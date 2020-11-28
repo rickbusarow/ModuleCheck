@@ -24,7 +24,7 @@ object Versions {
   const val canIDropJetifier = "0.5"
   const val changeTracker = "0.7.3"
   const val dependencyAnalysis = "0.63.0"
-  const val dokka = "1.4.10"
+  const val dokka = "1.4.20"
   const val knit = "0.2.2"
   const val mavenPublish = "0.13.0"
 
@@ -35,7 +35,7 @@ object Versions {
 
   const val androidTools = "4.1.0" // update the buildSrc gradle dependency too!
   const val gms = "4.3.4"
-  const val kotlin = "1.4.10" // update the buildSrc gradle dependency too!
+  const val kotlin = "1.4.20" // update the buildSrc gradle dependency too!
   const val sonarPlugin = "2.6.1"
   const val spoon = "1.5.0"
   const val taskTree = "1.5"

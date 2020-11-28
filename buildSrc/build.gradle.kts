@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  kotlin("jvm") version "1.4.10"
   `kotlin-dsl`
 }
 
@@ -20,7 +19,7 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  val kotlinVersion = "1.4.10"
+  val kotlinVersion = "1.4.20"
 
   implementation(kotlin("gradle-plugin", version = kotlinVersion))
   implementation(kotlin("stdlib", version = kotlinVersion))

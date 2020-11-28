@@ -2,7 +2,8 @@ plugins {
   kotlin("jvm")
   id("java-gradle-plugin")
   `kotlin-dsl`
-//  id("com.gradle.plugin-publish")
+  `maven-publish`
+  id("com.gradle.plugin-publish") version "0.12.0"
 }
 
 repositories {
@@ -19,7 +20,7 @@ repositories {
 dependencies {
   compileOnly(gradleApi())
 
-  val kotlinVersion = "1.4.10"
+  val kotlinVersion = "1.4.20"
 
   implementation(kotlin("gradle-plugin", version = kotlinVersion))
   implementation(kotlin("stdlib", version = kotlinVersion))
@@ -47,38 +48,107 @@ java {
 
 gradlePlugin {
   plugins {
-    create("kaapt") {
-      id = "com.rickbusarow.modulecheck"
-      implementationClass = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
-//      version = PluginCoordinates.VERSION
+    create("moduleCheck") {
+      id = PluginCoordinates.ID
+      group = PluginCoordinates.GROUP
+      implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
+      version = PluginCoordinates.VERSION
+    }
+  }
+}
+object PluginCoordinates {
+  const val ID = "com.rickbusarow.module-check"
+  const val GROUP = "com.rickbusarow.modulecheck"
+  const val VERSION = "0.10.0"
+  const val IMPLEMENTATION_CLASS = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
+}
+
+object PluginBundle {
+  const val VCS = "https://github.com/RBusarow/ModuleCheck"
+  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
+  const val DESCRIPTION = "Fast dependency graph validation for gradle"
+  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
+  val TAGS = listOf("plugin", "gradle")
+}
+
+// Configuration Block for the Plugin Marker artifact on Plugin Central
+pluginBundle {
+  website = PluginBundle.WEBSITE
+  vcsUrl = PluginBundle.VCS
+  description = PluginBundle.DESCRIPTION
+  tags = PluginBundle.TAGS
+
+  plugins {
+    getByName("moduleCheck") {
+      displayName = PluginBundle.DISPLAY_NAME
     }
   }
 }
 
-// Configuration Block for the Plugin Marker artifact on Plugin Central
-//pluginBundle {
-//  website = PluginBundle.WEBSITE
-//  vcsUrl = PluginBundle.VCS
-//  description = PluginBundle.DESCRIPTION
-//  tags = PluginBundle.TAGS
+tasks.create("setupPluginUploadFromEnvironment") {
+  doLast {
+    val key = System.getenv("GRADLE_PUBLISH_KEY")
+    val secret = System.getenv("GRADLE_PUBLISH_SECRET")
+
+    if (key == null || secret == null) {
+      throw GradleException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
+    }
+
+    System.setProperty("gradle.publish.key", key)
+    System.setProperty("gradle.publish.secret", secret)
+  }
+}
+
+//publishing {
 //
-//  plugins {
-//    getByName(PluginCoordinates.ID) {
-//      displayName = PluginBundle.DISPLAY_NAME
+//  repositories {
+//    maven {
+//
+//      credentials {
+//
+//        username = project.properties["SONATYPE_NEXUS_PASSWORD"] as? String ?: "--"
+//        password = project.properties["SONATYPE_NEXUS_USERNAME"] as? String ?: "--"
+//      }
+//
+//      url = uri("")
 //    }
 //  }
-//}
-
-//tasks.create("setupPluginUploadFromEnvironment") {
-//  doLast {
-//    val key = System.getenv("GRADLE_PUBLISH_KEY")
-//    val secret = System.getenv("GRADLE_PUBLISH_SECRET")
 //
-//    if (key == null || secret == null) {
-//      throw GradleException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
+//  publications {
+//
+//    create<MavenPublication>("maven") {
+//
+////      artifact(tasks["shadowJar"])
+//
+//      pom {
+//        name.set("OpenLink Engine Sequences")
+//        description.set("Command and response engine for the OpenLink protocol")
+//      }
+//
+//      groupId = "com.milwaukeetool.onekey"
+//      artifactId = "openlink-engine-sequences"
+//
+//      val versionName: String by project
+//
+//      val timestamp =  SimpleDateFormat("yyyyMMddHHmm").format( Date())
+//
+//      version = "0.10.0"
+//
+//      pom {
+//        url.set("https://github.com/mkeonekey/android-onekey")
+//
+//        developers {
+//          developer {
+//            id.set("onekey")
+//            name.set("One-Key")
+//          }
+//        }
+//        scm {
+//          connection.set("scm:git:https://github.com/mkeonekey/android-onekey.git")
+//          developerConnection.set("scm:git:ssh://github.com/mkeonekey/android-onekey.git")
+//          url.set("https://github.com/mkeonekey/android-onekey")
+//        }
+//      }
 //    }
-//
-//    System.setProperty("gradle.publish.key", key)
-//    System.setProperty("gradle.publish.secret", secret)
 //  }
 //}

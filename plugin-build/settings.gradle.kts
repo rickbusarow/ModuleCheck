@@ -39,6 +39,7 @@ gradleEnterprise {
   }
 }
 
-rootProject.name = "ModuleCheck Plugin"
+rootProject.name = "module-check-plugin"
+//rootProject.name = "ModuleCheck Plugin"
 
 include(":plugin")

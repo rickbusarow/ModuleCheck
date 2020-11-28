@@ -12,7 +12,7 @@ buildscript {
     classpath("com.android.tools.build:gradle:4.1.0")
     classpath("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
     classpath("com.google.gms:google-services:4.3.4")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20")
     classpath("com.vanniktech:gradle-maven-publish-plugin:0.13.0")
     classpath("com.jaredsburrows:gradle-spoon-plugin:1.5.0")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.2.2")
@@ -21,8 +21,8 @@ buildscript {
 }
 
 plugins {
-//  kotlin("jvm") version "1.4.10"
-  id("com.rickbusarow.modulecheck")
+  kotlin("jvm")
+  id("com.rickbusarow.module-check")
 }
 
 //apply<ModuleCheck>()
