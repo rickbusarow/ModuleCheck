@@ -1,19 +1,70 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
 local.properties
 
-# Project exclude paths
-/buildSrc/build/
-/plugin/build/
+# Windows thumbnail db
+Thumbs.db
+
+# OSX files
+.DS_Store
+
+# Eclipse project files
+.classpath
+.project
+
+## IDEA/Android Studio ignores
+*.iml
+*.ipr
+*.iws
+/.idea/*
+/.gradle/*
+
+# IDEA/Android Studio Ignore exceptions
+!/.idea/vcs.xml
+!/.idea/fileTemplates/
+!/.idea/inspectionProfiles/
+!/.idea/scopes/
+!/.idea/codeStyleSettings.xml
+!/.idea/encodings.xml
+!/.idea/copyright/
+!/.idea/compiler.xml
+
+
+#NDK
+obj/
+/METOpenLink/METOpenLink.iml
+/.gradle/
+
+/.idea/vcs.xml
+captures/
+java_pid1690.hprof
+/.idea/copyright/profiles_settings.xml
+/.idea/compiler.xml
+!/.idea/codeStyles/
+!/gradle/wrapper/gradle-wrapper.properties
+true/
+
+libs/
+src/main/res/drawable/
+*TestSuite.kt
+*devices.properties
+**/bluetooth/tools
+**/mockzall/tools
+/buildSrc/.gradle/
+/detekt-reports/
+
+# all build dirs at any level
+**/build
