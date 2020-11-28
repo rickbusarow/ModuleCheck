@@ -1,13 +1,9 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.*
-import groovy.util.Node
-import groovy.util.XmlParser
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
-import org.jetbrains.kotlin.psi.KtImportDirective
-import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
@@ -78,7 +74,8 @@ class ModuleCheckPlugin : Plugin<Project> {
         if (unused.isNotEmpty()) {
 
           unused.forEach {
-            logger.error("unused dependency: ${it.first.projectDir}/build.gradle.kts: (15, 1): ${it.second}")
+            logger.error("unused dependency: ${it.first.buildFile} -- ${it.second}")
+//            logger.error("unused dependency: ${it.first.projectDir}/build.gradle.kts: (15, 1): ${it.second}")
           }
         }
       }
@@ -86,29 +83,11 @@ class ModuleCheckPlugin : Plugin<Project> {
   }
 }
 
-class AndroidLayoutParser {
-  private val parser = XmlParser()
-
-  fun parse(file: File): Set<String> {
-    return parser.parse(file)
-      .breadthFirst()
-      .filterIsInstance<Node>()
-      .mapNotNull { it.name() as? String }
-      .toSet()
-  }
-
-}
-
 private val cache = ConcurrentHashMap<Project, ModuleCheckProject>()
-
-data class JvmFile(val packageFqName: String, val importDirectives: Set<KtImportDirective>)
 
 fun Project.toModuleCheckProject(): IntermediateModuleCheckProject {
 
-//  val kotlinExtension = project.extensions.getByType<JavaPluginExtension>()
-//  val kotlinSourceSets = kotlinExtension.
-//
-//  println("$this --- $t")
+//  println("build file --> ${buildFile}")
 
   val mainFiles = mainJavaRoot.walkTopDown()
     .files()
@@ -189,56 +168,4 @@ fun Project.toModuleCheckProject(): IntermediateModuleCheckProject {
     testImports = testImports,
     testDependencies = testDependencyProjects
   ) { setOf() }
-}
-
-class IntermediateModuleCheckProject(
-  val path: String,
-  val project: Project,
-  val mainPackages: Set<String>,
-  val mainImports: Set<String>,
-  val mainDependencies: Set<Project>,
-  val testPackages: Set<String>,
-  val testImports: Set<String>,
-  val testDependencies: Set<Project>,
-  importCandidates: () -> Set<String>
-) : Comparable<ModuleCheckProject> {
-
-  val importCandidates by lazy { importCandidates() }
-
-  override fun compareTo(other: ModuleCheckProject): Int = path.compareTo(other.path)
-
-  override fun toString(): String {
-    return """ModuleCheckProject(
-          path='$path',
-    )"""
-  }
-
-}
-
-class ModuleCheckProject(
-  val path: String,
-  val project: Project,
-  val mainPackages: Set<String>,
-  val mainImports: Set<String>,
-  val mainDependencies: Map<Project, ModuleCheckProject>,
-  val testPackages: Set<String>,
-  val testImports: Set<String>,
-  val testDependencies: Map<Project, ModuleCheckProject>,
-  importCandidates: () -> Set<String>
-) : Comparable<ModuleCheckProject> {
-
-  val depth: Int by lazy {
-    if (mainDependencies.isEmpty()) 0 else (mainDependencies.values.map { it.depth }.max()!! + 1)
-  }
-
-  val importCandidates by lazy { importCandidates() }
-
-  override fun compareTo(other: ModuleCheckProject): Int = path.compareTo(other.path)
-
-  override fun toString(): String {
-    return """ModuleCheckProject(
-          path='$path',
-    )"""
-  }
-
 }

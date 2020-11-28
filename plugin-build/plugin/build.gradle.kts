@@ -12,9 +12,9 @@ repositories {
   maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
 
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
-}
+//kotlinDslPluginOptions {
+//  experimentalWarning.set(false)
+//}
 
 dependencies {
   compileOnly(gradleApi())
@@ -48,8 +48,8 @@ java {
 gradlePlugin {
   plugins {
     create("kaapt") {
-      id = "onekey.plugins.kapt"
-      implementationClass = "onekey.plugins.OneKeyKaptPlugin"
+      id = "com.rickbusarow.modulecheck"
+      implementationClass = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
 //      version = PluginCoordinates.VERSION
     }
   }

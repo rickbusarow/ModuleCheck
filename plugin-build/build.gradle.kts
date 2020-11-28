@@ -22,7 +22,6 @@ buildscript {
 
 plugins {
 //  kotlin("jvm") version "1.4.10"
-  id("com.rickbusarow.modulecheck")
 }
 
 //apply<ModuleCheck>()

@@ -39,12 +39,6 @@ gradleEnterprise {
   }
 }
 
-rootProject.name = "ModuleCheck"
+rootProject.name = "ModuleCheck Plugin"
 
-include(
-  ":sample:app",
-  ":sample:library-a",
-  ":sample:library-b",
-  ":sample:nested:library-c"
-)
-includeBuild("plugin-build")
+include(":plugin")
