@@ -13,10 +13,20 @@ class ModuleCheckPlugin : Plugin<Project> {
   }
 }
 
+internal fun List<String>.positionOf(project: Project): ProjectDependencyDeclaration.Position {
+
+  val reg = """.*project[(]{0,1}(?:path =\s*)"${project.path}".*""".toRegex()
+
+  val row = indexOfFirst { it.trim().matches(reg) }
+
+  val col = if (row == -1) -1 else get(row).indexOfFirst { it != ' ' }
+
+  return ProjectDependencyDeclaration.Position(row + 1, col + 1)
+}
 
 fun Project.toModuleCheckProject(): ModuleCheckProject.JavaModuleCheckProject {
 
-//  println("build file --> ${buildFile}")
+  val buildFileLines = if (buildFile.exists()) buildFile.readText().lines() else emptyList()
 
   val mainFiles = mainJavaRoot.walkTopDown()
     .files()
@@ -75,7 +85,7 @@ fun Project.toModuleCheckProject(): ModuleCheckProject.JavaModuleCheckProject {
 
       config.dependencies
         .withType(ProjectDependency::class.java)
-        .map { it.dependencyProject }
+        .map { ProjectDependencyDeclaration(it.dependencyProject, buildFileLines.positionOf(it.dependencyProject)) }
     }.toSet()
 
   val testDependencyProjects = configurations
@@ -84,7 +94,7 @@ fun Project.toModuleCheckProject(): ModuleCheckProject.JavaModuleCheckProject {
 
       config.dependencies
         .withType(ProjectDependency::class.java)
-        .map { it.dependencyProject }
+        .map { ProjectDependencyDeclaration(it.dependencyProject, buildFileLines.positionOf(it.dependencyProject)) }
     }.toSet()
 
   return ModuleCheckProject.JavaModuleCheckProject(

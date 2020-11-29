@@ -16,67 +16,117 @@ abstract class ModuleCheckTask : DefaultTask() {
   fun execute() {
     val cli = Cli()
 
-    lateinit var things: List<ModuleCheckProject.JavaModuleCheckProject>
+    lateinit var moduleCheckProjects: List<ModuleCheckProject.JavaModuleCheckProject>
+    lateinit var mainUnused: List<UnusedDependency>
+    lateinit var testUnused: List<UnusedDependency>
 
     val time = measureTimeMillis {
 
-      things = project.rootProject.allprojects
+      moduleCheckProjects = project.rootProject.allprojects
         .map { gradleProject ->
           gradleProject.toModuleCheckProject()
             .also { moduleCheckProject -> moduleCheckProject.init() }
         }
-    }
 
-    val mapped: Map<Project, ModuleCheckProject.JavaModuleCheckProject> =
-      things.associateBy { it.project }
+      val mapped: Map<Project, ModuleCheckProject.JavaModuleCheckProject> =
+        moduleCheckProjects.associateBy { it.project }
 
-    val unused = things.flatMap { parent ->
+      mainUnused = moduleCheckProjects.flatMap { parent ->
 
-      parent.mainDependencies.mapNotNull { projectDependency ->
+        parent.mainDependencies.mapNotNull { projectDependency ->
 
-        val moduleCheckProject = mapped[projectDependency]
+          val moduleCheckProject = mapped[projectDependency.project]
 
-        require(moduleCheckProject != null) {
-          """map does not contain ${projectDependency} 
+          require(moduleCheckProject != null) {
+            """map does not contain $projectDependency 
               |
               |${mapped.keys}
             """.trimMargin()
-        }
+          }
 
-        val used = parent.mainImports.any { importString ->
-          when {
-            moduleCheckProject.mainPackages.contains(importString) -> true
-            else -> parent.mainDependencies.any { childProjectDependency ->
-              val dpp = mapped.getValue(childProjectDependency)
+          val used = parent.mainImports.any { importString ->
+            when {
+              moduleCheckProject.mainPackages.contains(importString) -> true
+              else -> parent.mainDependencies.any { childProjectDependency ->
+                val dpp = mapped.getValue(childProjectDependency.project)
 
-              dpp.mainDependencies.contains(projectDependency).also {
-                if (it) {
-                  logger.info("project ${parent.path} couldn't find import for $projectDependency but allowing because it's a valid dependency for child ${childProjectDependency}")
+                dpp.mainDependencies.contains(projectDependency).also {
+                  if (it) {
+                    logger.info(
+                      "project ${parent.path} couldn't find import for $projectDependency but" +
+                          " allowing because it's a valid dependency for child $childProjectDependency"
+                    )
+                  }
                 }
               }
             }
+
           }
 
+          if (!used) {
+            UnusedDependency(parent.project, projectDependency.position, projectDependency.project.path)
+          } else null
+
         }
+      }
 
-        if (!used) {
-          parent.project to projectDependency.path
-        } else null
+      testUnused = moduleCheckProjects.flatMap { parent ->
 
+        parent.testDependencies.mapNotNull { projectDependency ->
+
+          val moduleCheckProject = mapped[projectDependency.project]
+
+          require(moduleCheckProject != null) {
+            """map does not contain $projectDependency 
+              |
+              |${mapped.keys}
+            """.trimMargin()
+          }
+
+          val used = parent.testImports.any { importString ->
+            when {
+              moduleCheckProject.testPackages.contains(importString) -> true
+              else -> parent.testDependencies.any { childProjectDependency ->
+                val dpp = mapped.getValue(childProjectDependency.project)
+
+                dpp.testDependencies.contains(projectDependency).also {
+                  if (it) {
+                    logger.info(
+                      "project ${parent.path} couldn't find import for $projectDependency but" +
+                          " allowing because it's a valid dependency for child $childProjectDependency"
+                    )
+                  }
+                }
+              }
+            }
+
+          }
+
+          if (!used) {
+            UnusedDependency(parent.project, projectDependency.position, projectDependency.project.path)
+          } else null
+
+        }
       }
     }
 
-    things.groupBy { it.depth }.toSortedMap().forEach { (depth, modules) ->
+    moduleCheckProjects.groupBy { it.depth }.toSortedMap().forEach { (depth, modules) ->
       cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
     }
 
     cli.printGreen("total parsing time --> $time milliseconds")
 
-    if (unused.isNotEmpty()) {
+    if (mainUnused.isNotEmpty()) {
 
-      unused.forEach {
-        logger.error("unused dependency: ${it.first.buildFile} -- ${it.second}")
-//            logger.error("unused dependency: ${it.first.projectDir}/build.gradle.kts: (15, 1): ${it.second}")
+      mainUnused.forEach {
+        logger.error("unused main dependency: ${it.logString()}")
+      }
+    }
+
+    if (testUnused.isNotEmpty()) {
+
+      testUnused.forEach {
+        logger.error("unused test dependency: ${it.logString()}")
       }
     }
   }
