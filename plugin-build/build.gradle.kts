@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 buildscript {
   repositories {
     mavenCentral()
@@ -20,12 +18,6 @@ buildscript {
   }
 }
 
-plugins {
-//  kotlin("jvm") version "1.4.20"
-}
-
-//apply<ModuleCheck>()
-
 allprojects {
 
   repositories {
@@ -36,21 +28,4 @@ allprojects {
     jcenter()
     maven("https://s3-us-west-2.amazonaws.com/si-mobile-sdks/android/")
   }
-
-//  dependencies {
-//
-//  }
-//
-//  tasks.withType<KotlinCompile>()
-//      .configureEach {
-//
-//        kotlinOptions {
-//
-//          freeCompilerArgs = listOf(
-//              "-Xinline-classes",
-//              "-Xopt-in=kotlin.ExperimentalStdlibApi",
-//              "-Xuse-experimental=kotlin.contracts.ExperimentalContracts"
-//          )
-//        }
-//      }
 }

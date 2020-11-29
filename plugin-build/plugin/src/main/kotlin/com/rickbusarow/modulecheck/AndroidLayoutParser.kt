@@ -1,5 +1,6 @@
 package com.rickbusarow.modulecheck
 
+import com.github.javaparser.StaticJavaParser
 import groovy.util.Node
 import groovy.util.XmlParser
 import java.io.File
@@ -15,4 +16,15 @@ class AndroidLayoutParser {
       .toSet()
   }
 
+}
+
+class JavaParser {
+
+  fun parse(file:File) {
+
+    val parsed = StaticJavaParser.parse(file)
+
+    val imports = parsed.imports.toSet()
+
+  }
 }

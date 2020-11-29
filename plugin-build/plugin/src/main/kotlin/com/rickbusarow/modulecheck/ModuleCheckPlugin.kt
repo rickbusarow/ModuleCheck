@@ -4,88 +4,17 @@ import com.rickbusarow.modulecheck.internal.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.system.measureTimeMillis
 
 class ModuleCheckPlugin : Plugin<Project> {
 
   override fun apply(project: Project) {
 
-    project.tasks.register("moduleCheck") {
-
-      description = "verification"
-
-      doLast {
-
-        val cli = Cli()
-
-        lateinit var things: List<IntermediateModuleCheckProject>
-
-        val time = measureTimeMillis {
-
-          things = project.rootProject.allprojects
-            .map { it.toModuleCheckProject() }
-        }
-
-        val mapped: Map<Project, IntermediateModuleCheckProject> = things.associateBy { it.project }
-
-        val unused = things.flatMap { parent ->
-
-          parent.mainDependencies.mapNotNull { projectDependency ->
-
-            val dp = mapped[projectDependency]
-
-            require(dp != null) {
-              """map does not contain ${projectDependency} 
-              |
-              |${mapped.keys}
-            """.trimMargin()
-            }
-
-            val used = parent.mainImports.any { importString ->
-              when {
-                dp.mainPackages.contains(importString) -> true
-                else -> parent.mainDependencies.any { childProjectDependency ->
-                  val dpp = mapped[childProjectDependency]!!
-
-                  dpp.mainDependencies.contains(projectDependency).also {
-                    if (it) {
-                      logger.info("project ${parent.path} couldn't find import for $projectDependency but allowing because it's a valid dependency for child ${childProjectDependency}")
-                    }
-                  }
-                }
-              }
-
-            }
-
-            if (!used) {
-              parent.project to projectDependency.path
-            } else null
-
-          }
-        }
-
-//        things.groupBy { it.depth }.toSortedMap().forEach { (depth, modules) ->
-//          cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-//        }
-
-        cli.printGreen("total parsing time --> $time milliseconds")
-
-        if (unused.isNotEmpty()) {
-
-          unused.forEach {
-            logger.error("unused dependency: ${it.first.buildFile} -- ${it.second}")
-//            logger.error("unused dependency: ${it.first.projectDir}/build.gradle.kts: (15, 1): ${it.second}")
-          }
-        }
-      }
-    }
+    project.tasks.register("moduleCheck", ModuleCheckTask::class.java)
   }
 }
 
-private val cache = ConcurrentHashMap<Project, ModuleCheckProject>()
 
-fun Project.toModuleCheckProject(): IntermediateModuleCheckProject {
+fun Project.toModuleCheckProject(): ModuleCheckProject.JavaModuleCheckProject {
 
 //  println("build file --> ${buildFile}")
 
@@ -158,7 +87,7 @@ fun Project.toModuleCheckProject(): IntermediateModuleCheckProject {
         .map { it.dependencyProject }
     }.toSet()
 
-  return IntermediateModuleCheckProject(
+  return ModuleCheckProject.JavaModuleCheckProject(
     path = path,
     project = this,
     mainPackages = mainPackages,
@@ -167,5 +96,5 @@ fun Project.toModuleCheckProject(): IntermediateModuleCheckProject {
     testPackages = testPackages,
     testImports = testImports,
     testDependencies = testDependencyProjects
-  ) { setOf() }
+  )
 }
