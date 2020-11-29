@@ -21,7 +21,10 @@ abstract class ModuleCheckTask : DefaultTask() {
     val time = measureTimeMillis {
 
       things = project.rootProject.allprojects
-        .map { it.toModuleCheckProject().also { it.init() } }
+        .map { gradleProject ->
+          gradleProject.toModuleCheckProject()
+            .also { moduleCheckProject -> moduleCheckProject.init() }
+        }
     }
 
     val mapped: Map<Project, ModuleCheckProject.JavaModuleCheckProject> =
@@ -31,9 +34,9 @@ abstract class ModuleCheckTask : DefaultTask() {
 
       parent.mainDependencies.mapNotNull { projectDependency ->
 
-        val dp = mapped[projectDependency]
+        val moduleCheckProject = mapped[projectDependency]
 
-        require(dp != null) {
+        require(moduleCheckProject != null) {
           """map does not contain ${projectDependency} 
               |
               |${mapped.keys}
@@ -42,7 +45,7 @@ abstract class ModuleCheckTask : DefaultTask() {
 
         val used = parent.mainImports.any { importString ->
           when {
-            dp.mainPackages.contains(importString) -> true
+            moduleCheckProject.mainPackages.contains(importString) -> true
             else -> parent.mainDependencies.any { childProjectDependency ->
               val dpp = mapped.getValue(childProjectDependency)
 
