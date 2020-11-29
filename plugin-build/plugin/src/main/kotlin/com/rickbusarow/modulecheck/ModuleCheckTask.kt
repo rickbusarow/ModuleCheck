@@ -28,8 +28,7 @@ abstract class ModuleCheckTask : DefaultTask() {
             .also { moduleCheckProject -> moduleCheckProject.init() }
         }
 
-      val mapped: Map<Project, ModuleCheckProject.JavaModuleCheckProject> =
-        moduleCheckProjects.associateBy { it.project }
+      val mapped  = moduleCheckProjects.associateBy { it.project }
 
       mainUnused = moduleCheckProjects.flatMap { parent ->
 
@@ -85,7 +84,7 @@ abstract class ModuleCheckTask : DefaultTask() {
 
           val used = parent.testImports.any { importString ->
             when {
-              moduleCheckProject.testPackages.contains(importString) -> true
+              moduleCheckProject.mainPackages.contains(importString) -> true
               else -> parent.testDependencies.any { childProjectDependency ->
                 val dpp = mapped.getValue(childProjectDependency.project)
 
