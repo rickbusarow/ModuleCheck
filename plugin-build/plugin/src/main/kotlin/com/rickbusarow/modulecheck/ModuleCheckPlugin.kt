@@ -4,12 +4,25 @@ import com.rickbusarow.modulecheck.internal.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.SetProperty
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.setProperty
+
+abstract class ModuleCheckExtension(objects: ObjectFactory) {
+
+  val alwaysIgnore: SetProperty<String> = objects.setProperty<String>()
+}
+
+fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
+  extensions.configure(ModuleCheckExtension::class, config)
+}
 
 class ModuleCheckPlugin : Plugin<Project> {
 
-  override fun apply(project: Project) {
-
-    project.tasks.register("moduleCheck", ModuleCheckTask::class.java)
+  override fun apply(target: Project) {
+    target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
+    target.tasks.register("moduleCheck", ModuleCheckTask::class.java)
   }
 }
 
