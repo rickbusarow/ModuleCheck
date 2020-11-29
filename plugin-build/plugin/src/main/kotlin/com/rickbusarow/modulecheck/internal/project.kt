@@ -7,8 +7,11 @@ import java.io.File
 
 val Project.srcRoot get() = File("$projectDir/src")
 val Project.mainJavaRoot get() = File("$srcRoot/main/java")
-val Project.androidJavaTestRoot get() = File("$srcRoot/androidTest/java")
+val Project.androidTestJavaRoot get() = File("$srcRoot/androidTest/java")
 val Project.testJavaRoot get() = File("$srcRoot/test/java")
+val Project.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
+val Project.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
+val Project.testKotlinRoot get() = File("$srcRoot/test/kotlin")
 
 fun Project.mainLayoutRootOrNull(): File? {
   val file = File("$srcRoot/main/res/layout")
