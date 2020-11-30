@@ -43,7 +43,6 @@ abstract class ModuleCheckTask : DefaultTask() {
         .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
         .flatMap { moduleCheckProject ->
           with(moduleCheckProject) {
-
             listOf(
               unusedAndroidTest,
               unusedApi,

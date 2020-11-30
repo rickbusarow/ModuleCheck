@@ -22,6 +22,23 @@ sealed class JvmFile {
           ?.joinToString(".")
       }.toSet()
     }
+
+    init {
+      println(
+        """classes
+        |
+        |${ktFile.text}
+        |
+        |${ktFile.classes.map { it.name }}
+        |
+        |${
+          ktFile.classes.forEach { klass ->
+            klass.allInnerClasses.map { it.name }
+          }
+        }
+      """.trimMargin()
+      )
+    }
   }
 
   data class JavaFile(val file: File) : JvmFile() {
@@ -41,7 +58,7 @@ sealed class JvmFile {
 
 data class XmlFile(val customViews: Set<String>, val resourceReferences: Set<String>)
 
-data class ProjectDependencyDeclaration(val project: Project,private val dependent: Project) {
+data class ProjectDependencyDeclaration(val project: Project, private val dependent: Project) {
 
   val position: Position by unsafeLazy { dependent.buildFile.readText().lines().positionOf(project) }
 
