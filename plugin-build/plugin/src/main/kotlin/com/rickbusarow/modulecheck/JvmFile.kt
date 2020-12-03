@@ -22,23 +22,6 @@ sealed class JvmFile {
           ?.joinToString(".")
       }.toSet()
     }
-
-    init {
-      println(
-        """classes
-        |
-        |${ktFile.text}
-        |
-        |${ktFile.classes.map { it.name }}
-        |
-        |${
-          ktFile.classes.forEach { klass ->
-            klass.allInnerClasses.map { it.name }
-          }
-        }
-      """.trimMargin()
-      )
-    }
   }
 
   data class JavaFile(val file: File) : JvmFile() {
@@ -56,27 +39,64 @@ sealed class JvmFile {
   }
 }
 
-data class XmlFile(val customViews: Set<String>, val resourceReferences: Set<String>)
+data class ProjectDependencyDeclaration(val project: Project,   val dependent: Project) {
 
-data class ProjectDependencyDeclaration(val project: Project, private val dependent: Project) {
-
-  val position: Position by unsafeLazy { dependent.buildFile.readText().lines().positionOf(project) }
+  val position: Position by unsafeLazy {
+    dependent.buildFile.readText().lines().positionOf(project)
+  }
 
   data class Position(val row: Int, val column: Int)
 }
 
-data class UnusedDependency(
-  val dependentProject: Project,
-  val position: ProjectDependencyDeclaration.Position,
-  val dependencyPath: String,
-  val configurationName: String
-) {
-  fun logString(): String {
+sealed class DependencyFinding (val problemName: String){
+  abstract val dependentProject: Project
+  abstract val position: ProjectDependencyDeclaration.Position
+  abstract val dependencyPath: String
+  abstract val configurationName: String
 
-    val pos = if (position.row == 0 || position.column == 0) "" else "(${position.row}, ${position.column}): "
+  data class UnusedDependency(
+    override val dependentProject: Project,
+    override val position: ProjectDependencyDeclaration.Position,
+    override val dependencyPath: String,
+    override val configurationName: String
+  ) : DependencyFinding("unused")
+
+  data class RedundantDependency(
+    override val dependentProject: Project,
+    override val position: ProjectDependencyDeclaration.Position,
+    override val dependencyPath: String,
+    override val configurationName: String,
+    val from: List<Project>
+  ) : DependencyFinding("redundant") {
+    override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
+
+  }
+
+  open fun logString(): String {
+
+    val pos =
+      if (position.row == 0 || position.column == 0) "" else "(${position.row}, ${position.column}): "
 
     return "${dependentProject.buildFile.path}: $pos${dependencyPath}"
   }
+
+  fun commentOut() {
+
+    val text = dependentProject.buildFile.readText()
+
+    val row = position.row - 1
+
+    val lines = text.lines().toMutableList()
+
+    lines[row] = "//" + lines[row]
+
+    val newText = lines.joinToString("\n")
+
+    dependentProject.buildFile.writeText(newText)
+
+
+  }
 }
 
-fun <T> unsafeLazy(initializer: () -> T): Lazy<T> = lazy(mode = LazyThreadSafetyMode.NONE, initializer = initializer)
+fun <T> unsafeLazy(initializer: () -> T): Lazy<T> =
+  lazy(mode = LazyThreadSafetyMode.NONE, initializer = initializer)

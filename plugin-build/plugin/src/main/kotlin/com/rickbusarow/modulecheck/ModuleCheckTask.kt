@@ -16,17 +16,19 @@ abstract class ModuleCheckTask : DefaultTask() {
   }
 
   @get:Input
-  val alwaysIgnore: SetProperty<String> = project.extensions.getByType<ModuleCheckExtension>().alwaysIgnore
+  val alwaysIgnore: SetProperty<String> =
+    project.extensions.getByType<ModuleCheckExtension>().alwaysIgnore
 
   @get:Input
-  val ignoreAll: SetProperty<String> = project.extensions.getByType<ModuleCheckExtension>().ignoreAll
+  val ignoreAll: SetProperty<String> =
+    project.extensions.getByType<ModuleCheckExtension>().ignoreAll
 
   @TaskAction
   fun execute() = runBlocking {
     val cli = Cli()
 
     lateinit var moduleCheckProjects: List<ModuleCheckProject>
-    lateinit var unused: List<UnusedDependency>
+    lateinit var unused: List<DependencyFinding>
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -48,7 +50,10 @@ abstract class ModuleCheckTask : DefaultTask() {
               unusedApi,
               unusedCompileOnly,
               unusedImplementation,
-              unusedTestImplementation
+              unusedTestImplementation,
+              redundantAndroidTest,
+              redundantMain,
+              redundantTest
             ).flatMap { dependencies ->
               dependencies.mapNotNull { dependency ->
                 if (alwaysIgnore.contains(dependency.dependencyPath)) {
@@ -66,8 +71,9 @@ abstract class ModuleCheckTask : DefaultTask() {
       cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
     }
 
-    unused.forEach { dependency ->
-      logger.error("unused ${dependency.configurationName} dependency: ${dependency.logString()}")
+    unused.forEach { finding ->
+      logger.error("${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}")
+      finding.commentOut()
     }
 
     cli.printGreen("total parsing time --> $time milliseconds")

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_lightest"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        >
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:padding="@dimen/mt_padding_medium"
+          >
+
+        <ImageView
+            android:id="@+id/btnSave"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="#111111"
+            android:src="@drawable/ic_menu_save"
+            android:visibility="invisible"
+            />
+
+        <ImageView
+            android:id="@+id/btnBluetooth"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_nearby_active"
+            />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red_milwaukee"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/mt_padding_medium"
+        >
+
+      <TextView
+          android:id="@+id/profileNameTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:text=""
+          android:textColor="@color/black"
+          android:textSize="@dimen/mt_font_size_standard"
+          android:textStyle="bold"
+          />
+
+      <androidx.appcompat.widget.AppCompatTextView
+          android:id="@+id/toolNameTextView"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:text=""
+          android:textColor="@color/gray"
+          android:textSize="@dimen/mt_font_size_small"
+          android:textStyle="bold"
+          />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setupViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/mt_padding_medium"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvNotWirelessMode"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="@string/tool_control_enabled_wireless_mode"
+        android:textColor="@color/white"
+        android:textSize="@dimen/mt_font_size_medium"
+        android:visibility="gone"
+        />
+
+  </LinearLayout>
+</FrameLayout>
