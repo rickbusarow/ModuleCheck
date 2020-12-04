@@ -28,7 +28,7 @@ abstract class ModuleCheckTask : DefaultTask() {
     val cli = Cli()
 
     lateinit var moduleCheckProjects: List<ModuleCheckProject>
-    lateinit var unused: List<DependencyFinding>
+    lateinit var findings: List<DependencyFinding>
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -41,11 +41,12 @@ abstract class ModuleCheckTask : DefaultTask() {
           ModuleCheckProject(gradleProject)
         }
 
-      unused = moduleCheckProjects.sorted()
+      findings = moduleCheckProjects.sorted()
         .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
         .flatMap { moduleCheckProject ->
           with(moduleCheckProject) {
             listOf(
+              overshotDependencies,
               unusedAndroidTest,
               unusedApi,
               unusedCompileOnly,
@@ -65,15 +66,16 @@ abstract class ModuleCheckTask : DefaultTask() {
             }
           }
         }
+        .distinctBy { it.position }
     }
 
     moduleCheckProjects.groupBy { it.mainDepth }.toSortedMap().forEach { (depth, modules) ->
       cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
     }
 
-    unused.forEach { finding ->
+    findings.forEach { finding ->
       logger.error("${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}")
-      finding.commentOut()
+      finding.fix()
     }
 
     cli.printGreen("total parsing time --> $time milliseconds")
