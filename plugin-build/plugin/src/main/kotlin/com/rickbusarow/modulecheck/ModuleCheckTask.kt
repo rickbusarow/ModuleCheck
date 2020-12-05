@@ -27,7 +27,7 @@ abstract class ModuleCheckTask : DefaultTask() {
   fun Project.moduleCheckProjects() = project.rootProject.allprojects
     .filter { gradleProject -> gradleProject.buildFile.exists() }
     .map { gradleProject ->
-      ModuleCheckProject(gradleProject)
+      ModuleCheckProject.from(gradleProject)
     }
 
   @TaskAction

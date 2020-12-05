@@ -19,15 +19,16 @@ sealed class DependencyFinding(val problemName: String) {
     override val dependentProject: Project,
     override val dependencyPath: String,
     override val configurationName: String,
-    val from: List<ProjectDependencyDeclaration>
+    val from: List<ModuleCheckProject>
   ) : DependencyFinding("over-shot") {
+
     override val position: ProjectDependencyDeclaration.Position
       get() = from.firstOrNull()?.let { first ->
-        dependentProject.buildFile.readText().lines().positionOf(first.dependent.project)
+        dependentProject.buildFile.readText().lines().positionOf(first.project)
       } ?: ProjectDependencyDeclaration.Position(-1, -1)
 
     override fun logString(): String =
-      super.logString() + " from: ${from.joinToString { it.dependent.path }}"
+      super.logString() + " from: ${from.joinToString { it.path }}"
 
     override fun fix() {
 
@@ -39,7 +40,7 @@ sealed class DependencyFinding(val problemName: String) {
 
       if (row > 0 && from.isNotEmpty()) {
 
-        val existingPath = from.first().dependent.path
+        val existingPath = from.first().path
 
         val existingLine = lines[row]
 

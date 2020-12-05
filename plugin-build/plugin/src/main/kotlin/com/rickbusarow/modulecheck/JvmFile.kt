@@ -33,11 +33,9 @@ sealed class JvmFile {
   }
 }
 
-data class ProjectDependencyDeclaration(val project: Project, val dependent: Project) {
+data class ProjectDependencyDeclaration(val project: Project, val parent: Project) {
 
-  val position: Position by unsafeLazy {
-    dependent.buildFile.readText().lines().positionOf(project)
-  }
+  fun position(): Position = parent.buildFile.readText().lines().positionOf(project)
 
   data class Position(val row: Int, val column: Int)
 }

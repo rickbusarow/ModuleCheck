@@ -6,7 +6,7 @@ import kotlin.reflect.KProperty1
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 
-data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProject> {
+data class ModuleCheckProject private constructor(val project: Project) : Comparable<ModuleCheckProject> {
 
   init {
     cache[project] = this
@@ -88,25 +88,19 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
               .max()!! + 1)
         }
 
-  fun allPublicClassPathDependencyDeclarations(): List<ProjectDependencyDeclaration> {
-
-    return apiDependencies +
-        apiDependencies.flatMap {
-          it.moduleCheckProject().allPublicClassPathDependencyDeclarations()
+  fun allPublicClassPathDependencyDeclarations():List<ModuleCheckProject> = apiDependencies + apiDependencies.flatMap {
+          it. allPublicClassPathDependencyDeclarations()
         }
-  }
 
-  fun inheritedMainDependencyProjects(): List<ProjectDependencyDeclaration> {
+  fun inheritedMainDependencyProjects(): List<ModuleCheckProject> {
 
     val main = apiDependencies + implementationDependencies
 
-    return apiDependencies +
-        main.flatMap { pdd ->
-          val mcp = pdd.moduleCheckProject()
+    return apiDependencies + main.flatMap { pdd ->
 
-          mcp.inheritedMainDependencyProjects() +
-              mcp.apiDependencies.flatMap {
-                it.moduleCheckProject().inheritedMainDependencyProjects()
+      pdd.inheritedMainDependencyProjects() +
+          pdd.apiDependencies.flatMap {
+                it. inheritedMainDependencyProjects()
               }
         }
   }
@@ -116,12 +110,12 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
     val free = allPublicClassPathDependencyDeclarations()
 
     val allMain =
-        (apiDependencies + implementationDependencies).map { it.moduleCheckProject() }.toSet()
+        (apiDependencies + implementationDependencies) .toSet()
 
     return free
-        .filterNot { allMain.contains(it.moduleCheckProject()) }
+        .filterNot { allMain.contains(it ) }
         .filter { inheritedNewProject ->
-          inheritedNewProject.moduleCheckProject().mainPackages.any { newProjectPackage ->
+          inheritedNewProject .mainPackages.any { newProjectPackage ->
             mainImports.contains(newProjectPackage)
           }
         }
@@ -162,10 +156,10 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
           val from =
               inheritedMainDependencyProjects()
                   .filter { inherited -> inherited.project == it.project }
-                  .map { it.dependent }
+                  .map { it.project }
 
           DependencyFinding.RedundantDependency(
-              project, it.position, it.project.path, "androidTest", from)
+              project, it.positionIn(project), it.project.path, "androidTest", from)
         }
         .distinctBy { it.position }
   }
@@ -179,8 +173,8 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
       val from =
           inheritedMainDependencyProjects()
               .filter { inherited -> inherited.project == it.project }
-              .map { it.dependent }
-      DependencyFinding.RedundantDependency(project, it.position, it.project.path, "main", from)
+              .map { it.project }
+      DependencyFinding.RedundantDependency(project, it.positionIn(project), it.project.path, "main", from)
     }
   }
 
@@ -193,30 +187,28 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
           val from =
               inheritedMainDependencyProjects()
                   .filter { inherited -> inherited.project == it.project }
-                  .map { it.dependent }
-          DependencyFinding.RedundantDependency(project, it.position, it.project.path, "test", from)
+                  .map { it.project }
+          DependencyFinding.RedundantDependency(project, it.positionIn(project), it.project.path, "test", from)
         }
   }
 
   private fun findUnused(
       imports: Set<String>,
-      dependencyKProp: KProperty1<ModuleCheckProject, List<ProjectDependencyDeclaration>>,
+      dependencyKProp: KProperty1<ModuleCheckProject, List<ModuleCheckProject>>,
       configurationName: String
   ): List<DependencyFinding.UnusedDependency> =
       dependencyKProp(this)
           // .filterNot { alwaysIgnore.contains(it.project.path)}
           .mapNotNull { projectDependency ->
-            val dependencyFromCache = projectDependency.moduleCheckProject()
 
             val used =
                 imports.any { importString ->
                   when {
-                    dependencyFromCache.mainPackages.contains(importString) -> true
+                    projectDependency.mainPackages.contains(importString) -> true
                     else ->
                         dependencyKProp(this).any { childProjectDependency ->
-                          val childModuleCheckProject = childProjectDependency.moduleCheckProject()
 
-                          dependencyKProp(childModuleCheckProject).contains(projectDependency)
+                          dependencyKProp(childProjectDependency).contains(projectDependency)
                         }
                   }
                 }
@@ -224,7 +216,7 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
             if (!used) {
               DependencyFinding.UnusedDependency(
                   project,
-                  projectDependency.position,
+                  projectDependency.positionIn(project),
                   projectDependency.project.path,
                   configurationName)
             } else null
@@ -236,10 +228,12 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
             .dependencies
             .withType(ProjectDependency::class.java)
             .map {
-              ProjectDependencyDeclaration(project = it.dependencyProject, dependent = project)
+              ProjectDependencyDeclaration(project = it.dependencyProject, parent = project).moduleCheckProject()
             }
             .toSet()
       }
+
+  fun positionIn(parent: Project): ProjectDependencyDeclaration.Position = parent.buildFile.readText().lines().positionOf(project)
 
   private fun DependencyFinding.moduleCheckProject() = cache.getValue(dependentProject)
   private fun ProjectDependencyDeclaration.moduleCheckProject() = cache.getValue(project)
@@ -252,5 +246,7 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
 
   companion object {
     private val cache = ConcurrentHashMap<Project, ModuleCheckProject>()
+
+    fun from(project: Project) = cache.getOrPut(project) { ModuleCheckProject(project) }
   }
 }
