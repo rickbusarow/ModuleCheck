@@ -1,10 +1,10 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.*
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.reflect.KProperty1
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KProperty1
 
 data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProject> {
 
@@ -60,24 +60,29 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
     dependencyProjects("androidTestImplementation")
   }
 
-  val mainDepth: Int by unsafeLazy {
+  fun getMainDepth(): Int {
     val all = compileOnlyDependencies + apiDependencies + implementationDependencies
 
-    if (all.isEmpty()) 0 else (all.map { cache.getValue(it.project).mainDepth }.max()!! + 1)
+    return if (all.isEmpty()) 0 else (all.map { cache.getValue(it.project).getMainDepth() }
+      .max()!! + 1)
   }
 
-  val testDepth: Int by unsafeLazy {
-    if (testImplementationDependencies.isEmpty()) 0
-    else (testImplementationDependencies.map { cache.getValue(it.project).mainDepth }.max()!! + 1)
+  fun getTestDepth(): Int = if (testImplementationDependencies.isEmpty()) {
+    0
+  } else {
+    (testImplementationDependencies.map { cache.getValue(it.project).getMainDepth() }
+      .max()!! + 1)
   }
 
-  val androidTestDepth: Int by unsafeLazy {
-    if (androidTestImplementationDependencies.isEmpty()) 0
-    else
+
+  val androidTestDepth: Int
+    get() = if (androidTestImplementationDependencies.isEmpty()) {
+      0
+    } else {
       (androidTestImplementationDependencies
-        .map { cache.getValue(it.project).mainDepth }
+        .map { cache.getValue(it.project).getMainDepth() }
         .max()!! + 1)
-  }
+    }
 
   val inheritedMainDependencyProjects by unsafeLazy {
     (apiDependencies + implementationDependencies).map { cache.getValue(it.project) }.flatMap {
@@ -108,7 +113,7 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
           project,
           overshot.key.path,
           "main",
-          overshot.value.map { it }.distinctBy { it.project}
+          overshot.value.map { it }.distinctBy { it.project }
         )
       }
   }

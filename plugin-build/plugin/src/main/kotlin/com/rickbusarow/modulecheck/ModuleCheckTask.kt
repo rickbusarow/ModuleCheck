@@ -28,7 +28,6 @@ abstract class ModuleCheckTask : DefaultTask() {
     val cli = Cli()
 
     lateinit var moduleCheckProjects: List<ModuleCheckProject>
-    lateinit var findings: List<DependencyFinding>
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -41,17 +40,31 @@ abstract class ModuleCheckTask : DefaultTask() {
           ModuleCheckProject(gradleProject)
         }
 
-      findings = moduleCheckProjects.sorted()
+      moduleCheckProjects.sorted()
         .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
         .flatMap { moduleCheckProject ->
           with(moduleCheckProject) {
             listOf(
-              overshotDependencies,
-              unusedAndroidTest,
-              unusedApi,
-              unusedCompileOnly,
-              unusedImplementation,
-              unusedTestImplementation,
+              overshotDependencies
+            ).flatMap { dependencies ->
+              dependencies.mapNotNull { dependency ->
+                if (alwaysIgnore.contains(dependency.dependencyPath)) {
+                  null
+                } else {
+                  dependency
+                }
+              }
+            }
+          }
+        }
+        .distinctBy { it.position }
+        .finish()
+
+      moduleCheckProjects.sorted()
+        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
+        .flatMap { moduleCheckProject ->
+          with(moduleCheckProject) {
+            listOf(
               redundantAndroidTest,
               redundantMain,
               redundantTest
@@ -67,18 +80,60 @@ abstract class ModuleCheckTask : DefaultTask() {
           }
         }
         .distinctBy { it.position }
+        .finish()
+
+      moduleCheckProjects.sorted()
+        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
+        .flatMap { moduleCheckProject ->
+          with(moduleCheckProject) {
+            listOf(
+              unusedAndroidTest,
+              unusedApi,
+              unusedCompileOnly,
+              unusedImplementation,
+              unusedTestImplementation
+            ).flatMap { dependencies ->
+              dependencies.mapNotNull { dependency ->
+                if (alwaysIgnore.contains(dependency.dependencyPath)) {
+                  null
+                } else {
+                  dependency
+                }
+              }
+            }
+          }
+        }
+        .distinctBy { it.position }
+        .finish()
     }
 
-    moduleCheckProjects.groupBy { it.mainDepth }.toSortedMap().forEach { (depth, modules) ->
+    moduleCheckProjects.groupBy { it.getMainDepth() }.toSortedMap().forEach { (depth, modules) ->
       cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-    }
-
-    findings.forEach { finding ->
-      logger.error("${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}")
-      finding.fix()
     }
 
     cli.printGreen("total parsing time --> $time milliseconds")
 
+  }
+
+  private fun List<DependencyFinding>.finish() {
+    val byProject = groupBy { it.dependentProject }
+
+    val sortedProjects = byProject.keys.sorted()
+
+    sortedProjects.forEach { key ->
+      val forProject = byProject.getValue(key).groupBy { it::class }
+
+      listOf(
+        DependencyFinding.OverShotDependency::class,
+        DependencyFinding.RedundantDependency::class,
+        DependencyFinding.UnusedDependency::class
+      ).forEach { type ->
+        forProject[type]?.forEach { finding ->
+          logger.error("${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}")
+          finding.fix()
+        }
+      }
+
+    }
   }
 }
