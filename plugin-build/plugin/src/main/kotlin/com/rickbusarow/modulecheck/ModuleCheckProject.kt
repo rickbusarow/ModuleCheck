@@ -84,23 +84,23 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
         .max()!! + 1)
     }
 
-  val inheritedMainDependencyProjects by unsafeLazy {
+  fun inheritedMainDependencyProjects() =
     (apiDependencies + implementationDependencies).map { cache.getValue(it.project) }.flatMap {
       it.apiDependencies
     }
-  }
 
-  val overshotDependencies by unsafeLazy {
 
-    val free = (unusedApi + unusedImplementation + redundantMain).flatMap {
+  fun overshotDependencies(): List<DependencyFinding.OverShotDependency> {
+
+    val free = (unusedApi() + unusedImplementation() + redundantMain()).flatMap {
       it.moduleCheckProject()
-        .inheritedMainDependencyProjects
+        .inheritedMainDependencyProjects()
     }
 
     val allMain =
       (apiDependencies + implementationDependencies).map { it.moduleCheckProject() }.toSet()
 
-    free
+    return free
       .filterNot { allMain.contains(it.moduleCheckProject()) }
       .filter { inheritedNewProject ->
         inheritedNewProject.moduleCheckProject().mainPackages.any { newProjectPackage ->
@@ -118,36 +118,33 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
       }
   }
 
-  val unusedAndroidTest by unsafeLazy {
-    findUnused(
-      androidTestImports,
-      ModuleCheckProject::androidTestImplementationDependencies,
-      "androidTest"
-    )
-  }
-  val unusedApi by unsafeLazy {
-    findUnused(mainImports, ModuleCheckProject::apiDependencies, "api")
-  }
-  val unusedCompileOnly by unsafeLazy {
+  fun unusedAndroidTest() = findUnused(
+    androidTestImports,
+    ModuleCheckProject::androidTestImplementationDependencies,
+    "androidTest"
+  )
+
+
+  fun unusedApi() = findUnused(mainImports, ModuleCheckProject::apiDependencies, "api")
+
+  fun unusedCompileOnly() =
     findUnused(mainImports, ModuleCheckProject::compileOnlyDependencies, "compileOnly")
-  }
-  val unusedImplementation by unsafeLazy {
+
+  fun unusedImplementation() =
     findUnused(mainImports, ModuleCheckProject::implementationDependencies, "implementation")
-  }
-  val unusedTestImplementation by unsafeLazy {
-    findUnused(
-      testImports, ModuleCheckProject::testImplementationDependencies, "testImplementation"
-    )
-  }
 
-  val redundantAndroidTest by unsafeLazy {
-    val inheritedDependencyProjects = inheritedMainDependencyProjects.map { it.project }.toSet()
+  fun unusedTestImplementation() = findUnused(
+    testImports, ModuleCheckProject::testImplementationDependencies, "testImplementation"
+  )
 
-    androidTestImplementationDependencies
+  fun redundantAndroidTest(): List<DependencyFinding.RedundantDependency> {
+    val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
+
+    return androidTestImplementationDependencies
       .filter { inheritedDependencyProjects.contains(it.project) }
       .map {
         val from =
-          inheritedMainDependencyProjects
+          inheritedMainDependencyProjects()
             .filter { inherited -> inherited.project == it.project }
             .map { it.dependent }
 
@@ -158,30 +155,31 @@ data class ModuleCheckProject(val project: Project) : Comparable<ModuleCheckProj
       .distinctBy { it.position }
   }
 
-  val redundantMain by unsafeLazy {
+  fun redundantMain(): List<DependencyFinding.RedundantDependency> {
     val allMain = (apiDependencies + implementationDependencies)
 
-    val inheritedDependencyProjects = inheritedMainDependencyProjects.map { it.project }.toSet()
+    val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
 
-    allMain.filter { inheritedDependencyProjects.contains(it.project) }.map {
+    return allMain.filter { inheritedDependencyProjects.contains(it.project) }.map {
       val from =
-        inheritedMainDependencyProjects
+        inheritedMainDependencyProjects()
           .filter { inherited -> inherited.project == it.project }
           .map { it.dependent }
       DependencyFinding.RedundantDependency(project, it.position, it.project.path, "main", from)
     }
   }
 
-  val redundantTest by unsafeLazy {
-    val inheritedDependencyProjects = inheritedMainDependencyProjects.map { it.project }.toSet()
+  fun redundantTest(): List<DependencyFinding.RedundantDependency> {
+    val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
 
-    testImplementationDependencies.filter { inheritedDependencyProjects.contains(it.project) }.map {
-      val from =
-        inheritedMainDependencyProjects
-          .filter { inherited -> inherited.project == it.project }
-          .map { it.dependent }
-      DependencyFinding.RedundantDependency(project, it.position, it.project.path, "test", from)
-    }
+    return testImplementationDependencies.filter { inheritedDependencyProjects.contains(it.project) }
+      .map {
+        val from =
+          inheritedMainDependencyProjects()
+            .filter { inherited -> inherited.project == it.project }
+            .map { it.dependent }
+        DependencyFinding.RedundantDependency(project, it.position, it.project.path, "test", from)
+      }
   }
 
   private fun findUnused(
