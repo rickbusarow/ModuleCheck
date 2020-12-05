@@ -3,6 +3,7 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.internal.Cli
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
+import org.gradle.api.Project
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -23,24 +24,24 @@ abstract class ModuleCheckTask : DefaultTask() {
   val ignoreAll: SetProperty<String> =
     project.extensions.getByType<ModuleCheckExtension>().ignoreAll
 
+  fun Project.moduleCheckProjects() = project.rootProject.allprojects
+    .filter { gradleProject -> gradleProject.buildFile.exists() }
+    .map { gradleProject ->
+      ModuleCheckProject(gradleProject)
+    }
+
   @TaskAction
   fun execute() = runBlocking {
     val cli = Cli()
 
-    lateinit var moduleCheckProjects: List<ModuleCheckProject>
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     val time = measureTimeMillis {
 
-      moduleCheckProjects = project.rootProject.allprojects
-        .filter { gradleProject -> gradleProject.buildFile.exists() }
-        .map { gradleProject ->
-          ModuleCheckProject(gradleProject)
-        }
-
-      moduleCheckProjects.sorted()
+      project.moduleCheckProjects()
+        .sorted()
         .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
         .flatMap { moduleCheckProject ->
           with(moduleCheckProject) {
@@ -60,56 +61,61 @@ abstract class ModuleCheckTask : DefaultTask() {
         }
         .finish()
 
-      moduleCheckProjects.sorted()
-        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
-        .flatMap { moduleCheckProject ->
-          with(moduleCheckProject) {
-            listOf(
-              redundantAndroidTest(),
-              redundantMain(),
-              redundantTest()
-            ).flatMap { dependencies ->
-              dependencies.mapNotNull { dependency ->
-                if (alwaysIgnore.contains(dependency.dependencyPath)) {
-                  null
-                } else {
-                  dependency
-                }
-              }
-            }
-              .distinctBy { it.position }
-          }
-        }
-        .finish()
-
-      moduleCheckProjects.sorted()
-        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
-        .flatMap { moduleCheckProject ->
-          with(moduleCheckProject) {
-            listOf(
-              unusedAndroidTest(),
-              unusedApi(),
-              unusedCompileOnly(),
-              unusedImplementation(),
-              unusedTestImplementation()
-            ).flatMap { dependencies ->
-              dependencies.mapNotNull { dependency ->
-                if (alwaysIgnore.contains(dependency.dependencyPath)) {
-                  null
-                } else {
-                  dependency
-                }
-              }
-            }
-              .distinctBy { it.position }
-          }
-        }
-        .finish()
+//      project.moduleCheckProjects()
+    //      .sorted()
+//        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
+//        .flatMap { moduleCheckProject ->
+//          with(moduleCheckProject) {
+//            listOf(
+//              redundantAndroidTest(),
+//              redundantMain(),
+//              redundantTest()
+//            ).flatMap { dependencies ->
+//              dependencies.mapNotNull { dependency ->
+//                if (alwaysIgnore.contains(dependency.dependencyPath)) {
+//                  null
+//                } else {
+//                  dependency
+//                }
+//              }
+//            }
+//              .distinctBy { it.position }
+//          }
+//        }
+//        .finish()
+//
+//    project.moduleCheckProjects()
+    //    .sorted()
+//        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
+//        .flatMap { moduleCheckProject ->
+//          with(moduleCheckProject) {
+//            listOf(
+//              unusedAndroidTest(),
+//              unusedApi(),
+//              unusedCompileOnly(),
+//              unusedImplementation(),
+//              unusedTestImplementation()
+//            ).flatMap { dependencies ->
+//              dependencies.mapNotNull { dependency ->
+//                if (alwaysIgnore.contains(dependency.dependencyPath)) {
+//                  null
+//                } else {
+//                  dependency
+//                }
+//              }
+//            }
+//              .distinctBy { it.position }
+//          }
+//        }
+//        .finish()
     }
 
-    moduleCheckProjects.groupBy { it.getMainDepth() }.toSortedMap().forEach { (depth, modules) ->
-      cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-    }
+    project.moduleCheckProjects()
+      .groupBy { it.getMainDepth() }
+      .toSortedMap()
+      .forEach { (depth, modules) ->
+        cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
+      }
 
     cli.printGreen("total parsing time --> $time milliseconds")
 
