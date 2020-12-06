@@ -1,18 +1,48 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.*
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.reflect.KProperty1
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.reflect.KProperty1
 
-data class ModuleCheckProject private constructor(val project: Project) : Comparable<ModuleCheckProject> {
+class ProjectDependencies(private val project: ModuleCheckProject) {
+
+  val compileOnlyDependencies by unsafeLazy { dependencyProjects("compileOnly") }
+  val apiDependencies by unsafeLazy { dependencyProjects("api") }
+  val implementationDependencies by unsafeLazy { dependencyProjects("implementation") }
+  val mainDependencies by unsafeLazy {
+    compileOnlyDependencies + apiDependencies + implementationDependencies
+  }
+  val testImplementationDependencies by unsafeLazy { dependencyProjects("testImplementation") }
+  val androidTestImplementationDependencies by unsafeLazy {
+    dependencyProjects("androidTestImplementation")
+  }
+
+  private fun dependencyProjects(configurationName: String) =
+    project.project
+      .configurations
+      .filter { it.name == configurationName }
+      .flatMap { config ->
+        config
+          .dependencies
+          .withType(ProjectDependency::class.java)
+          .map { ModuleCheckProject.from(it.dependencyProject) }
+          .toSet()
+      }
+}
+
+class ModuleCheckProject private constructor(
+  val project: Project
+) : Comparable<ModuleCheckProject> {
 
   init {
     cache[project] = this
   }
 
   val path: String = project.path
+
+  val dependencies = ProjectDependencies(this)
 
   val androidTestFiles by unsafeLazy {
     project.androidTestJavaRoot.jvmFiles() + project.androidTestKotlinRoot.jvmFiles()
@@ -22,14 +52,6 @@ data class ModuleCheckProject private constructor(val project: Project) : Compar
   }
   val testFiles by unsafeLazy {
     project.testJavaRoot.jvmFiles() + project.testKotlinRoot.jvmFiles()
-  }
-
-  val androidTestPackages by unsafeLazy { androidTestFiles.map { it.packageFqName }.toSet() }
-  val mainPackages by unsafeLazy { mainFiles.map { it.packageFqName }.toSet() }
-  val testPackages by unsafeLazy { testFiles.map { it.packageFqName }.toSet() }
-
-  val mainLayoutFiles by unsafeLazy {
-    project.mainLayoutRootOrNull()?.walkTopDown()?.files().orEmpty().map { XmlFile.LayoutFile(it) }
   }
 
   val mainLayoutViewDependencies by unsafeLazy {
@@ -52,188 +74,193 @@ data class ModuleCheckProject private constructor(val project: Project) : Compar
     testFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
   }
 
-  val compileOnlyDependencies by unsafeLazy { dependencyProjects("compileOnly") }
-  val apiDependencies by unsafeLazy { dependencyProjects("api") }
-  val implementationDependencies by unsafeLazy { dependencyProjects("implementation") }
-  val mainDependencies by unsafeLazy {
-    compileOnlyDependencies + apiDependencies + implementationDependencies
-  }
-  val testImplementationDependencies by unsafeLazy { dependencyProjects("testImplementation") }
-  val androidTestImplementationDependencies by unsafeLazy {
-    dependencyProjects("androidTestImplementation")
+  val androidTestPackages by unsafeLazy { androidTestFiles.map { it.packageFqName }.toSet() }
+  val mainPackages by unsafeLazy { mainFiles.map { it.packageFqName }.toSet() }
+  val testPackages by unsafeLazy { testFiles.map { it.packageFqName }.toSet() }
+
+  val mainLayoutFiles by unsafeLazy {
+    project.mainLayoutRootOrNull()?.walkTopDown()?.files().orEmpty().map { XmlFile.LayoutFile(it) }
   }
 
   fun getMainDepth(): Int {
-    val all = compileOnlyDependencies + apiDependencies + implementationDependencies
+    val all =
+      dependencies.compileOnlyDependencies + dependencies.apiDependencies + dependencies.implementationDependencies
 
     return if (all.isEmpty()) 0
-    else (all.map { cache.getValue(it.project).getMainDepth() }.max()!! + 1)
+    else all.map { cache.getValue(it.project).getMainDepth() }.max()!! + 1
   }
 
   fun getTestDepth(): Int =
-      if (testImplementationDependencies.isEmpty()) {
-        0
-      } else {
-        (testImplementationDependencies.map { cache.getValue(it.project).getMainDepth() }.max()!! +
-            1)
-      }
+    if (dependencies.testImplementationDependencies.isEmpty()) {
+      0
+    } else {
+      dependencies.testImplementationDependencies.map {
+        cache.getValue(it.project).getMainDepth()
+      }.max()!! + 1
+    }
 
   val androidTestDepth: Int
     get() =
-        if (androidTestImplementationDependencies.isEmpty()) {
-          0
-        } else {
-          (androidTestImplementationDependencies
-              .map { cache.getValue(it.project).getMainDepth() }
-              .max()!! + 1)
-        }
+      if (dependencies.androidTestImplementationDependencies.isEmpty()) {
+        0
+      } else {
+        dependencies.androidTestImplementationDependencies
+          .map { cache.getValue(it.project).getMainDepth() }
+          .max()!! + 1
+      }
 
-  fun allPublicClassPathDependencyDeclarations():List<ModuleCheckProject> = apiDependencies + apiDependencies.flatMap {
-          it. allPublicClassPathDependencyDeclarations()
-        }
+  fun allPublicClassPathDependencyDeclarations(): List<ModuleCheckProject> =
+    dependencies.apiDependencies + dependencies.apiDependencies.flatMap {
+      it.allPublicClassPathDependencyDeclarations()
+    }
 
   fun inheritedMainDependencyProjects(): List<ModuleCheckProject> {
 
-    val main = apiDependencies + implementationDependencies
+    val main = dependencies.apiDependencies + dependencies.implementationDependencies
 
-    return apiDependencies + main.flatMap { pdd ->
+    return dependencies.apiDependencies + main.flatMap { pdd ->
 
       pdd.inheritedMainDependencyProjects() +
-          pdd.apiDependencies.flatMap {
-                it. inheritedMainDependencyProjects()
-              }
+        pdd.dependencies.apiDependencies.flatMap {
+          it.inheritedMainDependencyProjects()
         }
+    }
   }
 
   fun overshotDependencies(): List<DependencyFinding.OverShotDependency> {
 
-    val free = allPublicClassPathDependencyDeclarations()
-
     val allMain =
-        (apiDependencies + implementationDependencies) .toSet()
+      (dependencies.apiDependencies + dependencies.implementationDependencies).toSet()
 
-    return free
-        .filterNot { allMain.contains(it ) }
-        .filter { inheritedNewProject ->
-          inheritedNewProject .mainPackages.any { newProjectPackage ->
-            mainImports.contains(newProjectPackage)
-          }
+    return allPublicClassPathDependencyDeclarations()
+      .filterNot { allMain.contains(it) }
+      .filter { inheritedNewProject ->
+        inheritedNewProject.mainPackages.any { newProjectPackage ->
+          mainImports.contains(newProjectPackage)
         }
-        .groupBy { it.project }
-        .map { overshot ->
-          DependencyFinding.OverShotDependency(
-              project,
-              overshot.key.path,
-              "main",
-              overshot.value.map { it }.distinctBy { it.project })
-        }
+      }
+      .groupBy { it.project }
+      .map { overshot ->
+        DependencyFinding.OverShotDependency(
+          project,
+          overshot.key.path,
+          "main",
+          overshot.value.map { it }.distinctBy { it.project }
+        )
+      }
   }
 
   fun unusedAndroidTest() =
-      findUnused(
-          androidTestImports,
-          ModuleCheckProject::androidTestImplementationDependencies,
-          "androidTest")
+    findUnused(
+      androidTestImports,
+      ProjectDependencies::androidTestImplementationDependencies,
+      "androidTest"
+    )
 
-  fun unusedApi() = findUnused(mainImports, ModuleCheckProject::apiDependencies, "api")
+  fun unusedApi() = findUnused(mainImports, ProjectDependencies::apiDependencies, "api")
 
   fun unusedCompileOnly() =
-      findUnused(mainImports, ModuleCheckProject::compileOnlyDependencies, "compileOnly")
+    findUnused(mainImports, ProjectDependencies::compileOnlyDependencies, "compileOnly")
 
   fun unusedImplementation() =
-      findUnused(mainImports, ModuleCheckProject::implementationDependencies, "implementation")
+    findUnused(mainImports, ProjectDependencies::implementationDependencies, "implementation")
 
   fun unusedTestImplementation() =
-      findUnused(
-          testImports, ModuleCheckProject::testImplementationDependencies, "testImplementation")
+    findUnused(
+      testImports, ProjectDependencies::testImplementationDependencies, "testImplementation"
+    )
 
   fun redundantAndroidTest(): List<DependencyFinding.RedundantDependency> {
     val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
 
-    return androidTestImplementationDependencies
-        .filter { inheritedDependencyProjects.contains(it.project) }
-        .map {
-          val from =
-              inheritedMainDependencyProjects()
-                  .filter { inherited -> inherited.project == it.project }
-                  .map { it.project }
+    return dependencies.androidTestImplementationDependencies
+      .filter { inheritedDependencyProjects.contains(it.project) }
+      .map {
+        val from =
+          inheritedMainDependencyProjects()
+            .filter { inherited -> inherited.project == it.project }
+            .map { it.project }
 
-          DependencyFinding.RedundantDependency(
-              project, it.positionIn(project), it.project.path, "androidTest", from)
-        }
-        .distinctBy { it.position }
+        DependencyFinding.RedundantDependency(
+          project, it.positionIn(project), it.project.path, "androidTest", from
+        )
+      }
+      .distinctBy { it.position }
   }
 
   fun redundantMain(): List<DependencyFinding.RedundantDependency> {
-    val allMain = (apiDependencies + implementationDependencies)
+    val allMain = (dependencies.apiDependencies + dependencies.implementationDependencies)
 
     val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
 
     return allMain.filter { inheritedDependencyProjects.contains(it.project) }.map {
       val from =
-          inheritedMainDependencyProjects()
-              .filter { inherited -> inherited.project == it.project }
-              .map { it.project }
-      DependencyFinding.RedundantDependency(project, it.positionIn(project), it.project.path, "main", from)
+        inheritedMainDependencyProjects()
+          .filter { inherited -> inherited.project == it.project }
+          .map { it.project }
+      DependencyFinding.RedundantDependency(
+        project,
+        it.positionIn(project),
+        it.project.path,
+        "main",
+        from
+      )
     }
   }
 
   fun redundantTest(): List<DependencyFinding.RedundantDependency> {
     val inheritedDependencyProjects = inheritedMainDependencyProjects().map { it.project }.toSet()
 
-    return testImplementationDependencies
-        .filter { inheritedDependencyProjects.contains(it.project) }
-        .map {
-          val from =
-              inheritedMainDependencyProjects()
-                  .filter { inherited -> inherited.project == it.project }
-                  .map { it.project }
-          DependencyFinding.RedundantDependency(project, it.positionIn(project), it.project.path, "test", from)
-        }
+    return dependencies.testImplementationDependencies
+      .filter { inheritedDependencyProjects.contains(it.project) }
+      .map {
+        val from =
+          inheritedMainDependencyProjects()
+            .filter { inherited -> inherited.project == it.project }
+            .map { it.project }
+        DependencyFinding.RedundantDependency(
+          project,
+          it.positionIn(project),
+          it.project.path,
+          "test",
+          from
+        )
+      }
   }
 
   private fun findUnused(
-      imports: Set<String>,
-      dependencyKProp: KProperty1<ModuleCheckProject, List<ModuleCheckProject>>,
-      configurationName: String
+    imports: Set<String>,
+    dependencyKProp: KProperty1<ProjectDependencies, List<ModuleCheckProject>>,
+    configurationName: String
   ): List<DependencyFinding.UnusedDependency> =
-      dependencyKProp(this)
-          // .filterNot { alwaysIgnore.contains(it.project.path)}
-          .mapNotNull { projectDependency ->
+    dependencyKProp(this.dependencies)
+      // .filterNot { alwaysIgnore.contains(it.project.path)}
+      .mapNotNull { projectDependency ->
 
-            val used =
-                imports.any { importString ->
-                  when {
-                    projectDependency.mainPackages.contains(importString) -> true
-                    else ->
-                        dependencyKProp(this).any { childProjectDependency ->
+        val used =
+          imports.any { importString ->
+            when {
+              projectDependency.mainPackages.contains(importString) -> true
+              else ->
+                dependencyKProp(this.dependencies).any { childProjectDependency ->
 
-                          dependencyKProp(childProjectDependency).contains(projectDependency)
-                        }
-                  }
+                  dependencyKProp(childProjectDependency.dependencies).contains(projectDependency)
                 }
-
-            if (!used) {
-              DependencyFinding.UnusedDependency(
-                  project,
-                  projectDependency.positionIn(project),
-                  projectDependency.project.path,
-                  configurationName)
-            } else null
+            }
           }
 
-  private fun dependencyProjects(configurationName: String) =
-      project.configurations.filter { it.name == configurationName }.flatMap { config ->
-        config
-            .dependencies
-            .withType(ProjectDependency::class.java)
-            .map {
-              ProjectDependencyDeclaration(project = it.dependencyProject, parent = project).moduleCheckProject()
-            }
-            .toSet()
+        if (!used) {
+          DependencyFinding.UnusedDependency(
+            project,
+            projectDependency.positionIn(project),
+            projectDependency.project.path,
+            configurationName
+          )
+        } else null
       }
 
-  fun positionIn(parent: Project): ProjectDependencyDeclaration.Position = parent.buildFile.readText().lines().positionOf(project)
+  fun positionIn(parent: Project): ProjectDependencyDeclaration.Position =
+    parent.buildFile.readText().lines().positionOf(project)
 
   private fun DependencyFinding.moduleCheckProject() = cache.getValue(dependentProject)
   private fun ProjectDependencyDeclaration.moduleCheckProject() = cache.getValue(project)
@@ -247,6 +274,23 @@ data class ModuleCheckProject private constructor(val project: Project) : Compar
   companion object {
     private val cache = ConcurrentHashMap<Project, ModuleCheckProject>()
 
+    fun reset() {
+      cache.clear()
+    }
+
     fun from(project: Project) = cache.getOrPut(project) { ModuleCheckProject(project) }
+
+    fun dependentsOf(project: Project): List<ModuleCheckProject> {
+
+      val dep = from(project)
+
+      return cache.values.filter {
+        it.dependencies.implementationDependencies.any { it == dep } ||
+          it.dependencies.mainDependencies.any { it == dep } ||
+          it.dependencies.testImplementationDependencies.any { it == dep } ||
+          it.dependencies.androidTestImplementationDependencies.any { it == dep } ||
+          it.dependencies.compileOnlyDependencies.any { it == dep }
+      }
+    }
   }
 }

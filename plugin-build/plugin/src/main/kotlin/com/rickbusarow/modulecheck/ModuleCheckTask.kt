@@ -1,6 +1,7 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.Cli
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -8,7 +9,6 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
-import kotlin.system.measureTimeMillis
 
 abstract class ModuleCheckTask : DefaultTask() {
 
@@ -33,7 +33,6 @@ abstract class ModuleCheckTask : DefaultTask() {
   @TaskAction
   fun execute() = runBlocking {
     val cli = Cli()
-
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -62,7 +61,7 @@ abstract class ModuleCheckTask : DefaultTask() {
         .finish()
 
 //      project.moduleCheckProjects()
-    //      .sorted()
+//        .sorted()
 //        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
 //        .flatMap { moduleCheckProject ->
 //          with(moduleCheckProject) {
@@ -84,8 +83,8 @@ abstract class ModuleCheckTask : DefaultTask() {
 //        }
 //        .finish()
 //
-//    project.moduleCheckProjects()
-    //    .sorted()
+//      project.moduleCheckProjects()
+//        .sorted()
 //        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
 //        .flatMap { moduleCheckProject ->
 //          with(moduleCheckProject) {
@@ -118,7 +117,6 @@ abstract class ModuleCheckTask : DefaultTask() {
       }
 
     cli.printGreen("total parsing time --> $time milliseconds")
-
   }
 
   private fun List<DependencyFinding>.finish() {
@@ -126,8 +124,9 @@ abstract class ModuleCheckTask : DefaultTask() {
     forEach { finding ->
       logger.error("${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}")
       finding.fix()
+      ModuleCheckProject.reset()
     }
-
+  }
 
 //    val byProject = groupBy { it.dependentProject }
 //
@@ -148,5 +147,5 @@ abstract class ModuleCheckTask : DefaultTask() {
 //      }
 //
 //    }
-  }
+//  }
 }
