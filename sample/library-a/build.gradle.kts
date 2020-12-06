@@ -3,6 +3,6 @@ plugins {
 }
 
 dependencies {
-//  api(project(path = ":sample:library-b"))
+  api(project(path = ":sample:library-b"))
 //  testImplementation(project(path = ":sample:nested:library-c"))
 }

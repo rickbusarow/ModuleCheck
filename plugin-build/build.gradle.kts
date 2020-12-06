@@ -29,3 +29,32 @@ allprojects {
     maven("https://s3-us-west-2.amazonaws.com/si-mobile-sdks/android/")
   }
 }
+
+allprojects {
+
+
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
+    .configureEach {
+
+      kotlinOptions {
+
+        // allWarningsAsErrors = true
+
+        jvmTarget = "1.8"
+
+        val args = listOf(
+          "-Xallow-result-return-type",
+          "-Xopt-in=kotlin.contracts.ExperimentalContracts",
+          "-Xopt-in=kotlin.Experimental",
+          "-Xopt-in=kotlin.time.ExperimentalTime",
+          "-Xopt-in=kotlin.RequiresOptIn",
+          "-Xinline-classes",
+          "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+          "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+        )
+
+        // https://youtrack.jetbrains.com/issue/KT-24946
+        freeCompilerArgs = args
+      }
+    }
+}

@@ -23,6 +23,20 @@ class ProjectDependencies(private val project: ModuleCheckProject) {
     project.mainLayoutFiles.map { it.customViews }.flatten().toSet()
   }
 
+  fun sourceOf(
+    dependencyProject: ModuleCheckProject,
+    apiOnly: Boolean = false
+  ): ModuleCheckProject? {
+
+    val toCheck = if (apiOnly) apiDependencies else mainDependencies
+
+    if (dependencyProject in toCheck) return this.project
+
+    return toCheck.firstOrNull {
+      it == dependencyProject || it.dependencies.sourceOf(dependencyProject, true) != null
+    }
+  }
+
   private fun dependencyProjects(configurationName: String) =
     project.project
       .configurations

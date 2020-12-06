@@ -72,14 +72,27 @@ class ModuleCheckProject private constructor(
 
   override fun compareTo(other: ModuleCheckProject): Int = path.compareTo(other.path)
 
-  override fun toString(): String {
-    return """ModuleCheckProject( path='$path' )"""
+  override fun toString(): String = """ModuleCheckProject( path='$path' )"""
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is ModuleCheckProject) return false
+
+    if (path != other.path) return false
+
+    return true
   }
+
+  override fun hashCode(): Int {
+    return path.hashCode()
+  }
+
 
   data class Position(val row: Int, val column: Int)
 
   companion object {
     private val cache = ConcurrentHashMap<Project, ModuleCheckProject>()
+    private val reverseCache = ConcurrentHashMap<ModuleCheckProject, List<ModuleCheckProject>>()
 
     fun reset() {
       cache.clear()
@@ -87,17 +100,23 @@ class ModuleCheckProject private constructor(
 
     fun from(project: Project) = cache.getOrPut(project) { ModuleCheckProject(project) }
 
-    fun dependentsOf(project: Project): List<ModuleCheckProject> {
-
-      val dep = from(project)
-
-      return cache.values.filter {
-        it.dependencies.implementationDependencies.any { it == dep } ||
-          it.dependencies.mainDependencies.any { it == dep } ||
-          it.dependencies.testImplementationDependencies.any { it == dep } ||
-          it.dependencies.androidTestImplementationDependencies.any { it == dep } ||
-          it.dependencies.compileOnlyDependencies.any { it == dep }
-      }
-    }
+//    fun dependentsOf(
+//      project: Project
+////      alreadyChecked: Set<Project> = emptySet()
+//    ): List<ModuleCheckProject> {
+//
+//      val dep = from(project)
+//
+//      val thisLayer = cache.values
+////        .filter { mcp -> mcp.project !in alreadyChecked }
+//        .filter { mcp -> mcp.dependencies.mainDependencies.any { it == dep } }
+//
+//      return (thisLayer + thisLayer.flatMap {
+//        dependentsOf(
+//          it.project
+////          alreadyChecked + (thisLayer.map { it.project }.toSet() + project)
+//        )
+//      }).distinct()
+//    }
   }
 }

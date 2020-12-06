@@ -30,93 +30,95 @@ abstract class ModuleCheckTask : DefaultTask() {
       .map { gradleProject -> ModuleCheckProject.from(gradleProject) }
 
   @TaskAction
-  fun execute() =
-    runBlocking {
-      val cli = Cli()
+  fun execute() = runBlocking {
+    val cli = Cli()
 
-      val alwaysIgnore = alwaysIgnore.get()
-      val ignoreAll = ignoreAll.get()
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
 
-      val time = measureTimeMillis {
-        project
-          .moduleCheckProjects()
-          .sorted()
-          .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path) }
-          .flatMap { moduleCheckProject ->
-            with(moduleCheckProject) {
-              listOf(findings.overshotDependencies())
-                .flatMap { dependencies ->
-                  dependencies.mapNotNull { dependency ->
-                    if (alwaysIgnore.contains(dependency.dependencyPath)) {
-                      null
-                    } else {
-                      dependency
-                    }
-                  }
+    val time = measureTimeMillis {
+
+      val projects = project.moduleCheckProjects()
+
+      projects
+        .sorted()
+        .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
+        .flatMap { moduleCheckProject ->
+          with(moduleCheckProject) {
+            findings
+              .overshotDependencies()
+              .mapNotNull { dependency ->
+                if (dependency.dependencyPath in alwaysIgnore) {
+                  null
+                } else {
+                  dependency
                 }
-                .distinctBy { it.dependencyPath }
-            }
+              }
+              .distinctBy { it.dependencyPath }
           }
-          .finish()
+        }
+        .finish()
 
-        //      project.moduleCheckProjects()
-        //        .sorted()
-        //        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path)
-        // }
-        //        .flatMap { moduleCheckProject ->
-        //          with(moduleCheckProject) {
-        //            listOf(
-        //          findings.    redundantAndroidTest(),
-        //          findings.    redundantMain(),
-        //          findings.    redundantTest()
-        //            ).flatMap { dependencies ->
-        //              dependencies.mapNotNull { dependency ->
-        //                if (alwaysIgnore.contains(dependency.dependencyPath)) {
-        //                  null
-        //                } else {
-        //                  dependency
-        //                }
-        //              }
-        //            }
-        //              .distinctBy { it.position }
-        //          }
-        //        }
-        //        .finish()
-        //
-        //      project.moduleCheckProjects()
-        //        .sorted()
-        //        .filterNot { moduleCheckProject -> ignoreAll.contains(moduleCheckProject.path)
-        // }
-        //        .flatMap { moduleCheckProject ->
-        //          with(moduleCheckProject) {
-        //            listOf(
-        //           findings.  unusedAndroidTest(),
-        //           findings.  unusedApi(),
-        //           findings.  unusedCompileOnly(),
-        //           findings.  unusedImplementation(),
-        //           findings.  unusedTestImplementation()
-        //            ).flatMap { dependencies ->
-        //              dependencies.mapNotNull { dependency ->
-        //                if (alwaysIgnore.contains(dependency.dependencyPath)) {
-        //                  null
-        //                } else {
-        //                  dependency
-        //                }
-        //              }
-        //            }
-        //              .distinctBy { it.position }
-        //          }
-        //        }
-        //        .finish()
+//               project.moduleCheckProjects()
+//                 .sorted()
+//                 .filterNot { moduleCheckProject ->
+//                   moduleCheckProject.path in ignoreAll
+//          }
+//                 .flatMap { moduleCheckProject ->
+//                   with(moduleCheckProject) {
+//                     listOf(
+//                   findings.    redundantAndroidTest(),
+//                   findings.    redundantMain(),
+//                   findings.    redundantTest()
+//                     ).flatMap { dependencies ->
+//                       dependencies.mapNotNull { dependency ->
+//                         if (dependency.dependencyPath in alwaysIgnore) {
+//                           null
+//                         } else {
+//                           dependency
+//                         }
+//                       }
+//                     }
+//                       .distinctBy { it.position }
+//                   }
+//                 }
+//                 .finish()
+//
+//               project.moduleCheckProjects()
+//                 .sorted()
+//                 .filterNot { moduleCheckProject ->
+//                   moduleCheckProject.path in ignoreAll
+//          }
+//                 .flatMap { moduleCheckProject ->
+//                   with(moduleCheckProject) {
+//                     listOf(
+//                    findings.  unusedAndroidTest(),
+//                    findings.  unusedApi(),
+//                    findings.  unusedCompileOnly(),
+//                    findings.  unusedImplementation(),
+//                    findings.  unusedTestImplementation()
+//                     ).flatMap { dependencies ->
+//                       dependencies.mapNotNull { dependency ->
+//                         if (dependency.dependencyPath in alwaysIgnore) {
+//                           null
+//                         } else {
+//                           dependency
+//                         }
+//                       }
+//                     }
+//                       .distinctBy { it.position }
+//                   }
+//                 }
+//                 .finish()
+    }
+
+    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+      .forEach { (depth, modules) ->
+        cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
 
-      project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
-        .forEach { (depth, modules) ->
-          cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-        }
-
-      cli.printGreen("total parsing time --> $time milliseconds")
-    }
+    cli.printGreen("total parsing time --> $time milliseconds")
+  }
 
   private fun List<DependencyFinding>.finish() {
 
@@ -125,7 +127,7 @@ abstract class ModuleCheckTask : DefaultTask() {
         "${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}"
       )
       finding.fix()
-      ModuleCheckProject.reset()
+//      ModuleCheckProject.reset()
     }
   }
 
