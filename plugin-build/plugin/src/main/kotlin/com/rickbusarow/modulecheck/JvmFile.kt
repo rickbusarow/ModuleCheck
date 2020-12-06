@@ -1,9 +1,8 @@
 package com.rickbusarow.modulecheck
 
 import com.github.javaparser.StaticJavaParser
-import java.io.File
-import org.gradle.api.Project
 import org.jetbrains.kotlin.psi.KtFile
+import java.io.File
 
 sealed class JvmFile {
   abstract val packageFqName: String
@@ -11,34 +10,34 @@ sealed class JvmFile {
 
   data class KotlinFile(val ktFile: KtFile) : JvmFile() {
 
-    override val packageFqName by unsafeLazy { ktFile.packageFqName.asString() }
-    override val importDirectives by unsafeLazy {
+    override val packageFqName by lazy { ktFile.packageFqName.asString() }
+    override val importDirectives by lazy {
       ktFile
-          .importDirectives
-          .mapNotNull { importDirective ->
-            importDirective.importPath?.pathStr?.split(".")?.dropLast(1)?.joinToString(".")
-          }
-          .toSet()
+        .importDirectives
+        .mapNotNull { importDirective ->
+          importDirective
+            .importPath
+            ?.pathStr
+            ?.split(".")
+            ?.dropLast(1)
+            ?.joinToString(".")
+        }
+        .toSet()
     }
   }
 
   data class JavaFile(val file: File) : JvmFile() {
 
-    val parsed by unsafeLazy { StaticJavaParser.parse(file) }
+    val parsed by lazy { StaticJavaParser.parse(file) }
 
-    override val packageFqName by unsafeLazy { parsed.packageDeclaration.get().nameAsString }
-    override val importDirectives by unsafeLazy {
-      parsed.imports.map { it.nameAsString.split(".").dropLast(1).joinToString(".") }.toSet()
+    override val packageFqName by lazy { parsed.packageDeclaration.get().nameAsString }
+    override val importDirectives by lazy {
+      parsed.imports.map {
+        it.nameAsString
+          .split(".")
+          .dropLast(1)
+          .joinToString(".")
+      }.toSet()
     }
   }
 }
-
-data class ProjectDependencyDeclaration(val project: Project, val parent: Project) {
-
-  fun position(): Position = parent.buildFile.readText().lines().positionOf(project)
-
-  data class Position(val row: Int, val column: Int)
-}
-
-fun <T> unsafeLazy(initializer: () -> T): Lazy<T> =
-    lazy(mode = LazyThreadSafetyMode.NONE, initializer = initializer)

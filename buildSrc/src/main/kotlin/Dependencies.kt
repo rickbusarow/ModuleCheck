@@ -48,7 +48,8 @@ object BuildPlugins {
   const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
   const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
   const val googleServices = "com.google.gms:google-services:${Versions.gms}"
-  const val gradleMavenPublish = "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
+  const val gradleMavenPublish =
+    "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
   const val knit = "org.jetbrains.kotlinx:kotlinx-knit:${Versions.knit}"
   const val anvil = "com.squareup.anvil:gradle-plugin:${Versions.anvil}"
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
@@ -320,7 +321,8 @@ object Libs {
       const val espresso = "com.rickbusarow.dispatch:dispatch-android-espresso:$version"
       const val extensions = "com.rickbusarow.dispatch:dispatch-extensions:$version"
       const val lifecycle = "com.rickbusarow.dispatch:dispatch-android-lifecycle:$version"
-      const val lifecycleExtensions = "com.rickbusarow.dispatch:dispatch-android-lifecycle-extensions:$version"
+      const val lifecycleExtensions =
+        "com.rickbusarow.dispatch:dispatch-android-lifecycle-extensions:$version"
       const val viewModel = "com.rickbusarow.dispatch:dispatch-android-viewmodel:$version"
 
       object Test {
@@ -343,7 +345,8 @@ object Libs {
   }
 
   object Sephiroth {
-    const val bottomNavigation = "it.sephiroth.android.library.bottomnavigation:bottom-navigation:3.0.0"
+    const val bottomNavigation =
+      "it.sephiroth.android.library.bottomnavigation:bottom-navigation:3.0.0"
   }
 
   object SergiVonavi {
@@ -369,7 +372,8 @@ object Libs {
     object KotlinPoet {
       private const val version = "1.6.0"
 
-      const val core = "com.squareup:kotlinpoet:$version" // update the buildSrc gradle dependency too!
+      const val core =
+        "com.squareup:kotlinpoet:$version" // update the buildSrc gradle dependency too!
       const val classInspectorElements = "com.squareup:kotlinpoet-classinspector-elements:$version"
       const val metadata = "com.squareup:kotlinpoet-metadata:$version"
       const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"

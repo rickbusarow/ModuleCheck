@@ -4,13 +4,13 @@ import org.gradle.api.Project
 
 sealed class DependencyFinding(val problemName: String) {
   abstract val dependentProject: Project
-  abstract val position: ProjectDependencyDeclaration.Position
+  abstract val position: ModuleCheckProject.Position
   abstract val dependencyPath: String
   abstract val configurationName: String
 
   data class UnusedDependency(
     override val dependentProject: Project,
-    override val position: ProjectDependencyDeclaration.Position,
+    override val position: ModuleCheckProject.Position,
     override val dependencyPath: String,
     override val configurationName: String
   ) : DependencyFinding("unused")
@@ -19,13 +19,9 @@ sealed class DependencyFinding(val problemName: String) {
     override val dependentProject: Project,
     override val dependencyPath: String,
     override val configurationName: String,
+    override val position: ModuleCheckProject.Position,
     val from: List<ModuleCheckProject>
   ) : DependencyFinding("over-shot") {
-
-    override val position: ProjectDependencyDeclaration.Position
-      get() = from.firstOrNull()?.let { first ->
-        dependentProject.buildFile.readText().lines().positionOf(first.project)
-      } ?: ProjectDependencyDeclaration.Position(-1, -1)
 
     override fun logString(): String =
       super.logString() + " from: ${from.joinToString { it.path }}"
@@ -55,7 +51,7 @@ sealed class DependencyFinding(val problemName: String) {
 
   data class RedundantDependency(
     override val dependentProject: Project,
-    override val position: ProjectDependencyDeclaration.Position,
+    override val position: ModuleCheckProject.Position,
     override val dependencyPath: String,
     override val configurationName: String,
     val from: List<Project>

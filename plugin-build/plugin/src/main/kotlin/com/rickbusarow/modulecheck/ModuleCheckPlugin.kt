@@ -30,7 +30,7 @@ class ModuleCheckPlugin : Plugin<Project> {
   }
 }
 
-internal fun List<String>.positionOf(project: Project): ProjectDependencyDeclaration.Position {
+internal fun List<String>.positionOf(project: Project): ModuleCheckProject.Position {
 
   val reg = """.*project[(]{0,1}(?:path =\s*)"${project.path}".*""".toRegex()
 
@@ -38,7 +38,7 @@ internal fun List<String>.positionOf(project: Project): ProjectDependencyDeclara
 
   val col = if (row == -1) -1 else get(row).indexOfFirst { it != ' ' }
 
-  return ProjectDependencyDeclaration.Position(row + 1, col + 1)
+  return ModuleCheckProject.Position(row + 1, col + 1)
 }
 
 fun File.jvmFiles() = walkTopDown()

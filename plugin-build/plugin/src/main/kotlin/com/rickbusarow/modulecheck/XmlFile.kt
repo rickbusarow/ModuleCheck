@@ -7,7 +7,7 @@ sealed class XmlFile {
 
   data class LayoutFile(val file: File) : XmlFile() {
 
-    val customViews: Set<String> by unsafeLazy {
+    val customViews: Set<String> by  lazy {
       AndroidLayoutParser.parseViews(file)
         .map {
           it.split(".")
@@ -16,7 +16,7 @@ sealed class XmlFile {
         }
         .toSet()
     }
-    val resourceReferences: Set<String> by unsafeLazy {
+    val resourceReferences: Set<String> by lazy {
       AndroidLayoutParser.parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
