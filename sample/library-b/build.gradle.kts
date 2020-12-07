@@ -1,7 +1,7 @@
 plugins {
-  kotlin("jvm")
+    kotlin("jvm")
 }
 dependencies {
-  api(project(path = ":sample:nested:library-c"))
-//  testImplementation(project(path = ":sample:nested:library-c"))
+//    api(project(path = ":sample:nested:library-c"))
+//    testImplementation(project(path = ":sample:nested:library-c"))
 }

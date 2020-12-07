@@ -57,16 +57,14 @@ class ModuleCheckProject private constructor(
 
     return dependencies.apiDependencies + main.flatMap { pdd ->
 
-      pdd.inheritedMainDependencyProjects() +
-        pdd.dependencies.apiDependencies.flatMap {
-          it.inheritedMainDependencyProjects()
-        }
+      pdd.inheritedMainDependencyProjects() + pdd.dependencies.apiDependencies.flatMap {
+        it.inheritedMainDependencyProjects()
+      }
     }
   }
 
-  fun positionIn(parent: Project): ModuleCheckProject.Position =
-    parent.buildFile.readText().lines().positionOf(project.project)
-
+  fun positionIn(parent: Project, configuration: String): ModuleCheckProject.Position =
+    parent.buildFile.readText().lines().positionOf(project.project, configuration)
 
   private fun DependencyFinding.moduleCheckProject() = cache.getValue(dependentProject)
 

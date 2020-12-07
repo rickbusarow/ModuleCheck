@@ -27,12 +27,18 @@ class ModuleCheckPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
     target.tasks.register("moduleCheck", ModuleCheckTask::class.java)
+    target.tasks.register("moduleCheckOverShot", ModuleCheckOverShotTask::class.java)
+    target.tasks.register("moduleCheckRedundant", ModuleCheckRedundantTask::class.java)
+    target.tasks.register("moduleCheckUnused", ModuleCheckUnusedTask::class.java)
   }
 }
 
-internal fun List<String>.positionOf(project: Project): ModuleCheckProject.Position {
+internal fun List<String>.positionOf(
+  project: Project,
+  configuration: String
+): ModuleCheckProject.Position {
 
-  val reg = """.*project[(]{0,1}(?:path =\s*)"${project.path}".*""".toRegex()
+  val reg = """.*$configuration\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }
 

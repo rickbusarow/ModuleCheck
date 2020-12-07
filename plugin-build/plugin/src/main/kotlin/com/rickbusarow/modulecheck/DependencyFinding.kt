@@ -24,7 +24,8 @@ sealed class DependencyFinding(val problemName: String) {
   ) : DependencyFinding("over-shot") {
 
     override fun position(): ModuleCheckProject.Position {
-      return from?.positionIn(dependentProject.project) ?: ModuleCheckProject.Position(-1, -1)
+      return from?.positionIn(dependentProject.project, configurationName)
+        ?: ModuleCheckProject.Position(-1, -1)
     }
 
     override fun logString(): String = super.logString() + " from: ${from?.path}"
@@ -64,7 +65,8 @@ sealed class DependencyFinding(val problemName: String) {
   }
 
   open fun position(): ModuleCheckProject.Position {
-    return ModuleCheckProject.from(dependencyProject).positionIn(dependentProject)
+    return ModuleCheckProject.from(dependencyProject)
+      .positionIn(dependentProject, configurationName)
   }
 
   open fun logString(): String {

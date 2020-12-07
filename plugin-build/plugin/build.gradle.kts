@@ -1,99 +1,96 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-  kotlin("jvm")
-  id("java-gradle-plugin")
-  `kotlin-dsl`
-  `maven-publish`
-  id("com.gradle.plugin-publish") version "0.12.0"
+    kotlin("jvm")
+    id("java-gradle-plugin")
+    `kotlin-dsl`
+    `maven-publish`
+    id("com.gradle.plugin-publish") version "0.12.0"
 }
 
 repositories {
-  mavenCentral()
-  google()
-  jcenter()
-  maven("https://oss.sonatype.org/content/repositories/snapshots")
+    mavenCentral()
+    google()
+    jcenter()
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
 
 dependencies {
-  compileOnly(gradleApi())
+    compileOnly(gradleApi())
 
-  val kotlinVersion = "1.4.20"
+    val kotlinVersion = "1.4.20"
 
-  implementation(kotlin("gradle-plugin", version = kotlinVersion))
-  implementation(kotlin("stdlib", version = kotlinVersion))
-  implementation(kotlin("stdlib-common", version = kotlinVersion))
-  implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
-  implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
-  implementation(kotlin("reflect", version = kotlinVersion))
+    implementation(kotlin("gradle-plugin", version = kotlinVersion))
+    implementation(kotlin("stdlib", version = kotlinVersion))
+    implementation(kotlin("stdlib-common", version = kotlinVersion))
+    implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
+    implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
+    implementation(kotlin("reflect", version = kotlinVersion))
 
 //  implementation("com.android.tools.build:gradle:4.1.0")
 
-  implementation("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
-  implementation("com.android.tools.build:gradle:4.1.0")
-  implementation("com.jaredsburrows:gradle-spoon-plugin:1.5.0")
-  implementation("com.squareup:kotlinpoet:1.6.0")
-  implementation("com.github.javaparser:javaparser-symbol-solver-core:3.17.0")
-  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion")
-  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-
+    implementation("com.google.firebase:firebase-crashlytics-gradle:2.3.0")
+    implementation("com.android.tools.build:gradle:4.1.0")
+    implementation("com.jaredsburrows:gradle-spoon-plugin:1.5.0")
+    implementation("com.squareup:kotlinpoet:1.6.0")
+    implementation("com.github.javaparser:javaparser-symbol-solver-core:3.17.0")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 }
 
 java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 gradlePlugin {
-  plugins {
-    create("moduleCheck") {
-      id = PluginCoordinates.ID
-      group = PluginCoordinates.GROUP
-      implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = PluginCoordinates.VERSION
+    plugins {
+        create("moduleCheck") {
+            id = PluginCoordinates.ID
+            group = PluginCoordinates.GROUP
+            implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
+            version = PluginCoordinates.VERSION
+        }
     }
-  }
 }
 object PluginCoordinates {
-  const val ID = "com.rickbusarow.module-check"
-  const val GROUP = "com.rickbusarow.modulecheck"
-  const val VERSION = "0.10.0"
-  const val IMPLEMENTATION_CLASS = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
+    const val ID = "com.rickbusarow.module-check"
+    const val GROUP = "com.rickbusarow.modulecheck"
+    const val VERSION = "0.10.0"
+    const val IMPLEMENTATION_CLASS = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
 }
 
 object PluginBundle {
-  const val VCS = "https://github.com/RBusarow/ModuleCheck"
-  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
-  const val DESCRIPTION = "Fast dependency graph validation for gradle"
-  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
-  val TAGS = listOf("plugin", "gradle")
+    const val VCS = "https://github.com/RBusarow/ModuleCheck"
+    const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
+    const val DESCRIPTION = "Fast dependency graph validation for gradle"
+    const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
+    val TAGS = listOf("plugin", "gradle")
 }
 
 // Configuration Block for the Plugin Marker artifact on Plugin Central
 pluginBundle {
-  website = PluginBundle.WEBSITE
-  vcsUrl = PluginBundle.VCS
-  description = PluginBundle.DESCRIPTION
-  tags = PluginBundle.TAGS
+    website = PluginBundle.WEBSITE
+    vcsUrl = PluginBundle.VCS
+    description = PluginBundle.DESCRIPTION
+    tags = PluginBundle.TAGS
 
-  plugins {
-    getByName("moduleCheck") {
-      displayName = PluginBundle.DISPLAY_NAME
+    plugins {
+        getByName("moduleCheck") {
+            displayName = PluginBundle.DISPLAY_NAME
+        }
     }
-  }
 }
 
 tasks.create("setupPluginUploadFromEnvironment") {
-  doLast {
-    val key = System.getenv("GRADLE_PUBLISH_KEY")
-    val secret = System.getenv("GRADLE_PUBLISH_SECRET")
+    doLast {
+        val key = System.getenv("GRADLE_PUBLISH_KEY")
+        val secret = System.getenv("GRADLE_PUBLISH_SECRET")
 
-    if (key == null || secret == null) {
-      throw GradleException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
+        if (key == null || secret == null) {
+            throw GradleException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
+        }
+
+        System.setProperty("gradle.publish.key", key)
+        System.setProperty("gradle.publish.secret", secret)
     }
-
-    System.setProperty("gradle.publish.key", key)
-    System.setProperty("gradle.publish.secret", secret)
-  }
 }

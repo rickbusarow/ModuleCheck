@@ -83,7 +83,7 @@ class ProjectFindings(val project: ModuleCheckProject) {
         } else null
       }
 
-  fun overshotDependencies(): List<DependencyFinding.OverShotDependency> {
+  fun overshotApiDependencies(): List<DependencyFinding.OverShotDependency> {
 
     val allBad = (unusedApi() + unusedCompileOnly() + unusedImplementation())
       .map { ModuleCheckProject.from(it.dependencyProject) }.toSet()
@@ -106,7 +106,38 @@ class ProjectFindings(val project: ModuleCheckProject) {
           project.project,
           overshot,
           overshot.path,
-          "main",
+          "api",
+          source
+        )
+      }
+      .toList()
+  }
+
+
+  fun overshotImplementationDependencies(): List<DependencyFinding.OverShotDependency> {
+
+    val allBad = (unusedApi() + unusedCompileOnly() + unusedImplementation())
+      .map { ModuleCheckProject.from(it.dependencyProject) }.toSet()
+
+    return project.allPublicClassPathDependencyDeclarations()
+      .asSequence()
+      .filterNot { it in allBad }
+      .filterNot { it in project.dependencies.mainDependencies }
+      .filter { inheritedNewProject ->
+        inheritedNewProject.mainPackages.any { newProjectPackage ->
+          newProjectPackage in project.mainImports
+        }
+      }
+      .groupBy { it.project }
+      .map { (overshot, _) ->
+
+        val source = project.dependencies.sourceOf(ModuleCheckProject.from(overshot))
+
+        DependencyFinding.OverShotDependency(
+          project.project,
+          overshot,
+          overshot.path,
+          "implementation",
           source
         )
       }
@@ -120,7 +151,7 @@ class ProjectFindings(val project: ModuleCheckProject) {
     return project.dependencies.androidTestImplementationDependencies
       .filter { it.project in inheritedDependencyProjects }
       .map {
-        val from = project.inheritedMainDependencyProjects()
+        val from = project.dependencies.androidTestImplementationDependencies
           .filter { inherited -> inherited.project == it.project }
           .map { it.project }
 
@@ -136,16 +167,18 @@ class ProjectFindings(val project: ModuleCheckProject) {
   }
 
   fun redundantMain(): List<DependencyFinding.RedundantDependency> {
-    val allMain =
-      (project.dependencies.apiDependencies + project.dependencies.implementationDependencies)
+
+    val allMain = project.dependencies.mainDependencies.toSet()
 
     val inheritedDependencyProjects =
       project.inheritedMainDependencyProjects().map { it.project }.toSet()
 
     return allMain.filter { it.project in inheritedDependencyProjects }.map {
-      val from = project.inheritedMainDependencyProjects()
+
+      val from = allMain
         .filter { inherited -> inherited.project == it.project }
-        .map { it.project }
+        .map { inherited -> it.project }
+
       DependencyFinding.RedundantDependency(
         project.project,
         it.project,
@@ -163,7 +196,7 @@ class ProjectFindings(val project: ModuleCheckProject) {
     return project.dependencies.testImplementationDependencies
       .filter { it.project in inheritedDependencyProjects }
       .map {
-        val from = project.inheritedMainDependencyProjects()
+        val from = project.dependencies.testImplementationDependencies
           .filter { inherited -> inherited.project == it.project }
           .map { it.project }
         DependencyFinding.RedundantDependency(
