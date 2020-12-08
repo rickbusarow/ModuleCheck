@@ -53,7 +53,7 @@ class ModuleCheckProject private constructor(
 
   fun inheritedMainDependencyProjects(): List<ModuleCheckProject> {
 
-    val main = dependencies.apiDependencies + dependencies.implementationDependencies
+    val main = dependencies.mainDependencies
 
     return dependencies.apiDependencies + main.flatMap { pdd ->
 

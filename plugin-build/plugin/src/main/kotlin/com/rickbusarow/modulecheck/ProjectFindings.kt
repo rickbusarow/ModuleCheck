@@ -1,5 +1,6 @@
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.internal.Cli
 import kotlin.reflect.KProperty1
 
 class ProjectFindings(val project: ModuleCheckProject) {
@@ -166,27 +167,79 @@ class ProjectFindings(val project: ModuleCheckProject) {
       .distinctBy { it.position() }
   }
 
-  fun redundantMain(): List<DependencyFinding.RedundantDependency> {
+  fun redundantApi(): List<DependencyFinding.RedundantDependency> {
 
-    val allMain = project.dependencies.mainDependencies.toSet()
+    val allMain = project.dependencies.apiDependencies.toSet()
 
     val inheritedDependencyProjects =
       project.inheritedMainDependencyProjects().map { it.project }.toSet()
 
-    return allMain.filter { it.project in inheritedDependencyProjects }.map {
+    return allMain
+      .filter { it.project in inheritedDependencyProjects }
+      .map {
 
-      val from = allMain
-        .filter { inherited -> inherited.project == it.project }
-        .map { inherited -> it.project }
+        val from = allMain
+          .filter { inherited -> inherited.project == it.project }
+          .map { it.project }
 
-      DependencyFinding.RedundantDependency(
-        project.project,
-        it.project,
-        it.project.path,
-        "main",
-        from
-      )
-    }
+        DependencyFinding.RedundantDependency(
+          project.project,
+          it.project,
+          it.project.path,
+          "api",
+          from
+        )
+      }
+  }
+
+  fun redundantCompileOnly(): List<DependencyFinding.RedundantDependency> {
+
+    val allMain = project.dependencies.compileOnlyDependencies.toSet()
+
+    val inheritedDependencyProjects =
+      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+
+    return allMain
+      .filter { it.project in inheritedDependencyProjects }
+      .map {
+
+        val from = allMain
+          .filter { inherited -> inherited.project == it.project }
+          .map { it.project }
+
+        DependencyFinding.RedundantDependency(
+          project.project,
+          it.project,
+          it.project.path,
+          "compileOnly",
+          from
+        )
+      }
+  }
+
+  fun redundantImplementation(): List<DependencyFinding.RedundantDependency> {
+
+    val allMain = project.dependencies.implementationDependencies.toSet()
+
+    val inheritedDependencyProjects =
+      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+
+    return allMain
+      .filter { it.project in inheritedDependencyProjects }
+      .map {
+
+        val from = allMain
+          .filter { inherited -> inherited.project == it.project }
+          .map { it.project }
+
+        DependencyFinding.RedundantDependency(
+          project.project,
+          it.project,
+          it.project.path,
+          "implementation",
+          from
+        )
+      }
   }
 
   fun redundantTest(): List<DependencyFinding.RedundantDependency> {

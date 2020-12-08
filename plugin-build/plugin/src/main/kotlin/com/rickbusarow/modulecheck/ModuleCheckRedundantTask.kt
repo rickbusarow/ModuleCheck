@@ -10,7 +10,8 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckRedundantTask : DefaultTask() {
+
+abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
     description = "verification"
@@ -24,43 +25,52 @@ abstract class ModuleCheckRedundantTask : DefaultTask() {
   val ignoreAll: SetProperty<String> =
     project.extensions.getByType<ModuleCheckExtension>().ignoreAll
 
-  fun Project.moduleCheckProjects() =
+  protected val cli = Cli()
+
+  protected fun List<DependencyFinding>.finish() {
+
+    forEach { finding ->
+
+      project.logger.error(
+        "${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}"
+      )
+      finding.fix()
+      ModuleCheckProject.reset()
+    }
+  }
+
+
+  protected fun Project.moduleCheckProjects() =
     project.rootProject.allprojects
       .filter { gradleProject -> gradleProject.buildFile.exists() }
       .map { gradleProject -> ModuleCheckProject.from(gradleProject) }
 
+  protected inline fun <T> T.measured(action: T.() -> Unit) {
+    val time = measureTimeMillis {
+      action()
+    }
+
+    cli.printGreen("total parsing time --> $time milliseconds")
+  }
+}
+
+abstract class ModuleCheckTask : AbstractModuleCheckTask() {
+
   @TaskAction
   fun execute() = runBlocking {
-    val cli = Cli()
 
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
-    val time = measureTimeMillis {
+    measured {
 
-      project.moduleCheckProjects()
-        .sorted()
-        .filterNot { moduleCheckProject ->
-          moduleCheckProject.path in ignoreAll
-        }
-        .flatMap { moduleCheckProject ->
-          with(moduleCheckProject) {
-            listOf(
-              findings.redundantAndroidTest(),
-              findings.redundantMain(),
-              findings.redundantTest()
-            ).flatMap { dependencies ->
-              dependencies.mapNotNull { dependency ->
-                if (dependency.dependencyPath in alwaysIgnore) {
-                  null
-                } else {
-                  dependency
-                }
-              }
-            }
-              .distinctBy { it.position() }
-          }
-        }
+      OverShotProvider(project, alwaysIgnore, ignoreAll).get()
+        .finish()
+
+      RedundantProvider(project, alwaysIgnore, ignoreAll).get()
+        .finish()
+
+      UnusedProvider(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
 
@@ -68,18 +78,69 @@ abstract class ModuleCheckRedundantTask : DefaultTask() {
       .forEach { (depth, modules) ->
         cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
-
-    cli.printGreen("total parsing time --> $time milliseconds")
   }
+}
 
-  private fun List<DependencyFinding>.finish() {
 
-    forEach { finding ->
-      logger.error(
-        "${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}"
-      )
-      finding.fix()
-      ModuleCheckProject.reset()
+abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
+
+  @TaskAction
+  fun execute() = runBlocking {
+
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
+
+    measured {
+
+      OverShotProvider(project, alwaysIgnore, ignoreAll).get()
+        .finish()
     }
+
+    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+      .forEach { (depth, modules) ->
+        cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
+      }
+  }
+}
+
+abstract class ModuleCheckRedundantTask : AbstractModuleCheckTask() {
+
+  @TaskAction
+  fun execute() = runBlocking {
+
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
+
+    measured {
+
+      RedundantProvider(project, alwaysIgnore, ignoreAll).get()
+        .finish()
+    }
+
+    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+      .forEach { (depth, modules) ->
+        cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
+      }
+  }
+}
+
+abstract class ModuleCheckUnusedTask : AbstractModuleCheckTask() {
+
+  @TaskAction
+  fun execute() = runBlocking {
+
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
+
+    measured {
+
+      UnusedProvider(project, alwaysIgnore, ignoreAll).get()
+        .finish()
+    }
+
+    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+      .forEach { (depth, modules) ->
+        cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
+      }
   }
 }
