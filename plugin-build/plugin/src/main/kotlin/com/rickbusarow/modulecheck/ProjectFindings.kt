@@ -1,6 +1,5 @@
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.internal.Cli
 import kotlin.reflect.KProperty1
 
 class ProjectFindings(val project: ModuleCheckProject) {
@@ -171,8 +170,12 @@ class ProjectFindings(val project: ModuleCheckProject) {
 
     val allMain = project.dependencies.apiDependencies.toSet()
 
-    val inheritedDependencyProjects =
-      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+    val inheritedDependencyProjects = project.dependencies.apiDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      }
 
     return allMain
       .filter { it.project in inheritedDependencyProjects }
