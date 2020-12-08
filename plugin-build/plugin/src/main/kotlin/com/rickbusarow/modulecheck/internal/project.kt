@@ -17,6 +17,10 @@ fun Project.mainLayoutRootOrNull(): File? {
   val file = File("$srcRoot/main/res/layout")
   return if (file.exists()) file else null
 }
+fun Project.mainResRootOrNull(): File? {
+  val file = File("$srcRoot/main/res")
+  return if (file.exists()) file else null
+}
 
 fun FileTreeWalk.dirs(): Sequence<File> = asSequence().filter { it.isDirectory }
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
