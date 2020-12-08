@@ -3,7 +3,7 @@
 - [ ] parse java files
 - [ ] differentiate between java and android modules
 - [ ] parse resources (strings, drawables, icons, etc.)
-- [ ] parse test files
+- [X] parse test files
 - [ ] auto-fix
 - [X] locate declaration
 - [ ] ignore modules

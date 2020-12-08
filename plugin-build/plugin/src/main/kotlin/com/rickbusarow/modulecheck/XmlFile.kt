@@ -25,17 +25,17 @@ sealed class XmlFile {
 
   companion object {
     val PREFIXES = listOf(
-      "@anim",
-      "@animator",
-      "@arrays",
+      "@anim/",
+      "@animator/",
+      "@arrays/",
       "@color/",
       "@dimen/",
       "@drawable/",
-      "@font",
-      "@layout",
-      "@menu",
-      "@mipmap",
-      "@raw",
+      "@font/",
+      "@layout/",
+      "@menu/",
+      "@mipmap/",
+      "@raw/",
       "@string/",
       "@style/"
     )

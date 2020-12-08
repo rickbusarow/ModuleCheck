@@ -38,9 +38,9 @@ class ModuleCheckProject private constructor(
     testFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
   }
 
-  val androidTestPackages by lazy { androidTestFiles.map { it.packageFqName }.toSet() }
-  val mainPackages by lazy { mainFiles.map { it.packageFqName }.toSet() }
-  val testPackages by lazy { testFiles.map { it.packageFqName }.toSet() }
+  val androidTestPackages by lazy { androidTestFiles.flatMap { it.declarations }.toSet() }
+  val mainPackages by lazy { mainFiles.flatMap { it.declarations }.toSet() }
+  val testPackages by lazy { testFiles.flatMap { it.declarations }.toSet() }
 
   val mainLayoutFiles by lazy {
     project.mainLayoutRootOrNull()?.walkTopDown()?.files().orEmpty().map { XmlFile.LayoutFile(it) }
@@ -98,23 +98,5 @@ class ModuleCheckProject private constructor(
 
     fun from(project: Project) = cache.getOrPut(project) { ModuleCheckProject(project) }
 
-//    fun dependentsOf(
-//      project: Project
-////      alreadyChecked: Set<Project> = emptySet()
-//    ): List<ModuleCheckProject> {
-//
-//      val dep = from(project)
-//
-//      val thisLayer = cache.values
-////        .filter { mcp -> mcp.project !in alreadyChecked }
-//        .filter { mcp -> mcp.dependencies.mainDependencies.any { it == dep } }
-//
-//      return (thisLayer + thisLayer.flatMap {
-//        dependentsOf(
-//          it.project
-////          alreadyChecked + (thisLayer.map { it.project }.toSet() + project)
-//        )
-//      }).distinct()
-//    }
   }
 }
