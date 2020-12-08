@@ -145,8 +145,13 @@ class ProjectFindings(val project: ModuleCheckProject) {
   }
 
   fun redundantAndroidTest(): List<DependencyFinding.RedundantDependency> {
-    val inheritedDependencyProjects =
-      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+
+    val inheritedDependencyProjects = project.dependencies.androidTestImplementationDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      }
 
     return project.dependencies.androidTestImplementationDependencies
       .filter { it.project in inheritedDependencyProjects }
@@ -175,7 +180,13 @@ class ProjectFindings(val project: ModuleCheckProject) {
         it.inheritedMainDependencyProjects()
           .map { it.project }
           .toSet()
+      } + project.dependencies.mainDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
       }
+
 
     return allMain
       .filter { it.project in inheritedDependencyProjects }
@@ -199,8 +210,18 @@ class ProjectFindings(val project: ModuleCheckProject) {
 
     val allMain = project.dependencies.compileOnlyDependencies.toSet()
 
-    val inheritedDependencyProjects =
-      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+    val inheritedDependencyProjects = project.dependencies.compileOnlyDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      } + project.dependencies.mainDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      }
+
 
     return allMain
       .filter { it.project in inheritedDependencyProjects }
@@ -224,8 +245,17 @@ class ProjectFindings(val project: ModuleCheckProject) {
 
     val allMain = project.dependencies.implementationDependencies.toSet()
 
-    val inheritedDependencyProjects =
-      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+    val inheritedDependencyProjects = project.dependencies.implementationDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      } + project.dependencies.mainDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      }
 
     return allMain
       .filter { it.project in inheritedDependencyProjects }
@@ -246,8 +276,18 @@ class ProjectFindings(val project: ModuleCheckProject) {
   }
 
   fun redundantTest(): List<DependencyFinding.RedundantDependency> {
-    val inheritedDependencyProjects =
-      project.inheritedMainDependencyProjects().map { it.project }.toSet()
+    val inheritedDependencyProjects = project.dependencies.testImplementationDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      } + project.dependencies.mainDependencies
+      .flatMap {
+        it.inheritedMainDependencyProjects()
+          .map { it.project }
+          .toSet()
+      }
+
 
     return project.dependencies.testImplementationDependencies
       .filter { it.project in inheritedDependencyProjects }
@@ -259,7 +299,7 @@ class ProjectFindings(val project: ModuleCheckProject) {
           project.project,
           it.project,
           it.project.path,
-          "test",
+          "testImplementation",
           from
         )
       }
