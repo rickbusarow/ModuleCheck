@@ -36,7 +36,7 @@ class ModuleCheckPlugin : Plugin<Project> {
 internal fun List<String>.positionOf(
   project: Project,
   configuration: String
-): ModuleCheckProject.Position {
+): MCP.Position {
 
   val reg = """.*$configuration\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
 
@@ -44,7 +44,7 @@ internal fun List<String>.positionOf(
 
   val col = if (row == -1) -1 else get(row).indexOfFirst { it != ' ' }
 
-  return ModuleCheckProject.Position(row + 1, col + 1)
+  return MCP.Position(row + 1, col + 1)
 }
 
 fun File.jvmFiles() = walkTopDown()

@@ -4,6 +4,7 @@ import com.rickbusarow.modulecheck.internal.*
 import org.gradle.api.Project
 import java.util.concurrent.ConcurrentHashMap
 
+
 class ModuleCheckProject private constructor(
   val project: Project
 ) : Comparable<ModuleCheckProject> {
@@ -63,7 +64,7 @@ class ModuleCheckProject private constructor(
     }
   }
 
-  fun positionIn(parent: Project, configuration: String): ModuleCheckProject.Position =
+  fun positionIn(parent: Project, configuration: String): MCP.Position =
     parent.buildFile.readText().lines().positionOf(project.project, configuration)
 
   private fun DependencyFinding.moduleCheckProject() = cache.getValue(dependentProject)

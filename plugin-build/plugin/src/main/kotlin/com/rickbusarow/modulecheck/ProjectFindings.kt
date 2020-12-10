@@ -59,15 +59,15 @@ class ProjectFindings(val project: ModuleCheckProject) {
     configurationName: String
   ): List<DependencyFinding.UnusedDependency> =
     dependencyKProp(project.dependencies)
-      // .filterNot { alwaysIgnore.contains(it.project.path)}
+
       .mapNotNull { projectDependency ->
 
         val used = imports.any { importString ->
-          when {
-            importString in projectDependency.mainPackages -> true
-            else ->
-              dependencyKProp(project.dependencies).any { childProjectDependency ->
-
+          if (importString in projectDependency.mainPackages) {
+            true
+          } else {
+            dependencyKProp(project.dependencies)
+              .any { childProjectDependency ->
                 projectDependency in dependencyKProp(childProjectDependency.dependencies)
               }
           }

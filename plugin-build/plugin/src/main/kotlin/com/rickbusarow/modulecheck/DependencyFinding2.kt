@@ -2,29 +2,31 @@ package com.rickbusarow.modulecheck
 
 import org.gradle.api.Project
 
-sealed class DependencyFinding(val problemName: String) {
+sealed class DependencyFinding2(val problemName: String) {
   abstract val dependentProject: Project
   abstract val dependencyProject: Project
   abstract val dependencyPath: String
-  abstract val configurationName: String
+  abstract val config: Config
 
   data class UnusedDependency(
     override val dependentProject: Project,
     override val dependencyProject: Project,
     override val dependencyPath: String,
-    override val configurationName: String
-  ) : DependencyFinding("unused")
+    override val config: Config
+  ) : DependencyFinding2("unused") {
+    fun cpp() = CPP(config, dependencyProject)
+  }
 
   data class OverShotDependency(
     override val dependentProject: Project,
     override val dependencyProject: Project,
     override val dependencyPath: String,
-    override val configurationName: String,
-    val from: ModuleCheckProject?
-  ) : DependencyFinding("over-shot") {
+    override val config: Config,
+    val from: MCP?
+  ) : DependencyFinding2("over-shot") {
 
     override fun position(): ModuleCheckProject.Position {
-      return from?.positionIn(dependentProject.project, configurationName)
+      return from?.positionIn(dependentProject.project, config.name)
         ?: ModuleCheckProject.Position(-1, -1)
     }
 
@@ -57,16 +59,16 @@ sealed class DependencyFinding(val problemName: String) {
     override val dependentProject: Project,
     override val dependencyProject: Project,
     override val dependencyPath: String,
-    override val configurationName: String,
+    override val config: Config,
     val from: List<Project>
-  ) : DependencyFinding("redundant") {
+  ) : DependencyFinding2("redundant") {
     override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
 
   }
 
   open fun position(): ModuleCheckProject.Position {
     return ModuleCheckProject.from(dependencyProject)
-      .positionIn(dependentProject, configurationName)
+      .positionIn(dependentProject, config.name)
   }
 
   open fun logString(): String {
@@ -98,4 +100,3 @@ sealed class DependencyFinding(val problemName: String) {
     }
   }
 }
-
