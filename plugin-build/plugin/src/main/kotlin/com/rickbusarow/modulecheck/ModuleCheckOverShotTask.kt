@@ -16,7 +16,7 @@ abstract class FindingProvider<T : DependencyFinding>(
   protected fun Project.moduleCheckProjects() =
     project.rootProject.allprojects
       .filter { gradleProject -> gradleProject.buildFile.exists() }
-      .map { gradleProject -> ModuleCheckProject.from(gradleProject) }
+      .map { gradleProject -> MCP.from(gradleProject) }
 
 }
 
@@ -33,17 +33,13 @@ class OverShotProvider(
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
       .flatMap { moduleCheckProject ->
         with(moduleCheckProject) {
-          listOf(
-            findings.overshotApiDependencies(),
-            findings.overshotImplementationDependencies()
-          )
-            .flatMap { dependencies ->
-              dependencies.mapNotNull { dependency ->
-                if (dependency.dependencyPath in alwaysIgnore) {
-                  null
-                } else {
-                  dependency
-                }
+          overshot
+            .all()
+            .mapNotNull { dependency ->
+              if (dependency.dependencyPath in alwaysIgnore) {
+                null
+              } else {
+                dependency
               }
             }
             .distinctBy { it.dependencyPath }
@@ -67,21 +63,15 @@ class RedundantProvider(
       }
       .flatMap { moduleCheckProject ->
         with(moduleCheckProject) {
-          listOf(
-            findings.redundantAndroidTest(),
-            findings.redundantApi(),
-            findings.redundantCompileOnly(),
-            findings.redundantImplementation(),
-            findings.redundantTest()
-          ).flatMap { dependencies ->
-            dependencies.mapNotNull { dependency ->
+          redundant
+            .all()
+            .mapNotNull { dependency ->
               if (dependency.dependencyPath in alwaysIgnore) {
                 null
               } else {
                 dependency
               }
             }
-          }
             .distinctBy { it.position() }
         }
       }
@@ -103,21 +93,15 @@ class UnusedProvider(
       }
       .flatMap { moduleCheckProject ->
         with(moduleCheckProject) {
-          listOf(
-            findings.unusedAndroidTest(),
-            findings.unusedApi(),
-            findings.unusedCompileOnly(),
-            findings.unusedImplementation(),
-            findings.unusedTestImplementation()
-          ).flatMap { dependencies ->
-            dependencies.mapNotNull { dependency ->
+          unused
+            .all()
+            .mapNotNull { dependency ->
               if (dependency.dependencyPath in alwaysIgnore) {
                 null
               } else {
                 dependency
               }
             }
-          }
             .distinctBy { it.position() }
         }
       }

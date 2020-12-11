@@ -18,7 +18,7 @@ class MCP private constructor(
 
   val overshot by lazy { OvershotParser.parse(this) }
   val unused by lazy { UnusedParser.parse(this) }
-//  val redundant = Parsed<DependencyFinding.RedundantDependency>()
+  val redundant by lazy { RedundantParser.parse(this) }
 
   val androidTestFiles =
     project.androidTestJavaRoot.jvmFiles() + project.androidTestKotlinRoot.jvmFiles()
@@ -80,6 +80,30 @@ class MCP private constructor(
       ?.mcp()
   }
 
+  fun getMainDepth(): Int {
+
+    val all = dependencies.main()
+
+    return if (all.isEmpty()) 0
+    else all.map { it.mcp().getMainDepth() }.max()!! + 1
+  }
+
+  fun getTestDepth(): Int = if (dependencies.testImplementation.isEmpty()) {
+    0
+  } else {
+    dependencies.testImplementation
+      .map { it.mcp().getMainDepth() }
+      .max()!! + 1
+  }
+
+  val androidTestDepth: Int
+    get() = if (dependencies.androidTest.isEmpty()) {
+      0
+    } else {
+      dependencies.androidTest
+        .map { it.mcp().getMainDepth() }
+        .max()!! + 1
+    }
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
 
@@ -92,7 +116,7 @@ class MCP private constructor(
 
   data class Position(val row: Int, val column: Int)
 
-  class Parsed<T>(
+  data class Parsed<T>(
     val androidTest: MutableSet<T>,
     val api: MutableSet<T>,
     val compileOnly: MutableSet<T>,
@@ -111,6 +135,7 @@ class MCP private constructor(
     private val cache = ConcurrentHashMap<Project, MCP>()
 
     fun reset() {
+      Cli().printGreen("                                                          resetting")
       cache.clear()
     }
 

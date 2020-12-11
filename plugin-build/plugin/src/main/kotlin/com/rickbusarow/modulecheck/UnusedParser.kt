@@ -2,7 +2,7 @@ package com.rickbusarow.modulecheck
 
 object UnusedParser {
 
-  fun parse(mcp: MCP): MCP.Parsed<DependencyFinding2.UnusedDependency> {
+  fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.UnusedDependency> {
 
     val dependencies = mcp.dependencies
 
@@ -14,16 +14,22 @@ object UnusedParser {
 
     val dependents = mcp.dependents()
 
-    val unusedAnywhere = unusedHere
+    /*
+    If a module doesn't use a dependency,
+    but it's an api dependency,
+    and ALL dependents of that module use it,
+    then ignore the fact that it's unused in the current module.
+     */
+    val unusedInAtLeastOneDependent = unusedHere
       .filter { cpp ->
-        cpp.config != Config.Api || dependents.all { dependent ->
+        cpp.config != Config.Api || dependents.any { dependent ->
           !cpp.usedIn(dependent)
         }
       }
 
-    val grouped = unusedAnywhere.map { cpp ->
+    val grouped = unusedInAtLeastOneDependent.map { cpp ->
 
-      DependencyFinding2.UnusedDependency(
+      DependencyFinding.UnusedDependency(
         mcp.project,
         cpp.project,
         cpp.project.path,

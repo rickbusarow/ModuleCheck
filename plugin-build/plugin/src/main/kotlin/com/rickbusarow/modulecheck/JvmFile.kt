@@ -71,10 +71,10 @@ class DeclarationVisitor(val declarations: MutableSet<String>) : KtTreeVisitorVo
   }
 
   override fun visitReferenceExpression(expression: KtReferenceExpression) {
-    expression
-      .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
-      ?.takeIf { it.children.isEmpty() }
-      ?.run { println(this.text) }
+//    expression
+//      .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
+//      ?.takeIf { it.children.isEmpty() }
+//      ?.run { println(this.text) }
 
     super.visitReferenceExpression(expression)
   }

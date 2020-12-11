@@ -2,7 +2,7 @@ package com.rickbusarow.modulecheck
 
 object OvershotParser {
 
-  fun parse(mcp: MCP) : MCP.Parsed<DependencyFinding2.OverShotDependency>{
+  fun parse(mcp: MCP) : MCP.Parsed<DependencyFinding.OverShotDependency>{
 
     val bad = (mcp.unused.main())
       .map { it.cpp() }
@@ -22,7 +22,7 @@ object OvershotParser {
 
         val source = mcp.sourceOf(overshot)
 
-        DependencyFinding2.OverShotDependency(
+        DependencyFinding.OverShotDependency(
           mcp.project,
           overshot.project,
           overshot.project.path,

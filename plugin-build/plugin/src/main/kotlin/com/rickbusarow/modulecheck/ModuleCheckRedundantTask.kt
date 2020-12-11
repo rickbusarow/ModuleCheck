@@ -32,18 +32,17 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     forEach { finding ->
 
       project.logger.error(
-        "${finding.problemName} ${finding.configurationName} dependency: ${finding.logString()}"
+        "${finding.problemName} ${finding.config.name} dependency: ${finding.logString()}"
       )
       finding.fix()
-      ModuleCheckProject.reset()
+      MCP.reset()
     }
   }
-
 
   protected fun Project.moduleCheckProjects() =
     project.rootProject.allprojects
       .filter { gradleProject -> gradleProject.buildFile.exists() }
-      .map { gradleProject -> ModuleCheckProject.from(gradleProject) }
+      .map { gradleProject -> MCP.from(gradleProject) }
 
   protected inline fun <T> T.measured(action: T.() -> Unit) {
     val time = measureTimeMillis {
@@ -64,17 +63,15 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
     measured {
 
-      OverShotProvider(project, alwaysIgnore, ignoreAll).get()
-        .finish()
+      val all = OverShotProvider(project, alwaysIgnore, ignoreAll).get() +
+        RedundantProvider(project, alwaysIgnore, ignoreAll).get() +
+        UnusedProvider(project, alwaysIgnore, ignoreAll).get()
 
-      RedundantProvider(project, alwaysIgnore, ignoreAll).get()
-        .finish()
-
-      UnusedProvider(project, alwaysIgnore, ignoreAll).get()
+      all.distinctBy { it.dependentProject to CPP(it.config, it.dependencyProject) }
         .finish()
     }
 
-    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
       .forEach { (depth, modules) ->
         cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
@@ -96,7 +93,7 @@ abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
         .finish()
     }
 
-    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
       .forEach { (depth, modules) ->
         cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
@@ -117,7 +114,7 @@ abstract class ModuleCheckRedundantTask : AbstractModuleCheckTask() {
         .finish()
     }
 
-    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
       .forEach { (depth, modules) ->
         cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
@@ -138,7 +135,7 @@ abstract class ModuleCheckUnusedTask : AbstractModuleCheckTask() {
         .finish()
     }
 
-    project.moduleCheckProjects().groupBy { it.findings.getMainDepth() }.toSortedMap()
+    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
       .forEach { (depth, modules) ->
         cli.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }

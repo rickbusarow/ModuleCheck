@@ -38,5 +38,9 @@ sealed class Config(val name: String) {
     return name.hashCode()
   }
 
+  override fun toString(): String {
+    return "Config(name='$name')"
+  }
+
 
 }
