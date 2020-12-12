@@ -53,3 +53,4 @@ allprojects {
 //        }
 //      }
 }
+val sortDependencies by tasks.registering(com.rickbusarow.modulecheck.SortDependenciesTask::class)

@@ -3,8 +3,14 @@ plugins {
 }
 
 dependencies {
-  api(project(path = ":sample:library-a"))
-//  api(project(path = ":sample:nested:library-c"))
-//  api(project(path = ":sample:library-b"))
-//    testImplementation(project(path = ":sample:nested:library-c"))
+
+  // floating comment
+
+  // comment before the dependency
+  api(project(path = ":sample:library-a")) // in-line comment
+
+
+  api(project(path = ":sample:nested:library-c"))
+  api(project(path = ":sample:library-b"))
+  testImplementation(project(path = ":sample:nested:library-c"))
 }
