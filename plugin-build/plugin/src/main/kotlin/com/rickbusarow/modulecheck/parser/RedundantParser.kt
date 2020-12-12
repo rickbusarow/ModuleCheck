@@ -1,8 +1,13 @@
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.parser
 
-object RedundantParser {
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.mcp
 
-  fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.RedundantDependency> {
+object RedundantParser : Parser<DependencyFinding.RedundantDependency>() {
+
+  override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.RedundantDependency> {
 
     val allMain = mcp.dependencies.api.toSet()
 

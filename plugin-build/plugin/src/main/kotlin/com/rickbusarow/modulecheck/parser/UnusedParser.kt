@@ -1,8 +1,12 @@
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.parser
 
-object UnusedParser {
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.MCP
 
-  fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.UnusedDependency> {
+object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
+
+  override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.UnusedDependency> {
 
     val dependencies = mcp.dependencies
 

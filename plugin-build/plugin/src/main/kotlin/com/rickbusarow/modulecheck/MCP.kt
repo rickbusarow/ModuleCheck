@@ -1,6 +1,10 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.*
+import com.rickbusarow.modulecheck.parser.DependencyParser
+import com.rickbusarow.modulecheck.parser.OvershotParser
+import com.rickbusarow.modulecheck.parser.RedundantParser
+import com.rickbusarow.modulecheck.parser.UnusedParser
 import org.gradle.api.Project
 import java.util.concurrent.ConcurrentHashMap
 
@@ -14,11 +18,11 @@ class MCP private constructor(
 
   val path: String = project.path
 
-  val dependencies = DependencyParser.parse(this)
+  val dependencies by DependencyParser.parseLazy(this)
 
-  val overshot by lazy { OvershotParser.parse(this) }
-  val unused by lazy { UnusedParser.parse(this) }
-  val redundant by lazy { RedundantParser.parse(this) }
+  val overshot by OvershotParser.parseLazy(this)
+  val unused by UnusedParser.parseLazy(this)
+  val redundant by RedundantParser.parseLazy(this)
 
   val androidTestFiles =
     project.androidTestJavaRoot.jvmFiles() + project.androidTestKotlinRoot.jvmFiles()
