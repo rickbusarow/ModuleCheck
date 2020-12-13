@@ -20,6 +20,15 @@ class MCP private constructor(
 
   val dependencies by DependencyParser.parseLazy(this)
 
+  val resolvedMainDependencies by lazy {
+
+    val all = dependencies.main() + allPublicClassPathDependencyDeclarations()
+
+    all.filter { dep ->
+      dep.mcp().mainDeclarations.any { it in mainImports }
+    }
+  }
+
   val overshot by OvershotParser.parseLazy(this)
   val unused by UnusedParser.parseLazy(this)
   val redundant by RedundantParser.parseLazy(this)
@@ -47,9 +56,9 @@ class MCP private constructor(
 
   val testImports = testFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
 
-  val androidTestDeclarations = androidTestFiles.flatMap { it.declarations }.toSet()
-  val mainDeclarations = mainFiles.flatMap { it.declarations }.toSet()
-  val testDeclarations = testFiles.flatMap { it.declarations }.toSet()
+  val androidTestDeclarations by lazy { androidTestFiles.flatMap { it.declarations }.toSet() }
+  val mainDeclarations by lazy { mainFiles.flatMap { it.declarations }.toSet() }
+  val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }
 
   fun dependents() =
     cache.values.filter { it.dependencies.all().any { it.project == this.project } }

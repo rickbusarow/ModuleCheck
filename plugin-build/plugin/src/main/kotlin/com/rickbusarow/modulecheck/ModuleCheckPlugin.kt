@@ -30,6 +30,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckOverShot", ModuleCheckOverShotTask::class.java)
     target.tasks.register("moduleCheckRedundant", ModuleCheckRedundantTask::class.java)
     target.tasks.register("moduleCheckUnused", ModuleCheckUnusedTask::class.java)
+    target.tasks.register("moduleCheckUsed", ModuleCheckUsedTask::class.java)
   }
 }
 

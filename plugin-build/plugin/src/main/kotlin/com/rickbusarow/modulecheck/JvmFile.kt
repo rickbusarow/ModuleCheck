@@ -1,20 +1,22 @@
 package com.rickbusarow.modulecheck
 
 import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.Node
+import com.github.javaparser.ast.body.TypeDeclaration
+import java.io.File
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isPrivate
 import org.jetbrains.kotlin.psi.psiUtil.isPublic
-import java.io.File
 
 sealed class JvmFile {
   abstract val packageFqName: String
   abstract val importDirectives: Set<String>
   abstract val declarations: Set<String>
 
-  data class KotlinFile(val ktFile: KtFile) : JvmFile() {
+  class KotlinFile(val ktFile: KtFile) : JvmFile() {
     override val packageFqName by lazy { ktFile.packageFqName.asString() }
     override val importDirectives by lazy {
       ktFile
@@ -42,7 +44,7 @@ sealed class JvmFile {
 
   }
 
-  data class JavaFile(val file: File) : JvmFile() {
+  class JavaFile(val file: File) : JvmFile() {
 
     val parsed by lazy { StaticJavaParser.parse(file) }
 
@@ -50,12 +52,56 @@ sealed class JvmFile {
     override val importDirectives by lazy {
       parsed.imports.map {
         it.nameAsString
-          .split(".")
-          .dropLast(1)
-          .joinToString(".")
+//          .split(".")
+//          .dropLast(1)
+//          .joinToString(".")
       }.toSet()
     }
-    override val declarations by lazy { setOf(packageFqName) }
+    override val declarations by lazy {
+
+//      val fields = mutableListOf<String>()
+//      val methods = mutableListOf<String>()
+      val types = mutableSetOf<String>()
+
+      val iterator = NodeIterator { node ->
+        when (node) {
+//          is FieldDeclaration -> if (node.isStatic) fields.add(node.toString())
+//          is MethodDeclaration -> if (node.isStatic) methods.add(node.toString())
+          is TypeDeclaration<*> -> types.add(node.fullyQualifiedName.get())
+        }
+        true
+      }
+
+      iterator.explore(parsed)
+
+      types
+    }
+  }
+
+  override fun toString(): String {
+    return """${this::class.simpleName}(
+      |packageFqName='$packageFqName',
+      |
+      |importDirectives=$importDirectives,
+      |
+      |declarations=$declarations
+      |
+      |)""".trimMargin()
+  }
+
+
+}
+
+class NodeIterator(
+  private val predicate: (node: Node) -> Boolean
+) {
+
+  fun explore(node: Node) {
+    if (predicate(node)) {
+      node.childNodes.forEach { child ->
+        explore(child)
+      }
+    }
   }
 }
 

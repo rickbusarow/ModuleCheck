@@ -8,7 +8,18 @@ public class MyApplication {
 
     //    ClassA classA;
     ClassB classB;
+    // static   ClassA classA;
+    static ClassB classBstatic;
     KotlinOuterClass kotlinOuterClass;
 
     MyInternalClass myInternalClass;
+
+    static void someStaticVoidMethod() {
+    }
+
+    static class StaticInnerClass {
+        static class StaticInnerInnerClass {
+        }
+    }
+
 }

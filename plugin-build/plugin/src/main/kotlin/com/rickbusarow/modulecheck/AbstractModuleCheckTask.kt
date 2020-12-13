@@ -1,6 +1,7 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.Cli
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
@@ -8,7 +9,6 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
-import kotlin.system.measureTimeMillis
 
 
 abstract class AbstractModuleCheckTask : DefaultTask() {
@@ -44,12 +44,27 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
       .filter { gradleProject -> gradleProject.buildFile.exists() }
       .map { gradleProject -> MCP.from(gradleProject) }
 
-  protected inline fun <T> T.measured(action: T.() -> Unit) {
+  protected inline fun <T, R> T.measured(action: T.() -> R): R {
+
+    var r: R? = null
+
     val time = measureTimeMillis {
-      action()
+      r = action()
     }
 
+    project.moduleCheckProjects()
+      .forEach { mcp ->
+        println(
+          """project --> $mcp
+          |
+          |jvm files --> ${mcp.mainFiles.joinToString("\n")}
+        """.trimMargin()
+        )
+      }
+
     cli.printGreen("total parsing time --> $time milliseconds")
+
+    return r!!
   }
 }
 
@@ -78,6 +93,27 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
   }
 }
 
+abstract class ModuleCheckUsedTask : AbstractModuleCheckTask() {
+
+  @TaskAction
+  fun execute() = runBlocking {
+
+    val pairs = measured {
+
+      project
+        .moduleCheckProjects()
+        .map { mcp ->
+          mcp to mcp.resolvedMainDependencies
+        }
+    }
+
+    pairs
+      .sortedBy { it.first }
+      .forEach { (mcp, lst) ->
+        cli.printYellow("${mcp.path.padEnd(50)} -- ${lst.joinToString { it.project.path }}")
+      }
+  }
+}
 
 abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
 

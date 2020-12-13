@@ -16,7 +16,7 @@ repositories {
 dependencies {
   compileOnly(gradleApi())
 
-  val kotlinVersion = "1.4.20"
+  val kotlinVersion = "1.4.21"
 
   implementation(kotlin("gradle-plugin", version = kotlinVersion))
   implementation(kotlin("stdlib", version = kotlinVersion))
