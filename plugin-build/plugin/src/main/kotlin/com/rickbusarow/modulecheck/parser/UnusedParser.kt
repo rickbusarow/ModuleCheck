@@ -18,6 +18,10 @@ object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
 
     val dependents = mcp.dependents()
 
+    val unusedMain = dependencies
+      .main()
+      .filter { it !in mcp.resolvedMainDependencies }
+
     /*
     If a module doesn't use a dependency,
     but it's an api dependency,
@@ -43,12 +47,24 @@ object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
       .groupBy { it.config }
       .mapValues { it.value.toMutableSet() }
 
+    val newGrouped = unusedMain.map { cpp ->
+
+      DependencyFinding.UnusedDependency(
+        mcp.project,
+        cpp.project,
+        cpp.project.path,
+        cpp.config
+      )
+    }
+      .groupBy { it.config }
+      .mapValues { it.value.toMutableSet() }
+
     return MCP.Parsed(
       grouped.getOrDefault(Config.AndroidTest, mutableSetOf()),
-      grouped.getOrDefault(Config.Api, mutableSetOf()),
-      grouped.getOrDefault(Config.CompileOnly, mutableSetOf()),
-      grouped.getOrDefault(Config.Implementation, mutableSetOf()),
-      grouped.getOrDefault(Config.RuntimeOnly, mutableSetOf()),
+      newGrouped.getOrDefault(Config.Api, mutableSetOf()),
+      newGrouped.getOrDefault(Config.CompileOnly, mutableSetOf()),
+      newGrouped.getOrDefault(Config.Implementation, mutableSetOf()),
+      newGrouped.getOrDefault(Config.RuntimeOnly, mutableSetOf()),
       grouped.getOrDefault(Config.TestApi, mutableSetOf()),
       grouped.getOrDefault(Config.TestImplementation, mutableSetOf())
     )

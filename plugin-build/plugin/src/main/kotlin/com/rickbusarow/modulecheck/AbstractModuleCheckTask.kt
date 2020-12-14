@@ -35,7 +35,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
         "${finding.problemName} ${finding.config.name} dependency: ${finding.logString()}"
       )
       finding.fix()
-      MCP.reset()
+//      MCP.reset()
     }
   }
 
@@ -51,16 +51,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     val time = measureTimeMillis {
       r = action()
     }
-
-    project.moduleCheckProjects()
-      .forEach { mcp ->
-        println(
-          """project --> $mcp
-          |
-          |jvm files --> ${mcp.mainFiles.joinToString("\n")}
-        """.trimMargin()
-        )
-      }
 
     cli.printGreen("total parsing time --> $time milliseconds")
 
