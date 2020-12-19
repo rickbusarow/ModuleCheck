@@ -21,6 +21,7 @@ buildscript {
 plugins {
   kotlin("jvm")
   id(Plugins.spotless) version Versions.spotless
+  id("org.jmailen.kotlinter") version "3.3.0"
   id("com.rickbusarow.module-check")
 }
 
