@@ -41,6 +41,4 @@ sealed class Config(val name: String) {
   override fun toString(): String {
     return "Config(name='$name')"
   }
-
-
 }

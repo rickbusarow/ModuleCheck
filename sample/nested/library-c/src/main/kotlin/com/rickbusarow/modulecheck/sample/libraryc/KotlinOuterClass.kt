@@ -11,22 +11,15 @@ class KotlinOuterClass {
   inner class KotlinInnerClass
 
   companion object {
-
   }
 
-  object Foo {
-
-  }
+  object Foo
 }
 
-object FooC {
-
-}
+object FooC
 
 fun normalFunction() {
-
 }
 
 fun String.stringExtensionFunction() {
-
 }

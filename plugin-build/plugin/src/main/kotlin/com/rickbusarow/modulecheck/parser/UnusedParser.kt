@@ -53,5 +53,4 @@ object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
       grouped.getOrDefault(Config.TestImplementation, mutableSetOf())
     )
   }
-
 }

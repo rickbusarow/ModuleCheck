@@ -10,7 +10,6 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import kotlin.system.measureTimeMillis
 
-
 abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
@@ -77,7 +76,6 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
       }
   }
 }
-
 
 abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
 

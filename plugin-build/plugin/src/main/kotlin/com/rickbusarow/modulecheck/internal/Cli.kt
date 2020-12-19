@@ -38,7 +38,7 @@ class Cli {
       when (val choice = scanner.nextLine().toLowerCase()) {
         trueChoice.toLowerCase() -> return true.also { printGreen("choice: $choice") }
         falseChoice.toLowerCase() -> return false.also { printGreen("choice: $choice") }
-        else                      -> {
+        else -> {
 
           printRed("Unexpected input ($choice), please, try again")
         }

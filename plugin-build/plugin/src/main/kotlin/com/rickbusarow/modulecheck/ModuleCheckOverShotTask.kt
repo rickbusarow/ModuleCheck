@@ -17,11 +17,12 @@ abstract class FindingProvider<T : DependencyFinding>(
     project.rootProject.allprojects
       .filter { gradleProject -> gradleProject.buildFile.exists() }
       .map { gradleProject -> MCP.from(gradleProject) }
-
 }
 
 class OverShotProvider(
-  project: Project, alwaysIgnore: Set<String>, ignoreAll: Set<String>
+  project: Project,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>
 ) : FindingProvider<DependencyFinding.OverShotDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
@@ -49,7 +50,9 @@ class OverShotProvider(
 }
 
 class RedundantProvider(
-  project: Project, alwaysIgnore: Set<String>, ignoreAll: Set<String>
+  project: Project,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>
 ) : FindingProvider<DependencyFinding.RedundantDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
@@ -79,7 +82,9 @@ class RedundantProvider(
 }
 
 class UnusedProvider(
-  project: Project, alwaysIgnore: Set<String>, ignoreAll: Set<String>
+  project: Project,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>
 ) : FindingProvider<DependencyFinding.UnusedDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
@@ -107,4 +112,3 @@ class UnusedProvider(
       }
   }
 }
-

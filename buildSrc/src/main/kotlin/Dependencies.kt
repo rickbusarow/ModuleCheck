@@ -15,6 +15,7 @@ object Plugins {
   const val kotlinAndroidExtensions = "kotlin-android-extensions"
   const val mavenPublish = "com.vanniktech.maven.publish"
   const val spoon = "com.jaredsburrows.spoon"
+  const val spotless = "com.diffplug.spotless"
   const val taskTree = "com.dorongold.task-tree"
 }
 
@@ -38,6 +39,7 @@ object Versions {
   const val kotlin = "1.4.20" // update the buildSrc gradle dependency too!
   const val sonarPlugin = "2.6.1"
   const val spoon = "1.5.0"
+  const val spotless = "5.8.2"
   const val taskTree = "1.5"
 }
 
@@ -171,7 +173,6 @@ object Libs {
 
     // The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and certificate generation.
     const val extendedApis = "org.bouncycastle:bcpkix-jdk15on:1.65"
-
   }
 
   object BumpTech {
@@ -329,7 +330,6 @@ object Libs {
         const val core = "com.rickbusarow.dispatch:dispatch-test:$version"
         const val jUnit4 = "com.rickbusarow.dispatch:dispatch-test-junit4:$version"
         const val jUnit5 = "com.rickbusarow.dispatch:dispatch-test-junit5:$version"
-
       }
     }
   }
@@ -366,7 +366,6 @@ object Libs {
 
       const val annotations = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
       const val processor = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
-
     }
 
     object KotlinPoet {
@@ -377,7 +376,6 @@ object Libs {
       const val classInspectorElements = "com.squareup:kotlinpoet-classinspector-elements:$version"
       const val metadata = "com.squareup:kotlinpoet-metadata:$version"
       const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"
-
     }
 
     object Moshi {
@@ -404,7 +402,6 @@ object Libs {
       const val moshi = "com.squareup.retrofit2:converter-moshi:$version"
       const val mock = "com.squareup.retrofit2:retrofit-mock:$version"
     }
-
   }
 
   /**
@@ -423,5 +420,4 @@ object Libs {
   object Yalantis {
     const val ucrop = "com.github.yalantis:ucrop:2.2.4"
   }
-
 }

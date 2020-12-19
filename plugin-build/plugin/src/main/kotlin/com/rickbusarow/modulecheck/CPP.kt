@@ -19,5 +19,4 @@ data class CPP(val config: Config, val project: Project) {
         is Config.Custom -> TODO("unsupported config --> ${config.name}") // TODO - parse custom source sets (like "debug")
       }
     }
-
 }
