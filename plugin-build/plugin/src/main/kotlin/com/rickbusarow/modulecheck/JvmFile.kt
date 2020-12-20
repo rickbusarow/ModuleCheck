@@ -3,13 +3,13 @@ package com.rickbusarow.modulecheck
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.body.TypeDeclaration
-import java.io.File
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isPrivate
 import org.jetbrains.kotlin.psi.psiUtil.isPublic
+import java.io.File
 
 sealed class JvmFile {
   abstract val packageFqName: String
@@ -87,8 +87,6 @@ sealed class JvmFile {
       |
       |)""".trimMargin()
   }
-
-
 }
 
 class NodeIterator(

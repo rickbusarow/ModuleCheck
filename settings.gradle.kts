@@ -43,9 +43,5 @@ rootProject.name = "ModuleCheck"
 
 include(
   ":testing",
-  ":plugin",
-  ":sample:app",
-  ":sample:library-a",
-  ":sample:library-b",
-  ":sample:nested:library-c"
+  ":plugin"
 )
