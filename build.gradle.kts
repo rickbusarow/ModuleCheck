@@ -1,4 +1,5 @@
 buildscript {
+  val kotlin_version by extra("1.4.21")
   repositories {
     mavenCentral()
     google()
@@ -21,10 +22,7 @@ buildscript {
 plugins {
   kotlin("jvm")
   id(Plugins.spotless) version Versions.spotless
-  id("com.rickbusarow.module-check")
 }
-
-// apply<ModuleCheck>()
 
 allprojects {
 
@@ -37,22 +35,20 @@ allprojects {
     maven("https://s3-us-west-2.amazonaws.com/si-mobile-sdks/android/")
   }
 
-//  dependencies {
-//
-//  }
-//
-//  tasks.withType<KotlinCompile>()
-//      .configureEach {
-//
-//        kotlinOptions {
-//
-//          freeCompilerArgs = listOf(
-//              "-Xinline-classes",
-//              "-Xopt-in=kotlin.ExperimentalStdlibApi",
-//              "-Xuse-experimental=kotlin.contracts.ExperimentalContracts"
-//          )
-//        }
-//      }
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
+    .configureEach {
+
+      kotlinOptions {
+
+        jvmTarget = "1.8"
+
+        freeCompilerArgs = listOf(
+          "-Xinline-classes",
+          "-Xopt-in=kotlin.ExperimentalStdlibApi",
+          "-Xuse-experimental=kotlin.contracts.ExperimentalContracts"
+        )
+      }
+    }
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {

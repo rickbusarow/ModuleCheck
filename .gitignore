@@ -45,7 +45,6 @@ Thumbs.db
 
 #NDK
 obj/
-/METOpenLink/METOpenLink.iml
 /.gradle/
 
 /.idea/vcs.xml
@@ -58,13 +57,7 @@ java_pid1690.hprof
 true/
 
 libs/
-src/main/res/drawable/
-*TestSuite.kt
-*devices.properties
-**/bluetooth/tools
-**/mockzall/tools
 /buildSrc/.gradle/
-/detekt-reports/
 
 # all build dirs at any level
 **/build

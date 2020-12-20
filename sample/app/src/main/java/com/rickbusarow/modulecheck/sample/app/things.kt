@@ -4,8 +4,6 @@ import com.rickbusarow.modulecheck.ClassB
 import com.rickbusarow.modulecheck.sample.app.internal.MyInternalClass
 import com.rickbusarow.modulecheck.sample.libraryc.KotlinOuterClass
 
-val k = KotlinOuterClass()
-
 class MyApplication2 {
   //    ClassA classA;
   var classB: ClassB? = null
