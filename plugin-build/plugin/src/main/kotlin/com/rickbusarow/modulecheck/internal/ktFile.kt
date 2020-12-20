@@ -39,11 +39,11 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
   val oldImports = importList?.text
 
   val newText = when {
-    oldImports != null       -> text.replace(oldImports, newImportsText)
+    oldImports != null -> text.replace(oldImports, newImportsText)
     // no existing imports -- add these under the package declaration
     packageDirective != null -> packageDirective!!.text + "\n\n" + newImportsText
     // no existing imports and file is at root of source directory
-    else                     -> newImportsText + text
+    else -> newImportsText + text
   }
 
   val path = absolutePath()
@@ -65,11 +65,11 @@ fun KtFile.sortImports(): KtFile {
   val path = absolutePath()
 
   val newText = when {
-    oldImportsText != null   -> text.replace(oldImportsText, newImportsText)
+    oldImportsText != null -> text.replace(oldImportsText, newImportsText)
     // no existing imports -- add these under the package declaration
     packageDirective != null -> packageDirective!!.text + "\n\n" + newImportsText
     // no existing imports and file is at root of source directory
-    else                     -> newImportsText + text
+    else -> newImportsText + text
   }
 
   return (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, newText) as KtFile).apply {
@@ -117,11 +117,11 @@ private fun KtFile.updateImports(
   newImportsText: String
 ): KtFile {
   val newText = when {
-    oldImportsText != null   -> text.replace(oldImportsText, newImportsText)
+    oldImportsText != null -> text.replace(oldImportsText, newImportsText)
     // no existing imports -- add these under the package declaration
     packageDirective != null -> packageDirective!!.text + "\n\n" + newImportsText
     // no existing imports and file is at root of source directory
-    else                     -> newImportsText + text
+    else -> newImportsText + text
   }
 
   val path = absolutePath()

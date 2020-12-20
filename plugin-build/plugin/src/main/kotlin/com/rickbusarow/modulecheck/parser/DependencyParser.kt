@@ -1,7 +1,7 @@
 package com.rickbusarow.modulecheck.parser
 
-import org.gradle.api.artifacts.ProjectDependency
 import com.rickbusarow.modulecheck.*
+import org.gradle.api.artifacts.ProjectDependency
 
 object DependencyParser : Parser<CPP>() {
 
@@ -27,8 +27,5 @@ object DependencyParser : Parser<CPP>() {
       grouped.getOrDefault("testApi", mutableSetOf()),
       grouped.getOrDefault("testImplementation", mutableSetOf())
     )
-
   }
-
 }
-

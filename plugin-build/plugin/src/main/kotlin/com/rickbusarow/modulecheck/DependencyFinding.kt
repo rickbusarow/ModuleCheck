@@ -63,7 +63,6 @@ sealed class DependencyFinding(val problemName: String) {
     val from: List<Project>
   ) : DependencyFinding("redundant") {
     override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
-
   }
 
   open fun position(): MCP.Position {
@@ -79,7 +78,7 @@ sealed class DependencyFinding(val problemName: String) {
       "(${position().row}, ${position().column}): "
     }
 
-    return "${dependentProject.buildFile.path}: $pos${dependencyPath}"
+    return "${dependentProject.buildFile.path}: $pos$dependencyPath"
   }
 
   open fun fix() {

@@ -41,7 +41,6 @@ sealed class JvmFile {
       val v = DeclarationVisitor(_declarations)
       ktFile.accept(v)
     }
-
   }
 
   class JavaFile(val file: File) : JvmFile() {
@@ -124,7 +123,6 @@ class DeclarationVisitor(val declarations: MutableSet<String>) : KtTreeVisitorVo
 
     super.visitReferenceExpression(expression)
   }
-
 }
 
 fun KtModifierListOwner.isPublicNotOverridden() = isPublic && !isOverride()

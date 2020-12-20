@@ -153,7 +153,6 @@ class MCP private constructor(
     }
 
     fun from(project: Project): MCP = cache.getOrPut(project) { MCP(project) }
-
   }
 }
 
@@ -164,4 +163,3 @@ fun CPP.mcp() = MCP.from(this.project)
 @JvmName("ProjectCollectionToMCP")
 fun Collection<Project>.mcp() = map { MCP.from(it.project) }
 fun Project.mcp() = MCP.from(this)
-

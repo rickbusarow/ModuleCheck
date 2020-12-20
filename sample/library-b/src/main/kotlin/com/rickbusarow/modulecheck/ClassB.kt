@@ -1,4 +1,3 @@
 package com.rickbusarow.modulecheck
 
-class ClassB {
-}
+class ClassB

@@ -27,13 +27,13 @@ gradleEnterprise {
 
     if (!githubActionID.isNullOrBlank()) {
       link(
-          "WorkflowURL",
-          "https://github.com/" +
-              System.getenv("GITHUB_REPOSITORY") +
-              "/pull/" +
-              System.getenv("PR_NUMBER") +
-              "/checks?check_run_id=" +
-              System.getenv("GITHUB_RUN_ID")
+        "WorkflowURL",
+        "https://github.com/" +
+          System.getenv("GITHUB_REPOSITORY") +
+          "/pull/" +
+          System.getenv("PR_NUMBER") +
+          "/checks?check_run_id=" +
+          System.getenv("GITHUB_RUN_ID")
       )
     }
   }

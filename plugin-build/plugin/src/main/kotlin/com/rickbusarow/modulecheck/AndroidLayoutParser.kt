@@ -26,6 +26,4 @@ object AndroidLayoutParser {
       .filterIsInstance<String>()
       .toSet()
   }
-
 }
-

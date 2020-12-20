@@ -26,8 +26,6 @@ enum class AnsiColor(private val colorNumber: Byte) {
     const val RESET = "$prefix[0m"
     private val isCompatible = "win" !in System.getProperty("os.name").toLowerCase(Locale.ROOT)
   }
-
 }
 
 inline class MenuEntryIndex(val value: Int)
-

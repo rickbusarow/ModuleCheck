@@ -4,7 +4,6 @@ import java.io.File
 
 sealed class XmlFile {
 
-
   data class LayoutFile(val file: File) : XmlFile() {
 
     val customViews: Set<String> by lazy {
@@ -87,17 +86,3 @@ sealed class AndroidResource(val prefix: kotlin.String) {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
