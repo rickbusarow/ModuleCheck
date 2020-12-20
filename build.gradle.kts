@@ -1,5 +1,8 @@
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import io.gitlab.arturbosch.detekt.detekt
+
 buildscript {
-  val kotlin_version by extra("1.4.21")
   repositories {
     mavenCentral()
     google()
@@ -20,8 +23,14 @@ buildscript {
 }
 
 plugins {
-  kotlin("jvm")
+  id(Plugins.benManes) version Versions.benManes
+  id(Plugins.gradleDoctor) version Versions.gradleDoctor
   id(Plugins.spotless) version Versions.spotless
+  id(Plugins.detekt) version "1.15.0"
+  kotlin("jvm")
+  id(Plugins.dokka) version Versions.dokka
+  id(Plugins.taskTree) version Versions.taskTree
+  base
 }
 
 allprojects {
@@ -49,6 +58,57 @@ allprojects {
         )
       }
     }
+}
+
+@Suppress("DEPRECATION")
+detekt {
+
+  parallel = true
+  config = files("$rootDir/detekt/detekt-config.yml")
+
+  reports {
+    xml.enabled = false
+    html.enabled = true
+    txt.enabled = false
+  }
+}
+
+tasks.withType<DetektCreateBaselineTask> {
+
+  setSource(files(rootDir))
+
+  include("**/*.kt", "**/*.kts")
+  exclude("**/resources/**", "**/build/**", "**/src/test/java**")
+
+  // Target version of the generated JVM bytecode. It is used for type resolution.
+  this.jvmTarget = "1.8"
+}
+
+tasks.withType<Detekt> {
+
+  setSource(files(rootDir))
+
+  include("**/*.kt", "**/*.kts")
+  exclude("**/resources/**", "**/build/**", "**/src/test/java**")
+
+  // Target version of the generated JVM bytecode. It is used for type resolution.
+  this.jvmTarget = "1.8"
+}
+
+fun isNonStable(version: String): Boolean {
+  val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+  val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+  val isStable = stableKeyword || regex.matches(version)
+  return isStable.not()
+}
+
+tasks.named(
+  "dependencyUpdates",
+  com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class.java
+).configure {
+  rejectVersionIf {
+    isNonStable(candidate.version) && !isNonStable(currentVersion)
+  }
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {

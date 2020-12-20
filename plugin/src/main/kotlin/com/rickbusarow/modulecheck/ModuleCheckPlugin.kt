@@ -12,6 +12,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.setProperty
 import java.io.File
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class ModuleCheckExtension(objects: ObjectFactory) {
 
   val alwaysIgnore: SetProperty<String> = objects.setProperty<String>()

@@ -1,7 +1,70 @@
 package com.rickbusarow.modulecheck.internal
 
+import java.util.*
+
 @Suppress("DefaultLocale")
 object Output {
+
+  fun askForString(
+    question: String,
+    default: String? = null,
+    errorMessageGen: (String) -> String?
+  ): String {
+    while (true) {
+      println()
+      printBlue(question)
+
+      val choice = scanner.nextLine()
+
+      val result = if (choice.isEmpty() && default != null) default else choice
+
+      val errorMessage = errorMessageGen(choice) ?: return result.also { printGreen("choice: $it") }
+
+      printRed(errorMessage)
+    }
+  }
+
+  fun askBinaryQuestion(
+    question: String,
+    trueChoice: String,
+    falseChoice: String
+  ): Boolean {
+    while (true) {
+      println()
+      printBlue(question)
+
+      printMagenta("$trueChoice/$falseChoice")
+
+      when (val choice = scanner.nextLine().toLowerCase()) {
+        trueChoice.toLowerCase() -> return true.also { printGreen("choice: $choice") }
+        falseChoice.toLowerCase() -> return false.also { printGreen("choice: $choice") }
+        else -> {
+
+          printRed("Unexpected input ($choice), please, try again")
+        }
+      }
+    }
+  }
+
+  fun showMenuAndGetIndexOfChoice(
+    header: String,
+    footer: String,
+    numberedEntries: List<String>
+  ): MenuEntryIndex {
+    println()
+    printBlue(header)
+    println()
+    numberedEntries.forEachIndexed { index, entryText ->
+      val number = index + 1
+      printBlue("$number.  $entryText")
+    }
+    println()
+    printBlue(footer)
+
+    return MenuEntryIndex(scanner.nextLine().toInt() - 1).also { printGreen("choice: $it") }
+  }
+
+  private val scanner = Scanner(System.`in`)
 
   fun printBlueBackground(message: String) {
     print(AnsiColor.WHITE.boldHighIntensity)

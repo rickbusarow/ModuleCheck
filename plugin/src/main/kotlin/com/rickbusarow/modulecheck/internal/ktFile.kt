@@ -21,7 +21,8 @@ fun File.asKtFile(): KtFile =
 fun KtFile.asFile(): File = File(absolutePath())
 
 fun KtFile(absolutePath: String): KtFile = File(absolutePath).asKtFile()
-fun KtFile(absoluteDirectory: String, fileName: String): KtFile = File(absoluteDirectory, fileName).asKtFile()
+fun KtFile(absoluteDirectory: String, fileName: String): KtFile =
+  File(absoluteDirectory, fileName).asKtFile()
 
 fun FileTreeWalk.ktFiles() = asSequence().filter { it.isFile }
   .mapNotNull { it.asKtFile() }
@@ -48,7 +49,11 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, newText) as KtFile).apply {
+  return (psiFileFactory.createFileFromText(
+    name,
+    KotlinLanguage.INSTANCE,
+    newText
+  ) as KtFile).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
@@ -72,14 +77,23 @@ fun KtFile.sortImports(): KtFile {
     else -> newImportsText + text
   }
 
-  return (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, newText) as KtFile).apply {
+  return (psiFileFactory.createFileFromText(
+    name,
+    KotlinLanguage.INSTANCE,
+    newText
+  ) as KtFile).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
 
 fun KtFile.removeImport(fqImport: String): KtFile = removeImports(createImport(fqImport))
-fun KtFile.removeImport(ktImportDirective: KtImportDirective): KtFile = removeImports(listOf(ktImportDirective))
-fun KtFile.removeImports(vararg ktImportDirectives: KtImportDirective): KtFile = removeImports(ktImportDirectives.toList())
+fun KtFile.removeImport(ktImportDirective: KtImportDirective): KtFile =
+  removeImports(listOf(ktImportDirective))
+
+fun KtFile.removeImports(
+  vararg ktImportDirectives: KtImportDirective
+): KtFile = removeImports(ktImportDirectives.toList())
+
 fun KtFile.removeImports(ktImportDirectives: List<KtImportDirective>): KtFile {
 
   val oldImports = importDirectives
@@ -97,8 +111,12 @@ fun KtFile.removeImports(ktImportDirectives: List<KtImportDirective>): KtFile {
 }
 
 fun KtFile.addImport(fqImport: String): KtFile = addImports(createImport(fqImport))
-fun KtFile.addImport(ktImportDirective: KtImportDirective): KtFile = addImports(listOf(ktImportDirective))
-fun KtFile.addImports(vararg ktImportDirectives: KtImportDirective): KtFile = addImports(ktImportDirectives.toList())
+fun KtFile.addImport(ktImportDirective: KtImportDirective): KtFile =
+  addImports(listOf(ktImportDirective))
+
+fun KtFile.addImports(vararg ktImportDirectives: KtImportDirective): KtFile =
+  addImports(ktImportDirectives.toList())
+
 fun KtFile.addImports(ktImportDirectives: List<KtImportDirective>): KtFile {
 
   val oldImports = importDirectives
@@ -126,7 +144,11 @@ private fun KtFile.updateImports(
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, newText) as KtFile).apply {
+  return (psiFileFactory.createFileFromText(
+    name,
+    KotlinLanguage.INSTANCE,
+    newText
+  ) as KtFile).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
@@ -137,7 +159,11 @@ fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, newText) as KtFile).apply {
+  return (psiFileFactory.createFileFromText(
+    name,
+    KotlinLanguage.INSTANCE,
+    newText
+  ) as KtFile).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }

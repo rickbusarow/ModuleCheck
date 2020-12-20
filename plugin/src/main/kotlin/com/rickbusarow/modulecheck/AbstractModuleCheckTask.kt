@@ -97,6 +97,7 @@ abstract class ModuleCheckUsedTask : AbstractModuleCheckTask() {
     pairs
       .sortedBy { it.first }
       .forEach { (mcp, lst) ->
+        @Suppress("MagicNumber")
         Output.printYellow("${mcp.path.padEnd(50)} -- ${lst.joinToString { it.project.path }}")
       }
   }

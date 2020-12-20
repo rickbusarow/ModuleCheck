@@ -10,6 +10,7 @@ plugins {
   id("com.gradle.enterprise").version("3.4.1")
 }
 
+@Suppress("VariableNaming")
 val VERSION: String by extra.properties
 
 gradleEnterprise {
