@@ -8,9 +8,32 @@ class ProjectSettingsSpec private constructor(
   fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("settings.gradle.kts").writeText(
-      includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
+      pluginManagement() +  includes()
     )
   }
+
+  private fun pluginManagement() =
+    """pluginManagement {
+       |  repositories {
+       |    gradlePluginPortal()
+       |    jcenter()
+       |    google()
+       |  }
+       |  resolutionStrategy {
+       |    eachPlugin { 
+       |      if (requested.id.id.startsWith("com.android")) {
+       |        useModule("com.android.tools.build:gradle:4.1.1")
+       |      }
+       |      if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+       |        useVersion("1.4.21")
+       |      }
+       |    }
+       |  }
+       |}
+       |
+       |""".trimMargin()
+
+  private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
   class Builder {
 

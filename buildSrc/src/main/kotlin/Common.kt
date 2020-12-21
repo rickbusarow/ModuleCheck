@@ -26,7 +26,7 @@ fun Project.common() {
 
       kotlinOptions {
 
-        allWarningsAsErrors = true
+//        allWarningsAsErrors = true
 
         jvmTarget = "1.8"
       }

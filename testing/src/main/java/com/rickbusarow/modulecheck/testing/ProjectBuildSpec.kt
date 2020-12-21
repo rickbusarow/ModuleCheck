@@ -5,13 +5,14 @@ import java.nio.file.Path
 class ProjectBuildSpec private constructor(
   val plugins: List<String>,
   val dependencies: List<String>,
-  val isAndroid: Boolean
+  val isAndroid: Boolean,
+  val buildScript: Boolean
 ) {
 
   fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("build.gradle.kts")
-      .writeText(pluginsBlock() + androidBlock() + dependenciesBlock())
+      .writeText(buildScriptBlock() + pluginsBlock() + androidBlock() + dependenciesBlock())
   }
 
   private fun pluginsBlock() = if (plugins.isEmpty()) "" else buildString {
@@ -20,6 +21,34 @@ class ProjectBuildSpec private constructor(
     appendLine("}\n")
   }
 
+  private fun buildScriptBlock() = if (!buildScript) "" else """buildscript {
+  repositories {
+    mavenCentral()
+    google()
+    jcenter()
+    maven("https://plugins.gradle.org/m2/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+  }
+  dependencies {
+    classpath("com.android.tools.build:gradle:4.1.1")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")  
+  }
+}
+
+allprojects {
+
+  repositories {
+    mavenCentral()
+    google()
+    jcenter()
+    maven("https://plugins.gradle.org/m2/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+  }
+
+}
+"""
+
+
   private fun androidBlock() = if (!isAndroid) "" else """android {
   compileSdkVersion(30)
 
@@ -27,17 +56,13 @@ class ProjectBuildSpec private constructor(
     minSdkVersion(23)
     targetSdkVersion(30)
     versionCode = 1
-    versionName = "1.0"
-
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    versionName = "1.0" 
   }
 
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-  }
-  kotlinOptions {
-    jvmTarget = "1.8"
+  buildTypes {
+    getByName("release") { 
+      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+    }
   }
 }
 
@@ -55,6 +80,11 @@ class ProjectBuildSpec private constructor(
     private val dependencies = mutableListOf<String>()
 
     private var isAndroid = false
+    private var isBuildScript = false
+
+    fun buildScript() = apply {
+      isBuildScript = true
+    }
 
     fun android() = apply {
       isAndroid = true
@@ -68,6 +98,6 @@ class ProjectBuildSpec private constructor(
       dependencies.add("$configuration(project(path = \":$dependencyPath\"))")
     }
 
-    fun build() = ProjectBuildSpec(plugins, dependencies, isAndroid)
+    fun build() = ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)
   }
 }

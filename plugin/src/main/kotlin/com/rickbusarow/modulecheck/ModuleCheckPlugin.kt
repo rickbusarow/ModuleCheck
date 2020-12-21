@@ -1,7 +1,7 @@
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.JvmFile.JavaFile
-import com.rickbusarow.modulecheck.JvmFile.KotlinFile
+import com.rickbusarow.modulecheck.files.JavaFile
+import com.rickbusarow.modulecheck.files.KotlinFile
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.internal.files
 import org.gradle.api.Plugin
