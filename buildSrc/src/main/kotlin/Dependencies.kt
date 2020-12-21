@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 object Plugins {
 
   const val androidApplication = "com.android.application"
@@ -15,30 +30,33 @@ object Plugins {
   const val kotlinAndroidExtensions = "kotlin-android-extensions"
   const val mavenPublish = "com.vanniktech.maven.publish"
   const val spoon = "com.jaredsburrows.spoon"
+  const val spotless = "com.diffplug.spotless"
   const val taskTree = "com.dorongold.task-tree"
+  const val benManes = "com.github.ben-manes.versions"
+  const val gradleDoctor = "com.osacky.doctor"
 }
 
 object Versions {
 
+  const val androidTools = "4.1.1"
   const val anvil = "2.0.6"
+  const val compileSdk = 30
+  const val benManes = "0.33.0"
   const val canIDropJetifier = "0.5"
   const val changeTracker = "0.7.3"
   const val dependencyAnalysis = "0.63.0"
   const val dokka = "1.4.20"
+  const val gradleDoctor = "0.6.3"
   const val knit = "0.2.2"
+  const val kotlin = "1.4.21"
   const val mavenPublish = "0.13.0"
-
-  const val compileSdk = 30
   const val minSdk = "23"
-  const val targetSdk = 30
-  const val buildTools = "30.0.0"
-
-  const val androidTools = "4.1.0" // update the buildSrc gradle dependency too!
-  const val gms = "4.3.4"
-  const val kotlin = "1.4.20" // update the buildSrc gradle dependency too!
   const val sonarPlugin = "2.6.1"
   const val spoon = "1.5.0"
+  const val spotless = "5.8.2"
+  const val targetSdk = 30
   const val taskTree = "1.5"
+  const val versionName = "0.10.0"
 }
 
 object BuildPlugins {
@@ -47,7 +65,6 @@ object BuildPlugins {
   const val atomicFu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.14.1"
   const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
   const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
-  const val googleServices = "com.google.gms:google-services:${Versions.gms}"
   const val gradleMavenPublish =
     "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
   const val knit = "org.jetbrains.kotlinx:kotlinx-knit:${Versions.knit}"
@@ -56,7 +73,7 @@ object BuildPlugins {
   const val spoon = "com.jaredsburrows:gradle-spoon-plugin:${Versions.spoon}"
 }
 
-object Libs {
+object Libs  {
 
   object Android {
     const val archCoreTesting = "android.arch.core:core-testing:2.0.0"
@@ -171,7 +188,6 @@ object Libs {
 
     // The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and certificate generation.
     const val extendedApis = "org.bouncycastle:bcpkix-jdk15on:1.65"
-
   }
 
   object BumpTech {
@@ -190,40 +206,11 @@ object Libs {
 
   object Detekt {
 
-    const val version = "1.14.2"
+    const val version = "1.15.0"
     const val api = "io.gitlab.arturbosch.detekt:detekt-api:$version"
     const val cli = "io.gitlab.arturbosch.detekt:detekt-cli:$version"
     const val formatting = "io.gitlab.arturbosch.detekt:detekt-formatting:$version"
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
-  }
-
-  object Epoxy {
-    private const val version = "3.8.0"
-    const val epoxy = "com.airbnb.android:epoxy:$version"
-    const val paging = "com.airbnb.android:epoxy-paging:$version"
-    const val dataBinding = "com.airbnb.android:epoxy-databinding:$version"
-    const val processor = "com.airbnb.android:epoxy-processor:$version"
-  }
-
-  object Firebase {
-    const val analytics = "com.google.firebase:firebase-analytics:17.6.0"
-    const val config = "com.google.firebase:firebase-config-ktx:19.2.0"
-    const val crashlytics = "com.google.firebase:firebase-crashlytics:17.0.1"
-    const val installations = "com.google.firebase:firebase-installations:16.3.3"
-    const val messaging = "com.google.firebase:firebase-messaging:20.2.0"
-    const val mlVision = "com.google.firebase:firebase-ml-vision:24.0.1"
-    const val performance = "com.google.firebase:firebase-perf:19.0.7"
-  }
-
-  object Google {
-    const val autoService = "com.google.auto.service:auto-service:1.0-rc6"
-    const val findBugs = "com.google.code.findbugs:jsr305:3.0.2"
-    const val material = "com.google.android.material:material:1.2.1"
-    const val placesSdk = "com.google.android.libraries.places:places:2.3.0"
-    const val playServicesLocation = "com.google.android.gms:play-services-location:16.0.0"
-    const val playServicesMaps = "com.google.android.gms:play-services-maps:16.1.0"
-    const val playServicesNearby = "com.google.android.gms:play-services-nearby:16.0.0"
-    const val truth = "com.google.truth:truth:0.44"
   }
 
   object JakeWharton {
@@ -248,9 +235,11 @@ object Libs {
 
     const val api = "org.junit.jupiter:junit-jupiter-api:$version"
     const val params = "org.junit.jupiter:junit-jupiter-params:$version"
-    const val runtime = "org.junit.jupiter:junit-jupiter-engine:$version"
+    const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
     const val vintage = "org.junit.vintage:junit-vintage-engine:$version"
   }
+
+  const val javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.17.0"
 
   object Kotlin {
     const val compiler = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${Versions.kotlin}"
@@ -269,11 +258,15 @@ object Libs {
 
   object Kotlinx {
     object Coroutines {
-      private const val version = "1.3.9"
-      const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+      private const val version = "1.4.2"
       const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-      const val playServices = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$version"
+      const val coreJvm = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$version"
+      const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
       const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
+    }
+
+    object Knit {
+      const val test = "org.jetbrains.kotlinx:kotlinx-knit-test:${Versions.knit}"
     }
   }
 
@@ -329,7 +322,6 @@ object Libs {
         const val core = "com.rickbusarow.dispatch:dispatch-test:$version"
         const val jUnit4 = "com.rickbusarow.dispatch:dispatch-test-junit4:$version"
         const val jUnit5 = "com.rickbusarow.dispatch:dispatch-test-junit5:$version"
-
       }
     }
   }
@@ -366,7 +358,6 @@ object Libs {
 
       const val annotations = "com.squareup.inject:assisted-inject-annotations-dagger2:$version"
       const val processor = "com.squareup.inject:assisted-inject-processor-dagger2:$version"
-
     }
 
     object KotlinPoet {
@@ -377,7 +368,6 @@ object Libs {
       const val classInspectorElements = "com.squareup:kotlinpoet-classinspector-elements:$version"
       const val metadata = "com.squareup:kotlinpoet-metadata:$version"
       const val metadataSpecs = "com.squareup:kotlinpoet-metadata-specs:$version"
-
     }
 
     object Moshi {
@@ -404,7 +394,6 @@ object Libs {
       const val moshi = "com.squareup.retrofit2:converter-moshi:$version"
       const val mock = "com.squareup.retrofit2:retrofit-mock:$version"
     }
-
   }
 
   /**
@@ -423,5 +412,4 @@ object Libs {
   object Yalantis {
     const val ucrop = "com.github.yalantis:ucrop:2.2.4"
   }
-
 }

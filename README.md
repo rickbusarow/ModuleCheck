@@ -6,7 +6,7 @@
 - [X] parse test files
 - [ ] auto-fix
 - [X] locate declaration
-- [ ] ignore modules
+- [X] ignore modules
 - [ ] imports for nested classes
 - [ ] minify (remove dependency if declared as api by dependency module)
 - [ ] disallow test dependencies if no test src directory
