@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
+import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
 import java.io.File
 import java.io.FileNotFoundException
 
@@ -86,25 +87,11 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
   lateinit var newPlugins: String
   lateinit var oldPluginsText: String
 
-  fun PsiElement.blockChildOrNull(): KtBlockExpression? {
-
-    if (this is KtBlockExpression) return this
-
-    val blockChild = children.filterIsInstance<KtBlockExpression>().firstOrNull()
-
-    if (blockChild != null)
-      return blockChild
-
-    return children.flatMap { gc ->
-      gc.children.toList()
-    }.firstOrNull { it.blockChildOrNull() != null } as? KtBlockExpression
-  }
-
   fun PsiElement.nextNonWhitespace(): PsiElement? =
-    if (this !is PsiWhiteSpace) {
-      this
+    if (nextSibling !is PsiWhiteSpace) {
+      nextSibling
     } else {
-      nextSibling?.nextNonWhitespace()
+      nextSibling?.nextSibling?.nextNonWhitespace()
     }
 
   override fun visitCallExpression(expression: KtCallExpression) {
@@ -119,19 +106,25 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
     }
   }
 
-
-  class DependencyBlockDeclarationVisitor : KtTreeVisitorVoid() {
+  inner class DependencyBlockDeclarationVisitor : KtTreeVisitorVoid() {
 
     override fun visitBlockExpression(expression: KtBlockExpression) {
 
-      println(
-        """block ---> 
-      |${expression.text}""".trimMargin()
-      )
+      val visitor = DependencyDeclarationCallExpressionVisitor()
+
+      expression
+        .getChildrenOfType<KtCallExpression>()
+        .forEach { visitor.visitCallExpression(it) }
 
       super.visitBlockExpression(expression)
     }
+  }
 
+  inner class DependencyDeclarationCallExpressionVisitor: KtTreeVisitorVoid(){
+    override fun visitCallExpression(expression: KtCallExpression) {
+      println("expression --> ${expression.text}")
+      super.visitCallExpression(expression)
+    }
   }
 
   private fun parseDependencies(expression: KtCallExpression) {
