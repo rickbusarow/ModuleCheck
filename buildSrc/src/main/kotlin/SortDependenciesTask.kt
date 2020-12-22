@@ -13,12 +13,50 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.internal.asKtFile
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
+import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
+import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
+import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
+import org.jetbrains.kotlin.com.intellij.openapi.util.Key
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
+import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
+import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
+import java.io.File
+import java.io.FileNotFoundException
+
+val ABSOLUTE_PATH: Key<String> = Key("absolutePath")
+val configuration = CompilerConfiguration().apply {
+  put(
+    CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY,
+    PrintingMessageCollector(
+      System.err,
+      MessageRenderer.PLAIN_FULL_PATHS,
+      false
+    )
+  )
+}
+
+private val psiProject by lazy {
+  KotlinCoreEnvironment.createForProduction(
+    Disposer.newDisposable(),
+    configuration,
+    EnvironmentConfigFiles.JVM_CONFIG_FILES
+  ).project
+}
+val psiFileFactory: PsiFileFactory = PsiFileFactory.getInstance(psiProject)
+fun File.asKtFile(): KtFile =
+  (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, readText()) as? KtFile)?.apply {
+    putUserData(ABSOLUTE_PATH, this@asKtFile.absolutePath)
+  } ?: throw FileNotFoundException("could not find file $this")
 
 abstract class SortDependenciesTask : DefaultTask() {
 
@@ -48,124 +86,50 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
   lateinit var newPlugins: String
   lateinit var oldPluginsText: String
 
+  fun PsiElement.blockChildOrNull(): KtBlockExpression? {
+
+    if (this is KtBlockExpression) return this
+
+    val blockChild = children.filterIsInstance<KtBlockExpression>().firstOrNull()
+
+    if (blockChild != null)
+      return blockChild
+
+    return children.flatMap { gc ->
+      gc.children.toList()
+    }.firstOrNull { it.blockChildOrNull() != null } as? KtBlockExpression
+  }
+
+  fun PsiElement.nextNonWhitespace(): PsiElement? =
+    if (this !is PsiWhiteSpace) {
+      this
+    } else {
+      nextSibling?.nextNonWhitespace()
+    }
+
   override fun visitCallExpression(expression: KtCallExpression) {
 
     if (expression.text.startsWith("dependencies {")) {
 
-      val visitor = DependencyDeclarationVisitor()
+      val visitor = DependencyBlockDeclarationVisitor()
 
-
-      visitor.visitElement(expression)
-
-//      expression.children.forEach {
-//        println(
-//          """child -------------------- ${it}
-//      |
-//      |${it.text}
-//    """.trimMargin()
-//        )
-//
-//        it.children.forEach {
-//          println(
-//            """grand-child ------------------- $it
-//        |
-//        |${it.text}
-//      """.trimMargin()
-//          )
-//
-//          it.children.forEach {
-//            println(
-//              """great-grand-child ------------------- $it
-//        |
-//        |${it.text}
-//      """.trimMargin()
-//            )
-//          }
-//
-//          it.children.forEach {
-//            println(
-//              """great-great-grand-child ------------------- $it
-//        |
-//        |${it.text}
-//      """.trimMargin()
-//            )
-//          }
-//
-//          it.children.forEach {
-//            println(
-//              """great-great-great-grand-child ------------------- $it
-//        |
-//        |${it.text}
-//      """.trimMargin()
-//            )
-//          }
-//        }
-//      }
+      expression.lastChild.lastChild.lastChild.getChildOfType<KtBlockExpression>()?.let {
+        visitor.visitBlockExpression(it)
+      }
     }
   }
 
-//  override fun visitLambdaExpression(lambdaExpression: KtLambdaExpression) {
-//
-//    println(
-//      """lambda expression ---------------------------
-//      |
-//      |${lambdaExpression.text}
-//      |
-//      |--------------------------------
-//    """.trimMargin()
-//    )
-//
-//
-//  }
-//
-//  override fun visitReferenceExpression(expression: KtReferenceExpression) {
-//
-//    if (expression.text.startsWith("dependencies {")) {
-//      val visitor = DependencyDeclarationVisitor()
-//      expression.children
-//        .filterIsInstance<KtReferenceExpression>()
-//        .forEach { visitor.visitReferenceExpression(it) }
-//
-////      println(
-////        """reference expression ***
-////    |
-////    |${expression.text}
-////    |
-////    |^^^^
-////  """.trimMargin()
-////      )
-//
-//      super.visitReferenceExpression(expression)
-//    }
-//  }
 
-  class DependencyDeclarationVisitor : KtTreeVisitorVoid() {
+  class DependencyBlockDeclarationVisitor : KtTreeVisitorVoid() {
 
-    override fun visitCallExpression(expression: KtCallExpression) {
+    override fun visitBlockExpression(expression: KtBlockExpression) {
 
-      println("""call expression ----------------------
-        |
-        |${expression.text}
-        |${expression.parent.text}
-        |
-        |==========================================
-      """.trimMargin())
+      println(
+        """block ---> 
+      |${expression.text}""".trimMargin()
+      )
 
-
-    }
-
-    override fun visitReferenceExpression(expression: KtReferenceExpression) {
-
-//      println(
-//        """visited expression ***
-//      |
-//      |${expression.text}
-//      |
-//      |^^^^^^^^^^^^^^^^
-//    """.trimMargin()
-//      )
-
-
+      super.visitBlockExpression(expression)
     }
 
   }

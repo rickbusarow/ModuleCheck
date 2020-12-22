@@ -24,7 +24,8 @@ plugins {
 dependencies {
   compileOnly(gradleApi())
 
-  testImplementation(project(path = ":testing"))
+  // a comment
+  testImplementation(project(path = ":testing")) // an inline comment
 
   implementation(Libs.Kotlin.gradlePlugin)
   implementation(Libs.Kotlin.reflect)

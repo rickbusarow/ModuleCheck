@@ -163,4 +163,4 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
       )
   }
 }
-val sortDependencies by tasks.registering(com.rickbusarow.modulecheck.SortDependenciesTask::class)
+val sortDependencies by tasks.registering(SortDependenciesTask::class)
