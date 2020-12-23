@@ -73,7 +73,7 @@ object BuildPlugins {
   const val spoon = "com.jaredsburrows:gradle-spoon-plugin:${Versions.spoon}"
 }
 
-object Libs  {
+object Libs {
 
   object Android {
     const val archCoreTesting = "android.arch.core:core-testing:2.0.0"

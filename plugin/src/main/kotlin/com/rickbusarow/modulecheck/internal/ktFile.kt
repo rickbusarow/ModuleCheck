@@ -64,11 +64,13 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(
-    name,
-    KotlinLanguage.INSTANCE,
-    newText
-  ) as KtFile).apply {
+  return (
+    psiFileFactory.createFileFromText(
+      name,
+      KotlinLanguage.INSTANCE,
+      newText
+    ) as KtFile
+    ).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
@@ -92,11 +94,13 @@ fun KtFile.sortImports(): KtFile {
     else -> newImportsText + text
   }
 
-  return (psiFileFactory.createFileFromText(
-    name,
-    KotlinLanguage.INSTANCE,
-    newText
-  ) as KtFile).apply {
+  return (
+    psiFileFactory.createFileFromText(
+      name,
+      KotlinLanguage.INSTANCE,
+      newText
+    ) as KtFile
+    ).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
@@ -159,11 +163,13 @@ private fun KtFile.updateImports(
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(
-    name,
-    KotlinLanguage.INSTANCE,
-    newText
-  ) as KtFile).apply {
+  return (
+    psiFileFactory.createFileFromText(
+      name,
+      KotlinLanguage.INSTANCE,
+      newText
+    ) as KtFile
+    ).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }
@@ -174,11 +180,13 @@ fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
 
   val path = absolutePath()
 
-  return (psiFileFactory.createFileFromText(
-    name,
-    KotlinLanguage.INSTANCE,
-    newText
-  ) as KtFile).apply {
+  return (
+    psiFileFactory.createFileFromText(
+      name,
+      KotlinLanguage.INSTANCE,
+      newText
+    ) as KtFile
+    ).apply {
     putUserData(ABSOLUTE_PATH, path)
   }
 }

@@ -46,7 +46,7 @@ class ProjectBuildSpec private constructor(
   }
   dependencies {
     classpath("com.android.tools.build:gradle:4.1.1")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")  
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21")
   }
 }
 
@@ -63,7 +63,6 @@ allprojects {
 }
 """
 
-
   private fun androidBlock() = if (!isAndroid) "" else """android {
   compileSdkVersion(30)
 
@@ -71,11 +70,11 @@ allprojects {
     minSdkVersion(23)
     targetSdkVersion(30)
     versionCode = 1
-    versionName = "1.0" 
+    versionName = "1.0"
   }
 
   buildTypes {
-    getByName("release") { 
+    getByName("release") {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }

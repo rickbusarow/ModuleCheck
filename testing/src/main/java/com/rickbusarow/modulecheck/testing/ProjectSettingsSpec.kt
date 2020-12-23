@@ -23,7 +23,7 @@ class ProjectSettingsSpec private constructor(
   fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("settings.gradle.kts").writeText(
-      pluginManagement() +  includes()
+      pluginManagement() + includes()
     )
   }
 
@@ -35,7 +35,7 @@ class ProjectSettingsSpec private constructor(
        |    google()
        |  }
        |  resolutionStrategy {
-       |    eachPlugin { 
+       |    eachPlugin {
        |      if (requested.id.id.startsWith("com.android")) {
        |        useModule("com.android.tools.build:gradle:4.1.1")
        |      }

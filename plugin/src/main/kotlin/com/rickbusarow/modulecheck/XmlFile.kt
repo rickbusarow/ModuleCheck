@@ -55,4 +55,3 @@ sealed class XmlFile {
     )
   }
 }
-

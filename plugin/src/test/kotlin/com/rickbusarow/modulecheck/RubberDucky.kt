@@ -51,24 +51,24 @@ class RubberDucky : FreeSpec({
       )
       .addSubproject(
 //        ProjectSpec.Builder("lib-a")
-////          .addSrcSpec(
-////            ProjectSrcSpec.Builder(Path.of("src/main/java"))
-////              .addFile(FileSpec.builder("com.foo", "Bar").build())
-////              .build()
-////          )
+// //          .addSrcSpec(
+// //            ProjectSrcSpec.Builder(Path.of("src/main/java"))
+// //              .addFile(FileSpec.builder("com.foo", "Bar").build())
+// //              .build()
+// //          )
 //          .addBuildSpec(
 //            ProjectBuildSpec.Builder()
 //              .addPlugin("id(\"com.android.application\")")
 //              .addPlugin("kotlin(\"android\")")
 //              .android()
-////              .addDependency("implementation", "lib-1")
-////              .addDependency("implementation", "lib-2")
-////              .addDependency("implementation", "lib-3")
-////              .addDependency("implementation", "lib-4")
+// //              .addDependency("implementation", "lib-1")
+// //              .addDependency("implementation", "lib-2")
+// //              .addDependency("implementation", "lib-3")
+// //              .addDependency("implementation", "lib-4")
 //              .build()
 //          )
 //          .build()
-          ProjectSpec.Builder("lib-a")
+        ProjectSpec.Builder("lib-a")
           .addSrcSpec(
             ProjectSrcSpec.Builder(Path.of("src/main/java"))
               .addFile(FileSpec.builder("com.foo", "Bar").build())
@@ -173,6 +173,5 @@ class RubberDucky : FreeSpec({
 
       result.task(":moduleCheck")?.outcome shouldBe TaskOutcome.SUCCESS
     }
-
   }
 })

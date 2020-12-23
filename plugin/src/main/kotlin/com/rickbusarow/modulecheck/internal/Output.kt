@@ -18,7 +18,6 @@ package com.rickbusarow.modulecheck.internal
 @Suppress("DefaultLocale")
 object Output {
 
-
   fun printBlueBackground(message: String) {
     print(AnsiColor.WHITE.boldHighIntensity)
     print(AnsiColor.BLUE.background)
