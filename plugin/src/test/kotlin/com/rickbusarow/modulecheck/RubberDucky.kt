@@ -15,8 +15,10 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.internal.files
-import com.rickbusarow.modulecheck.testing.*
+import com.rickbusarow.modulecheck.testing.ProjectBuildSpec
+import com.rickbusarow.modulecheck.testing.ProjectSettingsSpec
+import com.rickbusarow.modulecheck.testing.ProjectSpec
+import com.rickbusarow.modulecheck.testing.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -153,14 +155,14 @@ class RubberDucky : FreeSpec({
 
     "ducky task" {
 
-      testProjectDir
-        .walkTopDown()
-        .files()
-        .forEach {
-          println(it.relativePath())
-          println(it.readText())
-          println()
-        }
+//      testProjectDir
+//        .walkTopDown()
+//        .files()
+//        .forEach {
+//          println(it.relativePath())
+//          println(it.readText())
+//          println()
+//        }
 
       val result = GradleRunner.create()
         .withPluginClasspath()
