@@ -21,31 +21,16 @@ dependencies {
 
   compileOnly(gradleApi())
 
-compileOnly(gradleApi())
-
-
-
   implementation(Libs.javaParser)
-
   implementation(Libs.Kotlin.compiler)
-
   implementation(Libs.Kotlin.gradlePlugin)
-
   implementation(Libs.Kotlin.reflect)
-
   implementation(Libs.Square.KotlinPoet.core)
 
-
-
   testImplementation(Libs.JUnit.api)
-
   testImplementation(Libs.JUnit.engine)
-
   testImplementation(Libs.JUnit.params)
-
   testImplementation(Libs.Kotest.assertions)
-
   testImplementation(Libs.Kotest.properties)
-
   testImplementation(Libs.Kotest.runner)
 }

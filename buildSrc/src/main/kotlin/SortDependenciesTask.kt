@@ -76,7 +76,16 @@ abstract class SortDependenciesTask : DefaultTask() {
         val sorted = visitor
           .things
           .grouped()
-          .joinToString("\n\n") { it.joinToString("\n") }
+          .joinToString("\n\n") { list ->
+            list
+              .sortedBy { psiElementWithSurroundings ->
+                psiElementWithSurroundings
+                  .psiElement
+                  .text
+                  .toLowerCase(Locale.US)
+              }
+              .joinToString("\n")
+          }
           .trim()
 
         val allText = sub.buildFile.readText()
@@ -252,8 +261,10 @@ fun PsiElement.withSurroundings(visited: MutableSet<PsiElement>): PsiElementWith
     if ((text + nextText + next.text).lines().size == 1) {
       visited.add(next)
       nextText += next.text
+      next = next.nextSibling
+    } else {
+      break
     }
-    next = next.nextSibling
   }
 
   return PsiElementWithSurroundings(this, previousText.trimStart('\n', '\r'), nextText.trimEnd())
