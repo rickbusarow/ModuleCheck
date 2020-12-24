@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
@@ -23,16 +22,17 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.openapi.util.Key
+import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
-import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
+import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.*
 
 val ABSOLUTE_PATH: Key<String> = Key("absolutePath")
 val configuration = CompilerConfiguration().apply {
@@ -65,13 +65,27 @@ abstract class SortDependenciesTask : DefaultTask() {
   fun run() {
 
     project.subprojects.forEach { sub ->
-      println(sub.buildFile)
       if (sub.buildFile.exists()) {
-        println("----")
+
+        val visitor = GradleDependencyVisitor()
         sub
           .buildFile
           .asKtFile()
-          .accept(GradleDependencyVisitor())
+          .accept(visitor)
+
+        val sorted = visitor
+          .things
+          .grouped()
+          .joinToString("\n\n") { it.joinToString("\n") }
+          .trim()
+
+        val allText = sub.buildFile.readText()
+
+        visitor.blockText?.let {
+          val newText = allText.replace(it, sorted)
+
+          sub.buildFile.writeText(newText)
+        }
       }
     }
   }
@@ -79,20 +93,8 @@ abstract class SortDependenciesTask : DefaultTask() {
 
 class GradleDependencyVisitor : KtTreeVisitorVoid() {
 
-  lateinit var root: KtFile
-  lateinit var oldDependenciesText: String
-  lateinit var dependencies: List<String>
-  lateinit var plugins: List<String>
-  lateinit var newDependencies: String
-  lateinit var newPlugins: String
-  lateinit var oldPluginsText: String
-
-  fun PsiElement.nextNonWhitespace(): PsiElement? =
-    if (nextSibling !is PsiWhiteSpace) {
-      nextSibling
-    } else {
-      nextSibling?.nextSibling?.nextNonWhitespace()
-    }
+  val things = mutableListOf<PsiElementWithSurroundings>()
+  var blockText: String? = null
 
   override fun visitCallExpression(expression: KtCallExpression) {
 
@@ -100,7 +102,7 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
 
       val visitor = DependencyBlockDeclarationVisitor()
 
-      expression.lastChild.lastChild.lastChild.getChildOfType<KtBlockExpression>()?.let {
+      expression.findDescendantOfType<KtBlockExpression>()?.let {
         visitor.visitBlockExpression(it)
       }
     }
@@ -110,23 +112,20 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
 
     override fun visitBlockExpression(expression: KtBlockExpression) {
 
-      val visitor = DependencyDeclarationCallExpressionVisitor()
+      blockText = expression.text
 
-      expression
-        .getChildrenOfType<KtCallExpression>()
-        .forEach { visitor.visitCallExpression(it) }
+      val visited = mutableSetOf<PsiElement>()
 
-      super.visitBlockExpression(expression)
+      val elements = expression
+        .children
+        .filterNot { it is PsiComment || it is PsiWhiteSpace }
+        .filterIsInstance<PsiElement>()
+        .map { it.withSurroundings(visited) }
+
+      things.addAll(elements)
     }
   }
-
-  inner class DependencyDeclarationCallExpressionVisitor: KtTreeVisitorVoid(){
-    override fun visitCallExpression(expression: KtCallExpression) {
-      println("expression --> ${expression.text}")
-      super.visitCallExpression(expression)
-    }
-  }
-
+/*
   private fun parseDependencies(expression: KtCallExpression) {
     dependencies = expression.children
       .mapNotNull { it as? KtLambdaArgument }
@@ -208,4 +207,56 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
       |}
     """.trimMargin()
   }
+*/
+}
+
+fun List<PsiElementWithSurroundings>.grouped() = groupBy {
+  it.psiElement.text.split("[(.]".toRegex()).take(2).joinToString("-")
+}.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
+  .map { it.value }
+
+data class PsiElementWithSurroundings(
+  val psiElement: PsiElement,
+  val previousText: String,
+  val nextText: String
+) {
+  override fun toString(): String {
+    return previousText + psiElement.text + nextText
+  }
+}
+
+fun PsiElement.withSurroundings(visited: MutableSet<PsiElement>): PsiElementWithSurroundings {
+
+  var previous: PsiElement? = prevSibling
+
+  val prevStrings = mutableListOf<String>()
+
+  while (previous !in visited && (previous is PsiWhiteSpace || previous is PsiComment)) {
+
+    visited.add(previous)
+
+    prevStrings.add(previous.text)
+    previous = previous.prevSibling
+  }
+
+  val previousText = prevStrings
+    .reversed()
+    .joinToString("")
+
+  var next: PsiElement? = nextSibling
+
+  var nextText = ""
+
+  while (next is PsiWhiteSpace || next is PsiComment) {
+
+    if ((text + nextText + next.text).lines().size == 1) {
+      visited.add(next)
+      nextText += next.text
+    }
+    next = next.nextSibling
+  }
+
+  return PsiElementWithSurroundings(this, previousText.trimStart('\n', '\r'), nextText.trimEnd())
+
+
 }

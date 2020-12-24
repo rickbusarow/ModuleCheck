@@ -22,22 +22,39 @@ plugins {
 }
 
 dependencies {
+
+  api(Libs.Kotlin.gradlePlugin)
+
   compileOnly(gradleApi())
 
-  // a comment
-  testImplementation(project(path = ":testing")) // an inline comment
+  if (1L % 2L == 0L) {
+    implementation(Libs.Kotlin.gradlePlugin)
+  } else {
+    implementation(Libs.Kotlin.reflect)
+  }
 
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
+  /**
+   * A KDoc comment
+   */
   implementation(Libs.javaParser)
+  /*
+  A block comment
+   */
   implementation(Libs.Kotlin.compiler)
+  implementation(Libs.Kotlin.reflect)
   implementation(Libs.Square.KotlinPoet.core)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
+
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)
   testImplementation(Libs.JUnit.params)
+  testImplementation(Libs.Kotest.assertions)
+  testImplementation(Libs.Kotest.properties)
+  testImplementation(Libs.Kotest.runner)
+
+  // a floating comment
+
+  // a comment
+  testImplementation(project(path = ":testing")) // an inline comment
 
 }
 
