@@ -45,7 +45,7 @@ object Versions {
   const val canIDropJetifier = "0.5"
   const val changeTracker = "0.7.3"
   const val dependencyAnalysis = "0.63.0"
-  const val dokka = "1.4.21"
+  const val dokka = "1.4.20"
   const val gradleDoctor = "0.7.0"
   const val knit = "0.2.3"
   const val kotlin = "1.4.21"
