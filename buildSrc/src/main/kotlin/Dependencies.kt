@@ -41,13 +41,13 @@ object Versions {
   const val androidTools = "4.1.1"
   const val anvil = "2.0.6"
   const val compileSdk = 30
-  const val benManes = "0.33.0"
+  const val benManes = "0.36.0"
   const val canIDropJetifier = "0.5"
   const val changeTracker = "0.7.3"
   const val dependencyAnalysis = "0.63.0"
-  const val dokka = "1.4.20"
-  const val gradleDoctor = "0.6.3"
-  const val knit = "0.2.2"
+  const val dokka = "1.4.21"
+  const val gradleDoctor = "0.7.0"
+  const val knit = "0.2.3"
   const val kotlin = "1.4.21"
   const val mavenPublish = "0.13.0"
   const val minSdk = "23"
@@ -180,30 +180,6 @@ object Libs {
     const val jwtDecode = "com.auth0.android:jwtdecode:1.3.0"
     const val sdk = "com.auth0.android:auth0:1.16.0"
   }
-
-  object BouncyCastle {
-    private const val version = "1.65.01"
-
-    const val core = "org.bouncycastle:bcprov-jdk15on:$version"
-
-    // The Bouncy Castle Java APIs for CMS, PKCS, EAC, TSP, CMP, CRMF, OCSP, and certificate generation.
-    const val extendedApis = "org.bouncycastle:bcpkix-jdk15on:1.65"
-  }
-
-  object BumpTech {
-    const val glide = "com.github.bumptech.glide:glide:4.11.0"
-    const val glideCompiler = "com.github.bumptech.glide:compiler:4.11.0"
-  }
-
-  object Dagger {
-    private const val version = "2.29.1"
-    const val android = "com.google.dagger:dagger-android:$version"
-    const val androidKapt = "com.google.dagger:dagger-android-processor:$version"
-    const val androidSupport = "com.google.dagger:dagger-android-support:$version"
-    const val compiler = "com.google.dagger:dagger-compiler:$version"
-    const val core = "com.google.dagger:dagger:$version"
-  }
-
   object Detekt {
 
     const val version = "1.15.0"
@@ -213,22 +189,6 @@ object Libs {
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
   }
 
-  object JakeWharton {
-
-    object Timber {
-
-      const val jdk = "com.jakewharton.timber:timber-jdk:5.0.0-SNAPSHOT"
-      const val android = "com.jakewharton.timber:timber-android:5.0.0-SNAPSHOT"
-    }
-  }
-
-  object Json {
-    const val test = "org.json:json:20200518"
-  }
-
-  object JSoup {
-    const val core = "org.jsoup:jsoup:1.11.3"
-  }
 
   object JUnit {
     private const val version = "5.7.0"
@@ -239,7 +199,7 @@ object Libs {
     const val vintage = "org.junit.vintage:junit-vintage-engine:$version"
   }
 
-  const val javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.17.0"
+  const val javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.18.0"
 
   object Kotlin {
     const val compiler = "org.jetbrains.kotlin:kotlin-compiler-embeddable:${Versions.kotlin}"
@@ -250,7 +210,7 @@ object Libs {
   }
 
   object Kotest {
-    private const val version = "4.2.6"
+    private const val version = "4.3.2"
     const val assertions = "io.kotest:kotest-assertions-core-jvm:$version"
     const val properties = "io.kotest:kotest-property-jvm:$version"
     const val runner = "io.kotest:kotest-runner-junit5-jvm:$version"
@@ -361,7 +321,7 @@ object Libs {
     }
 
     object KotlinPoet {
-      private const val version = "1.6.0"
+      private const val version = "1.7.2"
 
       const val core =
         "com.squareup:kotlinpoet:$version" // update the buildSrc gradle dependency too!

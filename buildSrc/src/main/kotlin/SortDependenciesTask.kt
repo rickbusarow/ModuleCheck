@@ -64,7 +64,7 @@ abstract class SortDependenciesTask : DefaultTask() {
   @TaskAction
   fun run() {
 
-    project.subprojects.forEach { sub ->
+    project.allprojects.forEach { sub ->
       if (sub.buildFile.exists()) {
 
         val visitor = GradleDependencyVisitor()

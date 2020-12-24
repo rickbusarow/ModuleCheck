@@ -29,7 +29,7 @@ abstract class SortPluginsTask : DefaultTask() {
   @TaskAction
   fun run() {
 
-    project.subprojects.forEach { sub ->
+    project.allprojects.forEach { sub ->
       if (sub.buildFile.exists()) {
 
         val visitor = GradlePluginVisitor()
