@@ -58,6 +58,6 @@ gradleEnterprise {
 rootProject.name = "ModuleCheck"
 
 include(
-  ":testing",
+  ":specs",
   ":plugin"
 )

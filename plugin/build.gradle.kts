@@ -37,7 +37,7 @@ dependencies {
   testImplementation(Libs.Kotest.properties)
   testImplementation(Libs.Kotest.runner)
 
-  testImplementation(project(path = ":testing"))
+  testImplementation(project(path = ":specs"))
 
 }
 
