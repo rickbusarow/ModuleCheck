@@ -15,28 +15,29 @@
 
 plugins {
   javaLibrary
+  id("com.gradle.plugin-publish") version "0.12.0"
   id("java-gradle-plugin")
   `kotlin-dsl`
   `maven-publish`
-  id("com.gradle.plugin-publish") version "0.12.0"
 }
 
 dependencies {
   compileOnly(gradleApi())
 
-  testImplementation(project(path = ":testing"))
-
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
   implementation(Libs.javaParser)
   implementation(Libs.Kotlin.compiler)
+  implementation(Libs.Kotlin.gradlePlugin)
+  implementation(Libs.Kotlin.reflect)
   implementation(Libs.Square.KotlinPoet.core)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
+
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)
   testImplementation(Libs.JUnit.params)
+  testImplementation(Libs.Kotest.assertions)
+  testImplementation(Libs.Kotest.properties)
+  testImplementation(Libs.Kotest.runner)
+
+  testImplementation(project(path = ":testing"))
 
 }
 
