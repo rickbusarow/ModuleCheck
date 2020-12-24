@@ -268,6 +268,4 @@ fun PsiElement.withSurroundings(visited: MutableSet<PsiElement>): PsiElementWith
   }
 
   return PsiElementWithSurroundings(this, previousText.trimStart('\n', '\r'), nextText.trimEnd())
-
-
 }
