@@ -108,7 +108,11 @@ allprojects {
       plugins.add(plugin)
     }
 
-    fun addDependency(configuration: String, dependencyPath: String) = apply {
+    fun addExternalDependency(configuration: String, dependencyPath: String, comment: String= "", inlineComment: String = "") = apply { dependencies.add(
+      "$configuration(\":$dependencyPath\")"
+    )    }
+
+    fun addProjectDependency(configuration: String, dependencyPath: String, comment: String= "", inlineComment: String = "") = apply {
       dependencies.add("$configuration(project(path = \":$dependencyPath\"))")
     }
 

@@ -61,7 +61,7 @@ class SortDependenciesTest : FreeSpec({
         addSubproject(project)
       }
 
-    "ducky task" {
+    "configurations should be grouped and sorted" {
 
       psBuilder
         .addSubproject(
@@ -69,16 +69,16 @@ class SortDependenciesTest : FreeSpec({
             .addBuildSpec(
               ProjectBuildSpec.Builder()
                 .addPlugin("kotlin(\"jvm\")")
-                .addDependency("runtimeOnly", "lib-1")
-                .addDependency("api", "lib-3")
-                .addDependency("implementation", "lib-7")
-                .addDependency("compileOnly", "lib-4")
-                .addDependency("api", "lib-0")
-                .addDependency("testImplementation", "lib-5")
-                .addDependency("compileOnly", "lib-6")
-                .addDependency("implementation", "lib-2")
-                .addDependency("testImplementation", "lib-8")
-                .addDependency("implementation", "lib-9")
+                .addProjectDependency("runtimeOnly", "lib-1")
+                .addProjectDependency("api", "lib-3")
+                .addProjectDependency("implementation", "lib-7")
+                .addProjectDependency("compileOnly", "lib-4")
+                .addProjectDependency("api", "lib-0")
+                .addProjectDependency("testImplementation", "lib-5")
+                .addProjectDependency("compileOnly", "lib-6")
+                .addProjectDependency("implementation", "lib-2")
+                .addProjectDependency("testImplementation", "lib-8")
+                .addProjectDependency("implementation", "lib-9")
                 .build()
             )
             .build()
@@ -113,6 +113,80 @@ class SortDependenciesTest : FreeSpec({
         |  implementation(project(path = ":lib-9"))
         |
         |  runtimeOnly(project(path = ":lib-1"))
+        |
+        |  testImplementation(project(path = ":lib-5"))
+        |  testImplementation(project(path = ":lib-8"))
+        |}
+        |""".trimMargin()
+    }
+
+    "external dependencies should be grouped separately" {
+
+      psBuilder
+        .addSubproject(
+          ProjectSpec.Builder("app")
+            .addBuildSpec(
+              ProjectBuildSpec.Builder()
+                .addPlugin("kotlin(\"jvm\")")
+                .addProjectDependency("runtimeOnly", "lib-1")
+                .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
+                .addProjectDependency("api", "lib-3")
+                .addProjectDependency("implementation", "lib-7")
+                .addExternalDependency(
+                  "implementation",
+                  "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+                )
+                .addProjectDependency("compileOnly", "lib-4")
+                .addProjectDependency("api", "lib-0")
+                .addProjectDependency("testImplementation", "lib-5")
+                .addProjectDependency("compileOnly", "lib-6")
+                .addProjectDependency("implementation", "lib-2")
+                .addProjectDependency("testImplementation", "lib-8")
+                .addExternalDependency(
+                  "testImplementation",
+                  "org.junit.jupiter:junit-jupiter-api:5.7.0"
+                )
+                .addProjectDependency("implementation", "lib-9")
+                .build()
+            )
+            .build()
+        )
+
+      psBuilder
+        .build()
+        .writeIn(testProjectDir.toPath())
+
+      val result = GradleRunner.create()
+        .withPluginClasspath()
+        .withDebug(true)
+        .withProjectDir(testProjectDir)
+        .withArguments("moduleCheckSortDependencies")
+        .build()
+
+      result.task(":moduleCheckSortDependencies")?.outcome shouldBe TaskOutcome.SUCCESS
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  api(":com.squareup:kotlinpoet:1.7.2")
+        |
+        |  api(project(path = ":lib-0"))
+        |  api(project(path = ":lib-3"))
+        |
+        |  compileOnly(project(path = ":lib-4"))
+        |  compileOnly(project(path = ":lib-6"))
+        |
+        |  implementation(":org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+        |
+        |  implementation(project(path = ":lib-2"))
+        |  implementation(project(path = ":lib-7"))
+        |  implementation(project(path = ":lib-9"))
+        |
+        |  runtimeOnly(project(path = ":lib-1"))
+        |
+        |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0")
         |
         |  testImplementation(project(path = ":lib-5"))
         |  testImplementation(project(path = ":lib-8"))
