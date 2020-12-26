@@ -111,19 +111,27 @@ allprojects {
     fun addExternalDependency(
       configuration: String,
       dependencyPath: String,
-      comment: String = "",
-      inlineComment: String = ""
-    ) = apply { dependencies.add(
-      "$configuration(\":$dependencyPath\")"
-    )    }
+      comment: String? = null,
+      inlineComment: String? = null
+    ) = apply {
+
+      val prev = comment?.let { "$it\n  " } ?: ""
+      val after = inlineComment?.let { " $it" } ?: ""
+
+      dependencies.add("$prev$configuration(\":$dependencyPath\")$after")
+    }
 
     fun addProjectDependency(
       configuration: String,
       dependencyPath: String,
-      comment: String = "",
-      inlineComment: String = ""
+      comment: String? = null,
+      inlineComment: String? = null
     ) = apply {
-      dependencies.add("$comment$configuration(project(path = \":$dependencyPath\"))")
+
+      val prev = comment?.let { "$it\n  " } ?: ""
+      val after = inlineComment?.let { " $it" } ?: ""
+
+      dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
     }
 
     fun build() = ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)

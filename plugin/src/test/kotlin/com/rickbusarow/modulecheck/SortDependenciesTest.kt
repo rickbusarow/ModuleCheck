@@ -128,7 +128,6 @@ class SortDependenciesTest : FreeSpec({
             .addBuildSpec(
               ProjectBuildSpec.Builder()
                 .addPlugin("kotlin(\"jvm\")")
-                .addProjectDependency("runtimeOnly", "lib-1")
                 .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
                 .addProjectDependency("api", "lib-3")
                 .addProjectDependency("implementation", "lib-7")
@@ -138,9 +137,6 @@ class SortDependenciesTest : FreeSpec({
                 )
                 .addProjectDependency("compileOnly", "lib-4")
                 .addProjectDependency("api", "lib-0")
-                .addProjectDependency("testImplementation", "lib-5")
-                .addProjectDependency("compileOnly", "lib-6")
-                .addProjectDependency("implementation", "lib-2")
                 .addProjectDependency("testImplementation", "lib-8")
                 .addExternalDependency(
                   "testImplementation",
@@ -176,25 +172,20 @@ class SortDependenciesTest : FreeSpec({
         |  api(project(path = ":lib-3"))
         |
         |  compileOnly(project(path = ":lib-4"))
-        |  compileOnly(project(path = ":lib-6"))
         |
         |  implementation(":org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         |
-        |  implementation(project(path = ":lib-2"))
         |  implementation(project(path = ":lib-7"))
         |  implementation(project(path = ":lib-9"))
         |
-        |  runtimeOnly(project(path = ":lib-1"))
-        |
         |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0")
         |
-        |  testImplementation(project(path = ":lib-5"))
         |  testImplementation(project(path = ":lib-8"))
         |}
         |""".trimMargin()
     }
 
-    "comments above" {
+    "comments should move along with the dependency declaration" {
 
       psBuilder
         .addSubproject(
@@ -202,10 +193,9 @@ class SortDependenciesTest : FreeSpec({
             .addBuildSpec(
               ProjectBuildSpec.Builder()
                 .addPlugin("kotlin(\"jvm\")")
-                .addProjectDependency("runtimeOnly", "lib-1")
-                .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
-                .addProjectDependency("api", "lib-3")
-                .addProjectDependency("implementation", "lib-7")
+                .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2", "// multi-line\n  // comment")
+                .addProjectDependency("api", "lib-3", "/* \n  block comment\n  */")
+                .addProjectDependency("implementation", "lib-7","/** \n  * block comment\n  */")
                 .addExternalDependency(
                   "implementation",
                   "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
@@ -213,14 +203,15 @@ class SortDependenciesTest : FreeSpec({
                 .addProjectDependency("compileOnly", "lib-4")
                 .addProjectDependency("api", "lib-0")
                 .addProjectDependency("testImplementation", "lib-5")
-                .addProjectDependency("compileOnly", "lib-6")
-                .addProjectDependency("implementation", "lib-2", "//foo\n  ")
+                .addProjectDependency("compileOnly", "lib-6", "// floating comment\n\n")
+                .addProjectDependency("implementation", "lib-2", "// library 2")
                 .addProjectDependency("testImplementation", "lib-8")
                 .addExternalDependency(
                   "testImplementation",
-                  "org.junit.jupiter:junit-jupiter-api:5.7.0"
+                  "org.junit.jupiter:junit-jupiter-api:5.7.0",
+                  inlineComment = "// JUnit 5"
                 )
-                .addProjectDependency("implementation", "lib-9", "//foo\n  ")
+                .addProjectDependency("implementation", "lib-9", "// library 9")
                 .build()
             )
             .build()
@@ -244,23 +235,34 @@ class SortDependenciesTest : FreeSpec({
         |}
         |
         |dependencies {
+        |  // multi-line
+        |  // comment
         |  api(":com.squareup:kotlinpoet:1.7.2")
         |
         |  api(project(path = ":lib-0"))
+        |  /* 
+        |  block comment
+        |  */
         |  api(project(path = ":lib-3"))
         |
         |  compileOnly(project(path = ":lib-4"))
+        |  // floating comment
+        |
+        |
         |  compileOnly(project(path = ":lib-6"))
         |
         |  implementation(":org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         |
+        |  // library 2
         |  implementation(project(path = ":lib-2"))
+        |  /** 
+        |  * block comment
+        |  */
         |  implementation(project(path = ":lib-7"))
+        |  // library 9
         |  implementation(project(path = ":lib-9"))
         |
-        |  runtimeOnly(project(path = ":lib-1"))
-        |
-        |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0")
+        |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0") // JUnit 5
         |
         |  testImplementation(project(path = ":lib-5"))
         |  testImplementation(project(path = ":lib-8"))

@@ -171,7 +171,7 @@ fun PsiElement.withSurroundings(
 
   return PsiElementWithSurroundings(
     psiElement = this,
-    previousText = previousText.trimStart('\n', '\r') + startingWhitespace,
+    previousText = (startingWhitespace + previousText).trimStart('\n', '\r'),
     nextText = nextText.trimEnd()
   )
 }
