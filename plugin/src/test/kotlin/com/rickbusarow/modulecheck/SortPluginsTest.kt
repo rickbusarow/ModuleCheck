@@ -85,5 +85,4 @@ class SortPluginsTest : FreeSpec({
         |
         |""".trimMargin()
   }
-
 })
