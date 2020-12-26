@@ -108,12 +108,22 @@ allprojects {
       plugins.add(plugin)
     }
 
-    fun addExternalDependency(configuration: String, dependencyPath: String, comment: String= "", inlineComment: String = "") = apply { dependencies.add(
+    fun addExternalDependency(
+      configuration: String,
+      dependencyPath: String,
+      comment: String = "",
+      inlineComment: String = ""
+    ) = apply { dependencies.add(
       "$configuration(\":$dependencyPath\")"
     )    }
 
-    fun addProjectDependency(configuration: String, dependencyPath: String, comment: String= "", inlineComment: String = "") = apply {
-      dependencies.add("$configuration(project(path = \":$dependencyPath\"))")
+    fun addProjectDependency(
+      configuration: String,
+      dependencyPath: String,
+      comment: String = "",
+      inlineComment: String = ""
+    ) = apply {
+      dependencies.add("$comment$configuration(project(path = \":$dependencyPath\"))")
     }
 
     fun build() = ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)
