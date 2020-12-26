@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
+
 /*
  * Copyright (C) 2020 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +17,10 @@
 
 plugins {
   javaLibrary
+}
+
+kotlin {
+  explicitApi = ExplicitApiMode.Strict
 }
 
 dependencies {

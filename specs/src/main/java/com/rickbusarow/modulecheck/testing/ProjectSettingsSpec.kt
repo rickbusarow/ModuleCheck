@@ -17,10 +17,11 @@ package com.rickbusarow.modulecheck.testing
 
 import java.nio.file.Path
 
-class ProjectSettingsSpec private constructor(
-  val includes: List<String>
+@Suppress("MemberVisibilityCanBePrivate")
+public class ProjectSettingsSpec private constructor(
+  public val includes: List<String>
 ) {
-  fun writeIn(path: Path) {
+  public fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("settings.gradle.kts").writeText(
       pluginManagement() + includes()
@@ -50,14 +51,14 @@ class ProjectSettingsSpec private constructor(
 
   private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
-  class Builder {
+  public class Builder {
 
     private val includes = mutableListOf<String>()
 
-    fun addInclude(include: String) = apply {
+    public fun addInclude(include: String): Builder = apply {
       includes.add(include)
     }
 
-    fun build() = ProjectSettingsSpec(includes)
+    public fun build(): ProjectSettingsSpec = ProjectSettingsSpec(includes)
   }
 }

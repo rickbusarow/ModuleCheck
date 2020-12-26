@@ -17,14 +17,15 @@ package com.rickbusarow.modulecheck.testing
 
 import java.nio.file.Path
 
-class ProjectBuildSpec private constructor(
-  val plugins: List<String>,
-  val dependencies: List<String>,
-  val isAndroid: Boolean,
-  val buildScript: Boolean
+@Suppress("MemberVisibilityCanBePrivate")
+public class ProjectBuildSpec private constructor(
+  public val plugins: List<String>,
+  public val dependencies: List<String>,
+  public val isAndroid: Boolean,
+  public val buildScript: Boolean
 ) {
 
-  fun writeIn(path: Path) {
+  public fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("build.gradle.kts")
       .writeText(buildScriptBlock() + pluginsBlock() + androidBlock() + dependenciesBlock())
@@ -88,7 +89,7 @@ allprojects {
     appendLine("}")
   }
 
-  class Builder {
+  public class Builder {
 
     private val plugins = mutableListOf<String>()
     private val dependencies = mutableListOf<String>()
@@ -96,24 +97,24 @@ allprojects {
     private var isAndroid = false
     private var isBuildScript = false
 
-    fun buildScript() = apply {
+    public fun buildScript(): Builder = apply {
       isBuildScript = true
     }
 
-    fun android() = apply {
+    public fun android(): Builder = apply {
       isAndroid = true
     }
 
-    fun addPlugin(plugin: String) = apply {
+    public fun addPlugin(plugin: String): Builder = apply {
       plugins.add(plugin)
     }
 
-    fun addExternalDependency(
+    public fun addExternalDependency(
       configuration: String,
       dependencyPath: String,
       comment: String? = null,
       inlineComment: String? = null
-    ) = apply {
+    ): Builder = apply {
 
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
@@ -121,12 +122,12 @@ allprojects {
       dependencies.add("$prev$configuration(\":$dependencyPath\")$after")
     }
 
-    fun addProjectDependency(
+    public fun addProjectDependency(
       configuration: String,
       dependencyPath: String,
       comment: String? = null,
       inlineComment: String? = null
-    ) = apply {
+    ): Builder = apply {
 
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
@@ -134,6 +135,7 @@ allprojects {
       dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
     }
 
-    fun build() = ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)
+    public fun build(): ProjectBuildSpec =
+      ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)
   }
 }

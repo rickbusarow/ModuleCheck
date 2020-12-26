@@ -18,25 +18,26 @@ package com.rickbusarow.modulecheck.testing
 import com.squareup.kotlinpoet.FileSpec
 import java.nio.file.Path
 
-class ProjectSrcSpec private constructor(
-  val dir: Path,
-  val files: List<FileSpec>
+@Suppress("MemberVisibilityCanBePrivate")
+public class ProjectSrcSpec private constructor(
+  public val dir: Path,
+  public val files: List<FileSpec>
 ) {
 
-  fun writeIn(path: Path) {
+  public fun writeIn(path: Path) {
     files.forEach {
       it.writeTo(Path.of("$path/$dir"))
     }
   }
 
-  class Builder(val dir: Path) {
+  public class Builder(public val dir: Path) {
 
     private val files = mutableListOf<FileSpec>()
 
-    fun addFile(fileSpec: FileSpec) = apply {
+    public fun addFile(fileSpec: FileSpec): Builder = apply {
       files.add(fileSpec)
     }
 
-    fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, files)
+    public fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, files)
   }
 }
