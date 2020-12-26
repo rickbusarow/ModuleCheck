@@ -16,6 +16,7 @@
 package com.rickbusarow.modulecheck.testing
 
 import com.squareup.kotlinpoet.FileSpec
+import java.io.File
 import java.nio.file.Path
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -26,7 +27,10 @@ public class ProjectSrcSpec private constructor(
 
   public fun writeIn(path: Path) {
     files.forEach {
-      it.writeTo(Path.of("$path/$dir"))
+      val txt = it.toString()
+      File(path.toString() + "/" + dir).mkdirs()
+      File(path.toString() + "/" + dir + "/" + it.name).writeText(txt)
+//      it.writeTo(Path.of("$path/$dir"))
     }
   }
 

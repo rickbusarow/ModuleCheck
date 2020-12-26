@@ -73,6 +73,7 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
 
   val things = mutableListOf<PsiElementWithSurroundings>()
   var blockText: String? = null
+  var blockWhiteSpace: String? = null
 
   override fun visitCallExpression(expression: KtCallExpression) {
 
@@ -81,6 +82,7 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
       val visitor = PluginBlockDeclarationVisitor()
 
       expression.findDescendantOfType<KtBlockExpression>()?.let {
+        blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
         visitor.visitBlockExpression(it)
       }
     }
@@ -98,7 +100,13 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
         .children
         .filterNot { it is PsiComment || it is PsiWhiteSpace }
         .filterIsInstance<PsiElement>()
-        .map { it.withSurroundings(visited) }
+        .mapIndexed { index, psi ->
+          if (index == 0) {
+            psi.withSurroundings(visited, blockWhiteSpace ?: "")
+          } else {
+            psi.withSurroundings(visited)
+          }
+        }
 
       things.addAll(elements)
     }

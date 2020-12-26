@@ -23,7 +23,6 @@ repositories {
   mavenCentral()
   google()
   jcenter()
-  maven("https://oss.sonatype.org/content/repositories/snapshots")
 }
 
 kotlinDslPluginOptions {

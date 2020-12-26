@@ -20,6 +20,7 @@ import java.nio.file.Path
 @Suppress("MemberVisibilityCanBePrivate")
 public class ProjectBuildSpec private constructor(
   public val plugins: List<String>,
+  public val repositories: List<String>,
   public val dependencies: List<String>,
   public val isAndroid: Boolean,
   public val buildScript: Boolean
@@ -28,13 +29,19 @@ public class ProjectBuildSpec private constructor(
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("build.gradle.kts")
-      .writeText(buildScriptBlock() + pluginsBlock() + androidBlock() + dependenciesBlock())
+      .writeText(buildScriptBlock() + pluginsBlock() + repositoriesBlock() + androidBlock() + dependenciesBlock())
   }
 
   private fun pluginsBlock() = if (plugins.isEmpty()) "" else buildString {
-    appendLine("plugins {")
-    plugins.forEach { appendLine("  $it") }
-    appendLine("}\n")
+    appendln("plugins {")
+    plugins.forEach { appendln("  $it") }
+    appendln("}\n")
+  }
+
+  private fun repositoriesBlock() = if (repositories.isEmpty()) "" else buildString {
+    appendln("repositories {")
+    repositories.forEach { appendln("  $it") }
+    appendln("}\n")
   }
 
   private fun buildScriptBlock() = if (!buildScript) "" else """buildscript {
@@ -84,14 +91,15 @@ allprojects {
 """
 
   private fun dependenciesBlock() = if (dependencies.isEmpty()) "" else buildString {
-    appendLine("dependencies {")
-    dependencies.forEach { appendLine("  $it") }
-    appendLine("}")
+    appendln("dependencies {")
+    dependencies.forEach { appendln("  $it") }
+    appendln("}")
   }
 
   public class Builder {
 
     private val plugins = mutableListOf<String>()
+    private val repositories = mutableListOf<String>()
     private val dependencies = mutableListOf<String>()
 
     private var isAndroid = false
@@ -105,8 +113,28 @@ allprojects {
       isAndroid = true
     }
 
-    public fun addPlugin(plugin: String): Builder = apply {
-      plugins.add(plugin)
+    public fun addPlugin(
+      plugin: String,
+      comment: String? = null,
+      inlineComment: String? = null
+    ): Builder = apply {
+
+      val prev = comment?.let { "$it\n  " } ?: ""
+      val after = inlineComment?.let { " $it" } ?: ""
+
+      plugins.add("$prev$plugin$after")
+    }
+
+    public fun addRepository(
+      repository: String,
+      comment: String? = null,
+      inlineComment: String? = null
+    ): Builder = apply {
+
+      val prev = comment?.let { "$it\n  " } ?: ""
+      val after = inlineComment?.let { " $it" } ?: ""
+
+      repositories.add("$prev$repository$after")
     }
 
     public fun addExternalDependency(
@@ -136,6 +164,6 @@ allprojects {
     }
 
     public fun build(): ProjectBuildSpec =
-      ProjectBuildSpec(plugins, dependencies, isAndroid, isBuildScript)
+      ProjectBuildSpec(plugins, repositories, dependencies, isAndroid, isBuildScript)
   }
 }

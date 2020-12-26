@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 /*
  * Copyright (C) 2020 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +24,7 @@ import java.io.File
 import java.nio.file.Files
 
 object ProjectConfig : AbstractProjectConfig() {
-  //  override val parallelism = 3
+  override val parallelism = 1
   override val isolationMode = IsolationMode.InstancePerLeaf
 }
 
