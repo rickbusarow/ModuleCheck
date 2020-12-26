@@ -19,7 +19,7 @@ import java.io.File
 import java.nio.file.Path
 
 class ProjectSpec private constructor(
-  private val path: String,
+  val gradlePath: String,
   private val subprojects: MutableList<ProjectSpec>,
   private val projectSettingsSpec: ProjectSettingsSpec?,
   private val projectBuildSpec: ProjectBuildSpec?,
@@ -29,7 +29,7 @@ class ProjectSpec private constructor(
   fun writeIn(path: Path) {
     projectSettingsSpec?.writeIn(path)
     projectBuildSpec?.writeIn(path)
-    subprojects.forEach { it.writeIn(Path.of(path.toString(), it.path)) }
+    subprojects.forEach { it.writeIn(Path.of(path.toString(), it.gradlePath)) }
     projectSrcSpecs.forEach { it.writeIn(path) }
   }
 

@@ -189,7 +189,6 @@ object Libs {
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
   }
 
-
   object JUnit {
     private const val version = "5.7.0"
 

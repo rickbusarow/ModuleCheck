@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+package com.rickbusarow.modulecheck
+
+import com.rickbusarow.modulecheck.internal.asKtFile
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
@@ -22,7 +25,6 @@ import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
-import java.util.*
 
 abstract class SortPluginsTask : DefaultTask() {
 
@@ -49,7 +51,7 @@ abstract class SortPluginsTask : DefaultTask() {
           { it.psiElement.text }
         )
 
-        val sorted =visitor
+        val sorted = visitor
           .things
           .sortedWith(comparator)
           .joinToString("\n")
