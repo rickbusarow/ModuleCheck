@@ -101,7 +101,6 @@ class UnusedKaptTest : FreeSpec({
 
     projectSpecBuilder
       .build()
-//      .writeIn(Path.of("./FFF"))
       .writeIn(testProjectDir.toPath())
 
     val result = GradleRunner.create()

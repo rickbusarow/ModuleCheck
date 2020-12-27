@@ -55,8 +55,6 @@ object UnusedKaptParser {
       .toSet()
 
     val unusedMain = mcp.kaptDependencies.main.filter { matcher ->
-
-      println("matcher --> $matcher")
       mcp.mainImports.none { imp ->
         matcher.annotationImports.any { annotationRegex ->
           annotationRegex.matches(imp)
