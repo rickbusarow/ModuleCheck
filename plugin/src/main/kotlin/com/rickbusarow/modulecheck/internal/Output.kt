@@ -66,8 +66,8 @@ object Output {
 
   fun magentaBackground(message: String): String {
     return AnsiColor.MAGENTA.background +
-        AnsiColor.WHITE.boldHighIntensity +
-        message +
-        AnsiColor.RESET
+      AnsiColor.WHITE.boldHighIntensity +
+      message +
+      AnsiColor.RESET
   }
 }

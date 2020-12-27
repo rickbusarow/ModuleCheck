@@ -31,10 +31,10 @@ public class ProjectBuildSpec private constructor(
     path.newFile("build.gradle.kts")
       .writeText(
         buildScriptBlock() +
-            pluginsBlock() +
-            repositoriesBlock() +
-            androidBlock() +
-            dependenciesBlock()
+          pluginsBlock() +
+          repositoriesBlock() +
+          androidBlock() +
+          dependenciesBlock()
       )
   }
 
