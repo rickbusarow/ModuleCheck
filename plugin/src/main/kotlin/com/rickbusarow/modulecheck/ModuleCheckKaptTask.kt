@@ -17,7 +17,7 @@ abstract class ModuleCheckKaptTask : AbstractModuleCheckTask() {
   }
 
   @TaskAction
-  fun execute()  = runBlocking {
+  fun execute() = runBlocking {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
@@ -27,13 +27,12 @@ abstract class ModuleCheckKaptTask : AbstractModuleCheckTask() {
       unused
         .forEach { finding ->
 
-        project.logger.error(
-          "unused ${finding.config.name} dependency: ${finding.logString()}"
-        )
-        finding.fix()
+          project.logger.error(
+            "unused ${finding.config.name} dependency: ${finding.logString()}"
+          )
+          finding.fix()
 //      MCP.reset()
-      }
+        }
     }
   }
-
 }
