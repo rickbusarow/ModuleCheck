@@ -1,6 +1,9 @@
 package com.rickbusarow.modulecheck.parser
 
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.MCP
+import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
 
 object KaptParser {
@@ -31,6 +34,84 @@ object KaptParser {
       grouped.getOrDefault("kapt", setOf()),
       grouped.getOrDefault("kaptTest", setOf())
     )
+  }
+}
+
+object UnusedKaptParser {
+
+  fun parseLazy(mcp: MCP): Lazy<MCP.ParsedKapt<UnusedKapt>> = lazy {
+    parse(mcp)
+  }
+
+  fun parse(mcp: MCP): MCP.ParsedKapt<UnusedKapt> {
+    val unusedAndroidTest = mcp.kaptDependencies.androidTest.filter { matcher ->
+      matcher.annotationImports.none { annotationRegex ->
+        mcp.androidTestImports.any { imp ->
+          annotationRegex.matches(imp)
+        }
+      }
+    }
+      .map { UnusedKapt(mcp.project, it.processor, Config.KaptAndroidTest) }
+      .toSet()
+
+    val unusedMain = mcp.kaptDependencies.main.filter { matcher ->
+      matcher.annotationImports.none { annotationRegex ->
+        mcp.mainImports.any { imp ->
+          annotationRegex.matches(imp)
+        }
+      }
+    }
+      .map { UnusedKapt(mcp.project, it.processor, Config.Kapt) }
+      .toSet()
+
+    val unusedTest = mcp.kaptDependencies.test.filter { matcher ->
+      matcher.annotationImports.none { annotationRegex ->
+        mcp.testImports.any { imp ->
+          annotationRegex.matches(imp)
+        }
+      }
+    }
+      .map { UnusedKapt(mcp.project, it.processor, Config.KaptTest) }
+      .toSet()
+
+    return MCP.ParsedKapt(unusedAndroidTest, unusedMain, unusedTest)
+  }
+}
+
+data class UnusedKapt(
+  val dependentProject: Project,
+  val dependencyPath: String,
+  val config: Config
+) : Fixable {
+
+  fun position(): MCP.Position {
+    return MCP.Position(-1, -1)
+  }
+
+  fun logString(): String {
+    val pos = if (position().row == 0 || position().column == 0) {
+      ""
+    } else {
+      "(${position().row}, ${position().column}): "
+    }
+
+    return "${dependentProject.buildFile.path}: $pos$dependencyPath"
+  }
+
+  override fun fix() {
+    val text = dependentProject.buildFile.readText()
+
+    val row = position().row - 1
+
+    val lines = text.lines().toMutableList()
+
+    if (row > 0) {
+      lines[row] = "//" + lines[row]
+
+      val newText = lines.joinToString("\n")
+
+      dependentProject.buildFile.writeText(newText)
+    }
   }
 }
 

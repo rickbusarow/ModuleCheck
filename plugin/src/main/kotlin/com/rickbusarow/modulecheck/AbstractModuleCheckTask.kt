@@ -76,9 +76,9 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      val all = OverShotProvider(project, alwaysIgnore, ignoreAll).get() +
-        RedundantProvider(project, alwaysIgnore, ignoreAll).get() +
-        UnusedProvider(project, alwaysIgnore, ignoreAll).get()
+      val all = OverShotRule(project, alwaysIgnore, ignoreAll).get() +
+        RedundantRule(project, alwaysIgnore, ignoreAll).get() +
+        UnusedRule(project, alwaysIgnore, ignoreAll).get()
 
       all.distinctBy { it.dependentProject to CPP(it.config, it.dependencyProject) }
         .finish()
@@ -120,7 +120,7 @@ abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      OverShotProvider(project, alwaysIgnore, ignoreAll).get()
+      OverShotRule(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
 
@@ -139,7 +139,7 @@ abstract class ModuleCheckRedundantTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      RedundantProvider(project, alwaysIgnore, ignoreAll).get()
+      RedundantRule(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
 
@@ -158,7 +158,7 @@ abstract class ModuleCheckUnusedTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      UnusedProvider(project, alwaysIgnore, ignoreAll).get()
+      UnusedRule(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
 

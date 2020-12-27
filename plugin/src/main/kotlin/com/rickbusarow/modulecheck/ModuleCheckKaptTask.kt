@@ -1,5 +1,6 @@
 package com.rickbusarow.modulecheck
 
+import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -16,61 +17,23 @@ abstract class ModuleCheckKaptTask : AbstractModuleCheckTask() {
   }
 
   @TaskAction
-  fun check() {
-    val messages = project
-      .moduleCheckProjects()
-      .map { mcp ->
+  fun execute()  = runBlocking {
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
 
-        val usedMain = mcp.kaptDependencies.main.filter {
-          it.annotationImports.any { annotationRegex ->
-            mcp.mainImports.any { imp ->
-              annotationRegex.matches(imp)
-            }
-          }
-        }
+    measured {
+      val unused = UnusedKaptRule(project, alwaysIgnore, ignoreAll).get()
 
-        val unusedMain = mcp.kaptDependencies.main.filter {
-          it.annotationImports.none { annotationRegex ->
-            mcp.mainImports.any { imp ->
-              annotationRegex.matches(imp)
-            }
-          }
-        }
+      unused
+        .forEach { finding ->
 
-        val usedTest = mcp.kaptDependencies.test.filter {
-          it.annotationImports.any { annotationRegex ->
-            mcp.testImports.any { imp ->
-              annotationRegex.matches(imp)
-            }
-          }
-        }
-
-        val unusedTest = mcp.kaptDependencies.test.filter {
-          it.annotationImports.none { annotationRegex ->
-            mcp.testImports.any { imp ->
-              annotationRegex.matches(imp)
-            }
-          }
-        }
-
-        """project ------> ${mcp.path}
-            |
-            |androidTest -- ${mcp.kaptDependencies.androidTest}
-            |
-            |used main -- $usedMain
-            |unused main -- $unusedMain
-            |
-            |used test -- $usedTest
-            |unused test -- $unusedTest
-            |
-            |
-            |
-            |
-          """.trimMargin()
+        project.logger.error(
+          "unused ${finding.config.name} dependency: ${finding.logString()}"
+        )
+        finding.fix()
+//      MCP.reset()
       }
-
-    messages.forEach {
-      project.logger.warn(it + "\n")
     }
   }
+
 }

@@ -17,7 +17,11 @@ package com.rickbusarow.modulecheck
 
 import org.gradle.api.Project
 
-sealed class DependencyFinding(val problemName: String) {
+interface Fixable {
+  fun fix()
+}
+
+abstract class DependencyFinding(val problemName: String) : Fixable {
   abstract val dependentProject: Project
   abstract val dependencyProject: Project
   abstract val dependencyPath: String
@@ -93,7 +97,7 @@ sealed class DependencyFinding(val problemName: String) {
     return "${dependentProject.buildFile.path}: $pos$dependencyPath"
   }
 
-  open fun fix() {
+  override fun fix() {
     val text = dependentProject.buildFile.readText()
 
     val row = position().row - 1

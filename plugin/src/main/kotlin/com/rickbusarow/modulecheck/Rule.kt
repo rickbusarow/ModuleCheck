@@ -15,9 +15,10 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.parser.UnusedKapt
 import org.gradle.api.Project
 
-abstract class FindingProvider<T : DependencyFinding>(
+abstract class Rule<T>(
   protected val project: Project,
   protected val alwaysIgnore: Set<String>,
   protected val ignoreAll: Set<String>
@@ -31,11 +32,11 @@ abstract class FindingProvider<T : DependencyFinding>(
       .map { gradleProject -> MCP.from(gradleProject) }
 }
 
-class OverShotProvider(
+class OverShotRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : FindingProvider<DependencyFinding.OverShotDependency>(
+) : Rule<DependencyFinding.OverShotDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
@@ -61,11 +62,41 @@ class OverShotProvider(
   }
 }
 
-class RedundantProvider(
+class UnusedKaptRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : FindingProvider<DependencyFinding.RedundantDependency>(
+) : Rule<UnusedKapt>(
+  project, alwaysIgnore, ignoreAll
+) {
+
+  override fun get(): List<UnusedKapt> {
+    return project
+      .moduleCheckProjects()
+      .sorted()
+      .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
+      .flatMap { moduleCheckProject ->
+        with(moduleCheckProject) {
+          unusedKapt
+            .all()
+            .mapNotNull { dependency ->
+              if (dependency.dependencyPath in alwaysIgnore) {
+                null
+              } else {
+                dependency
+              }
+            }
+            .distinctBy { it.dependencyPath }
+        }
+      }
+  }
+}
+
+class RedundantRule(
+  project: Project,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>
+) : Rule<DependencyFinding.RedundantDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
@@ -93,11 +124,11 @@ class RedundantProvider(
   }
 }
 
-class UnusedProvider(
+class UnusedRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : FindingProvider<DependencyFinding.UnusedDependency>(
+) : Rule<DependencyFinding.UnusedDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 

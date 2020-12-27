@@ -18,6 +18,9 @@ package com.rickbusarow.modulecheck
 sealed class Config(val name: String) {
 
   object AndroidTest : Config("androidTest")
+  object KaptAndroidTest : Config("kaptAndroidTest")
+  object Kapt : Config("kapt")
+  object KaptTest : Config("kaptTest")
   object Api : Config("api")
   object CompileOnly : Config("compileOnly")
   object Implementation : Config("implementation")

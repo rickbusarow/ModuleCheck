@@ -44,6 +44,7 @@ class MCP private constructor(
 
   val overshot by OvershotParser.parseLazy(this)
   val unused by UnusedParser.parseLazy(this)
+  val unusedKapt by UnusedKaptParser.parseLazy(this)
   val redundant by RedundantParser.parseLazy(this)
 
   val androidTestFiles =
@@ -143,7 +144,9 @@ class MCP private constructor(
     val androidTest: Set<T>,
     val main: Set<T>,
     val test: Set<T>
-  )
+  ) {
+    fun all() = androidTest + main + test
+  }
 
   data class Parsed<T>(
     val androidTest: MutableSet<T>,

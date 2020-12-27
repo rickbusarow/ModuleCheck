@@ -44,6 +44,7 @@ data class CPP(val config: Config, val project: Project) {
         Config.TestApi -> declaration !in mcp.testImports
         Config.TestImplementation -> declaration !in mcp.testImports
         is Config.Custom -> TODO("unsupported config --> ${config.name}")
+        else -> TODO()
       }
     }
 }
