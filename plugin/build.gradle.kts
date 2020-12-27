@@ -38,7 +38,6 @@ dependencies {
   testImplementation(Libs.Kotest.runner)
 
   testImplementation(project(path = ":specs"))
-
 }
 
 gradlePlugin {
@@ -87,7 +86,9 @@ tasks.create("setupPluginUploadFromEnvironment") {
     val secret = System.getenv("GRADLE_PUBLISH_SECRET")
 
     if (key == null || secret == null) {
-      throw GradleException("gradlePublishKey and/or gradlePublishSecret are not defined environment variables")
+      throw GradleException(
+        "gradlePublishKey and/or gradlePublishSecret are not defined environment variables"
+      )
     }
 
     System.setProperty("gradle.publish.key", key)

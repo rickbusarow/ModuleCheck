@@ -65,6 +65,9 @@ object Output {
   fun red(message: String) = AnsiColor.RED.bold + message + AnsiColor.RESET
 
   fun magentaBackground(message: String): String {
-    return AnsiColor.MAGENTA.background + AnsiColor.WHITE.boldHighIntensity + message + AnsiColor.RESET
+    return AnsiColor.MAGENTA.background +
+        AnsiColor.WHITE.boldHighIntensity +
+        message +
+        AnsiColor.RESET
   }
 }

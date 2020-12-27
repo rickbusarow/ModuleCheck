@@ -82,7 +82,6 @@ class MCP private constructor(
     }
 
   fun inheritedMainDependencyProjects(): List<MCP> {
-
     return dependencies.main().flatMap { pdd ->
 
       pdd.mcp().inheritedMainDependencyProjects() + pdd.mcp().dependencies.api.flatMap {
@@ -95,7 +94,6 @@ class MCP private constructor(
     dependencyProject: CPP,
     apiOnly: Boolean = false
   ): MCP? {
-
     val toCheck = if (apiOnly) dependencies.api else dependencies.main()
 
     if (dependencyProject in toCheck) return this
@@ -107,7 +105,6 @@ class MCP private constructor(
   }
 
   fun getMainDepth(): Int {
-
     val all = dependencies.main()
 
     return if (all.isEmpty()) 0

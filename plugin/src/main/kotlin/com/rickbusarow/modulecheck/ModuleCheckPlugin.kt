@@ -57,7 +57,6 @@ internal fun List<String>.positionOf(
   project: Project,
   configuration: String
 ): MCP.Position {
-
   val reg = """.*$configuration\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }

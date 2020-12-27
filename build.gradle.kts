@@ -37,6 +37,7 @@ plugins {
   id(Plugins.benManes) version Versions.benManes
   id(Plugins.detekt) version Libs.Detekt.version
   id(Plugins.dokka) version Versions.dokka
+  id(Plugins.ktLint) version Versions.ktLint
   id(Plugins.gradleDoctor) version Versions.gradleDoctor
   id(Plugins.spotless) version Versions.spotless
   id(Plugins.taskTree) version Versions.taskTree
@@ -156,5 +157,27 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
           "ij_kotlin_imports_layout" to "*,java.**,javax.**,kotlin.**,^"
         )
       )
+  }
+}
+
+subprojects {
+  apply {
+    plugin("org.jlleitschuh.gradle.ktlint")
+  }
+  ktlint {
+    debug.set(false)
+    version.set("0.40.0")
+    verbose.set(true)
+    outputColorName.set("RED")
+    android.set(false)
+    outputToConsole.set(true)
+    ignoreFailures.set(false)
+    enableExperimentalRules.set(true)
+    additionalEditorconfigFile.set(file("${rootProject.rootDir}/.editorconfig"))
+    disabledRules.set(setOf("no-wildcard-imports", "experimental:argument-list-wrapping"))
+    filter {
+      exclude("**/generated/**")
+      include("**/kotlin/**")
+    }
   }
 }

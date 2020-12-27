@@ -29,10 +29,8 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun run() {
-
     project.allprojects.forEach { sub ->
       if (sub.buildFile.exists()) {
-
         val visitor = GradlePluginVisitor()
         sub
           .buildFile
@@ -75,9 +73,7 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
   var blockWhiteSpace: String? = null
 
   override fun visitCallExpression(expression: KtCallExpression) {
-
     if (expression.text.startsWith("plugins {")) {
-
       val visitor = PluginBlockDeclarationVisitor()
 
       expression.findDescendantOfType<KtBlockExpression>()?.let {
@@ -90,7 +86,6 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
   inner class PluginBlockDeclarationVisitor : KtTreeVisitorVoid() {
 
     override fun visitBlockExpression(expression: KtBlockExpression) {
-
       blockText = expression.text
 
       val visited = mutableSetOf<PsiElement>()

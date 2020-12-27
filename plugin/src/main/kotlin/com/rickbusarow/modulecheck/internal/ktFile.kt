@@ -51,7 +51,6 @@ fun KtFile.relativePath(): String = getUserData(RELATIVE_PATH)
   ?: error("KtFile '$name' expected to have an relative path.")
 
 fun KtFile.replaceImports(newImportsText: String): KtFile {
-
   val oldImports = importList?.text
 
   val newText = when {
@@ -76,7 +75,6 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
 }
 
 fun KtFile.sortImports(): KtFile {
-
   val oldImports = importDirectives
 
   val oldImportsText = importList?.text
@@ -114,7 +112,6 @@ fun KtFile.removeImports(
 ): KtFile = removeImports(ktImportDirectives.toList())
 
 fun KtFile.removeImports(ktImportDirectives: List<KtImportDirective>): KtFile {
-
   val oldImports = importDirectives
 
   val newImports = oldImports.filterNot {
@@ -137,7 +134,6 @@ fun KtFile.addImports(vararg ktImportDirectives: KtImportDirective): KtFile =
   addImports(ktImportDirectives.toList())
 
 fun KtFile.addImports(ktImportDirectives: List<KtImportDirective>): KtFile {
-
   val oldImports = importDirectives
 
   val newImports = ktImportDirectives.toList()
@@ -175,7 +171,6 @@ private fun KtFile.updateImports(
 }
 
 fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
-
   val newText = text.replace(oldClass.text, newClass.text)
 
   val path = absolutePath()
@@ -192,7 +187,6 @@ fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
 }
 
 fun KtFile.write(path: String = absolutePath()) {
-
   val javaFile = File(path)
 
   javaFile.mkdirs()

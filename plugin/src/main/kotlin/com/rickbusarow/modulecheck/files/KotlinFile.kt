@@ -52,7 +52,6 @@ class KotlinFile(val ktFile: KtFile) : JvmFile() {
 class DeclarationVisitor(val declarations: MutableSet<String>) : KtTreeVisitorVoid() {
 
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
-
     if (!declaration.isPrivateOrInternal()) {
       declaration.fqName?.let { declarations.add(it.asString()) }
     }

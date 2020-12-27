@@ -40,7 +40,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     project.extensions.getByType<ModuleCheckExtension>().ignoreAll
 
   protected fun List<DependencyFinding>.finish() {
-
     forEach { finding ->
 
       project.logger.error(
@@ -57,7 +56,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
       .map { gradleProject -> MCP.from(gradleProject) }
 
   protected inline fun <T, R> T.measured(action: T.() -> R): R {
-
     var r: R? = null
 
     val time = measureTimeMillis {
@@ -74,12 +72,10 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     measured {
-
       val all = OverShotProvider(project, alwaysIgnore, ignoreAll).get() +
         RedundantProvider(project, alwaysIgnore, ignoreAll).get() +
         UnusedProvider(project, alwaysIgnore, ignoreAll).get()
@@ -99,9 +95,7 @@ abstract class ModuleCheckUsedTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-
     val pairs = measured {
-
       project
         .moduleCheckProjects()
         .map { mcp ->
@@ -122,12 +116,10 @@ abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     measured {
-
       OverShotProvider(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
@@ -143,12 +135,10 @@ abstract class ModuleCheckRedundantTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     measured {
-
       RedundantProvider(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }
@@ -164,12 +154,10 @@ abstract class ModuleCheckUnusedTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     measured {
-
       UnusedProvider(project, alwaysIgnore, ignoreAll).get()
         .finish()
     }

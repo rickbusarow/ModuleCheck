@@ -23,7 +23,6 @@ object AndroidLayoutParser {
   private val parser = XmlParser()
 
   fun parseViews(file: File): Set<String> {
-
     return parser.parse(file)
       .breadthFirst()
       .filterIsInstance<Node>()
@@ -32,7 +31,6 @@ object AndroidLayoutParser {
   }
 
   fun parseResources(file: File): Set<String> {
-
     return parser.parse(file)
       .breadthFirst()
       .filterIsInstance<Node>()

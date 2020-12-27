@@ -30,10 +30,8 @@ abstract class SortDependenciesTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun run() {
-
     project.allprojects.forEach { sub ->
       if (sub.buildFile.exists()) {
-
         val visitor = GradleDependencyVisitor()
         sub
           .buildFile
@@ -74,13 +72,10 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
   var blockWhiteSpace: String? = null
 
   override fun visitCallExpression(expression: KtCallExpression) {
-
     if (expression.text.startsWith("dependencies {")) {
-
       val visitor = DependencyBlockDeclarationVisitor()
 
       expression.findDescendantOfType<KtBlockExpression>()?.let {
-
         blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
         visitor.visitBlockExpression(it)
       }
@@ -90,7 +85,6 @@ class GradleDependencyVisitor : KtTreeVisitorVoid() {
   inner class DependencyBlockDeclarationVisitor : KtTreeVisitorVoid() {
 
     override fun visitBlockExpression(expression: KtBlockExpression) {
-
       blockText = expression.text
 
       val visited = mutableSetOf<PsiElement>()
@@ -136,13 +130,11 @@ fun PsiElement.withSurroundings(
   visited: MutableSet<PsiElement>,
   startingWhitespace: String = ""
 ): PsiElementWithSurroundings {
-
   var previous: PsiElement? = prevSibling
 
   val prevStrings = mutableListOf<String>()
 
   while (previous !in visited && (previous is PsiWhiteSpace || previous is PsiComment)) {
-
     visited.add(previous)
 
     prevStrings.add(previous.text)
@@ -158,7 +150,6 @@ fun PsiElement.withSurroundings(
   var nextText = ""
 
   while (next is PsiWhiteSpace || next is PsiComment) {
-
     if ((text + nextText + next.text).lines().size == 1) {
       visited.add(next)
       nextText += next.text

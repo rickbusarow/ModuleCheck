@@ -23,7 +23,6 @@ import com.rickbusarow.modulecheck.mcp
 object RedundantParser : Parser<DependencyFinding.RedundantDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.RedundantDependency> {
-
     val allMain = mcp.dependencies.api.toSet()
 
     val inheritedDependencyProjects = mcp.dependencies.main()
@@ -36,7 +35,6 @@ object RedundantParser : Parser<DependencyFinding.RedundantDependency>() {
     val redundant = allMain
       .filter { it.project in inheritedDependencyProjects }
       .map {
-
         val from = allMain
           .filter { inherited -> inherited.project == it.project }
           .map { it.project }

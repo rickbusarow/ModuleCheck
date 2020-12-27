@@ -29,7 +29,13 @@ public class ProjectBuildSpec private constructor(
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("build.gradle.kts")
-      .writeText(buildScriptBlock() + pluginsBlock() + repositoriesBlock() + androidBlock() + dependenciesBlock())
+      .writeText(
+        buildScriptBlock() +
+            pluginsBlock() +
+            repositoriesBlock() +
+            androidBlock() +
+            dependenciesBlock()
+      )
   }
 
   private fun pluginsBlock() = if (plugins.isEmpty()) "" else buildString {
@@ -118,7 +124,6 @@ allprojects {
       comment: String? = null,
       inlineComment: String? = null
     ): Builder = apply {
-
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
@@ -130,7 +135,6 @@ allprojects {
       comment: String? = null,
       inlineComment: String? = null
     ): Builder = apply {
-
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
@@ -143,7 +147,6 @@ allprojects {
       comment: String? = null,
       inlineComment: String? = null
     ): Builder = apply {
-
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
@@ -156,7 +159,6 @@ allprojects {
       comment: String? = null,
       inlineComment: String? = null
     ): Builder = apply {
-
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 

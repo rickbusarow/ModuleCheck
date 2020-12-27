@@ -22,7 +22,6 @@ import com.rickbusarow.modulecheck.MCP
 object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.UnusedDependency> {
-
     val dependencies = mcp.dependencies
 
     val unusedHere = dependencies

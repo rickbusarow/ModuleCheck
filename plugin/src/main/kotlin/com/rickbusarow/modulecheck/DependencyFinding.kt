@@ -48,7 +48,6 @@ sealed class DependencyFinding(val problemName: String) {
     override fun logString(): String = super.logString() + " from: ${from?.path}"
 
     override fun fix() {
-
       val text = dependentProject.buildFile.readText()
 
       val row = position().row - 1
@@ -56,7 +55,6 @@ sealed class DependencyFinding(val problemName: String) {
       val lines = text.lines().toMutableList()
 
       if (row > 0 && from != null) {
-
         val existingPath = from.path
 
         val existingLine = lines[row]
@@ -86,7 +84,6 @@ sealed class DependencyFinding(val problemName: String) {
   }
 
   open fun logString(): String {
-
     val pos = if (position().row == 0 || position().column == 0) {
       ""
     } else {
@@ -97,7 +94,6 @@ sealed class DependencyFinding(val problemName: String) {
   }
 
   open fun fix() {
-
     val text = dependentProject.buildFile.readText()
 
     val row = position().row - 1
@@ -105,7 +101,6 @@ sealed class DependencyFinding(val problemName: String) {
     val lines = text.lines().toMutableList()
 
     if (row > 0) {
-
       lines[row] = "//" + lines[row]
 
       val newText = lines.joinToString("\n")

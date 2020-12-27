@@ -15,13 +15,14 @@
 
 package com.rickbusarow.modulecheck.parser
 
-import com.rickbusarow.modulecheck.*
+import com.rickbusarow.modulecheck.CPP
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.MCP
 import org.gradle.api.artifacts.ProjectDependency
 
 object DependencyParser : Parser<CPP>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<CPP> {
-
     val grouped = mcp.project
       .configurations
       .groupBy { it.name }

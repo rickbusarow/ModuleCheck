@@ -30,7 +30,6 @@ fun KtClass.isFragment(): Boolean = superTypeListEntries.any {
 }
 
 fun KtClass.replaceBody(newBodyText: String): KtClass {
-
   val oldBodyText = body?.text
 
   val newText = if (oldBodyText != null) {
@@ -43,7 +42,6 @@ fun KtClass.replaceBody(newBodyText: String): KtClass {
 }
 
 fun KtClass.removeSuperType(supertypeText: String): KtClass {
-
   val originalSuperText = this.getSuperTypeList()?.text ?: return this
 
   val toRemove = getSuperTypeList()?.entries?.firstOrNull { it.text == supertypeText }

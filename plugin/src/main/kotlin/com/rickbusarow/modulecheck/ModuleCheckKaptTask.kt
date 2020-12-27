@@ -17,7 +17,6 @@ abstract class ModuleCheckKaptTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun check() {
-
     val messages = project
       .moduleCheckProjects()
       .map { mcp ->

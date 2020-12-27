@@ -23,7 +23,6 @@ import com.rickbusarow.modulecheck.mcp
 object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.OverShotDependency> {
-
     val bad = (mcp.unused.main())
       .map { it.cpp() }
       .toSet()
