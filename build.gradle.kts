@@ -39,7 +39,6 @@ plugins {
   id(Plugins.dokka) version Versions.dokka
   id(Plugins.ktLint) version Versions.ktLint
   id(Plugins.gradleDoctor) version Versions.gradleDoctor
-  id(Plugins.spotless) version Versions.spotless
   id(Plugins.taskTree) version Versions.taskTree
   base
 }
@@ -122,45 +121,7 @@ tasks.named(
   }
 }
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-  java {
-    target("src/*/java/**/*.java")
-    googleJavaFormat("1.7")
-    removeUnusedImports()
-    trimTrailingWhitespace()
-    endWithNewline()
-  }
-  kotlin {
-    target("**/src/**/*.kt", "**/src/**/*.kt")
-    ktlint("0.40.0")
-      .userData(
-        mapOf(
-          "indent_size" to "2",
-          "continuation_indent_size" to "2",
-          "max_line_length" to "off",
-          "disabled_rules" to "no-wildcard-imports",
-          "ij_kotlin_imports_layout" to "*,java.**,javax.**,kotlin.**,^"
-        )
-      )
-    trimTrailingWhitespace()
-    endWithNewline()
-  }
-  kotlinGradle {
-    target("*.gradle.kts")
-    ktlint("0.40.0")
-      .userData(
-        mapOf(
-          "indent_size" to "2",
-          "continuation_indent_size" to "2",
-          "max_line_length" to "off",
-          "disabled_rules" to "no-wildcard-imports",
-          "ij_kotlin_imports_layout" to "*,java.**,javax.**,kotlin.**,^"
-        )
-      )
-  }
-}
-
-subprojects {
+allprojects {
   apply {
     plugin("org.jlleitschuh.gradle.ktlint")
   }

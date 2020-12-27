@@ -38,7 +38,7 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
           .accept(visitor)
 
         val comparator = compareBy<PsiElementWithSurroundings>(
-          { !it.psiElement.text.startsWith("""id("android""") },
+          { !it.psiElement.text.startsWith("""id("com.android""") },
           { !it.psiElement.text.startsWith("""id("java-library")""") },
           { it.psiElement.text != """kotlin("jvm")""" },
           { !it.psiElement.text.startsWith("android") },
