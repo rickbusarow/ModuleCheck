@@ -22,7 +22,7 @@ object KaptParser {
             .dependencies
             .map { dep: Dependency ->
 
-              val comb = dep.name + ":" + dep.version
+              val comb = dep.group + ":" + dep.name
 
               kaptMatchers.getOrElse(comb) { KaptMatcher("???", comb, listOf()) }
             }
@@ -55,8 +55,10 @@ object UnusedKaptParser {
       .toSet()
 
     val unusedMain = mcp.kaptDependencies.main.filter { matcher ->
-      matcher.annotationImports.none { annotationRegex ->
-        mcp.mainImports.any { imp ->
+
+      println("matcher --> $matcher")
+      mcp.mainImports.none { imp ->
+        matcher.annotationImports.any { annotationRegex ->
           annotationRegex.matches(imp)
         }
       }
@@ -85,7 +87,7 @@ data class UnusedKapt(
 ) : Fixable {
 
   fun position(): MCP.Position {
-    return MCP.Position(-1, -1)
+    return MCP.Position(0, 0)
   }
 
   fun logString(): String {
@@ -168,6 +170,14 @@ internal val kaptMatchers: Map<String, KaptMatcher> = listOf(
     ).map { it.toRegex() }
   ),
   KaptMatcher(
+    name = "Dagger Android",
+    processor = "com.google.dagger:dagger-android-processor",
+    annotationImports = listOf(
+      "javax\\.android\\.\\*",
+      "javax\\.android\\.ContributesAndroidInjector"
+    ).map { it.toRegex() }
+  ),
+  KaptMatcher(
     name = "Inflation Inject", processor = "com.squareup.inject:inflation-inject-processor",
     annotationImports = listOf(
       "com\\.squareup\\.inject\\.inflation\\.\\*",
@@ -184,7 +194,7 @@ internal val kaptMatchers: Map<String, KaptMatcher> = listOf(
     ).map { it.toRegex() }
   ),
   KaptMatcher(
-    name = "Assisted Inject", processor = "com.squareup.inject:assisted-inject-processor-dagger2",
+    name = "Assisted Inject", processor = "com.squareup.inject:assisted-inject-processor",
     annotationImports = listOf(
       "com\\.squareup\\.inject\\.assisted\\.\\*",
       "com\\.squareup\\.inject\\.assisted\\.AssistedInject",
@@ -210,6 +220,22 @@ internal val kaptMatchers: Map<String, KaptMatcher> = listOf(
     annotationImports = listOf(
       "androidx\\.room\\.\\*",
       "androidx\\.room\\.Database"
+    ).map { it.toRegex() }
+  ),
+  KaptMatcher(
+    name = "AutoService",
+    processor = "com.google.auto.service:auto-service",
+    annotationImports = listOf(
+      "com\\.google\\.auto\\.\\*",
+      "com\\.google\\.auto\\.service"
+    ).map { it.toRegex() }
+  ),
+  KaptMatcher(
+    name = "Gradle Incap Helper",
+    processor = "net.ltgt.gradle.incap:incap-processor",
+    annotationImports = listOf(
+      "net\\.ltgt\\.gradle\\.incap\\.\\*",
+      "net\\.ltgt\\.gradle\\.incap\\.IncrementalAnnotationProcessor"
     ).map { it.toRegex() }
   )
 ).associateBy { it.processor }
