@@ -16,10 +16,7 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.*
-import com.rickbusarow.modulecheck.parser.DependencyParser
-import com.rickbusarow.modulecheck.parser.OvershotParser
-import com.rickbusarow.modulecheck.parser.RedundantParser
-import com.rickbusarow.modulecheck.parser.UnusedParser
+import com.rickbusarow.modulecheck.parser.*
 import org.gradle.api.Project
 import java.util.concurrent.ConcurrentHashMap
 
@@ -34,6 +31,7 @@ class MCP private constructor(
   val path: String = project.path
 
   val dependencies by DependencyParser.parseLazy(this)
+  val kaptDependencies by KaptParser.parseLazy(this)
 
   val resolvedMainDependencies by lazy {
 
@@ -143,6 +141,12 @@ class MCP private constructor(
       .positionOf(project.project, configuration)
 
   data class Position(val row: Int, val column: Int)
+
+  data class ParsedKapt<T>(
+    val androidTest: Set<T>,
+    val main: Set<T>,
+    val test: Set<T>
+  )
 
   data class Parsed<T>(
     val androidTest: MutableSet<T>,

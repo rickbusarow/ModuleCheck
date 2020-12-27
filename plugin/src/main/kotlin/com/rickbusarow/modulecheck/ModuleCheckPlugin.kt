@@ -49,6 +49,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckUsed", ModuleCheckUsedTask::class.java)
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
     target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
+    target.tasks.register("moduleCheckKapt", ModuleCheckKaptTask::class.java)
   }
 }
 

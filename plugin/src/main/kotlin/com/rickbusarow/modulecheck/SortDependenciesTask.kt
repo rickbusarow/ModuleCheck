@@ -16,7 +16,6 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.asKtFile
-import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -27,7 +26,7 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import java.util.*
 
-abstract class SortDependenciesTask : DefaultTask() {
+abstract class SortDependenciesTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun run() {
