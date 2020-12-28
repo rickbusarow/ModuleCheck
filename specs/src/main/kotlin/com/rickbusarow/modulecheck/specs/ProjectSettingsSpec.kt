@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.testing
+package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
@@ -51,7 +51,7 @@ public class ProjectSettingsSpec private constructor(
 
   private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
-  public class Builder {
+  public class Builder internal constructor() {
 
     private val includes = mutableListOf<String>()
 
@@ -60,5 +60,10 @@ public class ProjectSettingsSpec private constructor(
     }
 
     public fun build(): ProjectSettingsSpec = ProjectSettingsSpec(includes)
+  }
+
+  public companion object {
+
+    public fun builder(): Builder = Builder()
   }
 }

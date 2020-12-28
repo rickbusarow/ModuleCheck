@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.testing
+package com.rickbusarow.modulecheck.specs
 
 import com.squareup.kotlinpoet.FileSpec
 import java.io.File
@@ -34,7 +34,7 @@ public class ProjectSrcSpec private constructor(
     }
   }
 
-  public class Builder(public val dir: Path) {
+  public class Builder internal constructor(public val dir: Path) {
 
     private val files = mutableListOf<FileSpec>()
 
@@ -43,5 +43,12 @@ public class ProjectSrcSpec private constructor(
     }
 
     public fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, files)
+  }
+
+  public companion object {
+
+    public fun builder(path: Path): Builder = Builder(path)
+
+    public fun builder(path: String): Builder = Builder(Path.of(path))
   }
 }

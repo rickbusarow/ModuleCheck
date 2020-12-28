@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.testing
+package com.rickbusarow.modulecheck.specs
 
 import java.io.File
 import java.nio.file.Path
@@ -34,7 +34,7 @@ public class ProjectSpec private constructor(
     projectSrcSpecs.forEach { it.writeIn(path) }
   }
 
-  public class Builder(public val filePath: String) {
+  public class Builder internal constructor(public val filePath: String) {
 
     private val subprojects = mutableListOf<ProjectSpec>()
     private var projectSettingsSpec: ProjectSettingsSpec? = null
@@ -59,6 +59,13 @@ public class ProjectSpec private constructor(
 
     public fun build(): ProjectSpec =
       ProjectSpec(filePath, subprojects, projectSettingsSpec, projectBuildSpec, projectSrcSpecs)
+  }
+
+  public companion object {
+
+    public fun builder(path: Path): Builder = Builder(path.toString())
+
+    public fun builder(path: String): Builder = Builder(path)
   }
 }
 

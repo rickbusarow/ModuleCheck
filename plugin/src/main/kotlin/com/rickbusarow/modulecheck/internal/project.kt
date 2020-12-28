@@ -32,6 +32,7 @@ fun Project.mainLayoutRootOrNull(): File? {
   val file = File("$srcRoot/main/res/layout")
   return if (file.exists()) file else null
 }
+
 fun Project.mainResRootOrNull(): File? {
   val file = File("$srcRoot/main/res")
   return if (file.exists()) file else null
@@ -61,8 +62,8 @@ private fun KtFile.updateImports(
       newText
     ) as KtFile
     ).apply {
-    putUserData(ABSOLUTE_PATH, path)
-  }
+      putUserData(ABSOLUTE_PATH, path)
+    }
 }
 
 val File.generated get() = File(this.path + "/generated")

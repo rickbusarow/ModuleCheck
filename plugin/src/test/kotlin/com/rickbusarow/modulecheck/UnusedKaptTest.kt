@@ -1,9 +1,9 @@
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.testing.ProjectBuildSpec
-import com.rickbusarow.modulecheck.testing.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.testing.ProjectSpec
-import com.rickbusarow.modulecheck.testing.ProjectSrcSpec
+import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
+import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
+import com.rickbusarow.modulecheck.specs.ProjectSpec
+import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -21,14 +21,14 @@ class UnusedKaptTest : FreeSpec({
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpecBuilder = ProjectSpec.Builder("project")
+  val projectSpecBuilder = ProjectSpec.builder("project")
     .addSettingsSpec(
-      ProjectSettingsSpec.Builder()
+      ProjectSettingsSpec.builder()
         .addInclude("app")
         .build()
     )
     .addBuildSpec(
-      ProjectBuildSpec.Builder()
+      ProjectBuildSpec.builder()
         .addPlugin("id(\"com.rickbusarow.module-check\")")
         .buildScript()
         .build()
@@ -38,9 +38,9 @@ class UnusedKaptTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
               .addPlugin("kotlin(\"kapt\")")
               .addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
@@ -70,9 +70,9 @@ class UnusedKaptTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addSrcSpec(
-            ProjectSrcSpec.Builder(Path.of("src/main/kotlin"))
+            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
               .addFile(
                 FileSpec.builder("com.my.app", "App.kt")
                   .addType(
@@ -89,7 +89,7 @@ class UnusedKaptTest : FreeSpec({
               .build()
           )
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
               .addPlugin("kotlin(\"kapt\")")
               .addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")

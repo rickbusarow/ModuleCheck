@@ -15,9 +15,9 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.testing.ProjectBuildSpec
-import com.rickbusarow.modulecheck.testing.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.testing.ProjectSpec
+import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
+import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
+import com.rickbusarow.modulecheck.specs.ProjectSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import org.gradle.testkit.runner.GradleRunner
@@ -30,14 +30,14 @@ class Android : FreeSpec({
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpecBuilder = ProjectSpec.Builder("project")
+  val projectSpecBuilder = ProjectSpec.builder("project")
     .addSettingsSpec(
-      ProjectSettingsSpec.Builder()
+      ProjectSettingsSpec.builder()
         .addInclude("app")
         .build()
     )
     .addBuildSpec(
-      ProjectBuildSpec.Builder()
+      ProjectBuildSpec.builder()
         .addPlugin("id(\"com.rickbusarow.module-check\")")
         .buildScript()
         .build()
@@ -47,9 +47,9 @@ class Android : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("""id("com.android.library")""")
               .android()
               .build()

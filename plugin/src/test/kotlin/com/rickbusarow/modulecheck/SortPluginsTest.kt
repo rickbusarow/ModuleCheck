@@ -1,9 +1,9 @@
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.testing.ProjectBuildSpec
-import com.rickbusarow.modulecheck.testing.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.testing.ProjectSpec
-import com.rickbusarow.modulecheck.testing.ProjectSrcSpec
+import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
+import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
+import com.rickbusarow.modulecheck.specs.ProjectSpec
+import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
@@ -18,22 +18,22 @@ class SortPluginsTest : FreeSpec({
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpecBuilder = ProjectSpec.Builder("project")
+  val projectSpecBuilder = ProjectSpec.builder("project")
     .addSettingsSpec(
-      ProjectSettingsSpec.Builder()
+      ProjectSettingsSpec.builder()
         .addInclude("app")
         .build()
     )
     .addBuildSpec(
-      ProjectBuildSpec.Builder()
+      ProjectBuildSpec.builder()
         .addPlugin("id(\"com.rickbusarow.module-check\")")
         .buildScript()
         .build()
     )
     .addSubproject(
-      ProjectSpec.Builder("buildSrc")
+      ProjectSpec.builder("buildSrc")
         .addBuildSpec(
-          ProjectBuildSpec.Builder()
+          ProjectBuildSpec.builder()
             .addPlugin("`kotlin-dsl`")
             .addRepository("mavenCentral()")
             .addRepository("google()")
@@ -41,7 +41,7 @@ class SortPluginsTest : FreeSpec({
             .build()
         )
         .addSrcSpec(
-          ProjectSrcSpec.Builder(Path.of("src/main/kotlin"))
+          ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
             .addFile(FileSpec.builder("", "androidLibrary.gradle.kts").build())
             .addFile(FileSpec.builder("", "javaLibrary.gradle.kts").build())
             .build()
@@ -53,9 +53,9 @@ class SortPluginsTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("javaLibrary")
               .addPlugin("kotlin(\"jvm\")")
               .addPlugin("id(\"io.gitlab.arturbosch.detekt\") version \"1.15.0\"")

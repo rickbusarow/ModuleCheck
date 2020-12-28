@@ -15,9 +15,9 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.testing.ProjectBuildSpec
-import com.rickbusarow.modulecheck.testing.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.testing.ProjectSpec
+import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
+import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
+import com.rickbusarow.modulecheck.specs.ProjectSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
 import org.gradle.testkit.runner.GradleRunner
@@ -31,13 +31,13 @@ class SortDependenciesTest : FreeSpec({
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   val projects = List(10) {
-    ProjectSpec.Builder("lib-$it")
+    ProjectSpec.builder("lib-$it")
       .build()
   }
 
-  val projectSpecBuilder = ProjectSpec.Builder("project")
+  val projectSpecBuilder = ProjectSpec.builder("project")
     .addSettingsSpec(
-      ProjectSettingsSpec.Builder()
+      ProjectSettingsSpec.builder()
         .applyEach(projects) { project ->
           addInclude(project.gradlePath)
         }
@@ -45,7 +45,7 @@ class SortDependenciesTest : FreeSpec({
         .build()
     )
     .addBuildSpec(
-      ProjectBuildSpec.Builder()
+      ProjectBuildSpec.builder()
         .addPlugin("id(\"com.rickbusarow.module-check\")")
         .buildScript()
         .build()
@@ -58,9 +58,9 @@ class SortDependenciesTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
               .addProjectDependency("runtimeOnly", "lib-1")
               .addProjectDependency("api", "lib-3")
@@ -117,9 +117,9 @@ class SortDependenciesTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
               .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
               .addProjectDependency("api", "lib-3")
@@ -182,9 +182,9 @@ class SortDependenciesTest : FreeSpec({
 
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.Builder("app")
+        ProjectSpec.builder("app")
           .addBuildSpec(
-            ProjectBuildSpec.Builder()
+            ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
               .addExternalDependency(
                 "api",

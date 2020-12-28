@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.testing
+package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
@@ -39,15 +39,15 @@ public class ProjectBuildSpec private constructor(
   }
 
   private fun pluginsBlock() = if (plugins.isEmpty()) "" else buildString {
-    appendln("plugins {")
-    plugins.forEach { appendln("  $it") }
-    appendln("}\n")
+    appendLine("plugins {")
+    plugins.forEach { appendLine("  $it") }
+    appendLine("}\n")
   }
 
   private fun repositoriesBlock() = if (repositories.isEmpty()) "" else buildString {
-    appendln("repositories {")
-    repositories.forEach { appendln("  $it") }
-    appendln("}\n")
+    appendLine("repositories {")
+    repositories.forEach { appendLine("  $it") }
+    appendLine("}\n")
   }
 
   private fun buildScriptBlock() = if (!buildScript) "" else """buildscript {
@@ -97,12 +97,12 @@ allprojects {
 """
 
   private fun dependenciesBlock() = if (dependencies.isEmpty()) "" else buildString {
-    appendln("dependencies {")
-    dependencies.forEach { appendln("  $it") }
-    appendln("}")
+    appendLine("dependencies {")
+    dependencies.forEach { appendLine("  $it") }
+    appendLine("}")
   }
 
-  public class Builder {
+  public class Builder internal constructor() {
 
     private val plugins = mutableListOf<String>()
     private val repositories = mutableListOf<String>()
@@ -167,5 +167,10 @@ allprojects {
 
     public fun build(): ProjectBuildSpec =
       ProjectBuildSpec(plugins, repositories, dependencies, isAndroid, isBuildScript)
+  }
+
+  public companion object {
+
+    public fun builder(): Builder = Builder()
   }
 }
