@@ -32,6 +32,10 @@ abstract class ModuleCheckExtension(objects: ObjectFactory) {
 
   val alwaysIgnore: SetProperty<String> = objects.setProperty<String>()
   val ignoreAll: SetProperty<String> = objects.setProperty<String>()
+
+//  fun addKapt(name: String, coordinates: String, vararg imports: Regex) {
+//
+//  }
 }
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {

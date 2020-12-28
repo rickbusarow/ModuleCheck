@@ -26,6 +26,8 @@ plugins {
 dependencies {
   compileOnly(gradleApi())
 
+  api(project(path = ":core"))
+
   implementation(Libs.javaParser)
   implementation(Libs.Kotlin.compiler)
   implementation(Libs.Kotlin.gradlePlugin)
