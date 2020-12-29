@@ -22,16 +22,15 @@ object AndroidLayoutParser {
   private val parser = XmlMapper()
 
   fun parseViews(file: File): Set<String> {
-
     val t = javax.xml.parsers.SAXParserFactory.newDefaultInstance().newSAXParser()
 
-    t.xmlReader.
+    t.xmlReader
 
-    return parser.parse(file)
-      .breadthFirst()
-      .filterIsInstance<Node>()
-      .mapNotNull { it.name() as? String }
-      .toSet()
+      .return parser.parse(file)
+        .breadthFirst()
+        .filterIsInstance<Node>()
+        .mapNotNull { it.name() as? String }
+        .toSet()
   }
 
   fun parseResources(file: File): Set<String> {

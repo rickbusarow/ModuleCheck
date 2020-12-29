@@ -36,7 +36,10 @@ fun File.asKtFile(): KtFile =
 fun KtFile.asFile(): File = File(absolutePath())
 
 fun KtFile(absolutePath: String): KtFile = File(absolutePath).asKtFile()
-fun KtFile(absoluteDirectory: String, fileName: String): KtFile =
+fun KtFile(
+  absoluteDirectory: String,
+  fileName: String
+): KtFile =
   File(absoluteDirectory, fileName).asKtFile()
 
 fun FileTreeWalk.ktFiles() = asSequence().filter { it.isFile }
@@ -70,8 +73,8 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
       newText
     ) as KtFile
     ).apply {
-    putUserData(ABSOLUTE_PATH, path)
-  }
+      putUserData(ABSOLUTE_PATH, path)
+    }
 }
 
 fun KtFile.sortImports(): KtFile {
@@ -99,8 +102,8 @@ fun KtFile.sortImports(): KtFile {
       newText
     ) as KtFile
     ).apply {
-    putUserData(ABSOLUTE_PATH, path)
-  }
+      putUserData(ABSOLUTE_PATH, path)
+    }
 }
 
 fun KtFile.removeImport(fqImport: String): KtFile = removeImports(createImport(fqImport))
@@ -166,11 +169,14 @@ private fun KtFile.updateImports(
       newText
     ) as KtFile
     ).apply {
-    putUserData(ABSOLUTE_PATH, path)
-  }
+      putUserData(ABSOLUTE_PATH, path)
+    }
 }
 
-fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
+fun KtFile.replaceClass(
+  oldClass: KtClass,
+  newClass: KtClass
+): KtFile {
   val newText = text.replace(oldClass.text, newClass.text)
 
   val path = absolutePath()
@@ -182,8 +188,8 @@ fun KtFile.replaceClass(oldClass: KtClass, newClass: KtClass): KtFile {
       newText
     ) as KtFile
     ).apply {
-    putUserData(ABSOLUTE_PATH, path)
-  }
+      putUserData(ABSOLUTE_PATH, path)
+    }
 }
 
 fun KtFile.write(path: String = absolutePath()) {

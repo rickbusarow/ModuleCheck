@@ -17,9 +17,10 @@ package com.rickbusarow.modulecheck
 
 import org.gradle.api.Project
 
-
-
-data class CPP(val config: Config, val project: Project) {
+data class CPP(
+  val config: Config,
+  val project: Project
+) {
 
   fun usedIn(mcp: MCP) = mcp()
     .mainDeclarations

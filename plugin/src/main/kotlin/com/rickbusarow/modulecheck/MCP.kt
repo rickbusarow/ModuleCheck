@@ -131,14 +131,20 @@ class MCP private constructor(
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
 
-  fun positionIn(parent: Project, configuration: String): Position =
+  fun positionIn(
+    parent: Project,
+    configuration: String
+  ): Position =
     parent
       .buildFile
       .readText()
       .lines()
       .positionOf(project.project, configuration)
 
-  data class Position(val row: Int, val column: Int)
+  data class Position(
+    val row: Int,
+    val column: Int
+  )
 
   data class ParsedKapt<T>(
     val androidTest: Set<T>,

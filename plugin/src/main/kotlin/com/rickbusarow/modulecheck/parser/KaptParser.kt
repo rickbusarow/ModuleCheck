@@ -115,7 +115,11 @@ data class UnusedKapt(
   }
 }
 
-data class KaptMatcher(val name: String, val processor: String, val annotationImports: List<Regex>)
+data class KaptMatcher(
+  val name: String,
+  val processor: String,
+  val annotationImports: List<Regex>
+)
 
 internal val kaptMatchers: Map<String, KaptMatcher> = listOf(
   KaptMatcher(

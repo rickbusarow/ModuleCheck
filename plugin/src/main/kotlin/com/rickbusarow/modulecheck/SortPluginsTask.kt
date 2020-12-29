@@ -105,38 +105,4 @@ class GradlePluginVisitor : KtTreeVisitorVoid() {
       things.addAll(elements)
     }
   }
-/*
-private fun parsePlugins(expression: KtCallExpression) {
-    val declarations = expression.children
-      .mapNotNull { it as? KtLambdaArgument }
-      .flatMap { lambdaArg ->
-        lambdaArg.children.mapNotNull { it as? KtLambdaExpression }
-          .flatMap { lambdaExpression ->
-            lambdaExpression.children.mapNotNull { it as? KtExpression }
-              .flatMap { ktExpression ->
-                ktExpression.children.mapNotNull { declarationExpression ->
-                  declarationExpression as? KtExpression
-                }
-                  .flatMap { declarationExpression ->
-                    declarationExpression.children.mapNotNull { it.text }
-                  }
-              }
-          }
-      }
-
-    plugins = declarations
-
-    val comparator = compareBy<String>(
-      { it.startsWith("android").not() && it != "javaLibrary" },
-      { it.startsWith("kotlin").not() },
-      { it.startsWith("id").not() },
-      { it }
-    )
-
-    newPlugins = """plugins {
-      |  ${declarations.sortedWith(comparator).joinToString("\n") { "  $it" }.trim()}
-      |}
-    """.trimMargin()
-  }
-*/
 }
