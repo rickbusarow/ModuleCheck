@@ -15,11 +15,18 @@
 
 package com.rickbusarow.modulecheck
 
-import org.gradle.api.Project
+import java.io.File
+
+interface Dependency
+
+interface GradleProjectProxy {
+  val buildDir: File
+  val projectDir: File
+}
 
 data class CPP(
   val config: Config,
-  val project: Project
+  val project: Dependency
 ) {
 
   fun usedIn(mcp: MCP) = mcp()

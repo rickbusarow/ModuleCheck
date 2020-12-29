@@ -15,25 +15,25 @@
 
 package com.rickbusarow.modulecheck.internal
 
-import org.gradle.api.Project
+import com.rickbusarow.modulecheck.GradleProjectProxy
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
-val Project.srcRoot get() = File("$projectDir/src")
-val Project.mainJavaRoot get() = File("$srcRoot/main/java")
-val Project.androidTestJavaRoot get() = File("$srcRoot/androidTest/java")
-val Project.testJavaRoot get() = File("$srcRoot/test/java")
-val Project.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
-val Project.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
-val Project.testKotlinRoot get() = File("$srcRoot/test/kotlin")
+val GradleProjectProxy.srcRoot get() = File("$projectDir/src")
+val GradleProjectProxy.mainJavaRoot get() = File("$srcRoot/main/java")
+val GradleProjectProxy.androidTestJavaRoot get() = File("$srcRoot/androidTest/java")
+val GradleProjectProxy.testJavaRoot get() = File("$srcRoot/test/java")
+val GradleProjectProxy.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
+val GradleProjectProxy.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
+val GradleProjectProxy.testKotlinRoot get() = File("$srcRoot/test/kotlin")
 
-fun Project.mainLayoutRootOrNull(): File? {
+fun GradleProjectProxy.mainLayoutRootOrNull(): File? {
   val file = File("$srcRoot/main/res/layout")
   return if (file.exists()) file else null
 }
 
-fun Project.mainResRootOrNull(): File? {
+fun GradleProjectProxy.mainResRootOrNull(): File? {
   val file = File("$srcRoot/main/res")
   return if (file.exists()) file else null
 }

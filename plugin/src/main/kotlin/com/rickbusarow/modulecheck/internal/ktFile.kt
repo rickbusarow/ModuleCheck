@@ -73,8 +73,8 @@ fun KtFile.replaceImports(newImportsText: String): KtFile {
       newText
     ) as KtFile
     ).apply {
-      putUserData(ABSOLUTE_PATH, path)
-    }
+    putUserData(ABSOLUTE_PATH, path)
+  }
 }
 
 fun KtFile.sortImports(): KtFile {
@@ -102,8 +102,8 @@ fun KtFile.sortImports(): KtFile {
       newText
     ) as KtFile
     ).apply {
-      putUserData(ABSOLUTE_PATH, path)
-    }
+    putUserData(ABSOLUTE_PATH, path)
+  }
 }
 
 fun KtFile.removeImport(fqImport: String): KtFile = removeImports(createImport(fqImport))
@@ -169,8 +169,8 @@ private fun KtFile.updateImports(
       newText
     ) as KtFile
     ).apply {
-      putUserData(ABSOLUTE_PATH, path)
-    }
+    putUserData(ABSOLUTE_PATH, path)
+  }
 }
 
 fun KtFile.replaceClass(
@@ -188,8 +188,8 @@ fun KtFile.replaceClass(
       newText
     ) as KtFile
     ).apply {
-      putUserData(ABSOLUTE_PATH, path)
-    }
+    putUserData(ABSOLUTE_PATH, path)
+  }
 }
 
 fun KtFile.write(path: String = absolutePath()) {

@@ -3,8 +3,7 @@ package com.rickbusarow.modulecheck.parser
 import com.rickbusarow.modulecheck.Config
 import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.MCP
-import org.gradle.api.Project
-import org.gradle.api.artifacts.Dependency
+import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 
 object KaptParser {
 

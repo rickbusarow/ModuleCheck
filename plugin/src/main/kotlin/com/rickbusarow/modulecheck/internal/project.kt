@@ -62,8 +62,8 @@ private fun KtFile.updateImports(
       newText
     ) as KtFile
     ).apply {
-      putUserData(ABSOLUTE_PATH, path)
-    }
+    putUserData(ABSOLUTE_PATH, path)
+  }
 }
 
 val File.generated get() = File(this.path + "/generated")
