@@ -13,24 +13,21 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.parser.android
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import groovy.util.Node
+import groovy.util.XmlParser
 import java.io.File
 
 object AndroidLayoutParser {
-  private val parser = XmlMapper()
+  private val parser = XmlParser()
 
   fun parseViews(file: File): Set<String> {
-    val t = javax.xml.parsers.SAXParserFactory.newDefaultInstance().newSAXParser()
-
-    t.xmlReader
-
-      .return parser.parse(file)
-        .breadthFirst()
-        .filterIsInstance<Node>()
-        .mapNotNull { it.name() as? String }
-        .toSet()
+    return parser.parse(file)
+      .breadthFirst()
+      .filterIsInstance<Node>()
+      .mapNotNull { it.name() as? String }
+      .toSet()
   }
 
   fun parseResources(file: File): Set<String> {

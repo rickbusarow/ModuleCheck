@@ -13,9 +13,21 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.internal
+package com.rickbusarow.modulecheck.rule
 
-import java.io.File
+import com.rickbusarow.modulecheck.MCP
+import org.gradle.api.Project
 
-fun Sequence<File>.ktFiles() = filter { it.isFile }
-  .mapNotNull { it.asKtFile() }
+abstract class Rule<T>(
+  protected val project: Project,
+  protected val alwaysIgnore: Set<String>,
+  protected val ignoreAll: Set<String>
+) {
+
+  abstract fun check(): List<T>
+
+  protected fun Project.moduleCheckProjects() =
+    project.rootProject.allprojects
+      .filter { gradleProject -> gradleProject.buildFile.exists() }
+      .map { gradleProject -> MCP.from(gradleProject) }
+}

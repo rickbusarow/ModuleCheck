@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.parser.android
 
 sealed class AndroidResource(val prefix: kotlin.String) {
 

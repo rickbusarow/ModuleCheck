@@ -16,28 +16,25 @@
 package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.internal.asKtFile
+import com.rickbusarow.modulecheck.parser.DslBlockParser
+import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
+import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import org.gradle.api.tasks.TaskAction
-import org.jetbrains.kotlin.com.intellij.psi.PsiComment
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
-import org.jetbrains.kotlin.psi.KtBlockExpression
-import org.jetbrains.kotlin.psi.KtCallExpression
-import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
-import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun run() {
-    project.allprojects.forEach { sub ->
-      if (sub.buildFile.exists()) {
-        val visitor = GradlePluginVisitor()
-        sub
-          .buildFile
-          .asKtFile()
-          .accept(visitor)
+    val parser = DslBlockParser("plugins")
 
-        val comparator = compareBy<PsiElementWithSurroundings>(
+    project
+      .allprojects
+      .filter { it.buildFile.exists() }
+      .forEach { sub ->
+
+        val result = parser.parse(sub.buildFile.asKtFile()) ?: return@forEach
+
+        val comparator = compareBy<PsiElementWithSurroundingText>(
           { !it.psiElement.text.startsWith("""id("com.android""") },
           { !it.psiElement.text.startsWith("""id("java-library")""") },
           { it.psiElement.text != """kotlin("jvm")""" },
@@ -48,61 +45,43 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
           { it.psiElement.text }
         )
 
-        val sorted = visitor
-          .things
+        // val comparator2: List<(String) -> Comparable<Boolean>> = listOf(
+        //   { !it.matches("""id\("com\.android.*"\)""".toRegex()) },
+        //   { !it.matches("""id\("android-.*"\)""".toRegex()) },
+        //   { !it.matches("""id\("java-library"\)""".toRegex()) },
+        //   { !it.matches("""kotlin\("jvm"\)""".toRegex()) },
+        //   { !it.matches("""android.*""".toRegex()) },
+        //   { !it.matches("""javaLibrary.*""".toRegex()) },
+        //   { !it.matches("""kotlin.*""".toRegex()) },
+        //   { !it.matches("""id.*""".toRegex()) }
+        // )
+        //
+        // val c3 = Comparator<PsiElementWithSurroundingText> { o1, o2 ->
+        //   TODO("Not yet implemented")
+        // }
+        //
+        // val patterns = listOf(
+        //   """id\("com\.android.*"\)""",
+        //   """id\("android-.*"\)""",
+        //   """id\("java-library"\)""",
+        //   """kotlin\("jvm"\)""",
+        //   """android.*""",
+        //   """javaLibrary.*""",
+        //   """kotlin.*""",
+        //   """id.*"""
+        // )
+
+        val sorted = result
+          .elements
           .sortedWith(comparator)
           .joinToString("\n")
           .trim()
 
         val allText = sub.buildFile.readText()
 
-        visitor.blockText?.let {
-          val newText = allText.replace(it, sorted)
+        val newText = allText.replace(result.blockText, sorted)
 
-          sub.buildFile.writeText(newText)
-        }
+        sub.buildFile.writeText(newText)
       }
-    }
-  }
-}
-
-class GradlePluginVisitor : KtTreeVisitorVoid() {
-
-  val things = mutableListOf<PsiElementWithSurroundings>()
-  var blockText: String? = null
-  var blockWhiteSpace: String? = null
-
-  override fun visitCallExpression(expression: KtCallExpression) {
-    if (expression.text.startsWith("plugins {")) {
-      val visitor = PluginBlockDeclarationVisitor()
-
-      expression.findDescendantOfType<KtBlockExpression>()?.let {
-        blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
-        visitor.visitBlockExpression(it)
-      }
-    }
-  }
-
-  inner class PluginBlockDeclarationVisitor : KtTreeVisitorVoid() {
-
-    override fun visitBlockExpression(expression: KtBlockExpression) {
-      blockText = expression.text
-
-      val visited = mutableSetOf<PsiElement>()
-
-      val elements = expression
-        .children
-        .filterNot { it is PsiComment || it is PsiWhiteSpace }
-        .filterIsInstance<PsiElement>()
-        .mapIndexed { index, psi ->
-          if (index == 0) {
-            psi.withSurroundings(visited, blockWhiteSpace ?: "")
-          } else {
-            psi.withSurroundings(visited)
-          }
-        }
-
-      things.addAll(elements)
-    }
   }
 }

@@ -19,6 +19,7 @@ import com.rickbusarow.modulecheck.files.JavaFile
 import com.rickbusarow.modulecheck.files.KotlinFile
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.internal.files
+import com.rickbusarow.modulecheck.task.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory

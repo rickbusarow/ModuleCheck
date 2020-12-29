@@ -15,59 +15,91 @@
 
 package com.rickbusarow.modulecheck.internal
 
+import java.util.*
+
 @Suppress("DefaultLocale")
 object Output {
 
+  private const val prefix = "\u001B"
+
   fun printBlueBackground(message: String) {
-    print(AnsiColor.WHITE.boldHighIntensity)
-    print(AnsiColor.BLUE.background)
+    print(Color.WHITE.boldHighIntensity)
+    print(Color.BLUE.background)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printBlue(message: String) {
-    print(AnsiColor.BLUE.bold)
+    print(Color.BLUE.bold)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printGreenBackground(message: String) {
-    print(AnsiColor.WHITE.boldHighIntensity)
-    print(AnsiColor.GREEN.background)
+    print(Color.WHITE.boldHighIntensity)
+    print(Color.GREEN.background)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printMagenta(message: String) {
-    print(AnsiColor.MAGENTA.bold)
+    print(Color.MAGENTA.bold)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printYellow(message: String) {
-    print(AnsiColor.YELLOW.bold)
+    print(Color.YELLOW.bold)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printGreen(message: String) {
-    print(AnsiColor.GREEN.bold)
+    print(Color.GREEN.bold)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
   fun printRed(message: String) {
-    print(AnsiColor.RED.bold)
+    print(Color.RED.bold)
     print(message)
-    println(AnsiColor.RESET)
+    reset()
   }
 
-  fun red(message: String) = AnsiColor.RED.bold + message + AnsiColor.RESET
+  private fun reset() {
+    println("$prefix[0m")
+  }
+
+  fun red(message: String) = Color.RED.bold + message + "$prefix[0m"
 
   fun magentaBackground(message: String): String {
-    return AnsiColor.MAGENTA.background +
-      AnsiColor.WHITE.boldHighIntensity +
+    return Color.MAGENTA.background +
+      Color.WHITE.boldHighIntensity +
       message +
-      AnsiColor.RESET
+      "$prefix[0m"
+  }
+
+  @Suppress("MagicNumber")
+  enum class Color(private val colorNumber: Byte) {
+    BLACK(0),
+    RED(1),
+    GREEN(2),
+    YELLOW(3),
+    BLUE(4),
+    MAGENTA(5),
+    CYAN(6),
+    WHITE(7);
+
+    val background get() = if (!windows) "$prefix[4${colorNumber}m" else ""
+    val backgroundHighIntensity get() = if (!windows) "$prefix[0;10${colorNumber}m" else ""
+    val bold get() = if (!windows) "$prefix[1;3${colorNumber}m" else ""
+    val boldHighIntensity get() = if (!windows) "$prefix[1;9${colorNumber}m" else ""
+    val highIntensity get() = if (!windows) "$prefix[0;9${colorNumber}m" else ""
+    val regular get() = if (!windows) "$prefix[0;3${colorNumber}m" else ""
+    val underline get() = if (!windows) "$prefix[4;3${colorNumber}m" else ""
+
+    companion object {
+      private val windows = "win" in System.getProperty("os.name").toLowerCase(Locale.ROOT)
+    }
   }
 }
