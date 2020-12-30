@@ -57,7 +57,8 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
       .map { gradleProject -> MCP.from(gradleProject) }
 
   protected inline fun <T, R> T.measured(action: T.() -> R): R {
-    var r: R? = null
+
+    var r: R
 
     val time = measureTimeMillis {
       r = action()
@@ -65,6 +66,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
     Output.printGreen("total parsing time --> $time milliseconds")
 
-    return r!!
+    return r
   }
 }
