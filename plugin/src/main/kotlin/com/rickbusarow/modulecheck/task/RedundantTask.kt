@@ -16,11 +16,11 @@
 package com.rickbusarow.modulecheck.task
 
 import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.rule.OverShotRule
+import com.rickbusarow.modulecheck.rule.RedundantRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
-abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
+abstract class RedundantTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
@@ -28,7 +28,7 @@ abstract class ModuleCheckOverShotTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      OverShotRule(project, alwaysIgnore, ignoreAll).check()
+      RedundantRule(project, alwaysIgnore, ignoreAll).check()
         .finish()
     }
 

@@ -22,7 +22,7 @@ class RedundantRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : Rule<DependencyFinding.RedundantDependency>(
+) : AbstractRule<DependencyFinding.RedundantDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 

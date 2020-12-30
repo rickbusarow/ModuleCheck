@@ -15,6 +15,7 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.parser.*
 import org.gradle.api.Project

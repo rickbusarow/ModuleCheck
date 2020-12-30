@@ -48,13 +48,13 @@ class ModuleCheckPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
     target.tasks.register("moduleCheck", ModuleCheckTask::class.java)
-    target.tasks.register("moduleCheckOverShot", ModuleCheckOverShotTask::class.java)
-    target.tasks.register("moduleCheckRedundant", ModuleCheckRedundantTask::class.java)
-    target.tasks.register("moduleCheckUnused", ModuleCheckUnusedTask::class.java)
-    target.tasks.register("moduleCheckUsed", ModuleCheckUsedTask::class.java)
+    target.tasks.register("moduleCheckOverShot", OverShotTask::class.java)
+    target.tasks.register("moduleCheckRedundant", RedundantTask::class.java)
+    target.tasks.register("moduleCheckUnused", UnusedTask::class.java)
+    target.tasks.register("moduleCheckUsed", UsedTask::class.java)
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
     target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
-    target.tasks.register("moduleCheckKapt", ModuleCheckKaptTask::class.java)
+    target.tasks.register("moduleCheckKapt", KaptTask::class.java)
   }
 }
 

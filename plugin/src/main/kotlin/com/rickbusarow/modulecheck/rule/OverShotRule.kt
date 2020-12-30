@@ -22,7 +22,7 @@ class OverShotRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : Rule<DependencyFinding.OverShotDependency>(
+) : AbstractRule<DependencyFinding.OverShotDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 

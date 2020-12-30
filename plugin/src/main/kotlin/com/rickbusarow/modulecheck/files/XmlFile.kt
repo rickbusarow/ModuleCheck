@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.files
 
 import com.rickbusarow.modulecheck.parser.android.AndroidLayoutParser
 import java.io.File

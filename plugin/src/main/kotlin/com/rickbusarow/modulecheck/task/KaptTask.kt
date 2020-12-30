@@ -25,7 +25,7 @@ import org.gradle.api.tasks.TaskAction
  *
  * Throws warnings if a processor is applied without any annotations being used.
  */
-abstract class ModuleCheckKaptTask : AbstractModuleCheckTask() {
+abstract class KaptTask : AbstractModuleCheckTask() {
 
   init {
     description =

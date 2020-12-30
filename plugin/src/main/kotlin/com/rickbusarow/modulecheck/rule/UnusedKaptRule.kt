@@ -22,7 +22,7 @@ class UnusedKaptRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : Rule<UnusedKapt>(
+) : AbstractRule<UnusedKapt>(
   project, alwaysIgnore, ignoreAll
 ) {
 

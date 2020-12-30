@@ -16,26 +16,25 @@
 package com.rickbusarow.modulecheck.task
 
 import com.rickbusarow.modulecheck.internal.Output
+import com.rickbusarow.modulecheck.rule.OverShotRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
-abstract class ModuleCheckUsedTask : AbstractModuleCheckTask() {
+abstract class OverShotTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
-    val pairs = measured {
-      project
-        .moduleCheckProjects()
-        .map { mcp ->
-          mcp to mcp.resolvedMainDependencies
-        }
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
+
+    measured {
+      OverShotRule(project, alwaysIgnore, ignoreAll).check()
+        .finish()
     }
 
-    pairs
-      .sortedBy { it.first }
-      .forEach { (mcp, lst) ->
-        @Suppress("MagicNumber")
-        (Output.printYellow("${mcp.path.padEnd(50)} -- ${lst.joinToString { it.project.path }}"))
+    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
+      .forEach { (depth, modules) ->
+        Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
   }
 }

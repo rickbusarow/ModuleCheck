@@ -18,7 +18,7 @@ package com.rickbusarow.modulecheck.rule
 import com.rickbusarow.modulecheck.MCP
 import org.gradle.api.Project
 
-abstract class Rule<T>(
+abstract class AbstractRule<T>(
   protected val project: Project,
   protected val alwaysIgnore: Set<String>,
   protected val ignoreAll: Set<String>

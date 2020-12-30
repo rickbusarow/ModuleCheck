@@ -22,7 +22,7 @@ class UnusedRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : Rule<DependencyFinding.UnusedDependency>(
+) : AbstractRule<DependencyFinding.UnusedDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
