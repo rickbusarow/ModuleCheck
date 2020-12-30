@@ -46,13 +46,13 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
         val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> = patterns
           .map { it.toRegex() }
-          .map { reg ->
-            { str: String -> !str.matches(reg) }
+          .map { regex ->
+            { str: String -> !str.matches(regex) }
           }
-          .map { bool ->
+          .map { booleanLambda ->
             { psi: PsiElementWithSurroundingText ->
 
-              bool.invoke(psi.psiElement.text)
+              booleanLambda.invoke(psi.psiElement.text)
             }
           }.toTypedArray()
 
