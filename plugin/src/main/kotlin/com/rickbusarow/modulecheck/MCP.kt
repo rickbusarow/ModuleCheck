@@ -43,6 +43,8 @@ class MCP private constructor(
     }
   }
 
+  val plugins by lazy { project.plugins }
+
   val overshot by OvershotParser.parseLazy(this)
   val unused by UnusedParser.parseLazy(this)
   val unusedKapt by UnusedKaptParser.parseLazy(this)
