@@ -15,7 +15,7 @@
 
 package com.rickbusarow.modulecheck.task
 
-import com.rickbusarow.modulecheck.rule.UnusedKaptRule
+import com.rickbusarow.modulecheck.rule.UnusedKaptPluginRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
@@ -25,7 +25,7 @@ import org.gradle.api.tasks.TaskAction
  *
  * Throws warnings if a processor is applied without any annotations being used.
  */
-abstract class KaptTask : AbstractModuleCheckTask() {
+abstract class KaptPluginTask : AbstractModuleCheckTask() {
 
   init {
     description =
@@ -38,13 +38,13 @@ abstract class KaptTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      val unused = UnusedKaptRule(project, alwaysIgnore, ignoreAll).check()
+      val unused = UnusedKaptPluginRule(project, alwaysIgnore, ignoreAll).check()
 
       unused
         .forEach { finding ->
 
           project.logger.error(
-            "unused ${finding.config.name} dependency: ${finding.logString()}"
+            "unused kapt plugin: ${finding.mcp.path}"
           )
           finding.fix()
 //      MCP.reset()
@@ -52,4 +52,3 @@ abstract class KaptTask : AbstractModuleCheckTask() {
     }
   }
 }
-

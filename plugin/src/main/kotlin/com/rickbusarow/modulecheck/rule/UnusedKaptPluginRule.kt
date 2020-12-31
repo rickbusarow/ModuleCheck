@@ -15,36 +15,45 @@
 
 package com.rickbusarow.modulecheck.rule
 
-import com.rickbusarow.modulecheck.parser.UnusedKapt
+import com.rickbusarow.modulecheck.Fixable
+import com.rickbusarow.modulecheck.MCP
 import org.gradle.api.Project
 
-class UnusedKaptRule(
+class UnusedKaptPluginRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<UnusedKapt>(
+) : AbstractRule<UnusedKaptPlugin>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<UnusedKapt> {
+  override fun check(): List<UnusedKaptPlugin> {
     return project
       .moduleCheckProjects()
       .sorted()
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
-      .flatMap { moduleCheckProject ->
+      .mapNotNull { moduleCheckProject ->
         with(moduleCheckProject) {
-          unusedKapt
-            .all()
-            .mapNotNull { dependency ->
-              if (dependency.dependencyPath in alwaysIgnore) {
-                null
-              } else {
-                dependency
-              }
-            }
-            .distinctBy { it.dependencyPath }
+
+          val kapt = plugins.findPlugin("org.jetbrains.kotlin.kapt")
+
+          if (kapt != null) {
+
+            val unused = unusedKapt.all().size == kaptDependencies.all().size
+            if (unused) {
+              UnusedKaptPlugin(this)
+            } else null
+          } else {
+            null
+          }
         }
       }
   }
 }
 
+data class UnusedKaptPlugin(val mcp: MCP): Fixable {
+
+  override fun fix() {
+    TODO("Not yet implemented")
+  }
+}

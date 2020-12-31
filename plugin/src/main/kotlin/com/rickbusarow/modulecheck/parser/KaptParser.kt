@@ -37,47 +37,6 @@ object KaptParser {
   }
 }
 
-object UnusedKaptParser {
-
-  fun parseLazy(mcp: MCP): Lazy<MCP.ParsedKapt<UnusedKapt>> = lazy {
-    parse(mcp)
-  }
-
-  fun parse(mcp: MCP): MCP.ParsedKapt<UnusedKapt> {
-    val unusedAndroidTest = mcp.kaptDependencies.androidTest.filter { matcher ->
-      matcher.annotationImports.none { annotationRegex ->
-        mcp.androidTestImports.any { imp ->
-          annotationRegex.matches(imp)
-        }
-      }
-    }
-      .map { UnusedKapt(mcp.project, it.processor, Config.KaptAndroidTest) }
-      .toSet()
-
-    val unusedMain = mcp.kaptDependencies.main.filter { matcher ->
-      mcp.mainImports.none { imp ->
-        matcher.annotationImports.any { annotationRegex ->
-          annotationRegex.matches(imp)
-        }
-      }
-    }
-      .map { UnusedKapt(mcp.project, it.processor, Config.Kapt) }
-      .toSet()
-
-    val unusedTest = mcp.kaptDependencies.test.filter { matcher ->
-      matcher.annotationImports.none { annotationRegex ->
-        mcp.testImports.any { imp ->
-          annotationRegex.matches(imp)
-        }
-      }
-    }
-      .map { UnusedKapt(mcp.project, it.processor, Config.KaptTest) }
-      .toSet()
-
-    return MCP.ParsedKapt(unusedAndroidTest, unusedMain, unusedTest)
-  }
-}
-
 data class UnusedKapt(
   val dependentProject: Project,
   val dependencyPath: String,
@@ -175,8 +134,8 @@ internal val kaptMatchers: Map<String, KaptMatcher> = listOf(
     name = "Dagger Android",
     processor = "com.google.dagger:dagger-android-processor",
     annotationImports = listOf(
-      "javax\\.android\\.\\*",
-      "javax\\.android\\.ContributesAndroidInjector"
+      "dagger\\.android\\.\\*",
+      "dagger\\.android\\.ContributesAndroidInjector"
     ).map { it.toRegex() }
   ),
   KaptMatcher(
