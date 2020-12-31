@@ -25,34 +25,42 @@ object UnusedKaptParser {
   }
 
   fun parse(mcp: MCP): MCP.ParsedKapt<UnusedKapt> {
-    val unusedAndroidTest = mcp.kaptDependencies.androidTest.filter { matcher ->
-      matcher.annotationImports.none { annotationRegex ->
-        mcp.androidTestImports.any { imp ->
-          annotationRegex.matches(imp)
+    val matchers = kaptMatchers.asMap()
+
+    val unusedAndroidTest = mcp.kaptDependencies.androidTest.filter { coords ->
+      matchers[coords.coordinates]?.let { matcher ->
+        matcher.annotationImports.none { annotationRegex ->
+          mcp.androidTestImports.any { imp ->
+            annotationRegex.matches(imp)
+          }
         }
-      }
+      } == true
     }
-      .map { UnusedKapt(mcp.project, it.processor, Config.KaptAndroidTest) }
+      .map { UnusedKapt(mcp.project, it.coordinates, Config.KaptAndroidTest) }
       .toSet()
 
-    val unusedMain = mcp.kaptDependencies.main.filter { matcher ->
-      mcp.mainImports.none { imp ->
-        matcher.annotationImports.any { annotationRegex ->
-          annotationRegex.matches(imp)
+    val unusedMain = mcp.kaptDependencies.main.filter { coords ->
+      matchers[coords.coordinates]?.let { matcher ->
+        mcp.mainImports.none { imp ->
+          matcher.annotationImports.any { annotationRegex ->
+            annotationRegex.matches(imp)
+          }
         }
-      }
+      } == true
     }
-      .map { UnusedKapt(mcp.project, it.processor, Config.Kapt) }
+      .map { UnusedKapt(mcp.project, it.coordinates, Config.Kapt) }
       .toSet()
 
-    val unusedTest = mcp.kaptDependencies.test.filter { matcher ->
-      matcher.annotationImports.none { annotationRegex ->
-        mcp.testImports.any { imp ->
-          annotationRegex.matches(imp)
+    val unusedTest = mcp.kaptDependencies.test.filter { coords ->
+      matchers[coords.coordinates]?.let { matcher ->
+        matcher.annotationImports.none { annotationRegex ->
+          mcp.testImports.any { imp ->
+            annotationRegex.matches(imp)
+          }
         }
-      }
+      } == true
     }
-      .map { UnusedKapt(mcp.project, it.processor, Config.KaptTest) }
+      .map { UnusedKapt(mcp.project, it.coordinates, Config.KaptTest) }
       .toSet()
 
     return MCP.ParsedKapt(unusedAndroidTest, unusedMain, unusedTest)

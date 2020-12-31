@@ -15,36 +15,59 @@
 
 package com.rickbusarow.modulecheck.rule
 
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.parser.KaptMatcher
 import com.rickbusarow.modulecheck.parser.UnusedKapt
+import com.rickbusarow.modulecheck.parser.asMap
 import org.gradle.api.Project
 
 class UnusedKaptRule(
   project: Project,
   alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
+  ignoreAll: Set<String>,
+  private val kaptMatchers: List<KaptMatcher>
 ) : AbstractRule<UnusedKapt>(
   project, alwaysIgnore, ignoreAll
 ) {
 
   override fun check(): List<UnusedKapt> {
+    val matchers = kaptMatchers.asMap()
+
     return project
       .moduleCheckProjects()
       .sorted()
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
       .flatMap { moduleCheckProject ->
-        with(moduleCheckProject) {
-          unusedKapt
-            .all()
-            .mapNotNull { dependency ->
-              if (dependency.dependencyPath in alwaysIgnore) {
-                null
-              } else {
-                dependency
-              }
+        with(moduleCheckProject) mcp@{
+          listOf(
+            Config.KaptAndroidTest to androidTestImports,
+            Config.Kapt to mainImports,
+            Config.KaptTest to testImports
+          ).flatMap { (config, imports) ->
+
+            val processors = when (config) {
+              Config.KaptAndroidTest -> kaptDependencies.androidTest
+              Config.Kapt -> kaptDependencies.main
+              Config.KaptTest -> kaptDependencies.test
+              else -> throw IllegalArgumentException("")
             }
-            .distinctBy { it.dependencyPath }
+
+            processors.filter { coords ->
+
+              matchers[coords.coordinates]?.let { matcher ->
+
+                matcher.annotationImports.none { annotationRegex ->
+
+                  imports.any { import ->
+
+                    annotationRegex.matches(import)
+                  }
+                }
+              } == true
+            }
+              .map { UnusedKapt(this.project, it.coordinates, config) }
+          }
         }
       }
   }
 }
-

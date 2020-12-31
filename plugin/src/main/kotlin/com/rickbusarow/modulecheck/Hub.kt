@@ -58,4 +58,3 @@ interface McpComponent {
     fun create(): T
   }
 }
-

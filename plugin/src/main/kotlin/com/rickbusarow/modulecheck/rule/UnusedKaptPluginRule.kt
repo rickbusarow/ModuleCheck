@@ -34,11 +34,9 @@ class UnusedKaptPluginRule(
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
       .mapNotNull { moduleCheckProject ->
         with(moduleCheckProject) {
-
           val kapt = plugins.findPlugin("org.jetbrains.kotlin.kapt")
 
           if (kapt != null) {
-
             val unused = unusedKapt.all().size == kaptDependencies.all().size
             if (unused) {
               UnusedKaptPlugin(this)
@@ -51,9 +49,8 @@ class UnusedKaptPluginRule(
   }
 }
 
-data class UnusedKaptPlugin(val mcp: MCP): Fixable {
+data class UnusedKaptPlugin(val mcp: MCP) : Fixable {
 
   override fun fix() {
-    TODO("Not yet implemented")
   }
 }

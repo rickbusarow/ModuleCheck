@@ -15,9 +15,15 @@
 
 package com.rickbusarow.modulecheck.task
 
+import com.rickbusarow.modulecheck.ModuleCheckExtension
+import com.rickbusarow.modulecheck.parser.KaptMatcher
+import com.rickbusarow.modulecheck.parser.kaptMatchers
 import com.rickbusarow.modulecheck.rule.UnusedKaptRule
 import kotlinx.coroutines.runBlocking
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.getByType
 
 /**
  * Loops through all registered annotation processors for each module,
@@ -25,12 +31,17 @@ import org.gradle.api.tasks.TaskAction
  *
  * Throws warnings if a processor is applied without any annotations being used.
  */
-abstract class KaptTask : AbstractModuleCheckTask() {
+abstract class UnusedKaptTask : AbstractModuleCheckTask() {
 
   init {
     description =
       "Checks all modules with registered annotation processors to ensure they're needed."
   }
+
+  @get:Input
+  val additionalKaptMatchers: ListProperty<KaptMatcher> = project.extensions
+    .getByType<ModuleCheckExtension>()
+    .additionalKaptMatchers
 
   @TaskAction
   fun execute() = runBlocking {
@@ -38,7 +49,12 @@ abstract class KaptTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      val unused = UnusedKaptRule(project, alwaysIgnore, ignoreAll).check()
+      val unused = UnusedKaptRule(
+        project = project,
+        alwaysIgnore = alwaysIgnore,
+        ignoreAll = ignoreAll,
+        kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
+      ).check()
 
       unused
         .forEach { finding ->
@@ -52,4 +68,3 @@ abstract class KaptTask : AbstractModuleCheckTask() {
     }
   }
 }
-

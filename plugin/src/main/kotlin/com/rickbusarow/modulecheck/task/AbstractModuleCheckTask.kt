@@ -57,7 +57,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
       .map { gradleProject -> MCP.from(gradleProject) }
 
   protected inline fun <T, R> T.measured(action: T.() -> R): R {
-
     var r: R
 
     val time = measureTimeMillis {

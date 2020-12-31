@@ -22,22 +22,8 @@ import com.rickbusarow.modulecheck.internal.files
 import com.rickbusarow.modulecheck.task.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.SetProperty
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.setProperty
 import java.io.File
-
-@Suppress("UnnecessaryAbstractClass")
-abstract class ModuleCheckExtension(objects: ObjectFactory) {
-
-  val alwaysIgnore: SetProperty<String> = objects.setProperty<String>()
-  val ignoreAll: SetProperty<String> = objects.setProperty<String>()
-
-//  fun addKapt(name: String, coordinates: String, vararg imports: Regex) {
-//
-//  }
-}
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -54,7 +40,8 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckUsed", UsedTask::class.java)
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
     target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
-    target.tasks.register("moduleCheckKapt", KaptTask::class.java)
+    target.tasks.register("moduleCheckKapt", UnusedKaptTask::class.java)
+    target.tasks.register("moduleCheckKaptPlugin", KaptPluginTask::class.java)
   }
 }
 
