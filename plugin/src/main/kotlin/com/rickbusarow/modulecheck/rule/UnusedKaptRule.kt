@@ -18,6 +18,7 @@ package com.rickbusarow.modulecheck.rule
 import com.rickbusarow.modulecheck.Config
 import com.rickbusarow.modulecheck.parser.KaptMatcher
 import com.rickbusarow.modulecheck.parser.UnusedKapt
+import com.rickbusarow.modulecheck.parser.UnusedKaptProcessor
 import com.rickbusarow.modulecheck.parser.asMap
 import org.gradle.api.Project
 
@@ -33,7 +34,7 @@ class UnusedKaptRule(
   override fun check(): List<UnusedKapt> {
     val matchers = kaptMatchers.asMap()
 
-    return project
+    val unusedProcessors =  project
       .moduleCheckProjects()
       .sorted()
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
@@ -65,9 +66,13 @@ class UnusedKaptRule(
                 }
               } == true
             }
-              .map { UnusedKapt(this.project, it.coordinates, config) }
+              .map { UnusedKaptProcessor(this.project, it.coordinates, config) }
           }
         }
       }
+
+
+
+    return unusedProcessors
   }
 }

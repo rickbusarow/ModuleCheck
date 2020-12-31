@@ -15,8 +15,7 @@
 
 package com.rickbusarow.modulecheck.rule
 
-import com.rickbusarow.modulecheck.Fixable
-import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.parser.UnusedKaptPlugin
 import org.gradle.api.Project
 
 class UnusedKaptPluginRule(
@@ -39,18 +38,12 @@ class UnusedKaptPluginRule(
           if (kapt != null) {
             val unused = unusedKapt.all().size == kaptDependencies.all().size
             if (unused) {
-              UnusedKaptPlugin(this)
+              UnusedKaptPlugin(this.project)
             } else null
           } else {
             null
           }
         }
       }
-  }
-}
-
-data class UnusedKaptPlugin(val mcp: MCP) : Fixable {
-
-  override fun fix() {
   }
 }

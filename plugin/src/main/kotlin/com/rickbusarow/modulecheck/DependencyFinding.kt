@@ -17,6 +17,10 @@ package com.rickbusarow.modulecheck
 
 import org.gradle.api.Project
 
+interface Finding {
+  val dependentProject: Project
+}
+
 interface Fixable {
   fun fix()
 }

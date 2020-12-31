@@ -20,11 +20,11 @@ import com.rickbusarow.modulecheck.MCP
 
 object UnusedKaptParser {
 
-  fun parseLazy(mcp: MCP): Lazy<MCP.ParsedKapt<UnusedKapt>> = lazy {
+  fun parseLazy(mcp: MCP): Lazy<MCP.ParsedKapt<UnusedKaptProcessor>> = lazy {
     parse(mcp)
   }
 
-  fun parse(mcp: MCP): MCP.ParsedKapt<UnusedKapt> {
+  fun parse(mcp: MCP): MCP.ParsedKapt<UnusedKaptProcessor> {
     val matchers = kaptMatchers.asMap()
 
     val unusedAndroidTest = mcp.kaptDependencies.androidTest.filter { coords ->
@@ -36,7 +36,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKapt(mcp.project, it.coordinates, Config.KaptAndroidTest) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.KaptAndroidTest) }
       .toSet()
 
     val unusedMain = mcp.kaptDependencies.main.filter { coords ->
@@ -48,7 +48,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKapt(mcp.project, it.coordinates, Config.Kapt) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.Kapt) }
       .toSet()
 
     val unusedTest = mcp.kaptDependencies.test.filter { coords ->
@@ -60,7 +60,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKapt(mcp.project, it.coordinates, Config.KaptTest) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.KaptTest) }
       .toSet()
 
     return MCP.ParsedKapt(unusedAndroidTest, unusedMain, unusedTest)
