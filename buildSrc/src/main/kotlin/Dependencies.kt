@@ -19,38 +19,38 @@ object Plugins {
   const val androidLibrary = "com.android.library"
   const val anvil = "com.squareup.anvil"
   const val atomicFu = "kotlinx-atomicfu"
+  const val benManes = "com.github.ben-manes.versions"
   const val canIDropJetifier = "com.github.plnice.canidropjetifier"
   const val changeTracker = "com.ismaeldivita.changetracker"
   const val crashlytics = "com.google.firebase.crashlytics"
   const val dependencyAnalysis = "com.autonomousapps.dependency-analysis"
   const val detekt = "io.gitlab.arturbosch.detekt"
   const val dokka = "org.jetbrains.dokka"
+  const val gradleDoctor = "com.osacky.doctor"
   const val javaLibrary = "java-library"
   const val knit = "kotlinx-knit"
-  const val ktLint = "org.jlleitschuh.gradle.ktlint"
   const val kotlinAndroidExtensions = "kotlin-android-extensions"
+  const val kotlinter = "org.jmailen.kotlinter"
   const val mavenPublish = "com.vanniktech.maven.publish"
   const val spoon = "com.jaredsburrows.spoon"
   const val spotless = "com.diffplug.spotless"
   const val taskTree = "com.dorongold.task-tree"
-  const val benManes = "com.github.ben-manes.versions"
-  const val gradleDoctor = "com.osacky.doctor"
 }
 
 object Versions {
 
   const val androidTools = "4.1.1"
   const val anvil = "2.0.6"
-  const val compileSdk = 30
   const val benManes = "0.36.0"
   const val canIDropJetifier = "0.5"
   const val changeTracker = "0.7.3"
+  const val compileSdk = 30
   const val dependencyAnalysis = "0.63.0"
   const val dokka = "1.4.20"
   const val gradleDoctor = "0.7.0"
   const val knit = "0.2.3"
-  const val ktLint = "9.4.1"
   const val kotlin = "1.4.21"
+  const val kotlinter = "3.3.0"
   const val mavenPublish = "0.13.0"
   const val minSdk = "23"
   const val sonarPlugin = "2.6.1"
@@ -64,14 +64,13 @@ object Versions {
 object BuildPlugins {
 
   const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidTools}"
+  const val anvil = "com.squareup.anvil:gradle-plugin:${Versions.anvil}"
   const val atomicFu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.14.1"
   const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
   const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
-  const val gradleMavenPublish =
-    "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
-  const val knit = "org.jetbrains.kotlinx:kotlinx-knit:${Versions.knit}"
-  const val anvil = "com.squareup.anvil:gradle-plugin:${Versions.anvil}"
+  const val gradleMavenPublish = "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+  const val kotlinter = "org.jmailen.gradle:kotlinter-gradle:${Versions.kotlinter}"
   const val spoon = "com.jaredsburrows:gradle-spoon-plugin:${Versions.spoon}"
 }
 
