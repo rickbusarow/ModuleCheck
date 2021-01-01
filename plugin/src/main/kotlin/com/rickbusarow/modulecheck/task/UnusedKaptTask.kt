@@ -59,10 +59,7 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
       unused
         .forEach { finding ->
 
-          project.logger.error(
-            "       asdfasdfasdfsadf"
-            // "unused ${finding.config.name} dependency: ${finding.logString()}"
-          )
+          project.logger.error(finding.logString())
           finding.fix()
 //      MCP.reset()
         }

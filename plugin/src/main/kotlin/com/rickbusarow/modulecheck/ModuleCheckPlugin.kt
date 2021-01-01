@@ -41,21 +41,37 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
     target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
     target.tasks.register("moduleCheckKapt", UnusedKaptTask::class.java)
-    target.tasks.register("moduleCheckKaptPlugin", KaptPluginTask::class.java)
   }
 }
 
 internal fun List<String>.positionOf(
   project: Project,
-  configuration: String
-): MCP.Position {
-  val reg = """.*$configuration\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
+  configuration: Config
+): Position? {
+  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }
 
-  val col = if (row == -1) -1 else get(row).indexOfFirst { it != ' ' }
+  if (row < 0) return null
 
-  return MCP.Position(row + 1, col + 1)
+  val col = get(row).indexOfFirst { it != ' ' }
+
+  return Position(row + 1, col + 1)
+}
+
+internal fun List<String>.positionOf(
+  path: String,
+  configuration: Config
+): Position? {
+  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+
+  val row = indexOfFirst { it.trim().matches(reg) }
+
+  if (row < 0) return null
+
+  val col = get(row).indexOfFirst { it != ' ' }
+
+  return Position(row + 1, col + 1)
 }
 
 fun File.jvmFiles() = walkTopDown()

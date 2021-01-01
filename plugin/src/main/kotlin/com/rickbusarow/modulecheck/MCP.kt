@@ -136,18 +136,12 @@ class MCP private constructor(
 
   fun positionIn(
     parent: Project,
-    configuration: String
-  ): Position =
-    parent
-      .buildFile
-      .readText()
-      .lines()
-      .positionOf(project.project, configuration)
-
-  data class Position(
-    val row: Int,
-    val column: Int
-  )
+    configuration: Config
+  ): Position? = parent
+    .buildFile
+    .readText()
+    .lines()
+    .positionOf(project.project, configuration)
 
   data class ParsedKapt<T>(
     val androidTest: Set<T>,
@@ -183,6 +177,11 @@ class MCP private constructor(
     fun from(project: Project): MCP = cache.getOrPut(project) { MCP(project) }
   }
 }
+
+data class Position(
+  val row: Int,
+  val column: Int
+)
 
 @JvmName("CppCollectionToMCP")
 fun Collection<CPP>.mcp() = map { MCP.from(it.project) }

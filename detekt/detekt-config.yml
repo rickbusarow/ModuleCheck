@@ -32,7 +32,7 @@ console-reports:
     - 'FileBasedFindingsReport'
 
 comments:
-  active: true
+  active: false
   excludes: ['**/test/**', '**/buildSrc/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   AbsentOrWrongFileLicense:
     active: false

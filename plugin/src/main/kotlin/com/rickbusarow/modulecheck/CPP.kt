@@ -21,7 +21,7 @@ data class CPP(
   val config: Config,
   val project: Project
 ) {
-
+  @Suppress("ComplexMethod")
   fun usedIn(mcp: MCP) = mcp()
     .mainDeclarations
     .any { declaration ->

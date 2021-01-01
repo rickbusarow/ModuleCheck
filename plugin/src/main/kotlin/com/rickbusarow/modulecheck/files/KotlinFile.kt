@@ -16,11 +16,11 @@
 package com.rickbusarow.modulecheck.files
 
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.psi.KtStringTemplateEntry
+import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
-import org.jetbrains.kotlin.psi.psiUtil.isPrivate
-import org.jetbrains.kotlin.psi.psiUtil.isPublic
 
 class KotlinFile(val ktFile: KtFile) : JvmFile() {
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
@@ -58,29 +58,7 @@ class DeclarationVisitor(val declarations: MutableSet<String>) : KtTreeVisitorVo
 
     super.visitNamedDeclaration(declaration)
   }
-
-  override fun visitReferenceExpression(expression: KtReferenceExpression) {
-//    expression
-//      .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
-//      ?.takeIf { it.children.isEmpty() }
-//      ?.run { println(this.text) }
-
-    super.visitReferenceExpression(expression)
-  }
 }
-
-fun KtModifierListOwner.isPublicNotOverridden() = isPublic && !isOverride()
-fun KtModifierListOwner.isPrivateOrInternal() = isPrivate() || isInternal()
-fun KtModifierListOwner.isAbstract() = hasModifier(KtTokens.ABSTRACT_KEYWORD)
-fun KtModifierListOwner.isOverride() = hasModifier(KtTokens.OVERRIDE_KEYWORD)
-fun KtModifierListOwner.isOpen() = hasModifier(KtTokens.OPEN_KEYWORD)
-fun KtModifierListOwner.isExternal() = hasModifier(KtTokens.EXTERNAL_KEYWORD)
-fun KtModifierListOwner.isOperator() = hasModifier(KtTokens.OPERATOR_KEYWORD)
-fun KtModifierListOwner.isConstant() = hasModifier(KtTokens.CONST_KEYWORD)
-fun KtModifierListOwner.isInternal() = hasModifier(KtTokens.INTERNAL_KEYWORD)
-fun KtModifierListOwner.isLateinit() = hasModifier(KtTokens.LATEINIT_KEYWORD)
-fun KtModifierListOwner.isInline() = hasModifier(KtTokens.INLINE_KEYWORD)
-fun KtModifierListOwner.isExpect() = hasModifier(KtTokens.EXPECT_KEYWORD)
 
 /**
  * Tests if this element is part of given PsiElement.

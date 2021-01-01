@@ -1,5 +1,3 @@
-
-
 /*
  * Copyright (C) 2020 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +19,10 @@ plugins {
   id("java-gradle-plugin")
   `kotlin-dsl`
   `maven-publish`
+}
+
+kotlinDslPluginOptions {
+  experimentalWarning.set(false)
 }
 
 dependencies {

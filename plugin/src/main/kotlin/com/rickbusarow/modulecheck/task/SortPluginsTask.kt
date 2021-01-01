@@ -56,7 +56,8 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
             }
           }.toTypedArray()
 
-        val comparator = compareBy<PsiElementWithSurroundingText>(*comparables)
+        @Suppress("SpreadOperator")
+        val comparator = compareBy(*comparables)
 
         val sorted = result
           .elements

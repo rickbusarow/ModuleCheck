@@ -18,15 +18,19 @@ package com.rickbusarow.modulecheck
 import org.gradle.api.Project
 
 interface Finding {
+
   val dependentProject: Project
+
+  fun logString(): String
+  fun position(): Position?
 }
 
 interface Fixable {
   fun fix()
 }
 
-abstract class DependencyFinding(val problemName: String) : Fixable {
-  abstract val dependentProject: Project
+abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
+
   abstract val dependencyProject: Project
   abstract val dependencyPath: String
   abstract val config: Config
@@ -48,9 +52,8 @@ abstract class DependencyFinding(val problemName: String) : Fixable {
     val from: MCP?
   ) : DependencyFinding("over-shot") {
 
-    override fun position(): MCP.Position {
-      return from?.positionIn(dependentProject.project, config.name)
-        ?: MCP.Position(-1, -1)
+    override fun position(): Position? {
+      return from?.positionIn(dependentProject.project, config)
     }
 
     override fun logString(): String = super.logString() + " from: ${from?.path}"
@@ -58,20 +61,23 @@ abstract class DependencyFinding(val problemName: String) : Fixable {
     override fun fix() {
       val text = dependentProject.buildFile.readText()
 
-      val row = position().row - 1
+      position()?.let { position ->
 
-      val lines = text.lines().toMutableList()
+        val row = position.row - 1
 
-      if (row > 0 && from != null) {
-        val existingPath = from.path
+        val lines = text.lines().toMutableList()
 
-        val existingLine = lines[row]
+        if (row > 0 && from != null) {
+          val existingPath = from.path
 
-        lines[row] = existingLine + "\n" + existingLine.replace(existingPath, dependencyPath)
+          val existingLine = lines[row]
 
-        val newText = lines.joinToString("\n")
+          lines[row] = existingLine + "\n" + existingLine.replace(existingPath, dependencyPath)
 
-        dependentProject.buildFile.writeText(newText)
+          val newText = lines.joinToString("\n")
+
+          dependentProject.buildFile.writeText(newText)
+        }
       }
     }
   }
@@ -86,17 +92,15 @@ abstract class DependencyFinding(val problemName: String) : Fixable {
     override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
   }
 
-  open fun position(): MCP.Position {
+  override fun position(): Position? {
     return MCP.from(dependencyProject)
-      .positionIn(dependentProject, config.name)
+      .positionIn(dependentProject, config)
   }
 
-  open fun logString(): String {
-    val pos = if (position().row == 0 || position().column == 0) {
-      ""
-    } else {
-      "(${position().row}, ${position().column}): "
-    }
+  override fun logString(): String {
+    val pos = position()?.let {
+      "(${it.row}, ${it.column}): "
+    } ?: ""
 
     return "${dependentProject.buildFile.path}: $pos$dependencyPath"
   }
@@ -104,16 +108,19 @@ abstract class DependencyFinding(val problemName: String) : Fixable {
   override fun fix() {
     val text = dependentProject.buildFile.readText()
 
-    val row = position().row - 1
+    position()?.let { position ->
 
-    val lines = text.lines().toMutableList()
+      val row = position.row - 1
 
-    if (row > 0) {
-      lines[row] = "//" + lines[row]
+      val lines = text.lines().toMutableList()
 
-      val newText = lines.joinToString("\n")
+      if (row > 0) {
+        lines[row] = "//" + lines[row]
 
-      dependentProject.buildFile.writeText(newText)
+        val newText = lines.joinToString("\n")
+
+        dependentProject.buildFile.writeText(newText)
+      }
     }
   }
 }

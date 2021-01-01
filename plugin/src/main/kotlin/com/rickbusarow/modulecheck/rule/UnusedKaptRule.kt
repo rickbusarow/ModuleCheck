@@ -16,11 +16,11 @@
 package com.rickbusarow.modulecheck.rule
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.parser.KaptMatcher
-import com.rickbusarow.modulecheck.parser.UnusedKapt
-import com.rickbusarow.modulecheck.parser.UnusedKaptProcessor
-import com.rickbusarow.modulecheck.parser.asMap
+import com.rickbusarow.modulecheck.parser.*
 import org.gradle.api.Project
+
+internal const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
   project: Project,
@@ -34,7 +34,7 @@ class UnusedKaptRule(
   override fun check(): List<UnusedKapt> {
     val matchers = kaptMatchers.asMap()
 
-    val unusedProcessors =  project
+    return project
       .moduleCheckProjects()
       .sorted()
       .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
@@ -53,7 +53,7 @@ class UnusedKaptRule(
               else -> throw IllegalArgumentException("")
             }
 
-            processors.filter { coords ->
+            val unused = processors.filter { coords ->
 
               matchers[coords.coordinates]?.let { matcher ->
 
@@ -66,13 +66,17 @@ class UnusedKaptRule(
                 }
               } == true
             }
-              .map { UnusedKaptProcessor(this.project, it.coordinates, config) }
+              .map { UnusedKaptProcessor(project, it.coordinates, config) }
+
+            val unusedPlugin = kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
+
+            if (unusedPlugin) {
+              unused + UnusedKaptPlugin(project)
+            } else {
+              unused
+            }
           }
         }
       }
-
-
-
-    return unusedProcessors
   }
 }

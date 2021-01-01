@@ -32,6 +32,7 @@ class DslBlockParser(private val blockName: String) {
     val blockWhiteSpace: String
   )
 
+  @Suppress("ReturnCount")
   fun parse(file: KtFile): ParseResult? {
     val elements = mutableListOf<PsiElementWithSurroundingText>()
     var blockText: String? = null

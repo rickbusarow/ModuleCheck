@@ -37,6 +37,7 @@ sealed class AndroidResource(val prefix: kotlin.String) {
 
     private val REGEX = """"@(.*)/(.*)"""".toRegex()
 
+    @Suppress("ComplexMethod")
     fun fromString(str: kotlin.String): AndroidResource {
       val (prefix, name) = REGEX.find(str)!!.destructured
 
