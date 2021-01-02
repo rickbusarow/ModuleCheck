@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+      - release/*
+  pull_request:
+    branches:
+      - dev
+      - main
+      - release/*
+
+jobs:
+
+  tests:
+
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+      - name : KTLint
+        run : ./gradlew lintKotlin
+      - name : detekt
+        run : ./gradlew detekt
+      - name: all tests
+        run: ./gradlew test
