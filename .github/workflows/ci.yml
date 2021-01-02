@@ -24,7 +24,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 14
+      - name : KTLint
+        run : ./gradlew lintKotlin
+      - name : detekt
+        run : ./gradlew detekt
       - name: all tests
         run: ./gradlew test
-      - name: detekt
-        run: ./gradlew detekt
