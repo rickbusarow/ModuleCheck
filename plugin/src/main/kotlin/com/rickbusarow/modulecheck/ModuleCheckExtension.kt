@@ -25,18 +25,9 @@ import org.gradle.kotlin.dsl.setProperty
 @Suppress("UnnecessaryAbstractClass")
 abstract class ModuleCheckExtension(objects: ObjectFactory) {
 
-  /**
-   * A test comment.
-   */
   val alwaysIgnore: SetProperty<String> = objects.setProperty()
 
-  /**
-   * Another test comment.
-   */
   val ignoreAll: SetProperty<String> = objects.setProperty()
 
-  /**
-   * Fooooooooo
-   */
   val additionalKaptMatchers: ListProperty<KaptMatcher> = objects.listProperty()
 }
