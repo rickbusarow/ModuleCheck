@@ -20,12 +20,12 @@ import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
-import kotlin.system.measureTimeMillis
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.getByType
+import kotlin.system.measureTimeMillis
 
 abstract class AbstractModuleCheckTask : DefaultTask() {
 

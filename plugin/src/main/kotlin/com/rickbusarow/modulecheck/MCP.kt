@@ -18,8 +18,8 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.parser.*
-import java.util.concurrent.ConcurrentHashMap
 import org.gradle.api.Project
+import java.util.concurrent.ConcurrentHashMap
 
 class MCP private constructor(
   val project: Project
