@@ -38,4 +38,3 @@ abstract class OverShotTask : AbstractModuleCheckTask() {
       }
   }
 }
-

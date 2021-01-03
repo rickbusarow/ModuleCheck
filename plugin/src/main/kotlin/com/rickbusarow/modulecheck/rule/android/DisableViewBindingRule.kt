@@ -38,7 +38,6 @@ data class UnusedViewBindingGeneration(
   }
 
   override fun position(): Position? {
-
     val ktFile = dependentProject.buildFile.asKtFile()
 
     return androidBlockParser.parse(ktFile)?.let { result ->
@@ -63,7 +62,6 @@ data class UnusedViewBindingGeneration(
   }
 
   override fun fix() {
-
     val ktFile = dependentProject.buildFile.asKtFile()
   }
 }
@@ -80,7 +78,6 @@ class DisableViewBindingRule(
 
   @Suppress("ReturnCount")
   override fun check(): List<UnusedViewBindingGeneration> {
-
     val testedExtension = project.extensions.findByType<LibraryExtension>()
       ?: project.extensions.findByType<AppExtension>()
 

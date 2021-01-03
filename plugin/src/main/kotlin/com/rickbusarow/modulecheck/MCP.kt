@@ -181,8 +181,8 @@ class MCP private constructor(
 data class Position(
   val row: Int,
   val column: Int
-){
-    fun logString(): String = "($row, $column): "
+) {
+  fun logString(): String = "($row, $column): "
 }
 
 @JvmName("CppCollectionToMCP")

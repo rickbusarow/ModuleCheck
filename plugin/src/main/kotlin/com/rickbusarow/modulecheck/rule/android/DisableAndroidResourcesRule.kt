@@ -40,7 +40,6 @@ data class UnusedResourcesGeneration(
   }
 
   override fun position(): Position? {
-
     val ktFile = dependentProject.buildFile.asKtFile()
 
     return androidBlockParser.parse(ktFile)?.let { result ->
@@ -65,7 +64,6 @@ data class UnusedResourcesGeneration(
   }
 
   override fun fix() {
-
     val ktFile = dependentProject.buildFile.asKtFile()
   }
 }
@@ -82,7 +80,6 @@ class DisableAndroidResourcesRule(
 
   @Suppress("ReturnCount")
   override fun check(): List<UnusedResourcesGeneration> {
-
     val libraryExtension = project.extensions.findByType<LibraryExtension>()
 
     libraryExtension ?: return emptyList()
@@ -107,4 +104,3 @@ class DisableAndroidResourcesRule(
     }
   }
 }
-
