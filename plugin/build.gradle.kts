@@ -28,11 +28,13 @@ kotlinDslPluginOptions {
 dependencies {
   compileOnly(gradleApi())
 
+  implementation(BuildPlugins.androidGradlePlugin)
   implementation(Libs.javaParser)
   implementation(Libs.Kotlin.compiler)
   implementation(Libs.Kotlin.gradlePlugin)
   implementation(Libs.Kotlin.reflect)
   implementation(Libs.Square.KotlinPoet.core)
+  implementation(Libs.Swiftzer.semVer)
 
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)

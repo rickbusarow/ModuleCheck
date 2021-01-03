@@ -98,9 +98,7 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
   }
 
   override fun logString(): String {
-    val pos = position()?.let {
-      "(${it.row}, ${it.column}): "
-    } ?: ""
+    val pos = position()?.logString() ?: ""
 
     return "${dependentProject.buildFile.path}: $pos$dependencyPath"
   }

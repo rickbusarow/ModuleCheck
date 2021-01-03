@@ -20,10 +20,12 @@ import com.rickbusarow.modulecheck.files.KotlinFile
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.internal.files
 import com.rickbusarow.modulecheck.task.*
+import com.rickbusarow.modulecheck.task.android.DisableAndroidResourcesTask
+import com.rickbusarow.modulecheck.task.android.DisableViewBindingTask
+import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import java.io.File
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -41,6 +43,8 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
     target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
     target.tasks.register("moduleCheckKapt", UnusedKaptTask::class.java)
+    target.tasks.register("moduleCheckDisableAndroidResources", DisableAndroidResourcesTask::class.java)
+    target.tasks.register("moduleCheckDisableViewBinding", DisableViewBindingTask::class.java)
   }
 }
 

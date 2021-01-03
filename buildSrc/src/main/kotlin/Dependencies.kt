@@ -356,6 +356,10 @@ object Libs {
     }
   }
 
+  object Swiftzer {
+    const val semVer = "net.swiftzer.semver:semver:1.1.1"
+  }
+
   /**
    * Used for incremental annotation processing
    */

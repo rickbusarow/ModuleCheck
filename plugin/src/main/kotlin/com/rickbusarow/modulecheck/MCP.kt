@@ -18,8 +18,8 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.parser.*
-import org.gradle.api.Project
 import java.util.concurrent.ConcurrentHashMap
+import org.gradle.api.Project
 
 class MCP private constructor(
   val project: Project
@@ -181,7 +181,9 @@ class MCP private constructor(
 data class Position(
   val row: Int,
   val column: Int
-)
+){
+    fun logString(): String = "($row, $column): "
+}
 
 @JvmName("CppCollectionToMCP")
 fun Collection<CPP>.mcp() = map { MCP.from(it.project) }

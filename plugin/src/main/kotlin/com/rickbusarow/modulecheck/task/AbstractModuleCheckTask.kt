@@ -15,21 +15,22 @@
 
 package com.rickbusarow.modulecheck.task
 
-import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.Finding
+import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
+import kotlin.system.measureTimeMillis
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.getByType
-import kotlin.system.measureTimeMillis
 
 abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
-    description = "verification"
+    group = "moduleCheck"
   }
 
   @get:Input
@@ -40,13 +41,13 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   val ignoreAll: SetProperty<String> =
     project.extensions.getByType<ModuleCheckExtension>().ignoreAll
 
-  protected fun List<DependencyFinding>.finish() {
+  protected fun List<Finding>.finish() {
     forEach { finding ->
 
-      project.logger.error(
-        "${finding.problemName} ${finding.config.name} dependency: ${finding.logString()}"
-      )
-      finding.fix()
+      project.logger.error(finding.logString())
+
+      (finding as? Fixable)?.fix()
+
 //      MCP.reset()
     }
   }
