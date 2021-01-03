@@ -23,18 +23,29 @@ import com.rickbusarow.modulecheck.mcp
 object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.OverShotDependency> {
-    val bad = (mcp.unused.main())
+    val unused = mcp.unused
+      .main()
       .map { it.cpp() }
       .toSet()
 
-    val grouped = mcp.allPublicClassPathDependencyDeclarations()
+    val apiFromUnused = unused
+      .flatMap { cpp ->
+        cpp
+          .mcp()
+          .dependencies.api
+      }.toSet()
+
+    val grouped = apiFromUnused
       .asSequence()
-      .filterNot { it in bad }
-      .filterNot { it in mcp.dependencies.api }
+      .filterNot { it in unused }
+      .filterNot { it in mcp.dependencies.main() }
       .filter { inheritedNewProject ->
-        inheritedNewProject.mcp().mainDeclarations.any { newProjectPackage ->
-          newProjectPackage in mcp.mainImports
-        }
+        inheritedNewProject
+          .mcp()
+          .mainDeclarations
+          .any { newProjectPackage ->
+            newProjectPackage in mcp.mainImports
+          }
       }
       .groupBy { it }
       .map { (overshot, _) ->

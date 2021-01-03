@@ -18,8 +18,10 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.parser.*
+import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
 import org.gradle.api.Project
-import java.util.concurrent.ConcurrentHashMap
+import java.io.File
+import java.util.concurrent.*
 
 class MCP private constructor(
   val project: Project
@@ -73,8 +75,29 @@ class MCP private constructor(
 
   val testImports = testFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
 
+  val isAndroid by lazy { project.isAndroid }
+
+  val androidPackageOrNull by lazy {
+
+    val manifest = File("${project.srcRoot}/main/AndroidManifest.xml")
+
+    if (!manifest.exists()) return@lazy null
+
+    AndroidManifestParser.parse(manifest)["package"]
+  }
+
   val androidTestDeclarations by lazy { androidTestFiles.flatMap { it.declarations }.toSet() }
-  val mainDeclarations by lazy { mainFiles.flatMap { it.declarations }.toSet() }
+  val mainDeclarations by lazy {
+
+    val rPackage = androidPackageOrNull
+
+    if (isAndroid && rPackage != null) {
+      mainFiles.flatMap { it.declarations }.toSet() + "$rPackage.R"
+    } else {
+      mainFiles.flatMap { it.declarations }.toSet()
+    }
+  }
+
   val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }
 
   fun dependents() =

@@ -15,7 +15,9 @@
 
 package com.rickbusarow.modulecheck.internal
 
+import com.android.build.gradle.TestedExtension
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
@@ -83,3 +85,6 @@ fun createFile(
 ) {
   File(path).writeText(text)
 }
+
+val Project.isAndroid: Boolean
+  get() = extensions.findByType(TestedExtension::class) != null
