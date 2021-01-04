@@ -1,17 +1,17 @@
-scenario,Clean Build
-version,Gradle 6.8-rc-4
-tasks,assemble
-value,execution
-warm-up build #1,29044
-warm-up build #2,1551
-warm-up build #3,1350
-measured build #1,933
-measured build #2,1284
-measured build #3,1562
-measured build #4,1167
-measured build #5,1174
-measured build #6,1086
-measured build #7,1147
-measured build #8,1602
-measured build #9,1061
-measured build #10,866
+scenario,Clean Build,All Tests
+version,Gradle 6.8-rc-4,Gradle 6.8-rc-4
+tasks,assemble,testJvm
+value,execution,execution
+warm-up build #1,29044,98944
+warm-up build #2,1551,29591
+warm-up build #3,1350,27204
+measured build #1,933,26171
+measured build #2,1284,28918
+measured build #3,1562,26917
+measured build #4,1167,30014
+measured build #5,1174,24828
+measured build #6,1086,27549
+measured build #7,1147,26176
+measured build #8,1602,26444
+measured build #9,1061,25296
+measured build #10,866,26748

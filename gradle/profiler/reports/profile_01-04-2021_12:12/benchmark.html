@@ -330,7 +330,7 @@ div.controls .btn {
 <script>
 const benchmarkResult =
 {
-  "date": "2021-01-04T18:15:31.872533Z",
+  "date": "2021-01-04T18:24:17.645279Z",
   "environment": {
     "profilerVersion": "0.15.0",
     "operatingSystem": "mac os x x86_64 10.16"
@@ -493,6 +493,170 @@ const benchmarkResult =
           "title": "measured build #10",
           "values": {
             "execution": 866.037337
+          }
+        }
+      ]
+    },
+    {
+      "definition": {
+        "name": "tests",
+        "title": "All Tests",
+        "displayName": "All Tests using Gradle 6.8-rc-4",
+        "buildTool": "Gradle 6.8-rc-4",
+        "tasks": "testJvm",
+        "version": "6.8-rc-4",
+        "gradleHome": "/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-4-bin/3epnh8olf7pivejgy314eg3hc/gradle-6.8-rc-4",
+        "javaHome": "/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home",
+        "usesScanPlugin": false,
+        "action": "run tasks testJvm",
+        "cleanup": "run tasks clean",
+        "invoker": "Tooling API",
+        "mutators": [],
+        "args": [
+          "--rerun-tasks",
+          "--continue"
+        ],
+        "jvmArgs": [
+          "-XX:+UseParallelGC",
+          "--add-opens",
+          "java.base/java.util\u003dALL-UNNAMED",
+          "--add-opens",
+          "java.base/java.lang\u003dALL-UNNAMED",
+          "--add-opens",
+          "java.base/java.lang.invoke\u003dALL-UNNAMED",
+          "--add-opens",
+          "java.prefs/java.util.prefs\u003dALL-UNNAMED",
+          "-Xmx2048m",
+          "-Dfile.encoding\u003dUTF-8",
+          "-Duser.country\u003dUS",
+          "-Duser.language\u003den",
+          "-Duser.variant",
+          "-Dfile.encoding\u003dUTF-8"
+        ],
+        "systemProperties": {},
+        "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564"
+      },
+      "samples": [
+        {
+          "name": "execution"
+        }
+      ],
+      "iterations": [
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_WARM_UP_1",
+          "phase": "WARM_UP",
+          "iteration": 1,
+          "title": "warm-up build #1",
+          "values": {
+            "execution": 98944.366534
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_WARM_UP_2",
+          "phase": "WARM_UP",
+          "iteration": 2,
+          "title": "warm-up build #2",
+          "values": {
+            "execution": 29591.628516
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_WARM_UP_3",
+          "phase": "WARM_UP",
+          "iteration": 3,
+          "title": "warm-up build #3",
+          "values": {
+            "execution": 27204.810738
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_1",
+          "phase": "MEASURE",
+          "iteration": 1,
+          "title": "measured build #1",
+          "values": {
+            "execution": 26171.226887
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_2",
+          "phase": "MEASURE",
+          "iteration": 2,
+          "title": "measured build #2",
+          "values": {
+            "execution": 28918.875995
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_3",
+          "phase": "MEASURE",
+          "iteration": 3,
+          "title": "measured build #3",
+          "values": {
+            "execution": 26917.005555
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_4",
+          "phase": "MEASURE",
+          "iteration": 4,
+          "title": "measured build #4",
+          "values": {
+            "execution": 30014.263187
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_5",
+          "phase": "MEASURE",
+          "iteration": 5,
+          "title": "measured build #5",
+          "values": {
+            "execution": 24828.707696
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_6",
+          "phase": "MEASURE",
+          "iteration": 6,
+          "title": "measured build #6",
+          "values": {
+            "execution": 27549.549148
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_7",
+          "phase": "MEASURE",
+          "iteration": 7,
+          "title": "measured build #7",
+          "values": {
+            "execution": 26176.22181
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_8",
+          "phase": "MEASURE",
+          "iteration": 8,
+          "title": "measured build #8",
+          "values": {
+            "execution": 26444.219975
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_9",
+          "phase": "MEASURE",
+          "iteration": 9,
+          "title": "measured build #9",
+          "values": {
+            "execution": 25296.232026
+          }
+        },
+        {
+          "id": "_fa5784db_66a9_4a45_b450_d9fa06d16418_tests_8ad96564_MEASURE_10",
+          "phase": "MEASURE",
+          "iteration": 10,
+          "title": "measured build #10",
+          "values": {
+            "execution": 26748.100615
           }
         }
       ]
