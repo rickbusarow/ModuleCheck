@@ -35,16 +35,24 @@ object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
           .dependencies.api
       }.toSet()
 
+    fun log(str: String) {
+      if (mcp.project.path == ":kits:data") {
+        println(str)
+      }
+    }
+
     val grouped = apiFromUnused
       .asSequence()
       .filterNot { it in unused }
       .filterNot { it in mcp.dependencies.main() }
       .filter { inheritedNewProject ->
+        log("inherited --> $inheritedNewProject")
         inheritedNewProject
           .mcp()
           .mainDeclarations
-          .any { newProjectPackage ->
-            newProjectPackage in mcp.mainImports
+          .any { newProjectDeclaration ->
+            log("new project declaration --> $newProjectDeclaration")
+            newProjectDeclaration in mcp.mainImports
           }
       }
       .groupBy { it }
