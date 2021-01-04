@@ -42,6 +42,8 @@ Thumbs.db
 !/.idea/copyright/
 !/.idea/compiler.xml
 
+!/gradle/profiler/bin/gradle-profiler
+!/gradle/profiler/bin/gradle-profiler.bat
 
 #NDK
 obj/
