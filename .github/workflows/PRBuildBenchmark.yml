@@ -10,7 +10,7 @@ on:
 jobs:
   build-head:
 
-    runs-on: hackintosh
+    runs-on: self-hosted
 
     steps:
       - uses: khan/pull-request-comment-trigger@master
@@ -53,7 +53,7 @@ jobs:
 
   build-base:
     needs: build-head
-    runs-on: hackintosh
+    runs-on: self-hosted
 
     steps:
       - uses: xt0rted/pull-request-comment-branch@v1
