@@ -1,0 +1,24 @@
+# Can specify scenarios to use when none are specified on the command line
+default-scenarios = ["clean_build", "tests"]
+
+# Scenarios are run in alphabetical order
+
+clean_build {
+    title = "Clean Build"
+    tasks = ["assemble"]
+    cleanup-tasks = ["clean"]
+    run-using = tooling-api // value can be "cli" or "tooling-api"
+    daemon = warm // value can be "warm", "cold", or "none"
+    # measured-build-ops = ["org.gradle.api.internal.tasks.SnapshotTaskInputsBuildOperationType"] // see --measure-build-op
+
+    warm-ups = 3
+}
+tests {
+    title = "All Tests"
+    tasks = ["testJvm"]
+    gradle-args = ["--rerun-tasks", "--continue"]
+    cleanup-tasks = ["clean"]
+    run-using = tooling-api // value can be "cli" or "tooling-api"
+    daemon = warm // value can be "warm", "cold", or "none"
+    warm-ups = 3
+}
