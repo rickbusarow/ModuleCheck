@@ -39,12 +39,9 @@ jobs:
         with:
           java-version: 14
 
-      - name: Install SDKMAN, Gradle Profiler and Begin Profiling
+      - name: Begin Profiling
         run: |
-          curl -s "https://get.sdkman.io" | bash
-          source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install gradleprofiler 0.12.0
-          gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 3
+          gradle/profiler/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
 
       - uses: actions/upload-artifact@v2
         with:
@@ -74,12 +71,9 @@ jobs:
         with:
           java-version: 14
 
-      - name: Install SDKMAN, Gradle Profiler and Begin Profiling
+      - name: Begin Profiling
         run: |
-          curl -s "https://get.sdkman.io" | bash
-          source "$HOME/.sdkman/bin/sdkman-init.sh"
-          sdk install gradleprofiler 0.12.0
-          gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 3
+          gradle/profiler/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
 
       - uses: actions/upload-artifact@v2
         name: Archive Benchmark Result File
@@ -99,3 +93,9 @@ jobs:
         run: |
           chmod +x benchmark-difference.py
           python benchmark-difference.py
+
+      - uses: actions/upload-artifact@v2
+        name: Archive Difference Result File
+        with:
+          name: benchmark-result
+          path: benchmark-result.txt
