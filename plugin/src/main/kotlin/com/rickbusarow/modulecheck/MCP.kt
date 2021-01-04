@@ -166,6 +166,10 @@ class MCP private constructor(
     .lines()
     .positionOf(project.project, configuration)
 
+  override fun toString(): String {
+    return "MCP(project=$project)"
+  }
+
   data class ParsedKapt<T>(
     val androidTest: Set<T>,
     val main: Set<T>,

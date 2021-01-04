@@ -35,13 +35,6 @@ class OverShotRule(
         with(moduleCheckProject) {
           overshot
             .all()
-            .mapNotNull { dependency ->
-              if (dependency.dependencyPath in alwaysIgnore) {
-                null
-              } else {
-                dependency
-              }
-            }
             .distinctBy { it.dependencyPath }
         }
       }
