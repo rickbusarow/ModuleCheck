@@ -2182,3 +2182,234 @@ WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass
 WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 28s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/aqgnijjq3qlwm
+
+Used daemon with pid 6681
+Execution time 28918 ms
+
+* Running cleanup for measured build #3
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 4s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/lva3fla5w6bey
+
+Used daemon with pid 6681
+
+* Running measured build #3
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-4-bin/3epnh8olf7pivejgy314eg3hc/gradle-6.8-rc-4/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 26s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/mjqlofuzctl2e
+
+Used daemon with pid 6681
+Execution time 26917 ms
+
+* Running cleanup for measured build #4
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 4s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/il2tqz2qbbgea
+
+Used daemon with pid 6681
+
+* Running measured build #4
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
