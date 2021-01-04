@@ -41,7 +41,7 @@ jobs:
 
       - name: Begin Profiling
         run: |
-          gradle/profiler/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
+          gradle/profiler/bin/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
 
       - uses: actions/upload-artifact@v2
         with:
@@ -73,7 +73,7 @@ jobs:
 
       - name: Begin Profiling
         run: |
-          gradle/profiler/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
+          gradle/profiler/bin/gradle-profiler --benchmark --scenario-file gradle/profiler/profiler.scenarios clean_build --warmups 2 --iteration 10
 
       - uses: actions/upload-artifact@v2
         name: Archive Benchmark Result File
