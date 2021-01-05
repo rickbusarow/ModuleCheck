@@ -1,0 +1,1314 @@
+
+* Started at 2021-01-05T02:51:34.283900Z
+
+* Settings
+Project dir: ../..
+Output dir: reports/profile_01-04-2021_20:51
+Profiler: none
+Benchmark: true
+Versions: []
+Gradle User Home: /Users/rbusarow/.gradle-profiler-user-home
+Targets: []
+Builds: 10
+
+* Inspecting the build using its default Gradle version
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :help
+
+Welcome to Gradle 6.8-rc-5.
+
+To run a build, run gradle <task> ...
+
+To see a list of available tasks, run gradle tasks
+
+To see a list of command-line options, run gradle --help
+
+To see more detail about a task, run gradle help --task <task>
+
+For troubleshooting, visit https://help.gradle.org
+
+BUILD SUCCESSFUL in 5s
+1 actionable task: 1 executed
+
+Publishing build scan...
+https://gradle.com/s/7gr3d4pnrz2nm
+
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Scenarios
+Scenario: Clean Build using Gradle 6.8-rc-5
+  Gradle 6.8-rc-5 (/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5)
+  Run using: Tooling API with cold daemon
+  Run: run tasks assemble
+  Cleanup: run tasks clean
+  Gradle args: []
+  Build changes: []
+  Warm-ups: 1
+  Builds: 10
+Scenario: All Tests using Gradle 6.8-rc-5
+  Gradle 6.8-rc-5 (/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5)
+  Run using: Tooling API with cold daemon
+  Run: run tasks testJvm
+  Cleanup: run tasks clean
+  Gradle args: [--rerun-tasks, --continue]
+  Build changes: []
+  Warm-ups: 1
+  Builds: 10
+
+* Running scenario Clean Build using Gradle 6.8-rc-5 (scenario 1/2)
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Build details
+Gradle version: Gradle 6.8-rc-5
+Java home: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+OS: mac os x x86_64 10.16
+JVM args:
+  -XX:+UseParallelGC
+  --add-opens
+  java.base/java.util=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang.invoke=ALL-UNNAMED
+  --add-opens
+  java.prefs/java.util.prefs=ALL-UNNAMED
+  -Xmx2048m
+  -Dfile.encoding=UTF-8
+  -Duser.country=US
+  -Duser.language=en
+  -Duser.variant
+  -Dfile.encoding=UTF-8
+  -Dorg.gradle.profiler.scenario=clean_build
+Gradle args:
+  --gradle-user-home
+  /Users/rbusarow/.gradle-profiler-user-home
+  -I
+  /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler14654848827520489883.gradle
+
+* Running cleanup for warm-up build #1
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 5s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/it6awjbyeghpg
+
+Used daemon with pid 42140
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running warm-up build #1
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/r5iy3r57c6ovy
+
+Used daemon with pid 42156
+Execution time 6051 ms
+
+* Using args for instrumented builds:
+
+* Running cleanup for measured build #1
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 406ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/6iy7rmjdzw3x2
+
+Used daemon with pid 42156
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #1
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/h5d7xzcubkrc2
+
+Used daemon with pid 42183
+Execution time 5952 ms
+
+* Running cleanup for measured build #2
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 414ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/wsfn4ykb2szfs
+
+Used daemon with pid 42183
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #2
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/ggol2ymh2wdjm
+
+Used daemon with pid 42201
+Execution time 6075 ms
+
+* Running cleanup for measured build #3
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 419ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/fnbc4bo3qk64y
+
+Used daemon with pid 42201
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #3
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/hp7cr6yozo7ei
+
+Used daemon with pid 42219
+Execution time 6203 ms
+
+* Running cleanup for measured build #4
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 483ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/r7up4qzzldab4
+
+Used daemon with pid 42219
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #4
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/wisiqplu4hyua
+
+Used daemon with pid 42237
+Execution time 6230 ms
+
+* Running cleanup for measured build #5
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 459ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/ytztoasuz3hz6
+
+Used daemon with pid 42237
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #5
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/x7ujhplcjdbw2
+
+Used daemon with pid 42255
+Execution time 6273 ms
+
+* Running cleanup for measured build #6
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 448ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/4i77tpvt6gzqk
+
+Used daemon with pid 42255
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #6
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/bpbww6nhamqzg
+
+Used daemon with pid 42273
+Execution time 6643 ms
+
+* Running cleanup for measured build #7
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 466ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/nihbxjnuuykmk
+
+Used daemon with pid 42273
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #7
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 5s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/vqdzltqq6ngia
+
+Used daemon with pid 42299
+Execution time 6562 ms
+
+* Running cleanup for measured build #8
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 556ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/icaom37pxvdhi
+
+Used daemon with pid 42299
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #8
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 7s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/4wxop7tevjlio
+
+Used daemon with pid 42326
+Execution time 8551 ms
+
+* Running cleanup for measured build #9
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 475ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/b75z4m2zskpcm
+
+Used daemon with pid 42326
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #9
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin FROM-CACHE
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+> Task :plugin:compileKotlin FROM-CACHE
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 6s
+12 actionable tasks: 10 executed, 2 from cache
+
+Publishing build scan...
+https://gradle.com/s/iz2cbmeetgqce
+
+Used daemon with pid 42354
+Execution time 7944 ms
+
+* Running cleanup for measured build #10
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 741ms
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/boz7khzqdiujs
+
+Used daemon with pid 42354
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+1 Daemon stopped
+
+* Running measured build #10

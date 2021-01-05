@@ -1,0 +1,3169 @@
+
+* Started at 2021-01-05T02:55:15.992807Z
+
+* Settings
+Project dir: ../..
+Output dir: reports/profile_01-04-2021_20:55
+Profiler: none
+Benchmark: true
+Versions: []
+Gradle User Home: /Users/rbusarow/.gradle-profiler-user-home
+Targets: []
+Builds: 10
+
+* Inspecting the build using its default Gradle version
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:inspectClassesForKotlinIC UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :buildSrc:assemble UP-TO-DATE
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata UP-TO-DATE
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins UP-TO-DATE
+> Task :buildSrc:check UP-TO-DATE
+> Task :buildSrc:build UP-TO-DATE
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :help
+
+Welcome to Gradle 6.8-rc-5.
+
+To run a build, run gradle <task> ...
+
+To see a list of available tasks, run gradle tasks
+
+To see a list of command-line options, run gradle --help
+
+To see more detail about a task, run gradle help --task <task>
+
+For troubleshooting, visit https://help.gradle.org
+
+BUILD SUCCESSFUL in 7s
+1 actionable task: 1 executed
+
+Publishing build scan...
+https://gradle.com/s/yl7wk5qt77uvk
+
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+Stopping Daemon(s)
+2 Daemons stopped
+
+* Scenarios
+Scenario: Clean Build using Gradle 6.8-rc-5
+  Gradle 6.8-rc-5 (/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5)
+  Run using: `gradle` command with --no-daemon
+  Run: run tasks assemble
+  Cleanup: run tasks clean
+  Gradle args: [--rerun-tasks, --no-build-cache]
+  Build changes: []
+  Warm-ups: 1
+  Builds: 10
+Scenario: All Tests using Gradle 6.8-rc-5
+  Gradle 6.8-rc-5 (/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5)
+  Run using: `gradle` command with --no-daemon
+  Run: run tasks testJvm
+  Cleanup: run tasks clean
+  Gradle args: [--rerun-tasks, --continue, --no-build-cache]
+  Build changes: []
+  Warm-ups: 1
+  Builds: 10
+
+* Running scenario Clean Build using Gradle 6.8-rc-5 (scenario 1/2)
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Build details
+Gradle version: Gradle 6.8-rc-5
+Java home: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+OS: mac os x x86_64 10.16
+JVM args:
+  -XX:+UseParallelGC
+  --add-opens
+  java.base/java.util=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang.invoke=ALL-UNNAMED
+  --add-opens
+  java.prefs/java.util.prefs=ALL-UNNAMED
+  -Xmx2048m
+  -Dfile.encoding=UTF-8
+  -Duser.country=US
+  -Duser.language=en
+  -Duser.variant
+  -Dfile.encoding=UTF-8
+  -Dorg.gradle.profiler.scenario=clean_build
+Gradle args:
+  --gradle-user-home
+  /Users/rbusarow/.gradle-profiler-user-home
+  --rerun-tasks
+  --no-build-cache
+  -I
+  /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle
+
+* Running cleanup for warm-up build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=WARM_UP" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 29s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/h3eo455du32aq
+
+Used daemon with pid 42651
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running warm-up build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=WARM_UP" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 39s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/egzv6kevrvpks
+
+Used daemon with pid 42704
+Execution time 40320 ms
+
+* Using args for instrumented builds:
+
+* Running cleanup for measured build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 29s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/xn6hp465v4bli
+
+Used daemon with pid 42741
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 40s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/zvqsrgg73tteq
+
+Used daemon with pid 42800
+Execution time 42168 ms
+
+* Running cleanup for measured build #2
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=2" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 24s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/ewvdkiwwtolso
+
+Used daemon with pid 42861
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #2
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=2" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 37s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/ia6tqq5o27s7s
+
+Used daemon with pid 42922
+Execution time 38708 ms
+
+* Running cleanup for measured build #3
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=3" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 27s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/kz7nl5dntxlzs
+
+Used daemon with pid 43044
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #3
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=3" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 42s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/vkbzgb3hutaiy
+
+Used daemon with pid 43098
+Execution time 43245 ms
+
+* Running cleanup for measured build #4
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=4" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 26s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/ht7oxbk7evlco
+
+Used daemon with pid 43171
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #4
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=4" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 35s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/73gb6r3qvca4q
+
+Used daemon with pid 43261
+Execution time 36856 ms
+
+* Running cleanup for measured build #5
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=5" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 27s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/2ssxj5f23pdiw
+
+Used daemon with pid 43319
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #5
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=5" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 38s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/xqls4b276h72c
+
+Used daemon with pid 43378
+Execution time 39207 ms
+
+* Running cleanup for measured build #6
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=6" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 24s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/42hizkkaokgkm
+
+Used daemon with pid 43454
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #6
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=6" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 38s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/ucrr3zeocgxs6
+
+Used daemon with pid 43525
+Execution time 39615 ms
+
+* Running cleanup for measured build #7
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=7" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 23s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/5bzhfuqcssnzs
+
+Used daemon with pid 43586
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #7
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=7" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 36s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/zj2zsfdkvjrsg
+
+Used daemon with pid 43646
+Execution time 37450 ms
+
+* Running cleanup for measured build #8
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=8" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 27s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/dzx2c65otnivw
+
+Used daemon with pid 43695
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #8
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=8" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 36s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/dvbzc3zdphgg4
+
+Used daemon with pid 43765
+Execution time 38174 ms
+
+* Running cleanup for measured build #9
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=9" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 26s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/i3vptdm7y33d6
+
+Used daemon with pid 43833
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #9
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=9" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 36s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/emcdyzzucvofc
+
+Used daemon with pid 43898
+Execution time 38271 ms
+
+* Running cleanup for measured build #10
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=10" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 24s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/devh54lhgmtc6
+
+Used daemon with pid 43963
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #10
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=clean_build" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=10" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler15002434436603878461.gradle assemble -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :compileKotlin NO-SOURCE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :inspectClassesForKotlinIC
+> Task :jar
+> Task :assemble
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:assemble
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:inspectClassesForKotlinIC
+> Task :plugin:jar
+> Task :plugin:publishPluginJar
+> Task :plugin:javadoc NO-SOURCE
+> Task :plugin:publishPluginJavaDocsJar
+> Task :plugin:assemble
+
+BUILD SUCCESSFUL in 36s
+12 actionable tasks: 12 executed
+
+Publishing build scan...
+https://gradle.com/s/nd4ahhu2mwc2k
+
+Used daemon with pid 44022
+Execution time 38011 ms
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running scenario All Tests using Gradle 6.8-rc-5 (scenario 2/2)
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Build details
+Gradle version: Gradle 6.8-rc-5
+Java home: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+OS: mac os x x86_64 10.16
+JVM args:
+  -XX:+UseParallelGC
+  --add-opens
+  java.base/java.util=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang=ALL-UNNAMED
+  --add-opens
+  java.base/java.lang.invoke=ALL-UNNAMED
+  --add-opens
+  java.prefs/java.util.prefs=ALL-UNNAMED
+  -Xmx2048m
+  -Dfile.encoding=UTF-8
+  -Duser.country=US
+  -Duser.language=en
+  -Duser.variant
+  -Dfile.encoding=UTF-8
+  -Dorg.gradle.profiler.scenario=tests
+Gradle args:
+  --gradle-user-home
+  /Users/rbusarow/.gradle-profiler-user-home
+  --rerun-tasks
+  --continue
+  --no-build-cache
+  -I
+  /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle
+
+* Running cleanup for warm-up build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=WARM_UP" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 28s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/uspdmns4t3xoe
+
+Used daemon with pid 44104
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running warm-up build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=WARM_UP" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 55s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/q3zi77ikwf7u6
+
+Used daemon with pid 44171
+Execution time 57279 ms
+
+* Using args for instrumented builds:
+
+* Running cleanup for measured build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 28s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/gqq2g2hz762y2
+
+Used daemon with pid 44252
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #1
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=1" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 57s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/gmmb572nbddls
+
+Used daemon with pid 44341
+Execution time 58613 ms
+
+* Running cleanup for measured build #2
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=2" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 25s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/ylhtl2pz2onto
+
+Used daemon with pid 44467
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #2
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=2" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 58s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/gyo5psc56v3uw
+
+Used daemon with pid 44543
+Execution time 59516 ms
+
+* Running cleanup for measured build #3
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=3" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 33s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/a2gkgux6ne7bu
+
+Used daemon with pid 44611
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #3
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=3" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 7s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/4r5c5tlij4otu
+
+Used daemon with pid 44699
+Execution time 69075 ms
+
+* Running cleanup for measured build #4
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=4" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 23s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/gxtijuoyqfyvo
+
+Used daemon with pid 44787
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #4
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=4" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 52s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/ooecmow75qvgu
+
+Used daemon with pid 44840
+Execution time 53489 ms
+
+* Running cleanup for measured build #5
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=5" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 25s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/ip64dnj234bd2
+
+Used daemon with pid 44895
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #5
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=5" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 1s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/ldg54t4lrimao
+
+Used daemon with pid 44960
+Execution time 62315 ms
+
+* Running cleanup for measured build #6
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=6" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 31s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/qzfagtovd53ii
+
+Used daemon with pid 45093
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #6
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=6" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 9s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/esdccb4c5ip2q
+
+Used daemon with pid 45163
+Execution time 70517 ms
+
+* Running cleanup for measured build #7
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=7" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 29s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/moplryxyh377y
+
+Used daemon with pid 45452
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #7
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=7" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 0s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/y5oe4nop5j3vi
+
+Used daemon with pid 45562
+Execution time 61764 ms
+
+* Running cleanup for measured build #8
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=8" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 35s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/jefzp4426stxc
+
+Used daemon with pid 45604
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #8
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=8" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 8s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/oso3shlxusayu
+
+Used daemon with pid 45776
+Execution time 69595 ms
+
+* Running cleanup for measured build #9
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=9" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 30s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/movvmnpec2gvu
+
+Used daemon with pid 45962
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #9
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=9" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 3s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/y6ivjy5yt2eas
+
+Used daemon with pid 46019
+Execution time 64942 ms
+
+* Running cleanup for measured build #10
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=10" "-Dorg.gradle.profiler.step=CLEANUP"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle clean -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :clean
+> Task :specs:clean
+> Task :plugin:clean
+
+BUILD SUCCESSFUL in 28s
+3 actionable tasks: 3 executed
+
+Publishing build scan...
+https://gradle.com/s/yiyg26wj4thza
+
+Used daemon with pid 46106
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Running measured build #10
+GRADLE_OPTS: "-XX:+UseParallelGC" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED" "--add-opens" "java.base/java.lang.invoke=ALL-UNNAMED" "--add-opens" "java.prefs/java.util.prefs=ALL-UNNAMED" "-Xmx2048m" "-Dfile.encoding=UTF-8" "-Duser.country=US" "-Duser.language=en" "-Duser.variant" "-Dfile.encoding=UTF-8" "-Dorg.gradle.profiler.scenario=tests" "-Dorg.gradle.profiler.phase=MEASURE" "-Dorg.gradle.profiler.number=10" "-Dorg.gradle.profiler.step=BUILD"
+JAVA_HOME: /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home --rerun-tasks --continue --no-build-cache -I /private/var/folders/nz/qq91q4w53ngds96m8cq1sdsr0000gn/T/gradleProfiler2471103437491251692.gradle testJvm -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedConstructor$1 (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to constructor java.net.URI(java.lang.String,java.lang.String)
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedConstructor$1
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:configurePrecompiledScriptDependenciesResolver
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:classes
+> Task :buildSrc:inspectClassesForKotlinIC
+> Task :buildSrc:jar
+> Task :buildSrc:assemble
+> Task :buildSrc:compileTestKotlin NO-SOURCE
+> Task :buildSrc:pluginUnderTestMetadata
+> Task :buildSrc:compileTestJava NO-SOURCE
+> Task :buildSrc:compileTestGroovy NO-SOURCE
+> Task :buildSrc:processTestResources NO-SOURCE
+> Task :buildSrc:testClasses UP-TO-DATE
+> Task :buildSrc:test NO-SOURCE
+> Task :buildSrc:validatePlugins
+> Task :buildSrc:check
+> Task :buildSrc:build
+
+> Configure project :plugin
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `1.4.20` that might work differently than in the requested version `1.4.21`.
+
+> Task :specs:compileKotlin
+> Task :specs:compileJava NO-SOURCE
+> Task :specs:processResources NO-SOURCE
+> Task :specs:classes UP-TO-DATE
+> Task :specs:inspectClassesForKotlinIC
+> Task :specs:jar
+> Task :specs:compileTestKotlin NO-SOURCE
+> Task :specs:compileTestJava NO-SOURCE
+> Task :specs:processTestResources NO-SOURCE
+> Task :specs:testClasses UP-TO-DATE
+> Task :specs:test NO-SOURCE
+> Task :specs:testJvm UP-TO-DATE
+
+> Task :plugin:compileKotlin
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableAndroidResourcesRule.kt: (67, 9): Variable 'ktFile' is never used
+w: /Users/rbusarow/projects/AndroidStudio/ModuleCheck/plugin/src/main/kotlin/com/rickbusarow/modulecheck/rule/android/DisableViewBindingRule.kt: (65, 9): Variable 'ktFile' is never used
+
+> Task :plugin:compileJava NO-SOURCE
+> Task :plugin:pluginDescriptors
+> Task :plugin:processResources
+> Task :plugin:classes
+> Task :plugin:compileTestKotlin
+> Task :plugin:pluginUnderTestMetadata
+> Task :plugin:compileTestJava NO-SOURCE
+> Task :plugin:processTestResources NO-SOURCE
+> Task :plugin:testClasses UP-TO-DATE
+
+> Task :plugin:test
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.codehaus.groovy.reflection.CachedClass (file:/Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/lib/groovy-all-1.3-2.5.12.jar) to method java.lang.Object.finalize()
+WARNING: Please consider reporting this to the maintainers of org.codehaus.groovy.reflection.CachedClass
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+
+> Task :plugin:testJvm
+
+BUILD SUCCESSFUL in 1m 4s
+9 actionable tasks: 9 executed
+
+Publishing build scan...
+https://gradle.com/s/qsl7si2pomyvg
+
+Used daemon with pid 46160
+Execution time 66284 ms
+
+* Stopping daemons
+Running command /Users/rbusarow/.gradle-profiler-user-home/wrapper/dists/gradle-6.8-rc-5-bin/esyiyuj6flvs53241kf549357/gradle-6.8-rc-5/bin/gradle --stop --gradle-user-home /Users/rbusarow/.gradle-profiler-user-home
+No Gradle daemons are running.
+
+* Results written to /Users/rbusarow/projects/AndroidStudio/ModuleCheck/gradle/profiler/reports/profile_01-04-2021_20:55
+  /Users/rbusarow/projects/AndroidStudio/ModuleCheck/gradle/profiler/reports/profile_01-04-2021_20:55/benchmark.csv
+  /Users/rbusarow/projects/AndroidStudio/ModuleCheck/gradle/profiler/reports/profile_01-04-2021_20:55/benchmark.html
+

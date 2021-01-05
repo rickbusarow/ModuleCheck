@@ -34,3 +34,8 @@ buildStr = "Branch Head Build Time: " + str(headMean) + " | Base Branch Build Ti
 print(buildStr)
 with open("benchmark-result.txt", 'w') as f:
   f.write(buildStr)
+
+fields=['first','second','third']
+with open(r'name', 'a') as f:
+  writer = csv.writer(f)
+  writer.writerow(fields)

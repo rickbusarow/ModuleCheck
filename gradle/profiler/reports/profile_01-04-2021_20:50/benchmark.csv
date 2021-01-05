@@ -1,0 +1,4 @@
+scenario,Clean Build,All Tests
+version,Gradle 6.8-rc-5,Gradle 6.8-rc-5
+tasks,assemble,testJvm
+value,execution,execution
