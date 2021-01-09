@@ -23,10 +23,7 @@ def get_result(fileName):
     return statistics.mean(values)
 
 baseResult = get_result('profile-out/benchmark.csv')
-mergeResult = get_result('profile-out-head/benchmark.csv')
-
 baseMean = baseResult
-headMean = mergeResult
 
 buildStr = "Branch Head Build Time: " + str(headMean) + " | Base Branch Build Time: " + str(baseMean)
 
@@ -35,7 +32,7 @@ print(buildStr)
 with open("benchmark-result.txt", 'w') as f:
   f.write(buildStr)
 
-fields=['first','second','third']
-with open(r'name', 'a') as f:
-  writer = csv.writer(f)
-  writer.writerow(fields)
+# fields=['first','second','third']
+# with open(r'name', 'a') as f:
+#   writer = csv.writer(f)
+#   writer.writerow(fields)
