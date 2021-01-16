@@ -139,7 +139,3 @@ allprojects {
     )
   }
 }
-
-tasks
-  .named("check")
-  .dependsOn("installKotlinterPrePushHook")
