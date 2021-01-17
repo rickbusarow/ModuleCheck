@@ -15,8 +15,6 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.internal.asKtFile
-import com.rickbusarow.modulecheck.parser.DslBlockParser
 import org.gradle.api.Project
 
 interface Finding {
@@ -38,45 +36,6 @@ data class UnusedDependency(
   override val config: Config
 ) : DependencyFinding("unused") {
   fun cpp() = CPP(config, dependencyProject)
-}
-
-data class OverShotDependency(
-  override val dependentProject: Project,
-  override val dependencyProject: Project,
-  override val dependencyPath: String,
-  override val config: Config,
-  val from: MCP?
-) : DependencyFinding("over-shot") {
-
-  override fun position(): Position? {
-    return from?.positionIn(dependentProject.project, config)
-  }
-
-  override fun logString(): String = super.logString() + " from: ${from?.path}"
-
-  override fun fix() {
-    val parser = DslBlockParser("dependencies")
-
-    val fromPath = from?.path ?: return
-
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
-
-    val match = result.elements.firstOrNull {
-      it.psiElement.text.contains(fromPath)
-    } ?: return
-
-    val newDeclaration = match.toString().replace(fromPath, dependencyPath)
-
-    val newDependencies = result.blockText.replace(
-      match.toString(), newDeclaration + "\n" + match.toString()
-    )
-
-    val text = dependentProject.buildFile.readText()
-
-    val newText = text.replace(result.blockText, newDependencies)
-
-    dependentProject.buildFile.writeText(newText)
-  }
 }
 
 data class RedundantDependency(

@@ -22,7 +22,6 @@ import com.rickbusarow.modulecheck.rule.RedundantRule
 import com.rickbusarow.modulecheck.rule.UnusedRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
-import com.rickbusarow.modulecheck.*
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 

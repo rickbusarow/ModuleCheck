@@ -130,8 +130,7 @@ class OvershotDependenciesTest : FreeSpec({
           .build()
       )
       .build()
-      // .writeIn(Path.of("./FFFF"))
-    .writeIn(testProjectDir.toPath())
+      .writeIn(testProjectDir.toPath())
 
     val result = GradleRunner.create()
       .withPluginClasspath()

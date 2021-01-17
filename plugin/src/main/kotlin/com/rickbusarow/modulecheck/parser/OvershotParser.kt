@@ -16,8 +16,8 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.*
 import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.OverShotDependency
 import com.rickbusarow.modulecheck.mcp
 
 object OvershotParser : Parser<OverShotDependency>() {
@@ -43,19 +43,6 @@ object OvershotParser : Parser<OverShotDependency>() {
       .main()
       .map { it.project.path }
       .toSet()
-
-    println(""" ------------------------------------- ${mcp.path}
-      |
-      |unused --> $unused
-      |
-      |apiFromUnused --> $apiFromUnused
-      |
-      |unusedPaths --> $unusedPaths
-      |
-      |mainDependenciesPaths --> $mainDependenciesPaths
-      |
-      |============================================================
-    """.trimMargin())
 
     val grouped = apiFromUnused
       .asSequence()

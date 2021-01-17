@@ -15,8 +15,8 @@
 
 package com.rickbusarow.modulecheck.rule
 
+import com.rickbusarow.modulecheck.RedundantDependency
 import org.gradle.api.Project
-import com.rickbusarow.modulecheck.*
 
 class RedundantRule(
   project: Project,

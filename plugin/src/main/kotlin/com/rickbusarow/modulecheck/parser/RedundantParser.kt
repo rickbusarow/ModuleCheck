@@ -16,9 +16,8 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
-
-import com.rickbusarow.modulecheck.*
 import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.RedundantDependency
 import com.rickbusarow.modulecheck.mcp
 
 object RedundantParser : Parser<RedundantDependency>() {

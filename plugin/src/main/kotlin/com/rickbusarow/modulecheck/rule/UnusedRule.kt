@@ -15,10 +15,8 @@
 
 package com.rickbusarow.modulecheck.rule
 
-
-import com.rickbusarow.modulecheck.*
+import com.rickbusarow.modulecheck.UnusedDependency
 import org.gradle.api.Project
-import com.rickbusarow.modulecheck.*
 
 class UnusedRule(
   project: Project,
