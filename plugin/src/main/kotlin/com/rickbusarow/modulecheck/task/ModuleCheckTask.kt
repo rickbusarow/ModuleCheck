@@ -17,11 +17,12 @@ package com.rickbusarow.modulecheck.task
 
 import com.rickbusarow.modulecheck.CPP
 import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.rule.OverShotRule
+import com.rickbusarow.modulecheck.rule.OvershotRule
 import com.rickbusarow.modulecheck.rule.RedundantRule
 import com.rickbusarow.modulecheck.rule.UnusedRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
+import com.rickbusarow.modulecheck.*
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
@@ -31,7 +32,7 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      val all = OverShotRule(project, alwaysIgnore, ignoreAll).check() +
+      val all = OvershotRule(project, alwaysIgnore, ignoreAll).check() +
         RedundantRule(project, alwaysIgnore, ignoreAll).check() +
         UnusedRule(project, alwaysIgnore, ignoreAll).check()
 

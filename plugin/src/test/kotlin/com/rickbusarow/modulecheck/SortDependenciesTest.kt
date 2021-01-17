@@ -15,6 +15,7 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.internal.applyEach
 import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec

@@ -16,13 +16,13 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.*
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.mcp
 
-object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
+object OvershotParser : Parser<OverShotDependency>() {
 
-  override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.OverShotDependency> {
+  override fun parse(mcp: MCP): MCP.Parsed<OverShotDependency> {
     val unused = mcp.unused
       .main()
       .map { it.cpp() }
@@ -43,6 +43,19 @@ object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
       .main()
       .map { it.project.path }
       .toSet()
+
+    println(""" ------------------------------------- ${mcp.path}
+      |
+      |unused --> $unused
+      |
+      |apiFromUnused --> $apiFromUnused
+      |
+      |unusedPaths --> $unusedPaths
+      |
+      |mainDependenciesPaths --> $mainDependenciesPaths
+      |
+      |============================================================
+    """.trimMargin())
 
     val grouped = apiFromUnused
       .asSequence()
@@ -66,7 +79,7 @@ object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
           .firstOrNull { it.project == source?.project }
           ?.config
 
-        DependencyFinding.OverShotDependency(
+        OverShotDependency(
           dependentProject = mcp.project,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,

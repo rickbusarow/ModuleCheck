@@ -16,12 +16,13 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.DependencyFinding
+
+import com.rickbusarow.modulecheck.*
 import com.rickbusarow.modulecheck.MCP
 
-object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
+object UnusedParser : Parser<UnusedDependency>() {
 
-  override fun parse(mcp: MCP): MCP.Parsed<DependencyFinding.UnusedDependency> {
+  override fun parse(mcp: MCP): MCP.Parsed<UnusedDependency> {
     val dependencies = mcp.dependencies
 
     val unusedHere = dependencies
@@ -51,7 +52,7 @@ object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
 
     val grouped = unusedInAtLeastOneDependent.map { cpp ->
 
-      DependencyFinding.UnusedDependency(
+      UnusedDependency(
         mcp.project,
         cpp.project,
         cpp.project.path,
@@ -63,7 +64,7 @@ object UnusedParser : Parser<DependencyFinding.UnusedDependency>() {
 
     val newGrouped = unusedMain.map { cpp ->
 
-      DependencyFinding.UnusedDependency(
+      UnusedDependency(
         mcp.project,
         cpp.project,
         cpp.project.path,

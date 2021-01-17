@@ -15,18 +15,18 @@
 
 package com.rickbusarow.modulecheck.rule
 
-import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.*
 import org.gradle.api.Project
 
-class OverShotRule(
+class OvershotRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<DependencyFinding.OverShotDependency>(
+) : AbstractRule<OverShotDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<DependencyFinding.OverShotDependency> {
+  override fun check(): List<OverShotDependency> {
     return project
       .moduleCheckProjects()
       .sorted()

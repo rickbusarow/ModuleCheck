@@ -15,18 +15,18 @@
 
 package com.rickbusarow.modulecheck.rule
 
-import com.rickbusarow.modulecheck.DependencyFinding
 import org.gradle.api.Project
+import com.rickbusarow.modulecheck.*
 
 class RedundantRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<DependencyFinding.RedundantDependency>(
+) : AbstractRule<RedundantDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<DependencyFinding.RedundantDependency> {
+  override fun check(): List<RedundantDependency> {
     return project
       .moduleCheckProjects()
       .sorted()

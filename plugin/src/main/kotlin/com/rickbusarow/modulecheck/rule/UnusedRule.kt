@@ -15,18 +15,20 @@
 
 package com.rickbusarow.modulecheck.rule
 
-import com.rickbusarow.modulecheck.DependencyFinding
+
+import com.rickbusarow.modulecheck.*
 import org.gradle.api.Project
+import com.rickbusarow.modulecheck.*
 
 class UnusedRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<DependencyFinding.UnusedDependency>(
+) : AbstractRule<UnusedDependency>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<DependencyFinding.UnusedDependency> {
+  override fun check(): List<UnusedDependency> {
     return project
       .moduleCheckProjects()
       .sorted()

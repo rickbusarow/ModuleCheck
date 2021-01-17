@@ -28,8 +28,8 @@ public class ProjectSrcSpec private constructor(
   public fun writeIn(path: Path) {
     files.forEach {
       val txt = it.toString()
-      File(path.toString() + "/" + dir).mkdirs()
-      File(path.toString() + "/" + dir + "/" + it.name).writeText(txt)
+      File("$path/$dir").mkdirs()
+      File("$path/$dir/${it.name}").writeText(txt)
 //      it.writeTo(Path.of("$path/$dir"))
     }
   }
