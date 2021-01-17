@@ -18,12 +18,17 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.parser.KaptMatcher
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.kotlin.dsl.listProperty
+import org.gradle.kotlin.dsl.property
 import org.gradle.kotlin.dsl.setProperty
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class ModuleCheckExtension(objects: ObjectFactory) {
+
+  @Suppress("UnstableApiUsage")
+  val autoCorrect: Property<Boolean> = objects.property<Boolean>().convention(true)
 
   val alwaysIgnore: SetProperty<String> = objects.setProperty()
 

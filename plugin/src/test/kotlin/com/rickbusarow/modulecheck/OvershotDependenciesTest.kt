@@ -40,26 +40,23 @@ class OvershotDependenciesTest : FreeSpec({
       .build()
   }
 
+  val projectSettings = ProjectSettingsSpec.builder()
+    .applyEach(projects) { project ->
+      addInclude(project.gradlePath)
+    }
+    .addInclude("app")
+
+  val projectBuild = ProjectBuildSpec.builder()
+    // .addImport("import com.rickbusarow.modulecheck.moduleCheck")
+    .addPlugin("id(\"com.rickbusarow.module-check\")")
+    .buildScript()
+
   val projectSpecBuilder = ProjectSpec.builder("project")
-    .addSettingsSpec(
-      ProjectSettingsSpec.builder()
-        .applyEach(projects) { project ->
-          addInclude(project.gradlePath)
-        }
-        .addInclude("app")
-        .build()
-    )
-    .addBuildSpec(
-      ProjectBuildSpec.builder()
-        .addPlugin("id(\"com.rickbusarow.module-check\")")
-        .buildScript()
-        .build()
-    )
     .applyEach(projects) { project ->
       addSubproject(project)
     }
 
-  "overshot dependencies should be added" {
+  "overshot dependencies" - {
 
     projectSpecBuilder
       .addSubproject(
@@ -129,19 +126,36 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .build()
-      .writeIn(testProjectDir.toPath())
+    "with autoCorrect" - {
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
-      .withArguments("moduleCheckOvershot")
-      .build()
+      projectSpecBuilder
+        .addSettingsSpec(projectSettings.build())
+        .addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  // autoCorrect.set(true)
+            |}
+          """.trimMargin()
+            ).build()
+        )
 
-    result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+      "should be added" {
 
-    File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        projectSpecBuilder
+          .build()
+          .writeIn(testProjectDir.toPath())
+
+        val result = GradleRunner.create()
+          .withPluginClasspath()
+          .withDebug(true)
+          .withProjectDir(testProjectDir)
+          .withArguments("moduleCheckOvershot")
+          .build()
+
+        result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+
+        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
         |}
         |
@@ -151,6 +165,8 @@ class OvershotDependenciesTest : FreeSpec({
         |  api(project(path = ":lib-3"))
         |}
         |""".trimMargin()
+      }
+    }
   }
 
   "added dependencies should match the configuration of the dependency which provided them" {
@@ -223,6 +239,8 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+      .addSettingsSpec(projectSettings.build())
+      .addBuildSpec(projectBuild.build())
       .build()
       .writeIn(testProjectDir.toPath())
 
@@ -328,6 +346,8 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+      .addSettingsSpec(projectSettings.build())
+      .addBuildSpec(projectBuild.build())
       .build()
       .writeIn(testProjectDir.toPath())
 
@@ -439,6 +459,8 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+      .addSettingsSpec(projectSettings.build())
+      .addBuildSpec(projectBuild.build())
       .build()
       .writeIn(testProjectDir.toPath())
 

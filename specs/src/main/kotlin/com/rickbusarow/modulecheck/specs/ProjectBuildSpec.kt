@@ -20,6 +20,8 @@ import java.nio.file.Path
 @Suppress("MemberVisibilityCanBePrivate")
 public class ProjectBuildSpec private constructor(
   public val plugins: List<String>,
+  public val imports: List<String>,
+  public val blocks: List<String>,
   public val repositories: List<String>,
   public val dependencies: List<String>,
   public val isAndroid: Boolean,
@@ -30,11 +32,13 @@ public class ProjectBuildSpec private constructor(
     path.toFile().mkdirs()
     path.newFile("build.gradle.kts")
       .writeText(
-        buildScriptBlock() +
+        imports() +
+          buildScriptBlock() +
           pluginsBlock() +
           repositoriesBlock() +
           androidBlock() +
-          dependenciesBlock()
+          dependenciesBlock() +
+          blocksBlock()
       )
   }
 
@@ -42,6 +46,15 @@ public class ProjectBuildSpec private constructor(
     appendLine("plugins {")
     plugins.forEach { appendLine("  $it") }
     appendLine("}\n")
+  }
+
+  private fun imports() = if (imports.isEmpty()) "" else buildString {
+    imports.forEach { appendLine(it) }
+    appendLine()
+  }
+
+  private fun blocksBlock() = if (blocks.isEmpty()) "" else buildString {
+    blocks.forEach { appendLine("$it\n") }
   }
 
   private fun repositoriesBlock() = if (repositories.isEmpty()) "" else buildString {
@@ -105,6 +118,8 @@ allprojects {
   public class Builder internal constructor() {
 
     private val plugins = mutableListOf<String>()
+    private val imports = mutableListOf<String>()
+    private val blocks = mutableListOf<String>()
     private val repositories = mutableListOf<String>()
     private val dependencies = mutableListOf<String>()
 
@@ -117,6 +132,14 @@ allprojects {
 
     public fun android(): Builder = apply {
       isAndroid = true
+    }
+
+    public fun addImport(import: String): Builder = apply {
+      imports.add(import)
+    }
+
+    public fun addBlock(codeBlock: String): Builder = apply {
+      blocks.add(codeBlock)
     }
 
     public fun addPlugin(
@@ -166,7 +189,15 @@ allprojects {
     }
 
     public fun build(): ProjectBuildSpec =
-      ProjectBuildSpec(plugins, repositories, dependencies, isAndroid, isBuildScript)
+      ProjectBuildSpec(
+        plugins,
+        imports,
+        blocks,
+        repositories,
+        dependencies,
+        isAndroid,
+        isBuildScript
+      )
   }
 
   public companion object {

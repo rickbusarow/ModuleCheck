@@ -22,6 +22,7 @@ import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.kotlin.dsl.getByType
@@ -34,19 +35,28 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   }
 
   @get:Input
-  val alwaysIgnore: SetProperty<String> =
-    project.extensions.getByType<ModuleCheckExtension>().alwaysIgnore
+  val autoCorrect: Property<Boolean> = project.extensions
+    .getByType<ModuleCheckExtension>()
+    .autoCorrect
 
   @get:Input
-  val ignoreAll: SetProperty<String> =
-    project.extensions.getByType<ModuleCheckExtension>().ignoreAll
+  val alwaysIgnore: SetProperty<String> = project.extensions
+    .getByType<ModuleCheckExtension>()
+    .alwaysIgnore
+
+  @get:Input
+  val ignoreAll: SetProperty<String> = project.extensions
+    .getByType<ModuleCheckExtension>()
+    .ignoreAll
 
   protected fun List<Finding>.finish() {
     forEach { finding ->
 
       project.logger.error(finding.logString())
 
-      (finding as? Fixable)?.fix()
+      if (finding is Fixable && autoCorrect.get()) {
+        finding.fix()
+      }
 
 //      MCP.reset()
     }
