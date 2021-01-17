@@ -15,6 +15,8 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.internal.asKtFile
+import com.rickbusarow.modulecheck.parser.DslBlockParser
 import org.gradle.api.Project
 
 interface Finding {
@@ -59,26 +61,27 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
     override fun logString(): String = super.logString() + " from: ${from?.path}"
 
     override fun fix() {
+      val parser = DslBlockParser("dependencies")
+
+      val fromPath = from?.path ?: return
+
+      val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
+
+      val match = result.elements.firstOrNull {
+        it.psiElement.text.contains(fromPath)
+      } ?: return
+
+      val newDeclaration = match.toString().replace(fromPath, dependencyPath)
+
+      val newDependencies = result.blockText.replace(
+          match.toString(), newDeclaration + "\n" + match.toString()
+      )
+
       val text = dependentProject.buildFile.readText()
 
-      position()?.let { position ->
+      val newText = text.replace(result.blockText, newDependencies)
 
-        val row = position.row - 1
-
-        val lines = text.lines().toMutableList()
-
-        if (row > 0 && from != null) {
-          val existingPath = from.path
-
-          val existingLine = lines[row]
-
-          lines[row] = existingLine + "\n" + existingLine.replace(existingPath, dependencyPath)
-
-          val newText = lines.joinToString("\n")
-
-          dependentProject.buildFile.writeText(newText)
-        }
-      }
+      dependentProject.buildFile.writeText(newText)
     }
   }
 
@@ -94,7 +97,7 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
 
   override fun position(): Position? {
     return MCP.from(dependencyProject)
-      .positionIn(dependentProject, config)
+        .positionIn(dependentProject, config)
   }
 
   override fun logString(): String {

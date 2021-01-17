@@ -35,10 +35,19 @@ object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
           .dependencies.api
       }.toSet()
 
+    val unusedPaths = unused
+      .map { it.project.path }
+      .toSet()
+
+    val mainDependenciesPaths = mcp.dependencies
+      .main()
+      .map { it.project.path }
+      .toSet()
+
     val grouped = apiFromUnused
       .asSequence()
-      .filterNot { it in unused }
-      .filterNot { it in mcp.dependencies.main() }
+      .filterNot { it.project.path in unusedPaths }
+      .filterNot { it.project.path in mainDependenciesPaths }
       .filter { inheritedDependencyProject ->
         inheritedDependencyProject
           .mcp()
@@ -47,6 +56,7 @@ object OvershotParser : Parser<DependencyFinding.OverShotDependency>() {
             newProjectDeclaration in mcp.mainImports
           }
       }
+      .distinct()
       .map { overshot ->
 
         val source = mcp.sourceOf(overshot)

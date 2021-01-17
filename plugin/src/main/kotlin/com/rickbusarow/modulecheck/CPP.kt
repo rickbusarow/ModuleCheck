@@ -50,4 +50,20 @@ data class CPP(
         else -> TODO()
       }
     }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is CPP) return false
+
+    if (config != other.config) return false
+    if (project.path != other.project.path) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = config.hashCode()
+    result = 31 * result + project.hashCode()
+    return result
+  }
 }
