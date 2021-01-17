@@ -126,6 +126,7 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+
     "with autoCorrect" - {
 
       projectSpecBuilder
@@ -239,8 +240,17 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+    projectSpecBuilder
       .addSettingsSpec(projectSettings.build())
-      .addBuildSpec(projectBuild.build())
+      .addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  // autoCorrect.set(true)
+            |}
+          """.trimMargin()
+          ).build()
+      )
       .build()
       .writeIn(testProjectDir.toPath())
 
@@ -347,7 +357,17 @@ class OvershotDependenciesTest : FreeSpec({
           .build()
       )
       .addSettingsSpec(projectSettings.build())
-      .addBuildSpec(projectBuild.build())
+      .addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  // autoCorrect.set(true)
+            |}
+          """.trimMargin()
+          ).build()
+      )
+
+    projectSpecBuilder
       .build()
       .writeIn(testProjectDir.toPath())
 
@@ -459,8 +479,16 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
+
       .addSettingsSpec(projectSettings.build())
-      .addBuildSpec(projectBuild.build())
+      .addBuildSpec(
+        projectBuild.addBlock(
+          """moduleCheck {
+            |  // autoCorrect.set(true)
+            |}
+          """.trimMargin()
+        ).build()
+      )
       .build()
       .writeIn(testProjectDir.toPath())
 
