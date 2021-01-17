@@ -17,7 +17,7 @@ package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
-@Suppress("MemberVisibilityCanBePrivate")
+@Suppress("MemberVisibilityCanBePrivate", "LongParameterList")
 public class ProjectBuildSpec private constructor(
   public val plugins: List<String>,
   public val imports: List<String>,
