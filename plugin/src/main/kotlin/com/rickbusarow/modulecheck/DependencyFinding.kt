@@ -74,7 +74,7 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
       val newDeclaration = match.toString().replace(fromPath, dependencyPath)
 
       val newDependencies = result.blockText.replace(
-          match.toString(), newDeclaration + "\n" + match.toString()
+        match.toString(), newDeclaration + "\n" + match.toString()
       )
 
       val text = dependentProject.buildFile.readText()
@@ -97,7 +97,7 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
 
   override fun position(): Position? {
     return MCP.from(dependencyProject)
-        .positionIn(dependentProject, config)
+      .positionIn(dependentProject, config)
   }
 
   override fun logString(): String {
