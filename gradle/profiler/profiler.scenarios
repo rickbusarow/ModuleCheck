@@ -8,7 +8,7 @@ clean_build_debug {
     tasks = ["assemble"]
     cleanup-tasks = ["clean"]
     run-using = tooling-api // value can be "cli" or "tooling-api"
-    daemon = warm // value can be "warm", "cold", or "none"
+    daemon = none // value can be "warm", "cold", or "none"
     # measured-build-ops = ["org.gradle.api.internal.tasks.SnapshotTaskInputsBuildOperationType"] // see --measure-build-op
 }
 tests {
