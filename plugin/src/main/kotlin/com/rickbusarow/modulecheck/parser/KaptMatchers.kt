@@ -40,8 +40,8 @@ class KaptMatcher(
 
   override fun toString(): String {
     return """KaptMatcher(
-      |  name='$name', 
-      |  processor='$processor', 
+      |  name='$name',
+      |  processor='$processor',
       |  annotationImports=${annotationImports.joinToString("\n    ", "\n    ")}
       |)""".trimMargin()
   }
@@ -57,10 +57,7 @@ internal val kaptMatchers: List<KaptMatcher> = listOf(
       "dagger\\.hilt\\.\\*",
       "dagger\\.hilt\\.DefineComponent",
       "dagger\\.hilt\\.EntryPoint",
-      "dagger\\.hilt\\.InstallIn",
-      "dagger\\.hilt\\.android.AndroidEntryPoint",
-      "dagger\\.hilt\\.android.HiltAndroidApp",
-      "dagger\\.hilt\\.android.WithFragmentBindings"
+      "dagger\\.hilt\\.InstallIn"
     )
   ),
   KaptMatcher(
@@ -96,7 +93,11 @@ internal val kaptMatchers: List<KaptMatcher> = listOf(
       "dagger\\.multibindings\\.IntoMap",
       "dagger\\.multibindings\\.IntoSet",
       "dagger\\.BindsInstance",
-      "dagger\\.Component"
+      "dagger\\.Component",
+      "dagger\\.assisted\\.\\*",
+      "dagger\\.assisted\\.Assisted",
+      "dagger\\.assisted\\.AssistedInject",
+      "dagger\\.assisted\\.AssistedFactory"
     )
   ),
   KaptMatcher(
