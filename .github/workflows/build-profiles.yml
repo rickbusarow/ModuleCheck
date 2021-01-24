@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           # use a personal access token to check out so that this action can trigger other actions
-          token: ${{ secrets.AUTOSQUASH_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # compares our wrapper's hash against one from Gradle
       - uses: gradle/wrapper-validation-action@v1
@@ -37,6 +37,6 @@ jobs:
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          token: ${{ secrets.AUTOSQUASH_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           commit_message: clean debug build profile results
           commit_options: '--no-verify --signoff'
