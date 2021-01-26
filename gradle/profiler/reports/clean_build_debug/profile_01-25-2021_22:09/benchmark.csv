@@ -1,0 +1,8 @@
+scenario,Clean Build
+version,Gradle 6.8.1
+tasks,assemble
+value,execution
+warm-up build #1,23317
+measured build #1,7064
+measured build #2,7418
+measured build #3,7748
