@@ -30,7 +30,7 @@ sealed class UnusedKapt : Finding, Fixable {
       val lines = text.lines().toMutableList()
 
       if (row > 0) {
-        lines[row] = Fixable.INLINE_COMMENT + lines[row] + label()
+        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
 
         val newText = lines.joinToString("\n")
 

@@ -18,44 +18,25 @@ package com.rickbusarow.modulecheck
 import org.gradle.api.Project
 
 interface Finding {
+
+  val problemName: String
   val dependentProject: Project
 
   fun logString(): String
   fun position(): Position?
 }
 
-interface Fixable {
-
-  val problemName: String
+interface Fixable : Finding {
 
   fun fix()
 
-  fun label() = "$FIX_LABEL -- $problemName"
+  fun fixLabel() = "$FIX_LABEL -- $problemName"
 
   companion object {
 
     const val FIX_LABEL = "  // ModuleCheck finding"
     const val INLINE_COMMENT = "// "
   }
-}
-
-data class UnusedDependency(
-  override val dependentProject: Project,
-  override val dependencyProject: Project,
-  override val dependencyPath: String,
-  override val config: Config
-) : DependencyFinding("unused") {
-  fun cpp() = CPP(config, dependencyProject)
-}
-
-data class RedundantDependency(
-  override val dependentProject: Project,
-  override val dependencyProject: Project,
-  override val dependencyPath: String,
-  override val config: Config,
-  val from: List<Project>
-) : DependencyFinding("redundant") {
-  override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
 }
 
 abstract class DependencyFinding(override val problemName: String) : Fixable, Finding {
@@ -84,7 +65,7 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
       val lines = text.lines().toMutableList()
 
       if (row > 0) {
-        lines[row] = Fixable.INLINE_COMMENT + lines[row] + label()
+        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
 
         val newText = lines.joinToString("\n")
 
