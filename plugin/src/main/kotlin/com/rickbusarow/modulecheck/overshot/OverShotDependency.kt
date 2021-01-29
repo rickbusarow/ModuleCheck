@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package com.rickbusarow.modulecheck.overshot
 
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.DependencyFinding
+import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.Position
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import org.gradle.api.Project

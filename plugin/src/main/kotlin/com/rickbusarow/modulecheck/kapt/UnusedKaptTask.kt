@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.task
+package com.rickbusarow.modulecheck.kapt
 
 import com.rickbusarow.modulecheck.ModuleCheckExtension
-import com.rickbusarow.modulecheck.parser.KaptMatcher
-import com.rickbusarow.modulecheck.parser.kaptMatchers
-import com.rickbusarow.modulecheck.rule.UnusedKaptRule
+import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Input
@@ -56,13 +54,7 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
         kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
       ).check()
 
-      unused
-        .forEach { finding ->
-
-          project.logger.error(finding.logString())
-          finding.fix()
-//      MCP.reset()
-        }
+      unused.finish()
     }
   }
 }

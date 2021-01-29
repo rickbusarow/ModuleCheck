@@ -17,6 +17,8 @@ package com.rickbusarow.modulecheck
 
 import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
+import com.rickbusarow.modulecheck.kapt.KaptParser
+import com.rickbusarow.modulecheck.kapt.UnusedKaptParser
 import com.rickbusarow.modulecheck.parser.*
 import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
 import org.gradle.api.Project

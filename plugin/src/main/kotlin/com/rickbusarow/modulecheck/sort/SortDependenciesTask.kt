@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,18 +13,20 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.task
+package com.rickbusarow.modulecheck.sort
 
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
+import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import org.gradle.api.tasks.TaskAction
+import java.util.*
 
-abstract class SortPluginsTask : AbstractModuleCheckTask() {
+abstract class SortDependenciesTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun run() {
-    val parser = DslBlockParser("plugins")
+    val parser = DslBlockParser("dependencies")
 
     project
       .allprojects
@@ -33,36 +35,19 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
         val result = parser.parse(sub.buildFile.asKtFile()) ?: return@forEach
 
-        val patterns = listOf(
-          """id\("com\.android.*"\)""",
-          """id\("android-.*"\)""",
-          """id\("java-library"\)""",
-          """kotlin\("jvm"\)""",
-          """android.*""",
-          """javaLibrary.*""",
-          """kotlin.*""",
-          """id.*"""
-        )
-
-        val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> = patterns
-          .map { it.toRegex() }
-          .map { regex ->
-            { str: String -> !str.matches(regex) }
-          }
-          .map { booleanLambda ->
-            { psi: PsiElementWithSurroundingText ->
-
-              booleanLambda.invoke(psi.psiElement.text)
-            }
-          }.toTypedArray()
-
-        @Suppress("SpreadOperator")
-        val comparator = compareBy(*comparables)
-
         val sorted = result
           .elements
-          .sortedWith(comparator)
-          .joinToString("\n")
+          .grouped()
+          .joinToString("\n\n") { list ->
+            list
+              .sortedBy { psiElementWithSurroundings ->
+                psiElementWithSurroundings
+                  .psiElement
+                  .text
+                  .toLowerCase(Locale.US)
+              }
+              .joinToString("\n")
+          }
           .trim()
 
         val allText = sub.buildFile.readText()
@@ -72,4 +57,14 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
         sub.buildFile.writeText(newText)
       }
   }
+
+  fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
+    it
+      .psiElement
+      .text
+      .split("[(.]".toRegex())
+      .take(2)
+      .joinToString("-")
+  }.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
+    .map { it.value }
 }

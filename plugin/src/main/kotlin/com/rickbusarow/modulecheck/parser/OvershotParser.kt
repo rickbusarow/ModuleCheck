@@ -16,9 +16,10 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.Config.Api
 import com.rickbusarow.modulecheck.MCP
-import com.rickbusarow.modulecheck.OverShotDependency
 import com.rickbusarow.modulecheck.mcp
+import com.rickbusarow.modulecheck.overshot.OverShotDependency
 
 object OvershotParser : Parser<OverShotDependency>() {
 
@@ -70,7 +71,7 @@ object OvershotParser : Parser<OverShotDependency>() {
           dependentProject = mcp.project,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
-          config = sourceConfig ?: Config.Api,
+          config = sourceConfig ?: Api,
           from = source
         )
       }

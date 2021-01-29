@@ -15,13 +15,20 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.android.resources.DisableAndroidResourcesTask
+import com.rickbusarow.modulecheck.android.viewbinding.DisableViewBindingTask
 import com.rickbusarow.modulecheck.files.JavaFile
 import com.rickbusarow.modulecheck.files.KotlinFile
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.internal.files
-import com.rickbusarow.modulecheck.task.*
-import com.rickbusarow.modulecheck.task.android.DisableAndroidResourcesTask
-import com.rickbusarow.modulecheck.task.android.DisableViewBindingTask
+import com.rickbusarow.modulecheck.kapt.UnusedKaptTask
+import com.rickbusarow.modulecheck.overshot.OvershotTask
+import com.rickbusarow.modulecheck.sort.SortDependenciesTask
+import com.rickbusarow.modulecheck.sort.SortPluginsTask
+import com.rickbusarow.modulecheck.task.ModuleCheckTask
+import com.rickbusarow.modulecheck.task.RedundantTask
+import com.rickbusarow.modulecheck.task.UnusedTask
+import com.rickbusarow.modulecheck.task.UsedTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure

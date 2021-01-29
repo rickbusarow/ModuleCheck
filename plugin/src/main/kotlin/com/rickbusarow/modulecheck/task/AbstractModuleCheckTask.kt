@@ -50,15 +50,22 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     .ignoreAll
 
   protected fun List<Finding>.finish() {
-    forEach { finding ->
 
-      project.logger.error(finding.logString())
+    val grouped = this.groupBy { it.dependentProject }
 
-      if (finding is Fixable && autoCorrect.get()) {
-        finding.fix()
+    Output.printMagenta("ModuleCheck found ${this.size} issues:\n")
+
+    grouped.forEach { (project, list) ->
+      Output.printMagenta("\t${project.path}")
+
+      list.forEach { finding ->
+
+        Output.printYellow("\t\t${finding.logString()}")
+
+        if (finding is Fixable && autoCorrect.get()) {
+          finding.fix()
+        }
       }
-
-//      MCP.reset()
     }
   }
 

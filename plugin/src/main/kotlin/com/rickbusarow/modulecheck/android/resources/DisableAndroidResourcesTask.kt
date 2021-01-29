@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,14 +13,15 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.task
+package com.rickbusarow.modulecheck.android.resources
 
 import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.rule.OvershotRule
+import com.rickbusarow.modulecheck.rule.android.DisableAndroidResourcesRule
+import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
-abstract class OvershotTask : AbstractModuleCheckTask() {
+abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
@@ -28,8 +29,14 @@ abstract class OvershotTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      OvershotRule(project, alwaysIgnore, ignoreAll).check()
-        .finish()
+      project
+        .allprojects
+        .forEach { proj ->
+
+          DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll)
+            .check()
+            .finish()
+        }
     }
 
     project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()

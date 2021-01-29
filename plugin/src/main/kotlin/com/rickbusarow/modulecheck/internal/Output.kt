@@ -43,7 +43,13 @@ object Output {
   }
 
   fun printMagenta(message: String) {
-    print(Color.MAGENTA.bold)
+    print(Color.MAGENTA.boldHighIntensity)
+    print(message)
+    reset()
+  }
+
+  fun printCyan(message: String) {
+    print(Color.CYAN.boldHighIntensity)
     print(message)
     reset()
   }
@@ -61,22 +67,20 @@ object Output {
   }
 
   fun printRed(message: String) {
-    print(Color.RED.bold)
+    print(Color.RED.boldHighIntensity)
+    print(message)
+    reset()
+  }
+
+  fun printRedBackground(message: String) {
+    print(Color.WHITE.boldHighIntensity)
+    print(Color.RED.backgroundHighIntensity)
     print(message)
     reset()
   }
 
   private fun reset() {
     println("$prefix[0m")
-  }
-
-  fun red(message: String) = Color.RED.bold + message + "$prefix[0m"
-
-  fun magentaBackground(message: String): String {
-    return Color.MAGENTA.background +
-      Color.WHITE.boldHighIntensity +
-      message +
-      "$prefix[0m"
   }
 
   @Suppress("MagicNumber")

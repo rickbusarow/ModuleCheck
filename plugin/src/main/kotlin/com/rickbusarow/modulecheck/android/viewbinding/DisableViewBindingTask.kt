@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,17 +13,15 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.task
+package com.rickbusarow.modulecheck.android.viewbinding
 
-import com.rickbusarow.modulecheck.CPP
 import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.overshot.OvershotRule
-import com.rickbusarow.modulecheck.rule.RedundantRule
-import com.rickbusarow.modulecheck.rule.UnusedRule
+import com.rickbusarow.modulecheck.rule.android.DisableViewBindingRule
+import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
-abstract class ModuleCheckTask : AbstractModuleCheckTask() {
+abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
@@ -31,12 +29,14 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      val all = OvershotRule(project, alwaysIgnore, ignoreAll).check() +
-        RedundantRule(project, alwaysIgnore, ignoreAll).check() +
-        UnusedRule(project, alwaysIgnore, ignoreAll).check()
+      project
+        .allprojects
+        .forEach { proj ->
 
-      all.distinctBy { it.dependentProject to CPP(it.config, it.dependencyProject) }
-        .finish()
+          DisableViewBindingRule(proj, alwaysIgnore, ignoreAll)
+            .check()
+            .finish()
+        }
     }
 
     project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()

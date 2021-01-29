@@ -18,7 +18,6 @@ package com.rickbusarow.modulecheck
 import org.gradle.api.Project
 
 interface Finding {
-
   val dependentProject: Project
 
   fun logString(): String
@@ -26,7 +25,18 @@ interface Finding {
 }
 
 interface Fixable {
+
+  val problemName: String
+
   fun fix()
+
+  fun label() = "$FIX_LABEL -- $problemName"
+
+  companion object {
+
+    const val FIX_LABEL = "  // ModuleCheck finding"
+    const val INLINE_COMMENT = "// "
+  }
 }
 
 data class UnusedDependency(
@@ -48,7 +58,7 @@ data class RedundantDependency(
   override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
 }
 
-abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
+abstract class DependencyFinding(override val problemName: String) : Fixable, Finding {
 
   abstract val dependencyProject: Project
   abstract val dependencyPath: String
@@ -74,7 +84,7 @@ abstract class DependencyFinding(val problemName: String) : Fixable, Finding {
       val lines = text.lines().toMutableList()
 
       if (row > 0) {
-        lines[row] = "//" + lines[row]
+        lines[row] = Fixable.INLINE_COMMENT + lines[row] + label()
 
         val newText = lines.joinToString("\n")
 

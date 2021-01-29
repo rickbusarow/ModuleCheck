@@ -31,6 +31,8 @@ data class UnusedViewBindingGeneration(
   override val dependentProject: Project
 ) : Finding, Fixable {
 
+  override val problemName = "unused ViewBinding generation"
+
   override fun logString(): String {
     val pos = position()?.logString() ?: ""
 

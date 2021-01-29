@@ -33,6 +33,8 @@ data class UnusedResourcesGeneration(
   override val dependentProject: Project
 ) : Finding, Fixable {
 
+  override val problemName = "unused R file generation"
+
   override fun logString(): String {
     val pos = position()?.logString() ?: ""
 

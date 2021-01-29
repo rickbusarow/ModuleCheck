@@ -15,7 +15,7 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.parser.KaptMatcher
+import com.rickbusarow.modulecheck.kapt.KaptMatcher
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property

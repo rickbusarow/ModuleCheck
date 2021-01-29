@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,11 +13,9 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.parser
+package com.rickbusarow.modulecheck.kapt
 
 import com.rickbusarow.modulecheck.*
-import com.rickbusarow.modulecheck.rule.KAPT_PLUGIN_FUN
-import com.rickbusarow.modulecheck.rule.KAPT_PLUGIN_ID
 import org.gradle.api.Project
 
 sealed class UnusedKapt : Finding, Fixable {
@@ -32,7 +30,7 @@ sealed class UnusedKapt : Finding, Fixable {
       val lines = text.lines().toMutableList()
 
       if (row > 0) {
-        lines[row] = "//" + lines[row]
+        lines[row] = Fixable.INLINE_COMMENT + lines[row] + label()
 
         val newText = lines.joinToString("\n")
 
@@ -45,6 +43,8 @@ sealed class UnusedKapt : Finding, Fixable {
 data class UnusedKaptPlugin(
   override val dependentProject: Project
 ) : UnusedKapt() {
+
+  override val problemName = "unused kapt plugin"
 
   override fun position(): Position? {
     val text = dependentProject
@@ -73,7 +73,7 @@ data class UnusedKaptPlugin(
       "(${it.row}, ${it.column}): "
     } ?: ""
 
-    return "unused kapt plugin: ${dependentProject.buildFile.path}: $pos$KAPT_PLUGIN_ID"
+    return "${dependentProject.buildFile.path}: $pos  unused kapt plugin: $KAPT_PLUGIN_ID"
   }
 }
 
@@ -82,6 +82,8 @@ data class UnusedKaptProcessor(
   val dependencyPath: String,
   val config: Config
 ) : UnusedKapt() {
+
+  override val problemName = "unused kapt processor"
 
   override fun position(): Position? {
     val fixedPath = dependencyPath.split(".")
@@ -104,6 +106,6 @@ data class UnusedKaptProcessor(
       "(${it.row}, ${it.column}): "
     } ?: ""
 
-    return "unused ${config.name} dependency: ${dependentProject.buildFile.path}: $pos$dependencyPath"
+    return "${dependentProject.buildFile.path}: $pos  unused ${config.name} dependency: $dependencyPath"
   }
 }

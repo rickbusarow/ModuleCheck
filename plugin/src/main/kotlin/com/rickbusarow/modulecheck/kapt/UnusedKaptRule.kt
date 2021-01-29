@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.rule
+package com.rickbusarow.modulecheck.kapt
 
 import com.rickbusarow.modulecheck.Config
 import com.rickbusarow.modulecheck.parser.*
+import com.rickbusarow.modulecheck.rule.AbstractRule
 import org.gradle.api.Project
 
 internal const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
@@ -68,7 +69,8 @@ class UnusedKaptRule(
             }
               .map { UnusedKaptProcessor(project, it.coordinates, config) }
 
-            val unusedPlugin = kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
+            val unusedPlugin =
+              kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
 
             if (unusedPlugin) {
               unused + UnusedKaptPlugin(project)

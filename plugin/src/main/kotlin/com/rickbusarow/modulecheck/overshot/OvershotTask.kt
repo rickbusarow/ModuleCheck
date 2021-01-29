@@ -13,16 +13,14 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.task.android
+package com.rickbusarow.modulecheck.overshot
 
 import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.rule.android.DisableAndroidResourcesRule
-import com.rickbusarow.modulecheck.rule.android.DisableViewBindingRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
-abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
+abstract class OvershotTask : AbstractModuleCheckTask() {
 
   @TaskAction
   fun execute() = runBlocking {
@@ -30,39 +28,8 @@ abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
     val ignoreAll = ignoreAll.get()
 
     measured {
-      project
-        .allprojects
-        .forEach { proj ->
-
-          DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll)
-            .check()
-            .finish()
-        }
-    }
-
-    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
-      .forEach { (depth, modules) ->
-        Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-      }
-  }
-}
-
-abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
-
-  @TaskAction
-  fun execute() = runBlocking {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
-    measured {
-      project
-        .allprojects
-        .forEach { proj ->
-
-          DisableViewBindingRule(proj, alwaysIgnore, ignoreAll)
-            .check()
-            .finish()
-        }
+      OvershotRule(project, alwaysIgnore, ignoreAll).check()
+        .finish()
     }
 
     project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()

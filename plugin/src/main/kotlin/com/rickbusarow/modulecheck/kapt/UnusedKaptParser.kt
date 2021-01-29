@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,9 +13,11 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck.parser
+package com.rickbusarow.modulecheck.kapt
 
-import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.Config.Kapt
+import com.rickbusarow.modulecheck.Config.KaptAndroidTest
+import com.rickbusarow.modulecheck.Config.KaptTest
 import com.rickbusarow.modulecheck.MCP
 
 object UnusedKaptParser {
@@ -36,7 +38,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.KaptAndroidTest) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, KaptAndroidTest) }
       .toSet()
 
     val unusedMain = mcp.kaptDependencies.main.filter { coords ->
@@ -48,7 +50,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.Kapt) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Kapt) }
       .toSet()
 
     val unusedTest = mcp.kaptDependencies.test.filter { coords ->
@@ -60,7 +62,7 @@ object UnusedKaptParser {
         }
       } == true
     }
-      .map { UnusedKaptProcessor(mcp.project, it.coordinates, Config.KaptTest) }
+      .map { UnusedKaptProcessor(mcp.project, it.coordinates, KaptTest) }
       .toSet()
 
     return MCP.ParsedKapt(unusedAndroidTest, unusedMain, unusedTest)
