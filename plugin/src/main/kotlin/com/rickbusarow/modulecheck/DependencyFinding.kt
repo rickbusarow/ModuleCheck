@@ -24,11 +24,29 @@ interface Finding {
 
   fun logString(): String
   fun position(): Position?
+  fun positionString()= position()?.logString() ?: ""
 }
 
 interface Fixable : Finding {
 
-  fun fix()
+  fun fix(){
+    val text = dependentProject.buildFile.readText()
+
+    position()?.let { position ->
+
+      val row = position.row - 1
+
+      val lines = text.lines().toMutableList()
+
+      if (row > 0) {
+        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
+
+        val newText = lines.joinToString("\n")
+
+        dependentProject.buildFile.writeText(newText)
+      }
+    }
+  }
 
   fun fixLabel() = "$FIX_LABEL -- $problemName"
 
@@ -50,27 +68,7 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
   }
 
   override fun logString(): String {
-    val pos = position()?.logString() ?: ""
 
-    return "${dependentProject.buildFile.path}: $pos$dependencyPath"
-  }
-
-  override fun fix() {
-    val text = dependentProject.buildFile.readText()
-
-    position()?.let { position ->
-
-      val row = position.row - 1
-
-      val lines = text.lines().toMutableList()
-
-      if (row > 0) {
-        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
-
-        val newText = lines.joinToString("\n")
-
-        dependentProject.buildFile.writeText(newText)
-      }
-    }
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }

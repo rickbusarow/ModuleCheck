@@ -18,31 +18,9 @@ package com.rickbusarow.modulecheck.kapt
 import com.rickbusarow.modulecheck.*
 import org.gradle.api.Project
 
-sealed class UnusedKapt : Finding, Fixable {
-
-  override fun fix() {
-    val text = dependentProject.buildFile.readText()
-
-    position()?.let { position ->
-
-      val row = position.row - 1
-
-      val lines = text.lines().toMutableList()
-
-      if (row > 0) {
-        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
-
-        val newText = lines.joinToString("\n")
-
-        dependentProject.buildFile.writeText(newText)
-      }
-    }
-  }
-}
-
 data class UnusedKaptPlugin(
   override val dependentProject: Project
-) : UnusedKapt() {
+) : Finding, Fixable {
 
   override val problemName = "unused kapt plugin"
 
@@ -69,11 +47,8 @@ data class UnusedKaptPlugin(
   }
 
   override fun logString(): String {
-    val pos = position()?.let {
-      "(${it.row}, ${it.column}): "
-    } ?: ""
 
-    return "${dependentProject.buildFile.path}: $pos  unused kapt plugin: $KAPT_PLUGIN_ID"
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $KAPT_PLUGIN_ID"
   }
 }
 
@@ -81,9 +56,9 @@ data class UnusedKaptProcessor(
   override val dependentProject: Project,
   val dependencyPath: String,
   val config: Config
-) : UnusedKapt() {
+) : Finding, Fixable {
 
-  override val problemName = "unused kapt processor"
+  override val problemName = "unused ${config.name} dependency"
 
   override fun position(): Position? {
     val fixedPath = dependencyPath.split(".")
@@ -94,18 +69,16 @@ data class UnusedKaptProcessor(
       .buildFile
       .readText()
       .lines()
-      .positionOf(dependencyPath, config) ?: dependentProject
-      .buildFile
-      .readText()
-      .lines()
-      .positionOf(fixedPath, config)
+      .positionOf(dependencyPath, config)
+      ?: dependentProject
+        .buildFile
+        .readText()
+        .lines()
+        .positionOf(fixedPath, config)
   }
 
   override fun logString(): String {
-    val pos = position()?.let {
-      "(${it.row}, ${it.column}): "
-    } ?: ""
 
-    return "${dependentProject.buildFile.path}: $pos  unused ${config.name} dependency: $dependencyPath"
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }
