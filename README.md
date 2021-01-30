@@ -11,3 +11,22 @@
 - [ ] minify (remove dependency if declared as api by dependency module)
 - [ ] disallow test dependencies if no test src directory
 - [ ] disallow androidTest dependencies if no androidTest src directory
+
+
+### Tasks
+
+#### Done
+- kapt
+- disable android resources
+- disable viewbinding
+- sort plugins
+- sort dependencies
+- overshot
+
+#### TODO
+- disable android values ???
+
+#### Partial
+- unused
+- redundant
+- used?
