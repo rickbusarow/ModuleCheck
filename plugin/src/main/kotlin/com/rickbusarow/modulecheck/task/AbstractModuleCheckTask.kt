@@ -50,7 +50,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     .ignoreAll
 
   protected fun List<Finding>.finish() {
-
     val grouped = this.groupBy { it.dependentProject }
 
     Output.printMagenta("ModuleCheck found ${this.size} issues:\n")

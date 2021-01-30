@@ -34,7 +34,6 @@ data class UnusedViewBindingGeneration(
   override val problemName = "unused ViewBinding generation"
 
   override fun logString(): String {
-
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
   }
 

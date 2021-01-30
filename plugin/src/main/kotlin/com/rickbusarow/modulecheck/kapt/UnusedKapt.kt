@@ -47,7 +47,6 @@ data class UnusedKaptPlugin(
   }
 
   override fun logString(): String {
-
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $KAPT_PLUGIN_ID"
   }
 }
@@ -78,7 +77,6 @@ data class UnusedKaptProcessor(
   }
 
   override fun logString(): String {
-
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }

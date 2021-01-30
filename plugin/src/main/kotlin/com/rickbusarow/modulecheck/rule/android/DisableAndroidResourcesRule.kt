@@ -36,7 +36,6 @@ data class UnusedResourcesGeneration(
   override val problemName = "unused R file generation"
 
   override fun logString(): String {
-
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
   }
 

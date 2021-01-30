@@ -24,12 +24,12 @@ interface Finding {
 
   fun logString(): String
   fun position(): Position?
-  fun positionString()= position()?.logString() ?: ""
+  fun positionString() = position()?.logString() ?: ""
 }
 
 interface Fixable : Finding {
 
-  fun fix(){
+  fun fix() {
     val text = dependentProject.buildFile.readText()
 
     position()?.let { position ->
@@ -68,7 +68,6 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
   }
 
   override fun logString(): String {
-
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }
