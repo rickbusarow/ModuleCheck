@@ -36,30 +36,31 @@ abstract class ModuleCheckExtension(objects: ObjectFactory) {
 
   val additionalKaptMatchers: ListProperty<KaptMatcher> = objects.listProperty()
 
-  @Suppress("UnstableApiUsage")
+  val checks: Property<ChecksExtension> =
+    objects.property<ChecksExtension>().convention(ChecksExtension(objects))
+
+  fun checks(block: ChecksExtension.() -> Unit) {
+    checks.get().block()
+  }
+}
+
+@Suppress("UnstableApiUsage")
+class ChecksExtension(objects: ObjectFactory) {
   val overshot: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val redundant: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val unused: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val used: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val sortDependencies: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val sortPlugins: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val kapt: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val disableAndroidResources: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  @Suppress("UnstableApiUsage")
   val disableViewBinding: Property<Boolean> = objects.property<Boolean>().convention(true)
 }

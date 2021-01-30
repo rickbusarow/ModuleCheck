@@ -21,7 +21,7 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
 abstract class RedundantTask : AbstractModuleCheckTask() {
-
+/*
   @TaskAction
   fun execute() = runBlocking {
     val alwaysIgnore = alwaysIgnore.get()
@@ -37,4 +37,5 @@ abstract class RedundantTask : AbstractModuleCheckTask() {
         Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
   }
+  */
 }

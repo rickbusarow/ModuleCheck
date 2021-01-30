@@ -23,7 +23,7 @@ import org.gradle.api.tasks.TaskAction
 
 abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
 
-  @TaskAction
+/*  @TaskAction
   fun execute() = runBlocking {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -43,5 +43,5 @@ abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
       .forEach { (depth, modules) ->
         Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
-  }
+  }*/
 }

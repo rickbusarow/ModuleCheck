@@ -20,12 +20,26 @@ import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
+import com.rickbusarow.modulecheck.kapt.UnusedKaptRule
+import com.rickbusarow.modulecheck.kapt.kaptMatchers
+import com.rickbusarow.modulecheck.overshot.OvershotRule
+import com.rickbusarow.modulecheck.parser.DslBlockParser
+import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
+import com.rickbusarow.modulecheck.rule.RedundantRule
+import com.rickbusarow.modulecheck.rule.UnusedRule
+import com.rickbusarow.modulecheck.rule.android.DisableAndroidResourcesRule
+import com.rickbusarow.modulecheck.rule.android.DisableViewBindingRule
+import com.rickbusarow.modulecheck.sort.SortDependenciesRule
+import com.rickbusarow.modulecheck.sort.SortPluginsRule
+import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
+import java.util.*
 import kotlin.system.measureTimeMillis
 
 abstract class AbstractModuleCheckTask : DefaultTask() {
@@ -35,19 +49,126 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   }
 
   @get:Input
-  val autoCorrect: Property<Boolean> = project.extensions
-    .getByType<ModuleCheckExtension>()
-    .autoCorrect
+  val extension: ModuleCheckExtension = project.extensions.getByType()
 
   @get:Input
-  val alwaysIgnore: SetProperty<String> = project.extensions
-    .getByType<ModuleCheckExtension>()
-    .alwaysIgnore
+  val autoCorrect: Property<Boolean> = extension.autoCorrect
 
   @get:Input
-  val ignoreAll: SetProperty<String> = project.extensions
-    .getByType<ModuleCheckExtension>()
-    .ignoreAll
+  val alwaysIgnore: SetProperty<String> = extension.alwaysIgnore
+
+  @get:Input
+  val ignoreAll: SetProperty<String> = extension.ignoreAll
+
+  val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
+    SortPluginsRule.patterns
+      .map { it.toRegex() }
+      .map { regex ->
+        { str: String -> !str.matches(regex) }
+      }
+      .map { booleanLambda ->
+        { psi: PsiElementWithSurroundingText ->
+
+          booleanLambda.invoke(psi.psiElement.text)
+        }
+      }.toTypedArray()
+
+  @Suppress("SpreadOperator")
+  val pluginComparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
+
+  val dependencyComparator: Comparator<PsiElementWithSurroundingText> =
+    compareBy { psiElementWithSurroundings ->
+      psiElementWithSurroundings
+        .psiElement
+        .text
+        .toLowerCase(Locale.US)
+    }
+
+  @TaskAction
+  fun evaluate() = runBlocking {
+
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
+
+    val checks = extension.checks.get()
+
+    val findings = buildList<Finding> {
+
+      measured {
+
+        project
+          .allprojects
+          .filter { it.buildFile.exists() }
+          .forEach { proj ->
+
+            if (checks.overshot.get()) {
+              addAll(OvershotRule(proj, alwaysIgnore, ignoreAll).check())
+            }
+            if (checks.redundant.get()) {
+              addAll(RedundantRule(proj, alwaysIgnore, ignoreAll).check())
+            }
+            if (checks.unused.get()) {
+              addAll(UnusedRule(proj, alwaysIgnore, ignoreAll).check())
+            }
+            if (checks.used.get()) {
+            }
+            if (checks.sortDependencies.get()) {
+
+              val parser = DslBlockParser("dependencies")
+
+              addAll(
+                SortDependenciesRule(
+                  project = proj,
+                  alwaysIgnore = alwaysIgnore,
+                  ignoreAll = ignoreAll,
+                  parser = parser,
+                  comparator = dependencyComparator
+                )
+                  .check()
+              )
+            }
+            if (checks.sortPlugins.get()) {
+
+              val parser = DslBlockParser("plugins")
+
+              addAll(
+                SortPluginsRule(
+                  project = proj,
+                  alwaysIgnore = alwaysIgnore,
+                  ignoreAll = ignoreAll,
+                  parser = parser,
+                  comparator = pluginComparator
+                )
+                  .check()
+              )
+            }
+            if (checks.kapt.get()) {
+
+              val additionalKaptMatchers = project.extensions
+                .getByType<ModuleCheckExtension>()
+                .additionalKaptMatchers
+
+              addAll(
+                UnusedKaptRule(
+                  project = proj,
+                  alwaysIgnore = alwaysIgnore,
+                  ignoreAll = ignoreAll,
+                  kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
+                ).check()
+              )
+            }
+            if (checks.disableAndroidResources.get()) {
+              addAll(DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check())
+            }
+            if (checks.disableViewBinding.get()) {
+              addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
+            }
+          }
+      }
+    }
+
+    findings.finish()
+  }
 
   protected fun List<Finding>.finish() {
     val grouped = this.groupBy { it.dependentProject }

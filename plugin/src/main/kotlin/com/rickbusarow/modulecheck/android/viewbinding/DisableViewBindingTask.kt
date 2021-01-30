@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
 abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
-
+/*
   @TaskAction
   fun execute() = runBlocking {
     val alwaysIgnore = alwaysIgnore.get()
@@ -43,5 +43,5 @@ abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
       .forEach { (depth, modules) ->
         Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
       }
-  }
+  }*/
 }

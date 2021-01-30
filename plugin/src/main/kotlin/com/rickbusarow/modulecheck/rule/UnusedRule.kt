@@ -16,6 +16,7 @@
 package com.rickbusarow.modulecheck.rule
 
 import com.rickbusarow.modulecheck.UnusedDependency
+import com.rickbusarow.modulecheck.mcp
 import org.gradle.api.Project
 
 class UnusedRule(
@@ -27,25 +28,19 @@ class UnusedRule(
 ) {
 
   override fun check(): List<UnusedDependency> {
-    return project
-      .moduleCheckProjects()
-      .sorted()
-      .filterNot { moduleCheckProject ->
-        moduleCheckProject.path in ignoreAll
-      }
-      .flatMap { moduleCheckProject ->
-        with(moduleCheckProject) {
-          unused
-            .all()
-            .mapNotNull { dependency ->
-              if (dependency.dependencyIdentifier in alwaysIgnore) {
-                null
-              } else {
-                dependency
-              }
-            }
-            .distinctBy { it.position() }
+
+    if (project.path in ignoreAll) return emptyList()
+
+    return project.mcp()
+      .unused
+      .all()
+      .mapNotNull { dependency ->
+        if (dependency.dependencyIdentifier in alwaysIgnore) {
+          null
+        } else {
+          dependency
         }
       }
+      .distinctBy { it.position() }
   }
 }

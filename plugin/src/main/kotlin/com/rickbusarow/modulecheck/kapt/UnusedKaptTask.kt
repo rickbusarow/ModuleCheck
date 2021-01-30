@@ -17,10 +17,8 @@ package com.rickbusarow.modulecheck.kapt
 
 import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
-import kotlinx.coroutines.runBlocking
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 
 /**
@@ -41,7 +39,7 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
     .getByType<ModuleCheckExtension>()
     .additionalKaptMatchers
 
-  @TaskAction
+/*  @TaskAction
   fun execute() = runBlocking {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -56,5 +54,5 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
 
       unused.finish()
     }
-  }
+  }*/
 }

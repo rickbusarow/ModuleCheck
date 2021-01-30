@@ -15,6 +15,7 @@
 
 package com.rickbusarow.modulecheck.overshot
 
+import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.rule.AbstractRule
 import org.gradle.api.Project
 
@@ -27,16 +28,11 @@ class OvershotRule(
 ) {
 
   override fun check(): List<OverShotDependencyFinding> {
-    return project
-      .moduleCheckProjects()
-      .sorted()
-      .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
-      .flatMap { moduleCheckProject ->
-        with(moduleCheckProject) {
-          overshot
-            .all()
-            .distinctBy { it.dependencyIdentifier }
-        }
-      }
+
+    if (project.path in ignoreAll) return emptyList()
+
+    return project.mcp().overshot
+      .all()
+      .distinctBy { it.dependencyIdentifier }
   }
 }

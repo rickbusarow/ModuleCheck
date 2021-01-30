@@ -20,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.tasks.TaskAction
 
 abstract class UsedTask : AbstractModuleCheckTask() {
-
+/*
   @TaskAction
   fun execute() = runBlocking {
     val pairs = measured {
@@ -38,4 +38,5 @@ abstract class UsedTask : AbstractModuleCheckTask() {
         (Output.printYellow("${mcp.path.padEnd(50)} -- ${lst.joinToString { it.project.path }}"))
       }
   }
+  */
 }

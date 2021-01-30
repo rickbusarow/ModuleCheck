@@ -16,7 +16,7 @@
 package com.rickbusarow.modulecheck.kapt
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.parser.*
+import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.rule.AbstractRule
 import org.gradle.api.Project
 
@@ -35,50 +35,46 @@ class UnusedKaptRule(
   override fun check(): List<UnusedKaptFinding> {
     val matchers = kaptMatchers.asMap()
 
-    return project
-      .moduleCheckProjects()
-      .sorted()
-      .filterNot { moduleCheckProject -> moduleCheckProject.path in ignoreAll }
-      .flatMap { moduleCheckProject ->
-        with(moduleCheckProject) mcp@{
-          listOf(
-            Config.KaptAndroidTest to androidTestImports,
-            Config.Kapt to mainImports,
-            Config.KaptTest to testImports
-          ).flatMap { (config, imports) ->
+    if (project.path in ignoreAll) return emptyList()
 
-            val processors = when (config) {
-              Config.KaptAndroidTest -> kaptDependencies.androidTest
-              Config.Kapt -> kaptDependencies.main
-              Config.KaptTest -> kaptDependencies.test
-              else -> throw IllegalArgumentException("")
+    return with(project.mcp()) {
+      listOf(
+        Config.KaptAndroidTest to androidTestImports,
+        Config.Kapt to mainImports,
+        Config.KaptTest to testImports
+      ).flatMap { (config, imports) ->
+
+        val processors = when (config) {
+          Config.KaptAndroidTest -> kaptDependencies.androidTest
+          Config.Kapt -> kaptDependencies.main
+          Config.KaptTest -> kaptDependencies.test
+          else -> throw IllegalArgumentException("")
+        }
+
+        val unused = processors.filter { coords ->
+
+          matchers[coords.coordinates]?.let { matcher ->
+
+            matcher.annotationImports.none { annotationRegex ->
+
+              imports.any { import ->
+
+                annotationRegex.matches(import)
+              }
             }
+          } == true
+        }
+          .map { UnusedKaptProcessorFinding(project, it.coordinates, config) }
 
-            val unused = processors.filter { coords ->
+        val unusedPlugin =
+          kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
 
-              matchers[coords.coordinates]?.let { matcher ->
-
-                matcher.annotationImports.none { annotationRegex ->
-
-                  imports.any { import ->
-
-                    annotationRegex.matches(import)
-                  }
-                }
-              } == true
-            }
-              .map { UnusedKaptProcessorFinding(project, it.coordinates, config) }
-
-            val unusedPlugin =
-              kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
-
-            if (unusedPlugin) {
-              unused + UnusedKaptPluginFinding(project)
-            } else {
-              unused
-            }
-          }
+        if (unusedPlugin) {
+          unused + UnusedKaptPluginFinding(project)
+        } else {
+          unused
         }
       }
+    }
   }
 }

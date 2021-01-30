@@ -15,56 +15,131 @@
 
 package com.rickbusarow.modulecheck.sort
 
+import com.rickbusarow.modulecheck.Finding
+import com.rickbusarow.modulecheck.Fixable
+import com.rickbusarow.modulecheck.Position
 import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
+import com.rickbusarow.modulecheck.rule.AbstractRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
+import org.gradle.api.Project
 import org.gradle.api.tasks.TaskAction
 import java.util.*
 
 abstract class SortDependenciesTask : AbstractModuleCheckTask() {
+/*
 
   @TaskAction
   fun run() {
     val parser = DslBlockParser("dependencies")
+
+    val comparator = compareBy<PsiElementWithSurroundingText> { psiElementWithSurroundings ->
+      psiElementWithSurroundings
+        .psiElement
+        .text
+        .toLowerCase(Locale.US) }
 
     project
       .allprojects
       .filter { it.buildFile.exists() }
       .forEach { sub ->
 
-        val result = parser.parse(sub.buildFile.asKtFile()) ?: return@forEach
-
-        val sorted = result
-          .elements
-          .grouped()
-          .joinToString("\n\n") { list ->
-            list
-              .sortedBy { psiElementWithSurroundings ->
-                psiElementWithSurroundings
-                  .psiElement
-                  .text
-                  .toLowerCase(Locale.US)
-              }
-              .joinToString("\n")
-          }
-          .trim()
-
-        val allText = sub.buildFile.readText()
-
-        val newText = allText.replace(result.blockText, sorted)
-
-        sub.buildFile.writeText(newText)
+        SortDependenciesRule(
+          project = sub,
+          alwaysIgnore = alwaysIgnore.get(),
+          ignoreAll = ignoreAll.get(),
+          parser = parser,
+          comparator = comparator
+        )
+          .check()
       }
   }
+*/
 
-  fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
-    it
-      .psiElement
-      .text
-      .split("[(.]".toRegex())
-      .take(2)
-      .joinToString("-")
-  }.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
-    .map { it.value }
+}
+
+fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
+  it
+    .psiElement
+    .text
+    .split("[(.]".toRegex())
+    .take(2)
+    .joinToString("-")
+}.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
+  .map { it.value }
+
+class SortDependenciesFinding(
+  override val dependentProject: Project,
+  val parser: DslBlockParser,
+  val comparator: Comparator<PsiElementWithSurroundingText>
+) : Finding, Fixable {
+  override val problemName = "unsorted dependencies"
+
+  override val dependencyIdentifier = ""
+
+  override fun position(): Position? = null
+
+  override fun fix() {
+
+    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
+
+    val sorted = result
+      .elements
+      .grouped()
+      .joinToString("\n\n") { list ->
+        list
+          .sortedWith(comparator)
+          .joinToString("\n")
+      }
+      .trim()
+
+    val allText = dependentProject.buildFile.readText()
+
+    val newText = allText.replace(result.blockText, sorted)
+
+    dependentProject.buildFile.writeText(newText)
+  }
+}
+class SortDependenciesRule(
+  project: Project,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>,
+  val parser: DslBlockParser,
+  val comparator: Comparator<PsiElementWithSurroundingText>
+) : AbstractRule<SortDependenciesFinding>(
+  project, alwaysIgnore, ignoreAll
+) {
+  override fun check(): List<SortDependenciesFinding> {
+
+    val result = parser.parse(project.buildFile.asKtFile()) ?: return emptyList()
+
+    val sorted = result
+      .elements
+      .grouped()
+      .joinToString("\n\n") { list ->
+        list
+          .sortedWith(comparator)
+          .joinToString("\n")
+      }
+      .trim()
+
+    return if (result.blockText == sorted)
+      emptyList()
+    else
+      listOf(SortDependenciesFinding(project, parser, comparator))
+  }
+
+  companion object {
+    val patterns = listOf(
+      """id\("com\.android.*"\)""",
+      """id\("android-.*"\)""",
+      """id\("java-library"\)""",
+      """kotlin\("jvm"\)""",
+      """android.*""",
+      """javaLibrary.*""",
+      """kotlin.*""",
+      """id.*"""
+    )
+  }
 }
