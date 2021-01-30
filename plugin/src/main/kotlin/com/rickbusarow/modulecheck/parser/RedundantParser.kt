@@ -17,12 +17,12 @@ package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
 import com.rickbusarow.modulecheck.MCP
-import com.rickbusarow.modulecheck.RedundantDependency
+import com.rickbusarow.modulecheck.RedundantDependencyFinding
 import com.rickbusarow.modulecheck.mcp
 
-object RedundantParser : Parser<RedundantDependency>() {
+object RedundantParser : Parser<RedundantDependencyFinding>() {
 
-  override fun parse(mcp: MCP): MCP.Parsed<RedundantDependency> {
+  override fun parse(mcp: MCP): MCP.Parsed<RedundantDependencyFinding> {
     val allMain = mcp.dependencies.api.toSet()
 
     val inheritedDependencyProjects = mcp.dependencies.main()
@@ -39,7 +39,7 @@ object RedundantParser : Parser<RedundantDependency>() {
           .filter { inherited -> inherited.project == it.project }
           .map { it.project }
 
-        RedundantDependency(
+        RedundantDependencyFinding(
           mcp.project,
           it.project,
           it.project.path,

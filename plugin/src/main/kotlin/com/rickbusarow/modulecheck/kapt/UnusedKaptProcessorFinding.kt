@@ -15,47 +15,18 @@
 
 package com.rickbusarow.modulecheck.kapt
 
-import com.rickbusarow.modulecheck.*
+import com.rickbusarow.modulecheck.Config
+import com.rickbusarow.modulecheck.Position
+import com.rickbusarow.modulecheck.positionOf
 import org.gradle.api.Project
 
-data class UnusedKaptPlugin(
-  override val dependentProject: Project
-) : Finding, Fixable {
-
-  override val problemName = "unused kapt plugin"
-
-  override fun position(): Position? {
-    val text = dependentProject
-      .buildFile
-      .readText()
-
-    val lines = text.lines()
-
-    val row = lines
-      .indexOfFirst { line ->
-        line.contains("id(\"$KAPT_PLUGIN_ID\")") ||
-          line.contains(KAPT_PLUGIN_FUN) ||
-          line.contains("plugin = \"$KAPT_PLUGIN_ID\")")
-      }
-
-    if (row < 0) return null
-
-    val col = lines[row]
-      .indexOfFirst { it != ' ' }
-
-    return Position(row + 1, col + 1)
-  }
-
-  override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $KAPT_PLUGIN_ID"
-  }
-}
-
-data class UnusedKaptProcessor(
+data class UnusedKaptProcessorFinding(
   override val dependentProject: Project,
   val dependencyPath: String,
   val config: Config
-) : Finding, Fixable {
+) : UnusedKaptFinding {
+
+  override val dependencyIdentifier = dependencyPath
 
   override val problemName = "unused ${config.name} dependency"
 
@@ -74,9 +45,5 @@ data class UnusedKaptProcessor(
         .readText()
         .lines()
         .positionOf(fixedPath, config)
-  }
-
-  override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }

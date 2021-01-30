@@ -19,11 +19,11 @@ import com.rickbusarow.modulecheck.Config
 import com.rickbusarow.modulecheck.Config.Api
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.mcp
-import com.rickbusarow.modulecheck.overshot.OverShotDependency
+import com.rickbusarow.modulecheck.overshot.OverShotDependencyFinding
 
-object OvershotParser : Parser<OverShotDependency>() {
+object OvershotParser : Parser<OverShotDependencyFinding>() {
 
-  override fun parse(mcp: MCP): MCP.Parsed<OverShotDependency> {
+  override fun parse(mcp: MCP): MCP.Parsed<OverShotDependencyFinding> {
     val unused = mcp.unused
       .main()
       .map { it.cpp() }
@@ -67,7 +67,7 @@ object OvershotParser : Parser<OverShotDependency>() {
           .firstOrNull { it.project == source?.project }
           ?.config
 
-        OverShotDependency(
+        OverShotDependencyFinding(
           dependentProject = mcp.project,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,

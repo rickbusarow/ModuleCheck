@@ -23,19 +23,19 @@ import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import org.gradle.api.Project
 
-data class OverShotDependency(
+data class OverShotDependencyFinding(
   override val dependentProject: Project,
   override val dependencyProject: Project,
-  override val dependencyPath: String,
+  val dependencyPath: String,
   override val config: Config,
   val from: MCP?
 ) : DependencyFinding("over-shot") {
 
+  override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
+
   override fun position(): Position? {
     return from?.positionIn(dependentProject.project, config)
   }
-
-  override fun logString(): String = super.logString() + " from: ${from?.path}"
 
   override fun fix() {
     val parser = DslBlockParser("dependencies")

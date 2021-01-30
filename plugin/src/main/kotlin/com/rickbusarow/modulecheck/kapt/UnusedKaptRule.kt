@@ -28,11 +28,11 @@ class UnusedKaptRule(
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>,
   private val kaptMatchers: List<KaptMatcher>
-) : AbstractRule<UnusedKapt>(
+) : AbstractRule<UnusedKaptFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<UnusedKapt> {
+  override fun check(): List<UnusedKaptFinding> {
     val matchers = kaptMatchers.asMap()
 
     return project
@@ -67,13 +67,13 @@ class UnusedKaptRule(
                 }
               } == true
             }
-              .map { UnusedKaptProcessor(project, it.coordinates, config) }
+              .map { UnusedKaptProcessorFinding(project, it.coordinates, config) }
 
             val unusedPlugin =
               kaptDependencies.all().size == unused.size && plugins.hasPlugin(KAPT_PLUGIN_ID)
 
             if (unusedPlugin) {
-              unused + UnusedKaptPlugin(project)
+              unused + UnusedKaptPluginFinding(project)
             } else {
               unused
             }

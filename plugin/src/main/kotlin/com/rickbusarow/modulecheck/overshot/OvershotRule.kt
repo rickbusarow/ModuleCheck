@@ -22,11 +22,11 @@ class OvershotRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<OverShotDependency>(
+) : AbstractRule<OverShotDependencyFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<OverShotDependency> {
+  override fun check(): List<OverShotDependencyFinding> {
     return project
       .moduleCheckProjects()
       .sorted()
@@ -35,7 +35,7 @@ class OvershotRule(
         with(moduleCheckProject) {
           overshot
             .all()
-            .distinctBy { it.dependencyPath }
+            .distinctBy { it.dependencyIdentifier }
         }
       }
   }

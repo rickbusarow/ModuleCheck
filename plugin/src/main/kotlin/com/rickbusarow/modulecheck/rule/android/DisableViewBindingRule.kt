@@ -27,15 +27,13 @@ import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 
-data class UnusedViewBindingGeneration(
+data class UnusedViewBindingGenerationFinding(
   override val dependentProject: Project
 ) : Finding, Fixable {
 
   override val problemName = "unused ViewBinding generation"
 
-  override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
-  }
+  override val dependencyIdentifier = ""
 
   override fun position(): Position? {
     val ktFile = dependentProject.buildFile.asKtFile()
@@ -72,12 +70,12 @@ class DisableViewBindingRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<UnusedViewBindingGeneration>(
+) : AbstractRule<UnusedViewBindingGenerationFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
   @Suppress("ReturnCount")
-  override fun check(): List<UnusedViewBindingGeneration> {
+  override fun check(): List<UnusedViewBindingGenerationFinding> {
     val testedExtension = project.extensions.findByType<LibraryExtension>()
       ?: project.extensions.findByType<AppExtension>()
 
@@ -102,7 +100,7 @@ class DisableViewBindingRule(
     }
 
     return if (noLayouts) {
-      listOf(UnusedViewBindingGeneration(project))
+      listOf(UnusedViewBindingGenerationFinding(project))
     } else {
       emptyList()
     }

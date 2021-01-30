@@ -17,12 +17,13 @@ package com.rickbusarow.modulecheck
 
 import org.gradle.api.Project
 
-data class RedundantDependency(
+data class RedundantDependencyFinding(
   override val dependentProject: Project,
   override val dependencyProject: Project,
-  override val dependencyPath: String,
+  val dependencyPath: String,
   override val config: Config,
   val from: List<Project>
 ) : DependencyFinding("redundant") {
-  override fun logString(): String = super.logString() + " from: ${from.joinToString { it.path }}"
+
+  override val dependencyIdentifier = dependencyPath + " from: ${from.joinToString { it.path }}"
 }

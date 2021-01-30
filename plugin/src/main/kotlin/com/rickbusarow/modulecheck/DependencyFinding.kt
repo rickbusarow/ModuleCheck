@@ -22,12 +22,21 @@ interface Finding {
   val problemName: String
   val dependentProject: Project
 
-  fun logString(): String
+  fun logString(): String {
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
+  }
+
   fun position(): Position?
   fun positionString() = position()?.logString() ?: ""
 }
 
 interface Fixable : Finding {
+
+  val dependencyIdentifier: String
+
+  override fun logString(): String {
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
+  }
 
   fun fix() {
     val text = dependentProject.buildFile.readText()
@@ -60,14 +69,9 @@ interface Fixable : Finding {
 abstract class DependencyFinding(override val problemName: String) : Fixable, Finding {
 
   abstract val dependencyProject: Project
-  abstract val dependencyPath: String
   abstract val config: Config
   override fun position(): Position? {
     return MCP.from(dependencyProject)
       .positionIn(dependentProject, config)
-  }
-
-  override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyPath"
   }
 }

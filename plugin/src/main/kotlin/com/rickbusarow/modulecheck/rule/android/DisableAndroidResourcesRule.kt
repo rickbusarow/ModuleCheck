@@ -29,15 +29,13 @@ import org.gradle.kotlin.dsl.findByType
 internal val androidBlockParser = DslBlockParser("android")
 internal val androidBlockRegex = "^android \\{".toRegex()
 
-data class UnusedResourcesGeneration(
+data class UnusedResourcesGenerationFinding(
   override val dependentProject: Project
 ) : Finding, Fixable {
 
   override val problemName = "unused R file generation"
 
-  override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
-  }
+  override val dependencyIdentifier = ""
 
   override fun position(): Position? {
     val ktFile = dependentProject.buildFile.asKtFile()
@@ -74,12 +72,12 @@ class DisableAndroidResourcesRule(
   project: Project,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<UnusedResourcesGeneration>(
+) : AbstractRule<UnusedResourcesGenerationFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
   @Suppress("ReturnCount")
-  override fun check(): List<UnusedResourcesGeneration> {
+  override fun check(): List<UnusedResourcesGenerationFinding> {
     val libraryExtension = project.extensions.findByType<LibraryExtension>()
 
     libraryExtension ?: return emptyList()
@@ -98,7 +96,7 @@ class DisableAndroidResourcesRule(
     }
 
     return if (noResources) {
-      listOf(UnusedResourcesGeneration(project))
+      listOf(UnusedResourcesGenerationFinding(project))
     } else {
       emptyList()
     }

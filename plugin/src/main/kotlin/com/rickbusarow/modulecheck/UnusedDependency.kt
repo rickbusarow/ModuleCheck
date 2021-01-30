@@ -20,7 +20,7 @@ import org.gradle.api.Project
 data class UnusedDependency(
   override val dependentProject: Project,
   override val dependencyProject: Project,
-  override val dependencyPath: String,
+  override val dependencyIdentifier: String,
   override val config: Config
 ) : DependencyFinding("unused") {
   fun cpp() = CPP(config, dependencyProject)

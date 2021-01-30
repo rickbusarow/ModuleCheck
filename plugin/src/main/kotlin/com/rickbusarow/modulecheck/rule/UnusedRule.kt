@@ -38,7 +38,7 @@ class UnusedRule(
           unused
             .all()
             .mapNotNull { dependency ->
-              if (dependency.dependencyPath in alwaysIgnore) {
+              if (dependency.dependencyIdentifier in alwaysIgnore) {
                 null
               } else {
                 dependency
