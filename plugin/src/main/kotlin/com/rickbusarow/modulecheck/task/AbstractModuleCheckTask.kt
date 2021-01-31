@@ -15,10 +15,7 @@
 
 package com.rickbusarow.modulecheck.task
 
-import com.rickbusarow.modulecheck.Finding
-import com.rickbusarow.modulecheck.Fixable
-import com.rickbusarow.modulecheck.MCP
-import com.rickbusarow.modulecheck.ModuleCheckExtension
+import com.rickbusarow.modulecheck.*
 import com.rickbusarow.modulecheck.internal.Output
 import com.rickbusarow.modulecheck.kapt.UnusedKaptRule
 import com.rickbusarow.modulecheck.kapt.kaptMatchers
@@ -99,6 +96,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
         project
           .allprojects
           .filter { it.buildFile.exists() }
+          .sortedByDescending { it.mcp().getMainDepth()}
           .forEach { proj ->
 
             if (checks.overshot.get()) {
