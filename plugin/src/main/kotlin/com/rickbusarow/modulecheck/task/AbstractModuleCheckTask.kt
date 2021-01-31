@@ -83,16 +83,13 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
   @TaskAction
   fun evaluate() = runBlocking {
-
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
     val checks = extension.checks.get()
 
     val findings = buildList<Finding> {
-
       measured {
-
         project
           .allprojects
           .filter { it.buildFile.exists() }
@@ -100,18 +97,30 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
           .forEach { proj ->
 
             if (checks.overshot.get()) {
-              addAll(OvershotRule(proj, alwaysIgnore, ignoreAll).check())
+              addAll(
+                OvershotRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
+
             if (checks.redundant.get()) {
-              addAll(RedundantRule(proj, alwaysIgnore, ignoreAll).check())
+              addAll(
+                RedundantRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
+
             if (checks.unused.get()) {
-              addAll(UnusedRule(proj, alwaysIgnore, ignoreAll).check())
+              addAll(
+                UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
+
             if (checks.used.get()) {
             }
-            if (checks.sortDependencies.get()) {
 
+            if (checks.sortDependencies.get()) {
               val parser = DslBlockParser("dependencies")
 
               addAll(
@@ -125,8 +134,8 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
                   .check()
               )
             }
-            if (checks.sortPlugins.get()) {
 
+            if (checks.sortPlugins.get()) {
               val parser = DslBlockParser("plugins")
 
               addAll(
@@ -140,8 +149,8 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
                   .check()
               )
             }
-            if (checks.kapt.get()) {
 
+            if (checks.kapt.get()) {
               val additionalKaptMatchers = project.extensions
                 .getByType<ModuleCheckExtension>()
                 .additionalKaptMatchers
@@ -155,9 +164,11 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
                 ).check()
               )
             }
+
             if (checks.disableAndroidResources.get()) {
               addAll(DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check())
             }
+
             if (checks.disableViewBinding.get()) {
               addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
             }

@@ -28,7 +28,6 @@ class OvershotRule(
 ) {
 
   override fun check(): List<OverShotDependencyFinding> {
-
     if (project.path in ignoreAll) return emptyList()
 
     return project.mcp().overshot

@@ -33,7 +33,7 @@ data class OverShotDependencyFinding(
 
   override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
 
-  override fun position(): Position? {
+  override fun positionOrNull(): Position? {
     return from?.positionIn(dependentProject.project, config)
   }
 

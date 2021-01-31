@@ -28,7 +28,6 @@ class RedundantRule(
 ) {
 
   override fun check(): List<RedundantDependencyFinding> {
-
     if (project.path in ignoreAll) return emptyList()
 
     return project.mcp().redundant
@@ -40,6 +39,6 @@ class RedundantRule(
           dependency
         }
       }
-      .distinctBy { it.position() }
+      .distinctBy { it.positionOrNull() }
   }
 }

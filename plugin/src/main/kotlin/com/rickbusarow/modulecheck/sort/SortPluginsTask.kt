@@ -22,10 +22,8 @@ import com.rickbusarow.modulecheck.internal.asKtFile
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.rule.AbstractRule
-import com.rickbusarow.modulecheck.sort.SortPluginsRule.Companion.patterns
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import org.gradle.api.Project
-import org.gradle.api.tasks.TaskAction
 import java.util.*
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
@@ -75,10 +73,9 @@ class SortPluginsFinding(
 
   override val dependencyIdentifier = ""
 
-  override fun position(): Position? = null
+  override fun positionOrNull(): Position? = null
 
   override fun fix() {
-
     val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
 
     val sorted = result
@@ -105,7 +102,6 @@ class SortPluginsRule(
   project, alwaysIgnore, ignoreAll
 ) {
   override fun check(): List<SortPluginsFinding> {
-
     val result = parser.parse(project.buildFile.asKtFile()) ?: return emptyList()
 
     val sorted = result
@@ -114,10 +110,11 @@ class SortPluginsRule(
       .joinToString("\n")
       .trim()
 
-    return if (result.blockText == sorted)
+    return if (result.blockText == sorted) {
       emptyList()
-    else
+    } else {
       listOf(SortPluginsFinding(project, parser, comparator))
+    }
   }
 
   companion object {

@@ -28,7 +28,6 @@ class UnusedRule(
 ) {
 
   override fun check(): List<UnusedDependency> {
-
     if (project.path in ignoreAll) return emptyList()
 
     return project.mcp()
@@ -41,6 +40,6 @@ class UnusedRule(
           dependency
         }
       }
-      .distinctBy { it.position() }
+      .distinctBy { it.positionOrNull() }
   }
 }

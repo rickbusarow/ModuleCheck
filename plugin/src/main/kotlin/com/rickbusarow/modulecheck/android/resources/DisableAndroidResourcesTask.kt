@@ -15,11 +15,7 @@
 
 package com.rickbusarow.modulecheck.android.resources
 
-import com.rickbusarow.modulecheck.internal.Output
-import com.rickbusarow.modulecheck.rule.android.DisableAndroidResourcesRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
-import kotlinx.coroutines.runBlocking
-import org.gradle.api.tasks.TaskAction
 
 abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
 

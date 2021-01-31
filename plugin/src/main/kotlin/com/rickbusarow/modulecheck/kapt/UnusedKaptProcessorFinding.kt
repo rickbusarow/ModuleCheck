@@ -30,7 +30,7 @@ data class UnusedKaptProcessorFinding(
 
   override val problemName = "unused ${config.name} dependency"
 
-  override fun position(): Position? {
+  override fun positionOrNull(): Position? {
     val fixedPath = dependencyPath.split(".")
       .drop(1)
       .joinToString(":", ":")

@@ -15,10 +15,6 @@
 
 package com.rickbusarow.modulecheck.task
 
-import com.rickbusarow.modulecheck.internal.Output
-import kotlinx.coroutines.runBlocking
-import org.gradle.api.tasks.TaskAction
-
 abstract class UsedTask : AbstractModuleCheckTask() {
 /*
   @TaskAction

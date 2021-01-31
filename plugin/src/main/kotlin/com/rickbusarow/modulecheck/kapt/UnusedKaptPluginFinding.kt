@@ -30,7 +30,7 @@ data class UnusedKaptPluginFinding(
 
   override val problemName = "unused kapt plugin"
 
-  override fun position(): Position? {
+  override fun positionOrNull(): Position? {
     val text = dependentProject
       .buildFile
       .readText()

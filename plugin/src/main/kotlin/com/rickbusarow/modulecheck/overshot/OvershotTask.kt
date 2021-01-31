@@ -15,10 +15,7 @@
 
 package com.rickbusarow.modulecheck.overshot
 
-import com.rickbusarow.modulecheck.internal.Output
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
-import kotlinx.coroutines.runBlocking
-import org.gradle.api.tasks.TaskAction
 
 abstract class OvershotTask : AbstractModuleCheckTask() {
 

@@ -15,6 +15,7 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import org.gradle.api.Project
 
 interface Finding {
@@ -26,8 +27,9 @@ interface Finding {
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
   }
 
-  fun position(): Position?
-  fun positionString() = position()?.logString() ?: ""
+  fun elementOrNull(): PsiElementWithSurroundingText? = null
+  fun positionOrNull(): Position?
+  fun positionString() = positionOrNull()?.logString() ?: ""
 }
 
 interface Fixable : Finding {
@@ -41,27 +43,24 @@ interface Fixable : Finding {
   fun fix() {
     val text = dependentProject.buildFile.readText()
 
-    position()?.let { position ->
+    elementOrNull()
+      ?.psiElement
+      ?.let { element ->
 
-      val row = position.row - 1
+        val newText = element.text
+          .lines()
+          .joinToString("\n") { fixLabel() + it }
 
-      val lines = text.lines().toMutableList()
-
-      if (row > 0) {
-        lines[row] = Fixable.INLINE_COMMENT + lines[row] + fixLabel()
-
-        val newText = lines.joinToString("\n")
-
-        dependentProject.buildFile.writeText(newText)
+        dependentProject.buildFile
+          .writeText(text.replace(element.text, newText))
       }
-    }
   }
 
-  fun fixLabel() = "$FIX_LABEL -- $problemName"
+  fun fixLabel() = "$FIX_LABEL [$problemName] "
 
   companion object {
 
-    const val FIX_LABEL = "  // ModuleCheck finding"
+    const val FIX_LABEL = "// ModuleCheck finding"
     const val INLINE_COMMENT = "// "
   }
 }
@@ -70,7 +69,13 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
 
   abstract val dependencyProject: Project
   abstract val config: Config
-  override fun position(): Position? {
+
+  override fun elementOrNull(): PsiElementWithSurroundingText? {
+    return MCP.from(dependencyProject)
+      .psiElementIn(dependentProject, config)
+  }
+
+  override fun positionOrNull(): Position? {
     return MCP.from(dependencyProject)
       .positionIn(dependentProject, config)
   }

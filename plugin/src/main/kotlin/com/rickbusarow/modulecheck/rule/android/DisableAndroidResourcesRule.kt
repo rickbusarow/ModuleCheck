@@ -37,7 +37,7 @@ data class UnusedResourcesGenerationFinding(
 
   override val dependencyIdentifier = ""
 
-  override fun position(): Position? {
+  override fun positionOrNull(): Position? {
     val ktFile = dependentProject.buildFile.asKtFile()
 
     return androidBlockParser.parse(ktFile)?.let { result ->

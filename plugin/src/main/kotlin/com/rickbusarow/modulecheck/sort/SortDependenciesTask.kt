@@ -24,7 +24,6 @@ import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.rule.AbstractRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import org.gradle.api.Project
-import org.gradle.api.tasks.TaskAction
 import java.util.*
 
 abstract class SortDependenciesTask : AbstractModuleCheckTask() {
@@ -56,7 +55,6 @@ abstract class SortDependenciesTask : AbstractModuleCheckTask() {
       }
   }
 */
-
 }
 
 fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
@@ -78,10 +76,9 @@ class SortDependenciesFinding(
 
   override val dependencyIdentifier = ""
 
-  override fun position(): Position? = null
+  override fun positionOrNull(): Position? = null
 
   override fun fix() {
-
     val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
 
     val sorted = result
@@ -111,7 +108,6 @@ class SortDependenciesRule(
   project, alwaysIgnore, ignoreAll
 ) {
   override fun check(): List<SortDependenciesFinding> {
-
     val result = parser.parse(project.buildFile.asKtFile()) ?: return emptyList()
 
     val sorted = result
@@ -124,10 +120,11 @@ class SortDependenciesRule(
       }
       .trim()
 
-    return if (result.blockText == sorted)
+    return if (result.blockText == sorted) {
       emptyList()
-    else
+    } else {
       listOf(SortDependenciesFinding(project, parser, comparator))
+    }
   }
 
   companion object {

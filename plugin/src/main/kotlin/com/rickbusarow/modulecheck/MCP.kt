@@ -22,6 +22,7 @@ import com.rickbusarow.modulecheck.kapt.UnusedKaptParser
 import com.rickbusarow.modulecheck.parser.*
 import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
 import org.gradle.api.Project
+import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.*
 
@@ -158,6 +159,25 @@ class MCP private constructor(
     }
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
+
+  fun psiElementIn(
+    parent: Project,
+    configuration: Config
+  ): PsiElementWithSurroundingText? {
+    val result = DslBlockParser("dependencies")
+      .parse(parent.buildFile.asKtFile())
+      ?: return null
+
+    // println("project --> ${parent.path} looking for ${project.project.path}")
+
+    return result.elements
+      .firstOrNull { element ->
+
+        val p = ProjectDependencyDeclarationParser(configuration, project.project.path)
+
+        p.parse(element.psiElement as KtCallExpression)
+      }
+  }
 
   fun positionIn(
     parent: Project,
