@@ -54,9 +54,9 @@ class ChecksExtension(objects: ObjectFactory) {
 
   val used: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  val sortDependencies: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val sortDependencies: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  val sortPlugins: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val sortPlugins: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   val kapt: Property<Boolean> = objects.property<Boolean>().convention(true)
 

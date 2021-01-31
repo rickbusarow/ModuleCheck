@@ -49,14 +49,21 @@ interface Fixable : Finding {
 
         val newText = element.text
           .lines()
-          .joinToString("\n") { fixLabel() + it }
+          .mapIndexed { index: Int, str: String ->
+            if (index == 0) {
+              INLINE_COMMENT + str + fixLabel()
+            } else {
+              INLINE_COMMENT + str
+            }
+          }
+          .joinToString("\n")
 
         dependentProject.buildFile
           .writeText(text.replace(element.text, newText))
       }
   }
 
-  fun fixLabel() = "$FIX_LABEL [$problemName] "
+  fun fixLabel() = "  $FIX_LABEL [$problemName] "
 
   companion object {
 
