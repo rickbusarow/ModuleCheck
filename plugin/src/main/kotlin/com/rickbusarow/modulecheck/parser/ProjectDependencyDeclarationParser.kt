@@ -15,7 +15,6 @@ class ProjectDependencyDeclarationParser(
 
   @Suppress("ReturnCount")
   fun parse(expression: KtCallExpression): Boolean {
-
     var found = false
 
     val configCallExpressionVisitor = object : KtTreeVisitorVoid() {

@@ -168,8 +168,6 @@ class MCP private constructor(
       .parse(parent.buildFile.asKtFile())
       ?: return null
 
-    // println("project --> ${parent.path} looking for ${project.project.path}")
-
     return result.elements
       .firstOrNull { element ->
 

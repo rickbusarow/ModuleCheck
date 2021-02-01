@@ -93,7 +93,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
         project
           .allprojects
           .filter { it.buildFile.exists() }
-          .sortedByDescending { it.mcp().getMainDepth()}
+          .sortedByDescending { it.mcp().getMainDepth() }
           .forEach { proj ->
 
             if (checks.overshot.get()) {
