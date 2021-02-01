@@ -33,6 +33,7 @@ class UsedImportsVisitor(
   private var currentPackage: FqName? = null
   private var imports: List<KtImportDirective>? = null
   private val namedReferences = mutableSetOf<KtReferenceExpression>()
+  var fqNames = listOf<FqName>()
   private val namedReferencesInKDoc = mutableSetOf<String>()
 
   fun usedImports(): List<KtImportDirective> {
@@ -51,7 +52,7 @@ class UsedImportsVisitor(
       return if (bindingContext == BindingContext.EMPTY) {
         identifier in namedReferencesAsString
       } else {
-        val fqNames = namedReferences.mapNotNull { referenceExpression ->
+        fqNames = namedReferences.mapNotNull { referenceExpression ->
           val descriptor =
             bindingContext[BindingContext.SHORT_REFERENCE_TO_COMPANION_OBJECT, referenceExpression]
               ?: bindingContext[BindingContext.REFERENCE_TARGET, referenceExpression]

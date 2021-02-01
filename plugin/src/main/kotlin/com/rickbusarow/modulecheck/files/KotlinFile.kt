@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
+import org.jetbrains.kotlin.resolve.BindingContext
 
 class KotlinFile(val ktFile: KtFile) : JvmFile() {
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
@@ -46,6 +47,28 @@ class KotlinFile(val ktFile: KtFile) : JvmFile() {
 
     val v = DeclarationVisitor(_declarations)
     ktFile.accept(v)
+
+    if (ktFile.name.endsWith("DaoModule.kt")) {
+
+      val uiv = UsedImportsVisitor(BindingContext.EMPTY)
+
+      ktFile.accept(uiv)
+      val un = uiv.usedImports()
+
+      if (un.isNotEmpty()) {
+        println(
+          """`````````````````````````````````````````````
+          |
+          |used --> ${un.joinToString("\n") { it.text }}
+          |
+          |
+          |fqNames --> ${uiv.fqNames.joinToString("\n") { it.asString()  }}
+          |
+          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        """.trimMargin()
+        )
+      }
+    }
   }
 }
 
