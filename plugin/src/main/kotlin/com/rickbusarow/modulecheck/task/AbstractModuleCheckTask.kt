@@ -81,13 +81,23 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
   protected abstract fun getFindings(): List<Finding>
 
-  protected fun List<Finding>.finish() {
+  private fun List<Finding>.finish() {
     val grouped = this.groupBy { it.dependentProject }
 
     Output.printMagenta("ModuleCheck found ${this.size} issues:\n")
 
+    val t = grouped.flatMap { (project, list)->
+
+      list
+    }
+
+
     grouped.forEach { (project, list) ->
       Output.printMagenta("\t${project.path}")
+
+
+
+
 
       list.forEach { finding ->
 

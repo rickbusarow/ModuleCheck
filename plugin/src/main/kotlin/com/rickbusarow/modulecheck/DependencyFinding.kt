@@ -40,10 +40,10 @@ interface Fixable : Finding {
     return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
   }
 
-  fun fix() {
+  fun fix(): Boolean {
     val text = dependentProject.buildFile.readText()
 
-    elementOrNull()
+    return elementOrNull()
       ?.psiElement
       ?.let { element ->
 
@@ -60,7 +60,9 @@ interface Fixable : Finding {
 
         dependentProject.buildFile
           .writeText(text.replace(element.text, newText))
-      }
+
+        true
+      } ?: false
   }
 
   fun fixLabel() = "  $FIX_LABEL [$problemName] "
