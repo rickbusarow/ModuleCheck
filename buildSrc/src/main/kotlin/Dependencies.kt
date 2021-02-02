@@ -39,7 +39,7 @@ object Plugins {
 
 object Versions {
 
-  const val androidTools = "4.1.1"
+  const val androidTools = "4.1.2"
   const val anvil = "2.0.6"
   const val benManes = "0.36.0"
   const val canIDropJetifier = "0.5"
