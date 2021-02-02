@@ -15,7 +15,10 @@
 
 package com.rickbusarow.modulecheck.task
 
-import com.rickbusarow.modulecheck.*
+import com.rickbusarow.modulecheck.Finding
+import com.rickbusarow.modulecheck.Fixable
+import com.rickbusarow.modulecheck.MCP
+import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.sort.SortPluginsRule
@@ -81,33 +84,34 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
   protected abstract fun getFindings(): List<Finding>
 
-  private fun List<Finding>.finish() {
+  private fun List<Finding>.finish(): Boolean {
     val grouped = this.groupBy { it.dependentProject }
 
     Output.printMagenta("ModuleCheck found ${this.size} issues:\n")
 
-    val t = grouped.flatMap { (project, list)->
+    val unFixed = grouped
+      .entries
+      .sortedBy { it.key.path }
+      .flatMap { (project, list) ->
 
-      list
-    }
+        Output.printMagenta("\t${project.path}")
 
-
-    grouped.forEach { (project, list) ->
-      Output.printMagenta("\t${project.path}")
-
-
-
-
-
-      list.forEach { finding ->
-
-        Output.printYellow("\t\t${finding.logString()}")
-
-        if (finding is Fixable && autoCorrect.get()) {
-          finding.fix()
+        val (fixed, toFix) = list.partition { finding ->
+          autoCorrect.get() && (finding as? Fixable)?.fix() ?: false
         }
+
+        fixed.forEach { finding ->
+          Output.printYellow("\t\t${finding.logString()}")
+        }
+
+        toFix.forEach { finding ->
+          Output.printRed("\t\t${finding.logString()}")
+        }
+
+        toFix
       }
-    }
+
+    return unFixed.isEmpty()
   }
 
   protected fun Project.moduleCheckProjects() =
@@ -122,7 +126,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
       r = action()
     }
 
-    Output.printGreen("total parsing time --> $time milliseconds")
+    Output.printGreen("total parsing time: $time milliseconds")
 
     return r
   }

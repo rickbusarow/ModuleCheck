@@ -37,17 +37,17 @@ data class OverShotDependencyFinding(
     return from?.positionIn(dependentProject.project, config)
   }
 
-  override fun fix() {
+  override fun fix(): Boolean {
     val parser = DslBlockParser("dependencies")
 
-    val fromPath = from?.path ?: return
+    val fromPath = from?.path ?: return false
 
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
+    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return false
 
     val match = result.elements.firstOrNull {
       it.psiElement.text.contains(fromPath)
     }
-      ?.toString() ?: return
+      ?.toString() ?: return false
 
     val newDeclaration = match.replace(fromPath, dependencyPath)
 
@@ -62,5 +62,7 @@ data class OverShotDependencyFinding(
     val newText = text.replace(result.blockText, newDependencies)
 
     dependentProject.buildFile.writeText(newText)
+
+    return true
   }
 }

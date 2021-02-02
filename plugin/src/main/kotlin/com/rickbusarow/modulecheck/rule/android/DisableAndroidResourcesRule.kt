@@ -61,8 +61,10 @@ data class UnusedResourcesGenerationFinding(
     }
   }
 
-  override fun fix() {
+  override fun fix(): Boolean {
     val ktFile = dependentProject.buildFile.asKtFile()
+
+    return false
   }
 }
 

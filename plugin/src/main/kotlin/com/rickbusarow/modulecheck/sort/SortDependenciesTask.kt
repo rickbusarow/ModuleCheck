@@ -74,8 +74,8 @@ class SortDependenciesFinding(
 
   override fun positionOrNull(): Position? = null
 
-  override fun fix() {
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return
+  override fun fix(): Boolean {
+    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return false
 
     val sorted = result
       .elements
@@ -92,6 +92,8 @@ class SortDependenciesFinding(
     val newText = allText.replace(result.blockText, sorted)
 
     dependentProject.buildFile.writeText(newText)
+
+    return true
   }
 }
 
