@@ -26,15 +26,17 @@ import org.jetbrains.kotlin.resolve.BindingContext
 class KotlinFile(val ktFile: KtFile) : JvmFile() {
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
   override val importDirectives by lazy {
-    ktFile
-      .importDirectives
+
+    val usedImportsVisitor = UsedImportsVisitor(BindingContext.EMPTY)
+
+    ktFile.accept(usedImportsVisitor)
+
+    usedImportsVisitor
+      .usedImports()
       .mapNotNull { importDirective ->
         importDirective
           .importPath
           ?.pathStr
-//            ?.split(".")
-//            ?.dropLast(1)
-//            ?.joinToString(".")
       }
       .toSet()
   }
@@ -62,7 +64,7 @@ class KotlinFile(val ktFile: KtFile) : JvmFile() {
           |used --> ${un.joinToString("\n") { it.text }}
           |
           |
-          |fqNames --> ${uiv.fqNames.joinToString("\n") { it.asString()  }}
+          |fqNames --> ${uiv.fqNames.joinToString("\n") { it.asString() }}
           |
           |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         """.trimMargin()

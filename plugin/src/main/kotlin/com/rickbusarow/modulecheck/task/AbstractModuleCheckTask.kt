@@ -24,6 +24,7 @@ import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.sort.SortPluginsRule
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -79,7 +80,11 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   fun evaluate() = runBlocking {
     val findings = getFindings()
 
-    findings.finish()
+    val t = findings.finish()
+
+    if (!t) {
+      throw GradleException("ModuleCheck found some shit")
+    }
   }
 
   protected abstract fun getFindings(): List<Finding>
