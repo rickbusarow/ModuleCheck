@@ -15,29 +15,25 @@
 
 package com.rickbusarow.modulecheck.android.viewbinding
 
+import com.rickbusarow.modulecheck.Finding
+import com.rickbusarow.modulecheck.mcp
+import com.rickbusarow.modulecheck.rule.android.DisableViewBindingRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 
 abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
-/*
-  @TaskAction
-  fun execute() = runBlocking {
+
+  override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
-    measured {
+    return measured {
       project
         .allprojects
-        .forEach { proj ->
-
-          DisableViewBindingRule(proj, alwaysIgnore, ignoreAll)
-            .check()
-            .finish()
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check()
         }
     }
-
-    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
-      .forEach { (depth, modules) ->
-        Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-      }
-  }*/
+  }
 }

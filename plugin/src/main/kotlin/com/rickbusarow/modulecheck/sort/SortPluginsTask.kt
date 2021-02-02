@@ -19,6 +19,7 @@ import com.rickbusarow.modulecheck.Finding
 import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.Position
 import com.rickbusarow.modulecheck.internal.asKtFile
+import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.rule.AbstractRule
@@ -28,40 +29,28 @@ import java.util.*
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
-/*  @TaskAction
-  fun run() {
+  override fun getFindings(): List<Finding> {
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
     val parser = DslBlockParser("plugins")
 
-    val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> = patterns
-      .map { it.toRegex() }
-      .map { regex ->
-        { str: String -> !str.matches(regex) }
-      }
-      .map { booleanLambda ->
-        { psi: PsiElementWithSurroundingText ->
-
-          booleanLambda.invoke(psi.psiElement.text)
+    return measured {
+      project
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          SortPluginsRule(
+            project = proj,
+            alwaysIgnore = alwaysIgnore,
+            ignoreAll = ignoreAll,
+            parser = parser,
+            comparator = pluginComparator
+          )
+            .check()
         }
-      }.toTypedArray()
-
-    @Suppress("SpreadOperator")
-    val comparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
-
-    project
-      .allprojects
-      .filter { it.buildFile.exists() }
-      .forEach { sub ->
-
-        SortPluginsRule(
-          project = sub,
-          alwaysIgnore = alwaysIgnore.get(),
-          ignoreAll = ignoreAll.get(),
-          parser = parser,
-          comparator = comparator
-        )
-          .check()
-      }
-  }*/
+    }
+  }
 }
 
 class SortPluginsFinding(

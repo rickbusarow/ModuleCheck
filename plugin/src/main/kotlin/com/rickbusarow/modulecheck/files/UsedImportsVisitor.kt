@@ -42,7 +42,6 @@ class UsedImportsVisitor(
 
     @Suppress("ReturnCount")
     fun KtImportDirective.isUsed(): Boolean {
-
       val namedReferencesAsString = namedReferences.map { it.text.trim('`') }
       if (aliasName in (namedReferencesInKDoc + namedReferencesAsString)) return true
 

@@ -15,7 +15,9 @@
 
 package com.rickbusarow.modulecheck.kapt
 
+import com.rickbusarow.modulecheck.Finding
 import com.rickbusarow.modulecheck.ModuleCheckExtension
+import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.Input
@@ -39,20 +41,23 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
     .getByType<ModuleCheckExtension>()
     .additionalKaptMatchers
 
-/*  @TaskAction
-  fun execute() = runBlocking {
+  override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
-    measured {
-      val unused = UnusedKaptRule(
-        project = project,
-        alwaysIgnore = alwaysIgnore,
-        ignoreAll = ignoreAll,
-        kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
-      ).check()
-
-      unused.finish()
+    return measured {
+      project
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          UnusedKaptRule(
+            project = proj,
+            alwaysIgnore = alwaysIgnore,
+            ignoreAll = ignoreAll,
+            kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
+          ).check()
+        }
     }
-  }*/
+  }
 }

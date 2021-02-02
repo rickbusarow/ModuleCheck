@@ -15,22 +15,24 @@
 
 package com.rickbusarow.modulecheck.task
 
+import com.rickbusarow.modulecheck.Finding
+import com.rickbusarow.modulecheck.mcp
+import com.rickbusarow.modulecheck.rule.UnusedRule
+
 abstract class UnusedTask : AbstractModuleCheckTask() {
-/*
-  @TaskAction
-  fun execute() = runBlocking {
+
+  override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
 
-    measured {
-      UnusedRule(project, alwaysIgnore, ignoreAll).check()
-        .finish()
+    return measured {
+      project
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+        }
     }
-
-    project.moduleCheckProjects().groupBy { it.getMainDepth() }.toSortedMap()
-      .forEach { (depth, modules) ->
-        Output.printBlue("""$depth  ${modules.joinToString { it.path }}""")
-      }
   }
-  */
 }

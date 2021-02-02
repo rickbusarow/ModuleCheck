@@ -19,6 +19,7 @@ import com.rickbusarow.modulecheck.Finding
 import com.rickbusarow.modulecheck.Fixable
 import com.rickbusarow.modulecheck.Position
 import com.rickbusarow.modulecheck.internal.asKtFile
+import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.rule.AbstractRule
@@ -27,34 +28,29 @@ import org.gradle.api.Project
 import java.util.*
 
 abstract class SortDependenciesTask : AbstractModuleCheckTask() {
-/*
 
-  @TaskAction
-  fun run() {
+  override fun getFindings(): List<Finding> {
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
     val parser = DslBlockParser("dependencies")
 
-    val comparator = compareBy<PsiElementWithSurroundingText> { psiElementWithSurroundings ->
-      psiElementWithSurroundings
-        .psiElement
-        .text
-        .toLowerCase(Locale.US) }
-
-    project
-      .allprojects
-      .filter { it.buildFile.exists() }
-      .forEach { sub ->
-
-        SortDependenciesRule(
-          project = sub,
-          alwaysIgnore = alwaysIgnore.get(),
-          ignoreAll = ignoreAll.get(),
-          parser = parser,
-          comparator = comparator
-        )
-          .check()
-      }
+    return measured {
+      project
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          SortDependenciesRule(
+            project = proj,
+            alwaysIgnore = alwaysIgnore,
+            ignoreAll = ignoreAll,
+            parser = parser,
+            comparator = dependencyComparator
+          )
+            .check()
+        }
+    }
   }
-*/
 }
 
 fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
@@ -98,6 +94,7 @@ class SortDependenciesFinding(
     dependentProject.buildFile.writeText(newText)
   }
 }
+
 class SortDependenciesRule(
   project: Project,
   alwaysIgnore: Set<String>,
