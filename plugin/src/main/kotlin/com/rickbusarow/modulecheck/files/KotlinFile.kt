@@ -16,20 +16,15 @@
 package com.rickbusarow.modulecheck.files
 
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.KtNamedDeclaration
-import org.jetbrains.kotlin.psi.KtStringTemplateEntry
-import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
+import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class KotlinFile(val ktFile: KtFile) : JvmFile() {
+
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
-  override val importDirectives by lazy {
 
-    val usedImportsVisitor = UsedImportsVisitor(BindingContext.EMPTY)
-
-    ktFile.accept(usedImportsVisitor)
+  override val imports by lazy {
 
     usedImportsVisitor
       .usedImports()
@@ -41,40 +36,122 @@ class KotlinFile(val ktFile: KtFile) : JvmFile() {
       .toSet()
   }
 
-  private val _declarations = mutableSetOf<String>()
-  override val declarations: Set<String>
-    get() = _declarations
+  override val declarations by lazy {
 
-  init {
-
-    val v = DeclarationVisitor(_declarations)
+    val v = DeclarationVisitor()
     ktFile.accept(v)
+    v.declarations
+  }
 
-    if (ktFile.name.endsWith("DaoModule.kt")) {
+  override val wildcardImports by lazy {
+    ktFile
+      .importDirectives
+      .mapNotNull { importDirective ->
+        importDirective
+          .importPath
+          ?.pathStr
+      }
+      .filter { it.endsWith('*') }
+      .toSet()
+  }
 
-      val uiv = UsedImportsVisitor(BindingContext.EMPTY)
+  private val usedImportsVisitor by lazy {
+    UsedImportsVisitor(BindingContext.EMPTY)
+      .also { ktFile.accept(it) }
+  }
 
-      ktFile.accept(uiv)
-      val un = uiv.usedImports()
+  private val referenceVisitor by lazy {
+    ReferenceVisitor()
+      .also { ktFile.accept(it) }
+  }
 
-      if (un.isNotEmpty()) {
-        println(
-          """`````````````````````````````````````````````
-          |
-          |used --> ${un.joinToString("\n") { it.text }}
-          |
-          |
-          |fqNames --> ${uiv.fqNames.joinToString("\n") { it.asString() }}
-          |
-          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        """.trimMargin()
-        )
+  private val namedReferences by lazy {
+
+    ktFile.accept(usedImportsVisitor)
+    usedImportsVisitor.namedReferences
+      .map { it.text }
+      .toSet()
+  }
+
+  private val typeReferences by lazy {
+    referenceVisitor.typeReferences
+      .mapNotNull { tr ->
+        CHILD_PARAMETERS_REGEX.find(tr)?.value
+      }
+      .filterNot { it in imports }
+      .toSet()
+  }
+
+  private val callableReferences by lazy {
+    referenceVisitor.callableReferences
+      .mapNotNull { tr ->
+        CHILD_PARAMETERS_REGEX.find(tr)?.value
+      }
+      .toSet()
+  }
+
+  private val qualifiedExpressions by lazy {
+    referenceVisitor.qualifiedExpressions
+      .mapNotNull { tr ->
+        CHILD_PARAMETERS_REGEX.find(tr)?.value
+      }
+      .toSet()
+  }
+
+  override val maybeExtraReferences by lazy {
+
+    val allOther = typeReferences + callableReferences + qualifiedExpressions
+
+    allOther + wildcardImports.flatMap { wi ->
+      allOther.map { tr ->
+        wi.replace("*", tr)
       }
     }
+      .toSet()
+  }
+
+  companion object {
+    private val CHILD_PARAMETERS_REGEX = """^[a-zA-Z._`]*""".toRegex()
   }
 }
 
-class DeclarationVisitor(val declarations: MutableSet<String>) : KtTreeVisitorVoid() {
+class ReferenceVisitor : KtTreeVisitorVoid() {
+
+  val qualifiedExpressions: MutableSet<String> = mutableSetOf()
+  val callableReferences: MutableSet<String> = mutableSetOf()
+  val typeReferences: MutableSet<String> = mutableSetOf()
+
+  override fun visitQualifiedExpression(expression: KtQualifiedExpression) {
+    super.visitQualifiedExpression(expression)
+
+    expression
+      .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
+      // ?.takeIf { it.children.isEmpty() }
+      ?.run { qualifiedExpressions.add(this.text) }
+  }
+
+  override fun visitTypeReference(typeReference: KtTypeReference) {
+    super.visitTypeReference(typeReference)
+
+    typeReferences.add(typeReference.text)
+  }
+
+  override fun visitCallExpression(expression: KtCallExpression) {
+    super.visitCallExpression(expression)
+
+    callableReferences.add(expression.text)
+  }
+
+  override fun visitCallableReferenceExpression(expression: KtCallableReferenceExpression) {
+    super.visitCallableReferenceExpression(expression)
+
+    callableReferences.add(expression.text)
+  }
+}
+
+class DeclarationVisitor : KtTreeVisitorVoid() {
+
+  val declarations: MutableSet<String> = mutableSetOf()
 
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
     if (!declaration.isPrivateOrInternal()) {

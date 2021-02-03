@@ -25,7 +25,7 @@ class JavaFile(val file: File) : JvmFile() {
   val parsed by lazy { StaticJavaParser.parse(file) }
 
   override val packageFqName by lazy { parsed.packageDeclaration.get().nameAsString }
-  override val importDirectives by lazy {
+  override val imports by lazy {
     parsed.imports.map {
       it.nameAsString
 //          .split(".")
@@ -52,6 +52,8 @@ class JavaFile(val file: File) : JvmFile() {
 
     types
   }
+  override val wildcardImports: Set<String> get() = emptySet()
+  override val maybeExtraReferences: Set<String> get() = emptySet()
 }
 
 class NodeIterator(

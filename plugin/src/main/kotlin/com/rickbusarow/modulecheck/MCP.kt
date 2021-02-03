@@ -67,16 +67,23 @@ class MCP private constructor(
     .orEmpty()
     .map { XmlFile.LayoutFile(it) }
 
-  val androidTestImports = androidTestFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
+  val androidTestImports = androidTestFiles.flatMap { jvmFile -> jvmFile.imports }.toSet()
 
-  val mainImports = (
+  val mainImports by lazy {
     mainFiles
-      .flatMap { jvmFile -> jvmFile.importDirectives } + mainLayoutFiles.map { it.customViews }
+      .flatMap { jvmFile -> jvmFile.imports } + mainLayoutFiles
+      .map { it.customViews }
       .flatten()
       .toSet()
-    ).toSet()
+  }
 
-  val testImports = testFiles.flatMap { jvmFile -> jvmFile.importDirectives }.toSet()
+  val mainExtraPossibleReferences by lazy {
+    mainFiles
+      .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
+      .toSet()
+  }
+
+  val testImports = testFiles.flatMap { jvmFile -> jvmFile.imports }.toSet()
 
   val isAndroid by lazy { project.isAndroid }
 

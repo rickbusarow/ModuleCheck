@@ -32,7 +32,7 @@ class UsedImportsVisitor(
 ) : KtTreeVisitorVoid() {
   private var currentPackage: FqName? = null
   private var imports: List<KtImportDirective>? = null
-  private val namedReferences = mutableSetOf<KtReferenceExpression>()
+  val namedReferences = mutableSetOf<KtReferenceExpression>()
   var fqNames = listOf<FqName>()
   private val namedReferencesInKDoc = mutableSetOf<String>()
 

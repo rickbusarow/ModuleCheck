@@ -15,6 +15,7 @@
 
 package com.rickbusarow.modulecheck
 
+import com.rickbusarow.modulecheck.Config.*
 import org.gradle.api.Project
 
 data class CPP(
@@ -22,34 +23,73 @@ data class CPP(
   val project: Project
 ) {
   @Suppress("ComplexMethod")
-  fun usedIn(mcp: MCP) = mcp()
-    .mainDeclarations
-    .any { declaration ->
-
-      when (config) {
-        Config.AndroidTest -> declaration !in mcp.androidTestImports
-        Config.Api ->
-          declaration !in mcp.mainImports &&
-            declaration !in mcp.testImports &&
-            declaration in mcp.androidTestImports
-        Config.CompileOnly ->
-          declaration !in mcp.mainImports &&
-            declaration !in mcp.testImports &&
-            declaration in mcp.androidTestImports
-        Config.Implementation ->
-          declaration !in mcp.mainImports &&
-            declaration !in mcp.testImports &&
-            declaration in mcp.androidTestImports
-        Config.RuntimeOnly ->
-          declaration !in mcp.mainImports &&
-            declaration !in mcp.testImports &&
-            declaration in mcp.androidTestImports
-        Config.TestApi -> declaration !in mcp.testImports
-        Config.TestImplementation -> declaration !in mcp.testImports
-        is Config.Custom -> TODO("unsupported config --> ${config.name}")
-        else -> TODO()
-      }
+  fun usedIn(mcp: MCP): Boolean {
+/*
+    if (project.path == ":places:data" && mcp.project.path == ":kits:data") {
+      println(
+        """---------------------------------------------------------------------
+        |
+        | -- places data declarations
+        |
+        | ${mcp().mainDeclarations.joinToString("\n")}
+        |
+        | -- kits data possible references
+        |
+        | ${mcp.mainExtraPossibleReferences.joinToString("\n")}
+        |
+        | -- kits data imports
+        |
+        | ${mcp.mainImports.joinToString("\n")}
+        |
+        | ======================================================================
+      """.trimMargin()
+      )
     }
+*/
+
+    return when (config) {
+      AndroidTest -> usedInAndroidTest(mcp)
+      // KaptAndroidTest -> TODO()
+      // Kapt -> TODO()
+      // KaptTest -> TODO()
+      Api -> usedInMain(mcp)
+      CompileOnly -> usedInMain(mcp)
+      Implementation -> usedInMain(mcp)
+      RuntimeOnly -> usedInMain(mcp)
+      TestApi -> usedInTest(mcp)
+      TestImplementation -> usedInTest(mcp)
+      is Config.Custom -> TODO("unsupported config --> ${config.name}")
+      else -> TODO()
+    }
+  }
+
+  private fun usedInMain(mcp: MCP): Boolean {
+    return mcp()
+      .mainDeclarations
+      .any { declaration ->
+
+        declaration in mcp.mainImports ||
+          declaration in mcp.mainExtraPossibleReferences ||
+          declaration in mcp.testImports ||
+          declaration in mcp.androidTestImports
+      }
+  }
+
+  private fun usedInAndroidTest(mcp: MCP): Boolean {
+    return mcp()
+      .androidTestDeclarations
+      .any { declaration ->
+        declaration in mcp.androidTestImports
+      }
+  }
+
+  private fun usedInTest(mcp: MCP): Boolean {
+    return mcp()
+      .testDeclarations
+      .any { declaration ->
+        declaration in mcp.testImports
+      }
+  }
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

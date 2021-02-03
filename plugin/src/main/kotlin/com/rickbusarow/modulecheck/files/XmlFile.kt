@@ -24,11 +24,6 @@ sealed class XmlFile {
 
     val customViews: Set<String> by lazy {
       AndroidLayoutParser.parseViews(file)
-        .map {
-          it.split(".")
-            .dropLast(1)
-            .joinToString(".")
-        }
         .toSet()
     }
     val resourceReferences: Set<String> by lazy {

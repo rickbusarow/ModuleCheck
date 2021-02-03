@@ -31,7 +31,11 @@ data class UnusedKaptProcessorFinding(
   override val problemName = "unused ${config.name} dependency"
 
   override fun positionOrNull(): Position? {
-    val fixedPath = dependencyPath.split(".")
+    // Kapt paths are different from other project dependencies.
+    // Given a module of `:foo:bar:baz` in a project named `my-proj`,
+    // the resolved artifact is `my-proj.foo.bar.baz`.
+    // Reverse that to get the coordinates actually written in the build file.
+    val correctedPath = dependencyPath.split(".")
       .drop(1)
       .joinToString(":", ":")
 
@@ -44,6 +48,6 @@ data class UnusedKaptProcessorFinding(
         .buildFile
         .readText()
         .lines()
-        .positionOf(fixedPath, config)
+        .positionOf(correctedPath, config)
   }
 }

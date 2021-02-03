@@ -112,7 +112,9 @@ internal val kaptMatchers: List<KaptMatcher> = listOf(
       "dagger\\.assisted\\.\\*",
       "dagger\\.assisted\\.Assisted",
       "dagger\\.assisted\\.AssistedInject",
-      "dagger\\.assisted\\.AssistedFactory"
+      "dagger\\.assisted\\.AssistedFactory",
+      "com\\.squareup\\.anvil\\.annotations\\.\\*",
+      "com\\.squareup\\.anvil\\.annotations\\.ContributesTo"
     )
   ),
   KaptMatcher(

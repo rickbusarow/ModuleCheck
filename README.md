@@ -16,17 +16,20 @@
 ### Tasks
 
 #### Done
-- kapt
-- disable android resources
-- disable viewbinding
-- sort plugins
-- sort dependencies
-- overshot
+- [X] kapt
+- [X] disable android resources
+- [X] disable viewbinding
+- [X] sort plugins
+- [X] sort dependencies
+- [X] overshot
 
 #### TODO
-- disable android values ???
+- [ ] disable android values ???
+- [ ] checkstyle reports
+- [ ] junit reports
+- [ ] text reports
 
 #### Partial
-- unused
-- redundant
-- used?
+- [ ] unused
+- [ ] redundant
+- [ ] used?

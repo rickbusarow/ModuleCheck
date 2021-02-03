@@ -17,17 +17,20 @@ package com.rickbusarow.modulecheck.files
 
 abstract class JvmFile {
   abstract val packageFqName: String
-  abstract val importDirectives: Set<String>
+  abstract val imports: Set<String>
   abstract val declarations: Set<String>
 
   override fun toString(): String {
     return """${this::class.simpleName}(
       |packageFqName='$packageFqName',
       |
-      |importDirectives=$importDirectives,
+      |importDirectives=$imports,
       |
       |declarations=$declarations
       |
       |)""".trimMargin()
   }
+
+  abstract val wildcardImports: Set<String>
+  abstract val maybeExtraReferences: Set<String>
 }
