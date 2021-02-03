@@ -23,13 +23,14 @@
 - [X] sort dependencies
 - [X] overshot
 
+#### Partial
+- [ ] unused
+- [ ] redundant
+- [ ] used?
+
 #### TODO
 - [ ] disable android values ???
 - [ ] checkstyle reports
 - [ ] junit reports
 - [ ] text reports
-
-#### Partial
-- [ ] unused
-- [ ] redundant
-- [ ] used?
+- [ ] duplicates & different configs (like listed as `implementation` and `api`)

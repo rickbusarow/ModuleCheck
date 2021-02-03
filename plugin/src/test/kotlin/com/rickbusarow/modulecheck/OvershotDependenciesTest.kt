@@ -64,6 +64,8 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
+              .addProjectDependency("api", "lib-1")
+              .addProjectDependency("api", "lib-2")
               .addProjectDependency("api", "lib-3")
               .build()
           )
@@ -145,6 +147,7 @@ class OvershotDependenciesTest : FreeSpec({
 
         projectSpecBuilder
           .build()
+          // .writeIn(File("FFFF").toPath())
           .writeIn(testProjectDir.toPath())
 
         val result = GradleRunner.create()
@@ -178,6 +181,8 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
+              .addProjectDependency("implementation", "lib-1")
+              .addProjectDependency("implementation", "lib-2")
               .addProjectDependency("implementation", "lib-3")
               .build()
           )
@@ -286,6 +291,8 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
+              .addProjectDependency("api", "lib-1")
+              .addProjectDependency("api", "lib-2")
               .addProjectDependency("api", "lib-3")
               .build()
           )
@@ -293,8 +300,6 @@ class OvershotDependenciesTest : FreeSpec({
             ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
               .addFile(
                 FileSpec.builder("com.example.app", "MyApp.kt")
-                  .addImport("com.example.lib1", "Lib1Class")
-                  .addImport("com.example.lib2", "Lib2Class")
                   .addImport("com.example.lib3", "Lib3Class")
                   .build()
               )
@@ -385,6 +390,8 @@ class OvershotDependenciesTest : FreeSpec({
         |}
         |
         |dependencies {
+        |  api(project(path = ":lib-1"))
+        |  api(project(path = ":lib-2"))
         |  api(project(path = ":lib-3"))
         |}
         |""".trimMargin()
@@ -398,6 +405,8 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
+              .addProjectDependency("api", "lib-1")
+              .addProjectDependency("api", "lib-2")
               .addProjectDependency("api", "lib-4")
               .build()
           )

@@ -33,7 +33,7 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  val kotlinVersion = "1.4.21"
+  val kotlinVersion = "1.4.30"
 
   implementation(kotlin("gradle-plugin", version = kotlinVersion))
   implementation(kotlin("stdlib", version = kotlinVersion))
