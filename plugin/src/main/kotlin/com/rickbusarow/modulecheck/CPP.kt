@@ -24,29 +24,6 @@ data class CPP(
 ) {
   @Suppress("ComplexMethod")
   fun usedIn(mcp: MCP): Boolean {
-/*
-    if (project.path == ":places:data" && mcp.project.path == ":kits:data") {
-      println(
-        """---------------------------------------------------------------------
-        |
-        | -- places data declarations
-        |
-        | ${mcp().mainDeclarations.joinToString("\n")}
-        |
-        | -- kits data possible references
-        |
-        | ${mcp.mainExtraPossibleReferences.joinToString("\n")}
-        |
-        | -- kits data imports
-        |
-        | ${mcp.mainImports.joinToString("\n")}
-        |
-        | ======================================================================
-      """.trimMargin()
-      )
-    }
-*/
-
     return when (config) {
       AndroidTest -> usedInAndroidTest(mcp)
       // KaptAndroidTest -> TODO()
@@ -77,17 +54,17 @@ data class CPP(
 
   private fun usedInAndroidTest(mcp: MCP): Boolean {
     return mcp()
-      .androidTestDeclarations
+      .mainDeclarations
       .any { declaration ->
-        declaration in mcp.androidTestImports
+        declaration in mcp.androidTestImports || declaration in mcp.androidTestExtraPossibleReferences
       }
   }
 
   private fun usedInTest(mcp: MCP): Boolean {
     return mcp()
-      .testDeclarations
+      .mainDeclarations
       .any { declaration ->
-        declaration in mcp.testImports
+        declaration in mcp.testImports || declaration in mcp.testExtraPossibleReferences
       }
   }
 

@@ -18,7 +18,6 @@ package com.rickbusarow.modulecheck
 import com.rickbusarow.modulecheck.files.XmlFile
 import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.kapt.KaptParser
-import com.rickbusarow.modulecheck.kapt.UnusedKaptParser
 import com.rickbusarow.modulecheck.parser.*
 import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
 import org.gradle.api.Project
@@ -52,7 +51,6 @@ class MCP private constructor(
 
   val overshot by OvershotParser.parseLazy(this)
   val unused by UnusedParser.parseLazy(this)
-  val unusedKapt by UnusedKaptParser.parseLazy(this)
   val redundant by RedundantParser.parseLazy(this)
 
   val androidTestFiles =
@@ -69,6 +67,12 @@ class MCP private constructor(
 
   val androidTestImports = androidTestFiles.flatMap { jvmFile -> jvmFile.imports }.toSet()
 
+  val androidTestExtraPossibleReferences by lazy {
+    androidTestFiles
+      .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
+      .toSet()
+  }
+
   val mainImports by lazy {
     mainFiles
       .flatMap { jvmFile -> jvmFile.imports } + mainLayoutFiles
@@ -79,6 +83,11 @@ class MCP private constructor(
 
   val mainExtraPossibleReferences by lazy {
     mainFiles
+      .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
+      .toSet()
+  }
+  val testExtraPossibleReferences by lazy {
+    testFiles
       .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
       .toSet()
   }

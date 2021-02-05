@@ -102,7 +102,10 @@ class KotlinFile(val ktFile: KtFile) : JvmFile() {
 
     val allOther = typeReferences + callableReferences + qualifiedExpressions
 
-    allOther + wildcardImports.flatMap { wi ->
+    allOther + allOther.map {
+      ktFile.packageFqName.asString() + "." + it
+    } + wildcardImports.flatMap { wi ->
+
       allOther.map { tr ->
         wi.replace("*", tr)
       }

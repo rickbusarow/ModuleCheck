@@ -24,11 +24,6 @@ fun <E> Collection<E>.lines() = joinToString("\n")
 object UnusedParser : Parser<UnusedDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<UnusedDependency> {
-    fun log(msg: () -> String) {
-      if (mcp.project.path == ":kits:data") {
-        println(msg())
-      }
-    }
 
     val dependencies = mcp.dependencies
 
@@ -36,44 +31,11 @@ object UnusedParser : Parser<UnusedDependency>() {
       .all()
       .filter { cpp -> !cpp.usedIn(mcp) }
 
-    log {
-      """ ********************************************************
-      |
-      |unused here
-      |
-      |${unusedHere.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
-
     val dependents = mcp.dependents()
-
-    log {
-      """ ********************************************************
-      |
-      |dependents
-      |
-      |${dependents.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
 
     val unusedMain = dependencies
       .main()
       .filter { it !in mcp.resolvedMainDependencies }
-
-    log {
-      """ ********************************************************
-      |
-      |unused main
-      |
-      |${unusedMain.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
 
     /*
     If a module doesn't use a dependency,
@@ -88,17 +50,6 @@ object UnusedParser : Parser<UnusedDependency>() {
         }
       }
 
-    log {
-      """ ********************************************************
-      |
-      |unusedInAtLeastOneDependent
-      |
-      |${unusedInAtLeastOneDependent.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
-
     val grouped = unusedInAtLeastOneDependent.map { cpp ->
 
       UnusedDependency(
@@ -111,17 +62,6 @@ object UnusedParser : Parser<UnusedDependency>() {
       .groupBy { it.config }
       .mapValues { it.value.toMutableSet() }
 
-    log {
-      """ ********************************************************
-      |
-      |grouped
-      |
-      |${grouped.entries.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
-
     val newGrouped = unusedHere.map { cpp ->
 
       UnusedDependency(
@@ -133,17 +73,6 @@ object UnusedParser : Parser<UnusedDependency>() {
     }
       .groupBy { it.config }
       .mapValues { it.value.toMutableSet() }
-
-    log {
-      """ ********************************************************
-      |
-      |newGrouped
-      |
-      |${newGrouped.entries.lines()}
-      |
-      |_______________________________________________________
-    """.trimMargin()
-    }
 
     return MCP.Parsed(
       grouped.getOrDefault(Config.AndroidTest, mutableSetOf()),
