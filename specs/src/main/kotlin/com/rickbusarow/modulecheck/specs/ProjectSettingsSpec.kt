@@ -41,7 +41,7 @@ public class ProjectSettingsSpec private constructor(
        |        useModule("com.android.tools.build:gradle:4.1.1")
        |      }
        |      if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-       |        useVersion("1.4.21")
+       |        useVersion("1.4.30")
        |      }
        |    }
        |  }
