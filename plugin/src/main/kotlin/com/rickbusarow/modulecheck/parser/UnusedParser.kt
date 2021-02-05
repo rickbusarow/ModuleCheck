@@ -24,7 +24,6 @@ fun <E> Collection<E>.lines() = joinToString("\n")
 object UnusedParser : Parser<UnusedDependency>() {
 
   override fun parse(mcp: MCP): MCP.Parsed<UnusedDependency> {
-
     val dependencies = mcp.dependencies
 
     val unusedHere = dependencies
