@@ -49,7 +49,7 @@ object AndroidResourceParser {
             t.joinToString("\n") {
               it.name()
                 .toString() + "       " + it.value() + "       " + it.attributes()
-                .map { it.cast<MutableMap.MutableEntry<String, String>>().key }
+                .map { it.cast<MutableMap.MutableEntry<String, String>>().value }
             }
             }
             |
