@@ -16,10 +16,10 @@
 package com.rickbusarow.modulecheck.parser.android
 
 import com.rickbusarow.modulecheck.internal.mainResRootOrNull
-import com.rickbusarow.modulecheck.parser.lines
 import groovy.util.Node
 import groovy.util.XmlParser
 import org.gradle.api.Project
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
 object AndroidResourceParser {
@@ -35,6 +35,31 @@ object AndroidResourceParser {
     val anims = resRoot
       .walkTopDown()
       .filter { it.isFile }
+
+      .onEach { file ->
+        if (file.path.endsWith("values-da/dimens.xml")) {
+          val parsed = parser.parse(file)
+
+          val t = parsed.children().cast<List<Node>>()
+
+          println(
+            """ ______________________________________________ node file --> $file
+            |
+            |${
+            t.joinToString("\n") {
+              it.name()
+                .toString() + "       " + it.value() + "       " + it.attributes()
+                .map { it.cast<MutableMap.MutableEntry<String, String>>().key }
+            }
+            }
+            |
+            |
+            |____________________________________________________
+          """.trimMargin()
+          )
+        }
+      }
+
       .map { file -> AndroidResource.fromFile(file) }
       .toList()
 
@@ -44,12 +69,12 @@ object AndroidResourceParser {
     //   ?.map { file -> Anim(file.nameWithoutExtension) }
     //   .orEmpty()
 
-    log {
-      """------------------------------------------------ base resources anims ---
-      |
-      |${anims.lines() }
-    """.trimMargin()
-    }
+    // log {
+    //   """------------------------------------------------ base resources anims ---
+    //   |
+    //   |${anims.lines()}
+    // """.trimMargin()
+    // }
   }
 
   fun parse(file: File) = parser.parse(file)
@@ -65,3 +90,42 @@ object AndroidResourceParser {
 }
 
 fun File.orNull(): File? = if (exists()) this else null
+
+/*
+
+resources[
+  attributes={};
+  value=[dimen[attributes={name=gauge_view_height};
+  value=[125dp]], dimen[attributes={name=mt_font_size_large};
+  value=[13sp]], dimen[attributes={name=mt_font_size_medium};
+  value=[10sp]], dimen[attributes={name=mt_font_size_small};
+  value=[8sp]], dimen[attributes={name=mt_font_size_standard};
+  value=[11sp]], dimen[attributes={name=mt_font_size_xl};
+  value=[15sp]], dimen[attributes={name=mt_margin_large};
+  value=[25dp]], dimen[attributes={name=mt_margin_medium};
+  value=[8dp]], dimen[attributes={name=mt_margin_small};
+  value=[5dp]], dimen[attributes={name=mt_margin_standard};
+  value=[10dp]], dimen[attributes={name=mt_margin_tiny};
+  value=[2dp]], dimen[attributes={name=mt_margin_xl};
+  value=[50dp]], dimen[attributes={name=mt_padding_large};
+  value=[25dp]], dimen[attributes={name=mt_padding_medium};
+  value=[8dp]], dimen[attributes={name=mt_padding_small};
+  value=[5dp]], dimen[attributes={name=mt_padding_standard};
+  value=[10dp]], dimen[attributes={name=mt_padding_tiny};
+  value=[2dp]], dimen[attributes={name=mt_padding_xl};
+  value=[50dp]], dimen[attributes={name=showcase_radius};
+  value=[55dp]], dimen[attributes={name=showcase_radius_inner};
+  value=[65dp]], dimen[attributes={name=showcase_radius_outer};
+  value=[75dp]], dimen[attributes={name=text_size_body}; value=[12sp]]]]
+
+
+
+
+
+
+
+
+
+
+
+ */

@@ -157,7 +157,7 @@ class MCP private constructor(
     val all = dependencies.main()
 
     return if (all.isEmpty()) 0
-    else all.map { it.mcp().getMainDepth() }.maxOrNull()!! + 1
+    else all.map { it.mcp().getMainDepth() }.max()!! + 1
   }
 
   fun getTestDepth(): Int = if (dependencies.testImplementation.isEmpty()) {
@@ -165,7 +165,7 @@ class MCP private constructor(
   } else {
     dependencies.testImplementation
       .map { it.mcp().getMainDepth() }
-      .maxOrNull()!! + 1
+      .max()!! + 1
   }
 
   val androidTestDepth: Int
@@ -174,7 +174,7 @@ class MCP private constructor(
     } else {
       dependencies.androidTest
         .map { it.mcp().getMainDepth() }
-        .maxOrNull()!! + 1
+        .max()!! + 1
     }
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)

@@ -70,14 +70,6 @@ private fun KtFile.updateImports(
 
 val File.generated get() = File(this.path + "/generated")
 
-fun String.splitFirst(regex: Regex) = split(regex, 2)
-
-@Suppress("SpreadOperator", "CHANGING_ARGUMENTS_EXECUTION_ORDER_FOR_NAMED_VARARGS")
-fun String.splitFirst(
-  vararg delimiters: String,
-  ignoreCase: Boolean = false
-) = split(delimiters = delimiters, ignoreCase = ignoreCase, limit = 2)
-
 fun createFile(
   path: String,
   text: String

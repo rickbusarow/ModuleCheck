@@ -44,10 +44,6 @@ sealed class AndroidResource(val prefix: kotlin.String) {
       val dir = file.parent.split('/').last()
       val name = file.nameWithoutExtension
 
-      if (dir == "xml") {
-        println("found that security thing --> $file")
-      }
-
       return when {
         dir.startsWith("anim") -> Anim(name)
         dir.startsWith("animator") -> Animator(name)
