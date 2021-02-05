@@ -15,6 +15,8 @@
 
 package com.rickbusarow.modulecheck.parser.android
 
+import java.io.File
+
 sealed class AndroidResource(val prefix: kotlin.String) {
 
   abstract val name: kotlin.String
@@ -36,6 +38,35 @@ sealed class AndroidResource(val prefix: kotlin.String) {
   companion object {
 
     private val REGEX = """"@(.*)/(.*)"""".toRegex()
+
+    @Suppress("ComplexMethod")
+    fun fromFile(file: File): AndroidResource {
+      val dir = file.parent.split('/').last()
+      val name = file.nameWithoutExtension
+
+      if (dir == "xml") {
+        println("found that security thing --> $file")
+      }
+
+      return when {
+        dir.startsWith("anim") -> Anim(name)
+        dir.startsWith("animator") -> Animator(name)
+        dir.startsWith("arrays") -> Arrays(name)
+        dir.startsWith("color") -> Color(name)
+        dir.startsWith("dimen") -> Dimen(name)
+        dir.startsWith("drawable") -> Drawable(name)
+        dir.startsWith("font") -> Font(name)
+        dir.startsWith("layout") -> Layout(name)
+        dir.startsWith("menu") -> Menu(name)
+        dir.startsWith("mipmap") -> Mipmap(name)
+        dir.startsWith("raw") -> Raw(name)
+        dir.startsWith("string") -> String(name)
+        dir.startsWith("values") -> Style(name)
+        dir.startsWith("style") -> Style(name)
+        dir.startsWith("xml") -> Style(name)
+        else -> throw IllegalArgumentException("unrecognized resource reference --> $dir")
+      }
+    }
 
     @Suppress("ComplexMethod")
     fun fromString(str: kotlin.String): AndroidResource {

@@ -76,8 +76,7 @@ fun String.splitFirst(regex: Regex) = split(regex, 2)
 fun String.splitFirst(
   vararg delimiters: String,
   ignoreCase: Boolean = false
-) =
-  split(delimiters = *delimiters, ignoreCase = ignoreCase, limit = 2)
+) = split(delimiters = delimiters, ignoreCase = ignoreCase, limit = 2)
 
 fun createFile(
   path: String,

@@ -20,6 +20,7 @@ import com.rickbusarow.modulecheck.internal.*
 import com.rickbusarow.modulecheck.kapt.KaptParser
 import com.rickbusarow.modulecheck.parser.*
 import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
+import com.rickbusarow.modulecheck.parser.android.AndroidResourceParser
 import org.gradle.api.Project
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
@@ -31,6 +32,8 @@ class MCP private constructor(
 
   init {
     cache[project] = this
+
+    AndroidResourceParser.parse(project)
   }
 
   val path: String = project.path
@@ -154,7 +157,7 @@ class MCP private constructor(
     val all = dependencies.main()
 
     return if (all.isEmpty()) 0
-    else all.map { it.mcp().getMainDepth() }.max()!! + 1
+    else all.map { it.mcp().getMainDepth() }.maxOrNull()!! + 1
   }
 
   fun getTestDepth(): Int = if (dependencies.testImplementation.isEmpty()) {
@@ -162,7 +165,7 @@ class MCP private constructor(
   } else {
     dependencies.testImplementation
       .map { it.mcp().getMainDepth() }
-      .max()!! + 1
+      .maxOrNull()!! + 1
   }
 
   val androidTestDepth: Int
@@ -171,7 +174,7 @@ class MCP private constructor(
     } else {
       dependencies.androidTest
         .map { it.mcp().getMainDepth() }
-        .max()!! + 1
+        .maxOrNull()!! + 1
     }
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
