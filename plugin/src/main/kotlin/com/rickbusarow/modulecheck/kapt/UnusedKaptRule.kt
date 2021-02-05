@@ -39,9 +39,9 @@ class UnusedKaptRule(
 
     return with(project.mcp()) {
       listOf(
-        Config.KaptAndroidTest to androidTestImports,
-        Config.Kapt to mainImports,
-        Config.KaptTest to testImports
+        Config.KaptAndroidTest to androidTestImports + androidTestExtraPossibleReferences,
+        Config.Kapt to mainImports + mainExtraPossibleReferences,
+        Config.KaptTest to testImports + testExtraPossibleReferences
       ).flatMap { (config, imports) ->
 
         val processors = when (config) {
@@ -51,9 +51,9 @@ class UnusedKaptRule(
           else -> throw IllegalArgumentException("")
         }
 
-        val unused = processors.filter { coords ->
+        val unused = processors.filter { processor ->
 
-          matchers[coords.coordinates]?.let { matcher ->
+          matchers[processor.coordinates]?.let { matcher ->
 
             matcher.annotationImports.none { annotationRegex ->
 

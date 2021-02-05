@@ -191,7 +191,7 @@ object Libs {
   }
 
   object JUnit {
-    private const val version = "5.7.0"
+    private const val version = "5.7.1"
 
     const val api = "org.junit.jupiter:junit-jupiter-api:$version"
     const val params = "org.junit.jupiter:junit-jupiter-params:$version"
@@ -210,7 +210,7 @@ object Libs {
   }
 
   object Kotest {
-    private const val version = "4.3.2"
+    private const val version = "4.4.0"
     const val assertions = "io.kotest:kotest-assertions-core-jvm:$version"
     const val properties = "io.kotest:kotest-property-jvm:$version"
     const val runner = "io.kotest:kotest-runner-junit5-jvm:$version"

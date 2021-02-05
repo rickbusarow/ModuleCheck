@@ -16,7 +16,6 @@
 package com.rickbusarow.modulecheck.task
 
 import com.rickbusarow.modulecheck.Finding
-import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.kapt.UnusedKaptRule
 import com.rickbusarow.modulecheck.kapt.kaptMatchers
@@ -52,24 +51,24 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
           .forEach { proj ->
 
             if (checks.overshot.get()) {
-              OvershotRule(proj, alwaysIgnore, ignoreAll).check()
-                .distinctBy { it.dependencyProject.path }
-                .finish()
-              MCP.reset()
+              addAll(
+                OvershotRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
 
             if (checks.redundant.get()) {
-              RedundantRule(proj, alwaysIgnore, ignoreAll).check()
-                .distinctBy { it.dependencyProject.path }
-                .finish()
-              MCP.reset()
+              addAll(
+                RedundantRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
 
             if (checks.unused.get()) {
-              UnusedRule(proj, alwaysIgnore, ignoreAll).check()
-                .distinctBy { it.dependencyProject.path }
-                .finish()
-              MCP.reset()
+              addAll(
+                UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
             }
 
             if (checks.sortDependencies.get()) {
@@ -124,8 +123,6 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             if (checks.disableViewBinding.get()) {
               addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
             }
-
-            MCP.reset()
           }
       }
     }
