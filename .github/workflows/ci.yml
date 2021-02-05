@@ -14,14 +14,43 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v1
+        # cancel previous jobs
+      - uses : khan/pull-request-workflow-cancel@1.0.0
+        with :
+          workflows : "ci.yml"
+        env :
+          GITHUB_TOKEN : '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
+      - uses: actions/checkout@v2
+        with :
+          # use a personal access token to check out so that this action can trigger other actions
+          token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 14
-      - name : KTLint
-        run : ./gradlew lintKotlin
+
+      # formats all Kotlin src files
+      - name: ktlint format
+        run: ./gradlew formatKotlin
+
+      # If sortDependencies or formatKotlin generated changes, commit and push those changes.
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply ktlint format
+          commit_options: '--no-verify --signoff'
+          push_options: '--force' # necessary to push if the branch is protected
+
       - name : detekt
         run : ./gradlew detekt
+
       - name: all tests
-        run: ./gradlew test
+        run: ./gradlew testJvm
+
+      - name: Unit test results
+        uses: mikepenz/action-junit-report@v1
+        if: always()
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Unit Test Results
