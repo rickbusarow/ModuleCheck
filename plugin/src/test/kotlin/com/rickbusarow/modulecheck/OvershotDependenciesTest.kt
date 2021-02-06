@@ -20,6 +20,7 @@ import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.core.spec.style.FreeSpec
@@ -56,6 +57,10 @@ class OvershotDependenciesTest : FreeSpec({
       addSubproject(project)
     }
 
+  val jvmSub1 = jvmSubProject("lib-1", ClassName("com.example.lib1", "Lib1Class"))
+  val jvmSub2 = jvmSubProject("lib-2", ClassName("com.example.lib2", "Lib2Class"))
+  val jvmSub3 = jvmSubProject("lib-3", ClassName("com.example.lib3", "Lib3Class"))
+
   "overshot dependencies" - {
 
     projectSpecBuilder
@@ -81,42 +86,8 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(
-        ProjectSpec.builder("lib-1")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib1", "Lib1Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib1Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-2")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib2", "Lib2Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib2Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
+      .addSubproject(jvmSub1)
+      .addSubproject(jvmSub2)
       .addSubproject(
         ProjectSpec.builder("lib-3")
           .addBuildSpec(
@@ -198,42 +169,8 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(
-        ProjectSpec.builder("lib-1")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib1", "Lib1Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib1Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-2")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib2", "Lib2Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib2Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
+      .addSubproject(jvmSub1)
+      .addSubproject(jvmSub2)
       .addSubproject(
         ProjectSpec.builder("lib-3")
           .addBuildSpec(
@@ -307,60 +244,9 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(
-        ProjectSpec.builder("lib-1")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib1", "Lib1Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib1Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-2")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib2", "Lib2Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib2Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-3")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib3", "Lib3Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib3Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
+      .addSubproject(jvmSub1)
+      .addSubproject(jvmSub2)
+      .addSubproject(jvmSub3)
       .addSettingsSpec(projectSettings.build())
       .addBuildSpec(
         projectBuild
@@ -422,60 +308,9 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(
-        ProjectSpec.builder("lib-1")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib1", "Lib1Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib1Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-2")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib2", "Lib2Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib2Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .addSubproject(
-        ProjectSpec.builder("lib-3")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .build()
-          )
-          .addSrcSpec(
-            ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
-              .addFile(
-                FileSpec.builder("com.example.lib3", "Lib3Class.kt")
-                  .addType(TypeSpec.classBuilder("Lib3Class").build())
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
+      .addSubproject(jvmSub1)
+      .addSubproject(jvmSub2)
+      .addSubproject(jvmSub3)
       .addSubproject(
         ProjectSpec.builder("lib-4")
           .addBuildSpec(
@@ -522,3 +357,25 @@ class OvershotDependenciesTest : FreeSpec({
         |""".trimMargin()
   }
 })
+
+fun jvmSubProject(
+  path: String,
+  vararg fqClassName: ClassName
+): ProjectSpec = ProjectSpec.builder(path)
+  .addBuildSpec(
+    ProjectBuildSpec.builder()
+      .addPlugin("kotlin(\"jvm\")")
+      .build()
+  )
+  .applyEach(fqClassName.toList()) { fq ->
+    addSrcSpec(
+      ProjectSrcSpec.builder(Path.of("src/main/kotlin"))
+        .addFile(
+          FileSpec.builder(fq.packageName, fq.simpleName + ".kt")
+            .addType(TypeSpec.classBuilder(fq.simpleName).build())
+            .build()
+        )
+        .build()
+    )
+  }
+  .build()
