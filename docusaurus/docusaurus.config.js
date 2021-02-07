@@ -9,14 +9,23 @@ module.exports = {
   organizationName: 'rbusarow', // Usually your GitHub org/user name.
   projectName: 'ModuleCheck', // Usually your repo name.
   themeConfig: {
+    hideableSidebar: true,
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
+    announcementBar: {
+      id: 'supportus',
+      content: '⭐️ If you like ModuleCheck, give it a star on <a target="_blank" rel="noopener noreferrer" href="https://github.com/rbusarow/ModuleCheck/">GitHub</a>! ⭐️',
+    },
     navbar: {
       title: 'ModuleCheck',
-//      logo: {
-//        alt: 'ModuleCheck Logo',
-//        src: 'img/logo.svg',
-//      },
-      items: [
-        {
+      //      logo: {
+      //        alt: 'ModuleCheck Logo',
+      //        src: 'img/logo.svg',
+      //      },
+      items: [{
           type: 'doc',
           docId: 'quickstart',
           label: 'Basics',
@@ -34,6 +43,15 @@ module.exports = {
           position: 'left'
         },
         {
+          type: 'docsVersionDropdown',
+          position: 'right',
+          dropdownActiveClassDisabled: true,
+          dropdownItemsAfter: [{
+            to: '/versions',
+            label: 'All versions',
+          }, ],
+        },
+        {
           href: 'https://github.com/rbusarow/ModuleCheck/',
           label: 'GitHub',
           position: 'right',
@@ -42,11 +60,9 @@ module.exports = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
+      links: [{
           title: 'Docs',
-          items: [
-            {
+          items: [{
               label: 'Change Log',
               to: 'docs/',
             },
@@ -58,8 +74,7 @@ module.exports = {
         },
         {
           title: 'Community',
-          items: [
-            {
+          items: [{
               label: 'Stack Overflow',
               href: 'https://stackoverflow.com/questions/tagged/ModuleCheck',
             },
@@ -71,8 +86,7 @@ module.exports = {
         },
         {
           title: 'More',
-          items: [
-            {
+          items: [{
               label: 'Blog',
               to: 'blog',
             },
@@ -86,7 +100,8 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Rick Busarow, Built with Docusaurus.`,
     },
     prism: {
-      theme: require('prism-react-renderer/themes/dracula'),
+      theme: require('prism-react-renderer/themes/github'),
+      darkTheme: require('prism-react-renderer/themes/dracula'),
       additionalLanguages: ['kotlin', 'groovy'],
     },
   },
@@ -97,14 +112,12 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/rbusarow/ModuleCheck/',
+          editUrl: 'https://github.com/rbusarow/ModuleCheck/',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
-          editUrl:
-            'https://github.com/rbusarow/ModuleCheck/',
+          editUrl: 'https://github.com/rbusarow/ModuleCheck/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

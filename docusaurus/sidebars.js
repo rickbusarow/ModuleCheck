@@ -1,8 +1,8 @@
 module.exports = {
   Basics: [
-  'quickstart',
-  'configuration',
-  'changelog',
+    'quickstart',
+    'configuration',
+    'changelog',
   ],
   Rules: [
     'rules/unused',
@@ -37,6 +37,5 @@ module.exports = {
       ]
     },
   ],
-  Features: ['mdx',]
+  Features: ['mdx', ]
 };
-
