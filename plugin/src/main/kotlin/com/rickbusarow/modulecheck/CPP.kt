@@ -15,8 +15,8 @@
 
 package com.rickbusarow.modulecheck
 
-import org.gradle.api.Project
 import kotlin.LazyThreadSafetyMode.NONE
+import org.gradle.api.Project
 
 data class CPP(
   val config: Config,
@@ -64,7 +64,7 @@ data class CPP(
       .mainDeclarations
       .any { declaration ->
         declaration in mcp.androidTestImports || declaration in mcp.androidTestExtraPossibleReferences
-      }|| mcp()
+      } || mcp()
       .mainAndroidResDeclarations
       .any { rDeclaration ->
         rDeclaration in rReferences
@@ -79,7 +79,7 @@ data class CPP(
       .mainDeclarations
       .any { declaration ->
         declaration in mcp.testImports || declaration in mcp.testExtraPossibleReferences
-      }|| mcp()
+      } || mcp()
       .mainAndroidResDeclarations
       .any { rDeclaration ->
         rDeclaration in rReferences

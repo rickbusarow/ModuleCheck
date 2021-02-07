@@ -24,14 +24,18 @@ jobs:
         with :
           # use a personal access token to check out so that this action can trigger other actions
           token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
 
-      # formats all Kotlin src files
-      - name: ktlint format
-        run: ./gradlew formatKotlin
+      # for Spotless's Prettier Javascript format
+      - uses : actions/setup-node@v2
+
+      - name : Set up JDK
+        uses : actions/setup-java@v1
+        with :
+          java-version : 14
+
+      # formats all src files
+      - name : spotless format
+        run : ./gradlew spotlessApply
 
       # If sortDependencies or formatKotlin generated changes, commit and push those changes.
       - name: commit changes

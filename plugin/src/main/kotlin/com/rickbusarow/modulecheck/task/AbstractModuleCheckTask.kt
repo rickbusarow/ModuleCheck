@@ -22,6 +22,8 @@ import com.rickbusarow.modulecheck.ModuleCheckExtension
 import com.rickbusarow.modulecheck.internal.Output
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.sort.SortPluginsRule
+import java.util.*
+import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -31,8 +33,6 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
-import java.util.*
-import kotlin.system.measureTimeMillis
 
 abstract class AbstractModuleCheckTask : DefaultTask() {
 

@@ -20,9 +20,9 @@ import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
+import java.io.File
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import java.io.File
 
 class Android : FreeSpec({
 

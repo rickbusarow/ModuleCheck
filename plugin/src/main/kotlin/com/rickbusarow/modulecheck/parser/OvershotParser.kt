@@ -63,7 +63,7 @@ object OvershotParser : Parser<OverShotDependencyFinding>() {
           dependentProject = mcp.project,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
-          config = sourceConfig ?:Config. Api,
+          config = sourceConfig ?: Config.Api,
           from = source
         )
       }

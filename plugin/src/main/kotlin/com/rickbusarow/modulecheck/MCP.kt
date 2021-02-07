@@ -21,10 +21,10 @@ import com.rickbusarow.modulecheck.kapt.KaptParser
 import com.rickbusarow.modulecheck.parser.*
 import com.rickbusarow.modulecheck.parser.android.AndroidManifestParser
 import com.rickbusarow.modulecheck.parser.android.AndroidResourceParser
-import org.gradle.api.Project
-import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.*
+import org.gradle.api.Project
+import org.jetbrains.kotlin.psi.KtCallExpression
 
 class MCP private constructor(
   val project: Project

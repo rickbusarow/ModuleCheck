@@ -22,10 +22,10 @@ import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 import java.nio.file.Path
+import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 
 class SortPluginsTest : FreeSpec({
 

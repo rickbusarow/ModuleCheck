@@ -68,6 +68,7 @@ object BuildPlugins {
     "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
   const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
   const val kotlinter = "org.jmailen.gradle:kotlinter-gradle:${Versions.kotlinter}"
+  const val spotless = "com.diffplug.spotless:spotless-plugin-gradle:${Versions.spotless}"
 }
 
 object Libs {

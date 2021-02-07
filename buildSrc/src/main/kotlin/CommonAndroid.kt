@@ -16,10 +16,10 @@
 @file:Suppress("LongMethod")
 
 import com.android.build.gradle.*
+import java.io.*
 import org.gradle.api.*
 import org.gradle.api.JavaVersion.*
 import org.gradle.kotlin.dsl.*
-import java.io.*
 
 fun Project.commonAndroid() {
 

@@ -25,10 +25,10 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.shouldBe
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
 import java.io.File
 import java.nio.file.Path
+import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 
 class OvershotDependenciesTest : FreeSpec({
 
