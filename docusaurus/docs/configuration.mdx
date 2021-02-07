@@ -1,0 +1,95 @@
+---
+id: configuration
+sidebar_label: Configuration
+---
+
+
+``` kotlin
+plugins {
+  id("com.rickbusarow.module-check") version "0.10.0"
+}
+
+moduleCheck {
+
+  checks {
+    redundant.set(false)
+    disableAndroidResources.set(false)
+    disableViewBinding.set(false)
+  }
+
+  alwaysIgnore.set(
+    setOf(
+      ":test:core-jvm",
+      ":test:core-android",
+      ":codegen:vminject:annotations",
+      ":codegen:bundles:annotations",
+      ":base:resources",
+      ":room:api"
+    )
+  )
+  ignoreAll.set(
+    setOf(
+      ":app_onekey:onekey",
+      ":app_onekey:shared",
+      ":app_onekey:navigation",
+      ":app_ble",
+      ":app_tls",
+      ":mockzall:app_mockzall"
+    )
+  )
+
+  additionalKaptMatchers.set(
+    listOf(
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "Roomigrant",
+        processor = "com.github.RickBusarow.Roomigrant:RoomigrantCompiler",
+        annotationImports = listOf(
+          "dev\\.matrix\\.roomigrant\\.\\*",
+          "dev\\.matrix\\.roomigrant\\.GenerateRoomMigrations",
+          "dev\\.matrix\\.roomigrant\\.rules\\.\\*",
+          "dev\\.matrix\\.roomigrant\\.rules\\.FieldMigrationRule",
+          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationEndRule",
+          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationStartRule"
+        )
+      ),
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "Bluetooth Replay",
+        processor = "android-onekey.codegen.bluetooth-replay:processor",
+        annotationImports = listOf(
+          "onekey\\.codegen\\.replay\\.annotations\\.\\*",
+          "onekey\\.codegen\\.replay\\.annotations\\.BluetoothReplayEntryPoint"
+        )
+      ),
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "Bundles",
+        processor = "android-onekey.codegen.bundles:processor",
+        annotationImports = listOf(
+          "onekey\\.codegen\\.bundles\\.\\*",
+          "onekey\\.codegen\\.bundles\\.BundleSealedClass",
+          "onekey\\.codegen\\.bundles\\.BundleClass",
+          "onekey\\.codegen\\.bundles\\.BundleParam"
+        )
+      ),
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "Test Suite",
+        processor = "android-onekey.codegen.test-suite:processor",
+        annotationImports = listOf(
+          "onekey\\.codegen\\.annotation\\.\\*",
+          "onekey\\.codegen\\.annotation\\.TestType"
+        )
+      ),
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "VMInject",
+        processor = "android-onekey.codegen.vminject:processor",
+        annotationImports = listOf(
+          "onekey\\.vminject\\.\\*",
+          "onekey\\.vminject\\.VMInject",
+          "onekey\\.vminject\\.VMInject\\.Source",
+          "onekey\\.vminject\\.VMInjectParam",
+          "onekey\\.vminject\\.VMInjectModule"
+        )
+      )
+    )
+  )
+}
+```

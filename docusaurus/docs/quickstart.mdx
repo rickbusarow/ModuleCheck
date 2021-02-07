@@ -1,0 +1,125 @@
+---
+id: quickstart
+title: Quick Start
+sidebar_label: Quick Start
+---
+
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+:::note
+ModuleCheck leverages Gradle for parsing all build logic, so validation works regardless of whether that logic is expressed in Groovy or Kotlin.
+
+However, auto-correction of errors is only done by parsing Kotlin files via PSI.  Groovy auto-correction is not supported.
+:::
+
+<Tabs
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'},
+{label: 'Groovy', value: 'Groovy'},
+]}>
+
+   <TabItem value="Kotlin">
+
+```kotlin
+// settings.gradle.kts
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```kotlin
+// top-level build.gradle.kts
+
+plugins {
+  id("com.rickbusarow.module-check") version "0.10.0"
+}
+```
+
+   </TabItem>
+
+<TabItem value="Groovy">
+
+```groovy
+// settings.gradle
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```groovy
+// top-level build.gradle
+
+plugins {
+  id "com.rickbusarow.module-check" version "0.10.0"
+}
+```
+
+   </TabItem>
+</Tabs>
+
+## Configuration
+
+
+<Tabs
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'},
+{label: 'Groovy', value: 'Groovy'},
+]}>
+
+
+   <TabItem value="Kotlin">
+
+```kotlin
+// settings.gradle.kts
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```kotlin
+// top-level build.gradle.kts
+
+plugins {
+  id("com.rickbusarow.module-check") version "0.10.0"
+}
+```
+
+   </TabItem>
+
+
+<TabItem value="Groovy">
+
+```groovy
+// settings.gradle
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```groovy
+// top-level build.gradle
+
+plugins {
+  id "com.rickbusarow.module-check" version "0.10.0"
+}
+```
+
+   </TabItem>
+</Tabs>
