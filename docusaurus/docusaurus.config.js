@@ -34,7 +34,7 @@ module.exports = {
           position: 'left'
         },
         {
-          href: 'https://github.com/rbusarow/ModuleCheck',
+          href: 'https://github.com/rbusarow/ModuleCheck/',
           label: 'GitHub',
           position: 'right',
         },
