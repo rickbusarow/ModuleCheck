@@ -36,24 +36,22 @@ class ProjectDependencyDeclarationParser(
       override fun visitCallExpression(expression: KtCallExpression) {
         expression
           .referenceExpression()
-          ?.let { referenceExpression ->
+          .takeIf { it?.text == configuration.name }
+          ?.let {
+            expression                                          // implementation(project(path = ":foo:bar"))
+              .valueArguments                                   // [project(path = ":foo:bar")]
+              .firstOrNull()                                    // project(path = ":foo:bar")
+              ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
+              ?.valueArguments                                  // [path = ":foo:bar"]
+              ?.firstOrNull()                                   // path = ":foo:bar"
+              ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
+              ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+              ?.let { projectNameArg ->
 
-            if (referenceExpression.text == configuration.name) {
-              expression                                          // implementation(project(path = ":foo:bar"))
-                .valueArguments                                   // [project(path = ":foo:bar")]
-                .firstOrNull()                                    // project(path = ":foo:bar")
-                ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
-                ?.valueArguments                                  // [path = ":foo:bar"]
-                ?.firstOrNull()                                   // path = ":foo:bar"
-                ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-                ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
-                ?.let { projectNameArg ->
-
-                  if (projectNameArg.text == projectPath) {
-                    found = true
-                  }
+                if (projectNameArg.text == projectPath) {
+                  found = true
                 }
-            }
+              }
           }
       }
     }

@@ -16,7 +16,6 @@
 package com.rickbusarow.modulecheck.parser
 
 import com.rickbusarow.modulecheck.Config
-import com.rickbusarow.modulecheck.Config.Api
 import com.rickbusarow.modulecheck.MCP
 import com.rickbusarow.modulecheck.mcp
 import com.rickbusarow.modulecheck.overshot.OverShotDependencyFinding
@@ -49,14 +48,7 @@ object OvershotParser : Parser<OverShotDependencyFinding>() {
       .asSequence()
       .filterNot { it.project.path in unusedPaths }
       .filterNot { it.project.path in mainDependenciesPaths }
-      .filter { inheritedDependencyProject ->
-        inheritedDependencyProject
-          .mcp()
-          .mainDeclarations
-          .any { newProjectDeclaration ->
-            newProjectDeclaration in mcp.mainImports
-          }
-      }
+      .filter { inheritedDependencyProject -> inheritedDependencyProject.usedIn(mcp) }
       .distinct()
       .map { overshot ->
 
@@ -71,7 +63,7 @@ object OvershotParser : Parser<OverShotDependencyFinding>() {
           dependentProject = mcp.project,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
-          config = sourceConfig ?: Api,
+          config = sourceConfig ?:Config. Api,
           from = source
         )
       }

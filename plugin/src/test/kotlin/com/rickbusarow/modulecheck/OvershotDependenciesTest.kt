@@ -63,15 +63,26 @@ class OvershotDependenciesTest : FreeSpec({
 
   "overshot dependencies" - {
 
+    val b = jvmSub3.toBuilder()
+
+    b.projectBuildSpec?.let { bs ->
+      b.addBuildSpec(
+        bs.toBuilder()
+          .addProjectDependency("api", jvmSub1)
+          .addProjectDependency("api", jvmSub2)
+          .build()
+      )
+    }
+
     projectSpecBuilder
       .addSubproject(
         ProjectSpec.builder("app")
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("api", "lib-1")
-              .addProjectDependency("api", "lib-2")
-              .addProjectDependency("api", "lib-3")
+              .addProjectDependency("api", jvmSub1)
+              .addProjectDependency("api", jvmSub2)
+              .addProjectDependency("api", jvmSub3)
               .build()
           )
           .addSrcSpec(
@@ -86,15 +97,14 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(jvmSub1)
-      .addSubproject(jvmSub2)
+      .addSubprojects(jvmSub1, jvmSub2)
       .addSubproject(
         ProjectSpec.builder("lib-3")
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("api", "lib-1")
-              .addProjectDependency("api", "lib-2")
+              .addProjectDependency("api", jvmSub1)
+              .addProjectDependency("api", jvmSub2)
               .build()
           )
           .build()
@@ -152,9 +162,9 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("implementation", "lib-1")
-              .addProjectDependency("implementation", "lib-2")
-              .addProjectDependency("implementation", "lib-3")
+              .addProjectDependency("implementation", jvmSub1)
+              .addProjectDependency("implementation", jvmSub2)
+              .addProjectDependency("implementation", jvmSub3)
               .build()
           )
           .addSrcSpec(
@@ -169,15 +179,14 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(jvmSub1)
-      .addSubproject(jvmSub2)
+      .addSubprojects(jvmSub1, jvmSub2)
       .addSubproject(
         ProjectSpec.builder("lib-3")
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("api", "lib-1")
-              .addProjectDependency("api", "lib-2")
+              .addProjectDependency("api", jvmSub1)
+              .addProjectDependency("api", jvmSub2)
               .build()
           )
           .build()
@@ -228,9 +237,9 @@ class OvershotDependenciesTest : FreeSpec({
           .addBuildSpec(
             ProjectBuildSpec.builder()
               .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("api", "lib-1")
-              .addProjectDependency("api", "lib-2")
-              .addProjectDependency("api", "lib-3")
+              .addProjectDependency("api", jvmSub1)
+              .addProjectDependency("api", jvmSub2)
+              .addProjectDependency("api", jvmSub3)
               .build()
           )
           .addSrcSpec(
@@ -244,9 +253,7 @@ class OvershotDependenciesTest : FreeSpec({
           )
           .build()
       )
-      .addSubproject(jvmSub1)
-      .addSubproject(jvmSub2)
-      .addSubproject(jvmSub3)
+      .addSubprojects(jvmSub1, jvmSub2, jvmSub3)
       .addSettingsSpec(projectSettings.build())
       .addBuildSpec(
         projectBuild
@@ -311,18 +318,7 @@ class OvershotDependenciesTest : FreeSpec({
       .addSubproject(jvmSub1)
       .addSubproject(jvmSub2)
       .addSubproject(jvmSub3)
-      .addSubproject(
-        ProjectSpec.builder("lib-4")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("api", "lib-1")
-              .addProjectDependency("api", "lib-2")
-              .addProjectDependency("api", "lib-3")
-              .build()
-          )
-          .build()
-      )
+      .addSubproject(jvmSubProject("lib-4", apiDependencies = listOf(jvmSub1, jvmSub2, jvmSub3)))
 
       .addSettingsSpec(projectSettings.build())
       .addBuildSpec(
@@ -358,13 +354,22 @@ class OvershotDependenciesTest : FreeSpec({
   }
 })
 
+@Suppress("LongParameterList")
 fun jvmSubProject(
   path: String,
-  vararg fqClassName: ClassName
+  vararg fqClassName: ClassName,
+  apiDependencies: List<ProjectSpec> = emptyList(),
+  implementationDependencies: List<ProjectSpec> = emptyList(),
+  androidTestDependencies: List<ProjectSpec> = emptyList(),
+  testDependencies: List<ProjectSpec> = emptyList()
 ): ProjectSpec = ProjectSpec.builder(path)
   .addBuildSpec(
     ProjectBuildSpec.builder()
       .addPlugin("kotlin(\"jvm\")")
+      .applyEach(apiDependencies) { addProjectDependency("api", it) }
+      .applyEach(implementationDependencies) { addProjectDependency("implementation", it) }
+      .applyEach(androidTestDependencies) { addProjectDependency("androidTestImplementation", it) }
+      .applyEach(testDependencies) { addProjectDependency("testImplementation", it) }
       .build()
   )
   .applyEach(fqClassName.toList()) { fq ->

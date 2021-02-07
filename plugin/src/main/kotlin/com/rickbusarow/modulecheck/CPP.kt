@@ -15,8 +15,8 @@
 
 package com.rickbusarow.modulecheck
 
-import com.rickbusarow.modulecheck.Config.*
 import org.gradle.api.Project
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class CPP(
   val config: Config,
@@ -25,46 +25,64 @@ data class CPP(
   @Suppress("ComplexMethod")
   fun usedIn(mcp: MCP): Boolean {
     return when (config) {
-      AndroidTest -> usedInAndroidTest(mcp)
-      // KaptAndroidTest -> TODO()
-      // Kapt -> TODO()
-      // KaptTest -> TODO()
-      Api -> usedInMain(mcp)
-      CompileOnly -> usedInMain(mcp)
-      Implementation -> usedInMain(mcp)
-      RuntimeOnly -> usedInMain(mcp)
-      TestApi -> usedInTest(mcp)
-      TestImplementation -> usedInTest(mcp)
+      Config.AndroidTest -> usedInAndroidTest(mcp)
+      // Config.KaptAndroidTest -> TODO()
+      // Config.Kapt -> TODO()
+      // Config.KaptTest -> TODO()
+      Config.Api -> usedInMain(mcp)
+      Config.CompileOnly -> usedInMain(mcp)
+      Config.Implementation -> usedInMain(mcp)
+      Config.RuntimeOnly -> usedInMain(mcp)
+      Config.TestApi -> usedInTest(mcp)
+      Config.TestImplementation -> usedInTest(mcp)
       is Config.Custom -> TODO("unsupported config --> ${config.name}")
       else -> TODO()
     }
   }
 
   private fun usedInMain(mcp: MCP): Boolean {
+
+    val rReferences by lazy(NONE) { mcp.mainExtraPossibleReferences.filter { it.startsWith("R.") } }
+
     return mcp()
       .mainDeclarations
       .any { declaration ->
 
-        declaration in mcp.mainImports ||
-          declaration in mcp.mainExtraPossibleReferences ||
-          declaration in mcp.testImports ||
-          declaration in mcp.androidTestImports
+        declaration in mcp.mainImports || declaration in mcp.mainExtraPossibleReferences
+      } || mcp()
+      .mainAndroidResDeclarations
+      .any { rDeclaration ->
+        rDeclaration in rReferences
       }
   }
 
   private fun usedInAndroidTest(mcp: MCP): Boolean {
+
+    val rReferences by lazy(NONE) { mcp.androidTestExtraPossibleReferences.filter { it.startsWith("R.") } }
+
     return mcp()
       .mainDeclarations
       .any { declaration ->
         declaration in mcp.androidTestImports || declaration in mcp.androidTestExtraPossibleReferences
+      }|| mcp()
+      .mainAndroidResDeclarations
+      .any { rDeclaration ->
+        rDeclaration in rReferences
       }
   }
 
   private fun usedInTest(mcp: MCP): Boolean {
+
+    val rReferences by lazy(NONE) { mcp.testExtraPossibleReferences.filter { it.startsWith("R.") } }
+
     return mcp()
       .mainDeclarations
       .any { declaration ->
         declaration in mcp.testImports || declaration in mcp.testExtraPossibleReferences
+      }|| mcp()
+      .mainAndroidResDeclarations
+      .any { rDeclaration ->
+        rDeclaration in rReferences
       }
   }
 

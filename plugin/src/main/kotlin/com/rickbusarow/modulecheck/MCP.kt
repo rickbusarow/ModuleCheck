@@ -32,8 +32,6 @@ class MCP private constructor(
 
   init {
     cache[project] = this
-
-    AndroidResourceParser.parse(project)
   }
 
   val path: String = project.path
@@ -89,6 +87,7 @@ class MCP private constructor(
       .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
       .toSet()
   }
+
   val testExtraPossibleReferences by lazy {
     testFiles
       .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
@@ -109,6 +108,7 @@ class MCP private constructor(
   }
 
   val androidTestDeclarations by lazy { androidTestFiles.flatMap { it.declarations }.toSet() }
+
   val mainDeclarations by lazy {
 
     val rPackage = androidPackageOrNull
@@ -118,6 +118,35 @@ class MCP private constructor(
     } else {
       mainFiles.flatMap { it.declarations }.toSet()
     }
+  }
+
+  val androidTestAndroidResDeclarations by lazy {
+
+    val rPackage = androidPackageOrNull
+    val resDir = project.androidTestResRootOrNull()
+
+    if (isAndroid && rPackage != null && resDir != null) {
+      AndroidResourceParser.parse(resDir)
+    } else emptySet()
+  }
+
+  val mainAndroidResDeclarations by lazy {
+
+    val rPackage = androidPackageOrNull
+    val resDir = project.mainResRootOrNull()
+
+    if (isAndroid && rPackage != null && resDir != null) {
+      AndroidResourceParser.parse(resDir)
+    } else emptySet()
+  }
+  val testAndroidResDeclarations by lazy {
+
+    val rPackage = androidPackageOrNull
+    val resDir = project.testResRootOrNull()
+
+    if (isAndroid && rPackage != null && resDir != null) {
+      AndroidResourceParser.parse(resDir)
+    } else emptySet()
   }
 
   val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }

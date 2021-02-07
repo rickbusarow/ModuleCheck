@@ -21,11 +21,22 @@ import java.nio.file.Path
 @Suppress("MemberVisibilityCanBePrivate")
 public class ProjectSpec private constructor(
   public val gradlePath: String,
-  private val subprojects: MutableList<ProjectSpec>,
+  private val subprojects: List<ProjectSpec>,
   private val projectSettingsSpec: ProjectSettingsSpec?,
   private val projectBuildSpec: ProjectBuildSpec?,
-  private val projectSrcSpecs: MutableList<ProjectSrcSpec>
+  private val projectSrcSpecs: List<ProjectSrcSpec>
 ) {
+
+  public fun toBuilder(): Builder = Builder(gradlePath).apply {
+    applyEach(subprojects) { addSubproject(it) }
+    applyEach(projectSrcSpecs) { addSrcSpec(it) }
+    if (this@ProjectSpec.projectSettingsSpec != null) {
+      addSettingsSpec(this@ProjectSpec.projectSettingsSpec)
+    }
+    if (this@ProjectSpec.projectBuildSpec != null) {
+      addBuildSpec(this@ProjectSpec.projectBuildSpec)
+    }
+  }
 
   public fun writeIn(path: Path) {
     projectSettingsSpec?.writeIn(path)
@@ -34,15 +45,28 @@ public class ProjectSpec private constructor(
     projectSrcSpecs.forEach { it.writeIn(path) }
   }
 
+  @Suppress("TooManyFunctions")
   public class Builder internal constructor(public val filePath: String) {
 
-    private val subprojects = mutableListOf<ProjectSpec>()
-    private var projectSettingsSpec: ProjectSettingsSpec? = null
-    private var projectBuildSpec: ProjectBuildSpec? = null
-    private val projectSrcSpecs = mutableListOf<ProjectSrcSpec>()
+    private val _subprojects: MutableList<ProjectSpec> = mutableListOf<ProjectSpec>()
+    private val _projectSrcSpecs = mutableListOf<ProjectSrcSpec>()
+
+    public val subprojects: List<ProjectSpec>
+      get() = _subprojects
+    public val projectSrcSpecs: List<ProjectSrcSpec>
+      get() = _projectSrcSpecs
+
+    public var projectSettingsSpec: ProjectSettingsSpec? = null
+      private set
+    public var projectBuildSpec: ProjectBuildSpec? = null
+      private set
 
     public fun addSubproject(projectSpec: ProjectSpec): Builder = apply {
-      subprojects.add(projectSpec)
+      _subprojects.add(projectSpec)
+    }
+
+    public fun addSubprojects(vararg projectSpecs: ProjectSpec): Builder = apply {
+      _subprojects.addAll(projectSpecs)
     }
 
     public fun addSettingsSpec(projectSettingsSpec: ProjectSettingsSpec): Builder = apply {
@@ -54,7 +78,7 @@ public class ProjectSpec private constructor(
     }
 
     public fun addSrcSpec(projectSrcSpec: ProjectSrcSpec): Builder = apply {
-      this.projectSrcSpecs.add(projectSrcSpec)
+      this._projectSrcSpecs.add(projectSrcSpec)
     }
 
     public fun build(): ProjectSpec =

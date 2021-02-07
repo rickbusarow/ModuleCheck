@@ -17,6 +17,11 @@ package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
+public inline fun <T : Any, E> T.applyEach(elements: Iterable<E>, block: T.(E) -> Unit): T {
+  elements.forEach { element -> this.block(element) }
+  return this
+}
+
 @Suppress("MemberVisibilityCanBePrivate", "LongParameterList")
 public class ProjectBuildSpec private constructor(
   public val plugins: List<String>,
@@ -27,6 +32,17 @@ public class ProjectBuildSpec private constructor(
   public val isAndroid: Boolean,
   public val buildScript: Boolean
 ) {
+
+  public fun toBuilder(): Builder = Builder()
+    .apply {
+      applyEach(plugins) { addPlugin(it) }
+      applyEach(imports) { addImport(it) }
+      applyEach(blocks) { addBlock(it) }
+      applyEach(repositories) { addRepository(it) }
+      applyEach(dependencies) { addRawDependency(it) }
+      if (isAndroid) android()
+      if (buildScript) buildScript()
+    }
 
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
@@ -115,16 +131,25 @@ allprojects {
     appendLine("}")
   }
 
+  @Suppress("TooManyFunctions")
   public class Builder internal constructor() {
 
-    private val plugins = mutableListOf<String>()
-    private val imports = mutableListOf<String>()
-    private val blocks = mutableListOf<String>()
-    private val repositories = mutableListOf<String>()
-    private val dependencies = mutableListOf<String>()
+    private val _plugins = mutableListOf<String>()
+    private val _imports = mutableListOf<String>()
+    private val _blocks = mutableListOf<String>()
+    private val _repositories = mutableListOf<String>()
+    private val _dependencies = mutableListOf<String>()
 
-    private var isAndroid = false
-    private var isBuildScript = false
+    public val plugins: List<String> get() = _plugins
+    public val imports: List<String> get() = _imports
+    public val blocks: List<String> get() = _blocks
+    public val repositories: List<String> get() = _repositories
+    public val dependencies: List<String> get() = _dependencies
+
+    public var isAndroid: Boolean = false
+      private set
+    public var isBuildScript: Boolean = false
+      private set
 
     public fun buildScript(): Builder = apply {
       isBuildScript = true
@@ -135,11 +160,11 @@ allprojects {
     }
 
     public fun addImport(import: String): Builder = apply {
-      imports.add(import)
+      _imports.add(import)
     }
 
     public fun addBlock(codeBlock: String): Builder = apply {
-      blocks.add(codeBlock)
+      _blocks.add(codeBlock)
     }
 
     public fun addPlugin(
@@ -150,7 +175,7 @@ allprojects {
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
-      plugins.add("$prev$plugin$after")
+      _plugins.add("$prev$plugin$after")
     }
 
     public fun addRepository(
@@ -161,7 +186,13 @@ allprojects {
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
-      repositories.add("$prev$repository$after")
+      _repositories.add("$prev$repository$after")
+    }
+
+    public fun addRawDependency(
+      configuration: String
+    ): Builder = apply {
+      _dependencies.add(configuration)
     }
 
     public fun addExternalDependency(
@@ -173,7 +204,19 @@ allprojects {
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
-      dependencies.add("$prev$configuration(\":$dependencyPath\")$after")
+      _dependencies.add("$prev$configuration(\":$dependencyPath\")$after")
+    }
+
+    public fun addProjectDependency(
+      configuration: String,
+      dependencyProjectSpec: ProjectSpec,
+      comment: String? = null,
+      inlineComment: String? = null
+    ): Builder = apply {
+      val prev = comment?.let { "$it\n  " } ?: ""
+      val after = inlineComment?.let { " $it" } ?: ""
+
+      _dependencies.add("$prev$configuration(project(path = \":${dependencyProjectSpec.gradlePath}\"))$after")
     }
 
     public fun addProjectDependency(
@@ -185,7 +228,7 @@ allprojects {
       val prev = comment?.let { "$it\n  " } ?: ""
       val after = inlineComment?.let { " $it" } ?: ""
 
-      dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
+      _dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
     }
 
     public fun build(): ProjectBuildSpec =

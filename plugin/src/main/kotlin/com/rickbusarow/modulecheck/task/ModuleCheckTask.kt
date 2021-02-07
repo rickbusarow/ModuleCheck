@@ -32,6 +32,7 @@ import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
+  @Suppress("LongMethod")
   override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()

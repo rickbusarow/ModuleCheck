@@ -35,8 +35,16 @@ fun Project.mainLayoutRootOrNull(): File? {
   return if (file.exists()) file else null
 }
 
+fun Project.androidTestResRootOrNull(): File? {
+  val file = File("$srcRoot/androidTest/res")
+  return if (file.exists()) file else null
+}
 fun Project.mainResRootOrNull(): File? {
   val file = File("$srcRoot/main/res")
+  return if (file.exists()) file else null
+}
+fun Project.testResRootOrNull(): File? {
+  val file = File("$srcRoot/test/res")
   return if (file.exists()) file else null
 }
 

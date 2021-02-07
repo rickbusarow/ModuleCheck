@@ -15,28 +15,22 @@
 
 package com.rickbusarow.modulecheck.parser.android
 
-import com.rickbusarow.modulecheck.internal.mainResRootOrNull
-import groovy.util.Node
 import groovy.util.XmlParser
-import org.gradle.api.Project
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
 object AndroidResourceParser {
   private val parser = XmlParser()
 
-  fun parse(project: Project) {
+  fun parse(resDir: File): Set<String> {
     fun log(msg: () -> String) {
-      if (project.path == ":base:resources") println(msg())
+      /*if (project.path == ":base:resources") */println(msg())
     }
 
-    val resRoot = project.mainResRootOrNull() ?: return
-
-    val anims = resRoot
+    val resources = resDir
       .walkTopDown()
       .filter { it.isFile }
 
-      .onEach { file ->
+      /*.onEach { file ->
         if (file.path.endsWith("values-da/dimens.xml")) {
           val parsed = parser.parse(file)
 
@@ -58,35 +52,37 @@ object AndroidResourceParser {
           """.trimMargin()
           )
         }
-      }
+      }*/
 
       .map { file -> AndroidResource.fromFile(file) }
-      .toList()
+      .toSet()
 
-    // val anims = File(resRoot.path + "/anim")
-    //   .orNull()
-    //   ?.listFiles()
-    //   ?.map { file -> Anim(file.nameWithoutExtension) }
-    //   .orEmpty()
+/*    val grouped = resources.groupBy { it::class }
 
-    // log {
-    //   """------------------------------------------------ base resources anims ---
-    //   |
-    //   |${anims.lines()}
-    // """.trimMargin()
-    // }
+    grouped
+      .forEach { type, lst ->
+
+        log {
+          """ ------------------------------------------- ${type.simpleName}
+        |
+        |${lst.lines()}
+        |
+      """.trimMargin()
+        }
+      }*/
+
+    return resources
+      .map { "R.${it.prefix}.${it.name}" }
+      .toSet()
+      .also {
+        //   println(
+        //     """ ----------------------------------------------- resource things ----------------------------
+        //   |
+        //   |${it.lines()}
+        // """.trimMargin()
+        //   )
+      }
   }
-
-  fun parse(file: File) = parser.parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
 }
 
-fun File.orNull(): File? = if (exists()) this else null
+fun File.existsOrNull(): File? = if (exists()) this else null
