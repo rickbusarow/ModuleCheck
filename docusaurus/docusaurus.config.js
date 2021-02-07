@@ -19,13 +19,13 @@ module.exports = {
         {
           type: 'doc',
           docId: 'quickstart',
-          label: 'Charlie',
+          label: 'Basics',
           position: 'left'
         },
         {
           type: 'doc',
-          docId: 'doc1',
-          label: 'Docs',
+          docId: 'rules/unused',
+          label: 'Rules',
           position: 'left',
         },
         {

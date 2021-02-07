@@ -4,7 +4,20 @@ module.exports = {
   'configuration',
   'changelog',
   ],
-  Docusaurus: ['doc1', 'doc2', 'doc3',],
+  Rules: [
+    'rules/unused',
+    'rules/redundant',
+    'rules/overshot',
+    {
+      type: "category",
+      label: "Android",
+      collapsed: false,
+      items: [
+        'rules/android/disable_resources',
+        'rules/android/disable_viewbinding',
+      ]
+    },
+  ],
   Features: ['mdx',]
 };
 

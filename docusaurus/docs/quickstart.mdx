@@ -16,6 +16,7 @@ However, auto-correction of errors is only done by parsing Kotlin files via PSI.
 :::
 
 <Tabs
+groupId="language"
 defaultValue="Kotlin"
 values={[
 {label: 'Kotlin', value: 'Kotlin'},
@@ -69,8 +70,10 @@ plugins {
 
 ## Configuration
 
+See [configuration](./configuration.mdx) for a full list of options.
 
 <Tabs
+groupId="language"
 defaultValue="Kotlin"
 values={[
 {label: 'Kotlin', value: 'Kotlin'},
@@ -81,20 +84,29 @@ values={[
    <TabItem value="Kotlin">
 
 ```kotlin
-// settings.gradle.kts
+// top-level build.gradle.kts
 
-pluginManagement {
-  repositories {
-    gradlePluginPortal()
+configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
   }
 }
 ```
+--or--
 
 ```kotlin
 // top-level build.gradle.kts
 
-plugins {
-  id("com.rickbusarow.module-check") version "0.10.0"
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
 }
 ```
 
@@ -104,20 +116,15 @@ plugins {
 <TabItem value="Groovy">
 
 ```groovy
-// settings.gradle
-
-pluginManagement {
-  repositories {
-    gradlePluginPortal()
-  }
-}
-```
-
-```groovy
 // top-level build.gradle
 
-plugins {
-  id "com.rickbusarow.module-check" version "0.10.0"
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
 }
 ```
 
