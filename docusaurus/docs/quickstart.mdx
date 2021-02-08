@@ -6,24 +6,20 @@ slug: /
 ---
 
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
+:::note ModuleCheck leverages Gradle for parsing all build logic, so validation works regardless of
+whether that logic is expressed in Groovy or Kotlin.
 
-:::note
-ModuleCheck leverages Gradle for parsing all build logic, so validation works regardless of whether that logic is expressed in Groovy or Kotlin.
-
-However, auto-correction of errors is only done by parsing Kotlin files via PSI.  Groovy auto-correction is not supported.
+However, auto-correction is only supported for Kotlin build files.
 :::
 
 ## Dependencies
 
-<Tabs
-groupId="language"
+<Tabs groupId="language"
 defaultValue="Kotlin"
 values={[
-{label: 'Kotlin', value: 'Kotlin'},
-{label: 'Groovy', value: 'Groovy'},
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
 ]}>
 
    <TabItem value="Kotlin">
@@ -71,16 +67,46 @@ plugins {
    </TabItem>
 </Tabs>
 
+## Tasks
+
+all checks
+```shell
+./gradlew moduleCheck
+```
+
+kapt checks
+```shell
+./gradlew moduleCheckKapt
+```
+
+sorts
+```shell
+./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
+```
+
+unused
+```shell
+./gardlew moduleCheckUnused
+```
+
+redundant
+```shell
+./gradlew moduleCheckRedundant
+```
+
+overshot
+```shell
+./gradlew moduleCheckOvershot
+```
+
 ## Configuration
 
 See [configuration](./configuration.mdx) for a full list of options.
 
-<Tabs
-groupId="language"
+<Tabs groupId="language"
 defaultValue="Kotlin"
 values={[
-{label: 'Kotlin', value: 'Kotlin'},
-{label: 'Groovy', value: 'Groovy'},
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
 ]}>
 
 
@@ -98,6 +124,7 @@ configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
   }
 }
 ```
+
 --or--
 
 ```kotlin
