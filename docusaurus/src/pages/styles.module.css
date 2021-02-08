@@ -1,0 +1,83 @@
+/* stylelint-disable docusaurus/copyright-header
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 0 0 var(--ifm-navbar-height);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: #0f2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  height: calc(100vh - calc(2 * var(--ifm-navbar-height)));
+}
+
+.heroFooter {
+  padding: 1.8rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: #0f2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #2c5364,
+    #203a43,
+    #0f2027
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  height: var(--ifm-navbar-height);
+}
+
+.hero__title {
+  font-size: 2.5rem;
+}
+
+.hero__subtitle {
+  text-align: center;
+  font-weight: 300;
+}
+
+.customHero__subtitle {
+  text-align: center;
+  font-weight: 200;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+@media screen and (max-width: 966px) {
+  .hero__title {
+    font-size: 2rem;
+  }
+
+  .customHero__subtitle {
+    font-size: 0.5rem;
+  }
+}
+
+.getStarted:hover,
+.getStarted:active {
+  background: var(--ifm-color-secondary-darkest);
+  border-color: var(--ifm-color-secondary-darkest);
+}

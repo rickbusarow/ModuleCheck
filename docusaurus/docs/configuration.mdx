@@ -1,0 +1,51 @@
+---
+id: configuration
+sidebar_label: Configuration
+---
+
+
+``` kotlin
+plugins {
+  id("com.rickbusarow.module-check") version "0.10.0"
+}
+
+moduleCheck {
+
+  checks {
+    redundant.set(false)
+    disableAndroidResources.set(false)
+    disableViewBinding.set(false)
+  }
+
+  alwaysIgnore.set(setOf(":test:core-jvm", ":test:core-android"))
+  ignoreAll.set(setOf(":app_ble"))
+
+  additionalKaptMatchers.set(
+    listOf(
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "Roomigrant",
+        processor = "com.github.RickBusarow.Roomigrant:RoomigrantCompiler",
+        annotationImports = listOf(
+          "dev\\.matrix\\.roomigrant\\.\\*",
+          "dev\\.matrix\\.roomigrant\\.GenerateRoomMigrations",
+          "dev\\.matrix\\.roomigrant\\.rules\\.\\*",
+          "dev\\.matrix\\.roomigrant\\.rules\\.FieldMigrationRule",
+          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationEndRule",
+          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationStartRule"
+        )
+      ),
+      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+        name = "VMInject",
+        processor = "my-project.codegen.vminject:processor",
+        annotationImports = listOf(
+          "vminject\\.\\*",
+          "vminject\\.VMInject",
+          "vminject\\.VMInject\\.Source",
+          "vminject\\.VMInjectParam",
+          "vminject\\.VMInjectModule"
+        )
+      )
+    )
+  )
+}
+```
