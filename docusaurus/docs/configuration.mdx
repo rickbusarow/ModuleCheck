@@ -12,28 +12,26 @@ plugins {
 moduleCheck {
 
   checks {
-    redundant.set(false)
-    disableAndroidResources.set(false)
-    disableViewBinding.set(false)
+    overshot.set(true) // default is true
+    redundant.set(false) // default is false
+    unused.set(true) // default is true
+    sortDependencies.set(false) // default is false
+    sortPlugins.set(false) // default is false
+    kapt.set(true) // default is true
+    disableAndroidResources.set(false) // default is false
+    disableViewBinding.set(false) // default is false
   }
 
+  // allow these modules to be declared as dependency anywhere,
+  // regardless of whether they're used
   alwaysIgnore.set(setOf(":test:core-jvm", ":test:core-android"))
-  ignoreAll.set(setOf(":app_ble"))
+
+  // do not check the dependencies of these modules.
+  // in this case, :app could declare any module it wants without issue
+  ignoreAll.set(setOf(":app"))
 
   additionalKaptMatchers.set(
     listOf(
-      com.rickbusarow.modulecheck.kapt.KaptMatcher(
-        name = "Roomigrant",
-        processor = "com.github.RickBusarow.Roomigrant:RoomigrantCompiler",
-        annotationImports = listOf(
-          "dev\\.matrix\\.roomigrant\\.\\*",
-          "dev\\.matrix\\.roomigrant\\.GenerateRoomMigrations",
-          "dev\\.matrix\\.roomigrant\\.rules\\.\\*",
-          "dev\\.matrix\\.roomigrant\\.rules\\.FieldMigrationRule",
-          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationEndRule",
-          "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationStartRule"
-        )
-      ),
       com.rickbusarow.modulecheck.kapt.KaptMatcher(
         name = "VMInject",
         processor = "my-project.codegen.vminject:processor",

@@ -1,10 +1,12 @@
+### This is a work in progress, in a very early state, and there are bugs.
+
+___
+
 ModuleCheck identifies unused **internal** (sub-project) dependencies within a Gradle project.
 
 It does this **without performing a build**, which makes the parsing extremely fast.
 
 All inspection is done using Gradle build files, Java/Kotlin source, and `res` xml files for Kotlin.
-
-This is a work in progress, in a very early state, and there are bugs.
 
 Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
 
