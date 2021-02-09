@@ -78,18 +78,17 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
   @TaskAction
   fun evaluate() = runBlocking {
-    val findings = getFindings()
 
-    val t = findings.finish()
+    val numIssues = getFindings().finish()
 
-    if (!t) {
-      throw GradleException("ModuleCheck found some shit")
+    if (numIssues > 0) {
+      throw GradleException("\"ModuleCheck found $numIssues issues")
     }
   }
 
   protected abstract fun getFindings(): List<Finding>
 
-  protected fun Collection<Finding>.finish(): Boolean {
+  protected fun Collection<Finding>.finish(): Int {
     val grouped = this.groupBy { it.dependentProject }
 
     Output.printMagenta("ModuleCheck found ${this.size} issues:\n")
@@ -116,7 +115,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
         toFix
       }
 
-    return unFixed.isEmpty()
+    return unFixed.size
   }
 
   protected fun Project.moduleCheckProjects() =
