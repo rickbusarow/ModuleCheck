@@ -48,11 +48,11 @@ abstract class ModuleCheckExtension(objects: ObjectFactory) {
 class ChecksExtension(objects: ObjectFactory) {
   val overshot: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  val redundant: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val redundant: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   val unused: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  val used: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val used: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   val sortDependencies: Property<Boolean> = objects.property<Boolean>().convention(false)
 
@@ -60,7 +60,7 @@ class ChecksExtension(objects: ObjectFactory) {
 
   val kapt: Property<Boolean> = objects.property<Boolean>().convention(true)
 
-  val disableAndroidResources: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val disableAndroidResources: Property<Boolean> = objects.property<Boolean>().convention(false)
 
-  val disableViewBinding: Property<Boolean> = objects.property<Boolean>().convention(true)
+  val disableViewBinding: Property<Boolean> = objects.property<Boolean>().convention(false)
 }
