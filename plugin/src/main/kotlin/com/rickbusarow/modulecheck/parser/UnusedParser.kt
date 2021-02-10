@@ -32,10 +32,6 @@ object UnusedParser : Parser<UnusedDependency>() {
 
     val dependents = mcp.dependents()
 
-    val unusedMain = dependencies
-      .main()
-      .filter { it !in mcp.resolvedMainDependencies }
-
     /*
     If a module doesn't use a dependency,
     but it's an api dependency,

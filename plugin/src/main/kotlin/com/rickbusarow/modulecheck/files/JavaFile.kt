@@ -16,44 +16,91 @@
 package com.rickbusarow.modulecheck.files
 
 import com.github.javaparser.StaticJavaParser
+import com.github.javaparser.ast.ImportDeclaration
 import com.github.javaparser.ast.Node
+import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.TypeDeclaration
+import com.github.javaparser.ast.type.ClassOrInterfaceType
 import java.io.File
 
 class JavaFile(val file: File) : JvmFile() {
 
-  val parsed by lazy { StaticJavaParser.parse(file) }
+  override val name = file.name
 
-  override val packageFqName by lazy { parsed.packageDeclaration.get().nameAsString }
-  override val imports by lazy {
-    parsed.imports.map {
-      it.nameAsString
-//          .split(".")
-//          .dropLast(1)
-//          .joinToString(".")
-    }.toSet()
-  }
-  override val declarations by lazy {
+  data class ParsedFile(
+    val packageFqName: String,
+    val imports: NodeList<ImportDeclaration>,
+    val classOrInterfaceTypes: Set<ClassOrInterfaceType>,
+    val typeDeclarations: Set<TypeDeclaration<*>>
+  )
 
-//      val fields = mutableListOf<String>()
-//      val methods = mutableListOf<String>()
-    val types = mutableSetOf<String>()
+  private val parsed by lazy {
+    val unit = StaticJavaParser.parse(file)
+
+    val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
+    val typeDeclarations = mutableSetOf<TypeDeclaration<*>>()
 
     val iterator = NodeIterator { node ->
+
       when (node) {
-//          is FieldDeclaration -> if (node.isStatic) fields.add(node.toString())
-//          is MethodDeclaration -> if (node.isStatic) methods.add(node.toString())
-        is TypeDeclaration<*> -> types.add(node.fullyQualifiedName.get())
+        is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
+        is TypeDeclaration<*> -> typeDeclarations.add(node)
       }
+
       true
     }
 
-    iterator.explore(parsed)
+    iterator.explore(unit)
 
-    types
+    ParsedFile(
+      packageFqName = unit.packageDeclaration.get().nameAsString,
+      imports = unit.imports,
+      classOrInterfaceTypes = classOrInterfaceTypes,
+      typeDeclarations = typeDeclarations
+    )
   }
-  override val wildcardImports: Set<String> get() = emptySet()
-  override val maybeExtraReferences: Set<String> get() = emptySet()
+
+  override val packageFqName by lazy { parsed.packageFqName }
+
+  override val imports by lazy {
+    parsed
+      .imports
+      .map {
+        it.toString()
+          .replace("import", "")
+          .replace(";", "")
+          .trim()
+      }.toSet()
+  }
+
+  override val declarations by lazy {
+    parsed.typeDeclarations
+      .map { it.fullyQualifiedName.get() }
+      .toSet()
+  }
+
+  override val wildcardImports: Set<String> by lazy {
+    parsed
+      .imports
+      .filter { it.isAsterisk }
+      .map {
+        it.toString()
+          .replace("import", "")
+          .replace(";", "")
+          .trim()
+      }.toSet()
+  }
+
+  override val maybeExtraReferences: Set<String> by lazy {
+    parsed.classOrInterfaceTypes
+      .map { it.nameWithScope }
+      .flatMap { name ->
+        wildcardImports.map { wildcardImport ->
+          wildcardImport.replace("*", name)
+        }
+      }
+      .toSet()
+  }
 }
 
 class NodeIterator(

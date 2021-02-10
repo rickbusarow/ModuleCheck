@@ -16,6 +16,7 @@
 package com.rickbusarow.modulecheck.files
 
 abstract class JvmFile {
+  abstract val name: String
   abstract val packageFqName: String
   abstract val imports: Set<String>
   abstract val declarations: Set<String>

@@ -22,6 +22,8 @@ import org.jetbrains.kotlin.resolve.BindingContext
 
 class KotlinFile(val ktFile: KtFile) : JvmFile() {
 
+  override val name = ktFile.name
+
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
 
   override val imports by lazy {
