@@ -13,25 +13,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("MatchingDeclarationName")
+package com.rickbusarow.modulecheck.specs
 
-package com.rickbusarow.modulecheck
-
-import io.kotest.core.TestConfiguration
-import io.kotest.core.config.AbstractProjectConfig
-import io.kotest.core.spec.IsolationMode
-import java.io.File
-import java.nio.file.Files
-
-object ProjectConfig : AbstractProjectConfig() {
-  override val parallelism = 1
-  override val isolationMode = IsolationMode.InstancePerLeaf
-}
-
-fun TestConfiguration.tempDir(): File {
-  val file = Files.createTempDirectory("").toFile()
-  afterSpec {
-    file.delete()
-  }
-  return file
+public inline fun <T : Any, E> T.applyEach(elements: Iterable<E>, block: T.(E) -> Unit): T {
+  elements.forEach { element -> this.block(element) }
+  return this
 }

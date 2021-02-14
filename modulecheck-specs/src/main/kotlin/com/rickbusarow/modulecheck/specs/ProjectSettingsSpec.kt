@@ -17,10 +17,18 @@ package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
-@Suppress("MemberVisibilityCanBePrivate")
-public class ProjectSettingsSpec private constructor(
-  public val includes: List<String>
+public data class ProjectSettingsSpec(
+  public val includes: MutableList<String>
 ) {
+
+  public fun toBuilder(): ProjectSettingsSpecBuilder = ProjectSettingsSpecBuilder(
+    includes = includes
+  )
+
+  public inline fun edit(
+    init: ProjectSettingsSpecBuilder.() -> Unit
+  ): ProjectSettingsSpec = toBuilder().apply { init() }.build()
+
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
     path.newFile("settings.gradle.kts").writeText(
@@ -51,19 +59,28 @@ public class ProjectSettingsSpec private constructor(
 
   private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
-  public class Builder internal constructor() {
-
-    private val includes = mutableListOf<String>()
-
-    public fun addInclude(include: String): Builder = apply {
-      includes.add(include)
-    }
-
-    public fun build(): ProjectSettingsSpec = ProjectSettingsSpec(includes)
-  }
-
   public companion object {
 
-    public fun builder(): Builder = Builder()
+    public operator fun invoke(
+      init: ProjectSettingsSpecBuilder.() -> Unit
+    ): ProjectSettingsSpec = ProjectSettingsSpecBuilder(init = init).build()
+
+    public fun builder(): ProjectSettingsSpecBuilder = ProjectSettingsSpecBuilder()
   }
+}
+
+public class ProjectSettingsSpecBuilder(
+  public val includes: MutableList<String> = mutableListOf(),
+  init: ProjectSettingsSpecBuilder.() -> Unit = {}
+) : Builder<ProjectSettingsSpec> {
+
+  init {
+    init()
+  }
+
+  public fun addInclude(include: String) {
+    includes.add(include)
+  }
+
+  override fun build(): ProjectSettingsSpec = ProjectSettingsSpec(includes)
 }

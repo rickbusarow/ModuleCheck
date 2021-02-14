@@ -99,7 +99,7 @@ tasks.withType<Detekt> {
   setSource(files(rootDir))
 
   include("**/*.kt", "**/*.kts")
-  exclude("**/resources/**", "**/build/**", "**/src/test/java**")
+  exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
 
   // Target version of the generated JVM bytecode. It is used for type resolution.
   this.jvmTarget = "1.8"

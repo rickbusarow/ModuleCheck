@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,8 +42,11 @@ dependencies {
   testImplementation(Libs.Kotest.assertions)
   testImplementation(Libs.Kotest.properties)
   testImplementation(Libs.Kotest.runner)
+  testImplementation(Libs.RickBusarow.Hermit.core)
+  testImplementation(Libs.RickBusarow.Hermit.coroutines)
+  testImplementation(Libs.RickBusarow.Hermit.junit5)
 
-  testImplementation(project(path = ":specs"))
+  testImplementation(project(path = ":modulecheck-specs"))
 }
 
 gradlePlugin {

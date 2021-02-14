@@ -13,48 +13,50 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package modulecheck.gradle
 
 import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
-import io.kotest.core.spec.style.FreeSpec
+import com.rickbusarow.modulecheck.specs.ProjectSpecBuilder
+import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
 import java.io.File
+import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 
-class Android : FreeSpec({
+class Android : HermitJUnit5() {
 
-  val testProjectDir = tempDir()
+  val testProjectDir by tempDir()
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpecBuilder = ProjectSpec.builder("project")
-    .addSettingsSpec(
-      ProjectSettingsSpec.builder()
-        .addInclude("app")
-        .build()
+  val projectSpecBuilder = ProjectSpecBuilder("project") {
+    addSettingsSpec(
+      ProjectSettingsSpec {
+        addInclude("app")
+      }
     )
-    .addBuildSpec(
-      ProjectBuildSpec.builder()
-        .addPlugin("id(\"com.rickbusarow.module-check\")")
-        .buildScript()
-        .build()
+    addBuildSpec(
+      ProjectBuildSpec {
+        addPlugin("id(\"com.rickbusarow.module-check\")")
+        buildScript()
+      }
     )
+  }
 
-  "configurations should be grouped and sorted" {
-
+  @Test fun `configurations should be grouped and sorted`() {
     projectSpecBuilder
       .addSubproject(
-        ProjectSpec.builder("app")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("""id("com.android.library")""")
-              .android()
-              .build()
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("""id("com.android.library")""")
+              android = true
+            }
           )
-          .build()
+        }
       )
 
     projectSpecBuilder
@@ -94,4 +96,4 @@ class Android : FreeSpec({
       |
       |""".trimMargin()
   }
-})
+}

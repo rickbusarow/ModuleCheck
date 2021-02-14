@@ -13,21 +13,22 @@
  * limitations under the License.
  */
 
-package com.rickbusarow.modulecheck
+package modulecheck.gradle
 
 import com.rickbusarow.modulecheck.internal.applyEach
 import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
-import io.kotest.core.spec.style.FreeSpec
+import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
 import java.io.File
 import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
+import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import org.junit.jupiter.api.Test
 
-class SortDependenciesTest : FreeSpec({
+class SortDependenciesTest : HermitJUnit5() {
 
-  val testProjectDir = tempDir()
+  val testProjectDir by tempDir()
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -36,50 +37,50 @@ class SortDependenciesTest : FreeSpec({
       .build()
   }
 
-  val projectSpecBuilder = ProjectSpec.builder("project")
-    .addSettingsSpec(
-      ProjectSettingsSpec.builder()
-        .applyEach(projects) { project ->
+  val projectSpec = ProjectSpec("project") {
+    addSettingsSpec(
+      ProjectSettingsSpec {
+        projects.forEach { project ->
           addInclude(project.gradlePath)
         }
-        .addInclude("app")
-        .build()
+        addInclude("app")
+      }
     )
-    .addBuildSpec(
-      ProjectBuildSpec.builder()
-        .addPlugin("id(\"com.rickbusarow.module-check\")")
-        .buildScript()
-        .build()
+    addBuildSpec(
+      ProjectBuildSpec {
+        addPlugin("id(\"com.rickbusarow.module-check\")")
+        buildScript()
+      }
     )
-    .applyEach(projects) { project ->
-      addSubproject(project)
-    }
+      .applyEach(projects) { project ->
+        addSubproject(project)
+      }
+  }
 
-  "configurations should be grouped and sorted" {
+  @Test
+  fun `configurations should be grouped and sorted`() {
 
-    projectSpecBuilder
-      .addSubproject(
-        ProjectSpec.builder("app")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .addProjectDependency("runtimeOnly", "lib-1")
-              .addProjectDependency("api", "lib-3")
-              .addProjectDependency("implementation", "lib-7")
-              .addProjectDependency("compileOnly", "lib-4")
-              .addProjectDependency("api", "lib-0")
-              .addProjectDependency("testImplementation", "lib-5")
-              .addProjectDependency("compileOnly", "lib-6")
-              .addProjectDependency("implementation", "lib-2")
-              .addProjectDependency("testImplementation", "lib-8")
-              .addProjectDependency("implementation", "lib-9")
-              .build()
+    projectSpec.edit {
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addProjectDependency("runtimeOnly", "lib-1")
+              addProjectDependency("api", "lib-3")
+              addProjectDependency("implementation", "lib-7")
+              addProjectDependency("compileOnly", "lib-4")
+              addProjectDependency("api", "lib-0")
+              addProjectDependency("testImplementation", "lib-5")
+              addProjectDependency("compileOnly", "lib-6")
+              addProjectDependency("implementation", "lib-2")
+              addProjectDependency("testImplementation", "lib-8")
+              addProjectDependency("implementation", "lib-9")
+            }
           )
-          .build()
+        }
       )
-
-    projectSpecBuilder
-      .build()
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = GradleRunner.create()
@@ -89,7 +90,7 @@ class SortDependenciesTest : FreeSpec({
       .withArguments("moduleCheckSortDependencies")
       .build()
 
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -114,36 +115,36 @@ class SortDependenciesTest : FreeSpec({
         |""".trimMargin()
   }
 
-  "external dependencies should be grouped separately" {
+  @Test
+  fun `external dependencies should be grouped separately`() {
 
-    projectSpecBuilder
-      .addSubproject(
-        ProjectSpec.builder("app")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
-              .addProjectDependency("api", "lib-3")
-              .addProjectDependency("implementation", "lib-7")
-              .addExternalDependency(
-                "implementation",
-                "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-              )
-              .addProjectDependency("compileOnly", "lib-4")
-              .addProjectDependency("api", "lib-0")
-              .addProjectDependency("testImplementation", "lib-8")
-              .addExternalDependency(
-                "testImplementation",
-                "org.junit.jupiter:junit-jupiter-api:5.7.0"
-              )
-              .addProjectDependency("implementation", "lib-9")
-              .build()
-          )
-          .build()
-      )
-
-    projectSpecBuilder
-      .build()
+    projectSpec
+      .edit {
+        addSubproject(
+          ProjectSpec("app") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
+                addProjectDependency("api", "lib-3")
+                addProjectDependency("implementation", "lib-7")
+                addExternalDependency(
+                  "implementation",
+                  "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+                )
+                addProjectDependency("compileOnly", "lib-4")
+                addProjectDependency("api", "lib-0")
+                addProjectDependency("testImplementation", "lib-8")
+                addExternalDependency(
+                  "testImplementation",
+                  "org.junit.jupiter:junit-jupiter-api:5.7.0"
+                )
+                addProjectDependency("implementation", "lib-9")
+              }
+            )
+          }
+        )
+      }
       .writeIn(testProjectDir.toPath())
 
     val result = GradleRunner.create()
@@ -153,7 +154,7 @@ class SortDependenciesTest : FreeSpec({
       .withArguments("moduleCheckSortDependencies")
       .build()
 
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -179,44 +180,44 @@ class SortDependenciesTest : FreeSpec({
         |""".trimMargin()
   }
 
-  "comments should move along with the dependency declaration" {
+  @Test
+  fun `comments should move along with the dependency declaration`() {
 
-    projectSpecBuilder
-      .addSubproject(
-        ProjectSpec.builder("app")
-          .addBuildSpec(
-            ProjectBuildSpec.builder()
-              .addPlugin("kotlin(\"jvm\")")
-              .addExternalDependency(
-                "api",
-                "com.squareup:kotlinpoet:1.7.2",
-                "// multi-line\n  // comment"
-              )
-              .addProjectDependency("api", "lib-3", "/*\n  block comment\n  */")
-              .addProjectDependency("implementation", "lib-7", "/**\n  * block comment\n  */")
-              .addExternalDependency(
-                "implementation",
-                "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-              )
-              .addProjectDependency("compileOnly", "lib-4")
-              .addProjectDependency("api", "lib-0")
-              .addProjectDependency("testImplementation", "lib-5")
-              .addProjectDependency("compileOnly", "lib-6", "// floating comment\n\n")
-              .addProjectDependency("implementation", "lib-2", "// library 2")
-              .addProjectDependency("testImplementation", "lib-8")
-              .addExternalDependency(
-                "testImplementation",
-                "org.junit.jupiter:junit-jupiter-api:5.7.0",
-                inlineComment = "// JUnit 5"
-              )
-              .addProjectDependency("implementation", "lib-9", "// library 9")
-              .build()
-          )
-          .build()
-      )
-
-    projectSpecBuilder
-      .build()
+    projectSpec
+      .edit {
+        addSubproject(
+          ProjectSpec("app") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addExternalDependency(
+                  "api",
+                  "com.squareup:kotlinpoet:1.7.2",
+                  "// multi-line\n  // comment"
+                )
+                addRawDependency("/*\n  block comment\n  */\n  api(project(path = \":lib-3\"))")
+                addProjectDependency("implementation", "lib-7", "/**\n  * block comment\n  */")
+                addExternalDependency(
+                  "implementation",
+                  "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+                )
+                addProjectDependency("compileOnly", "lib-4")
+                addProjectDependency("api", "lib-0")
+                addProjectDependency("testImplementation", "lib-5")
+                addProjectDependency("compileOnly", "lib-6", "// floating comment\n\n")
+                addProjectDependency("implementation", "lib-2", "// library 2")
+                addProjectDependency("testImplementation", "lib-8")
+                addExternalDependency(
+                  "testImplementation",
+                  "org.junit.jupiter:junit-jupiter-api:5.7.0",
+                  inlineComment = "// JUnit 5"
+                )
+                addProjectDependency("implementation", "lib-9", "// library 9")
+              }
+            )
+          }
+        )
+      }
       .writeIn(testProjectDir.toPath())
 
     val result = GradleRunner.create()
@@ -226,7 +227,7 @@ class SortDependenciesTest : FreeSpec({
       .withArguments("moduleCheckSortDependencies")
       .build()
 
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -267,4 +268,4 @@ class SortDependenciesTest : FreeSpec({
         |}
         |""".trimMargin()
   }
-})
+}
