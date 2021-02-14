@@ -25,11 +25,11 @@ import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import java.io.File
+import java.nio.file.Path
 import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import java.io.File
-import java.nio.file.Path
 
 class UnusedKaptTest : HermitJUnit5() {
 

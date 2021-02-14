@@ -24,8 +24,8 @@ import com.rickbusarow.modulecheck.parser.DslBlockParser
 import com.rickbusarow.modulecheck.parser.PsiElementWithSurroundingText
 import com.rickbusarow.modulecheck.rule.AbstractRule
 import com.rickbusarow.modulecheck.task.AbstractModuleCheckTask
-import org.gradle.api.Project
 import java.util.*
+import org.gradle.api.Project
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
 

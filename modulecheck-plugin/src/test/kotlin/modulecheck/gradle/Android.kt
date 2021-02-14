@@ -21,10 +21,10 @@ import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpecBuilder
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import java.io.File
 import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import java.io.File
 
 class Android : HermitJUnit5() {
 

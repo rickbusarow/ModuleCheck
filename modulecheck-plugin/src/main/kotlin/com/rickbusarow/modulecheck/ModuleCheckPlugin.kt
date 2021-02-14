@@ -29,12 +29,12 @@ import com.rickbusarow.modulecheck.task.ModuleCheckTask
 import com.rickbusarow.modulecheck.task.RedundantTask
 import com.rickbusarow.modulecheck.task.UnusedTask
 import com.rickbusarow.modulecheck.task.UsedTask
+import java.io.File
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
-import java.io.File
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)

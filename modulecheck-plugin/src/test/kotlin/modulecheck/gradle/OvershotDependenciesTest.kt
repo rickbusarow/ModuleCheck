@@ -22,13 +22,13 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import java.io.File
+import java.nio.file.Path
 import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import java.io.File
-import java.nio.file.Path
 
 class OvershotDependenciesTest : HermitJUnit5() {
 

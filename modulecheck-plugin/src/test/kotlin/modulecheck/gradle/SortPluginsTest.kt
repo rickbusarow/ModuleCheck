@@ -22,11 +22,11 @@ import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import java.io.File
+import java.nio.file.Path
 import org.gradle.internal.impldep.org.junit.Test
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
-import java.io.File
-import java.nio.file.Path
 
 class SortPluginsTest : HermitJUnit5() {
 

@@ -21,10 +21,10 @@ import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import java.io.File
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class SortDependenciesTest : HermitJUnit5() {
 
