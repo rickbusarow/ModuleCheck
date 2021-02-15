@@ -41,18 +41,26 @@ fun ConfiguredProjectDependency.usedIn(mcp: MCP): Boolean {
 fun ConfiguredProjectDependency.mcp() = MCP.from(project)
 
 private fun ConfiguredProjectDependency.usedInMain(mcp: MCP): Boolean {
-  val rReferences by lazy(NONE) { mcp.mainExtraPossibleReferences.filter { it.startsWith("R.") } }
+  val thisAsMCP = mcp()
 
-  return mcp()
+  val javaIsUsed = thisAsMCP
     .mainDeclarations
     .any { declaration ->
 
       declaration in mcp.mainImports || declaration in mcp.mainExtraPossibleReferences
-    } || mcp()
+    }
+
+  if (javaIsUsed) return true
+
+  val rReferences = mcp.mainExtraPossibleReferences.filter { it.startsWith("R.") }
+
+  val resourcesAreUsed = thisAsMCP
     .mainAndroidResDeclarations
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
+
+  return resourcesAreUsed
 }
 
 private fun ConfiguredProjectDependency.usedInAndroidTest(mcp: MCP): Boolean {

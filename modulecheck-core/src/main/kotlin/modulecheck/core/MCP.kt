@@ -119,11 +119,15 @@ class MCP private constructor(
   }
 
   val mainImports by lazy {
-    mainFiles
-      .flatMap { jvmFile -> jvmFile.imports } + mainLayoutFiles
+    val imports = mainFiles
+      .flatMap { jvmFile -> jvmFile.imports }
+
+    val customViewReferences = mainLayoutFiles
       .map { it.customViews }
       .flatten()
       .toSet()
+
+    (imports + customViewReferences).toSet()
   }
 
   val mainExtraPossibleReferences by lazy {

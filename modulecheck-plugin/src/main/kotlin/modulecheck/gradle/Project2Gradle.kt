@@ -20,10 +20,13 @@ import modulecheck.api.*
 import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
 import modulecheck.core.kapt.KaptParser
+import modulecheck.core.parser.DslBlockParser
+import modulecheck.core.parser.ExternalDependencyDeclarationParser
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
 import modulecheck.psi.*
 import modulecheck.psi.internal.*
+import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.internal.HasConvention
@@ -32,6 +35,7 @@ import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.cli.common.messages.*
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
 import java.util.concurrent.*
@@ -159,8 +163,46 @@ class Project2Gradle private constructor(
       .flatMap { config ->
         config.dependencies
           .filterNot { it is ProjectDependency }
-          .map { ExternalDependency(Config.from(config.name), it.name) }
+          .map {
+
+            val psi = lazy psiLazy@{
+              val parsed = DslBlockParser("dependencies")
+                .parse(project.buildFile.asKtFile())
+                ?: return@psiLazy null
+
+              parsed
+                .elements
+                .firstOrNull { element ->
+
+                  val p = ExternalDependencyDeclarationParser(
+                    configuration = Config.from(config.name),
+                    group = it.group,
+                    name = it.name,
+                    version = it.version
+                  )
+
+                  p.parse(element.psiElement as KtCallExpression)
+                }
+            }
+            ExternalDependency(
+              config = Config.from(config.name),
+              group = it.group,
+              moduleName = it.name,
+              version = it.version,
+              psiElementWithSurroundingText = psi
+            )
+          }
       }
+  }
+
+  override fun compilerPluginVersionForGroupName(groupName: String): SemVer? {
+    return project
+      .configurations
+      .findByName("kotlinCompilerPluginClasspath")
+      ?.dependencies
+      ?.find { it.group == groupName }
+      ?.version
+      ?.let { versionString -> SemVer.parse(versionString) }
   }
 
   override fun toString(): String = "Project2Gradle(path='$path')"

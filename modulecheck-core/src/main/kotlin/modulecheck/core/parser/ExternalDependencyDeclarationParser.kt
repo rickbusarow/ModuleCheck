@@ -23,12 +23,29 @@ import org.jetbrains.kotlin.psi.callExpressionVisitor
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
-class ProjectDependencyDeclarationParser(
+class ExternalDependencyDeclarationParser(
   private val configuration: Config,
-  private val projectPath: String
+  /**
+   * In "com.google.dagger:dagger:2.32", this would be "com.google.dagger"
+   */
+  private val group: String? = null,
+  /**
+   * In "com.google.dagger:dagger:2.32", this would be "dagger"
+   */
+  private val name: String? = null,
+  /**
+   * In "com.google.dagger:dagger:2.32", this would be "2.32"
+   */
+  private val version: String? = null
 ) {
 
-  @Suppress("ReturnCount")
+  val projectMatcher = """${group.orWildcard()}:${name.orWildcard()}:${version.orWildcard()}"""
+    .replace(".", "\\.")
+    .toRegex()
+
+  private fun String?.orWildcard() = this ?: "*"
+
+  @Suppress("ReturnCount", "MaxLineLength")
   fun parse(expression: KtCallExpression): Boolean {
     var found = false
 
@@ -37,17 +54,15 @@ class ProjectDependencyDeclarationParser(
         .referenceExpression()
         .takeIf { it?.text == configuration.name }
         ?.let {
-          innerExpression                                     // implementation(project(path = ":foo:bar"))
-            .valueArguments                                   // [project(path = ":foo:bar")]
-            .firstOrNull()                                    // project(path = ":foo:bar")
-            ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
-            ?.valueArguments                                  // [path = ":foo:bar"]
-            ?.firstOrNull()                                   // path = ":foo:bar"
-            ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-            ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
-            ?.let { projectNameArg ->
+          innerExpression                                     // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
+            .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
+            .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
+            ?.getChildOfType<KtStringTemplateExpression>()    // "com.google.dagger:dagger:2.32"
+            ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
+            ?.text                                            // com.google.dagger:dagger:2.32
+            ?.let { groupName ->
 
-              if (projectNameArg.text == projectPath) {
+              if (groupName.matches(projectMatcher)) {
                 found = true
               }
             }

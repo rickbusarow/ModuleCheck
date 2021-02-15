@@ -22,6 +22,7 @@ import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
 import modulecheck.core.parser.DslBlockParser
+import modulecheck.core.rule.AnvilFactoryRule
 import modulecheck.core.rule.RedundantRule
 import modulecheck.core.rule.UnusedRule
 import modulecheck.core.rule.android.DisableAndroidResourcesRule
@@ -116,6 +117,16 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
                   alwaysIgnore = alwaysIgnore,
                   ignoreAll = ignoreAll,
                   kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
+                ).check()
+              )
+            }
+
+            if (checks.anvilFactories.get()) {
+              addAll(
+                AnvilFactoryRule(
+                  project = proj,
+                  alwaysIgnore = alwaysIgnore,
+                  ignoreAll = ignoreAll
                 ).check()
               )
             }

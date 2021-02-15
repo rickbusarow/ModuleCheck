@@ -60,6 +60,8 @@ class ChecksExtension(objects: ObjectFactory) {
 
   val kapt: Property<Boolean> = objects.property<Boolean>().convention(true)
 
+  val anvilFactories: Property<Boolean> = objects.property<Boolean>().convention(true)
+
   val disableAndroidResources: Property<Boolean> = objects.property<Boolean>().convention(false)
 
   val disableViewBinding: Property<Boolean> = objects.property<Boolean>().convention(false)
