@@ -13,26 +13,28 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule
+package modulecheck.gradle.task
 
-import modulecheck.api.Project2
-import modulecheck.core.RedundantDependencyFinding
+import modulecheck.api.Finding
 import modulecheck.core.mcp
+import modulecheck.core.rule.MustBeApiRule
+import modulecheck.gradle.project2
 
-class RedundantRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<RedundantDependencyFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+abstract class MustBeApiTask : AbstractModuleCheckTask() {
 
-  override fun check(): List<RedundantDependencyFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override fun getFindings(): List<Finding> {
+    val alwaysIgnore = alwaysIgnore.get()
+    val ignoreAll = ignoreAll.get()
 
-    return project.mcp().redundant
-      .all()
-      .filterNot { dependency -> dependency.dependencyIdentifier in alwaysIgnore }
-      .distinctBy { it.positionOrNull() }
+    return measured {
+      project
+        .project2()
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .sortedByDescending { it.mcp().getMainDepth() }
+        .flatMap { proj ->
+          MustBeApiRule(proj, alwaysIgnore, ignoreAll).check()
+        }
+    }
   }
 }

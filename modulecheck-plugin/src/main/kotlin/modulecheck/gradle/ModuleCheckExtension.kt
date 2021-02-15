@@ -50,6 +50,7 @@ class ChecksExtension : ChecksSettings {
   override var overshot: Boolean = true
   override var redundant: Boolean = false
   override var unused: Boolean = true
+  override var mustBeApi: Boolean = true
   override var used: Boolean = false
   override var sortDependencies: Boolean = false
   override var sortPlugins: Boolean = false

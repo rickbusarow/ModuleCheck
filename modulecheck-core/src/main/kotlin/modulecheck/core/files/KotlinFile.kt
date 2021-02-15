@@ -62,6 +62,23 @@ class KotlinFile(
       .toSet()
   }
 
+  val apiReferences by lazy {
+
+    val replacedWildcards = wildcardImports.flatMap { wi ->
+
+      referenceVisitor.apiReferences.map { tr ->
+        wi.replace("*", tr)
+      }
+    }
+      .toSet()
+
+    val simple = referenceVisitor.apiReferences + referenceVisitor.apiReferences.map {
+      ktFile.packageFqName.asString() + "." + it
+    }
+
+    simple + replacedWildcards
+  }
+
   private val usedImportsVisitor by lazy {
     UsedImportsVisitor(bindingContext)
       .also { ktFile.accept(it) }
