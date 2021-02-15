@@ -18,14 +18,16 @@ package modulecheck.core
 import modulecheck.api.*
 import modulecheck.api.Config.*
 import modulecheck.api.Finding.Position
+import modulecheck.api.JvmFile
 import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.files.JvmFile
 import modulecheck.core.files.XmlFile
 import modulecheck.core.internal.*
 import modulecheck.core.kapt.KaptParser
 import modulecheck.core.parser.*
 import modulecheck.core.parser.android.AndroidManifestParser
 import modulecheck.core.parser.android.AndroidResourceParser
+import modulecheck.psi.*
+import modulecheck.psi.internal.*
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.*

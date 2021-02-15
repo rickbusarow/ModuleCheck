@@ -13,23 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.api
 
-import groovy.util.Node
-import groovy.xml.XmlParser
-import java.io.File
+abstract class JvmFile {
+  abstract val name: String
+  abstract val packageFqName: String
+  abstract val imports: Set<String>
+  abstract val declarations: Set<String>
 
-object AndroidManifestParser {
-  private val parser = XmlParser()
+  override fun toString(): String {
+    return """${this::class.simpleName}(
+      |packageFqName='$packageFqName',
+      |
+      |importDirectives=$imports,
+      |
+      |declarations=$declarations
+      |
+      |)""".trimMargin()
+  }
 
-  fun parse(file: File) = parser.parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
+  abstract val wildcardImports: Set<String>
+  abstract val maybeExtraReferences: Set<String>
 }

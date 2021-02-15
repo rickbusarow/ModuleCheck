@@ -21,8 +21,9 @@ plugins {
 dependencies {
 
   api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-psi"))
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
+  implementation(Libs.Groovy.xml)
 
   compileOnly(gradleApi())
 

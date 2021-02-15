@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.psi
+package modulecheck.psi
 
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback

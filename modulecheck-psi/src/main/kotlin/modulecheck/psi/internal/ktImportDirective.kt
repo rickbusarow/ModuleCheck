@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.psi.internal
 
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtImportDirective
@@ -31,3 +31,5 @@ val KtImportDirective.isAlias: Boolean
 val KtImportDirective.isJava: Boolean
   get() = importedFqName?.asString()
     ?.let { it.startsWith("java") || it.startsWith("kotlin.") } ?: false
+
+internal fun KtImportDirective.identifier() = this.importPath?.importedName?.identifier

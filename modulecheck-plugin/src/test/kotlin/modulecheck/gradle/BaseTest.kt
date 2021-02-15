@@ -28,7 +28,7 @@ public val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.grad
 
 abstract class BaseTest : HermitJUnit5() {
 
-  val testProjectDir by tempDir("___${System.currentTimeMillis()}")
+  val testProjectDir by tempDir()
 
   private val kotlinVersion =
     System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)

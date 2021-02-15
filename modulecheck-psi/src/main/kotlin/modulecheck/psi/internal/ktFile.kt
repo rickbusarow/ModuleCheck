@@ -15,7 +15,7 @@
 
 @file:Suppress("TooManyFunctions")
 
-package modulecheck.core.internal
+package modulecheck.psi.internal
 
 import org.jetbrains.kotlin.com.intellij.openapi.util.Key
 import org.jetbrains.kotlin.idea.KotlinLanguage

@@ -17,11 +17,13 @@ package modulecheck.gradle
 
 import com.android.build.gradle.TestedExtension
 import modulecheck.api.*
+import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
 import modulecheck.core.kapt.KaptParser
-import modulecheck.core.psi.createBindingContext
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
+import modulecheck.psi.*
+import modulecheck.psi.internal.*
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.internal.HasConvention
@@ -66,9 +68,9 @@ class Project2Gradle private constructor(
   override fun bindingContextForSourceSet(sourceSet: SourceSet): BindingContext {
     return bindingContexts.getOrPut(sourceSet) {
       val classPath = classpathForSourceSet(sourceSet).map { it.path }
-      val jvmFiles = jvmSourcesForSourceSet(sourceSet).ktFiles()
+      val jvmSources = jvmSourcesForSourceSet(sourceSet).ktFiles()
 
-      createBindingContext(classPath, jvmFiles)
+      createBindingContext(classPath, jvmSources)
     }
   }
 
@@ -99,6 +101,24 @@ class Project2Gradle private constructor(
           kotlinSourceSet.kotlin.sourceDirectories.files
         } ?: emptySet()
     }
+  }
+
+  override fun jvmFilesForSourceSet(sourceSet: SourceSet): List<JvmFile> {
+    return jvmSources.getOrPut(sourceSet) {
+      sourceSets
+        ?.findByName(sourceSet.name)
+        ?.let { set ->
+
+          val kotlinSourceSet = (set as? HasConvention)
+            ?.convention
+            ?.plugins
+            ?.get("kotlin") as? KotlinSourceSet
+
+          kotlinSourceSet ?: return@let set.allJava.files
+
+          kotlinSourceSet.kotlin.sourceDirectories.files
+        } ?: emptySet()
+    }.jvmFiles(bindingContextForSourceSet(sourceSet))
   }
 
   override fun resourcesForSourceSet(sourceSet: SourceSet): Set<File> {

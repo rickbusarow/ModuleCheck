@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.psi.internal
 
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer

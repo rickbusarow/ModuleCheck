@@ -20,8 +20,8 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.DependencyFinding
 import modulecheck.core.MCP
-import modulecheck.core.internal.asKtFile
 import modulecheck.core.parser.DslBlockParser
+import modulecheck.psi.internal.asKtFile
 
 data class OverShotDependencyFinding(
   override val dependentProject: Project2,

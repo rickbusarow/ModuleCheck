@@ -15,9 +15,11 @@
 
 package modulecheck.core.files
 
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.psi.*
-import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
+import modulecheck.api.JvmFile
+import modulecheck.psi.DeclarationVisitor
+import modulecheck.psi.ReferenceVisitor
+import modulecheck.psi.UsedImportsVisitor
+import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class KotlinFile(
@@ -122,62 +124,3 @@ class KotlinFile(
     private val CHILD_PARAMETERS_REGEX = """^[a-zA-Z._`]*""".toRegex()
   }
 }
-
-class ReferenceVisitor(
-  val bindingContext: BindingContext
-) : KtTreeVisitorVoid() {
-
-  val qualifiedExpressions: MutableSet<String> = mutableSetOf()
-  val callableReferences: MutableSet<String> = mutableSetOf()
-  val typeReferences: MutableSet<String> = mutableSetOf()
-
-  override fun visitQualifiedExpression(expression: KtQualifiedExpression) {
-    super.visitQualifiedExpression(expression)
-
-    expression
-      .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
-      // ?.takeIf { it.children.isEmpty() }
-      ?.run { qualifiedExpressions.add(this.text) }
-  }
-
-  override fun visitTypeReference(typeReference: KtTypeReference) {
-    super.visitTypeReference(typeReference)
-
-    typeReferences.add(typeReference.text)
-  }
-
-  override fun visitCallExpression(expression: KtCallExpression) {
-    super.visitCallExpression(expression)
-
-    callableReferences.add(expression.text)
-  }
-
-  override fun visitCallableReferenceExpression(expression: KtCallableReferenceExpression) {
-    super.visitCallableReferenceExpression(expression)
-
-    callableReferences.add(expression.text)
-  }
-}
-
-class DeclarationVisitor : KtTreeVisitorVoid() {
-
-  val declarations: MutableSet<String> = mutableSetOf()
-
-  override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
-    if (!declaration.isPrivateOrInternal()) {
-      declaration.fqName?.let { declarations.add(it.asString()) }
-    }
-
-    super.visitNamedDeclaration(declaration)
-  }
-}
-
-/**
- * Tests if this element is part of given PsiElement.
- */
-inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
-
-/**
- * Tests if this element is part of a kotlin string.
- */
-fun PsiElement.isPartOfString(): Boolean = isPartOf<KtStringTemplateEntry>()

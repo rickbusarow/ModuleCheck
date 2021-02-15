@@ -13,23 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.psi
 
-import groovy.util.Node
-import groovy.xml.XmlParser
-import java.io.File
+import modulecheck.psi.internal.isPrivateOrInternal
+import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-object AndroidManifestParser {
-  private val parser = XmlParser()
+class DeclarationVisitor : KtTreeVisitorVoid() {
 
-  fun parse(file: File) = parser.parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
+  val declarations: MutableSet<String> = mutableSetOf()
+
+  override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
+    if (!declaration.isPrivateOrInternal()) {
+      declaration.fqName?.let { declarations.add(it.asString()) }
+    }
+
+    super.visitNamedDeclaration(declaration)
+  }
 }

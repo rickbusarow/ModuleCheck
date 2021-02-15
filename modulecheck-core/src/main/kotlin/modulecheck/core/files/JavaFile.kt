@@ -21,6 +21,7 @@ import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.type.ClassOrInterfaceType
+import modulecheck.api.JvmFile
 import java.io.File
 
 class JavaFile(val file: File) : JvmFile() {

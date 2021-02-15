@@ -17,6 +17,7 @@ package modulecheck.core.internal
 
 import modulecheck.core.files.JavaFile
 import modulecheck.core.files.KotlinFile
+import modulecheck.psi.internal.asKtFile
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -29,11 +30,20 @@ fun File.jvmFiles(bindingContext: BindingContext) = walkTopDown()
   .files()
   .mapNotNull { file ->
     when {
-      file.isKotlinFile(listOf("kt")) -> KotlinFile(file.asKtFile(), bindingContext)
+      file.isKotlinFile(listOf("kt")) -> {
+        KotlinFile(
+          file.asKtFile(),
+          bindingContext
+        )
+      }
       file.isJavaFile() -> JavaFile(file)
       else -> null
     }
   }.toList()
+
+fun Collection<File>.jvmFiles(
+  bindingContext: BindingContext
+) = flatMap { it.jvmFiles(bindingContext) }
 
 fun FileTreeWalk.dirs(): Sequence<File> = asSequence().filter { it.isDirectory }
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }

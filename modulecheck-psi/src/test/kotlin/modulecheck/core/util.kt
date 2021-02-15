@@ -13,23 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.core
 
-import groovy.util.Node
-import groovy.xml.XmlParser
+import hermit.test.Hermit
+import hermit.test.LazyResets
 import java.io.File
+import java.nio.file.Files
 
-object AndroidManifestParser {
-  private val parser = XmlParser()
+fun Hermit.tempDir(path: String = ""): LazyResets<File> {
+  return object : LazyResets<File> {
 
-  fun parse(file: File) = parser.parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
+    val delegate = LazyResets(this@tempDir) { Files.createTempDirectory(path).toFile() }
+
+    override fun reset() {
+      delegate.value.delete()
+      delegate.reset()
+    }
+
+    override val value: File
+      get() = delegate.value
+
+    override fun isInitialized(): Boolean = delegate.isInitialized()
+  }
 }

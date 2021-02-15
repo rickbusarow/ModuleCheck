@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.core.files
+package modulecheck.psi
 
+import modulecheck.psi.internal.identifier
+import modulecheck.psi.internal.isPartOf
 import org.jetbrains.kotlin.kdoc.psi.impl.KDocTag
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.*
@@ -22,8 +24,6 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameOrNull
 import org.jetbrains.kotlin.resolve.descriptorUtil.getImportableDescriptor
-
-internal fun KtImportDirective.identifier() = this.importPath?.importedName?.identifier
 
 // adapted from Detekt's UnusedImportsVisitor
 // https://github.com/detekt/detekt/blob/master/detekt-rules-style/src/main/kotlin/io/gitlab/arturbosch/detekt/rules/style/UnusedImports.kt

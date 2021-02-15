@@ -16,7 +16,7 @@
 package modulecheck.core.parser.android
 
 import groovy.util.Node
-import groovy.util.XmlParser
+import groovy.xml.XmlParser
 import java.io.File
 
 object AndroidLayoutParser {

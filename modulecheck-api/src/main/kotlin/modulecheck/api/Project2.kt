@@ -37,10 +37,11 @@ interface Project2 {
 
   val kaptProcessors: ParsedKapt<KaptProcessor>
 
+  fun bindingContextForSourceSet(sourceSet: SourceSet): BindingContext
   fun classpathForSourceSet(sourceSet: SourceSet): Set<File>
+  fun jvmFilesForSourceSet(sourceSet: SourceSet): List<JvmFile>
   fun jvmSourcesForSourceSet(sourceSet: SourceSet):  Set<File>
   fun resourcesForSourceSet(sourceSet: SourceSet):  Set<File>
-  fun bindingContextForSourceSet(sourceSet: SourceSet): BindingContext
 }
 
 data class ParsedKapt<T>(

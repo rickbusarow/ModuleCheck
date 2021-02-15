@@ -15,7 +15,7 @@
 
 package modulecheck.core.parser.android
 
-import groovy.util.XmlParser
+import groovy.xml.XmlParser
 import java.io.File
 
 object AndroidResourceParser {

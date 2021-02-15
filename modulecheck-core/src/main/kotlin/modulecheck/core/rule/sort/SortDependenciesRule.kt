@@ -20,9 +20,10 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.internal.asKtFile
 import modulecheck.core.parser.DslBlockParser
 import modulecheck.core.rule.AbstractRule
+import modulecheck.psi.*
+import modulecheck.psi.internal.*
 import java.util.*
 
 fun List<PsiElementWithSurroundingText>.grouped() = groupBy {

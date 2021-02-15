@@ -13,25 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.core.files
+package modulecheck.psi.internal
 
-abstract class JvmFile {
-  abstract val name: String
-  abstract val packageFqName: String
-  abstract val imports: Set<String>
-  abstract val declarations: Set<String>
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtStringTemplateEntry
+import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 
-  override fun toString(): String {
-    return """${this::class.simpleName}(
-      |packageFqName='$packageFqName',
-      |
-      |importDirectives=$imports,
-      |
-      |declarations=$declarations
-      |
-      |)""".trimMargin()
-  }
+/**
+ * Tests if this element is part of given PsiElement.
+ */
+inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
 
-  abstract val wildcardImports: Set<String>
-  abstract val maybeExtraReferences: Set<String>
-}
+/**
+ * Tests if this element is part of a kotlin string.
+ */
+fun PsiElement.isPartOfString(): Boolean = isPartOf<KtStringTemplateEntry>()

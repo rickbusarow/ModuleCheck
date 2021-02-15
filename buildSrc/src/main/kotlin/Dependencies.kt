@@ -97,6 +97,11 @@ object Libs {
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
   }
 
+  object Groovy {
+
+    const val xml = "org.codehaus.groovy:groovy-xml:3.0.7"
+  }
+
   object JUnit {
     private const val version = "5.7.1"
 
