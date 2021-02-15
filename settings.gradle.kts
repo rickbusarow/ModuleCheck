@@ -58,6 +58,9 @@ gradleEnterprise {
 rootProject.name = "ModuleCheck"
 
 include(
+  ":modulecheck-api",
+  ":modulecheck-core",
   ":modulecheck-plugin",
+  ":modulecheck-psi",
   ":modulecheck-specs"
 )

@@ -13,6 +13,21 @@
  * limitations under the License.
  */
 
+
+object PluginCoordinates {
+  const val ID = "com.rickbusarow.module-check"
+  const val GROUP = "com.rickbusarow.modulecheck"
+  const val IMPLEMENTATION_CLASS = "modulecheck.gradle.ModuleCheckPlugin"
+}
+
+object PluginBundle {
+  const val VCS = "https://github.com/RBusarow/ModuleCheck"
+  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
+  const val DESCRIPTION = "Fast dependency graph validation for gradle"
+  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
+  val TAGS = listOf("plugin", "gradle")
+}
+
 object Plugins {
 
   const val androidApplication = "com.android.application"
@@ -51,7 +66,7 @@ object Versions {
   const val minSdk = "23"
   const val sonarPlugin = "2.6.1"
   const val spoon = "1.5.0"
-  const val spotless = "5.8.2"
+  const val spotless = "5.10.1"
   const val targetSdk = 30
   const val taskTree = "1.5"
   const val versionName = "0.10.0"
@@ -82,6 +97,11 @@ object Libs {
     const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
   }
 
+  object Groovy {
+
+    const val xml = "org.codehaus.groovy:groovy-xml:3.0.7"
+  }
+
   object JUnit {
     private const val version = "5.7.1"
 
@@ -102,7 +122,7 @@ object Libs {
   }
 
   object Kotest {
-    private const val version = "4.4.0"
+    private const val version = "4.4.1"
     const val assertions = "io.kotest:kotest-assertions-core-jvm:$version"
     const val properties = "io.kotest:kotest-property-jvm:$version"
     const val runner = "io.kotest:kotest-runner-junit5-jvm:$version"

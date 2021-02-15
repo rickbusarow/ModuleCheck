@@ -15,11 +15,11 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.internal.applyEach
-import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
-import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.specs.ProjectSpec
+import com.squareup.kotlinpoet.ClassName
 import io.kotest.matchers.shouldBe
+import modulecheck.specs.ProjectBuildSpec
+import modulecheck.specs.ProjectSettingsSpec
+import modulecheck.specs.ProjectSpec
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -29,33 +29,27 @@ class SortDependenciesTest : BaseTest() {
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   val projects = List(10) {
-    ProjectSpec.builder("lib-$it")
-      .build()
-  }
-
-  val projectSpec = ProjectSpec("project") {
-    addSettingsSpec(
-      ProjectSettingsSpec {
-        projects.forEach { project ->
-          addInclude(project.gradlePath)
-        }
-        addInclude("app")
-      }
-    )
-    addBuildSpec(
-      ProjectBuildSpec {
-        addPlugin("id(\"com.rickbusarow.module-check\")")
-        buildScript()
-      }
-    )
-      .applyEach(projects) { project ->
-        addSubproject(project)
-      }
+    jvmSubProject("lib-$it", ClassName("com.example.lib$it", "Lib${it}Class"))
   }
 
   @Test
   fun `configurations should be grouped and sorted`() {
-    projectSpec.edit {
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          projects.forEach { project ->
+            addInclude(project.gradlePath)
+          }
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      projects.forEach { project -> addSubproject(project) }
       addSubproject(
         ProjectSpec("app") {
           addBuildSpec(
@@ -109,33 +103,47 @@ class SortDependenciesTest : BaseTest() {
 
   @Test
   fun `external dependencies should be grouped separately`() {
-    projectSpec
-      .edit {
-        addSubproject(
-          ProjectSpec("app") {
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("kotlin(\"jvm\")")
-                addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
-                addProjectDependency("api", "lib-3")
-                addProjectDependency("implementation", "lib-7")
-                addExternalDependency(
-                  "implementation",
-                  "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-                )
-                addProjectDependency("compileOnly", "lib-4")
-                addProjectDependency("api", "lib-0")
-                addProjectDependency("testImplementation", "lib-8")
-                addExternalDependency(
-                  "testImplementation",
-                  "org.junit.jupiter:junit-jupiter-api:5.7.0"
-                )
-                addProjectDependency("implementation", "lib-9")
-              }
-            )
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          projects.forEach { project ->
+            addInclude(project.gradlePath)
           }
-        )
-      }
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      projects.forEach { project -> addSubproject(project) }
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addExternalDependency("api", "com.squareup:kotlinpoet:1.7.2")
+              addProjectDependency("api", "lib-3")
+              addProjectDependency("implementation", "lib-7")
+              addExternalDependency(
+                "implementation",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+              )
+              addProjectDependency("compileOnly", "lib-4")
+              addProjectDependency("api", "lib-0")
+              addProjectDependency("testImplementation", "lib-8")
+              addExternalDependency(
+                "testImplementation",
+                "org.junit.jupiter:junit-jupiter-api:5.7.0"
+              )
+              addProjectDependency("implementation", "lib-9")
+            }
+          )
+        }
+      )
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
@@ -149,19 +157,19 @@ class SortDependenciesTest : BaseTest() {
         |}
         |
         |dependencies {
-        |  api(":com.squareup:kotlinpoet:1.7.2")
+        |  api("com.squareup:kotlinpoet:1.7.2")
         |
         |  api(project(path = ":lib-0"))
         |  api(project(path = ":lib-3"))
         |
         |  compileOnly(project(path = ":lib-4"))
         |
-        |  implementation(":org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+        |  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         |
         |  implementation(project(path = ":lib-7"))
         |  implementation(project(path = ":lib-9"))
         |
-        |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0")
+        |  testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
         |
         |  testImplementation(project(path = ":lib-8"))
         |}
@@ -170,41 +178,55 @@ class SortDependenciesTest : BaseTest() {
 
   @Test
   fun `comments should move along with the dependency declaration`() {
-    projectSpec
-      .edit {
-        addSubproject(
-          ProjectSpec("app") {
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("kotlin(\"jvm\")")
-                addExternalDependency(
-                  "api",
-                  "com.squareup:kotlinpoet:1.7.2",
-                  "// multi-line\n  // comment"
-                )
-                addRawDependency("/*\n  block comment\n  */\n  api(project(path = \":lib-3\"))")
-                addProjectDependency("implementation", "lib-7", "/**\n  * block comment\n  */")
-                addExternalDependency(
-                  "implementation",
-                  "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-                )
-                addProjectDependency("compileOnly", "lib-4")
-                addProjectDependency("api", "lib-0")
-                addProjectDependency("testImplementation", "lib-5")
-                addProjectDependency("compileOnly", "lib-6", "// floating comment\n\n")
-                addProjectDependency("implementation", "lib-2", "// library 2")
-                addProjectDependency("testImplementation", "lib-8")
-                addExternalDependency(
-                  "testImplementation",
-                  "org.junit.jupiter:junit-jupiter-api:5.7.0",
-                  inlineComment = "// JUnit 5"
-                )
-                addProjectDependency("implementation", "lib-9", "// library 9")
-              }
-            )
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          projects.forEach { project ->
+            addInclude(project.gradlePath)
           }
-        )
-      }
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      projects.forEach { project -> addSubproject(project) }
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addExternalDependency(
+                "api",
+                "com.squareup:kotlinpoet:1.7.2",
+                "// multi-line\n  // comment"
+              )
+              addRawDependency("/*\n  block comment\n  */\n  api(project(path = \":lib-3\"))")
+              addProjectDependency("implementation", "lib-7", "/**\n  * block comment\n  */")
+              addExternalDependency(
+                "implementation",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+              )
+              addProjectDependency("compileOnly", "lib-4")
+              addProjectDependency("api", "lib-0")
+              addProjectDependency("testImplementation", "lib-5")
+              addProjectDependency("compileOnly", "lib-6", "// floating comment\n\n")
+              addProjectDependency("implementation", "lib-2", "// library 2")
+              addProjectDependency("testImplementation", "lib-8")
+              addExternalDependency(
+                "testImplementation",
+                "org.junit.jupiter:junit-jupiter-api:5.7.0",
+                inlineComment = "// JUnit 5"
+              )
+              addProjectDependency("implementation", "lib-9", "// library 9")
+            }
+          )
+        }
+      )
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
@@ -220,7 +242,7 @@ class SortDependenciesTest : BaseTest() {
         |dependencies {
         |  // multi-line
         |  // comment
-        |  api(":com.squareup:kotlinpoet:1.7.2")
+        |  api("com.squareup:kotlinpoet:1.7.2")
         |
         |  api(project(path = ":lib-0"))
         |  /*
@@ -234,7 +256,7 @@ class SortDependenciesTest : BaseTest() {
         |
         |  compileOnly(project(path = ":lib-6"))
         |
-        |  implementation(":org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+        |  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         |
         |  // library 2
         |  implementation(project(path = ":lib-2"))
@@ -245,7 +267,7 @@ class SortDependenciesTest : BaseTest() {
         |  // library 9
         |  implementation(project(path = ":lib-9"))
         |
-        |  testImplementation(":org.junit.jupiter:junit-jupiter-api:5.7.0") // JUnit 5
+        |  testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0") // JUnit 5
         |
         |  testImplementation(project(path = ":lib-5"))
         |  testImplementation(project(path = ":lib-8"))

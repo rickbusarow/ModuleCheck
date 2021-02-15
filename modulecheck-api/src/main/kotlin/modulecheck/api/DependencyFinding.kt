@@ -1,0 +1,112 @@
+/*
+ * Copyright (C) 2021 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package modulecheck.api
+
+import modulecheck.api.Finding.Position
+import modulecheck.api.psi.PsiElementWithSurroundingText
+
+interface Finding {
+
+  val problemName: String
+  val dependentProject: Project2
+
+  fun logString(): String {
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
+  }
+
+  fun elementOrNull(): PsiElementWithSurroundingText? = null
+  fun positionOrNull(): Position?
+  fun positionString() = positionOrNull()?.logString() ?: ""
+
+  data class Position(
+    val row: Int,
+    val column: Int
+  ) {
+    fun logString(): String = "($row, $column): "
+  }
+}
+
+interface Fixable : Finding {
+
+  val dependencyIdentifier: String
+
+  override fun logString(): String {
+    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
+  }
+
+  fun fix(): Boolean {
+    val text = dependentProject.buildFile.readText()
+
+    return elementOrNull()
+      ?.psiElement
+      ?.let { element ->
+
+        val newText = element.text
+          .lines()
+          .mapIndexed { index: Int, str: String ->
+            if (index == 0) {
+              INLINE_COMMENT + str + fixLabel()
+            } else {
+              INLINE_COMMENT + str
+            }
+          }
+          .joinToString("\n")
+
+        dependentProject.buildFile
+          .writeText(text.replace(element.text, newText))
+
+        true
+      } ?: false
+  }
+
+  fun fixLabel() = "  $FIX_LABEL [$problemName] "
+
+  companion object {
+
+    const val FIX_LABEL = "// ModuleCheck finding"
+    const val INLINE_COMMENT = "// "
+  }
+}
+
+fun List<String>.positionOf(
+  project: Project2,
+  configuration: Config
+): Position? {
+  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
+
+  val row = indexOfFirst { it.trim().matches(reg) }
+
+  if (row < 0) return null
+
+  val col = get(row).indexOfFirst { it != ' ' }
+
+  return Position(row + 1, col + 1)
+}
+
+fun List<String>.positionOf(
+  path: String,
+  configuration: Config
+): Position? {
+  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+
+  val row = indexOfFirst { it.trim().matches(reg) }
+
+  if (row < 0) return null
+
+  val col = get(row).indexOfFirst { it != ' ' }
+
+  return Position(row + 1, col + 1)
+}

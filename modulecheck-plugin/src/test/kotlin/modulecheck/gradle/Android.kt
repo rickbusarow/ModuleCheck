@@ -15,11 +15,10 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
-import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.specs.ProjectSpec
-import com.rickbusarow.modulecheck.specs.ProjectSpecBuilder
 import io.kotest.matchers.shouldBe
+import modulecheck.specs.ProjectBuildSpec
+import modulecheck.specs.ProjectSettingsSpec
+import modulecheck.specs.ProjectSpec
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -28,24 +27,21 @@ class Android : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpecBuilder = ProjectSpecBuilder("project") {
-    addSettingsSpec(
-      ProjectSettingsSpec {
-        addInclude("app")
-      }
-    )
-    addBuildSpec(
-      ProjectBuildSpec {
-        addPlugin("id(\"com.rickbusarow.module-check\")")
-        buildScript()
-      }
-    )
-  }
-
   @Test
   fun `configurations should be grouped and sorted`() {
-    projectSpecBuilder
-      .addSubproject(
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
         ProjectSpec("app") {
           addBuildSpec(
             ProjectBuildSpec {
@@ -55,9 +51,7 @@ class Android : BaseTest() {
           )
         }
       )
-
-    projectSpecBuilder
-      .build()
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner

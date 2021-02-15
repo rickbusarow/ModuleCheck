@@ -29,12 +29,16 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(BuildPlugins.androidGradlePlugin)
-  implementation(Libs.javaParser)
   implementation(Libs.Kotlin.compiler)
   implementation(Libs.Kotlin.gradlePlugin)
   implementation(Libs.Kotlin.reflect)
   implementation(Libs.Square.KotlinPoet.core)
   implementation(Libs.Swiftzer.semVer)
+  implementation(Libs.javaParser)
+
+  implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-core"))
+  implementation(project(path = ":modulecheck-psi"))
 
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)
@@ -55,24 +59,9 @@ gradlePlugin {
       id = PluginCoordinates.ID
       group = PluginCoordinates.GROUP
       implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = PluginCoordinates.VERSION
+      version = Versions.versionName
     }
   }
-}
-
-object PluginCoordinates {
-  const val ID = "com.rickbusarow.module-check"
-  const val GROUP = "com.rickbusarow.modulecheck"
-  const val VERSION = "0.10.0"
-  const val IMPLEMENTATION_CLASS = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
-}
-
-object PluginBundle {
-  const val VCS = "https://github.com/RBusarow/ModuleCheck"
-  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
-  const val DESCRIPTION = "Fast dependency graph validation for gradle"
-  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
-  val TAGS = listOf("plugin", "gradle")
 }
 
 // Configuration Block for the Plugin Marker artifact on Plugin Central

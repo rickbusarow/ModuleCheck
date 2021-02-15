@@ -15,12 +15,12 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
-import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.specs.ProjectSpec
-import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import io.kotest.matchers.shouldBe
+import modulecheck.specs.ProjectBuildSpec
+import modulecheck.specs.ProjectSettingsSpec
+import modulecheck.specs.ProjectSpec
+import modulecheck.specs.ProjectSrcSpec
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -30,54 +30,50 @@ class SortPluginsTest : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpec = ProjectSpec("project") {
-    addSettingsSpec(
-      ProjectSettingsSpec {
-        addInclude("app")
-      }
-    )
-    addBuildSpec(
-      ProjectBuildSpec {
-        addPlugin("id(\"com.rickbusarow.module-check\")")
-        buildScript()
-      }
-    )
-    addSubproject(
-      ProjectSpec("buildSrc") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addPlugin("`kotlin-dsl`")
-            addRepository("mavenCentral()")
-            addRepository("google()")
-            addRepository("jcenter()")
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFile(FileSpec.builder("", "androidLibrary.gradle.kts").build())
-            addFile(FileSpec.builder("", "javaLibrary.gradle.kts").build())
-          }
-        )
-      }
-    )
-  }
-
   @Test
   fun `sorting`() {
-    projectSpec
-      .edit {
-        addSubproject(
-          ProjectSpec("app") {
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("javaLibrary")
-                addPlugin("kotlin(\"jvm\")")
-                addPlugin("id(\"io.gitlab.arturbosch.detekt\") version \"1.15.0\"")
-              }
-            )
-          }
-        )
-      }
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("buildSrc") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("`kotlin-dsl`")
+              addRepository("mavenCentral()")
+              addRepository("google()")
+              addRepository("jcenter()")
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/kotlin")) {
+              addFile(FileSpec.builder("", "androidLibrary.gradle.kts").build())
+              addFile(FileSpec.builder("", "javaLibrary.gradle.kts").build())
+            }
+          )
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("javaLibrary")
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("id(\"io.gitlab.arturbosch.detekt\") version \"1.15.0\"")
+            }
+          )
+        }
+      )
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
