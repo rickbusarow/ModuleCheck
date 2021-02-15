@@ -21,10 +21,10 @@ import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
 import modulecheck.core.kapt.KaptParser
 import modulecheck.core.parser.DslBlockParser
-import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
 import modulecheck.psi.*
+import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.psi.internal.*
 import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
