@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser
+package modulecheck.psi
 
 import modulecheck.api.Config
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -23,20 +23,20 @@ import org.jetbrains.kotlin.psi.callExpressionVisitor
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
-class ExternalDependencyDeclarationParser(
+class ExternalDependencyDeclarationVisitor(
   private val configuration: Config,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "com.google.dagger"
    */
-  private val group: String? = null,
+  group: String? = null,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "dagger"
    */
-  private val name: String? = null,
+  name: String? = null,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "2.32"
    */
-  private val version: String? = null
+  version: String? = null
 ) {
 
   val projectMatcher = """${group.orWildcard()}:${name.orWildcard()}:${version.orWildcard()}"""
@@ -46,7 +46,7 @@ class ExternalDependencyDeclarationParser(
   private fun String?.orWildcard() = this ?: "*"
 
   @Suppress("ReturnCount", "MaxLineLength")
-  fun parse(expression: KtCallExpression): Boolean {
+  fun find(expression: KtCallExpression): Boolean {
     var found = false
 
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->

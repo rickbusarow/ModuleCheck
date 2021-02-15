@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser
+package modulecheck.psi
 
 import modulecheck.api.Config
 import org.jetbrains.kotlin.psi.KtCallExpression
@@ -23,13 +23,13 @@ import org.jetbrains.kotlin.psi.callExpressionVisitor
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
-class ProjectDependencyDeclarationParser(
+class ProjectDependencyDeclarationVisitor(
   private val configuration: Config,
   private val projectPath: String
 ) {
 
   @Suppress("ReturnCount")
-  fun parse(expression: KtCallExpression): Boolean {
+  fun find(expression: KtCallExpression): Boolean {
     var found = false
 
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->

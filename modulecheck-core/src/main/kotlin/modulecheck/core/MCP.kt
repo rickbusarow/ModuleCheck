@@ -280,9 +280,9 @@ class MCP private constructor(
     return result.elements
       .firstOrNull { element ->
 
-        val p = ProjectDependencyDeclarationParser(configuration, project.path)
+        val p = ProjectDependencyDeclarationVisitor(configuration, project.path)
 
-        p.parse(element.psiElement as KtCallExpression)
+        p.find(element.psiElement as KtCallExpression)
       }
   }
 

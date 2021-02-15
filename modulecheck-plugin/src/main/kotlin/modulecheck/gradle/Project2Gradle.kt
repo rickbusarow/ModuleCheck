@@ -21,7 +21,7 @@ import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
 import modulecheck.core.kapt.KaptParser
 import modulecheck.core.parser.DslBlockParser
-import modulecheck.core.parser.ExternalDependencyDeclarationParser
+import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
 import modulecheck.psi.*
@@ -174,14 +174,14 @@ class Project2Gradle private constructor(
                 .elements
                 .firstOrNull { element ->
 
-                  val p = ExternalDependencyDeclarationParser(
+                  val p = ExternalDependencyDeclarationVisitor(
                     configuration = Config.from(config.name),
                     group = it.group,
                     name = it.name,
                     version = it.version
                   )
 
-                  p.parse(element.psiElement as KtCallExpression)
+                  p.find(element.psiElement as KtCallExpression)
                 }
             }
             ExternalDependency(
