@@ -21,12 +21,12 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
+import java.io.File
+import java.nio.file.Path
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.io.File
-import java.nio.file.Path
 
 class OvershotDependenciesTest : BaseTest() {
 
