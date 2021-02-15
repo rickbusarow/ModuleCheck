@@ -36,6 +36,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.tasks.register("moduleCheckRedundant", RedundantTask::class.java)
     target.tasks.register("moduleCheckUnused", UnusedTask::class.java)
     target.tasks.register("moduleCheckMustBeApi", MustBeApiTask::class.java)
+    target.tasks.register("moduleCheckInheritedImplementation", InheritedImplementationTask::class.java)
     target.tasks.register("moduleCheckAnvilFactories",  AnvilFactoryTask::class.java)
     target.tasks.register("moduleCheckUsed", UsedTask::class.java)
     target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
