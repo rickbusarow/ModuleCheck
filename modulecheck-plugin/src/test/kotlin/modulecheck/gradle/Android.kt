@@ -20,9 +20,9 @@ import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpecBuilder
 import io.kotest.matchers.shouldBe
+import java.io.File
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
-import java.io.File
 
 class Android : BaseTest() {
 

@@ -24,10 +24,10 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
-import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
+import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.Test
 
 class UnusedKaptTest : BaseTest() {
 

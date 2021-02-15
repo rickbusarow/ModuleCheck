@@ -21,10 +21,10 @@ import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
 import io.kotest.matchers.shouldBe
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
-import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
+import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import org.junit.jupiter.api.Test
 
 class SortPluginsTest : BaseTest() {
 
