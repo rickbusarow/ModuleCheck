@@ -24,9 +24,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.Disposable
-import org.jetbrains.kotlin.com.intellij.openapi.extensions.ExtensionPoint
-import org.jetbrains.kotlin.com.intellij.openapi.extensions.Extensions
-import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.openapi.util.UserDataHolderBase
 import org.jetbrains.kotlin.com.intellij.pom.PomModel
@@ -34,7 +31,6 @@ import org.jetbrains.kotlin.com.intellij.pom.PomModelAspect
 import org.jetbrains.kotlin.com.intellij.pom.PomTransaction
 import org.jetbrains.kotlin.com.intellij.pom.impl.PomTransactionBase
 import org.jetbrains.kotlin.com.intellij.pom.tree.TreeAspect
-import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.TreeCopyHandler
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.languageVersionSettings
@@ -70,6 +66,10 @@ fun createBindingContext(
   return analyzer.analysisResult.bindingContext
 }
 
+/*
+Borrowed from Detekt
+https://github.com/detekt/detekt/blob/master/detekt-parser/src/main/kotlin/io/github/detekt/parser/KotlinEnvironmentUtils.kt
+ */
 fun createKotlinCoreEnvironment(
   configuration: CompilerConfiguration = CompilerConfiguration(),
   disposable: Disposable = Disposer.newDisposable()
@@ -94,38 +94,21 @@ fun createKotlinCoreEnvironment(
     "MockProject type expected, actual - ${projectCandidate.javaClass.simpleName}"
   }
 
-  project.registerService(PomModel::class.java, DetektPomModel(project))
+  project.registerService(PomModel::class.java, ModuleCheckPomModel())
 
   return environment
 }
 
 /**
- * Adapted from https://github.com/pinterest/ktlint/blob/master/ktlint-core/src/main/kotlin/com/pinterest/ktlint/core/KtLint.kt
- * Licenced under the MIT licence - https://github.com/pinterest/ktlint/blob/master/LICENSE
+ * https://github.com/pinterest/ktlint/blob/69cc0f7f826e18d7ec20e7a0f05df12d53a3c1e1/ktlint-core/src/main/kotlin/com/pinterest/ktlint/core/internal/KotlinPsiFileFactory.kt#L70
  */
-class DetektPomModel(project: Project) : UserDataHolderBase(), PomModel {
-
-  init {
-    val extension = "org.jetbrains.kotlin.com.intellij.treeCopyHandler"
-    val extensionClass = TreeCopyHandler::class.java.name
-    synchronized(Extensions.getRootArea()) {
-      arrayOf(project.extensionArea, Extensions.getRootArea())
-        .filter { !it.hasExtensionPoint(extension) }
-        .forEach {
-          it.registerExtensionPoint(
-            extension,
-            extensionClass,
-            ExtensionPoint.Kind.INTERFACE
-          )
-        }
-    }
-  }
+private class ModuleCheckPomModel : UserDataHolderBase(), PomModel {
 
   override fun runTransaction(transaction: PomTransaction) {
     val transactionCandidate = transaction as? PomTransactionBase
 
     val pomTransaction = requireNotNull(transactionCandidate) {
-      "${PomTransactionBase::class.simpleName} type expected, actual is ${transaction.javaClass.simpleName}"
+      "expected ${PomTransactionBase::class.simpleName} but actual was ${transaction.javaClass.simpleName}"
     }
 
     pomTransaction.run()
@@ -133,6 +116,9 @@ class DetektPomModel(project: Project) : UserDataHolderBase(), PomModel {
 
   override fun <T : PomModelAspect?> getModelAspect(aspect: Class<T>): T? {
     if (aspect == TreeAspect::class.java) {
+      // using approach described in https://git.io/vKQTo due to the magical bytecode of TreeAspect
+      // (check constructor signature and compare it to the source)
+      // (org.jetbrains.kotlin:kotlin-compiler-embeddable:1.0.3)
       val constructor = ReflectionFactory.getReflectionFactory()
         .newConstructorForSerialization(aspect, Any::class.java.getDeclaredConstructor())
       @Suppress("UNCHECKED_CAST")

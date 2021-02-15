@@ -13,6 +13,21 @@
  * limitations under the License.
  */
 
+
+object PluginCoordinates {
+  const val ID = "com.rickbusarow.module-check"
+  const val GROUP = "com.rickbusarow.modulecheck"
+  const val IMPLEMENTATION_CLASS = "modulecheck.gradle.ModuleCheckPlugin"
+}
+
+object PluginBundle {
+  const val VCS = "https://github.com/RBusarow/ModuleCheck"
+  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
+  const val DESCRIPTION = "Fast dependency graph validation for gradle"
+  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
+  val TAGS = listOf("plugin", "gradle")
+}
+
 object Plugins {
 
   const val androidApplication = "com.android.application"
