@@ -15,12 +15,11 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.internal.applyEach
-import com.rickbusarow.modulecheck.specs.*
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
+import modulecheck.specs.*
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested

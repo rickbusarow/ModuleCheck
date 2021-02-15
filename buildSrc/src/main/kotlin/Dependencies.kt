@@ -51,7 +51,7 @@ object Versions {
   const val minSdk = "23"
   const val sonarPlugin = "2.6.1"
   const val spoon = "1.5.0"
-  const val spotless = "5.8.2"
+  const val spotless = "5.10.1"
   const val targetSdk = 30
   const val taskTree = "1.5"
   const val versionName = "0.10.0"
@@ -102,7 +102,7 @@ object Libs {
   }
 
   object Kotest {
-    private const val version = "4.4.0"
+    private const val version = "4.4.1"
     const val assertions = "io.kotest:kotest-assertions-core-jvm:$version"
     const val properties = "io.kotest:kotest-property-jvm:$version"
     const val runner = "io.kotest:kotest-runner-junit5-jvm:$version"

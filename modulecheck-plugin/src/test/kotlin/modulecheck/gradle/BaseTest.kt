@@ -15,10 +15,10 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.specs.DEFAULT_AGP_VERSION
-import com.rickbusarow.modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
+import modulecheck.specs.DEFAULT_AGP_VERSION
+import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach

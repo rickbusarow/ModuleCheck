@@ -15,15 +15,15 @@
 
 package modulecheck.gradle
 
-import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
-import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
-import com.rickbusarow.modulecheck.specs.ProjectSpec
-import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
+import modulecheck.specs.ProjectBuildSpec
+import modulecheck.specs.ProjectSettingsSpec
+import modulecheck.specs.ProjectSpec
+import modulecheck.specs.ProjectSrcSpec
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -33,37 +33,33 @@ class UnusedKaptTest : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  val projectSpec = ProjectSpec("project") {
-    addSettingsSpec(
-      ProjectSettingsSpec {
-        addInclude("app")
-      }
-    )
-    addBuildSpec(
-      ProjectBuildSpec {
-        addPlugin("id(\"com.rickbusarow.module-check\")")
-        buildScript()
-      }
-    )
-  }
-
   @Test
   fun `unused`() {
-    projectSpec
-      .edit {
-        addSubproject(
-          ProjectSpec("app") {
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("kotlin(\"jvm\")")
-                addPlugin("kotlin(\"kapt\")")
-                addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
-                addExternalDependency("kaptTest", "com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
-              }
-            )
-          }
-        )
-      }
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("kotlin(\"kapt\")")
+              addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
+              addExternalDependency("kaptTest", "com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+            }
+          )
+        }
+      )
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
@@ -77,38 +73,48 @@ class UnusedKaptTest : BaseTest() {
 
   @Test
   fun `used`() {
-    projectSpec
-      .edit {
-        addSubproject(
-          ProjectSpec("app") {
-            addSrcSpec(
-              ProjectSrcSpec(Path.of("src/main/kotlin")) {
-                addFile(
-                  FileSpec.builder("com.my.app", "App.kt")
-                    .addType(
-                      TypeSpec.classBuilder("MyClass")
-                        .addFunction(
-                          FunSpec.constructorBuilder()
-                            .addAnnotation(ClassName("javax.inject", "Inject"))
-                            .build()
-                        )
-                        .build()
-                    )
-                    .build()
-                )
-              }
-            )
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("kotlin(\"jvm\")")
-                addPlugin("kotlin(\"kapt\")")
-                addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
-                addExternalDependency("kaptTest", "com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
-              }
-            )
-          }
-        )
-      }
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/kotlin")) {
+              addFile(
+                FileSpec.builder("com.my.app", "App.kt")
+                  .addType(
+                    TypeSpec.classBuilder("MyClass")
+                      .addFunction(
+                        FunSpec.constructorBuilder()
+                          .addAnnotation(ClassName("javax.inject", "Inject"))
+                          .build()
+                      )
+                      .build()
+                  )
+                  .build()
+              )
+            }
+          )
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("kotlin(\"kapt\")")
+              addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
+              addExternalDependency("kaptTest", "com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+            }
+          )
+        }
+      )
+    }
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner

@@ -22,7 +22,7 @@ moduleCheck {
 
   additionalKaptMatchers.set(
     listOf(
-      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+      com.rickbusarow.modulecheck.core.kapt.KaptMatcher(
         name = "Roomigrant",
         processor = "com.github.RickBusarow.Roomigrant:RoomigrantCompiler",
         annotationImports = listOf(
@@ -34,7 +34,7 @@ moduleCheck {
           "dev\\.matrix\\.roomigrant\\.rules\\.OnMigrationStartRule"
         )
       ),
-      com.rickbusarow.modulecheck.kapt.KaptMatcher(
+      com.rickbusarow.modulecheck.core.kapt.KaptMatcher(
         name = "VMInject",
         processor = "my-project.codegen.vminject:processor",
         annotationImports = listOf(

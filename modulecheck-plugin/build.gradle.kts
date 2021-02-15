@@ -29,12 +29,15 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(BuildPlugins.androidGradlePlugin)
-  implementation(Libs.javaParser)
   implementation(Libs.Kotlin.compiler)
   implementation(Libs.Kotlin.gradlePlugin)
   implementation(Libs.Kotlin.reflect)
   implementation(Libs.Square.KotlinPoet.core)
   implementation(Libs.Swiftzer.semVer)
+  implementation(Libs.javaParser)
+
+  implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-core"))
 
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)
@@ -55,7 +58,7 @@ gradlePlugin {
       id = PluginCoordinates.ID
       group = PluginCoordinates.GROUP
       implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = PluginCoordinates.VERSION
+      version = Versions.versionName
     }
   }
 }
@@ -63,8 +66,7 @@ gradlePlugin {
 object PluginCoordinates {
   const val ID = "com.rickbusarow.module-check"
   const val GROUP = "com.rickbusarow.modulecheck"
-  const val VERSION = "0.10.0"
-  const val IMPLEMENTATION_CLASS = "com.rickbusarow.modulecheck.ModuleCheckPlugin"
+  const val IMPLEMENTATION_CLASS = "modulecheck.gradle.ModuleCheckPlugin"
 }
 
 object PluginBundle {
