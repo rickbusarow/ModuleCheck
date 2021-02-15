@@ -20,7 +20,7 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.DependencyFinding
 import modulecheck.core.MCP
-import modulecheck.core.parser.DslBlockParser
+import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.internal.asKtFile
 
 data class OverShotDependencyFinding(
@@ -38,7 +38,7 @@ data class OverShotDependencyFinding(
   }
 
   override fun fix(): Boolean {
-    val parser = DslBlockParser("dependencies")
+    val parser = DslBlockVisitor("dependencies")
 
     val fromPath = from?.path ?: return false
 

@@ -273,7 +273,7 @@ class MCP private constructor(
     parent: Project2,
     configuration: Config
   ): PsiElementWithSurroundingText? {
-    val result = DslBlockParser("dependencies")
+    val result = DslBlockVisitor("dependencies")
       .parse(parent.buildFile.asKtFile())
       ?: return null
 

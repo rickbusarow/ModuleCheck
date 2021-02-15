@@ -20,15 +20,15 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.parser.DslBlockParser
 import modulecheck.core.rule.AbstractRule
 import modulecheck.psi.*
+import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.internal.*
 import java.util.*
 
 class SortPluginsFinding(
   override val dependentProject: Project2,
-  val parser: DslBlockParser,
+  val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>
 ) : Finding, Fixable {
   override val problemName = "unsorted plugins"
@@ -38,7 +38,7 @@ class SortPluginsFinding(
   override fun positionOrNull(): Position? = null
 
   override fun fix(): Boolean {
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return false
+    val result = visitor.parse(dependentProject.buildFile.asKtFile()) ?: return false
 
     val sorted = result
       .elements
@@ -60,13 +60,13 @@ class SortPluginsRule(
   project: Project2,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>,
-  val parser: DslBlockParser,
+  val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>
 ) : AbstractRule<SortPluginsFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
   override fun check(): List<SortPluginsFinding> {
-    val result = parser.parse(project.buildFile.asKtFile()) ?: return emptyList()
+    val result = visitor.parse(project.buildFile.asKtFile()) ?: return emptyList()
 
     val sorted = result
       .elements
@@ -77,7 +77,7 @@ class SortPluginsRule(
     return if (result.blockText == sorted) {
       emptyList()
     } else {
-      listOf(SortPluginsFinding(project, parser, comparator))
+      listOf(SortPluginsFinding(project, visitor, comparator))
     }
   }
 

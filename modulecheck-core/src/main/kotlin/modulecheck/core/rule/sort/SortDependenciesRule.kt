@@ -20,9 +20,9 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.parser.DslBlockParser
 import modulecheck.core.rule.AbstractRule
 import modulecheck.psi.*
+import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.internal.*
 import java.util.*
 
@@ -38,7 +38,7 @@ fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
 
 class SortDependenciesFinding(
   override val dependentProject: Project2,
-  val parser: DslBlockParser,
+  val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>
 ) : Finding, Fixable {
   override val problemName = "unsorted dependencies"
@@ -48,7 +48,7 @@ class SortDependenciesFinding(
   override fun positionOrNull(): Position? = null
 
   override fun fix(): Boolean {
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return false
+    val result = visitor.parse(dependentProject.buildFile.asKtFile()) ?: return false
 
     val sorted = result
       .elements
@@ -74,13 +74,13 @@ class SortDependenciesRule(
   project: Project2,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>,
-  val parser: DslBlockParser,
+  val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>
 ) : AbstractRule<SortDependenciesFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
   override fun check(): List<SortDependenciesFinding> {
-    val result = parser.parse(project.buildFile.asKtFile()) ?: return emptyList()
+    val result = visitor.parse(project.buildFile.asKtFile()) ?: return emptyList()
 
     val sorted = result
       .elements
@@ -95,7 +95,7 @@ class SortDependenciesRule(
     return if (result.blockText == sorted) {
       emptyList()
     } else {
-      listOf(SortDependenciesFinding(project, parser, comparator))
+      listOf(SortDependenciesFinding(project, visitor, comparator))
     }
   }
 

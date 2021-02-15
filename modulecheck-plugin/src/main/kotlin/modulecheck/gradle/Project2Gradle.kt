@@ -20,11 +20,10 @@ import modulecheck.api.*
 import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
 import modulecheck.core.kapt.KaptParser
-import modulecheck.core.parser.DslBlockParser
-import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
 import modulecheck.psi.*
+import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.psi.internal.*
 import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
@@ -142,8 +141,7 @@ class Project2Gradle private constructor(
 
   override val kaptProcessors: ParsedKapt<KaptProcessor> by KaptParser.parseLazy(this)
 
-  override val projectDependencies: List<ConfiguredProjectDependency>
-    by lazy {
+  override val projectDependencies: List<ConfiguredProjectDependency> by lazy {
     project
       .configurations
       .flatMap { config ->
@@ -166,7 +164,7 @@ class Project2Gradle private constructor(
           .map {
 
             val psi = lazy psiLazy@{
-              val parsed = DslBlockParser("dependencies")
+              val parsed = DslBlockVisitor("dependencies")
                 .parse(project.buildFile.asKtFile())
                 ?: return@psiLazy null
 

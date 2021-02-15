@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
 
-  api(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-api"))
 
   compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
 

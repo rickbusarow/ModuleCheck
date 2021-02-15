@@ -21,7 +21,6 @@ import modulecheck.core.kapt.UnusedKaptRule
 import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
-import modulecheck.core.parser.DslBlockParser
 import modulecheck.core.rule.AnvilFactoryRule
 import modulecheck.core.rule.RedundantRule
 import modulecheck.core.rule.UnusedRule
@@ -31,6 +30,7 @@ import modulecheck.core.rule.sort.SortDependenciesRule
 import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.project2
+import modulecheck.psi.DslBlockVisitor
 import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
@@ -77,14 +77,14 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             }
 
             if (checks.sortDependencies.get()) {
-              val parser = DslBlockParser("dependencies")
+              val visitor = DslBlockVisitor("dependencies")
 
               addAll(
                 SortDependenciesRule(
                   project = proj,
                   alwaysIgnore = alwaysIgnore,
                   ignoreAll = ignoreAll,
-                  parser = parser,
+                  visitor = visitor,
                   comparator = dependencyComparator
                 )
                   .check()
@@ -92,14 +92,14 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             }
 
             if (checks.sortPlugins.get()) {
-              val parser = DslBlockParser("plugins")
+              val visitor = DslBlockVisitor("plugins")
 
               addAll(
                 SortPluginsRule(
                   project = proj,
                   alwaysIgnore = alwaysIgnore,
                   ignoreAll = ignoreAll,
-                  parser = parser,
+                  visitor = visitor,
                   comparator = pluginComparator
                 )
                   .check()
