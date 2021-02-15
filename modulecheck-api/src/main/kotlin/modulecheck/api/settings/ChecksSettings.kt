@@ -19,6 +19,7 @@ interface ChecksSettings {
   var overshot: Boolean
   var redundant: Boolean
   var unused: Boolean
+  var mustBeApi: Boolean
   var used: Boolean
   var sortDependencies: Boolean
   var sortPlugins: Boolean

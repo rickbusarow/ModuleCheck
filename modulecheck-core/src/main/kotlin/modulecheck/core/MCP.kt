@@ -20,6 +20,7 @@ import modulecheck.api.Config.*
 import modulecheck.api.Finding.Position
 import modulecheck.api.JvmFile
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.core.files.KotlinFile
 import modulecheck.core.files.XmlFile
 import modulecheck.core.internal.*
 import modulecheck.core.kapt.KaptParser
@@ -187,6 +188,7 @@ class MCP private constructor(
       AndroidResourceParser.parse(resDir)
     } else emptySet()
   }
+
 /*  val testAndroidResDeclarations by lazy {
 
     val rPackage = androidPackageOrNull
@@ -198,7 +200,25 @@ class MCP private constructor(
   }
 
   val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }*/
+  val mustBeApi by lazy {
 
+    val noIdeaWhereTheyComeFrom = mainFiles
+      .filterIsInstance<KotlinFile>()
+      .flatMap { kotlinFile ->
+        kotlinFile
+          .apiReferences
+          .filterNot { it in mainDeclarations }
+      }.toSet()
+
+    dependencies
+      .main()
+      .filterNot { it in dependencies.api }
+      .filter { cpp ->
+        cpp.mcp().mainDeclarations.any { declared ->
+          declared in noIdeaWhereTheyComeFrom
+        }
+      }
+  }
   fun dependents() = cache
     .values
     .filter {

@@ -22,6 +22,7 @@ import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
 import modulecheck.core.rule.AnvilFactoryRule
+import modulecheck.core.rule.MustBeApiRule
 import modulecheck.core.rule.RedundantRule
 import modulecheck.core.rule.UnusedRule
 import modulecheck.core.rule.android.DisableAndroidResourcesRule
@@ -35,7 +36,7 @@ import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
-  @Suppress("LongMethod")
+  @Suppress("LongMethod", "ComplexMethod")
   override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
@@ -72,6 +73,13 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             if (checks.unused) {
               addAll(
                 UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
+            }
+
+            if (checks.mustBeApi) {
+              addAll(
+                MustBeApiRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }

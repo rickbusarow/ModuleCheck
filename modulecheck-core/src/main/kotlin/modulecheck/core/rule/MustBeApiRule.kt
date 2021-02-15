@@ -16,23 +16,25 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
-import modulecheck.core.RedundantDependencyFinding
+import modulecheck.core.MustBeApiFinding
 import modulecheck.core.mcp
 
-class RedundantRule(
+class MustBeApiRule(
   project: Project2,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<RedundantDependencyFinding>(
+) : AbstractRule<MustBeApiFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
-  override fun check(): List<RedundantDependencyFinding> {
+  override fun check(): List<MustBeApiFinding> {
     if (project.path in ignoreAll) return emptyList()
 
-    return project.mcp().redundant
-      .all()
-      .filterNot { dependency -> dependency.dependencyIdentifier in alwaysIgnore }
+    return project
+      .mcp()
+      .mustBeApi
+      .filterNot { cpp -> cpp.project.path in alwaysIgnore }
+      .map { MustBeApiFinding(project, it.project, it.config) }
       .distinctBy { it.positionOrNull() }
   }
 }
