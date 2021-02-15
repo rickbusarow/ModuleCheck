@@ -15,8 +15,8 @@
 
 package com.rickbusarow.modulecheck
 
-import kotlin.LazyThreadSafetyMode.NONE
 import org.gradle.api.Project
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class CPP(
   val config: Config,
@@ -41,7 +41,6 @@ data class CPP(
   }
 
   private fun usedInMain(mcp: MCP): Boolean {
-
     val rReferences by lazy(NONE) { mcp.mainExtraPossibleReferences.filter { it.startsWith("R.") } }
 
     return mcp()
@@ -57,7 +56,6 @@ data class CPP(
   }
 
   private fun usedInAndroidTest(mcp: MCP): Boolean {
-
     val rReferences by lazy(NONE) { mcp.androidTestExtraPossibleReferences.filter { it.startsWith("R.") } }
 
     return mcp()
@@ -72,7 +70,6 @@ data class CPP(
   }
 
   private fun usedInTest(mcp: MCP): Boolean {
-
     val rReferences by lazy(NONE) { mcp.testExtraPossibleReferences.filter { it.startsWith("R.") } }
 
     return mcp()

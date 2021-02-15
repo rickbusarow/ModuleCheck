@@ -21,12 +21,12 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
-import java.io.File
-import java.nio.file.Path
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import java.io.File
+import java.nio.file.Path
 
 class OvershotDependenciesTest : BaseTest() {
 
@@ -72,7 +72,6 @@ class OvershotDependenciesTest : BaseTest() {
 
     @Test
     fun `with autoCorrect should be added`() {
-
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -145,7 +144,6 @@ class OvershotDependenciesTest : BaseTest() {
 
   @Test
   fun `added dependencies should match the configuration of the dependency which provided them`() {
-
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -220,7 +218,6 @@ class OvershotDependenciesTest : BaseTest() {
 
   @Test
   fun `dependencies should not be overshot if providing dependency is used`() {
-
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -280,7 +277,6 @@ class OvershotDependenciesTest : BaseTest() {
 
   @Test
   fun `unused inherited api dependencies should not be added`() {
-
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)

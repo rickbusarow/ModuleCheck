@@ -17,13 +17,13 @@
 
 package com.rickbusarow.modulecheck.internal
 
-import java.io.File
-import java.io.FileNotFoundException
 import org.jetbrains.kotlin.com.intellij.openapi.util.Key
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtImportDirective
+import java.io.File
+import java.io.FileNotFoundException
 
 val RELATIVE_PATH: Key<String> = Key("relativePath")
 val ABSOLUTE_PATH: Key<String> = Key("absolutePath")

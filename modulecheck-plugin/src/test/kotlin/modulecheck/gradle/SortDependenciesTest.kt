@@ -20,9 +20,9 @@ import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import io.kotest.matchers.shouldBe
-import java.io.File
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
+import java.io.File
 
 class SortDependenciesTest : BaseTest() {
 
@@ -55,7 +55,6 @@ class SortDependenciesTest : BaseTest() {
 
   @Test
   fun `configurations should be grouped and sorted`() {
-
     projectSpec.edit {
       addSubproject(
         ProjectSpec("app") {
@@ -110,7 +109,6 @@ class SortDependenciesTest : BaseTest() {
 
   @Test
   fun `external dependencies should be grouped separately`() {
-
     projectSpec
       .edit {
         addSubproject(
@@ -172,7 +170,6 @@ class SortDependenciesTest : BaseTest() {
 
   @Test
   fun `comments should move along with the dependency declaration`() {
-
     projectSpec
       .edit {
         addSubproject(

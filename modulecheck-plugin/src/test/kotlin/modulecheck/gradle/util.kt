@@ -21,7 +21,6 @@ import java.io.File
 import java.nio.file.Files
 
 fun Hermit.tempDir(path: String = ""): LazyResets<File> {
-
   return object : LazyResets<File> {
 
     private var lazyHolder: Lazy<File> = createLazy()
@@ -35,7 +34,6 @@ fun Hermit.tempDir(path: String = ""): LazyResets<File> {
     }
 
     override fun reset() {
-
       value.deleteRecursively()
 
       lazyHolder = createLazy()
