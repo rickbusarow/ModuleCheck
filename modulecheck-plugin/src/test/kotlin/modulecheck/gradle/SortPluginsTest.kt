@@ -20,17 +20,13 @@ import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSrcSpec
 import com.squareup.kotlinpoet.FileSpec
-import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
-import org.gradle.internal.impldep.org.junit.Test
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 
-class SortPluginsTest : HermitJUnit5() {
-
-  val testProjectDir by tempDir()
+class SortPluginsTest : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -66,7 +62,8 @@ class SortPluginsTest : HermitJUnit5() {
     )
   }
 
-  @Test fun `sorting`() {
+  @Test
+  fun `sorting`() {
 
     projectSpec
       .edit {
@@ -84,10 +81,7 @@ class SortPluginsTest : HermitJUnit5() {
       }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckSortPlugins")
       .build()
 

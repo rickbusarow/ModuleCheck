@@ -20,19 +20,15 @@ import com.rickbusarow.modulecheck.specs.*
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
-import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
-import java.io.File
-import java.nio.file.Path
-import org.gradle.internal.impldep.org.junit.Test
-import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import java.io.File
+import java.nio.file.Path
 
-class OvershotDependenciesTest : HermitJUnit5() {
-
-  val testProjectDir by tempDir()
+class OvershotDependenciesTest : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -74,7 +70,8 @@ class OvershotDependenciesTest : HermitJUnit5() {
       }
     }
 
-    @Test fun `with autoCorrect should be added`() {
+    @Test
+    fun `with autoCorrect should be added`() {
 
       ProjectSpec("project") {
         applyEach(projects) { project ->
@@ -127,10 +124,7 @@ class OvershotDependenciesTest : HermitJUnit5() {
       }
         .writeIn(testProjectDir.toPath())
 
-      val result = GradleRunner.create()
-        .withPluginClasspath()
-        .withDebug(true)
-        .withProjectDir(testProjectDir)
+      val result = gradleRunner
         .withArguments("moduleCheckOvershot")
         .build()
 
@@ -203,10 +197,7 @@ class OvershotDependenciesTest : HermitJUnit5() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckOvershot")
       .build()
 
@@ -227,7 +218,8 @@ class OvershotDependenciesTest : HermitJUnit5() {
         |""".trimMargin()
   }
 
-  @Test fun `dependencies should not be overshot if providing dependency is used`() {
+  @Test
+  fun `dependencies should not be overshot if providing dependency is used`() {
 
     ProjectSpec("project") {
       applyEach(projects) { project ->
@@ -268,10 +260,7 @@ class OvershotDependenciesTest : HermitJUnit5() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckOvershot")
       .build()
 
@@ -289,7 +278,8 @@ class OvershotDependenciesTest : HermitJUnit5() {
         |""".trimMargin()
   }
 
-  @Test fun `unused inherited api dependencies should not be added`() {
+  @Test
+  fun `unused inherited api dependencies should not be added`() {
 
     ProjectSpec("project") {
       applyEach(projects) { project ->
@@ -334,10 +324,7 @@ class OvershotDependenciesTest : HermitJUnit5() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckOvershot")
       .build()
 

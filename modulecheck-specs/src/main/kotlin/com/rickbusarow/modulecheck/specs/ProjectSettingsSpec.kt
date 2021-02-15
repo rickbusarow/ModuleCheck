@@ -18,10 +18,14 @@ package com.rickbusarow.modulecheck.specs
 import java.nio.file.Path
 
 public data class ProjectSettingsSpec(
+  public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
+  public var agpVersion: String = DEFAULT_AGP_VERSION,
   public val includes: MutableList<String>
 ) {
 
   public fun toBuilder(): ProjectSettingsSpecBuilder = ProjectSettingsSpecBuilder(
+    kotlinVersion = kotlinVersion,
+    agpVersion = agpVersion,
     includes = includes
   )
 
@@ -46,10 +50,10 @@ public data class ProjectSettingsSpec(
        |  resolutionStrategy {
        |    eachPlugin {
        |      if (requested.id.id.startsWith("com.android")) {
-       |        useModule("com.android.tools.build:gradle:4.1.1")
+       |        useModule("com.android.tools.build:gradle:$agpVersion")
        |      }
        |      if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-       |        useVersion("1.4.30")
+       |        useVersion("$kotlinVersion")
        |      }
        |    }
        |  }
@@ -70,6 +74,8 @@ public data class ProjectSettingsSpec(
 }
 
 public class ProjectSettingsSpecBuilder(
+  public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
+  public var agpVersion: String = DEFAULT_AGP_VERSION,
   public val includes: MutableList<String> = mutableListOf(),
   init: ProjectSettingsSpecBuilder.() -> Unit = {}
 ) : Builder<ProjectSettingsSpec> {
@@ -82,5 +88,9 @@ public class ProjectSettingsSpecBuilder(
     includes.add(include)
   }
 
-  override fun build(): ProjectSettingsSpec = ProjectSettingsSpec(includes)
+  override fun build(): ProjectSettingsSpec = ProjectSettingsSpec(
+    kotlinVersion = kotlinVersion,
+    agpVersion = agpVersion,
+    includes = includes
+  )
 }
