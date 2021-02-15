@@ -73,7 +73,7 @@ jobs :
       fail-fast : false
       matrix :
         kotlin-version : [ 1.4.30, 1.3.72 ]
-        gradle-version : [ 7.0-milestone-1, 6.8.2, 6.5 ]
+        gradle-version : [ 7.0-milestone-1, 6.8.2 ]
         agp-version : [ 4.0.1, 4.1.2 ]
 
     steps :
