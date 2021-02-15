@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser
+package modulecheck.psi
 
 import modulecheck.api.psi.PsiElementWithSurroundingText
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
@@ -25,7 +25,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 
-class DslBlockParser(private val blockName: String) {
+class DslBlockVisitor(private val blockName: String) {
 
   data class ParseResult(
     val elements: List<PsiElementWithSurroundingText>,

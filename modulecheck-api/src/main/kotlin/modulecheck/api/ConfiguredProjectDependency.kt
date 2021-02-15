@@ -15,6 +15,8 @@
 
 package modulecheck.api
 
+import modulecheck.api.psi.PsiElementWithSurroundingText
+
 interface HasConfig {
   val config: Config
   val name: String
@@ -22,8 +24,13 @@ interface HasConfig {
 
 data class ExternalDependency(
   override val config: Config,
-  override val name: String
-) : HasConfig
+  val group: String?,
+  val moduleName: String?,
+  val version: String?,
+  val psiElementWithSurroundingText: Lazy<PsiElementWithSurroundingText?>
+) : HasConfig {
+  override val name = "${group ?: ""}:${moduleName ?: ""}:${version ?: ""}"
+}
 
 data class ConfiguredProjectDependency(
   override val config: Config,

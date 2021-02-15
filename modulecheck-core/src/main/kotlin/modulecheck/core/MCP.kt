@@ -119,11 +119,15 @@ class MCP private constructor(
   }
 
   val mainImports by lazy {
-    mainFiles
-      .flatMap { jvmFile -> jvmFile.imports } + mainLayoutFiles
+    val imports = mainFiles
+      .flatMap { jvmFile -> jvmFile.imports }
+
+    val customViewReferences = mainLayoutFiles
       .map { it.customViews }
       .flatten()
       .toSet()
+
+    (imports + customViewReferences).toSet()
   }
 
   val mainExtraPossibleReferences by lazy {
@@ -269,16 +273,16 @@ class MCP private constructor(
     parent: Project2,
     configuration: Config
   ): PsiElementWithSurroundingText? {
-    val result = DslBlockParser("dependencies")
+    val result = DslBlockVisitor("dependencies")
       .parse(parent.buildFile.asKtFile())
       ?: return null
 
     return result.elements
       .firstOrNull { element ->
 
-        val p = ProjectDependencyDeclarationParser(configuration, project.path)
+        val p = ProjectDependencyDeclarationVisitor(configuration, project.path)
 
-        p.parse(element.psiElement as KtCallExpression)
+        p.find(element.psiElement as KtCallExpression)
       }
   }
 

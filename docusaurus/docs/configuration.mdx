@@ -12,14 +12,15 @@ plugins {
 moduleCheck {
 
   checks {
-    overshot.set(true) // default is true
-    redundant.set(false) // default is false
-    unused.set(true) // default is true
-    sortDependencies.set(false) // default is false
-    sortPlugins.set(false) // default is false
-    kapt.set(true) // default is true
-    disableAndroidResources.set(false) // default is false
-    disableViewBinding.set(false) // default is false
+    overshot = true // default is true
+    redundant = false // default is false
+    unused = true // default is true
+    sortDependencies = false // default is false
+    sortPlugins = false // default is false
+    kapt = true // default is true
+    anvilFactories = true // default is true
+    disableAndroidResources = false // default is false
+    disableViewBinding = false // default is false
   }
 
   // allow these modules to be declared as dependency anywhere,

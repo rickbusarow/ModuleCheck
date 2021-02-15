@@ -17,16 +17,16 @@ package modulecheck.gradle.task
 
 import modulecheck.api.*
 import modulecheck.core.mcp
-import modulecheck.core.parser.DslBlockParser
 import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.project2
+import modulecheck.psi.DslBlockVisitor
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
     val alwaysIgnore = alwaysIgnore.get()
     val ignoreAll = ignoreAll.get()
-    val parser = DslBlockParser("plugins")
+    val visitor = DslBlockVisitor("plugins")
 
     return measured {
       project
@@ -39,7 +39,7 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
             project = proj,
             alwaysIgnore = alwaysIgnore,
             ignoreAll = ignoreAll,
-            parser = parser,
+            visitor = visitor,
             comparator = pluginComparator
           )
             .check()

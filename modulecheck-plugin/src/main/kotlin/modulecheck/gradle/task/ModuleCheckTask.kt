@@ -21,7 +21,7 @@ import modulecheck.core.kapt.UnusedKaptRule
 import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
-import modulecheck.core.parser.DslBlockParser
+import modulecheck.core.rule.AnvilFactoryRule
 import modulecheck.core.rule.RedundantRule
 import modulecheck.core.rule.UnusedRule
 import modulecheck.core.rule.android.DisableAndroidResourcesRule
@@ -30,6 +30,7 @@ import modulecheck.core.rule.sort.SortDependenciesRule
 import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.project2
+import modulecheck.psi.DslBlockVisitor
 import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
@@ -54,58 +55,58 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
           .sortedByDescending { it.mcp().getMainDepth() }
           .forEach { proj ->
 
-            if (checks.overshot.get()) {
+            if (checks.overshot) {
               addAll(
                 OvershotRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.redundant.get()) {
+            if (checks.redundant)  {
               addAll(
                 RedundantRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.unused.get()) {
+            if (checks.unused) {
               addAll(
                 UnusedRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.sortDependencies.get()) {
-              val parser = DslBlockParser("dependencies")
+            if (checks.sortDependencies) {
+              val visitor = DslBlockVisitor("dependencies")
 
               addAll(
                 SortDependenciesRule(
                   project = proj,
                   alwaysIgnore = alwaysIgnore,
                   ignoreAll = ignoreAll,
-                  parser = parser,
+                  visitor = visitor,
                   comparator = dependencyComparator
                 )
                   .check()
               )
             }
 
-            if (checks.sortPlugins.get()) {
-              val parser = DslBlockParser("plugins")
+            if (checks.sortPlugins) {
+              val visitor = DslBlockVisitor("plugins")
 
               addAll(
                 SortPluginsRule(
                   project = proj,
                   alwaysIgnore = alwaysIgnore,
                   ignoreAll = ignoreAll,
-                  parser = parser,
+                  visitor = visitor,
                   comparator = pluginComparator
                 )
                   .check()
               )
             }
 
-            if (checks.kapt.get()) {
+            if (checks.kapt) {
               val additionalKaptMatchers = project.extensions
                 .getByType<ModuleCheckExtension>()
                 .additionalKaptMatchers
@@ -120,11 +121,21 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
               )
             }
 
-            if (checks.disableAndroidResources.get() && proj is AndroidProject2) {
+            if (checks.anvilFactories) {
+              addAll(
+                AnvilFactoryRule(
+                  project = proj,
+                  alwaysIgnore = alwaysIgnore,
+                  ignoreAll = ignoreAll
+                ).check()
+              )
+            }
+
+            if (checks.disableAndroidResources && proj is AndroidProject2) {
               addAll(DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check())
             }
 
-            if (checks.disableViewBinding.get() && proj is AndroidProject2) {
+            if (checks.disableViewBinding && proj is AndroidProject2) {
               addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
             }
           }

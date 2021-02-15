@@ -42,6 +42,9 @@ interface Project2 {
   fun jvmFilesForSourceSet(sourceSet: SourceSet): List<JvmFile>
   fun jvmSourcesForSourceSet(sourceSet: SourceSet):  Set<File>
   fun resourcesForSourceSet(sourceSet: SourceSet):  Set<File>
+
+  // TODO oddly specific function.  Maybe find a better way to abstract this?
+  fun compilerPluginVersionForGroupName(groupName: String): SemVer?
 }
 
 data class ParsedKapt<T>(

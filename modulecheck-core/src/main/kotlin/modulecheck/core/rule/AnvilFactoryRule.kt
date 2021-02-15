@@ -13,17 +13,24 @@
  * limitations under the License.
  */
 
-package modulecheck.api.settings
+package modulecheck.core.rule
 
-interface ChecksSettings {
-  var overshot: Boolean
-  var redundant: Boolean
-  var unused: Boolean
-  var used: Boolean
-  var sortDependencies: Boolean
-  var sortPlugins: Boolean
-  var kapt: Boolean
-  var anvilFactories: Boolean
-  var disableAndroidResources: Boolean
-  var disableViewBinding: Boolean
+import modulecheck.api.Project2
+import modulecheck.core.CouldUseAnvilFinding
+import modulecheck.core.mcp
+import modulecheck.core.parser.AnvilFactoryParser
+
+class AnvilFactoryRule(
+  project: Project2,
+  alwaysIgnore: Set<String>,
+  ignoreAll: Set<String>
+) : AbstractRule<CouldUseAnvilFinding>(
+  project, alwaysIgnore, ignoreAll
+) {
+
+  override fun check(): List<CouldUseAnvilFinding> {
+    if (project.path in ignoreAll) return emptyList()
+
+    return AnvilFactoryParser.parse(project.mcp())
+  }
 }
