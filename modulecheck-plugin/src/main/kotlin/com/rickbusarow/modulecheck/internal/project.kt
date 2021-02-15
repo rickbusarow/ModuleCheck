@@ -16,11 +16,11 @@
 package com.rickbusarow.modulecheck.internal
 
 import com.android.build.gradle.TestedExtension
-import java.io.File
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
+import java.io.File
 
 val Project.srcRoot get() = File("$projectDir/src")
 val Project.mainJavaRoot get() = File("$srcRoot/main/java")

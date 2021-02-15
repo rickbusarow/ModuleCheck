@@ -23,17 +23,13 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
-import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
-import org.gradle.internal.impldep.org.junit.Test
-import org.gradle.testkit.runner.GradleRunner
-import org.gradle.testkit.runner.TaskOutcome
 
-class UnusedKaptTest : HermitJUnit5() {
-
-  val testProjectDir by tempDir()
+class UnusedKaptTest : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -51,8 +47,8 @@ class UnusedKaptTest : HermitJUnit5() {
     )
   }
 
-  @Test fun `unused`() {
-
+  @Test
+  fun `unused`() {
     projectSpec
       .edit {
         addSubproject(
@@ -70,10 +66,7 @@ class UnusedKaptTest : HermitJUnit5() {
       }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckKapt")
       .build()
 
@@ -82,8 +75,8 @@ class UnusedKaptTest : HermitJUnit5() {
     result.task(":moduleCheckKapt")?.outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  @Test fun `used`() {
-
+  @Test
+  fun `used`() {
     projectSpec
       .edit {
         addSubproject(
@@ -118,10 +111,7 @@ class UnusedKaptTest : HermitJUnit5() {
       }
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckKapt")
       .build()
 

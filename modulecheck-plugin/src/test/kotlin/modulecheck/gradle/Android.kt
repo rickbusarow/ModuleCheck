@@ -19,16 +19,12 @@ import com.rickbusarow.modulecheck.specs.ProjectBuildSpec
 import com.rickbusarow.modulecheck.specs.ProjectSettingsSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpec
 import com.rickbusarow.modulecheck.specs.ProjectSpecBuilder
-import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
-import java.io.File
-import org.gradle.internal.impldep.org.junit.Test
-import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.Test
+import java.io.File
 
-class Android : HermitJUnit5() {
-
-  val testProjectDir by tempDir()
+class Android : BaseTest() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -46,7 +42,8 @@ class Android : HermitJUnit5() {
     )
   }
 
-  @Test fun `configurations should be grouped and sorted`() {
+  @Test
+  fun `configurations should be grouped and sorted`() {
     projectSpecBuilder
       .addSubproject(
         ProjectSpec("app") {
@@ -63,11 +60,7 @@ class Android : HermitJUnit5() {
       .build()
       .writeIn(testProjectDir.toPath())
 
-    val result = GradleRunner.create()
-      .withPluginClasspath()
-      .withDebug(true)
-      .forwardOutput()
-      .withProjectDir(testProjectDir)
+    val result = gradleRunner
       .withArguments("moduleCheckSortDependencies")
       .build()
 

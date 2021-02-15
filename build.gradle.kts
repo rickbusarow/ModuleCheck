@@ -29,7 +29,7 @@ buildscript {
     classpath("com.android.tools.build:gradle:4.1.2")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.2.3")
-    classpath(BuildPlugins.spotless)
+    classpath(BuildPlugins.kotlinter)
   }
 }
 
@@ -122,33 +122,19 @@ tasks.named(
 }
 
 allprojects {
-  apply(plugin = Plugins.spotless)
+  apply(plugin = Plugins.kotlinter)
 
-  configure<com.diffplug.gradle.spotless.SpotlessExtension> {
-    format("javascript") {
-      target("**/docusaurus/**/*.js")
-      targetExclude("**/node_modules/**")
-      prettier()
-    }
-    val ktLintOptions = mapOf(
-      "indent_size" to "2",
-      "continuation_indent_size" to "2",
-      "max_line_length" to "off",
-      "disabled_rules" to "no-wildcard-imports,no-multi-spaces",
-      "kotlin_imports_layout" to "idea",
-      "ij_kotlin_imports_layout" to "*,java.**,javax.**,kotlin.**,^"
+  extensions.configure<org.jmailen.gradle.kotlinter.KotlinterExtension> {
+
+    ignoreFailures = false
+    reporters = arrayOf("checkstyle", "plain")
+    experimentalRules = true
+    disabledRules = arrayOf(
+      "no-multi-spaces",
+      "no-wildcard-imports",
+      "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
+      "filename", // same as Detekt's MatchingDeclarationName, except Detekt's version can be suppressed and this can't
+      "experimental:argument-list-wrapping" // doesn't work half the time
     )
-    kotlin {
-      target("**/src/**/*.kt")
-      ktlint()
-        .userData(ktLintOptions)
-      trimTrailingWhitespace()
-      endWithNewline()
-    }
-    kotlinGradle {
-      target("*.gradle.kts")
-      ktlint()
-        .userData(ktLintOptions)
-    }
   }
 }

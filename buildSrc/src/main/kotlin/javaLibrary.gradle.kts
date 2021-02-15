@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +21,16 @@ common()
 
 tasks.withType<Test> {
   useJUnitPlatform()
+
+  project
+    .properties
+    .asSequence()
+    .filter { (key, value) ->
+      key.startsWith("modulecheck") && value != null
+    }
+    .forEach { (key, value) ->
+      systemProperty(key, value!!)
+    }
 }
 
 java {

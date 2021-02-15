@@ -17,23 +17,31 @@ package com.rickbusarow.modulecheck.specs
 
 import java.nio.file.Path
 
+public val DEFAULT_KOTLIN_VERSION: String =
+  System.getProperty("modulecheck.kotlinVersion", "1.4.30")
+public val DEFAULT_AGP_VERSION: String = System.getProperty("modulecheck.agpVersion", "4.1.2")
+
 public data class ProjectBuildSpec(
+  public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
+  public var agpVersion: String = DEFAULT_AGP_VERSION,
   public val plugins: MutableList<String>,
   public val imports: MutableList<String>,
   public val blocks: MutableList<String>,
   public val repositories: MutableList<String>,
   public val dependencies: MutableList<String>,
-  public var isAndroid: Boolean,
+  public var android: Boolean,
   public var buildScript: Boolean
 ) {
 
   public fun toBuilder(): ProjectBuildSpecBuilder = ProjectBuildSpecBuilder(
+    kotlinVersion = kotlinVersion,
+    agpVersion = agpVersion,
     plugins = plugins,
     imports = imports,
     blocks = blocks,
     repositories = repositories,
     dependencies = dependencies,
-    android = isAndroid,
+    android = android,
     buildScript = buildScript
   )
 
@@ -85,8 +93,8 @@ public data class ProjectBuildSpec(
       |    maven("https://oss.sonatype.org/content/repositories/snapshots")
       |  }
       |  dependencies {
-      |    classpath("com.android.tools.build:gradle:4.1.1")
-      |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
+      |    classpath("com.android.tools.build:gradle:$agpVersion")
+      |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
       |  }
       |}
       |
@@ -103,7 +111,7 @@ public data class ProjectBuildSpec(
       |}
       |""".trimMargin()
 
-  private fun androidBlock() = if (!isAndroid) "" else """android {
+  private fun androidBlock() = if (!android) "" else """android {
       |  compileSdkVersion(30)
       |
       |  defaultConfig {
@@ -140,6 +148,8 @@ public data class ProjectBuildSpec(
 
 @Suppress("LongParameterList", "TooManyFunctions")
 public class ProjectBuildSpecBuilder(
+  public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
+  public var agpVersion: String = DEFAULT_AGP_VERSION,
   public val plugins: MutableList<String> = mutableListOf(),
   public val imports: MutableList<String> = mutableListOf(),
   public val blocks: MutableList<String> = mutableListOf(),
@@ -242,12 +252,14 @@ public class ProjectBuildSpecBuilder(
   }
 
   override fun build(): ProjectBuildSpec = ProjectBuildSpec(
+    kotlinVersion = kotlinVersion,
+    agpVersion = agpVersion,
     plugins = plugins,
     imports = imports,
     blocks = blocks,
     repositories = repositories,
     dependencies = dependencies,
-    isAndroid = android,
+    android = android,
     buildScript = buildScript
   )
 }
