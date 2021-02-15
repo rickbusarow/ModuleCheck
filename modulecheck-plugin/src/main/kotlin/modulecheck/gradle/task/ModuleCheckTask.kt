@@ -21,10 +21,7 @@ import modulecheck.core.kapt.UnusedKaptRule
 import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
-import modulecheck.core.rule.AnvilFactoryRule
-import modulecheck.core.rule.MustBeApiRule
-import modulecheck.core.rule.RedundantRule
-import modulecheck.core.rule.UnusedRule
+import modulecheck.core.rule.*
 import modulecheck.core.rule.android.DisableAndroidResourcesRule
 import modulecheck.core.rule.android.DisableViewBindingRule
 import modulecheck.core.rule.sort.SortDependenciesRule
@@ -80,6 +77,13 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             if (checks.mustBeApi) {
               addAll(
                 MustBeApiRule(proj, alwaysIgnore, ignoreAll).check()
+                  .distinctBy { it.dependencyProject.path }
+              )
+            }
+
+            if (checks.inheritedImplementation) {
+              addAll(
+                InheritedImplementationRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
