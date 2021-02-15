@@ -23,6 +23,7 @@ interface ChecksSettings {
   var sortDependencies: Boolean
   var sortPlugins: Boolean
   var kapt: Boolean
+  var anvilFactories: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
 }

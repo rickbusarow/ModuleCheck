@@ -15,7 +15,8 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.KaptMatcher
+import modulecheck.api.*
+import modulecheck.api.settings.*
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -37,7 +38,7 @@ abstract class ModuleCheckExtension(objects: ObjectFactory) {
   val additionalKaptMatchers: ListProperty<KaptMatcher> = objects.listProperty()
 
   val checks: Property<ChecksExtension> =
-    objects.property<ChecksExtension>().convention(ChecksExtension(objects))
+    objects.property<ChecksExtension>().convention(ChecksExtension())
 
   fun checks(block: ChecksExtension.() -> Unit) {
     checks.get().block()
@@ -45,24 +46,15 @@ abstract class ModuleCheckExtension(objects: ObjectFactory) {
 }
 
 @Suppress("UnstableApiUsage")
-class ChecksExtension(objects: ObjectFactory) {
-  val overshot: Property<Boolean> = objects.property<Boolean>().convention(true)
-
-  val redundant: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  val unused: Property<Boolean> = objects.property<Boolean>().convention(true)
-
-  val used: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  val sortDependencies: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  val sortPlugins: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  val kapt: Property<Boolean> = objects.property<Boolean>().convention(true)
-
-  val anvilFactories: Property<Boolean> = objects.property<Boolean>().convention(true)
-
-  val disableAndroidResources: Property<Boolean> = objects.property<Boolean>().convention(false)
-
-  val disableViewBinding: Property<Boolean> = objects.property<Boolean>().convention(false)
+class ChecksExtension : ChecksSettings {
+  override var overshot: Boolean = true
+  override var redundant: Boolean = false
+  override var unused: Boolean = true
+  override var used: Boolean = false
+  override var sortDependencies: Boolean = false
+  override var sortPlugins: Boolean = false
+  override var kapt: Boolean = true
+  override var anvilFactories: Boolean = true
+  override var disableAndroidResources: Boolean = false
+  override var disableViewBinding: Boolean = false
 }

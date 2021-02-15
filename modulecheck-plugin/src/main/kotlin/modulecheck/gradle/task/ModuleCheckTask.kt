@@ -55,28 +55,28 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
           .sortedByDescending { it.mcp().getMainDepth() }
           .forEach { proj ->
 
-            if (checks.overshot.get()) {
+            if (checks.overshot) {
               addAll(
                 OvershotRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.redundant.get()) {
+            if (checks.redundant)  {
               addAll(
                 RedundantRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.unused.get()) {
+            if (checks.unused) {
               addAll(
                 UnusedRule(proj, alwaysIgnore, ignoreAll).check()
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.sortDependencies.get()) {
+            if (checks.sortDependencies) {
               val visitor = DslBlockVisitor("dependencies")
 
               addAll(
@@ -91,7 +91,7 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
               )
             }
 
-            if (checks.sortPlugins.get()) {
+            if (checks.sortPlugins) {
               val visitor = DslBlockVisitor("plugins")
 
               addAll(
@@ -106,7 +106,7 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
               )
             }
 
-            if (checks.kapt.get()) {
+            if (checks.kapt) {
               val additionalKaptMatchers = project.extensions
                 .getByType<ModuleCheckExtension>()
                 .additionalKaptMatchers
@@ -121,7 +121,7 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
               )
             }
 
-            if (checks.anvilFactories.get()) {
+            if (checks.anvilFactories) {
               addAll(
                 AnvilFactoryRule(
                   project = proj,
@@ -131,11 +131,11 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
               )
             }
 
-            if (checks.disableAndroidResources.get() && proj is AndroidProject2) {
+            if (checks.disableAndroidResources && proj is AndroidProject2) {
               addAll(DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check())
             }
 
-            if (checks.disableViewBinding.get() && proj is AndroidProject2) {
+            if (checks.disableViewBinding && proj is AndroidProject2) {
               addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
             }
           }
