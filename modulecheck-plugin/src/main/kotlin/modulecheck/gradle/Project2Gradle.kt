@@ -16,6 +16,7 @@
 package modulecheck.gradle
 
 import com.android.build.gradle.TestedExtension
+import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.api.*
 import modulecheck.core.internal.jvmFiles
 import modulecheck.core.kapt.KAPT_PLUGIN_ID
@@ -23,7 +24,6 @@ import modulecheck.core.kapt.KaptParser
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.ktFiles
 import modulecheck.psi.*
-import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.psi.internal.*
 import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
@@ -201,6 +201,13 @@ class Project2Gradle private constructor(
       ?.find { it.group == groupName }
       ?.version
       ?.let { versionString -> SemVer.parse(versionString) }
+  }
+
+  override fun anvilGenerateFactoriesEnabled(): Boolean {
+    return project
+      .extensions
+      .findByType<AnvilExtension>()
+      ?.generateDaggerFactories == true
   }
 
   override fun toString(): String = "Project2Gradle(path='$path')"

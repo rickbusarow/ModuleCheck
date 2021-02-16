@@ -28,6 +28,7 @@ kotlinDslPluginOptions {
 dependencies {
   compileOnly(gradleApi())
 
+  implementation(BuildPlugins.anvil)
   implementation(BuildPlugins.androidGradlePlugin)
   implementation(Libs.Kotlin.compiler)
   implementation(Libs.Kotlin.gradlePlugin)
