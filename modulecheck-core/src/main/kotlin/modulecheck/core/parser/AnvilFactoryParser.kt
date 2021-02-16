@@ -18,6 +18,7 @@ package modulecheck.core.parser
 import modulecheck.core.CouldUseAnvilFinding
 import modulecheck.core.MCP
 import modulecheck.core.files.JavaFile
+import modulecheck.core.files.KotlinFile
 import net.swiftzer.semver.SemVer
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -36,6 +37,7 @@ object AnvilFactoryParser {
   @Suppress("MagicNumber")
   private val minimumAnvilVersion = SemVer(2, 0, 11)
 
+  @Suppress("ComplexMethod")
   fun parse(mcp: MCP): List<CouldUseAnvilFinding> {
     val project = mcp.project
 
@@ -72,6 +74,18 @@ object AnvilFactoryParser {
       }
 
     if (usesDaggerInJava) return emptyList()
+
+    val usesDaggerInKotlin = mcp.mainFiles
+      .filterIsInstance<KotlinFile>()
+      .any { file ->
+        file.imports.contains(daggerInject) ||
+          file.imports.contains(daggerModule) ||
+          file.maybeExtraReferences.contains(daggerInject) ||
+          file.maybeExtraReferences.contains(daggerModule)
+      }
+
+    if (!usesDaggerInKotlin) return emptyList()
+    if (project.anvilGenerateFactoriesEnabled()) return emptyList()
 
     val couldBeAnvil =
       !allImports.contains(daggerComponent) && !maybeExtra.contains(daggerComponent)

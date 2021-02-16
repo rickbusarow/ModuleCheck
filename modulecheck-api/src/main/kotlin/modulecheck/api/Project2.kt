@@ -43,8 +43,9 @@ interface Project2 {
   fun jvmSourcesForSourceSet(sourceSet: SourceSet):  Set<File>
   fun resourcesForSourceSet(sourceSet: SourceSet):  Set<File>
 
-  // TODO oddly specific function.  Maybe find a better way to abstract this?
+  // TODO oddly specific functions.  Maybe find a better way to abstract this?
   fun compilerPluginVersionForGroupName(groupName: String): SemVer?
+  fun anvilGenerateFactoriesEnabled(): Boolean
 }
 
 data class ParsedKapt<T>(
