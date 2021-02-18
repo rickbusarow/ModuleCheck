@@ -15,52 +15,10 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.*
-import modulecheck.api.*
-import modulecheck.api.Finding.Position
+import modulecheck.api.AndroidProject2
+import modulecheck.core.mcp
 import modulecheck.core.rule.AbstractRule
-import modulecheck.psi.*
-import modulecheck.psi.internal.*
 import net.swiftzer.semver.SemVer
-
-data class UnusedViewBindingGenerationFinding(
-  override val dependentProject: Project2
-) : Finding, Fixable {
-
-  override val problemName = "unused ViewBinding generation"
-
-  override val dependencyIdentifier = ""
-
-  override fun positionOrNull(): Position? {
-    val ktFile = dependentProject.buildFile.asKtFile()
-
-    return androidBlockParser.parse(ktFile)?.let { result ->
-
-      val token = result
-        .blockText
-        .lines()
-        .firstOrNull { it.isNotEmpty() } ?: return@let null
-
-      val lines = ktFile.text.lines()
-
-      val startRow = lines.indexOfFirst { it.matches(androidBlockRegex) }
-
-      if (startRow == -1) return@let null
-
-      val after = lines.subList(startRow, lines.lastIndex)
-
-      val row = after.indexOfFirst { it.contains(token) }
-
-      Position(row + startRow + 1, 0)
-    }
-  }
-
-  override fun fix(): Boolean {
-    val ktFile = dependentProject.buildFile.asKtFile()
-
-    return false
-  }
-}
 
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
@@ -68,12 +26,12 @@ class DisableViewBindingRule(
   project: AndroidProject2,
   alwaysIgnore: Set<String>,
   ignoreAll: Set<String>
-) : AbstractRule<UnusedViewBindingGenerationFinding>(
+) : AbstractRule<DisableViewBindingGenerationFinding>(
   project, alwaysIgnore, ignoreAll
 ) {
 
   @Suppress("ReturnCount")
-  override fun check(): List<UnusedViewBindingGenerationFinding> {
+  override fun check(): List<DisableViewBindingGenerationFinding> {
     val androidProject = project as? AndroidProject2 ?: return emptyList()
 
     // grabs the AGP version of the client project - not this plugin
@@ -86,17 +44,48 @@ class DisableViewBindingRule(
     @Suppress("UnstableApiUsage")
     if (!androidProject.viewBindingEnabled) return emptyList()
 
-    val filterReg = """layout*/*.xml""".toRegex()
-
-    val noLayouts = androidProject
+    val layouts = androidProject
       .resourceFiles
       .filter { it.path.matches(filterReg) }
-      .any { it.exists() }
 
-    return if (noLayouts) {
-      listOf(UnusedViewBindingGenerationFinding(project))
-    } else {
+    val dependents = project.dependendents
+
+    val basePackage = project.androidPackageOrNull
+      ?: return listOf(DisableViewBindingGenerationFinding(project))
+
+    val usedLayouts = layouts
+      .filter { it.exists() }
+      .filter { file ->
+
+        val generated = file
+          .nameWithoutExtension
+          .split("_")
+          .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+
+        val reference = "$basePackage.databinding.$generated"
+
+        dependents
+          .any { dep ->
+
+            val mcp = dep.mcp()
+
+            mcp
+              .mainImports
+              .contains(reference) || mcp
+              .mainExtraPossibleReferences
+              .contains(reference)
+          }
+      }
+      .toList()
+
+    return if (usedLayouts.isNotEmpty()) {
       emptyList()
+    } else {
+      listOf(DisableViewBindingGenerationFinding(project))
     }
+  }
+
+  companion object {
+    private val filterReg = """.*/layout.*/.*.xml""".toRegex()
   }
 }

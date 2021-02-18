@@ -17,7 +17,6 @@ package modulecheck.gradle.task
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Finding
-import modulecheck.core.mcp
 import modulecheck.core.rule.android.DisableViewBindingRule
 import modulecheck.gradle.project2
 
@@ -29,10 +28,9 @@ abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
 
     return measured {
       project
-        .project2()
         .allprojects
+        .map { it.project2() }
         .filter { it.buildFile.exists() }
-        .sortedByDescending { it.mcp().getMainDepth() }
         .filterIsInstance<AndroidProject2>()
         .flatMap { proj ->
           DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check()

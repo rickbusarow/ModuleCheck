@@ -30,6 +30,8 @@ interface Project2 {
   val projectDir: File
   val buildFile: File
 
+  val dependendents: Set<Project2>
+
   val projectDependencies: List<ConfiguredProjectDependency>
   val externalDependencies: List<ExternalDependency>
 
@@ -68,6 +70,7 @@ interface AndroidProject2 : Project2 {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>
+  val androidPackageOrNull: String?
 }
 
 val Project2.srcRoot get() = File("$projectDir/src")

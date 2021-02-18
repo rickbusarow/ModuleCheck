@@ -20,6 +20,8 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.core.parser.android.AndroidManifestParser
+import modulecheck.gradle.internal.srcRoot
 import net.swiftzer.semver.SemVer
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
@@ -28,7 +30,7 @@ import java.util.concurrent.*
 
 class AndroidProject2Gradle(
   private val project: Project
-) : Project2 by modulecheck.gradle.Project2Gradle.Companion.from(project),
+) : Project2 by Project2Gradle.from(project),
   AndroidProject2 {
 
   override val agpVersion: SemVer by lazy { SemVer.parse(Version.ANDROID_GRADLE_PLUGIN_VERSION) }
@@ -37,6 +39,15 @@ class AndroidProject2Gradle(
   private val testedExtension by lazy {
     project.extensions.findByType<LibraryExtension>()
       ?: project.extensions.findByType<AppExtension>()
+  }
+
+  override val androidPackageOrNull: String? by lazy {
+
+    val manifest = File("${project.srcRoot}/main/AndroidManifest.xml")
+
+    if (!manifest.exists()) return@lazy null
+
+    AndroidManifestParser.parse(manifest)["package"]
   }
 
   @Suppress("UnstableApiUsage")

@@ -15,56 +15,13 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.*
 import modulecheck.api.*
-import modulecheck.api.Finding.Position
 import modulecheck.core.rule.AbstractRule
-import modulecheck.psi.*
 import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.internal.*
 import net.swiftzer.semver.SemVer
 
 internal val androidBlockParser = DslBlockVisitor("android")
 internal val androidBlockRegex = "^android \\{".toRegex()
-
-data class UnusedResourcesGenerationFinding(
-  override val dependentProject: Project2
-) : Finding, Fixable {
-
-  override val problemName = "unused R file generation"
-
-  override val dependencyIdentifier = ""
-
-  override fun positionOrNull(): Position? {
-    val ktFile = dependentProject.buildFile.asKtFile()
-
-    return androidBlockParser.parse(ktFile)?.let { result ->
-
-      val token = result
-        .blockText
-        .lines()
-        .firstOrNull { it.isNotEmpty() } ?: return@let null
-
-      val lines = ktFile.text.lines()
-
-      val startRow = lines.indexOfFirst { it.matches(androidBlockRegex) }
-
-      if (startRow == -1) return@let null
-
-      val after = lines.subList(startRow, lines.lastIndex)
-
-      val row = after.indexOfFirst { it.contains(token) }
-
-      Position(row + startRow + 1, 0)
-    }
-  }
-
-  override fun fix(): Boolean {
-    val ktFile = dependentProject.buildFile.asKtFile()
-
-    return false
-  }
-}
 
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 1, patch = 0)
 
