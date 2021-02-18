@@ -65,7 +65,9 @@ data class DisableViewBindingGenerationFinding(
 
     val oldBlock = elementOrNull()?.toString() ?: return false
 
-    val newBlock = oldBlock.replace("true", "false")
+    if (!oldBlock.contains("viewbinding = true")) return false
+
+    val newBlock = oldBlock.replace("viewBinding = true", "viewBinding = false")
 
     val oldText = ktFile.text
 
