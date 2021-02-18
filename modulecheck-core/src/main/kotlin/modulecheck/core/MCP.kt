@@ -297,10 +297,10 @@ class MCP private constructor(
       .parse(parent.buildFile.asKtFile())
       ?: return null
 
+    val p = ProjectDependencyDeclarationVisitor(configuration, project.path)
+
     return result.elements
       .firstOrNull { element ->
-
-        val p = ProjectDependencyDeclarationVisitor(configuration, project.path)
 
         p.find(element.psiElement as KtCallExpression)
       }

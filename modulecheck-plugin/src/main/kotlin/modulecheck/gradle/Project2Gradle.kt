@@ -141,6 +141,13 @@ class Project2Gradle private constructor(
 
   override val kaptProcessors: ParsedKapt<KaptProcessor> by KaptParser.parseLazy(this)
 
+  override val dependendents: Set<Project2Gradle> by lazy {
+    cache
+      .values
+      .filter { otherProject -> this.path in otherProject.projectDependencies.map { it.project.path } }
+      .toSet()
+  }
+
   override val projectDependencies: List<ConfiguredProjectDependency> by lazy {
     project
       .configurations

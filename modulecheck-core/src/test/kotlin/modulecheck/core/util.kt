@@ -23,16 +23,47 @@ import java.nio.file.Files
 fun Hermit.tempDir(path: String = ""): LazyResets<File> {
   return object : LazyResets<File> {
 
-    val delegate = LazyResets(this@tempDir) { Files.createTempDirectory(path).toFile() }
-
-    override fun reset() {
-      delegate.value.delete()
-      delegate.reset()
-    }
+    private var lazyHolder: Lazy<File> = createLazy()
 
     override val value: File
-      get() = delegate.value
+      get() = lazyHolder.value
 
-    override fun isInitialized(): Boolean = delegate.isInitialized()
+    private fun createLazy() = lazy {
+      register(this)
+      Files.createTempDirectory(path).toFile()
+    }
+
+    override fun reset() {
+      value.deleteRecursively()
+
+      lazyHolder = createLazy()
+    }
+
+    override fun isInitialized(): Boolean = lazyHolder.isInitialized()
+  }
+}
+
+fun Hermit.tempFile(path: String = "temp.kt"): LazyResets<File> {
+  return object : LazyResets<File> {
+
+    private var lazyHolder: Lazy<File> = createLazy()
+
+    override val value: File
+      get() = lazyHolder.value
+
+    private fun createLazy() = lazy {
+      register(this)
+
+      @Suppress("DEPRECATION")
+      createTempFile(path)
+    }
+
+    override fun reset() {
+      value.deleteRecursively()
+
+      lazyHolder = createLazy()
+    }
+
+    override fun isInitialized(): Boolean = lazyHolder.isInitialized()
   }
 }

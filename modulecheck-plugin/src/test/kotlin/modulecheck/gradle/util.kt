@@ -42,3 +42,28 @@ fun Hermit.tempDir(path: String = ""): LazyResets<File> {
     override fun isInitialized(): Boolean = lazyHolder.isInitialized()
   }
 }
+
+fun Hermit.tempFile(path: String = "temp.kt"): LazyResets<File> {
+  return object : LazyResets<File> {
+
+    private var lazyHolder: Lazy<File> = createLazy()
+
+    override val value: File
+      get() = lazyHolder.value
+
+    private fun createLazy() = lazy {
+      register(this)
+
+      @Suppress("DEPRECATION")
+      createTempFile(path)
+    }
+
+    override fun reset() {
+      value.deleteRecursively()
+
+      lazyHolder = createLazy()
+    }
+
+    override fun isInitialized(): Boolean = lazyHolder.isInitialized()
+  }
+}
