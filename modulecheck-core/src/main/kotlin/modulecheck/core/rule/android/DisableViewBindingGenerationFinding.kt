@@ -65,7 +65,7 @@ data class DisableViewBindingGenerationFinding(
 
     val oldBlock = elementOrNull()?.toString() ?: return false
 
-    if (!oldBlock.contains("viewbinding = true")) return false
+    if (!oldBlock.contains("viewBinding = true")) return false
 
     val newBlock = oldBlock.replace("viewBinding = true", "viewBinding = false")
 
