@@ -15,9 +15,9 @@
 
 @file:Suppress("LongMethod", "TopLevelPropertyNaming")
 
-import org.gradle.api.*
-import org.gradle.kotlin.dsl.*
-import org.jetbrains.kotlin.gradle.tasks.*
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun Project.common() {
 
@@ -35,21 +35,7 @@ fun Project.common() {
 // force update all transitive dependencies (prevents some library leaking an old version)
   configurations.all {
     resolutionStrategy {
-      force(
-        Libs.Kotlin.reflect,
-        Libs.Kotlinx.Coroutines.core,
-        Libs.Kotlinx.Coroutines.test,
-        Libs.Kotlinx.Coroutines.android,
-        Libs.RickBusarow.Dispatch.core,
-        Libs.RickBusarow.Dispatch.detekt,
-        Libs.RickBusarow.Dispatch.espresso,
-        Libs.RickBusarow.Dispatch.lifecycle,
-        Libs.RickBusarow.Dispatch.lifecycleExtensions,
-        Libs.RickBusarow.Dispatch.viewModel,
-        Libs.RickBusarow.Dispatch.Test.core,
-        Libs.RickBusarow.Dispatch.Test.jUnit4,
-        Libs.RickBusarow.Dispatch.Test.jUnit5
-      )
+      force(Libs.Kotlin.reflect)
     }
   }
 }

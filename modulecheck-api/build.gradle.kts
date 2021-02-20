@@ -35,7 +35,6 @@ dependencies {
   testImplementation(Libs.Kotest.properties)
   testImplementation(Libs.Kotest.runner)
   testImplementation(Libs.RickBusarow.Hermit.core)
-  testImplementation(Libs.RickBusarow.Hermit.coroutines)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
   testImplementation(project(path = ":modulecheck-specs"))
