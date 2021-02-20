@@ -16,23 +16,19 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.mcp
 
 class RedundantRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<RedundantDependencyFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<RedundantDependencyFinding>() {
 
-  override fun check(): List<RedundantDependencyFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override val id = "RedundantDependency"
 
+  override fun check(project: Project2): List<RedundantDependencyFinding> {
     return project.mcp().redundant
       .all()
-      .filterNot { dependency -> dependency.dependencyIdentifier in alwaysIgnore }
       .distinctBy { it.positionOrNull() }
   }
 }

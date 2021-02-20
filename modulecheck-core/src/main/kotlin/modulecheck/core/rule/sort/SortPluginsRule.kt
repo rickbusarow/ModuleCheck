@@ -17,21 +17,39 @@ package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.AbstractRule
 import modulecheck.psi.DslBlockVisitor
 import java.util.*
 
 class SortPluginsRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>,
-  val visitor: DslBlockVisitor,
-  val comparator: Comparator<PsiElementWithSurroundingText>
-) : AbstractRule<SortPluginsFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
-  override fun check(): List<SortPluginsFinding> {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return emptyList()
+  override val settings: ModuleCheckSettings
+) : AbstractRule<SortPluginsFinding>() {
+
+  override val id = "SortPlugins"
+
+  private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
+    settings
+      .sortSettings
+      .dependencyComparators
+      .map { it.toRegex() }
+      .map { regex ->
+        { str: String -> !str.matches(regex) }
+      }
+      .map { booleanLambda ->
+        { psi: PsiElementWithSurroundingText ->
+
+          booleanLambda.invoke(psi.psiElement.text)
+        }
+      }.toTypedArray()
+
+  @Suppress("SpreadOperator")
+  private val comparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
+
+  override fun check(project: Project2): List<SortPluginsFinding> {
+    val visitor = DslBlockVisitor("plugins")
+
+    val kotlinBuildFile = project.kotlinBuildFileOrNull() ?: return emptyList()
 
     val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
 

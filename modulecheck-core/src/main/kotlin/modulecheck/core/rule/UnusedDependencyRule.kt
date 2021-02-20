@@ -13,19 +13,23 @@
  * limitations under the License.
  */
 
-package modulecheck.api.settings
+package modulecheck.core.rule
 
-interface ChecksSettings {
-  var overshot: Boolean
-  var redundant: Boolean
-  var unused: Boolean
-  var mustBeApi: Boolean
-  var inheritedImplementation: Boolean
-  var used: Boolean
-  var sortDependencies: Boolean
-  var sortPlugins: Boolean
-  var kapt: Boolean
-  var anvilFactories: Boolean
-  var disableAndroidResources: Boolean
-  var disableViewBinding: Boolean
+import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.core.UnusedDependency
+import modulecheck.core.mcp
+
+class UnusedDependencyRule(
+  override val settings: ModuleCheckSettings
+) : AbstractRule<UnusedDependency>() {
+
+  override val id = "UnusedDependency"
+
+  override fun check(project: Project2): List<UnusedDependency> {
+    return project.mcp()
+      .unused
+      .all()
+      .distinctBy { it.positionOrNull() }
+  }
 }

@@ -16,21 +16,18 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.CouldUseAnvilFinding
 import modulecheck.core.mcp
 import modulecheck.core.parser.AnvilFactoryParser
 
 class AnvilFactoryRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<CouldUseAnvilFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<CouldUseAnvilFinding>() {
 
-  override fun check(): List<CouldUseAnvilFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override val id = "AnvilFactoryGeneration"
 
+  override fun check(project: Project2): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project.mcp())
   }
 }

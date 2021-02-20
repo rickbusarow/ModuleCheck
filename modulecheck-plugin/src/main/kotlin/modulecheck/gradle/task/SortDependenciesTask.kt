@@ -19,15 +19,10 @@ import modulecheck.api.Finding
 import modulecheck.core.mcp
 import modulecheck.core.rule.sort.SortDependenciesRule
 import modulecheck.gradle.project2
-import modulecheck.psi.DslBlockVisitor
 
 abstract class SortDependenciesTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-    val visitor = DslBlockVisitor("dependencies")
-
     return measured {
       project
         .project2()
@@ -35,14 +30,7 @@ abstract class SortDependenciesTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          SortDependenciesRule(
-            project = proj,
-            alwaysIgnore = alwaysIgnore,
-            ignoreAll = ignoreAll,
-            visitor = visitor,
-            comparator = dependencyComparator
-          )
-            .check()
+          SortDependenciesRule(extension).check(proj)
         }
     }
   }

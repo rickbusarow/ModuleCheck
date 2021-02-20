@@ -17,21 +17,49 @@ package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.AbstractRule
 import modulecheck.psi.DslBlockVisitor
 import java.util.*
 
 class SortDependenciesRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>,
-  val visitor: DslBlockVisitor,
-  val comparator: Comparator<PsiElementWithSurroundingText>
-) : AbstractRule<SortDependenciesFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
-  override fun check(): List<SortDependenciesFinding> {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return emptyList()
+  override val settings: ModuleCheckSettings
+) : AbstractRule<SortDependenciesFinding>() {
+
+  override val id = "SortDependencies"
+
+/*
+  private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
+    settings
+      .sortSettings
+      .dependencyComparators
+      .map { it.toRegex() }
+      .map { regex ->
+        { str: String -> !str.matches(regex) }
+      }
+      .map { booleanLambda ->
+        { psi: PsiElementWithSurroundingText ->
+
+          booleanLambda.invoke(psi.psiElement.text)
+        }
+      }.toTypedArray()
+
+  @Suppress("SpreadOperator")
+  private val comparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
+*/
+
+  private val comparator: Comparator<PsiElementWithSurroundingText> =
+    compareBy { psiElementWithSurroundings ->
+      psiElementWithSurroundings
+        .psiElement
+        .text
+        .toLowerCase(Locale.US)
+    }
+
+  override fun check(project: Project2): List<SortDependenciesFinding> {
+    val visitor = DslBlockVisitor("dependencies")
+
+    val kotlinBuildFile = project.kotlinBuildFileOrNull() ?: return emptyList()
 
     val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
 

@@ -16,6 +16,7 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.*
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.AbstractRule
 import modulecheck.psi.DslBlockVisitor
 import net.swiftzer.semver.SemVer
@@ -26,15 +27,13 @@ internal val androidBlockRegex = "^android \\{".toRegex()
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 1, patch = 0)
 
 class DisableAndroidResourcesRule(
-  project: AndroidProject2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<UnusedResourcesGenerationFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<UnusedResourcesGenerationFinding>() {
+
+  override val id = "DisableAndroidResources"
 
   @Suppress("ReturnCount")
-  override fun check(): List<UnusedResourcesGenerationFinding> {
+  override fun check(project: Project2): List<UnusedResourcesGenerationFinding> {
     val androidProject = project as? AndroidProject2 ?: return emptyList()
 
     // grabs the AGP version of the client project - not this plugin

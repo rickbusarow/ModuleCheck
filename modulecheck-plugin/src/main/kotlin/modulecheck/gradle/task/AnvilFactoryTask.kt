@@ -23,9 +23,6 @@ import modulecheck.gradle.project2
 abstract class AnvilFactoryTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .project2()
@@ -33,7 +30,7 @@ abstract class AnvilFactoryTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          AnvilFactoryRule(proj, alwaysIgnore, ignoreAll).check()
+          AnvilFactoryRule(extension).check(proj)
         }
     }
   }

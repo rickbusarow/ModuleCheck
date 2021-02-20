@@ -19,7 +19,7 @@ package modulecheck.core.kapt
 
 import modulecheck.api.KaptMatcher
 
-val kaptMatchers: List<KaptMatcher> = listOf(
+val defaultKaptMatchers: List<KaptMatcher> = listOf(
   KaptMatcher(
     name = "Dagger Hilt",
     processor = "com.google.dagger:hilt-compiler",

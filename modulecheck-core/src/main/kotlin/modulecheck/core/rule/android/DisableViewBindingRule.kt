@@ -16,6 +16,8 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.AndroidProject2
+import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.mcp
 import modulecheck.core.rule.AbstractRule
 import net.swiftzer.semver.SemVer
@@ -23,15 +25,13 @@ import net.swiftzer.semver.SemVer
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
 class DisableViewBindingRule(
-  project: AndroidProject2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<DisableViewBindingGenerationFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<DisableViewBindingGenerationFinding>() {
+
+  override val id = "DisableViewBinding"
 
   @Suppress("ReturnCount")
-  override fun check(): List<DisableViewBindingGenerationFinding> {
+  override fun check(project: Project2): List<DisableViewBindingGenerationFinding> {
     val androidProject = project as? AndroidProject2 ?: return emptyList()
 
     // grabs the AGP version of the client project - not this plugin

@@ -15,19 +15,14 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.*
+import modulecheck.api.Finding
 import modulecheck.core.mcp
 import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.project2
-import modulecheck.psi.DslBlockVisitor
 
 abstract class SortPluginsTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-    val visitor = DslBlockVisitor("plugins")
-
     return measured {
       project
         .project2()
@@ -35,14 +30,7 @@ abstract class SortPluginsTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          SortPluginsRule(
-            project = proj,
-            alwaysIgnore = alwaysIgnore,
-            ignoreAll = ignoreAll,
-            visitor = visitor,
-            comparator = pluginComparator
-          )
-            .check()
+          SortPluginsRule(extension).check(proj)
         }
     }
   }

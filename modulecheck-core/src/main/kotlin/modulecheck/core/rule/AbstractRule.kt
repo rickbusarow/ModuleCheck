@@ -16,22 +16,22 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MCP
 import modulecheck.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
-abstract class AbstractRule<T>(
-  protected val project: Project2,
-  protected val alwaysIgnore: Set<String>,
-  protected val ignoreAll: Set<String>
-) {
+abstract class AbstractRule<T> {
 
-  abstract fun check(): List<T>
+  abstract val settings: ModuleCheckSettings
+  abstract val id: String
 
-  protected fun kotlinBuildFileOrNull(): KtFile? = project.buildFile.asKtsFileOrNull()
+  abstract fun check(project: Project2): List<T>
+
+  protected fun Project2.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
 
   protected fun Project2.moduleCheckProjects() =
-    project.rootProject.allprojects
+    rootProject.allprojects
       .filter { gradleProject -> gradleProject.buildFile.exists() }
       .map { gradleProject -> MCP.from(gradleProject) }
 }
