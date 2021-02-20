@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rick Busarow
+ * Copyright (C) 2021 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,11 +13,28 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 apply(plugin = "com.android.library")
 apply(plugin = "org.jetbrains.kotlin.android")
 
 commonAndroid()
 common()
+
+val lintMain by tasks.registering {
+
+  doFirst {
+    tasks.withType<KotlinCompile>()
+      .configureEach {
+        kotlinOptions {
+          allWarningsAsErrors = true
+        }
+      }
+  }
+}
+lintMain {
+  finalizedBy("compileKotlin", "lintDebug")
+}
 
 val testJvm by tasks.registering {
   dependsOn("testDebugUnitTest")

@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   kotlin("jvm")
 }
@@ -38,6 +40,21 @@ java {
   // This is different than the Kotlin jvm target.
   sourceCompatibility = JavaVersion.VERSION_1_8
   targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+val lintMain by tasks.registering {
+
+  doFirst {
+    tasks.withType<KotlinCompile>()
+      .configureEach {
+        kotlinOptions {
+          allWarningsAsErrors = true
+        }
+      }
+  }
+}
+lintMain {
+  finalizedBy("compileKotlin")
 }
 
 val testJvm by tasks.registering {

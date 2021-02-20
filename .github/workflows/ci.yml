@@ -89,7 +89,7 @@ jobs :
           java-version : 14
 
       - name : all tests
-        run : ./gradlew testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }}
+        run : ./gradlew lintMain testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks
 
       - name : Archive test results
         uses : actions/upload-artifact@v2
@@ -123,7 +123,7 @@ jobs :
           java-version : 14
 
       - name : all tests
-        run : ./gradlew testJvm
+        run : ./gradlew lintMain testJvm --rerun-tasks
 
       - name : Archive test results
         uses : actions/upload-artifact@v2
