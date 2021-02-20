@@ -15,10 +15,9 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.*
-import modulecheck.api.*
+import modulecheck.api.AndroidProject2
+import modulecheck.api.Finding
 import modulecheck.core.kapt.UnusedKaptRule
-import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
 import modulecheck.core.overshot.OvershotRule
 import modulecheck.core.rule.*
@@ -28,17 +27,15 @@ import modulecheck.core.rule.sort.SortDependenciesRule
 import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.project2
-import modulecheck.psi.DslBlockVisitor
 import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
   @Suppress("LongMethod", "ComplexMethod")
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
+    val settings = extension
 
-    val checks = extension.checks.get()
+    val checks = extension.checksSettings
 
     val findings = mutableListOf<Finding>()
 
@@ -55,66 +52,50 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
             if (checks.overshot) {
               addAll(
-                OvershotRule(proj, alwaysIgnore, ignoreAll).check()
+                OvershotRule(settings).check(proj)
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
-            if (checks.redundant)  {
+            if (checks.redundant) {
               addAll(
-                RedundantRule(proj, alwaysIgnore, ignoreAll).check()
+                RedundantRule(settings).check(proj)
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
             if (checks.unused) {
               addAll(
-                UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+                UnusedDependencyRule(settings).check(proj)
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
             if (checks.mustBeApi) {
               addAll(
-                MustBeApiRule(proj, alwaysIgnore, ignoreAll).check()
+                MustBeApiRule(settings).check(proj)
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
             if (checks.inheritedImplementation) {
               addAll(
-                InheritedImplementationRule(proj, alwaysIgnore, ignoreAll).check()
+                InheritedImplementationRule(settings).check(proj)
                   .distinctBy { it.dependencyProject.path }
               )
             }
 
             if (checks.sortDependencies) {
-              val visitor = DslBlockVisitor("dependencies")
-
               addAll(
-                SortDependenciesRule(
-                  project = proj,
-                  alwaysIgnore = alwaysIgnore,
-                  ignoreAll = ignoreAll,
-                  visitor = visitor,
-                  comparator = dependencyComparator
-                )
-                  .check()
+                SortDependenciesRule(settings)
+                  .check(proj)
               )
             }
 
             if (checks.sortPlugins) {
-              val visitor = DslBlockVisitor("plugins")
-
               addAll(
-                SortPluginsRule(
-                  project = proj,
-                  alwaysIgnore = alwaysIgnore,
-                  ignoreAll = ignoreAll,
-                  visitor = visitor,
-                  comparator = pluginComparator
-                )
-                  .check()
+                SortPluginsRule(settings)
+                  .check(proj)
               )
             }
 
@@ -124,31 +105,20 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
                 .additionalKaptMatchers
 
               addAll(
-                UnusedKaptRule(
-                  project = proj,
-                  alwaysIgnore = alwaysIgnore,
-                  ignoreAll = ignoreAll,
-                  kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
-                ).check()
+                UnusedKaptRule(settings).check(proj)
               )
             }
 
             if (checks.anvilFactories) {
-              addAll(
-                AnvilFactoryRule(
-                  project = proj,
-                  alwaysIgnore = alwaysIgnore,
-                  ignoreAll = ignoreAll
-                ).check()
-              )
+              addAll(AnvilFactoryRule(settings).check(proj))
             }
 
             if (checks.disableAndroidResources && proj is AndroidProject2) {
-              addAll(DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check())
+              addAll(DisableAndroidResourcesRule(settings).check(proj))
             }
 
             if (checks.disableViewBinding && proj is AndroidProject2) {
-              addAll(DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check())
+              addAll(DisableViewBindingRule(settings).check(proj))
             }
           }
       }

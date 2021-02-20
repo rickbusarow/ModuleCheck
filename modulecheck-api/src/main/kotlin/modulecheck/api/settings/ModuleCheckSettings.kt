@@ -25,6 +25,28 @@ interface ModuleCheckSettings {
   var additionalKaptMatchers: List<KaptMatcher>
 
   val checksSettings: ChecksSettings
-
   fun checks(block: ChecksSettings.() -> Unit)
+
+  val sortSettings: SortSettings
+  fun sort(block: SortSettings.() -> Unit)
+}
+
+interface SortSettings {
+  var pluginComparators: List<String>
+  var dependencyComparators: List<String>
+}
+
+interface ChecksSettings {
+  var overshot: Boolean
+  var redundant: Boolean
+  var unused: Boolean
+  var mustBeApi: Boolean
+  var inheritedImplementation: Boolean
+  var used: Boolean
+  var sortDependencies: Boolean
+  var sortPlugins: Boolean
+  var kapt: Boolean
+  var anvilFactories: Boolean
+  var disableAndroidResources: Boolean
+  var disableViewBinding: Boolean
 }

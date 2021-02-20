@@ -16,20 +16,17 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.InheritedImplementationDependencyFinding
 import modulecheck.core.parser.InheritedImplementationParser
 
 class InheritedImplementationRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<InheritedImplementationDependencyFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<InheritedImplementationDependencyFinding>() {
 
-  override fun check(): List<InheritedImplementationDependencyFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override val id = "InheritedImplementation"
 
+  override fun check(project: Project2): List<InheritedImplementationDependencyFinding> {
     return InheritedImplementationParser.parse(project)
       .all()
       .toList()

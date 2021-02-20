@@ -23,9 +23,6 @@ import modulecheck.gradle.project2
 abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .project2()
@@ -34,7 +31,7 @@ abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
         .sortedByDescending { it.mcp().getMainDepth() }
         .filterIsInstance<AndroidProject2>()
         .flatMap { proj ->
-          DisableAndroidResourcesRule(proj, alwaysIgnore, ignoreAll).check()
+          DisableAndroidResourcesRule(extension).check(proj)
         }
     }
   }

@@ -15,34 +15,25 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.*
-import modulecheck.api.settings.*
-import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
-import org.gradle.kotlin.dsl.listProperty
-import org.gradle.kotlin.dsl.property
-import org.gradle.kotlin.dsl.setProperty
+import modulecheck.api.KaptMatcher
+import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.api.settings.SortSettings
+import modulecheck.core.rule.sort.SortDependenciesRule
+import modulecheck.core.rule.sort.SortPluginsRule
 
-@Suppress("UnnecessaryAbstractClass")
-abstract class ModuleCheckExtension(objects: ObjectFactory) {
+open class ModuleCheckExtension : ModuleCheckSettings {
 
-  @Suppress("UnstableApiUsage")
-  val autoCorrect: Property<Boolean> = objects.property<Boolean>().convention(true)
+  override var autoCorrect: Boolean = true
+  override var alwaysIgnore: Set<String> = mutableSetOf()
+  override var ignoreAll: Set<String> = mutableSetOf()
+  override var additionalKaptMatchers: List<KaptMatcher> = mutableListOf()
 
-  val alwaysIgnore: SetProperty<String> = objects.setProperty()
+  override val checksSettings: ChecksExtension = ChecksExtension()
+  override fun checks(block: ChecksSettings.() -> Unit) = block.invoke(checksSettings)
 
-  val ignoreAll: SetProperty<String> = objects.setProperty()
-
-  val additionalKaptMatchers: ListProperty<KaptMatcher> = objects.listProperty()
-
-  val checks: Property<ChecksExtension> =
-    objects.property<ChecksExtension>().convention(ChecksExtension())
-
-  fun checks(block: ChecksExtension.() -> Unit) {
-    checks.get().block()
-  }
+  override val sortSettings: SortExtension = SortExtension()
+  override fun sort(block: SortSettings.() -> Unit) = block.invoke(sortSettings)
 }
 
 @Suppress("UnstableApiUsage")
@@ -59,4 +50,10 @@ class ChecksExtension : ChecksSettings {
   override var anvilFactories: Boolean = true
   override var disableAndroidResources: Boolean = false
   override var disableViewBinding: Boolean = false
+}
+
+@Suppress("UnstableApiUsage")
+class SortExtension : SortSettings {
+  override var pluginComparators = SortPluginsRule.patterns
+  override var dependencyComparators = SortDependenciesRule.patterns
 }

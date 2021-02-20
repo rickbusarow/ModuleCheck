@@ -16,20 +16,17 @@
 package modulecheck.core.overshot
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.mcp
 import modulecheck.core.rule.AbstractRule
 
 class OvershotRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<OverShotDependencyFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<OvershotDependencyFinding>() {
 
-  override fun check(): List<OverShotDependencyFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override val id = "OvershotDependency"
 
+  override fun check(project: Project2): List<OvershotDependencyFinding> {
     return project.mcp().overshot
       .all()
       .distinctBy { it.dependencyIdentifier }

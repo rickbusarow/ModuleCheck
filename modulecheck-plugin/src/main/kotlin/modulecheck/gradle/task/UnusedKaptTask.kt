@@ -16,15 +16,9 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.Finding
-import modulecheck.api.KaptMatcher
 import modulecheck.core.kapt.UnusedKaptRule
-import modulecheck.core.kapt.kaptMatchers
 import modulecheck.core.mcp
-import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.project2
-import org.gradle.api.provider.ListProperty
-import org.gradle.api.tasks.Input
-import org.gradle.kotlin.dsl.getByType
 
 /**
  * Loops through all registered annotation processors for each module,
@@ -39,15 +33,7 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
       "Checks all modules with registered annotation processors to ensure they're needed."
   }
 
-  @get:Input
-  val additionalKaptMatchers: ListProperty<KaptMatcher> = project.extensions
-    .getByType<ModuleCheckExtension>()
-    .additionalKaptMatchers
-
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .project2()
@@ -55,12 +41,7 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          UnusedKaptRule(
-            project = proj,
-            alwaysIgnore = alwaysIgnore,
-            ignoreAll = ignoreAll,
-            kaptMatchers = kaptMatchers + additionalKaptMatchers.get()
-          ).check()
+          UnusedKaptRule(extension).check(proj)
         }
     }
   }

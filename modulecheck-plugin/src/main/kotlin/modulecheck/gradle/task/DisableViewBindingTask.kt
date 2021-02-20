@@ -23,9 +23,6 @@ import modulecheck.gradle.project2
 abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .allprojects
@@ -33,7 +30,7 @@ abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .filterIsInstance<AndroidProject2>()
         .flatMap { proj ->
-          DisableViewBindingRule(proj, alwaysIgnore, ignoreAll).check()
+          DisableViewBindingRule(extension).check(proj)
         }
     }
   }

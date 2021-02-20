@@ -20,11 +20,11 @@ import modulecheck.api.Project2
 import modulecheck.core.MCP
 import modulecheck.core.internal.usedIn
 import modulecheck.core.mcp
-import modulecheck.core.overshot.OverShotDependencyFinding
+import modulecheck.core.overshot.OvershotDependencyFinding
 
-object OvershotParser : Parser<OverShotDependencyFinding>() {
+object OvershotParser : Parser<OvershotDependencyFinding>() {
 
-  override fun parse(project: Project2): MCP.Parsed<OverShotDependencyFinding> {
+  override fun parse(project: Project2): MCP.Parsed<OvershotDependencyFinding> {
     val unused = project
       .mcp()
       .unused
@@ -67,7 +67,7 @@ object OvershotParser : Parser<OverShotDependencyFinding>() {
           .firstOrNull { it.project == source?.project }
           ?.config
 
-        OverShotDependencyFinding(
+        OvershotDependencyFinding(
           buildFile = project.buildFile,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,

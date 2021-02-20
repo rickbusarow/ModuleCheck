@@ -17,14 +17,10 @@ package modulecheck.gradle.task
 
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
-import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.internal.Output
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
@@ -41,37 +37,13 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
   val extension: ModuleCheckExtension = project.extensions.getByType()
 
   @get:Input
-  val autoCorrect: Property<Boolean> = extension.autoCorrect
+  val autoCorrect: Boolean = extension.autoCorrect
 
   @get:Input
-  val alwaysIgnore: SetProperty<String> = extension.alwaysIgnore
+  val alwaysIgnore: Set<String> = extension.alwaysIgnore
 
   @get:Input
-  val ignoreAll: SetProperty<String> = extension.ignoreAll
-
-  val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
-    SortPluginsRule.patterns
-      .map { it.toRegex() }
-      .map { regex ->
-        { str: String -> !str.matches(regex) }
-      }
-      .map { booleanLambda ->
-        { psi: PsiElementWithSurroundingText ->
-
-          booleanLambda.invoke(psi.psiElement.text)
-        }
-      }.toTypedArray()
-
-  @Suppress("SpreadOperator")
-  val pluginComparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
-
-  val dependencyComparator: Comparator<PsiElementWithSurroundingText> =
-    compareBy { psiElementWithSurroundings ->
-      psiElementWithSurroundings
-        .psiElement
-        .text
-        .toLowerCase(Locale.US)
-    }
+  val ignoreAll: Set<String> = extension.ignoreAll
 
   @TaskAction
   fun evaluate() {
@@ -97,7 +69,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
         Output.printMagenta("\t${project.path}")
 
         val (fixed, toFix) = list.partition { finding ->
-          autoCorrect.get() && (finding as? Fixable)?.fix() ?: false
+          autoCorrect && (finding as? Fixable)?.fix() ?: false
         }
 
         fixed.forEach { finding ->

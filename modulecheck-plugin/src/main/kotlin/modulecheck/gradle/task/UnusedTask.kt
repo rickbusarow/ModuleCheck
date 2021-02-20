@@ -17,15 +17,12 @@ package modulecheck.gradle.task
 
 import modulecheck.api.Finding
 import modulecheck.core.mcp
-import modulecheck.core.rule.UnusedRule
+import modulecheck.core.rule.UnusedDependencyRule
 import modulecheck.gradle.project2
 
 abstract class UnusedTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .project2()
@@ -33,7 +30,7 @@ abstract class UnusedTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          UnusedRule(proj, alwaysIgnore, ignoreAll).check()
+          UnusedDependencyRule(extension).check(proj)
         }
     }
   }

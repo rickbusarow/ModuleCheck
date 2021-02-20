@@ -23,9 +23,6 @@ import modulecheck.gradle.project2
 abstract class MustBeApiTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
-    val alwaysIgnore = alwaysIgnore.get()
-    val ignoreAll = ignoreAll.get()
-
     return measured {
       project
         .project2()
@@ -33,7 +30,7 @@ abstract class MustBeApiTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          MustBeApiRule(proj, alwaysIgnore, ignoreAll).check()
+          MustBeApiRule(extension).check(proj)
         }
     }
   }

@@ -16,24 +16,20 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.mcp
 
 class MustBeApiRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>
-) : AbstractRule<MustBeApiFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<MustBeApiFinding>() {
 
-  override fun check(): List<MustBeApiFinding> {
-    if (project.path in ignoreAll) return emptyList()
+  override val id = "MustBeApi"
 
+  override fun check(project: Project2): List<MustBeApiFinding> {
     return project
       .mcp()
       .mustBeApi
-      .filterNot { cpp -> cpp.project.path in alwaysIgnore }
       .map { MustBeApiFinding(project.buildFile, it.project, it.config) }
       .distinctBy { it.positionOrNull() }
   }

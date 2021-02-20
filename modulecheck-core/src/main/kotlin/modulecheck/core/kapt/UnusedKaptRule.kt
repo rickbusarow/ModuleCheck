@@ -15,7 +15,10 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.*
+import modulecheck.api.Config
+import modulecheck.api.Project2
+import modulecheck.api.asMap
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.mcp
 import modulecheck.core.rule.AbstractRule
 
@@ -23,18 +26,15 @@ const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>,
-  private val kaptMatchers: List<KaptMatcher>
-) : AbstractRule<UnusedKaptFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
+  override val settings: ModuleCheckSettings
+) : AbstractRule<UnusedKaptFinding>() {
 
-  override fun check(): List<UnusedKaptFinding> {
+  private val kaptMatchers = settings.additionalKaptMatchers + defaultKaptMatchers
+
+  override val id = "UnusedKapt"
+
+  override fun check(project: Project2): List<UnusedKaptFinding> {
     val matchers = kaptMatchers.asMap()
-
-    if (project.path in ignoreAll) return emptyList()
 
     return with(project.mcp()) {
       listOf(
