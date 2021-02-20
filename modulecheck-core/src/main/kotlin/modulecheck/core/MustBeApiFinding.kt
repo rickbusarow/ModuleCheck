@@ -17,9 +17,10 @@ package modulecheck.core
 
 import modulecheck.api.Config
 import modulecheck.api.Project2
+import java.io.File
 
 data class MustBeApiFinding(
-  override val dependentProject: Project2,
+  override val buildFile: File,
   override val dependencyProject: Project2,
   override val config: Config
 ) : DependencyFinding("mustBeApi") {
@@ -32,9 +33,9 @@ data class MustBeApiFinding(
     val oldText = element.toString()
     val newText = oldText.replace(config.name, "api")
 
-    val buildFileText = dependentProject.buildFile.readText()
+    val buildFileText = buildFile.readText()
 
-    dependentProject.buildFile.writeText(buildFileText.replace(oldText, newText))
+    buildFile.writeText(buildFileText.replace(oldText, newText))
 
     return true
   }

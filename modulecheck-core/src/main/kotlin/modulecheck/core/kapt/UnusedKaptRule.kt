@@ -63,12 +63,12 @@ class UnusedKaptRule(
             }
           } == true
         }
-          .map { UnusedKaptProcessorFinding(project, it.coordinates, config) }
+          .map { UnusedKaptProcessorFinding(project.buildFile, it.coordinates, config) }
 
         val unusedPlugin = project.kaptProcessors.all().size == unused.size && project.hasKapt
 
         if (unusedPlugin) {
-          unused + UnusedKaptPluginFinding(project)
+          unused + UnusedKaptPluginFinding(project.buildFile)
         } else {
           unused
         }

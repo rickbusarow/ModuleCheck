@@ -34,7 +34,7 @@ class MustBeApiRule(
       .mcp()
       .mustBeApi
       .filterNot { cpp -> cpp.project.path in alwaysIgnore }
-      .map { MustBeApiFinding(project, it.project, it.config) }
+      .map { MustBeApiFinding(project.buildFile, it.project, it.config) }
       .distinctBy { it.positionOrNull() }
   }
 }

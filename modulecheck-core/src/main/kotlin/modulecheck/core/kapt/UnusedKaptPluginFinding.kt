@@ -18,12 +18,12 @@ package modulecheck.core.kapt
 import modulecheck.api.Finding
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
-import modulecheck.api.Project2
+import java.io.File
 
 interface UnusedKaptFinding : Finding, Fixable
 
 data class UnusedKaptPluginFinding(
-  override val dependentProject: Project2
+  override val buildFile: File
 ) : UnusedKaptFinding {
 
   override val dependencyIdentifier = KAPT_PLUGIN_ID
@@ -31,8 +31,7 @@ data class UnusedKaptPluginFinding(
   override val problemName = "unused kapt plugin"
 
   override fun positionOrNull(): Position? {
-    val text = dependentProject
-      .buildFile
+    val text = buildFile
       .readText()
 
     val lines = text.lines()

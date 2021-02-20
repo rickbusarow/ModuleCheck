@@ -49,7 +49,7 @@ class DisableAndroidResourcesRule(
     val noResources = androidProject.resourceFiles.isEmpty()
 
     return if (noResources) {
-      listOf(UnusedResourcesGenerationFinding(project))
+      listOf(UnusedResourcesGenerationFinding(project.buildFile))
     } else {
       emptyList()
     }

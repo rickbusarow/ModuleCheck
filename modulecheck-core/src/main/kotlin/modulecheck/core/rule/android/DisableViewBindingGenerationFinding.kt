@@ -17,13 +17,13 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
-import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.AndroidBuildFeaturesVisitor
-import modulecheck.psi.internal.asKtsFileOrNull
+import java.io.File
 
 data class DisableViewBindingGenerationFinding(
-  override val dependentProject: Project2
+  override val buildFile: File
 ) : Finding, Fixable {
 
   override val problemName = "unused ViewBinding generation"
@@ -31,13 +31,13 @@ data class DisableViewBindingGenerationFinding(
   override val dependencyIdentifier = ""
 
   override fun elementOrNull(): PsiElementWithSurroundingText? {
-    val buildFile = dependentProject.buildFile.asKtsFileOrNull() ?: return null
+    val buildFile = kotlinBuildFileOrNull() ?: return null
 
     return AndroidBuildFeaturesVisitor().find(buildFile, "viewBinding")
   }
 
   override fun positionOrNull(): Finding.Position? {
-    val ktFile = dependentProject.buildFile.asKtsFileOrNull() ?: return null
+    val ktFile = kotlinBuildFileOrNull() ?: return null
 
     return androidBlockParser.parse(ktFile)?.let { result ->
 
@@ -61,7 +61,7 @@ data class DisableViewBindingGenerationFinding(
   }
 
   override fun fix(): Boolean {
-    val ktFile = dependentProject.buildFile.asKtsFileOrNull() ?: return false
+    val ktFile = kotlinBuildFileOrNull() ?: return false
 
     val oldBlock = elementOrNull()?.toString() ?: return false
 
@@ -71,7 +71,7 @@ data class DisableViewBindingGenerationFinding(
 
     val oldText = ktFile.text
 
-    dependentProject.buildFile.writeText(oldText.replace(oldBlock, newBlock))
+    buildFile.writeText(oldText.replace(oldBlock, newBlock))
 
     return true
   }

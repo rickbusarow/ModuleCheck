@@ -28,11 +28,11 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
 
   override fun elementOrNull(): PsiElementWithSurroundingText? {
     return MCP.from(dependencyProject)
-      .psiElementIn(dependentProject, config)
+      .psiElementIn(buildFile, config)
   }
 
   override fun positionOrNull(): Finding.Position? {
     return MCP.from(dependencyProject)
-      .positionIn(dependentProject, config)
+      .positionIn(buildFile, config)
   }
 }
