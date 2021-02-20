@@ -18,13 +18,14 @@ package modulecheck.core.internal
 import modulecheck.core.files.JavaFile
 import modulecheck.core.files.KotlinFile
 import modulecheck.psi.internal.asKtFile
+import modulecheck.psi.internal.asKtFileOrNull
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
 
 fun Sequence<File>.ktFiles() = filter { it.isFile }
-  .mapNotNull { it.asKtFile() }
+  .mapNotNull { it.asKtFileOrNull() }
 
 fun File.jvmFiles(bindingContext: BindingContext) = walkTopDown()
   .files()
