@@ -21,12 +21,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun Project.common() {
 
+  val ci = !System.getenv("CI").isNullOrBlank()
+
   tasks.withType<KotlinCompile>()
     .configureEach {
 
       kotlinOptions {
 
-//        allWarningsAsErrors = true
+        allWarningsAsErrors = ci
 
         jvmTarget = "1.8"
       }

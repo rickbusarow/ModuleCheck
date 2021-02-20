@@ -188,17 +188,17 @@ class MCP private constructor(
     } else emptySet()
   }
 
-/*  val testAndroidResDeclarations by lazy {
+  /*  val testAndroidResDeclarations by lazy {
 
-    val rPackage = androidPackageOrNull
-    val resDir = project.testResRootOrNull()
+      val rPackage = androidPackageOrNull
+      val resDir = project.testResRootOrNull()
 
-    if (isAndroid && rPackage != null && resDir != null) {
-      AndroidResourceParser.parse(resDir)
-    } else emptySet()
-  }
+      if (isAndroid && rPackage != null && resDir != null) {
+        AndroidResourceParser.parse(resDir)
+      } else emptySet()
+    }
 
-  val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }*/
+    val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }*/
   val mustBeApi by lazy {
 
     val noIdeaWhereTheyComeFrom = mainFiles
@@ -266,13 +266,22 @@ class MCP private constructor(
   fun getMainDepth(): Int {
     val all = dependencies.main()
 
-    return if (all.isEmpty()) 0
-    else all.map { it.mcp().getMainDepth() }.max()!! + 1
+    return if (all.isEmpty()) {
+      0
+    } else {
+      // `max` is deprecated but older Gradle versions use Kotlin 1.3.72 where the `maxOrNull` replacement doesn't exist
+      @Suppress("DEPRECATION")
+      all
+        .map { it.mcp().getMainDepth() }
+        .max()!! + 1
+    }
   }
 
   fun getTestDepth(): Int = if (dependencies.testImplementation.isEmpty()) {
     0
   } else {
+    // `max` is deprecated but older Gradle versions use Kotlin 1.3.72 where the `maxOrNull` replacement doesn't exist
+    @Suppress("DEPRECATION")
     dependencies.testImplementation
       .map { it.mcp().getMainDepth() }
       .max()!! + 1
@@ -282,6 +291,8 @@ class MCP private constructor(
     get() = if (dependencies.androidTest.isEmpty()) {
       0
     } else {
+      // `max` is deprecated but older Gradle versions use Kotlin 1.3.72 where the `maxOrNull` replacement doesn't exist
+      @Suppress("DEPRECATION")
       dependencies.androidTest
         .map { it.mcp().getMainDepth() }
         .max()!! + 1

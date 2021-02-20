@@ -25,9 +25,7 @@ import modulecheck.core.rule.android.DisableAndroidResourcesRule
 import modulecheck.core.rule.android.DisableViewBindingRule
 import modulecheck.core.rule.sort.SortDependenciesRule
 import modulecheck.core.rule.sort.SortPluginsRule
-import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.gradle.project2
-import org.gradle.kotlin.dsl.getByType
 
 abstract class ModuleCheckTask : AbstractModuleCheckTask() {
 
@@ -86,27 +84,15 @@ abstract class ModuleCheckTask : AbstractModuleCheckTask() {
             }
 
             if (checks.sortDependencies) {
-              addAll(
-                SortDependenciesRule(settings)
-                  .check(proj)
-              )
+              addAll(SortDependenciesRule(settings).check(proj))
             }
 
             if (checks.sortPlugins) {
-              addAll(
-                SortPluginsRule(settings)
-                  .check(proj)
-              )
+              addAll(SortPluginsRule(settings).check(proj))
             }
 
             if (checks.kapt) {
-              val additionalKaptMatchers = project.extensions
-                .getByType<ModuleCheckExtension>()
-                .additionalKaptMatchers
-
-              addAll(
-                UnusedKaptRule(settings).check(proj)
-              )
+              addAll(UnusedKaptRule(settings).check(proj))
             }
 
             if (checks.anvilFactories) {
