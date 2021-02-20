@@ -17,6 +17,8 @@ package modulecheck.core.rule
 
 import modulecheck.api.Project2
 import modulecheck.core.MCP
+import modulecheck.psi.internal.asKtsFileOrNull
+import org.jetbrains.kotlin.psi.KtFile
 
 abstract class AbstractRule<T>(
   protected val project: Project2,
@@ -25,6 +27,8 @@ abstract class AbstractRule<T>(
 ) {
 
   abstract fun check(): List<T>
+
+  protected fun kotlinBuildFileOrNull(): KtFile? = project.buildFile.asKtsFileOrNull()
 
   protected fun Project2.moduleCheckProjects() =
     project.rootProject.allprojects

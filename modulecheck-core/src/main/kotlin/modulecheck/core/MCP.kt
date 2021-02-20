@@ -18,7 +18,6 @@ package modulecheck.core
 import modulecheck.api.*
 import modulecheck.api.Config.*
 import modulecheck.api.Finding.Position
-import modulecheck.api.JvmFile
 import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.core.files.KotlinFile
 import modulecheck.core.files.XmlFile
@@ -219,6 +218,7 @@ class MCP private constructor(
         }
       }
   }
+
   fun dependents() = cache
     .values
     .filter {
@@ -293,8 +293,10 @@ class MCP private constructor(
     parent: Project2,
     configuration: Config
   ): PsiElementWithSurroundingText? {
+    val kotlinBuildFile = parent.buildFile.asKtsFileOrNull() ?: return null
+
     val result = DslBlockVisitor("dependencies")
-      .parse(parent.buildFile.asKtFile())
+      .parse(kotlinBuildFile)
       ?: return null
 
     val p = ProjectDependencyDeclarationVisitor(configuration, project.path)
