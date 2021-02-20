@@ -20,10 +20,9 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.core.rule.AbstractRule
-import modulecheck.psi.*
 import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.internal.*
 import java.util.*
 
 fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
@@ -48,7 +47,9 @@ class SortDependenciesFinding(
   override fun positionOrNull(): Position? = null
 
   override fun fix(): Boolean {
-    val result = visitor.parse(dependentProject.buildFile.asKtFile()) ?: return false
+    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+
+    val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val sorted = result
       .elements
@@ -80,7 +81,9 @@ class SortDependenciesRule(
   project, alwaysIgnore, ignoreAll
 ) {
   override fun check(): List<SortDependenciesFinding> {
-    val result = visitor.parse(project.buildFile.asKtFile()) ?: return emptyList()
+    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return emptyList()
+
+    val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
 
     val sorted = result
       .elements

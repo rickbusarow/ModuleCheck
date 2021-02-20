@@ -19,7 +19,6 @@ import modulecheck.api.Config
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.internal.asKtFile
 
 data class InheritedImplementationDependencyFinding(
   override val dependentProject: Project2,
@@ -40,7 +39,9 @@ data class InheritedImplementationDependencyFinding(
 
     val fromPath = from?.path ?: return false
 
-    val result = visitor.parse(dependentProject.buildFile.asKtFile()) ?: return false
+    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+
+    val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
       it.psiElement.text.contains(fromPath)

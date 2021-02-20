@@ -20,8 +20,8 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.DependencyFinding
 import modulecheck.core.MCP
+import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.internal.asKtFile
 
 data class OverShotDependencyFinding(
   override val dependentProject: Project2,
@@ -38,11 +38,13 @@ data class OverShotDependencyFinding(
   }
 
   override fun fix(): Boolean {
-    val parser = DslBlockVisitor("dependencies")
+    val visitor = DslBlockVisitor("dependencies")
 
     val fromPath = from?.path ?: return false
 
-    val result = parser.parse(dependentProject.buildFile.asKtFile()) ?: return false
+    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+
+    val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
       it.psiElement.text.contains(fromPath)
