@@ -17,14 +17,15 @@ package modulecheck.api
 
 import modulecheck.api.Finding.Position
 import modulecheck.api.psi.PsiElementWithSurroundingText
+import java.io.File
 
 interface Finding {
 
   val problemName: String
-  val dependentProject: Project2
+  val buildFile: File
 
   fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName"
+    return "${buildFile.path}: ${positionString()} $problemName"
   }
 
   fun elementOrNull(): PsiElementWithSurroundingText? = null
@@ -44,11 +45,11 @@ interface Fixable : Finding {
   val dependencyIdentifier: String
 
   override fun logString(): String {
-    return "${dependentProject.buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
+    return "${buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
   }
 
   fun fix(): Boolean {
-    val text = dependentProject.buildFile.readText()
+    val text = buildFile.readText()
 
     return elementOrNull()
       ?.psiElement
@@ -65,7 +66,7 @@ interface Fixable : Finding {
           }
           .joinToString("\n")
 
-        dependentProject.buildFile
+        buildFile
           .writeText(text.replace(element.text, newText))
 
         true

@@ -19,9 +19,10 @@ import modulecheck.api.Config
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.psi.DslBlockVisitor
+import java.io.File
 
 data class InheritedImplementationDependencyFinding(
-  override val dependentProject: Project2,
+  override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val config: Config,
@@ -31,7 +32,7 @@ data class InheritedImplementationDependencyFinding(
   override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
 
   override fun positionOrNull(): Position? {
-    return from?.positionIn(dependentProject, config)
+    return from?.positionIn(buildFile, config)
   }
 
   override fun fix(): Boolean {
@@ -56,11 +57,11 @@ data class InheritedImplementationDependencyFinding(
       newValue = (newDeclaration + "\n" + match).trimStart()
     )
 
-    val text = dependentProject.buildFile.readText()
+    val text = buildFile.readText()
 
     val newText = text.replace(result.blockText, newDependencies)
 
-    dependentProject.buildFile.writeText(newText)
+    buildFile.writeText(newText)
 
     return true
   }

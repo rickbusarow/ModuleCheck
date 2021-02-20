@@ -68,7 +68,7 @@ object OvershotParser : Parser<OverShotDependencyFinding>() {
           ?.config
 
         OverShotDependencyFinding(
-          dependentProject = project,
+          buildFile = project.buildFile,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
           config = sourceConfig ?: Config.Api,

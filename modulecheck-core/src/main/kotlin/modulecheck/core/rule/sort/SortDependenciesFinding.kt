@@ -15,25 +15,29 @@
 
 package modulecheck.core.rule.sort
 
-import modulecheck.api.Project2
+import modulecheck.api.Finding
+import modulecheck.api.Fixable
 import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
+import java.io.File
 import java.util.*
 
-class SortDependenciesRule(
-  project: Project2,
-  alwaysIgnore: Set<String>,
-  ignoreAll: Set<String>,
+class SortDependenciesFinding(
+  override val buildFile: File,
   val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>
-) : AbstractRule<SortDependenciesFinding>(
-  project, alwaysIgnore, ignoreAll
-) {
-  override fun check(): List<SortDependenciesFinding> {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return emptyList()
+) : Finding, Fixable {
+  override val problemName = "unsorted dependencies"
 
-    val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
+  override val dependencyIdentifier = ""
+
+  override fun positionOrNull(): Finding.Position? = null
+
+  override fun fix(): Boolean {
+    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+
+    val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val sorted = result
       .elements
@@ -45,23 +49,22 @@ class SortDependenciesRule(
       }
       .trim()
 
-    return if (result.blockText == sorted) {
-      emptyList()
-    } else {
-      listOf(SortDependenciesFinding(project.buildFile, visitor, comparator))
-    }
-  }
+    val allText = buildFile.readText()
 
-  companion object {
-    val patterns = listOf(
-      """id\("com\.android.*"\)""",
-      """id\("android-.*"\)""",
-      """id\("java-library"\)""",
-      """kotlin\("jvm"\)""",
-      """android.*""",
-      """javaLibrary.*""",
-      """kotlin.*""",
-      """id.*"""
-    )
+    val newText = allText.replace(result.blockText, sorted)
+
+    buildFile.writeText(newText)
+
+    return true
   }
 }
+
+fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
+  it
+    .psiElement
+    .text
+    .split("[(.]".toRegex())
+    .take(2)
+    .joinToString("-")
+}.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
+  .map { it.value }

@@ -17,11 +17,11 @@ package modulecheck.core.kapt
 
 import modulecheck.api.Config
 import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
 import modulecheck.api.positionOf
+import java.io.File
 
 data class UnusedKaptProcessorFinding(
-  override val dependentProject: Project2,
+  override val buildFile: File,
   val dependencyPath: String,
   val config: Config
 ) : UnusedKaptFinding {
@@ -39,13 +39,11 @@ data class UnusedKaptProcessorFinding(
       .drop(1)
       .joinToString(":", ":")
 
-    return dependentProject
-      .buildFile
+    return buildFile
       .readText()
       .lines()
       .positionOf(dependencyPath, config)
-      ?: dependentProject
-        .buildFile
+      ?: buildFile
         .readText()
         .lines()
         .positionOf(correctedPath, config)

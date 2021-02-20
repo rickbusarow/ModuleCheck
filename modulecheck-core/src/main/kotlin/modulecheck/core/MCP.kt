@@ -290,10 +290,10 @@ class MCP private constructor(
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
 
   fun psiElementIn(
-    parent: Project2,
+    parentBuildFile: File,
     configuration: Config
   ): PsiElementWithSurroundingText? {
-    val kotlinBuildFile = parent.buildFile.asKtsFileOrNull() ?: return null
+    val kotlinBuildFile = parentBuildFile.asKtsFileOrNull() ?: return null
 
     val result = DslBlockVisitor("dependencies")
       .parse(kotlinBuildFile)
@@ -309,10 +309,9 @@ class MCP private constructor(
   }
 
   fun positionIn(
-    parent: Project2,
+    parentBuildFile: File,
     configuration: Config
-  ): Position? = parent
-    .buildFile
+  ): Position? = parentBuildFile
     .readText()
     .lines()
     .positionOf(project, configuration)

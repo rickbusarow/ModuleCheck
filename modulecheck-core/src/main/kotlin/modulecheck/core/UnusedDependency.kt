@@ -18,9 +18,10 @@ package modulecheck.core
 import modulecheck.api.Config
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
+import java.io.File
 
 data class UnusedDependency(
-  override val dependentProject: Project2,
+  override val buildFile: File,
   override val dependencyProject: Project2,
   override val dependencyIdentifier: String,
   override val config: Config

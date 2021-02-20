@@ -91,7 +91,7 @@ object AnvilFactoryParser {
       !allImports.contains(daggerComponent) && !maybeExtra.contains(daggerComponent)
 
     return if (couldBeAnvil) {
-      listOf(CouldUseAnvilFinding(mcp.project))
+      listOf(CouldUseAnvilFinding(mcp.project.buildFile))
     } else {
       listOf()
     }
