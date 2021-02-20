@@ -47,9 +47,3 @@ val testJvm by tasks.registering {
 val buildTests by tasks.registering {
   dependsOn("testClasses")
 }
-
-dependencies {
-
-  api(Libs.Kotlinx.Coroutines.core)
-  api(Libs.Kotlinx.Coroutines.coreJvm)
-}

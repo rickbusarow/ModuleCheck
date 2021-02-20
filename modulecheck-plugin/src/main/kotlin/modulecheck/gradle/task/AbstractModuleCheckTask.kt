@@ -15,7 +15,6 @@
 
 package modulecheck.gradle.task
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.psi.PsiElementWithSurroundingText
@@ -75,7 +74,7 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
     }
 
   @TaskAction
-  fun evaluate() = runBlocking {
+  fun evaluate() {
     val numIssues = getFindings().finish()
 
     if (numIssues > 0) {
