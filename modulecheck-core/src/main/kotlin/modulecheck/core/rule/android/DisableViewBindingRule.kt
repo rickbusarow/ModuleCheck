@@ -19,16 +19,18 @@ import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.mcp
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
 
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
 class DisableViewBindingRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<DisableViewBindingGenerationFinding>() {
+) : ModuleCheckRule<DisableViewBindingGenerationFinding>() {
 
   override val id = "DisableViewBinding"
+  override val description = "Finds modules which have ViewBinding enabled, " +
+    "but don't actually use any generated ViewBinding objects from that module"
 
   @Suppress("ReturnCount")
   override fun check(project: Project2): List<DisableViewBindingGenerationFinding> {
@@ -51,7 +53,7 @@ class DisableViewBindingRule(
     val dependents = project.dependendents
 
     val basePackage = project.androidPackageOrNull
-      ?: return listOf(DisableViewBindingGenerationFinding(project.buildFile))
+      ?: return listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
 
     val usedLayouts = layouts
       .filter { it.exists() }
@@ -81,7 +83,7 @@ class DisableViewBindingRule(
     return if (usedLayouts.isNotEmpty()) {
       emptyList()
     } else {
-      listOf(DisableViewBindingGenerationFinding(project.buildFile))
+      listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
     }
   }
 

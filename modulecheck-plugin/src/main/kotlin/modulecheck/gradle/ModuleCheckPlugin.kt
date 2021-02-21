@@ -15,13 +15,18 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.Config
-import modulecheck.api.Finding.Position
+import modulecheck.api.Finding
 import modulecheck.api.Project2
-import modulecheck.gradle.task.*
+import modulecheck.api.settings.ModuleCheckExtension
+import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.gradle.task.ModuleCheckAllTask
+import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.register
+import javax.inject.Inject
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -30,67 +35,32 @@ fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
 class ModuleCheckPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
-    target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
-    target.tasks.register("moduleCheck", ModuleCheckTask::class.java)
-    target.tasks.register("moduleCheckOvershot", OvershotTask::class.java)
-    target.tasks.register("moduleCheckRedundant", RedundantTask::class.java)
-    target.tasks.register("moduleCheckUnused", UnusedTask::class.java)
-    target.tasks.register("moduleCheckMustBeApi", MustBeApiTask::class.java)
-    target.tasks.register("moduleCheckInheritedImplementation", InheritedImplementationTask::class.java)
-    target.tasks.register("moduleCheckAnvilFactories",  AnvilFactoryTask::class.java)
-    target.tasks.register("moduleCheckUsed", UsedTask::class.java)
-    target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
-    target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
-    target.tasks.register("moduleCheckKapt", UnusedKaptTask::class.java)
-    target.tasks.register(
-      "moduleCheckDisableAndroidResources",
-      DisableAndroidResourcesTask::class.java
-    )
-    target.tasks.register("moduleCheckDisableViewBinding", DisableViewBindingTask::class.java)
+    val settings = target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
+
+    val factory = ModuleCheckRuleFactory()
+
+    val rules = factory.create(settings)
+
+    rules
+      .onEach { rule ->
+        target.tasks.register("moduleCheck${rule.id}", DynamicModuleCheckTask::class, rule)
+      }
+
+    target.tasks.register("moduleCheck", ModuleCheckAllTask::class.java, rules)
   }
 }
 
-internal fun List<String>.positionOf(
-  project: Project,
-  configuration: Config
-): Position? {
-  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
+abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
+  val rule: ModuleCheckRule<T>
+) : ModuleCheckTask() {
 
-  val row = indexOfFirst { it.trim().matches(reg) }
+  init {
+    description = rule.description
+  }
 
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
-}
-
-internal fun List<String>.positionOf(
-  project: Project2,
-  configuration: Config
-): Position? {
-  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
-}
-
-internal fun List<String>.positionOf(
-  path: String,
-  configuration: Config
-): Position? {
-  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
+  override fun List<Project2>.getFindings(): List<T> {
+    return flatMap { project ->
+      rule.check(project)
+    }
+  }
 }

@@ -55,7 +55,8 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
           ?.config
 
         InheritedImplementationDependencyFinding(
-          buildFile = mcp.project.buildFile,
+          dependentPath = project.path,
+          buildFile = project.buildFile,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
           config = sourceConfig ?: Config.Api,

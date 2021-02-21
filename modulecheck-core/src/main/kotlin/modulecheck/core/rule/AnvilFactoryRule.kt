@@ -23,9 +23,11 @@ import modulecheck.core.parser.AnvilFactoryParser
 
 class AnvilFactoryRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<CouldUseAnvilFinding>() {
+) : ModuleCheckRule<CouldUseAnvilFinding>() {
 
   override val id = "AnvilFactoryGeneration"
+  override val description = "Finds modules which could use Anvil's factory generation " +
+    "instead of Dagger's"
 
   override fun check(project: Project2): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project.mcp())

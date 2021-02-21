@@ -12,17 +12,17 @@ plugins {
 moduleCheck {
 
   checks {
-    overshot = true // default is true
-    redundant = false // default is false
-    unused = true // default is true
-    sortDependencies = false // default is false
-    sortPlugins = false // default is false
-    kapt = true // default is true
-    mustBeApi = true // default is true
-    inheritedImplementation = true // default is true
-    anvilFactories = true // default is true
-    disableAndroidResources = false // default is false
-    disableViewBinding = false // default is false
+    overshotDependency = true  // default is true
+    redundantDependency = false  // default is false
+    unusedDependency = true  // default is true
+    mustBeApi = true  // default is true
+    inheritedImplementation = true  // default is true
+    sortDependencies = false  // default is false
+    sortPlugins = false  // default is false
+    unusedKapt = true  // default is true
+    anvilFactoryGeneration = true  // default is true
+    disableAndroidResources = false  // default is false
+    disableViewBinding = false  // default is false
   }
 
   // allow these modules to be declared as dependency anywhere,

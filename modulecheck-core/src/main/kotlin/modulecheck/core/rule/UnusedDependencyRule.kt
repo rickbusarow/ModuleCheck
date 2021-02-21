@@ -22,9 +22,10 @@ import modulecheck.core.mcp
 
 class UnusedDependencyRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<UnusedDependency>() {
+) : ModuleCheckRule<UnusedDependency>() {
 
   override val id = "UnusedDependency"
+  override val description = "Finds project dependencies which aren't used in the declaring module"
 
   override fun check(project: Project2): List<UnusedDependency> {
     return project.mcp()

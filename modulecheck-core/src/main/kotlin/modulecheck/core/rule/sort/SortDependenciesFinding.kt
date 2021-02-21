@@ -24,9 +24,10 @@ import java.io.File
 import java.util.*
 
 class SortDependenciesFinding(
+  override val dependentPath: String,
   override val buildFile: File,
-  val visitor: DslBlockVisitor,
-  val comparator: Comparator<PsiElementWithSurroundingText>
+  private val visitor: DslBlockVisitor,
+  private val comparator: Comparator<String>
 ) : Finding, Fixable {
   override val problemName = "unsorted dependencies"
 
@@ -41,10 +42,10 @@ class SortDependenciesFinding(
 
     val sorted = result
       .elements
-      .grouped()
+      .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedWith(comparator)
+          .sortedBy { it.psiElement.text.toLowerCase(Locale.US) }
           .joinToString("\n")
       }
       .trim()
@@ -59,12 +60,14 @@ class SortDependenciesFinding(
   }
 }
 
-fun List<PsiElementWithSurroundingText>.grouped() = groupBy {
-  it
-    .psiElement
+fun List<PsiElementWithSurroundingText>.grouped(
+  comparator: Comparator<String>
+) = groupBy {
+  it.psiElement
     .text
     .split("[(.]".toRegex())
     .take(2)
     .joinToString("-")
-}.toSortedMap(compareBy { it.toLowerCase(Locale.US) })
+}
+  .toSortedMap(comparator)
   .map { it.value }

@@ -142,6 +142,11 @@ object Libs {
     }
   }
 
+  object MockK {
+
+    const val core = "io.mockk:mockk:1.10.5"
+  }
+
   object RickBusarow {
 
     object Hermit {
@@ -160,7 +165,6 @@ object Libs {
       const val core = "com.rickbusarow.dispatch:dispatch-core:$version"
       const val detekt = "com.rickbusarow.dispatch:dispatch-detekt:$version"
       const val espresso = "com.rickbusarow.dispatch:dispatch-android-espresso:$version"
-      const val extensions = "com.rickbusarow.dispatch:dispatch-extensions:$version"
       const val lifecycle = "com.rickbusarow.dispatch:dispatch-android-lifecycle:$version"
       const val lifecycleExtensions =
         "com.rickbusarow.dispatch:dispatch-android-lifecycle-extensions:$version"

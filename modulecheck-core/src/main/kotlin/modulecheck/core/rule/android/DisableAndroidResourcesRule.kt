@@ -15,9 +15,10 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.api.*
+import modulecheck.api.AndroidProject2
+import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
 import net.swiftzer.semver.SemVer
 
@@ -28,9 +29,12 @@ private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 1, pat
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<UnusedResourcesGenerationFinding>() {
+) : ModuleCheckRule<UnusedResourcesGenerationFinding>() {
 
   override val id = "DisableAndroidResources"
+  override val description =
+    "Finds modules which have android resources R file generation enabled, " +
+      "but don't actually use any resources from the module"
 
   @Suppress("ReturnCount")
   override fun check(project: Project2): List<UnusedResourcesGenerationFinding> {
@@ -48,7 +52,7 @@ class DisableAndroidResourcesRule(
     val noResources = androidProject.resourceFiles.isEmpty()
 
     return if (noResources) {
-      listOf(UnusedResourcesGenerationFinding(project.buildFile))
+      listOf(UnusedResourcesGenerationFinding(project.path, project.buildFile))
     } else {
       emptyList()
     }

@@ -21,6 +21,7 @@ import modulecheck.api.Project2
 import java.io.File
 
 data class UnusedDependency(
+  override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
   override val dependencyIdentifier: String,

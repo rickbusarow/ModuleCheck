@@ -21,6 +21,7 @@ import modulecheck.api.positionOf
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
+  override val dependentPath: String,
   override val buildFile: File,
   val dependencyPath: String,
   val config: Config

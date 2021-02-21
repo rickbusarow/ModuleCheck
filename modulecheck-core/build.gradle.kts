@@ -37,6 +37,7 @@ dependencies {
 
   testImplementation(Libs.JUnit.api)
   testImplementation(Libs.JUnit.engine)
+  testImplementation(Libs.MockK.core)
   testImplementation(Libs.JUnit.params)
   testImplementation(Libs.Kotest.assertions)
   testImplementation(Libs.Kotest.properties)

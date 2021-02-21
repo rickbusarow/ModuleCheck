@@ -20,6 +20,7 @@ import modulecheck.api.Project2
 import java.io.File
 
 data class RedundantDependencyFinding(
+  override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,

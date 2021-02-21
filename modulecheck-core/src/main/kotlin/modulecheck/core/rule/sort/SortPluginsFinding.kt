@@ -21,9 +21,10 @@ import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import java.io.File
-import java.util.Comparator
+import java.util.*
 
 class SortPluginsFinding(
+  override val dependentPath: String,
   override val buildFile: File,
   val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>

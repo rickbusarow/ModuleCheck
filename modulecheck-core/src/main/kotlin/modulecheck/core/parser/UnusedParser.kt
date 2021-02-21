@@ -53,10 +53,11 @@ object UnusedParser : Parser<UnusedDependency>() {
     val grouped = unusedInAtLeastOneDependent.map { cpp ->
 
       UnusedDependency(
-        mcp.project.buildFile,
-        cpp.project,
-        cpp.project.path,
-        cpp.config
+        dependentPath = project.path,
+        buildFile = project.buildFile,
+        dependencyProject = cpp.project,
+        dependencyIdentifier = cpp.project.path,
+        config = cpp.config
       )
     }
       .groupBy { it.config }
@@ -65,10 +66,11 @@ object UnusedParser : Parser<UnusedDependency>() {
     val newGrouped = unusedHere.map { cpp ->
 
       UnusedDependency(
-        mcp.project.buildFile,
-        cpp.project,
-        cpp.project.path,
-        cpp.config
+        dependentPath = project.path,
+        buildFile = project.buildFile,
+        dependencyProject = cpp.project,
+        dependencyIdentifier = cpp.project.path,
+        config = cpp.config
       )
     }
       .groupBy { it.config }

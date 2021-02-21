@@ -22,6 +22,7 @@ import modulecheck.psi.DslBlockVisitor
 import java.io.File
 
 data class InheritedImplementationDependencyFinding(
+  override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
