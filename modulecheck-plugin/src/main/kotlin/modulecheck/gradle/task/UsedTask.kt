@@ -15,7 +15,7 @@
 
 package modulecheck.gradle.task
 
-abstract class UsedTask : AbstractModuleCheckTask() {
+abstract class UsedTask : ModuleCheckTask() {
 /*
   @TaskAction
   fun execute() = runBlocking {

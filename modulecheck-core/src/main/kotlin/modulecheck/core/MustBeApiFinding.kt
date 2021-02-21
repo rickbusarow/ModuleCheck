@@ -17,10 +17,8 @@ package modulecheck.core
 
 import modulecheck.api.Config
 import modulecheck.api.Project2
-import java.io.File
 
 data class MustBeApiFinding(
-  override val buildFile: File,
   override val dependencyProject: Project2,
   override val config: Config
 ) : DependencyFinding("mustBeApi") {

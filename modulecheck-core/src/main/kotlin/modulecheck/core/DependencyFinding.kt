@@ -21,7 +21,13 @@ import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
 
-abstract class DependencyFinding(override val problemName: String) : Fixable, Finding {
+abstract class DependencyFinding(
+  override val problemName: String
+) : Fixable,
+  Finding {
+
+  override val path get() = dependencyProject.path
+  override val buildFile get() = dependencyProject.buildFile
 
   abstract val dependencyProject: Project2
   abstract val config: Config
@@ -34,5 +40,23 @@ abstract class DependencyFinding(override val problemName: String) : Fixable, Fi
   override fun positionOrNull(): Finding.Position? {
     return MCP.from(dependencyProject)
       .positionIn(buildFile, config)
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is DependencyFinding) return false
+
+    if (problemName != other.problemName) return false
+    if (dependencyProject != other.dependencyProject) return false
+    if (config != other.config) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = problemName.hashCode()
+    result = 31 * result + dependencyProject.hashCode()
+    result = 31 * result + config.hashCode()
+    return result
   }
 }

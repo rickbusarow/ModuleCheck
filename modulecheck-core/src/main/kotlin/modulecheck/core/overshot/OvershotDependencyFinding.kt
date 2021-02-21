@@ -22,10 +22,8 @@ import modulecheck.core.DependencyFinding
 import modulecheck.core.MCP
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
-import java.io.File
 
 data class OvershotDependencyFinding(
-  override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val config: Config,

@@ -16,10 +16,8 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.*
-import modulecheck.core.mcp
-import modulecheck.core.rule.android.DisableAndroidResourcesRule
-import modulecheck.gradle.project2
 
+/*
 abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
@@ -31,8 +29,9 @@ abstract class DisableAndroidResourcesTask : AbstractModuleCheckTask() {
         .sortedByDescending { it.mcp().getMainDepth() }
         .filterIsInstance<AndroidProject2>()
         .flatMap { proj ->
-          DisableAndroidResourcesRule(extension).check(proj)
+          DisableAndroidResourcesRule(settings).check(proj)
         }
     }
   }
 }
+*/

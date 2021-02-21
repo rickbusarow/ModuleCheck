@@ -22,6 +22,7 @@ import java.io.File
 interface Finding {
 
   val problemName: String
+  val path: String
   val buildFile: File
 
   fun logString(): String {

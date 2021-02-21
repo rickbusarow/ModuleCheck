@@ -15,11 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.mcp
-import modulecheck.core.rule.RedundantRule
-import modulecheck.gradle.project2
-
+/*
 abstract class RedundantTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
@@ -30,8 +26,9 @@ abstract class RedundantTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          RedundantRule(extension).check(proj)
+          RedundantRule(settings).check(proj)
         }
     }
   }
 }
+*/

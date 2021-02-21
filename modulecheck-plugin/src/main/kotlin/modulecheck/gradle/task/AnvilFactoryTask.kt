@@ -15,11 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.mcp
-import modulecheck.core.rule.AnvilFactoryRule
-import modulecheck.gradle.project2
-
+/*
 abstract class AnvilFactoryTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
@@ -30,8 +26,9 @@ abstract class AnvilFactoryTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          AnvilFactoryRule(extension).check(proj)
+          AnvilFactoryRule(settings).check(proj)
         }
     }
   }
 }
+*/

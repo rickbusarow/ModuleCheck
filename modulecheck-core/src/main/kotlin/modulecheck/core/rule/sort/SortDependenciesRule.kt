@@ -18,15 +18,16 @@ package modulecheck.core.rule.sort
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
 import java.util.*
 
 class SortDependenciesRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<SortDependenciesFinding>() {
+) : ModuleCheckRule<SortDependenciesFinding>() {
 
   override val id = "SortDependencies"
+  override val description = "Sorts all dependencies within a dependencies { ... } block"
 
 /*
   private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
@@ -76,20 +77,7 @@ class SortDependenciesRule(
     return if (result.blockText == sorted) {
       emptyList()
     } else {
-      listOf(SortDependenciesFinding(project.buildFile, visitor, comparator))
+      listOf(SortDependenciesFinding(project.path, project.buildFile, visitor, comparator))
     }
-  }
-
-  companion object {
-    val patterns = listOf(
-      """id\("com\.android.*"\)""",
-      """id\("android-.*"\)""",
-      """id\("java-library"\)""",
-      """kotlin\("jvm"\)""",
-      """android.*""",
-      """javaLibrary.*""",
-      """kotlin.*""",
-      """id.*"""
-    )
   }
 }

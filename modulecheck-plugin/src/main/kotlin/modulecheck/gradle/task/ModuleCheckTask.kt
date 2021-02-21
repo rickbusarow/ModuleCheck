@@ -15,101 +15,90 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.AndroidProject2
 import modulecheck.api.Finding
-import modulecheck.core.kapt.UnusedKaptRule
-import modulecheck.core.mcp
-import modulecheck.core.overshot.OvershotRule
-import modulecheck.core.rule.*
-import modulecheck.core.rule.android.DisableAndroidResourcesRule
-import modulecheck.core.rule.android.DisableViewBindingRule
-import modulecheck.core.rule.sort.SortDependenciesRule
-import modulecheck.core.rule.sort.SortPluginsRule
+import modulecheck.api.Fixable
+import modulecheck.api.Project2
+import modulecheck.api.settings.ModuleCheckExtension
+import modulecheck.gradle.internal.Output
 import modulecheck.gradle.project2
+import org.gradle.api.DefaultTask
+import org.gradle.api.GradleException
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.getByType
+import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckTask : AbstractModuleCheckTask() {
+abstract class ModuleCheckTask : DefaultTask() {
 
-  @Suppress("LongMethod", "ComplexMethod")
-  override fun getFindings(): List<Finding> {
-    val settings = extension
+  init {
+    group = "moduleCheck"
+  }
 
-    val checks = extension.checksSettings
+  @get:Input
+  val settings: ModuleCheckExtension = project.extensions.getByType()
 
-    val findings = mutableListOf<Finding>()
+  @get:Input
+  val autoCorrect: Boolean = settings.autoCorrect
 
-    // use a mutable list and with(findings) { ... }
-    // because buildList { ... } requires Kotlin 1.4.0, which means Gradle 6.8+
-    with(findings) {
-      measured {
-        project
-          .project2()
-          .allprojects
-          .filter { it.buildFile.exists() }
-          .sortedByDescending { it.mcp().getMainDepth() }
-          .forEach { proj ->
+  @TaskAction
+  fun evaluate() {
+    val numIssues = measured {
+      project
+        .project2()
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .filterNot { it.path in settings.ignoreAll }
+        .getFindings()
+        .distinct()
+    }
+      .finish()
 
-            if (checks.overshot) {
-              addAll(
-                OvershotRule(settings).check(proj)
-                  .distinctBy { it.dependencyProject.path }
-              )
-            }
+    if (numIssues > 0) {
+      throw GradleException("ModuleCheck found $numIssues issues which could not be fixed.")
+    }
+  }
 
-            if (checks.redundant) {
-              addAll(
-                RedundantRule(settings).check(proj)
-                  .distinctBy { it.dependencyProject.path }
-              )
-            }
+  abstract fun List<Project2>.getFindings(): List<Finding>
 
-            if (checks.unused) {
-              addAll(
-                UnusedDependencyRule(settings).check(proj)
-                  .distinctBy { it.dependencyProject.path }
-              )
-            }
+  private fun Collection<Finding>.finish(): Int {
+    val grouped = this.groupBy { it.path }
 
-            if (checks.mustBeApi) {
-              addAll(
-                MustBeApiRule(settings).check(proj)
-                  .distinctBy { it.dependencyProject.path }
-              )
-            }
+    Output.printMagenta("ModuleCheck found ${this.size} issues\n")
 
-            if (checks.inheritedImplementation) {
-              addAll(
-                InheritedImplementationRule(settings).check(proj)
-                  .distinctBy { it.dependencyProject.path }
-              )
-            }
+    val unFixed = grouped
+      .entries
+      .sortedBy { it.key }
+      .flatMap { (path, list) ->
 
-            if (checks.sortDependencies) {
-              addAll(SortDependenciesRule(settings).check(proj))
-            }
+        Output.printMagenta("\t$path")
 
-            if (checks.sortPlugins) {
-              addAll(SortPluginsRule(settings).check(proj))
-            }
+        val (fixed, toFix) = list.partition { finding ->
+          autoCorrect && (finding as? Fixable)?.fix() ?: false
+        }
 
-            if (checks.kapt) {
-              addAll(UnusedKaptRule(settings).check(proj))
-            }
+        fixed.forEach { finding ->
+          Output.printYellow("\t\t${finding.logString()}")
+        }
 
-            if (checks.anvilFactories) {
-              addAll(AnvilFactoryRule(settings).check(proj))
-            }
+        toFix.forEach { finding ->
+          Output.printRed("\t\t${finding.logString()}")
+        }
 
-            if (checks.disableAndroidResources && proj is AndroidProject2) {
-              addAll(DisableAndroidResourcesRule(settings).check(proj))
-            }
-
-            if (checks.disableViewBinding && proj is AndroidProject2) {
-              addAll(DisableViewBindingRule(settings).check(proj))
-            }
-          }
+        toFix
       }
+
+    return unFixed.size
+  }
+
+  protected inline fun <T, R> T.measured(action: T.() -> R): R {
+    var r: R
+
+    val time = measureTimeMillis {
+      r = action()
     }
 
-    return findings
+    Output.printGreen("total parsing time: $time milliseconds")
+
+    return r
   }
 }

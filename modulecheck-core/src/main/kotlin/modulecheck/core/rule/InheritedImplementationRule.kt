@@ -22,9 +22,11 @@ import modulecheck.core.parser.InheritedImplementationParser
 
 class InheritedImplementationRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<InheritedImplementationDependencyFinding>() {
+) : ModuleCheckRule<InheritedImplementationDependencyFinding>() {
 
   override val id = "InheritedImplementation"
+  override val description = "Finds project dependencies which are used in the current module, " +
+    "but are not actually directly declared as dependencies in the current module"
 
   override fun check(project: Project2): List<InheritedImplementationDependencyFinding> {
     return InheritedImplementationParser.parse(project)

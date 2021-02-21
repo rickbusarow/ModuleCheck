@@ -19,10 +19,8 @@ import modulecheck.api.Config
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.psi.DslBlockVisitor
-import java.io.File
 
 data class InheritedImplementationDependencyFinding(
-  override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val config: Config,

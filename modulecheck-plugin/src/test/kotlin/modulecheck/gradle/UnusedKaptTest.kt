@@ -63,12 +63,12 @@ class UnusedKaptTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
-      .withArguments("moduleCheckKapt")
+      .withArguments("moduleCheckUnusedKapt")
       .build()
 
     println(result.output)
 
-    result.task(":moduleCheckKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
   }
 
   @Test
@@ -118,11 +118,11 @@ class UnusedKaptTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
-      .withArguments("moduleCheckKapt")
+      .withArguments("moduleCheckUnusedKapt")
       .build()
 
     println(result.output)
 
-    result.task(":moduleCheckKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
   }
 }

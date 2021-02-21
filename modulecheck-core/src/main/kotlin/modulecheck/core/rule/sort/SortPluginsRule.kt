@@ -18,15 +18,17 @@ package modulecheck.core.rule.sort
 import modulecheck.api.Project2
 import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
 import java.util.*
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<SortPluginsFinding>() {
+) : ModuleCheckRule<SortPluginsFinding>() {
 
   override val id = "SortPlugins"
+  override val description =
+    "Sorts Gradle plugins which are applied using the plugins { ... } block"
 
   private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
     settings
@@ -62,20 +64,7 @@ class SortPluginsRule(
     return if (result.blockText == sorted) {
       emptyList()
     } else {
-      listOf(SortPluginsFinding(project.buildFile, visitor, comparator))
+      listOf(SortPluginsFinding(project.path, project.buildFile, visitor, comparator))
     }
-  }
-
-  companion object {
-    val patterns = listOf(
-      """id\("com\.android.*"\)""",
-      """id\("android-.*"\)""",
-      """id\("java-library"\)""",
-      """kotlin\("jvm"\)""",
-      """android.*""",
-      """javaLibrary.*""",
-      """kotlin.*""",
-      """id.*"""
-    )
   }
 }

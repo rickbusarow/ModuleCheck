@@ -15,17 +15,13 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.kapt.UnusedKaptRule
-import modulecheck.core.mcp
-import modulecheck.gradle.project2
-
 /**
  * Loops through all registered annotation processors for each module,
  * checking that at least one applicable annotation is imported in the source.
  *
  * Throws warnings if a processor is applied without any annotations being used.
  */
+/*
 abstract class UnusedKaptTask : AbstractModuleCheckTask() {
 
   init {
@@ -41,8 +37,9 @@ abstract class UnusedKaptTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          UnusedKaptRule(extension).check(proj)
+          UnusedKaptRule(settings).check(proj)
         }
     }
   }
 }
+*/

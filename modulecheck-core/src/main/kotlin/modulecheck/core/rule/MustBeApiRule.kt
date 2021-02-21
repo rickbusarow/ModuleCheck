@@ -22,15 +22,17 @@ import modulecheck.core.mcp
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<MustBeApiFinding>() {
+) : ModuleCheckRule<MustBeApiFinding>() {
 
   override val id = "MustBeApi"
+  override val description = "Finds project dependencies which are exposed by the module " +
+    "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
   override fun check(project: Project2): List<MustBeApiFinding> {
     return project
       .mcp()
       .mustBeApi
-      .map { MustBeApiFinding(project.buildFile, it.project, it.config) }
+      .map { MustBeApiFinding(it.project, it.config) }
       .distinctBy { it.positionOrNull() }
   }
 }

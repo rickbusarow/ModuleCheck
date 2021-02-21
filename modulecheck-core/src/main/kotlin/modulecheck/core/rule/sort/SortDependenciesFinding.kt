@@ -24,6 +24,7 @@ import java.io.File
 import java.util.*
 
 class SortDependenciesFinding(
+  override val path: String,
   override val buildFile: File,
   val visitor: DslBlockVisitor,
   val comparator: Comparator<PsiElementWithSurroundingText>

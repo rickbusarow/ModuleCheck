@@ -15,23 +15,14 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.mcp
-import modulecheck.core.overshot.OvershotRule
-import modulecheck.gradle.project2
+/*
 
 abstract class OvershotTask : AbstractModuleCheckTask() {
 
-  override fun getFindings(): List<Finding> {
-    return measured {
-      project
-        .project2()
-        .allprojects
-        .filter { it.buildFile.exists() }
-        .sortedByDescending { it.mcp().getMainDepth() }
-        .flatMap { proj ->
-          OvershotRule(extension).check(proj)
-        }
+  override fun List<Project2>.getFindings(): List<Finding> {
+    return flatMap { project ->
+      OvershotRule(settings).check(project)
     }
   }
 }
+*/

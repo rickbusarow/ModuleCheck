@@ -23,6 +23,7 @@ import modulecheck.psi.AndroidBuildFeaturesVisitor
 import java.io.File
 
 data class UnusedResourcesGenerationFinding(
+  override val path: String,
   override val buildFile: File
 ) : Finding, Fixable {
 

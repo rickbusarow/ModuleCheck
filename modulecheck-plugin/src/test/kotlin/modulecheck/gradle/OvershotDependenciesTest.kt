@@ -114,7 +114,7 @@ class OvershotDependenciesTest : BaseTest() {
           projectBuild
             .addBlock(
               """moduleCheck {
-            |  // autoCorrect.set(true)
+            |  // autoCorrect = true
             |}
           """.trimMargin()
             ).build()
@@ -123,10 +123,10 @@ class OvershotDependenciesTest : BaseTest() {
         .writeIn(testProjectDir.toPath())
 
       val result = gradleRunner
-        .withArguments("moduleCheckOvershot")
+        .withArguments("moduleCheckOvershotDependency")
         .build()
 
-      result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+      result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -186,7 +186,7 @@ class OvershotDependenciesTest : BaseTest() {
         projectBuild
           .addBlock(
             """moduleCheck {
-            |  // autoCorrect.set(true)
+            |  // autoCorrect = true
             |}
           """.trimMargin()
           ).build()
@@ -195,10 +195,10 @@ class OvershotDependenciesTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
-      .withArguments("moduleCheckOvershot")
+      .withArguments("moduleCheckOvershotDependency")
       .build()
 
-    result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
 
     // lib-1 and lib-2 are api dependencies in lib-3,
     // but lib-3 is an implementation dependency of app
@@ -248,7 +248,7 @@ class OvershotDependenciesTest : BaseTest() {
         projectBuild
           .addBlock(
             """moduleCheck {
-            |  // autoCorrect.set(true)
+            |  // autoCorrect = true
             |}
           """.trimMargin()
           ).build()
@@ -257,10 +257,10 @@ class OvershotDependenciesTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
-      .withArguments("moduleCheckOvershot")
+      .withArguments("moduleCheckOvershotDependency")
       .build()
 
-    result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -311,7 +311,7 @@ class OvershotDependenciesTest : BaseTest() {
       addBuildSpec(
         projectBuild.addBlock(
           """moduleCheck {
-            |  // autoCorrect.set(true)
+            |  // autoCorrect = true
             |}
           """.trimMargin()
         ).build()
@@ -320,10 +320,10 @@ class OvershotDependenciesTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     val result = gradleRunner
-      .withArguments("moduleCheckOvershot")
+      .withArguments("moduleCheckOvershotDependency")
       .build()
 
-    result.task(":moduleCheckOvershot")!!.outcome shouldBe TaskOutcome.SUCCESS
+    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

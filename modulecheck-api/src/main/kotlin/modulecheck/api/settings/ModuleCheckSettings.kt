@@ -37,16 +37,15 @@ interface SortSettings {
 }
 
 interface ChecksSettings {
-  var overshot: Boolean
-  var redundant: Boolean
-  var unused: Boolean
+  var overshotDependency: Boolean
+  var redundantDependency: Boolean
+  var unusedDependency: Boolean
   var mustBeApi: Boolean
   var inheritedImplementation: Boolean
-  var used: Boolean
   var sortDependencies: Boolean
   var sortPlugins: Boolean
-  var kapt: Boolean
-  var anvilFactories: Boolean
+  var unusedKapt: Boolean
+  var anvilFactoryGeneration: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
 }

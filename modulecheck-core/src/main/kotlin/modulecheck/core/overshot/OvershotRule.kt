@@ -18,13 +18,15 @@ package modulecheck.core.overshot
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.mcp
-import modulecheck.core.rule.AbstractRule
+import modulecheck.core.rule.ModuleCheckRule
 
 class OvershotRule(
   override val settings: ModuleCheckSettings
-) : AbstractRule<OvershotDependencyFinding>() {
+) : ModuleCheckRule<OvershotDependencyFinding>() {
 
   override val id = "OvershotDependency"
+  override val description = "Finds project dependencies which are required by the current project, " +
+    "but are only added to the classpath by some other project dependency which is unused"
 
   override fun check(project: Project2): List<OvershotDependencyFinding> {
     return project.mcp().overshot

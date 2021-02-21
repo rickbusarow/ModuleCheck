@@ -15,11 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.mcp
-import modulecheck.core.rule.sort.SortDependenciesRule
-import modulecheck.gradle.project2
-
+/*
 abstract class SortDependenciesTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
@@ -30,8 +26,9 @@ abstract class SortDependenciesTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          SortDependenciesRule(extension).check(proj)
+          SortDependenciesRule(settings).check(proj)
         }
     }
   }
 }
+*/

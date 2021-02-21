@@ -45,15 +45,6 @@ class MCP private constructor(
   val dependencies by DependencyParser.parseLazy(project)
   val kaptDependencies by KaptParser.parseLazy(project)
 
-/*  val resolvedMainDependencies by lazy {
-
-    val all = dependencies.main() + allPublicClassPathDependencyDeclarations()
-
-    all.filter { dep ->
-      dep.mcp().mainDeclarations.any { it in mainImports }
-    }
-  }*/
-
   val overshot by OvershotParser.parseLazy(project)
   val unused by UnusedParser.parseLazy(project)
   val redundant by RedundantParser.parseLazy(project)
@@ -82,35 +73,6 @@ class MCP private constructor(
     .map { XmlFile.LayoutFile(it) }
 
   val androidTestImports = androidTestFiles.flatMap { jvmFile -> jvmFile.imports }.toSet()
-
-  private val references = ConcurrentHashMap<Config, Set<String>>()
-  private val files = ConcurrentHashMap<BuildType, Set<JvmFile>>()
-
-/*  fun filesFor(buildType: BuildType) = when(buildType) {
-    BuildType.AndroidTest -> androidTestFiles
-    Debug ->
-    Main -> mainFiles
-    Release -> TODO()
-    Test -> testFiles
-    is BuildType.Custom -> TODO()
-  }
-
-  fun referenceFor(config: Config): Set<String> {
-
-    when (config) {
-      AndroidTest -> references.getOrPut(Config.AndroidTest) {}
-      Api -> TODO()
-      CompileOnly -> TODO()
-      is Custom -> TODO()
-      Implementation -> TODO()
-      Kapt -> TODO()
-      KaptAndroidTest -> TODO()
-      KaptTest -> TODO()
-      RuntimeOnly -> TODO()
-      TestApi -> TODO()
-      TestImplementation -> TODO()
-    }
-  }*/
 
   val androidTestExtraPossibleReferences by lazy {
     androidTestFiles
@@ -155,8 +117,6 @@ class MCP private constructor(
     AndroidManifestParser.parse(manifest)["package"]
   }
 
-  // val androidTestDeclarations by lazy { androidTestFiles.flatMap { it.declarations }.toSet() }
-
   val mainDeclarations by lazy {
 
     val rPackage = androidPackageOrNull
@@ -168,16 +128,6 @@ class MCP private constructor(
     }
   }
 
-/*  val androidTestAndroidResDeclarations by lazy {
-
-    val rPackage = androidPackageOrNull
-    val resDir = project.androidTestResRootOrNull()
-
-    if (isAndroid && rPackage != null && resDir != null) {
-      AndroidResourceParser.parse(resDir)
-    } else emptySet()
-  }*/
-
   val mainAndroidResDeclarations by lazy {
 
     val rPackage = androidPackageOrNull
@@ -188,17 +138,6 @@ class MCP private constructor(
     } else emptySet()
   }
 
-  /*  val testAndroidResDeclarations by lazy {
-
-      val rPackage = androidPackageOrNull
-      val resDir = project.testResRootOrNull()
-
-      if (isAndroid && rPackage != null && resDir != null) {
-        AndroidResourceParser.parse(resDir)
-      } else emptySet()
-    }
-
-    val testDeclarations by lazy { testFiles.flatMap { it.declarations }.toSet() }*/
   val mustBeApi by lazy {
 
     val noIdeaWhereTheyComeFrom = mainFiles
@@ -232,19 +171,6 @@ class MCP private constructor(
         it.mcp().allPublicClassPathDependencyDeclarations()
       }
 
-/*  fun inheritedMainDependencyProjects(): List<MCP> {
-    return dependencies
-      .main()
-      .flatMap { pdd ->
-
-        pdd.mcp().inheritedMainDependencyProjects() + pdd.mcp()
-          .dependencies
-          .api.flatMap {
-            it.mcp().inheritedMainDependencyProjects()
-          }
-      }
-  }*/
-
   fun sourceOf(
     dependencyProject: ConfiguredProjectDependency,
     apiOnly: Boolean = false
@@ -276,27 +202,6 @@ class MCP private constructor(
         .max()!! + 1
     }
   }
-
-  fun getTestDepth(): Int = if (dependencies.testImplementation.isEmpty()) {
-    0
-  } else {
-    // `max` is deprecated but older Gradle versions use Kotlin 1.3.72 where the `maxOrNull` replacement doesn't exist
-    @Suppress("DEPRECATION")
-    dependencies.testImplementation
-      .map { it.mcp().getMainDepth() }
-      .max()!! + 1
-  }
-
-  val androidTestDepth: Int
-    get() = if (dependencies.androidTest.isEmpty()) {
-      0
-    } else {
-      // `max` is deprecated but older Gradle versions use Kotlin 1.3.72 where the `maxOrNull` replacement doesn't exist
-      @Suppress("DEPRECATION")
-      dependencies.androidTest
-        .map { it.mcp().getMainDepth() }
-        .max()!! + 1
-    }
 
   override fun compareTo(other: MCP): Int = project.path.compareTo(other.project.path)
 

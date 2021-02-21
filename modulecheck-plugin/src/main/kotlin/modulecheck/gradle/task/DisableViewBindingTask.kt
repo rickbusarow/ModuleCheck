@@ -15,10 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Finding
-import modulecheck.core.rule.android.DisableViewBindingRule
-import modulecheck.gradle.project2
+/*
 
 abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
 
@@ -30,8 +27,9 @@ abstract class DisableViewBindingTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .filterIsInstance<AndroidProject2>()
         .flatMap { proj ->
-          DisableViewBindingRule(extension).check(proj)
+          DisableViewBindingRule(settings).check(proj)
         }
     }
   }
 }
+*/

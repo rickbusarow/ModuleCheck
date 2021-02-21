@@ -21,7 +21,8 @@ import modulecheck.core.parser.android.existsOrNull
 import java.io.File
 
 data class CouldUseAnvilFinding(
-  override val buildFile: File
+  override val buildFile: File,
+  override val path: String
 ) : Finding, Fixable {
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"

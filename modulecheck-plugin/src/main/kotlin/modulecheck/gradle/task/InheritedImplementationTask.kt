@@ -15,11 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.core.mcp
-import modulecheck.core.rule.InheritedImplementationRule
-import modulecheck.gradle.project2
-
+/*
 abstract class InheritedImplementationTask : AbstractModuleCheckTask() {
 
   override fun getFindings(): List<Finding> {
@@ -30,8 +26,9 @@ abstract class InheritedImplementationTask : AbstractModuleCheckTask() {
         .filter { it.buildFile.exists() }
         .sortedByDescending { it.mcp().getMainDepth() }
         .flatMap { proj ->
-          InheritedImplementationRule(extension).check(proj)
+          InheritedImplementationRule(settings).check(proj)
         }
     }
   }
 }
+*/

@@ -43,7 +43,6 @@ object RedundantParser : Parser<RedundantDependencyFinding>() {
           .map { it.project }
 
         RedundantDependencyFinding(
-          buildFile = project.buildFile,
           dependencyProject = it.project,
           dependencyPath = it.project.path,
           config = it.config,
