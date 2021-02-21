@@ -33,17 +33,17 @@ open class ModuleCheckExtension : ModuleCheckSettings {
 
 @Suppress("UnstableApiUsage")
 class ChecksExtension : ChecksSettings {
-  override var overshotDependency: Boolean      = true
-  override var redundantDependency: Boolean     = false
-  override var unusedDependency: Boolean        = true
-  override var mustBeApi: Boolean               = true
+  override var overshotDependency: Boolean = true
+  override var redundantDependency: Boolean = false
+  override var unusedDependency: Boolean = true
+  override var mustBeApi: Boolean = true
   override var inheritedImplementation: Boolean = true
-  override var sortDependencies: Boolean        = false
-  override var sortPlugins: Boolean             = false
-  override var unusedKapt: Boolean              = true
-  override var anvilFactoryGeneration: Boolean  = true
+  override var sortDependencies: Boolean = false
+  override var sortPlugins: Boolean = false
+  override var unusedKapt: Boolean = true
+  override var anvilFactoryGeneration: Boolean = true
   override var disableAndroidResources: Boolean = false
-  override var disableViewBinding: Boolean      = false
+  override var disableViewBinding: Boolean = false
 }
 
 @Suppress("UnstableApiUsage")
