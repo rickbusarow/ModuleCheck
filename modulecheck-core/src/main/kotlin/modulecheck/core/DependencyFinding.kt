@@ -26,9 +26,6 @@ abstract class DependencyFinding(
 ) : Fixable,
   Finding {
 
-  override val path get() = dependencyProject.path
-  override val buildFile get() = dependencyProject.buildFile
-
   abstract val dependencyProject: Project2
   abstract val config: Config
 

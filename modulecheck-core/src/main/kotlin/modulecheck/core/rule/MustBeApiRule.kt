@@ -32,7 +32,14 @@ class MustBeApiRule(
     return project
       .mcp()
       .mustBeApi
-      .map { MustBeApiFinding(it.project, it.config) }
+      .map {
+        MustBeApiFinding(
+          dependentPath = project.path,
+          buildFile = project.buildFile,
+          dependencyProject = it.project,
+          config = it.config
+        )
+      }
       .distinctBy { it.positionOrNull() }
   }
 }

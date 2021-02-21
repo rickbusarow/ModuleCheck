@@ -23,7 +23,7 @@ import java.io.File
 interface UnusedKaptFinding : Finding, Fixable
 
 data class UnusedKaptPluginFinding(
-  override val path: String,
+  override val dependentPath: String,
   override val buildFile: File
 ) : UnusedKaptFinding {
 

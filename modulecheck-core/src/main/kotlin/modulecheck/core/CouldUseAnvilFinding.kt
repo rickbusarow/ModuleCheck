@@ -15,14 +15,17 @@
 
 package modulecheck.core
 
-import modulecheck.api.*
+import modulecheck.api.Config
+import modulecheck.api.Finding
+import modulecheck.api.Fixable
+import modulecheck.api.positionOf
 import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.core.parser.android.existsOrNull
 import java.io.File
 
 data class CouldUseAnvilFinding(
   override val buildFile: File,
-  override val path: String
+  override val dependentPath: String
 ) : Finding, Fixable {
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
