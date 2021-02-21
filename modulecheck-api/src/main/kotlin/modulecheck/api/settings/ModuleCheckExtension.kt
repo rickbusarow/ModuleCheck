@@ -59,13 +59,7 @@ class SortExtension : SortSettings {
     """id.*"""
   )
   override var dependencyComparators = listOf(
-    """id\("com\.android.*"\)""",
-    """id\("android-.*"\)""",
-    """id\("java-library"\)""",
-    """kotlin\("jvm"\)""",
-    """android.*""",
-    """javaLibrary.*""",
-    """kotlin.*""",
-    """id.*"""
+    """.*""",
+    """kapt.*"""
   )
 }

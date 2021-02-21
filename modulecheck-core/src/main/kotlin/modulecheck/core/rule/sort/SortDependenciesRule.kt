@@ -16,7 +16,6 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
@@ -29,33 +28,20 @@ class SortDependenciesRule(
   override val id = "SortDependencies"
   override val description = "Sorts all dependencies within a dependencies { ... } block"
 
-/*
-  private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
+  private val elementComparables: Array<(String) -> Comparable<*>> =
     settings
       .sortSettings
       .dependencyComparators
       .map { it.toRegex() }
       .map { regex ->
         { str: String -> !str.matches(regex) }
-      }
-      .map { booleanLambda ->
-        { psi: PsiElementWithSurroundingText ->
-
-          booleanLambda.invoke(psi.psiElement.text)
-        }
       }.toTypedArray()
 
   @Suppress("SpreadOperator")
-  private val comparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
-*/
-
-  private val comparator: Comparator<PsiElementWithSurroundingText> =
-    compareBy { psiElementWithSurroundings ->
-      psiElementWithSurroundings
-        .psiElement
-        .text
-        .toLowerCase(Locale.US)
-    }
+  private val comparator: Comparator<String> = compareBy(
+    *elementComparables,
+    { it.toLowerCase(Locale.US) }
+  )
 
   override fun check(project: Project2): List<SortDependenciesFinding> {
     val visitor = DslBlockVisitor("dependencies")
@@ -66,10 +52,10 @@ class SortDependenciesRule(
 
     val sorted = result
       .elements
-      .grouped()
+      .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedWith(comparator)
+          .sortedBy { it.psiElement.text.toLowerCase(Locale.US) }
           .joinToString("\n")
       }
       .trim()

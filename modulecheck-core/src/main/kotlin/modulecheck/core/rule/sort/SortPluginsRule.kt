@@ -33,7 +33,7 @@ class SortPluginsRule(
   private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
     settings
       .sortSettings
-      .dependencyComparators
+      .pluginComparators
       .map { it.toRegex() }
       .map { regex ->
         { str: String -> !str.matches(regex) }

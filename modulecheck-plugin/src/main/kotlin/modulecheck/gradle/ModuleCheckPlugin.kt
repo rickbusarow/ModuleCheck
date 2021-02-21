@@ -47,29 +47,6 @@ class ModuleCheckPlugin : Plugin<Project> {
       }
 
     target.tasks.register("moduleCheck", ModuleCheckAllTask::class.java, rules)
-
-    // allTask {
-    //   dependsOn(tasks)
-    // }
-
-    // target.tasks.register("moduleCheckOvershot", OvershotTask::class.java)
-    // target.tasks.register("moduleCheckRedundant", RedundantTask::class.java)
-    // target.tasks.register("moduleCheckUnused", UnusedTask::class.java)
-    // target.tasks.register("moduleCheckMustBeApi", MustBeApiTask::class.java)
-    // target.tasks.register(
-    //   "moduleCheckInheritedImplementation",
-    //   InheritedImplementationTask::class.java
-    // )
-    // target.tasks.register("moduleCheckAnvilFactories", AnvilFactoryTask::class.java)
-    // target.tasks.register("moduleCheckUsed", UsedTask::class.java)
-    // target.tasks.register("moduleCheckSortDependencies", SortDependenciesTask::class.java)
-    // target.tasks.register("moduleCheckSortPlugins", SortPluginsTask::class.java)
-    // target.tasks.register("moduleCheckKapt", UnusedKaptTask::class.java)
-    // target.tasks.register(
-    //   "moduleCheckDisableAndroidResources",
-    //   DisableAndroidResourcesTask::class.java
-    // )
-    // target.tasks.register("moduleCheckDisableViewBinding", DisableViewBindingTask::class.java)
   }
 }
 
