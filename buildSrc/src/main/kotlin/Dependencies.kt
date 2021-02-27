@@ -60,7 +60,7 @@ object Versions {
   const val dokka = "1.4.20"
   const val gradleDoctor = "0.7.0"
   const val knit = "0.2.3"
-  const val kotlin = "1.4.30"
+  const val kotlin = "1.4.31"
   const val kotlinter = "3.3.0"
   const val mavenPublish = "0.13.0"
   const val minSdk = "23"
