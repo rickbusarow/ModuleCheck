@@ -34,10 +34,17 @@ fun Project.common() {
       }
     }
 
-// force update all transitive dependencies (prevents some library leaking an old version)
   configurations.all {
     resolutionStrategy {
       force(Libs.Kotlin.reflect)
+    }
+  }
+
+  val irEnabled = properties["modulecheck.kotlinIR"]?.toString()?.toBoolean() ?: true
+
+  tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+      useIR = irEnabled
     }
   }
 }
