@@ -80,34 +80,34 @@ jobs:
           - kotlin-version: 1.5.0-M1
             kotlinIR: false
 
-        steps:
-          - uses: actions/checkout@v2
-            with:
-              # use a personal access token to check out so that this action can trigger other actions
-              token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          # use a personal access token to check out so that this action can trigger other actions
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-          - name: Set up JDK
-            uses: actions/setup-java@v1
-            with:
-              java-version: 14
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
 
-          - name: all tests
-            run: ./gradlew lintMain testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.kotlinIR=${{ matrix.kotlinIR }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks
+      - name: all tests
+        run: ./gradlew lintMain testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.kotlinIR=${{ matrix.kotlinIR }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks
 
-          - name: Archive test results
-            uses: actions/upload-artifact@v2
-            if: failure()
-            with:
-              name: test-results-ubuntu
-              path: ./**/build/reports/tests/
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-results-ubuntu
+          path: ./**/build/reports/tests/
 
-          - name: Unit test results
-            uses: mikepenz/action-junit-report@v1
-            if: failure()
-            with:
-              github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-              report_paths: '**/build/**/TEST-*.xml'
-              check_name: Unit Test Results - Ubuntu
+      - name: Unit test results
+        uses: mikepenz/action-junit-report@v1
+        if: failure()
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Unit Test Results - Ubuntu
 
   tests-windows:
 
