@@ -1,142 +1,144 @@
-name : CI
+name: CI
 
-on :
-  pull_request :
-    branches :
+on:
+  pull_request:
+    branches:
       - dev
       - main
       - release/*
 
-jobs :
+jobs:
 
-  cancel-other-jobs :
+  cancel-other-jobs:
 
-    runs-on : ubuntu-latest
+    runs-on: ubuntu-latest
 
-    steps :
+    steps:
       # cancel previous jobs
-      - uses : khan/pull-request-workflow-cancel@1.0.0
-        with :
-          workflows : "ci.yml"
-        env :
-          GITHUB_TOKEN : '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
+      - uses: khan/pull-request-workflow-cancel@1.0.0
+        with:
+          workflows: "ci.yml"
+        env:
+          GITHUB_TOKEN: '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
 
-  detekt :
+  detekt:
 
-    runs-on : ubuntu-latest
+    runs-on: ubuntu-latest
 
-    steps :
-      - uses : actions/checkout@v2
-        with :
+    steps:
+      - uses: actions/checkout@v2
+        with:
           # use a personal access token to check out so that this action can trigger other actions
-          token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name : Set up JDK
-        uses : actions/setup-java@v1
-        with :
-          java-version : 14
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
 
-      - name : detekt
-        run : ./gradlew detekt
+      - name: detekt
+        run: ./gradlew detekt
 
-  ktlint :
+  ktlint:
 
-    runs-on : ubuntu-latest
+    runs-on: ubuntu-latest
 
-    steps :
-      - uses : actions/checkout@v2
-        with :
+    steps:
+      - uses: actions/checkout@v2
+        with:
           # use a personal access token to check out so that this action can trigger other actions
-          token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name : Set up JDK
-        uses : actions/setup-java@v1
-        with :
-          java-version : 14
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
 
       # formats all src files
-      - name : KtLint format
-        run : ./gradlew formatKotlin
+      - name: KtLint format
+        run: ./gradlew formatKotlin
 
       # If KtLint generated changes, commit and push those changes.
-      - name : commit changes
-        uses : stefanzweifel/git-auto-commit-action@v4
-        with :
-          commit_message : Apply KtLint format
-          commit_options : '--no-verify --signoff'
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply KtLint format
+          commit_options: '--no-verify --signoff'
 
-  tests-ubuntu :
+  tests-ubuntu:
 
-    runs-on : ubuntu-latest
+    runs-on: ubuntu-latest
 
-    strategy :
-      fail-fast : false
-      matrix :
-        kotlin-version : [ 1.4.31, 1.3.72 ]
-        gradle-version : [ 7.0-milestone-1, 6.8.3 ]
-        agp-version : [ 4.0.1, 4.1.2 ]
-        kotlinIR : [ true, false ]
+    strategy:
+      fail-fast: false
+      matrix:
+        kotlin-version: [ 1.5.0-M1, 1.4.31, 1.3.72 ]
+        gradle-version: [ 7.0-milestone-1, 6.8.3 ]
+        agp-version: [ 4.0.1, 4.1.2 ]
+        kotlinIR: [ true, false ]
+        exclude:
+          - kotlin-version: 1.5.0-M1
+            kotlinIR: false
 
-    steps :
+        steps:
+          - uses: actions/checkout@v2
+            with:
+              # use a personal access token to check out so that this action can trigger other actions
+              token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - uses : actions/checkout@v2
-        with :
+          - name: Set up JDK
+            uses: actions/setup-java@v1
+            with:
+              java-version: 14
+
+          - name: all tests
+            run: ./gradlew lintMain testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.kotlinIR=${{ matrix.kotlinIR }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks
+
+          - name: Archive test results
+            uses: actions/upload-artifact@v2
+            if: failure()
+            with:
+              name: test-results-ubuntu
+              path: ./**/build/reports/tests/
+
+          - name: Unit test results
+            uses: mikepenz/action-junit-report@v1
+            if: failure()
+            with:
+              github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+              report_paths: '**/build/**/TEST-*.xml'
+              check_name: Unit Test Results - Ubuntu
+
+  tests-windows:
+
+    runs-on: windows-latest
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
           # use a personal access token to check out so that this action can trigger other actions
-          token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
-      - name : Set up JDK
-        uses : actions/setup-java@v1
-        with :
-          java-version : 14
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
 
-      - name : all tests
-        run : ./gradlew lintMain testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.kotlinIR=${{ matrix.kotlinIR }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks
+      - name: all tests
+        run: ./gradlew lintMain testJvm --rerun-tasks
 
-      - name : Archive test results
-        uses : actions/upload-artifact@v2
-        if : failure()
-        with :
-          name : test-results-ubuntu
-          path : ./**/build/reports/tests/
+      - name: Archive test results
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-results-windows
+          path: ./**/build/reports/tests/
 
-      - name : Unit test results
-        uses : mikepenz/action-junit-report@v1
-        if : failure()
-        with :
-          github_token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          report_paths : '**/build/**/TEST-*.xml'
-          check_name : Unit Test Results - Ubuntu
-
-  tests-windows :
-
-    runs-on : windows-latest
-
-    steps :
-
-      - uses : actions/checkout@v2
-        with :
-          # use a personal access token to check out so that this action can trigger other actions
-          token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-
-      - name : Set up JDK
-        uses : actions/setup-java@v1
-        with :
-          java-version : 14
-
-      - name : all tests
-        run : ./gradlew lintMain testJvm --rerun-tasks
-
-      - name : Archive test results
-        uses : actions/upload-artifact@v2
-        if : failure()
-        with :
-          name : test-results-windows
-          path : ./**/build/reports/tests/
-
-      - name : Unit test results
-        uses : mikepenz/action-junit-report@v1
-        if : failure()
-        with :
-          github_token : ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          report_paths : '**/build/**/TEST-*.xml'
-          check_name : Unit Test Results - Windows
+      - name: Unit test results
+        uses: mikepenz/action-junit-report@v1
+        if: failure()
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Unit Test Results - Windows
