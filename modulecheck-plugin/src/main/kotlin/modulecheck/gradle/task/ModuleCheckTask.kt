@@ -54,7 +54,7 @@ abstract class ModuleCheckTask : DefaultTask() {
       .finish()
 
     if (numIssues > 0) {
-      throw GradleException("ModuleCheck found $numIssues issues which could not be fixed.")
+      throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
     }
   }
 
@@ -97,7 +97,9 @@ abstract class ModuleCheckTask : DefaultTask() {
       r = action()
     }
 
-    Output.printGreen("total parsing time: $time milliseconds")
+    val secondsDouble = time / 100.0
+
+    Output.printGreen("total parsing time: $secondsDouble seconds")
 
     return r
   }
