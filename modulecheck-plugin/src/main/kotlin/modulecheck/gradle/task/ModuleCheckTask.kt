@@ -97,6 +97,7 @@ abstract class ModuleCheckTask : DefaultTask() {
       r = action()
     }
 
+    @Suppress("MagicNumber")
     val secondsDouble = time / 100.0
 
     Output.printGreen("total parsing time: $secondsDouble seconds")
