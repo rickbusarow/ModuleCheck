@@ -134,6 +134,14 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
     )
   ),
   KaptMatcher(
+    name = "AutoFactory",
+    processor = "com.google.auto.factory:auto-factory",
+    annotationImports = listOf(
+      "com\\.google\\.auto\\.factory\\.\\*",
+      "com\\.google\\.auto\\.factory\\.AutoFactory"
+    )
+  ),
+  KaptMatcher(
     name = "Gradle Incap Helper",
     processor = "net.ltgt.gradle.incap:incap-processor",
     annotationImports = listOf(
