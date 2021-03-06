@@ -29,8 +29,6 @@ import java.nio.file.Path
 
 class OvershotDependenciesTest : BaseTest() {
 
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
-
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
       .build()

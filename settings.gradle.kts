@@ -60,6 +60,7 @@ rootProject.name = "ModuleCheck"
 include(
   ":modulecheck-api",
   ":modulecheck-core",
+  ":modulecheck-internal-testing",
   ":modulecheck-plugin",
   ":modulecheck-psi",
   ":modulecheck-specs"

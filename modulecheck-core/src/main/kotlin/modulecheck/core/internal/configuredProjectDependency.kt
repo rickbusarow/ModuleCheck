@@ -15,47 +15,49 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.Config
+import modulecheck.api.AndroidProject2
 import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.core.MCP
+import modulecheck.api.Project2
+import modulecheck.api.context.Declarations
 import kotlin.LazyThreadSafetyMode.NONE
 
-@Suppress("ComplexMethod")
-fun ConfiguredProjectDependency.usedIn(mcp: MCP): Boolean {
-  return when (config) {
-    Config.AndroidTest -> usedInAndroidTest(mcp)
-    // Config.KaptAndroidTest -> TODO()
-    // Config.Kapt -> TODO()
-    // Config.KaptTest -> TODO()
-    Config.Api -> usedInMain(mcp)
-    Config.CompileOnly -> usedInMain(mcp)
-    Config.Implementation -> usedInMain(mcp)
-    Config.RuntimeOnly -> usedInMain(mcp)
-    Config.TestApi -> usedInTest(mcp)
-    Config.TestImplementation -> usedInTest(mcp)
-    is Config.Custom -> TODO("unsupported config --> ${config.name}")
-    else -> TODO()
+fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
+  return when (dependency.configurationName) {
+    "androidTest" -> usesInAndroidTest(dependency)
+    "api" -> usesInMain(dependency)
+    "compileOnly" -> usesInMain(dependency)
+    "implementation" -> usesInMain(dependency)
+    "runtimeOnly" -> usesInMain(dependency)
+    "testApi" -> usesInTest(dependency)
+    "testImplementation" -> usesInTest(dependency)
+    else -> false
   }
 }
 
-fun ConfiguredProjectDependency.mcp() = MCP.from(project)
+private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolean {
+  val dependencyDeclarations = dependency
+    .project
+    .context[Declarations]["main"]
+    .orEmpty()
 
-private fun ConfiguredProjectDependency.usedInMain(mcp: MCP): Boolean {
-  val thisAsMCP = mcp()
-
-  val javaIsUsed = thisAsMCP
-    .mainDeclarations
+  val javaIsUsed = dependencyDeclarations
     .any { declaration ->
 
-      declaration in mcp.mainImports || declaration in mcp.mainExtraPossibleReferences
+      declaration in importsForSourceSetName("main") ||
+        declaration in extraPossibleReferencesForSourceSetName("main")
     }
 
   if (javaIsUsed) return true
 
-  val rReferences = mcp.mainExtraPossibleReferences.filter { it.startsWith("R.") }
+  if (this !is AndroidProject2) return false
 
-  val resourcesAreUsed = thisAsMCP
-    .mainAndroidResDeclarations
+  val rReferences = extraPossibleReferencesForSourceSetName("main")
+    .filter { it.startsWith("R.") }
+
+  val dependencyAsAndroid = dependency.project as? AndroidProject2 ?: return false
+
+  val resourcesAreUsed = dependencyAsAndroid
+    .androidResourceDeclarationsForSourceSetName("main")
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
@@ -63,29 +65,47 @@ private fun ConfiguredProjectDependency.usedInMain(mcp: MCP): Boolean {
   return resourcesAreUsed
 }
 
-private fun ConfiguredProjectDependency.usedInAndroidTest(mcp: MCP): Boolean {
-  val rReferences by lazy(NONE) { mcp.androidTestExtraPossibleReferences.filter { it.startsWith("R.") } }
+private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency): Boolean {
+  val dependencyDeclarations = dependency
+    .project
+    .context[Declarations]["main"]
+    .orEmpty()
 
-  return mcp()
-    .mainDeclarations
+  val rReferences by lazy(NONE) {
+    extraPossibleReferencesForSourceSetName("androidTest")
+      .filter { it.startsWith("R.") }
+  }
+
+  return dependencyDeclarations
     .any { declaration ->
-      declaration in mcp.androidTestImports || declaration in mcp.androidTestExtraPossibleReferences
-    } || mcp()
-    .mainAndroidResDeclarations
+      declaration in importsForSourceSetName("androidTest") ||
+        declaration in extraPossibleReferencesForSourceSetName("androidTest")
+    } || (dependency.project as? AndroidProject2)
+    ?.androidResourceDeclarationsForSourceSetName("main")
+    .orEmpty()
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
 }
 
-private fun ConfiguredProjectDependency.usedInTest(mcp: MCP): Boolean {
-  val rReferences by lazy(NONE) { mcp.testExtraPossibleReferences.filter { it.startsWith("R.") } }
+private fun Project2.usesInTest(dependency: ConfiguredProjectDependency): Boolean {
+  val dependencyDeclarations = dependency
+    .project
+    .context[Declarations]["main"]
+    .orEmpty()
 
-  return mcp()
-    .mainDeclarations
+  val rReferences by lazy(NONE) {
+    extraPossibleReferencesForSourceSetName("test")
+      .filter { it.startsWith("R.") }
+  }
+
+  return dependencyDeclarations
     .any { declaration ->
-      declaration in mcp.testImports || declaration in mcp.testExtraPossibleReferences
-    } || mcp()
-    .mainAndroidResDeclarations
+      declaration in importsForSourceSetName("test") ||
+        declaration in extraPossibleReferencesForSourceSetName("test")
+    } || (dependency.project as? AndroidProject2)
+    ?.androidResourceDeclarationsForSourceSetName("main")
+    .orEmpty()
     .any { rDeclaration ->
       rDeclaration in rReferences
     }

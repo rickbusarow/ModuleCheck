@@ -28,8 +28,6 @@ import java.nio.file.Path
 
 class SortPluginsTest : BaseTest() {
 
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
-
   @Test
   fun `sorting`() {
     ProjectSpec("project") {

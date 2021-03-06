@@ -20,7 +20,6 @@ plugins {
 
 dependencies {
 
-  implementation(project(path = ":modulecheck-api"))
 
   compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
 
@@ -43,6 +42,7 @@ dependencies {
   testImplementation(Libs.RickBusarow.Hermit.core)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
+  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-specs"))
 }
 

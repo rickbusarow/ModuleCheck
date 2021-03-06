@@ -25,8 +25,6 @@ import java.io.File
 
 class Android : BaseTest() {
 
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
-
   @Test
   fun `configurations should be grouped and sorted`() {
     ProjectSpec("project") {

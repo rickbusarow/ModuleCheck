@@ -18,17 +18,21 @@ package modulecheck.gradle.task
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
-import modulecheck.api.settings.ModuleCheckExtension
+import modulecheck.api.ProjectsAware
+import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.gradle.Project2Gradle
 import modulecheck.gradle.internal.Output
-import modulecheck.gradle.project2
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckTask : DefaultTask() {
+abstract class ModuleCheckTask :
+  DefaultTask(),
+  ProjectsAware {
 
   init {
     group = "moduleCheck"
@@ -40,11 +44,13 @@ abstract class ModuleCheckTask : DefaultTask() {
   @get:Input
   val autoCorrect: Boolean = settings.autoCorrect
 
+  @get:Input
+  override val projectCache = ConcurrentHashMap<String, Project2>()
+
   @TaskAction
   fun evaluate() {
     val numIssues = measured {
-      project
-        .project2()
+      Project2Gradle.from(project, projectCache)
         .allprojects
         .filter { it.buildFile.exists() }
         .filterNot { it.path in settings.ignoreAll }
@@ -90,7 +96,7 @@ abstract class ModuleCheckTask : DefaultTask() {
     return unFixed.size
   }
 
-  protected inline fun <T, R> T.measured(action: T.() -> R): R {
+  inline fun <T, R> T.measured(action: T.() -> R): R {
     var r: R
 
     val time = measureTimeMillis {
@@ -98,7 +104,7 @@ abstract class ModuleCheckTask : DefaultTask() {
     }
 
     @Suppress("MagicNumber")
-    val secondsDouble = time / 100.0
+    val secondsDouble = time / 1000.0
 
     Output.printGreen("total parsing time: $secondsDouble seconds")
 

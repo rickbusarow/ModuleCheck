@@ -15,22 +15,6 @@
 
 package modulecheck.api.settings
 
-import modulecheck.api.KaptMatcher
-
-open class ModuleCheckExtension : ModuleCheckSettings {
-
-  override var autoCorrect: Boolean = true
-  override var alwaysIgnore: Set<String> = mutableSetOf()
-  override var ignoreAll: Set<String> = mutableSetOf()
-  override var additionalKaptMatchers: List<KaptMatcher> = mutableListOf()
-
-  override val checksSettings: ChecksExtension = ChecksExtension()
-  override fun checks(block: ChecksSettings.() -> Unit) = block.invoke(checksSettings)
-
-  override val sortSettings: SortExtension = SortExtension()
-  override fun sort(block: SortSettings.() -> Unit) = block.invoke(sortSettings)
-}
-
 @Suppress("UnstableApiUsage")
 class ChecksExtension : ChecksSettings {
   override var overshotDependency: Boolean = true

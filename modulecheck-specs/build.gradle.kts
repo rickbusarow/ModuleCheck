@@ -54,4 +54,5 @@ dependencies {
   testImplementation(Libs.Kotest.assertions)
   testImplementation(Libs.Kotest.properties)
   testImplementation(Libs.Kotest.runner)
+  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

@@ -15,7 +15,6 @@
 
 package modulecheck.psi
 
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 

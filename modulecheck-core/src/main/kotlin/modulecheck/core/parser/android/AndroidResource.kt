@@ -40,7 +40,7 @@ sealed class AndroidResource(val prefix: kotlin.String) {
     private val REGEX = """"@(.*)/(.*)"""".toRegex()
 
     @Suppress("ComplexMethod")
-    fun fromFile(file: File): AndroidResource {
+    fun fromFile(file: File): AndroidResource? {
       val dir = file.parent.split('/').last()
       val name = file.nameWithoutExtension
 
@@ -60,15 +60,13 @@ sealed class AndroidResource(val prefix: kotlin.String) {
         dir.startsWith("values") -> Style(name)
         dir.startsWith("style") -> Style(name)
         dir.startsWith("xml") -> Style(name)
-        else -> throw IllegalArgumentException("unrecognized resource reference --> $dir")
+        else -> null
       }
     }
 
     @Suppress("ComplexMethod")
-    fun fromString(str: kotlin.String): AndroidResource {
-      val (prefix, name) = REGEX.find(str)!!.destructured
-
-      return when (prefix) {
+    fun fromValuePair(type: kotlin.String, name: kotlin.String): AndroidResource? {
+      return when (type) {
         "anim" -> Anim(name)
         "animator" -> Animator(name)
         "arrays" -> Arrays(name)
@@ -82,8 +80,15 @@ sealed class AndroidResource(val prefix: kotlin.String) {
         "raw" -> Raw(name)
         "string" -> String(name)
         "style" -> Style(name)
-        else -> throw IllegalArgumentException("unrecognized resource reference --> $str")
+        else -> null
       }
+    }
+
+    @Suppress("ComplexMethod")
+    fun fromString(str: kotlin.String): AndroidResource? {
+      val (prefix, name) = REGEX.find(str)?.destructured ?: return null
+
+      return fromValuePair(prefix, name)
     }
   }
 }

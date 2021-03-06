@@ -26,8 +26,6 @@ import java.io.File
 
 class SortDependenciesTest : BaseTest() {
 
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
-
   val projects = List(10) {
     jvmSubProject("lib-$it", ClassName("com.example.lib$it", "Lib${it}Class"))
   }

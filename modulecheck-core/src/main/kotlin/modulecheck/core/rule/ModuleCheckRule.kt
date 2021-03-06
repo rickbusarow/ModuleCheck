@@ -17,41 +17,8 @@ package modulecheck.core.rule
 
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.MCP
-import modulecheck.core.kapt.UnusedKaptRule
-import modulecheck.core.overshot.OvershotRule
-import modulecheck.core.rule.android.DisableAndroidResourcesRule
-import modulecheck.core.rule.android.DisableViewBindingRule
-import modulecheck.core.rule.sort.SortDependenciesRule
-import modulecheck.core.rule.sort.SortPluginsRule
 import modulecheck.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
-
-interface RuleFactory {
-
-  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<*>>
-}
-
-class ModuleCheckRuleFactory : RuleFactory {
-
-  override fun create(
-    settings: ModuleCheckSettings
-  ): List<ModuleCheckRule<*>> {
-    return listOf(
-      AnvilFactoryRule(settings),
-      DisableAndroidResourcesRule(settings),
-      DisableViewBindingRule(settings),
-      InheritedImplementationRule(settings),
-      MustBeApiRule(settings),
-      OvershotRule(settings),
-      RedundantRule(settings),
-      SortDependenciesRule(settings),
-      SortPluginsRule(settings),
-      UnusedDependencyRule(settings),
-      UnusedKaptRule(settings)
-    )
-  }
-}
 
 abstract class ModuleCheckRule<T> {
 
@@ -62,9 +29,4 @@ abstract class ModuleCheckRule<T> {
   abstract fun check(project: Project2): List<T>
 
   protected fun Project2.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
-
-  protected fun Project2.moduleCheckProjects() =
-    rootProject.allprojects
-      .filter { gradleProject -> gradleProject.buildFile.exists() }
-      .map { gradleProject -> MCP.from(gradleProject) }
 }

@@ -26,12 +26,9 @@ import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.nio.file.Path
 
 class UnusedKaptTest : BaseTest() {
-
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   @Test
   fun `unused`() {

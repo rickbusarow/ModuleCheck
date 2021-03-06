@@ -18,7 +18,6 @@ package modulecheck.core.rule.android
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.mcp
 import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
 
@@ -69,13 +68,12 @@ class DisableViewBindingRule(
         dependents
           .any { dep ->
 
-            val mcp = dep.mcp()
-
-            mcp
-              .mainImports
-              .contains(reference) || mcp
-              .mainExtraPossibleReferences
-              .contains(reference)
+            project
+              .importsForSourceSetName("main")
+              .contains(reference) ||
+              dep
+                .extraPossibleReferencesForSourceSetName("main")
+                .contains(reference)
           }
       }
       .toList()

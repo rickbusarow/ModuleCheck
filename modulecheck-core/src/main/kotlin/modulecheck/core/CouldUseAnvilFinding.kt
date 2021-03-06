@@ -15,12 +15,11 @@
 
 package modulecheck.core
 
-import modulecheck.api.Config
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
+import modulecheck.api.files.existsOrNull
 import modulecheck.api.positionOf
-import modulecheck.api.psi.PsiElementWithSurroundingText
-import modulecheck.core.parser.android.existsOrNull
+import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 
 data class CouldUseAnvilFinding(
@@ -44,6 +43,6 @@ data class CouldUseAnvilFinding(
       .existsOrNull()
       ?.readText()
       ?.lines()
-      ?.positionOf(element.toString(), Config.from("kapt"))
+      ?.positionOf(element.toString(), "kapt")
   }
 }

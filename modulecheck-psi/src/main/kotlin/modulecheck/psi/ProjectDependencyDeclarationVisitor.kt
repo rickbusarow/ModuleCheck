@@ -15,7 +15,6 @@
 
 package modulecheck.psi
 
-import modulecheck.api.Config
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
@@ -24,7 +23,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
 class ProjectDependencyDeclarationVisitor(
-  private val configuration: Config,
+  private val configurationName: String,
   private val projectPath: String
 ) {
 
@@ -35,7 +34,7 @@ class ProjectDependencyDeclarationVisitor(
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->
       innerExpression
         .referenceExpression()
-        .takeIf { it?.text == configuration.name }
+        .takeIf { it?.text == configurationName }
         ?.let {
           innerExpression                                     // implementation(project(path = ":foo:bar"))
             .valueArguments                                   // [project(path = ":foo:bar")]

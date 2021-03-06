@@ -16,25 +16,34 @@
 package modulecheck.gradle
 
 import com.android.Version
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.*
+import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.api.TestedVariant
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.api.SourceSet
+import modulecheck.api.SourceSetName
+import modulecheck.api.context.*
 import modulecheck.core.parser.android.AndroidManifestParser
+import modulecheck.core.parser.android.AndroidResourceDeclarations
 import modulecheck.gradle.internal.srcRoot
 import net.swiftzer.semver.SemVer
+import org.gradle.api.DomainObjectSet
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 import java.util.concurrent.*
 
 class AndroidProject2Gradle(
-  private val project: Project
-) : Project2 by Project2Gradle.from(project),
+  private val project: Project,
+  projectCache: ConcurrentHashMap<String, Project2>
+) : Project2Gradle(project, projectCache),
   AndroidProject2 {
 
   override val agpVersion: SemVer by lazy { SemVer.parse(Version.ANDROID_GRADLE_PLUGIN_VERSION) }
 
+  private val baseExtension by lazy { project.extensions.findByType<BaseExtension>() }
   private val libraryExtension by lazy { project.extensions.findByType<LibraryExtension>() }
   private val testedExtension by lazy {
     project.extensions.findByType<LibraryExtension>()
@@ -64,6 +73,78 @@ class AndroidProject2Gradle(
     }.orEmpty().toSet()
   }
 
+  private val BaseExtension.variants: DomainObjectSet<out BaseVariant>?
+    get() = when (this) {
+      is AppExtension -> applicationVariants
+      is LibraryExtension -> libraryVariants
+      is TestExtension -> applicationVariants
+      else -> null
+    }
+
+  private val BaseVariant.testVariants: List<BaseVariant>
+    get() = when (this) {
+      is TestedVariant -> listOfNotNull(testVariant, unitTestVariant)
+      else -> emptyList()
+    }
+
+  override val sourceSets: Map<SourceSetName, SourceSet> by lazy {
+
+    baseExtension
+      ?.variants
+      ?.flatMap { variant ->
+
+        val testSourceSets = variant
+          .testVariants
+          .flatMap { it.sourceSets }
+
+        val mainSourceSets = variant.sourceSets
+
+        (testSourceSets + mainSourceSets)
+          .distinctBy { it.name }
+          .map { sourceProvider ->
+
+            val jvmFiles = sourceProvider
+              .javaDirectories
+              .flatMap { it.listFiles().orEmpty().toList() }
+              .toSet()
+
+            // val bootClasspath = project.files(baseExtension!!.bootClasspath)
+            // val classPath = variant
+            //   .getCompileClasspath(null)
+            //   .filter { it.exists() }
+            //   .plus(bootClasspath)
+            //   .toSet()
+
+            val resourceFiles = sourceProvider
+              .resDirectories
+              .flatMap { it.listFiles().orEmpty().toList() }
+              .toSet()
+
+            val layoutFiles = resourceFiles
+              .filter { it.isFile && it.path.contains("""/res/layouts.*/.*.xml""".toRegex()) }
+              .toSet()
+
+            SourceSet(
+              name = sourceProvider.name,
+              classpathFiles = emptySet(),
+              outputFiles = setOf(), // TODO
+              jvmFiles = jvmFiles,
+              resourceFiles = resourceFiles,
+              layoutFiles = layoutFiles
+            )
+          }
+      }
+
+      ?.associateBy { it.name }
+      .orEmpty()
+  }
+
+  override fun androidResourceDeclarationsForSourceSetName(
+    sourceSetName: SourceSetName
+  ): Set<DeclarationName> {
+    return context[AndroidResourceDeclarations][sourceSetName].orEmpty()
+  }
+
   override fun toString(): String = "AndroidProject2Gradle(path='$path')"
 
   override fun equals(other: Any?): Boolean {
@@ -80,10 +161,13 @@ class AndroidProject2Gradle(
   }
 
   companion object {
-    private val cache = ConcurrentHashMap<Project, AndroidProject2Gradle>()
 
-    fun from(project: Project) = cache.getOrPut(project) {
-      AndroidProject2Gradle(project)
-    }
+    fun from(
+      gradleProject: Project,
+      projectCache: ConcurrentHashMap<String, Project2>
+    ): AndroidProject2 =
+      projectCache.getOrPut(gradleProject.path) {
+        AndroidProject2Gradle(gradleProject, projectCache)
+      }.cast()
   }
 }

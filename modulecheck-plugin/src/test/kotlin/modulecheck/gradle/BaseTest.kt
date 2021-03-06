@@ -19,16 +19,20 @@ import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.testing.tempDir
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
+import java.io.File
 
 public val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "6.8.3")
 
 abstract class BaseTest : HermitJUnit5() {
 
   val testProjectDir by tempDir()
+
+  fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   private val kotlinVersion =
     System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)

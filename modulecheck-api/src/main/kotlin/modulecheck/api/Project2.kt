@@ -15,13 +15,19 @@
 
 package modulecheck.api
 
+import modulecheck.api.context.*
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
 import java.util.concurrent.*
 import kotlin.contracts.contract
 
-interface Project2 {
+interface ProjectsAware {
+  val projectCache: ConcurrentHashMap<String, Project2>
+}
+
+@Suppress("TooManyFunctions")
+interface Project2 : ProjectContextAware, Comparable<Project2>, ProjectsAware {
 
   val path: String
 
@@ -30,24 +36,36 @@ interface Project2 {
   val projectDir: File
   val buildFile: File
 
-  val dependendents: Set<Project2>
+  val configurations: Map<String, Config>
 
-  val projectDependencies: List<ConfiguredProjectDependency>
-  val externalDependencies: List<ExternalDependency>
+  val dependendents: Set<Project2>
+  val projectDependencies: Map<ConfigurationName, List<ConfiguredProjectDependency>>
 
   val hasKapt: Boolean
 
-  val kaptProcessors: ParsedKapt<KaptProcessor>
+  val sourceSets: Map<SourceSetName, SourceSet>
 
-  fun bindingContextForSourceSet(sourceSet: SourceSet): BindingContext
+  fun kaptDependenciesForConfig(configurationName: ConfigurationName): Set<KaptProcessor>
+  fun bindingContextForSourceSetName(sourceSetName: SourceSetName): BindingContext
+  fun classpathForSourceSetName(sourceSetName: SourceSetName): Set<File>
+  fun jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile>
+  fun jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File>
+  fun resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File>
+  fun layoutFilesForSourceSetName(sourceSetName: SourceSetName): Set<XmlFile.LayoutFile>
+
   fun classpathForSourceSet(sourceSet: SourceSet): Set<File>
   fun jvmFilesForSourceSet(sourceSet: SourceSet): List<JvmFile>
-  fun jvmSourcesForSourceSet(sourceSet: SourceSet):  Set<File>
-  fun resourcesForSourceSet(sourceSet: SourceSet):  Set<File>
+  fun jvmSourcesForSourceSet(sourceSet: SourceSet): Set<File>
+  fun resourcesForSourceSet(sourceSet: SourceSet): Set<File>
+  fun layoutFilesForSourceSet(sourceSet: SourceSet): Set<XmlFile.LayoutFile>
 
-  // TODO oddly specific functions.  Maybe find a better way to abstract this?
-  fun compilerPluginVersionForGroupName(groupName: String): SemVer?
-  fun anvilGenerateFactoriesEnabled(): Boolean
+  fun importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName>
+  fun extraPossibleReferencesForSourceSetName(
+    sourceSetName: SourceSetName
+  ): Set<PossibleReferenceName>
+
+  fun allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency>
+  fun sourceOf(dependencyProject: ConfiguredProjectDependency, apiOnly: Boolean = false): Project2?
 }
 
 data class ParsedKapt<T>(
@@ -71,6 +89,9 @@ interface AndroidProject2 : Project2 {
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>
   val androidPackageOrNull: String?
+  fun androidResourceDeclarationsForSourceSetName(
+    sourceSetName: SourceSetName
+  ): Set<DeclarationName>
 }
 
 val Project2.srcRoot get() = File("$projectDir/src")

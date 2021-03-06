@@ -15,74 +15,44 @@
 
 package modulecheck.core.parser.android
 
+import groovy.util.Node
 import groovy.xml.XmlParser
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
 object AndroidResourceParser {
   private val parser = XmlParser()
 
-  fun parse(resDir: File): Set<String> {
-    fun log(msg: () -> String) {
-      /*if (project.path == ":base:resources") */println(msg())
-    }
+  fun parseFile(resDir: File): Set<String> {
+    val values = mutableSetOf<AndroidResource>()
 
     val resources = resDir
       .walkTopDown()
       .filter { it.isFile }
+      .filter { it.extension == "xml" }
 
-      /*.onEach { file ->
-        if (file.path.endsWith("values-da/dimens.xml")) {
-          val parsed = parser.parse(file)
+      .onEach { file ->
+        val parsed = parser.parse(file)
 
+        if (parsed.name() == "resources") {
           val t = parsed.children().cast<List<Node>>()
 
-          println(
-            """ ______________________________________________ node file --> $file
-            |
-            |${
-            t.joinToString("\n") {
-              it.name()
-                .toString() + "       " + it.value() + "       " + it.attributes()
-                .map { it.cast<MutableMap.MutableEntry<String, String>>().value }
-            }
-            }
-            |
-            |
-            |____________________________________________________
-          """.trimMargin()
-          )
+          t.forEach { node ->
+
+            AndroidResource.fromValuePair(
+              node.name()
+                .toString(),
+              node.attributes().values.first()?.toString() ?: ""
+            )?.also { values.add(it) }
+          }
         }
-      }*/
+      }
 
-      .map { file -> AndroidResource.fromFile(file) }
-      .toSet()
-
-/*    val grouped = resources.groupBy { it::class }
-
-    grouped
-      .forEach { type, lst ->
-
-        log {
-          """ ------------------------------------------- ${type.simpleName}
-        |
-        |${lst.lines()}
-        |
-      """.trimMargin()
-        }
-      }*/
+      .mapNotNull { file -> AndroidResource.fromFile(file) }
+      .toSet() + values
 
     return resources
       .map { "R.${it.prefix}.${it.name}" }
       .toSet()
-      .also {
-        //   println(
-        //     """ ----------------------------------------------- resource things ----------------------------
-        //   |
-        //   |${it.lines()}
-        // """.trimMargin()
-        //   )
-      }
   }
 }
-
-fun File.existsOrNull(): File? = if (exists()) this else null

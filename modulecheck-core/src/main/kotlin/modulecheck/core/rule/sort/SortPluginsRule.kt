@@ -16,10 +16,10 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
+import modulecheck.psi.PsiElementWithSurroundingText
 import java.util.*
 
 class SortPluginsRule(
