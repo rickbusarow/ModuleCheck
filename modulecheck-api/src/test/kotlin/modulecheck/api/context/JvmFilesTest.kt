@@ -18,4 +18,3 @@ package modulecheck.api.context
 import modulecheck.testing.ContextTest
 
 internal class JvmFilesTest : ContextTest()
-

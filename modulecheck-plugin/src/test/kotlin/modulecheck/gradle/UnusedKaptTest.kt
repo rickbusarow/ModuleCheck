@@ -19,12 +19,10 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 
@@ -59,13 +57,7 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckUnusedKapt")
-      .build()
-
-    println(result.output)
-
-    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    build("moduleCheckUnusedKapt").shouldSucceed()
   }
 
   @Test
@@ -114,12 +106,6 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckUnusedKapt")
-      .build()
-
-    println(result.output)
-
-    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    build("moduleCheckUnusedKapt").shouldSucceed()
   }
 }

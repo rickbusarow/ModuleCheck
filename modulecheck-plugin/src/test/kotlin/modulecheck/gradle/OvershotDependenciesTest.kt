@@ -20,7 +20,6 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import io.kotest.matchers.shouldBe
 import modulecheck.specs.*
-import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -54,6 +53,25 @@ class OvershotDependenciesTest : BaseTest() {
 
     val b = jvmSub3.toBuilder()
 
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("kotlin(\"jvm\")")
+          addProjectDependency("api", jvmSub3)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addFile(
+            FileSpec.builder("com.example.app", "MyApp.kt")
+              .addImport("com.example.lib1", "Lib1Class")
+              .addImport("com.example.lib2", "Lib2Class")
+              .build()
+          )
+        }
+      )
+    }
+
     @BeforeEach
     fun beforeEach() {
       b.projectBuildSpec?.let { bs ->
@@ -72,28 +90,7 @@ class OvershotDependenciesTest : BaseTest() {
         applyEach(projects) { project ->
           addSubproject(project)
         }
-        addSubproject(
-          ProjectSpec("app") {
-            addBuildSpec(
-              ProjectBuildSpec {
-                addPlugin("kotlin(\"jvm\")")
-                // addProjectDependency("api", jvmSub1)
-                // addProjectDependency("api", jvmSub2)
-                addProjectDependency("api", jvmSub3)
-              }
-            )
-            addSrcSpec(
-              ProjectSrcSpec(Path.of("src/main/kotlin")) {
-                addFile(
-                  FileSpec.builder("com.example.app", "MyApp.kt")
-                    .addImport("com.example.lib1", "Lib1Class")
-                    .addImport("com.example.lib2", "Lib2Class")
-                    .build()
-                )
-              }
-            )
-          }
-        )
+        addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2)
         addSubproject(
           ProjectSpec("lib-3") {
@@ -138,26 +135,6 @@ class OvershotDependenciesTest : BaseTest() {
 
     @Test
     fun `without autoCorrect should fail with report`() {
-      val appProject = ProjectSpec("app") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addPlugin("kotlin(\"jvm\")")
-            // addProjectDependency("api", jvmSub1)
-            // addProjectDependency("api", jvmSub2)
-            addProjectDependency("api", jvmSub3)
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFile(
-              FileSpec.builder("com.example.app", "MyApp.kt")
-                .addImport("com.example.lib1", "Lib1Class")
-                .addImport("com.example.lib2", "Lib2Class")
-                .build()
-            )
-          }
-        )
-      }
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -210,7 +187,6 @@ class OvershotDependenciesTest : BaseTest() {
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("implementation", jvmSub1)
               addProjectDependency("implementation", jvmSub2)
               addProjectDependency("implementation", jvmSub3)
             }
@@ -252,11 +228,10 @@ class OvershotDependenciesTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckOvershotDependency")
-      .build()
-
-    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
+    build(
+      "moduleCheckOvershotDependency",
+      "moduleCheckSortDependencies"
+    ).shouldSucceed()
 
     // lib-1 and lib-2 are api dependencies in lib-3,
     // but lib-3 is an implementation dependency of app
@@ -284,8 +259,6 @@ class OvershotDependenciesTest : BaseTest() {
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-              addProjectDependency("api", jvmSub2)
               addProjectDependency("api", jvmSub3)
             }
           )
@@ -302,31 +275,20 @@ class OvershotDependenciesTest : BaseTest() {
       )
       addSubprojects(jvmSub1, jvmSub2, jvmSub3)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  // autoCorrect = true
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckOvershotDependency")
-      .build()
-
-    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
+    build(
+      "moduleCheckOvershotDependency",
+      "moduleCheckSortDependencies"
+    ).shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
         |}
         |
         |dependencies {
-        |  api(project(path = ":lib-1"))
-        |  api(project(path = ":lib-2"))
         |  api(project(path = ":lib-3"))
         |}
         |""".trimMargin()
@@ -343,8 +305,6 @@ class OvershotDependenciesTest : BaseTest() {
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", "lib-1")
-              addProjectDependency("api", "lib-2")
               addProjectDependency("api", "lib-4")
             }
           )
@@ -377,11 +337,10 @@ class OvershotDependenciesTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckOvershotDependency")
-      .build()
-
-    result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
+    build(
+      "moduleCheckOvershotDependency",
+      "moduleCheckSortDependencies"
+    ).shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

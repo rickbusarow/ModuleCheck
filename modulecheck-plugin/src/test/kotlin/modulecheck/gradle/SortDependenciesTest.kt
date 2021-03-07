@@ -20,7 +20,6 @@ import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -70,11 +69,7 @@ class SortDependenciesTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckSortDependencies")
-      .build()
-
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
+    build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -144,11 +139,7 @@ class SortDependenciesTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckSortDependencies")
-      .build()
-
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
+    build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -227,11 +218,7 @@ class SortDependenciesTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckSortDependencies")
-      .build()
-
-    result.task(":moduleCheckSortDependencies")?.outcome shouldBe SUCCESS
+    build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

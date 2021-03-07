@@ -21,7 +21,6 @@ import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
@@ -74,11 +73,7 @@ class SortPluginsTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckSortPlugins")
-      .build()
-
-    result.task(":moduleCheckSortPlugins")?.outcome shouldBe SUCCESS
+    build("moduleCheckSortPlugins").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

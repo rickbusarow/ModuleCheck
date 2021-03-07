@@ -20,7 +20,6 @@ import modulecheck.api.context.ProjectContext.Element
 import modulecheck.api.context.ProjectContext.Key
 import java.util.concurrent.ConcurrentHashMap
 
-
 interface ProjectContext {
   operator fun <E : Element> get(key: Key<E>): E
 

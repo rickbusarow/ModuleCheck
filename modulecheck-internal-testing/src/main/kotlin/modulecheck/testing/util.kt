@@ -68,4 +68,3 @@ fun Hermit.tempFile(path: String = "temp.kt"): LazyResets<File> {
     override fun isInitialized(): Boolean = lazyHolder.isInitialized()
   }
 }
-
