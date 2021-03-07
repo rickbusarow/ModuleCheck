@@ -17,13 +17,11 @@ package modulecheck.testing
 
 import hermit.test.Hermit
 import hermit.test.LazyResets
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.DynamicTest
 import java.io.File
 import java.nio.file.Files
+import java.util.*
 
-fun Hermit.tempDir(path: String = ""): LazyResets<File> {
+fun Hermit.tempDir(path: String = UUID.randomUUID().toString()): LazyResets<File> {
   return object : LazyResets<File> {
 
     private var lazyHolder: Lazy<File> = createLazy()
@@ -71,35 +69,3 @@ fun Hermit.tempFile(path: String = "temp.kt"): LazyResets<File> {
   }
 }
 
-interface DynamicTests {
-
-  fun <T : Any> Iterable<() -> T>.dynamic(
-    testName: String,
-    test: suspend CoroutineScope.(T) -> Unit
-  ): List<DynamicTest> {
-    return map { factory -> factory.invoke() }
-      .map { subject ->
-
-        DynamicTest.dynamicTest("$testName -- ${subject::class.simpleName}") {
-          runBlocking {
-            test.invoke(this, subject)
-          }
-        }
-      }
-  }
-
-  fun <T : Any> Iterable<() -> T>.dynamic(
-    testName: (T) -> String,
-    test: suspend CoroutineScope.(T) -> Unit
-  ): List<DynamicTest> {
-    return map { factory -> factory.invoke() }
-      .map { subject ->
-
-        DynamicTest.dynamicTest("$testName -- $subject") {
-          runBlocking {
-            test.invoke(this, subject)
-          }
-        }
-      }
-  }
-}

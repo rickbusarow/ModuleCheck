@@ -75,6 +75,7 @@ abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
   }
 }
 
+@Suppress("UnstableApiUsage")
 open class ModuleCheckExtension @Inject constructor(
   private val objects: ObjectFactory
 ) : ModuleCheckSettings {
@@ -102,7 +103,9 @@ open class ModuleCheckExtension @Inject constructor(
     objects.listProperty<KaptMatcher>().convention(emptyList())
   override var additionalKaptMatchers: List<KaptMatcher>
     @Internal get() = additionalKaptMatchersProp.get()
-    set(value) {      additionalKaptMatchersProp.set(value) }
+    set(value) {
+      additionalKaptMatchersProp.set(value)
+    }
 
   @get:Internal
   val checksSettingsProp: Property<ChecksSettings> =

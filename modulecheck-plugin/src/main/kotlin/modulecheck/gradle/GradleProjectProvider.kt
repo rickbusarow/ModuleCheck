@@ -63,15 +63,28 @@ class GradleProjectProvider(
     val configurations = gradleProject.configurations()
 
     val projectDependencies = gradleProject.projectDependencies()
-    val hasKapt = gradleProject.plugins.hasPlugin(KAPT_PLUGIN_ID)
-    val sourceSets = gradleProject.jvmSourceSets()
+    val hasKapt = gradleProject
+      .plugins
+      .hasPlugin(KAPT_PLUGIN_ID)
+    val sourceSets = gradleProject
+      .jvmSourceSets()
 
-    val isAndroid = gradleProject.extensions.findByType(TestedExtension::class) != null
+    val isAndroid = gradleProject
+      .extensions
+      .findByType(TestedExtension::class) != null
 
-    val libraryExtension by lazy(NONE) { gradleProject.extensions.findByType<LibraryExtension>() }
+    val libraryExtension by lazy(NONE) {
+      gradleProject
+        .extensions
+        .findByType<LibraryExtension>()
+    }
     val testedExtension by lazy(NONE) {
-      gradleProject.extensions.findByType<LibraryExtension>()
-        ?: gradleProject.extensions.findByType<AppExtension>()
+      gradleProject
+        .extensions
+        .findByType<LibraryExtension>()
+        ?: gradleProject
+          .extensions
+          .findByType<AppExtension>()
     }
 
     return if (isAndroid) {
@@ -144,10 +157,6 @@ class GradleProjectProvider(
 
       configuration.name to config
     }
-
-  private fun GradleProject.allprojects(): List<Project2> = rootProject
-    .allprojects
-    .map { get(it.path) }
 
   private fun GradleProject.projectDependencies(): Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>> =
     lazy {

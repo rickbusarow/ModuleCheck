@@ -78,8 +78,8 @@ class OvershotDependenciesTest : BaseTest() {
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
-                addProjectDependency("api", jvmSub2)
+                // addProjectDependency("api", jvmSub1)
+                // addProjectDependency("api", jvmSub2)
                 addProjectDependency("api", jvmSub3)
               }
             )
@@ -112,7 +112,7 @@ class OvershotDependenciesTest : BaseTest() {
           projectBuild
             .addBlock(
               """moduleCheck {
-            |  // autoCorrect = true
+            |  autoCorrect = true
             |}
           """.trimMargin()
             ).build()
@@ -120,11 +120,10 @@ class OvershotDependenciesTest : BaseTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      val result = gradleRunner
-        .withArguments("moduleCheckOvershotDependency")
-        .build()
-
-      result.task(":moduleCheckOvershotDependency")!!.outcome shouldBe TaskOutcome.SUCCESS
+      build(
+        "moduleCheckOvershotDependency",
+        "moduleCheckSortDependencies"
+      ).shouldSucceed()
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -136,6 +135,68 @@ class OvershotDependenciesTest : BaseTest() {
         |  api(project(path = ":lib-3"))
         |}
         |""".trimMargin()
+    }
+
+    @Test
+    fun `without autoCorrect should fail with report`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            // addProjectDependency("api", jvmSub1)
+            // addProjectDependency("api", jvmSub2)
+            addProjectDependency("api", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFile(
+              FileSpec.builder("com.example.app", "MyApp.kt")
+                .addImport("com.example.lib1", "Lib1Class")
+                .addImport("com.example.lib2", "Lib2Class")
+                .build()
+            )
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2)
+        addSubproject(
+          ProjectSpec("lib-3") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+                addProjectDependency("api", jvmSub2)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      shouldFailWithMessage(
+        "moduleCheckOvershotDependency"
+      ) {
+        it.contains("ModuleCheck found 2 issues") shouldBe true
+        it.contains("> ModuleCheck found 2 issues which were not auto-corrected.") shouldBe true
+        it.contains("app/build.gradle.kts: (6, 3):  over-shot: :lib-1 from: :lib-3") shouldBe true
+        it.contains("app/build.gradle.kts: (6, 3):  over-shot: :lib-2 from: :lib-3") shouldBe true
+      }
     }
   }
 

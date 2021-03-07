@@ -15,30 +15,7 @@
 
 package modulecheck.api.context
 
-import hermit.test.junit.HermitJUnit5
-import io.kotest.matchers.shouldBe
-import modulecheck.api.Project2Impl
-import org.junit.jupiter.api.Test
-import java.io.File
-import java.util.concurrent.ConcurrentHashMap
+import modulecheck.testing.ContextTest
 
-internal class JvmFilesTest : HermitJUnit5() {
+internal class JvmFilesTest : ContextTest()
 
-  @Test
-  fun `foo`() {
-
-    val p = Project2Impl(
-      path = ":",
-      projectDir = File(""),
-      buildFile = File(""),
-      configurations = emptyMap(),
-      projectDependencies = lazy { emptyMap() },
-      hasKapt = false,
-      sourceSets = emptyMap(),
-      projectCache = ConcurrentHashMap(),
-      anvilGradlePlugin = null
-    )
-
-    p[JvmFiles] shouldBe emptyMap()
-  }
-}
