@@ -15,30 +15,30 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.context.ProjectContext.Element
-import modulecheck.api.context.ProjectContext.Key
+import hermit.test.junit.HermitJUnit5
+import io.kotest.matchers.shouldBe
+import modulecheck.api.Project2Impl
+import org.junit.jupiter.api.Test
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
+internal class JvmFilesTest : HermitJUnit5() {
 
-interface ProjectContext {
-  operator fun <E : Element> get(key: Key<E>): E
+  @Test
+  fun `foo`() {
 
-  interface Key<E : Element> {
-    operator fun invoke(project: Project2): E
-  }
+    val p = Project2Impl(
+      path = ":",
+      projectDir = File(""),
+      buildFile = File(""),
+      configurations = emptyMap(),
+      projectDependencies = lazy { emptyMap() },
+      hasKapt = false,
+      sourceSets = emptyMap(),
+      projectCache = ConcurrentHashMap(),
+      anvilGradlePlugin = null
+    )
 
-  interface Element {
-    val key: Key<*>
-  }
-}
-
-class ProjectContextImpl(val project: Project2) : ProjectContext {
-
-  private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
-
-  override operator fun <E : Element> get(key: Key<E>): E {
-    @Suppress("UNCHECKED_CAST")
-    return cache.getOrPut(key, { key.invoke(project) }) as E
+    p[JvmFiles] shouldBe emptyMap()
   }
 }
