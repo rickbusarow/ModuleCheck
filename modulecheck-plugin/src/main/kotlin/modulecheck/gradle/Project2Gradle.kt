@@ -18,6 +18,8 @@ package modulecheck.gradle
 import com.android.build.gradle.TestedExtension
 import modulecheck.api.*
 import modulecheck.api.context.*
+import modulecheck.api.context.ProjectContext.Element
+import modulecheck.api.context.ProjectContext.Key
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.psi.DslBlockVisitor
@@ -31,7 +33,6 @@ import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.findPlugin
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.psi.KtCallExpression
-import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
 import java.util.concurrent.*
 
@@ -41,7 +42,11 @@ open class Project2Gradle protected constructor(
   override val projectCache: ConcurrentHashMap<String, Project2>
 ) : Project2 {
 
-  override val context by lazy { ProjectContext(this) }
+  private val context by lazy { ProjectContextImpl(this) }
+
+  override fun <E : Element> get(key: Key<E>): E {
+    return context[key]
+  }
 
   override val configurations = gradleProject
     .configurations
@@ -148,9 +153,6 @@ open class Project2Gradle protected constructor(
   override val buildFile: File get() = gradleProject.buildFile
   override val hasKapt: Boolean by lazy { gradleProject.plugins.hasPlugin(KAPT_PLUGIN_ID) }
 
-  override val dependendents: Set<Project2>
-    get() = context[DependentProjects]
-
   override val projectDependencies: Map<ConfigurationName, List<ConfiguredProjectDependency>> by lazy {
     gradleProject
       .configurations
@@ -166,69 +168,8 @@ open class Project2Gradle protected constructor(
       .toMap()
   }
 
-  override fun kaptDependenciesForConfig(configurationName: ConfigurationName): Set<KaptProcessor> =
-    context[KaptDependencies][configurationName].orEmpty()
-
-  override fun bindingContextForSourceSetName(sourceSetName: SourceSetName): BindingContext =
-    context[BindingContexts][sourceSetName] ?: BindingContext.EMPTY
-
-  override fun classpathForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-    sourceSets[sourceSetName]?.let {
-      classpathForSourceSet(it)
-    } ?: emptySet()
-
-  override fun jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
-    sourceSets[sourceSetName]?.let {
-      jvmFilesForSourceSet(it)
-    } ?: emptyList()
-
-  override fun jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-    sourceSets[sourceSetName]?.let {
-      jvmSourcesForSourceSet(it)
-    } ?: emptySet()
-
-  override fun resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-    sourceSets[sourceSetName]?.let {
-      resourcesForSourceSet(it)
-    } ?: emptySet()
-
-  override fun layoutFilesForSourceSetName(sourceSetName: SourceSetName): Set<XmlFile.LayoutFile> =
-    sourceSets[sourceSetName]?.let {
-      layoutFilesForSourceSet(it)
-    } ?: emptySet()
-
-  override fun importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName> {
-    return context[Imports][sourceSetName].orEmpty()
-  }
-
-  override fun extraPossibleReferencesForSourceSetName(
-    sourceSetName: SourceSetName
-  ): Set<PossibleReferenceName> {
-    return context[PossibleReferences][sourceSetName].orEmpty()
-  }
-
-  override fun classpathForSourceSet(sourceSet: SourceSet): Set<File> {
-    return context[ClassPaths][sourceSet].orEmpty()
-  }
-
-  override fun jvmSourcesForSourceSet(sourceSet: SourceSet): Set<File> {
-    return context[JvmSourceFiles][sourceSet.name].orEmpty()
-  }
-
-  override fun jvmFilesForSourceSet(sourceSet: SourceSet): List<JvmFile> {
-    return context[JvmFiles][sourceSet.name].orEmpty()
-  }
-
-  override fun resourcesForSourceSet(sourceSet: SourceSet): Set<File> {
-    return context[ResSourceFiles][sourceSet.name].orEmpty()
-  }
-
-  override fun layoutFilesForSourceSet(sourceSet: SourceSet): Set<XmlFile.LayoutFile> {
-    return context[LayoutFiles][sourceSet.name].orEmpty()
-  }
-
   fun anvilGradlePlugin(): AnvilGradlePlugin {
-    return context[AnvilGradlePlugin]
+    return anvilGradlePlugin
   }
 
   override fun sourceOf(

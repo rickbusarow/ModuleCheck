@@ -34,16 +34,14 @@ data class Imports(
     override operator fun invoke(project: Project2): Imports {
       val ss = project.sourceSets
 
-      val context = project.context
-
       val map = ss
         .mapValues { (name, _) ->
 
-          val jvm = context[JvmFiles][name]
+          val jvm = project[JvmFiles][name]
             .orEmpty()
             .flatMap { it.imports }
             .toSet()
-          val layout = context[LayoutFiles][name]
+          val layout = project[LayoutFiles][name]
             .orEmpty()
             .flatMap { it.customViews }
             .toSet()
@@ -56,4 +54,9 @@ data class Imports(
       return Imports(ConcurrentHashMap(map))
     }
   }
+}
+
+val ProjectContext.imports: Imports get() = get(Imports)
+fun ProjectContext.importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName> {
+  return imports[sourceSetName].orEmpty()
 }

@@ -37,7 +37,7 @@ data class JvmFiles(
         .map { (name, sourceSet) ->
 
           name to project
-            .jvmSourcesForSourceSet(sourceSet)
+            .jvmSourcesForSourceSetName(sourceSet.name)
             .jvmFiles(project.bindingContextForSourceSetName(sourceSet.name))
         }.toMap()
 
@@ -45,3 +45,7 @@ data class JvmFiles(
     }
   }
 }
+
+val ProjectContext.jvmFiles: JvmFiles get() = get(JvmFiles)
+fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
+  jvmFiles[sourceSetName].orEmpty()

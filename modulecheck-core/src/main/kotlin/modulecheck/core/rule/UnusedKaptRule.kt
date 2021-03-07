@@ -19,6 +19,9 @@ import modulecheck.api.KaptMatcher
 import modulecheck.api.Project2
 import modulecheck.api.asMap
 import modulecheck.api.context.KaptDependencies
+import modulecheck.api.context.extraPossibleReferencesForSourceSetName
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.kaptDependencies
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.kapt.UnusedKaptFinding
 import modulecheck.core.kapt.UnusedKaptPluginFinding
@@ -51,7 +54,7 @@ class UnusedKaptRule(
       }
       .flatMap { (configurationName, imports) ->
 
-        val processors = project.kaptDependenciesForConfig(configurationName)
+        val processors = project.kaptDependencies[configurationName].orEmpty()
 
         val unused = processors.filterNot { processor ->
 
@@ -75,8 +78,7 @@ class UnusedKaptRule(
             )
           }
 
-        val unusedPlugin = project
-          .context[KaptDependencies]
+        val unusedPlugin = project [KaptDependencies]
           .values
           .flatten()
           .size == unused.size && project.hasKapt && unused.isNotEmpty()

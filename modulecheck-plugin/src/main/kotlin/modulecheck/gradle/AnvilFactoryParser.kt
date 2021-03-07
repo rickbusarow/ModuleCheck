@@ -16,6 +16,9 @@
 package modulecheck.gradle
 
 import modulecheck.api.Project2
+import modulecheck.api.context.extraPossibleReferencesForSourceSetName
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.files.JavaFile
 import modulecheck.api.files.KotlinFile
 import modulecheck.core.CouldUseAnvilFinding

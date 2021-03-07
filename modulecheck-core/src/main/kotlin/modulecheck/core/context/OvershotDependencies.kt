@@ -34,8 +34,7 @@ data class OvershotDependencies(
 
   companion object Key : ProjectContext.Key<OvershotDependencies> {
     override operator fun invoke(project: Project2): OvershotDependencies {
-      val unused = project
-        .context[UnusedDependencies]
+      val unused = project [UnusedDependencies]
         .main()
         .map { it.cpp() }
         .toSet()
@@ -92,3 +91,5 @@ data class OvershotDependencies(
     }
   }
 }
+
+val ProjectContext.overshotDependencies: OvershotDependencies get() = get(OvershotDependencies)

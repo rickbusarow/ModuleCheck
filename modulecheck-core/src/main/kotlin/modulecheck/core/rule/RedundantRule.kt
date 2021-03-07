@@ -31,8 +31,7 @@ class RedundantRule(
       "projects, but also declared in the current project unnecessarily"
 
   override fun check(project: Project2): List<RedundantDependencyFinding> {
-    return project
-      .context[RedundantDependencies]
+    return project [RedundantDependencies]
       .all()
       .distinctBy { it.positionOrNull() }
   }

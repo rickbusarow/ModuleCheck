@@ -42,3 +42,7 @@ data class ResSourceFiles(
     }
   }
 }
+
+val ProjectContext.resSourceFiles: ResSourceFiles get() = get(ResSourceFiles)
+fun ProjectContext.resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  resSourceFiles[sourceSetName].orEmpty()

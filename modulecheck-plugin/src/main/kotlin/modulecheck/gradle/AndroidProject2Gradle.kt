@@ -142,7 +142,7 @@ class AndroidProject2Gradle(
   override fun androidResourceDeclarationsForSourceSetName(
     sourceSetName: SourceSetName
   ): Set<DeclarationName> {
-    return context[AndroidResourceDeclarations][sourceSetName].orEmpty()
+    return get(AndroidResourceDeclarations)[sourceSetName].orEmpty()
   }
 
   override fun toString(): String = "AndroidProject2Gradle(path='$path')"

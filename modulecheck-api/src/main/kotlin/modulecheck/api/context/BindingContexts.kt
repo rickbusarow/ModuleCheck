@@ -37,8 +37,8 @@ data class BindingContexts(
         .sourceSets
         .mapValues { (_, sourceSet) ->
 
-          val classPath = project.classpathForSourceSet(sourceSet).map { it.path }
-          val jvmSources = project.jvmSourcesForSourceSet(sourceSet).ktFiles()
+          val classPath = project.classpathForSourceSetName(sourceSet.name).map { it.path }
+          val jvmSources = project.jvmSourcesForSourceSetName(sourceSet.name).ktFiles()
 
           createBindingContext(classPath, jvmSources)
         }
@@ -47,3 +47,7 @@ data class BindingContexts(
     }
   }
 }
+
+val ProjectContext.bindingContexts: BindingContexts get() = get(BindingContexts)
+fun  ProjectContext.bindingContextForSourceSetName(sourceSetName: SourceSetName): BindingContext =
+  bindingContexts[sourceSetName] ?: BindingContext.EMPTY

@@ -42,3 +42,6 @@ data class DependentProjects(
     }
   }
 }
+
+val ProjectContext.dependentProjects: DependentProjects get() = get(DependentProjects)
+val ProjectContext.dependendents: DependentProjects get() = get(DependentProjects)

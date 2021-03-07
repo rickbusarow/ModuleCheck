@@ -19,6 +19,7 @@ import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.Declarations
 import modulecheck.api.context.ProjectContext
+import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.files.KotlinFile
 import modulecheck.api.main
 
@@ -37,7 +38,7 @@ data class MustBeApi(
         .flatMap { kotlinFile ->
           kotlinFile
             .apiReferences
-            .filterNot { it in project.context[Declarations]["main"].orEmpty() }
+            .filterNot { it in project[Declarations]["main"].orEmpty() }
         }.toSet()
 
       val api = project
@@ -49,8 +50,7 @@ data class MustBeApi(
         }
         .filter { cpp ->
           cpp
-            .project
-            .context[Declarations]["main"]
+            .project[Declarations]["main"]
             .orEmpty()
             .any { declared ->
               declared in noIdeaWhereTheyComeFrom
@@ -62,3 +62,5 @@ data class MustBeApi(
     }
   }
 }
+
+val ProjectContext.mustBeApi: MustBeApi get() = get(MustBeApi)

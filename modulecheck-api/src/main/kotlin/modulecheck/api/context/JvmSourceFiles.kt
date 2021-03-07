@@ -42,3 +42,7 @@ data class JvmSourceFiles(
     }
   }
 }
+
+val ProjectContext.jvmSourceFiles: JvmSourceFiles get() = get(JvmSourceFiles)
+fun ProjectContext.jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  jvmSourceFiles[sourceSetName].orEmpty()

@@ -19,6 +19,8 @@ import modulecheck.api.AndroidProject2
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.Declarations
+import modulecheck.api.context.extraPossibleReferencesForSourceSetName
+import modulecheck.api.context.importsForSourceSetName
 import kotlin.LazyThreadSafetyMode.NONE
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
@@ -36,8 +38,7 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
 
 private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val javaIsUsed = dependencyDeclarations
@@ -67,8 +68,7 @@ private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolea
 
 private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val rReferences by lazy(NONE) {
@@ -90,8 +90,7 @@ private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency):
 
 private fun Project2.usesInTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val rReferences by lazy(NONE) {

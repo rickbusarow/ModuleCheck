@@ -87,3 +87,5 @@ data class RedundantDependencies(
     }
   }
 }
+
+val ProjectContext.redundantDependencies: RedundantDependencies get() = get(RedundantDependencies)
