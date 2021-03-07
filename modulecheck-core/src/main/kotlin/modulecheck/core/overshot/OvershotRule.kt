@@ -30,8 +30,7 @@ class OvershotRule(
     "but are only added to the classpath by some other project dependency which is unused"
 
   override fun check(project: Project2): List<OvershotDependencyFinding> {
-    return project
-      .context[OvershotDependencies]
+    return project [OvershotDependencies]
       .all()
       .distinctBy { it.dependencyIdentifier }
   }

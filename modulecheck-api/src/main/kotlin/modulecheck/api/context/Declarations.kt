@@ -40,12 +40,12 @@ data class Declarations(
           val rPackage = (project as? AndroidProject2)?.androidPackageOrNull
 
           val set = if (rPackage != null) {
-            project.context[JvmFiles][sourceSet.name]
+            project[JvmFiles][sourceSet.name]
               .orEmpty()
               .flatMap { it.declarations }
               .toSet() + "$rPackage.R"
           } else {
-            project.context[JvmFiles][sourceSet.name]
+            project[JvmFiles][sourceSet.name]
               .orEmpty()
               .flatMap { it.declarations }
               .toSet()
@@ -57,3 +57,5 @@ data class Declarations(
     }
   }
 }
+
+val ProjectContext.declarations: Declarations get() = get(Declarations)

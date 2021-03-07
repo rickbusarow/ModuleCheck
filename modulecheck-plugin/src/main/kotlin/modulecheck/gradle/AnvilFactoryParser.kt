@@ -16,6 +16,9 @@
 package modulecheck.gradle
 
 import modulecheck.api.Project2
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.files.JavaFile
 import modulecheck.api.files.KotlinFile
 import modulecheck.core.CouldUseAnvilFinding
@@ -51,9 +54,9 @@ object AnvilFactoryParser {
       project.importsForSourceSetName("test")
 
     val maybeExtra by lazy(NONE) {
-      project.extraPossibleReferencesForSourceSetName("androidTest") +
-        project.extraPossibleReferencesForSourceSetName("main") +
-        project.extraPossibleReferencesForSourceSetName("test")
+      project.possibleReferencesForSourceSetName("androidTest") +
+        project.possibleReferencesForSourceSetName("main") +
+        project.possibleReferencesForSourceSetName("test")
     }
 
     val createsComponent = allImports.contains(daggerComponent) ||

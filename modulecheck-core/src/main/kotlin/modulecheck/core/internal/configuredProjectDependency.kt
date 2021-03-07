@@ -19,6 +19,8 @@ import modulecheck.api.AndroidProject2
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.Declarations
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import kotlin.LazyThreadSafetyMode.NONE
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
@@ -36,22 +38,21 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
 
 private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val javaIsUsed = dependencyDeclarations
     .any { declaration ->
 
       declaration in importsForSourceSetName("main") ||
-        declaration in extraPossibleReferencesForSourceSetName("main")
+        declaration in possibleReferencesForSourceSetName("main")
     }
 
   if (javaIsUsed) return true
 
   if (this !is AndroidProject2) return false
 
-  val rReferences = extraPossibleReferencesForSourceSetName("main")
+  val rReferences = possibleReferencesForSourceSetName("main")
     .filter { it.startsWith("R.") }
 
   val dependencyAsAndroid = dependency.project as? AndroidProject2 ?: return false
@@ -67,19 +68,18 @@ private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolea
 
 private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val rReferences by lazy(NONE) {
-    extraPossibleReferencesForSourceSetName("androidTest")
+    possibleReferencesForSourceSetName("androidTest")
       .filter { it.startsWith("R.") }
   }
 
   return dependencyDeclarations
     .any { declaration ->
       declaration in importsForSourceSetName("androidTest") ||
-        declaration in extraPossibleReferencesForSourceSetName("androidTest")
+        declaration in possibleReferencesForSourceSetName("androidTest")
     } || (dependency.project as? AndroidProject2)
     ?.androidResourceDeclarationsForSourceSetName("main")
     .orEmpty()
@@ -90,19 +90,18 @@ private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency):
 
 private fun Project2.usesInTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project
-    .context[Declarations]["main"]
+    .project [Declarations]["main"]
     .orEmpty()
 
   val rReferences by lazy(NONE) {
-    extraPossibleReferencesForSourceSetName("test")
+    possibleReferencesForSourceSetName("test")
       .filter { it.startsWith("R.") }
   }
 
   return dependencyDeclarations
     .any { declaration ->
       declaration in importsForSourceSetName("test") ||
-        declaration in extraPossibleReferencesForSourceSetName("test")
+        declaration in possibleReferencesForSourceSetName("test")
     } || (dependency.project as? AndroidProject2)
     ?.androidResourceDeclarationsForSourceSetName("main")
     .orEmpty()

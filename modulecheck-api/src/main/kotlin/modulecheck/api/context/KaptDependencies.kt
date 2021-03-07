@@ -55,3 +55,9 @@ data class KaptDependencies(
     }
   }
 }
+
+val ProjectContext.kaptDependencies: KaptDependencies get() = get(KaptDependencies)
+fun ProjectContext.kaptDependenciesForConfig(
+  configurationName: ConfigurationName
+): Set<KaptProcessor> =
+  kaptDependencies[configurationName].orEmpty()

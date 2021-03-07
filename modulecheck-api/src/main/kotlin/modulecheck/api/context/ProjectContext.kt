@@ -16,25 +16,16 @@
 package modulecheck.api.context
 
 import modulecheck.api.Project2
+import modulecheck.api.context.ProjectContext.Element
+import modulecheck.api.context.ProjectContext.Key
 import java.util.concurrent.ConcurrentHashMap
 
-interface ProjectContextAware {
+interface ProjectContextAware : ProjectContext {
   val context: ProjectContext
 }
 
-class ProjectContext(val project: Project2) {
-
-  private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
-
-  operator fun <E : Element> get(key: Key<E>): E {
-    @Suppress("UNCHECKED_CAST")
-    return cache.getOrPut(key, { key.invoke(project) }) as E
-  }
-
-  fun <E : Element> get(key: Key<E>, func: () -> E): E {
-    @Suppress("UNCHECKED_CAST")
-    return cache.getOrPut(key, func) as E
-  }
+interface ProjectContext {
+  operator fun <E : Element> get(key: Key<E>): E
 
   interface Key<E : Element> {
     operator fun invoke(project: Project2): E
@@ -42,5 +33,15 @@ class ProjectContext(val project: Project2) {
 
   interface Element {
     val key: Key<*>
+  }
+}
+
+class ProjectContextImpl(val project: Project2) : ProjectContext {
+
+  private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
+
+  override operator fun <E : Element> get(key: Key<E>): E {
+    @Suppress("UNCHECKED_CAST")
+    return cache.getOrPut(key, { key.invoke(project) }) as E
   }
 }

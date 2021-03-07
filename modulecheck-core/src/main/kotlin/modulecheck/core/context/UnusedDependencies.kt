@@ -77,3 +77,5 @@ data class UnusedDependencies(
     }
   }
 }
+
+val ProjectContext.unusedDependencies: UnusedDependencies get() = get(UnusedDependencies)

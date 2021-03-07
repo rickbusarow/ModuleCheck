@@ -55,3 +55,5 @@ data class AnvilGradlePlugin(
     }
   }
 }
+
+val ProjectContext.anvilGradlePlugin: AnvilGradlePlugin get() = get(AnvilGradlePlugin)

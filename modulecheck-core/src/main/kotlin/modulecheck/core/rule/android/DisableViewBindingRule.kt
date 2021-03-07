@@ -17,6 +17,9 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.api.context.dependendents
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
@@ -72,7 +75,7 @@ class DisableViewBindingRule(
               .importsForSourceSetName("main")
               .contains(reference) ||
               dep
-                .extraPossibleReferencesForSourceSetName("main")
+                .possibleReferencesForSourceSetName("main")
                 .contains(reference)
           }
       }

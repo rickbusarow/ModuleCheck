@@ -35,8 +35,7 @@ data class PossibleReferences(
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->
-          project
-            .context[JvmFiles][sourceSet.name]
+          project[JvmFiles][sourceSet.name]
             .orEmpty()
             .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
             .toSet()
@@ -46,3 +45,9 @@ data class PossibleReferences(
     }
   }
 }
+
+val ProjectContext.possibleReferences: PossibleReferences get() = get(PossibleReferences)
+fun ProjectContext.possibleReferencesForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<PossibleReferenceName> =
+  possibleReferences[sourceSetName].orEmpty()

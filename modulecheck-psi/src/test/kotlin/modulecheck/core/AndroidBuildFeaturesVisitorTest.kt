@@ -19,6 +19,7 @@ import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
 import io.kotest.matchers.shouldBe
 import modulecheck.psi.AndroidBuildFeaturesVisitor
+import modulecheck.psi.internal.asKtFile
 import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest

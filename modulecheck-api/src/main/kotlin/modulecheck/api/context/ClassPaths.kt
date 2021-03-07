@@ -16,14 +16,14 @@
 package modulecheck.api.context
 
 import modulecheck.api.Project2
-import modulecheck.api.SourceSet
+import modulecheck.api.SourceSetName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 data class ClassPaths(
-  internal val delegate: ConcurrentMap<SourceSet, Set<File>>
-) : ConcurrentMap<SourceSet, Set<File>> by delegate,
+  internal val delegate: ConcurrentMap<SourceSetName, Set<File>>
+) : ConcurrentMap<SourceSetName, Set<File>> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<ClassPaths>
@@ -35,7 +35,7 @@ data class ClassPaths(
         .sourceSets
         .values
         .map { sourceSet ->
-          sourceSet to (sourceSet.classpathFiles + sourceSet.outputFiles).toSet()
+          sourceSet.name to (sourceSet.classpathFiles + sourceSet.outputFiles).toSet()
         }
         .toMap()
 
@@ -43,3 +43,7 @@ data class ClassPaths(
     }
   }
 }
+
+val ProjectContext.classPaths: ClassPaths get() = get(ClassPaths)
+fun ProjectContext.classpathForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  classPaths[sourceSetName].orEmpty()
