@@ -42,7 +42,6 @@ class OvershotDependenciesTest : BaseTest() {
   }
 
   val projectBuild = ProjectBuildSpecBuilder()
-    // .addImport("import com.rickbusarow.modulecheck.moduleCheck")
     .addPlugin("id(\"com.rickbusarow.module-check\")")
     .buildScript()
 
