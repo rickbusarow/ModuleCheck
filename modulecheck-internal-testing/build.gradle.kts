@@ -23,6 +23,9 @@ dependencies {
 
   compileOnly(gradleApi())
 
+  // compileOnly(project(path = ":modulecheck-api"))
+  // compileOnly(project(path = ":modulecheck-core"))
+  // compileOnly(project(path = ":modulecheck-plugin"))
   compileOnly(project(path = ":modulecheck-specs"))
 
   api(BuildPlugins.androidGradlePlugin)

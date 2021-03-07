@@ -37,6 +37,8 @@ fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
 }
 
+typealias GradleProject = Project
+
 class ModuleCheckPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {

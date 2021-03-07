@@ -34,7 +34,7 @@ data class OvershotDependencies(
 
   companion object Key : ProjectContext.Key<OvershotDependencies> {
     override operator fun invoke(project: Project2): OvershotDependencies {
-      val unused = project [UnusedDependencies]
+      val unused = project[UnusedDependencies]
         .main()
         .map { it.cpp() }
         .toSet()
@@ -43,7 +43,8 @@ data class OvershotDependencies(
         .flatMap { cpp ->
           cpp
             .project
-            .projectDependencies["api"]
+            .projectDependencies
+            .value["api"]
             .orEmpty()
         }.toSet()
 
@@ -53,6 +54,7 @@ data class OvershotDependencies(
 
       val mainDependenciesPaths = project
         .projectDependencies
+        .value
         .main()
         .map { it.project.path }
         .toSet()
@@ -70,8 +72,9 @@ data class OvershotDependencies(
 
           val sourceConfig = project
             .projectDependencies
+            .value
             .main()
-            .firstOrNull { it.project == source  }
+            .firstOrNull { it.project == source }
             ?.configurationName
             ?: "api"
 

@@ -29,18 +29,17 @@ interface Project2 :
 
   val path: String
 
-  val rootProject: Project2
-  val allprojects: List<Project2>
   val projectDir: File
   val buildFile: File
 
   val configurations: Map<String, Config>
 
-  val projectDependencies: Map<ConfigurationName, List<ConfiguredProjectDependency>>
+  val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>
 
   val hasKapt: Boolean
 
   val sourceSets: Map<SourceSetName, SourceSet>
+  val anvilGradlePlugin: AnvilGradlePlugin?
 
   fun allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency>
   fun sourceOf(dependencyProject: ConfiguredProjectDependency, apiOnly: Boolean = false): Project2?
@@ -59,7 +58,9 @@ interface AndroidProject2 : Project2 {
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>
   val androidPackageOrNull: String?
-  fun androidResourceDeclarationsForSourceSetName(
-    sourceSetName: SourceSetName
-  ): Set<DeclarationName>
 }
+
+data class AnvilGradlePlugin(
+  val version: SemVer,
+  val generateDaggerFactories: Boolean
+)

@@ -32,6 +32,7 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
 
     val mainDependenciesPaths = project
       .projectDependencies
+      .value
       .main()
       .map { it.project.path }
       .toSet()
@@ -49,6 +50,7 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
             )
         val sourceConfig = project
           .projectDependencies
+          .value
           .main()
           .firstOrNull { it.project == source }
           ?.configurationName ?: "api"

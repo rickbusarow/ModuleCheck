@@ -19,8 +19,8 @@ import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
 import modulecheck.api.ProjectsAware
+import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.gradle.Project2Gradle
 import modulecheck.gradle.internal.Output
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -45,15 +45,19 @@ abstract class ModuleCheckTask :
   val autoCorrect: Boolean = settings.autoCorrect
 
   @get:Input
-  override val projectCache = ConcurrentHashMap<String, Project2>()
+  final override val projectCache = ConcurrentHashMap<String, Project2>()
+
+  @get:Input
+  val projectProvider = GradleProjectProvider(project.rootProject, projectCache)
 
   @TaskAction
   fun evaluate() {
     val numIssues = measured {
-      Project2Gradle.from(project, projectCache)
+      project
         .allprojects
         .filter { it.buildFile.exists() }
         .filterNot { it.path in settings.ignoreAll }
+        .map { projectProvider.get(it.path) }
         .getFindings()
         .distinct()
     }

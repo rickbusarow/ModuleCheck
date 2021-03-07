@@ -43,9 +43,11 @@ data class MustBeApi(
 
       val api = project
         .projectDependencies
+        .value
         .main()
         .filterNot {
-          it in project.projectDependencies["api"]
+          it in project.projectDependencies
+            .value["api"]
             .orEmpty()
         }
         .filter { cpp ->

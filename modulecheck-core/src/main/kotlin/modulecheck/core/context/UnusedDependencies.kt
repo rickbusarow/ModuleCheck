@@ -51,7 +51,10 @@ data class UnusedDependencies(
         .asSequence()
         .filterNot { it.name.contains("kapt", true) }
         .flatMap { config ->
-          project.projectDependencies[config.name].orEmpty()
+          project
+            .projectDependencies
+            .value[config.name]
+            .orEmpty()
         }
         .filterNot { cpd ->
           // test configurations have the main source project as a dependency.

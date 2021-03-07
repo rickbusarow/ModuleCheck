@@ -37,9 +37,7 @@ object AnvilFactoryParser {
 
   @Suppress("ComplexMethod")
   fun parse(project: Project2): List<CouldUseAnvilFinding> {
-    if (project !is Project2Gradle) return emptyList()
-
-    val anvil = project.anvilGradlePlugin()
+    val anvil = project.anvilGradlePlugin ?: return emptyList()
 
     if (anvil.generateDaggerFactories) return emptyList()
 

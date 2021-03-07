@@ -20,3 +20,8 @@ import java.util.concurrent.ConcurrentHashMap
 interface ProjectsAware {
   val projectCache: ConcurrentHashMap<String, Project2>
 }
+
+interface ProjectProvider : ProjectsAware {
+
+  fun get(path: String): Project2
+}

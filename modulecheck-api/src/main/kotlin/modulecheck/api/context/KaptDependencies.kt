@@ -40,7 +40,10 @@ data class KaptDependencies(
         .mapValues { (configName, config) ->
 
           val external = config.externalDependencies
-          val internal = project.projectDependencies.all()
+          val internal = project
+            .projectDependencies
+            .value
+            .all()
 
           val allDependencies = external + internal
 

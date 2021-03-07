@@ -21,6 +21,7 @@ import modulecheck.api.Project2
 import modulecheck.api.context.Declarations
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.core.parser.android.androidResourceDeclarationsForSourceSetName
 import kotlin.LazyThreadSafetyMode.NONE
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {

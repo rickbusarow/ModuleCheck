@@ -32,6 +32,7 @@ data class DependentProjects(
         .filter { otherProject ->
           project.path in otherProject
             .projectDependencies
+            .value
             .flatMap {
               it.value.map { it.project.path }
             }

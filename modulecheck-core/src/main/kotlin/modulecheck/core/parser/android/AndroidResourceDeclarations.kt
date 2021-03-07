@@ -63,3 +63,8 @@ data class AndroidResourceDeclarations(
 }
 
 val ProjectContext.androidResourceDeclarations: AndroidResourceDeclarations get() = get(AndroidResourceDeclarations)
+fun ProjectContext.androidResourceDeclarationsForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<DeclarationName> {
+  return get(AndroidResourceDeclarations)[sourceSetName].orEmpty()
+}
