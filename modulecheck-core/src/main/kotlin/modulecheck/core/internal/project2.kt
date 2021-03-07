@@ -18,7 +18,6 @@ package modulecheck.core.internal
 import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
-import modulecheck.api.util.positionOf
 import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.ProjectDependencyDeclarationVisitor
 import modulecheck.psi.PsiElementWithSurroundingText

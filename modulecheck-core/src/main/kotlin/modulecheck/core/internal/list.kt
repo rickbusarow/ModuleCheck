@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.util
+package modulecheck.core.internal
 
 import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position

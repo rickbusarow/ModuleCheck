@@ -18,7 +18,7 @@ package modulecheck.core
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.files.existsOrNull
-import modulecheck.api.util.positionOf
+import modulecheck.core.internal.positionOf
 import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 

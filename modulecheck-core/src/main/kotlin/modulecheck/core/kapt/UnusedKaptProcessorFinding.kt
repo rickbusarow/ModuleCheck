@@ -17,7 +17,7 @@ package modulecheck.core.kapt
 
 import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
-import modulecheck.api.util.positionOf
+import modulecheck.core.internal.positionOf
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
