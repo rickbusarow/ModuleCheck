@@ -78,7 +78,7 @@ class UnusedKaptTest : BaseTest() {
         ProjectSpec("app") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(
+              addFileSpec(
                 FileSpec.builder("com.my.app", "App.kt")
                   .addType(
                     TypeSpec.classBuilder("MyClass")

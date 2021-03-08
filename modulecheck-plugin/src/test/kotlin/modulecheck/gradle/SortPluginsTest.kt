@@ -53,8 +53,8 @@ class SortPluginsTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(FileSpec.builder("", "androidLibrary.gradle.kts").build())
-              addFile(FileSpec.builder("", "javaLibrary.gradle.kts").build())
+              addFileSpec(FileSpec.builder("", "androidLibrary.gradle.kts").build())
+              addFileSpec(FileSpec.builder("", "javaLibrary.gradle.kts").build())
             }
           )
         }

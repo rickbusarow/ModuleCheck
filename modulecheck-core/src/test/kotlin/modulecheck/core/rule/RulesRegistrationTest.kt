@@ -48,8 +48,8 @@ data class TestSettings(
   override var alwaysIgnore: Set<String> = emptySet(),
   override var ignoreAll: Set<String> = emptySet(),
   override var additionalKaptMatchers: List<KaptMatcher> = emptyList(),
-  override val checksSettings: ChecksSettings = ChecksExtension(),
-  override val sortSettings: SortSettings = SortExtension()
+  override val checks: ChecksSettings = ChecksExtension(),
+  override val sort: SortSettings = SortExtension()
 ) : ModuleCheckSettings {
   override fun checks(block: ChecksSettings.() -> Unit) = Unit
 

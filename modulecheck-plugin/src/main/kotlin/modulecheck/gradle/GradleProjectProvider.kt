@@ -99,7 +99,7 @@ class GradleProjectProvider(
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         agpVersion = agpVersion,
-        androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources == true,
+        androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         resourceFiles = gradleProject.androidResourceFiles(),
         androidPackageOrNull = gradleProject.androidPackageOrNull()

@@ -62,9 +62,11 @@ data class UnusedResourcesGenerationFinding(
   }
 
   override fun fix(): Boolean {
-    val ktFile =  kotlinBuildFileOrNull() ?:   return false
+    val ktFile = kotlinBuildFileOrNull() ?: return false
 
-    val oldBlock = elementOrNull()?.toString() ?: return false
+    val element = elementOrNull() ?: return false
+
+    val oldBlock = element.toString()
 
     val newBlock = oldBlock.replace("true", "false")
 

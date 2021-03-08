@@ -110,19 +110,19 @@ open class ModuleCheckExtension @Inject constructor(
   @get:Internal
   val checksSettingsProp: Property<ChecksSettings> =
     objects.property<ChecksSettings>().convention(ChecksExtension())
-  override var checksSettings: ChecksSettings
+  override var checks: ChecksSettings
     @Internal get() = checksSettingsProp.get()
     set(value) = checksSettingsProp.set(value)
 
-  override fun checks(block: ChecksSettings.() -> Unit) = block.invoke(checksSettings)
+  override fun checks(block: ChecksSettings.() -> Unit) = block.invoke(checks)
 
   @get:Internal
   val sortSettingsProp: Property<SortSettings> = objects.property<SortSettings>().convention(
     SortExtension()
   )
-  override var sortSettings: SortSettings
+  override var sort: SortSettings
     @Internal get() = sortSettingsProp.get()
     set(value) = sortSettingsProp.set(value)
 
-  override fun sort(block: SortSettings.() -> Unit) = block.invoke(sortSettings)
+  override fun sort(block: SortSettings.() -> Unit) = block.invoke(sort)
 }

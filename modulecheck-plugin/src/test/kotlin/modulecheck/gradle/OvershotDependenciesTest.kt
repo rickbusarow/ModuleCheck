@@ -62,7 +62,7 @@ class OvershotDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFile(
+          addFileSpec(
             FileSpec.builder("com.example.app", "MyApp.kt")
               .addImport("com.example.lib1", "Lib1Class")
               .addImport("com.example.lib2", "Lib2Class")
@@ -193,7 +193,7 @@ class OvershotDependenciesTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(
+              addFileSpec(
                 FileSpec.builder("com.example.app", "MyApp.kt")
                   .addImport("com.example.lib1", "Lib1Class")
                   .addImport("com.example.lib2", "Lib2Class")
@@ -264,7 +264,7 @@ class OvershotDependenciesTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(
+              addFileSpec(
                 FileSpec.builder("com.example.app", "MyApp.kt")
                   .addImport("com.example.lib3", "Lib3Class")
                   .build()
@@ -310,7 +310,7 @@ class OvershotDependenciesTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(
+              addFileSpec(
                 FileSpec.builder("com.example.app", "MyApp.kt")
                   .addImport("com.example.lib1", "Lib1Class")
                   .addImport("com.example.lib2", "Lib2Class")
@@ -376,7 +376,7 @@ fun jvmSubProject(
     .applyEach(fqClassName.toList()) { fq ->
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFile(
+          addFileSpec(
             FileSpec.builder(fq.packageName, fq.simpleName + ".kt")
               .addType(TypeSpec.classBuilder(fq.simpleName).build())
               .build()

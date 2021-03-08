@@ -64,11 +64,6 @@ abstract class BaseTest : HermitJUnit5() {
     tasks.forEach { it.outcome shouldBe TaskOutcome.SUCCESS }
   }
 
-  infix fun BuildResult.shouldFailWithMessage(message: String) {
-    tasks shouldContain TaskOutcome.FAILED
-    output shouldBe message
-  }
-
   fun shouldFailWithMessage(vararg tasks: String, messageBlock: (String) -> Unit) {
     val result = gradleRunner.withArguments(*tasks).buildAndFail()
 

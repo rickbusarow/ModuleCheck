@@ -30,7 +30,7 @@ class SortDependenciesRule(
 
   private val elementComparables: Array<(String) -> Comparable<*>> =
     settings
-      .sortSettings
+      .sort
       .dependencyComparators
       .map { it.toRegex() }
       .map { regex ->
