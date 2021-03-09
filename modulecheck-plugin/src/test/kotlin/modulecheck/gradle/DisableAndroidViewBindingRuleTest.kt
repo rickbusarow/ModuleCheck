@@ -541,7 +541,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (24, 0):  unused ViewBinding generation:")
+          it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:"
         }
       }
 
@@ -559,7 +559,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (7, 0):  unused ViewBinding generation:")
+          it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:"
         }
       }
 
@@ -581,7 +581,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (24, 0):  unused ViewBinding generation:")
+          it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:"
         }
       }
 
@@ -601,7 +601,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (7, 0):  unused ViewBinding generation:")
+          it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:"
         }
       }
     }
