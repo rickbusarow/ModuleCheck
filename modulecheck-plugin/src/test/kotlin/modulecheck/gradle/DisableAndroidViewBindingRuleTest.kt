@@ -15,7 +15,9 @@
 
 package modulecheck.gradle
 
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.PropertySpec
 import hermit.test.resets
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -56,6 +58,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("""id("com.android.library")""")
+              addPlugin("kotlin(\"android\")")
               android = true
             }
           )
@@ -67,33 +70,34 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
   @Nested
   inner class `viewBinding generation is used` {
 
-    @BeforeEach
-    fun beforeEach() {
-      project.edit {
-        subprojects.first().edit {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp")
-                  .addImport("com.example.app.databinding", "ActivityMainBinding")
-                  .build()
-              )
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/res/layout")) {
-              addXmlFile(
-                XmlFile(
-                  "activity_main.xml",
-                  """<?xml version="1.0" encoding="utf-8"?>
+    val bindingClassName = ClassName("com.example.app.databinding", "ActivityMainBinding")
+    val bindingProperty = PropertySpec.builder("binding", bindingClassName).build()
+    val myAppFile = FileSpec.builder("com.example.app", "MyApp")
+      .addProperty(bindingProperty)
+      .build()
+    val activity_main_xml = XmlFile(
+      "activity_main.xml",
+      """<?xml version="1.0" encoding="utf-8"?>
                 |<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 |  android:id="@+id/fragment_container"
                 |  android:layout_width="match_parent"
                 |  android:layout_height="match_parent" />
                 |
                 """.trimMargin()
-                )
-              )
+    )
+
+    @BeforeEach
+    fun beforeEach() {
+      project.edit {
+        subprojects.first().edit {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/java")) {
+              addFileSpec(myAppFile)
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/res/layout")) {
+              addXmlFile(activity_main_xml)
             }
           )
           addSrcSpec(
@@ -129,6 +133,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -171,6 +176,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -215,6 +221,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -261,6 +268,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -337,6 +345,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -379,6 +388,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -423,6 +433,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -469,6 +480,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
+        |  kotlin("android")
         |}
         |
         |android {
@@ -529,12 +541,12 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (23, 0):  unused ViewBinding generation:")
+          it.shouldContain("app/build.gradle.kts: (24, 0):  unused ViewBinding generation:")
         }
       }
 
       @Test
-      fun `fully dot qualified should be fixed`() {
+      fun `fully dot qualified should fail`() {
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -547,12 +559,12 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (6, 0):  unused ViewBinding generation:")
+          it.shouldContain("app/build.gradle.kts: (7, 0):  unused ViewBinding generation:")
         }
       }
 
       @Test
-      fun `fully scoped should be fixed`() {
+      fun `fully scoped should fail`() {
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -569,12 +581,12 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (23, 0):  unused ViewBinding generation:")
+          it.shouldContain("app/build.gradle.kts: (24, 0):  unused ViewBinding generation:")
         }
       }
 
       @Test
-      fun `dot qualified and then scoped should be fixed`() {
+      fun `dot qualified and then scoped should fail`() {
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -589,7 +601,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it.shouldContain("app/build.gradle.kts: (6, 0):  unused ViewBinding generation:")
+          it.shouldContain("app/build.gradle.kts: (7, 0):  unused ViewBinding generation:")
         }
       }
     }

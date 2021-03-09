@@ -16,6 +16,7 @@
 package modulecheck.specs
 
 import com.squareup.kotlinpoet.FileSpec
+import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
 import java.io.File
 import java.nio.file.Path
@@ -23,12 +24,14 @@ import java.nio.file.Path
 public data class ProjectSrcSpec(
   public var dir: Path,
   public val fileSpecs: MutableList<FileSpec>,
+  public val ktsFiles: MutableList<KtsFile>,
   public val xmlFiles: MutableList<XmlFile>
 ) {
 
   public fun toBuilder(dir: Path): ProjectSrcSpecBuilder = ProjectSrcSpecBuilder(
     dir = dir,
     fileSpecs = fileSpecs,
+    ktsFiles = ktsFiles,
     xmlFiles = xmlFiles
   )
 
@@ -38,15 +41,16 @@ public data class ProjectSrcSpec(
   ): ProjectSrcSpec = toBuilder(dir).apply { init() }.build()
 
   public fun writeIn(path: Path) {
+    ktsFiles.forEach {
+      File("$path/$dir").mkdirs()
+      File("$path/$dir/${it.fileName}").writeText(it.text)
+    }
     xmlFiles.forEach {
       File("$path/$dir").mkdirs()
       File("$path/$dir/${it.fileName}").writeText(it.text)
     }
     fileSpecs.forEach {
       it.writeTo(File("$path/$dir"))
-      // val txt = it.toString()
-      // File("$path/$dir").mkdirs()
-      // File("$path/$dir/${ it.packageName.replace(".", "/")}/${it.name}").writeText(txt)
     }
   }
 
@@ -66,6 +70,7 @@ public data class ProjectSrcSpec(
 public class ProjectSrcSpecBuilder(
   public var dir: Path,
   public val fileSpecs: MutableList<FileSpec> = mutableListOf(),
+  public val ktsFiles: MutableList<KtsFile> = mutableListOf(),
   public val xmlFiles: MutableList<XmlFile> = mutableListOf(),
   init: ProjectSrcSpecBuilder.() -> Unit = {}
 ) : Builder<ProjectSrcSpec> {
@@ -78,11 +83,16 @@ public class ProjectSrcSpecBuilder(
     fileSpecs.add(fileSpec)
   }
 
+  public fun addKtsFile(file: KtsFile) {
+    ktsFiles.add(file)
+  }
+
   public fun addXmlFile(file: XmlFile) {
     xmlFiles.add(file)
   }
 
-  override fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, fileSpecs, xmlFiles)
+  override fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, fileSpecs, ktsFiles, xmlFiles)
 
   public data class XmlFile(val fileName: String, val text: String)
+  public data class KtsFile(val fileName: String, val text: String)
 }

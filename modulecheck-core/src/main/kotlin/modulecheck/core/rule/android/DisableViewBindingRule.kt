@@ -68,15 +68,15 @@ class DisableViewBindingRule(
 
         val reference = "$basePackage.databinding.$generated"
 
-        dependents
-          .any { dep ->
+        val usedInProject = project
+          .importsForSourceSetName("main")
+          .contains(reference)
 
-            project
-              .importsForSourceSetName("main")
-              .contains(reference) ||
-              dep
-                .possibleReferencesForSourceSetName("main")
-                .contains(reference)
+        usedInProject || dependents
+          .any { dep ->
+            dep
+              .possibleReferencesForSourceSetName("main")
+              .contains(reference)
           }
       }
       .toList()
