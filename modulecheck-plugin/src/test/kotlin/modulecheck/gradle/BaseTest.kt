@@ -38,7 +38,7 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  fun String.fixPath(): String = replace("/", File.separator)
+  fun String.fixPath(): String = replace(File.separator, "/")
 
   private val kotlinVersion =
     System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)
@@ -70,7 +70,7 @@ abstract class BaseTest : HermitJUnit5() {
     val result = gradleRunner.withArguments(*tasks).buildAndFail()
 
     result.tasks.map { it.outcome } shouldContain TaskOutcome.FAILED
-    messageBlock(result.output)
+    messageBlock(result.output.fixPath())
   }
 
   @BeforeEach

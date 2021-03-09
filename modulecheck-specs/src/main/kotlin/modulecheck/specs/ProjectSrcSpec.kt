@@ -42,12 +42,12 @@ public data class ProjectSrcSpec(
 
   public fun writeIn(path: Path) {
     ktsFiles.forEach {
-      File("$path/$dir").mkdirs()
-      File("$path/$dir/${it.fileName}").writeText(it.text)
+      File("$path/$dir".fixPath()).mkdirs()
+      File("$path/$dir/${it.fileName}".fixPath()).writeText(it.text)
     }
     xmlFiles.forEach {
-      File("$path/$dir").mkdirs()
-      File("$path/$dir/${it.fileName}").writeText(it.text)
+      File("$path/$dir".fixPath()).mkdirs()
+      File("$path/$dir/${it.fileName}".fixPath()).writeText(it.text)
     }
     fileSpecs.forEach {
       it.writeTo(File("$path/$dir"))
@@ -96,3 +96,5 @@ public class ProjectSrcSpecBuilder(
   public data class XmlFile(val fileName: String, val text: String)
   public data class KtsFile(val fileName: String, val text: String)
 }
+
+internal fun String.fixPath(): String = replace("/", File.separator)
