@@ -38,6 +38,8 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
+  fun String.fixPath(): String = replace("/", File.separator)
+
   private val kotlinVersion =
     System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)
   private val agpVersion = System.getProperty("modulecheck.agpVersion", DEFAULT_AGP_VERSION)
