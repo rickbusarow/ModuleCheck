@@ -18,6 +18,8 @@ package modulecheck.api
 import modulecheck.api.Output.Color.*
 import java.util.*
 
+private val windows = "win" in System.getProperty("os.name").toLowerCase(Locale.ROOT)
+
 @Suppress("DefaultLocale")
 object Output {
 
@@ -81,7 +83,7 @@ object Output {
   }
 
   private fun reset() {
-    println("$prefix[0m")
+    if (!windows) println("$prefix[0m")
   }
 
   @Suppress("MagicNumber")
@@ -102,9 +104,5 @@ object Output {
     val highIntensity get() = if (!windows) "$prefix[0;9${colorNumber}m" else ""
     val regular get() = if (!windows) "$prefix[0;3${colorNumber}m" else ""
     val underline get() = if (!windows) "$prefix[4;3${colorNumber}m" else ""
-
-    companion object {
-      private val windows = "win" in System.getProperty("os.name").toLowerCase(Locale.ROOT)
-    }
   }
 }
