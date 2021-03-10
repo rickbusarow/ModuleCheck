@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
-import modulecheck.core.mcp
+import modulecheck.core.context.MustBeApi
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings
@@ -29,15 +29,13 @@ class MustBeApiRule(
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
   override fun check(project: Project2): List<MustBeApiFinding> {
-    return project
-      .mcp()
-      .mustBeApi
+    return project [MustBeApi]
       .map {
         MustBeApiFinding(
           dependentPath = project.path,
           buildFile = project.buildFile,
           dependencyProject = it.project,
-          config = it.config
+          configurationName = it.configurationName
         )
       }
       .distinctBy { it.positionOrNull() }

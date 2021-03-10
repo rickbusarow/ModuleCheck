@@ -19,19 +19,14 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.nio.file.Path
 
 class UnusedKaptTest : BaseTest() {
-
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   @Test
   fun `unused`() {
@@ -62,13 +57,7 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckUnusedKapt")
-      .build()
-
-    println(result.output)
-
-    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    build("moduleCheckUnusedKapt").shouldSucceed()
   }
 
   @Test
@@ -89,7 +78,7 @@ class UnusedKaptTest : BaseTest() {
         ProjectSpec("app") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(
+              addFileSpec(
                 FileSpec.builder("com.my.app", "App.kt")
                   .addType(
                     TypeSpec.classBuilder("MyClass")
@@ -117,12 +106,6 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckUnusedKapt")
-      .build()
-
-    println(result.output)
-
-    result.task(":moduleCheckUnusedKapt")?.outcome shouldBe TaskOutcome.SUCCESS
+    build("moduleCheckUnusedKapt").shouldSucceed()
   }
 }

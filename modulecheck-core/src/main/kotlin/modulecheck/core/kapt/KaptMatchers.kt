@@ -81,7 +81,8 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
     )
   ),
   KaptMatcher(
-    name = "Inflation Inject", processor = "com.squareup.inject:inflation-inject-processor",
+    name = "Inflation Inject",
+    processor = "com.squareup.inject:inflation-inject-processor",
     annotationImports = listOf(
       "com\\.squareup\\.inject\\.inflation\\.\\*",
       "com\\.squareup\\.inject\\.inflation\\.InflationInject",
@@ -97,7 +98,8 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
     )
   ),
   KaptMatcher(
-    name = "Assisted Inject", processor = "com.squareup.inject:assisted-inject-processor",
+    name = "Assisted Inject",
+    processor = "com.squareup.inject:assisted-inject-processor",
     annotationImports = listOf(
       "com\\.squareup\\.inject\\.assisted\\.\\*",
       "com\\.squareup\\.inject\\.assisted\\.AssistedInject",

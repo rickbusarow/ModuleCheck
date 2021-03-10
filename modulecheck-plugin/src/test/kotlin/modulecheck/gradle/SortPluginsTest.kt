@@ -15,20 +15,17 @@
 
 package modulecheck.gradle
 
-import com.squareup.kotlinpoet.FileSpec
 import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import org.gradle.testkit.runner.TaskOutcome.SUCCESS
+import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
 class SortPluginsTest : BaseTest() {
-
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
   @Test
   fun `sorting`() {
@@ -56,8 +53,8 @@ class SortPluginsTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFile(FileSpec.builder("", "androidLibrary.gradle.kts").build())
-              addFile(FileSpec.builder("", "javaLibrary.gradle.kts").build())
+              addKtsFile(KtsFile("androidLibrary.gradle.kts", ""))
+              addKtsFile(KtsFile("javaLibrary.gradle.kts", ""))
             }
           )
         }
@@ -76,11 +73,7 @@ class SortPluginsTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    val result = gradleRunner
-      .withArguments("moduleCheckSortPlugins")
-      .build()
-
-    result.task(":moduleCheckSortPlugins")?.outcome shouldBe SUCCESS
+    build("moduleCheckSortPlugins").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

@@ -17,9 +17,9 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.AndroidBuildFeaturesVisitor
+import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 
 data class UnusedResourcesGenerationFinding(
@@ -62,9 +62,11 @@ data class UnusedResourcesGenerationFinding(
   }
 
   override fun fix(): Boolean {
-    val ktFile =  kotlinBuildFileOrNull() ?:   return false
+    val ktFile = kotlinBuildFileOrNull() ?: return false
 
-    val oldBlock = elementOrNull()?.toString() ?: return false
+    val element = elementOrNull() ?: return false
+
+    val oldBlock = element.toString()
 
     val newBlock = oldBlock.replace("true", "false")
 

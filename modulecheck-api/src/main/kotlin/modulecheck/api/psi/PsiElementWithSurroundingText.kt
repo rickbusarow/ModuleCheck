@@ -14,15 +14,3 @@
  */
 
 package modulecheck.api.psi
-
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-
-data class PsiElementWithSurroundingText(
-  val psiElement: PsiElement,
-  val previousText: String,
-  val nextText: String
-) {
-  override fun toString(): String {
-    return previousText + psiElement.text + nextText
-  }
-}

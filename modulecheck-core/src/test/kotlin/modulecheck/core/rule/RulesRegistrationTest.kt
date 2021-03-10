@@ -17,9 +17,8 @@ package modulecheck.core.rule
 
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckExtension
-import modulecheck.core.parser.lines
+import modulecheck.api.KaptMatcher
+import modulecheck.api.settings.*
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -27,7 +26,7 @@ internal class RulesRegistrationTest : HermitJUnit5() {
 
   @Test
   fun `all rules should be represented in ChecksSettings`() {
-    val settings = ModuleCheckExtension()
+    val settings = TestSettings()
 
     val rules = ModuleCheckRuleFactory().create(settings)
 
@@ -37,13 +36,22 @@ internal class RulesRegistrationTest : HermitJUnit5() {
 
     val checksProperties = ChecksSettings::class.declaredMemberProperties
       .map { it.name.decapitalize() }
+      .filterNot { it == "anvilFactoryGeneration" } // Gradle plugin rule is only defined in the Gradle module
       .sorted()
-
-    val props = ChecksSettings::class.declaredMemberProperties
-      .map { it.name to it.get(settings.checksSettings) }
-
-    println(props.lines())
 
     checksProperties shouldBe ruleIds
   }
+}
+
+data class TestSettings(
+  override var autoCorrect: Boolean = false,
+  override var alwaysIgnore: Set<String> = emptySet(),
+  override var ignoreAll: Set<String> = emptySet(),
+  override var additionalKaptMatchers: List<KaptMatcher> = emptyList(),
+  override val checks: ChecksSettings = ChecksExtension(),
+  override val sort: SortSettings = SortExtension()
+) : ModuleCheckSettings {
+  override fun checks(block: ChecksSettings.() -> Unit) = Unit
+
+  override fun sort(block: SortSettings.() -> Unit) = Unit
 }

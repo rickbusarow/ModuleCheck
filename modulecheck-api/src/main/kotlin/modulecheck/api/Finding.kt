@@ -15,8 +15,7 @@
 
 package modulecheck.api
 
-import modulecheck.api.Finding.Position
-import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 
 interface Finding {
@@ -81,34 +80,4 @@ interface Fixable : Finding {
     const val FIX_LABEL = "// ModuleCheck finding"
     const val INLINE_COMMENT = "// "
   }
-}
-
-fun List<String>.positionOf(
-  project: Project2,
-  configuration: Config
-): Position? {
-  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
-}
-
-fun List<String>.positionOf(
-  path: String,
-  configuration: Config
-): Position? {
-  val reg = """.*${configuration.name}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
 }

@@ -17,9 +17,9 @@ package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
+import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 import java.util.*
 

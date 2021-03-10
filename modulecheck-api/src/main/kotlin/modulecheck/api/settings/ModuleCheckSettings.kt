@@ -24,10 +24,10 @@ interface ModuleCheckSettings {
   var ignoreAll: Set<String>
   var additionalKaptMatchers: List<KaptMatcher>
 
-  val checksSettings: ChecksSettings
+  val checks: ChecksSettings
   fun checks(block: ChecksSettings.() -> Unit)
 
-  val sortSettings: SortSettings
+  val sort: SortSettings
   fun sort(block: SortSettings.() -> Unit)
 }
 

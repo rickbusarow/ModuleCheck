@@ -15,7 +15,6 @@
 
 package modulecheck.psi
 
-import modulecheck.api.Config
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
@@ -24,7 +23,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.referenceExpression
 
 class ExternalDependencyDeclarationVisitor(
-  private val configuration: Config,
+  private val configuration: String,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "com.google.dagger"
    */
@@ -52,7 +51,7 @@ class ExternalDependencyDeclarationVisitor(
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->
       innerExpression
         .referenceExpression()
-        .takeIf { it?.text == configuration.name }
+        .takeIf { it?.text == configuration }
         ?.let {
           innerExpression                                     // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
             .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]

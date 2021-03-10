@@ -29,7 +29,7 @@ abstract class ModuleCheckAllTask @Inject constructor(
   @Suppress("LongMethod", "ComplexMethod")
   override fun List<Project2>.getFindings(): List<Finding> {
     val props = ChecksSettings::class.declaredMemberProperties
-      .associate { it.name to it.get(settings.checksSettings) as Boolean }
+      .associate { it.name to it.get(settings.checks) as Boolean }
 
     val findings = flatMap { proj ->
       rules

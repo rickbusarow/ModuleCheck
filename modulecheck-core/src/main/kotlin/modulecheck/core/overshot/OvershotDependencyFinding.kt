@@ -15,11 +15,11 @@
 
 package modulecheck.core.overshot
 
-import modulecheck.api.Config
+import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.DependencyFinding
-import modulecheck.core.MCP
+import modulecheck.core.internal.positionIn
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import java.io.File
@@ -29,14 +29,14 @@ data class OvershotDependencyFinding(
   override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
-  override val config: Config,
-  val from: MCP?
+  override val configurationName: ConfigurationName,
+  val from: Project2?
 ) : DependencyFinding("over-shot") {
 
   override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
 
   override fun positionOrNull(): Position? {
-    return from?.positionIn(buildFile, config)
+    return from?.positionIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean {

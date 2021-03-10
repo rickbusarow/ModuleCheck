@@ -15,25 +15,24 @@
 
 package modulecheck.core.parser
 
-import modulecheck.api.Config
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
+import modulecheck.api.main
 import modulecheck.core.InheritedImplementationDependencyFinding
-import modulecheck.core.MCP.Parsed
-import modulecheck.core.internal.usedIn
-import modulecheck.core.mcp
+import modulecheck.core.Parsed
+import modulecheck.core.internal.uses
 
 object InheritedImplementationParser : Parser<InheritedImplementationDependencyFinding>() {
 
   override fun parse(project: Project2): Parsed<InheritedImplementationDependencyFinding> {
-    val mcp = project.mcp()
-
-    val inherited = mcp.allPublicClassPathDependencyDeclarations()
+    val inherited = project.allPublicClassPathDependencyDeclarations()
 
     val used = inherited
-      .filter { it.usedIn(mcp) }
+      .filter { project.uses(it) }
 
-    val mainDependenciesPaths = mcp.dependencies
+    val mainDependenciesPaths = project
+      .projectDependencies
+      .value
       .main()
       .map { it.project.path }
       .toSet()
@@ -45,35 +44,37 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
       .map { overshot ->
 
         val source =
-          mcp.sourceOf(ConfiguredProjectDependency(Config.Api, overshot.project)) ?: mcp.sourceOf(
-            ConfiguredProjectDependency(Config.Implementation, overshot.project)
-          )
-        val sourceConfig = mcp
-          .dependencies
+          project.sourceOf(ConfiguredProjectDependency("api", overshot.project))
+            ?: project.sourceOf(
+              ConfiguredProjectDependency("implementation", overshot.project)
+            )
+        val sourceConfig = project
+          .projectDependencies
+          .value
           .main()
-          .firstOrNull { it.project == source?.project }
-          ?.config
+          .firstOrNull { it.project == source }
+          ?.configurationName ?: "api"
 
         InheritedImplementationDependencyFinding(
           dependentPath = project.path,
           buildFile = project.buildFile,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
-          config = sourceConfig ?: Config.Api,
+          configurationName = sourceConfig,
           from = source
         )
       }
-      .groupBy { it.config }
+      .groupBy { it.configurationName }
       .mapValues { it.value.toMutableSet() }
 
     return Parsed(
-      grouped.getOrDefault(Config.AndroidTest, mutableSetOf()),
-      grouped.getOrDefault(Config.Api, mutableSetOf()),
-      grouped.getOrDefault(Config.CompileOnly, mutableSetOf()),
-      grouped.getOrDefault(Config.Implementation, mutableSetOf()),
-      grouped.getOrDefault(Config.RuntimeOnly, mutableSetOf()),
-      grouped.getOrDefault(Config.TestApi, mutableSetOf()),
-      grouped.getOrDefault(Config.TestImplementation, mutableSetOf())
+      grouped.getOrDefault("androidTest", mutableSetOf()),
+      grouped.getOrDefault("api", mutableSetOf()),
+      grouped.getOrDefault("compileOnly", mutableSetOf()),
+      grouped.getOrDefault("implementation", mutableSetOf()),
+      grouped.getOrDefault("runtimeOnly", mutableSetOf()),
+      grouped.getOrDefault("testApi", mutableSetOf()),
+      grouped.getOrDefault("testImplementation", mutableSetOf())
     )
   }
 }

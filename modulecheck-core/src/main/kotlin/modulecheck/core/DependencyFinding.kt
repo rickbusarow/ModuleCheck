@@ -15,11 +15,13 @@
 
 package modulecheck.core
 
-import modulecheck.api.Config
+import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
-import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.core.internal.positionIn
+import modulecheck.core.internal.psiElementIn
+import modulecheck.psi.PsiElementWithSurroundingText
 
 abstract class DependencyFinding(
   override val problemName: String
@@ -27,16 +29,16 @@ abstract class DependencyFinding(
   Finding {
 
   abstract val dependencyProject: Project2
-  abstract val config: Config
+  abstract val configurationName: ConfigurationName
 
   override fun elementOrNull(): PsiElementWithSurroundingText? {
-    return MCP.from(dependencyProject)
-      .psiElementIn(buildFile, config)
+    return dependencyProject
+      .psiElementIn(buildFile, configurationName)
   }
 
   override fun positionOrNull(): Finding.Position? {
-    return MCP.from(dependencyProject)
-      .positionIn(buildFile, config)
+    return dependencyProject
+      .positionIn(buildFile, configurationName)
   }
 
   override fun equals(other: Any?): Boolean {
@@ -45,7 +47,7 @@ abstract class DependencyFinding(
 
     if (problemName != other.problemName) return false
     if (dependencyProject != other.dependencyProject) return false
-    if (config != other.config) return false
+    if (configurationName != other.configurationName) return false
 
     return true
   }
@@ -53,7 +55,7 @@ abstract class DependencyFinding(
   override fun hashCode(): Int {
     var result = problemName.hashCode()
     result = 31 * result + dependencyProject.hashCode()
-    result = 31 * result + config.hashCode()
+    result = 31 * result + configurationName.hashCode()
     return result
   }
 }

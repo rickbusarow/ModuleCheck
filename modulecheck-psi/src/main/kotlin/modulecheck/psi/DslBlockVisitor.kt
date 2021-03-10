@@ -15,7 +15,6 @@
 
 package modulecheck.psi
 
-import modulecheck.api.psi.PsiElementWithSurroundingText
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace

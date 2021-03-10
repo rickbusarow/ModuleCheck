@@ -18,6 +18,8 @@ package modulecheck.core.kapt
 import modulecheck.api.Finding
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
+import modulecheck.core.rule.KAPT_PLUGIN_FUN
+import modulecheck.core.rule.KAPT_PLUGIN_ID
 import java.io.File
 
 interface UnusedKaptFinding : Finding, Fixable

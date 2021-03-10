@@ -18,17 +18,20 @@ package modulecheck.gradle.task
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
 import modulecheck.api.Project2
-import modulecheck.api.settings.ModuleCheckExtension
-import modulecheck.gradle.internal.Output
-import modulecheck.gradle.project2
+import modulecheck.api.ProjectsAware
+import modulecheck.gradle.GradleProjectProvider
+import modulecheck.gradle.ModuleCheckExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckTask : DefaultTask() {
+abstract class ModuleCheckTask :
+  DefaultTask(),
+  ProjectsAware {
 
   init {
     group = "moduleCheck"
@@ -40,14 +43,23 @@ abstract class ModuleCheckTask : DefaultTask() {
   @get:Input
   val autoCorrect: Boolean = settings.autoCorrect
 
+  @get:Input
+  final override val projectCache = ConcurrentHashMap<String, Project2>()
+
+  @get:Input
+  val projectProvider = GradleProjectProvider(project.rootProject, projectCache)
+
+  @get:Input
+  val logger = GradleLogger(project)
+
   @TaskAction
   fun evaluate() {
     val numIssues = measured {
       project
-        .project2()
         .allprojects
         .filter { it.buildFile.exists() }
         .filterNot { it.path in settings.ignoreAll }
+        .map { projectProvider.get(it.path) }
         .getFindings()
         .distinct()
     }
@@ -63,25 +75,25 @@ abstract class ModuleCheckTask : DefaultTask() {
   private fun Collection<Finding>.finish(): Int {
     val grouped = this.groupBy { it.dependentPath }
 
-    Output.printMagenta("ModuleCheck found ${this.size} issues\n")
+    logger.printFailureHeader("ModuleCheck found ${this.size} issues\n")
 
     val unFixed = grouped
       .entries
       .sortedBy { it.key }
       .flatMap { (path, list) ->
 
-        Output.printMagenta("\t$path")
+        logger.printHeader("\t$path")
 
         val (fixed, toFix) = list.partition { finding ->
           autoCorrect && (finding as? Fixable)?.fix() ?: false
         }
 
         fixed.forEach { finding ->
-          Output.printYellow("\t\t${finding.logString()}")
+          logger.printWarning("\t\t${finding.logString()}")
         }
 
         toFix.forEach { finding ->
-          Output.printRed("\t\t${finding.logString()}")
+          logger.printFailure("\t\t${finding.logString()}")
         }
 
         toFix
@@ -90,7 +102,7 @@ abstract class ModuleCheckTask : DefaultTask() {
     return unFixed.size
   }
 
-  protected inline fun <T, R> T.measured(action: T.() -> R): R {
+  inline fun <T, R> T.measured(action: T.() -> R): R {
     var r: R
 
     val time = measureTimeMillis {
@@ -98,9 +110,9 @@ abstract class ModuleCheckTask : DefaultTask() {
     }
 
     @Suppress("MagicNumber")
-    val secondsDouble = time / 100.0
+    val secondsDouble = time / 1000.0
 
-    Output.printGreen("total parsing time: $secondsDouble seconds")
+    logger.printSuccessHeader("total parsing time: $secondsDouble seconds")
 
     return r
   }

@@ -17,10 +17,13 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.api.context.dependendents
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.mcp
 import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
+import java.io.File
 
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
@@ -66,15 +69,14 @@ class DisableViewBindingRule(
 
         val reference = "$basePackage.databinding.$generated"
 
-        dependents
+        val usedInProject = project
+          .importsForSourceSetName("main")
+          .contains(reference)
+
+        usedInProject || dependents
           .any { dep ->
-
-            val mcp = dep.mcp()
-
-            mcp
-              .mainImports
-              .contains(reference) || mcp
-              .mainExtraPossibleReferences
+            dep
+              .possibleReferencesForSourceSetName("main")
               .contains(reference)
           }
       }
@@ -88,6 +90,6 @@ class DisableViewBindingRule(
   }
 
   companion object {
-    private val filterReg = """.*/layout.*/.*.xml""".toRegex()
+    private val filterReg = """.*\${File.separator}layout.*\${File.separator}.*.xml""".toRegex()
   }
 }

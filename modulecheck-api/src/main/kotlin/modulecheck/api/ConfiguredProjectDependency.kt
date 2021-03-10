@@ -15,25 +15,26 @@
 
 package modulecheck.api
 
-import modulecheck.api.psi.PsiElementWithSurroundingText
+import modulecheck.psi.PsiElementWithSurroundingText
 
 interface HasConfig {
-  val config: Config
+  val configurationName: ConfigurationName
   val name: String
 }
 
 data class ExternalDependency(
-  override val config: Config,
+  override val configurationName: ConfigurationName,
   val group: String?,
   val moduleName: String?,
   val version: String?,
   val psiElementWithSurroundingText: Lazy<PsiElementWithSurroundingText?>
 ) : HasConfig {
-  override val name = "${group ?: ""}:${moduleName ?: ""}:${version ?: ""}"
+  override val name = "${group ?: ""}:${moduleName ?: ""}"
+  val nameWithVersion = "${group ?: ""}:${moduleName ?: ""}:${version ?: ""}"
 }
 
 data class ConfiguredProjectDependency(
-  override val config: Config,
+  override val configurationName: ConfigurationName,
   val project: Project2
 ) : HasConfig {
 
@@ -43,14 +44,14 @@ data class ConfiguredProjectDependency(
     if (this === other) return true
     if (other !is ConfiguredProjectDependency) return false
 
-    if (config != other.config) return false
+    if (configurationName != other.configurationName) return false
     if (project.path != other.project.path) return false
 
     return true
   }
 
   override fun hashCode(): Int {
-    var result = config.hashCode()
+    var result = configurationName.hashCode()
     result = 31 * result + project.hashCode()
     return result
   }

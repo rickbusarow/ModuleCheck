@@ -16,13 +16,13 @@
 package modulecheck.core.parser
 
 import modulecheck.api.Project2
-import modulecheck.core.MCP
+import modulecheck.core.Parsed
 
 abstract class Parser<T> {
 
-  fun parseLazy(project: Project2): Lazy<MCP.Parsed<T>> = lazy {
+  fun parseLazy(project: Project2): Lazy<Parsed<T>> = lazy {
     parse(project)
   }
 
-  abstract fun parse(project: Project2): MCP.Parsed<T>
+  abstract fun parse(project: Project2): Parsed<T>
 }

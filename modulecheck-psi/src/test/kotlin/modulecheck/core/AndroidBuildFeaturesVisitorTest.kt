@@ -20,6 +20,7 @@ import hermit.test.resets
 import io.kotest.matchers.shouldBe
 import modulecheck.psi.AndroidBuildFeaturesVisitor
 import modulecheck.psi.internal.asKtFile
+import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
@@ -106,7 +107,8 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
       """.trimIndent()
     )
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe "android.buildFeatures.viewBinding = $enabled"
+    visitor.find(testFileKt, "viewBinding")
+      .toString() shouldBe "android.buildFeatures.viewBinding = $enabled"
   }
 
   fun runTest(block: (enabled: Boolean) -> Unit): List<DynamicTest> {

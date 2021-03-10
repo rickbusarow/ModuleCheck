@@ -17,18 +17,28 @@ package modulecheck.gradle
 
 import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.shouldBe
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.testing.tempDir
+import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
+import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
+import java.io.File
 
 public val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "6.8.3")
 
 abstract class BaseTest : HermitJUnit5() {
 
   val testProjectDir by tempDir()
+
+  fun File.relativePath() = path.removePrefix(testProjectDir.path)
+
+  fun String.fixPath(): String = replace(File.separator, "/")
 
   private val kotlinVersion =
     System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)
@@ -39,14 +49,29 @@ abstract class BaseTest : HermitJUnit5() {
   val gradleRunner by resets {
     GradleRunner
       .create()
-      .forwardOutput()
+      // .forwardOutput()
       .withGradleVersion(gradleVersion)
       .withPluginClasspath()
-      .withDebug(true)
+      // .withDebug(true)
       .withProjectDir(testProjectDir)
   }
 
   private var testInfo: TestInfo? = null
+
+  fun build(vararg tasks: String): BuildResult {
+    return gradleRunner.withArguments(*tasks).build()
+  }
+
+  fun BuildResult.shouldSucceed() {
+    tasks.forEach { it.outcome shouldBe TaskOutcome.SUCCESS }
+  }
+
+  fun shouldFailWithMessage(vararg tasks: String, messageBlock: (String) -> Unit) {
+    val result = gradleRunner.withArguments(*tasks).buildAndFail()
+
+    result.tasks.map { it.outcome } shouldContain TaskOutcome.FAILED
+    messageBlock(result.output.fixPath())
+  }
 
   @BeforeEach
   fun beforeEach(testInfo: TestInfo) {
