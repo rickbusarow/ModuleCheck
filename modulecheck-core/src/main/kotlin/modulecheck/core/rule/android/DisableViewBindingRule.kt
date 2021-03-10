@@ -23,6 +23,7 @@ import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
+import java.io.File
 
 private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
@@ -89,6 +90,6 @@ class DisableViewBindingRule(
   }
 
   companion object {
-    private val filterReg = """.*/layout.*/.*.xml""".toRegex()
+    private val filterReg = """.*\${File.separator}layout.*\${File.separator}.*.xml""".toRegex()
   }
 }

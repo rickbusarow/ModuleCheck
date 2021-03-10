@@ -216,7 +216,7 @@ class GradleProjectProvider(
   }
 
   private fun GradleProject.androidPackageOrNull(): String? {
-    val manifest = File("$srcRoot/main/AndroidManifest.xml")
+    val manifest = File("$srcRoot/main/AndroidManifest.xml".replace("/", File.separator))
 
     if (!manifest.exists()) return null
 
