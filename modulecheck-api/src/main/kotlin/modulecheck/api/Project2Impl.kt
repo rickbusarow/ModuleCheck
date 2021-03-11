@@ -25,7 +25,7 @@ data class Project2Impl(
   override val projectDir: File,
   override val buildFile: File,
   override val configurations: Map<String, Config>,
-  override val projectDependencies:  Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>,
+  override val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
   override val projectCache: ConcurrentHashMap<String, Project2>,
@@ -89,5 +89,9 @@ data class Project2Impl(
 
   override fun hashCode(): Int {
     return path.hashCode()
+  }
+
+  override fun toString(): String {
+    return "Project2Impl(path='$path')"
   }
 }

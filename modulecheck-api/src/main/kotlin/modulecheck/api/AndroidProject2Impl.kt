@@ -58,4 +58,8 @@ data class AndroidProject2Impl(
   override fun hashCode(): Int {
     return path.hashCode()
   }
+
+  override fun toString(): String {
+    return "AndroidProject2Impl(path='$path')"
+  }
 }

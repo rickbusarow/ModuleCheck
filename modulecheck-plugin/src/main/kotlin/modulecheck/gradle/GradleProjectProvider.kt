@@ -285,7 +285,8 @@ class GradleProjectProvider(
               .toSet()
 
             val layoutFiles = resourceFiles
-              .filter { it.isFile && it.path.contains("""/res/layouts.*/.*.xml""".toRegex()) }
+              .flatMap { it.listFiles().orEmpty().toList() }
+              .filter { it.isFile && it.path.contains("""/res/layout.*/.*.xml""".toRegex()) }
               .toSet()
 
             SourceSet(
