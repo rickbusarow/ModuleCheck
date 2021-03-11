@@ -90,7 +90,7 @@ object Libs {
 
   object Detekt {
 
-    const val version = "1.15.0"
+    const val version = "1.16.0"
     const val api = "io.gitlab.arturbosch.detekt:detekt-api:$version"
     const val cli = "io.gitlab.arturbosch.detekt:detekt-cli:$version"
     const val formatting = "io.gitlab.arturbosch.detekt:detekt-formatting:$version"
