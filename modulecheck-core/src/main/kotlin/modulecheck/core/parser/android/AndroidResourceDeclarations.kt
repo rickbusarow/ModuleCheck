@@ -45,12 +45,12 @@ data class AndroidResourceDeclarations(
         .mapValues { (sourceSetName, _) ->
 
           if (rPackage != null) {
-            project [ResSourceFiles][sourceSetName]
+            project[ResSourceFiles][sourceSetName]
               .orEmpty()
               .flatMap { AndroidResourceParser.parseFile(it) }
               .toSet() + "$rPackage.R"
           } else {
-            project [JvmFiles][sourceSetName]
+            project[JvmFiles][sourceSetName]
               .orEmpty()
               .flatMap { it.declarations }
               .toSet()
@@ -62,7 +62,11 @@ data class AndroidResourceDeclarations(
   }
 }
 
-val ProjectContext.androidResourceDeclarations: AndroidResourceDeclarations get() = get(AndroidResourceDeclarations)
+val ProjectContext.androidResourceDeclarations: AndroidResourceDeclarations
+  get() = get(
+    AndroidResourceDeclarations
+  )
+
 fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<DeclarationName> {

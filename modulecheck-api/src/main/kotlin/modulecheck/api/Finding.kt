@@ -73,7 +73,7 @@ interface Fixable : Finding {
       } ?: false
   }
 
-  fun fixLabel() = "  $FIX_LABEL [$problemName] "
+  fun fixLabel() = "  $FIX_LABEL [$problemName]"
 
   companion object {
 

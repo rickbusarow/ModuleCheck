@@ -17,6 +17,7 @@ package modulecheck.core.context
 
 import modulecheck.api.ConfigurationName
 import modulecheck.api.Project2
+import modulecheck.api.allPublicClassPathDependencyDeclarations
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.main
 import modulecheck.core.DependencyFinding

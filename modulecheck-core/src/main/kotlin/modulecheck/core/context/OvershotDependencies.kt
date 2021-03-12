@@ -19,6 +19,7 @@ import modulecheck.api.ConfigurationName
 import modulecheck.api.Project2
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.main
+import modulecheck.api.sourceOf
 import modulecheck.core.internal.uses
 import modulecheck.core.overshot.OvershotDependencyFinding
 import java.util.concurrent.ConcurrentHashMap

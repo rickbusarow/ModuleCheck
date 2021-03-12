@@ -69,22 +69,19 @@ class GradleProjectProvider(
     val sourceSets = gradleProject
       .jvmSourceSets()
 
-    val isAndroid = gradleProject
+    val testedExtension = gradleProject
       .extensions
-      .findByType(TestedExtension::class) != null
+      .findByType<LibraryExtension>()
+      ?: gradleProject
+        .extensions
+        .findByType<AppExtension>()
+
+    val isAndroid = testedExtension != null
 
     val libraryExtension by lazy(NONE) {
       gradleProject
         .extensions
         .findByType<LibraryExtension>()
-    }
-    val testedExtension by lazy(NONE) {
-      gradleProject
-        .extensions
-        .findByType<LibraryExtension>()
-        ?: gradleProject
-          .extensions
-          .findByType<AppExtension>()
     }
 
     return if (isAndroid) {
@@ -104,17 +101,19 @@ class GradleProjectProvider(
         resourceFiles = gradleProject.androidResourceFiles(),
         androidPackageOrNull = gradleProject.androidPackageOrNull()
       )
-    } else Project2Impl(
-      path = path,
-      projectDir = gradleProject.projectDir,
-      buildFile = gradleProject.buildFile,
-      configurations = configurations,
-      projectDependencies = projectDependencies,
-      hasKapt = hasKapt,
-      sourceSets = sourceSets,
-      projectCache = projectCache,
-      anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull()
-    )
+    } else {
+      Project2Impl(
+        path = path,
+        projectDir = gradleProject.projectDir,
+        buildFile = gradleProject.buildFile,
+        configurations = configurations,
+        projectDependencies = projectDependencies,
+        hasKapt = hasKapt,
+        sourceSets = sourceSets,
+        projectCache = projectCache,
+        anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull()
+      )
+    }
   }
 
   private fun GradleProject.configurations() = configurations
@@ -282,10 +281,15 @@ class GradleProjectProvider(
             val resourceFiles = sourceProvider
               .resDirectories
               .flatMap { it.listFiles().orEmpty().toList() }
+              .flatMap { it.listFiles().orEmpty().toList() }
               .toSet()
 
             val layoutFiles = resourceFiles
-              .filter { it.isFile && it.path.contains("""/res/layouts.*/.*.xml""".toRegex()) }
+              .filter {
+                it.isFile && it.path
+                  .replace(File.separator, "/") // replace `\` from Windows paths with `/`.
+                  .contains("""/res/layout.*/.*.xml""".toRegex())
+              }
               .toSet()
 
             SourceSet(

@@ -15,9 +15,7 @@
 
 package modulecheck.core.parser
 
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.main
+import modulecheck.api.*
 import modulecheck.core.InheritedImplementationDependencyFinding
 import modulecheck.core.Parsed
 import modulecheck.core.internal.uses
