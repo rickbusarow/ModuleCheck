@@ -285,7 +285,11 @@ class GradleProjectProvider(
               .toSet()
 
             val layoutFiles = resourceFiles
-              .filter { it.isFile && it.path.contains("""/res/layout.*/.*.xml""".toRegex()) }
+              .filter {
+                it.isFile && it.path
+                  .replace(File.separator, "/") // replace `\` from Windows paths with `/`.
+                  .contains("""/res/layout.*/.*.xml""".toRegex())
+              }
               .toSet()
 
             SourceSet(
