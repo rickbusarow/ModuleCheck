@@ -15,6 +15,8 @@
 
 package modulecheck.api
 
+import modulecheck.api.context.ProjectContext
+import modulecheck.api.context.ProjectContextImpl
 import net.swiftzer.semver.SemVer
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -34,18 +36,16 @@ data class AndroidProject2Impl(
   override val viewBindingEnabled: Boolean,
   override val resourceFiles: Set<File>,
   override val androidPackageOrNull: String?
-) : AndroidProject2,
-  Project2 by Project2Impl(
-    path = path,
-    projectDir = projectDir,
-    buildFile = buildFile,
-    configurations = configurations,
-    projectDependencies = projectDependencies,
-    hasKapt = hasKapt,
-    sourceSets = sourceSets,
-    projectCache = projectCache,
-    anvilGradlePlugin = anvilGradlePlugin
-  ) {
+) : AndroidProject2 {
+
+  private val context = ProjectContextImpl(this)
+
+  override fun <E : ProjectContext.Element> get(key: ProjectContext.Key<E>): E {
+    return context[key]
+  }
+
+  override fun compareTo(other: Project2): Int = path.compareTo(other.path)
+
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is AndroidProject2Impl) return false

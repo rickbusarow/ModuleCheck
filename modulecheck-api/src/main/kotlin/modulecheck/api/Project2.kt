@@ -40,9 +40,6 @@ interface Project2 :
 
   val sourceSets: Map<SourceSetName, SourceSet>
   val anvilGradlePlugin: AnvilGradlePlugin?
-
-  fun allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency>
-  fun sourceOf(dependencyProject: ConfiguredProjectDependency, apiOnly: Boolean = false): Project2?
 }
 
 fun Project2.isAndroid(): Boolean {
@@ -50,6 +47,44 @@ fun Project2.isAndroid(): Boolean {
     returns(true) implies (this@isAndroid is AndroidProject2)
   }
   return this is AndroidProject2
+}
+
+fun Project2.allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency> {
+  val sub = projectDependencies
+    .value["api"]
+    .orEmpty()
+    .flatMap {
+      it
+        .project
+        .allPublicClassPathDependencyDeclarations()
+    }
+
+  return projectDependencies
+    .value["api"]
+    .orEmpty()
+    .plus(sub)
+    .toSet()
+}
+
+fun Project2.sourceOf(
+  dependencyProject: ConfiguredProjectDependency,
+  apiOnly: Boolean = false
+): Project2? {
+  val toCheck = if (apiOnly) {
+    projectDependencies
+      .value["api"]
+      .orEmpty()
+  } else {
+    projectDependencies
+      .value
+      .main()
+  }
+
+  if (dependencyProject in toCheck) return this
+
+  return toCheck.firstOrNull {
+    it == dependencyProject || it.project.sourceOf(dependencyProject, true) != null
+  }?.project
 }
 
 interface AndroidProject2 : Project2 {

@@ -15,9 +15,7 @@
 
 package modulecheck.gradle
 
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
@@ -199,6 +197,107 @@ class UnusedDependenciesTest : BaseTest() {
           )
         }
       )
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
+  fun `module with a string resource used in subject module should not be unused`() {
+    val appFile = FileSpec.builder("com.example.app", "MyApp")
+      .addType(
+        TypeSpec.classBuilder("MyApp")
+          .addProperty(
+            PropertySpec.builder("appNameRes", Int::class.asTypeName())
+              .getter(
+                FunSpec.getterBuilder()
+                  .addCode(
+                    """return %T.string.app_name""",
+                    ClassName.bestGuess("com.example.app.R")
+                  )
+                  .build()
+              )
+              .build()
+          )
+          .build()
+      )
+      .build()
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addFileSpec(appFile)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addXmlFile(
+            XmlFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.app" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+    }
+
+    val androidSub1 = ProjectSpec("lib-1") {
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/res/values")) {
+          addXmlFile(
+            XmlFile(
+              "strings.xml",
+              """<resources>
+                |  <string name="app_name" translatable="false">MyApp</string>
+                |</resources>
+                """.trimMargin()
+            )
+          )
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addXmlFile(
+            XmlFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.lib1" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      addSubproject(appProject)
+      addSubproject(androidSub1)
       addSettingsSpec(projectSettings.build())
       addBuildSpec(
         projectBuild

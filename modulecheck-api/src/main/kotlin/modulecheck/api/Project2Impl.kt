@@ -38,44 +38,6 @@ data class Project2Impl(
     return context[key]
   }
 
-  override fun allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency> {
-    val sub = projectDependencies
-      .value["api"]
-      .orEmpty()
-      .flatMap {
-        it
-          .project
-          .allPublicClassPathDependencyDeclarations()
-      }
-
-    return projectDependencies
-      .value["api"]
-      .orEmpty()
-      .plus(sub)
-      .toSet()
-  }
-
-  override fun sourceOf(
-    dependencyProject: ConfiguredProjectDependency,
-    apiOnly: Boolean
-  ): Project2? {
-    val toCheck = if (apiOnly) {
-      projectDependencies
-        .value["api"]
-        .orEmpty()
-    } else {
-      projectDependencies
-        .value
-        .main()
-    }
-
-    if (dependencyProject in toCheck) return this
-
-    return toCheck.firstOrNull {
-      it == dependencyProject || it.project.sourceOf(dependencyProject, true) != null
-    }?.project
-  }
-
   override fun compareTo(other: Project2): Int = path.compareTo(other.path)
 
   override fun equals(other: Any?): Boolean {
