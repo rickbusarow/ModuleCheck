@@ -15,41 +15,50 @@
 
 package modulecheck.api.context
 
+import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-typealias PossibleReferenceName = String
-
-data class PossibleReferences(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<ImportName>>
-) : ConcurrentMap<SourceSetName, Set<ImportName>> by delegate,
+data class ResolvedReferences(
+  internal val delegate: ConcurrentMap<SourceSetName, Set<ConfiguredProjectDependency>>
+) : ConcurrentMap<SourceSetName, Set<ConfiguredProjectDependency>> by delegate,
     ProjectContext.Element {
 
-  override val key: ProjectContext.Key<PossibleReferences>
+  override val key: ProjectContext.Key<ResolvedReferences>
     get() = Key
 
-  companion object Key : ProjectContext.Key<PossibleReferences> {
-    override operator fun invoke(project: Project2): PossibleReferences {
+  companion object Key : ProjectContext.Key<ResolvedReferences> {
+    override operator fun invoke(project: Project2): ResolvedReferences {
+
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->
+
+          val projectDependencies = project
+            .projectDependencies
+            .value[sourceSet.name]
+            .orEmpty()
+
           project[JvmFiles][sourceSet.name]
             .orEmpty()
-            .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
+            .flatMap { jvmFile ->
+
+              jvmFile
+                .maybeExtraReferences
+                .mapNotNull { possible ->
+                  projectDependencies
+                    .firstOrNull {
+                      it.project[Declarations]["main"].orEmpty()
+                        .any { it == possible }
+                    }
+                }
+            }
             .toSet()
         }
 
-      return PossibleReferences(ConcurrentHashMap(map))
+      return ResolvedReferences(ConcurrentHashMap(map))
     }
   }
 }
-
-val ProjectContext.possibleReferences: PossibleReferences get() = get(PossibleReferences)
-fun ProjectContext.possibleReferencesForSourceSetName(
-  sourceSetName: SourceSetName
-): Set<PossibleReferenceName> =
-  possibleReferences[sourceSetName].orEmpty()
-
-
