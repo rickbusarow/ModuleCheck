@@ -61,7 +61,7 @@ class ModuleCheckPlugin : Plugin<Project> {
 }
 
 abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
-  val rule: ModuleCheckRule<T>
+  @Internal val rule: ModuleCheckRule<T>
 ) : ModuleCheckTask() {
 
   init {
