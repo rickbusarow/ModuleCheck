@@ -16,6 +16,7 @@
 package modulecheck.gradle
 
 import modulecheck.api.Project2
+import modulecheck.api.asSourceSetName
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
@@ -47,14 +48,14 @@ object AnvilFactoryParser {
 
     if (!hasAnvil) return emptyList()
 
-    val allImports = project.importsForSourceSetName("main") +
-      project.importsForSourceSetName("androidTest") +
-      project.importsForSourceSetName("test")
+    val allImports = project.importsForSourceSetName("main".asSourceSetName()) +
+      project.importsForSourceSetName("androidTest".asSourceSetName()) +
+      project.importsForSourceSetName("test".asSourceSetName())
 
     val maybeExtra by lazy(NONE) {
-      project.possibleReferencesForSourceSetName("androidTest") +
-        project.possibleReferencesForSourceSetName("main") +
-        project.possibleReferencesForSourceSetName("test")
+      project.possibleReferencesForSourceSetName("androidTest".asSourceSetName()) +
+        project.possibleReferencesForSourceSetName("main".asSourceSetName()) +
+        project.possibleReferencesForSourceSetName("test".asSourceSetName())
     }
 
     val createsComponent = allImports.contains(daggerComponent) ||
@@ -65,7 +66,7 @@ object AnvilFactoryParser {
     if (createsComponent) return emptyList()
 
     val usesDaggerInJava = project
-      .jvmFilesForSourceSetName("main")
+      .jvmFilesForSourceSetName("main".asSourceSetName())
       .filterIsInstance<JavaFile>()
       .any { file ->
         file.imports.contains(daggerInject) ||
@@ -77,7 +78,7 @@ object AnvilFactoryParser {
     if (usesDaggerInJava) return emptyList()
 
     val usesDaggerInKotlin = project
-      .jvmFilesForSourceSetName("main")
+      .jvmFilesForSourceSetName("main".asSourceSetName())
       .filterIsInstance<KotlinFile>()
       .any { file ->
         file.imports.contains(daggerInject) ||

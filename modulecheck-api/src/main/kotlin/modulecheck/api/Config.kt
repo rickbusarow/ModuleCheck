@@ -15,19 +15,59 @@
 
 package modulecheck.api
 
-typealias ConfigurationName = String
+/**
+ * The order of this list matters.
+ * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
+ */
+private val baseConfigurations = listOf(
+  "compileOnlyApi",
+  "api",
+  "implementation",
+  "compileOnly",
+  "runtimeOnly"
+)
+private val baseConfigurationsCapitalized = baseConfigurations
+  .map { it.capitalize() }
+  .toSet()
+
+data class ConfigurationName(val value: String) {
+  fun asSourceSetName(): SourceSetName = when (this.value) {
+    // "main" source set configurations omit the "main" from their name,
+    // creating "implementation" instead of "mainImplementation"
+    in baseConfigurations -> "main".asSourceSetName()
+    // all other configurations (like "test", "debug", or "androidTest")
+    // are just "$sourceSetName${configurationName.capitalize()}"
+    else -> this.value.extractSourceSetName()
+  }
+
+  /**
+   * find the "base" configuration name and remove it
+   *
+   * For instance, `debugCompileOnly` would find the "CompileOnly" and remove it,
+   * returning "debug" as the sourceSet name
+   */
+  private fun String.extractSourceSetName(): SourceSetName {
+    val configType = baseConfigurationsCapitalized
+      .find { this.endsWith(it) }
+      ?: return asSourceSetName()
+
+    return removeSuffix(configType).asSourceSetName()
+  }
+}
+
+fun String.asConfigurationName(): ConfigurationName = ConfigurationName(this)
 
 data class Config(
-  val name: String,
+  val name: ConfigurationName,
   val externalDependencies: Set<ExternalDependency>
 )
 
 fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
   return listOfNotNull(
-    get("api"),
-    get("compileOnly"),
-    get("implementation"),
-    get("runtimeOnly")
+    get("api".asConfigurationName()),
+    get("compileOnly".asConfigurationName()),
+    get("implementation".asConfigurationName()),
+    get("runtimeOnly".asConfigurationName())
   ).flatten()
 }
 

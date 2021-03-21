@@ -17,6 +17,7 @@ package modulecheck.core
 
 import modulecheck.api.Finding
 import modulecheck.api.Fixable
+import modulecheck.api.asConfigurationName
 import modulecheck.api.files.existsOrNull
 import modulecheck.core.internal.positionOf
 import modulecheck.psi.PsiElementWithSurroundingText
@@ -39,6 +40,6 @@ data class CouldUseAnvilFinding(
       .existsOrNull()
       ?.readText()
       ?.lines()
-      ?.positionOf(element.toString(), "kapt")
+      ?.positionOf(element.toString(), "kapt".asConfigurationName())
   }
 }

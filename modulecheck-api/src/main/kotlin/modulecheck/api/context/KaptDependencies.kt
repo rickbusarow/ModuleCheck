@@ -35,8 +35,8 @@ data class KaptDependencies(
     override operator fun invoke(project: Project2): KaptDependencies {
       val map = project
         .configurations
-        .filterNot { it.key.startsWith("_") }
-        .filter { it.key.contains("kapt", true) }
+        .filterNot { it.key.value.startsWith("_") }
+        .filter { it.key.value.contains("kapt", true) }
         .mapValues { (configName, config) ->
 
           val external = config.externalDependencies

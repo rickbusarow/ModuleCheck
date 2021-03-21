@@ -15,13 +15,11 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
+import modulecheck.api.*
 import modulecheck.api.context.Declarations
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.files.KotlinFile
-import modulecheck.api.main
 
 data class MustBeApi(
   internal val delegate: Set<ConfiguredProjectDependency>
@@ -33,12 +31,13 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
-      val noIdeaWhereTheyComeFrom = project.jvmFilesForSourceSetName("main")
+      val noIdeaWhereTheyComeFrom = project
+        .jvmFilesForSourceSetName("main".asSourceSetName())
         .filterIsInstance<KotlinFile>()
         .flatMap { kotlinFile ->
           kotlinFile
             .apiReferences
-            .filterNot { it in project[Declarations]["main"].orEmpty() }
+            .filterNot { it in project[Declarations]["main".asSourceSetName()].orEmpty() }
         }.toSet()
 
       val api = project
@@ -47,12 +46,12 @@ data class MustBeApi(
         .main()
         .filterNot {
           it in project.projectDependencies
-            .value["api"]
+            .value["api".asConfigurationName()]
             .orEmpty()
         }
         .filter { cpp ->
           cpp
-            .project[Declarations]["main"]
+            .project[Declarations]["main".asSourceSetName()]
             .orEmpty()
             .any { declared ->
               declared in noIdeaWhereTheyComeFrom

@@ -32,7 +32,7 @@ interface Project2 :
   val projectDir: File
   val buildFile: File
 
-  val configurations: Map<String, Config>
+  val configurations: Map<ConfigurationName, Config>
 
   val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>
 
@@ -51,7 +51,7 @@ fun Project2.isAndroid(): Boolean {
 
 fun Project2.allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency> {
   val sub = projectDependencies
-    .value["api"]
+    .value["api".asConfigurationName()]
     .orEmpty()
     .flatMap {
       it
@@ -60,7 +60,7 @@ fun Project2.allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDe
     }
 
   return projectDependencies
-    .value["api"]
+    .value["api".asConfigurationName()]
     .orEmpty()
     .plus(sub)
     .toSet()
@@ -72,7 +72,7 @@ fun Project2.sourceOf(
 ): Project2? {
   val toCheck = if (apiOnly) {
     projectDependencies
-      .value["api"]
+      .value["api".asConfigurationName()]
       .orEmpty()
   } else {
     projectDependencies

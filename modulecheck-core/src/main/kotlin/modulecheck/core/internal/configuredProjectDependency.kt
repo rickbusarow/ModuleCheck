@@ -18,6 +18,7 @@ package modulecheck.core.internal
 import modulecheck.api.AndroidProject2
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
+import modulecheck.api.asSourceSetName
 import modulecheck.api.context.Declarations
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
@@ -25,7 +26,7 @@ import modulecheck.core.parser.android.androidResourceDeclarationsForSourceSetNa
 import kotlin.LazyThreadSafetyMode.NONE
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
-  return when (dependency.configurationName) {
+  return when (dependency.configurationName.value) {
     "androidTest" -> usesInAndroidTest(dependency)
     "api" -> usesInMain(dependency)
     "compileOnly" -> usesInMain(dependency)
@@ -39,27 +40,27 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
 
 private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project[Declarations]["main"]
+    .project[Declarations]["main".asSourceSetName()]
     .orEmpty()
 
   val javaIsUsed = dependencyDeclarations
     .any { declaration ->
 
-      declaration in importsForSourceSetName("main") ||
-        declaration in possibleReferencesForSourceSetName("main")
+      declaration in importsForSourceSetName("main".asSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName("main".asSourceSetName())
     }
 
   if (javaIsUsed) return true
 
   if (this !is AndroidProject2) return false
 
-  val rReferences = possibleReferencesForSourceSetName("main")
+  val rReferences = possibleReferencesForSourceSetName("main".asSourceSetName())
     .filter { it.startsWith("R.") }
 
   val dependencyAsAndroid = dependency.project as? AndroidProject2 ?: return false
 
   val resourcesAreUsed = dependencyAsAndroid
-    .androidResourceDeclarationsForSourceSetName("main")
+    .androidResourceDeclarationsForSourceSetName("main".asSourceSetName())
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
@@ -69,20 +70,20 @@ private fun Project2.usesInMain(dependency: ConfiguredProjectDependency): Boolea
 
 private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project[Declarations]["main"]
+    .project[Declarations]["main".asSourceSetName()]
     .orEmpty()
 
   val rReferences by lazy(NONE) {
-    possibleReferencesForSourceSetName("androidTest")
+    possibleReferencesForSourceSetName("androidTest".asSourceSetName())
       .filter { it.startsWith("R.") }
   }
 
   return dependencyDeclarations
     .any { declaration ->
-      declaration in importsForSourceSetName("androidTest") ||
-        declaration in possibleReferencesForSourceSetName("androidTest")
+      declaration in importsForSourceSetName("androidTest".asSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName("androidTest".asSourceSetName())
     } || (dependency.project as? AndroidProject2)
-    ?.androidResourceDeclarationsForSourceSetName("main")
+    ?.androidResourceDeclarationsForSourceSetName("main".asSourceSetName())
     .orEmpty()
     .any { rDeclaration ->
       rDeclaration in rReferences
@@ -91,20 +92,20 @@ private fun Project2.usesInAndroidTest(dependency: ConfiguredProjectDependency):
 
 private fun Project2.usesInTest(dependency: ConfiguredProjectDependency): Boolean {
   val dependencyDeclarations = dependency
-    .project[Declarations]["main"]
+    .project[Declarations]["main".asSourceSetName()]
     .orEmpty()
 
   val rReferences by lazy(NONE) {
-    possibleReferencesForSourceSetName("test")
+    possibleReferencesForSourceSetName("test".asSourceSetName())
       .filter { it.startsWith("R.") }
   }
 
   return dependencyDeclarations
     .any { declaration ->
-      declaration in importsForSourceSetName("test") ||
-        declaration in possibleReferencesForSourceSetName("test")
+      declaration in importsForSourceSetName("test".asSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName("test".asSourceSetName())
     } || (dependency.project as? AndroidProject2)
-    ?.androidResourceDeclarationsForSourceSetName("main")
+    ?.androidResourceDeclarationsForSourceSetName("main".asSourceSetName())
     .orEmpty()
     .any { rDeclaration ->
       rDeclaration in rReferences
