@@ -49,8 +49,8 @@ class UnusedKaptRule(
       .configurations
       .keys
       .map { configName ->
-        configName to project.importsForSourceSetName(configName) +
-          project.possibleReferencesForSourceSetName(configName)
+        configName to project.importsForSourceSetName(configName.asSourceSetName()) +
+          project.possibleReferencesForSourceSetName(configName.asSourceSetName())
       }
       .flatMap { (configurationName, imports) ->
 

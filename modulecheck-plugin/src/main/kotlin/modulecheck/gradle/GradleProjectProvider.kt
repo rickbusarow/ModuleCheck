@@ -143,7 +143,7 @@ class GradleProjectProvider(
               }
           }
           ExternalDependency(
-            configurationName = configuration.name,
+            configurationName = configuration.name.asConfigurationName(),
             group = dep.group,
             moduleName = dep.name,
             version = dep.version,
@@ -152,19 +152,19 @@ class GradleProjectProvider(
         }
         .toSet()
 
-      val config = Config(configuration.name, external)
+      val config = Config(configuration.name.asConfigurationName(), external)
 
-      configuration.name to config
+      configuration.name.asConfigurationName() to config
     }
 
   private fun GradleProject.projectDependencies(): Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>> =
     lazy {
       configurations
         .map { config ->
-          config.name to config.dependencies.withType(ProjectDependency::class.java)
+          config.name.asConfigurationName() to config.dependencies.withType(ProjectDependency::class.java)
             .map {
               ConfiguredProjectDependency(
-                configurationName = config.name,
+                configurationName = config.name.asConfigurationName(),
                 project = get(it.dependencyProject.path)
               )
             }
@@ -172,7 +172,7 @@ class GradleProjectProvider(
         .toMap()
     }
 
-  private fun GradleProject.jvmSourceSets(): Map<String, SourceSet> = convention
+  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
     .findPlugin(JavaPluginConvention::class)
     ?.sourceSets
     ?.map {
@@ -188,7 +188,7 @@ class GradleProjectProvider(
         ?: it.allJava.files
 
       SourceSet(
-        name = it.name,
+        name = it.name.asSourceSetName(),
         classpathFiles = it.compileClasspath.existingFiles().files,
         outputFiles = it.output.classesDirs.existingFiles().files,
         jvmFiles = jvmFiles,
@@ -250,7 +250,7 @@ class GradleProjectProvider(
       else -> emptyList()
     }
 
-  private fun GradleProject.androidSourceSets(): Map<String, SourceSet> {
+  private fun GradleProject.androidSourceSets(): Map<SourceSetName, SourceSet> {
     return extensions
       .findByType<BaseExtension>()
       ?.variants
@@ -293,7 +293,7 @@ class GradleProjectProvider(
               .toSet()
 
             SourceSet(
-              name = sourceProvider.name,
+              name = sourceProvider.name.asSourceSetName(),
               classpathFiles = emptySet(),
               outputFiles = setOf(), // TODO
               jvmFiles = jvmFiles,

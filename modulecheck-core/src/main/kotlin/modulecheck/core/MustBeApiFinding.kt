@@ -32,7 +32,7 @@ data class MustBeApiFinding(
     val element = elementOrNull() ?: return false
 
     val oldText = element.toString()
-    val newText = oldText.replace(configurationName, "api")
+    val newText = oldText.replace(configurationName.value, "api")
 
     val buildFileText = buildFile.readText()
 

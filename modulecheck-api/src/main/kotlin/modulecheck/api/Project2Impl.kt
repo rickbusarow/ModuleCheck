@@ -24,7 +24,7 @@ data class Project2Impl(
   override val path: String,
   override val projectDir: File,
   override val buildFile: File,
-  override val configurations: Map<String, Config>,
+  override val configurations: Map<ConfigurationName, Config>,
   override val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
