@@ -15,11 +15,8 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Project2
-import modulecheck.api.allPublicClassPathDependencyDeclarations
+import modulecheck.api.*
 import modulecheck.api.context.ProjectContext
-import modulecheck.api.main
 import modulecheck.core.DependencyFinding
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -49,7 +46,7 @@ data class RedundantDependencies(
     override operator fun invoke(project: Project2): RedundantDependencies {
       val allApi = project
         .projectDependencies
-        .value["api"]
+        .value["api".asConfigurationName()]
         .orEmpty()
         .toSet()
 

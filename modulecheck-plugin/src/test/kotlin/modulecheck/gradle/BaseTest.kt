@@ -49,7 +49,7 @@ abstract class BaseTest : HermitJUnit5() {
   val gradleRunner by resets {
     GradleRunner
       .create()
-      // .forwardOutput()
+      .forwardOutput()
       .withGradleVersion(gradleVersion)
       .withPluginClasspath()
       // .withDebug(true)

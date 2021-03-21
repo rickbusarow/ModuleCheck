@@ -42,16 +42,21 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
       .map { overshot ->
 
         val source =
-          project.sourceOf(ConfiguredProjectDependency("api", overshot.project))
+          project.sourceOf(
+            ConfiguredProjectDependency(
+              "api".asConfigurationName(),
+              overshot.project
+            )
+          )
             ?: project.sourceOf(
-              ConfiguredProjectDependency("implementation", overshot.project)
+              ConfiguredProjectDependency("implementation".asConfigurationName(), overshot.project)
             )
         val sourceConfig = project
           .projectDependencies
           .value
           .main()
           .firstOrNull { it.project == source }
-          ?.configurationName ?: "api"
+          ?.configurationName ?: "api".asConfigurationName()
 
         InheritedImplementationDependencyFinding(
           dependentPath = project.path,
@@ -66,13 +71,13 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
       .mapValues { it.value.toMutableSet() }
 
     return Parsed(
-      grouped.getOrDefault("androidTest", mutableSetOf()),
-      grouped.getOrDefault("api", mutableSetOf()),
-      grouped.getOrDefault("compileOnly", mutableSetOf()),
-      grouped.getOrDefault("implementation", mutableSetOf()),
-      grouped.getOrDefault("runtimeOnly", mutableSetOf()),
-      grouped.getOrDefault("testApi", mutableSetOf()),
-      grouped.getOrDefault("testImplementation", mutableSetOf())
+      grouped.getOrDefault("androidTest".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("api".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("compileOnly".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("implementation".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("runtimeOnly".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("testApi".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault("testImplementation".asConfigurationName(), mutableSetOf())
     )
   }
 }

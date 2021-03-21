@@ -17,6 +17,7 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.api.asSourceSetName
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
@@ -70,13 +71,13 @@ class DisableViewBindingRule(
         val reference = "$basePackage.databinding.$generated"
 
         val usedInProject = project
-          .importsForSourceSetName("main")
+          .importsForSourceSetName("main".asSourceSetName())
           .contains(reference)
 
         usedInProject || dependents
           .any { dep ->
             dep
-              .possibleReferencesForSourceSetName("main")
+              .possibleReferencesForSourceSetName("main".asSourceSetName())
               .contains(reference)
           }
       }

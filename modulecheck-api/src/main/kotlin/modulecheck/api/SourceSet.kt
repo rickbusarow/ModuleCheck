@@ -17,10 +17,12 @@ package modulecheck.api
 
 import java.io.File
 
-typealias SourceSetName = String
+data class SourceSetName(val value: String)
+
+fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 
 data class SourceSet(
-  val name: String,
+  val name: SourceSetName,
   val classpathFiles: Set<File> = emptySet(),
   val outputFiles: Set<File> = emptySet(),
   val jvmFiles: Set<File> = emptySet(),

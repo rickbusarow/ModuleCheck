@@ -49,7 +49,7 @@ data class UnusedDependencies(
         .configurations
         .values
         .asSequence()
-        .filterNot { it.name.contains("kapt", true) }
+        .filterNot { it.name.value.contains("kapt", true) }
         .flatMap { config ->
           project
             .projectDependencies
