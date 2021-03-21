@@ -21,7 +21,7 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
@@ -70,8 +70,8 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
 
-    @Test
-    fun `with autoCorrect should be removed`() {
+    @TestFactory
+    fun `with autoCorrect should be removed`() = test(
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -89,7 +89,7 @@ class UnusedDependenciesTest : BaseTest() {
             ).build()
         )
       }
-        .writeIn(testProjectDir.toPath())
+    ) {
 
       build("moduleCheckUnusedDependency").shouldSucceed()
 
@@ -105,8 +105,8 @@ class UnusedDependenciesTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `without autoCorrect should fail with report`() {
+    @TestFactory
+    fun `without autoCorrect should fail with report`() = test(
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -124,7 +124,7 @@ class UnusedDependenciesTest : BaseTest() {
             ).build()
         )
       }
-        .writeIn(testProjectDir.toPath())
+    ) {
 
       shouldFailWithMessage(
         "moduleCheckUnusedDependency"
@@ -137,11 +137,12 @@ class UnusedDependenciesTest : BaseTest() {
     }
   }
 
-  @Test
-  fun `module with a custom view used in a layout subject module should not be unused`() {
-    val activity_main_xml = XmlFile(
-      "activity_main.xml",
-      """<?xml version="1.0" encoding="utf-8"?>
+  @TestFactory
+  fun `module with a custom view used in a layout subject module should not be unused`() = test(
+    {
+      val activity_main_xml = XmlFile(
+        "activity_main.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
         |<androidx.constraintlayout.widget.ConstraintLayout
         |  xmlns:android="http://schemas.android.com/apk/res/android"
         |  android:id="@+id/fragment_container"
@@ -156,70 +157,74 @@ class UnusedDependenciesTest : BaseTest() {
         |
         |</androidx.constraintlayout.widget.ConstraintLayout>
                 """.trimMargin()
-    )
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
       )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/layout")) {
-          addXmlFile(activity_main_xml)
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/res/layout")) {
+            addXmlFile(activity_main_xml)
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(TypeSpec.classBuilder("Lib1View").build())
-                  .build()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
         }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addFileSpec(
+                  FileSpec.builder("com.example.lib1", "Lib1View")
+                    .addType(TypeSpec.classBuilder("Lib1View").build())
+                    .build()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
 
-  @Test
-  fun `module with a string resource used in subject module should not be unused`() {
+  @TestFactory
+  fun `module with a string resource used in subject module should not be unused`() = test({
     val appFile = FileSpec.builder("com.example.app", "MyApp")
       .addType(
         TypeSpec.classBuilder("MyApp")
           .addProperty(
-            PropertySpec.builder("appNameRes", Int::class.asTypeName())
+            PropertySpec.builder(
+              "appNameRes", Int::
+            class.asTypeName()
+            )
               .getter(
                 FunSpec.getterBuilder()
                   .addCode(
@@ -295,7 +300,8 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
 
-    ProjectSpec("project") {
+    ProjectSpec("project")
+    {
       addSubproject(appProject)
       addSubproject(androidSub1)
       addSettingsSpec(projectSettings.build())
@@ -309,7 +315,7 @@ class UnusedDependenciesTest : BaseTest() {
           ).build()
       )
     }
-      .writeIn(testProjectDir.toPath())
+  }) {
 
     build("moduleCheckUnusedDependency").shouldSucceed()
   }

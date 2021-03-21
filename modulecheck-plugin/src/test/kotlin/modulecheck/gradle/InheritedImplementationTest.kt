@@ -22,7 +22,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
@@ -50,9 +50,42 @@ class InheritedImplementationTest : BaseTest() {
   val lib4ClassName = ClassName("com.example.lib4", "Lib4Class")
 
   val jvmSub1 = jvmSubProject("lib-1", lib1ClassName)
-  val jvmSub2 = jvmSubProject("lib-2", lib2ClassName)
-  val jvmSub3 = jvmSubProject("lib-3", lib3ClassName)
-  val jvmSub4 = jvmSubProject("lib-4", lib4ClassName)
+  val jvmSub2 = jvmSubProject("lib-2", lib2ClassName).edit {
+    projectBuildSpec!!.edit {
+      addProjectDependency("api", jvmSub1)
+    }
+  }
+  val jvmSub3 = jvmSubProject("lib-3", lib3ClassName).edit {
+    projectBuildSpec!!.edit {
+      addProjectDependency("api", jvmSub2)
+    }
+  }
+  val jvmSub4 = jvmSubProject("lib-4", lib4ClassName).edit {
+    projectBuildSpec!!.edit {
+      addProjectDependency("api", jvmSub3)
+    }
+  }
+
+  val appProject = ProjectSpec("app") {
+    addBuildSpec(
+      ProjectBuildSpec {
+        addPlugin("kotlin(\"jvm\")")
+        addProjectDependency("api", jvmSub4)
+      }
+    )
+    addSrcSpec(
+      ProjectSrcSpec(Path.of("src/main/kotlin")) {
+        addFileSpec(
+          FileSpec.builder("com.example.app", "MyApp.kt")
+            .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
+            .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
+            .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
+            .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
+            .build()
+        )
+      }
+    )
+  }
 
   @Nested
   inner class `deeply inherited` {
@@ -60,44 +93,9 @@ class InheritedImplementationTest : BaseTest() {
     @Nested
     inner class `with auto-correct` {
 
-      @Test
-      fun `should add inherited projects and succeed`() {
-        val appProject = ProjectSpec("app") {
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub4)
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
-                  .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
-                  .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
-                  .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
-                  .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
-                  .build()
-              )
-            }
-          )
-        }
+      @TestFactory
+      fun `should add inherited projects and succeed`() = test(
 
-        jvmSub4.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub3)
-          }
-        }
-        jvmSub3.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub2)
-          }
-        }
-        jvmSub2.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub1)
-          }
-        }
         ProjectSpec("project") {
           applyEach(projects) { project ->
             addSubproject(project)
@@ -114,8 +112,7 @@ class InheritedImplementationTest : BaseTest() {
           """.trimMargin()
               ).build()
           )
-        }
-          .writeIn(testProjectDir.toPath())
+        }) {
 
         build(
           "moduleCheckInheritedImplementation",
@@ -139,44 +136,8 @@ class InheritedImplementationTest : BaseTest() {
     @Nested
     inner class `without auto-correct` {
 
-      @Test
-      fun `should fail and name all three libraries as inherited`() {
-        val appProject = ProjectSpec("app") {
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub4)
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
-                  .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
-                  .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
-                  .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
-                  .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
-                  .build()
-              )
-            }
-          )
-        }
-
-        jvmSub4.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub3)
-          }
-        }
-        jvmSub3.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub2)
-          }
-        }
-        jvmSub2.edit {
-          projectBuildSpec!!.edit {
-            addProjectDependency("api", jvmSub1)
-          }
-        }
+      @TestFactory
+      fun `should fail and name all three libraries as inherited`() = test(
         ProjectSpec("project") {
           applyEach(projects) { project ->
             addSubproject(project)
@@ -193,8 +154,7 @@ class InheritedImplementationTest : BaseTest() {
           """.trimMargin()
               ).build()
           )
-        }
-          .writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage(
           "moduleCheckInheritedImplementation",

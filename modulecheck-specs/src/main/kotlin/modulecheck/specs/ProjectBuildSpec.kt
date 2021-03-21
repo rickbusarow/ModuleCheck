@@ -17,9 +17,10 @@ package  modulecheck.specs
 
 import java.nio.file.Path
 
-public val DEFAULT_KOTLIN_VERSION: String =
-  System.getProperty("modulecheck.kotlinVersion", "1.4.31")
-public val DEFAULT_AGP_VERSION: String = System.getProperty("modulecheck.agpVersion", "4.1.2")
+public val DEFAULT_KOTLIN_VERSION: String
+  get() =
+    System.getProperty("modulecheck.kotlinVersion", "1.4.31")
+public val DEFAULT_AGP_VERSION: String get() = System.getProperty("modulecheck.agpVersion", "4.1.2")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,

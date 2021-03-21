@@ -28,7 +28,7 @@ import modulecheck.specs.ProjectSrcSpec
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
@@ -115,8 +115,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       }
     }
 
-    @Test
-    fun `scoped and then dot qualified should not be changed`() {
+    @TestFactory
+    fun `scoped and then dot qualified should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -128,7 +128,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -160,8 +160,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `fully dot qualified should not be changed`() {
+    @TestFactory
+    fun `fully dot qualified should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -171,7 +171,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -201,8 +201,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `fully scoped should not be changed`() {
+    @TestFactory
+    fun `fully scoped should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -216,7 +216,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -250,8 +250,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `dot qualified and then scoped should not be changed`() {
+    @TestFactory
+    fun `dot qualified and then scoped should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -263,7 +263,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -316,19 +316,19 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }
       }
 
-      @Test
-      fun `default value of disabled enabled should pass`() {
+      @TestFactory
+      fun `default value of disabled enabled should pass`() = test(project) {
         // this can't be auto-corrected since the property isn't there to change.
         // Technically we could just add an Android block or seek out an existing one,
         // so this might change
 
-        project.writeIn(testProjectDir.toPath())
+        project
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
       }
 
-      @Test
-      fun `scoped and then dot qualified should be fixed`() {
+      @TestFactory
+      fun `scoped and then dot qualified should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -340,7 +340,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -372,8 +372,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `fully dot qualified should be fixed`() {
+      @TestFactory
+      fun `fully dot qualified should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -383,7 +383,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -413,8 +413,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `fully scoped should be fixed`() {
+      @TestFactory
+      fun `fully scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -428,7 +428,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -462,8 +462,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `dot qualified and then scoped should be fixed`() {
+      @TestFactory
+      fun `dot qualified and then scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -475,7 +475,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -525,8 +525,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }
       }
 
-      @Test
-      fun `scoped and then dot qualified should fail`() {
+      @TestFactory
+      fun `scoped and then dot qualified should fail`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -538,15 +538,15 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
-      @Test
-      fun `fully dot qualified should fail`() {
+      @TestFactory
+      fun `fully dot qualified should fail`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -556,15 +556,15 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
-      @Test
-      fun `fully scoped should fail`() {
+      @TestFactory
+      fun `fully scoped should fail`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -578,15 +578,15 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
-      @Test
-      fun `dot qualified and then scoped should fail`() {
+      @TestFactory
+      fun `dot qualified and then scoped should fail`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -598,8 +598,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
-
+        }) {
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }

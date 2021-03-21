@@ -25,11 +25,11 @@ import modulecheck.specs.ProjectSrcSpec
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
-class DisableAndroidResourcesRuleTest : BaseTest() {
+class DisableAndroidResourcesRuleTestFactory : BaseTest() {
 
   val project by resets {
     ProjectSpec("project") {
@@ -87,13 +87,14 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
       }
     }
 
-    @Test
-    fun `default enabled should not be changed`() {
+    @TestFactory
+    fun `default enabled should not be changed`() = test(
       // this can't be auto-corrected since the property isn't there to change.
       // Technically we could just add an Android block or seek out an existing one,
       // so this might change
 
-      project.writeIn(testProjectDir.toPath())
+      project
+    ) {
 
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -120,8 +121,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `scoped and then dot qualified should not be changed`() {
+    @TestFactory
+    fun `scoped and then dot qualified should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -133,7 +134,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -164,8 +165,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `fully dot qualified should not be changed`() {
+    @TestFactory
+    fun `fully dot qualified should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -175,7 +176,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -204,8 +205,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `fully scoped should not be changed`() {
+    @TestFactory
+    fun `fully scoped should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -219,7 +220,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -252,8 +253,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `dot qualified and then scoped should not be changed`() {
+    @TestFactory
+    fun `dot qualified and then scoped should not be changed`() = test(
       project.edit {
         subprojects.first().edit {
           projectBuildSpec!!.edit {
@@ -265,7 +266,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
             )
           }
         }
-      }.writeIn(testProjectDir.toPath())
+      }) {
 
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -317,21 +318,22 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }
       }
 
-      @Test
-      fun `default value of enabled enabled should fail`() {
+      @TestFactory
+      fun `default value of enabled enabled should fail`() = test(
         // this can't be auto-corrected since the property isn't there to change.
         // Technically we could just add an Android block or seek out an existing one,
         // so this might change
 
-        project.writeIn(testProjectDir.toPath())
+        project
+      ) {
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
         }
       }
 
-      @Test
-      fun `scoped and then dot qualified should be fixed`() {
+      @TestFactory
+      fun `scoped and then dot qualified should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -343,7 +345,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -374,8 +376,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `fully dot qualified should be fixed`() {
+      @TestFactory
+      fun `fully dot qualified should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -385,7 +387,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -414,8 +416,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `fully scoped should be fixed`() {
+      @TestFactory
+      fun `fully scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -429,7 +431,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -462,8 +464,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |""".trimMargin()
       }
 
-      @Test
-      fun `dot qualified and then scoped should be fixed`() {
+      @TestFactory
+      fun `dot qualified and then scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -475,7 +477,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -524,8 +526,8 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }
       }
 
-      @Test
-      fun `scoped and then dot qualified should fail`() {
+      @TestFactory
+      fun `scoped and then dot qualified should fail`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -537,15 +539,15 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
         }
       }
 
-      @Test
-      fun `fully dot qualified should be fixed`() {
+      @TestFactory
+      fun `fully dot qualified should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -555,15 +557,15 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
         }
       }
 
-      @Test
-      fun `fully scoped should be fixed`() {
+      @TestFactory
+      fun `fully scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -577,15 +579,15 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
         }
       }
 
-      @Test
-      fun `dot qualified and then scoped should be fixed`() {
+      @TestFactory
+      fun `dot qualified and then scoped should be fixed`() = test(
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -597,7 +599,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
               )
             }
           }
-        }.writeIn(testProjectDir.toPath())
+        }) {
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"

@@ -23,7 +23,7 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
@@ -85,8 +85,8 @@ class OvershotDependenciesTest : BaseTest() {
       }
     }
 
-    @Test
-    fun `with autoCorrect should be added`() {
+    @TestFactory
+    fun `with autoCorrect should be added`() = test(
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -114,8 +114,7 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
             ).build()
         )
-      }
-        .writeIn(testProjectDir.toPath())
+      }) {
 
       build(
         "moduleCheckOvershotDependency",
@@ -134,8 +133,8 @@ class OvershotDependenciesTest : BaseTest() {
         |""".trimMargin()
     }
 
-    @Test
-    fun `without autoCorrect should fail with report`() {
+    @TestFactory
+    fun `without autoCorrect should fail with report`() = test(
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -163,8 +162,7 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
             ).build()
         )
-      }
-        .writeIn(testProjectDir.toPath())
+      }) {
 
       shouldFailWithMessage(
         "moduleCheckOvershotDependency"
@@ -177,67 +175,67 @@ class OvershotDependenciesTest : BaseTest() {
     }
   }
 
-  @Test
-  fun `added dependencies should match the configuration of the dependency which provided them`() {
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
-      }
-      addSubproject(
-        ProjectSpec("app") {
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("implementation", jvmSub2)
-              addProjectDependency("implementation", jvmSub3)
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
-                  .addImport("com.example.lib1", "Lib1Class")
-                  .addImport("com.example.lib2", "Lib2Class")
-                  .build()
-              )
-            }
-          )
+  @TestFactory
+  fun `added dependencies should match the configuration of the dependency which provided them`() =
+    test(
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
         }
-      )
-      addSubprojects(jvmSub1, jvmSub2)
-      addSubproject(
-        ProjectSpec("lib-3") {
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-              addProjectDependency("api", jvmSub2)
-            }
-          )
-        }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        addSubproject(
+          ProjectSpec("app") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("implementation", jvmSub2)
+                addProjectDependency("implementation", jvmSub3)
+              }
+            )
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/kotlin")) {
+                addFileSpec(
+                  FileSpec.builder("com.example.app", "MyApp.kt")
+                    .addImport("com.example.lib1", "Lib1Class")
+                    .addImport("com.example.lib2", "Lib2Class")
+                    .build()
+                )
+              }
+            )
+          }
+        )
+        addSubprojects(jvmSub1, jvmSub2)
+        addSubproject(
+          ProjectSpec("lib-3") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+                addProjectDependency("api", jvmSub2)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  // autoCorrect = true
             |}
           """.trimMargin()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
+            ).build()
+        )
+      }) {
 
-    build(
-      "moduleCheckOvershotDependency",
-      "moduleCheckSortDependencies"
-    ).shouldSucceed()
+      build(
+        "moduleCheckOvershotDependency",
+        "moduleCheckSortDependencies"
+      ).shouldSucceed()
 
-    // lib-1 and lib-2 are api dependencies in lib-3,
-    // but lib-3 is an implementation dependency of app
-    // so here, they're added as implementation dependencies
-    File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+      // lib-1 and lib-2 are api dependencies in lib-3,
+      // but lib-3 is an implementation dependency of app
+      // so here, they're added as implementation dependencies
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
         |}
         |
@@ -247,10 +245,10 @@ class OvershotDependenciesTest : BaseTest() {
         |  implementation(project(path = ":lib-3"))
         |}
         |""".trimMargin()
-  }
+    }
 
-  @Test
-  fun `dependencies should not be overshot if providing dependency is used`() {
+  @TestFactory
+  fun `dependencies should not be overshot if providing dependency is used`() = test(
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -277,8 +275,7 @@ class OvershotDependenciesTest : BaseTest() {
       addSubprojects(jvmSub1, jvmSub2, jvmSub3)
       addSettingsSpec(projectSettings.build())
       addBuildSpec(projectBuild.build())
-    }
-      .writeIn(testProjectDir.toPath())
+    }) {
 
     build(
       "moduleCheckOvershotDependency",
@@ -295,8 +292,8 @@ class OvershotDependenciesTest : BaseTest() {
         |""".trimMargin()
   }
 
-  @Test
-  fun `unused inherited api dependencies should not be added`() {
+  @TestFactory
+  fun `unused inherited api dependencies should not be added`() = test(
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -335,8 +332,7 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
         ).build()
       )
-    }
-      .writeIn(testProjectDir.toPath())
+    }) {
 
     build(
       "moduleCheckOvershotDependency",

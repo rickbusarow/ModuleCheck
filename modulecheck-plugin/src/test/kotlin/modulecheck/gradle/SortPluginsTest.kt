@@ -21,14 +21,14 @@ import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
 import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 import java.nio.file.Path
 
 class SortPluginsTest : BaseTest() {
 
-  @Test
-  fun `sorting`() {
+  @TestFactory
+  fun `sorting`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -71,7 +71,7 @@ class SortPluginsTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckSortPlugins").shouldSucceed()
 

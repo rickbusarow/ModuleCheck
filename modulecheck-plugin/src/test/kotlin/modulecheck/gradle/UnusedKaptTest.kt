@@ -23,13 +23,13 @@ import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.nio.file.Path
 
 class UnusedKaptTest : BaseTest() {
 
-  @Test
-  fun `unused`() {
+  @TestFactory
+  fun `unused`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -55,13 +55,13 @@ class UnusedKaptTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckUnusedKapt").shouldSucceed()
   }
 
-  @Test
-  fun `used`() {
+  @TestFactory
+  fun `used`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -104,7 +104,7 @@ class UnusedKaptTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckUnusedKapt").shouldSucceed()
   }

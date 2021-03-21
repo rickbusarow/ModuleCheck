@@ -20,7 +20,7 @@ import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import java.io.File
 
 class SortDependenciesTest : BaseTest() {
@@ -29,8 +29,8 @@ class SortDependenciesTest : BaseTest() {
     jvmSubProject("lib-$it", ClassName("com.example.lib$it", "Lib${it}Class"))
   }
 
-  @Test
-  fun `configurations should be grouped and sorted`() {
+  @TestFactory
+  fun `configurations should be grouped and sorted`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -67,7 +67,7 @@ class SortDependenciesTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckSortDependencies").shouldSucceed()
 
@@ -94,8 +94,8 @@ class SortDependenciesTest : BaseTest() {
         |""".trimMargin()
   }
 
-  @Test
-  fun `external dependencies should be grouped separately`() {
+  @TestFactory
+  fun `external dependencies should be grouped separately`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -137,7 +137,7 @@ class SortDependenciesTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckSortDependencies").shouldSucceed()
 
@@ -165,8 +165,8 @@ class SortDependenciesTest : BaseTest() {
         |""".trimMargin()
   }
 
-  @Test
-  fun `comments should move along with the dependency declaration`() {
+  @TestFactory
+  fun `comments should move along with the dependency declaration`() = test(
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -216,7 +216,7 @@ class SortDependenciesTest : BaseTest() {
         }
       )
     }
-      .writeIn(testProjectDir.toPath())
+  ) {
 
     build("moduleCheckSortDependencies").shouldSucceed()
 
