@@ -20,7 +20,7 @@ import org.junit.jupiter.api.DynamicTest
 interface DynamicTests {
   fun <T : Any> Iterable<() -> T>.dynamic(
     testName: String,
-    test: T .() -> Unit
+    test: T.() -> Unit
   ): List<DynamicTest> {
     return map { factory -> factory.invoke() }
       .map { subject ->
@@ -33,7 +33,7 @@ interface DynamicTests {
 
   fun <T : Any> Iterable<() -> T>.dynamic(
     testName: () -> String,
-    test: T .() -> Unit
+    test: T.() -> Unit
   ): List<DynamicTest> {
     return map { factory -> factory.invoke() }
       .map { subject ->

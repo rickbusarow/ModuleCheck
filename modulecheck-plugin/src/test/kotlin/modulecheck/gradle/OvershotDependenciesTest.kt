@@ -114,8 +114,8 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
             ).build()
         )
-      }) {
-
+      }
+    ) {
       build(
         "moduleCheckOvershotDependency",
         "moduleCheckSortDependencies"
@@ -162,8 +162,8 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
             ).build()
         )
-      }) {
-
+      }
+    ) {
       shouldFailWithMessage(
         "moduleCheckOvershotDependency"
       ) {
@@ -225,8 +225,8 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
             ).build()
         )
-      }) {
-
+      }
+    ) {
       build(
         "moduleCheckOvershotDependency",
         "moduleCheckSortDependencies"
@@ -275,8 +275,8 @@ class OvershotDependenciesTest : BaseTest() {
       addSubprojects(jvmSub1, jvmSub2, jvmSub3)
       addSettingsSpec(projectSettings.build())
       addBuildSpec(projectBuild.build())
-    }) {
-
+    }
+  ) {
     build(
       "moduleCheckOvershotDependency",
       "moduleCheckSortDependencies"
@@ -332,8 +332,8 @@ class OvershotDependenciesTest : BaseTest() {
           """.trimMargin()
         ).build()
       )
-    }) {
-
+    }
+  ) {
     build(
       "moduleCheckOvershotDependency",
       "moduleCheckSortDependencies"

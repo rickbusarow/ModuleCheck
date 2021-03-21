@@ -68,7 +68,6 @@ class SortDependenciesTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -138,7 +137,6 @@ class SortDependenciesTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -217,7 +215,6 @@ class SortDependenciesTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckSortDependencies").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {

@@ -72,7 +72,6 @@ class SortPluginsTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckSortPlugins").shouldSucceed()
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {

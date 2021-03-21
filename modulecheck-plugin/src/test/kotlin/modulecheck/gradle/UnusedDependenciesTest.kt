@@ -90,7 +90,6 @@ class UnusedDependenciesTest : BaseTest() {
         )
       }
     ) {
-
       build("moduleCheckUnusedDependency").shouldSucceed()
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
@@ -125,7 +124,6 @@ class UnusedDependenciesTest : BaseTest() {
         )
       }
     ) {
-
       shouldFailWithMessage(
         "moduleCheckUnusedDependency"
       ) {
@@ -211,7 +209,6 @@ class UnusedDependenciesTest : BaseTest() {
       }
     }
   ) {
-
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
 
@@ -222,8 +219,7 @@ class UnusedDependenciesTest : BaseTest() {
         TypeSpec.classBuilder("MyApp")
           .addProperty(
             PropertySpec.builder(
-              "appNameRes", Int::
-            class.asTypeName()
+              "appNameRes", Int::class.asTypeName()
             )
               .getter(
                 FunSpec.getterBuilder()
@@ -300,8 +296,7 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
 
-    ProjectSpec("project")
-    {
+    ProjectSpec("project") {
       addSubproject(appProject)
       addSubproject(androidSub1)
       addSettingsSpec(projectSettings.build())
@@ -316,7 +311,6 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
   }) {
-
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
 }

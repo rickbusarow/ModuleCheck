@@ -95,7 +95,6 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
 
       project
     ) {
-
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -134,8 +133,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -176,8 +175,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -220,8 +219,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -266,8 +265,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableAndroidResources").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -326,7 +325,6 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
 
         project
       ) {
-
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
         }
@@ -345,8 +343,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -387,8 +385,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -431,8 +429,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -477,8 +475,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableAndroidResources").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -539,8 +537,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
         }
@@ -557,8 +555,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
         }
@@ -579,8 +577,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
         }
@@ -599,8 +597,8 @@ class DisableAndroidResourcesRuleTestFactory : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
           it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
         }

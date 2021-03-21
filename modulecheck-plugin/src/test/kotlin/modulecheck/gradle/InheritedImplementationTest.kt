@@ -112,8 +112,8 @@ class InheritedImplementationTest : BaseTest() {
           """.trimMargin()
               ).build()
           )
-        }) {
-
+        }
+      ) {
         build(
           "moduleCheckInheritedImplementation",
           "moduleCheckSortDependencies"
@@ -154,8 +154,8 @@ class InheritedImplementationTest : BaseTest() {
           """.trimMargin()
               ).build()
           )
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage(
           "moduleCheckInheritedImplementation",
           "moduleCheckSortDependencies"

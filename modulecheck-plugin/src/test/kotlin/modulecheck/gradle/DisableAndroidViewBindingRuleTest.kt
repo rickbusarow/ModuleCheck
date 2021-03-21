@@ -128,8 +128,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -171,8 +171,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -216,8 +216,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -263,8 +263,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
             )
           }
         }
-      }) {
-
+      }
+    ) {
       build("moduleCheckDisableViewBinding").shouldSucceed()
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -340,8 +340,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -383,8 +383,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -428,8 +428,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -475,8 +475,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         build("moduleCheckDisableViewBinding").shouldSucceed()
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -538,8 +538,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
@@ -556,8 +556,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }
@@ -578,8 +578,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
-
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
@@ -598,7 +598,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               )
             }
           }
-        }) {
+        }
+      ) {
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
           it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }

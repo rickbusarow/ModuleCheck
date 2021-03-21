@@ -56,7 +56,6 @@ class UnusedKaptTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckUnusedKapt").shouldSucceed()
   }
 
@@ -105,7 +104,6 @@ class UnusedKaptTest : BaseTest() {
       )
     }
   ) {
-
     build("moduleCheckUnusedKapt").shouldSucceed()
   }
 }

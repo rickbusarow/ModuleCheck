@@ -39,9 +39,10 @@ interface GradleRunnerAware {
   }
 }
 
-abstract class BaseTest : HermitJUnit5(),
-                          DynamicTests,
-                          GradleRunnerAware {
+abstract class BaseTest :
+  HermitJUnit5(),
+  DynamicTests,
+  GradleRunnerAware {
 
   val testProjectDir by tempDir()
 
@@ -62,7 +63,9 @@ abstract class BaseTest : HermitJUnit5(),
   }
 
   data class TestOptions(
-    val kotlinVersion: String, val gradleVersion: String, val agpVersion: String
+    val kotlinVersion: String,
+    val gradleVersion: String,
+    val agpVersion: String
   ) {
     override fun toString(): String {
       return "$kotlinVersion - $gradleVersion - $agpVersion"
