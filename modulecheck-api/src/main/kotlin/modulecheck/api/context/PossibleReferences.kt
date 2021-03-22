@@ -25,7 +25,7 @@ typealias PossibleReferenceName = String
 data class PossibleReferences(
   internal val delegate: ConcurrentMap<SourceSetName, Set<ImportName>>
 ) : ConcurrentMap<SourceSetName, Set<ImportName>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<PossibleReferences>
     get() = Key
@@ -51,5 +51,3 @@ fun ProjectContext.possibleReferencesForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<PossibleReferenceName> =
   possibleReferences[sourceSetName].orEmpty()
-
-

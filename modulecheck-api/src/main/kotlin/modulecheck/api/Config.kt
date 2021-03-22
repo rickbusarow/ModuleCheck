@@ -15,21 +15,6 @@
 
 package modulecheck.api
 
-/**
- * The order of this list matters.
- * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
- */
-private val baseConfigurations = listOf(
-  "compileOnlyApi",
-  "api",
-  "implementation",
-  "compileOnly",
-  "runtimeOnly"
-)
-private val baseConfigurationsCapitalized = baseConfigurations
-  .map { it.capitalize() }
-  .toSet()
-
 data class ConfigurationName(val value: String) {
   fun asSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
@@ -53,13 +38,38 @@ data class ConfigurationName(val value: String) {
 
     return removeSuffix(configType).asSourceSetName()
   }
+
+  companion object {
+
+    val compileOnlyApi = ConfigurationName("compileOnlyApi")
+    val api = ConfigurationName("api")
+    val implementation = ConfigurationName("implementation")
+    val compileOnly = ConfigurationName("compileOnly")
+    val runtimeOnly = ConfigurationName("runtimeOnly")
+
+    /**
+     * The order of this list matters.
+     * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
+     */
+    private val baseConfigurations = listOf(
+      compileOnlyApi.value,
+      api.value,
+      implementation.value,
+      compileOnly.value,
+      runtimeOnly.value
+    )
+    private val baseConfigurationsCapitalized = baseConfigurations
+      .map { it.capitalize() }
+      .toSet()
+  }
 }
 
 fun String.asConfigurationName(): ConfigurationName = ConfigurationName(this)
 
 data class Config(
   val name: ConfigurationName,
-  val externalDependencies: Set<ExternalDependency>
+  val externalDependencies: Set<ExternalDependency>,
+  val inherited: Set<Config>
 )
 
 fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {

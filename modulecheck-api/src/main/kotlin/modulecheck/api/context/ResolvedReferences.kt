@@ -15,6 +15,7 @@
 
 package modulecheck.api.context
 
+import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
@@ -22,26 +23,25 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 data class ResolvedReferences(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<ConfiguredProjectDependency>>
-) : ConcurrentMap<SourceSetName, Set<ConfiguredProjectDependency>> by delegate,
-    ProjectContext.Element {
+  internal val delegate: ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>>
+) : ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>> by delegate,
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResolvedReferences>
     get() = Key
 
   companion object Key : ProjectContext.Key<ResolvedReferences> {
     override operator fun invoke(project: Project2): ResolvedReferences {
-
       val map = project
-        .sourceSets
-        .mapValues { (_, sourceSet) ->
+        .configurations
+        .mapValues { (configurationName, _) ->
 
           val projectDependencies = project
             .projectDependencies
-            .value[sourceSet.name]
+            .value[configurationName]
             .orEmpty()
 
-          project[JvmFiles][sourceSet.name]
+          project[JvmFiles][configurationName.asSourceSetName()]
             .orEmpty()
             .flatMap { jvmFile ->
 
@@ -50,7 +50,7 @@ data class ResolvedReferences(
                 .mapNotNull { possible ->
                   projectDependencies
                     .firstOrNull {
-                      it.project[Declarations]["main"].orEmpty()
+                      it.project[Declarations][SourceSetName.MAIN].orEmpty()
                         .any { it == possible }
                     }
                 }

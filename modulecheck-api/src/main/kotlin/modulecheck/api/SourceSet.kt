@@ -17,7 +17,11 @@ package modulecheck.api
 
 import java.io.File
 
-data class SourceSetName(val value: String)
+data class SourceSetName(val value: String) {
+  companion object {
+    val MAIN = SourceSetName("main")
+  }
+}
 
 fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 
