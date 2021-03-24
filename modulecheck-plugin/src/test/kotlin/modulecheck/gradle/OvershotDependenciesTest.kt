@@ -378,7 +378,7 @@ fun jvmSubProject(
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
           addFileSpec(
-            FileSpec.builder(fq.packageName, fq.simpleName + ".kt")
+            FileSpec.builder(fq.packageName, fq.simpleName)
               .addType(TypeSpec.classBuilder(fq.simpleName).build())
               .build()
           )

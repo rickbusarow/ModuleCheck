@@ -45,7 +45,9 @@ data class ConfigurationName(val value: String) {
     val api = ConfigurationName("api")
     val implementation = ConfigurationName("implementation")
     val compileOnly = ConfigurationName("compileOnly")
+    val compile = ConfigurationName("compile")
     val runtimeOnly = ConfigurationName("runtimeOnly")
+    val runtime = ConfigurationName("runtime")
 
     /**
      * The order of this list matters.
@@ -56,7 +58,9 @@ data class ConfigurationName(val value: String) {
       api.value,
       implementation.value,
       compileOnly.value,
-      runtimeOnly.value
+      compile.value,
+      runtimeOnly.value,
+      runtime.value
     )
     private val baseConfigurationsCapitalized = baseConfigurations
       .map { it.capitalize() }

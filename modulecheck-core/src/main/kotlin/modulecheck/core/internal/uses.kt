@@ -15,10 +15,8 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Config
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
+import modulecheck.api.*
+import modulecheck.api.context.DeclarationName
 import modulecheck.api.context.Declarations
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
@@ -35,8 +33,7 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
 }
 
 fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
-  val dependencyDeclarations = depProject[Declarations][config.name.asSourceSetName()]
-    .orEmpty()
+  val dependencyDeclarations = depProject.allDependencyDeclarationsForConfig(config)
 
   val javaIsUsed = dependencyDeclarations
     .any { declaration ->
@@ -62,4 +59,19 @@ fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
     }
 
   return resourcesAreUsed
+}
+
+fun Project2.allDependencyDeclarationsForConfig(config: Config): Set<DeclarationName> {
+  val root = get(Declarations)[config.name.asSourceSetName()]
+    .orEmpty()
+
+  val main = get(Declarations)[SourceSetName.MAIN]
+    .orEmpty()
+
+  val inherited = config.inherited.flatMap { inherited ->
+    get(Declarations)[inherited.name.asSourceSetName()]
+      .orEmpty()
+  }
+
+  return root + main + inherited.toSet()
 }
