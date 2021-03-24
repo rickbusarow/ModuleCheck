@@ -1,0 +1,35 @@
+[versions]
+androidTools = "4.1.3"
+anvil = "2.2.0"
+benManes = "0.36.0"
+changeTracker = "0.7.3"
+compileSdk = "30"
+dependencyAnalysis = "0.63.0"
+dokka = "1.4.20"
+gradleDoctor = "0.7.0"
+groovy = "3.0.5"
+knit = "0.2.3"
+kotlin = "1.4.31"
+kotlinter = "3.3.0"
+mavenPublish = "0.13.0"
+minSdk = "23"
+sonarPlugin = "2.6.1"
+spoon = "1.5.0"
+spotless = "5.10.1"
+targetSdk = "30"
+taskTree = "1.5"
+versionName = "0.10.0"
+
+[libraries]
+
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
+anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
+kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
+
+groovy-core = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
+groovy-json = { module = "org.codehaus.groovy:groovy-json", version.ref = "groovy" }
+groovy-nio = { module = "org.codehaus.groovy:groovy-nio", version.ref = "groovy" }
+commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = { strictly = "[3.8,4.0[", prefer = "3.9" } }
+
+[bundles]
+groovy = ["groovy-core", "groovy-json", "groovy-nio"]

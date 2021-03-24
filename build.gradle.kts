@@ -36,7 +36,7 @@ buildscript {
 plugins {
   kotlin("jvm")
   id(Plugins.benManes) version Versions.benManes
-  id(Plugins.detekt) version Libs.Detekt.version
+  id(Plugins.detekt) version "1.16.0"
   id(Plugins.dokka) version Versions.dokka
   id(Plugins.gradleDoctor) version Versions.gradleDoctor
   id(Plugins.taskTree) version Versions.taskTree

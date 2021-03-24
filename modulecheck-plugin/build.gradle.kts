@@ -21,10 +21,6 @@ plugins {
   `maven-publish`
 }
 
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
-}
-
 dependencies {
   compileOnly(gradleApi())
 
@@ -37,9 +33,9 @@ dependencies {
   implementation(Libs.Swiftzer.semVer)
   implementation(Libs.javaParser)
 
-  implementation(project(path = ":modulecheck-api"))
-  implementation(project(path = ":modulecheck-core"))
-  implementation(project(path = ":modulecheck-psi"))
+  implementation(projects.modulecheckApi)
+  implementation(projects.modulecheckCore)
+  implementation(projects.modulecheckPsi)
 
   constraints { implementation(Libs.Kotlin.reflect) }
 
@@ -52,8 +48,8 @@ dependencies {
   testImplementation(Libs.RickBusarow.Hermit.core)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 gradlePlugin {

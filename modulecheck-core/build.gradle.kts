@@ -20,8 +20,8 @@ plugins {
 
 dependencies {
 
-  api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-psi"))
+  implementation(projects.modulecheckApi)
+  implementation(projects.modulecheckPsi)
 
   implementation(Libs.Groovy.xml)
 
@@ -45,8 +45,8 @@ dependencies {
   testImplementation(Libs.RickBusarow.Hermit.core)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 publishing {

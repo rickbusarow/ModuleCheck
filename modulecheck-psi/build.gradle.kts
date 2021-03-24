@@ -42,8 +42,8 @@ dependencies {
   testImplementation(Libs.RickBusarow.Hermit.core)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 publishing {

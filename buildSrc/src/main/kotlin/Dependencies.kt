@@ -76,12 +76,6 @@ object BuildPlugins {
 
   const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidTools}"
   const val anvil = "com.squareup.anvil:gradle-plugin:${Versions.anvil}"
-  const val atomicFu = "org.jetbrains.kotlinx:atomicfu-gradle-plugin:0.14.1"
-  const val crashlytics = "com.google.firebase:firebase-crashlytics-gradle:2.3.0"
-  const val dokka = "org.jetbrains.dokka:dokka-gradle-plugin:${Versions.dokka}"
-  const val gradleMavenPublish =
-    "com.vanniktech:gradle-maven-publish-plugin:${Versions.mavenPublish}"
-  const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
   const val kotlinter = "org.jmailen.gradle:kotlinter-gradle:${Versions.kotlinter}"
   const val spotless = "com.diffplug.spotless:spotless-plugin-gradle:${Versions.spotless}"
 }
@@ -90,11 +84,10 @@ object Libs {
 
   object Detekt {
 
-    const val version = "1.16.0"
-    const val api = "io.gitlab.arturbosch.detekt:detekt-api:$version"
-    const val cli = "io.gitlab.arturbosch.detekt:detekt-cli:$version"
-    const val formatting = "io.gitlab.arturbosch.detekt:detekt-formatting:$version"
-    const val test = "io.gitlab.arturbosch.detekt:detekt-test:$version"
+    const val api = "io.gitlab.arturbosch.detekt:detekt-api:1.16.0"
+    const val cli = "io.gitlab.arturbosch.detekt:detekt-cli:1.16.0"
+    const val formatting = "io.gitlab.arturbosch.detekt:detekt-formatting:1.16.0"
+    const val test = "io.gitlab.arturbosch.detekt:detekt-test:1.16.0"
   }
 
   object Groovy {
@@ -103,12 +96,11 @@ object Libs {
   }
 
   object JUnit {
-    private const val version = "5.7.1"
 
-    const val api = "org.junit.jupiter:junit-jupiter-api:$version"
-    const val params = "org.junit.jupiter:junit-jupiter-params:$version"
-    const val engine = "org.junit.jupiter:junit-jupiter-engine:$version"
-    const val vintage = "org.junit.vintage:junit-vintage-engine:$version"
+    const val api = "org.junit.jupiter:junit-jupiter-api:5.7.1"
+    const val params = "org.junit.jupiter:junit-jupiter-params:5.7.1"
+    const val engine = "org.junit.jupiter:junit-jupiter-engine:5.7.1"
+    const val vintage = "org.junit.vintage:junit-vintage-engine:5.7.1"
   }
 
   const val javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.18.0"

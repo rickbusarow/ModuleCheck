@@ -21,7 +21,7 @@ plugins {
 dependencies {
 
   compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
-  implementation(project(path = ":modulecheck-psi"))
+  implementation(projects.modulecheckPsi)
 
   implementation(Libs.Groovy.xml)
   implementation(BuildPlugins.androidGradlePlugin)
@@ -41,8 +41,8 @@ dependencies {
   testImplementation(Libs.RickBusarow.Hermit.core)
   testImplementation(Libs.RickBusarow.Hermit.junit5)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 publishing {
