@@ -20,30 +20,24 @@ plugins {
 
 dependencies {
 
-
   compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
 
   compileOnly(gradleApi())
 
-  implementation(BuildPlugins.androidGradlePlugin)
-  implementation(Libs.Kotlin.compiler)
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
-  implementation(Libs.Square.KotlinPoet.core)
-  implementation(Libs.Swiftzer.semVer)
-  implementation(Libs.javaParser)
+  implementation(libs.androidGradlePlugin)
+  implementation(libs.kotlinCompiler)
+  implementation(libs.kotlinGradlePlugin)
+  implementation(libs.kotlinReflect)
+  implementation(libs.kotlinPoet)
+  implementation(libs.semVer)
+  implementation(libs.javaParser)
 
-  testImplementation(Libs.JUnit.api)
-  testImplementation(Libs.JUnit.engine)
-  testImplementation(Libs.JUnit.params)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
-  testImplementation(Libs.RickBusarow.Hermit.core)
-  testImplementation(Libs.RickBusarow.Hermit.junit5)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.bundles.hermit)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 publishing {
@@ -53,7 +47,7 @@ publishing {
       groupId = "com.rickbusarow.modulecheck"
       artifactId = "modulecheck-psi"
 
-      version = Versions.versionName
+      version = libs.versions.versionName.get()
 
       from(components["java"])
     }

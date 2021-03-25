@@ -34,10 +34,10 @@ data class InheritedImplementationDependencyFinding(
   override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
 
   override fun positionOrNull(): Position? {
-    return from?. positionIn(buildFile, configurationName)
+    return from?.positionIn(buildFile, configurationName)
   }
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val visitor = DslBlockVisitor("dependencies")
 
     val fromPath = from?.path ?: return false
@@ -47,21 +47,21 @@ data class InheritedImplementationDependencyFinding(
     val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
-      it.psiElement.text.contains(fromPath)
+      it.psiElement.text.contains("\"$fromPath\"")
     }
       ?.toString() ?: return false
 
-    val newDeclaration = match.replace(fromPath, dependencyPath)
+    val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
 
     // This won't match without .trimStart()
-    val newDependencies = result.blockText.replace(
+    val newDependencies = result.blockText.replaceFirst(
       oldValue = match.trimStart(),
       newValue = (newDeclaration + "\n" + match).trimStart()
     )
 
     val text = buildFile.readText()
 
-    val newText = text.replace(result.blockText, newDependencies)
+    val newText = text.replaceFirst(result.blockText, newDependencies)
 
     buildFile.writeText(newText)
 
