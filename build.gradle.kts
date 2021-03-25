@@ -37,7 +37,7 @@ plugins {
   kotlin("jvm")
   id("com.github.ben-manes.versions") version "0.36.0"
   id("io.gitlab.arturbosch.detekt") version "1.16.0"
-  id("org.jetbrains.dokka") version "1.4.20"
+  id("org.jetbrains.dokka") version "1.4.30"
   id("com.osacky.doctor") version "0.7.0"
   id("com.dorongold.task-tree") version "1.5"
   base
