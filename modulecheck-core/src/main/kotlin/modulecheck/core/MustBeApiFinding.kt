@@ -28,7 +28,7 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependencyProject.path
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val element = elementOrNull() ?: return false
 
     val oldText = element.toString()

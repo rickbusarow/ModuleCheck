@@ -48,7 +48,7 @@ interface Fixable : Finding {
     return "${buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
   }
 
-  fun fix(): Boolean {
+  fun fix(): Boolean = synchronized(buildFile) {
     val text = buildFile.readText()
 
     return elementOrNull()
@@ -67,7 +67,7 @@ interface Fixable : Finding {
           .joinToString("\n")
 
         buildFile
-          .writeText(text.replace(element.text, newText))
+          .writeText(text.replaceFirst(element.text, newText))
 
         true
       } ?: false

@@ -39,7 +39,7 @@ data class OvershotDependencyFinding(
     return from?.positionIn(buildFile, configurationName)
   }
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val visitor = DslBlockVisitor("dependencies")
 
     val fromPath = from?.path ?: return false
@@ -49,7 +49,7 @@ data class OvershotDependencyFinding(
     val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
-      it.psiElement.text.contains(fromPath)
+      it.psiElement.text.contains("\"$fromPath\"")
     }
       ?.toString() ?: return false
 

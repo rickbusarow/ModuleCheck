@@ -61,7 +61,7 @@ data class DisableViewBindingGenerationFinding(
     }
   }
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val ktFile = kotlinBuildFileOrNull() ?: return false
 
     val oldBlock = elementOrNull()?.toString() ?: return false
