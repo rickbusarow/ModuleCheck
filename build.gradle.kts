@@ -29,17 +29,17 @@ buildscript {
     classpath("com.android.tools.build:gradle:4.1.3")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.2.3")
-    classpath(BuildPlugins.kotlinter)
+    classpath("org.jmailen.gradle:kotlinter-gradle:3.3.0")
   }
 }
 
 plugins {
   kotlin("jvm")
-  id(Plugins.benManes) version Versions.benManes
-  id(Plugins.detekt) version Libs.Detekt.version
-  id(Plugins.dokka) version Versions.dokka
-  id(Plugins.gradleDoctor) version Versions.gradleDoctor
-  id(Plugins.taskTree) version Versions.taskTree
+  id("com.github.ben-manes.versions") version "0.36.0"
+  id("io.gitlab.arturbosch.detekt") version "1.16.0"
+  id("org.jetbrains.dokka") version "1.4.20"
+  id("com.osacky.doctor") version "0.7.0"
+  id("com.dorongold.task-tree") version "1.5"
   base
 }
 
@@ -122,7 +122,7 @@ tasks.named(
 }
 
 allprojects {
-  apply(plugin = Plugins.kotlinter)
+  apply(plugin = "org.jmailen.kotlinter")
 
   extensions.configure<org.jmailen.gradle.kotlinter.KotlinterExtension> {
 

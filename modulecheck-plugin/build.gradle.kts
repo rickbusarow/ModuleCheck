@@ -21,39 +21,28 @@ plugins {
   `maven-publish`
 }
 
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
-}
-
 dependencies {
   compileOnly(gradleApi())
 
-  compileOnly(BuildPlugins.anvil)
-  compileOnly(BuildPlugins.androidGradlePlugin)
-  implementation(Libs.Kotlin.compiler)
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
-  implementation(Libs.Square.KotlinPoet.core)
-  implementation(Libs.Swiftzer.semVer)
-  implementation(Libs.javaParser)
+  implementation(libs.anvil)
+  implementation(libs.androidGradlePlugin)
+  implementation(libs.kotlinCompiler)
+  implementation(libs.kotlinGradlePlugin)
+  implementation(libs.kotlinReflect)
+  implementation(libs.kotlinPoet)
+  implementation(libs.semVer)
+  implementation(libs.javaParser)
 
-  implementation(project(path = ":modulecheck-api"))
-  implementation(project(path = ":modulecheck-core"))
-  implementation(project(path = ":modulecheck-psi"))
+  implementation(projects.modulecheckApi)
+  implementation(projects.modulecheckCore)
+  implementation(projects.modulecheckPsi)
 
-  constraints { implementation(Libs.Kotlin.reflect) }
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.bundles.hermit)
 
-  testImplementation(Libs.JUnit.api)
-  testImplementation(Libs.JUnit.engine)
-  testImplementation(Libs.JUnit.params)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
-  testImplementation(Libs.RickBusarow.Hermit.core)
-  testImplementation(Libs.RickBusarow.Hermit.junit5)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
 
 gradlePlugin {
@@ -62,7 +51,7 @@ gradlePlugin {
       id = PluginCoordinates.ID
       group = PluginCoordinates.GROUP
       implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = Versions.versionName
+      version = libs.versions.versionName.get()
     }
   }
 }
@@ -95,4 +84,18 @@ tasks.create("setupPluginUploadFromEnvironment") {
     System.setProperty("gradle.publish.key", key)
     System.setProperty("gradle.publish.secret", secret)
   }
+}
+
+object PluginCoordinates {
+  const val ID = "com.rickbusarow.module-check"
+  const val GROUP = "com.rickbusarow.modulecheck"
+  const val IMPLEMENTATION_CLASS = "modulecheck.gradle.ModuleCheckPlugin"
+}
+
+object PluginBundle {
+  const val VCS = "https://github.com/RBusarow/ModuleCheck"
+  const val WEBSITE = "https://github.com/RBusarow/ModuleCheck"
+  const val DESCRIPTION = "Fast dependency graph validation for gradle"
+  const val DISPLAY_NAME = "Fast dependency graph validation for gradle"
+  val TAGS = listOf("plugin", "gradle")
 }
