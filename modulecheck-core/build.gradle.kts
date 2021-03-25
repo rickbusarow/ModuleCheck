@@ -50,7 +50,7 @@ publishing {
       groupId = "com.rickbusarow.modulecheck"
       artifactId = "modulecheck-core"
 
-      version = "0.10.0"
+      version = libs.versions.versionName.get()
 
       from(components["java"])
     }

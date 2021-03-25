@@ -27,13 +27,13 @@ versionName = "0.10.0"
 
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
-javaParser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version = "3.18.0" }
+javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.18.0"
 kotlinCompiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlinPoet = { module = "com.squareup:kotlinpoet", version = "1.7.2" }
+kotlinPoet = "com.squareup:kotlinpoet:1.7.2"
 kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
-semVer = { module = "net.swiftzer.semver:semver", version = "1.1.1" }
+semVer = "net.swiftzer.semver:semver:1.1.1"
 
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
 

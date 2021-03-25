@@ -51,7 +51,7 @@ gradlePlugin {
       id = PluginCoordinates.ID
       group = PluginCoordinates.GROUP
       implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = "0.10.0"
+      version = libs.versions.versionName.get()
     }
   }
 }

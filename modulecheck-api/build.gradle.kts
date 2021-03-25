@@ -48,7 +48,7 @@ publishing {
       groupId = "com.rickbusarow.modulecheck"
       artifactId = "modulecheck-api"
 
-      version = "0.10.0"
+      version = libs.versions.versionName.get()
 
       from(components["java"])
     }
