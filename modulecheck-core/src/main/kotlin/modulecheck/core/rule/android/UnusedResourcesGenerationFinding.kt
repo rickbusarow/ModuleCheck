@@ -61,7 +61,7 @@ data class UnusedResourcesGenerationFinding(
     }
   }
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val ktFile = kotlinBuildFileOrNull() ?: return false
 
     val element = elementOrNull() ?: return false

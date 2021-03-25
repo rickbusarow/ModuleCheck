@@ -35,7 +35,7 @@ class SortPluginsFinding(
 
   override fun positionOrNull(): Finding.Position? = null
 
-  override fun fix(): Boolean {
+  override fun fix(): Boolean = synchronized(buildFile) {
     val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
 
     val result = visitor.parse(kotlinBuildFile) ?: return false
