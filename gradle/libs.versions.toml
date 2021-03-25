@@ -7,9 +7,12 @@ compileSdk = "30"
 dependencyAnalysis = "0.63.0"
 dokka = "1.4.20"
 gradleDoctor = "0.7.0"
-groovy = "3.0.5"
+groovy = "3.0.7"
+hermit = "0.9.2"
+jUnit = "5.7.1"
 knit = "0.2.3"
-kotlin = "1.4.31"
+kotest = "4.4.1"
+kotlin = "1.4.32"
 kotlinter = "3.3.0"
 mavenPublish = "0.13.0"
 minSdk = "23"
@@ -22,14 +25,33 @@ versionName = "0.10.0"
 
 [libraries]
 
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
+javaParser = { module = "com.github.javaparser:javaparser-symbol-solver-core", version = "3.18.0" }
+kotlinCompiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlinPoet = { module = "com.squareup:kotlinpoet", version = "1.7.2" }
+kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
+semVer = { module = "net.swiftzer.semver:semver", version = "1.1.1" }
 
-groovy-core = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
-groovy-json = { module = "org.codehaus.groovy:groovy-json", version.ref = "groovy" }
-groovy-nio = { module = "org.codehaus.groovy:groovy-nio", version.ref = "groovy" }
-commons-lang3 = { group = "org.apache.commons", name = "commons-lang3", version = { strictly = "[3.8,4.0[", prefer = "3.9" } }
+groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
+
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
+
+kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-properties = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
+kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+
+hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "hermit" }
+hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "hermit" }
+hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
+hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
+hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "hermit" }
 
 [bundles]
-groovy = ["groovy-core", "groovy-json", "groovy-nio"]
+jUnit = ["junit-api", "junit-params", "junit-engine"]
+kotest = ["kotest-assertions", "kotest-properties", "kotest-runner"]
+hermit = ["hermit-core", "hermit-jUnit5"]

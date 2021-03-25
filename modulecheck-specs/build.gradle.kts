@@ -27,17 +27,13 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(Libs.javaParser)
-  implementation(Libs.Kotlin.compiler)
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
-  implementation(Libs.Square.KotlinPoet.core)
+  implementation(libs.javaParser)
+  implementation(libs.kotlinCompiler)
+  implementation(libs.kotlinGradlePlugin)
+  implementation(libs.kotlinPoet)
+  implementation(libs.kotlinReflect)
 
-  testImplementation(Libs.JUnit.api)
-  testImplementation(Libs.JUnit.engine)
-  testImplementation(Libs.JUnit.params)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
   testImplementation(projects.modulecheckInternalTesting)
 }

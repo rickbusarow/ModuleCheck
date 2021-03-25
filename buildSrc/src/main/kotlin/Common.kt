@@ -36,7 +36,7 @@ fun Project.common() {
 
   configurations.all {
     resolutionStrategy {
-      force(Libs.Kotlin.reflect)
+      force("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
     }
   }
 

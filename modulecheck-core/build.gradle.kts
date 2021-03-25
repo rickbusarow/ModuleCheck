@@ -23,27 +23,21 @@ dependencies {
   implementation(projects.modulecheckApi)
   implementation(projects.modulecheckPsi)
 
-  implementation(Libs.Groovy.xml)
+  implementation(libs.groovyXml)
 
   compileOnly(gradleApi())
 
-  implementation(BuildPlugins.androidGradlePlugin)
-  implementation(Libs.Kotlin.compiler)
-  implementation(Libs.Kotlin.gradlePlugin)
-  implementation(Libs.Kotlin.reflect)
-  implementation(Libs.Square.KotlinPoet.core)
-  implementation(Libs.Swiftzer.semVer)
-  implementation(Libs.javaParser)
+  implementation(libs.androidGradlePlugin)
+  implementation(libs.kotlinCompiler)
+  implementation(libs.kotlinGradlePlugin)
+  implementation(libs.kotlinReflect)
+  implementation(libs.kotlinPoet)
+  implementation(libs.semVer)
+  implementation(libs.javaParser)
 
-  testImplementation(Libs.JUnit.api)
-  testImplementation(Libs.JUnit.engine)
-  testImplementation(Libs.MockK.core)
-  testImplementation(Libs.JUnit.params)
-  testImplementation(Libs.Kotest.assertions)
-  testImplementation(Libs.Kotest.properties)
-  testImplementation(Libs.Kotest.runner)
-  testImplementation(Libs.RickBusarow.Hermit.core)
-  testImplementation(Libs.RickBusarow.Hermit.junit5)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.bundles.hermit)
 
   testImplementation(projects.modulecheckInternalTesting)
   testImplementation(projects.modulecheckSpecs)
@@ -56,7 +50,7 @@ publishing {
       groupId = "com.rickbusarow.modulecheck"
       artifactId = "modulecheck-core"
 
-      version = Versions.versionName
+      version = "0.10.0"
 
       from(components["java"])
     }
