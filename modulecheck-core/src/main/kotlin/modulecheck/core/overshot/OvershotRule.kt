@@ -26,11 +26,12 @@ class OvershotRule(
 ) : ModuleCheckRule<OvershotDependencyFinding>() {
 
   override val id = "OvershotDependency"
-  override val description = "Finds project dependencies which are required by the current project, " +
-    "but are only added to the classpath by some other project dependency which is unused"
+  override val description =
+    "Finds project dependencies which are required by the current project, " +
+      "but are only added to the classpath by some other project dependency which is unused"
 
   override fun check(project: Project2): List<OvershotDependencyFinding> {
-    return project [OvershotDependencies]
+    return project[OvershotDependencies]
       .all()
       .distinctBy { it.dependencyIdentifier }
   }

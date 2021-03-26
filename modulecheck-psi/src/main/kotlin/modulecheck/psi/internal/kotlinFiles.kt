@@ -56,6 +56,7 @@ fun KtFile(
   fileName: String
 ): KtFile =
   File(absoluteDirectory, fileName).asKtFile()
+
 fun KtFile.absolutePath(): String =
   getUserData(ABSOLUTE_PATH) ?: error("KtFile '$name' expected to have an absolute path.")
 

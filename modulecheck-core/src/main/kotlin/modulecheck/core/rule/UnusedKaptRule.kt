@@ -78,7 +78,7 @@ class UnusedKaptRule(
             )
           }
 
-        val unusedPlugin = project [KaptDependencies]
+        val unusedPlugin = project[KaptDependencies]
           .values
           .flatten()
           .size == unused.size && project.hasKapt && unused.isNotEmpty()

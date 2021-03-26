@@ -46,5 +46,7 @@ data class LayoutFiles(
 }
 
 val ProjectContext.layoutFiles: LayoutFiles get() = get(LayoutFiles)
-fun  ProjectContext.layoutFilesForSourceSetName(sourceSetName: SourceSetName): Set<XmlFile.LayoutFile> =
+fun ProjectContext.layoutFilesForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<XmlFile.LayoutFile> =
   layoutFiles[sourceSetName].orEmpty()

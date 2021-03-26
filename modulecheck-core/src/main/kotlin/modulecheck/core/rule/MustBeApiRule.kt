@@ -29,7 +29,7 @@ class MustBeApiRule(
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
   override fun check(project: Project2): List<MustBeApiFinding> {
-    return project [MustBeApi]
+    return project[MustBeApi]
       .map {
         MustBeApiFinding(
           dependentPath = project.path,
