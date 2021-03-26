@@ -37,7 +37,12 @@ class ReferenceVisitor(
 
     if (!classOrObject.isPrivateOrInternal()) {
       val superTypes = classOrObject.superTypeListEntries
-        .mapNotNull { it.typeReference?.text }
+        .mapNotNull {
+          it
+            .typeReference
+            ?.text
+            ?.removeGenericsAndSpecials()
+        }
 
       apiReferences.addAll(superTypes)
     }
@@ -46,7 +51,10 @@ class ReferenceVisitor(
   override fun visitProperty(property: KtProperty) {
     super.visitProperty(property)
     if (!property.isPrivateOrInternal()) {
-      val type = property.typeReference?.text
+      val type = property
+        .typeReference
+        ?.text
+        ?.removeGenericsAndSpecials()
 
       if (type != null) {
         apiReferences.add(type)
@@ -75,14 +83,23 @@ class ReferenceVisitor(
       .mapNotNull {
         it.typeReference
       }.filterNot { it.isFunctionalExpression() }
-      .mapNotNull { it.typeElement?.text }
+      .mapNotNull {
+        it.typeElement
+          ?.text
+          ?.removeGenericsAndSpecials()
+      }
 
     apiReferences.addAll(valueTypes)
   }
 
   fun parseTypeParameters(params: List<KtTypeParameter>) {
     val typeParameterTypes = params
-      .mapNotNull { it.extendsBound?.typeElement?.text }
+      .mapNotNull {
+        it.extendsBound
+          ?.typeElement
+          ?.text
+          ?.removeGenericsAndSpecials()
+      }
 
     apiReferences.addAll(typeParameterTypes)
   }
@@ -121,4 +138,7 @@ class ReferenceVisitor(
 
     callableReferences.add(expression.text)
   }
+
+  fun String.removeGenericsAndSpecials() = replace("<[a-zA-Z?]>".toRegex(), "")
+    .replace("[^a-zA-Z.]".toRegex(), "")
 }

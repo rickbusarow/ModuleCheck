@@ -31,13 +31,17 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
+      val declarationsInProject = project[Declarations][SourceSetName.MAIN]
+        .orEmpty()
+
       val noIdeaWhereTheyComeFrom = project
-        .jvmFilesForSourceSetName("main".asSourceSetName())
+        .jvmFilesForSourceSetName(SourceSetName.MAIN)
         .filterIsInstance<KotlinFile>()
         .flatMap { kotlinFile ->
+
           kotlinFile
             .apiReferences
-            .filterNot { it in project[Declarations]["main".asSourceSetName()].orEmpty() }
+            .filterNot { it in declarationsInProject }
         }.toSet()
 
       val api = project
@@ -46,12 +50,12 @@ data class MustBeApi(
         .main()
         .filterNot {
           it in project.projectDependencies
-            .value["api".asConfigurationName()]
+            .value[ConfigurationName.api]
             .orEmpty()
         }
         .filter { cpp ->
           cpp
-            .project[Declarations]["main".asSourceSetName()]
+            .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
             .any { declared ->
               declared in noIdeaWhereTheyComeFrom
