@@ -64,10 +64,10 @@ class KotlinFile(
 
   val apiReferences by lazy {
 
-    val replacedWildcards = wildcardImports.flatMap { wi ->
+    val replacedWildcards = wildcardImports.flatMap { wildardImport ->
 
-      referenceVisitor.apiReferences.map { tr ->
-        wi.replace("*", tr)
+      referenceVisitor.apiReferences.map { apiReference ->
+        wildardImport.replace("*", apiReference)
       }
     }
       .toSet()
@@ -76,7 +76,13 @@ class KotlinFile(
       ktFile.packageFqName.asString() + "." + it
     }
 
-    simple + replacedWildcards
+    val imported = imports.filter { imp ->
+      referenceVisitor.apiReferences.any { ref ->
+        imp.endsWith(ref)
+      }
+    }
+
+    imported + simple + replacedWildcards
   }
 
   private val usedImportsVisitor by lazy {
