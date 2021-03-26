@@ -38,8 +38,8 @@ fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
   val javaIsUsed = dependencyDeclarations
     .any { declaration ->
 
-      declaration in importsForSourceSetName(config.name.asSourceSetName()) ||
-        declaration in possibleReferencesForSourceSetName(config.name.asSourceSetName())
+      declaration in importsForSourceSetName(config.name.toSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName(config.name.toSourceSetName())
     }
 
   if (javaIsUsed) return true
@@ -47,13 +47,13 @@ fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
   if (this !is AndroidProject2) return false
 
   val rReferences =
-    possibleReferencesForSourceSetName(config.name.asSourceSetName())
+    possibleReferencesForSourceSetName(config.name.toSourceSetName())
       .filter { it.startsWith("R.") }
 
   val dependencyAsAndroid = depProject as? AndroidProject2 ?: return false
 
   val resourcesAreUsed = dependencyAsAndroid
-    .androidResourceDeclarationsForSourceSetName(config.name.asSourceSetName())
+    .androidResourceDeclarationsForSourceSetName(config.name.toSourceSetName())
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
@@ -62,14 +62,14 @@ fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
 }
 
 fun Project2.allDependencyDeclarationsForConfig(config: Config): Set<DeclarationName> {
-  val root = get(Declarations)[config.name.asSourceSetName()]
+  val root = get(Declarations)[config.name.toSourceSetName()]
     .orEmpty()
 
   val main = get(Declarations)[SourceSetName.MAIN]
     .orEmpty()
 
   val inherited = config.inherited.flatMap { inherited ->
-    get(Declarations)[inherited.name.asSourceSetName()]
+    get(Declarations)[inherited.name.toSourceSetName()]
       .orEmpty()
   }
 

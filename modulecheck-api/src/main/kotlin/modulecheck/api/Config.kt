@@ -16,12 +16,12 @@
 package modulecheck.api
 
 data class ConfigurationName(val value: String) {
-  fun asSourceSetName(): SourceSetName = when (this.value) {
+  fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
     // creating "implementation" instead of "mainImplementation"
-    in baseConfigurations -> "main".asSourceSetName()
+    in baseConfigurations -> SourceSetName.MAIN
     // all other configurations (like "test", "debug", or "androidTest")
-    // are just "$sourceSetName${configurationName.capitalize()}"
+    // are just "$sourceSetName${baseConfigurationName.capitalize()}"
     else -> this.value.extractSourceSetName()
   }
 
@@ -32,17 +32,47 @@ data class ConfigurationName(val value: String) {
    * returning "debug" as the sourceSet name
    */
   private fun String.extractSourceSetName(): SourceSetName {
+    // All kapt configurations start with `kapt`
+    //
+    //  Config             SourceSet
+    //  | kaptAndroidTest  | androidTest
+    //  | kaptTest         | test
+    //  | kapt             | main
+    //  etc.
+    if (this.startsWith(kapt.value)) {
+      return removePrefix(kapt.value)
+        .decapitalize()
+        .toSourceSetName()
+    }
+
+    // All the base JVM configurations omit "main" from their configuration name
+    //
+    //  Config             SourceSet
+    //  | api              | main
+    //  | compileOnlyApi   | main
+    //  | implementation   | main
+    //  etc.
     val configType = baseConfigurationsCapitalized
       .find { this.endsWith(it) }
-      ?: return asSourceSetName()
+      ?: return toSourceSetName()
 
-    return removeSuffix(configType).asSourceSetName()
+    // For any other configuration, the formula is $sourceSetName${baseConfigurationName.capitalize()}
+    //
+    //  Config                SourceSet
+    //  | debugApi            | debug
+    //  | releaseCompileOnly  | release
+    //  | testImplementation  | test
+    //  etc.
+    return removeSuffix(configType)
+      .decapitalize()
+      .toSourceSetName()
   }
 
   companion object {
 
     val compileOnlyApi = ConfigurationName("compileOnlyApi")
     val api = ConfigurationName("api")
+    val kapt = ConfigurationName("kapt")
     val implementation = ConfigurationName("implementation")
     val compileOnly = ConfigurationName("compileOnly")
     val compile = ConfigurationName("compile")
@@ -56,6 +86,7 @@ data class ConfigurationName(val value: String) {
     private val baseConfigurations = listOf(
       compileOnlyApi.value,
       api.value,
+      kapt.value,
       implementation.value,
       compileOnly.value,
       compile.value,

@@ -54,7 +54,7 @@ abstract class ModuleCheckTask :
 
   @TaskAction
   fun evaluate() {
-    val numIssues = measured {
+    val results = measured {
       project
         .allprojects
         .filter { it.buildFile.exists() }
@@ -63,19 +63,29 @@ abstract class ModuleCheckTask :
         .getFindings()
         .distinct()
     }
-      .finish()
+
+    val numIssues = results.finish()
 
     if (numIssues > 0) {
-      throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
+      throw GradleException("$numIssues issues were not auto-corrected.")
     }
   }
 
   abstract fun List<Project2>.getFindings(): List<Finding>
 
-  private fun Collection<Finding>.finish(): Int {
-    val grouped = this.groupBy { it.dependentPath }
+  private fun TimedResults<List<Finding>>.finish(): Int {
+    val grouped = data.groupBy { it.dependentPath }
 
-    logger.printFailureHeader("ModuleCheck found ${this.size} issues\n")
+    @Suppress("MagicNumber")
+    val secondsDouble = timeMillis / 1000.0
+
+    logger.printSuccessHeader("total parsing time: $secondsDouble seconds")
+
+    if (data.isEmpty()) {
+      logger.printSuccess("ModuleCheck found 0 issues in $secondsDouble seconds\n")
+    } else {
+      logger.printFailureHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
+    }
 
     val unFixed = grouped
       .entries
@@ -102,18 +112,15 @@ abstract class ModuleCheckTask :
     return unFixed.size
   }
 
-  inline fun <T, R> T.measured(action: T.() -> R): R {
+  inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
     var r: R
 
     val time = measureTimeMillis {
       r = action()
     }
 
-    @Suppress("MagicNumber")
-    val secondsDouble = time / 1000.0
-
-    logger.printSuccessHeader("total parsing time: $secondsDouble seconds")
-
-    return r
+    return TimedResults(time, r)
   }
+
+  data class TimedResults<R>(val timeMillis: Long, val data: R)
 }

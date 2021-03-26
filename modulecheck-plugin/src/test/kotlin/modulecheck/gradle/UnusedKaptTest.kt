@@ -19,11 +19,14 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
 import org.junit.jupiter.api.Test
+import java.io.File
 import java.nio.file.Path
 
 class UnusedKaptTest : BaseTest() {
@@ -57,11 +60,25 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldFailWithMessage("moduleCheckUnusedKapt") {
+      it shouldContain "app/build.gradle.kts:  unused kapt dependency: com.google.dagger:dagger-compiler"
+      it shouldContain "app/build.gradle.kts:  unused kaptTest dependency: com.squareup.moshi:moshi-kotlin-codegen"
+    }
+
+    File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |  kotlin("kapt")
+        |}
+        |
+        |dependencies {
+        |  kapt("com.google.dagger:dagger-compiler:2.30.1")
+        |  kaptTest("com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
+        |}
+        |""".trimMargin()
   }
 
   @Test
-  fun `used`() {
+  fun `used in main`() {
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
@@ -79,10 +96,10 @@ class UnusedKaptTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.my.app", "App.kt")
+                FileSpec.builder("com.my.app", "App")
                   .addType(
                     TypeSpec.classBuilder("MyClass")
-                      .addFunction(
+                      .primaryConstructor(
                         FunSpec.constructorBuilder()
                           .addAnnotation(ClassName("javax.inject", "Inject"))
                           .build()
@@ -98,12 +115,113 @@ class UnusedKaptTest : BaseTest() {
               addPlugin("kotlin(\"jvm\")")
               addPlugin("kotlin(\"kapt\")")
               addExternalDependency("kapt", "com.google.dagger:dagger-compiler:2.30.1")
+            }
+          )
+        }
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedKapt").shouldSucceed()
+  }
+
+  @Test
+  fun `used in test`() {
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/test/kotlin")) {
+              addFileSpec(
+                FileSpec.builder("com.my.app", "App")
+                  .addType(
+                    TypeSpec.classBuilder("MyClass")
+                      .primaryConstructor(
+                        FunSpec.constructorBuilder()
+                          .addAnnotation(ClassName("com.squareup.moshi", "JsonClass"))
+                          .build()
+                      )
+                      .build()
+                  )
+                  .build()
+              )
+            }
+          )
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("kotlin(\"kapt\")")
               addExternalDependency("kaptTest", "com.squareup.moshi:moshi-kotlin-codegen:1.11.0")
             }
           )
         }
       )
     }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedKapt").shouldSucceed()
+  }
+
+  @Test
+  fun `used in androidTest`() {
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/androidTest/java")) {
+              addFileSpec(
+                FileSpec.builder("com.my.app", "App")
+                  .addType(
+                    TypeSpec.classBuilder("MyClass")
+                      .primaryConstructor(
+                        FunSpec.constructorBuilder()
+                          .addAnnotation(ClassName("com.squareup.moshi", "JsonClass"))
+                          .build()
+                      )
+                      .build()
+                  )
+                  .build()
+              )
+            }
+          )
+          addBuildSpec(
+            ProjectBuildSpec {
+              android = true
+              addPlugin("""id("com.android.library")""")
+              addPlugin("kotlin(\"android\")")
+              addPlugin("kotlin(\"kapt\")")
+              addExternalDependency(
+                "kaptAndroidTest",
+                "com.squareup.moshi:moshi-kotlin-codegen:1.11.0"
+              )
+            }
+          )
+        }
+      )
+    }
+      // .writeIn(File("FFF").toPath())
       .writeIn(testProjectDir.toPath())
 
     build("moduleCheckUnusedKapt").shouldSucceed()

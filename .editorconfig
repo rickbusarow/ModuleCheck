@@ -468,7 +468,7 @@ ij_groovy_wrap_long_lines = false
 
 # for KtLint
 # https://github.com/pinterest/ktlint#custom-ktlint-specific-editorconfig-properties
-kotlin_imports_layout = idea
+kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
 
 [{*.kt,*.kts}]
 indent_size = 2

@@ -208,7 +208,7 @@ class GradleProjectProvider(
         ?: it.allJava.files
 
       SourceSet(
-        name = it.name.asSourceSetName(),
+        name = it.name.toSourceSetName(),
         classpathFiles = it.compileClasspath.existingFiles().files,
         outputFiles = it.output.classesDirs.existingFiles().files,
         jvmFiles = jvmFiles,
@@ -313,7 +313,7 @@ class GradleProjectProvider(
               .toSet()
 
             SourceSet(
-              name = sourceProvider.name.asSourceSetName(),
+              name = sourceProvider.name.toSourceSetName(),
               classpathFiles = emptySet(),
               outputFiles = setOf(), // TODO
               jvmFiles = jvmFiles,
