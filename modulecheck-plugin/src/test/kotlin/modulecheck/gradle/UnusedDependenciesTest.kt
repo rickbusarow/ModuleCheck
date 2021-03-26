@@ -126,10 +126,7 @@ class UnusedDependenciesTest : BaseTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage(
-        "moduleCheckUnusedDependency"
-      ) {
-        it shouldContain "ModuleCheck found 2 issues"
+      shouldFailWithMessage("moduleCheckUnusedDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
         it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
         it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"

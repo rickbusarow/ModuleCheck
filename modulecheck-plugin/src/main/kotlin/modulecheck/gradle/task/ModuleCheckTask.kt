@@ -67,7 +67,7 @@ abstract class ModuleCheckTask :
     val numIssues = results.finish()
 
     if (numIssues > 0) {
-      throw GradleException("$numIssues issues were not auto-corrected.")
+      throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
     }
   }
 

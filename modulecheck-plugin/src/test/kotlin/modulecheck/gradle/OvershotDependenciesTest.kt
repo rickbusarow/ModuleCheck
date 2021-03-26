@@ -166,10 +166,7 @@ class OvershotDependenciesTest : BaseTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage(
-        "moduleCheckOvershotDependency"
-      ) {
-        it shouldContain "ModuleCheck found 2 issues"
+      shouldFailWithMessage("moduleCheckOvershotDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
         it shouldContain "app/build.gradle.kts: (6, 3):  over-shot: :lib-1 from: :lib-3"
         it shouldContain "app/build.gradle.kts: (6, 3):  over-shot: :lib-2 from: :lib-3"
