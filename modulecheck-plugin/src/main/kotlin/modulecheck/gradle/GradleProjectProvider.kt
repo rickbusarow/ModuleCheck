@@ -30,6 +30,7 @@ import modulecheck.psi.ExternalDependencyDeclarationVisitor
 import modulecheck.psi.internal.asKtFile
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.JavaPluginConvention
@@ -116,46 +117,65 @@ class GradleProjectProvider(
     }
   }
 
-  private fun GradleProject.configurations() = configurations
-    .associate { configuration ->
+  private fun GradleProject.configurations(): Map<ConfigurationName, Config> {
+    val externalDependencyCache = mutableMapOf<String, Set<ExternalDependency>>()
 
-      val external = configuration
-        .dependencies
-        .filterNot { it is ProjectDependency }
-        .map { dep ->
-          val psi = lazy psiLazy@{
-            val parsed = DslBlockVisitor("dependencies")
-              .parse(buildFile.asKtFile())
-              ?: return@psiLazy null
+    fun Configuration.foldConfigs(): Set<Configuration> {
+      return extendsFrom + extendsFrom.flatMap { it.foldConfigs() }
+    }
 
-            parsed
-              .elements
-              .firstOrNull { element ->
+    fun Configuration.toConfig(): Config {
+      val external = externalDependencyCache.getOrPut(name) {
+        externalDependencies(this)
+      }
 
-                val p = ExternalDependencyDeclarationVisitor(
-                  configuration = configuration.name,
-                  group = dep.group,
-                  name = dep.name,
-                  version = dep.version
-                )
-
-                p.find(element.psiElement as KtCallExpression)
-              }
-          }
-          ExternalDependency(
-            configurationName = configuration.name.asConfigurationName(),
-            group = dep.group,
-            moduleName = dep.name,
-            version = dep.version,
-            psiElementWithSurroundingText = psi
-          )
-        }
+      val configs = foldConfigs()
+        .map { it.toConfig() }
         .toSet()
 
-      val config = Config(configuration.name.asConfigurationName(), external)
-
-      configuration.name.asConfigurationName() to config
+      return Config(name.asConfigurationName(), external, configs)
     }
+    return configurations
+      .associate { configuration ->
+
+        val config = configuration.toConfig()
+
+        configuration.name.asConfigurationName() to config
+      }
+  }
+
+  private fun GradleProject.externalDependencies(configuration: Configuration) =
+    configuration.dependencies
+      .filterNot { it is ProjectDependency }
+      .map { dep ->
+        val psi = lazy psiLazy@{
+          val parsed = DslBlockVisitor("dependencies")
+            .parse(buildFile.asKtFile())
+            ?: return@psiLazy null
+
+          parsed
+            .elements
+            .firstOrNull { element ->
+
+              val p = ExternalDependencyDeclarationVisitor(
+                configuration = configuration.name,
+                group = dep.group,
+                name = dep.name,
+                version = dep.version
+              )
+
+              p.find(element.psiElement as KtCallExpression)
+            }
+        }
+        ExternalDependency(
+          configurationName = configuration.name.asConfigurationName(),
+          group = dep.group,
+          moduleName = dep.name,
+          version = dep.version,
+          psiElementWithSurroundingText = psi
+        )
+      }
+      .toSet()
 
   private fun GradleProject.projectDependencies(): Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>> =
     lazy {

@@ -138,6 +138,47 @@ class UnusedDependenciesTest : BaseTest() {
   }
 
   @Test
+  fun `testImplementation used in test should not be unused`() {
+    val myTest = FileSpec.builder("com.example.app", "MyTest")
+      .addImport("com.example.lib1", "Lib1Class")
+      .build()
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("kotlin(\"jvm\")")
+          addProjectDependency("testImplementation", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/test/kotlin")) {
+          addFileSpec(myTest)
+        }
+      )
+    }
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubprojects(jvmSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `module with a custom view used in a layout subject module should not be unused`() {
     val activity_main_xml = XmlFile(
       "activity_main.xml",

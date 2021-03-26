@@ -49,18 +49,28 @@ fun Project2.isAndroid(): Boolean {
   return this is AndroidProject2
 }
 
-fun Project2.allPublicClassPathDependencyDeclarations(): Set<ConfiguredProjectDependency> {
+fun Project2.allPublicClassPathDependencyDeclarations(
+  includePrivate: Boolean = true
+): Set<ConfiguredProjectDependency> {
+  val configurationName = if (includePrivate) {
+    projectDependencies
+      .value[ConfigurationName.implementation].orEmpty()
+  } else {
+    emptyList()
+  }
+
   val sub = projectDependencies
-    .value["api".asConfigurationName()]
+    .value[ConfigurationName.api]
     .orEmpty()
+    .plus(configurationName)
     .flatMap {
       it
         .project
-        .allPublicClassPathDependencyDeclarations()
+        .allPublicClassPathDependencyDeclarations(false)
     }
 
   return projectDependencies
-    .value["api".asConfigurationName()]
+    .value[ConfigurationName.api]
     .orEmpty()
     .plus(sub)
     .toSet()
