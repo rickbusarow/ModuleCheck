@@ -23,7 +23,7 @@ data class SourceSetName(val value: String) {
   }
 }
 
-fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
+fun String.toSourceSetName(): SourceSetName = SourceSetName(this)
 
 data class SourceSet(
   val name: SourceSetName,

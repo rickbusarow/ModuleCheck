@@ -41,7 +41,7 @@ data class ResolvedReferences(
             .value[configurationName]
             .orEmpty()
 
-          project[JvmFiles][configurationName.asSourceSetName()]
+          project[JvmFiles][configurationName.toSourceSetName()]
             .orEmpty()
             .flatMap { jvmFile ->
 

@@ -29,7 +29,7 @@ data class UnusedKaptProcessorFinding(
 
   override val dependencyIdentifier = dependencyPath
 
-  override val problemName = "unused $configurationName dependency"
+  override val problemName = "unused ${configurationName.value} dependency"
 
   override fun positionOrNull(): Position? {
     // Kapt paths are different from other project dependencies.
