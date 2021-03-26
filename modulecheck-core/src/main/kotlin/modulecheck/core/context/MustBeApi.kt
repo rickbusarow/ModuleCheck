@@ -24,7 +24,7 @@ import modulecheck.api.files.KotlinFile
 data class MustBeApi(
   internal val delegate: Set<ConfiguredProjectDependency>
 ) : Set<ConfiguredProjectDependency> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<MustBeApi>
     get() = Key
