@@ -17,7 +17,7 @@ package modulecheck.psi
 
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
-class AnnotationVisitor
+
 class AndroidBuildFeaturesVisitor {
 
   fun find(buildFile: KtFile, propertyName: String): PsiElementWithSurroundingText? {
