@@ -264,21 +264,6 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
 
-    val libView = FileSpec.builder("com.example.lib1", "Lib1View")
-      .addType(
-        TypeSpec.classBuilder("Lib1View")
-          .addAnnotation(
-            AnnotationSpec
-              .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
-              .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
-              .build()
-          )
-          .build()
-      )
-      .build()
-
-    println(libView)
-
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -288,7 +273,20 @@ class UnusedDependenciesTest : BaseTest() {
         ProjectSpec("lib-1") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(libView)
+              addFileSpec(
+                FileSpec.builder("com.example.lib1", "Lib1View")
+                  .addType(
+                    TypeSpec.classBuilder("Lib1View")
+                      .addAnnotation(
+                        AnnotationSpec
+                          .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
+                          .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
+                          .build()
+                      )
+                      .build()
+                  )
+                  .build()
+              )
             }
           )
           addBuildSpec(
