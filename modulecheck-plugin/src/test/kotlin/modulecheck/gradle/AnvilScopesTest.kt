@@ -19,6 +19,7 @@ import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
+import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
@@ -45,7 +46,7 @@ class AnvilScopesTest : BaseTest() {
   val jvmSub2 = jvmSubProject("lib-2", ClassName("com.example.lib2", "Lib2Class"))
 
   @Test
-  fun `module which contributes anvil scopes should not be unused in merged module`() {
+  fun `module which contributes anvil scopes should not be unused in module which merges that scope`() {
     val appComponent = FileSpec.builder("com.example.app", "AppComponent")
       .addType(
         TypeSpec.classBuilder("AppComponent")
@@ -62,22 +63,27 @@ class AnvilScopesTest : BaseTest() {
     val lib2Component = ClassName("com.example.lib2", "Lib2Component")
 
     jvmSub2.edit {
-      addSrcSpec(ProjectSrcSpec(Path.of("src/main/kotlin")) {
-        addFileSpec(
-          FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
-            .addType(
-              TypeSpec.classBuilder(lib2Component.simpleName)
-                .addAnnotation(
-                  AnnotationSpec
-                    .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
-                    .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
-                    .build()
-                )
-                .build()
-            )
-            .build()
-        )
-      })
+      projectBuildSpec?.edit {
+        addPlugin("id(\"com.squareup.anvil\")")
+      }
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addFileSpec(
+            FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
+              .addType(
+                TypeSpec.classBuilder(lib2Component.simpleName)
+                  .addAnnotation(
+                    AnnotationSpec
+                      .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesBinding"))
+                      .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
+        }
+      )
     }
 
     val appProject = ProjectSpec("app") {
@@ -115,5 +121,85 @@ class AnvilScopesTest : BaseTest() {
       .writeIn(testProjectDir.toPath())
 
     build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
+  fun `module which contributes anvil scopes should be unused in module which does not merge that scope`() {
+    val appComponent = FileSpec.builder("com.example.app", "AppComponent")
+      .addType(
+        TypeSpec.classBuilder("AppComponent")
+          .addAnnotation(
+            AnnotationSpec
+              .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesTo"))
+              .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
+              .build()
+          )
+          .build()
+      )
+      .build()
+
+    val lib2Component = ClassName("com.example.lib2", "Lib2Component")
+
+    jvmSub2.edit {
+      projectBuildSpec?.edit {
+        addPlugin("id(\"com.squareup.anvil\")")
+      }
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addFileSpec(
+            FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
+              .addType(
+                TypeSpec.classBuilder(lib2Component.simpleName)
+                  .addAnnotation(
+                    AnnotationSpec
+                      .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesTo"))
+                      .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
+        }
+      )
+    }
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("kotlin(\"jvm\")")
+          addPlugin("id(\"com.squareup.anvil\")")
+          addProjectDependency("implementation", jvmSub1)
+          addProjectDependency("implementation", jvmSub2)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addFileSpec(appComponent)
+        }
+      )
+    }
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubprojects(jvmSub1, jvmSub2)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    shouldFailWithMessage("moduleCheckUnusedDependency") {
+      it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-2"
+    }
   }
 }

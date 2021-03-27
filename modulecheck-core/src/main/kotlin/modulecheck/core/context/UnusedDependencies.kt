@@ -53,6 +53,7 @@ data class UnusedDependencies(
         .configurations
         .values
         .asSequence()
+        .filterNot { it.name.value.contains("detekt", true) }
         .filterNot { it.name.value.contains("kapt", true) }
         .flatMap { config ->
           project

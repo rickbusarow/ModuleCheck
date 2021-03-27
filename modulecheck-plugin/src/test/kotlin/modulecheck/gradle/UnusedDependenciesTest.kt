@@ -20,7 +20,6 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -44,7 +43,9 @@ class UnusedDependenciesTest : BaseTest() {
     .addPlugin("id(\"com.rickbusarow.module-check\")")
     .buildScript()
 
-  val jvmSub1 = jvmSubProject("lib-1", ClassName("com.example.lib1", "Lib1Class"))
+  private val lib1ClassName = ClassName("com.example.lib1", "Lib1Class")
+
+  val jvmSub1 = jvmSubProject("lib-1", lib1ClassName)
   val jvmSub2 = jvmSubProject("lib-2", ClassName("com.example.lib2", "Lib2Class"))
   val jvmSub3 = jvmSubProject("lib-3", ClassName("com.example.lib3", "Lib3Class"))
 
@@ -176,13 +177,8 @@ class UnusedDependenciesTest : BaseTest() {
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
 
-  @Disabled
   @Test
-  fun `AndroidTestImplementation used in test should not be unused`() {
-    val myTest = FileSpec.builder("com.example.app", "MyTest")
-      .addImport("com.example.lib1", "Lib1Class")
-      .build()
-
+  fun `androidTestImplementation used in android test should not be unused`() {
     val appProject = ProjectSpec("app") {
       addBuildSpec(
         ProjectBuildSpec {
@@ -194,7 +190,19 @@ class UnusedDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/androidTest/java")) {
-          addFileSpec(myTest)
+          addFileSpec(
+            FileSpec.builder("com.example.app", "MyTest")
+              .addType(
+                TypeSpec.classBuilder("MyTest")
+                  .primaryConstructor(
+                    FunSpec.constructorBuilder()
+                      .addParameter("lib1Class", lib1ClassName)
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
         }
       )
     }
