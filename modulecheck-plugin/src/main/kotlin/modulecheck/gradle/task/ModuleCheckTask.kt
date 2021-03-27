@@ -79,8 +79,6 @@ abstract class ModuleCheckTask :
     @Suppress("MagicNumber")
     val secondsDouble = timeMillis / 1000.0
 
-    logger.printSuccessHeader("total parsing time: $secondsDouble seconds")
-
     if (data.isEmpty()) {
       logger.printSuccess("ModuleCheck found 0 issues in $secondsDouble seconds\n")
     } else {

@@ -19,6 +19,8 @@ import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.ProjectContext
+import modulecheck.api.context.anvilScopeContributionsForConfigurationName
+import modulecheck.api.context.anvilScopeMergesForConfigurationName
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import java.io.File
@@ -45,6 +47,8 @@ data class UnusedDependencies(
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override operator fun invoke(project: Project2): UnusedDependencies {
+      val neededForScopes = project.anvilScopeMap()
+
       val unusedHere = project
         .configurations
         .values
@@ -55,6 +59,9 @@ data class UnusedDependencies(
             .projectDependencies
             .value[config.name]
             .orEmpty()
+        }
+        .filterNot { cpd ->
+          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
         }
         .filterNot { cpd ->
           // test configurations have the main source project as a dependency.
@@ -77,6 +84,35 @@ data class UnusedDependencies(
         .mapValues { it.value.toSet() }
 
       return UnusedDependencies(ConcurrentHashMap(grouped))
+    }
+
+    private fun Project2.anvilScopeMap(): Map<ConfigurationName, List<Project2>> {
+      if (anvilGradlePlugin == null) {
+        return mapOf()
+      }
+
+      return configurations
+        .map { (configurationName, _) ->
+          val merged = anvilScopeMergesForConfigurationName(configurationName)
+
+          val neededForScopeInConfig = projectDependencies
+            .value[configurationName]
+            .orEmpty()
+            .filter { cpd ->
+
+              val contributed = cpd
+                .project
+                .anvilScopeContributionsForConfigurationName(cpd.configurationName)
+
+              contributed.any { cont ->
+                cont in merged
+              }
+            }
+            .map { it.project }
+
+          configurationName to neededForScopeInConfig
+        }
+        .toMap()
     }
   }
 }

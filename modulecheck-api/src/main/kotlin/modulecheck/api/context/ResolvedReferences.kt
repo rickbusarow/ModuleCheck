@@ -41,8 +41,8 @@ data class ResolvedReferences(
             .value[configurationName]
             .orEmpty()
 
-          project[JvmFiles][configurationName.toSourceSetName()]
-            .orEmpty()
+          project
+            .jvmFilesForSourceSetName(configurationName.toSourceSetName())
             .flatMap { jvmFile ->
 
               jvmFile
@@ -50,7 +50,9 @@ data class ResolvedReferences(
                 .mapNotNull { possible ->
                   projectDependencies
                     .firstOrNull {
-                      it.project[Declarations][SourceSetName.MAIN].orEmpty()
+                      it.project
+                        .declarations[SourceSetName.MAIN]
+                        .orEmpty()
                         .any { it == possible }
                     }
                 }
@@ -63,3 +65,7 @@ data class ResolvedReferences(
   }
 }
 
+val ProjectContext.resolvedReferences: ResolvedReferences get() = get(ResolvedReferences)
+fun ProjectContext.resolvedReferencesForConfigurationName(
+  configurationName: ConfigurationName
+): Set<ConfiguredProjectDependency> = resolvedReferences[configurationName].orEmpty()

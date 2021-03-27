@@ -20,6 +20,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -175,6 +176,50 @@ class UnusedDependenciesTest : BaseTest() {
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
 
+  @Disabled
+  @Test
+  fun `AndroidTestImplementation used in test should not be unused`() {
+    val myTest = FileSpec.builder("com.example.app", "MyTest")
+      .addImport("com.example.lib1", "Lib1Class")
+      .build()
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          android = true
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          addProjectDependency("androidTestImplementation", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/androidTest/java")) {
+          addFileSpec(myTest)
+        }
+      )
+    }
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubprojects(jvmSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
   @Test
   fun `module with a custom view used in a layout subject module should not be unused`() {
     val activity_main_xml = XmlFile(
@@ -211,6 +256,21 @@ class UnusedDependenciesTest : BaseTest() {
       )
     }
 
+    val libView = FileSpec.builder("com.example.lib1", "Lib1View")
+      .addType(
+        TypeSpec.classBuilder("Lib1View")
+          .addAnnotation(
+            AnnotationSpec
+              .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
+              .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
+              .build()
+          )
+          .build()
+      )
+      .build()
+
+    println(libView)
+
     ProjectSpec("project") {
       applyEach(projects) { project ->
         addSubproject(project)
@@ -220,11 +280,7 @@ class UnusedDependenciesTest : BaseTest() {
         ProjectSpec("lib-1") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(TypeSpec.classBuilder("Lib1View").build())
-                  .build()
-              )
+              addFileSpec(libView)
             }
           )
           addBuildSpec(
