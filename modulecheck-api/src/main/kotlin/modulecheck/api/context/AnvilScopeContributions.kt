@@ -29,7 +29,7 @@ data class AnvilScopeName(val fqName: ImportName)
 data class AnvilScopeContributions(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<AnvilScopeName>>
 ) : ConcurrentMap<ConfigurationName, Set<AnvilScopeName>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
     get() = Key
