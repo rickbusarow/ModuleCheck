@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentMap
 data class ResolvedReferences(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResolvedReferences>
     get() = Key
