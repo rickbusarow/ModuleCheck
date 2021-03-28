@@ -160,5 +160,27 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
       "net\\.ltgt\\.gradle\\.incap\\.\\*",
       "net\\.ltgt\\.gradle\\.incap\\.IncrementalAnnotationProcessor"
     )
+  ),
+  KaptMatcher(
+    name = "Epoxy",
+    processor = "com.airbnb.android:epoxy-processor",
+    annotationImports = listOf(
+      "com\\.airbnb\\.epoxy\\.\\*",
+      "com\\.airbnb\\.epoxy\\.AfterPropsSet",
+      "com\\.airbnb\\.epoxy\\.AutoModel",
+      "com\\.airbnb\\.epoxy\\.CallbackProp",
+      "com\\.airbnb\\.epoxy\\.EpoxyAttribute",
+      "com\\.airbnb\\.epoxy\\.EpoxyDataBindingLayouts",
+      "com\\.airbnb\\.epoxy\\.EpoxyDataBindingPattern",
+      "com\\.airbnb\\.epoxy\\.EpoxyModelClass",
+      "com\\.airbnb\\.epoxy\\.ModelProp",
+      "com\\.airbnb\\.epoxy\\.ModelView",
+      "com\\.airbnb\\.epoxy\\.OnViewRecycled",
+      "com\\.airbnb\\.epoxy\\.OnVisibilityChanged",
+      "com\\.airbnb\\.epoxy\\.OnVisibilityStateChanged",
+      "com\\.airbnb\\.epoxy\\.PackageEpoxyConfig",
+      "com\\.airbnb\\.epoxy\\.PackageModelViewConfig",
+      "com\\.airbnb\\.epoxy\\.TextProp",
+    )
   )
 )
