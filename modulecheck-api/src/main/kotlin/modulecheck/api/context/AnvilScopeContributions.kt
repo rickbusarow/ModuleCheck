@@ -112,10 +112,16 @@ data class AnvilScopeContributions(
         val typeRef = entry.typeReference?.text ?: return@annotationEntryRecursiveVisitor
 
         if (annotations.any { it.endsWith(typeRef) }) {
-          val t = entry.valueArgumentList?.getByNameOrIndex(0, "scope")
+          val entryText = entry
+            .valueArgumentList
+            ?.getByNameOrIndex(0, "scope")
+            ?.text
+            ?.replace(".+[=]+".toRegex(), "") // remove named arguments
+            ?.replace("::class", "")
+            ?.trim()
 
-          if (t != null) {
-            scopeArguments.add(t.text.replace("::class", ""))
+          if (entryText != null) {
+            scopeArguments.add(entryText)
           }
         }
       }
