@@ -40,7 +40,7 @@ data class UnusedDependency(
 data class UnusedDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key
