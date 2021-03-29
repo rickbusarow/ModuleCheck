@@ -81,12 +81,22 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
     )
   ),
   KaptMatcher(
-    name = "Inflation Inject",
+    name = "Inflation Inject (Square)",
     processor = "com.squareup.inject:inflation-inject-processor",
     annotationImports = listOf(
       "com\\.squareup\\.inject\\.inflation\\.\\*",
       "com\\.squareup\\.inject\\.inflation\\.InflationInject",
       "com\\.squareup\\.inject\\.inflation\\.InflationInjectModule"
+    )
+  ),
+  KaptMatcher(
+    name = "Inflation Inject (Cash App)",
+    processor = "app.cash.inject:inflation-inject-processor",
+    annotationImports = listOf(
+      "app\\.cash\\.inject\\.inflation\\.\\*",
+      "app\\.cash\\.inject\\.inflation\\.InflationInject",
+      "app\\.cash\\.inject\\.inflation\\.InflationModule",
+      "app\\.cash\\.inject\\.inflation\\.ViewFactory"
     )
   ),
   KaptMatcher(
@@ -149,6 +159,28 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
     annotationImports = listOf(
       "net\\.ltgt\\.gradle\\.incap\\.\\*",
       "net\\.ltgt\\.gradle\\.incap\\.IncrementalAnnotationProcessor"
+    )
+  ),
+  KaptMatcher(
+    name = "Epoxy",
+    processor = "com.airbnb.android:epoxy-processor",
+    annotationImports = listOf(
+      "com\\.airbnb\\.epoxy\\.\\*",
+      "com\\.airbnb\\.epoxy\\.AfterPropsSet",
+      "com\\.airbnb\\.epoxy\\.AutoModel",
+      "com\\.airbnb\\.epoxy\\.CallbackProp",
+      "com\\.airbnb\\.epoxy\\.EpoxyAttribute",
+      "com\\.airbnb\\.epoxy\\.EpoxyDataBindingLayouts",
+      "com\\.airbnb\\.epoxy\\.EpoxyDataBindingPattern",
+      "com\\.airbnb\\.epoxy\\.EpoxyModelClass",
+      "com\\.airbnb\\.epoxy\\.ModelProp",
+      "com\\.airbnb\\.epoxy\\.ModelView",
+      "com\\.airbnb\\.epoxy\\.OnViewRecycled",
+      "com\\.airbnb\\.epoxy\\.OnVisibilityChanged",
+      "com\\.airbnb\\.epoxy\\.OnVisibilityStateChanged",
+      "com\\.airbnb\\.epoxy\\.PackageEpoxyConfig",
+      "com\\.airbnb\\.epoxy\\.PackageModelViewConfig",
+      "com\\.airbnb\\.epoxy\\.TextProp",
     )
   )
 )
