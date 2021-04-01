@@ -15,21 +15,16 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
-import modulecheck.api.files.KotlinFile
-import modulecheck.psi.internal.getByNameOrIndex
-import org.jetbrains.kotlin.psi.annotationEntryRecursiveVisitor
+import modulecheck.api.anvil.AnvilScopeName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-data class AnvilScopeName(val fqName: ImportName)
-
 data class AnvilScopeContributions(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<AnvilScopeName>>
-) : ConcurrentMap<ConfigurationName, Set<AnvilScopeName>> by delegate,
-  ProjectContext.Element {
+  internal val delegate: ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
+) : ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
     get() = Key
@@ -45,99 +40,16 @@ data class AnvilScopeContributions(
     override operator fun invoke(project: Project2): AnvilScopeContributions {
       if (project.anvilGradlePlugin == null) return AnvilScopeContributions(ConcurrentHashMap())
 
-      val map = project
-        .configurations
-        .mapValues { (configurationName, _) ->
-
-          val projectDependencies = project
-            .projectDependencies
-            .value[configurationName]
-            .orEmpty()
-
-          project
-            .jvmFilesForSourceSetName(configurationName.toSourceSetName())
-            // Anvil only works with Kotlin, so no point in trying to parse Java files
-            .filterIsInstance<KotlinFile>()
-            // only re-visit files which have Anvil annotations
-            .filter { kotlinFile ->
-              kotlinFile.imports.any { it in annotations } ||
-                kotlinFile.maybeExtraReferences.any { it in annotations }
-            }
-            .flatMap { kotlinFile ->
-
-              kotlinFile
-                .getScopeArguments()
-                .map { scopeName ->
-
-                  // if scope is directly imported (most likely),
-                  // then use that fully qualified import
-                  kotlinFile.imports.firstOrNull { import ->
-                    import.endsWith(scopeName)
-                  } // if the scope is wildcard-imported
-                    ?: projectDependencies
-                      .asSequence()
-                      .flatMap { cpd ->
-                        cpd.project
-                          .declarations[SourceSetName.MAIN]
-                          .orEmpty()
-                      }
-                      .filter { declarationName ->
-                        declarationName in kotlinFile.maybeExtraReferences
-                      }
-                      .firstOrNull { declarationName ->
-                        declarationName.endsWith(scopeName)
-                      } // Scope must be defined in this same module
-                    ?: kotlinFile
-                      .maybeExtraReferences
-                      .firstOrNull { maybeExtra ->
-                        maybeExtra.startsWith(kotlinFile.packageFqName) && maybeExtra.endsWith(
-                          scopeName
-                        )
-                      } // Scope must be defined in this same package
-                    ?: kotlinFile.packageFqName + "." + scopeName
-                }
-                .map { AnvilScopeName(it) }
-            }
-            .toSet()
-        }
+      val map = project.parseAnvilScopes(annotations)
 
       return AnvilScopeContributions(ConcurrentHashMap(map))
-    }
-
-    private fun KotlinFile.getScopeArguments(): Set<String> {
-      val scopeArguments = mutableSetOf<String>()
-
-      val visitor = annotationEntryRecursiveVisitor { entry ->
-
-        val typeRef = entry.typeReference?.text ?: return@annotationEntryRecursiveVisitor
-
-        if (annotations.any { it.endsWith(typeRef) }) {
-          val entryText = entry
-            .valueArgumentList
-            ?.getByNameOrIndex(0, "scope")
-            ?.text
-            ?.replace(".+[=]+".toRegex(), "") // remove named arguments
-            ?.replace("::class", "")
-            ?.trim()
-
-          if (entryText != null) {
-            scopeArguments.add(entryText)
-          }
-        }
-      }
-
-      ktFile.accept(visitor)
-
-      return scopeArguments
     }
   }
 }
 
 val ProjectContext.anvilScopeContributions: AnvilScopeContributions
-  get() = get(
-    AnvilScopeContributions
-  )
+  get() = get(AnvilScopeContributions)
 
-fun ProjectContext.anvilScopeContributionsForConfigurationName(
-  configurationName: ConfigurationName
-): Set<AnvilScopeName> = anvilScopeContributions[configurationName].orEmpty()
+fun ProjectContext.anvilScopeContributionsForSourceSetName(
+  sourceSetName: SourceSetName
+): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions[sourceSetName].orEmpty()

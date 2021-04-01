@@ -16,27 +16,36 @@
 package modulecheck.core.internal
 
 import modulecheck.api.*
-import modulecheck.api.context.DeclarationName
-import modulecheck.api.context.Declarations
-import modulecheck.api.context.importsForSourceSetName
-import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.anvil.AnvilScopeName
+import modulecheck.api.context.*
 import modulecheck.core.parser.android.androidResourceDeclarationsForSourceSetName
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
+  val mergedScopeNames = anvilScopeMerges
+    .values
+    .flatMap { it.keys }
+
   val config = configurations[dependency.configurationName] ?: return false
 
   val all = config.inherited + config
 
   val depProject = dependency.project
 
-  return all.any { usesInConfig(it, depProject) }
+  return all.any { usesInConfig(mergedScopeNames, it, depProject) }
 }
 
-fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
-  val dependencyDeclarations = depProject.allDependencyDeclarationsForConfig(config)
+fun Project2.usesInConfig(
+  mergedScopeNames: List<AnvilScopeName>,
+  config: Config,
+  projectDependency: Project2
+): Boolean {
+  val contributions = projectDependency
+    .anvilScopeContributionsForSourceSetName(SourceSetName.MAIN)
 
-  val javaIsUsed = dependencyDeclarations
-    .any { declaration ->
+  val dependencyDeclarations = projectDependency.allDependencyDeclarationsForConfig(config)
+
+  val javaIsUsed = mergedScopeNames.any { contributions.containsKey(it) } ||
+    dependencyDeclarations.any { declaration ->
 
       declaration in importsForSourceSetName(config.name.toSourceSetName()) ||
         declaration in possibleReferencesForSourceSetName(config.name.toSourceSetName())
@@ -50,7 +59,7 @@ fun Project2.usesInConfig(config: Config, depProject: Project2): Boolean {
     possibleReferencesForSourceSetName(config.name.toSourceSetName())
       .filter { it.startsWith("R.") }
 
-  val dependencyAsAndroid = depProject as? AndroidProject2 ?: return false
+  val dependencyAsAndroid = projectDependency as? AndroidProject2 ?: return false
 
   val resourcesAreUsed = dependencyAsAndroid
     .androidResourceDeclarationsForSourceSetName(config.name.toSourceSetName())

@@ -18,6 +18,7 @@ package modulecheck.testing
 import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
 import modulecheck.api.*
+import modulecheck.api.anvil.AnvilGradlePlugin
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo

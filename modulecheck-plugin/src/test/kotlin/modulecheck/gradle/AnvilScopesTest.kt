@@ -149,7 +149,7 @@ class AnvilScopesTest : BaseTest() {
           addFileSpec(
             FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
               .addType(
-                TypeSpec.classBuilder(lib2Component.simpleName)
+                TypeSpec.interfaceBuilder(lib2Component.simpleName)
                   .addAnnotation(
                     AnnotationSpec
                       .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesBinding"))

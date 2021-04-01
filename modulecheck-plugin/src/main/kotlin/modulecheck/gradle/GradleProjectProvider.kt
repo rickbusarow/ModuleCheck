@@ -21,6 +21,7 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.api.*
+import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.core.parser.android.AndroidManifestParser
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.existingFiles

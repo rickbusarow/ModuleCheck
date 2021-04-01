@@ -15,6 +15,7 @@
 
 package modulecheck.api
 
+import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.api.context.*
 import net.swiftzer.semver.SemVer
 import java.io.File
@@ -104,8 +105,3 @@ interface AndroidProject2 : Project2 {
   val resourceFiles: Set<File>
   val androidPackageOrNull: String?
 }
-
-data class AnvilGradlePlugin(
-  val version: SemVer,
-  val generateDaggerFactories: Boolean
-)

@@ -19,8 +19,8 @@ import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.ProjectContext
-import modulecheck.api.context.anvilScopeContributionsForConfigurationName
-import modulecheck.api.context.anvilScopeMergesForConfigurationName
+import modulecheck.api.context.anvilScopeContributionsForSourceSetName
+import modulecheck.api.context.anvilScopeMergesForSourceSetName
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import java.io.File
@@ -40,7 +40,7 @@ data class UnusedDependency(
 data class UnusedDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key
@@ -94,7 +94,7 @@ data class UnusedDependencies(
 
       return configurations
         .map { (configurationName, _) ->
-          val merged = anvilScopeMergesForConfigurationName(configurationName)
+          val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
 
           val neededForScopeInConfig = projectDependencies
             .value[configurationName]
@@ -103,10 +103,10 @@ data class UnusedDependencies(
 
               val contributed = cpd
                 .project
-                .anvilScopeContributionsForConfigurationName(cpd.configurationName)
+                .anvilScopeContributionsForSourceSetName(cpd.configurationName.toSourceSetName())
 
               contributed.any { cont ->
-                cont in merged
+                cont.key in merged.keys
               }
             }
             .map { it.project }
