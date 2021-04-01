@@ -221,7 +221,6 @@ class UnusedKaptTest : BaseTest() {
         }
       )
     }
-      // .writeIn(File("FFF").toPath())
       .writeIn(testProjectDir.toPath())
 
     build("moduleCheckUnusedKapt").shouldSucceed()

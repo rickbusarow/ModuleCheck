@@ -19,6 +19,8 @@ import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Project2
 import modulecheck.api.context.ProjectContext
+import modulecheck.api.context.anvilScopeContributionsForSourceSetName
+import modulecheck.api.context.anvilScopeMergesForSourceSetName
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import java.io.File
@@ -45,16 +47,22 @@ data class UnusedDependencies(
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override operator fun invoke(project: Project2): UnusedDependencies {
+      val neededForScopes = project.anvilScopeMap()
+
       val unusedHere = project
         .configurations
         .values
         .asSequence()
+        .filterNot { it.name.value.contains("detekt", true) }
         .filterNot { it.name.value.contains("kapt", true) }
         .flatMap { config ->
           project
             .projectDependencies
             .value[config.name]
             .orEmpty()
+        }
+        .filterNot { cpd ->
+          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
         }
         .filterNot { cpd ->
           // test configurations have the main source project as a dependency.
@@ -77,6 +85,35 @@ data class UnusedDependencies(
         .mapValues { it.value.toSet() }
 
       return UnusedDependencies(ConcurrentHashMap(grouped))
+    }
+
+    private fun Project2.anvilScopeMap(): Map<ConfigurationName, List<Project2>> {
+      if (anvilGradlePlugin == null) {
+        return mapOf()
+      }
+
+      return configurations
+        .map { (configurationName, _) ->
+          val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
+
+          val neededForScopeInConfig = projectDependencies
+            .value[configurationName]
+            .orEmpty()
+            .filter { cpd ->
+
+              val contributed = cpd
+                .project
+                .anvilScopeContributionsForSourceSetName(cpd.configurationName.toSourceSetName())
+
+              contributed.any { cont ->
+                cont.key in merged.keys
+              }
+            }
+            .map { it.project }
+
+          configurationName to neededForScopeInConfig
+        }
+        .toMap()
     }
   }
 }

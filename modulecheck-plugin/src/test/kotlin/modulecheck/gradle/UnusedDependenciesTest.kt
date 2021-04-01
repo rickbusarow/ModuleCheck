@@ -43,7 +43,9 @@ class UnusedDependenciesTest : BaseTest() {
     .addPlugin("id(\"com.rickbusarow.module-check\")")
     .buildScript()
 
-  val jvmSub1 = jvmSubProject("lib-1", ClassName("com.example.lib1", "Lib1Class"))
+  private val lib1ClassName = ClassName("com.example.lib1", "Lib1Class")
+
+  val jvmSub1 = jvmSubProject("lib-1", lib1ClassName)
   val jvmSub2 = jvmSubProject("lib-2", ClassName("com.example.lib2", "Lib2Class"))
   val jvmSub3 = jvmSubProject("lib-3", ClassName("com.example.lib3", "Lib3Class"))
 
@@ -176,6 +178,57 @@ class UnusedDependenciesTest : BaseTest() {
   }
 
   @Test
+  fun `androidTestImplementation used in android test should not be unused`() {
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          android = true
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          addProjectDependency("androidTestImplementation", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/androidTest/java")) {
+          addFileSpec(
+            FileSpec.builder("com.example.app", "MyTest")
+              .addType(
+                TypeSpec.classBuilder("MyTest")
+                  .primaryConstructor(
+                    FunSpec.constructorBuilder()
+                      .addParameter("lib1Class", lib1ClassName)
+                      .build()
+                  )
+                  .build()
+              )
+              .build()
+          )
+        }
+      )
+    }
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubprojects(jvmSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `module with a custom view used in a layout subject module should not be unused`() {
     val activity_main_xml = XmlFile(
       "activity_main.xml",
@@ -222,7 +275,16 @@ class UnusedDependenciesTest : BaseTest() {
             ProjectSrcSpec(Path.of("src/main/java")) {
               addFileSpec(
                 FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(TypeSpec.classBuilder("Lib1View").build())
+                  .addType(
+                    TypeSpec.classBuilder("Lib1View")
+                      .addAnnotation(
+                        AnnotationSpec
+                          .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
+                          .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
+                          .build()
+                      )
+                      .build()
+                  )
                   .build()
               )
             }

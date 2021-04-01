@@ -16,9 +16,7 @@
 package modulecheck.core.context
 
 import modulecheck.api.*
-import modulecheck.api.context.Declarations
-import modulecheck.api.context.ProjectContext
-import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.api.context.*
 import modulecheck.api.files.KotlinFile
 
 data class MustBeApi(
@@ -31,6 +29,22 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
+      val mainDependencies = project.allPublicClassPathDependencyDeclarations()
+
+      val mergedScopeNames = project
+        .anvilScopeMerges
+        .values
+        .flatMap { it.keys }
+
+      val scopeContributingProjects = mainDependencies
+        .filter { (_, projectDependency) ->
+
+          val contributions =
+            projectDependency.anvilScopeContributionsForSourceSetName(SourceSetName.MAIN)
+
+          mergedScopeNames.any { contributions.containsKey(it) }
+        }
+
       val declarationsInProject = project[Declarations][SourceSetName.MAIN]
         .orEmpty()
 
@@ -44,12 +58,10 @@ data class MustBeApi(
             .filterNot { it in declarationsInProject }
         }.toSet()
 
-      val api = project
-        .projectDependencies
-        .value
-        .main()
-        .filterNot {
-          it in project.projectDependencies
+      val api = mainDependencies
+        .plus(scopeContributingProjects)
+        .filterNot { cpd ->
+          cpd in project.projectDependencies
             .value[ConfigurationName.api]
             .orEmpty()
         }

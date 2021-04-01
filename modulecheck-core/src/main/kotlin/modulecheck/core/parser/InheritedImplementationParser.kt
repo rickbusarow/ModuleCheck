@@ -49,7 +49,7 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
             )
           )
             ?: project.sourceOf(
-              ConfiguredProjectDependency("implementation".asConfigurationName(), overshot.project)
+              ConfiguredProjectDependency(ConfigurationName.implementation, overshot.project)
             )
         val sourceConfig = project
           .projectDependencies
@@ -67,15 +67,16 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
           from = source
         )
       }
+      .filterNot { it.dependencyPath in mainDependenciesPaths }
       .groupBy { it.configurationName }
       .mapValues { it.value.toMutableSet() }
 
     return Parsed(
       grouped.getOrDefault("androidTest".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault("api".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault("compileOnly".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault("implementation".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault("runtimeOnly".asConfigurationName(), mutableSetOf()),
+      grouped.getOrDefault(ConfigurationName.api, mutableSetOf()),
+      grouped.getOrDefault(ConfigurationName.compileOnly, mutableSetOf()),
+      grouped.getOrDefault(ConfigurationName.implementation, mutableSetOf()),
+      grouped.getOrDefault(ConfigurationName.runtimeOnly, mutableSetOf()),
       grouped.getOrDefault("testApi".asConfigurationName(), mutableSetOf()),
       grouped.getOrDefault("testImplementation".asConfigurationName(), mutableSetOf())
     )
