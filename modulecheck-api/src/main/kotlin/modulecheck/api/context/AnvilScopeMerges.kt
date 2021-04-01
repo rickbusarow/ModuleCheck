@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentMap
 data class AnvilScopeMerges(
   internal val delegate: ConcurrentHashMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
 ) : ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeMerges>
     get() = Key
