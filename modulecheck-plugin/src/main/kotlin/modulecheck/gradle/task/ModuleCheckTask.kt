@@ -79,9 +79,7 @@ abstract class ModuleCheckTask :
     @Suppress("MagicNumber")
     val secondsDouble = timeMillis / 1000.0
 
-    if (data.isEmpty()) {
-      logger.printSuccess("ModuleCheck found 0 issues in $secondsDouble seconds\n")
-    } else {
+    if (data.isNotEmpty()) {
       logger.printFailureHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
     }
 
