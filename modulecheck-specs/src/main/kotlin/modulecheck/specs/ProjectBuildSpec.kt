@@ -19,7 +19,8 @@ import java.nio.file.Path
 
 public val DEFAULT_KOTLIN_VERSION: String =
   System.getProperty("modulecheck.kotlinVersion", "1.5.0-M2")
-public val DEFAULT_AGP_VERSION: String = System.getProperty("modulecheck.agpVersion", "4.1.2")
+public val DEFAULT_AGP_VERSION: String =
+  System.getProperty("modulecheck.agpVersion", "7.0.0-alpha12")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
