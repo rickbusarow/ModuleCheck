@@ -17,11 +17,11 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
+import modulecheck.api.SourceSetName
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.api.toSourceSetName
 import modulecheck.core.rule.ModuleCheckRule
 import net.swiftzer.semver.SemVer
 import java.io.File
@@ -71,13 +71,16 @@ class DisableViewBindingRule(
         val reference = "$basePackage.databinding.$generated"
 
         val usedInProject = project
-          .importsForSourceSetName("main".toSourceSetName())
+          .importsForSourceSetName(SourceSetName.MAIN)
           .contains(reference)
 
         usedInProject || dependents
           .any { dep ->
+
             dep
-              .possibleReferencesForSourceSetName("main".toSourceSetName())
+              .importsForSourceSetName(SourceSetName.MAIN)
+              .contains(reference) || dep
+              .possibleReferencesForSourceSetName(SourceSetName.MAIN)
               .contains(reference)
           }
       }

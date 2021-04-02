@@ -38,7 +38,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
     ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
-          addInclude("app")
+          addInclude("lib1")
         }
       )
       addBuildSpec(
@@ -54,7 +54,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }
       )
       addSubproject(
-        ProjectSpec("app") {
+        ProjectSpec("lib1") {
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("""id("com.android.library")""")
@@ -68,11 +68,112 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
   }
 
   @Nested
+  inner class `viewBinding generation is used in another module` {
+
+    val bindingClassName = ClassName("com.example.lib1.databinding", "ActivityMainBinding")
+    val bindingProperty = PropertySpec.builder("binding", bindingClassName).build()
+    val myLib2File = FileSpec.builder("com.example.lib2", "MyLib2")
+      .addProperty(bindingProperty)
+      .build()
+    val activity_main_xml = XmlFile(
+      "activity_main.xml",
+      """<?xml version="1.0" encoding="utf-8"?>
+                |<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                |  android:id="@+id/fragment_container"
+                |  android:layout_width="match_parent"
+                |  android:layout_height="match_parent" />
+                |
+                """.trimMargin()
+    )
+
+    @Test
+    fun `scoped and then dot qualified in another module should not be changed`() {
+      project.edit {
+        projectSettingsSpec?.edit {
+          addInclude("lib2")
+        }
+        subprojects.first().edit {
+          projectBuildSpec!!.edit {
+            addBlock(
+              """android {
+              |  buildFeatures.viewBinding = true
+              |}
+              """.trimMargin()
+            )
+          }
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/res/layout")) {
+              addXmlFile(activity_main_xml)
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main")) {
+              addXmlFile(
+                XmlFile(
+                  "AndroidManifest.xml",
+                  """<manifest package="com.example.lib1" />
+                """.trimMargin()
+                )
+              )
+            }
+          )
+        }
+        addSubproject(
+          ProjectSpec("lib2") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addFileSpec(myLib2File)
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("""id("com.android.library")""")
+                addPlugin("kotlin(\"android\")")
+                android = true
+                addProjectDependency("api", "lib1")
+              }
+            )
+          }
+        )
+      }.writeIn(testProjectDir.toPath())
+
+      build("moduleCheckDisableViewBinding").shouldSucceed()
+      File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
+        |  id("com.android.library")
+        |  kotlin("android")
+        |}
+        |
+        |android {
+        |  compileSdkVersion(30)
+        |
+        |  defaultConfig {
+        |    minSdkVersion(23)
+        |    targetSdkVersion(30)
+        |    versionCode = 1
+        |    versionName = "1.0"
+        |  }
+        |
+        |  buildTypes {
+        |    getByName("release") {
+        |      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        |    }
+        |  }
+        |}
+        |
+        |android {
+        |  buildFeatures.viewBinding = true
+        |}
+        |
+        |""".trimMargin()
+    }
+  }
+
+  @Nested
   inner class `viewBinding generation is used` {
 
-    val bindingClassName = ClassName("com.example.app.databinding", "ActivityMainBinding")
+    val bindingClassName = ClassName("com.example.lib1.databinding", "ActivityMainBinding")
     val bindingProperty = PropertySpec.builder("binding", bindingClassName).build()
-    val myAppFile = FileSpec.builder("com.example.app", "MyApp")
+    val mylib1File = FileSpec.builder("com.example.lib1", "Mylib1")
       .addProperty(bindingProperty)
       .build()
     val activity_main_xml = XmlFile(
@@ -92,7 +193,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         subprojects.first().edit {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(myAppFile)
+              addFileSpec(mylib1File)
             }
           )
           addSrcSpec(
@@ -105,7 +206,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
               addXmlFile(
                 XmlFile(
                   "AndroidManifest.xml",
-                  """<manifest package="com.example.app" />
+                  """<manifest package="com.example.lib1" />
                 """.trimMargin()
                 )
               )
@@ -131,7 +232,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       }.writeIn(testProjectDir.toPath())
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+      File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -174,7 +275,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       }.writeIn(testProjectDir.toPath())
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+      File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -219,7 +320,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       }.writeIn(testProjectDir.toPath())
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+      File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -266,7 +367,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
       }.writeIn(testProjectDir.toPath())
 
       build("moduleCheckDisableViewBinding").shouldSucceed()
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+      File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -343,7 +444,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
-        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -386,7 +487,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
-        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -431,7 +532,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
-        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -478,7 +579,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         build("moduleCheckDisableViewBinding").shouldSucceed()
-        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
         |}
@@ -541,7 +642,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
@@ -559,7 +660,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
@@ -581,7 +682,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "app/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
@@ -601,7 +702,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "app/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (7, 0):  unused ViewBinding generation:".fixPath()
         }
       }
     }
