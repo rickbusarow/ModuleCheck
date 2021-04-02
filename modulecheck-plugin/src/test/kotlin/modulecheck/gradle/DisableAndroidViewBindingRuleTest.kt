@@ -87,7 +87,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
 
     @Test
     fun `scoped and then dot qualified in another module should not be changed`() {
-
       project.edit {
         projectSettingsSpec?.edit {
           addInclude("lib2")
