@@ -30,7 +30,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
 
-val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "7.0-rc-1")
+val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "7.0-rc-2")
 
 abstract class BaseTest : HermitJUnit5() {
 
