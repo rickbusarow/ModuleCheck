@@ -74,7 +74,6 @@ class DisableViewBindingRule(
           .importsForSourceSetName(SourceSetName.MAIN)
           .contains(reference)
 
-
         usedInProject || dependents
           .any { dep ->
 
