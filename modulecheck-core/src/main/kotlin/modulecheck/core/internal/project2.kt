@@ -35,11 +35,11 @@ fun Project2.psiElementIn(
     .parse(kotlinBuildFile)
     ?: return null
 
-  val p = ProjectDependencyDeclarationVisitor(configuration.value, path)
+  val visitor = ProjectDependencyDeclarationVisitor(configuration.value, path)
 
   return result.elements
     .firstOrNull { element ->
-      p.find(element.psiElement as KtCallExpression)
+      visitor.find(element.psiElement as KtCallExpression)
     }
 }
 

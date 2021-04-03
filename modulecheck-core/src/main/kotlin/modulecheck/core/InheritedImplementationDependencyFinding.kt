@@ -47,7 +47,9 @@ data class InheritedImplementationDependencyFinding(
     val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
-      it.psiElement.text.contains("\"$fromPath\"")
+      val text = it.psiElement.text
+
+      text.contains("\"$fromPath\"") && text.contains(configurationName.value)
     }
       ?.toString() ?: return false
 
