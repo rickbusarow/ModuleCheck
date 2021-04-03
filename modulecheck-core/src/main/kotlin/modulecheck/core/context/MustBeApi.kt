@@ -44,6 +44,7 @@ data class MustBeApi(
 
           mergedScopeNames.any { contributions.containsKey(it) }
         }
+        .filterNot { it.configurationName == ConfigurationName.api }
 
       val declarationsInProject = project[Declarations][SourceSetName.MAIN]
         .orEmpty()
@@ -59,6 +60,8 @@ data class MustBeApi(
         }.toSet()
 
       val api = mainDependencies
+        .asSequence()
+        .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
           cpd in project.projectDependencies
@@ -70,7 +73,8 @@ data class MustBeApi(
             .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
             .any { declared ->
-              declared in noIdeaWhereTheyComeFrom
+              declared in noIdeaWhereTheyComeFrom ||
+                declared in project.imports[SourceSetName.MAIN].orEmpty()
             }
         }
         .toSet()

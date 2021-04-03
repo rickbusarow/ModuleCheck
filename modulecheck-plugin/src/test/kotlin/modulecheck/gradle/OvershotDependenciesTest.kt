@@ -192,7 +192,7 @@ class OvershotDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
+                FileSpec.builder("com.example.app", "MyApp")
                   .addImport("com.example.lib1", "Lib1Class")
                   .addImport("com.example.lib2", "Lib2Class")
                   .build()
@@ -263,7 +263,7 @@ class OvershotDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
+                FileSpec.builder("com.example.app", "MyApp")
                   .addImport("com.example.lib3", "Lib3Class")
                   .build()
               )
@@ -309,7 +309,7 @@ class OvershotDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
+                FileSpec.builder("com.example.app", "MyApp")
                   .addImport("com.example.lib1", "Lib1Class")
                   .addImport("com.example.lib2", "Lib2Class")
                   .build()

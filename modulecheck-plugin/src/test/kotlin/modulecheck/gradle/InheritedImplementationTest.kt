@@ -18,7 +18,6 @@ package modulecheck.gradle
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.PropertySpec
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Nested
@@ -59,6 +58,101 @@ class InheritedImplementationTest : BaseTest() {
 
     @Nested
     inner class `with auto-correct` {
+      @Test
+      fun `androidTestImplementation should add inherited projects and succeed`() {
+        val appProject = ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("""id("com.android.library")""")
+              android = true
+              addProjectDependency("androidTestImplementation", jvmSub4)
+              addProjectDependency("api", jvmSub4)
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/java")) {
+              addFileSpec(
+                FileSpec.builder("com.example.app", "MyApp")
+                  .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
+                  .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
+                  .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
+                  .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
+                  .build()
+              )
+            }
+          )
+        }
+
+        jvmSub4.edit {
+          projectBuildSpec!!.edit {
+            addProjectDependency("api", jvmSub3)
+          }
+        }
+        jvmSub3.edit {
+          projectBuildSpec!!.edit {
+            addProjectDependency("api", jvmSub2)
+          }
+        }
+        jvmSub2.edit {
+          projectBuildSpec!!.edit {
+            addProjectDependency("api", jvmSub1)
+          }
+        }
+        ProjectSpec("project") {
+          applyEach(projects) { project ->
+            addSubproject(project)
+          }
+          addSubproject(appProject)
+          addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
+          addSettingsSpec(projectSettings.build())
+          addBuildSpec(
+            projectBuild
+              .addBlock(
+                """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+              ).build()
+          )
+        }
+          .writeIn(testProjectDir.toPath())
+
+        build(
+          "moduleCheckInheritedImplementation",
+          "moduleCheckSortDependencies"
+        ).shouldSucceed()
+
+        File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  id("com.android.library")
+        |}
+        |
+        |android {
+        |  compileSdkVersion(30)
+        |
+        |  defaultConfig {
+        |    minSdkVersion(23)
+        |    targetSdkVersion(30)
+        |    versionCode = 1
+        |    versionName = "1.0"
+        |  }
+        |
+        |  buildTypes {
+        |    getByName("release") {
+        |      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        |    }
+        |  }
+        |}
+        |
+        |dependencies {
+        |  androidTestImplementation(project(path = ":lib-4"))
+        |
+        |  api(project(path = ":lib-1"))
+        |  api(project(path = ":lib-2"))
+        |  api(project(path = ":lib-3"))
+        |  api(project(path = ":lib-4"))
+        |}
+        |""".trimMargin()
+      }
 
       @Test
       fun `should add inherited projects and succeed`() {
@@ -72,7 +166,7 @@ class InheritedImplementationTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
+                FileSpec.builder("com.example.app", "MyApp")
                   .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
                   .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
                   .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
@@ -151,7 +245,7 @@ class InheritedImplementationTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
               addFileSpec(
-                FileSpec.builder("com.example.app", "MyApp.kt")
+                FileSpec.builder("com.example.app", "MyApp")
                   .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
                   .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
                   .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
