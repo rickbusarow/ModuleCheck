@@ -37,7 +37,6 @@ interface SortSettings {
 }
 
 interface ChecksSettings {
-  var overshotDependency: Boolean
   var redundantDependency: Boolean
   var unusedDependency: Boolean
   var mustBeApi: Boolean

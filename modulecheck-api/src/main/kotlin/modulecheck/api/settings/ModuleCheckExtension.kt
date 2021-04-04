@@ -17,7 +17,6 @@ package modulecheck.api.settings
 
 @Suppress("UnstableApiUsage")
 class ChecksExtension : ChecksSettings {
-  override var overshotDependency: Boolean = true
   override var redundantDependency: Boolean = false
   override var unusedDependency: Boolean = true
   override var mustBeApi: Boolean = true

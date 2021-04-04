@@ -17,7 +17,6 @@ package modulecheck.core.rule
 
 import modulecheck.api.Fixable
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.overshot.OvershotRule
 import modulecheck.core.rule.android.DisableAndroidResourcesRule
 import modulecheck.core.rule.android.DisableViewBindingRule
 import modulecheck.core.rule.sort.SortDependenciesRule
@@ -37,7 +36,6 @@ class ModuleCheckRuleFactory : RuleFactory {
       { DisableViewBindingRule(it) },
       { InheritedImplementationRule(it) },
       { MustBeApiRule(it) },
-      { OvershotRule(it) },
       { RedundantRule(it) },
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
