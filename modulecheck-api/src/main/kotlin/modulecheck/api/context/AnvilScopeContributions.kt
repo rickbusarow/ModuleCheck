@@ -18,12 +18,10 @@ package modulecheck.api.context
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
 import modulecheck.api.anvil.AnvilScopeName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class AnvilScopeContributions(
-  internal val delegate: ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
-) : ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
+  internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
+) : Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
@@ -31,18 +29,10 @@ data class AnvilScopeContributions(
 
   companion object Key : ProjectContext.Key<AnvilScopeContributions> {
 
-    private val annotations = listOf(
-      "com.squareup.anvil.annotations.ContributesTo",
-      "com.squareup.anvil.annotations.ContributesBinding",
-      "com.squareup.anvil.annotations.ContributesMultibinding"
-    )
-
     override operator fun invoke(project: Project2): AnvilScopeContributions {
-      if (project.anvilGradlePlugin == null) return AnvilScopeContributions(ConcurrentHashMap())
+      val map = project.anvilGraph.scopeContributions
 
-      val map = project.parseAnvilScopes(annotations)
-
-      return AnvilScopeContributions(ConcurrentHashMap(map))
+      return AnvilScopeContributions(map)
     }
   }
 }

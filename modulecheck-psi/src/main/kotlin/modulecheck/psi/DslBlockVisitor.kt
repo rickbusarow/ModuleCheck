@@ -19,9 +19,9 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtBlockExpression
-import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
+import org.jetbrains.kotlin.psi.callExpressionRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 
 class DslBlockVisitor(private val blockName: String) {
@@ -61,13 +61,11 @@ class DslBlockVisitor(private val blockName: String) {
       }
     }
 
-    val callVisitor = object : KtTreeVisitorVoid() {
-      override fun visitCallExpression(expression: KtCallExpression) {
-        if (expression.text.startsWith("$blockName {")) {
-          expression.findDescendantOfType<KtBlockExpression>()?.let {
-            blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
-            blockVisitor.visitBlockExpression(it)
-          }
+    val callVisitor = callExpressionRecursiveVisitor { expression ->
+      if (expression.text.startsWith("$blockName {")) {
+        expression.findDescendantOfType<KtBlockExpression>()?.let {
+          blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
+          blockVisitor.visitBlockExpression(it)
         }
       }
     }
