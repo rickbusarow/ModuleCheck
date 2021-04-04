@@ -53,27 +53,34 @@ fun Project2.isAndroid(): Boolean {
 fun Project2.allPublicClassPathDependencyDeclarations(
   includePrivate: Boolean = true
 ): Set<ConfiguredProjectDependency> {
-  val configurationName = if (includePrivate) {
+  val privateDependencies = if (includePrivate) {
     projectDependencies
-      .value[ConfigurationName.implementation].orEmpty()
+      .value[ConfigurationName.implementation].orEmpty() +
+      projectDependencies
+        .value[ConfigurationName.compile].orEmpty() +
+      projectDependencies
+        .value[ConfigurationName.compileOnly].orEmpty() +
+      projectDependencies
+        .value[ConfigurationName.runtime].orEmpty() +
+      projectDependencies
+        .value[ConfigurationName.runtimeOnly].orEmpty()
   } else {
     emptyList()
   }
 
-  val sub = projectDependencies
+  val combined = privateDependencies + projectDependencies
     .value[ConfigurationName.api]
     .orEmpty()
-    .plus(configurationName)
-    .flatMap {
-      it
+
+  val inherited = combined
+    .flatMap { cpd ->
+      cpd
         .project
         .allPublicClassPathDependencyDeclarations(false)
     }
 
-  return projectDependencies
-    .value[ConfigurationName.api]
-    .orEmpty()
-    .plus(sub)
+  return inherited
+    .plus(combined)
     .toSet()
 }
 

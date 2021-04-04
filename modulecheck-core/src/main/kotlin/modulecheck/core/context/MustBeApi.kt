@@ -29,7 +29,8 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
-      val mainDependencies = project.allPublicClassPathDependencyDeclarations()
+      val mainDependencies = project
+        .allPublicClassPathDependencyDeclarations()
 
       val mergedScopeNames = project
         .anvilScopeMerges
@@ -49,7 +50,7 @@ data class MustBeApi(
       val declarationsInProject = project[Declarations][SourceSetName.MAIN]
         .orEmpty()
 
-      val noIdeaWhereTheyComeFrom = project
+      val inheritedImports = project
         .jvmFilesForSourceSetName(SourceSetName.MAIN)
         .filterIsInstance<KotlinFile>()
         .flatMap { kotlinFile ->
@@ -61,19 +62,21 @@ data class MustBeApi(
 
       val api = mainDependencies
         .asSequence()
-        .filterNot { it.configurationName == ConfigurationName.api }
+        // .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
+
           cpd in project.projectDependencies
             .value[ConfigurationName.api]
             .orEmpty()
         }
-        .filter { cpp ->
-          cpp
+        .filter { cpd ->
+          cpd
             .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
             .any { declared ->
-              declared in noIdeaWhereTheyComeFrom ||
+
+              declared in inheritedImports ||
                 declared in project.imports[SourceSetName.MAIN].orEmpty()
             }
         }
