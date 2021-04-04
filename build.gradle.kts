@@ -51,6 +51,8 @@ allprojects {
     maven("https://jitpack.io")
     jcenter {
       content {
+        // needed for Detekt
+        includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
         // https://youtrack.jetbrains.com/issue/IDEA-261387
         includeModule("org.jetbrains.trove4j", "trove4j")
       }
