@@ -89,6 +89,7 @@ data class MustBeApi(
             .firstOrNull()
           InheritedDependencyWithSource(cpd, source)
         }
+        .distinctBy { it.configuredProjectDependency }
         .toSet()
 
       return MustBeApi(api)
