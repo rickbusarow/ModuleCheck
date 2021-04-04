@@ -144,7 +144,6 @@ internal fun Project2.declarationsForScopeName(
           kotlinFile
             .getScopeArguments(annotations)
             .forEach { rawAnvilAnnotatedType ->
-              rawAnvilAnnotatedType.anvilScopeNameEntry
 
               val scopeName = getAnvilScopeName(
                 scopeNameEntry = rawAnvilAnnotatedType.anvilScopeNameEntry,
