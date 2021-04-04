@@ -22,18 +22,13 @@ plugins {
 repositories {
   mavenCentral()
   google()
-  jcenter()
 }
 
-kotlinDslPluginOptions {
-  experimentalWarning.set(false)
-}
+val kotlinVersion = "1.4.32"
 
 dependencies {
 
   compileOnly(gradleApi())
-
-  val kotlinVersion = "1.4.31"
 
   implementation(kotlin("gradle-plugin", version = kotlinVersion))
   implementation(kotlin("stdlib", version = kotlinVersion))
@@ -42,11 +37,23 @@ dependencies {
   implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
   implementation(kotlin("reflect", version = kotlinVersion))
 
-  implementation("com.android.tools.build:gradle:4.1.2") // update Dependencies.kt as well
-  implementation("com.squareup:kotlinpoet:1.7.2") // update Dependencies.kt as well
-  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion") // update Dependencies.kt as well
-  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion") // update Dependencies.kt as well
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2") // update Dependencies.kt as well
+  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion")
+}
+
+configurations.all {
+  resolutionStrategy {
+
+    eachDependency {
+      when {
+        requested.name.startsWith("kotlin-stdlib") -> {
+          useTarget(
+            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
+          )
+        }
+        requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
+      }
+    }
+  }
 }
 
 tasks.withType<KotlinCompile>()

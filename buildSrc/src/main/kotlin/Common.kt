@@ -36,7 +36,17 @@ fun Project.common() {
 
   configurations.all {
     resolutionStrategy {
-      force("org.jetbrains.kotlin:kotlin-reflect:1.4.31")
+
+      eachDependency {
+        when {
+          requested.name.startsWith("kotlin-stdlib") -> {
+            useTarget(
+              "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
+            )
+          }
+          requested.group == "org.jetbrains.kotlin" -> useVersion("1.4.32")
+        }
+      }
     }
   }
 

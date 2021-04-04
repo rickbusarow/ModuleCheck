@@ -21,7 +21,6 @@ buildscript {
   repositories {
     mavenCentral()
     google()
-    jcenter()
     maven("https://plugins.gradle.org/m2/")
     maven("https://oss.sonatype.org/content/repositories/snapshots")
   }
@@ -50,7 +49,14 @@ allprojects {
     mavenCentral()
     maven("https://oss.sonatype.org/content/repositories/snapshots")
     maven("https://jitpack.io")
-    jcenter()
+    jcenter {
+      content {
+        // needed for Detekt
+        includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
+        // https://youtrack.jetbrains.com/issue/IDEA-261387
+        includeModule("org.jetbrains.trove4j", "trove4j")
+      }
+    }
     maven("https://s3-us-west-2.amazonaws.com/si-mobile-sdks/android/")
   }
 
