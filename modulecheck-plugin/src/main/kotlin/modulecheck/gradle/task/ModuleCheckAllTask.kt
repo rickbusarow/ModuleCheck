@@ -19,26 +19,47 @@ import modulecheck.api.Finding
 import modulecheck.api.Project2
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.psi.internal.lines
 import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
+import kotlin.system.measureTimeMillis
 
 abstract class ModuleCheckAllTask @Inject constructor(
   private val rules: List<ModuleCheckRule<Finding>>
 ) : ModuleCheckTask() {
 
-  @Suppress("LongMethod", "ComplexMethod")
   override fun List<Project2>.getFindings(): List<Finding> {
     val props = ChecksSettings::class.declaredMemberProperties
       .associate { it.name to it.get(settings.checks) as Boolean }
 
+    val times = mutableMapOf<String, Long>()
+
     val findings = flatMap { proj ->
       rules
         .filter { props[it.id.decapitalize()] ?: false }
+        .reversed()
         .map { rule ->
-          rule.check(proj)
+
+          val old = times.getOrPut(rule.id) { 0 }
+
+          var findings: List<Finding>
+          val time = measureTimeMillis {
+            findings = rule.check(proj)
+          }
+
+          times[rule.id] = old + time
+
+          findings
         }
     }
       .flatten()
+
+    println(
+      """ ----------------------------------------------------- times
+      |
+      |${times.entries.lines()}
+    """.trimMargin()
+    )
 
     return findings
   }
