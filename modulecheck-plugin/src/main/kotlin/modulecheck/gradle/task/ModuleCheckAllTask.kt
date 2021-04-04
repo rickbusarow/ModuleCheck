@@ -19,7 +19,6 @@ import modulecheck.api.Finding
 import modulecheck.api.Project2
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.psi.internal.lines
 import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.system.measureTimeMillis
@@ -53,13 +52,6 @@ abstract class ModuleCheckAllTask @Inject constructor(
         }
     }
       .flatten()
-
-    println(
-      """ ----------------------------------------------------- times
-      |
-      |${times.entries.lines()}
-    """.trimMargin()
-    )
 
     return findings
   }

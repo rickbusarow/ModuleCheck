@@ -18,12 +18,10 @@ package modulecheck.api.context
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
 import modulecheck.api.anvil.AnvilScopeName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class AnvilScopeMerges(
-  internal val delegate: ConcurrentHashMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
-) : ConcurrentMap<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
+  internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
+) : Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
     ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeMerges>
@@ -31,17 +29,10 @@ data class AnvilScopeMerges(
 
   companion object Key : ProjectContext.Key<AnvilScopeMerges> {
 
-    private val annotations = listOf(
-      "com.squareup.anvil.annotations.MergeComponent",
-      "com.squareup.anvil.annotations.MergeSubcomponent"
-    )
-
     override operator fun invoke(project: Project2): AnvilScopeMerges {
-      if (project.anvilGradlePlugin == null) return AnvilScopeMerges(ConcurrentHashMap())
+      val map = project.anvilGraph.scopeMerges
 
-      val map = project.parseAnvilScopes(annotations)
-
-      return AnvilScopeMerges(ConcurrentHashMap(map))
+      return AnvilScopeMerges(map)
     }
   }
 }
