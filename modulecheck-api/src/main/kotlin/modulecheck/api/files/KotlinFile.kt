@@ -95,14 +95,6 @@ class KotlinFile(
       .also { ktFile.accept(it) }
   }
 
-  private val namedReferences by lazy {
-
-    ktFile.accept(usedImportsVisitor)
-    usedImportsVisitor.namedReferences
-      .map { it.text }
-      .toSet()
-  }
-
   private val typeReferences by lazy {
     referenceVisitor.typeReferences
       .mapNotNull { tr ->
