@@ -20,9 +20,9 @@ import modulecheck.api.context.*
 import modulecheck.api.files.KotlinFile
 
 data class MustBeApi(
-  internal val delegate: Set<ConfiguredProjectDependency>
-) : Set<ConfiguredProjectDependency> by delegate,
-  ProjectContext.Element {
+  internal val delegate: Set<InheritedDependencyWithSource>
+) : Set<InheritedDependencyWithSource> by delegate,
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<MustBeApi>
     get() = Key
@@ -79,11 +79,26 @@ data class MustBeApi(
                 declared in project.imports[SourceSetName.MAIN].orEmpty()
             }
         }
+        .map { cpd ->
+          val source = ConfigurationName
+            .main()
+            .asSequence()
+            .mapNotNull { configName ->
+              project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
+            }
+            .firstOrNull()
+          InheritedDependencyWithSource(cpd, source)
+        }
         .toSet()
 
       return MustBeApi(api)
     }
   }
 }
+
+data class InheritedDependencyWithSource(
+  val configuredProjectDependency: ConfiguredProjectDependency,
+  val source: Project2?
+)
 
 val ProjectContext.mustBeApi: MustBeApi get() = get(MustBeApi)

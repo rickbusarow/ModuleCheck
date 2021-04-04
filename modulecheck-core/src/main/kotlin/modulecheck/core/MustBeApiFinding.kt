@@ -16,17 +16,25 @@
 package modulecheck.core
 
 import modulecheck.api.ConfigurationName
+import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
+import modulecheck.core.internal.positionIn
 import java.io.File
 
 data class MustBeApiFinding(
   override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
-  override val configurationName: ConfigurationName
+  override val configurationName: ConfigurationName,
+  val source: Project2?
 ) : DependencyFinding("mustBeApi") {
 
-  override val dependencyIdentifier = dependencyProject.path
+  override val dependencyIdentifier = dependencyProject.path + " from: ${source?.path}"
+
+  override fun positionOrNull(): Position? {
+    return dependencyProject.positionIn(buildFile, configurationName)
+      ?: source?.positionIn(buildFile, configurationName)
+  }
 
   override fun fix(): Boolean = synchronized(buildFile) {
     val element = elementOrNull() ?: return false

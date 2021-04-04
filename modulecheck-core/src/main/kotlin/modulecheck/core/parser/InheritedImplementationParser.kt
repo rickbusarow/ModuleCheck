@@ -41,16 +41,13 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
       .distinct()
       .map { overshot ->
 
-        val source =
-          project.sourceOf(
-            ConfiguredProjectDependency(
-              "api".asConfigurationName(),
-              overshot.project
-            )
-          )
-            ?: project.sourceOf(
-              ConfiguredProjectDependency(ConfigurationName.implementation, overshot.project)
-            )
+        val source = ConfigurationName
+          .main()
+          .asSequence()
+          .mapNotNull { configName ->
+            project.sourceOf(ConfiguredProjectDependency(configName, overshot.project))
+          }
+          .firstOrNull()
         val sourceConfig = project
           .projectDependencies
           .value

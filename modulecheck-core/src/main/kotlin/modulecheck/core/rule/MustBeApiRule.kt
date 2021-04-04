@@ -34,8 +34,9 @@ class MustBeApiRule(
         MustBeApiFinding(
           dependentPath = project.path,
           buildFile = project.buildFile,
-          dependencyProject = it.project,
-          configurationName = it.configurationName
+          dependencyProject = it.configuredProjectDependency.project,
+          configurationName = it.configuredProjectDependency.configurationName,
+          source = it.source
         )
       }
       .distinctBy { it.positionOrNull() }
