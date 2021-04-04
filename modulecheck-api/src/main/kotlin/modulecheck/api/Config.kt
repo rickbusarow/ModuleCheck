@@ -96,6 +96,29 @@ data class ConfigurationName(val value: String) {
     private val baseConfigurationsCapitalized = baseConfigurations
       .map { it.capitalize() }
       .toSet()
+
+    fun main() = listOf(
+      compileOnlyApi,
+      api,
+      implementation,
+      compileOnly,
+      compile,
+      runtimeOnly,
+      runtime
+    )
+
+    fun private() = listOf(
+      implementation,
+      compileOnly,
+      compile,
+      runtimeOnly,
+      runtime
+    )
+
+    fun public() = listOf(
+      compileOnlyApi,
+      api
+    )
   }
 }
 

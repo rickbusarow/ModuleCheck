@@ -29,8 +29,7 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
-      val mainDependencies = project
-        .allPublicClassPathDependencyDeclarations()
+      val mainDependencies = project.publicDependencies
 
       val mergedScopeNames = project
         .anvilScopeMerges

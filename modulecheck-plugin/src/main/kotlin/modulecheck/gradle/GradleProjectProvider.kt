@@ -37,6 +37,7 @@ import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.findPlugin
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
@@ -178,9 +179,9 @@ class GradleProjectProvider(
       }
       .toSet()
 
-  private fun GradleProject.projectDependencies(): Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>> =
+  private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> =
     lazy {
-      configurations
+      val map = configurations
         .map { config ->
           config.name.asConfigurationName() to config.dependencies.withType(ProjectDependency::class.java)
             .map {
@@ -191,6 +192,7 @@ class GradleProjectProvider(
             }
         }
         .toMap()
+      ProjectDependencies(map)
     }
 
   private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention

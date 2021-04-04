@@ -23,7 +23,7 @@ import modulecheck.core.internal.uses
 object InheritedImplementationParser : Parser<InheritedImplementationDependencyFinding>() {
 
   override fun parse(project: Project2): Parsed<InheritedImplementationDependencyFinding> {
-    val inherited = project.allPublicClassPathDependencyDeclarations()
+    val inherited = project.publicDependencies
 
     val used = inherited
       .filter { project.uses(it) }
