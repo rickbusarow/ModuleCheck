@@ -66,11 +66,6 @@ interface Fixable : Finding {
           }
           .joinToString("\n")
 
-        println("----------------------------------------")
-        println("fixing --> $dependencyIdentifier")
-        println("element --> ${element.text}")
-        println("newText --> $newText")
-
         buildFile
           .writeText(text.replaceFirst(element.text, newText))
 
