@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class InheritedImplementationTest : BaseTest() {
+class InheritedDependencyTest : BaseTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
@@ -118,7 +118,7 @@ class InheritedImplementationTest : BaseTest() {
           .writeIn(testProjectDir.toPath())
 
         build(
-          "moduleCheckInheritedImplementation",
+          "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
         ).shouldSucceed()
 
@@ -212,7 +212,7 @@ class InheritedImplementationTest : BaseTest() {
           .writeIn(testProjectDir.toPath())
 
         build(
-          "moduleCheckInheritedImplementation",
+          "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
         ).shouldSucceed()
 
@@ -291,12 +291,12 @@ class InheritedImplementationTest : BaseTest() {
           .writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage(
-          "moduleCheckInheritedImplementation",
+          "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
         ) {
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedImplementation: :lib-3 from: :lib-4"
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedImplementation: :lib-2 from: :lib-4"
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedImplementation: :lib-1 from: :lib-4"
+          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-1 from: :lib-4"
+          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-2 from: :lib-4"
+          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-3 from: :lib-4"
         }
       }
     }

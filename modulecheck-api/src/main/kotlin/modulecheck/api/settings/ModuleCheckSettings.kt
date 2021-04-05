@@ -40,7 +40,7 @@ interface ChecksSettings {
   var redundantDependency: Boolean
   var unusedDependency: Boolean
   var mustBeApi: Boolean
-  var inheritedImplementation: Boolean
+  var inheritedDependency: Boolean
   var sortDependencies: Boolean
   var sortPlugins: Boolean
   var unusedKapt: Boolean

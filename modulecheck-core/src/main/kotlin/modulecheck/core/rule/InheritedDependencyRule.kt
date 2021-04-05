@@ -13,18 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser
+package modulecheck.core.rule
 
 import modulecheck.api.*
-import modulecheck.core.InheritedImplementationDependencyFinding
-import modulecheck.core.Parsed
+import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.core.InheritedDependencyFinding
+import modulecheck.core.context.mustBeApi
 import modulecheck.core.internal.uses
+import kotlin.LazyThreadSafetyMode.NONE
 
-object InheritedImplementationParser : Parser<InheritedImplementationDependencyFinding>() {
+class InheritedDependencyRule(
+  override val settings: ModuleCheckSettings
+) : ModuleCheckRule<InheritedDependencyFinding>() {
 
-  override fun parse(project: Project2): Parsed<InheritedImplementationDependencyFinding> {
+  override val id = "InheritedDependency"
+  override val description = "Finds project dependencies which are used in the current module, " +
+    "but are not actually directly declared as dependencies in the current module"
+
+  override fun check(project: Project2): List<InheritedDependencyFinding> {
     val inherited = project.publicDependencies
-
     val used = inherited
       .filter { project.uses(it) }
 
@@ -48,19 +55,28 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
             project.sourceOf(ConfiguredProjectDependency(configName, overshot.project))
           }
           .firstOrNull()
-        val sourceConfig = project
-          .projectDependencies
-          .value
-          .main()
-          .firstOrNull { it.project == source }
-          ?.configurationName ?: "api".asConfigurationName()
 
-        InheritedImplementationDependencyFinding(
+        val sourceConfig by lazy(NONE) {
+          project
+            .projectDependencies
+            .value
+            .main()
+            .firstOrNull { it.project == source?.project }
+            ?.configurationName ?: "api".asConfigurationName()
+        }
+
+        val mustBeApi = project
+          .mustBeApi
+          .any { it.configuredProjectDependency.project == overshot.project }
+
+        val newConfig = if (mustBeApi) ConfigurationName.api else sourceConfig
+
+        InheritedDependencyFinding(
           dependentPath = project.path,
           buildFile = project.buildFile,
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
-          configurationName = sourceConfig,
+          configurationName = newConfig,
           from = source
         )
       }
@@ -68,14 +84,6 @@ object InheritedImplementationParser : Parser<InheritedImplementationDependencyF
       .groupBy { it.configurationName }
       .mapValues { it.value.toMutableSet() }
 
-    return Parsed(
-      grouped.getOrDefault("androidTest".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault(ConfigurationName.api, mutableSetOf()),
-      grouped.getOrDefault(ConfigurationName.compileOnly, mutableSetOf()),
-      grouped.getOrDefault(ConfigurationName.implementation, mutableSetOf()),
-      grouped.getOrDefault(ConfigurationName.runtimeOnly, mutableSetOf()),
-      grouped.getOrDefault("testApi".asConfigurationName(), mutableSetOf()),
-      grouped.getOrDefault("testImplementation".asConfigurationName(), mutableSetOf())
-    )
+    return grouped.values.flatten()
   }
 }

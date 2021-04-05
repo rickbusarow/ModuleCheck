@@ -22,18 +22,7 @@ import modulecheck.api.Project2
 fun List<String>.positionOf(
   project: Project2,
   configurationName: ConfigurationName
-): Position? {
-  val reg =
-    """.*${configurationName.value}\(project[(]?(?:path =\s*)"${project.path}".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
-}
+): Position? = positionOf(project.path, configurationName)
 
 fun List<String>.positionOf(
   path: String,

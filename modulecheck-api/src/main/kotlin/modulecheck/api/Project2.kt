@@ -55,7 +55,7 @@ val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDepe
 fun Project2.sourceOf(
   dependencyProject: ConfiguredProjectDependency,
   apiOnly: Boolean = false
-): Project2? {
+): ConfiguredProjectDependency? {
   val toCheck = if (apiOnly) {
     projectDependencies
       .value[ConfigurationName.api]
@@ -66,11 +66,14 @@ fun Project2.sourceOf(
       .main()
   }
 
-  if (dependencyProject in toCheck) return this
+  if (dependencyProject in toCheck) return ConfiguredProjectDependency(
+    configurationName = dependencyProject.configurationName,
+    project = this
+  )
 
   return toCheck.firstOrNull {
     it == dependencyProject || it.project.sourceOf(dependencyProject, true) != null
-  }?.project
+  }
 }
 
 interface AndroidProject2 : Project2 {

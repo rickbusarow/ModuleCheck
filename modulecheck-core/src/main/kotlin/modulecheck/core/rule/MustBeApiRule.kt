@@ -39,6 +39,6 @@ class MustBeApiRule(
           source = it.source
         )
       }
-      .distinctBy { it.positionOrNull() }
+    // .distinctBy { it.dependencyProject }
   }
 }

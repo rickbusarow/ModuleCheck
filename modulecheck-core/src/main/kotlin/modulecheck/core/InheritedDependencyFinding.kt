@@ -16,31 +16,33 @@
 package modulecheck.core
 
 import modulecheck.api.ConfigurationName
+import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.internal.positionIn
 import modulecheck.psi.DslBlockVisitor
 import java.io.File
 
-data class InheritedImplementationDependencyFinding(
+data class InheritedDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: Project2?
-) : DependencyFinding("inheritedImplementation") {
+  val from: ConfiguredProjectDependency?
+) : DependencyFinding("inheritedDependency") {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
+  override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
 
   override fun positionOrNull(): Position? {
-    return from?.positionIn(buildFile, configurationName)
+    return from?.project?.positionIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
     val visitor = DslBlockVisitor("dependencies")
 
-    val fromPath = from?.path ?: return false
+    val fromPath = from?.project?.path ?: return false
+    val fromConfigName = from.configurationName.value
 
     val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
 
@@ -49,11 +51,12 @@ data class InheritedImplementationDependencyFinding(
     val match = result.elements.firstOrNull {
       val text = it.psiElement.text
 
-      text.contains("\"$fromPath\"") && text.contains(configurationName.value)
+      text.contains("\"$fromPath\"") && text.contains(fromConfigName)
     }
       ?.toString() ?: return false
 
     val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
+      .replaceFirst(fromConfigName, configurationName.value)
 
     // This won't match without .trimStart()
     val newDependencies = result.blockText.replaceFirst(

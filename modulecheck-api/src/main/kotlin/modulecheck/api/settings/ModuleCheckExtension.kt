@@ -20,7 +20,7 @@ class ChecksExtension : ChecksSettings {
   override var redundantDependency: Boolean = false
   override var unusedDependency: Boolean = true
   override var mustBeApi: Boolean = true
-  override var inheritedImplementation: Boolean = true
+  override var inheritedDependency: Boolean = true
   override var sortDependencies: Boolean = false
   override var sortPlugins: Boolean = false
   override var unusedKapt: Boolean = true

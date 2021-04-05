@@ -41,7 +41,7 @@ abstract class ContextTest : HermitJUnit5(), DynamicTests {
     projectDir: File = this@ContextTest.projectDir,
     buildFile: File = File(projectDir, "build.gradle.kts"),
     configurations: Map<ConfigurationName, Config> = emptyMap(),
-    projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>> = lazy { emptyMap() },
+    projectDependencies: Lazy<ProjectDependencies> = lazy { ProjectDependencies(emptyMap()) },
     hasKapt: Boolean = false,
     sourceSets: Map<SourceSetName, SourceSet> = emptyMap(),
     projectCache: ConcurrentHashMap<String, Project2> = this@ContextTest.projectCache,

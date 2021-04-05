@@ -80,13 +80,18 @@ data class MustBeApi(
             }
         }
         .map { cpd ->
-          val source = ConfigurationName
+          val source = project
+            .projectDependencies
+            .value
             .main()
-            .asSequence()
-            .mapNotNull { configName ->
-              project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
-            }
-            .firstOrNull()
+            .firstOrNull { it.project == cpd.project }
+            ?: ConfigurationName
+              .main()
+              .asSequence()
+              .mapNotNull { configName ->
+                project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
+              }
+              .firstOrNull()
           InheritedDependencyWithSource(cpd, source)
         }
         .distinctBy { it.configuredProjectDependency }
@@ -99,7 +104,7 @@ data class MustBeApi(
 
 data class InheritedDependencyWithSource(
   val configuredProjectDependency: ConfiguredProjectDependency,
-  val source: Project2?
+  val source: ConfiguredProjectDependency?
 )
 
 val ProjectContext.mustBeApi: MustBeApi get() = get(MustBeApi)

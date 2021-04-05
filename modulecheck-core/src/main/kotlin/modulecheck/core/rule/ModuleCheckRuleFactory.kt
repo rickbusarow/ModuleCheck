@@ -34,7 +34,7 @@ class ModuleCheckRuleFactory : RuleFactory {
     mutableListOf(
       { DisableAndroidResourcesRule(it) },
       { DisableViewBindingRule(it) },
-      { InheritedImplementationRule(it) },
+      { InheritedDependencyRule(it) },
       { MustBeApiRule(it) },
       { RedundantRule(it) },
       { SortDependenciesRule(it) },
