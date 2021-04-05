@@ -32,25 +32,29 @@ class ProjectDependencyDeclarationVisitor(
     var found = false
 
     val configCallExpressionVisitor = callExpressionVisitor { innerExpression ->
-      innerExpression
+
+      val matchingExpression = innerExpression
         .referenceExpression()
         .takeIf { it?.text == configurationName }
-        ?.let {
-          innerExpression                                     // implementation(project(path = ":foo:bar"))
-            .valueArguments                                   // [project(path = ":foo:bar")]
-            .firstOrNull()                                    // project(path = ":foo:bar")
-            ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
-            ?.valueArguments                                  // [path = ":foo:bar"]
-            ?.firstOrNull()                                   // path = ":foo:bar"
-            ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-            ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
-            ?.let { projectNameArg ->
+        ?: innerExpression
+          .takeIf { it.text.startsWith("\"$configurationName\"") }
 
-              if (projectNameArg.text == projectPath) {
-                found = true
-              }
+      if (matchingExpression != null) {
+        innerExpression                                     // implementation(project(path = ":foo:bar"))
+          .valueArguments                                   // [project(path = ":foo:bar")]
+          .firstOrNull()                                    // project(path = ":foo:bar")
+          ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
+          ?.valueArguments                                  // [path = ":foo:bar"]
+          ?.firstOrNull()                                   // path = ":foo:bar"
+          ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
+          ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+          ?.let { projectNameArg ->
+
+            if (projectNameArg.text == projectPath) {
+              found = true
             }
-        }
+          }
+      }
     }
 
     configCallExpressionVisitor.visitCallExpression(expression)

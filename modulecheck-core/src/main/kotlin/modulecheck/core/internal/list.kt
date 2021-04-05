@@ -28,7 +28,8 @@ fun List<String>.positionOf(
   path: String,
   configuration: ConfigurationName
 ): Position? {
-  val reg = """.*${configuration.value}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+  // val reg = """.*${configuration.value}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+  val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
 
   val row = indexOfFirst { it.trim().matches(reg) }
 
