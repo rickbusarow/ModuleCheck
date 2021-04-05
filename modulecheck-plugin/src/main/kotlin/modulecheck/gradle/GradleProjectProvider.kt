@@ -33,11 +33,11 @@ import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.findPlugin
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
@@ -138,6 +138,7 @@ class GradleProjectProvider(
       return Config(name.asConfigurationName(), external, configs)
     }
     return configurations
+      .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
       .associate { configuration ->
 
         val config = configuration.toConfig()
