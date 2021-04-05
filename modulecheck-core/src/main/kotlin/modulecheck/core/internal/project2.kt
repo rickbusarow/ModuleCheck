@@ -37,10 +37,13 @@ fun Project2.psiElementIn(
 
   val visitor = ProjectDependencyDeclarationVisitor(configuration.value, path)
 
-  return result.elements
+  return result
+    .elements
     .firstOrNull { element ->
       visitor.find(element.psiElement as KtCallExpression)
-    }
+    } ?: result
+    .elements
+    .firstOrNull()
 }
 
 fun Project2.positionIn(

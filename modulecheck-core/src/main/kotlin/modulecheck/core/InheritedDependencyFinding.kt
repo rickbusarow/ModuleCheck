@@ -13,57 +13,60 @@
  * limitations under the License.
  */
 
-package modulecheck.core.overshot
+package modulecheck.core
 
 import modulecheck.api.ConfigurationName
+import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
-import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.positionIn
-import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import java.io.File
 
-data class OvershotDependencyFinding(
+data class InheritedDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: Project2?
-) : DependencyFinding("over-shot") {
+  val from: ConfiguredProjectDependency?
+) : DependencyFinding("inheritedDependency") {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from?.path}"
+  override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
 
   override fun positionOrNull(): Position? {
-    return from?.positionIn(buildFile, configurationName)
+    return from?.project?.positionIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
     val visitor = DslBlockVisitor("dependencies")
 
-    val fromPath = from?.path ?: return false
+    val fromPath = from?.project?.path ?: return false
+    val fromConfigName = from.configurationName.value
 
     val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
 
     val result = visitor.parse(kotlinBuildFile) ?: return false
 
     val match = result.elements.firstOrNull {
-      it.psiElement.text.contains("\"$fromPath\"")
+      val text = it.psiElement.text
+
+      text.contains("\"$fromPath\"") && text.contains(fromConfigName)
     }
       ?.toString() ?: return false
 
-    val newDeclaration = match.replace(fromPath, dependencyPath)
+    val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
+      .replaceFirst(fromConfigName, configurationName.value)
 
     // This won't match without .trimStart()
-    val newDependencies = result.blockText.replace(
+    val newDependencies = result.blockText.replaceFirst(
       oldValue = match.trimStart(),
       newValue = (newDeclaration + "\n" + match).trimStart()
     )
 
     val text = buildFile.readText()
 
-    val newText = text.replace(result.blockText, newDependencies)
+    val newText = text.replaceFirst(result.blockText, newDependencies)
 
     buildFile.writeText(newText)
 

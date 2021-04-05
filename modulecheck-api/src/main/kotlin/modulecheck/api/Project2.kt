@@ -35,7 +35,7 @@ interface Project2 :
 
   val configurations: Map<ConfigurationName, Config>
 
-  val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>
+  val projectDependencies: Lazy<ProjectDependencies>
 
   val hasKapt: Boolean
 
@@ -50,40 +50,15 @@ fun Project2.isAndroid(): Boolean {
   return this is AndroidProject2
 }
 
-fun Project2.allPublicClassPathDependencyDeclarations(
-  includePrivate: Boolean = true
-): Set<ConfiguredProjectDependency> {
-  val configurationName = if (includePrivate) {
-    projectDependencies
-      .value[ConfigurationName.implementation].orEmpty()
-  } else {
-    emptyList()
-  }
-
-  val sub = projectDependencies
-    .value[ConfigurationName.api]
-    .orEmpty()
-    .plus(configurationName)
-    .flatMap {
-      it
-        .project
-        .allPublicClassPathDependencyDeclarations(false)
-    }
-
-  return projectDependencies
-    .value[ConfigurationName.api]
-    .orEmpty()
-    .plus(sub)
-    .toSet()
-}
+val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDependencies)
 
 fun Project2.sourceOf(
   dependencyProject: ConfiguredProjectDependency,
   apiOnly: Boolean = false
-): Project2? {
+): ConfiguredProjectDependency? {
   val toCheck = if (apiOnly) {
     projectDependencies
-      .value["api".asConfigurationName()]
+      .value[ConfigurationName.api]
       .orEmpty()
   } else {
     projectDependencies
@@ -91,11 +66,14 @@ fun Project2.sourceOf(
       .main()
   }
 
-  if (dependencyProject in toCheck) return this
+  if (dependencyProject in toCheck) return ConfiguredProjectDependency(
+    configurationName = dependencyProject.configurationName,
+    project = this
+  )
 
   return toCheck.firstOrNull {
     it == dependencyProject || it.project.sourceOf(dependencyProject, true) != null
-  }?.project
+  }
 }
 
 interface AndroidProject2 : Project2 {

@@ -15,8 +15,11 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.*
+import modulecheck.api.ConfigurationName
+import modulecheck.api.Project2
+import modulecheck.api.asConfigurationName
 import modulecheck.api.context.ProjectContext
+import modulecheck.api.publicDependencies
 import modulecheck.core.DependencyFinding
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -57,7 +60,7 @@ data class RedundantDependencies(
         .flatMap {
           it
             .project
-            .allPublicClassPathDependencyDeclarations()
+            .publicDependencies
             .map { it.project }
             .toSet()
         }

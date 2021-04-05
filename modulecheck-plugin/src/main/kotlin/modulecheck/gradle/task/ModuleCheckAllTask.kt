@@ -36,7 +36,6 @@ abstract class ModuleCheckAllTask @Inject constructor(
     val findings = flatMap { proj ->
       rules
         .filter { props[it.id.decapitalize()] ?: false }
-        .reversed()
         .map { rule ->
 
           val old = times.getOrPut(rule.id) { 0 }

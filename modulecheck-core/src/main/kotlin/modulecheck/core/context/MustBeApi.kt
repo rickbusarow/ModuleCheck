@@ -20,8 +20,8 @@ import modulecheck.api.context.*
 import modulecheck.api.files.KotlinFile
 
 data class MustBeApi(
-  internal val delegate: Set<ConfiguredProjectDependency>
-) : Set<ConfiguredProjectDependency> by delegate,
+  internal val delegate: Set<InheritedDependencyWithSource>
+) : Set<InheritedDependencyWithSource> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<MustBeApi>
@@ -29,7 +29,7 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
-      val mainDependencies = project.allPublicClassPathDependencyDeclarations()
+      val mainDependencies = project.publicDependencies
 
       val mergedScopeNames = project
         .anvilScopeMerges
@@ -49,7 +49,7 @@ data class MustBeApi(
       val declarationsInProject = project[Declarations][SourceSetName.MAIN]
         .orEmpty()
 
-      val noIdeaWhereTheyComeFrom = project
+      val inheritedImports = project
         .jvmFilesForSourceSetName(SourceSetName.MAIN)
         .filterIsInstance<KotlinFile>()
         .flatMap { kotlinFile ->
@@ -61,27 +61,50 @@ data class MustBeApi(
 
       val api = mainDependencies
         .asSequence()
-        .filterNot { it.configurationName == ConfigurationName.api }
+        // .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
+
           cpd in project.projectDependencies
             .value[ConfigurationName.api]
             .orEmpty()
         }
-        .filter { cpp ->
-          cpp
+        .filter { cpd ->
+          cpd
             .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
             .any { declared ->
-              declared in noIdeaWhereTheyComeFrom ||
+
+              declared in inheritedImports ||
                 declared in project.imports[SourceSetName.MAIN].orEmpty()
             }
         }
+        .map { cpd ->
+          val source = project
+            .projectDependencies
+            .value
+            .main()
+            .firstOrNull { it.project == cpd.project }
+            ?: ConfigurationName
+              .main()
+              .asSequence()
+              .mapNotNull { configName ->
+                project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
+              }
+              .firstOrNull()
+          InheritedDependencyWithSource(cpd, source)
+        }
+        .distinctBy { it.configuredProjectDependency }
         .toSet()
 
       return MustBeApi(api)
     }
   }
 }
+
+data class InheritedDependencyWithSource(
+  val configuredProjectDependency: ConfiguredProjectDependency,
+  val source: ConfiguredProjectDependency?
+)
 
 val ProjectContext.mustBeApi: MustBeApi get() = get(MustBeApi)

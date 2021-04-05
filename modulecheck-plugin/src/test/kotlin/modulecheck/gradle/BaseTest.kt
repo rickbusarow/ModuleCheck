@@ -15,12 +15,13 @@
 
 package modulecheck.gradle
 
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.TypeSpec
 import hermit.test.junit.HermitJUnit5
 import hermit.test.resets
 import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.shouldBe
-import modulecheck.specs.DEFAULT_AGP_VERSION
-import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.specs.*
 import modulecheck.testing.tempDir
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -29,6 +30,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.nio.file.Path
 import io.kotest.matchers.shouldBe as kotestShouldBe
 
 val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "7.0-rc-2")
@@ -104,4 +106,35 @@ abstract class BaseTest : HermitJUnit5() {
       throw assertionError
     }
   }
+}
+
+@Suppress("LongParameterList")
+fun jvmSubProject(
+  path: String,
+  vararg fqClassName: ClassName,
+  apiDependencies: List<ProjectSpec> = emptyList(),
+  implementationDependencies: List<ProjectSpec> = emptyList(),
+  androidTestDependencies: List<ProjectSpec> = emptyList(),
+  testDependencies: List<ProjectSpec> = emptyList()
+): ProjectSpec = ProjectSpec(path) {
+  addBuildSpec(
+    ProjectBuildSpec {
+      addPlugin("kotlin(\"jvm\")")
+      applyEach(apiDependencies) { addProjectDependency("api", it) }
+      applyEach(implementationDependencies) { addProjectDependency("implementation", it) }
+      applyEach(androidTestDependencies) { addProjectDependency("androidTestImplementation", it) }
+      applyEach(testDependencies) { addProjectDependency("testImplementation", it) }
+    }
+  )
+    .applyEach(fqClassName.toList()) { fq ->
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addFileSpec(
+            FileSpec.builder(fq.packageName, fq.simpleName)
+              .addType(TypeSpec.classBuilder(fq.simpleName).build())
+              .build()
+          )
+        }
+      )
+    }
 }

@@ -26,7 +26,7 @@ data class Project2Impl(
   override val projectDir: File,
   override val buildFile: File,
   override val configurations: Map<ConfigurationName, Config>,
-  override val projectDependencies: Lazy<Map<ConfigurationName, List<ConfiguredProjectDependency>>>,
+  override val projectDependencies: Lazy<ProjectDependencies>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
   override val projectCache: ConcurrentHashMap<String, Project2>,
