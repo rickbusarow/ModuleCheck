@@ -22,7 +22,7 @@ import modulecheck.api.files.KotlinFile
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
 ) : Set<InheritedDependencyWithSource> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<MustBeApi>
     get() = Key

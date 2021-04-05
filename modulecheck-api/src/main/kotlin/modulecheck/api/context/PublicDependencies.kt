@@ -22,7 +22,7 @@ import modulecheck.api.Project2
 data class PublicDependencies(
   internal val delegate: Set<ConfiguredProjectDependency>
 ) : Set<ConfiguredProjectDependency> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<PublicDependencies>
     get() = Key
