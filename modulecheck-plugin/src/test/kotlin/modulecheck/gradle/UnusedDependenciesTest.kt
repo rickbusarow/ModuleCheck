@@ -16,7 +16,6 @@
 package modulecheck.gradle
 
 import com.squareup.kotlinpoet.*
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
@@ -56,24 +55,24 @@ class UnusedDependenciesTest : BaseTest() {
       .addImport("com.example.lib1", "Lib1Class")
       .build()
 
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("kotlin(\"jvm\")")
-          addProjectDependency("api", jvmSub1)
-          addProjectDependency("api", jvmSub2)
-          addProjectDependency("implementation", jvmSub3)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFileSpec(myApp)
-        }
-      )
-    }
-
     @Test
     fun `with autoCorrect should be removed`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1)
+            addProjectDependency("api", jvmSub2)
+            addProjectDependency("implementation", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
@@ -108,7 +107,115 @@ class UnusedDependenciesTest : BaseTest() {
     }
 
     @Test
+    fun `with autoCorrect using string extension functions for configuration should be removed`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addProjectDependency("\"api\"", jvmSub1)
+            addProjectDependency("\"api\"", jvmSub2)
+            addProjectDependency("\"implementation\"", jvmSub3)
+            addPlugin("kotlin(\"jvm\")")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  "api"(project(path = ":lib-1"))
+        |  // "api"(project(path = ":lib-2"))  // ModuleCheck finding [unused]
+        |  // "implementation"(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
+
+    @Test
     fun `without autoCorrect should fail with report`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1)
+            addProjectDependency("api", jvmSub2)
+            addProjectDependency("implementation", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      shouldFailWithMessage("moduleCheckUnusedDependency") {
+        it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
+        it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
+        it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
+      }
+    }
+
+    @Test
+    fun `without autoCorrect using string extension functions for configuration should fail with report`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("\"api\"", jvmSub1)
+            addProjectDependency("\"api\"", jvmSub2)
+            addProjectDependency("\"implementation\"", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
       ProjectSpec("project") {
         applyEach(projects) { project ->
           addSubproject(project)
