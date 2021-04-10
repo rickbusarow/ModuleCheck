@@ -16,6 +16,7 @@
 package  modulecheck.specs
 
 import java.nio.file.Path
+import java.util.*
 
 public val DEFAULT_GRADLE_VERSION: String = System
   .getProperty("modulecheck.gradleVersion", "7.0")
@@ -26,6 +27,8 @@ public val DEFAULT_GRADLE_VERSION: String = System
   .let { prop ->
     if (prop.contains('.')) prop else "$prop.0"
   }
+public val DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS: Boolean =
+  System.getProperty("modulecheck.useTypeSafeProjectAccessors")?.toBoolean() ?: true
 public val DEFAULT_KOTLIN_VERSION: String =
   System.getProperty("modulecheck.kotlinVersion", "1.5.0-M2")
 public val DEFAULT_AGP_VERSION: String =
@@ -234,31 +237,61 @@ public class ProjectBuildSpecBuilder(
     configuration: String,
     dependencyProjectSpec: ProjectSpec,
     comment: String? = null,
-    inlineComment: String? = null
-  ): ProjectBuildSpecBuilder = apply {
-    val prev = comment?.let { "$it\n  " } ?: ""
-    val after = inlineComment?.let { " $it" } ?: ""
-
-    dependencies.add("$prev$configuration(project(path = \":${dependencyProjectSpec.gradlePath}\"))$after")
-  }
+    inlineComment: String? = null,
+    useTypeSafeProjectAccessors: Boolean = DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS
+  ): ProjectBuildSpecBuilder = addProjectDependency(
+    configuration = configuration,
+    dependencyPath = dependencyProjectSpec.gradlePath,
+    useTypeSafeProjectAccessors = useTypeSafeProjectAccessors,
+    comment = comment,
+    inlineComment = inlineComment
+  )
 
   public fun addProjectDependency(
     configuration: String,
     dependencyPath: String,
     comment: String? = null,
-    inlineComment: String? = null
+    inlineComment: String? = null,
+    useTypeSafeProjectAccessors: Boolean = DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS
   ): ProjectBuildSpecBuilder = apply {
     val prev = comment?.let { "$it\n  " } ?: ""
     val after = inlineComment?.let { " $it" } ?: ""
 
-    dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
+    if (useTypeSafeProjectAccessors) {
+      dependencies.add("$prev$configuration(projects.${dependencyPath.typeSafeName()})$after")
+    } else {
+      dependencies.add("$prev$configuration(project(path = \":$dependencyPath\"))$after")
+    }
   }
 
-  public fun addProjectDependency2(
-    configuration: String,
-    dependencyPath: String
-  ) {
-    addRawDependency("$configuration(project(path = \":$dependencyPath\"))")
+  private fun String.typeSafeName(): String = split(projectSplitRegex)
+    .filterNot { it.isBlank() }
+    .mapIndexed { index, s ->
+      if (index == 0) {
+        s.propertyAccessName()
+      } else {
+        s.capitalize(Locale.getDefault())
+      }
+    }
+    .joinToString("")
+    .replace(":", ".")
+
+  private fun String.propertyAccessName(): String {
+
+    if (isBlank()) return this
+
+    val chars = toCharArray()
+
+    if (!chars.first().isUpperCase()) return this
+
+    val caps = chars
+      .takeWhile { it.isUpperCase() }
+      .dropLast(1)
+
+    val lower = caps
+      .joinToString("") { it.toString().toLowerCase() }
+
+    return this.replaceFirst(this.substring(0, caps.size), lower)
   }
 
   override fun build(): ProjectBuildSpec = ProjectBuildSpec(
@@ -272,4 +305,8 @@ public class ProjectBuildSpecBuilder(
     android = android,
     buildScript = buildScript
   )
+
+  private companion object {
+    val projectSplitRegex = "[.\\-_]".toRegex()
+  }
 }
