@@ -41,9 +41,7 @@ fun Project2.psiElementIn(
     .elements
     .firstOrNull { element ->
       visitor.find(element.psiElement as KtCallExpression)
-    } ?: result
-    .elements
-    .firstOrNull()
+    }
 }
 
 fun Project2.positionIn(
