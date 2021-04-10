@@ -33,7 +33,7 @@ import java.io.File
 import java.nio.file.Path
 import io.kotest.matchers.shouldBe as kotestShouldBe
 
-val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "7.0-rc-2")
+val DEFAULT_GRADLE_VERSION: String = System.getProperty("modulecheck.gradleVersion", "7.0")
 
 abstract class BaseTest : HermitJUnit5() {
 
