@@ -41,11 +41,9 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun String.fixPath(): String = replace(File.separator, "/")
 
-  private val kotlinVersion =
-    System.getProperty("modulecheck.kotlinVersion", DEFAULT_KOTLIN_VERSION)
-  private val agpVersion = System.getProperty("modulecheck.agpVersion", DEFAULT_AGP_VERSION)
-  private val gradleVersion =
-    System.getProperty("modulecheck.gradleVersion", DEFAULT_GRADLE_VERSION)
+  private val kotlinVersion = DEFAULT_KOTLIN_VERSION
+  private val agpVersion = DEFAULT_AGP_VERSION
+  private val gradleVersion = DEFAULT_GRADLE_VERSION
 
   val gradleRunner by resets {
     GradleRunner
