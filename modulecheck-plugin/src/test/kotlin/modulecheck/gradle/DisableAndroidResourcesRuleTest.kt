@@ -16,13 +16,11 @@
 package modulecheck.gradle
 
 import hermit.test.resets
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -72,14 +70,12 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         subprojects.first().edit {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/res/values")) {
-              addXmlFile(
-                XmlFile(
-                  "strings.xml",
-                  """<resources>
+              addRawFile(
+                "strings.xml",
+                """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
                 """.trimMargin()
-                )
               )
             }
           )

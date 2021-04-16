@@ -19,13 +19,12 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.PropertySpec
 import hermit.test.resets
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -75,7 +74,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
     val myLib2File = FileSpec.builder("com.example.lib2", "MyLib2")
       .addProperty(bindingProperty)
       .build()
-    val activity_main_xml = XmlFile(
+    val activity_main_xml = RawFile(
       "activity_main.xml",
       """<?xml version="1.0" encoding="utf-8"?>
                 |<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -103,17 +102,15 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
           }
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/res/layout")) {
-              addXmlFile(activity_main_xml)
+              addRawFile(activity_main_xml)
             }
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main")) {
-              addXmlFile(
-                XmlFile(
+              addRawFile(
                   "AndroidManifest.xml",
                   """<manifest package="com.example.lib1" />
                 """.trimMargin()
-                )
               )
             }
           )
@@ -176,7 +173,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
     val mylib1File = FileSpec.builder("com.example.lib1", "Mylib1")
       .addProperty(bindingProperty)
       .build()
-    val activity_main_xml = XmlFile(
+    val activity_main_xml = RawFile(
       "activity_main.xml",
       """<?xml version="1.0" encoding="utf-8"?>
                 |<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -198,17 +195,15 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/res/layout")) {
-              addXmlFile(activity_main_xml)
+              addRawFile(activity_main_xml)
             }
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main")) {
-              addXmlFile(
-                XmlFile(
+              addRawFile(
                   "AndroidManifest.xml",
                   """<manifest package="com.example.lib1" />
                 """.trimMargin()
-                )
               )
             }
           )

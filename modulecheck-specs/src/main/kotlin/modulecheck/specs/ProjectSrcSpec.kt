@@ -16,23 +16,20 @@
 package modulecheck.specs
 
 import com.squareup.kotlinpoet.FileSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
-import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import java.io.File
 import java.nio.file.Path
 
 public data class ProjectSrcSpec(
   public var dir: Path,
   public val fileSpecs: MutableList<FileSpec>,
-  public val ktsFiles: MutableList<KtsFile>,
-  public val xmlFiles: MutableList<XmlFile>
+  public val rawFiles: MutableList<RawFile>
 ) {
 
   public fun toBuilder(dir: Path): ProjectSrcSpecBuilder = ProjectSrcSpecBuilder(
     dir = dir,
     fileSpecs = fileSpecs,
-    ktsFiles = ktsFiles,
-    xmlFiles = xmlFiles
+    rawFiles = rawFiles
   )
 
   public inline fun edit(
@@ -41,11 +38,7 @@ public data class ProjectSrcSpec(
   ): ProjectSrcSpec = toBuilder(dir).apply { init() }.build()
 
   public fun writeIn(path: Path) {
-    ktsFiles.forEach {
-      File("$path/$dir".fixPath()).mkdirs()
-      File("$path/$dir/${it.fileName}".fixPath()).writeText(it.text)
-    }
-    xmlFiles.forEach {
+    rawFiles.forEach {
       File("$path/$dir".fixPath()).mkdirs()
       File("$path/$dir/${it.fileName}".fixPath()).writeText(it.text)
     }
@@ -70,8 +63,7 @@ public data class ProjectSrcSpec(
 public class ProjectSrcSpecBuilder(
   public var dir: Path,
   public val fileSpecs: MutableList<FileSpec> = mutableListOf(),
-  public val ktsFiles: MutableList<KtsFile> = mutableListOf(),
-  public val xmlFiles: MutableList<XmlFile> = mutableListOf(),
+  public val rawFiles: MutableList<RawFile> = mutableListOf(),
   init: ProjectSrcSpecBuilder.() -> Unit = {}
 ) : Builder<ProjectSrcSpec> {
 
@@ -79,22 +71,21 @@ public class ProjectSrcSpecBuilder(
     init()
   }
 
+  public fun addRawFile(fileName: String, text: String) {
+    rawFiles.add(RawFile(fileName = fileName, text = text))
+  }
+
+  public fun addRawFile(rawFile: RawFile) {
+    rawFiles.add(rawFile)
+  }
+
   public fun addFileSpec(fileSpec: FileSpec) {
     fileSpecs.add(fileSpec)
   }
 
-  public fun addKtsFile(file: KtsFile) {
-    ktsFiles.add(file)
-  }
+  override fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, fileSpecs, rawFiles)
 
-  public fun addXmlFile(file: XmlFile) {
-    xmlFiles.add(file)
-  }
-
-  override fun build(): ProjectSrcSpec = ProjectSrcSpec(dir, fileSpecs, ktsFiles, xmlFiles)
-
-  public data class XmlFile(val fileName: String, val text: String)
-  public data class KtsFile(val fileName: String, val text: String)
+  public data class RawFile(val fileName: String, val text: String)
 }
 
 internal fun String.fixPath(): String = replace("/", File.separator)

@@ -15,12 +15,10 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
@@ -53,8 +51,8 @@ class SortPluginsTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addKtsFile(KtsFile("androidLibrary.gradle.kts", ""))
-              addKtsFile(KtsFile("javaLibrary.gradle.kts", ""))
+              addRawFile("androidLibrary.gradle.kts", "")
+              addRawFile("javaLibrary.gradle.kts", "")
             }
           )
         }

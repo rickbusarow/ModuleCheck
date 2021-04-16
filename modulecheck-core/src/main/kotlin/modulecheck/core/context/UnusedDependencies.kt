@@ -34,7 +34,7 @@ data class UnusedDependency(
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : DependencyFinding("unused") {
-  fun cpp() = ConfiguredProjectDependency(configurationName, dependencyProject)
+  fun cpd() = ConfiguredProjectDependency(configurationName, dependencyProject)
 }
 
 data class UnusedDependencies(

@@ -13,6 +13,9 @@
  * limitations under the License.
  */
 
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -23,6 +26,14 @@ common()
 
 tasks.withType<Test> {
   useJUnitPlatform()
+
+  testLogging {
+    events = setOf(PASSED, FAILED)
+    exceptionFormat = TestExceptionFormat.FULL
+    showExceptions = true
+    showCauses = true
+    showStackTraces = true
+  }
 
   project
     .properties

@@ -18,7 +18,7 @@ package modulecheck.gradle
 import com.squareup.kotlinpoet.*
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
-import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -337,7 +337,7 @@ class UnusedDependenciesTest : BaseTest() {
 
   @Test
   fun `module with a custom view used in a layout subject module should not be unused`() {
-    val activity_main_xml = XmlFile(
+    val activity_main_xml = RawFile(
       "activity_main.xml",
       """<?xml version="1.0" encoding="utf-8"?>
         |<androidx.constraintlayout.widget.ConstraintLayout
@@ -366,7 +366,7 @@ class UnusedDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/res/layout")) {
-          addXmlFile(activity_main_xml)
+          addRawFile(activity_main_xml)
         }
       )
     }
@@ -457,8 +457,8 @@ class UnusedDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main")) {
-          addXmlFile(
-            XmlFile(
+          addRawFile(
+            RawFile(
               "AndroidManifest.xml",
               """<manifest package="com.example.app" />
                 """.trimMargin()
@@ -471,8 +471,8 @@ class UnusedDependenciesTest : BaseTest() {
     val androidSub1 = ProjectSpec("lib-1") {
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addXmlFile(
-            XmlFile(
+          addRawFile(
+            RawFile(
               "strings.xml",
               """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
@@ -484,8 +484,8 @@ class UnusedDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main")) {
-          addXmlFile(
-            XmlFile(
+          addRawFile(
+            RawFile(
               "AndroidManifest.xml",
               """<manifest package="com.example.lib1" />
                 """.trimMargin()
