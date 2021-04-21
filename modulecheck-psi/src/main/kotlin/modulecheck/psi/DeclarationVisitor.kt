@@ -21,11 +21,13 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
 class DeclarationVisitor : KtTreeVisitorVoid() {
 
-  val declarations: MutableSet<String> = mutableSetOf()
+  val declarations: MutableSet<DeclarationName> = mutableSetOf()
 
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
     if (!declaration.isPrivateOrInternal()) {
-      declaration.fqName?.let { declarations.add(it.asString()) }
+      declaration.fqName?.let {
+        declarations.add(it.asString().asDeclaractionName())
+      }
     }
 
     super.visitNamedDeclaration(declaration)

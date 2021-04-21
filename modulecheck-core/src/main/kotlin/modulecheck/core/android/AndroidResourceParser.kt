@@ -13,17 +13,19 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.core.android
 
 import groovy.util.Node
 import groovy.xml.XmlParser
+import modulecheck.psi.DeclarationName
+import modulecheck.psi.asDeclaractionName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
 object AndroidResourceParser {
   private val parser = XmlParser()
 
-  fun parseFile(resDir: File): Set<String> {
+  fun parseFile(resDir: File): Set<DeclarationName> {
     val values = mutableSetOf<AndroidResource>()
 
     val resources = resDir
@@ -52,7 +54,7 @@ object AndroidResourceParser {
       .toSet() + values
 
     return resources
-      .map { "R.${it.prefix}.${it.name}" }
+      .map { "R.${it.prefix}.${it.name}".asDeclaractionName() }
       .toSet()
   }
 }

@@ -40,7 +40,7 @@ data class UnusedDependency(
 data class UnusedDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key
@@ -96,9 +96,12 @@ data class UnusedDependencies(
         .map { (configurationName, _) ->
           val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
 
-          val neededForScopeInConfig = projectDependencies
+          val configurationDependencies = projectDependencies
             .value[configurationName]
             .orEmpty()
+            .toSet()
+
+          val neededForScopeInConfig = configurationDependencies
             .filter { cpd ->
 
               val contributed = cpd

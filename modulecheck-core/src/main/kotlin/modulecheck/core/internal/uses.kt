@@ -18,7 +18,8 @@ package modulecheck.core.internal
 import modulecheck.api.*
 import modulecheck.api.anvil.AnvilScopeName
 import modulecheck.api.context.*
-import modulecheck.core.parser.android.androidResourceDeclarationsForSourceSetName
+import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
+import modulecheck.psi.DeclarationName
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
   val mergedScopeNames = anvilScopeMerges
@@ -45,11 +46,12 @@ fun Project2.usesInConfig(
   val dependencyDeclarations = projectDependency.allDependencyDeclarationsForConfig(config)
 
   val javaIsUsed = mergedScopeNames.any { contributions.containsKey(it) } ||
-    dependencyDeclarations.any { declaration ->
-
-      declaration in importsForSourceSetName(config.name.toSourceSetName()) ||
-        declaration in possibleReferencesForSourceSetName(config.name.toSourceSetName())
-    }
+    dependencyDeclarations
+      .map { it.fqName }
+      .any { declaration ->
+        declaration in importsForSourceSetName(config.name.toSourceSetName()) ||
+          declaration in possibleReferencesForSourceSetName(config.name.toSourceSetName())
+      }
 
   if (javaIsUsed) return true
 
@@ -61,13 +63,12 @@ fun Project2.usesInConfig(
 
   val dependencyAsAndroid = projectDependency as? AndroidProject2 ?: return false
 
-  val resourcesAreUsed = dependencyAsAndroid
+  return dependencyAsAndroid
     .androidResourceDeclarationsForSourceSetName(config.name.toSourceSetName())
+    .map { it.fqName }
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
-
-  return resourcesAreUsed
 }
 
 fun Project2.allDependencyDeclarationsForConfig(config: Config): Set<DeclarationName> {

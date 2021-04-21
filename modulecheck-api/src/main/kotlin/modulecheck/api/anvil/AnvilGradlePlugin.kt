@@ -15,8 +15,8 @@
 
 package modulecheck.api.anvil
 
-import modulecheck.api.context.DeclarationName
 import modulecheck.api.context.ImportName
+import modulecheck.psi.DeclarationName
 import net.swiftzer.semver.SemVer
 
 data class AnvilGradlePlugin(
@@ -34,5 +34,5 @@ data class RawAnvilAnnotatedType(
   val anvilScopeNameEntry: AnvilScopeNameEntry
 )
 
-data class AnvilScopeName(val fqName: ImportName)
+data class AnvilScopeName(val fqName: DeclarationName)
 data class AnvilScopeNameEntry(val name: ImportName)

@@ -13,15 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.core.android
 
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
-import modulecheck.api.context.DeclarationName
 import modulecheck.api.context.JvmFiles
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.ResSourceFiles
+import modulecheck.psi.DeclarationName
+import modulecheck.psi.asDeclaractionName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -48,7 +49,7 @@ data class AndroidResourceDeclarations(
             project[ResSourceFiles][sourceSetName]
               .orEmpty()
               .flatMap { AndroidResourceParser.parseFile(it) }
-              .toSet() + "$rPackage.R"
+              .toSet() + "$rPackage.R".asDeclaractionName()
           } else {
             project[JvmFiles][sourceSetName]
               .orEmpty()
@@ -63,9 +64,7 @@ data class AndroidResourceDeclarations(
 }
 
 val ProjectContext.androidResourceDeclarations: AndroidResourceDeclarations
-  get() = get(
-    AndroidResourceDeclarations
-  )
+  get() = get(AndroidResourceDeclarations)
 
 fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
