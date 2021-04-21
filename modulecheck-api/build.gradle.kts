@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
+  compileOnly("org.codehaus.groovy:groovy-xml:3.0.8")
   implementation(projects.modulecheckPsi)
 
   implementation(libs.groovyXml)
