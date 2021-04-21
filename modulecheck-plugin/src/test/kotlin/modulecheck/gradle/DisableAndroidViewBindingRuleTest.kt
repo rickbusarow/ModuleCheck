@@ -108,8 +108,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main")) {
               addRawFile(
-                  "AndroidManifest.xml",
-                  """<manifest package="com.example.lib1" />
+                "AndroidManifest.xml",
+                """<manifest package="com.example.lib1" />
                 """.trimMargin()
               )
             }
@@ -201,8 +201,8 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main")) {
               addRawFile(
-                  "AndroidManifest.xml",
-                  """<manifest package="com.example.lib1" />
+                "AndroidManifest.xml",
+                """<manifest package="com.example.lib1" />
                 """.trimMargin()
               )
             }

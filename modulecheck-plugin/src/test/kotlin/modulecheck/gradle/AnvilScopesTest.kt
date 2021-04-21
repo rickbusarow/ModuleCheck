@@ -47,7 +47,6 @@ class AnvilScopesTest : BaseTest() {
 
   @Test
   fun `module which contributes anvil scopes should not be unused in module which merges that scope`() {
-
     jvmSub2.edit {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
@@ -123,7 +122,6 @@ class AnvilScopesTest : BaseTest() {
 
   @Test
   fun `module which contributes anvil scopes with named argument should not be unused in module which merges that scope`() {
-
     jvmSub2.edit {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
