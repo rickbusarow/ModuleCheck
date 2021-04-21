@@ -13,27 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.psi
 
-import modulecheck.psi.DeclarationName
+import org.jetbrains.kotlin.name.FqName
 
-abstract class JvmFile {
-  abstract val name: String
-  abstract val packageFqName: String
-  abstract val imports: Set<String>
-  abstract val declarations: Set<DeclarationName>
+data class DeclarationName(val fqName: String)
 
-  override fun toString(): String {
-    return """${this::class.simpleName}(
-      |packageFqName='$packageFqName',
-      |
-      |importDirectives=$imports,
-      |
-      |declarations=$declarations
-      |
-      |)""".trimMargin()
-  }
-
-  abstract val wildcardImports: Set<String>
-  abstract val maybeExtraReferences: Set<String>
-}
+fun String.asDeclaractionName(): DeclarationName = DeclarationName(this)
+fun FqName.asDeclaractionName(): DeclarationName = DeclarationName(asString())

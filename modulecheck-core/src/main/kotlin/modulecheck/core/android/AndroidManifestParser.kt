@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.parser.android
+package modulecheck.core.android
 
 import groovy.util.Node
 import groovy.xml.XmlParser

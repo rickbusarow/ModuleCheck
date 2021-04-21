@@ -22,6 +22,8 @@ import modulecheck.api.anvil.AnvilScopeName
 import modulecheck.api.anvil.AnvilScopeNameEntry
 import modulecheck.api.anvil.RawAnvilAnnotatedType
 import modulecheck.api.files.KotlinFile
+import modulecheck.psi.DeclarationName
+import modulecheck.psi.asDeclaractionName
 import modulecheck.psi.internal.getByNameOrIndex
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -208,7 +210,7 @@ data class AnvilGraph(
         .trim()
 
       return RawAnvilAnnotatedType(
-        declarationName = typeFqName.asString(),
+        declarationName = typeFqName.asDeclaractionName(),
         anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
       )
     }
@@ -224,7 +226,9 @@ data class AnvilGraph(
       // then use that fully qualified import
       val rawScopeName = kotlinFile.imports.firstOrNull { import ->
         import.endsWith(scopeNameEntry.name)
-      } // if the scope is wildcard-imported
+      }
+        ?.asDeclaractionName()
+        // if the scope is wildcard-imported
         ?: dependenciesBySourceSetName[sourceSetName]
           .orEmpty()
           .asSequence()
@@ -234,18 +238,20 @@ data class AnvilGraph(
               .orEmpty()
           }
           .filter { dn ->
-            dn in kotlinFile.maybeExtraReferences
+            dn.fqName in kotlinFile.maybeExtraReferences
           }
           .firstOrNull { dn ->
-            dn.endsWith(scopeNameEntry.name)
+            dn.fqName.endsWith(scopeNameEntry.name)
           } // Scope must be defined in this same module
         ?: kotlinFile
           .maybeExtraReferences
           .firstOrNull { maybeExtra ->
             maybeExtra.startsWith(kotlinFile.packageFqName) &&
               maybeExtra.endsWith(scopeNameEntry.name)
-          } // Scope must be defined in this same package
-        ?: kotlinFile.packageFqName + "." + scopeNameEntry.name
+          }
+          ?.asDeclaractionName()
+        // Scope must be defined in this same package
+        ?: "${kotlinFile.packageFqName}.${scopeNameEntry.name}".asDeclaractionName()
 
       return AnvilScopeName(rawScopeName)
     }

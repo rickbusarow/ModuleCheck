@@ -18,10 +18,10 @@ package modulecheck.api.context
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
+import modulecheck.psi.DeclarationName
+import modulecheck.psi.asDeclaractionName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-
-typealias DeclarationName = String
 
 data class Declarations(
   internal val delegate: ConcurrentMap<SourceSetName, Set<DeclarationName>>
@@ -42,12 +42,12 @@ data class Declarations(
           val set = if (rPackage != null) {
             project[JvmFiles][sourceSet.name]
               .orEmpty()
-              .flatMap { it.declarations }
-              .toSet() + "$rPackage.R"
+              .flatMap { jvmFile -> jvmFile.declarations }
+              .toSet() + "$rPackage.R".asDeclaractionName()
           } else {
             project[JvmFiles][sourceSet.name]
               .orEmpty()
-              .flatMap { it.declarations }
+              .flatMap { jvmFile -> jvmFile.declarations }
               .toSet()
           }
           set

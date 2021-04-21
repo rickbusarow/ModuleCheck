@@ -18,6 +18,7 @@ package modulecheck.core.context
 import modulecheck.api.*
 import modulecheck.api.context.*
 import modulecheck.api.files.KotlinFile
+import modulecheck.psi.asDeclaractionName
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
@@ -56,7 +57,7 @@ data class MustBeApi(
 
           kotlinFile
             .apiReferences
-            .filterNot { it in declarationsInProject }
+            .filterNot { it.asDeclaractionName() in declarationsInProject }
         }.toSet()
 
       val api = mainDependencies
@@ -73,6 +74,7 @@ data class MustBeApi(
           cpd
             .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
+            .map { it.fqName }
             .any { declared ->
 
               declared in inheritedImports ||
