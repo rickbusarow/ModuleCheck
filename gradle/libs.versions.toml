@@ -7,7 +7,7 @@ compileSdk = "30"
 dependencyAnalysis = "0.63.0"
 dokka = "1.4.20"
 gradleDoctor = "0.7.0"
-groovy = "3.0.7"
+groovy = "3.0.8"
 hermit = "0.9.2"
 jUnit = "5.7.1"
 knit = "0.2.3"
@@ -28,10 +28,10 @@ versionName = "0.10.0"
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
 javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.20.2"
-kotlinCompiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
-kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinPoet = "com.squareup:kotlinpoet:1.8.0"
-kotlinReflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 semVer = "net.swiftzer.semver:semver:1.1.1"
 

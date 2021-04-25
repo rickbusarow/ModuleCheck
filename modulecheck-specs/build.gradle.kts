@@ -28,10 +28,10 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(libs.javaParser)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.gradlePlugin)
   implementation(libs.kotlinPoet)
-  implementation(libs.kotlinReflect)
+  implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)

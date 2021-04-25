@@ -26,9 +26,10 @@ dependencies {
   implementation(libs.groovyXml)
 
   implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
-  implementation(libs.kotlinReflect)
+
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.gradlePlugin)
+  implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)
   implementation(libs.semVer)
   implementation(libs.javaParser)

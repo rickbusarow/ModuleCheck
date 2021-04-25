@@ -24,20 +24,20 @@ repositories {
   google()
 }
 
-val kotlinVersion = "1.4.32"
+val kotlinVersion = libs.versions.kotlin.get()
 
 dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(kotlin("gradle-plugin", version = kotlinVersion))
+  implementation(libs.kotlin.gradlePlugin)
   implementation(kotlin("stdlib", version = kotlinVersion))
   implementation(kotlin("stdlib-common", version = kotlinVersion))
   implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
   implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
-  implementation(kotlin("reflect", version = kotlinVersion))
+  implementation(libs.kotlin.reflect)
 
-  implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlinVersion")
+  implementation(libs.kotlin.compiler)
 }
 
 configurations.all {
