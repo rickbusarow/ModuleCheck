@@ -39,7 +39,6 @@ plugins {
   id("com.osacky.doctor") version "0.7.0"
   id("com.dorongold.task-tree") version "1.5"
   base
-  id("com.autonomousapps.dependency-analysis") version "0.72.0"
 }
 
 allprojects {
