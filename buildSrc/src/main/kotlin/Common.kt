@@ -13,48 +13,23 @@
  * limitations under the License.
  */
 
-@file:Suppress("LongMethod", "TopLevelPropertyNaming")
-
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun Project.common() {
 
-  val ci = !System.getenv("CI").isNullOrBlank()
+  // val ci = !System.getenv("CI").isNullOrBlank()
 
   tasks.withType<KotlinCompile>()
     .configureEach {
 
       kotlinOptions {
 
-        allWarningsAsErrors = ci
+        // had to disable due to different Kotlin versions in the classpath
+        allWarningsAsErrors = false
 
         jvmTarget = "1.8"
       }
     }
-
-  configurations.all {
-    resolutionStrategy {
-
-      eachDependency {
-        when {
-          requested.name.startsWith("kotlin-stdlib") -> {
-            useTarget(
-              "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
-            )
-          }
-          requested.group == "org.jetbrains.kotlin" -> useVersion("1.4.32")
-        }
-      }
-    }
-  }
-
-  val irEnabled = properties["modulecheck.kotlinIR"]?.toString()?.toBoolean() ?: true
-
-  tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-      useIR = irEnabled
-    }
-  }
 }

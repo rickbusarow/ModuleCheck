@@ -15,6 +15,8 @@
 
 package modulecheck.api
 
+import java.util.*
+
 data class ConfigurationName(val value: String) {
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
@@ -41,7 +43,7 @@ data class ConfigurationName(val value: String) {
     //  etc.
     if (this.startsWith(kapt.value)) {
       return removePrefix(kapt.value)
-        .decapitalize()
+        .replaceFirstChar { it.lowercase(Locale.getDefault()) }
         .toSourceSetName()
     }
 
@@ -64,7 +66,7 @@ data class ConfigurationName(val value: String) {
     //  | testImplementation  | test
     //  etc.
     return removeSuffix(configType)
-      .decapitalize()
+      .replaceFirstChar { it.lowercase(Locale.getDefault()) }
       .toSourceSetName()
   }
 
@@ -94,7 +96,7 @@ data class ConfigurationName(val value: String) {
       runtime.value
     )
     private val baseConfigurationsCapitalized = baseConfigurations
-      .map { it.capitalize() }
+      .map { configName -> configName.replaceFirstChar { it.uppercaseChar() } }
       .toSet()
 
     fun main() = listOf(

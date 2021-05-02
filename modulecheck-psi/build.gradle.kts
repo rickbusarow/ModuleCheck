@@ -25,11 +25,8 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradlePlugin)
+  api(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
-  implementation(libs.kotlinPoet)
-  implementation(libs.semVer)
   implementation(libs.javaParser)
 
   testImplementation(libs.bundles.jUnit)

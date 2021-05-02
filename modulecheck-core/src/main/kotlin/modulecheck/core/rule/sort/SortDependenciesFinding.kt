@@ -21,7 +21,6 @@ import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
-import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
@@ -45,7 +44,7 @@ class SortDependenciesFinding(
       .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedBy { it.psiElement.text.toLowerCase(Locale.US) }
+          .sortedBy { it.psiElement.text.lowercase() }
           .joinToString("\n")
       }
       .trim()

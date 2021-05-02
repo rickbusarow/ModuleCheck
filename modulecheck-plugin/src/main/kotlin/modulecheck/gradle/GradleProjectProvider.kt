@@ -16,7 +16,10 @@
 package modulecheck.gradle
 
 import com.android.Version
-import com.android.build.gradle.*
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.TestExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
@@ -223,10 +226,17 @@ class GradleProjectProvider(
     .orEmpty()
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
+    /*
+    Before Kotlin 1.5.0, Anvil was applied to the `kotlinCompilerPluginClasspath` config.
+
+    In 1.5.0+, it's applied to individual source sets, such as
+    `kotlinCompilerPluginClasspathMain`, `kotlinCompilerPluginClasspathTest`, etc.
+     */
     val version = configurations
-      .findByName("kotlinCompilerPluginClasspath")
-      ?.dependencies
-      ?.find { it.group == "com.squareup.anvil" }
+      .filter { it.name.startsWith("kotlinCompilerPluginClasspath") }
+      .asSequence()
+      .flatMap { it.dependencies }
+      .firstOrNull { it.group == "com.squareup.anvil" }
       ?.version
       ?.let { versionString -> SemVer.parse(versionString) }
       ?: return null

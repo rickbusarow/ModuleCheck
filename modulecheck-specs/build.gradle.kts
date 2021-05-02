@@ -27,10 +27,8 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.javaParser)
   implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradlePlugin)
-  implementation(libs.kotlinPoet)
+  api(libs.kotlinPoet)
   implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.jUnit)

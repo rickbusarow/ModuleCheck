@@ -22,19 +22,19 @@ plugins {
 }
 
 dependencies {
-  compileOnly(gradleApi())
 
+  api(libs.javax.inject)
   implementation(libs.anvil)
   implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlin.compiler)
+  api(libs.kotlin.compiler)
   implementation(libs.kotlin.gradlePlugin)
   implementation(libs.kotlin.reflect)
-  implementation(libs.kotlinPoet)
+  testImplementation(libs.kotlinPoet)
   implementation(libs.semVer)
   implementation(libs.javaParser)
 
-  implementation(projects.modulecheckApi)
-  implementation(projects.modulecheckCore)
+  api(projects.modulecheckApi)
+  api(projects.modulecheckCore)
   implementation(projects.modulecheckPsi)
 
   testImplementation(libs.bundles.jUnit)

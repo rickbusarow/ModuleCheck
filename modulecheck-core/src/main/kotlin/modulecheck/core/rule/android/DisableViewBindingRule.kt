@@ -66,7 +66,7 @@ class DisableViewBindingRule(
         val generated = file
           .nameWithoutExtension
           .split("_")
-          .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+          .joinToString("") { fragment -> fragment.replaceFirstChar { it.uppercaseChar() } } + "Binding"
 
         val reference = "$basePackage.databinding.$generated"
 

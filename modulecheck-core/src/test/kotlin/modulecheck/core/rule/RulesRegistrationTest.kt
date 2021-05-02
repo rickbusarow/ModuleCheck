@@ -20,6 +20,7 @@ import io.kotest.matchers.shouldBe
 import modulecheck.api.KaptMatcher
 import modulecheck.api.settings.*
 import org.junit.jupiter.api.Test
+import java.util.*
 import kotlin.reflect.full.declaredMemberProperties
 
 internal class RulesRegistrationTest : HermitJUnit5() {
@@ -31,11 +32,13 @@ internal class RulesRegistrationTest : HermitJUnit5() {
     val rules = ModuleCheckRuleFactory().create(settings)
 
     val ruleIds = rules
-      .map { it.id.decapitalize() }
+      .map { rule -> rule.id.replaceFirstChar { it.lowercase(Locale.getDefault()) } }
       .sorted()
 
     val checksProperties = ChecksSettings::class.declaredMemberProperties
-      .map { it.name.decapitalize() }
+      .map { property ->
+        property.name.replaceFirstChar { it.lowercase(Locale.getDefault()) }
+      }
       .filterNot { it == "anvilFactoryGeneration" } // Gradle plugin rule is only defined in the Gradle module
       .sorted()
 
