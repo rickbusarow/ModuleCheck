@@ -31,11 +31,17 @@ internal class RulesRegistrationTest : HermitJUnit5() {
     val rules = ModuleCheckRuleFactory().create(settings)
 
     val ruleIds = rules
-      .map { it.id.decapitalize() }
+      .map {
+        @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+        it.id.decapitalize()
+      }
       .sorted()
 
     val checksProperties = ChecksSettings::class.declaredMemberProperties
-      .map { it.name.decapitalize() }
+      .map {
+        @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+        it.name.decapitalize()
+      }
       .filterNot { it == "anvilFactoryGeneration" } // Gradle plugin rule is only defined in the Gradle module
       .sorted()
 

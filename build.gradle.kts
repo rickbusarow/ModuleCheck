@@ -26,14 +26,13 @@ buildscript {
   }
   dependencies {
     classpath("com.android.tools.build:gradle:4.1.3")
-    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.0")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.2.3")
     classpath("org.jmailen.gradle:kotlinter-gradle:3.4.0")
   }
 }
 
 plugins {
-  kotlin("jvm")
   id("com.github.ben-manes.versions") version "0.38.0"
   id("io.gitlab.arturbosch.detekt") version "1.16.0"
   id("org.jetbrains.dokka") version "1.4.32"
@@ -142,5 +141,20 @@ allprojects {
       "filename", // same as Detekt's MatchingDeclarationName, except Detekt's version can be suppressed and this can't
       "experimental:argument-list-wrapping" // doesn't work half the time
     )
+  }
+}
+
+val kotlinVersion = libs.versions.kotlin.get()
+
+allprojects {
+  configurations.all {
+    resolutionStrategy {
+      force("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+      eachDependency {
+        when {
+          requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
+        }
+      }
+    }
   }
 }
