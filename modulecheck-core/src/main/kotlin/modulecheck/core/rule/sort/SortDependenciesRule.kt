@@ -60,7 +60,8 @@ class SortDependenciesRule(
         list
           .sortedBy {
             @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-            it.psiElement.text.toLowerCase(Locale.US) }
+            it.psiElement.text.toLowerCase(Locale.US)
+          }
           .joinToString("\n")
       }
       .trim()
