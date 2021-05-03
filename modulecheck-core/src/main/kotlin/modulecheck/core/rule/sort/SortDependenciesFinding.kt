@@ -45,7 +45,11 @@ class SortDependenciesFinding(
       .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedBy { it.psiElement.text.toLowerCase(Locale.US) }
+          .sortedBy {
+            // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+            @Suppress("DEPRECATION")
+            it.psiElement.text.toLowerCase(Locale.US)
+          }
           .joinToString("\n")
       }
       .trim()

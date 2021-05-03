@@ -40,6 +40,7 @@ data class ConfigurationName(val value: String) {
     //  | kapt             | main
     //  etc.
     if (this.startsWith(kapt.value)) {
+      @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
       return removePrefix(kapt.value)
         .decapitalize()
         .toSourceSetName()
@@ -63,6 +64,7 @@ data class ConfigurationName(val value: String) {
     //  | releaseCompileOnly  | release
     //  | testImplementation  | test
     //  etc.
+    @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     return removeSuffix(configType)
       .decapitalize()
       .toSourceSetName()
@@ -93,6 +95,8 @@ data class ConfigurationName(val value: String) {
       runtimeOnly.value,
       runtime.value
     )
+
+    @Suppress("DEPRECATION") // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     private val baseConfigurationsCapitalized = baseConfigurations
       .map { it.capitalize() }
       .toSet()

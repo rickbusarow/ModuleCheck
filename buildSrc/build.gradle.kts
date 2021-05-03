@@ -31,29 +31,9 @@ dependencies {
   compileOnly(gradleApi())
 
   implementation(libs.kotlin.gradlePlugin)
-  implementation(kotlin("stdlib", version = kotlinVersion))
-  implementation(kotlin("stdlib-common", version = kotlinVersion))
-  implementation(kotlin("stdlib-jdk7", version = kotlinVersion))
-  implementation(kotlin("stdlib-jdk8", version = kotlinVersion))
   implementation(libs.kotlin.reflect)
 
   implementation(libs.kotlin.compiler)
-}
-
-configurations.all {
-  resolutionStrategy {
-
-    eachDependency {
-      when {
-        requested.name.startsWith("kotlin-stdlib") -> {
-          useTarget(
-            "${requested.group}:${requested.name.replace("jre", "jdk")}:${requested.version}"
-          )
-        }
-        requested.group == "org.jetbrains.kotlin" -> useVersion(kotlinVersion)
-      }
-    }
-  }
 }
 
 tasks.withType<KotlinCompile>()
