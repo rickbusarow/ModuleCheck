@@ -19,18 +19,18 @@ plugins {
 
 dependencies {
 
-  compileOnly(libs.groovyXml)
+  api(libs.bundles.hermit)
+  api(libs.bundles.jUnit)
+  api(libs.bundles.kotest)
+
+  api(projects.modulecheckApi)
 
   compileOnly(gradleApi())
 
-  api(projects.modulecheckApi)
+  compileOnly(libs.groovyXml)
 
   implementation(libs.androidGradlePlugin)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)
-
-  api(libs.bundles.jUnit)
-  api(libs.bundles.kotest)
-  api(libs.bundles.hermit)
 }

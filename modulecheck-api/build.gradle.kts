@@ -20,21 +20,20 @@ plugins {
 
 dependencies {
 
+  api(libs.javaParser)
+  api(libs.kotlin.compiler)
+  api(libs.semVer)
+
   api(projects.modulecheckPsi)
 
+  implementation(libs.androidGradlePlugin)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
-
-  implementation(libs.androidGradlePlugin)
-
-  api(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
-  api(libs.semVer)
-  api(libs.javaParser)
 
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.bundles.hermit)
 
   testImplementation(projects.modulecheckInternalTesting)
   testImplementation(projects.modulecheckSpecs)

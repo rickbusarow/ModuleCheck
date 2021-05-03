@@ -25,13 +25,15 @@ kotlin {
 
 dependencies {
 
+  api(libs.kotlinPoet)
+
   compileOnly(gradleApi())
 
   implementation(libs.kotlin.compiler)
-  api(libs.kotlinPoet)
   implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+
   testImplementation(projects.modulecheckInternalTesting)
 }

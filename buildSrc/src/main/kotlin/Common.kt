@@ -19,14 +19,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 fun Project.common() {
 
-  // val ci = !System.getenv("CI").isNullOrBlank()
-
   tasks.withType<KotlinCompile>()
     .configureEach {
 
       kotlinOptions {
 
-        // had to disable due to different Kotlin versions in the classpath
+        // disabled due to different Kotlin versions in the classpath
         allWarningsAsErrors = false
 
         jvmTarget = "1.8"

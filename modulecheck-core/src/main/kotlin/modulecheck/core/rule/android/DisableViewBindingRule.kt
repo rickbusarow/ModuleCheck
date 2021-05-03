@@ -63,10 +63,11 @@ class DisableViewBindingRule(
       .filter { it.exists() }
       .filter { file ->
 
+        @Suppress("DEPRECATION") // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
         val generated = file
           .nameWithoutExtension
           .split("_")
-          .joinToString("") { fragment -> fragment.replaceFirstChar { it.uppercaseChar() } } + "Binding"
+          .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
 
         val reference = "$basePackage.databinding.$generated"
 

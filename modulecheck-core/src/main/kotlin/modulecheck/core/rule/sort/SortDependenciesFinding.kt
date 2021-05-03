@@ -21,6 +21,7 @@ import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
+import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
@@ -44,7 +45,10 @@ class SortDependenciesFinding(
       .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedBy { it.psiElement.text.lowercase() }
+          .sortedBy {
+            @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+            it.psiElement.text.toLowerCase(Locale.US)
+          }
           .joinToString("\n")
       }
       .trim()

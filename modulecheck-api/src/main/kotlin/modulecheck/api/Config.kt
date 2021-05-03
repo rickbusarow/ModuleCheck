@@ -15,8 +15,6 @@
 
 package modulecheck.api
 
-import java.util.*
-
 data class ConfigurationName(val value: String) {
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
@@ -42,8 +40,9 @@ data class ConfigurationName(val value: String) {
     //  | kapt             | main
     //  etc.
     if (this.startsWith(kapt.value)) {
+      @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
       return removePrefix(kapt.value)
-        .replaceFirstChar { it.lowercase(Locale.getDefault()) }
+        .decapitalize()
         .toSourceSetName()
     }
 
@@ -65,8 +64,9 @@ data class ConfigurationName(val value: String) {
     //  | releaseCompileOnly  | release
     //  | testImplementation  | test
     //  etc.
+    @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     return removeSuffix(configType)
-      .replaceFirstChar { it.lowercase(Locale.getDefault()) }
+      .decapitalize()
       .toSourceSetName()
   }
 
@@ -95,8 +95,10 @@ data class ConfigurationName(val value: String) {
       runtimeOnly.value,
       runtime.value
     )
+
+    @Suppress("DEPRECATION") // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     private val baseConfigurationsCapitalized = baseConfigurations
-      .map { configName -> configName.replaceFirstChar { it.uppercaseChar() } }
+      .map { it.capitalize() }
       .toSet()
 
     fun main() = listOf(

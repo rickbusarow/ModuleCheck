@@ -19,6 +19,7 @@ import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
+import java.util.*
 
 class SortDependenciesRule(
   override val settings: ModuleCheckSettings
@@ -39,7 +40,10 @@ class SortDependenciesRule(
   @Suppress("SpreadOperator")
   private val comparator: Comparator<String> = compareBy(
     *elementComparables,
-    { it.lowercase() }
+    {
+      @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+      it.toLowerCase(Locale.US)
+    }
   )
 
   override fun check(project: Project2): List<SortDependenciesFinding> {
@@ -54,7 +58,9 @@ class SortDependenciesRule(
       .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedBy { it.psiElement.text.lowercase() }
+          .sortedBy {
+            @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+            it.psiElement.text.toLowerCase(Locale.US) }
           .joinToString("\n")
       }
       .trim()

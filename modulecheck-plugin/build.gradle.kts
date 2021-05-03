@@ -24,22 +24,24 @@ plugins {
 dependencies {
 
   api(libs.javax.inject)
-  implementation(libs.anvil)
-  implementation(libs.androidGradlePlugin)
   api(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradlePlugin)
-  implementation(libs.kotlin.reflect)
-  testImplementation(libs.kotlinPoet)
-  implementation(libs.semVer)
-  implementation(libs.javaParser)
 
   api(projects.modulecheckApi)
   api(projects.modulecheckCore)
+
+  implementation(libs.androidGradlePlugin)
+  implementation(libs.anvil)
+  implementation(libs.javaParser)
+  implementation(libs.kotlin.gradlePlugin)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.semVer)
+
   implementation(projects.modulecheckPsi)
 
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.kotlinPoet)
 
   testImplementation(projects.modulecheckInternalTesting)
   testImplementation(projects.modulecheckSpecs)
