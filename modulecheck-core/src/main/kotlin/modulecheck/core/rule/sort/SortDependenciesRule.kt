@@ -40,8 +40,8 @@ class SortDependenciesRule(
   @Suppress("SpreadOperator")
   private val comparator: Comparator<String> = compareBy(
     *elementComparables,
-    {
-      @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+    { // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+      @Suppress("DEPRECATION")
       it.toLowerCase(Locale.US)
     }
   )
@@ -58,9 +58,10 @@ class SortDependenciesRule(
       .grouped(comparator)
       .joinToString("\n\n") { list ->
         list
-          .sortedBy {
-            @Suppress("DEPRECATION") // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-            it.psiElement.text.toLowerCase(Locale.US) }
+          .sortedBy { // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+            @Suppress("DEPRECATION")
+            it.psiElement.text.toLowerCase(Locale.US)
+          }
           .joinToString("\n")
       }
       .trim()

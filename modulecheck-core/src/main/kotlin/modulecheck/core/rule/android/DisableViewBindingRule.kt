@@ -63,7 +63,8 @@ class DisableViewBindingRule(
       .filter { it.exists() }
       .filter { file ->
 
-        @Suppress("DEPRECATION") // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+        // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+        @Suppress("DEPRECATION")
         val generated = file
           .nameWithoutExtension
           .split("_")
