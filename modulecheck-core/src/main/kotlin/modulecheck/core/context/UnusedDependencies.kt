@@ -26,6 +26,7 @@ import modulecheck.core.internal.uses
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class UnusedDependency(
   override val dependentPath: String,
@@ -47,7 +48,7 @@ data class UnusedDependencies(
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override operator fun invoke(project: Project2): UnusedDependencies {
-      val neededForScopes = project.anvilScopeMap()
+      val neededForScopes by lazy(NONE) { project.anvilScopeMap() }
 
       val unusedHere = project
         .configurations
@@ -62,14 +63,14 @@ data class UnusedDependencies(
             .orEmpty()
         }
         .filterNot { cpd ->
-          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
-        }
-        .filterNot { cpd ->
           // test configurations have the main source project as a dependency.
           // without this, every project will report itself as unused.
           cpd.project.path == project.path
         }
         .filterNot { cpd -> project.uses(cpd) }
+        .filterNot { cpd ->
+          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
+        }
 
       val grouped = unusedHere.map { cpp ->
 
