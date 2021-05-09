@@ -62,34 +62,19 @@ overshot
 ```
 
 
-### TODO
 
-#### Done
-- [X] kapt
-- [X] disable android resources
-- [X] disable viewbinding
-- [X] sort plugins
-- [X] sort dependencies
-- [X] overshot
+## License
 
-#### Partial
-- [ ] unused
-- [ ] redundant
-- [ ] used?
-- [ ] parse java files
-- [ ] auto-fix
-
-#### Backlog
-- [ ] disable android values ???
-- [ ] Reports
-  - [ ] checkstyle
-  - [ ] junit
-  - [ ] text
-- [ ] duplicates & different configs (like listed as `implementation` and `api`)
-- [ ] differentiate between java and android modules
-- [ ] parse resources (strings, drawables, icons, etc.)
-- [ ] imports for nested classes
-- [ ] minify (remove dependency if declared as api by dependency module)
-- [ ] disallow test dependencies if no test src directory
-- [ ] disallow androidTest dependencies if no androidTest src directory
+``` text
+Copyright (C) 2021 Rick Busarow
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
