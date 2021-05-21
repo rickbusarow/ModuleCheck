@@ -15,7 +15,7 @@
 
 plugins {
   javaLibrary
-  id("com.gradle.plugin-publish") version "0.14.0"
+  id("com.gradle.plugin-publish") version "0.15.0"
   id("java-gradle-plugin")
   `kotlin-dsl`
   `maven-publish`
