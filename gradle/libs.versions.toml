@@ -1,23 +1,21 @@
 [versions]
-androidTools = "4.2.0"
-anvil = "2.2.1"
+androidTools = "4.2.1"
+anvil = "2.2.2"
 benManes = "0.36.0"
-changeTracker = "0.7.3"
+changeTracker = "0.7.4"
 compileSdk = "30"
 dependencyAnalysis = "0.63.0"
 dokka = "1.4.20"
 gradleDoctor = "0.7.0"
 groovy = "3.0.8"
 hermit = "0.9.3"
-jUnit = "5.7.1"
+jUnit = "5.7.2"
 knit = "0.2.3"
-kotest = "4.5.0"
-kotlin = "1.5.0"
+kotest = "4.6.0"
+kotlin = "1.5.10"
 kotlinter = "3.4.4"
 mavenPublish = "0.13.0"
 minSdk = "23"
-sonarPlugin = "2.6.1"
-spoon = "1.5.0"
 spotless = "5.10.1"
 targetSdk = "30"
 taskTree = "1.5"
@@ -27,7 +25,7 @@ versionName = "0.10.0"
 
 androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
-javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.20.2"
+javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.22.1"
 javax-inject = "javax.inject:javax.inject:1"
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
