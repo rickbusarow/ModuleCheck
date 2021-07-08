@@ -37,7 +37,7 @@ plugins {
   id("io.gitlab.arturbosch.detekt") version "1.17.1"
   id("org.jetbrains.dokka") version "1.5.0"
   id("com.osacky.doctor") version "0.7.0"
-  id("com.dorongold.task-tree") version "1.5"
+  id("com.dorongold.task-tree") version "2.1.0"
   base
   // can be removed for Kotlin Gradle Plugin 1.5.10
   // workaround for https://youtrack.jetbrains.com/issue/KT-46368#focus=Comments-27-4868598.0-0
