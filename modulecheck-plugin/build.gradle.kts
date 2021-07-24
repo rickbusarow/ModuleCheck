@@ -50,9 +50,9 @@ dependencies {
 gradlePlugin {
   plugins {
     create("moduleCheck") {
-      id = PluginCoordinates.ID
-      group = PluginCoordinates.GROUP
-      implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
+      id = "com.rickbusarow.module-check"
+      group = "com.rickbusarow.modulecheck"
+      implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
       version = libs.versions.versionName.get()
     }
   }
@@ -60,14 +60,14 @@ gradlePlugin {
 
 // Configuration Block for the Plugin Marker artifact on Plugin Central
 pluginBundle {
-  website = PluginBundle.WEBSITE
-  vcsUrl = PluginBundle.VCS
-  description = PluginBundle.DESCRIPTION
-  tags = PluginBundle.TAGS
+  website = "https://github.com/RBusarow/ModuleCheck"
+  vcsUrl = "https://github.com/RBusarow/ModuleCheck"
+  description = "Fast dependency graph validation for gradle"
+  tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
 
   plugins {
     getByName("moduleCheck") {
-      displayName = PluginBundle.DISPLAY_NAME
+      displayName = "Fast dependency graph validation for gradle"
     }
   }
 }
