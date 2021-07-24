@@ -136,6 +136,6 @@ class KotlinFile(
   }
 
   companion object {
-    private val CHILD_PARAMETERS_REGEX = """^[a-zA-Z._`]*""".toRegex()
+    private val CHILD_PARAMETERS_REGEX = """^[a-zA-Z\d._`]*""".toRegex()
   }
 }

@@ -87,16 +87,16 @@ open class ModuleCheckExtension @Inject constructor(
     set(value) = autoCorrectProp.set(value)
 
   @get:Internal
-  val alwaysIgnoreProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
-  override var alwaysIgnore: Set<String>
-    @Internal get() = alwaysIgnoreProp.get()
-    set(value) = alwaysIgnoreProp.set(value)
+  val ignoreUnusedFindingProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
+  override var ignoreUnusedFinding: Set<String>
+    @Internal get() = ignoreUnusedFindingProp.get()
+    set(value) = ignoreUnusedFindingProp.set(value)
 
   @get:Internal
-  val ignoreAllProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
-  override var ignoreAll: Set<String>
-    @Internal get() = ignoreAllProp.get()
-    set(value) = ignoreAllProp.set(value)
+  val doNotCheckProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
+  override var doNotCheck: Set<String>
+    @Internal get() = doNotCheckProp.get()
+    set(value) = doNotCheckProp.set(value)
 
   @get:Internal
   val additionalKaptMatchersProp: ListProperty<KaptMatcher> =

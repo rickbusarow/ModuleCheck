@@ -186,6 +186,7 @@ class GradleProjectProvider(
   private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> =
     lazy {
       val map = configurations
+        .filterNot { it.name == "ktlintRuleset" }
         .map { config ->
           config.name.asConfigurationName() to config.dependencies.withType(ProjectDependency::class.java)
             .map {

@@ -51,8 +51,8 @@ internal class RulesRegistrationTest : HermitJUnit5() {
 
 data class TestSettings(
   override var autoCorrect: Boolean = false,
-  override var alwaysIgnore: Set<String> = emptySet(),
-  override var ignoreAll: Set<String> = emptySet(),
+  override var ignoreUnusedFinding: Set<String> = emptySet(),
+  override var doNotCheck: Set<String> = emptySet(),
   override var additionalKaptMatchers: List<KaptMatcher> = emptyList(),
   override val checks: ChecksSettings = ChecksExtension(),
   override val sort: SortSettings = SortExtension()

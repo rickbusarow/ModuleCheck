@@ -19,23 +19,31 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import hermit.test.junit.HermitJUnit5
-import hermit.test.resets
 import io.kotest.matchers.collections.shouldContain
 import modulecheck.specs.*
-import modulecheck.testing.tempDir
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
 import java.nio.file.Path
+import kotlin.properties.Delegates
 import io.kotest.matchers.shouldBe as kotestShouldBe
 
 abstract class BaseTest : HermitJUnit5() {
 
-  val testProjectDir by tempDir()
+  val testProjectDir by resets {
+    val className = testInfo.testClass.get().simpleName
+      .replace("[^a-zA-Z0-9]".toRegex(), "_")
+
+    val testName = testInfo.displayName
+      .replace("[^a-zA-Z0-9]".toRegex(), "_")
+      .replace("_{2,}".toRegex(), "_")
+      .removeSuffix("_")
+
+    File("build/tests/$className/$testName")
+  }
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -55,7 +63,14 @@ abstract class BaseTest : HermitJUnit5() {
       .withProjectDir(testProjectDir)
   }
 
-  private var testInfo: TestInfo? = null
+  private var testInfo: TestInfo by Delegates.notNull()
+
+  // This is automatically injected by JUnit5
+  @BeforeEach
+  internal fun injectTestInfo(testInfo: TestInfo) {
+    this.testInfo = testInfo
+    testProjectDir.delete()
+  }
 
   fun build(vararg tasks: String): BuildResult {
     return gradleRunner.withArguments(*tasks).build()
@@ -70,16 +85,6 @@ abstract class BaseTest : HermitJUnit5() {
 
     result.tasks.map { it.outcome } shouldContain TaskOutcome.FAILED
     messageBlock(result.output.fixPath())
-  }
-
-  @BeforeEach
-  fun beforeEach(testInfo: TestInfo) {
-    this.testInfo = testInfo
-  }
-
-  @AfterEach
-  fun afterEach() {
-    testInfo = null
   }
 
   @Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")

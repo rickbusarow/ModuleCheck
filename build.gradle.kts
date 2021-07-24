@@ -39,9 +39,6 @@ plugins {
   id("com.osacky.doctor") version "0.7.1"
   id("com.dorongold.task-tree") version "2.1.0"
   base
-  // can be removed for Kotlin Gradle Plugin 1.5.10
-  // workaround for https://youtrack.jetbrains.com/issue/KT-46368#focus=Comments-27-4868598.0-0
-  id("dev.zacsweers.kgp-150-leak-patcher") version "1.1.0"
 }
 
 allprojects {

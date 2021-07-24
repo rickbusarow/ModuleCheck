@@ -31,6 +31,7 @@ class UnusedDependencyRule(
   override fun check(project: Project2): List<UnusedDependency> {
     return project[UnusedDependencies]
       .all()
+      .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
       .distinctBy { it.elementOrNull() }
   }
 }

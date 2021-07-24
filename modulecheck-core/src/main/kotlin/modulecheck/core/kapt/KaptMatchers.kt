@@ -69,7 +69,9 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
       "dagger\\.assisted\\.AssistedInject",
       "dagger\\.assisted\\.AssistedFactory",
       "com\\.squareup\\.anvil\\.annotations\\.\\*",
-      "com\\.squareup\\.anvil\\.annotations\\.ContributesTo"
+      "com\\.squareup\\.anvil\\.annotations\\.ContributesTo",
+      "com\\.squareup\\.anvil\\.annotations\\.MergeComponent",
+      "com\\.squareup\\.anvil\\.annotations\\.MergeSubomponent"
     )
   ),
   KaptMatcher(

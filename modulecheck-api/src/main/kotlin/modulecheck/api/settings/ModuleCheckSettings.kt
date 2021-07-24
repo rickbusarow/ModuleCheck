@@ -20,8 +20,29 @@ import modulecheck.api.KaptMatcher
 interface ModuleCheckSettings {
 
   var autoCorrect: Boolean
-  var alwaysIgnore: Set<String>
-  var ignoreAll: Set<String>
+
+  /**
+   * Set of modules which are allowed to be unused.
+   *
+   * For instance, given:
+   * ```
+   * ignoreUnusedFinding = setOf(":core")
+   * ```
+   * If a module declares `:core` as a dependency but does not use it, no finding will be reported.
+   */
+  var ignoreUnusedFinding: Set<String>
+
+  /**
+   * Set of modules which will not be excluded from error reporting.
+   * The most common use-case would be if the module is the root of a dependency graph,
+   * like an Android application module, and it needs everything in its classpath
+   * for dependency injection purposes.
+   */
+  var doNotCheck: Set<String>
+
+  /**
+   * List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck.
+   */
   var additionalKaptMatchers: List<KaptMatcher>
 
   val checks: ChecksSettings

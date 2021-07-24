@@ -58,7 +58,7 @@ abstract class ModuleCheckTask :
       project
         .allprojects
         .filter { it.buildFile.exists() }
-        .filterNot { it.path in settings.ignoreAll }
+        .filterNot { it.path in settings.doNotCheck }
         .map { projectProvider.get(it.path) }
         .getFindings()
         .distinct()

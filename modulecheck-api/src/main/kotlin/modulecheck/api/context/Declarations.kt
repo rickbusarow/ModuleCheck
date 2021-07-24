@@ -53,7 +53,17 @@ data class Declarations(
           set
         }
 
-      return Declarations(ConcurrentHashMap(map))
+      return Declarations(ConcurrentHashMap(map)).also {
+        println(""" //////////////////////////////////////////
+          |
+          |$it
+          |
+          |
+          |
+          |
+          |
+        """.trimMargin())
+      }
     }
   }
 }
