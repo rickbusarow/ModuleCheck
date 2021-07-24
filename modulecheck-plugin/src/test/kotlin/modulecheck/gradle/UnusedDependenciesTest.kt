@@ -497,6 +497,84 @@ class UnusedDependenciesTest : BaseTest() {
   }
 
   @Test
+  fun `module with a static member declaration used via a wildcard import should not be unused`() {
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addRawFile(
+            "MyFile.kt", """
+            package com.example.app
+
+            import com.example.lib1.*
+
+            val theView = Lib1View.build()
+          """.trimIndent()
+          )
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubproject(
+        ProjectSpec("lib-1") {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/java")) {
+              addFileSpec(
+                FileSpec.builder("com.example.lib1", "Lib1View")
+                  .addType(
+                    TypeSpec.classBuilder("Lib1View")
+                      .addType(
+                        TypeSpec.companionObjectBuilder()
+                          .addFunction(
+                            FunSpec.builder("build")
+                              .build()
+                          )
+                          .build()
+                      )
+                      .build()
+                  )
+                  .build()
+              )
+            }
+          )
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addProjectDependency("api", jvmSub1)
+            }
+          )
+        }
+      )
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `module with a string resource used in subject module should not be unused`() {
     val appFile = FileSpec.builder("com.example.app", "MyApp")
       .addType(

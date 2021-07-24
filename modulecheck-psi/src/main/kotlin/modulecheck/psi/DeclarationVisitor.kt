@@ -26,7 +26,7 @@ class DeclarationVisitor : KtTreeVisitorVoid() {
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
     if (!declaration.isPrivateOrInternal()) {
       declaration.fqName?.let {
-        declarations.add(it.asString().asDeclaractionName())
+        declarations.add(it.asString().replace(".Companion", "").asDeclaractionName())
       }
     }
 
