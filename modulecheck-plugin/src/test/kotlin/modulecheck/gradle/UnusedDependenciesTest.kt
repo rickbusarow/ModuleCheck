@@ -422,7 +422,6 @@ class UnusedDependenciesTest : BaseTest() {
 
   @Test
   fun `module with a declaration used via a wildcard import should not be unused`() {
-
     val appProject = ProjectSpec("app") {
       addBuildSpec(
         ProjectBuildSpec {
@@ -435,13 +434,14 @@ class UnusedDependenciesTest : BaseTest() {
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/java")) {
           addRawFile(
-            "MyFile.kt", """
+            "MyFile.kt",
+            """
             package com.example.app
 
             import com.example.lib1.*
 
             val theView = Lib1View()
-          """.trimIndent()
+            """.trimIndent()
           )
         }
       )
@@ -498,7 +498,6 @@ class UnusedDependenciesTest : BaseTest() {
 
   @Test
   fun `module with a static member declaration used via a wildcard import should not be unused`() {
-
     val appProject = ProjectSpec("app") {
       addBuildSpec(
         ProjectBuildSpec {
@@ -511,13 +510,14 @@ class UnusedDependenciesTest : BaseTest() {
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/java")) {
           addRawFile(
-            "MyFile.kt", """
+            "MyFile.kt",
+            """
             package com.example.app
 
             import com.example.lib1.*
 
             val theView = Lib1View.build()
-          """.trimIndent()
+            """.trimIndent()
           )
         }
       )
