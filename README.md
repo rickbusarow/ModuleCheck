@@ -1,3 +1,8 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.rickbusarow.modulecheck/modulecheck-api?style=flat-square)](https://search.maven.org/search?q=com.rickbusarow.modulecheck)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/com.rickbusarow.module-check?style=flat-square)](https://plugins.gradle.org/plugin/com.rickbusarow.module-check)
+[![License](https://img.shields.io/badge/license-apache2.0-blue?style=flat-square.svg)](https://opensource.org/licenses/Apache-2.0)
+
+
 ### This is a work in progress, in a very early state, and there are bugs.
 
 ___
