@@ -14,7 +14,7 @@
  */
 
 module.exports = {
-  Basics: ["quickstart", "configuration", "changelog"],
+  Basics: ["quickstart", "configuration"],
   Rules: [
     "rules/unused",
     "rules/redundant",
