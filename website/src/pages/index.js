@@ -85,6 +85,14 @@ function Home() {
                 src="https://img.shields.io/maven-central/v/com.rickbusarow.ModuleCheck/ModuleCheck-api.svg?label=release&style=for-the-badge&color=aa0055"
                 alt="version badge"/>
             </a>
+            
+            &nbsp;
+
+            <a href="https://plugins.gradle.org/plugin/com.rickbusarow.module-check">
+              <img 
+                src="https://img.shields.io/gradle-plugin-portal/v/com.rickbusarow.module-check?style=for-the-badge"
+                alt="Gradle Plugin Portal" />
+            </a>
 
             &nbsp;
 
