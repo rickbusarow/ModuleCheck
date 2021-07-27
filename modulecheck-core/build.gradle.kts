@@ -15,7 +15,7 @@
 
 plugins {
   javaLibrary
-  `maven-publish`
+  id("com.vanniktech.maven.publish")
 }
 
 dependencies {
@@ -37,18 +37,4 @@ dependencies {
 
   testImplementation(projects.modulecheckInternalTesting)
   testImplementation(projects.modulecheckSpecs)
-}
-
-publishing {
-  publications {
-    create<MavenPublication>("maven") {
-
-      groupId = "com.rickbusarow.modulecheck"
-      artifactId = "modulecheck-core"
-
-      version = libs.versions.versionName.get()
-
-      from(components["java"])
-    }
-  }
 }
