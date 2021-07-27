@@ -80,9 +80,9 @@ function Home() {
       <main>
         <div className={styles.badges}>
           <div className="container">
-            <a href="https://search.maven.org/search?q=g:com.rickbusarow.ModuleCheck">
+            <a href="https://search.maven.org/search?q=g:com.rickbusarow.modulecheck">
               <img
-                src="https://img.shields.io/maven-central/v/com.rickbusarow.ModuleCheck/ModuleCheck-api.svg?label=release&style=for-the-badge&color=aa0055"
+                src="https://img.shields.io/maven-central/v/com.rickbusarow.modulecheck/modulecheck-api.svg?label=release&style=for-the-badge&color=aa0055"
                 alt="version badge"/>
             </a>
             
