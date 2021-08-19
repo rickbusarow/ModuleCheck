@@ -25,7 +25,7 @@ buildscript {
     maven("https://oss.sonatype.org/content/repositories/snapshots")
   }
   dependencies {
-    classpath("com.android.tools.build:gradle:7.0.0")
+    classpath("com.android.tools.build:gradle:7.0.1")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
     classpath("com.vanniktech:gradle-maven-publish-plugin:0.17.0")
