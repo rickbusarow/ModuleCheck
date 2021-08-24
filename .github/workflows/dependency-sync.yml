@@ -1,0 +1,60 @@
+name: DependencySync
+
+on:
+  workflow_dispatch:
+  pull_request_target:
+    branches:
+      - main
+
+jobs:
+  cancel-other-jobs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # cancel previous jobs
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        env:
+          access_token: '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
+
+  build:
+
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 14
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/buildSrc/.gradle
+            ~/buildSrc/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/libs.versions.toml', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Copy Dependabot dependencies to toml
+        run: ./gradlew dependencySync --no-daemon
+
+      # If the copy generated changes, commit and push those changes.
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update dependencies from dependabot
+          commit_options: '--no-verify --signoff'
