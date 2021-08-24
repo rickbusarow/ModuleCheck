@@ -25,7 +25,7 @@ dependencies {
   api(projects.modulecheckApi)
   api(projects.modulecheckPsi)
 
-  implementation(libs.androidGradlePlugin)
+  implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.semVer)
