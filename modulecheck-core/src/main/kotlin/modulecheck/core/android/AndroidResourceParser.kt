@@ -32,7 +32,6 @@ object AndroidResourceParser {
       .walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "xml" }
-
       .onEach { file ->
         val parsed = parser.parse(file)
 
@@ -49,7 +48,6 @@ object AndroidResourceParser {
           }
         }
       }
-
       .mapNotNull { file -> AndroidResource.fromFile(file) }
       .toSet() + values
 
