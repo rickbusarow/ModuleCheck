@@ -52,7 +52,6 @@ obj/
 /.idea/vcs.xml
 captures/
 java_pid1690.hprof
-/.idea/copyright/profiles_settings.xml
 /.idea/compiler.xml
 !/.idea/codeStyles/
 !/gradle/wrapper/gradle-wrapper.properties
