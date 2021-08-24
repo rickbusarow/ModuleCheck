@@ -1,0 +1,54 @@
+name-template: '$RESOLVED_VERSION'
+tag-template: '$RESOLVED_VERSION'
+
+categories:
+  - title: '🚀 Features'
+    labels:
+      - 'feature'
+  - title: '💥 Breaking Changes'
+    labels:
+      - 'api-breaking change'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
+  - title: '🧰 Maintenance'
+    labels:
+      - 'chore'
+      - 'dependencies'
+  - title: 'ℹ️ Website'
+    labels:
+      - 'documentation'
+
+change-template: '- $TITLE [@$AUTHOR](https://github.com/$AUTHOR) ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
+
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+
+version-resolver:
+  major:
+    labels:
+      - 'major'
+  minor:
+    labels:
+      - 'minor'
+  patch:
+    labels:
+      - 'patch'
+  default: patch
+
+template: |
+  ## Changes
+
+  $CHANGES
+
+autolabeler:
+  - label: 'documentation'
+    files:
+      - '*.md'
+  - label: 'dependencies'
+    branch:
+      - '/dependabot\/.+/'
+
+exclude-labels:
+  - no-changelog
