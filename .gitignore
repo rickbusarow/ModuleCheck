@@ -41,6 +41,7 @@ Thumbs.db
 !/.idea/encodings.xml
 !/.idea/copyright/
 !/.idea/compiler.xml
+!/.idea/icon.png
 
 /gradle/profiler/gradle-user-home/
 !/gradle/profiler/bin/
