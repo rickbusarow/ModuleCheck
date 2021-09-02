@@ -18,7 +18,6 @@ package modulecheck.api
 import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.ProjectContextImpl
-import net.swiftzer.semver.SemVer
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
@@ -32,7 +31,6 @@ data class AndroidProject2Impl(
   override val sourceSets: Map<SourceSetName, SourceSet>,
   override val projectCache: ConcurrentHashMap<String, Project2>,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
-  override val agpVersion: SemVer,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
   override val resourceFiles: Set<File>,

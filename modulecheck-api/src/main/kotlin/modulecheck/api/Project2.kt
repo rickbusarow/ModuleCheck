@@ -16,10 +16,9 @@
 package modulecheck.api
 
 import modulecheck.api.anvil.AnvilGradlePlugin
-import modulecheck.api.context.*
-import net.swiftzer.semver.SemVer
+import modulecheck.api.context.ProjectContext
+import modulecheck.api.context.PublicDependencies
 import java.io.File
-import java.util.concurrent.*
 import kotlin.contracts.contract
 
 @Suppress("TooManyFunctions")
@@ -77,7 +76,6 @@ fun Project2.sourceOf(
 }
 
 interface AndroidProject2 : Project2 {
-  val agpVersion: SemVer
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>

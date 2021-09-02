@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package modulecheck.gradle
 
-import com.android.Version
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
@@ -53,8 +54,6 @@ class GradleProjectProvider(
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects.associateBy { it.path }
-
-  private val agpVersion: SemVer by lazy(NONE) { SemVer.parse(Version.ANDROID_GRADLE_PLUGIN_VERSION) }
 
   override fun get(path: String): Project2 {
     return projectCache.getOrPut(path) {
@@ -101,7 +100,6 @@ class GradleProjectProvider(
         sourceSets = gradleProject.androidSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
-        agpVersion = agpVersion,
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         resourceFiles = gradleProject.androidResourceFiles(),

@@ -15,7 +15,6 @@
 
 package modulecheck.gradle
 
-import hermit.test.resets
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
@@ -102,8 +101,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -142,8 +139,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -184,8 +179,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -228,8 +221,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -274,8 +265,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -352,8 +341,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -394,8 +381,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -438,8 +423,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -484,8 +467,6 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -536,7 +517,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 0):  unused R file generation:"
         }
       }
 
@@ -576,7 +557,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (23, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 0):  unused R file generation:"
         }
       }
 

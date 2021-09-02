@@ -20,12 +20,9 @@ import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.psi.DslBlockVisitor
-import net.swiftzer.semver.SemVer
 
 internal val androidBlockParser = DslBlockVisitor("android")
 internal val androidBlockRegex = "^android \\{".toRegex()
-
-private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 1, patch = 0)
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings
@@ -39,12 +36,6 @@ class DisableAndroidResourcesRule(
   @Suppress("ReturnCount")
   override fun check(project: Project2): List<UnusedResourcesGenerationFinding> {
     val androidProject = project as? AndroidProject2 ?: return emptyList()
-
-    // grabs the AGP version of the client project - not this plugin
-    val agpVersion = androidProject.agpVersion
-
-    // minimum AGP version for this feature is 4.1.0, so don't bother checking below that
-    if (agpVersion < MINIMUM_ANDROID_RESOURCES_VERSION) return emptyList()
 
     @Suppress("UnstableApiUsage")
     if (!androidProject.androidResourcesEnabled) return emptyList()

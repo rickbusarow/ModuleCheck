@@ -18,7 +18,6 @@ package modulecheck.gradle
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.PropertySpec
-import hermit.test.resets
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
@@ -146,8 +145,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -238,8 +235,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -281,8 +276,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -326,8 +319,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -373,8 +364,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -450,8 +439,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -493,8 +480,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -538,8 +523,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -585,8 +568,6 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         |  defaultConfig {
         |    minSdkVersion(23)
         |    targetSdkVersion(30)
-        |    versionCode = 1
-        |    versionName = "1.0"
         |  }
         |
         |  buildTypes {
@@ -637,7 +618,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (22, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 
@@ -677,7 +658,7 @@ class DisableAndroidViewBindingRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (24, 0):  unused ViewBinding generation:".fixPath()
+          it shouldContain "lib1/build.gradle.kts: (22, 0):  unused ViewBinding generation:".fixPath()
         }
       }
 

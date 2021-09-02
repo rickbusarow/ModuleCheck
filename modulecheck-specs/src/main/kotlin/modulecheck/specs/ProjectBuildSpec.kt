@@ -127,8 +127,6 @@ public data class ProjectBuildSpec(
       |  defaultConfig {
       |    minSdkVersion(23)
       |    targetSdkVersion(30)
-      |    versionCode = 1
-      |    versionName = "1.0"
       |  }
       |
       |  buildTypes {
