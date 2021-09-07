@@ -22,7 +22,7 @@ dependencies {
 
   api(libs.kotlin.compiler)
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.8")
+  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
 
   compileOnly(gradleApi())
 
