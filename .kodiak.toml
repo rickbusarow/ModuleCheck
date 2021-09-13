@@ -4,12 +4,12 @@
 version = 1 # this is required but 1 is currently the only option
 
 [update]
-always = true # default: false
-require_automerge_label = false # default: true
+always = false # default: false
+require_automerge_label = true # default: true
 automerge_label = "automerge" # default: automerge
 # if using `update.always`, add dependabot to `update.ignore_usernames` to allow
 # dependabot to update and close stale dependency upgrades.
-ignored_usernames = ["dependabot"]
+# ignored_usernames = ["dependabot"]
 
 [merge]
 # if a PR is ready, merge it, don't place it in the merge queue.
