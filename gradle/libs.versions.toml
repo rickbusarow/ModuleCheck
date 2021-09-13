@@ -8,8 +8,8 @@ dependencyAnalysis = "0.63.0"
 dokka = "1.4.20"
 gradleDoctor = "0.7.0"
 groovy = "3.0.8"
-hermit = "0.9.3"
-jUnit = "5.7.2"
+hermit = "0.9.5"
+jUnit = "5.8.0"
 knit = "0.2.3"
 kotest = "4.6.0"
 kotlin = "1.5.30"
@@ -52,7 +52,7 @@ kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 
-kotlinPoet = "com.squareup:kotlinpoet:1.8.0"
+kotlinPoet = "com.squareup:kotlinpoet:1.9.0"
 
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 
