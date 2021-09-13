@@ -35,7 +35,7 @@ hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref =
 hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
 hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
 
-javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.22.1"
+javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.23.0"
 
 javax-inject = "javax.inject:javax.inject:1"
 
