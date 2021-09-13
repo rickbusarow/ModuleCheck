@@ -26,7 +26,7 @@ dependencies {
   dependencySync("com.rickbusarow.hermit:hermit-junit4:0.9.3")
   dependencySync("com.rickbusarow.hermit:hermit-junit5:0.9.3")
   dependencySync("com.rickbusarow.hermit:hermit-mockk:0.9.3")
-  dependencySync("com.squareup.anvil:gradle-plugin:2.2.2")
+  dependencySync("com.squareup.anvil:gradle-plugin:2.3.4")
   dependencySync("com.squareup:kotlinpoet:1.8.0")
   dependencySync("io.kotest:kotest-assertions-core-jvm:4.6.0")
   dependencySync("io.kotest:kotest-property-jvm:4.6.0")
