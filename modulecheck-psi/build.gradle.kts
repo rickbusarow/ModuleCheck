@@ -26,7 +26,7 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.androidGradlePlugin)
+  implementation(libs.agp)
   implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
 

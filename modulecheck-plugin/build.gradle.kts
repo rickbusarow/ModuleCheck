@@ -29,10 +29,10 @@ dependencies {
   api(projects.modulecheckApi)
   api(projects.modulecheckCore)
 
-  implementation(libs.androidGradlePlugin)
+  implementation(libs.agp)
   implementation(libs.anvil)
   implementation(libs.javaParser)
-  implementation(libs.kotlin.gradlePlugin)
+  implementation(libs.kotlin.gradle.plugin.api)
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
 

@@ -1,5 +1,5 @@
 [versions]
-androidTools = "4.2.1"
+androidTools = "7.0.1"
 anvil = "2.2.2"
 benManes = "0.36.0"
 changeTracker = "0.7.4"
@@ -22,35 +22,43 @@ taskTree = "1.5"
 versionName = "0.10.0"
 
 [libraries]
+agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 
-androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
-javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.22.1"
-javax-inject = "javax.inject:javax.inject:1"
-kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
-kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
-kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
-kotlinPoet = "com.squareup:kotlinpoet:1.8.0"
-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
-semVer = "net.swiftzer.semver:semver:1.1.1"
 
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
 
+hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "hermit" }
+hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "hermit" }
+hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "hermit" }
+hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
+hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
+
+javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.22.1"
+
+javax-inject = "javax.inject:javax.inject:1"
+
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
-junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
 
 kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 kotest-properties = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 
-hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "hermit" }
-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "hermit" }
-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
-hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "hermit" }
+kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+kotlinPoet = "com.squareup:kotlinpoet:1.8.0"
+
+kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
+
+kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
+
+semVer = "net.swiftzer.semver:semver:1.1.1"
 
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]

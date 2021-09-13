@@ -29,7 +29,7 @@ dependencies {
 
   compileOnly(libs.groovyXml)
 
-  implementation(libs.androidGradlePlugin)
+  implementation(libs.agp)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)

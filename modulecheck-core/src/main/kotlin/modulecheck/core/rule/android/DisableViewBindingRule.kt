@@ -23,10 +23,7 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
-import net.swiftzer.semver.SemVer
 import java.io.File
-
-private val MINIMUM_ANDROID_RESOURCES_VERSION = SemVer(major = 4, minor = 0, patch = 0)
 
 class DisableViewBindingRule(
   override val settings: ModuleCheckSettings
@@ -39,12 +36,6 @@ class DisableViewBindingRule(
   @Suppress("ReturnCount")
   override fun check(project: Project2): List<DisableViewBindingGenerationFinding> {
     val androidProject = project as? AndroidProject2 ?: return emptyList()
-
-    // grabs the AGP version of the client project - not this plugin
-    val agpVersion = androidProject.agpVersion
-
-    // minimum AGP version for this feature is 4.0.0, so don't bother checking below that
-    if (agpVersion < MINIMUM_ANDROID_RESOURCES_VERSION) return emptyList()
 
     // no chance of a finding if the feature's already disabled
     @Suppress("UnstableApiUsage")

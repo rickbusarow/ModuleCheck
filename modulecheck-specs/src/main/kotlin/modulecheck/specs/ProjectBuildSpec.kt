@@ -18,7 +18,7 @@ package  modulecheck.specs
 import java.nio.file.Path
 
 public val DEFAULT_GRADLE_VERSION: String = System
-  .getProperty("modulecheck.gradleVersion", "7.0.2")
+  .getProperty("modulecheck.gradleVersion", "7.2")
   /*
   * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command line argument of "7".
   * That version doesn't resolve.  So if the String doesn't contain a period, just append ".0"
@@ -27,9 +27,9 @@ public val DEFAULT_GRADLE_VERSION: String = System
     if (prop.contains('.')) prop else "$prop.0"
   }
 public val DEFAULT_KOTLIN_VERSION: String =
-  System.getProperty("modulecheck.kotlinVersion", "1.5.10")
+  System.getProperty("modulecheck.kotlinVersion", "1.5.30")
 public val DEFAULT_AGP_VERSION: String =
-  System.getProperty("modulecheck.agpVersion", "7.0.0-beta02")
+  System.getProperty("modulecheck.agpVersion", "7.0.2")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
@@ -127,8 +127,6 @@ public data class ProjectBuildSpec(
       |  defaultConfig {
       |    minSdkVersion(23)
       |    targetSdkVersion(30)
-      |    versionCode = 1
-      |    versionName = "1.0"
       |  }
       |
       |  buildTypes {
