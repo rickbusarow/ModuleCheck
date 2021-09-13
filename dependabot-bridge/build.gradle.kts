@@ -20,7 +20,7 @@ plugins {
 dependencies {
 
   dependencySync("com.android.tools.build:gradle:7.0.1")
-  dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.22.1")
+  dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.23.0")
   dependencySync("com.rickbusarow.hermit:hermit-core:0.9.3")
   dependencySync("com.rickbusarow.hermit:hermit-coroutines:0.9.3")
   dependencySync("com.rickbusarow.hermit:hermit-junit4:0.9.3")
