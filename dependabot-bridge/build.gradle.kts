@@ -35,7 +35,7 @@ dependencies {
   dependencySync("net.swiftzer.semver:semver:1.1.1")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.8")
   dependencySync("org.codehaus.groovy:groovy:3.0.8")
-  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.10")
+  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.30")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.10")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
   dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.5.10")
