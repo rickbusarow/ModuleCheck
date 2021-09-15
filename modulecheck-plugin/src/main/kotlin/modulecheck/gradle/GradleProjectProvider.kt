@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION") // AGP Variant API's are deprecated
+// AGP Variant API's are deprecated
+// Gradle's Convention API's are deprecated, but only available in 7.2+
+@file:Suppress("DEPRECATION")
 
 package modulecheck.gradle
 
@@ -38,8 +40,9 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
-import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.gradle.api.internal.HasConvention
+import org.gradle.api.plugins.JavaPluginConvention
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -196,34 +199,31 @@ class GradleProjectProvider(
       ProjectDependencies(map)
     }
 
-  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
-    val kotlinSourceSets = extensions
-      .findByType(KotlinProjectExtension::class.java)
-      ?.sourceSets
-
-    return extensions
-      .findByType(JavaPluginExtension::class.java)
-      ?.sourceSets
-      ?.map { gradleSourceSet ->
-
-        val files = kotlinSourceSets
-          ?.findByName(gradleSourceSet.name)
-          ?.kotlin
-          ?.sourceDirectories
-          ?.files
-          ?: gradleSourceSet.allJava.files
-
-        SourceSet(
-          name = gradleSourceSet.name.toSourceSetName(),
-          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
-          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
-          jvmFiles = files,
-          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
+    .findPlugin(JavaPluginConvention::class.java)
+    ?.sourceSets
+    ?.map { gradleSourceSet ->
+      val jvmFiles = (
+        (gradleSourceSet as? HasConvention)
+          ?.convention
+          ?.plugins
+          ?.get("kotlin") as? KotlinSourceSet
         )
-      }
-      ?.associateBy { it.name }
-      .orEmpty()
-  }
+        ?.kotlin
+        ?.sourceDirectories
+        ?.files
+        ?: gradleSourceSet.allJava.files
+
+      SourceSet(
+        name = gradleSourceSet.name.toSourceSetName(),
+        classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
+        outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
+        jvmFiles = jvmFiles,
+        resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+      )
+    }
+    ?.associateBy { it.name }
+    .orEmpty()
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
     /*

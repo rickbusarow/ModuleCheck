@@ -105,6 +105,7 @@ public data class ProjectBuildSpec(
       |  dependencies {
       |    classpath("com.android.tools.build:gradle:$agpVersion")
       |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
       |  }
       |}
       |
