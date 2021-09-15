@@ -206,22 +206,22 @@ class GradleProjectProvider(
           ?.convention
           ?.plugins
           ?.get("kotlin") as? KotlinSourceSet
-        )
-        ?.kotlin
-        ?.sourceDirectories
-        ?.files
-        ?: it.allJava.files
+          ?.kotlin
+          ?.sourceDirectories
+          ?.files
+          ?: gradleSourceSet.allJava.files
 
-      SourceSet(
-        name = it.name.toSourceSetName(),
-        classpathFiles = it.compileClasspath.existingFiles().files,
-        outputFiles = it.output.classesDirs.existingFiles().files,
-        jvmFiles = jvmFiles,
-        resourceFiles = it.resources.sourceDirectories.files
-      )
-    }
-    ?.associateBy { it.name }
-    .orEmpty()
+        SourceSet(
+          name = gradleSourceSet.name.toSourceSetName(),
+          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
+          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
+          jvmFiles = files,
+          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+        )
+      }
+      ?.associateBy { it.name }
+      .orEmpty()
+  }
 
   // This version uses Gradle 7.2+ code which is not backwards compatible
   // It was kind of a pain to write, so uncomment if the min Gradle version is ever 7.2 or higher
