@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION") // AGP Variant API's are deprecated
+// AGP Variant API's are deprecated
+// Gradle's Convention API's are deprecated, but only available in 7.2+
+@file:Suppress("DEPRECATION")
 
 package modulecheck.gradle
 
@@ -200,61 +202,27 @@ class GradleProjectProvider(
   private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
     .findPlugin(JavaPluginConvention::class.java)
     ?.sourceSets
-    ?.map {
+    ?.map { gradleSourceSet ->
       val jvmFiles = (
-        (it as? HasConvention)
+        (gradleSourceSet as? HasConvention)
           ?.convention
           ?.plugins
-          ?.get("kotlin") as? KotlinSourceSet
-          ?.kotlin
-          ?.sourceDirectories
-          ?.files
-          ?: gradleSourceSet.allJava.files
+          ?.get("kotlin") as? KotlinSourceSet)
+        ?.kotlin
+        ?.sourceDirectories
+        ?.files
+        ?: gradleSourceSet.allJava.files
 
-        SourceSet(
-          name = gradleSourceSet.name.toSourceSetName(),
-          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
-          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
-          jvmFiles = files,
-          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
-        )
-      }
-      ?.associateBy { it.name }
-      .orEmpty()
-  }
-
-  // This version uses Gradle 7.2+ code which is not backwards compatible
-  // It was kind of a pain to write, so uncomment if the min Gradle version is ever 7.2 or higher
-  /*
-  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
-    val kotlinSourceSets = extensions
-      .findByType(KotlinProjectExtension::class.java)
-      ?.sourceSets
-
-    return extensions
-      .findByType(JavaPluginExtension::class.java)
-      ?.sourceSets
-      ?.map { gradleSourceSet ->
-
-        val files = kotlinSourceSets
-          ?.findByName(gradleSourceSet.name)
-          ?.kotlin
-          ?.sourceDirectories
-          ?.files
-          ?: gradleSourceSet.allJava.files
-
-        SourceSet(
-          name = gradleSourceSet.name.toSourceSetName(),
-          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
-          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
-          jvmFiles = files,
-          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
-        )
-      }
-      ?.associateBy { it.name }
-      .orEmpty()
-  }
-  */
+      SourceSet(
+        name = gradleSourceSet.name.toSourceSetName(),
+        classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
+        outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
+        jvmFiles = jvmFiles,
+        resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+      )
+    }
+    ?.associateBy { it.name }
+    .orEmpty()
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
     /*
