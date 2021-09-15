@@ -44,8 +44,7 @@ tasks.withType<KotlinCompile>()
 
       freeCompilerArgs = listOf(
         "-Xinline-classes",
-        "-Xopt-in=kotlin.ExperimentalStdlibApi",
-        "-Xuse-experimental=kotlin.contracts.ExperimentalContracts"
+        "-Xopt-in=kotlin.ExperimentalStdlibApi"
       )
     }
   }

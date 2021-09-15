@@ -51,21 +51,6 @@ allprojects {
     maven("https://jitpack.io")
     maven("https://s3-us-west-2.amazonaws.com/si-mobile-sdks/android/")
   }
-
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
-    .configureEach {
-
-      kotlinOptions {
-
-        jvmTarget = "1.8"
-
-        freeCompilerArgs = listOf(
-          "-Xinline-classes",
-          "-Xopt-in=kotlin.ExperimentalStdlibApi",
-          "-Xuse-experimental=kotlin.contracts.ExperimentalContracts"
-        )
-      }
-    }
 }
 
 @Suppress("DEPRECATION")
