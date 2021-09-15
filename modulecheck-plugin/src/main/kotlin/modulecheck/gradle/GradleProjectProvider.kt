@@ -38,8 +38,9 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
-import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import org.gradle.api.internal.HasConvention
+import org.gradle.api.plugins.JavaPluginConvention
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -196,6 +197,35 @@ class GradleProjectProvider(
       ProjectDependencies(map)
     }
 
+  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
+    .findPlugin(JavaPluginConvention::class.java)
+    ?.sourceSets
+    ?.map {
+      val jvmFiles = (
+        (it as? HasConvention)
+          ?.convention
+          ?.plugins
+          ?.get("kotlin") as? KotlinSourceSet
+        )
+        ?.kotlin
+        ?.sourceDirectories
+        ?.files
+        ?: it.allJava.files
+
+      SourceSet(
+        name = it.name.toSourceSetName(),
+        classpathFiles = it.compileClasspath.existingFiles().files,
+        outputFiles = it.output.classesDirs.existingFiles().files,
+        jvmFiles = jvmFiles,
+        resourceFiles = it.resources.sourceDirectories.files
+      )
+    }
+    ?.associateBy { it.name }
+    .orEmpty()
+
+  // This version uses Gradle 7.2+ code which is not backwards compatible
+  // It was kind of a pain to write, so uncomment if the min Gradle version is ever 7.2 or higher
+  /*
   private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
     val kotlinSourceSets = extensions
       .findByType(KotlinProjectExtension::class.java)
@@ -224,6 +254,7 @@ class GradleProjectProvider(
       ?.associateBy { it.name }
       .orEmpty()
   }
+  */
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
     /*
