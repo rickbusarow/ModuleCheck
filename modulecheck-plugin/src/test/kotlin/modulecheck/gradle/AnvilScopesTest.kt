@@ -50,7 +50,7 @@ class AnvilScopesTest : BaseTest() {
     jvmSub2.edit {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
-        addExternalDependency("implementation", "com.google.dagger:dagger:2.34.1")
+        addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
         addProjectDependency("implementation", jvmSub1)
       }
       addSrcSpec(
@@ -77,7 +77,7 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addExternalDependency("implementation", "com.google.dagger:dagger:2.34.1")
+          addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
           addProjectDependency("implementation", jvmSub1)
           addProjectDependency("implementation", jvmSub2)
         }

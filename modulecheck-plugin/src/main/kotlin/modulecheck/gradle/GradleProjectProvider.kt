@@ -207,7 +207,8 @@ class GradleProjectProvider(
         (gradleSourceSet as? HasConvention)
           ?.convention
           ?.plugins
-          ?.get("kotlin") as? KotlinSourceSet)
+          ?.get("kotlin") as? KotlinSourceSet
+        )
         ?.kotlin
         ?.sourceDirectories
         ?.files
