@@ -1,17 +1,17 @@
 [versions]
-androidTools = "7.0.1"
-anvil = "2.2.2"
+androidTools = "7.0.2"
+anvil = "2.3.4"
 benManes = "0.36.0"
 changeTracker = "0.7.4"
 compileSdk = "30"
 dependencyAnalysis = "0.63.0"
 dokka = "1.4.20"
 gradleDoctor = "0.7.0"
-groovy = "3.0.8"
+groovy = "3.0.9"
 hermit = "0.9.5"
 jUnit = "5.8.0"
-knit = "0.2.3"
-kotest = "4.6.0"
+knit = "0.3.0"
+kotest = "4.6.2"
 kotlin = "1.5.30"
 kotlinter = "3.4.4"
 mavenPublish = "0.13.0"
@@ -35,7 +35,7 @@ hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref =
 hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
 hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
 
-javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.22.1"
+javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.23.0"
 
 javax-inject = "javax.inject:javax.inject:1"
 

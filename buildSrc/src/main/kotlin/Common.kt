@@ -28,6 +28,12 @@ fun Project.common() {
         allWarningsAsErrors = false
 
         jvmTarget = "1.8"
+
+        freeCompilerArgs = freeCompilerArgs + listOf(
+          "-Xinline-classes",
+          "-Xopt-in=kotlin.ExperimentalStdlibApi",
+          "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+        )
       }
     }
 }
