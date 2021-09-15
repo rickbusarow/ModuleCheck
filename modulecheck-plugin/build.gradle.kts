@@ -32,6 +32,7 @@ dependencies {
   implementation(libs.agp)
   implementation(libs.anvil)
   implementation(libs.javaParser)
+  implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlin.gradle.plugin.api)
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
