@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION") // AGP Variant API's are deprecated
 
 package modulecheck.gradle
 
@@ -38,22 +38,20 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
-import org.gradle.api.internal.HasConvention
-import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.kotlin.dsl.findByType
-import org.gradle.kotlin.dsl.findPlugin
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
+import org.gradle.api.plugins.JavaPluginExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.LazyThreadSafetyMode.NONE
 
 class GradleProjectProvider(
-  private val rootGradleProject: GradleProject,
+  rootGradleProject: GradleProject,
   override val projectCache: ConcurrentHashMap<String, Project2>
 ) : ProjectProvider {
 
-  private val gradleProjects = rootGradleProject.allprojects.associateBy { it.path }
+  private val gradleProjects = rootGradleProject.allprojects
+    .associateBy { it.path }
 
   override fun get(path: String): Project2 {
     return projectCache.getOrPut(path) {
@@ -76,17 +74,17 @@ class GradleProjectProvider(
 
     val testedExtension = gradleProject
       .extensions
-      .findByType<LibraryExtension>()
+      .findByType(LibraryExtension::class.java)
       ?: gradleProject
         .extensions
-        .findByType<AppExtension>()
+        .findByType(AppExtension::class.java)
 
     val isAndroid = testedExtension != null
 
     val libraryExtension by lazy(NONE) {
       gradleProject
         .extensions
-        .findByType<LibraryExtension>()
+        .findByType(LibraryExtension::class.java)
     }
 
     return if (isAndroid) {
@@ -185,8 +183,9 @@ class GradleProjectProvider(
     lazy {
       val map = configurations
         .filterNot { it.name == "ktlintRuleset" }
-        .map { config ->
-          config.name.asConfigurationName() to config.dependencies.withType(ProjectDependency::class.java)
+        .associate { config ->
+          config.name.asConfigurationName() to config.dependencies
+            .withType(ProjectDependency::class.java)
             .map {
               ConfiguredProjectDependency(
                 configurationName = config.name.asConfigurationName(),
@@ -194,35 +193,37 @@ class GradleProjectProvider(
               )
             }
         }
-        .toMap()
       ProjectDependencies(map)
     }
 
-  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
-    .findPlugin(JavaPluginConvention::class)
-    ?.sourceSets
-    ?.map {
-      val jvmFiles = (
-        (it as? HasConvention)
-          ?.convention
-          ?.plugins
-          ?.get("kotlin") as? KotlinSourceSet
-        )
-        ?.kotlin
-        ?.sourceDirectories
-        ?.files
-        ?: it.allJava.files
+  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
+    val kotlinSourceSets = extensions
+      .findByType(KotlinProjectExtension::class.java)
+      ?.sourceSets
 
-      SourceSet(
-        name = it.name.toSourceSetName(),
-        classpathFiles = it.compileClasspath.existingFiles().files,
-        outputFiles = it.output.classesDirs.existingFiles().files,
-        jvmFiles = jvmFiles,
-        resourceFiles = it.resources.sourceDirectories.files
-      )
-    }
-    ?.associateBy { it.name }
-    .orEmpty()
+    return extensions
+      .findByType(JavaPluginExtension::class.java)
+      ?.sourceSets
+      ?.map { gradleSourceSet ->
+
+        val files = kotlinSourceSets
+          ?.findByName(gradleSourceSet.name)
+          ?.kotlin
+          ?.sourceDirectories
+          ?.files
+          ?: gradleSourceSet.allJava.files
+
+        SourceSet(
+          name = gradleSourceSet.name.toSourceSetName(),
+          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
+          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
+          jvmFiles = files,
+          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+        )
+      }
+      ?.associateBy { it.name }
+      .orEmpty()
+  }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
     /*
@@ -241,8 +242,9 @@ class GradleProjectProvider(
       ?: return null
 
     val enabled = extensions
-      .findByType<AnvilExtension>()
-      ?.generateDaggerFactories == true
+      .findByType(AnvilExtension::class.java)
+      ?.generateDaggerFactories
+      ?.get() == true
 
     return AnvilGradlePlugin(version, enabled)
   }
@@ -257,8 +259,8 @@ class GradleProjectProvider(
 
   private fun GradleProject.androidResourceFiles(): Set<File> {
     val testedExtension =
-      extensions.findByType<LibraryExtension>()
-        ?: extensions.findByType<AppExtension>()
+      extensions.findByType(LibraryExtension::class.java)
+        ?: extensions.findByType(AppExtension::class.java)
 
     return testedExtension
       ?.sourceSets
@@ -285,7 +287,7 @@ class GradleProjectProvider(
 
   private fun GradleProject.androidSourceSets(): Map<SourceSetName, SourceSet> {
     return extensions
-      .findByType<BaseExtension>()
+      .findByType(BaseExtension::class.java)
       ?.variants
       ?.flatMap { variant ->
 
@@ -303,13 +305,6 @@ class GradleProjectProvider(
               .javaDirectories
               .flatMap { it.listFiles().orEmpty().toList() }
               .toSet()
-
-            // val bootClasspath = project.files(baseExtension!!.bootClasspath)
-            // val classPath = variant
-            //   .getCompileClasspath(null)
-            //   .filter { it.exists() }
-            //   .plus(bootClasspath)
-            //   .toSet()
 
             val resourceFiles = sourceProvider
               .resDirectories
