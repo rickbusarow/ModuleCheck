@@ -38,7 +38,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.30")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.30")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
-  dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.5.30")
+  dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
   dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
   dependencySync("org.jmailen.gradle:kotlinter-gradle:3.4.4")
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.0")
