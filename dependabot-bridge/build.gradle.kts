@@ -42,6 +42,6 @@ dependencies {
   dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
   dependencySync("org.jmailen.gradle:kotlinter-gradle:3.4.4")
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.0")
-  dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.0")
+  dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.1")
   dependencySync("org.junit.jupiter:junit-jupiter-params:5.8.0")
 }
