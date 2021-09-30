@@ -748,4 +748,87 @@ class UnusedDependenciesTest : BaseTest() {
 
     build("moduleCheckUnusedDependency").shouldSucceed()
   }
+
+  @Test
+  fun `module with a declaration used via a class reference with wildcard import should not be unused`() {
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addRawFile(
+            "MyModule.kt",
+            """
+            package com.example.app
+
+            import com.example.lib1.*
+            import com.squareup.anvil.annotations.ContributesTo
+            import dagger.Module
+
+            @Module
+            @ContributesTo(AppScope::class)
+            object MyModule
+            """.trimIndent()
+          )
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubproject(
+        ProjectSpec("lib-1") {
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/java")) {
+              addRawFile(
+                "AppScope.kt", """
+                package com.example.lib1
+
+                import javax.inject.Scope
+                import kotlin.reflect.KClass
+
+                /**
+                 * Maybe this should just be part of Anvil's api?
+                 */
+                abstract class AppScope private constructor()
+
+                @Scope
+                @Retention(AnnotationRetention.RUNTIME)
+                annotation class SingleIn(val clazz: KClass<*>)
+              """.trimIndent()
+              )
+            }
+          )
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("kotlin(\"jvm\")")
+              addProjectDependency("api", jvmSub1)
+            }
+          )
+        }
+      )
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
 }

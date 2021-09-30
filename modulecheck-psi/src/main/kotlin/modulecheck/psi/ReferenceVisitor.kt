@@ -32,6 +32,12 @@ class ReferenceVisitor(
 
   val apiReferences: MutableSet<String> = mutableSetOf()
 
+  override fun visitReferenceExpression(expression: KtReferenceExpression) {
+    super.visitReferenceExpression(expression)
+
+    typeReferences.add(expression.text)
+  }
+
   override fun visitClassOrObject(classOrObject: KtClassOrObject) {
     super.visitClassOrObject(classOrObject)
 
