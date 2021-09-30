@@ -716,7 +716,8 @@ class UnusedDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
               addRawFile(
-                "AppScope.kt", """
+                "AppScope.kt",
+                """
                 package com.example.lib1
 
                 import javax.inject.Scope
@@ -730,7 +731,7 @@ class UnusedDependenciesTest : BaseTest() {
                 @Scope
                 @Retention(AnnotationRetention.RUNTIME)
                 annotation class SingleIn(val clazz: KClass<*>)
-              """.trimIndent()
+                """.trimIndent()
               )
             }
           )
