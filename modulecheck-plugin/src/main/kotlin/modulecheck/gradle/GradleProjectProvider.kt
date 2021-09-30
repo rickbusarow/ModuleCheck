@@ -301,8 +301,9 @@ class GradleProjectProvider(
           .distinctBy { it.name }
           .map { sourceProvider ->
 
-            val jvmFiles = sourceProvider
-              .javaDirectories
+            val jvmFiles = with(sourceProvider) {
+              javaDirectories + kotlinDirectories
+            }
               .flatMap { it.listFiles().orEmpty().toList() }
               .toSet()
 
