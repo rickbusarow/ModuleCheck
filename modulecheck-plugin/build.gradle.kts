@@ -54,7 +54,7 @@ gradlePlugin {
       id = "com.rickbusarow.module-check"
       group = "com.rickbusarow.modulecheck"
       implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
-      version = libs.versions.versionName.get()
+      version = project.extra.properties["VERSION_NAME"] as String
     }
   }
 }
