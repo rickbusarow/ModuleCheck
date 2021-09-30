@@ -457,14 +457,15 @@ class UnusedDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
               addRawFile(
-                "Lib1View.kt", """
+                "Lib1View.kt",
+                """
                 package com.example.lib1
 
                 import com.squareup.anvil.annotations.ContributesMultibinding
 
                 @ContributesMultibinding(AppScope)
                 public class Lib1View
-              """.trimIndent()
+                """.trimIndent()
               )
             }
           )
@@ -533,14 +534,15 @@ class UnusedDependenciesTest : BaseTest() {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
               addRawFile(
-                "AppScope.kt", """
+                "AppScope.kt",
+                """
                 package com.example.lib1
 
                 import javax.inject.Scope
                 import kotlin.reflect.KClass
 
                 abstract class AppScope private constructor()
-              """.trimIndent()
+                """.trimIndent()
               )
             }
           )
