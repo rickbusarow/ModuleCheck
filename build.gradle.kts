@@ -136,3 +136,25 @@ allprojects {
     }
   }
 }
+
+// Delete any empty directories while cleaning.
+allprojects {
+  val proj = this@allprojects
+
+  proj.tasks
+    .withType<Delete>()
+    .configureEach {
+      doLast {
+
+        val subprojectDirs = proj.subprojects
+          .map { it.projectDir.path }
+
+        proj.projectDir.walkBottomUp()
+          .filter { it.isDirectory }
+          .filterNot { dir -> subprojectDirs.any { dir.path.startsWith(it) } }
+          .filterNot { it.path.contains(".gradle") }
+          .filter { it.listFiles()?.isEmpty() != false }
+          .forEach { it.deleteRecursively() }
+      }
+    }
+}
