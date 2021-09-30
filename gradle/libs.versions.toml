@@ -19,7 +19,6 @@ minSdk = "23"
 spotless = "5.10.1"
 targetSdk = "30"
 taskTree = "1.5"
-versionName = "0.10.0"
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }

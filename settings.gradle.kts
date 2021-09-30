@@ -17,23 +17,13 @@ pluginManagement {
   repositories {
     gradlePluginPortal()
     mavenCentral()
-  }
-
-  resolutionStrategy {
-    eachPlugin {
-      when {
-        requested.id.id.startsWith("org.jetbrains.kotlin") -> useVersion("1.5.10")
-      }
-    }
+    mavenLocal()
   }
 }
 
 plugins {
   id("com.gradle.enterprise").version("3.5.2")
 }
-
-@Suppress("VariableNaming")
-val VERSION: String by extra.properties
 
 gradleEnterprise {
   buildScan {
@@ -44,7 +34,7 @@ gradleEnterprise {
     publishAlways()
 
     tag(if (System.getenv("CI").isNullOrBlank()) "Local" else "CI")
-    tag(VERSION)
+    tag(extra.properties["VERSION_NAME"] as String)
 
     val githubActionID = System.getenv("GITHUB_ACTION")
 
