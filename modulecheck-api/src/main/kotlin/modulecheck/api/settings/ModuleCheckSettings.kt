@@ -46,15 +46,31 @@ interface ModuleCheckSettings {
   var additionalKaptMatchers: List<KaptMatcher>
 
   val checks: ChecksSettings
-  fun checks(block: ChecksSettings.() -> Unit)
 
   val sort: SortSettings
-  fun sort(block: SortSettings.() -> Unit)
 }
 
 interface SortSettings {
   var pluginComparators: List<String>
   var dependencyComparators: List<String>
+
+  companion object {
+
+    val PLUGIN_COMPARATORS_DEFAULT = listOf(
+      """id\("com\.android.*"\)""",
+      """id\("android-.*"\)""",
+      """id\("java-library"\)""",
+      """kotlin\("jvm"\)""",
+      """android.*""",
+      """javaLibrary.*""",
+      """kotlin.*""",
+      """id.*"""
+    )
+    val DEPENDENCY_COMPARATORS_DEFAULT = listOf(
+      """.*""",
+      """kapt.*"""
+    )
+  }
 }
 
 interface ChecksSettings {
@@ -68,4 +84,18 @@ interface ChecksSettings {
   var anvilFactoryGeneration: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
+
+  companion object {
+
+    const val REDUNDANT_DEPENDENCY_DEFAULT = false
+    const val UNUSED_DEPENDENCY_DEFAULT = true
+    const val MUST_BE_API_DEFAULT = true
+    const val INHERITED_DEPENDENCY_DEFAULT = true
+    const val SORT_DEPENDENCIES_DEFAULT = false
+    const val SORT_PLUGINS_DEFAULT = false
+    const val UNUSED_KAPT_DEFAULT = true
+    const val ANVIL_FACTORY_GENERATION_DEFAULT = true
+    const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
+    const val DISABLE_VIEW_BINDING_DEFAULT = false
+  }
 }
