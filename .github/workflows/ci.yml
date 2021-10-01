@@ -1,7 +1,13 @@
 name: CI
 
 on:
-  pull_request
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # every day at 10pm CST (4 UTC)
+    - cron: '0 4 * * *'
+
 
 jobs:
 
@@ -62,6 +68,43 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply KtLint format
+          commit_options: '--no-verify --signoff'
+
+  versioning:
+
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'adopt'
+          java-version : '14'
+          cache: 'gradle'
+
+      - name: Sync versions in website docs
+        run: ./gradlew updateWebsiteNextDocsVersionRefs --no-daemon
+
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update docs versions
+          commit_options: '--no-verify --signoff'
+
+      - name: Update version in website package.json
+        run: ./gradlew updateWebsitePackageJsonVersion --no-daemon
+
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update website versions
           commit_options: '--no-verify --signoff'
 
   tests-ubuntu:

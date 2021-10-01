@@ -10,8 +10,11 @@ updates:
     schedule:
       interval: "daily"
 
-    open-pull-requests-limit: 20
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       # Add default Kodiak `merge.automerge_label`
       - "automerge"
+    ignore:
+      - dependency-name: "*kotlinx-coroutines-*"
+        versions: [ "1.5.1-native-mt" ]
