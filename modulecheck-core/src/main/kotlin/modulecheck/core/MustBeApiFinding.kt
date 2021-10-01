@@ -40,7 +40,7 @@ data class MustBeApiFinding(
   override fun fix(): Boolean = synchronized(buildFile) {
     val element = elementOrNull() ?: return false
 
-    val oldText = element.toString()
+    val oldText = element.toString().trimStart('\n', '\r')
     val newText = oldText.replace(configurationName.value, "api")
 
     val buildFileText = buildFile.readText()

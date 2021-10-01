@@ -50,7 +50,7 @@ class SortDependenciesFinding(
             @Suppress("DEPRECATION")
             it.psiElement.text.toLowerCase(Locale.US)
           }
-          .joinToString("\n")
+          .joinToString("\n") { it.toString().trimStart('\n', '\r') }
       }
       .trim()
 

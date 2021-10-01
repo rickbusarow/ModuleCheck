@@ -15,10 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Finding
-import modulecheck.api.Fixable
-import modulecheck.api.Project2
+import modulecheck.api.*
 import modulecheck.core.internal.positionIn
 import modulecheck.core.internal.psiElementIn
 import modulecheck.psi.PsiElementWithSurroundingText
@@ -26,6 +23,7 @@ import modulecheck.psi.PsiElementWithSurroundingText
 abstract class DependencyFinding(
   override val problemName: String
 ) : Fixable,
+  Deletable,
   Finding {
 
   abstract val dependencyProject: Project2
