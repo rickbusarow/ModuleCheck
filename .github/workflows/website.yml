@@ -12,20 +12,48 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out repo
         uses: actions/checkout@v2
+
       # Node is required for npm
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
           node-version: "12"
+
+      - name: Set up JDK
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'adopt'
+          java-version : '14'
+          cache: 'gradle'
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/buildSrc/.gradle
+            ~/buildSrc/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build API docs and copy to /website
+        run: ./gradlew updateWebsiteApiDocs --no-daemon
+
+      - name: Update website's changelog
+        run: ./gradlew updateWebsiteChangelog --no-daemon
+
       # Install and build Docusaurus website
       - name: Build Docusaurus website
         run: |
           cd website
           npm install
           npm run build
+
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2

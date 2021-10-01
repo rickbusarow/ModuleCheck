@@ -40,6 +40,7 @@ plugins {
   id("com.osacky.doctor") version "0.7.3"
   id("com.dorongold.task-tree") version "2.1.0"
   base
+  website
 }
 
 allprojects {

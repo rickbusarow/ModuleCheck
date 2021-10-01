@@ -5,6 +5,7 @@ categories:
   - title: '🚀 Features'
     labels:
       - 'feature'
+      - 'enhancement'
   - title: '💥 Breaking Changes'
     labels:
       - 'api-breaking change'
@@ -21,7 +22,8 @@ categories:
     labels:
       - 'documentation'
 
-change-template: '- $TITLE [@$AUTHOR](https://github.com/$AUTHOR) ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
+#change-template: '- $TITLE [@$AUTHOR](https://github.com/$AUTHOR) ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
+change-template: '- $TITLE ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
 
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 
@@ -32,9 +34,14 @@ version-resolver:
   minor:
     labels:
       - 'minor'
+      - 'feature'
+      - 'enhancement'
   patch:
     labels:
       - 'patch'
+      - 'fix'
+      - 'bugfix'
+      - 'bug'
   default: patch
 
 template: |
@@ -50,5 +57,16 @@ autolabeler:
     branch:
       - '/dependabot\/.+/'
 
-exclude-labels:
-  - no-changelog
+include-labels:
+  - 'api-breaking change'
+  - 'bug'
+  - 'bugfix'
+  - 'chore'
+  - 'dependencies'
+  - 'documentation'
+  - 'enhancement'
+  - 'feature'
+  - 'fix'
+  - 'major'
+  - 'minor'
+  - 'patch'
