@@ -15,10 +15,7 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Finding
-import modulecheck.api.Fixable
-import modulecheck.api.Project2
-import modulecheck.api.ProjectsAware
+import modulecheck.api.*
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import org.gradle.api.DefaultTask
@@ -42,6 +39,9 @@ abstract class ModuleCheckTask :
 
   @get:Input
   val autoCorrect: Boolean = settings.autoCorrect
+
+  @get:Input
+  val deleteUnused: Boolean = settings.deleteUnused
 
   @get:Input
   final override val projectCache = ConcurrentHashMap<String, Project2>()
@@ -91,7 +91,14 @@ abstract class ModuleCheckTask :
         logger.printHeader("\t$path")
 
         val (fixed, toFix) = list.partition { finding ->
-          autoCorrect && (finding as? Fixable)?.fix() ?: false
+
+          if (!autoCorrect) return@partition false
+
+          if (deleteUnused && finding is Deletable) {
+            finding.delete()
+          } else {
+            (finding as? Fixable)?.fix() ?: false
+          }
         }
 
         fixed.forEach { finding ->

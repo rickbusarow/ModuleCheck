@@ -11,6 +11,9 @@ plugins {
 
 moduleCheck {
 
+  autoCorrect = true // default is true
+  deleteUnused = true // default is false
+
   checks {
     overshotDependency = true  // default is true
     redundantDependency = false  // default is false

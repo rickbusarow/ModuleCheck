@@ -60,7 +60,7 @@ data class InheritedDependencyFinding(
 
     // This won't match without .trimStart()
     val newDependencies = result.blockText.replaceFirst(
-      oldValue = match.trimStart(),
+      oldValue = match.trimStart('\n', '\r').trimStart(),
       newValue = (newDeclaration + "\n" + match).trimStart()
     )
 

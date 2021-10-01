@@ -21,7 +21,6 @@ import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.DslBlockVisitor
 import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
-import java.util.*
 
 class SortPluginsFinding(
   override val dependentPath: String,
@@ -43,7 +42,7 @@ class SortPluginsFinding(
     val sorted = result
       .elements
       .sortedWith(comparator)
-      .joinToString("\n")
+      .joinToString("\n") { it.toString().trimStart('\n', '\r') }
       .trim()
 
     val allText = buildFile.readText()

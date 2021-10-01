@@ -56,7 +56,7 @@ class UnusedDependenciesTest : BaseTest() {
       .build()
 
     @Test
-    fun `with autoCorrect should be removed`() {
+    fun `with autoCorrect should be commented out`() {
       val appProject = ProjectSpec("app") {
         addBuildSpec(
           ProjectBuildSpec {
@@ -102,6 +102,56 @@ class UnusedDependenciesTest : BaseTest() {
         |  api(project(path = ":lib-1"))
         |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
         |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
+
+    @Test
+    fun `with autoCorrect and deleteUnused should be deleted`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1)
+            addProjectDependency("api", jvmSub2)
+            addProjectDependency("implementation", jvmSub3, "// this is a comment")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |  deleteUnused = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  api(project(path = ":lib-1"))
         |}
         |""".trimMargin()
     }

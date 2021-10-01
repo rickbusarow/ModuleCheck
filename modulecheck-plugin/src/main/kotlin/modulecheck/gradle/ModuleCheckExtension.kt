@@ -44,7 +44,24 @@ open class ModuleCheckExtension @Inject constructor(
   private val objects: ObjectFactory
 ) : ModuleCheckSettings {
 
+  /**
+   * ModuleCheck will attempt to fix its findings automatically. This means removing unused
+   * dependencies, changing the configuration to `api` if necessary, and adding inherited
+   * dependencies which should be declared explicitly.
+   *
+   * By default, ModuleCheck will "remove" declarations of unused dependencies by simply commenting
+   * them out. See the [deleteUnused] for the option to delete them entirely.
+   */
   override var autoCorrect: Boolean by objects.property(true)
+
+  /**
+   * If true, ModuleCheck will delete declarations of unused dependencies entirely.
+   *
+   * If false, ModuleCheck will comment out declarations of unused dependencies.
+   *
+   * Default value is false.
+   */
+  override var deleteUnused: Boolean by objects.property(false)
 
   /**
    * Set of modules which are allowed to be unused.
@@ -93,7 +110,9 @@ open class ChecksExtension @Inject constructor(
   override var sortPlugins: Boolean by objects.property(SORT_PLUGINS_DEFAULT)
   override var unusedKapt: Boolean by objects.property(UNUSED_KAPT_DEFAULT)
   override var anvilFactoryGeneration: Boolean by objects.property(ANVIL_FACTORY_GENERATION_DEFAULT)
-  override var disableAndroidResources: Boolean by objects.property(DISABLE_ANDROID_RESOURCES_DEFAULT)
+  override var disableAndroidResources: Boolean by objects.property(
+    DISABLE_ANDROID_RESOURCES_DEFAULT
+  )
   override var disableViewBinding: Boolean by objects.property(DISABLE_VIEW_BINDING_DEFAULT)
 }
 

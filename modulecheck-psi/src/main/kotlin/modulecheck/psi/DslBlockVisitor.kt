@@ -113,7 +113,7 @@ class DslBlockVisitor(private val blockName: String) {
 
     return PsiElementWithSurroundingText(
       psiElement = this,
-      previousText = (startingWhitespace + previousText).trimStart('\n', '\r'),
+      previousText = (startingWhitespace + previousText),
       nextText = nextText.trimEnd()
     )
   }

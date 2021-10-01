@@ -15,27 +15,16 @@
 
 package modulecheck.api
 
-import modulecheck.psi.PsiElementWithSurroundingText
-import java.io.File
+interface Deletable : Finding {
 
-interface Finding {
+  fun delete(): Boolean = synchronized(buildFile) {
+    val text = buildFile.readText()
 
-  val problemName: String
-  val dependentPath: String
-  val buildFile: File
+    val element = elementOrNull() ?: return false
 
-  fun logString(): String {
-    return "${buildFile.path}: ${positionString()} $problemName"
-  }
+    buildFile
+      .writeText(text.replaceFirst(element.toString(), ""))
 
-  fun elementOrNull(): PsiElementWithSurroundingText? = null
-  fun positionOrNull(): Position?
-  fun positionString() = positionOrNull()?.logString() ?: ""
-
-  data class Position(
-    val row: Int,
-    val column: Int
-  ) {
-    fun logString(): String = "($row, $column): "
+    return true
   }
 }
