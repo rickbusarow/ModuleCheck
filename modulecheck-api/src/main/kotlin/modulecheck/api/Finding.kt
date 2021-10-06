@@ -47,6 +47,7 @@ fun String.positionOfStatement(statement: String): Position {
   val trimmedLastStatementLine = statement.trimEnd()
     .lines()
     .last()
+    .trimStart()
 
   var index = indexOf(trimmedLastStatementLine)
 
@@ -59,5 +60,5 @@ fun String.positionOfStatement(statement: String): Position {
     index -= (lines[row].length + 1)
     row++
   }
-  return Position(row + 1, index)
+  return Position(row + 1, index + 1)
 }
