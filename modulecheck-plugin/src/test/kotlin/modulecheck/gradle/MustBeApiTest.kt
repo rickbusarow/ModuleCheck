@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class MustBeApiTest : BaseTest() {
+class MustBeApiTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")

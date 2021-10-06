@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class SortPluginsTest : BaseTest() {
+class SortPluginsTest : BasePluginTest() {
 
   @Test
   fun `sorting`() {

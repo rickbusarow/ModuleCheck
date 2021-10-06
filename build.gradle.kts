@@ -16,8 +16,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.detekt
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.include
 
 buildscript {
   repositories {
@@ -31,7 +29,7 @@ buildscript {
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     classpath("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
     classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
-    classpath("org.jmailen.gradle:kotlinter-gradle:3.6.0")
+    classpath("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
   }
 }
 
@@ -107,20 +105,23 @@ tasks.named(
 }
 
 allprojects {
-  apply(plugin = "org.jmailen.kotlinter")
+  apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
-  extensions.configure<org.jmailen.gradle.kotlinter.KotlinterExtension> {
+  configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    debug.set(false)
 
-    ignoreFailures = false
-    reporters = arrayOf("checkstyle", "plain")
-    experimentalRules = true
-    disabledRules = arrayOf(
-      "no-multi-spaces",
-      "no-wildcard-imports",
-      "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-      "filename", // same as Detekt's MatchingDeclarationName, except Detekt's version can be suppressed and this can't
-      "experimental:argument-list-wrapping" // doesn't work half the time
+    disabledRules.set(
+      kotlin.collections.setOf(
+        "no-multi-spaces",
+        "no-wildcard-imports",
+        "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
+        "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
+        "experimental:argument-list-wrapping" // doesn't work half the time
+      )
     )
+  }
+  tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
+    workerMaxHeapSize.set("512m")
   }
 }
 
@@ -205,9 +206,7 @@ allprojects {
         )
       }
     }
-
 }
-
 
 /**
  * Looks for all references to Tangle artifacts in the md/mdx files
