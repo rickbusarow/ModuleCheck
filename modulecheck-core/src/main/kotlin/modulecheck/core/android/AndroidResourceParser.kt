@@ -17,8 +17,8 @@ package modulecheck.core.android
 
 import groovy.util.Node
 import groovy.xml.XmlParser
-import modulecheck.psi.DeclarationName
-import modulecheck.psi.asDeclaractionName
+import modulecheck.parsing.psi.DeclarationName
+import modulecheck.parsing.psi.asDeclaractionName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 

@@ -17,7 +17,7 @@ package modulecheck.core.rule
 
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.psi.internal.asKtsFileOrNull
+import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
 abstract class ModuleCheckRule<T> {

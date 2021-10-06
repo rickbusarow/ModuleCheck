@@ -20,7 +20,7 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.positionOfStatement
 import modulecheck.core.kotlinBuildFileOrNull
-import modulecheck.psi.AndroidBuildFeaturesVisitor
+import modulecheck.parsing.psi.AndroidBuildFeaturesVisitor
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(

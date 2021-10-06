@@ -16,7 +16,7 @@
 package modulecheck.api.anvil
 
 import modulecheck.api.context.ImportName
-import modulecheck.psi.DeclarationName
+import modulecheck.parsing.psi.DeclarationName
 import net.swiftzer.semver.SemVer
 
 data class AnvilGradlePlugin(

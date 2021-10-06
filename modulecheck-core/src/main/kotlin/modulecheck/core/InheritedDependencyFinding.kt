@@ -35,7 +35,7 @@ data class InheritedDependencyFinding(
   override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
 
   override val positionOrNull: Position? by lazy {
-      from?.project?.positionIn(buildFile, configurationName)
+    from?.project?.positionIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

@@ -21,8 +21,8 @@ import modulecheck.core.internal.statementOrNullIn
 abstract class DependencyFinding(
   override val problemName: String
 ) : Fixable,
-    Deletable,
-    Finding {
+  Deletable,
+  Finding {
 
   abstract val dependencyProject: Project2
   abstract val configurationName: ConfigurationName

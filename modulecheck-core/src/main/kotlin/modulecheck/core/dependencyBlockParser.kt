@@ -19,9 +19,9 @@ import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginsBlock
-import modulecheck.psi.KotlinDependencyBlockParser
-import modulecheck.psi.KotlinPluginsBlockParser
-import modulecheck.psi.internal.asKtFile
+import modulecheck.parsing.psi.KotlinDependencyBlockParser
+import modulecheck.parsing.psi.KotlinPluginsBlockParser
+import modulecheck.parsing.psi.internal.asKtFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 

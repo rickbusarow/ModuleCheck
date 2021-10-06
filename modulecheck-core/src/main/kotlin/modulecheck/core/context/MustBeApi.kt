@@ -18,7 +18,7 @@ package modulecheck.core.context
 import modulecheck.api.*
 import modulecheck.api.context.*
 import modulecheck.api.files.KotlinFile
-import modulecheck.psi.asDeclaractionName
+import modulecheck.parsing.psi.asDeclaractionName
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>

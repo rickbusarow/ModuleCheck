@@ -43,5 +43,4 @@ data class CouldUseAnvilFinding(
   }
 
   override val statementTextOrNull: String? get() = null
-
 }

@@ -15,7 +15,7 @@
 
 package modulecheck.api.files
 
-import modulecheck.psi.internal.asKtFile
+import modulecheck.parsing.psi.internal.asKtFile
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import org.jetbrains.kotlin.resolve.BindingContext

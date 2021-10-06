@@ -21,8 +21,8 @@ import modulecheck.api.SourceSetName
 import modulecheck.api.context.JvmFiles
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.ResSourceFiles
-import modulecheck.psi.DeclarationName
-import modulecheck.psi.asDeclaractionName
+import modulecheck.parsing.psi.DeclarationName
+import modulecheck.parsing.psi.asDeclaractionName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
