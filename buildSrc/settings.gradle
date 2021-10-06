@@ -13,38 +13,13 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+enableFeaturePreview("VERSION_CATALOGS")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-plugins {
-  `kotlin-dsl`
-}
-
-repositories {
-  mavenCentral()
-  google()
-}
-
-val kotlinVersion = libs.versions.kotlin.get()
-
-dependencies {
-
-  compileOnly(gradleApi())
-
-  implementation(libs.kotlin.gradle.plug)
-  implementation(libs.kotlin.gradle.plugin.api)
-  implementation(libs.kotlin.reflect)
-
-  implementation(libs.kotlin.compiler)
-}
-
-tasks.withType<KotlinCompile>()
-  .configureEach {
-
-    kotlinOptions {
-
-      freeCompilerArgs = listOf(
-        "-Xinline-classes",
-        "-Xopt-in=kotlin.ExperimentalStdlibApi"
-      )
+dependencyResolutionManagement {
+  versionCatalogs {
+    create("libs") {
+      from(files("../gradle/libs.versions.toml"))
     }
   }
+}

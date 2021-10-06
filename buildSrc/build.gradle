@@ -13,27 +13,23 @@
  * limitations under the License.
  */
 
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+plugins {
+  id 'groovy-gradle-plugin'
+}
 
-fun Project.common() {
+repositories {
+  mavenCentral()
+  google()
+}
 
-  tasks.withType<KotlinCompile>()
-    .configureEach {
+dependencies {
 
-      kotlinOptions {
+  compileOnly(gradleApi())
 
-        // disabled due to different Kotlin versions in the classpath
-        allWarningsAsErrors = false
+  implementation(libs.agp)
 
-        jvmTarget = "1.8"
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.gradle.plug)
 
-        freeCompilerArgs = freeCompilerArgs + listOf(
-          "-Xinline-classes",
-          "-Xopt-in=kotlin.ExperimentalStdlibApi",
-          "-Xopt-in=kotlin.contracts.ExperimentalContracts"
-        )
-      }
-    }
+  implementation(libs.kotlinx.knit)
 }
