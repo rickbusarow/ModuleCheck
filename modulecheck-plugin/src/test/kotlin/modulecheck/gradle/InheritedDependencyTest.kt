@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class InheritedDependencyTest : BaseTest() {
+class InheritedDependencyTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
