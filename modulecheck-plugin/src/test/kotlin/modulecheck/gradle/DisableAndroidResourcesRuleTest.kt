@@ -517,7 +517,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 2):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 3):  unused R file generation:"
         }
       }
 
@@ -535,7 +535,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (20, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (20, 1):  unused R file generation:"
         }
       }
 
@@ -557,7 +557,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (22, 4):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (22, 5):  unused R file generation:"
         }
       }
 
@@ -577,7 +577,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 2):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 3):  unused R file generation:"
         }
       }
     }
