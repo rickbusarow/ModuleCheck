@@ -16,11 +16,14 @@
 plugins {
   javaLibrary
   id("com.vanniktech.maven.publish")
+  groovy
 }
 
 dependencies {
 
   api(libs.kotlin.compiler)
+
+  api(projects.modulecheckParsing)
 
   compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
 
@@ -29,6 +32,7 @@ dependencies {
   implementation(libs.agp)
   implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
+  implementation(libs.groovy)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

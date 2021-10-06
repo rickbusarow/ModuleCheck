@@ -20,7 +20,7 @@ import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
 import modulecheck.core.internal.positionIn
-import modulecheck.psi.DslBlockVisitor
+import modulecheck.parsing.DependencyBlockParser
 import java.io.File
 
 data class InheritedDependencyFinding(
@@ -34,39 +34,40 @@ data class InheritedDependencyFinding(
 
   override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
 
-  override fun positionOrNull(): Position? {
-    return from?.project?.positionIn(buildFile, configurationName)
+  override val positionOrNull: Position? by lazy {
+      from?.project?.positionIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val visitor = DslBlockVisitor("dependencies")
-
     val fromPath = from?.project?.path ?: return false
     val fromConfigName = from.configurationName.value
 
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+    val blocks = DependencyBlockParser.parse(buildFile)
 
-    val result = visitor.parse(kotlinBuildFile) ?: return false
-
-    val match = result.elements.firstOrNull {
-      val text = it.psiElement.text
-
-      text.contains("\"$fromPath\"") && text.contains(fromConfigName)
+    val (block, match) = blocks.firstNotNullOfOrNull { block ->
+      block to block.getOrEmpty(fromPath, fromConfigName)
     }
-      ?.toString() ?: return false
+      ?.let { (block, declarations) ->
+
+        val matchStatement = declarations.firstOrNull()
+          ?.statementWithSurroundingText
+          ?: return false
+
+        block to matchStatement
+      }
+      ?: return false
 
     val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
       .replaceFirst(fromConfigName, configurationName.value)
 
-    // This won't match without .trimStart()
-    val newDependencies = result.blockText.replaceFirst(
-      oldValue = match.trimStart('\n', '\r').trimStart(),
-      newValue = (newDeclaration + "\n" + match).trimStart()
+    val newDependencies = block.contentString.replaceFirst(
+      oldValue = match,
+      newValue = (newDeclaration + "\n" + match)
     )
 
     val text = buildFile.readText()
 
-    val newText = text.replaceFirst(result.blockText, newDependencies)
+    val newText = text.replaceFirst(block.contentString, newDependencies)
 
     buildFile.writeText(newText)
 

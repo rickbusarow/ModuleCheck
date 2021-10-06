@@ -13,23 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.parsing
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Finding.Position
-
-fun List<String>.positionOf(
-  path: String,
-  configuration: ConfigurationName
-): Position? {
-  // val reg = """.*${configuration.value}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
-  val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
-
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
-}
+data class PluginDeclaration(
+  override val declarationText: String,
+  override val statementWithSurroundingText: String
+) : Declaration

@@ -32,6 +32,6 @@ class UnusedDependencyRule(
     return project[UnusedDependencies]
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
-      .distinctBy { it.elementOrNull() }
+      .distinctBy { it.statementTextOrNull }
   }
 }

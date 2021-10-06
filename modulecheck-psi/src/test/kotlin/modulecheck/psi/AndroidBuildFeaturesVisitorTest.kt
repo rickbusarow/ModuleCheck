@@ -13,12 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.psi
 
 import hermit.test.junit.HermitJUnit5
-import hermit.test.resets
 import io.kotest.matchers.shouldBe
-import modulecheck.psi.AndroidBuildFeaturesVisitor
 import modulecheck.psi.internal.asKtFile
 import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
@@ -53,7 +51,7 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
 
     testFile.writeText(block)
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe block
+    visitor.find(testFileKt, "viewBinding").toString() shouldBe "viewBinding = $enabled"
   }
 
   @TestFactory
@@ -67,7 +65,7 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
 
     testFile.writeText(block)
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe block
+    visitor.find(testFileKt, "viewBinding").toString() shouldBe "buildFeatures.viewBinding = $enabled"
   }
 
   @TestFactory
@@ -82,7 +80,7 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
 
     testFile.writeText(block)
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe block
+    visitor.find(testFileKt, "viewBinding").toString() shouldBe "viewBinding = $enabled"
   }
 
   @TestFactory
@@ -95,7 +93,7 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
 
     testFile.writeText(block)
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe block
+    visitor.find(testFileKt, "viewBinding").toString() shouldBe "viewBinding = $enabled"
   }
 
   @TestFactory

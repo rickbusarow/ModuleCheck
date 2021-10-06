@@ -16,41 +16,44 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
-import modulecheck.core.kotlinBuildFileOrNull
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
+import modulecheck.core.parse
+import modulecheck.parsing.PluginBlockParser
+import modulecheck.parsing.PluginDeclaration
+import modulecheck.parsing.PluginsBlock
 import java.io.File
 
 class SortPluginsFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  val visitor: DslBlockVisitor,
-  val comparator: Comparator<PsiElementWithSurroundingText>
+  val comparator: Comparator<PluginDeclaration>
 ) : Finding, Fixable {
   override val problemName = "unsorted plugins"
 
   override val dependencyIdentifier = ""
 
-  override fun positionOrNull(): Finding.Position? = null
+  override val positionOrNull: Position? get() = null
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+    val block = PluginBlockParser.parse(buildFile) ?: return false
 
-    val result = visitor.parse(kotlinBuildFile) ?: return false
+    var fileText = buildFile.readText()
 
-    val sorted = result
-      .elements
-      .sortedWith(comparator)
-      .joinToString("\n") { it.toString().trimStart('\n', '\r') }
-      .trim()
+    val sorted = block.sortedPlugins(comparator)
 
-    val allText = buildFile.readText()
+    fileText = fileText.replace(block.contentString, sorted)
 
-    val newText = allText.replace(result.blockText, sorted)
-
-    buildFile.writeText(newText)
+    buildFile.writeText(fileText)
 
     return true
   }
+}
+
+internal fun PluginsBlock.sortedPlugins(
+  comparator: Comparator<PluginDeclaration>
+): String {
+  return allDeclarations
+    .sortedWith(comparator)
+    .joinToString("\n") { it.statementWithSurroundingText }
 }

@@ -33,7 +33,7 @@ data class UnusedKaptPluginFinding(
 
   override val problemName = "unused kapt plugin"
 
-  override fun positionOrNull(): Position? {
+  override val positionOrNull: Position? by lazy {
     val text = buildFile
       .readText()
 
@@ -46,11 +46,11 @@ data class UnusedKaptPluginFinding(
           line.contains("plugin = \"$KAPT_PLUGIN_ID\")")
       }
 
-    if (row < 0) return null
+    if (row < 0) return@lazy null
 
     val col = lines[row]
       .indexOfFirst { it != ' ' }
 
-    return Position(row + 1, col + 1)
+    Position(row + 1, col + 1)
   }
 }

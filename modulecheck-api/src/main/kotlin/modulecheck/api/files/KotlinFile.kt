@@ -91,7 +91,7 @@ class KotlinFile(
   }
 
   private val referenceVisitor by lazy {
-    ReferenceVisitor(bindingContext)
+    ReferenceVisitor()
       .also { ktFile.accept(it) }
   }
 

@@ -17,8 +17,10 @@ package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.psi.DslBlockVisitor
+import modulecheck.parsing.DependenciesBlock
+import modulecheck.parsing.DependencyBlockParser
 import java.util.*
 
 class SortDependenciesRule(
@@ -47,29 +49,34 @@ class SortDependenciesRule(
   )
 
   override fun check(project: Project2): List<SortDependenciesFinding> {
-    val visitor = DslBlockVisitor("dependencies")
+    val allSorted = DependencyBlockParser
+      .parse(project.buildFile)
+      .all { block ->
 
-    val kotlinBuildFile = project.kotlinBuildFileOrNull() ?: return emptyList()
-
-    val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
-
-    val sorted = result
-      .elements
-      .grouped(comparator)
-      .joinToString("\n\n") { list ->
-        list
-          .sortedBy { // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-            @Suppress("DEPRECATION")
-            it.psiElement.text.toLowerCase(Locale.US)
-          }
-          .joinToString("\n")
+        block.contentString == block.sortedDeclarations(comparator)
       }
-      .trim()
 
-    return if (result.blockText == sorted) {
+    return if (allSorted) {
       emptyList()
     } else {
-      listOf(SortDependenciesFinding(project.path, project.buildFile, visitor, comparator))
+      listOf(SortDependenciesFinding(project.path, project.buildFile, comparator))
     }
   }
+}
+
+internal fun DependenciesBlock.sortedDeclarations(
+  comparator: Comparator<String>
+): String {
+  return allDeclarations
+    .grouped(comparator)
+    .joinToString("\n\n") { declarations ->
+
+      declarations
+        .sortedBy { declaration ->
+          // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
+          @Suppress("DEPRECATION")
+          declaration.declarationText.toLowerCase(Locale.US)
+        }
+        .joinToString("\n") { it.statementWithSurroundingText }
+    }
 }

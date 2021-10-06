@@ -15,13 +15,26 @@
 
 package modulecheck.psi
 
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import modulecheck.parsing.DependenciesBlock
 
-data class PsiElementWithSurroundingText(
-  val psiElement: PsiElement
-) {
-  val statementText: String = psiElement.text
+class KotlinDependenciesBlock(
+  contentString: String
+) : DependenciesBlock(contentString) {
+
+  override fun findOriginalStringIndex(parsedString: String) = originalLines
+    .indexOfFirst { originalLine ->
+
+      originalLine.trimStart().contains(parsedString)
+    }
+
   override fun toString(): String {
-    return statementText
+    return "KotlinDependenciesBlock(\n" +
+      "\toriginalBlockText='$contentString',\n" +
+      "\toriginalLines=$originalLines,\n" +
+      "\tallModuleDeclarations=${
+      allModuleDeclarations.toList()
+        .joinToString(",\n\t\t", "\n\t\t")
+      },\n" +
+      ")"
   }
 }

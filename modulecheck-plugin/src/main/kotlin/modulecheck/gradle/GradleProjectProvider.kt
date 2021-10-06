@@ -29,12 +29,12 @@ import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.api.*
 import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.core.android.AndroidManifestParser
+import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.srcRoot
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.ExternalDependencyDeclarationVisitor
-import modulecheck.psi.internal.asKtFile
+import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.MavenCoordinates
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
@@ -43,7 +43,6 @@ import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.JavaPluginConvention
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import org.jetbrains.kotlin.psi.KtCallExpression
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.LazyThreadSafetyMode.NONE
@@ -153,31 +152,25 @@ class GradleProjectProvider(
     configuration.dependencies
       .filterNot { it is ProjectDependency }
       .map { dep ->
-        val psi = lazy psiLazy@{
-          val parsed = DslBlockVisitor("dependencies")
-            .parse(buildFile.asKtFile())
-            ?: return@psiLazy null
+        val statementTextLazy = lazy psiLazy@{
+          val coords = MavenCoordinates(dep.group, dep.name, dep.version)
 
-          parsed
-            .elements
-            .firstOrNull { element ->
-
-              val p = ExternalDependencyDeclarationVisitor(
-                configuration = configuration.name,
-                group = dep.group,
-                name = dep.name,
-                version = dep.version
-              )
-
-              p.find(element.psiElement as KtCallExpression)
+          DependencyBlockParser
+            .parse(buildFile)
+            .asSequence()
+            .map { block ->
+              block.getOrEmpty(coords, configuration.name)
             }
+            .firstOrNull()
+            ?.firstOrNull()
+            ?.statementWithSurroundingText
         }
         ExternalDependency(
           configurationName = configuration.name.asConfigurationName(),
           group = dep.group,
           moduleName = dep.name,
           version = dep.version,
-          psiElementWithSurroundingText = psi
+          statementTextLazy = statementTextLazy
         )
       }
       .toSet()

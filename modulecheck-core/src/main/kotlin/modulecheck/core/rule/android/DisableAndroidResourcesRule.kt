@@ -19,10 +19,6 @@ import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.psi.DslBlockVisitor
-
-internal val androidBlockParser = DslBlockVisitor("android")
-internal val androidBlockRegex = "^android \\{".toRegex()
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings

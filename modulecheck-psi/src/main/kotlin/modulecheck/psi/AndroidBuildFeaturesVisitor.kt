@@ -21,10 +21,10 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 class AndroidBuildFeaturesVisitor {
 
   fun find(buildFile: KtFile, propertyName: String): PsiElementWithSurroundingText? {
-    return buildFile.fullyQualifiedReferenceOrNull(propertyName)
-      ?: buildFile.qualifiedScopedReferenceOrNull(propertyName)
+    return buildFile.scopedScopedReferenceOrNull(propertyName)
       ?: buildFile.scopedQualifiedReferenceOrNull(propertyName)
-      ?: buildFile.scopedScopedReferenceOrNull(propertyName)
+      ?: buildFile.qualifiedScopedReferenceOrNull(propertyName)
+      ?: buildFile.fullyQualifiedReferenceOrNull(propertyName)
   }
 
   private fun KtFile.fullyQualifiedReferenceOrNull(
@@ -37,7 +37,7 @@ class AndroidBuildFeaturesVisitor {
 
       if (expression.textMatches(str)) {
         if (expression.parent is KtBinaryExpression) {
-          element = PsiElementWithSurroundingText(expression.parent, "", "")
+          element = PsiElementWithSurroundingText(expression.parent)
           return@vis
         }
       }
@@ -56,7 +56,7 @@ class AndroidBuildFeaturesVisitor {
     val visitor = dotQualifiedExpressionRecursiveVisitor vis@{ expression ->
 
       if (expression.text.startsWith(fullyQualifiedStart)) {
-        val binary = expression                 // android.buildFeatures { ... }
+        val binary = expression                // android.buildFeatures { ... }
           .getChildOfType<KtCallExpression>()                   // buildFeatures { ... }
           ?.getChildOfType<KtLambdaArgument>()                  // { ... }
           ?.getChildOfType<KtLambdaExpression>()                // { ... }
@@ -70,7 +70,7 @@ class AndroidBuildFeaturesVisitor {
           }    // "viewBinding = true" as KtBinaryExpression
 
         if (binary != null) {
-          element = PsiElementWithSurroundingText(expression, "", "")
+          element = PsiElementWithSurroundingText(binary)
           return@vis
         }
       }
@@ -92,7 +92,7 @@ class AndroidBuildFeaturesVisitor {
         val binaryExpressionVisitor = binaryExpressionRecursiveVisitor vis@{ binary ->
 
           if (binary.text.matches("""buildFeatures\s*\.\s*$propertyName[\s\S]*""".toRegex())) {
-            element = PsiElementWithSurroundingText(callExpression, "", "")
+            element = PsiElementWithSurroundingText(binary)
             return@vis
           }
         }
@@ -119,8 +119,8 @@ class AndroidBuildFeaturesVisitor {
             referenceExpressionRecursiveVisitor vis3@{ three ->
 
               if (three.text.matches("""$propertyName\s*""".toRegex())) {
-                element = one.context?.let {
-                  PsiElementWithSurroundingText(it, "", "")
+                element = three.context?.let {
+                  PsiElementWithSurroundingText(it)
                 }
 
                 if (element != null) {

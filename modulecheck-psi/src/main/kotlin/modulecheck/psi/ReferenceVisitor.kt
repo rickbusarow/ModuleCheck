@@ -19,12 +19,9 @@ import modulecheck.psi.internal.isPartOf
 import modulecheck.psi.internal.isPrivateOrInternal
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.isFunctionalExpression
-import org.jetbrains.kotlin.resolve.BindingContext
 
 @Suppress("TooManyFunctions")
-class ReferenceVisitor(
-  val bindingContext: BindingContext
-) : KtTreeVisitorVoid() {
+class ReferenceVisitor : KtTreeVisitorVoid() {
 
   val qualifiedExpressions: MutableSet<String> = mutableSetOf()
   val callableReferences: MutableSet<String> = mutableSetOf()

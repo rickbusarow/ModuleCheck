@@ -17,10 +17,10 @@ package modulecheck.core.rule.sort
 
 import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
-import java.util.*
+import modulecheck.parsing.PluginBlockParser
+import modulecheck.parsing.PluginDeclaration
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings
@@ -30,7 +30,7 @@ class SortPluginsRule(
   override val description =
     "Sorts Gradle plugins which are applied using the plugins { ... } block"
 
-  private val comparables: Array<(PsiElementWithSurroundingText) -> Comparable<*>> =
+  private val comparables: Array<(PluginDeclaration) -> Comparable<*>> =
     settings
       .sort
       .pluginComparators
@@ -39,32 +39,26 @@ class SortPluginsRule(
         { str: String -> !str.matches(regex) }
       }
       .map { booleanLambda ->
-        { psi: PsiElementWithSurroundingText ->
+        { dec: PluginDeclaration ->
 
-          booleanLambda.invoke(psi.psiElement.text)
+          booleanLambda.invoke(dec.declarationText)
         }
       }.toTypedArray()
 
   @Suppress("SpreadOperator")
-  private val comparator: Comparator<PsiElementWithSurroundingText> = compareBy(*comparables)
+  private val comparator: Comparator<PluginDeclaration> = compareBy(*comparables)
 
   override fun check(project: Project2): List<SortPluginsFinding> {
-    val visitor = DslBlockVisitor("plugins")
+    val block = PluginBlockParser.parse(project.buildFile) ?: return emptyList()
 
-    val kotlinBuildFile = project.kotlinBuildFileOrNull() ?: return emptyList()
+    val sortedPlugins = block.sortedPlugins(comparator)
 
-    val result = visitor.parse(kotlinBuildFile) ?: return emptyList()
+    val sorted = block.contentString == sortedPlugins
 
-    val sorted = result
-      .elements
-      .sortedWith(comparator)
-      .joinToString("\n")
-      .trim()
-
-    return if (result.blockText == sorted) {
+    return if (sorted) {
       emptyList()
     } else {
-      listOf(SortPluginsFinding(project.path, project.buildFile, visitor, comparator))
+      listOf(SortPluginsFinding(project.path, project.buildFile, comparator))
     }
   }
 }

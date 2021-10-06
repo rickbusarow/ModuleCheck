@@ -16,59 +16,46 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
-import modulecheck.core.kotlinBuildFileOrNull
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
+import modulecheck.core.parse
+import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
 import java.io.File
-import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  private val visitor: DslBlockVisitor,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {
   override val problemName = "unsorted dependencies"
 
   override val dependencyIdentifier = ""
 
-  override fun positionOrNull(): Finding.Position? = null
+  override val positionOrNull: Position? get() = null
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+    var fileText = buildFile.readText()
 
-    val result = visitor.parse(kotlinBuildFile) ?: return false
+    DependencyBlockParser
+      .parse(buildFile)
+      .forEach { block ->
 
-    val sorted = result
-      .elements
-      .grouped(comparator)
-      .joinToString("\n\n") { list ->
-        list
-          .sortedBy {
-            // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-            @Suppress("DEPRECATION")
-            it.psiElement.text.toLowerCase(Locale.US)
-          }
-          .joinToString("\n") { it.toString().trimStart('\n', '\r') }
+        val sorted = block.sortedDeclarations(comparator)
+
+        fileText = fileText.replace(block.contentString, sorted)
       }
-      .trim()
 
-    val allText = buildFile.readText()
-
-    val newText = allText.replace(result.blockText, sorted)
-
-    buildFile.writeText(newText)
+    buildFile.writeText(fileText)
 
     return true
   }
 }
 
-fun List<PsiElementWithSurroundingText>.grouped(
+fun List<DependencyDeclaration>.grouped(
   comparator: Comparator<String>
 ) = groupBy {
-  it.psiElement
-    .text
+  it.declarationText
     .split("[(.]".toRegex())
     .take(2)
     .joinToString("-")

@@ -26,30 +26,35 @@ interface Fixable : Finding {
   fun fix(): Boolean = synchronized(buildFile) {
     val text = buildFile.readText()
 
-    return elementOrNull()
-      ?.let { elementWithSurroundingText ->
+    val statementText = statementTextOrNull ?: return false
 
-        val newText = elementWithSurroundingText
-          .psiElement
-          .text
-          .lines()
-          .mapIndexed { index: Int, str: String ->
-            if (index == 0) {
-              INLINE_COMMENT + str + fixLabel()
-            } else {
-              INLINE_COMMENT + str
-            }
-          }
-          .joinToString("\n")
+    val lines = statementText.lines()
+    val lastIndex = lines.lastIndex
+    val newText = lines
+      .mapIndexed { index: Int, str: String ->
 
-        val psiElement = elementWithSurroundingText.psiElement
-        buildFile
-          .writeText(
-            text.replaceFirst(psiElement.text, newText)
-          )
+        // don't comment out a blank line
+        if (str.isBlank()) return@mapIndexed str
 
-        true
-      } ?: false
+        val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
+          val (whitespace, code) = mr.destructured
+          "$whitespace$INLINE_COMMENT$code"
+        }
+
+        if (index == lastIndex) {
+          commented + fixLabel()
+        } else {
+          commented
+        }
+      }
+      .joinToString("\n")
+
+    buildFile
+      .writeText(
+        text.replaceFirst(statementText, newText)
+      )
+
+    true
   }
 
   fun fixLabel() = "  $FIX_LABEL [$problemName]"

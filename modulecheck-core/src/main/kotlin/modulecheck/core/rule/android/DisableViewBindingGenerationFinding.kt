@@ -16,10 +16,11 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
+import modulecheck.api.positionOfStatement
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.psi.AndroidBuildFeaturesVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(
@@ -31,40 +32,25 @@ data class DisableViewBindingGenerationFinding(
 
   override val dependencyIdentifier = ""
 
-  override fun elementOrNull(): PsiElementWithSurroundingText? {
-    val buildFile = kotlinBuildFileOrNull() ?: return null
+  override val statementTextOrNull: String? by lazy {
+    val buildFile = kotlinBuildFileOrNull() ?: return@lazy null
 
-    return AndroidBuildFeaturesVisitor().find(buildFile, "viewBinding")
+    AndroidBuildFeaturesVisitor().find(buildFile, "viewBinding")
+      ?.statementText
   }
 
-  override fun positionOrNull(): Finding.Position? {
-    val ktFile = kotlinBuildFileOrNull() ?: return null
+  override val positionOrNull: Position? by lazy {
+    val statement = statementTextOrNull ?: return@lazy null
 
-    return androidBlockParser.parse(ktFile)?.let { result ->
+    val fileText = buildFile.readText()
 
-      val token = result
-        .blockText
-        .lines()
-        .firstOrNull { it.isNotEmpty() } ?: return@let null
-
-      val lines = ktFile.text.lines()
-
-      val startRow = lines.indexOfFirst { it.matches(androidBlockRegex) }
-
-      if (startRow == -1) return@let null
-
-      val after = lines.subList(startRow, lines.lastIndex)
-
-      val row = after.indexOfFirst { it.contains(token) }
-
-      Finding.Position(row + startRow + 1, 0)
-    }
+    fileText.positionOfStatement(statement)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
     val ktFile = kotlinBuildFileOrNull() ?: return false
 
-    val oldBlock = elementOrNull()?.toString() ?: return false
+    val oldBlock = statementTextOrNull ?: return false
 
     if (!oldBlock.contains("viewBinding = true")) return false
 

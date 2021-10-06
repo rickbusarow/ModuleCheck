@@ -33,6 +33,6 @@ class RedundantRule(
   override fun check(project: Project2): List<RedundantDependencyFinding> {
     return project[RedundantDependencies]
       .all()
-      .distinctBy { it.positionOrNull() }
+      .distinctBy { it.positionOrNull }
   }
 }

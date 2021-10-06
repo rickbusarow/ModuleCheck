@@ -17,9 +17,8 @@ package modulecheck.core
 
 import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
-import modulecheck.core.internal.positionIn
+import modulecheck.core.internal.statementOrNullIn
 import java.io.File
 
 data class MustBeApiFinding(
@@ -32,20 +31,21 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependencyProject.path + " from: ${source?.project?.path}"
 
-  override fun positionOrNull(): Position? {
-    return dependencyProject.positionIn(buildFile, configurationName)
-      ?: source?.project?.positionIn(buildFile, configurationName)
+  override val statementTextOrNull: String? by lazy {
+    super.statementTextOrNull
+      ?: source?.project
+        ?.statementOrNullIn(buildFile, configurationName)
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val element = elementOrNull() ?: return false
 
-    val oldText = element.toString().trimStart('\n', '\r')
-    val newText = oldText.replace(configurationName.value, "api")
+    val statement = statementTextOrNull ?: return false
+
+    val newText = statement.replace(configurationName.value, "api")
 
     val buildFileText = buildFile.readText()
 
-    buildFile.writeText(buildFileText.replace(oldText, newText))
+    buildFile.writeText(buildFileText.replace(statement, newText))
 
     return true
   }

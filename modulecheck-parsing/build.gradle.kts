@@ -13,23 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+plugins {
+  javaLibrary
+  id("com.vanniktech.maven.publish")
+  groovy
+}
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Finding.Position
+dependencies {
 
-fun List<String>.positionOf(
-  path: String,
-  configuration: ConfigurationName
-): Position? {
-  // val reg = """.*${configuration.value}\(project[(]?(?:path =\s*)"$path".*""".toRegex()
-  val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+  compileOnly(gradleApi())
 
-  val row = indexOfFirst { it.trim().matches(reg) }
+  implementation(libs.agp)
+  implementation(libs.javaParser)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.groovy)
 
-  if (row < 0) return null
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }
