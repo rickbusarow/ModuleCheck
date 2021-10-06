@@ -23,7 +23,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.psi.KtPsiFactory
 
 val configuration = CompilerConfiguration().apply {
   put(
@@ -45,4 +44,3 @@ private val psiProject by lazy {
 }
 
 val psiFileFactory: PsiFileFactory = PsiFileFactory.getInstance(psiProject)
-val psiElementFactory = KtPsiFactory(psiProject, false)

@@ -18,8 +18,6 @@ package modulecheck.psi.internal
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 
-fun <E> Collection<E>.lines() = joinToString("\n")
-
 fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
   return arguments
     .firstOrNull { it.getArgumentName()?.text == name }
