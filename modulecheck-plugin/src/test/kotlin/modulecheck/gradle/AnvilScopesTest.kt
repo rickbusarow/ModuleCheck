@@ -24,7 +24,7 @@ import modulecheck.specs.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 
-class AnvilScopesTest : BaseTest() {
+class AnvilScopesTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")

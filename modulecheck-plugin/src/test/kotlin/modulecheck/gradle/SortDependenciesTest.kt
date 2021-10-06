@@ -16,14 +16,13 @@
 package modulecheck.gradle
 
 import com.squareup.kotlinpoet.ClassName
-import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class SortDependenciesTest : BaseTest() {
+class SortDependenciesTest : BasePluginTest() {
 
   val projects = List(10) {
     jvmSubProject("lib-$it", ClassName("com.example.lib$it", "Lib${it}Class"))

@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class UnusedDependenciesTest : BaseTest() {
+class UnusedDependenciesTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")

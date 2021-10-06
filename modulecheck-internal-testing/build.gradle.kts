@@ -23,7 +23,6 @@ dependencies {
   api(libs.bundles.jUnit)
   api(libs.bundles.kotest)
 
-  api(projects.modulecheckApi)
 
   compileOnly(gradleApi())
 
