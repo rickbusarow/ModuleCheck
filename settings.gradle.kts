@@ -61,6 +61,7 @@ include(
   ":modulecheck-api",
   ":modulecheck-core",
   ":modulecheck-internal-testing",
+  ":modulecheck-parsing",
   ":modulecheck-plugin",
   ":modulecheck-psi",
   ":modulecheck-specs"

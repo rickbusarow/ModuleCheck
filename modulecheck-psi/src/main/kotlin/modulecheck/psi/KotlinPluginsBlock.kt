@@ -13,14 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.psi.internal
+package modulecheck.psi
 
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+import modulecheck.parsing.PluginsBlock
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
+class KotlinPluginsBlock(contentString: String) : PluginsBlock(contentString) {
+
+  override fun findOriginalStringIndex(parsedString: String) = originalLines
+    .indexOfFirst { originalLine ->
+
+      originalLine.trimStart().contains(parsedString)
+    }
 }

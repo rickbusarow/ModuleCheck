@@ -18,36 +18,31 @@ package modulecheck.core.internal
 import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
 import modulecheck.api.Project2
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.ProjectDependencyDeclarationVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
-import modulecheck.psi.internal.asKtsFileOrNull
-import org.jetbrains.kotlin.psi.KtCallExpression
+import modulecheck.api.positionOfStatement
+import modulecheck.core.parse
+import modulecheck.parsing.DependencyBlockParser
 import java.io.File
 
-fun Project2.psiElementIn(
-  parentBuildFile: File,
+fun Project2.statementOrNullIn(
+  dependentBuildFile: File,
   configuration: ConfigurationName
-): PsiElementWithSurroundingText? {
-  val kotlinBuildFile = parentBuildFile.asKtsFileOrNull() ?: return null
-
-  val result = DslBlockVisitor("dependencies")
-    .parse(kotlinBuildFile)
-    ?: return null
-
-  val visitor = ProjectDependencyDeclarationVisitor(configuration.value, path)
-
-  return result
-    .elements
-    .firstOrNull { element ->
-      visitor.find(element.psiElement as KtCallExpression)
+): String? {
+  return DependencyBlockParser
+    .parse(dependentBuildFile)
+    .firstNotNullOfOrNull { block ->
+      block.getOrEmpty(path, configuration.value)
     }
+    ?.firstOrNull()
+    ?.statementWithSurroundingText
 }
 
 fun Project2.positionIn(
-  parentBuildFile: File,
+  dependentBuildFile: File,
   configuration: ConfigurationName
-): Position? = parentBuildFile
-  .readText()
-  .lines()
-  .positionOf(this, configuration)
+): Position? {
+
+  val statement = statementOrNullIn(dependentBuildFile, configuration) ?: return null
+
+  return dependentBuildFile.readText()
+    .positionOfStatement(statement)
+}

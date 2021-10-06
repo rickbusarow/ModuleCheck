@@ -31,7 +31,7 @@ data class UnusedKaptProcessorFinding(
 
   override val problemName = "unused ${configurationName.value} dependency"
 
-  override fun positionOrNull(): Position? {
+  override val positionOrNull: Position? by lazy {
     // Kapt paths are different from other project dependencies.
     // Given a module of `:foo:bar:baz` in a project named `my-proj`,
     // the resolved artifact is `my-proj.foo.bar.baz`.
@@ -40,7 +40,7 @@ data class UnusedKaptProcessorFinding(
       .drop(1)
       .joinToString(":", ":")
 
-    return buildFile
+    buildFile
       .readText()
       .lines()
       .positionOf(dependencyPath, configurationName)

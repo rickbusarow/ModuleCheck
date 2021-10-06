@@ -13,14 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.psi.internal
+package modulecheck.psi
 
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
+fun everythingPrinter() = object : KtTreeVisitorVoid() {
+  override fun visitElement(element: PsiElement) {
+    super.visitElement(element)
+    println(
+      """ ***************************************************************************
+      |
+      |${element.text}           -- ${element::class.java}
+      |
+      |_________________________________________________________________________________
+    """.trimMargin()
+    )
+  }
 }

@@ -15,29 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.api.context.declarations
-import modulecheck.api.context.resolvedReferencesForSourceSetName
-import modulecheck.psi.DeclarationName
 import modulecheck.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
 fun Finding.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
-
-fun DeclarationName.resolveSourceOrNull(
-  dependentProject: Project2,
-  sourceSetName: SourceSetName
-): ConfiguredProjectDependency? {
-  return dependentProject
-    .resolvedReferencesForSourceSetName(sourceSetName)
-    .firstOrNull { cpd ->
-      cpd
-        .project
-        .declarations[SourceSetName.MAIN]
-        .orEmpty()
-        .contains(this)
-    }
-}

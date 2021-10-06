@@ -13,14 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.psi.internal
+plugins {
+  javaLibrary
+  id("com.vanniktech.maven.publish")
+  groovy
+}
 
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+dependencies {
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
+  compileOnly(gradleApi())
+
+  implementation(libs.agp)
+  implementation(libs.javaParser)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.groovy)
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
+
+  testImplementation(projects.modulecheckInternalTesting)
+  testImplementation(projects.modulecheckSpecs)
 }

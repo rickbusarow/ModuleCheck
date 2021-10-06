@@ -15,8 +15,6 @@
 
 package modulecheck.api
 
-import modulecheck.psi.PsiElementWithSurroundingText
-
 interface HasConfig {
   val configurationName: ConfigurationName
   val name: String
@@ -27,7 +25,7 @@ data class ExternalDependency(
   val group: String?,
   val moduleName: String?,
   val version: String?,
-  val psiElementWithSurroundingText: Lazy<PsiElementWithSurroundingText?>
+  val statementTextLazy: Lazy<String?>
 ) : HasConfig {
   override val name = "${group ?: ""}:${moduleName ?: ""}"
   val nameWithVersion = "${group ?: ""}:${moduleName ?: ""}:${version ?: ""}"

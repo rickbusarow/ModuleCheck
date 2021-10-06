@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.psi.internal
+package modulecheck.parsing
 
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+interface DependencyBlockParser {
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
+  companion object
+}
+
+interface PluginBlockParser {
+
+  companion object
 }

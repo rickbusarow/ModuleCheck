@@ -15,7 +15,7 @@
 
 package modulecheck.api
 
-import modulecheck.psi.PsiElementWithSurroundingText
+import modulecheck.api.Finding.Position
 import java.io.File
 
 interface Finding {
@@ -24,13 +24,14 @@ interface Finding {
   val dependentPath: String
   val buildFile: File
 
+  val statementTextOrNull: String? get() = null
+  val positionOrNull: Position?
+
   fun logString(): String {
     return "${buildFile.path}: ${positionString()} $problemName"
   }
 
-  fun elementOrNull(): PsiElementWithSurroundingText? = null
-  fun positionOrNull(): Position?
-  fun positionString() = positionOrNull()?.logString() ?: ""
+  fun positionString() = positionOrNull?.logString() ?: ""
 
   data class Position(
     val row: Int,
@@ -38,4 +39,25 @@ interface Finding {
   ) {
     fun logString(): String = "($row, $column): "
   }
+}
+
+fun String.positionOfStatement(statement: String): Position {
+
+  val lines = lines()
+  val trimmedLastStatementLine = statement.trimEnd()
+    .lines()
+    .last()
+
+  var index = indexOf(trimmedLastStatementLine)
+
+  var row = 0
+
+  while (lines[row].length < index) {
+    // if the current row's string isn't long enough, subtract its length from the total index
+    // and move on to the next row.  Subtract an additional 1 because the newline character
+    // in the full string isn't included in the line's string.
+    index -= (lines[row].length + 1)
+    row++
+  }
+  return Position(row + 1, index)
 }

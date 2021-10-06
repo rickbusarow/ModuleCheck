@@ -16,11 +16,11 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.asConfigurationName
 import modulecheck.api.files.existsOrNull
 import modulecheck.core.internal.positionOf
-import modulecheck.psi.PsiElementWithSurroundingText
 import java.io.File
 
 data class CouldUseAnvilFinding(
@@ -31,15 +31,17 @@ data class CouldUseAnvilFinding(
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
   override val problemName = "could use Anvil factory generator"
 
-  override fun elementOrNull(): PsiElementWithSurroundingText? = null
+  override val positionOrNull: Position? by lazy {
 
-  override fun positionOrNull(): Finding.Position? {
-    val element = elementOrNull() ?: return null
+    val statement = statementTextOrNull ?: return@lazy null
 
-    return buildFile
+    buildFile
       .existsOrNull()
       ?.readText()
       ?.lines()
-      ?.positionOf(element.toString(), "kapt".asConfigurationName())
+      ?.positionOf(statement, "kapt".asConfigurationName())
   }
+
+  override val statementTextOrNull: String? get() = null
+
 }

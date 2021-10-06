@@ -63,6 +63,7 @@ internal class RulesRegistrationTest : HermitJUnit5() {
   }
 }
 
+@Suppress("UNUSED_PARAMETER")
 data class TestSettings(
   override var autoCorrect: Boolean = false,
   override var deleteUnused: Boolean = false,

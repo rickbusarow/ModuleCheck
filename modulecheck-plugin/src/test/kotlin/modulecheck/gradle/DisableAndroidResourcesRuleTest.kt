@@ -311,7 +311,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         project.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts:  unused R file generation:"
         }
       }
 
@@ -517,7 +517,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 2):  unused R file generation:"
         }
       }
 
@@ -535,12 +535,12 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (20, 0):  unused R file generation:"
         }
       }
 
       @Test
-      fun `fully scoped should be fixed`() {
+      fun `fully scoped should not be fixed`() {
         project.edit {
           subprojects.first().edit {
             projectBuildSpec!!.edit {
@@ -557,7 +557,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (22, 4):  unused R file generation:"
         }
       }
 
@@ -577,7 +577,7 @@ class DisableAndroidResourcesRuleTest : BaseTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (6, 0):  unused R file generation:"
+          it shouldContain "app/build.gradle.kts: (21, 2):  unused R file generation:"
         }
       }
     }

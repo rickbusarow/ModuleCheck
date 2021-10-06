@@ -13,14 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.psi.internal
+package modulecheck.parsing
 
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+interface Declaration {
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
+  val statementWithSurroundingText: String
+  val declarationText: String
 }

@@ -20,10 +20,10 @@ interface Deletable : Finding {
   fun delete(): Boolean = synchronized(buildFile) {
     val text = buildFile.readText()
 
-    val element = elementOrNull() ?: return false
+    val element = statementTextOrNull ?: return false
 
     buildFile
-      .writeText(text.replaceFirst(element.toString(), ""))
+      .writeText(text.replaceFirst(element + '\n', ""))
 
     return true
   }
