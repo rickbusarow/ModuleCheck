@@ -80,7 +80,7 @@ abstract class ModuleCheckTask :
     val secondsDouble = timeMillis / 1000.0
 
     if (data.isNotEmpty()) {
-      logger.printFailureHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
+      logger.printSuccessHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
     }
 
     val unFixed = grouped
@@ -90,7 +90,11 @@ abstract class ModuleCheckTask :
 
         logger.printHeader("\t$path")
 
+        val logStrings = mutableMapOf<Finding, String>()
+
         val (fixed, toFix) = list.partition { finding ->
+
+          logStrings[finding] = finding.logString()
 
           if (!autoCorrect) return@partition false
 
@@ -102,11 +106,11 @@ abstract class ModuleCheckTask :
         }
 
         fixed.forEach { finding ->
-          logger.printWarning("\t\t${finding.logString()}")
+          logger.printWarning("\t\t${logStrings.getValue(finding)}")
         }
 
         toFix.forEach { finding ->
-          logger.printFailure("\t\t${finding.logString()}")
+          logger.printFailure("\t\t${logStrings.getValue(finding)}")
         }
 
         toFix
