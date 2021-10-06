@@ -61,7 +61,7 @@ jobs:
 
       # formats all src files
       - name: KtLint format
-        run: ./gradlew formatKotlin --no-daemon
+        run: ./gradlew ktlintformat --no-daemon
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes
