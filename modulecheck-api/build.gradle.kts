@@ -24,7 +24,7 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.semVer)
 
-  api(projects.modulecheckPsi)
+  api(projects.modulecheckParsing.psi)
 
   implementation(libs.agp)
   implementation(libs.groovy)

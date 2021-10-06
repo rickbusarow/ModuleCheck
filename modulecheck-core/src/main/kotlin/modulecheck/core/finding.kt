@@ -16,7 +16,7 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
-import modulecheck.psi.internal.asKtsFileOrNull
+import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
 fun Finding.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()

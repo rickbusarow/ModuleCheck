@@ -18,7 +18,7 @@ package modulecheck.api.context
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
 import modulecheck.api.anvil.AnvilScopeName
-import modulecheck.psi.DeclarationName
+import modulecheck.parsing.psi.DeclarationName
 
 data class AnvilScopeMerges(
   internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>

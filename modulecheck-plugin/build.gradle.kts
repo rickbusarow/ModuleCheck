@@ -37,7 +37,7 @@ dependencies {
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
 
-  implementation(projects.modulecheckPsi)
+  implementation(projects.modulecheckParsing.psi)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

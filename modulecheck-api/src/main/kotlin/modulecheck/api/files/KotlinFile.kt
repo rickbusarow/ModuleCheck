@@ -16,9 +16,9 @@
 package modulecheck.api.files
 
 import modulecheck.api.JvmFile
-import modulecheck.psi.DeclarationVisitor
-import modulecheck.psi.ReferenceVisitor
-import modulecheck.psi.UsedImportsVisitor
+import modulecheck.parsing.psi.DeclarationVisitor
+import modulecheck.parsing.psi.ReferenceVisitor
+import modulecheck.parsing.psi.UsedImportsVisitor
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 

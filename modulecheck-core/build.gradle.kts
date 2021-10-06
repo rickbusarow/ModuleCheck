@@ -23,7 +23,7 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(projects.modulecheckApi)
-  api(projects.modulecheckPsi)
+  api(projects.modulecheckParsing.psi)
 
   implementation(libs.agp)
   implementation(libs.groovy)

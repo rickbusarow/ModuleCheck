@@ -17,8 +17,8 @@ package modulecheck.api.context
 
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
-import modulecheck.psi.createBindingContext
-import modulecheck.psi.internal.ktFiles
+import modulecheck.parsing.psi.createBindingContext
+import modulecheck.parsing.psi.internal.ktFiles
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
