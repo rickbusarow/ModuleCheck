@@ -34,6 +34,7 @@ buildscript {
 }
 
 plugins {
+  id("com.autonomousapps.dependency-analysis") version "0.78.0"
   id("com.github.ben-manes.versions") version "0.39.0"
   id("io.gitlab.arturbosch.detekt") version "1.18.1"
   id("org.jetbrains.dokka") version "1.5.31"

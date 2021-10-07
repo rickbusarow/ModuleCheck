@@ -37,6 +37,8 @@ dependencies {
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
 
+  implementation(projects.modulecheckParsing.api)
+  implementation(projects.modulecheckParsing.groovyAntlr)
   implementation(projects.modulecheckParsing.psi)
 
   testImplementation(libs.bundles.hermit)

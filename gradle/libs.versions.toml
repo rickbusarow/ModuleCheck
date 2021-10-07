@@ -1,5 +1,6 @@
 [versions]
 androidTools = "7.0.2"
+antlr = "4.9.2"
 anvil = "2.3.4"
 benManes = "0.36.0"
 changeTracker = "0.7.4"
@@ -22,6 +23,9 @@ taskTree = "1.5"
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
+
+antlr-core = { module = "org.antlr:antlr4", version.ref = "antlr" }
+antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }
 
 anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
 

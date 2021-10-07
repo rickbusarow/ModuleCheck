@@ -19,6 +19,8 @@ import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginsBlock
+import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
+import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.psi.internal.asKtFile
@@ -28,6 +30,7 @@ import java.io.File
 fun DependencyBlockParser.Companion.parse(file: File): List<DependenciesBlock> {
   return when {
     file.isKotlinFile(listOf("kts")) -> KotlinDependencyBlockParser().parse(file.asKtFile())
+    file.extension == "gradle" -> GroovyDependencyBlockParser().parse(file.readText())
     else -> throw IllegalArgumentException(
       "The file argument must be either a `*.gradle.kts` file or `*.gradle`.  " +
         "The supplied argument was `${file.name}`"
@@ -38,6 +41,7 @@ fun DependencyBlockParser.Companion.parse(file: File): List<DependenciesBlock> {
 fun PluginBlockParser.Companion.parse(file: File): PluginsBlock? {
   return when {
     file.isKotlinFile(listOf("kts")) -> KotlinPluginsBlockParser().parse(file.asKtFile())
+    file.extension == "gradle" -> GroovyPluginsBlockParser().parse(file.readText())
     else -> throw IllegalArgumentException(
       "The file argument must be either a `*.gradle.kts` file or `*.gradle`.  " +
         "The supplied argument was `${file.name}`"
