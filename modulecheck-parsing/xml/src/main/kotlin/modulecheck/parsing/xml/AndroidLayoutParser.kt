@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing.xml
 
 import groovy.util.Node
 import groovy.xml.XmlParser

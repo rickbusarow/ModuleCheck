@@ -15,9 +15,7 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.parsing.DeclarationName
 import org.jetbrains.kotlin.name.FqName
 
-data class DeclarationName(val fqName: String)
-
-fun String.asDeclaractionName(): DeclarationName = DeclarationName(this)
 fun FqName.asDeclaractionName(): DeclarationName = DeclarationName(asString())

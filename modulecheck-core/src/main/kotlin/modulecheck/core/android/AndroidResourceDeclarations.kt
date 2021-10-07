@@ -21,8 +21,9 @@ import modulecheck.api.SourceSetName
 import modulecheck.api.context.JvmFiles
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.ResSourceFiles
-import modulecheck.parsing.psi.DeclarationName
-import modulecheck.parsing.psi.asDeclaractionName
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.xml.AndroidResourceParser
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

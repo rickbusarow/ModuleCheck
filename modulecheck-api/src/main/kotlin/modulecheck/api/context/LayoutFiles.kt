@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
-import modulecheck.api.XmlFile
+import modulecheck.parsing.xml.XmlFile
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

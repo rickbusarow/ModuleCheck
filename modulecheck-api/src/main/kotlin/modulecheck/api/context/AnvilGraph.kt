@@ -22,7 +22,8 @@ import modulecheck.api.anvil.AnvilScopeName
 import modulecheck.api.anvil.AnvilScopeNameEntry
 import modulecheck.api.anvil.RawAnvilAnnotatedType
 import modulecheck.api.files.KotlinFile
-import modulecheck.parsing.psi.DeclarationName
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.asDeclaractionName
 import modulecheck.parsing.psi.asDeclaractionName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import org.jetbrains.kotlin.name.FqName

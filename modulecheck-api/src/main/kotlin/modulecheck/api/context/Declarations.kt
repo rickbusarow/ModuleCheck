@@ -18,8 +18,8 @@ package modulecheck.api.context
 import modulecheck.api.AndroidProject2
 import modulecheck.api.Project2
 import modulecheck.api.SourceSetName
-import modulecheck.parsing.psi.DeclarationName
-import modulecheck.parsing.psi.asDeclaractionName
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.asDeclaractionName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

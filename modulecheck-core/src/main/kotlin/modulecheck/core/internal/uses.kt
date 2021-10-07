@@ -19,7 +19,7 @@ import modulecheck.api.*
 import modulecheck.api.anvil.AnvilScopeName
 import modulecheck.api.context.*
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
-import modulecheck.parsing.psi.DeclarationName
+import modulecheck.parsing.DeclarationName
 
 fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
   val mergedScopeNames = anvilScopeMerges

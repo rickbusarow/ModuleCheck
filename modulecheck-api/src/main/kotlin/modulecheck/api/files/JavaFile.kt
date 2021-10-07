@@ -22,7 +22,7 @@ import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import modulecheck.api.JvmFile
-import modulecheck.parsing.psi.asDeclaractionName
+import modulecheck.parsing.asDeclaractionName
 import java.io.File
 
 class JavaFile(val file: File) : JvmFile() {
