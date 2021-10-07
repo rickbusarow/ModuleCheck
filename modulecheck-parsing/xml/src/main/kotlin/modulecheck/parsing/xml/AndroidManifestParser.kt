@@ -18,6 +18,7 @@ package modulecheck.parsing.xml
 import groovy.util.Node
 import groovy.xml.XmlParser
 import java.io.File
+import kotlin.collections.MutableMap.MutableEntry
 
 object AndroidManifestParser {
   private val parser = XmlParser()
@@ -28,8 +29,6 @@ object AndroidManifestParser {
     .mapNotNull { it.attributes() }
     .flatMap { it.entries }
     .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
+    .filterIsInstance<MutableEntry<String, String>>()
+    .associate { it.key to it.value }
 }

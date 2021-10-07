@@ -48,7 +48,7 @@ abstract class BasePluginTest : BaseTest() {
   }
 
   fun BuildResult.shouldSucceed() {
-    tasks.forEach { it.outcome shouldBe TaskOutcome.SUCCESS }
+    tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
   fun shouldFailWithMessage(vararg tasks: String, messageBlock: (String) -> Unit) {
