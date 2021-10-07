@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.android
+package modulecheck.parsing
 
 import java.io.File
 

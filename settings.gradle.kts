@@ -64,6 +64,7 @@ include(
   ":modulecheck-parsing:api",
   ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:psi",
+  ":modulecheck-parsing:xml",
   ":modulecheck-plugin",
   ":modulecheck-specs"
 )

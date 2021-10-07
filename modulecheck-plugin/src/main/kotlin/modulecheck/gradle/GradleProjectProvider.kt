@@ -28,13 +28,13 @@ import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.api.*
 import modulecheck.api.anvil.AnvilGradlePlugin
-import modulecheck.core.android.AndroidManifestParser
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.srcRoot
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.MavenCoordinates
+import modulecheck.parsing.xml.AndroidManifestParser
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration

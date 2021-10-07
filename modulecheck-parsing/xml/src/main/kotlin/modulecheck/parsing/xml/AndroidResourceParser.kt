@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.core.android
+package modulecheck.parsing.xml
 
 import groovy.util.Node
 import groovy.xml.XmlParser
-import modulecheck.parsing.psi.DeclarationName
-import modulecheck.parsing.psi.asDeclaractionName
+import modulecheck.parsing.AndroidResource
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.asDeclaractionName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
