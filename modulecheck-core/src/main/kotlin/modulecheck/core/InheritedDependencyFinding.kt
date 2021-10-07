@@ -29,18 +29,26 @@ data class InheritedDependencyFinding(
   override val dependencyProject: Project2,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: ConfiguredProjectDependency?
+  val source: ConfiguredProjectDependency?
 ) : DependencyFinding("inheritedDependency") {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
+  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
   override val positionOrNull: Position? by lazy {
-    from?.project?.positionIn(buildFile, configurationName)
+    source?.project?.positionIn(buildFile, configurationName)
+  }
+
+  private fun fromStringOrEmpty(): String {
+    return if (dependencyProject.path == source?.project?.path) {
+      ""
+    } else {
+      " from: ${source?.project?.path}"
+    }
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val fromPath = from?.project?.path ?: return false
-    val fromConfigName = from.configurationName.value
+    val fromPath = source?.project?.path ?: return false
+    val fromConfigName = source.configurationName.value
 
     val blocks = DependencyBlockParser.parse(buildFile)
 

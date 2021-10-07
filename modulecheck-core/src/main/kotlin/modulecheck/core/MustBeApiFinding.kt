@@ -29,12 +29,20 @@ data class MustBeApiFinding(
   val source: ConfiguredProjectDependency?
 ) : DependencyFinding("mustBeApi") {
 
-  override val dependencyIdentifier = dependencyProject.path + " from: ${source?.project?.path}"
+  override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
   override val statementTextOrNull: String? by lazy {
     super.statementTextOrNull
       ?: source?.project
         ?.statementOrNullIn(buildFile, configurationName)
+  }
+
+  private fun fromStringOrEmpty(): String {
+    return if (dependencyProject.path == source?.project?.path) {
+      ""
+    } else {
+      " from: ${source?.project?.path}"
+    }
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

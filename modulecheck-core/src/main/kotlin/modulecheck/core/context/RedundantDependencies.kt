@@ -34,13 +34,22 @@ data class RedundantDependencyFinding(
   val from: List<Project2>
 ) : DependencyFinding("redundant") {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from.joinToString { it.path }}"
+  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
+
+  private fun fromStringOrEmpty(): String {
+
+    return if (from.all { dependencyProject.path == it.path }) {
+      ""
+    } else {
+      " from: ${from.joinToString { it.path }}"
+    }
+  }
 }
 
 data class RedundantDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>>
 ) : ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<RedundantDependencies>
     get() = Key
