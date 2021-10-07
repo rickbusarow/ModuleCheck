@@ -43,6 +43,10 @@ public data class ProjectSpec(
     projectBuildSpec?.writeIn(path)
     subprojects.forEach { it.writeIn(Path.of(path.toString(), it.gradlePath)) }
     projectSrcSpecs.forEach { it.writeIn(path) }
+
+    File(path.toFile(), "gradle").mkdirs()
+    path.newFile("gradle/libs.versions.toml")
+      .writeText(versionsToml)
   }
 
   public companion object {

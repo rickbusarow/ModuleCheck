@@ -229,6 +229,18 @@ public class ProjectBuildSpecBuilder(
     dependencies.add("$prev$configuration(\"$dependencyPath\")$after")
   }
 
+  public fun addTypesafeExternalDependency(
+    configuration: String,
+    reference: String,
+    comment: String? = null,
+    inlineComment: String? = null
+  ): ProjectBuildSpecBuilder = apply {
+    val prev = comment?.let { "$it\n  " } ?: ""
+    val after = inlineComment?.let { " $it" } ?: ""
+
+    dependencies.add("$prev$configuration($reference)$after")
+  }
+
   public fun addProjectDependency(
     configuration: String,
     dependencyProjectSpec: ProjectSpec,
