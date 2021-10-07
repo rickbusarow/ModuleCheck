@@ -959,7 +959,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1009,10 +1009,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1059,7 +1059,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1112,10 +1112,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1163,7 +1163,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1232,10 +1232,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1283,7 +1283,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1352,10 +1352,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1408,7 +1408,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1497,10 +1497,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1554,7 +1554,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
       }
     }
 
@@ -1647,10 +1647,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
+        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
+        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
+        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
+        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
       }
     }
   }

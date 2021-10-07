@@ -77,7 +77,7 @@ class InheritedDependencyRule(
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
           configurationName = newConfig,
-          from = source
+          source = source
         )
       }
       .filterNot { it.dependencyPath in mainDependenciesPaths }
