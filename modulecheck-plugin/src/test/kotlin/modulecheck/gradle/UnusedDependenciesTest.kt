@@ -107,6 +107,59 @@ class UnusedDependenciesTest : BasePluginTest() {
     }
 
     @Test
+    fun `with autoCorrect and preceding typesafe external dependency should be commented out`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1)
+            addTypesafeExternalDependency("api", "libs.javax.inject")
+            addProjectDependency("api", jvmSub2)
+            addProjectDependency("implementation", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  api(project(path = ":lib-1"))
+        |  api(libs.javax.inject)
+        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
+        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
+
+    @Test
     fun `with autoCorrect and deleteUnused should be deleted`() {
       val appProject = ProjectSpec("app") {
         addBuildSpec(
