@@ -30,8 +30,9 @@ import modulecheck.api.*
 import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
+import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
-import modulecheck.gradle.internal.srcRoot
+import modulecheck.gradle.internal.testedExtensionOrNull
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.xml.AndroidManifestParser
@@ -243,19 +244,25 @@ class GradleProjectProvider(
   }
 
   private fun GradleProject.androidPackageOrNull(): String? {
-    val manifest = File("$srcRoot/main/AndroidManifest.xml".replace("/", File.separator))
 
-    if (!manifest.exists()) return null
-
-    return AndroidManifestParser.parse(manifest)["package"]
+    return androidManifests()
+      ?.filter { it.exists() }
+      ?.map { AndroidManifestParser.parse(it)["package"] }
+      ?.distinct()
+      ?.also {
+        require(it.size == 1) {
+          """ModuleCheck only supports a single base package.  The following packages are present for module `$path`:
+          |
+          |${it.joinToString("\n")}
+        """.trimMargin()
+        }
+      }
+      ?.single()
   }
 
   private fun GradleProject.androidResourceFiles(): Set<File> {
-    val testedExtension =
-      extensions.findByType(LibraryExtension::class.java)
-        ?: extensions.findByType(AppExtension::class.java)
 
-    return testedExtension
+    return testedExtensionOrNull()
       ?.sourceSets
       ?.flatMap { sourceSet ->
         sourceSet.res.getSourceFiles().toList()

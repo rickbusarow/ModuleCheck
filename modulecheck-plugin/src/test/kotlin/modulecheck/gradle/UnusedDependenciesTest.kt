@@ -853,6 +853,144 @@ class UnusedDependenciesTest : BasePluginTest() {
   }
 
   @Test
+  fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
+
+    val appFile = FileSpec.builder("com.example.app", "MyApp")
+      .addType(
+        TypeSpec.classBuilder("MyApp")
+          .addProperty(
+            PropertySpec.builder("appNameRes", Int::class.asTypeName())
+              .getter(
+                FunSpec.getterBuilder()
+                  .addCode(
+                    """return %T.string.app_name""",
+                    ClassName.bestGuess("com.example.app.R")
+                  )
+                  .build()
+              )
+              .build()
+          )
+          .build()
+      )
+      .build()
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addFileSpec(appFile)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.app" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+    }
+
+    val androidSub1 = ProjectSpec("lib-1") {
+
+      // without this, the standard manifest will be generated and this test won't be testing anything
+      disableAutoManifest = true
+
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/res/values")) {
+          addRawFile(
+            RawFile(
+              "strings.xml",
+              """<resources>
+                |  <string name="app_name" translatable="false">MyApp</string>
+                |</resources>
+                """.trimMargin()
+            )
+          )
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          // This reproduces the behavior of Auto-Manifest:
+          // https://github.com/GradleUp/auto-manifest
+          // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
+          // registered, and the manifest location is never changed from the default.  When I open
+          // the generated project dir and execute the task from terminal, it works fine...
+          // This does the same thing, but uses a different default directory.
+          addBlock(
+            """
+          |val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
+          |
+          |android {
+          |  sourceSets {
+          |    findByName("main")?.manifest {
+          |      srcFile(manifestFile.path)
+          |    }
+          |  }
+          |}
+          |
+          |val makeFile by tasks.registering {
+          |
+          |  doFirst {
+          |
+          |    manifestFile.parentFile.mkdirs()
+          |    manifestFile.writeText(
+          |      ""${'"'}<manifest package="com.example.lib1" /> ""${'"'}.trimMargin()
+          |    )
+          |  }
+          |}
+          |
+          |afterEvaluate {
+          |
+          |  tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java)
+          |    .configureEach { dependsOn(makeFile) }
+          |  tasks.withType(com.android.build.gradle.tasks.MergeResources::class.java)
+          |    .configureEach { dependsOn(makeFile) }
+          |  tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java)
+          |    .configureEach { dependsOn(makeFile)}
+          |
+          |}
+          """.trimMargin()
+          )
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      addSubproject(appProject)
+      addSubproject(androidSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+    // one last check to make sure the manifest wasn't generated, since that would invalidate the test
+    File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
+  }
+
+  @Test
   fun `module with a declaration used via a class reference with wildcard import should not be unused`() {
     val appProject = ProjectSpec("app") {
       addBuildSpec(

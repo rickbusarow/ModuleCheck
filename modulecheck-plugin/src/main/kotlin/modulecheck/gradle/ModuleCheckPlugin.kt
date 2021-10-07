@@ -15,18 +15,22 @@
 
 package modulecheck.gradle
 
+import com.android.build.gradle.tasks.GenerateBuildConfig
+import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.api.Finding
 import modulecheck.api.Project2
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckAllTask
 import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.Internal
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.register
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -47,17 +51,44 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val rules = factory.create(settings)
 
-    rules
-      .onEach { rule ->
-        target.tasks.register("moduleCheck${rule.id}", DynamicModuleCheckTask::class, rule)
-      }
+    rules.map { rule ->
+      target.registerTask(
+        name = "moduleCheck${rule.id}",
+        type = DynamicModuleCheckTask::class,
+        rules = rule
+      )
+    }
 
-    target.tasks.register("moduleCheck", ModuleCheckAllTask::class.java, rules)
+    target.registerTask(
+      name = "moduleCheck",
+      type = ModuleCheckAllTask::class,
+      rules = rules
+    )
+  }
+
+  private fun Project.registerTask(
+    name: String,
+    type: KClass<out Task>,
+    rules: Any
+  ) {
+    tasks.register(name, type.java, rules)
+      .configure {
+
+        allprojects
+          .filter { it.isMissingManifestFile() }
+          .flatMap { it.tasks.withType(ManifestProcessorTask::class.java) }
+          .forEach { dependsOn(it) }
+
+        allprojects
+          .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
+          .forEach { dependsOn(it) }
+      }
   }
 }
 
 abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
-  @Internal val rule: ModuleCheckRule<T>
+  @Internal
+  val rule: ModuleCheckRule<T>
 ) : ModuleCheckTask() {
 
   init {
