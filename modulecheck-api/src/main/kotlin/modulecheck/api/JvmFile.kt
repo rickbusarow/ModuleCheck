@@ -15,7 +15,7 @@
 
 package modulecheck.api
 
-import modulecheck.parsing.psi.DeclarationName
+import modulecheck.parsing.DeclarationName
 
 abstract class JvmFile {
   abstract val name: String

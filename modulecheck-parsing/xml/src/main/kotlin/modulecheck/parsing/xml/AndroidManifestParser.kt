@@ -13,29 +13,23 @@
  * limitations under the License.
  */
 
-plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
-}
+package modulecheck.parsing.xml
 
-dependencies {
+import groovy.util.Node
+import groovy.xml.XmlParser
+import java.io.File
 
-  api(libs.javaParser)
-  api(libs.kotlin.compiler)
-  api(libs.semVer)
+object AndroidManifestParser {
+  private val parser = XmlParser()
 
-  api(projects.modulecheckParsing.psi)
-  api(projects.modulecheckParsing.xml)
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.groovyXml)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
+  fun parse(file: File) = parser.parse(file)
+    .breadthFirst()
+    .filterIsInstance<Node>()
+    .mapNotNull { it.attributes() }
+    .flatMap { it.entries }
+    .filterNotNull()
+    // .flatMap { it.values.mapNotNull { value -> value } }
+    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
+    .map { it.key to it.value }
+    .toMap()
 }

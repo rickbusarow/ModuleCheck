@@ -26,6 +26,7 @@ dependencies {
   api(projects.modulecheckParsing.api)
   api(projects.modulecheckParsing.groovyAntlr)
   api(projects.modulecheckParsing.psi)
+  api(projects.modulecheckParsing.xml)
 
   implementation(libs.agp)
   implementation(libs.groovy)

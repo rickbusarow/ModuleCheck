@@ -13,23 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.core.android
+package modulecheck.parsing
 
-import groovy.util.Node
-import groovy.xml.XmlParser
-import java.io.File
+data class DeclarationName(val fqName: String)
 
-object AndroidManifestParser {
-  private val parser = XmlParser()
-
-  fun parse(file: File) = parser.parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    // .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<MutableMap.MutableEntry<String, String>>()
-    .map { it.key to it.value }
-    .toMap()
-}
+fun String.asDeclaractionName(): DeclarationName = DeclarationName(this)
