@@ -62,6 +62,7 @@ include(
   ":modulecheck-core",
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:api",
+  ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:psi",
   ":modulecheck-plugin",
   ":modulecheck-specs"

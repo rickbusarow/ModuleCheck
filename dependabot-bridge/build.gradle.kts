@@ -32,6 +32,8 @@ dependencies {
   dependencySync("io.kotest:kotest-property-jvm:4.6.3")
   dependencySync("io.kotest:kotest-runner-junit5-jvm:4.6.3")
   dependencySync("javax.inject:javax.inject:1")
+  dependencySync("org.antlr:antlr4:4.9.2")
+  dependencySync("org.antlr:antlr4-runtime:4.9.2")
   dependencySync("net.swiftzer.semver:semver:1.1.1")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")

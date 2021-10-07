@@ -40,7 +40,6 @@ fun Collection<File>.jvmFiles(
   bindingContext: BindingContext
 ) = flatMap { it.jvmFiles(bindingContext) }
 
-fun FileTreeWalk.dirs(): Sequence<File> = asSequence().filter { it.isDirectory }
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
 
 fun File.existsOrNull(): File? = if (exists()) this else null

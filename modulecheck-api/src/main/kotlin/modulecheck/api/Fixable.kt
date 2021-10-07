@@ -24,6 +24,7 @@ interface Fixable : Finding {
   }
 
   fun fix(): Boolean = synchronized(buildFile) {
+
     val text = buildFile.readText()
 
     val statementText = statementTextOrNull ?: return false
