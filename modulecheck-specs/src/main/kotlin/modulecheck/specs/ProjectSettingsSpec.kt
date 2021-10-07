@@ -35,9 +35,8 @@ public data class ProjectSettingsSpec(
 
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
-    path.newFile("settings.gradle.kts").writeText(
-      pluginManagement() + includes()
-    )
+    path.newFile("settings.gradle.kts")
+      .writeText(pluginManagement() + typeSafe() + includes())
   }
 
   private fun pluginManagement() =
@@ -60,6 +59,12 @@ public data class ProjectSettingsSpec(
        |}
        |
        |""".trimMargin()
+
+  private fun typeSafe() = """
+    |enableFeaturePreview("VERSION_CATALOGS")
+    |enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+    |
+  """.trimMargin()
 
   private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
