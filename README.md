@@ -15,6 +15,8 @@ All inspection is done using Gradle build files, Java/Kotlin source, and `res` x
 
 Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
 
+![Diagram of flattening module structure](website/static/img/modulecheck_diagram.png)
+
 ### Config
 ```kotlin
 // settings.gradle.kts
@@ -30,7 +32,7 @@ pluginManagement {
 // top-level build.gradle.kts
 
 plugins {
-  id("com.rickbusarow.module-check") version "0.10.0"
+  id("com.rickbusarow.module-check") version "0.11.0"
 }
 ```
 
@@ -40,33 +42,6 @@ all checks
 ```shell
 ./gradlew moduleCheck
 ```
-
-kapt checks
-```shell
-./gradlew moduleCheckKapt
-```
-
-sorts
-```shell
-./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
-```
-
-unused
-```shell
-./gardlew moduleCheckUnused
-```
-
-redundant
-```shell
-./gradlew moduleCheckRedundant
-```
-
-overshot
-```shell
-./gradlew moduleCheckOvershot
-```
-
-
 
 ## License
 
@@ -82,4 +57,3 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
-

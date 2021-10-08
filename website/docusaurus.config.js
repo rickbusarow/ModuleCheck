@@ -29,6 +29,16 @@ module.exports = {
       defaultMode: "light",
       disableSwitch: false,
       respectPrefersColorScheme: true,
+      switchConfig: {
+        darkIcon: '🌙',
+        lightIcon: '☀️',
+        darkIconStyle: {
+          marginLeft: '2px',
+        },
+        lightIconStyle: {
+          marginLeft: '2px',
+        },
+      },
     },
     announcementBar: {
       id: "supportus",
@@ -49,19 +59,13 @@ module.exports = {
           position: "left",
         },
         {
-          type: "doc",
-          docId: "rules/unused",
-          label: "Rules",
-          position: "left",
-        },
-        {
           to: 'CHANGELOG',
           label: 'ChangeLog',
-          position: 'right'
+          position: 'left'
         },
         {
           type: "docsVersionDropdown",
-          position: "right",
+          position: "left",
           dropdownActiveClassDisabled: true,
           dropdownItemsAfter: [
             {

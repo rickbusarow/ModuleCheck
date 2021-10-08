@@ -1,6 +1,6 @@
-## 0.11.0 - Groovy auto-correct support
+# 0.11.0 - Groovy auto-correct support
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - Support generated manifests ([#197](https://github.com/rbusarow/ModuleCheck/pull/197))
 - fix redundant "from: " output ([#193](https://github.com/rbusarow/ModuleCheck/pull/193))
@@ -9,6 +9,6 @@
 - include class literal expressions when looking for type references ([#177](https://github.com/rbusarow/ModuleCheck/pull/177))
 - check for Android kotlin sources ([#173](https://github.com/rbusarow/ModuleCheck/pull/173))
 
-## 0.10.0
+# 0.10.0
 
 Initial release
