@@ -23,13 +23,14 @@ import modulecheck.parsing.asDeclaractionName
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
 ) : Set<InheritedDependencyWithSource> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<MustBeApi>
     get() = Key
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override operator fun invoke(project: Project2): MustBeApi {
+      // this is anything in the main classpath, including inherited dependencies
       val mainDependencies = project.publicDependencies
 
       val mergedScopeNames = project
@@ -62,10 +63,12 @@ data class MustBeApi(
 
       val api = mainDependencies
         .asSequence()
-        // .filterNot { it.configurationName == ConfigurationName.api }
+        // Anything with an `api` config must be inherited,
+        // and will be handled by the InheritedDependencyRule.
+        .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
-
+          // exclude anything which is inherited but already included in local `api` deps
           cpd in project.projectDependencies
             .value[ConfigurationName.api]
             .orEmpty()

@@ -17,6 +17,7 @@ package modulecheck.core.context
 
 import modulecheck.api.ConfigurationName
 import modulecheck.api.ConfiguredProjectDependency
+import modulecheck.api.Deletable
 import modulecheck.api.Project2
 import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
@@ -34,14 +35,24 @@ data class UnusedDependency(
   override val dependencyProject: Project2,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
-) : DependencyFinding("unused") {
+) : DependencyFinding("unused"),
+    Deletable {
   fun cpd() = ConfiguredProjectDependency(configurationName, dependencyProject)
+  override fun toString(): String {
+    return "UnusedDependency(\n" +
+      "\tdependentPath='$dependentPath', \n" +
+      "\tbuildFile=$buildFile, \n" +
+      "\tdependencyProject=$dependencyProject, \n" +
+      "\tdependencyIdentifier='$dependencyIdentifier', \n" +
+      "\tconfigurationName=$configurationName\n" +
+      ")"
+  }
 }
 
 data class UnusedDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key

@@ -16,6 +16,7 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.*
+import modulecheck.core.context.UnusedDependency
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import org.gradle.api.DefaultTask
@@ -92,18 +93,21 @@ abstract class ModuleCheckTask :
 
         val logStrings = mutableMapOf<Finding, String>()
 
-        val (fixed, toFix) = list.partition { finding ->
-
-          logStrings[finding] = finding.logString()
-
-          if (!autoCorrect) return@partition false
-
-          if (deleteUnused && finding is Deletable) {
-            finding.delete()
-          } else {
-            (finding as? Fixable)?.fix() ?: false
+        val (fixed, toFix) = list
+          .distinct()
+          .onEach { finding ->
+            logStrings[finding] = finding.logString()
           }
-        }
+          .partition { finding ->
+
+            if (!autoCorrect) return@partition false
+
+            if (deleteUnused && finding is Deletable) {
+              finding.delete()
+            } else {
+              (finding as? Fixable)?.fix() ?: false
+            }
+          }
 
         fixed.forEach { finding ->
           logger.printWarning("\t\t${logStrings.getValue(finding)}")

@@ -15,11 +15,8 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Project2
-import modulecheck.api.asConfigurationName
+import modulecheck.api.*
 import modulecheck.api.context.ProjectContext
-import modulecheck.api.publicDependencies
 import modulecheck.core.DependencyFinding
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -32,7 +29,8 @@ data class RedundantDependencyFinding(
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
   val from: List<Project2>
-) : DependencyFinding("redundant") {
+) : DependencyFinding("redundant"),
+    Deletable {
 
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
@@ -49,7 +47,7 @@ data class RedundantDependencyFinding(
 data class RedundantDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>>
 ) : ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<RedundantDependencies>
     get() = Key
