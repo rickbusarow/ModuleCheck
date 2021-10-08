@@ -14,7 +14,7 @@
  */
 
 module.exports = {
-  Basics: [
+  Docs: [
     "quickstart",
     "configuration",
     {

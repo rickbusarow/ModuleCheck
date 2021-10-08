@@ -55,7 +55,7 @@ module.exports = {
         {
           type: "doc",
           docId: "quickstart",
-          label: "Basics",
+          label: "Docs",
           position: "left",
         },
         {
