@@ -51,15 +51,13 @@ data class UnusedDependencies(
       val neededForScopes by lazy(NONE) { project.anvilScopeMap() }
 
       val unusedHere = project
-        .configurations
-        .values
+        .sourceSets
+        .flatMap { it.key.configurationNames() }
         .asSequence()
-        .filterNot { it.name.value.contains("detekt", true) }
-        .filterNot { it.name.value.contains("kapt", true) }
         .flatMap { config ->
           project
             .projectDependencies
-            .value[config.name]
+            .value[config]
             .orEmpty()
         }
         .filterNot { cpd ->
