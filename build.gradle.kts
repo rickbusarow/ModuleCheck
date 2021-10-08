@@ -294,8 +294,10 @@ fun File.updateTangleVersionRef(version: String) {
 
   val group = project.extra.properties["GROUP"] as String
 
+  val pluginId = rootProject.extra.properties["PLUGIN_ID"] as String
+
   val pluginRegex =
-    """^([^'"\n]*['"])$group[^'"]*(['"].*) version (['"])[^'"]*(['"].*)${'$'}""".toRegex()
+    """^([^'"\n]*['"])$pluginId[^'"]*(['"].*) version (['"])[^'"]*(['"].*)${'$'}""".toRegex()
   val moduleRegex = """^([^'"\n]*['"])$group:([^:]*):[^'"]*(['"].*)${'$'}""".toRegex()
 
   val newText = readText()
@@ -306,7 +308,7 @@ fun File.updateTangleVersionRef(version: String) {
 
           val (preId, postId, preVersion, postVersion) = matchResult.destructured
 
-          "$preId$group$postId version $preVersion$version$postVersion"
+          "$preId$pluginId$postId version $preVersion$version$postVersion"
         }
         .replace(moduleRegex) { matchResult ->
 
@@ -331,7 +333,7 @@ val startSite by tasks.registering(Exec::class) {
     updateWebsitePackageJsonVersion
   )
 
-  workingDir("./website")
+  workingDir("$rootDir/website")
   commandLine("npm", "run", "start")
 }
 
@@ -341,7 +343,7 @@ val versionDocs by tasks.registering(Exec::class) {
     "creates a new version snapshot of website docs, using the current version defined in gradle.properties"
   group = "website"
 
-  val existingVersions = with(File("./website/versions.json")) {
+  val existingVersions = with(File("$rootDir/website/versions.json")) {
     "\"([^\"]*)\"".toRegex()
       .findAll(readText())
       .flatMap { it.destructured.toList() }
@@ -351,7 +353,7 @@ val versionDocs by tasks.registering(Exec::class) {
 
   enabled = version !in existingVersions
 
-  workingDir("./website")
+  workingDir("$rootDir/website")
   commandLine("npm", "run", "docusaurus", "docs:version", version)
 }
 
@@ -361,12 +363,12 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
   group = "website"
 
   from("CHANGELOG.md")
-  into("./website/src/pages")
+  into("$rootDir/website/src/pages")
 
   doLast {
 
     // add one hashmark to each header, because GitHub and Docusaurus render them differently
-    val changelog = File("./website/src/pages/CHANGELOG.md")
+    val changelog = File("$rootDir/website/src/pages/CHANGELOG.md")
 
     val newText = changelog.readText()
       .lines()

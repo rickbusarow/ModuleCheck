@@ -59,8 +59,8 @@
 }
 
 .featureImage {
-  height: 200px;
-  width: 200px;
+  /*height: 200px;*/
+  /*width: 200px;*/
 }
 
 .heroSlogan {
@@ -70,7 +70,7 @@
 }
 
 .heroSlogan strong {
-  color: #00ff00;
+  /*color: #00ff00;*/
 }
 
 .gettingStartedButton {
@@ -82,4 +82,3 @@
   background: #ffffff;
   color: var(--ifm-color-primary) !important;
 }
-

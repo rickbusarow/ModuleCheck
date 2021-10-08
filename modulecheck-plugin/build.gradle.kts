@@ -53,7 +53,7 @@ dependencies {
 gradlePlugin {
   plugins {
     create("moduleCheck") {
-      id = "com.rickbusarow.module-check"
+      id = rootProject.extra.properties["PLUGIN_ID"] as String
       group = "com.rickbusarow.modulecheck"
       implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
       version = project.extra.properties["VERSION_NAME"] as String

@@ -23,10 +23,25 @@ import useBaseUrl from "@docusaurus/useBaseUrl";
 import styles from "./styles.module.css";
 
 const features = [
+  {
+    title: 'Tree shaking',
+    imageUrl: 'img/modulecheck_diagram.png',
+    description: (
+      <>
+        Blah blah blah.
 
+        <br/><br/>
+
+        More text.
+
+        <br/><br/>
+
+      </>
+    ),
+  },
 ];
 
-function Feature({imageUrl, title, description, code, dest}) {
+function Feature({imageUrl, title, description}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
     <div className={clsx("col col--4", styles.feature)}>
@@ -35,12 +50,9 @@ function Feature({imageUrl, title, description, code, dest}) {
           <img className={styles.featureImage} src={imgUrl} alt={title}/>
         </div>
       )}
-      <h1 align="center">{title}</h1>
-      <div>
-        <CodeBlock className="language-kotlin">{code}</CodeBlock>
-      </div>
-      <p>{description}</p>
-      <a href={dest}>Read more</a>
+      {/*<h1 align="center">{title}</h1>*/}
+
+      {/*<p>{description}</p>*/}
     </div>
   );
 }
@@ -85,11 +97,11 @@ function Home() {
                 src="https://img.shields.io/maven-central/v/com.rickbusarow.modulecheck/modulecheck-api.svg?label=release&style=for-the-badge&color=aa0055"
                 alt="version badge"/>
             </a>
-            
+
             &nbsp;
 
             <a href="https://plugins.gradle.org/plugin/com.rickbusarow.module-check">
-              <img 
+              <img
                 src="https://img.shields.io/gradle-plugin-portal/v/com.rickbusarow.module-check?style=for-the-badge"
                 alt="Gradle Plugin Portal" />
             </a>
@@ -107,11 +119,11 @@ function Home() {
       <main>
         <section className={styles.features}>
           <div className="container">
-            <div className="row">
+            {/*<div className="row">*/}
               {features.map((props, idx) => (
                 <Feature key={idx} {...props} />
               ))}
-            </div>
+            {/*</div>*/}
           </div>
         </section>
       </main>
