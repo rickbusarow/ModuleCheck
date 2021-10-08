@@ -85,7 +85,7 @@ data class ConfigurationName(val value: String) {
      * The order of this list matters.
      * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
      */
-    private val baseConfigurations = listOf(
+    internal val baseConfigurations = listOf(
       compileOnlyApi.value,
       api.value,
       kapt.value,

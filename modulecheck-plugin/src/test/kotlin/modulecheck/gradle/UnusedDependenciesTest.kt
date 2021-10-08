@@ -347,6 +347,39 @@ class UnusedDependenciesTest : BasePluginTest() {
   }
 
   @Test
+  fun `dependencies from non-jvm configuration should be ignored`() {
+    val lib1 = ProjectSpec("lib1") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("kotlin(\"jvm\")")
+          addProjectDependency("\"fakeConfig\"", jvmSub1)
+        }
+      )
+    }
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(lib1)
+      addSubprojects(jvmSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """
+        subprojects {
+          configurations.create("fakeConfig")
+        }
+            """.trimIndent()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `testImplementation used in test should not be unused`() {
     val myTest = FileSpec.builder("com.example.app", "MyTest")
       .addImport("com.example.lib1", "Lib1Class")

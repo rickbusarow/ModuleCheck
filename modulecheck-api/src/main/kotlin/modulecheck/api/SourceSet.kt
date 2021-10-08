@@ -16,8 +16,24 @@
 package modulecheck.api
 
 import java.io.File
+import java.util.*
 
 data class SourceSetName(val value: String) {
+
+  fun configurationNames(): List<ConfigurationName> {
+
+    return if (this == MAIN) {
+      ConfigurationName.main()
+    } else {
+      ConfigurationName.baseConfigurations
+        .map {
+          @Suppress("DEPRECATION")
+          "${this.value}${it.capitalize(Locale.US)}"
+            .asConfigurationName()
+        }
+    }
+  }
+
   companion object {
     val MAIN = SourceSetName("main")
   }
