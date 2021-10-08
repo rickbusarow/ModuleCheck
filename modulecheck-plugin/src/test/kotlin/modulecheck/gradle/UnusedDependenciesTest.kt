@@ -370,7 +370,7 @@ class UnusedDependenciesTest : BasePluginTest() {
         subprojects {
           configurations.create("fakeConfig")
         }
-      """.trimIndent()
+            """.trimIndent()
           ).build()
       )
     }
