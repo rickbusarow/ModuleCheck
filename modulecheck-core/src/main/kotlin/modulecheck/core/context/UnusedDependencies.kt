@@ -36,7 +36,7 @@ data class UnusedDependency(
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : DependencyFinding("unused"),
-    Deletable {
+  Deletable {
   fun cpd() = ConfiguredProjectDependency(configurationName, dependencyProject)
   override fun toString(): String {
     return "UnusedDependency(\n" +
@@ -52,7 +52,7 @@ data class UnusedDependency(
 data class UnusedDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
 ) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key
