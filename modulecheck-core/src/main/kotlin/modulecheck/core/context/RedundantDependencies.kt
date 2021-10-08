@@ -30,7 +30,7 @@ data class RedundantDependencyFinding(
   override val configurationName: ConfigurationName,
   val from: List<Project2>
 ) : DependencyFinding("redundant"),
-    Deletable {
+  Deletable {
 
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
@@ -47,7 +47,7 @@ data class RedundantDependencyFinding(
 data class RedundantDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>>
 ) : ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<RedundantDependencies>
     get() = Key

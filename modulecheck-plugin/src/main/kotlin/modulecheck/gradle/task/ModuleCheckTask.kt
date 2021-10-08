@@ -16,7 +16,6 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.*
-import modulecheck.core.context.UnusedDependency
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import org.gradle.api.DefaultTask
