@@ -15,11 +15,12 @@
 
 package modulecheck.parsing.xml
 
+import modulecheck.parsing.AndroidResource
 import java.io.File
 
-sealed class XmlFile {
+sealed interface XmlFile {
 
-  data class LayoutFile(val file: File) : XmlFile() {
+  data class LayoutFile(val file: File) : XmlFile {
 
     val customViews: Set<String> by lazy {
       AndroidLayoutParser.parseViews(file)
@@ -28,6 +29,29 @@ sealed class XmlFile {
     val resourceReferences: Set<String> by lazy {
       AndroidLayoutParser.parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
+        .toSet()
+    }
+
+    val resourceReferencesAsRReferences: Set<String> by lazy {
+      resourceReferences
+        .mapNotNull { AndroidResource.fromString(it) }
+        .map { "R.${it.prefix}.${it.name}" }
+        .toSet()
+    }
+  }
+
+  data class ManifestFile(val file: File) : XmlFile {
+
+    val resourceReferences: Set<String> by lazy {
+      AndroidManifestParser.parseResources(file)
+        .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
+        .toSet()
+    }
+
+    val resourceReferencesAsRReferences: Set<String> by lazy {
+      resourceReferences
+        .mapNotNull { AndroidResource.fromString(it) }
+        .map { "R.${it.prefix}.${it.name}" }
         .toSet()
     }
   }

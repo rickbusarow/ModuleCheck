@@ -104,7 +104,8 @@ class GradleProjectProvider(
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         resourceFiles = gradleProject.androidResourceFiles(),
-        androidPackageOrNull = gradleProject.androidPackageOrNull()
+        androidPackageOrNull = gradleProject.androidPackageOrNull(),
+        manifests = gradleProject.androidManifests().orEmpty()
       )
     } else {
       Project2Impl(
@@ -246,8 +247,8 @@ class GradleProjectProvider(
   private fun GradleProject.androidPackageOrNull(): String? {
 
     return androidManifests()
-      ?.filter { it.exists() }
-      ?.map { AndroidManifestParser.parse(it)["package"] }
+      ?.filter { it.value.exists() }
+      ?.map { AndroidManifestParser.parse(it.value)["package"] }
       ?.distinct()
       ?.also {
         require(it.size == 1) {

@@ -34,7 +34,8 @@ data class AndroidProject2Impl(
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
   override val resourceFiles: Set<File>,
-  override val androidPackageOrNull: String?
+  override val androidPackageOrNull: String?,
+  override val manifests: Map<SourceSetName, File>
 ) : AndroidProject2 {
 
   private val context = ProjectContextImpl(this)

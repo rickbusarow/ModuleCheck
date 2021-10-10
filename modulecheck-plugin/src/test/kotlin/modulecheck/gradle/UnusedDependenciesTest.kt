@@ -886,6 +886,98 @@ class UnusedDependenciesTest : BasePluginTest() {
   }
 
   @Test
+  fun `module with a string resource used in subject module's AndroidManifest should not be unused`() {
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              """<manifest
+                |  xmlns:android="http://schemas.android.com/apk/res/android"
+                |  package="com.example.app"
+                |  >
+                |
+                |  <application
+                |    android:name=".App"
+                |    android:allowBackup="true"
+                |    android:icon="@mipmap/ic_launcher"
+                |    android:label="@string/app_name"
+                |    android:roundIcon="@mipmap/ic_launcher_round"
+                |    android:supportsRtl="true"
+                |    android:theme="@style/AppTheme"
+                |    />
+                |</manifest>
+                """.trimMargin()
+            )
+          )
+        }
+      )
+    }
+
+    val androidSub1 = ProjectSpec("lib-1") {
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/res/values")) {
+          addRawFile(
+            RawFile(
+              "strings.xml",
+              """<resources>
+                |  <string name="app_name" translatable="false">MyApp</string>
+                |</resources>
+                """.trimMargin()
+            )
+          )
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.lib1" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      addSubproject(appProject)
+      addSubproject(androidSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
 
     val appFile = FileSpec.builder("com.example.app", "MyApp")

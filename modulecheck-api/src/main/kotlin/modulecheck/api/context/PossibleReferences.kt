@@ -34,11 +34,22 @@ data class PossibleReferences(
     override operator fun invoke(project: Project2): PossibleReferences {
       val map = project
         .sourceSets
-        .mapValues { (_, sourceSet) ->
-          project[JvmFiles][sourceSet.name]
+        .mapValues { (name, sourceSet) ->
+          val jvm = project[JvmFiles][sourceSet.name]
             .orEmpty()
             .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
             .toSet()
+
+          val layout = project[LayoutFiles][name]
+            .orEmpty()
+            .flatMap { it.resourceReferencesAsRReferences }
+            .toSet()
+
+          val manifest = project.manifestFilesForSourceSetName(name)
+            ?.resourceReferencesAsRReferences
+            .orEmpty()
+
+          jvm + layout + manifest
         }
 
       return PossibleReferences(ConcurrentHashMap(map))
