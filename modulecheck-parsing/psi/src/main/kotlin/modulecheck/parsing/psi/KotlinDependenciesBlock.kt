@@ -21,11 +21,12 @@ class KotlinDependenciesBlock(
   contentString: String
 ) : DependenciesBlock(contentString) {
 
-  override fun findOriginalStringIndex(parsedString: String) = originalLines
-    .indexOfFirst { originalLine ->
-
-      originalLine.trimStart().contains(parsedString)
-    }
+  override fun originalLineMatchesParsed(
+    originalLine: String,
+    parsedString: String
+  ): Boolean {
+    return originalLine.contains(parsedString)
+  }
 
   override fun toString(): String {
     return "KotlinDependenciesBlock(\n" +

@@ -63,3 +63,5 @@ libs/
 
 # all build dirs at any level
 **/build
+
+**/*.hprof

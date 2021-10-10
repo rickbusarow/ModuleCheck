@@ -31,6 +31,7 @@ fun Project2.statementOrNullIn(
     .parse(dependentBuildFile)
     .firstNotNullOfOrNull { block ->
       block.getOrEmpty(path, configuration.value)
+        .takeIf { it.isNotEmpty() }
     }
     ?.firstOrNull()
     ?.statementWithSurroundingText
