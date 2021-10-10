@@ -37,7 +37,7 @@ sealed class AndroidResource(val prefix: kotlin.String) {
 
   companion object {
 
-    private val REGEX = """"@(.*)/(.*)"""".toRegex()
+    private val REGEX = """"?@(.*)/(.*)"?""".toRegex()
 
     @Suppress("ComplexMethod")
     fun fromFile(file: File): AndroidResource? {

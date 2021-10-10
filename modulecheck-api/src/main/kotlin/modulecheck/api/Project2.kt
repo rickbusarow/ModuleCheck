@@ -80,4 +80,5 @@ interface AndroidProject2 : Project2 {
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>
   val androidPackageOrNull: String?
+  val manifests: Map<SourceSetName, File>
 }

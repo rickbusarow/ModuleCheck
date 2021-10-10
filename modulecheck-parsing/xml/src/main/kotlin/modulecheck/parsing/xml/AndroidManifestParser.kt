@@ -31,4 +31,14 @@ object AndroidManifestParser {
     .filterNotNull()
     .filterIsInstance<MutableEntry<String, String>>()
     .associate { it.key to it.value }
+
+  fun parseResources(file: File): Set<String> {
+    return parser.parse(file)
+      .breadthFirst()
+      .filterIsInstance<Node>()
+      .mapNotNull { it.attributes() }
+      .flatMap { it.values.mapNotNull { value -> value } }
+      .filterIsInstance<String>()
+      .toSet()
+  }
 }

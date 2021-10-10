@@ -16,6 +16,8 @@
 package modulecheck.gradle.internal
 
 import com.android.build.gradle.TestedExtension
+import modulecheck.api.SourceSetName
+import modulecheck.api.toSourceSetName
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import java.io.File
@@ -43,9 +45,9 @@ fun Project.isAndroid(): Boolean = extensions.findByType(TestedExtension::class)
 fun Project.testedExtensionOrNull(): TestedExtension? = extensions
   .findByType(TestedExtension::class)
 
-fun Project.androidManifests() = testedExtensionOrNull()
+fun Project.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
   ?.sourceSets
-  ?.map { it.manifest.srcFile }
+  ?.associate { it.name.toSourceSetName() to it.manifest.srcFile }
 
 /**
  * @return the main src `AndroidManifest.xml` file if it exists. This will typically be

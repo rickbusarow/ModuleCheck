@@ -46,9 +46,7 @@ data class Imports(
             .flatMap { it.customViews }
             .toSet()
 
-          val combined = jvm + layout
-
-          combined
+          jvm + layout
         }
 
       return Imports(ConcurrentHashMap(map))
