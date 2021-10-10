@@ -107,10 +107,69 @@ abstract class DependenciesBlock(var contentString: String) {
       .orEmpty()
   }
 
-  protected abstract fun findOriginalStringIndex(parsedString: String): Int
+  /**
+   * Compares the target parsed string to the un-parsed lines of the original dependencies block,
+   * and returns the index of **the last row** which matches the parsed string.
+   *
+   * So, given the target:
+   * ```
+   * api(projects.foo.bar) {
+   *   exclude(group = "androidx.appcompat")
+   * }
+   * ```
+   * And given the dependencies lines:
+   * ```
+   * <blank line>
+   * // Remove leaking AppCompat dependency
+   * api(projects.foo.bar) {
+   *   exclude(group = "androidx.appcompat")
+   * }                                                // this is index 4
+   * api(libs.junit)
+   * ```
+   *
+   * This function would return index `4`, because rows 2-4 match the target parsed string.
+   *
+   * From this value, [getOriginalString] will return a multi-line string which includes
+   * the blank line and the comment.
+   */
+  private fun findLastMatchingRowIndex(parsedString: String): Int {
+    val targetLines = parsedString.lines()
+      .map { it.trimStart() }
 
-  protected fun getOriginalString(parsedString: String): String {
-    val originalStringIndex = findOriginalStringIndex(parsedString)
+    // index is incremented at least once (if the first line is a match), so start at -1
+    var index = -1
+
+    var matched: Boolean
+
+    do {
+      val candidates = originalLines
+        .drop(index + 1)
+        .take(targetLines.size)
+        .map { it.trimStart() }
+
+      matched = candidates.zip(targetLines)
+        .all { (candidate, target) ->
+          originalLineMatchesParsed(candidate, target)
+        }
+
+      if (matched) {
+        index += targetLines.size
+      } else {
+
+        index++
+      }
+    } while (!matched)
+
+    return index
+  }
+
+  protected abstract fun originalLineMatchesParsed(
+    originalLine: String,
+    parsedString: String
+  ): Boolean
+
+  private fun getOriginalString(parsedString: String): String {
+    val originalStringIndex = findLastMatchingRowIndex(parsedString)
 
     val originalStringLines = List(originalStringIndex + 1) {
       originalLines.removeFirst()

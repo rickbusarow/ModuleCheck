@@ -13,26 +13,22 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi
+package modulecheck.parsing.groovy.antlr
 
 import io.kotest.matchers.shouldBe
 import modulecheck.parsing.ExternalDependencyDeclaration
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.psi.internal.psiFileFactory
-import org.jetbrains.kotlin.idea.KotlinLanguage
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 import org.junit.jupiter.api.Test
 
-internal class KotlinDependencyBlockParserTest {
+internal class GroovyDependencyBlockParserTest {
 
   @Test
   fun `external declaration`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api("com.foo:bar:1.2.3.4")
+          api 'com.foo:bar:1.2.3.4'
        }
         """.trimIndent()
       ).single()
@@ -40,8 +36,8 @@ internal class KotlinDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ExternalDependencyDeclaration(
         configName = "api",
-        declarationText = """api("com.foo:bar:1.2.3.4")""",
-        statementWithSurroundingText = """   api("com.foo:bar:1.2.3.4")""",
+        declarationText = "api'com.foo:bar:1.2.3.4'",
+        statementWithSurroundingText = "   api 'com.foo:bar:1.2.3.4'",
         group = "com.foo",
         moduleName = "bar",
         version = "1.2.3.4"
@@ -50,34 +46,13 @@ internal class KotlinDependencyBlockParserTest {
   }
 
   @Test
-  fun `string extension configuration functions declaration`() {
-    val block = KotlinDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-         "api"(project(path = ":core:jvm"))
-       }
-        """.trimIndent()
-      ).single()
-
-    block.allDeclarations shouldBe listOf(
-      ModuleDependencyDeclaration(
-        moduleRef = ":core:jvm",
-        configName = "api",
-        declarationText = """"api"(project(path = ":core:jvm"))""",
-        statementWithSurroundingText = """  "api"(project(path = ":core:jvm"))"""
-      )
-    )
-  }
-
-  @Test
   fun `declaration's original string should include trailing comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(project(":core:jvm")) // trailing comment
-          api(project(":core:jvm"))
+          api project(':core:jvm') // trailing comment
+          api project(':core:jvm')
        }
         """.trimIndent()
       ).single()
@@ -86,29 +61,29 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = """   api(project(":core:jvm")) // trailing comment"""
+        declarationText = """apiproject(':core:jvm')""",
+        statementWithSurroundingText = """   api project(':core:jvm') // trailing comment"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = """   api(project(":core:jvm"))"""
+        declarationText = """apiproject(':core:jvm')""",
+        statementWithSurroundingText = """   api project(':core:jvm')"""
       )
     )
   }
 
   @Test
   fun `module dependency with config block should split declarations properly`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(project(":core:test")) {
-            exclude(group = "androidx.appcompat")
+          api project(':core:test') {
+            exclude group: 'androidx.appcompat'
           }
 
-          api(project(":core:jvm"))
+          api project(':core:jvm')
        }
         """.trimIndent()
       ).single()
@@ -117,12 +92,12 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:test",
         configName = "api",
-        declarationText = """api(project(":core:test")) {
-          |     exclude(group = "androidx.appcompat")
-          |   }
+        declarationText = """apiproject(':core:test'){
+          |excludegroup:'androidx.appcompat'
+          |}
         """.trimMargin(),
-        statementWithSurroundingText = """   api(project(":core:test")) {
-          |     exclude(group = "androidx.appcompat")
+        statementWithSurroundingText = """   api project(':core:test') {
+          |     exclude group: 'androidx.appcompat'
           |   }
         """.trimMargin()
       )
@@ -132,22 +107,22 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "api(project(\":core:jvm\"))",
-        statementWithSurroundingText = "\n   api(project(\":core:jvm\"))"
+        declarationText = "apiproject(':core:jvm')",
+        statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
     )
   }
 
   @Test
   fun `module dependency with config block and preceding declaration should split declarations properly`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(project(":core:jvm"))
+          api project(':core:jvm')
 
-          api(project(":core:test")) {
-            exclude(group = "androidx.appcompat")
+          api project(':core:test') {
+            exclude group: 'androidx.appcompat'
           }
        }
         """.trimIndent()
@@ -157,14 +132,14 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:test",
         configName = "api",
-        declarationText = """api(project(":core:test")) {
-          |     exclude(group = "androidx.appcompat")
-          |   }
+        declarationText = """apiproject(':core:test'){
+          |excludegroup:'androidx.appcompat'
+          |}
         """.trimMargin(),
         statementWithSurroundingText = """
           |
-          |   api(project(":core:test")) {
-          |     exclude(group = "androidx.appcompat")
+          |   api project(':core:test') {
+          |     exclude group: 'androidx.appcompat'
           |   }
         """.trimMargin()
       )
@@ -174,21 +149,21 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "api(project(\":core:jvm\"))",
-        statementWithSurroundingText = "   api(project(\":core:jvm\"))"
+        declarationText = "apiproject(':core:jvm')",
+        statementWithSurroundingText = "   api project(':core:jvm')"
       )
     )
   }
 
   @Test
   fun `module dependency with preceding blank line should preserve the blank line`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(project(":core:test"))
+          api project(':core:test')
 
-          api(project(":core:jvm"))
+          api project(':core:jvm')
        }
         """.trimIndent()
       ).single()
@@ -197,20 +172,20 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "api(project(\":core:jvm\"))",
-        statementWithSurroundingText = "\n   api(project(\":core:jvm\"))"
+        declarationText = "apiproject(':core:jvm')",
+        statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
     )
   }
 
   @Test
   fun `module dependency with two different configs should be recorded twice`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          implementation(project(":core:jvm"))
-          api(project(":core:jvm"))
+          implementation project(':core:jvm')
+          api project(':core:jvm')
        }
         """.trimIndent()
       ).single()
@@ -219,8 +194,8 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = """   api(project(":core:jvm"))"""
+        declarationText = """apiproject(':core:jvm')""",
+        statementWithSurroundingText = """   api project(':core:jvm')"""
       )
     )
 
@@ -228,22 +203,22 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "implementation",
-        declarationText = """implementation(project(":core:jvm"))""",
-        statementWithSurroundingText = """   implementation(project(":core:jvm"))"""
+        declarationText = """implementationproject(':core:jvm')""",
+        statementWithSurroundingText = """   implementation project(':core:jvm')"""
       )
     )
   }
 
   @Test
   fun `declaration's original string should include preceding single-line comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
           api("com.foo:bar:1.2.3.4") // inline comment
 
           // single-line comment
-          implementation(project(":core:android"))
+          implementation project(':core:android')
        }
         """.trimIndent()
       ).single()
@@ -252,26 +227,26 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementation(project(":core:android"))""",
+        declarationText = """implementationproject(':core:android')""",
         statementWithSurroundingText = """
    // single-line comment
-   implementation(project(":core:android"))"""
+   implementation project(':core:android')"""
       )
     )
   }
 
   @Test
   fun `declaration's original string should include preceding block comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api("com.foo:bar:1.2.3.4") // inline comment
+          api 'com.foo:bar:1.2.3.4' // inline comment
 
           /*
           block comment
           */
-          implementation(project(":core:android"))
+          implementation project(':core:android')
        }
         """.trimIndent()
       ).single()
@@ -280,24 +255,24 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementation(project(":core:android"))""",
+        declarationText = """implementationproject(':core:android')""",
         statementWithSurroundingText = """
    /*
    block comment
    */
-   implementation(project(":core:android"))"""
+   implementation project(':core:android')"""
       )
     )
   }
 
   @Test
   fun `declaration's original string should include preceding in-line block comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api("com.foo:bar:1.2.3.4") // inline comment
-          /* single-line block comment */ implementation(project(":core:android"))
+          api 'com.foo:bar:1.2.3.4' // inline comment
+          /* single-line block comment */ implementation project(':core:android')
        }
         """.trimIndent()
       ).single()
@@ -306,20 +281,20 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementation(project(":core:android"))""",
-        statementWithSurroundingText = """   /* single-line block comment */ implementation(project(":core:android"))"""
+        declarationText = """implementationproject(':core:android')""",
+        statementWithSurroundingText = """   /* single-line block comment */ implementation project(':core:android')"""
       )
     )
   }
 
   @Test
   fun `duplicate module dependency with same config should be recorded twice`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(project(":core:jvm"))
-          api (   project(":core:jvm"))
+          api project(':core:jvm')
+          api (   project(':core:jvm'))
        }
         """.trimIndent()
       ).single()
@@ -328,26 +303,26 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = """   api(project(":core:jvm"))"""
+        declarationText = """apiproject(':core:jvm')""",
+        statementWithSurroundingText = """   api project(':core:jvm')"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api (   project(":core:jvm"))""",
-        statementWithSurroundingText = """   api (   project(":core:jvm"))"""
+        declarationText = """api(project(':core:jvm'))""",
+        statementWithSurroundingText = """   api (   project(':core:jvm'))"""
       )
     )
   }
 
   @Test
   fun `modules declared using type-safe accessors can be looked up using their path`() {
-    val block = KotlinDependencyBlockParser()
+    val block = GroovyDependencyBlockParser()
       .parse(
         """
        dependencies {
-          api(projects.core.test)
-          implementation(projects.httpLogging)
+          api projects.core.test
+          implementation projects.httpLogging
        }
         """.trimIndent()
       ).single()
@@ -356,8 +331,8 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = "core.test",
         configName = "api",
-        declarationText = """api(projects.core.test)""",
-        statementWithSurroundingText = """   api(projects.core.test)"""
+        declarationText = """apiprojects.core.test""",
+        statementWithSurroundingText = """   api projects.core.test"""
       )
     )
 
@@ -365,17 +340,9 @@ internal class KotlinDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = "httpLogging",
         configName = "implementation",
-        declarationText = """implementation(projects.httpLogging)""",
-        statementWithSurroundingText = """   implementation(projects.httpLogging)"""
+        declarationText = """implementationprojects.httpLogging""",
+        statementWithSurroundingText = """   implementation projects.httpLogging"""
       )
     )
-  }
-
-  fun KotlinDependencyBlockParser.parse(string: String): List<KotlinDependenciesBlock> {
-    val file = psiFileFactory
-      .createFileFromText("build.gradle.kts", KotlinLanguage.INSTANCE, string)
-      .cast<KtFile>()
-
-    return parse(file)
   }
 }

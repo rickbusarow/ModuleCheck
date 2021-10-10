@@ -344,6 +344,55 @@ class UnusedDependenciesTest : BasePluginTest() {
         it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
       }
     }
+
+    @Test
+    fun `with autoCorrect following dependency configuration block should be fixed`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1, inlineComment = "{\n  }")
+            addProjectDependency("api", jvmSub2)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  api(project(path = ":lib-1")) {
+        |  }
+        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
   }
 
   @Test

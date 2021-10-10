@@ -21,13 +21,16 @@ class GroovyDependenciesBlock(
   contentString: String
 ) : DependenciesBlock(contentString) {
 
-  override fun findOriginalStringIndex(parsedString: String) = originalLines
-    .indexOfFirst { originalLine ->
-      originalLine.collapseBlockComments()
-        .trimEachLineStart()
-        .trimLinesLikeAntlr()
-        .lines()
-        .any { it.startsWith(parsedString) }
+  override fun originalLineMatchesParsed(
+    originalLine: String,
+    parsedString: String
+  ) = originalLine.collapseBlockComments()
+    .trimEachLineStart()
+    .trimLinesLikeAntlr()
+    .lines()
+    .any { str ->
+
+      str.startsWith(parsedString)
     }
 
   override fun toString(): String {

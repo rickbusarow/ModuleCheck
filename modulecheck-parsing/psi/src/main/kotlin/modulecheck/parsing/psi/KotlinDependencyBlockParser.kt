@@ -121,7 +121,6 @@ inline fun blockExpressionRecursiveVisitor(
   crossinline block: KtTreeVisitorVoid.(expression: KtBlockExpression) -> Unit
 ) = object : KtTreeVisitorVoid() {
   override fun visitBlockExpression(expression: KtBlockExpression) {
-    super.visitBlockExpression(expression)
     block(expression)
   }
 }

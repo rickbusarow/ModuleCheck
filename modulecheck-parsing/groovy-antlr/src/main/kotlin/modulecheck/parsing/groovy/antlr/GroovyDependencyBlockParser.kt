@@ -95,7 +95,6 @@ class GroovyDependencyBlockParser {
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
             override fun visitBlockStatement(ctx: BlockStatementContext) {
-              super.visitBlockStatement(ctx)
 
               val config = ctx.start.text
 
