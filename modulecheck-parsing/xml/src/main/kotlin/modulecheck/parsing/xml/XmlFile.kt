@@ -22,6 +22,8 @@ sealed interface XmlFile {
 
   data class LayoutFile(val file: File) : XmlFile {
 
+    val name: String = file.nameWithoutExtension
+
     val customViews: Set<String> by lazy {
       AndroidLayoutParser.parseViews(file)
         .toSet()
