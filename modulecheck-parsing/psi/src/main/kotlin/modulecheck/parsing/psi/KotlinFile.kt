@@ -13,12 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.api.files
+package modulecheck.parsing.psi
 
-import modulecheck.api.JvmFile
-import modulecheck.parsing.psi.DeclarationVisitor
-import modulecheck.parsing.psi.ReferenceVisitor
-import modulecheck.parsing.psi.UsedImportsVisitor
+import modulecheck.parsing.JvmFile
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 

@@ -13,27 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
-import modulecheck.parsing.DeclarationName
+import java.io.File
 
-abstract class JvmFile {
-  abstract val name: String
-  abstract val packageFqName: String
-  abstract val imports: Set<String>
-  abstract val declarations: Set<DeclarationName>
-
-  override fun toString(): String {
-    return """${this::class.simpleName}(
-      |packageFqName='$packageFqName',
-      |
-      |importDirectives=$imports,
-      |
-      |declarations=$declarations
-      |
-      |)""".trimMargin()
-  }
-
-  abstract val wildcardImports: Set<String>
-  abstract val maybeExtraReferences: Set<String>
-}
+fun File.existsOrNull(): File? = if (exists()) this else null

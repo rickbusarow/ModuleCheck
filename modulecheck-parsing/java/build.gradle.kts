@@ -16,21 +16,23 @@
 plugins {
   javaLibrary
   id("com.vanniktech.maven.publish")
+  groovy
 }
 
 dependencies {
 
   api(libs.kotlin.compiler)
-  api(libs.semVer)
 
-  api(projects.modulecheckParsing.java)
-  api(projects.modulecheckParsing.psi)
-  api(projects.modulecheckParsing.xml)
+  api(projects.modulecheckParsing.api)
+
+  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
+
+  compileOnly(gradleApi())
 
   implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.groovyXml)
+  implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
+  implementation(libs.groovy)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

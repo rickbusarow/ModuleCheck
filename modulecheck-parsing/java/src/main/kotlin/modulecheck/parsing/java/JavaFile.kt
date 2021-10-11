@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.files
+package modulecheck.parsing.java
 
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.ImportDeclaration
@@ -21,7 +21,7 @@ import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.type.ClassOrInterfaceType
-import modulecheck.api.JvmFile
+import modulecheck.parsing.JvmFile
 import modulecheck.parsing.asDeclaractionName
 import java.io.File
 

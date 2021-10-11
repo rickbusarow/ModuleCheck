@@ -19,10 +19,10 @@ import modulecheck.api.Project2
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
-import modulecheck.api.files.JavaFile
-import modulecheck.api.files.KotlinFile
 import modulecheck.api.toSourceSetName
 import modulecheck.core.CouldUseAnvilFinding
+import modulecheck.parsing.java.JavaFile
+import modulecheck.parsing.psi.KotlinFile
 import net.swiftzer.semver.SemVer
 import kotlin.LazyThreadSafetyMode.NONE
 
