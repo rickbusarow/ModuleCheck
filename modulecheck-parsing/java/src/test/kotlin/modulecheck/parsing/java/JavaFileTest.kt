@@ -30,7 +30,7 @@ internal class JavaFileTest : BaseTest() {
     package com.example;
 
     public enum Color { RED, BLUE }
-    """.trimIndent()
+      """.trimIndent()
     )
 
     javaFile.declarations shouldBe listOf(
@@ -50,7 +50,7 @@ internal class JavaFileTest : BaseTest() {
     public class Constants {
       public enum Color { RED, BLUE }
     }
-    """.trimIndent()
+      """.trimIndent()
     )
 
     javaFile.declarations shouldBe listOf(
@@ -72,7 +72,7 @@ internal class JavaFileTest : BaseTest() {
 
       public static final int MY_VALUE = 250;
     }
-    """.trimIndent()
+      """.trimIndent()
     )
 
     javaFile.declarations shouldBe listOf(
@@ -95,7 +95,7 @@ internal class JavaFileTest : BaseTest() {
         public static final int MY_VALUE = 250;
       }
     }
-    """.trimIndent()
+      """.trimIndent()
     )
 
     javaFile.declarations shouldBe listOf(
