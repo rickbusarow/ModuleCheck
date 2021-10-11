@@ -35,22 +35,18 @@ data class Declarations(
     override operator fun invoke(project: Project2): Declarations {
       val map = project
         .sourceSets
-        .mapValues { (_, sourceSet) ->
+        .mapValues { (sourceSetName, _) ->
 
-          val rPackage = (project as? AndroidProject2)?.androidPackageOrNull
+          val jvmFiles = project.jvmFilesForSourceSetName(sourceSetName)
+            .flatMap { jvmFile -> jvmFile.declarations }
+            .toSet()
 
-          val set = if (rPackage != null) {
-            project[JvmFiles][sourceSet.name]
-              .orEmpty()
-              .flatMap { jvmFile -> jvmFile.declarations }
-              .toSet() + "$rPackage.R".asDeclaractionName()
-          } else {
-            project[JvmFiles][sourceSet.name]
-              .orEmpty()
-              .flatMap { jvmFile -> jvmFile.declarations }
-              .toSet()
-          }
-          set
+          val baseAndroidPackage = (project as? AndroidProject2)?.androidPackageOrNull
+            ?: return@mapValues jvmFiles
+
+          jvmFiles
+            .plus("$baseAndroidPackage.R".asDeclaractionName())
+            .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
         }
 
       return Declarations(ConcurrentHashMap(map))

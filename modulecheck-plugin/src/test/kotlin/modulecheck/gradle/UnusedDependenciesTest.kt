@@ -606,6 +606,105 @@ class UnusedDependenciesTest : BasePluginTest() {
   }
 
   @Test
+  fun `module with a custom view used as a ViewBinding object in subject module should not be unused`() {
+
+    val bindingClassName = ClassName("com.example.lib1.databinding", "ActivityMainBinding")
+
+    val myActivity = FileSpec.builder("com.example.app", "MyActivity")
+      .addProperty(PropertySpec.builder("binding", bindingClassName).build())
+      .build()
+
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+          addBlock("android.buildFeatures.viewBinding = true")
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addFileSpec(myActivity)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.app" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+    }
+
+    val activity_main_xml = RawFile(
+      "activity_main.xml",
+      """<?xml version="1.0" encoding="utf-8"?>
+        |<androidx.constraintlayout.widget.ConstraintLayout
+        |  xmlns:android="http://schemas.android.com/apk/res/android"
+        |  android:id="@+id/fragment_container"
+        |  android:layout_width="match_parent"
+        |  android:layout_height="match_parent"
+        |  />
+        """.trimMargin()
+    )
+
+    ProjectSpec("project") {
+      applyEach(projects) { project ->
+        addSubproject(project)
+      }
+      addSubproject(appProject)
+      addSubproject(
+        ProjectSpec("lib-1") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("""id("com.android.library")""")
+              addPlugin("kotlin(\"android\")")
+              android = true
+              addProjectDependency("api", jvmSub1)
+              addBlock("android.buildFeatures.viewBinding = true")
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/res/layout")) {
+              addRawFile(activity_main_xml)
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main")) {
+              addRawFile(
+                RawFile(
+                  "AndroidManifest.xml",
+                  """<manifest package="com.example.lib1" />
+                """.trimMargin()
+                )
+              )
+            }
+          )
+        }
+      )
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(
+        projectBuild
+          .addBlock(
+            """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+          ).build()
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckUnusedDependency").shouldSucceed()
+  }
+
+  @Test
   fun `module with a declaration used via a wildcard import should not be unused`() {
     val appProject = ProjectSpec("app") {
       addBuildSpec(
