@@ -19,11 +19,17 @@ import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.ImportDeclaration
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.NodeList
+import com.github.javaparser.ast.body.EnumConstantDeclaration
+import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
+import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.ast.type.ClassOrInterfaceType
+import com.github.javaparser.resolution.Resolvable
+import modulecheck.parsing.DeclarationName
 import modulecheck.parsing.JvmFile
 import modulecheck.parsing.asDeclaractionName
 import java.io.File
+import kotlin.properties.Delegates
 
 class JavaFile(val file: File) : JvmFile() {
 
@@ -33,32 +39,47 @@ class JavaFile(val file: File) : JvmFile() {
     val packageFqName: String,
     val imports: NodeList<ImportDeclaration>,
     val classOrInterfaceTypes: Set<ClassOrInterfaceType>,
-    val typeDeclarations: Set<TypeDeclaration<*>>
+    val typeDeclarations: List<TypeDeclaration<*>>,
+    val fieldDeclarations: Set<DeclarationName>,
+    val enumDeclarations: Set<DeclarationName>
   )
 
   private val parsed by lazy {
     val unit = StaticJavaParser.parse(file)
 
     val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
-    val typeDeclarations = mutableSetOf<TypeDeclaration<*>>()
+    val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
+    val fieldDeclarations = mutableSetOf<DeclarationName>()
+    val enumDeclarations = mutableSetOf<DeclarationName>()
 
-    val iterator = NodeIterator { node ->
+    val iterator = NodeVisitor { node ->
 
       when (node) {
         is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
         is TypeDeclaration<*> -> typeDeclarations.add(node)
+        is FieldDeclaration -> {
+
+          if (node.isStatic && node.isPublic) {
+            fieldDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+          }
+        }
+        is EnumConstantDeclaration -> {
+          enumDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+        }
       }
 
       true
     }
 
-    iterator.explore(unit)
+    iterator.visit(unit)
 
     ParsedFile(
       packageFqName = unit.packageDeclaration.get().nameAsString,
       imports = unit.imports,
       classOrInterfaceTypes = classOrInterfaceTypes,
-      typeDeclarations = typeDeclarations
+      typeDeclarations = typeDeclarations.distinct(),
+      fieldDeclarations = fieldDeclarations,
+      enumDeclarations = enumDeclarations
     )
   }
 
@@ -79,6 +100,8 @@ class JavaFile(val file: File) : JvmFile() {
     parsed.typeDeclarations
       .map { it.fullyQualifiedName.get().asDeclaractionName() }
       .toSet()
+      .plus(parsed.fieldDeclarations)
+      .plus(parsed.enumDeclarations)
   }
 
   override val wildcardImports: Set<String> by lazy {
@@ -103,16 +126,42 @@ class JavaFile(val file: File) : JvmFile() {
       }
       .toSet()
   }
+
+  private fun <T> T.fqName(typeDeclarations: List<TypeDeclaration<*>>): String
+    where T : Node, T : Resolvable<*> {
+    val simpleName = simpleName()
+
+    val parentTypeFqName = typeDeclarations
+      .last { isDescendantOf(it) }
+      .fullyQualifiedName.get()
+    return "$parentTypeFqName.$simpleName"
+  }
+
+  private fun <T> T.simpleName(): String
+    where T : Node, T : Resolvable<*> {
+    var name: String by Delegates.notNull()
+
+    NodeVisitor { node ->
+      if (node is SimpleName) {
+        name = node.asString()
+        false
+      } else {
+        true
+      }
+    }.visit(this)
+
+    return name
+  }
 }
 
-class NodeIterator(
+internal class NodeVisitor(
   private val predicate: (node: Node) -> Boolean
 ) {
 
-  fun explore(node: Node) {
+  fun visit(node: Node) {
     if (predicate(node)) {
       node.childNodes.forEach { child ->
-        explore(child)
+        visit(child)
       }
     }
   }
