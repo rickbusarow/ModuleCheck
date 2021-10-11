@@ -63,6 +63,7 @@ include(
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:api",
   ":modulecheck-parsing:groovy-antlr",
+  ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",
   ":modulecheck-parsing:xml",
   ":modulecheck-plugin",
