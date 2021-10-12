@@ -1,5 +1,5 @@
 [versions]
-androidTools = "7.0.2"
+androidTools = "7.0.3"
 antlr = "4.9.2"
 anvil = "2.3.5"
 benManes = "0.36.0"
