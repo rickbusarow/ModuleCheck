@@ -114,9 +114,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kotlin-version: [ 1.5.30, 1.5.21, 1.4.32 ]
-        gradle-version: [ 7.2 ] # 7.0.2 breaks Anvil?
-        agp-version: [ 7.0.2, 4.2.1 ]
+        kotlin-version: [ 1.5.30, 1.5.21, 1.6.0-RC ]
+        gradle-version: [ 7.2, 7.3-rc-1 ] # 7.0.2 breaks Anvil?
+        agp-version: [ 7.0.3, 4.2.1 ]
 
     steps:
       - uses: actions/checkout@v2
