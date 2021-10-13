@@ -357,7 +357,7 @@ class SortDependenciesTest : BasePluginTest() {
 
   @Test
   fun `buildScript dependencies should not be sorted`() {
-    ProjectSpec("project") {
+    val root = ProjectSpec("project") {
       addSettingsSpec(
         ProjectSettingsSpec {
           projects.forEach { project ->
@@ -374,7 +374,8 @@ class SortDependenciesTest : BasePluginTest() {
       )
       projects.forEach { project -> addSubproject(project) }
     }
-      .writeIn(testProjectDir.toPath())
+
+    root.writeIn(testProjectDir.toPath())
 
     build("moduleCheckSortDependencies").shouldSucceed()
 
@@ -388,8 +389,8 @@ class SortDependenciesTest : BasePluginTest() {
         |    maven("https://oss.sonatype.org/content/repositories/snapshots")
         |  }
         |  dependencies {
-        |    classpath("com.android.tools.build:gradle:7.0.2")
-        |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        |    classpath("com.android.tools.build:gradle:${root.projectBuildSpec!!.agpVersion}")
+        |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${root.projectBuildSpec!!.kotlinVersion}")
         |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
         |  }
         |}
