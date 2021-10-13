@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentMap
 data class OverShotDependencies(
   internal val delegate: ConcurrentMap<ConfigurationName, Set<OverShotDependencyFinding>>
 ) : ConcurrentMap<ConfigurationName, Set<OverShotDependencyFinding>> by delegate,
-    ProjectContext.Element {
+  ProjectContext.Element {
 
   override val key: ProjectContext.Key<OverShotDependencies>
     get() = Key
