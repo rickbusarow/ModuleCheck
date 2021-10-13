@@ -24,6 +24,7 @@ import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURC
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.INHERITED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.MUST_BE_API_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.OVERSHOT_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.REDUNDANT_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
@@ -83,6 +84,7 @@ data class TestSettings(
 class TestChecksSettings(
   override var redundantDependency: Boolean = REDUNDANT_DEPENDENCY_DEFAULT,
   override var unusedDependency: Boolean = UNUSED_DEPENDENCY_DEFAULT,
+  override var overShotDependency: Boolean = OVERSHOT_DEPENDENCY_DEFAULT,
   override var mustBeApi: Boolean = MUST_BE_API_DEFAULT,
   override var inheritedDependency: Boolean = INHERITED_DEPENDENCY_DEFAULT,
   override var sortDependencies: Boolean = SORT_DEPENDENCIES_DEFAULT,

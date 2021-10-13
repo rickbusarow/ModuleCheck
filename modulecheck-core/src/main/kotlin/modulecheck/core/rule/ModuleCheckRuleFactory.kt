@@ -39,6 +39,7 @@ class ModuleCheckRuleFactory : RuleFactory {
       { RedundantRule(it) },
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
+      { OverShotDependencyRule(it) },
       { UnusedDependencyRule(it) },
       { UnusedKaptRule(it) },
     )

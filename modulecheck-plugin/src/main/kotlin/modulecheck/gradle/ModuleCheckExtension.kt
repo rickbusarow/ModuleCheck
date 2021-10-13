@@ -22,6 +22,7 @@ import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURC
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.INHERITED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.MUST_BE_API_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.OVERSHOT_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.REDUNDANT_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
@@ -104,6 +105,7 @@ open class ChecksExtension @Inject constructor(
 ) : ChecksSettings {
   override var redundantDependency: Boolean by objects.property(REDUNDANT_DEPENDENCY_DEFAULT)
   override var unusedDependency: Boolean by objects.property(UNUSED_DEPENDENCY_DEFAULT)
+  override var overShotDependency: Boolean by objects.property(OVERSHOT_DEPENDENCY_DEFAULT)
   override var mustBeApi: Boolean by objects.property(MUST_BE_API_DEFAULT)
   override var inheritedDependency: Boolean by objects.property(INHERITED_DEPENDENCY_DEFAULT)
   override var sortDependencies: Boolean by objects.property(SORT_DEPENDENCIES_DEFAULT)

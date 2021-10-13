@@ -17,6 +17,37 @@ package modulecheck.parsing
 
 import java.util.*
 
+sealed interface ModuleRef {
+
+  val value: String
+
+  @JvmInline
+  value class StringRef(override val value: String) : ModuleRef {
+    init {
+      require(value.startsWith(':')) {
+        "The StringRef `value` parameter should be the traditional Gradle path, " +
+          "starting with ':'.  Do not use the camel-cased type-safe project accessor.  " +
+          "This argument was '$value'."
+      }
+    }
+
+    fun toTypeSafe(): TypeSafeRef {
+      return TypeSafeRef(value.typeSafeName())
+    }
+  }
+
+  @JvmInline
+  value class TypeSafeRef(override val value: String) : ModuleRef
+
+  companion object {
+    fun from(rawString: String): ModuleRef = if (rawString.startsWith(':')) {
+      StringRef(rawString)
+    } else {
+      TypeSafeRef(rawString)
+    }
+  }
+}
+
 internal val projectSplitRegex = "[.\\-_]".toRegex()
 
 /**

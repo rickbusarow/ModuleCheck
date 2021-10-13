@@ -21,10 +21,11 @@ import groovyjarjarantlr4.v4.runtime.*
 import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.MavenCoordinates
+import modulecheck.parsing.ModuleRef
 import org.apache.groovy.parser.antlr4.GroovyLangLexer
 import org.apache.groovy.parser.antlr4.GroovyLangParser
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
-import org.apache.groovy.parser.antlr4.GroovyParser.PostfixExpressionContext
+import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
@@ -58,7 +59,7 @@ class GroovyDependencyBlockParser {
         currentResult: String?
       ): Boolean = currentResult == null
 
-      override fun visitPostfixExpression(ctx: PostfixExpressionContext?): String? {
+      override fun visitExpressionListElement(ctx: ExpressionListElementContext?): String? {
         return visitChildren(ctx) ?: when (ctx?.start?.text) {
           "projects" -> {
             ctx.originalText(stream).removePrefix("projects.")
@@ -70,6 +71,18 @@ class GroovyDependencyBlockParser {
             null
           }
         }
+      }
+    }
+
+    val unknownArgumentVisitor = object : GroovyParserBaseVisitor<String?>() {
+
+      override fun shouldVisitNextChild(
+        node: RuleNode?,
+        currentResult: String?
+      ): Boolean = currentResult == null
+
+      override fun visitExpressionListElement(ctx: ExpressionListElementContext): String {
+        return ctx.originalText(stream)
       }
     }
 
@@ -101,11 +114,11 @@ class GroovyDependencyBlockParser {
 
               val config = ctx.start.text
 
-              val moduleRef = projectDepVisitor.visit(ctx)
+              val moduleRefString = projectDepVisitor.visit(ctx)
 
-              if (moduleRef != null) {
+              if (moduleRefString != null) {
                 dependenciesBlock.addModuleStatement(
-                  moduleRef = moduleRef,
+                  moduleRef = ModuleRef.from(moduleRefString),
                   configName = config,
                   parsedString = ctx.originalText(stream)
                 )
@@ -124,7 +137,13 @@ class GroovyDependencyBlockParser {
                 return
               }
 
-              dependenciesBlock.addUnknownStatement(config, ctx.originalText(stream))
+              val argument = unknownArgumentVisitor.visit(ctx) ?: return
+
+              dependenciesBlock.addUnknownStatement(
+                configName = config,
+                parsedString = ctx.originalText(stream),
+                argument = argument
+              )
             }
           }
 
