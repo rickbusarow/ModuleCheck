@@ -53,11 +53,13 @@ abstract class DependenciesBlock(var contentString: String) {
 
   fun addUnknownStatement(
     configName: String,
-    parsedString: String
+    parsedString: String,
+    argument: String
   ) {
     val originalString = getOriginalString(parsedString)
 
     val declaration = UnknownDependencyDeclaration(
+      argument = argument,
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString
@@ -66,7 +68,7 @@ abstract class DependenciesBlock(var contentString: String) {
   }
 
   fun addModuleStatement(
-    moduleRef: String,
+    moduleRef: ModuleRef,
     configName: String,
     parsedString: String
   ) {
@@ -87,14 +89,20 @@ abstract class DependenciesBlock(var contentString: String) {
     _allDeclarations.add(declaration)
   }
 
-  fun getOrEmpty(moduleRef: String, configName: String): List<ModuleDependencyDeclaration> {
-    require(moduleRef.startsWith(":")) {
-      "The `moduleRef` parameter should be the traditional Gradle path, starting with ':'.  " +
-        "Do not use the camel-cased type-safe project accessor.  This argument was '$moduleRef'."
-    }
+  fun getOrEmpty(
+    moduleRef: String,
+    configName: String
+  ): List<ModuleDependencyDeclaration> {
+    return getOrEmpty(ModuleRef.StringRef(moduleRef), configName)
+  }
+
+  fun getOrEmpty(
+    moduleRef: ModuleRef.StringRef,
+    configName: String
+  ): List<ModuleDependencyDeclaration> {
 
     return allModuleDeclarations[ConfiguredModule(configName, moduleRef)]
-      ?: allModuleDeclarations[ConfiguredModule(configName, moduleRef.typeSafeName())]
+      ?: allModuleDeclarations[ConfiguredModule(configName, moduleRef.toTypeSafe())]
       ?: emptyList()
   }
 
@@ -178,5 +186,5 @@ abstract class DependenciesBlock(var contentString: String) {
     return originalStringLines.joinToString("\n")
   }
 
-  protected data class ConfiguredModule(val configName: String, val moduleRef: String)
+  protected data class ConfiguredModule(val configName: String, val moduleRef: ModuleRef)
 }

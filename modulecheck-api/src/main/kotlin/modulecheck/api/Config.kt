@@ -15,7 +15,7 @@
 
 package modulecheck.api
 
-data class ConfigurationName(val value: String) {
+data class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
     // creating "implementation" instead of "mainImplementation"
@@ -24,6 +24,19 @@ data class ConfigurationName(val value: String) {
     // are just "$sourceSetName${baseConfigurationName.capitalize()}"
     else -> this.value.extractSourceSetName()
   }
+
+  /**
+   * Returns the base name of the Configuration without any source set prefix.
+   *
+   * For "main" source sets, this function just returns the same string, e.g.:
+   *   ConfigurationName("api").nameWithoutSourceSet() == "api"
+   *   ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
+   *
+   * For other source sets, it returns the base configuration names:
+   *   ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
+   *   ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
+   */
+  fun nameWithoutSourceSet() = value.removePrefix(toSourceSetName().value)
 
   /**
    * find the "base" configuration name and remove it
@@ -68,6 +81,10 @@ data class ConfigurationName(val value: String) {
     return removeSuffix(configType)
       .decapitalize()
       .toSourceSetName()
+  }
+
+  override fun compareTo(other: ConfigurationName): Int {
+    return value.compareTo(other.value)
   }
 
   companion object {

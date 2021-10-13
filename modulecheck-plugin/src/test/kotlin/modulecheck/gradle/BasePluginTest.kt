@@ -23,6 +23,7 @@ import modulecheck.testing.BaseTest
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import kotlin.properties.Delegates
 
@@ -42,6 +43,11 @@ abstract class BasePluginTest : BaseTest() {
   }
 
   private var testInfo: TestInfo by Delegates.notNull()
+
+  @BeforeEach
+  fun beforeEach() {
+    testProjectDir.deleteRecursively()
+  }
 
   fun build(vararg tasks: String): BuildResult {
     return gradleRunner.withArguments(*tasks).build()

@@ -93,6 +93,7 @@ interface SortSettings {
 interface ChecksSettings {
   var redundantDependency: Boolean
   var unusedDependency: Boolean
+  var overShotDependency: Boolean
   var mustBeApi: Boolean
   var inheritedDependency: Boolean
   var sortDependencies: Boolean
@@ -106,6 +107,7 @@ interface ChecksSettings {
 
     const val REDUNDANT_DEPENDENCY_DEFAULT = false
     const val UNUSED_DEPENDENCY_DEFAULT = true
+    const val OVERSHOT_DEPENDENCY_DEFAULT = true
     const val MUST_BE_API_DEFAULT = true
     const val INHERITED_DEPENDENCY_DEFAULT = true
     const val SORT_DEPENDENCIES_DEFAULT = false

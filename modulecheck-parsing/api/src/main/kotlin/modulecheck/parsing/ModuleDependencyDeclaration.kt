@@ -20,13 +20,14 @@ sealed interface DependencyDeclaration : Declaration {
 }
 
 data class UnknownDependencyDeclaration(
+  val argument: String,
   override val configName: String,
   override val declarationText: String,
   override val statementWithSurroundingText: String
 ) : DependencyDeclaration
 
 data class ModuleDependencyDeclaration(
-  val moduleRef: String,
+  val moduleRef: ModuleRef,
   override val configName: String,
   override val declarationText: String,
   override val statementWithSurroundingText: String

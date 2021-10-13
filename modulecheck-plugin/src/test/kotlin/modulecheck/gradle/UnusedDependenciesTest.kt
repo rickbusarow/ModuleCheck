@@ -393,138 +393,137 @@ class UnusedDependenciesTest : BasePluginTest() {
         |}
         |""".trimMargin()
     }
-  }
 
-  @Test
-  fun `dependencies from non-jvm configuration should be ignored`() {
-    val lib1 = ProjectSpec("lib1") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("kotlin(\"jvm\")")
-          addProjectDependency("\"fakeConfig\"", jvmSub1)
-        }
-      )
-    }
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+    @Test
+    fun `dependencies from non-jvm configuration should be ignored`() {
+      val lib1 = ProjectSpec("lib1") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("\"fakeConfig\"", jvmSub1)
+          }
+        )
       }
-      addSubproject(lib1)
-      addSubprojects(jvmSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(lib1)
+        addSubprojects(jvmSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """
         subprojects {
           configurations.create("fakeConfig")
         }
-            """.trimIndent()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
-
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `testImplementation used in test should not be unused`() {
-    val myTest = FileSpec.builder("com.example.app", "MyTest")
-      .addImport("com.example.lib1", "Lib1Class")
-      .build()
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("kotlin(\"jvm\")")
-          addProjectDependency("testImplementation", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/test/kotlin")) {
-          addFileSpec(myTest)
-        }
-      )
-    }
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+              """.trimIndent()
+            ).build()
+        )
       }
-      addSubproject(appProject)
-      addSubprojects(jvmSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+    }
+
+    @Test
+    fun `testImplementation used in test should not be unused`() {
+      val myTest = FileSpec.builder("com.example.app", "MyTest")
+        .addImport("com.example.lib1", "Lib1Class")
+        .build()
+
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("testImplementation", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/test/kotlin")) {
+            addFileSpec(myTest)
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
-
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `androidTestImplementation used in android test should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          android = true
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          addProjectDependency("androidTestImplementation", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/androidTest/java")) {
-          addFileSpec(
-            FileSpec.builder("com.example.app", "MyTest")
-              .addType(
-                TypeSpec.classBuilder("MyTest")
-                  .primaryConstructor(
-                    FunSpec.constructorBuilder()
-                      .addParameter("lib1Class", lib1ClassName)
-                      .build()
-                  )
-                  .build()
-              )
-              .build()
-          )
-        }
-      )
-    }
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+            ).build()
+        )
       }
-      addSubproject(appProject)
-      addSubprojects(jvmSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+    }
+
+    @Test
+    fun `androidTestImplementation used in android test should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            android = true
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            addProjectDependency("androidTestImplementation", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/androidTest/java")) {
+            addFileSpec(
+              FileSpec.builder("com.example.app", "MyTest")
+                .addType(
+                  TypeSpec.classBuilder("MyTest")
+                    .primaryConstructor(
+                      FunSpec.constructorBuilder()
+                        .addParameter("lib1Class", lib1ClassName)
+                        .build()
+                    )
+                    .build()
+                )
+                .build()
+            )
+          }
+        )
+      }
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a custom view used in a layout subject module should not be unused`() {
-    val activity_main_xml = RawFile(
-      "activity_main.xml",
-      """<?xml version="1.0" encoding="utf-8"?>
+    @Test
+    fun `module with a custom view used in a layout subject module should not be unused`() {
+      val activity_main_xml = RawFile(
+        "activity_main.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
         |<androidx.constraintlayout.widget.ConstraintLayout
         |  xmlns:android="http://schemas.android.com/apk/res/android"
         |  android:id="@+id/fragment_container"
@@ -539,112 +538,112 @@ class UnusedDependenciesTest : BasePluginTest() {
         |
         |</androidx.constraintlayout.widget.ConstraintLayout>
                 """.trimMargin()
-    )
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
       )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/layout")) {
-          addRawFile(activity_main_xml)
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/res/layout")) {
+            addRawFile(activity_main_xml)
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(
-                    TypeSpec.classBuilder("Lib1View")
-                      .addAnnotation(
-                        AnnotationSpec
-                          .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
-                          .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
-                          .build()
-                      )
-                      .build()
-                  )
-                  .build()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
         }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addFileSpec(
+                  FileSpec.builder("com.example.lib1", "Lib1View")
+                    .addType(
+                      TypeSpec.classBuilder("Lib1View")
+                        .addAnnotation(
+                          AnnotationSpec
+                            .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
+                            .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
+                            .build()
+                        )
+                        .build()
+                    )
+                    .build()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
+    @Test
+    fun `module with a custom view used as a ViewBinding object in subject module should not be unused`() {
 
-  @Test
-  fun `module with a custom view used as a ViewBinding object in subject module should not be unused`() {
+      val bindingClassName = ClassName("com.example.lib1.databinding", "ActivityMainBinding")
 
-    val bindingClassName = ClassName("com.example.lib1.databinding", "ActivityMainBinding")
+      val myActivity = FileSpec.builder("com.example.app", "MyActivity")
+        .addProperty(PropertySpec.builder("binding", bindingClassName).build())
+        .build()
 
-    val myActivity = FileSpec.builder("com.example.app", "MyActivity")
-      .addProperty(PropertySpec.builder("binding", bindingClassName).build())
-      .build()
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-          addBlock("android.buildFeatures.viewBinding = true")
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addFileSpec(myActivity)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.app" />
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+            addBlock("android.buildFeatures.viewBinding = true")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addFileSpec(myActivity)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest package="com.example.app" />
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-    }
+          }
+        )
+      }
 
-    val activity_main_xml = RawFile(
-      "activity_main.xml",
-      """<?xml version="1.0" encoding="utf-8"?>
+      val activity_main_xml = RawFile(
+        "activity_main.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
         |<androidx.constraintlayout.widget.ConstraintLayout
         |  xmlns:android="http://schemas.android.com/apk/res/android"
         |  android:id="@+id/fragment_container"
@@ -652,147 +651,147 @@ class UnusedDependenciesTest : BasePluginTest() {
         |  android:layout_height="match_parent"
         |  />
         """.trimMargin()
-    )
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
-      }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("""id("com.android.library")""")
-              addPlugin("kotlin(\"android\")")
-              android = true
-              addProjectDependency("api", jvmSub1)
-              addBlock("android.buildFeatures.viewBinding = true")
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/res/layout")) {
-              addRawFile(activity_main_xml)
-            }
-          )
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main")) {
-              addRawFile(
-                RawFile(
-                  "AndroidManifest.xml",
-                  """<manifest package="com.example.lib1" />
-                """.trimMargin()
-                )
-              )
-            }
-          )
-        }
       )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("""id("com.android.library")""")
+                addPlugin("kotlin(\"android\")")
+                android = true
+                addProjectDependency("api", jvmSub1)
+                addBlock("android.buildFeatures.viewBinding = true")
+              }
+            )
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/res/layout")) {
+                addRawFile(activity_main_xml)
+              }
+            )
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main")) {
+                addRawFile(
+                  RawFile(
+                    "AndroidManifest.xml",
+                    """<manifest package="com.example.lib1" />
+                """.trimMargin()
+                  )
+                )
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a declaration used via a wildcard import should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addRawFile(
-            "MyFile.kt",
-            """
+    @Test
+    fun `module with a declaration used via a wildcard import should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addRawFile(
+              "MyFile.kt",
+              """
             package com.example.app
 
             import com.example.lib1.*
 
             val theView = Lib1View()
-            """.trimIndent()
-          )
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+              """.trimIndent()
+            )
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addRawFile(
-                "Lib1View.kt",
-                """
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addRawFile(
+                  "Lib1View.kt",
+                  """
                 package com.example.lib1
 
                 import com.squareup.anvil.annotations.ContributesMultibinding
 
                 @ContributesMultibinding(AppScope)
                 public class Lib1View
-                """.trimIndent()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
-        }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+                  """.trimIndent()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a declaration used in an android module with kotlin source directory should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addRawFile(
-            "MyModule.kt",
-            """
+    @Test
+    fun `module with a declaration used in an android module with kotlin source directory should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addRawFile(
+              "MyModule.kt",
+              """
             package com.example.app
 
             import com.example.lib1.AppScope
@@ -802,255 +801,255 @@ class UnusedDependenciesTest : BasePluginTest() {
             @Module
             @ContributesTo(AppScope::class)
             object MyModule
-            """.trimIndent()
-          )
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+              """.trimIndent()
+            )
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addRawFile(
-                "AppScope.kt",
-                """
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addRawFile(
+                  "AppScope.kt",
+                  """
                 package com.example.lib1
 
                 import javax.inject.Scope
                 import kotlin.reflect.KClass
 
                 abstract class AppScope private constructor()
-                """.trimIndent()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
-        }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+                  """.trimIndent()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a static member declaration used via a wildcard import should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addRawFile(
-            "MyFile.kt",
-            """
+    @Test
+    fun `module with a static member declaration used via a wildcard import should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addRawFile(
+              "MyFile.kt",
+              """
             package com.example.app
 
             import com.example.lib1.*
 
             val theView = Lib1View.build()
-            """.trimIndent()
-          )
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+              """.trimIndent()
+            )
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(
-                    TypeSpec.classBuilder("Lib1View")
-                      .addType(
-                        TypeSpec.companionObjectBuilder()
-                          .addFunction(
-                            FunSpec.builder("build")
-                              .build()
-                          )
-                          .build()
-                      )
-                      .build()
-                  )
-                  .build()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
         }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addFileSpec(
+                  FileSpec.builder("com.example.lib1", "Lib1View")
+                    .addType(
+                      TypeSpec.classBuilder("Lib1View")
+                        .addType(
+                          TypeSpec.companionObjectBuilder()
+                            .addFunction(
+                              FunSpec.builder("build")
+                                .build()
+                            )
+                            .build()
+                        )
+                        .build()
+                    )
+                    .build()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a string resource used in subject module should not be unused`() {
-    val appFile = FileSpec.builder("com.example.app", "MyApp")
-      .addType(
-        TypeSpec.classBuilder("MyApp")
-          .addProperty(
-            PropertySpec.builder("appNameRes", Int::class.asTypeName())
-              .getter(
-                FunSpec.getterBuilder()
-                  .addCode(
-                    """return %T.string.app_name""",
-                    ClassName.bestGuess("com.example.app.R")
-                  )
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .build()
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addFileSpec(appFile)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.app" />
-                """.trimMargin()
+    @Test
+    fun `module with a string resource used in subject module should not be unused`() {
+      val appFile = FileSpec.builder("com.example.app", "MyApp")
+        .addType(
+          TypeSpec.classBuilder("MyApp")
+            .addProperty(
+              PropertySpec.builder("appNameRes", Int::class.asTypeName())
+                .getter(
+                  FunSpec.getterBuilder()
+                    .addCode(
+                      """return %T.string.app_name""",
+                      ClassName.bestGuess("com.example.app.R")
+                    )
+                    .build()
+                )
+                .build()
             )
-          )
-        }
-      )
-    }
+            .build()
+        )
+        .build()
 
-    val androidSub1 = ProjectSpec("lib-1") {
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addRawFile(
-            RawFile(
-              "strings.xml",
-              """<resources>
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addFileSpec(appFile)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest package="com.example.app" />
+                """.trimMargin()
+              )
+            )
+          }
+        )
+      }
+
+      val androidSub1 = ProjectSpec("lib-1") {
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/res/values")) {
+            addRawFile(
+              RawFile(
+                "strings.xml",
+                """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.lib1" />
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest package="com.example.lib1" />
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-        }
-      )
-    }
+          }
+        )
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+          }
+        )
+      }
 
-    ProjectSpec("project") {
-      addSubproject(appProject)
-      addSubproject(androidSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+      ProjectSpec("project") {
+        addSubproject(appProject)
+        addSubproject(androidSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
+    @Test
+    fun `module with a string resource used in subject module's AndroidManifest should not be unused`() {
 
-  @Test
-  fun `module with a string resource used in subject module's AndroidManifest should not be unused`() {
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest
                 |  xmlns:android="http://schemas.android.com/apk/res/android"
                 |  package="com.example.app"
                 |  >
@@ -1066,145 +1065,145 @@ class UnusedDependenciesTest : BasePluginTest() {
                 |    />
                 |</manifest>
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-    }
+          }
+        )
+      }
 
-    val androidSub1 = ProjectSpec("lib-1") {
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addRawFile(
-            RawFile(
-              "strings.xml",
-              """<resources>
+      val androidSub1 = ProjectSpec("lib-1") {
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/res/values")) {
+            addRawFile(
+              RawFile(
+                "strings.xml",
+                """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.lib1" />
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest package="com.example.lib1" />
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-        }
-      )
-    }
+          }
+        )
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+          }
+        )
+      }
 
-    ProjectSpec("project") {
-      addSubproject(appProject)
-      addSubproject(androidSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+      ProjectSpec("project") {
+        addSubproject(appProject)
+        addSubproject(androidSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
+    @Test
+    fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
 
-  @Test
-  fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
-
-    val appFile = FileSpec.builder("com.example.app", "MyApp")
-      .addType(
-        TypeSpec.classBuilder("MyApp")
-          .addProperty(
-            PropertySpec.builder("appNameRes", Int::class.asTypeName())
-              .getter(
-                FunSpec.getterBuilder()
-                  .addCode(
-                    """return %T.string.app_name""",
-                    ClassName.bestGuess("com.example.app.R")
-                  )
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .build()
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addFileSpec(appFile)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.app" />
-                """.trimMargin()
+      val appFile = FileSpec.builder("com.example.app", "MyApp")
+        .addType(
+          TypeSpec.classBuilder("MyApp")
+            .addProperty(
+              PropertySpec.builder("appNameRes", Int::class.asTypeName())
+                .getter(
+                  FunSpec.getterBuilder()
+                    .addCode(
+                      """return %T.string.app_name""",
+                      ClassName.bestGuess("com.example.app.R")
+                    )
+                    .build()
+                )
+                .build()
             )
-          )
-        }
-      )
-    }
+            .build()
+        )
+        .build()
 
-    val androidSub1 = ProjectSpec("lib-1") {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addFileSpec(appFile)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main")) {
+            addRawFile(
+              RawFile(
+                "AndroidManifest.xml",
+                """<manifest package="com.example.app" />
+                """.trimMargin()
+              )
+            )
+          }
+        )
+      }
 
-      // without this, the standard manifest will be generated and this test won't be testing anything
-      disableAutoManifest = true
+      val androidSub1 = ProjectSpec("lib-1") {
 
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addRawFile(
-            RawFile(
-              "strings.xml",
-              """<resources>
+        // without this, the standard manifest will be generated and this test won't be testing anything
+        disableAutoManifest = true
+
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/res/values")) {
+            addRawFile(
+              RawFile(
+                "strings.xml",
+                """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
                 """.trimMargin()
+              )
             )
-          )
-        }
-      )
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          // This reproduces the behavior of Auto-Manifest:
-          // https://github.com/GradleUp/auto-manifest
-          // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
-          // registered, and the manifest location is never changed from the default.  When I open
-          // the generated project dir and execute the task from terminal, it works fine...
-          // This does the same thing, but uses a different default directory.
-          addBlock(
-            """
+          }
+        )
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            // This reproduces the behavior of Auto-Manifest:
+            // https://github.com/GradleUp/auto-manifest
+            // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
+            // registered, and the manifest location is never changed from the default.  When I open
+            // the generated project dir and execute the task from terminal, it works fine...
+            // This does the same thing, but uses a different default directory.
+            addBlock(
+              """
           |val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
           |
           |android {
@@ -1237,48 +1236,48 @@ class UnusedDependenciesTest : BasePluginTest() {
           |
           |}
           """.trimMargin()
-          )
-        }
-      )
-    }
+            )
+          }
+        )
+      }
 
-    ProjectSpec("project") {
-      addSubproject(appProject)
-      addSubproject(androidSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+      ProjectSpec("project") {
+        addSubproject(appProject)
+        addSubproject(androidSub1)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+      // one last check to make sure the manifest wasn't generated, since that would invalidate the test
+      File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
     }
-      .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
-    // one last check to make sure the manifest wasn't generated, since that would invalidate the test
-    File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
-  }
-
-  @Test
-  fun `module with a declaration used via a class reference with wildcard import should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          android = true
-          addProjectDependency("api", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/java")) {
-          addRawFile(
-            "MyModule.kt",
-            """
+    @Test
+    fun `module with a declaration used via a class reference with wildcard import should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""id("com.android.library")""")
+            addPlugin("kotlin(\"android\")")
+            android = true
+            addProjectDependency("api", jvmSub1)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addRawFile(
+              "MyModule.kt",
+              """
             package com.example.app
 
             import com.example.lib1.*
@@ -1288,24 +1287,24 @@ class UnusedDependenciesTest : BasePluginTest() {
             @Module
             @ContributesTo(AppScope::class)
             object MyModule
-            """.trimIndent()
-          )
-        }
-      )
-    }
-
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
+              """.trimIndent()
+            )
+          }
+        )
       }
-      addSubproject(appProject)
-      addSubproject(
-        ProjectSpec("lib-1") {
-          addSrcSpec(
-            ProjectSrcSpec(Path.of("src/main/java")) {
-              addRawFile(
-                "AppScope.kt",
-                """
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/main/java")) {
+                addRawFile(
+                  "AppScope.kt",
+                  """
                 package com.example.lib1
 
                 import javax.inject.Scope
@@ -1319,31 +1318,32 @@ class UnusedDependenciesTest : BasePluginTest() {
                 @Scope
                 @Retention(AnnotationRetention.RUNTIME)
                 annotation class SingleIn(val clazz: KClass<*>)
-                """.trimIndent()
-              )
-            }
-          )
-          addBuildSpec(
-            ProjectBuildSpec {
-              addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
-            }
-          )
-        }
-      )
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
+                  """.trimIndent()
+                )
+              }
+            )
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addProjectDependency("api", jvmSub1)
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
             |  autoCorrect = false
             |}
           """.trimMargin()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+      build("moduleCheckUnusedDependency").shouldSucceed()
+    }
   }
 }

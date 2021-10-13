@@ -16,6 +16,7 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.MavenCoordinates
+import modulecheck.parsing.ModuleRef
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.*
@@ -45,12 +46,12 @@ class KotlinDependencyBlockParser {
             .text
             .replace("\"", "")
 
-          val moduleName = callExpression.getStringModuleNameOrNull()
+          val moduleNameString = callExpression.getStringModuleNameOrNull()
             ?: callExpression.getTypeSafeModuleNameOrNull()
 
-          if (moduleName != null) {
+          if (moduleNameString != null) {
             block.addModuleStatement(
-              moduleRef = moduleName,
+              moduleRef = ModuleRef.from(moduleNameString),
               configName = configName,
               parsedString = callExpression.text
             )
@@ -64,7 +65,11 @@ class KotlinDependencyBlockParser {
             return@forEach
           }
 
-          block.addUnknownStatement(configName, callExpression.text)
+          block.addUnknownStatement(
+            configName = configName,
+            parsedString = callExpression.text,
+            argument = callExpression.getUnknownArgumentOrNull() ?: ""
+          )
         }
 
       blocks.add(block)
@@ -131,6 +136,14 @@ internal fun KtCallExpression.getMavenCoordinatesOrNull(): MavenCoordinates? {
     ?.getChildOfType<KtLiteralStringTemplateEntry>()  // com.google.dagger:dagger:2.32
     ?.text                                            // com.google.dagger:dagger:2.32
     ?.let { MavenCoordinates.parseOrNull(it) }
+}
+
+@Suppress("MaxLineLength")
+internal fun KtCallExpression.getUnknownArgumentOrNull(): String? {
+  return this                                         // implementation(libs.ktlint)
+    .valueArguments                                   // [libs.ktlint]
+    .firstOrNull()                                    // libs.ktlint
+    ?.text                                            // libs.ktlint
 }
 
 inline fun blockExpressionRecursiveVisitor(
