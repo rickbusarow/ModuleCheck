@@ -28,9 +28,9 @@ import kotlin.properties.Delegates
 
 abstract class BasePluginTest : BaseTest() {
 
-  private val kotlinVersion = DEFAULT_KOTLIN_VERSION
-  private val agpVersion = DEFAULT_AGP_VERSION
-  private val gradleVersion = DEFAULT_GRADLE_VERSION
+  val kotlinVersion = DEFAULT_KOTLIN_VERSION
+  val agpVersion = DEFAULT_AGP_VERSION
+  val gradleVersion = DEFAULT_GRADLE_VERSION
 
   val gradleRunner by resets {
     GradleRunner.create()

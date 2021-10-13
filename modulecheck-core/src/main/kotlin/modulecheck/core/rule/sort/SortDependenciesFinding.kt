@@ -63,7 +63,7 @@ internal fun sortedDependenciesFileText(
 
   val escapedContent = Regex.escape(trimmedContent)
 
-  val blockRegex = "${escapedContent}[\\n\\r]*(\\s*)}".toRegex()
+  val blockRegex = "$escapedContent[\\n\\r]*(\\s*)}".toRegex()
 
   return fileText.replace(blockRegex) { mr ->
 
