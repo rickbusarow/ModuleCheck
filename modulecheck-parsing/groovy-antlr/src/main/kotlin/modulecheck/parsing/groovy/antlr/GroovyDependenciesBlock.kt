@@ -24,14 +24,9 @@ class GroovyDependenciesBlock(
   override fun originalLineMatchesParsed(
     originalLine: String,
     parsedString: String
-  ) = originalLine.collapseBlockComments()
-    .trimEachLineStart()
-    .trimLinesLikeAntlr()
-    .lines()
-    .any { str ->
-
-      str.startsWith(parsedString)
-    }
+  ): Boolean {
+    return originalLine.contains(parsedString)
+  }
 
   override fun toString(): String {
     return "GroovyDependenciesBlock(\n" +

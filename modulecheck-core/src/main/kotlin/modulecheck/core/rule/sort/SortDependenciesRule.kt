@@ -21,6 +21,8 @@ import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.util.*
 
 class SortDependenciesRule(
@@ -53,7 +55,11 @@ class SortDependenciesRule(
       .parse(project.buildFile)
       .all { block ->
 
-        block.contentString == block.sortedDeclarations(comparator)
+        if (block.contentString.isBlank()) return@all true
+
+        val fileText = project.buildFile.readText()
+
+        fileText == sortedDependenciesFileText(block, fileText, comparator)
       }
 
     return if (allSorted) {
@@ -63,6 +69,18 @@ class SortDependenciesRule(
     }
   }
 }
+
+fun List<DependencyDeclaration>.grouped(
+  comparator: Comparator<String>
+) = groupBy {
+  it.declarationText
+    .split("[^a-zA-Z-]".toRegex())
+    .filterNot { it.isEmpty() }
+    .take(2)
+    .joinToString("-")
+}
+  .toSortedMap(comparator)
+  .map { it.value }
 
 internal fun DependenciesBlock.sortedDeclarations(
   comparator: Comparator<String>
@@ -77,6 +95,13 @@ internal fun DependenciesBlock.sortedDeclarations(
           @Suppress("DEPRECATION")
           declaration.declarationText.toLowerCase(Locale.US)
         }
-        .joinToString("\n") { it.statementWithSurroundingText }
+        .joinToString("\n") {
+          it.statementWithSurroundingText
+            .trimStart('\n')
+            .trimEnd()
+            .lines()
+            .joinToString("\n")
+        }
     }
+    .suffixIfNot("\n")
 }

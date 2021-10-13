@@ -36,11 +36,11 @@ internal class GroovyPluginsBlockParserTest {
 
     block.allDeclarations shouldBe listOf(
       PluginDeclaration(
-        declarationText = """id'org.jetbrains.kotlin.jvm'""",
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment"""
       ),
       PluginDeclaration(
-        declarationText = """id'com.squareup.anvil'version'2.34.0'""",
+        declarationText = """id 'com.squareup.anvil' version '2.34.0'""",
         statementWithSurroundingText = """  // comment
           |  id 'com.squareup.anvil' version '2.34.0'""".trimMargin()
       ),

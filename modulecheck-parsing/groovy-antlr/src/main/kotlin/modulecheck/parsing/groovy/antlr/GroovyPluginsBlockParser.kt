@@ -25,10 +25,10 @@ import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 class GroovyPluginsBlockParser {
 
   fun parse(file: String): GroovyPluginsBlock? {
-    val flattened = file.collapseBlockComments()
-      .trimEachLineStart()
 
-    val lexer = GroovyLangLexer(CharStreams.fromString(flattened))
+    val stream = CharStreams.fromString(file)
+
+    val lexer = GroovyLangLexer(stream)
     val tokens = CommonTokenStream(lexer)
 
     var block: GroovyPluginsBlock? = null
@@ -57,7 +57,7 @@ class GroovyPluginsBlockParser {
               super.visitBlockStatement(ctx)
 
               pluginsBlock.addStatement(
-                parsedString = ctx.text
+                parsedString = ctx.originalText(stream)
               )
             }
           }

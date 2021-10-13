@@ -18,6 +18,7 @@ package modulecheck.parsing.psi
 import io.kotest.matchers.shouldBe
 import modulecheck.parsing.ExternalDependencyDeclaration
 import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.UnknownDependencyDeclaration
 import modulecheck.parsing.psi.internal.psiFileFactory
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
@@ -367,6 +368,40 @@ internal class KotlinDependencyBlockParserTest {
         configName = "implementation",
         declarationText = """implementation(projects.httpLogging)""",
         statementWithSurroundingText = """   implementation(projects.httpLogging)"""
+      )
+    )
+  }
+
+  @Test
+  fun `buildscript dependencies should not be parsed`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+        |buildscript {
+        |  repositories {
+        |    mavenCentral()
+        |    google()
+        |    jcenter()
+        |    maven("https://plugins.gradle.org/m2/")
+        |    maven("https://oss.sonatype.org/content/repositories/snapshots")
+        |  }
+        |  dependencies {
+        |    classpath("com.android.tools.build:gradle:7.0.2")
+        |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
+        |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+        |  }
+        |}
+        |dependencies {
+        |  api(libs.ktlint)
+        |}
+        |""".trimMargin()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      UnknownDependencyDeclaration(
+        configName = "api",
+        declarationText = "api(libs.ktlint)",
+        statementWithSurroundingText = "  api(libs.ktlint)"
       )
     )
   }

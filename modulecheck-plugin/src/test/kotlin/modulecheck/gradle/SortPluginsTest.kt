@@ -81,4 +81,62 @@ class SortPluginsTest : BasePluginTest() {
         |
         |""".trimMargin()
   }
+
+  @Test
+  fun `sorting should be idempotent`() {
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("buildSrc") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("`kotlin-dsl`")
+              addRepository("mavenCentral()")
+              addRepository("google()")
+              addRepository("jcenter()")
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/kotlin")) {
+              addRawFile("androidLibrary.gradle.kts", "")
+              addRawFile("javaLibrary.gradle.kts", "")
+            }
+          )
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("javaLibrary")
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("id(\"io.gitlab.arturbosch.detekt\") version \"1.15.0\"")
+            }
+          )
+        }
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    build("moduleCheckSortPlugins").shouldSucceed()
+    build("moduleCheckSortPlugins").shouldSucceed()
+
+    File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |  javaLibrary
+        |  id("io.gitlab.arturbosch.detekt") version "1.15.0"
+        |}
+        |
+        |""".trimMargin()
+  }
 }

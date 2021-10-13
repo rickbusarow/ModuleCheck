@@ -18,6 +18,7 @@ package modulecheck.parsing.groovy.antlr
 import io.kotest.matchers.shouldBe
 import modulecheck.parsing.ExternalDependencyDeclaration
 import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.UnknownDependencyDeclaration
 import org.junit.jupiter.api.Test
 
 internal class GroovyDependencyBlockParserTest {
@@ -36,7 +37,7 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ExternalDependencyDeclaration(
         configName = "api",
-        declarationText = "api'com.foo:bar:1.2.3.4'",
+        declarationText = "api 'com.foo:bar:1.2.3.4'",
         statementWithSurroundingText = "   api 'com.foo:bar:1.2.3.4'",
         group = "com.foo",
         moduleName = "bar",
@@ -61,13 +62,13 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """apiproject(':core:jvm')""",
+        declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm') // trailing comment"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """apiproject(':core:jvm')""",
+        declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       )
     )
@@ -92,9 +93,9 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:test",
         configName = "api",
-        declarationText = """apiproject(':core:test'){
-          |excludegroup:'androidx.appcompat'
-          |}
+        declarationText = """api project(':core:test') {
+          |     exclude group: 'androidx.appcompat'
+          |   }
         """.trimMargin(),
         statementWithSurroundingText = """   api project(':core:test') {
           |     exclude group: 'androidx.appcompat'
@@ -107,7 +108,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "apiproject(':core:jvm')",
+        declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
     )
@@ -132,9 +133,9 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:test",
         configName = "api",
-        declarationText = """apiproject(':core:test'){
-          |excludegroup:'androidx.appcompat'
-          |}
+        declarationText = """api project(':core:test') {
+          |     exclude group: 'androidx.appcompat'
+          |   }
         """.trimMargin(),
         statementWithSurroundingText = """
           |
@@ -149,7 +150,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "apiproject(':core:jvm')",
+        declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "   api project(':core:jvm')"
       )
     )
@@ -172,7 +173,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = "apiproject(':core:jvm')",
+        declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
     )
@@ -194,7 +195,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """apiproject(':core:jvm')""",
+        declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       )
     )
@@ -203,7 +204,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "implementation",
-        declarationText = """implementationproject(':core:jvm')""",
+        declarationText = """implementation project(':core:jvm')""",
         statementWithSurroundingText = """   implementation project(':core:jvm')"""
       )
     )
@@ -227,7 +228,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementationproject(':core:android')""",
+        declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
    // single-line comment
    implementation project(':core:android')"""
@@ -255,7 +256,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementationproject(':core:android')""",
+        declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
    /*
    block comment
@@ -281,7 +282,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:android",
         configName = "implementation",
-        declarationText = """implementationproject(':core:android')""",
+        declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """   /* single-line block comment */ implementation project(':core:android')"""
       )
     )
@@ -303,13 +304,13 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """apiproject(':core:jvm')""",
+        declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ":core:jvm",
         configName = "api",
-        declarationText = """api(project(':core:jvm'))""",
+        declarationText = """api (   project(':core:jvm'))""",
         statementWithSurroundingText = """   api (   project(':core:jvm'))"""
       )
     )
@@ -331,7 +332,7 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = "core.test",
         configName = "api",
-        declarationText = """apiprojects.core.test""",
+        declarationText = """api projects.core.test""",
         statementWithSurroundingText = """   api projects.core.test"""
       )
     )
@@ -340,8 +341,44 @@ internal class GroovyDependencyBlockParserTest {
       ModuleDependencyDeclaration(
         moduleRef = "httpLogging",
         configName = "implementation",
-        declarationText = """implementationprojects.httpLogging""",
+        declarationText = """implementation projects.httpLogging""",
         statementWithSurroundingText = """   implementation projects.httpLogging"""
+      )
+    )
+  }
+
+  @Test
+  fun `buildscript dependencies should not be parsed`() {
+    val block = GroovyDependencyBlockParser()
+      .parse(
+        """
+        |buildscript {
+        |  repositories {
+        |    mavenCentral()
+        |    google()
+        |    jcenter()
+        |    maven("https://plugins.gradle.org/m2/")
+        |    maven("https://oss.sonatype.org/content/repositories/snapshots")
+        |  }
+        |  dependencies {
+        |    classpath 'com.android.tools.build:gradle:7.0.2'
+        |    classpath 'com.squareup.anvil:gradle-plugin:2.3.4'
+        |    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
+        |  }
+        |}
+        |dependencies {
+        |  api libs.ktlint
+        |}
+        |""".trimMargin()
+      ).single()
+
+    block.contentString shouldBe "  api libs.ktlint\n"
+
+    block.allDeclarations shouldBe listOf(
+      UnknownDependencyDeclaration(
+        configName = "api",
+        declarationText = "api libs.ktlint",
+        statementWithSurroundingText = "  api libs.ktlint"
       )
     )
   }

@@ -21,6 +21,7 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
+import org.jetbrains.kotlin.psi.psiUtil.parents
 
 class KotlinDependencyBlockParser {
 
@@ -70,7 +71,22 @@ class KotlinDependencyBlockParser {
     }
 
     val callVisitor = callExpressionRecursiveVisitor { expression ->
-      if (expression.text.matches(""".*dependencies\s*\{[\s\S]*""".toRegex())) {
+
+      if (expression.getChildOfType<KtNameReferenceExpression>()?.text == "dependencies") {
+
+        // recursively look for an enclosing KtCallExpression parent (`buildscript { ... }`)
+        // then walk down to find its name reference (`buildscript`)
+        val parentExpressionName = expression.parents
+          .filterIsInstance<KtCallExpression>()
+          .firstOrNull()
+          ?.getChildOfType<KtNameReferenceExpression>()
+          ?.text
+
+        // skip the dependencies block inside buildscript
+        if (parentExpressionName == "buildscript") {
+          return@callExpressionRecursiveVisitor
+        }
+
         expression.findDescendantOfType<KtBlockExpression>()?.let {
           blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
           blockVisitor.visitBlockExpression(it)
