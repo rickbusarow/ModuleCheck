@@ -19,8 +19,8 @@ import modulecheck.api.Finding
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.parse
+import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.DependencyDeclaration
 import java.io.File
 
 class SortDependenciesFinding(
@@ -41,9 +41,7 @@ class SortDependenciesFinding(
       .parse(buildFile)
       .forEach { block ->
 
-        val sorted = block.sortedDeclarations(comparator)
-
-        fileText = fileText.replace(block.contentString, sorted)
+        fileText = sortedDependenciesFileText(block, fileText, comparator)
       }
 
     buildFile.writeText(fileText)
@@ -52,13 +50,25 @@ class SortDependenciesFinding(
   }
 }
 
-fun List<DependencyDeclaration>.grouped(
+internal fun sortedDependenciesFileText(
+  block: DependenciesBlock,
+  fileText: String,
   comparator: Comparator<String>
-) = groupBy {
-  it.declarationText
-    .split("[(.]".toRegex())
-    .take(2)
-    .joinToString("-")
+): String {
+  val sorted = block.sortedDeclarations(comparator)
+
+  val trimmedContent = block.contentString
+    .trimStart('\n')
+    .trimEnd()
+
+  val escapedContent = Regex.escape(trimmedContent)
+
+  val blockRegex = "${escapedContent}[\\n\\r]*(\\s*)}".toRegex()
+
+  return fileText.replace(blockRegex) { mr ->
+
+    val whitespaceBeforeBrace = mr.destructured.component1()
+
+    "$sorted$whitespaceBeforeBrace}"
+  }
 }
-  .toSortedMap(comparator)
-  .map { it.value }

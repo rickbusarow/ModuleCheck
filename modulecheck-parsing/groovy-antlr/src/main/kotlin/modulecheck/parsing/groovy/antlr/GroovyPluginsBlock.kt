@@ -23,11 +23,8 @@ class GroovyPluginsBlock(
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->
-      originalLine.collapseBlockComments()
-        .trimEachLineStart()
-        .trimLinesLikeAntlr()
-        .lines()
-        .any { it.startsWith(parsedString) }
+
+      originalLine.trimStart().contains(parsedString)
     }
 
   override fun toString(): String {
