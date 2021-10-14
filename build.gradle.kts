@@ -368,7 +368,7 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
   doLast {
 
     // add one hashmark to each header, because GitHub and Docusaurus render them differently
-    val changelog = File("$rootDir/website/src/pages/CHANGELOG.md")
+    val changelog = File("$rootDir/website/src/pages/changelog.md")
 
     val newText = changelog.readText()
       .lines()
