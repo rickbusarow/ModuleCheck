@@ -1,3 +1,10 @@
+## 0.11.2
+
+#### 🐛 Bug Fixes
+
+- support overshot dependencies ([#217](https://github.com/rbusarow/ModuleCheck/pull/217))
+- sorting fixes ([#215](https://github.com/rbusarow/ModuleCheck/pull/215))
+
 ## 0.11.1
 
 #### 🐛 Bug Fixes
