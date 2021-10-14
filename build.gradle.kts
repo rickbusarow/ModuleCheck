@@ -362,7 +362,7 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
   description = "copies the root project's CHANGELOG to the website and updates its formatting"
   group = "website"
 
-  from("CHANGELOG.md")
+  from("changelog.md")
   into("$rootDir/website/src/pages")
 
   doLast {
