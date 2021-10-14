@@ -9,9 +9,13 @@
       "id": "version-0.11.2/configuration"
     },
     {
-      "collapsed": false,
+      "type": "doc",
+      "id": "version-0.11.2/ci-workflow"
+    },
+    {
       "type": "category",
       "label": "Rules",
+      "collapsed": false,
       "items": [
         {
           "type": "doc",
@@ -26,20 +30,21 @@
           "id": "version-0.11.2/rules/inherited_dependency"
         },
         {
-          "collapsed": false,
           "type": "category",
           "label": "compiler",
+          "collapsed": false,
           "items": [
             {
               "type": "doc",
               "id": "version-0.11.2/rules/compiler/could_use_anvil_factory"
             }
-          ]
+          ],
+          "collapsible": true
         },
         {
-          "collapsed": false,
           "type": "category",
           "label": "Kapt",
+          "collapsed": false,
           "items": [
             {
               "type": "doc",
@@ -53,12 +58,13 @@
               "type": "doc",
               "id": "version-0.11.2/rules/kapt/custom_kapt_matchers"
             }
-          ]
+          ],
+          "collapsible": true
         },
         {
-          "collapsed": false,
           "type": "category",
           "label": "Sorting",
+          "collapsed": false,
           "items": [
             {
               "type": "doc",
@@ -68,12 +74,13 @@
               "type": "doc",
               "id": "version-0.11.2/rules/sorting/sort_plugins"
             }
-          ]
+          ],
+          "collapsible": true
         },
         {
-          "collapsed": false,
           "type": "category",
           "label": "Android",
+          "collapsed": false,
           "items": [
             {
               "type": "doc",
@@ -83,9 +90,11 @@
               "type": "doc",
               "id": "version-0.11.2/rules/android/disable_viewbinding"
             }
-          ]
+          ],
+          "collapsible": true
         }
-      ]
+      ],
+      "collapsible": true
     }
   ]
 }
