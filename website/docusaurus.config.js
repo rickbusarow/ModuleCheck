@@ -67,12 +67,12 @@ module.exports = {
           type: "docsVersionDropdown",
           position: "left",
           dropdownActiveClassDisabled: true,
-          dropdownItemsAfter: [
-            {
+          // dropdownItemsAfter: [
+          //   {
               // to: "/versions",
               // label: "All versions",
-            },
-          ],
+            // },
+          // ],
         },
         {
           label: "Twitter",
@@ -100,6 +100,7 @@ module.exports = {
       "@docusaurus/preset-classic",
       {
         docs: {
+          remarkPlugins: [require('mdx-mermaid')],
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/rbusarow/ModuleCheck",
         },

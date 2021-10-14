@@ -17,6 +17,7 @@ module.exports = {
   Docs: [
     "quickstart",
     "configuration",
+    "ci-workflow",
     {
       type: "category",
       label: "Rules",
