@@ -1,0 +1,161 @@
+---
+id: quickstart
+title: Quick Start
+sidebar_label: Quick Start
+slug: /
+---
+
+
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+
+:::note
+ModuleCheck leverages Gradle for parsing all build logic, so validation works regardless of whether that logic is expressed in Groovy or Kotlin.
+
+:::
+
+## Dependencies
+
+<Tabs groupId="language"
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
+]}>
+
+   <TabItem value="Kotlin">
+
+```kotlin
+// settings.gradle.kts
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```kotlin
+// top-level build.gradle.kts
+
+plugins {
+  id("com.rickbusarow.module-check") version "0.11.1"
+}
+```
+
+   </TabItem>
+
+<TabItem value="Groovy">
+
+```groovy
+// settings.gradle
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+  }
+}
+```
+
+```groovy
+// top-level build.gradle
+
+plugins {
+  id 'com.rickbusarow.module-check' version '0.11.1'
+}
+```
+
+   </TabItem>
+</Tabs>
+
+## Tasks
+
+all checks
+```shell
+./gradlew moduleCheck
+```
+
+kapt checks
+```shell
+./gradlew moduleCheckKapt
+```
+
+sorts
+```shell
+./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
+```
+
+unused
+```shell
+./gardlew moduleCheckUnused
+```
+
+redundant
+```shell
+./gradlew moduleCheckRedundant
+```
+
+overshot
+```shell
+./gradlew moduleCheckOvershot
+```
+
+## Configuration
+
+See [configuration](./configuration.mdx) for a full list of options.
+
+<Tabs groupId="language"
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
+]}>
+
+
+   <TabItem value="Kotlin">
+
+```kotlin
+// top-level build.gradle.kts
+
+configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+--or--
+
+```kotlin
+// top-level build.gradle.kts
+
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+   </TabItem>
+
+
+<TabItem value="Groovy">
+
+```groovy
+// top-level build.gradle
+
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+   </TabItem>
+</Tabs>

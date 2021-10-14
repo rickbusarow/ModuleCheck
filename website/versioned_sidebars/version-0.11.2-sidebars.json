@@ -1,0 +1,91 @@
+{
+  "version-0.11.2/Docs": [
+    {
+      "type": "doc",
+      "id": "version-0.11.2/quickstart"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.11.2/configuration"
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Rules",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/unused"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/must_be_api"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/inherited_dependency"
+        },
+        {
+          "collapsed": false,
+          "type": "category",
+          "label": "compiler",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/compiler/could_use_anvil_factory"
+            }
+          ]
+        },
+        {
+          "collapsed": false,
+          "type": "category",
+          "label": "Kapt",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/unused_kapt_processor"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/unused_kapt_plugin"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/custom_kapt_matchers"
+            }
+          ]
+        },
+        {
+          "collapsed": false,
+          "type": "category",
+          "label": "Sorting",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/sorting/sort_dependencies"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/sorting/sort_plugins"
+            }
+          ]
+        },
+        {
+          "collapsed": false,
+          "type": "category",
+          "label": "Android",
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/android/disable_resources"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/android/disable_viewbinding"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
