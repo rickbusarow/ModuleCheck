@@ -31,27 +31,11 @@ cancellation, test, and ModuleCheck jobs run in parallel on three different runn
 "optimistic" workflow, in that it assumes that the `modulecheck` task will not generate changes
 which would trigger a restart.
 
-The reason for "cancel previous CI run" having its own runner is nuanced, and doesn't apply to all
-platforms. It does apply to GitHub Actions. In situations where the number of available runners is
-limited, jobs can get queued. This is especially true if committing changes from ModuleCheck, as
-this will double the number of jobs being queued.
-
-In these cases, it's important that stale runs get cancelled as soon as possible, and so it's
-important that the job which cancels the stale jobs is never stuck in a queue. Ideally, the
-cancellation job would be running on a different class of runners which does not get used for other
-tasks. That way, there can be a queue for tasks like unit tests, modulecheck, or lint, but there
-will always be a runner available for automatically cancelling stale jobs.
-
 ```mermaid
 flowchart TB
   Start(CI Start):::good --> mGraph
   Start --> tGraph
   Start --> cGraph
-
-  subgraph cGraph [runner 3]
-    direction TB
-    Cancel(Cancel previous CI run):::code
-  end
 
   subgraph mGraph [runner 1]
     direction TB
@@ -65,7 +49,13 @@ flowchart TB
     Tests(./gradlew test):::code --> EndTests("#10003;"):::good
   end
 
+  subgraph cGraph [runner 3]
+    direction TB
+    Cancel(Cancel previous CI run):::code
+  end
+
   style tGraph fill:#EEE,stroke:#000
+  style cGraph fill:#EEE,stroke:#000
   style mGraph fill:#EEE,stroke:#000
 
   classDef good fill:#0B0,stroke:#000
@@ -91,6 +81,17 @@ on:
   pull_request:
 
 jobs:
+
+  cancel-stale-jobs:
+    name: Cancel stale jobs
+    runs-on: ubuntu-latest
+
+    steps:
+      # cancel previous jobs
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
   ModuleCheck:
     name: ModuleCheck
@@ -121,4 +122,24 @@ jobs:
         with:
           commit_message: Apply ModuleCheck changes
           commit_options: '--no-verify --signoff'
+
+  tests:
+    name: Unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'temurin'
+          java-version : '14'
+
+      - name: all tests
+        run: ./gradlew test --no-daemon
 ```
