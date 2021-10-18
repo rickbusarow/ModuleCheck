@@ -71,7 +71,7 @@ jobs:
           gradle-dependencies-cache-key: |
             gradle/libs.versions.toml
           arguments: |
-            formatKotlin
+            ktlintformat
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes
@@ -108,8 +108,13 @@ jobs:
           commit_message: update docs versions
           commit_options: '--no-verify --signoff'
 
-      - name: Update version in website package.json
-        run: ./gradlew updateWebsitePackageJsonVersion --no-daemon
+      - uses: burrunan/gradle-cache-action@v1
+        name: Update version in website package.json
+        with:
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            updateWebsitePackageJsonVersion
 
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
