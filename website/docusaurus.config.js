@@ -67,12 +67,12 @@ module.exports = {
           type: "docsVersionDropdown",
           position: "left",
           dropdownActiveClassDisabled: true,
-          // dropdownItemsAfter: [
-          //   {
-              // to: "/versions",
-              // label: "All versions",
-            // },
-          // ],
+          dropdownItemsAfter: [
+            {
+              to: "/changelog",
+              label: "CHANGELOG",
+            },
+          ],
         },
         {
           label: "Twitter",

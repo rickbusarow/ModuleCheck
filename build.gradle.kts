@@ -334,7 +334,7 @@ val startSite by tasks.registering(Exec::class) {
   )
 
   workingDir("$rootDir/website")
-  commandLine("npm", "run", "start")
+  commandLine("yarn", "run", "start")
 }
 
 val versionDocs by tasks.registering(Exec::class) {
@@ -354,7 +354,7 @@ val versionDocs by tasks.registering(Exec::class) {
   enabled = version !in existingVersions
 
   workingDir("$rootDir/website")
-  commandLine("npm", "run", "docusaurus", "docs:version", version)
+  commandLine("yarn", "run", "docusaurus", "docs:version", version)
 }
 
 val updateWebsiteChangelog by tasks.registering(Copy::class) {
