@@ -32,17 +32,15 @@ jobs:
 
       - uses: gradle/wrapper-validation-action@v1
 
-      - uses: actions/cache@v2
+      - uses: burrunan/gradle-cache-action@v1
+        name: Update website's changelog
         with:
-          path: |
-            ~/buildSrc/.gradle
-            ~/buildSrc/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Update website's changelog
-        run: ./gradlew updateWebsiteChangelog --no-daemon
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            updateWebsiteChangelog
+          concurrent: true
+          gradle-build-scan-report: false
 
       # Install and build Docusaurus website
       - name: Build Docusaurus website

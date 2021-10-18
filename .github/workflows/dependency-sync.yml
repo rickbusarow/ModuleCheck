@@ -39,17 +39,15 @@ jobs:
           java-version : '14'
           cache: 'gradle'
 
-      - uses: actions/cache@v2
+      - uses: burrunan/gradle-cache-action@v1
+        name: run dependencySync
         with:
-          path: |
-            ~/buildSrc/.gradle
-            ~/buildSrc/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: run dependencySync
-        run: ./gradlew dependencySync --no-daemon
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            dependencySync
+          concurrent: true
+          gradle-build-scan-report: false
 
       # If the copy generated changes, commit and push those changes.
       - name: commit changes
