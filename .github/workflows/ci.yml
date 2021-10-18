@@ -39,8 +39,13 @@ jobs:
         with:
           java-version: 14
 
-      - name: detekt
-        run: ./gradlew detekt --no-daemon
+      - uses: burrunan/gradle-cache-action@v1
+        name: detekt
+        with:
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            detekt --no-daemon
 
   ktlint:
 
@@ -60,8 +65,13 @@ jobs:
           java-version: 14
 
       # formats all src files
-      - name: KtLint format
-        run: ./gradlew ktlintformat --no-daemon
+      - uses: burrunan/gradle-cache-action@v1
+        name: KtLint format
+        with:
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            formatKotlin
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes
@@ -130,19 +140,17 @@ jobs:
         with:
           java-version: 14
 
-      - uses: actions/cache@v2
+      - uses: burrunan/gradle-cache-action@v1
+        name: all tests
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/buildSrc/.gradle
-            ~/buildSrc/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/libs.versions.toml', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: all tests
-        run: ./gradlew testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --rerun-tasks --no-daemon
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            testJvm
+          properties: |
+            modulecheck.kotlinVersion=${{ matrix.kotlin-version }}
+            modulecheck.gradleVersion=${{ matrix.gradle-version }}
+            modulecheck.agpVersion=${{ matrix.agp-version }}
 
       - name: Archive test results
         uses: actions/upload-artifact@v2
@@ -176,19 +184,13 @@ jobs:
         with:
           java-version: 14
 
-      - uses: actions/cache@v2
+      - uses: burrunan/gradle-cache-action@v1
+        name: all tests
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/buildSrc/.gradle
-            ~/buildSrc/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/libs.versions.toml', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: all tests
-        run: ./gradlew testJvm --rerun-tasks --no-daemon
+          gradle-dependencies-cache-key: |
+            gradle/libs.versions.toml
+          arguments: |
+            testJvm
 
       - name: Archive test results
         uses: actions/upload-artifact@v2
