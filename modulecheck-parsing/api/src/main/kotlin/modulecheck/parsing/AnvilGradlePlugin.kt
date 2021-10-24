@@ -13,27 +13,24 @@
  * limitations under the License.
  */
 
-plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
-  groovy
-}
+package modulecheck.parsing
 
-dependencies {
+import net.swiftzer.semver.SemVer
 
-  compileOnly(gradleApi())
+data class AnvilGradlePlugin(
+  val version: SemVer,
+  val generateDaggerFactories: Boolean
+)
 
-  api(libs.semVer)
+data class AnvilAnnotatedType(
+  val contributedTypeDeclaration: DeclarationName,
+  val contributedScope: AnvilScopeName
+)
 
-  implementation(libs.agp)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-  implementation(libs.groovy)
+data class RawAnvilAnnotatedType(
+  val declarationName: DeclarationName,
+  val anvilScopeNameEntry: AnvilScopeNameEntry
+)
 
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
-}
+data class AnvilScopeName(val fqName: DeclarationName)
+data class AnvilScopeNameEntry(val name: String)

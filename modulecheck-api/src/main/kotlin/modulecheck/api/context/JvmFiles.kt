@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
 import modulecheck.parsing.JvmFile
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.internal.asKtFile

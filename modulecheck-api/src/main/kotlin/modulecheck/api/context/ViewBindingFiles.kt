@@ -15,11 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.*
+import modulecheck.parsing.ProjectContext
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -57,7 +54,7 @@ data class ViewBindingFiles(
                 }
                 .plus("Binding")
                 .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclaractionName()
+                .asDeclarationName()
             }
             .toSet()
         }

@@ -17,6 +17,7 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ModuleRef
+import modulecheck.parsing.asConfigurationName
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.*
@@ -52,7 +53,7 @@ class KotlinDependencyBlockParser {
           if (moduleNameString != null) {
             block.addModuleStatement(
               moduleRef = ModuleRef.from(moduleNameString),
-              configName = configName,
+              configName = configName.asConfigurationName(),
               parsedString = callExpression.text
             )
             return@forEach
@@ -61,12 +62,16 @@ class KotlinDependencyBlockParser {
           val mavenCoordinates = callExpression.getMavenCoordinatesOrNull()
 
           if (mavenCoordinates != null) {
-            block.addNonModuleStatement(configName, callExpression.text, mavenCoordinates)
+            block.addNonModuleStatement(
+              configName.asConfigurationName(),
+              callExpression.text,
+              mavenCoordinates
+            )
             return@forEach
           }
 
           block.addUnknownStatement(
-            configName = configName,
+            configName = configName.asConfigurationName(),
             parsedString = callExpression.text,
             argument = callExpression.getUnknownArgumentOrNull() ?: ""
           )

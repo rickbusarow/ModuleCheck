@@ -13,27 +13,9 @@
  * limitations under the License.
  */
 
-plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
-  groovy
-}
+package modulecheck.parsing
 
-dependencies {
+interface ProjectProvider : ProjectsAware {
 
-  compileOnly(gradleApi())
-
-  api(libs.semVer)
-
-  implementation(libs.agp)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-  implementation(libs.groovy)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
+  fun get(path: String): Project2
 }

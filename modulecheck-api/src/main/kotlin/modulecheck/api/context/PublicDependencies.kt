@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
 
 data class PublicDependencies(
   internal val delegate: Set<ConfiguredProjectDependency>
@@ -60,3 +61,5 @@ data class PublicDependencies(
     }
   }
 }
+
+val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDependencies)

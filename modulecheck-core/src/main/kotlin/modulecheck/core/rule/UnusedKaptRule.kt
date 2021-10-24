@@ -16,7 +16,6 @@
 package modulecheck.core.rule
 
 import modulecheck.api.KaptMatcher
-import modulecheck.api.Project2
 import modulecheck.api.asMap
 import modulecheck.api.context.*
 import modulecheck.api.settings.ModuleCheckSettings
@@ -24,6 +23,7 @@ import modulecheck.core.kapt.UnusedKaptFinding
 import modulecheck.core.kapt.UnusedKaptPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.parsing.Project2
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"

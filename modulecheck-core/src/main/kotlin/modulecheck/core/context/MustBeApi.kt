@@ -15,9 +15,8 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.*
 import modulecheck.api.context.*
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.*
 import modulecheck.parsing.psi.KotlinFile
 
 data class MustBeApi(
@@ -58,7 +57,7 @@ data class MustBeApi(
 
           kotlinFile
             .apiReferences
-            .filterNot { it.asDeclaractionName() in declarationsInProject }
+            .filterNot { it.asDeclarationName() in declarationsInProject }
         }.toSet()
 
       val api = mainDependencies

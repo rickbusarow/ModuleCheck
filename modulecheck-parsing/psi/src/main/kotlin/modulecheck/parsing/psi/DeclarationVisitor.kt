@@ -16,7 +16,7 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.asDeclarationName
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
@@ -28,7 +28,7 @@ class DeclarationVisitor : KtTreeVisitorVoid() {
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
     if (!declaration.isPrivateOrInternal()) {
       declaration.fqName?.let {
-        declarations.add(it.asString().replace(".Companion", "").asDeclaractionName())
+        declarations.add(it.asString().replace(".Companion", "").asDeclarationName())
       }
     }
 

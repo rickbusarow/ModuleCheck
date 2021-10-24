@@ -15,8 +15,8 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.parsing.Project2
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 

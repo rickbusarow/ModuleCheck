@@ -13,15 +13,30 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
+import modulecheck.parsing.ProjectContext.Element
+import modulecheck.parsing.ProjectContext.Key
 import java.util.concurrent.ConcurrentHashMap
 
-interface ProjectsAware {
-  val projectCache: ConcurrentHashMap<String, Project2>
+interface ProjectContext {
+  operator fun <E : Element> get(key: Key<E>): E
+
+  interface Key<E : Element> {
+    operator fun invoke(project: Project2): E
+  }
+
+  interface Element {
+    val key: Key<*>
+  }
 }
 
-interface ProjectProvider : ProjectsAware {
+class ProjectContextImpl(val project: Project2) : ProjectContext {
 
-  fun get(path: String): Project2
+  private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
+
+  override operator fun <E : Element> get(key: Key<E>): E {
+    @Suppress("UNCHECKED_CAST")
+    return cache.getOrPut(key) { key.invoke(project) } as E
+  }
 }

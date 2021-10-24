@@ -15,8 +15,9 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.psi.createBindingContext
 import modulecheck.parsing.psi.internal.ktFiles
 import org.jetbrains.kotlin.resolve.BindingContext

@@ -15,11 +15,11 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Project2
-import modulecheck.api.all
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.core.context.RedundantDependencyFinding
+import modulecheck.parsing.Project2
+import modulecheck.parsing.all
 
 class RedundantRule(
   override val settings: ModuleCheckSettings

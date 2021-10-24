@@ -32,7 +32,7 @@ abstract class DependenciesBlock(var contentString: String) {
   protected val allBlockStatements = mutableListOf<String>()
 
   fun addNonModuleStatement(
-    configName: String,
+    configName: ConfigurationName,
     parsedString: String,
     coordinates: MavenCoordinates
   ) {
@@ -52,7 +52,7 @@ abstract class DependenciesBlock(var contentString: String) {
   }
 
   fun addUnknownStatement(
-    configName: String,
+    configName: ConfigurationName,
     parsedString: String,
     argument: String
   ) {
@@ -69,7 +69,7 @@ abstract class DependenciesBlock(var contentString: String) {
 
   fun addModuleStatement(
     moduleRef: ModuleRef,
-    configName: String,
+    configName: ConfigurationName,
     parsedString: String
   ) {
     val cm = ConfiguredModule(configName = configName, moduleRef = moduleRef)
@@ -91,14 +91,14 @@ abstract class DependenciesBlock(var contentString: String) {
 
   fun getOrEmpty(
     moduleRef: String,
-    configName: String
+    configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
     return getOrEmpty(ModuleRef.StringRef(moduleRef), configName)
   }
 
   fun getOrEmpty(
     moduleRef: ModuleRef.StringRef,
-    configName: String
+    configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
 
     return allModuleDeclarations[ConfiguredModule(configName, moduleRef)]
@@ -108,7 +108,7 @@ abstract class DependenciesBlock(var contentString: String) {
 
   fun getOrEmpty(
     mavenCoordinates: MavenCoordinates,
-    configName: String
+    configName: ConfigurationName
   ): List<ExternalDependencyDeclaration> {
     return allExternalDeclarations[mavenCoordinates]
       ?.filter { it.configName == configName }
@@ -186,5 +186,5 @@ abstract class DependenciesBlock(var contentString: String) {
     return originalStringLines.joinToString("\n")
   }
 
-  protected data class ConfiguredModule(val configName: String, val moduleRef: ModuleRef)
+  protected data class ConfiguredModule(val configName: ConfigurationName, val moduleRef: ModuleRef)
 }

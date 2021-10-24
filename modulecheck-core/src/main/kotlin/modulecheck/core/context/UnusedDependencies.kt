@@ -15,15 +15,15 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Deletable
-import modulecheck.api.Project2
-import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.anvilScopeMergesForSourceSetName
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

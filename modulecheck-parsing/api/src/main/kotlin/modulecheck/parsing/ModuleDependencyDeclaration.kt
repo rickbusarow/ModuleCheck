@@ -16,25 +16,25 @@
 package modulecheck.parsing
 
 sealed interface DependencyDeclaration : Declaration {
-  val configName: String
+  val configName: ConfigurationName
 }
 
 data class UnknownDependencyDeclaration(
   val argument: String,
-  override val configName: String,
+  override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String
 ) : DependencyDeclaration
 
 data class ModuleDependencyDeclaration(
   val moduleRef: ModuleRef,
-  override val configName: String,
+  override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String
 ) : DependencyDeclaration
 
 data class ExternalDependencyDeclaration(
-  override val configName: String,
+  override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String,
   val group: String?,

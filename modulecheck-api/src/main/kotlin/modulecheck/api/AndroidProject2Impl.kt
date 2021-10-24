@@ -15,9 +15,8 @@
 
 package modulecheck.api
 
-import modulecheck.api.anvil.AnvilGradlePlugin
-import modulecheck.api.context.ProjectContext
-import modulecheck.api.context.ProjectContextImpl
+import modulecheck.parsing.*
+import modulecheck.parsing.AnvilGradlePlugin
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
 data class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
   fun toSourceSetName(): SourceSetName = when (this.value) {

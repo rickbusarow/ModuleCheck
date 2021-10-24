@@ -15,13 +15,13 @@
 
 package modulecheck.core.rule.sort
 
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.DependencyDeclaration
+import modulecheck.parsing.Project2
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.util.*
 

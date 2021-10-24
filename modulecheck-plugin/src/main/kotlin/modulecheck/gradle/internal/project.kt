@@ -16,8 +16,8 @@
 package modulecheck.gradle.internal
 
 import com.android.build.gradle.TestedExtension
-import modulecheck.api.SourceSetName
-import modulecheck.api.toSourceSetName
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.toSourceSetName
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import java.io.File

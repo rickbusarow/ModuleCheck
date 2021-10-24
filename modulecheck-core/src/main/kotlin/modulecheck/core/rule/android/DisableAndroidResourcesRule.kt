@@ -15,10 +15,10 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.parsing.AndroidProject2
+import modulecheck.parsing.Project2
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings

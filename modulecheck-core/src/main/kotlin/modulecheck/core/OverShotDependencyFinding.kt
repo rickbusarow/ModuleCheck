@@ -15,9 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Project2
-import modulecheck.api.context.ProjectContext
 import modulecheck.core.context.OverShotDependencies
 import modulecheck.parsing.*
 import modulecheck.parsing.ModuleRef.StringRef
@@ -81,10 +78,10 @@ data class OverShotDependencyFinding(
     (
       block.allDeclarations
         .filterIsInstance<ModuleDependencyDeclaration>()
-        .maxByOrNull { declaration -> declaration.configName == configurationName.value }
+        .maxByOrNull { declaration -> declaration.configName == configurationName }
         ?: block.allDeclarations
           .filterNot { it is ModuleDependencyDeclaration }
-          .maxByOrNull { declaration -> declaration.configName == configurationName.value }
+          .maxByOrNull { declaration -> declaration.configName == configurationName }
         ?: block.allDeclarations
           .lastOrNull()
       )
@@ -100,7 +97,7 @@ data class OverShotDependencyFinding(
 
   private fun newDeclarationText(match: DependencyDeclaration, moduleDeclaration: String): String {
     return match.declarationText
-      .replace(match.configName, configurationName.value)
+      .replace(match.configName.value, configurationName.value)
       .let {
         when (match) {
           is ExternalDependencyDeclaration -> it.replace("""(["']).*(["'])""".toRegex()) { mr ->

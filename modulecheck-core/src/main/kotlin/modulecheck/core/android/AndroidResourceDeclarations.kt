@@ -15,14 +15,9 @@
 
 package modulecheck.core.android
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
 import modulecheck.api.context.JvmFiles
-import modulecheck.api.context.ProjectContext
 import modulecheck.api.context.ResSourceFiles
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.*
 import modulecheck.parsing.xml.AndroidResourceParser
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -50,7 +45,7 @@ data class AndroidResourceDeclarations(
             project[ResSourceFiles][sourceSetName]
               .orEmpty()
               .flatMap { AndroidResourceParser.parseFile(it) }
-              .toSet() + "$rPackage.R".asDeclaractionName()
+              .toSet() + "$rPackage.R".asDeclarationName()
           } else {
             project[JvmFiles][sourceSetName]
               .orEmpty()

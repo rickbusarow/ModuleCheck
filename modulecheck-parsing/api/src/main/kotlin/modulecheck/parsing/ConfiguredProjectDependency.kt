@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
 interface HasConfig {
   val configurationName: ConfigurationName

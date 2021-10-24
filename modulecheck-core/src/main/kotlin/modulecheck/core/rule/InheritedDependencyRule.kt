@@ -15,11 +15,12 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.*
+import modulecheck.api.context.publicDependencies
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApi
 import modulecheck.core.internal.uses
+import modulecheck.parsing.*
 import kotlin.LazyThreadSafetyMode.NONE
 
 class InheritedDependencyRule(

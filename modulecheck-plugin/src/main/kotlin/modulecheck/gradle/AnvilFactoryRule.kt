@@ -15,10 +15,10 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.CouldUseAnvilFinding
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.parsing.Project2
 
 class AnvilFactoryRule(
   override val settings: ModuleCheckSettings

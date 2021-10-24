@@ -18,12 +18,12 @@ package modulecheck.gradle
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.api.Finding
-import modulecheck.api.Project2
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckAllTask
 import modulecheck.gradle.task.ModuleCheckTask
+import modulecheck.parsing.Project2
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task

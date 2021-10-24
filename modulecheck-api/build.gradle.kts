@@ -24,6 +24,7 @@ dependencies {
   api(libs.semVer)
 
   api(projects.modulecheckParsing.java)
+  api(projects.modulecheckParsing.api)
   api(projects.modulecheckParsing.psi)
   api(projects.modulecheckParsing.xml)
 

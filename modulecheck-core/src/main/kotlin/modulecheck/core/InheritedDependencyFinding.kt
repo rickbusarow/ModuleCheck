@@ -15,12 +15,12 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
 import modulecheck.core.internal.positionIn
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.Project2
 import java.io.File
 
 data class InheritedDependencyFinding(
@@ -48,7 +48,7 @@ data class InheritedDependencyFinding(
 
   override fun fix(): Boolean = synchronized(buildFile) {
     val fromPath = source?.project?.path ?: return false
-    val fromConfigName = source.configurationName.value
+    val fromConfigName = source.configurationName
 
     val blocks = DependencyBlockParser.parse(buildFile)
 
@@ -66,7 +66,7 @@ data class InheritedDependencyFinding(
       ?: return false
 
     val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
-      .replaceFirst(fromConfigName, configurationName.value)
+      .replaceFirst(fromConfigName.value, configurationName.value)
 
     val newDependencies = block.contentString.replaceFirst(
       oldValue = match,
