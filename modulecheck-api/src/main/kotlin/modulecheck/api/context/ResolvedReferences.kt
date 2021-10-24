@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 
 data class ResolvedReferences(
   internal val delegate: Map<SourceSetName, Set<ConfiguredProjectDependency>>

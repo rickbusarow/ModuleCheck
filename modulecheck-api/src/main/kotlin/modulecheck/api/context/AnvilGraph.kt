@@ -15,16 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.api.anvil.AnvilScopeName
-import modulecheck.api.anvil.AnvilScopeNameEntry
-import modulecheck.api.anvil.RawAnvilAnnotatedType
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.*
+import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.psi.asDeclaractionName
+import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -211,7 +205,7 @@ data class AnvilGraph(
         .trim()
 
       return RawAnvilAnnotatedType(
-        declarationName = typeFqName.asDeclaractionName(),
+        declarationName = typeFqName.asDeclarationName(),
         anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
       )
     }
@@ -228,7 +222,7 @@ data class AnvilGraph(
       val rawScopeName = kotlinFile.imports.firstOrNull { import ->
         import.endsWith(scopeNameEntry.name)
       }
-        ?.asDeclaractionName()
+        ?.asDeclarationName()
         // if the scope is wildcard-imported
         ?: dependenciesBySourceSetName[sourceSetName]
           .orEmpty()
@@ -250,9 +244,9 @@ data class AnvilGraph(
             maybeExtra.startsWith(kotlinFile.packageFqName) &&
               maybeExtra.endsWith(scopeNameEntry.name)
           }
-          ?.asDeclaractionName()
+          ?.asDeclarationName()
         // Scope must be defined in this same package
-        ?: "${kotlinFile.packageFqName}.${scopeNameEntry.name}".asDeclaractionName()
+        ?: "${kotlinFile.packageFqName}.${scopeNameEntry.name}".asDeclarationName()
 
       return AnvilScopeName(rawScopeName)
     }

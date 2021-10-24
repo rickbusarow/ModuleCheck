@@ -19,7 +19,7 @@ import groovy.util.Node
 import groovy.xml.XmlParser
 import modulecheck.parsing.AndroidResource
 import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.asDeclarationName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
@@ -53,7 +53,7 @@ object AndroidResourceParser {
       .toSet() + values
 
     return resources
-      .map { "R.${it.prefix}.${it.name}".asDeclaractionName() }
+      .map { "R.${it.prefix}.${it.name}".asDeclarationName() }
       .toSet()
   }
 }

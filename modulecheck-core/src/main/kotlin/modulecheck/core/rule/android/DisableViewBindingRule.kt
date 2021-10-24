@@ -15,14 +15,14 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.parsing.AndroidProject2
+import modulecheck.parsing.Project2
+import modulecheck.parsing.SourceSetName
 import java.io.File
 
 class DisableViewBindingRule(

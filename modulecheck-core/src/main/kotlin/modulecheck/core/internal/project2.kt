@@ -15,12 +15,12 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
 import modulecheck.api.positionOfStatement
 import modulecheck.core.parse
+import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.Project2
 import java.io.File
 
 fun Project2.statementOrNullIn(
@@ -30,7 +30,7 @@ fun Project2.statementOrNullIn(
   return DependencyBlockParser
     .parse(dependentBuildFile)
     .firstNotNullOfOrNull { block ->
-      block.getOrEmpty(path, configuration.value)
+      block.getOrEmpty(path, configuration)
         .takeIf { it.isNotEmpty() }
     }
     ?.firstOrNull()

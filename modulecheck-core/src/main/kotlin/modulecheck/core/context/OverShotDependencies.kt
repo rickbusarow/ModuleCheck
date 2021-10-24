@@ -15,12 +15,12 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.context.ProjectContext
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.internal.uses
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

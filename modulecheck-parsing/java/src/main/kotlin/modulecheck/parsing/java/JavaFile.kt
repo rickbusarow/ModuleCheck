@@ -27,7 +27,7 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
 import modulecheck.parsing.DeclarationName
 import modulecheck.parsing.JvmFile
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.asDeclarationName
 import java.io.File
 import kotlin.properties.Delegates
 
@@ -98,7 +98,7 @@ class JavaFile(val file: File) : JvmFile() {
 
   override val declarations by lazy {
     parsed.typeDeclarations
-      .map { it.fullyQualifiedName.get().asDeclaractionName() }
+      .map { it.fullyQualifiedName.get().asDeclarationName() }
       .toSet()
       .plus(parsed.fieldDeclarations)
       .plus(parsed.enumDeclarations)

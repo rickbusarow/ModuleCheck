@@ -15,11 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclaractionName
+import modulecheck.parsing.*
+import modulecheck.parsing.ProjectContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -45,7 +42,7 @@ data class Declarations(
             ?: return@mapValues jvmFiles
 
           jvmFiles
-            .plus("$baseAndroidPackage.R".asDeclaractionName())
+            .plus("$baseAndroidPackage.R".asDeclarationName())
             .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
         }
 

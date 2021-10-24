@@ -18,4 +18,4 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.DeclarationName
 import org.jetbrains.kotlin.name.FqName
 
-fun FqName.asDeclaractionName(): DeclarationName = DeclarationName(asString())
+fun FqName.asDeclarationName(): DeclarationName = DeclarationName(asString())

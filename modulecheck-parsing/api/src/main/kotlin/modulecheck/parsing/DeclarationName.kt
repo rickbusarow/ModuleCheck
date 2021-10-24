@@ -17,4 +17,4 @@ package modulecheck.parsing
 
 data class DeclarationName(val fqName: String)
 
-fun String.asDeclaractionName(): DeclarationName = DeclarationName(this)
+fun String.asDeclarationName(): DeclarationName = DeclarationName(this)

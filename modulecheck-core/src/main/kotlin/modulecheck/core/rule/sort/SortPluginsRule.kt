@@ -15,12 +15,12 @@
 
 package modulecheck.core.rule.sort
 
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
+import modulecheck.parsing.Project2
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings

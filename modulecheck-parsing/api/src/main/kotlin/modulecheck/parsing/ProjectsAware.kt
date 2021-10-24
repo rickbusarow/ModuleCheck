@@ -13,26 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.api.anvil
+package modulecheck.parsing
 
-import modulecheck.api.context.ImportName
-import modulecheck.parsing.DeclarationName
-import net.swiftzer.semver.SemVer
+import java.util.concurrent.ConcurrentHashMap
 
-data class AnvilGradlePlugin(
-  val version: SemVer,
-  val generateDaggerFactories: Boolean
-)
-
-data class AnvilAnnotatedType(
-  val contributedTypeDeclaration: DeclarationName,
-  val contributedScope: AnvilScopeName
-)
-
-data class RawAnvilAnnotatedType(
-  val declarationName: DeclarationName,
-  val anvilScopeNameEntry: AnvilScopeNameEntry
-)
-
-data class AnvilScopeName(val fqName: DeclarationName)
-data class AnvilScopeNameEntry(val name: ImportName)
+interface ProjectsAware {
+  val projectCache: ConcurrentHashMap<String, Project2>
+}

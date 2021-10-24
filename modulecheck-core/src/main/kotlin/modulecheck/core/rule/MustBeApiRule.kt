@@ -15,10 +15,10 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Project2
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
+import modulecheck.parsing.Project2
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings

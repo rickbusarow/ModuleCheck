@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
 import java.io.File
 import java.util.*

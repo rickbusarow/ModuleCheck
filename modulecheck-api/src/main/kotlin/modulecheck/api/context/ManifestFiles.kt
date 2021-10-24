@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.AndroidProject2
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.xml.XmlFile
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

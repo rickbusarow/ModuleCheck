@@ -15,11 +15,12 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.KaptProcessor
-import modulecheck.api.Project2
-import modulecheck.api.all
-import modulecheck.api.context.ProjectContext.Element
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.ProjectContext.*
+import modulecheck.parsing.all
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

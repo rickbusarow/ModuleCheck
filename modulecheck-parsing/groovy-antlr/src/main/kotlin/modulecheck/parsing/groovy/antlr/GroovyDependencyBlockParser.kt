@@ -22,6 +22,7 @@ import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ModuleRef
+import modulecheck.parsing.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyLangLexer
 import org.apache.groovy.parser.antlr4.GroovyLangParser
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
@@ -119,7 +120,7 @@ class GroovyDependencyBlockParser {
               if (moduleRefString != null) {
                 dependenciesBlock.addModuleStatement(
                   moduleRef = ModuleRef.from(moduleRefString),
-                  configName = config,
+                  configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(stream)
                 )
                 return
@@ -130,7 +131,7 @@ class GroovyDependencyBlockParser {
 
               if (mavenCoordinates != null) {
                 dependenciesBlock.addNonModuleStatement(
-                  configName = config,
+                  configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(stream),
                   coordinates = mavenCoordinates
                 )
@@ -140,7 +141,7 @@ class GroovyDependencyBlockParser {
               val argument = unknownArgumentVisitor.visit(ctx) ?: return
 
               dependenciesBlock.addUnknownStatement(
-                configName = config,
+                configName = config.asConfigurationName(),
                 parsedString = ctx.originalText(stream),
                 argument = argument
               )

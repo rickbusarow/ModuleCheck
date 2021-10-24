@@ -15,8 +15,12 @@
 
 package modulecheck.core
 
-import modulecheck.api.*
+import modulecheck.api.Finding
+import modulecheck.api.Fixable
+import modulecheck.api.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.Project2
 
 abstract class DependencyFinding(
   override val problemName: String

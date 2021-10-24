@@ -27,14 +27,12 @@ import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.api.*
-import modulecheck.api.anvil.AnvilGradlePlugin
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.internal.testedExtensionOrNull
-import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.MavenCoordinates
+import modulecheck.parsing.*
 import modulecheck.parsing.xml.AndroidManifestParser
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
@@ -160,9 +158,7 @@ class GradleProjectProvider(
           DependencyBlockParser
             .parse(buildFile)
             .asSequence()
-            .map { block ->
-              block.getOrEmpty(coords, configuration.name)
-            }
+            .map { block ->              block.getOrEmpty(coords, configuration.name.asConfigurationName())            }
             .firstOrNull()
             ?.firstOrNull()
             ?.statementWithSurroundingText

@@ -16,9 +16,9 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.Finding
-import modulecheck.api.Project2
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.parsing.Project2
 import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.system.measureTimeMillis

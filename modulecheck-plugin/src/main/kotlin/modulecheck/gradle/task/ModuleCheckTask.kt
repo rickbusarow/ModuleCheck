@@ -16,8 +16,10 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.*
+import modulecheck.api.Deletable
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.parsing.*
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input

@@ -15,8 +15,8 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
+import modulecheck.parsing.ConfigurationName
 
 fun List<String>.positionOf(
   path: String,

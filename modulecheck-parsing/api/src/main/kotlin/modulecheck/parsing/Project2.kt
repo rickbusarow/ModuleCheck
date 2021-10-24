@@ -13,11 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.parsing
 
-import modulecheck.api.anvil.AnvilGradlePlugin
-import modulecheck.api.context.ProjectContext
-import modulecheck.api.context.PublicDependencies
 import java.io.File
 import kotlin.contracts.contract
 
@@ -48,8 +45,6 @@ fun Project2.isAndroid(): Boolean {
   }
   return this is AndroidProject2
 }
-
-val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDependencies)
 
 fun Project2.sourceOf(
   dependencyProject: ConfiguredProjectDependency,

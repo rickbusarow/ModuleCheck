@@ -15,14 +15,14 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.Project2
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
-import modulecheck.api.toSourceSetName
 import modulecheck.core.CouldUseAnvilFinding
+import modulecheck.parsing.Project2
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.toSourceSetName
 import net.swiftzer.semver.SemVer
 import kotlin.LazyThreadSafetyMode.NONE
 
