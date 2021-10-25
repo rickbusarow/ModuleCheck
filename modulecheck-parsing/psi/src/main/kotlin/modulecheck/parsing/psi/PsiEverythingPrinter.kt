@@ -20,14 +20,16 @@ import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
 fun everythingPrinter() = object : KtTreeVisitorVoid() {
   override fun visitElement(element: PsiElement) {
-    super.visitElement(element)
+
+    val thisName = element::class.java.simpleName
+    val parentName = element.parent?.let { it::class.java.simpleName }
+
     println(
-      """ ***************************************************************************
-      |
-      |${element.text}           -- ${element::class.java}
-      |
+      """ ******************************** -- $thisName  ${parentName?.let { "-- parent: $parentName" } ?: ""}
+      |${element.text}
       |_________________________________________________________________________________
     """.trimMargin()
     )
+    super.visitElement(element)
   }
 }
