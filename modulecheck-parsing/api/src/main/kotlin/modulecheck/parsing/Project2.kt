@@ -62,7 +62,8 @@ fun Project2.sourceOf(
 
   if (dependencyProject in toCheck) return ConfiguredProjectDependency(
     configurationName = dependencyProject.configurationName,
-    project = this
+    project = this,
+    isTestFixture = dependencyProject.isTestFixture
   )
 
   return toCheck.firstOrNull {

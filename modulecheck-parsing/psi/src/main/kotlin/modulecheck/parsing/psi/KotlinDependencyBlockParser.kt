@@ -52,9 +52,9 @@ class KotlinDependencyBlockParser {
 
           if (moduleNameString != null) {
             block.addModuleStatement(
-              moduleRef = ModuleRef.from(moduleNameString),
               configName = configName.asConfigurationName(),
-              parsedString = callExpression.text
+              parsedString = callExpression.text,
+              moduleRef = ModuleRef.from(moduleNameString)
             )
             return@forEach
           }
@@ -66,6 +66,18 @@ class KotlinDependencyBlockParser {
               configName.asConfigurationName(),
               callExpression.text,
               mavenCoordinates
+            )
+            return@forEach
+          }
+
+          val testFixturesModuleNameString = callExpression.getStringTestFixturesModuleNameOrNull()
+            ?: callExpression.getTypeSafeTestFixturesModuleNameOrNull()
+
+          if (testFixturesModuleNameString != null) {
+            block.addModuleStatement(
+              configName = configName.asConfigurationName(),
+              parsedString = callExpression.text,
+              moduleRef = ModuleRef.from(testFixturesModuleNameString)
             )
             return@forEach
           }
@@ -126,6 +138,34 @@ internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): String? {
   return this                                       // implementation(projects.foo.bar)
     .valueArguments                                 // [projects.foo.bar]
     .firstOrNull()                                  // projects.foo.bar
+    ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
+    ?.text
+    ?.takeIf { it.startsWith("projects.") }
+    ?.removePrefix("projects.")
+}
+
+internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): String? {
+  return this                                         // implementation(testFixtures(project(path = ":foo:bar")))
+    .valueArguments                                   // [testFixtures(project(path = ":foo:bar"))]
+    .firstOrNull()                                    // testFixtures(project(path = ":foo:bar"))
+    ?.getChildOfType<KtCallExpression>()              // testFixtures(project(path = ":foo:bar"))
+    ?.valueArguments                                  // [project(path = ":foo:bar")]
+    ?.firstOrNull()                                   // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
+    ?.valueArguments                                  // [path = ":foo:bar"]
+    ?.firstOrNull()                                   // path = ":foo:bar"
+    ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
+    ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+    ?.text
+}
+
+internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): String? {
+  return this                                       // implementation(testFixtures(projects.foo.bar))
+    .valueArguments                                 // [testFixtures(projects.foo.bar)]
+    .firstOrNull()                                  // testFixtures(projects.foo.bar)
+    ?.getChildOfType<KtCallExpression>()            // testFixtures(projects.foo.bar)
+    ?.valueArguments                                // [projects.foo.bar]
+    ?.firstOrNull()                                 // projects.foo.bar
     ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
     ?.text
     ?.takeIf { it.startsWith("projects.") }

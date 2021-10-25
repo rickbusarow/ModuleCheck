@@ -33,7 +33,8 @@ data class ExternalDependency(
 
 data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
-  val project: Project2
+  val project: Project2,
+  val isTestFixture: Boolean
 ) : HasConfig {
 
   override val name = project.path

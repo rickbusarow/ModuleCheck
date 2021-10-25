@@ -34,10 +34,17 @@ data class UnusedDependency(
   override val buildFile: File,
   override val dependencyProject: Project2,
   override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName
+  override val configurationName: ConfigurationName,
+  val isTestFixture: Boolean
 ) : DependencyFinding("unused"),
   Deletable {
-  fun cpd() = ConfiguredProjectDependency(configurationName, dependencyProject)
+
+  fun cpd() = ConfiguredProjectDependency(
+    configurationName = configurationName,
+    project = dependencyProject,
+    isTestFixture = isTestFixture
+  )
+
   override fun toString(): String {
     return "UnusedDependency(\n" +
       "\tdependentPath='$dependentPath', \n" +
@@ -88,7 +95,8 @@ data class UnusedDependencies(
           buildFile = project.buildFile,
           dependencyProject = cpp.project,
           dependencyIdentifier = cpp.project.path,
-          configurationName = cpp.configurationName
+          configurationName = cpp.configurationName,
+          isTestFixture = cpp.isTestFixture
         )
       }
         .groupBy { it.configurationName }

@@ -53,7 +53,13 @@ class InheritedDependencyRule(
           .main()
           .asSequence()
           .mapNotNull { configName ->
-            project.sourceOf(ConfiguredProjectDependency(configName, overshot.project))
+            project.sourceOf(
+              ConfiguredProjectDependency(
+                configurationName = configName,
+                project = overshot.project,
+                isTestFixture = overshot.isTestFixture
+              )
+            )
           }
           .firstOrNull()
 
