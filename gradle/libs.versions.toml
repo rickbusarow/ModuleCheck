@@ -55,7 +55,7 @@ kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 
-kotlinPoet = "com.squareup:kotlinpoet:1.10.1"
+kotlinPoet = "com.squareup:kotlinpoet:1.10.2"
 
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 
