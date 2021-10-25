@@ -68,9 +68,9 @@ abstract class DependenciesBlock(var contentString: String) {
   }
 
   fun addModuleStatement(
-    moduleRef: ModuleRef,
     configName: ConfigurationName,
-    parsedString: String
+    parsedString: String,
+    moduleRef: ModuleRef
   ) {
     val cm = ConfiguredModule(configName = configName, moduleRef = moduleRef)
 

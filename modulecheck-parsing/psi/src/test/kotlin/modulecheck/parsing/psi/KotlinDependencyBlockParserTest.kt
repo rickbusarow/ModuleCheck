@@ -98,6 +98,48 @@ internal class KotlinDependencyBlockParserTest {
   }
 
   @Test
+  fun `string module dependency declaration with testFixtures should be parsed`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+       dependencies {
+          api(testFixtures(project(":core:jvm")))
+       }
+        """.trimIndent()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(testFixtures(project(":core:jvm")))""",
+        statementWithSurroundingText = """   api(testFixtures(project(":core:jvm")))"""
+      )
+    )
+  }
+
+  @Test
+  fun `type-safe module dependency declaration with testFixtures should be parsed`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+       dependencies {
+          api(testFixtures(projects.core.jvm))
+       }
+        """.trimIndent()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.TypeSafeRef("core.jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(testFixtures(projects.core.jvm))""",
+        statementWithSurroundingText = """   api(testFixtures(projects.core.jvm))"""
+      )
+    )
+  }
+
+  @Test
   fun `module dependency with config block should split declarations properly`() {
     val block = KotlinDependencyBlockParser()
       .parse(

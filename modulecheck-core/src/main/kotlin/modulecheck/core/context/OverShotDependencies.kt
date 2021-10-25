@@ -58,7 +58,8 @@ data class OverShotDependencies(
 
                   ConfiguredProjectDependency(
                     configurationName = dependentConfig.name,
-                    project = unused.dependencyProject
+                    project = unused.dependencyProject,
+                    isTestFixture = unused.cpd().isTestFixture
                   )
                     .takeIf { project.uses(it) }
                 }

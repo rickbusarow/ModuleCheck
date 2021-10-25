@@ -26,7 +26,8 @@ import com.android.build.gradle.TestExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
-import modulecheck.api.*
+import modulecheck.api.AndroidProject2Impl
+import modulecheck.api.Project2Impl
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
@@ -37,10 +38,12 @@ import modulecheck.parsing.xml.AndroidManifestParser
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.internal.HasConvention
 import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -150,8 +153,14 @@ class GradleProjectProvider(
 
   private fun GradleProject.externalDependencies(configuration: Configuration) =
     configuration.dependencies
-      .filterNot { it is ProjectDependency }
+      .filterIsInstance<ExternalModuleDependency>()
       .map { dep ->
+
+        /*
+        val isTestFixture = dep.requestedCapabilities.filterIsInstance<ImmutableCapability>()
+          .any { it.name.equals(dep.name + TEST_FIXTURES_SUFFIX) }
+         */
+
         val statementTextLazy = lazy psiLazy@{
           val coords = MavenCoordinates(dep.group, dep.name, dep.version)
 
@@ -181,40 +190,48 @@ class GradleProjectProvider(
           config.name.asConfigurationName() to config.dependencies
             .withType(ProjectDependency::class.java)
             .map {
+
+              val isTestFixture = it.requestedCapabilities
+                .filterIsInstance<ProjectDerivedCapability>()
+                .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
+
               ConfiguredProjectDependency(
                 configurationName = config.name.asConfigurationName(),
-                project = get(it.dependencyProject.path)
+                project = get(it.dependencyProject.path),
+                isTestFixture = isTestFixture
               )
             }
         }
       ProjectDependencies(map)
     }
 
-  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> = convention
-    .findPlugin(JavaPluginConvention::class.java)
-    ?.sourceSets
-    ?.map { gradleSourceSet ->
-      val jvmFiles = (
-        (gradleSourceSet as? HasConvention)
-          ?.convention
-          ?.plugins
-          ?.get("kotlin") as? KotlinSourceSet
-        )
-        ?.kotlin
-        ?.sourceDirectories
-        ?.files
-        ?: gradleSourceSet.allJava.files
+  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
+    return convention
+      .findPlugin(JavaPluginConvention::class.java)
+      ?.sourceSets
+      ?.map { gradleSourceSet ->
+        val jvmFiles = (
+          (gradleSourceSet as? HasConvention)
+            ?.convention
+            ?.plugins
+            ?.get("kotlin") as? KotlinSourceSet
+          )
+          ?.kotlin
+          ?.sourceDirectories
+          ?.files
+          ?: gradleSourceSet.allJava.files
 
-      SourceSet(
-        name = gradleSourceSet.name.toSourceSetName(),
-        classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
-        outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
-        jvmFiles = jvmFiles,
-        resourceFiles = gradleSourceSet.resources.sourceDirectories.files
-      )
-    }
-    ?.associateBy { it.name }
-    .orEmpty()
+        SourceSet(
+          name = gradleSourceSet.name.toSourceSetName(),
+          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
+          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
+          jvmFiles = jvmFiles,
+          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
+        )
+      }
+      ?.associateBy { it.name }
+      .orEmpty()
+  }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
     /*
@@ -331,5 +348,9 @@ class GradleProjectProvider(
 
       ?.associateBy { it.name }
       .orEmpty()
+  }
+
+  companion object {
+    private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
   }
 }

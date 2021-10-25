@@ -119,9 +119,9 @@ class GroovyDependencyBlockParser {
 
               if (moduleRefString != null) {
                 dependenciesBlock.addModuleStatement(
-                  moduleRef = ModuleRef.from(moduleRefString),
                   configName = config.asConfigurationName(),
-                  parsedString = ctx.originalText(stream)
+                  parsedString = ctx.originalText(stream),
+                  moduleRef = ModuleRef.from(moduleRefString)
                 )
                 return
               }

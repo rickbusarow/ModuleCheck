@@ -93,7 +93,13 @@ data class MustBeApi(
               .main()
               .asSequence()
               .mapNotNull { configName ->
-                project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
+                project.sourceOf(
+                  ConfiguredProjectDependency(
+                    configurationName = configName,
+                    project = cpd.project,
+                    isTestFixture = cpd.isTestFixture
+                  )
+                )
               }
               .firstOrNull()
           InheritedDependencyWithSource(cpd, source)

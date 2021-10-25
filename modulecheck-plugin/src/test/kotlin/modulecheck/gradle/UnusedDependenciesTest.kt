@@ -777,6 +777,143 @@ class UnusedDependenciesTest : BasePluginTest() {
     }
 
     @Test
+    fun `module with a declaration in testFixtures used in dependent module should not be unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addRawDependency("""testImplementation(testFixtures(project(":lib-1")))""")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/test/java")) {
+            addRawFile(
+              "MyFile.kt",
+              """
+            package com.example.app
+
+            import com.example.lib1.Lib1View
+
+            val theView = Lib1View()
+              """.trimIndent()
+            )
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addPlugin("id(\"java-test-fixtures\")")
+              }
+            )
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/testFixtures/java")) {
+                addRawFile(
+                  "Lib1View.kt",
+                  """
+                package com.example.lib1
+
+                import com.squareup.anvil.annotations.ContributesMultibinding
+
+                @ContributesMultibinding(AppScope)
+                public class Lib1View
+                  """.trimIndent()
+                )
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+    }
+
+    @Test
+    fun `module with a declaration in testFixtures which is unused should be auto-corrected`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addRawDependency("""testImplementation(testFixtures(project(":lib-1")))""")
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubproject(
+          ProjectSpec("lib-1") {
+            addBuildSpec(
+              ProjectBuildSpec {
+                addPlugin("kotlin(\"jvm\")")
+                addPlugin("id(\"java-test-fixtures\")")
+              }
+            )
+            addSrcSpec(
+              ProjectSrcSpec(Path.of("src/testFixtures/java")) {
+                addRawFile(
+                  "Lib1View.kt",
+                  """
+                package com.example.lib1
+
+                import com.squareup.anvil.annotations.ContributesMultibinding
+
+                @ContributesMultibinding(AppScope)
+                public class Lib1View
+                  """.trimIndent()
+                )
+              }
+            )
+          }
+        )
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  // testImplementation(testFixtures(project(":lib-1")))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
+
+    @Test
     fun `module with a declaration used in an android module with kotlin source directory should not be unused`() {
       val appProject = ProjectSpec("app") {
         addBuildSpec(
