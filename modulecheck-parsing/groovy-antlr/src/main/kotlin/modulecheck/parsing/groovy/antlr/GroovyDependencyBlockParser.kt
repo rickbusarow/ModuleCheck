@@ -25,10 +25,7 @@ import modulecheck.parsing.ModuleRef
 import modulecheck.parsing.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyLangLexer
 import org.apache.groovy.parser.antlr4.GroovyLangParser
-import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
-import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
-import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
-import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
+import org.apache.groovy.parser.antlr4.GroovyParser.*
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 
 class GroovyDependencyBlockParser {
@@ -89,13 +86,21 @@ class GroovyDependencyBlockParser {
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
 
+      var pendingBlockNoInspectionComment: String? = null
+
+      override fun visitNls(ctx: NlsContext) {
+        super.visitNls(ctx)
+
+        pendingBlockNoInspectionComment = NO_INSPECTION_REGEX.find(ctx.text)
+          ?.destructured
+          ?.component1()
+      }
+
       override fun visitScriptStatement(ctx: ScriptStatementContext?) {
 
         val statement = ctx?.statement()
 
         if (statement?.start?.text == "dependencies") {
-
-          super.visitScriptStatement(ctx)
 
           val originalBlockBody = statement.parentOfType<ScriptStatementContext>()
             ?.originalText(stream)
@@ -107,13 +112,35 @@ class GroovyDependencyBlockParser {
             ?.removePrefix("\n")
             ?: return
 
-          val dependenciesBlock = GroovyDependenciesBlock(blockBody)
+          val blockSuppressed = pendingBlockNoInspectionComment?.split(",")
+            ?.map { it.trim() }
+            .orEmpty()
+          pendingBlockNoInspectionComment = null
+
+          val dependenciesBlock = GroovyDependenciesBlock(blockBody, blockSuppressed)
+
+          super.visitScriptStatement(ctx)
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
+
+            var pendingNoInspectionComment: String? = null
+
+            override fun visitSep(ctx: SepContext) {
+              super.visitSep(ctx)
+
+              pendingNoInspectionComment = NO_INSPECTION_REGEX.find(ctx.text)
+                ?.destructured
+                ?.component1()
+            }
 
             override fun visitBlockStatement(ctx: BlockStatementContext) {
 
               val config = ctx.start.text
+
+              val suppressed = pendingNoInspectionComment?.split(",")
+                ?.map { it.trim() }
+                .orEmpty()
+              pendingNoInspectionComment = null
 
               val moduleRefString = projectDepVisitor.visit(ctx)
 
@@ -121,7 +148,8 @@ class GroovyDependencyBlockParser {
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(stream),
-                  moduleRef = ModuleRef.from(moduleRefString)
+                  moduleRef = ModuleRef.from(moduleRefString),
+                  suppressed = suppressed
                 )
                 return
               }
@@ -133,7 +161,8 @@ class GroovyDependencyBlockParser {
                 dependenciesBlock.addNonModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(stream),
-                  coordinates = mavenCoordinates
+                  coordinates = mavenCoordinates,
+                  suppressed = suppressed
                 )
                 return
               }
@@ -143,7 +172,8 @@ class GroovyDependencyBlockParser {
               dependenciesBlock.addUnknownStatement(
                 configName = config.asConfigurationName(),
                 parsedString = ctx.originalText(stream),
-                argument = argument
+                argument = argument,
+                suppressed = suppressed
               )
             }
           }
@@ -164,6 +194,7 @@ class GroovyDependencyBlockParser {
 
   companion object {
     val BLOCK_BODY_REGEX = """dependencies\s*\{([\s\S]*)\}""".toRegex()
+    val NO_INSPECTION_REGEX = """//noinspection \s*([\s\S]*)$""".toRegex()
   }
 }
 

@@ -16,6 +16,7 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.internal.positionOf
@@ -29,7 +30,7 @@ data class CouldUseAnvilFinding(
 ) : Finding, Fixable {
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
-  override val problemName = "could use Anvil factory generator"
+  override val problemName = "useAnvilFactories"
 
   override val positionOrNull: Position? by lazy {
 
@@ -40,6 +41,17 @@ data class CouldUseAnvilFinding(
       ?.readText()
       ?.lines()
       ?.positionOf(statement, "kapt".asConfigurationName())
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = dependencyIdentifier,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
   }
 
   override val statementTextOrNull: String? get() = null

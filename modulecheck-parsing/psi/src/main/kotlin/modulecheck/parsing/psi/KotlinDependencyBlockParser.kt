@@ -18,7 +18,6 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ModuleRef
 import modulecheck.parsing.asConfigurationName
-import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
@@ -33,60 +32,29 @@ class KotlinDependencyBlockParser {
 
     val blocks = mutableListOf<KotlinDependenciesBlock>()
 
-    val blockVisitor = blockExpressionRecursiveVisitor { expression ->
+    fun blockVisitor(
+      blockSuppressed: List<String>
+    ) = blockExpressionRecursiveVisitor { blockExpression ->
 
-      val block = KotlinDependenciesBlock((blockWhiteSpace ?: "") + expression.text)
+      val block = KotlinDependenciesBlock(
+        contentString = (blockWhiteSpace ?: "") + blockExpression.text,
+        suppressAll = blockSuppressed
+      )
 
-      expression
+      blockExpression
         .children
-        .filterNot { it is PsiComment || it is PsiWhiteSpace }
-        .filterIsInstance<KtCallExpression>()
-        .forEach { callExpression ->
+        .forEach { element ->
 
-          val configName = callExpression.calleeExpression!!
-            .text
-            .replace("\"", "")
+          when (element) {
+            is KtAnnotatedExpression -> {
+              val suppressed = element.suppressedNames()
 
-          val moduleNameString = callExpression.getStringModuleNameOrNull()
-            ?: callExpression.getTypeSafeModuleNameOrNull()
-
-          if (moduleNameString != null) {
-            block.addModuleStatement(
-              configName = configName.asConfigurationName(),
-              parsedString = callExpression.text,
-              moduleRef = ModuleRef.from(moduleNameString)
-            )
-            return@forEach
+              element.getChildOfType<KtCallExpression>()?.parseStatements(block, suppressed)
+            }
+            is KtCallExpression -> {
+              element.parseStatements(block, listOf())
+            }
           }
-
-          val mavenCoordinates = callExpression.getMavenCoordinatesOrNull()
-
-          if (mavenCoordinates != null) {
-            block.addNonModuleStatement(
-              configName.asConfigurationName(),
-              callExpression.text,
-              mavenCoordinates
-            )
-            return@forEach
-          }
-
-          val testFixturesModuleNameString = callExpression.getStringTestFixturesModuleNameOrNull()
-            ?: callExpression.getTypeSafeTestFixturesModuleNameOrNull()
-
-          if (testFixturesModuleNameString != null) {
-            block.addModuleStatement(
-              configName = configName.asConfigurationName(),
-              parsedString = callExpression.text,
-              moduleRef = ModuleRef.from(testFixturesModuleNameString)
-            )
-            return@forEach
-          }
-
-          block.addUnknownStatement(
-            configName = configName.asConfigurationName(),
-            parsedString = callExpression.text,
-            argument = callExpression.getUnknownArgumentOrNull() ?: ""
-          )
         }
 
       blocks.add(block)
@@ -95,6 +63,10 @@ class KotlinDependencyBlockParser {
     val callVisitor = callExpressionRecursiveVisitor { expression ->
 
       if (expression.getChildOfType<KtNameReferenceExpression>()?.text == "dependencies") {
+
+        val blockSuppressed = (expression.parent as? KtAnnotatedExpression)
+          ?.suppressedNames()
+          .orEmpty()
 
         // recursively look for an enclosing KtCallExpression parent (`buildscript { ... }`)
         // then walk down to find its name reference (`buildscript`)
@@ -111,7 +83,7 @@ class KotlinDependencyBlockParser {
 
         expression.findDescendantOfType<KtBlockExpression>()?.let {
           blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
-          blockVisitor.visitBlockExpression(it)
+          blockVisitor(blockSuppressed).visitBlockExpression(it)
         }
       }
     }
@@ -120,6 +92,60 @@ class KotlinDependencyBlockParser {
 
     return blocks
   }
+}
+
+private fun KtCallExpression.parseStatements(
+  block: KotlinDependenciesBlock,
+  suppressed: List<String>
+) {
+  val configName = calleeExpression!!
+    .text
+    .replace("\"", "")
+
+  val moduleNameString = getStringModuleNameOrNull()
+    ?: getTypeSafeModuleNameOrNull()
+
+  if (moduleNameString != null) {
+    block.addModuleStatement(
+      configName = configName.asConfigurationName(),
+      parsedString = text,
+      moduleRef = ModuleRef.from(moduleNameString),
+      suppressed = suppressed
+    )
+    return
+  }
+
+  val mavenCoordinates = getMavenCoordinatesOrNull()
+
+  if (mavenCoordinates != null) {
+    block.addNonModuleStatement(
+      configName = configName.asConfigurationName(),
+      parsedString = text,
+      coordinates = mavenCoordinates,
+      suppressed = suppressed
+    )
+    return
+  }
+
+  val testFixturesModuleNameString = getStringTestFixturesModuleNameOrNull()
+    ?: getTypeSafeTestFixturesModuleNameOrNull()
+
+  if (testFixturesModuleNameString != null) {
+    block.addModuleStatement(
+      configName = configName.asConfigurationName(),
+      parsedString = text,
+      moduleRef = ModuleRef.from(testFixturesModuleNameString),
+      suppressed = suppressed
+    )
+    return
+  }
+
+  block.addUnknownStatement(
+    configName = configName.asConfigurationName(),
+    parsedString = text,
+    argument = getUnknownArgumentOrNull() ?: "",
+    suppressed = suppressed
+  )
 }
 
 internal fun KtCallExpression.getStringModuleNameOrNull(): String? {
@@ -207,3 +233,12 @@ inline fun literalStringTemplateRecursiveVisitor(
     block(entry)
   }
 }
+
+internal fun KtAnnotatedExpression.suppressedNames(): List<String> = annotationEntries
+  .filter { it.typeReference?.text == "Suppress" || it.typeReference?.text == "SuppressWarnings" }
+  .flatMap { it.valueArgumentList?.arguments.orEmpty() }
+  .mapNotNull {
+    it.getChildOfType<KtStringTemplateExpression>() // "Unused"
+      ?.getChildOfType<KtLiteralStringTemplateEntry>()  // Unused
+      ?.text
+  }

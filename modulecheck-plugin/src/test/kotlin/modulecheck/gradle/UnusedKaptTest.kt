@@ -19,7 +19,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
@@ -61,8 +60,8 @@ class UnusedKaptTest : BasePluginTest() {
       .writeIn(testProjectDir.toPath())
 
     shouldFailWithMessage("moduleCheckUnusedKapt") {
-      it shouldContain "app/build.gradle.kts:  unused kapt dependency: com.google.dagger:dagger-compiler"
-      it shouldContain "app/build.gradle.kts:  unused kaptTest dependency: com.squareup.moshi:moshi-kotlin-codegen"
+      it shouldContain "com.google.dagger:dagger-compiler \\s*unusedKaptProcessor .*/app/build.gradle.kts:".toRegex()
+      it shouldContain "com.squareup.moshi:moshi-kotlin-codegen \\s*unusedKaptProcessor .*/app/build.gradle.kts:".toRegex()
     }
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {

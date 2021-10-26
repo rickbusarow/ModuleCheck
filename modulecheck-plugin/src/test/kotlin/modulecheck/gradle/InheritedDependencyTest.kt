@@ -292,9 +292,9 @@ class InheritedDependencyTest : BasePluginTest() {
           "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
         ) {
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-1 from: :lib-4"
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-2 from: :lib-4"
-          it shouldContain "app/build.gradle.kts: (6, 3):  inheritedDependency: :lib-3 from: :lib-4"
+          it shouldContain ":lib-1 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+          it shouldContain ":lib-2 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+          it shouldContain ":lib-3 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
         }
       }
     }

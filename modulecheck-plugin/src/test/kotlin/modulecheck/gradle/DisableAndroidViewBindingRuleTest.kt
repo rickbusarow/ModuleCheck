@@ -618,7 +618,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (22, 3):  unused ViewBinding generation:".fixPath()
+          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(22, 3\\):".toRegex()
         }
       }
 
@@ -636,7 +636,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (21, 1):  unused ViewBinding generation:".fixPath()
+          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(21, 1\\):".toRegex()
         }
       }
 
@@ -658,7 +658,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (23, 5):  unused ViewBinding generation:".fixPath()
+          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(23, 5\\):".toRegex()
         }
       }
 
@@ -678,7 +678,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "lib1/build.gradle.kts: (22, 3):  unused ViewBinding generation:".fixPath()
+          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(22, 3\\):".toRegex()
         }
       }
     }

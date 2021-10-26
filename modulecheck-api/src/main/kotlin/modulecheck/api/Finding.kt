@@ -16,6 +16,7 @@
 package modulecheck.api
 
 import modulecheck.api.Finding.Position
+import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
 
 interface Finding {
@@ -24,8 +25,15 @@ interface Finding {
   val dependentPath: String
   val buildFile: File
 
+  val statementOrNull: ModuleDependencyDeclaration? get() = null
   val statementTextOrNull: String? get() = null
   val positionOrNull: Position?
+
+  fun logElement(): LogElement
+
+  fun shouldSkip(): Boolean = statementOrNull?.suppressed
+    ?.contains(problemName)
+    ?: false
 
   fun logString(): String {
     return "${buildFile.path}: ${positionString()} $problemName"
@@ -36,8 +44,23 @@ interface Finding {
   data class Position(
     val row: Int,
     val column: Int
-  ) {
+  ) : Comparable<Position> {
     fun logString(): String = "($row, $column): "
+    override fun compareTo(other: Position): Int {
+      return row.compareTo(other.row)
+    }
+  }
+
+  data class LogElement(
+    val dependentPath: String,
+    val problemName: String,
+    val sourceOrNull: String?,
+    val dependencyPath: String,
+    val positionOrNull: Position?,
+    val buildFile: File,
+    var fixed: Boolean = false
+  ) {
+    val filePathStr = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
   }
 }
 

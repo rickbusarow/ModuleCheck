@@ -16,6 +16,7 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.parse
@@ -28,7 +29,7 @@ class SortDependenciesFinding(
   override val buildFile: File,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {
-  override val problemName = "unsorted dependencies"
+  override val problemName = "unsortedDependencies"
 
   override val dependencyIdentifier = ""
 
@@ -47,6 +48,17 @@ class SortDependenciesFinding(
     buildFile.writeText(fileText)
 
     return true
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = "",
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
   }
 }
 

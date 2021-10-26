@@ -54,6 +54,8 @@ data class UnusedDependency(
       "\tconfigurationName=$configurationName\n" +
       ")"
   }
+
+  override fun fromStringOrEmpty(): String = ""
 }
 
 data class UnusedDependencies(

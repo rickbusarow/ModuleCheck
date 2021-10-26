@@ -959,8 +959,53 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
+    }
+
+    @Test
+    fun `single implementation property which is suppressed should succeed`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""kotlin("jvm")""")
+            addProjectDependency("implementation", jvmSub4, "@Suppress(\"mustBeApi\")")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addFileSpec(
+              FileSpec.builder("com.example.app", "MyApp")
+                .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
+                .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
+                .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
+                .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
+                .build()
+            )
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = false
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckMustBeApi").shouldSucceed()
     }
 
     @Test
@@ -1009,10 +1054,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
 
@@ -1059,7 +1104,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
     }
 
@@ -1112,10 +1157,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
 
@@ -1163,7 +1208,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
     }
 
@@ -1232,10 +1277,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
 
@@ -1283,7 +1328,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
     }
 
@@ -1352,10 +1397,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
 
@@ -1408,7 +1453,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
     }
 
@@ -1497,10 +1542,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
 
@@ -1554,7 +1599,7 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
       }
     }
 
@@ -1647,10 +1692,10 @@ class MustBeApiTest : BasePluginTest() {
         .writeIn(testProjectDir.toPath())
 
       shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4"
+        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
       }
     }
   }

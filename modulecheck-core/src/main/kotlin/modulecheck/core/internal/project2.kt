@@ -20,13 +20,14 @@ import modulecheck.api.positionOfStatement
 import modulecheck.core.parse
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.Project2
 import java.io.File
 
 fun Project2.statementOrNullIn(
   dependentBuildFile: File,
   configuration: ConfigurationName
-): String? {
+): ModuleDependencyDeclaration? {
   return DependencyBlockParser
     .parse(dependentBuildFile)
     .firstNotNullOfOrNull { block ->
@@ -34,7 +35,6 @@ fun Project2.statementOrNullIn(
         .takeIf { it.isNotEmpty() }
     }
     ?.firstOrNull()
-    ?.statementWithSurroundingText
 }
 
 fun Project2.positionIn(
@@ -45,5 +45,5 @@ fun Project2.positionIn(
   val statement = statementOrNullIn(dependentBuildFile, configuration) ?: return null
 
   return dependentBuildFile.readText()
-    .positionOfStatement(statement)
+    .positionOfStatement(statement.statementWithSurroundingText)
 }
