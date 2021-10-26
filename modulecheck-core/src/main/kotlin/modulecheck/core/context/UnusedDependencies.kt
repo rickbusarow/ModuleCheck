@@ -36,7 +36,7 @@ data class UnusedDependency(
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName,
   val isTestFixture: Boolean
-) : DependencyFinding("unused"),
+) : DependencyFinding("unusedDependency"),
   Deletable {
 
   fun cpd() = ConfiguredProjectDependency(
