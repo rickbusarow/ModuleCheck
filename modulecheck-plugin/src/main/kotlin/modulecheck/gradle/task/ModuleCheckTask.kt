@@ -24,7 +24,7 @@ import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.parsing.Project2
 import modulecheck.parsing.ProjectsAware
-import modulecheck.reporting.checkstyle.CheckStyleReporter
+import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.LoggingReporter
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -118,7 +118,7 @@ abstract class ModuleCheckTask<T : Finding> :
 
     loggingReporter.reportResults(results)
 
-    val xmlString = CheckStyleReporter().reportResults(results)
+    val xmlString = CheckstyleReporter().reportResults(results)
 
     project.rootProject.buildDir.let {
       val mc = File(it, "moduleCheck").also { it.mkdirs() }

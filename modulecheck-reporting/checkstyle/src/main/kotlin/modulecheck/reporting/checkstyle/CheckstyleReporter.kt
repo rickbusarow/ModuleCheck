@@ -20,19 +20,18 @@ import modulecheck.api.Reporter
 import org.unbescape.xml.XmlEscape
 import java.io.File
 
-class CheckStyleReporter : Reporter<String> {
+class CheckstyleReporter : Reporter<String> {
 
-  override fun reportResults(results: List<FindingResult>): String {
+  override fun reportResults(results: List<FindingResult>): String = buildString {
 
-    val lines = ArrayList<String>()
-    lines += "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-    lines += "<checkstyle version=\"4.3\">"
+    appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+    appendLine("<checkstyle version=\"4.3\">")
 
     results.groupBy { it.buildFile.toUnifiedString() }
       .entries
       .forEach { (filePathString, values) ->
 
-        lines += "<file name=\"${filePathString.xml()}\">"
+        appendLine("<file name=\"${filePathString.xml()}\">")
 
         values.forEach {
 
@@ -42,25 +41,22 @@ class CheckStyleReporter : Reporter<String> {
           val severity = if (it.fixed) "info" else "error"
           val source = "modulecheck." + it.problemName
 
-          val line = arrayOf(
-            "\t<error line=\"${row.xml()}\"",
-            "column=\"${column.xml()}\"",
-            "severity=\"${severity.xml()}\"",
-            "message=\"${it.message.xml()}\"",
+          val line = "\t<error line=\"${row.xml()}\" " +
+            "column=\"${column.xml()}\" " +
+            "severity=\"${severity.xml()}\" " +
+            "message=\"${it.message.xml()}\" " +
             "source=\"${source.xml()}\" />"
-          ).joinToString(separator = " ")
 
-          lines += line
+          appendLine(line)
         }
 
-        lines += "</file>"
+        appendLine("</file>")
       }
 
-    lines += "</checkstyle>"
-    return lines.joinToString(separator = "\n")
+    appendLine("</checkstyle>")
   }
 
   private fun Any.xml() = XmlEscape.escapeXml11(toString().trim())
 
-  fun File.toUnifiedString(): String = toString().replace(File.separatorChar, '/')
+  private fun File.toUnifiedString(): String = toString().replace(File.separatorChar, '/')
 }
