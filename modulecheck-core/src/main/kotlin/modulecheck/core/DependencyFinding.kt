@@ -21,8 +21,8 @@ import modulecheck.api.Fixable
 import modulecheck.api.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.McProject
+import modulecheck.parsing.ModuleDependencyDeclaration
 
 abstract class DependencyFinding(
   override val problemName: String

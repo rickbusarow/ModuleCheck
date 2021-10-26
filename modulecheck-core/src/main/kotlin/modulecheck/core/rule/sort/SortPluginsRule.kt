@@ -18,9 +18,9 @@ package modulecheck.core.rule.sort
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.parsing.McProject
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
-import modulecheck.parsing.McProject
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings
