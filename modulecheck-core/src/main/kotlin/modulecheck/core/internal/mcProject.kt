@@ -20,8 +20,8 @@ import modulecheck.api.positionOfStatement
 import modulecheck.core.parse
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.McProject
+import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
 
 fun McProject.statementOrNullIn(
