@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.UnusedDependencies
 import modulecheck.core.context.UnusedDependency
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.all
 
 class UnusedDependencyRule(
@@ -28,7 +28,7 @@ class UnusedDependencyRule(
   override val id = "UnusedDependency"
   override val description = "Finds project dependencies which aren't used in the declaring module"
 
-  override fun check(project: Project2): List<UnusedDependency> {
+  override fun check(project: McProject): List<UnusedDependency> {
     return project[UnusedDependencies]
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }

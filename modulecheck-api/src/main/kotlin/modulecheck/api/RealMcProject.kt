@@ -16,11 +16,10 @@
 package modulecheck.api
 
 import modulecheck.parsing.*
-import modulecheck.parsing.AnvilGradlePlugin
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-data class AndroidProject2Impl(
+data class RealMcProject(
   override val path: String,
   override val projectDir: File,
   override val buildFile: File,
@@ -28,14 +27,9 @@ data class AndroidProject2Impl(
   override val projectDependencies: Lazy<ProjectDependencies>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
-  override val projectCache: ConcurrentHashMap<String, Project2>,
-  override val anvilGradlePlugin: AnvilGradlePlugin?,
-  override val androidResourcesEnabled: Boolean,
-  override val viewBindingEnabled: Boolean,
-  override val resourceFiles: Set<File>,
-  override val androidPackageOrNull: String?,
-  override val manifests: Map<SourceSetName, File>
-) : AndroidProject2 {
+  override val projectCache: ConcurrentHashMap<String, McProject>,
+  override val anvilGradlePlugin: AnvilGradlePlugin?
+) : McProject {
 
   private val context = ProjectContextImpl(this)
 
@@ -43,11 +37,11 @@ data class AndroidProject2Impl(
     return context[key]
   }
 
-  override fun compareTo(other: Project2): Int = path.compareTo(other.path)
+  override fun compareTo(other: McProject): Int = path.compareTo(other.path)
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is AndroidProject2Impl) return false
+    if (other !is RealMcProject) return false
 
     if (path != other.path) return false
 
@@ -59,6 +53,6 @@ data class AndroidProject2Impl(
   }
 
   override fun toString(): String {
-    return "AndroidProject2Impl(path='$path')"
+    return "Project2Impl(path='$path')"
   }
 }

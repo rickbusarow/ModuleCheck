@@ -19,9 +19,9 @@ import java.io.File
 import kotlin.contracts.contract
 
 @Suppress("TooManyFunctions")
-interface Project2 :
+interface McProject :
   ProjectContext,
-  Comparable<Project2>,
+  Comparable<McProject>,
   ProjectsAware {
 
   val path: String
@@ -39,14 +39,14 @@ interface Project2 :
   val anvilGradlePlugin: AnvilGradlePlugin?
 }
 
-fun Project2.isAndroid(): Boolean {
+fun McProject.isAndroid(): Boolean {
   contract {
-    returns(true) implies (this@isAndroid is AndroidProject2)
+    returns(true) implies (this@isAndroid is AndroidMcProject)
   }
-  return this is AndroidProject2
+  return this is AndroidMcProject
 }
 
-fun Project2.sourceOf(
+fun McProject.sourceOf(
   dependencyProject: ConfiguredProjectDependency,
   apiOnly: Boolean = false
 ): ConfiguredProjectDependency? {
@@ -71,7 +71,7 @@ fun Project2.sourceOf(
   }
 }
 
-interface AndroidProject2 : Project2 {
+interface AndroidMcProject : McProject {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
   val resourceFiles: Set<File>

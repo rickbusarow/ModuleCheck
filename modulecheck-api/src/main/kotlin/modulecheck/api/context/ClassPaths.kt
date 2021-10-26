@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 import java.io.File
@@ -31,7 +31,7 @@ data class ClassPaths(
     get() = Key
 
   companion object Key : ProjectContext.Key<ClassPaths> {
-    override operator fun invoke(project: Project2): ClassPaths {
+    override operator fun invoke(project: McProject): ClassPaths {
       val map = project
         .sourceSets
         .values

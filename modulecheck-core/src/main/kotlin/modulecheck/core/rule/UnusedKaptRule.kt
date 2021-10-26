@@ -23,7 +23,7 @@ import modulecheck.core.kapt.UnusedKaptFinding
 import modulecheck.core.kapt.UnusedKaptPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
@@ -39,7 +39,7 @@ class UnusedKaptRule(
   override val description = "Finds unused kapt processor dependencies " +
     "and warns if the kapt plugin is applied but unused"
 
-  override fun check(project: Project2): List<UnusedKaptFinding> {
+  override fun check(project: McProject): List<UnusedKaptFinding> {
     val matchers = kaptMatchers.asMap()
 
     return project

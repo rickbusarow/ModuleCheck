@@ -28,7 +28,7 @@ data class MustBeApi(
     get() = Key
 
   companion object Key : ProjectContext.Key<MustBeApi> {
-    override operator fun invoke(project: Project2): MustBeApi {
+    override operator fun invoke(project: McProject): MustBeApi {
       // this is anything in the main classpath, including inherited dependencies
       val mainDependencies = project.publicDependencies
 

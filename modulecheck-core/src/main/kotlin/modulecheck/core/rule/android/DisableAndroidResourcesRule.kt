@@ -17,8 +17,8 @@ package modulecheck.core.rule.android
 
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.parsing.AndroidProject2
-import modulecheck.parsing.Project2
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.McProject
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings
@@ -30,8 +30,8 @@ class DisableAndroidResourcesRule(
       "but don't actually use any resources from the module"
 
   @Suppress("ReturnCount")
-  override fun check(project: Project2): List<UnusedResourcesGenerationFinding> {
-    val androidProject = project as? AndroidProject2 ?: return emptyList()
+  override fun check(project: McProject): List<UnusedResourcesGenerationFinding> {
+    val androidProject = project as? AndroidMcProject ?: return emptyList()
 
     @Suppress("UnstableApiUsage")
     if (!androidProject.androidResourcesEnabled) return emptyList()

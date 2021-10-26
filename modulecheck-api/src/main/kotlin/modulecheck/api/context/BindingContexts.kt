@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.psi.createBindingContext
@@ -33,7 +33,7 @@ data class BindingContexts(
     get() = Key
 
   companion object Key : ProjectContext.Key<BindingContexts> {
-    override operator fun invoke(project: Project2): BindingContexts {
+    override operator fun invoke(project: McProject): BindingContexts {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->

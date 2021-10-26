@@ -21,13 +21,13 @@ import modulecheck.core.internal.positionIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import java.io.File
 
 data class InheritedDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?

@@ -31,7 +31,7 @@ class InheritedDependencyRule(
   override val description = "Finds project dependencies which are used in the current module, " +
     "but are not actually directly declared as dependencies in the current module"
 
-  override fun check(project: Project2): List<InheritedDependencyFinding> {
+  override fun check(project: McProject): List<InheritedDependencyFinding> {
     val inherited = project.publicDependencies
     val used = inherited
       .filter { project.uses(it) }

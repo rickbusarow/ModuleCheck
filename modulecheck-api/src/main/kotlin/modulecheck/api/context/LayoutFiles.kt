@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.xml.XmlFile
@@ -31,7 +31,7 @@ data class LayoutFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<LayoutFiles> {
-    override operator fun invoke(project: Project2): LayoutFiles {
+    override operator fun invoke(project: McProject): LayoutFiles {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->

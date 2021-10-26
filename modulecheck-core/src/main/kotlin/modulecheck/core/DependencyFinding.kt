@@ -22,14 +22,14 @@ import modulecheck.api.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 abstract class DependencyFinding(
   override val problemName: String
 ) : Fixable,
   Finding {
 
-  abstract val dependencyProject: Project2
+  abstract val dependencyProject: McProject
   abstract val configurationName: ConfigurationName
 
   override val positionOrNull by lazy {

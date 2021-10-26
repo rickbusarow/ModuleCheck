@@ -18,5 +18,5 @@ package modulecheck.parsing
 import java.util.concurrent.ConcurrentHashMap
 
 interface ProjectsAware {
-  val projectCache: ConcurrentHashMap<String, Project2>
+  val projectCache: ConcurrentHashMap<String, McProject>
 }
