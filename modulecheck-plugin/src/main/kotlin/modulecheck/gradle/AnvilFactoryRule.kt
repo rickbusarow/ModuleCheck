@@ -18,7 +18,7 @@ package modulecheck.gradle
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.CouldUseAnvilFinding
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 class AnvilFactoryRule(
   override val settings: ModuleCheckSettings
@@ -28,7 +28,7 @@ class AnvilFactoryRule(
   override val description = "Finds modules which could use Anvil's factory generation " +
     "instead of Dagger's"
 
-  override fun check(project: Project2): List<CouldUseAnvilFinding> {
+  override fun check(project: McProject): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project)
   }
 }

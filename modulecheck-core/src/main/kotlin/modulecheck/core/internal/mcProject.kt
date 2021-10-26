@@ -20,11 +20,11 @@ import modulecheck.api.positionOfStatement
 import modulecheck.core.parse
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.Project2
 import java.io.File
 
-fun Project2.statementOrNullIn(
+fun McProject.statementOrNullIn(
   dependentBuildFile: File,
   configuration: ConfigurationName
 ): ModuleDependencyDeclaration? {
@@ -37,7 +37,7 @@ fun Project2.statementOrNullIn(
     ?.firstOrNull()
 }
 
-fun Project2.positionIn(
+fun McProject.positionIn(
   dependentBuildFile: File,
   configuration: ConfigurationName
 ): Position? {

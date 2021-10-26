@@ -15,8 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.AndroidProject2
-import modulecheck.parsing.Project2
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.xml.XmlFile
@@ -32,9 +32,9 @@ data class ManifestFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<ManifestFiles> {
-    override operator fun invoke(project: Project2): ManifestFiles {
+    override operator fun invoke(project: McProject): ManifestFiles {
 
-      if (project !is AndroidProject2) return ManifestFiles(ConcurrentHashMap())
+      if (project !is AndroidMcProject) return ManifestFiles(ConcurrentHashMap())
 
       val map = project
         .manifests

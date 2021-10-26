@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.core.context.RedundantDependencyFinding
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.all
 
 class RedundantRule(
@@ -30,7 +30,7 @@ class RedundantRule(
     "Finds project dependencies which are declared as `api` in dependent " +
       "projects, but also declared in the current project unnecessarily"
 
-  override fun check(project: Project2): List<RedundantDependencyFinding> {
+  override fun check(project: McProject): List<RedundantDependencyFinding> {
     return project[RedundantDependencies]
       .all()
       .distinctBy { it.positionOrNull }

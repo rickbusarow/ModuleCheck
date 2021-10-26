@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings
@@ -28,7 +28,7 @@ class MustBeApiRule(
   override val description = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
-  override fun check(project: Project2): List<MustBeApiFinding> {
+  override fun check(project: McProject): List<MustBeApiFinding> {
     return project[MustBeApi]
       .map {
         MustBeApiFinding(

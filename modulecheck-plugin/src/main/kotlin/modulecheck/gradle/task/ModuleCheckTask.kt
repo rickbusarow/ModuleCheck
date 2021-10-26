@@ -21,7 +21,7 @@ import modulecheck.api.Finding.LogElement
 import modulecheck.api.Fixable
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectsAware
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -49,7 +49,7 @@ abstract class ModuleCheckTask :
   val deleteUnused: Boolean = settings.deleteUnused
 
   @get:Input
-  final override val projectCache = ConcurrentHashMap<String, Project2>()
+  final override val projectCache = ConcurrentHashMap<String, McProject>()
 
   @get:Input
   val projectProvider = GradleProjectProvider(project.rootProject, projectCache)
@@ -77,7 +77,7 @@ abstract class ModuleCheckTask :
     }
   }
 
-  abstract fun List<Project2>.getFindings(): List<Finding>
+  abstract fun List<McProject>.getFindings(): List<Finding>
 
   private fun TimedResults<List<Finding>>.finish(): Int {
     val grouped = data.groupBy { it.dependentPath }

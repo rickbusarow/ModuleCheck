@@ -23,7 +23,7 @@ import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckAllTask
 import modulecheck.gradle.task.ModuleCheckTask
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -95,7 +95,7 @@ abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
     description = rule.description
   }
 
-  override fun List<Project2>.getFindings(): List<T> {
+  override fun List<McProject>.getFindings(): List<T> {
     return flatMap { project ->
       rule.check(project)
     }

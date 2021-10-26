@@ -22,7 +22,7 @@ import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
@@ -32,7 +32,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 data class UnusedDependency(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName,
   val isTestFixture: Boolean
@@ -67,7 +67,7 @@ data class UnusedDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
-    override operator fun invoke(project: Project2): UnusedDependencies {
+    override operator fun invoke(project: McProject): UnusedDependencies {
       val neededForScopes by lazy(NONE) { project.anvilScopeMap() }
 
       val unusedHere = project
@@ -107,7 +107,7 @@ data class UnusedDependencies(
       return UnusedDependencies(ConcurrentHashMap(grouped))
     }
 
-    private fun Project2.anvilScopeMap(): Map<ConfigurationName, List<Project2>> {
+    private fun McProject.anvilScopeMap(): Map<ConfigurationName, List<McProject>> {
       if (anvilGradlePlugin == null) {
         return mapOf()
       }
