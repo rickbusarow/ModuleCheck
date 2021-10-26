@@ -35,9 +35,11 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'temurin'
+          java-version : '11'
+          cache: 'gradle'
 
       - uses: burrunan/gradle-cache-action@v1
         name: detekt
@@ -62,9 +64,11 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'temurin'
+          java-version : '11'
+          cache: 'gradle'
 
       # formats all src files
       - uses: burrunan/gradle-cache-action@v1
@@ -147,9 +151,11 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'temurin'
+          java-version : '11'
+          cache: 'gradle'
 
       - uses: burrunan/gradle-cache-action@v1
         name: all tests
@@ -193,9 +199,11 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 14
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'temurin'
+          java-version : '11'
+          cache: 'gradle'
 
       - uses: burrunan/gradle-cache-action@v1
         name: all tests

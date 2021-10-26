@@ -109,7 +109,7 @@ jobs:
         uses : actions/setup-java@v2
         with :
           distribution : 'temurin'
-          java-version : '14'
+          java-version : '11'
 
       # performs tree-shaking on the Gradle dependency graph
       - name: modulecheck
