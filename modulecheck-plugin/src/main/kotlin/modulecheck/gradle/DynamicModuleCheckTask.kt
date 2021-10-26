@@ -13,30 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.task
+package modulecheck.gradle
 
 import modulecheck.api.Finding
-import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.gradle.task.ModuleCheckTask
 import modulecheck.parsing.McProject
+import org.gradle.api.tasks.Internal
 import javax.inject.Inject
-import kotlin.reflect.full.declaredMemberProperties
 
-abstract class ModuleCheckAllTask @Inject constructor(
-  private val rules: List<ModuleCheckRule<Finding>>
-) : ModuleCheckTask<Finding>() {
+abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
+  @Internal
+  val rule: ModuleCheckRule<T>
+) : ModuleCheckTask<T>() {
 
-  override fun evaluate(projects: List<McProject>): List<Finding> {
-    val props = ChecksSettings::class.declaredMemberProperties
-      .associate { it.name to it.get(settings.checks) as Boolean }
+  init {
+    description = rule.description
+  }
 
-    val findings = projects.flatMap { proj ->
-      @Suppress("DEPRECATION")
-      this.rules
-        .filter { props[it.id.decapitalize()] ?: false }
-        .flatMap { it.check(proj) }
+  override fun evaluate(projects: List<McProject>): List<T> {
+    return projects.flatMap { project ->
+      this.rule.check(project)
     }
-
-    return findings
   }
 }
