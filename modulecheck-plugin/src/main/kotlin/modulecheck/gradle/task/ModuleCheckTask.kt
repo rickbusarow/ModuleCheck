@@ -15,25 +15,32 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Deletable
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
-import modulecheck.api.Fixable
+import modulecheck.api.Finding.FindingResult
+import modulecheck.api.FindingFactory
+import modulecheck.api.FindingProcessor
+import modulecheck.api.RealFindingProcessor
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.parsing.Project2
 import modulecheck.parsing.ProjectsAware
+import modulecheck.reporting.checkstyle.CheckStyleReporter
+import modulecheck.reporting.console.LoggingReporter
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
+import java.io.File
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckTask :
+abstract class ModuleCheckTask<T : Finding> :
   DefaultTask(),
-  ProjectsAware {
+  ProjectsAware,
+  FindingFactory<T>,
+  FindingProcessor by RealFindingProcessor() {
 
   init {
     group = "moduleCheck"
@@ -57,116 +64,72 @@ abstract class ModuleCheckTask :
   @get:Input
   val logger = GradleLogger(project)
 
+  @get:Input
+  val loggingReporter = LoggingReporter(logger)
+
   @TaskAction
-  fun evaluate() {
+  fun run() {
+
+    var totalIssues = 0
+
     val results = measured {
       project
         .allprojects
         .filter { it.buildFile.exists() }
         .filterNot { it.path in settings.doNotCheck }
         .map { projectProvider.get(it.path) }
-        .getFindings()
+        .evaluate()
         .distinct()
         .filterNot { it.shouldSkip() }
+        .also { totalIssues = it.size }
+        .finish()
     }
 
-    val numIssues = results.finish()
+    val numIssues = results.data
+
+    @Suppress("MagicNumber")
+    val secondsDouble = results.timeMillis / 1000.0
+
+    if (totalIssues > 0) {
+      logger.printInfo(
+        "ModuleCheck found $totalIssues issues in $secondsDouble seconds.\n\n" +
+          "To ignore any of these findings, annotate the dependency declaration with " +
+          "@Suppress(\"<the name of the issue>\") in Kotlin, or " +
+          "//noinspection <the name of the issue> in Groovy.\n" +
+          "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+      )
+    }
 
     if (numIssues > 0) {
       throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
     }
   }
 
-  abstract fun List<Project2>.getFindings(): List<Finding>
+  private fun List<T>.finish(): Int {
 
-  private fun TimedResults<List<Finding>>.finish(): Int {
-    val grouped = data.groupBy { it.dependentPath }
+    val results = groupBy { it.dependentPath.lowercase(Locale.getDefault()) }
+      .flatMap { (_, list) ->
 
-    @Suppress("MagicNumber")
-    val secondsDouble = timeMillis / 1000.0
-
-    if (data.isNotEmpty()) {
-      logger.printSuccessHeader(
-        "ModuleCheck found ${data.size} issues in $secondsDouble seconds\n" +
-          "To ignore any of these findings, annotate the dependency declaration.\n" +
-          "For Kotlin files, use @Suppress(\"<the name of the issue>\") or " +
-          "@SuppressWarnings(\"<the name of the ID>\").\n" +
-          "For Groovy files, add a comment above the declaration: " +
-          "//noinspection <the name of the issue>."
-      )
-    }
-
-    val unFixed = grouped
-      .entries
-      .sortedBy { it.key }
-      .map { (path, list) ->
-
-        logger.printHeader("${tab(1)}$path")
-
-        val elements = list
-          .map { finding ->
-
-            finding.logElement().apply {
-
-              fixed = when {
-                !autoCorrect -> false
-                deleteUnused && finding is Deletable -> {
-                  finding.delete()
-                }
-                else -> {
-                  (finding as? Fixable)?.fix() ?: false
-                }
-              }
-            }
-          }
-
-        if (elements.isEmpty()) return@map 0
-
-        val maxDependencyPath = maxOf(
-          elements.maxOf { it.dependencyPath.length },
-          "dependency".length
+        list.toResults(
+          autoCorrect = autoCorrect,
+          deleteUnused = deleteUnused
         )
-        val maxProblemName = elements.maxOf { it.problemName.length }
-        val maxSource = maxOf(elements.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
-        val maxFilePathStr = elements.maxOf { it.filePathStr.length }
-
-        logger.printHeader(
-          tab(2) +
-            "dependency".padEnd(maxDependencyPath) +
-            tab(1) +
-            "name".padEnd(maxProblemName) +
-            tab(1) +
-            "source".padEnd(maxSource) +
-            tab(1) +
-            "build file".padEnd(maxFilePathStr)
-        )
-
-        elements.sortedWith(
-          compareBy(
-            { !it.fixed },
-            { it.positionOrNull }
-          )
-        ).forEach { logElement ->
-
-          logElement.log(
-            tab(2) +
-              logElement.dependencyPath.padEnd(maxDependencyPath) +
-              tab(1) +
-              logElement.problemName.padEnd(maxProblemName) +
-              tab(1) +
-              logElement.sourceOrNull.orEmpty().padEnd(maxSource) +
-              tab(1) +
-              logElement.filePathStr.padEnd(maxFilePathStr)
-          )
-        }
-
-        elements.count { !it.fixed }
       }
 
-    return unFixed.sum()
+    loggingReporter.reportResults(results)
+
+    val xmlString = CheckStyleReporter().reportResults(results)
+
+    project.rootProject.buildDir.let {
+      val mc = File(it, "moduleCheck").also { it.mkdirs() }
+
+      File(mc, "report.xml").writeText(xmlString)
+    }
+
+    return results.count { !it.fixed }
   }
 
-  inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
+  private inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
     var r: R
 
     val time = measureTimeMillis {
@@ -180,11 +143,11 @@ abstract class ModuleCheckTask :
 
   private fun tab(numTabs: Int) = "    ".repeat(numTabs)
 
-  private fun LogElement.log(message: String) {
+  private fun FindingResult.log(message: String) {
     if (fixed) {
-      logger.printWarning(message)
+      logger.printWarningLine(message)
     } else {
-      logger.printFailure(message)
+      logger.printFailureLine(message)
     }
   }
 }

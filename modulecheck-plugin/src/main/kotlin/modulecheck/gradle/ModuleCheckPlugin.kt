@@ -17,19 +17,13 @@ package modulecheck.gradle
 
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
-import modulecheck.api.Finding
-import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckAllTask
-import modulecheck.gradle.task.ModuleCheckTask
-import modulecheck.parsing.Project2
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.Internal
 import org.gradle.kotlin.dsl.configure
-import javax.inject.Inject
 import kotlin.reflect.KClass
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
@@ -83,21 +77,5 @@ class ModuleCheckPlugin : Plugin<Project> {
           .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
           .forEach { dependsOn(it) }
       }
-  }
-}
-
-abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
-  @Internal
-  val rule: ModuleCheckRule<T>
-) : ModuleCheckTask() {
-
-  init {
-    description = rule.description
-  }
-
-  override fun List<Project2>.getFindings(): List<T> {
-    return flatMap { project ->
-      rule.check(project)
-    }
   }
 }

@@ -67,5 +67,7 @@ include(
   ":modulecheck-parsing:psi",
   ":modulecheck-parsing:xml",
   ":modulecheck-plugin",
+  ":modulecheck-reporting:checkstyle",
+  ":modulecheck-reporting:console",
   ":modulecheck-specs"
 )

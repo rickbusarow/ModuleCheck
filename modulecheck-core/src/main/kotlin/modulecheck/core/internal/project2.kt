@@ -16,7 +16,6 @@
 package modulecheck.core.internal
 
 import modulecheck.api.Finding.Position
-import modulecheck.api.positionOfStatement
 import modulecheck.core.parse
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser

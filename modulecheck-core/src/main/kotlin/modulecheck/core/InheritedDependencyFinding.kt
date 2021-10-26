@@ -15,7 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionIn
 import modulecheck.parsing.ConfigurationName
@@ -39,14 +39,15 @@ data class InheritedDependencyFinding(
     source?.project?.positionIn(buildFile, configurationName)
   }
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = fromStringOrEmpty(),
       dependencyPath = dependencyProject.path,
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 

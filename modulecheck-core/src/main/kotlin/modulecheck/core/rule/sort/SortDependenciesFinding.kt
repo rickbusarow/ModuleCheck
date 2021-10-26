@@ -16,7 +16,7 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.parse
@@ -50,14 +50,15 @@ class SortDependenciesFinding(
     return true
   }
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = null,
       dependencyPath = "",
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 }

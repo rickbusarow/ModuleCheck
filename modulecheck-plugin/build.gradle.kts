@@ -40,6 +40,8 @@ dependencies {
   implementation(projects.modulecheckParsing.api)
   implementation(projects.modulecheckParsing.groovyAntlr)
   implementation(projects.modulecheckParsing.psi)
+  implementation(projects.modulecheckReporting.console)
+  implementation(projects.modulecheckReporting.checkstyle)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

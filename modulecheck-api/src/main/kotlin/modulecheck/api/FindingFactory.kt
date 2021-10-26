@@ -15,15 +15,9 @@
 
 package modulecheck.api
 
-interface Logger {
-  fun printHeader(message: String)
-  fun printWarning(message: String)
-  fun printWarningLine(message: String)
-  fun printInfo(message: String)
-  fun printFailure(message: String)
-  fun printFailureLine(message: String)
-  fun printFailureHeader(message: String)
-  fun printSuccess(message: String)
-  fun printSuccessLine(message: String)
-  fun printSuccessHeader(message: String)
+import modulecheck.parsing.Project2
+
+fun interface FindingFactory<T : Finding> {
+
+  fun List<Project2>.evaluate(): List<T>
 }

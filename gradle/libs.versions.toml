@@ -63,6 +63,8 @@ kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "k
 
 semVer = "net.swiftzer.semver:semver:1.1.1"
 
+unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
+
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]
 kotest = ["kotest-assertions", "kotest-properties", "kotest-runner"]
