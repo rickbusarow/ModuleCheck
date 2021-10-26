@@ -16,10 +16,10 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
-import modulecheck.api.positionOfStatement
+import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.parsing.psi.AndroidBuildFeaturesVisitor
 import java.io.File
@@ -48,14 +48,15 @@ data class DisableViewBindingGenerationFinding(
     fileText.positionOfStatement(statement)
   }
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = null,
       dependencyPath = "",
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 

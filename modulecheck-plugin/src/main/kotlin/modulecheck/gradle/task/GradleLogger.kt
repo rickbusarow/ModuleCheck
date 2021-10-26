@@ -32,6 +32,10 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printWarning(message: String) {
+    output.withStyle(StyledTextOutput.Style.Description).text(message)
+  }
+
+  override fun printWarningLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
@@ -40,6 +44,10 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printFailure(message: String) {
+    output.withStyle(StyledTextOutput.Style.Failure).text(message)
+  }
+
+  override fun printFailureLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Failure).println(message)
   }
 
@@ -48,6 +56,10 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printSuccess(message: String) {
+    output.withStyle(StyledTextOutput.Style.Success).text(message)
+  }
+
+  override fun printSuccessLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Success).println(message)
   }
 

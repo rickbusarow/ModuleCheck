@@ -16,7 +16,7 @@
 package modulecheck.core.kapt
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
@@ -34,14 +34,15 @@ data class UnusedKaptPluginFinding(
 
   override val problemName = "unusedKaptPlugin"
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = null,
       dependencyPath = dependencyIdentifier,
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 

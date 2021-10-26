@@ -16,9 +16,9 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Fixable
-import modulecheck.api.positionOfStatement
+import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.McProject
@@ -47,14 +47,15 @@ abstract class DependencyFinding(
     statementOrNull?.statementWithSurroundingText
   }
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = fromStringOrEmpty(),
       dependencyPath = dependencyProject.path,
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 
