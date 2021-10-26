@@ -15,11 +15,14 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.*
 import modulecheck.api.Deletable
+import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
+import modulecheck.api.Fixable
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.parsing.*
+import modulecheck.parsing.Project2
+import modulecheck.parsing.ProjectsAware
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
@@ -64,6 +67,7 @@ abstract class ModuleCheckTask :
         .map { projectProvider.get(it.path) }
         .getFindings()
         .distinct()
+        .filterNot { it.shouldSkip() }
     }
 
     val numIssues = results.finish()
@@ -82,46 +86,84 @@ abstract class ModuleCheckTask :
     val secondsDouble = timeMillis / 1000.0
 
     if (data.isNotEmpty()) {
-      logger.printSuccessHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
+      logger.printSuccessHeader(
+        "ModuleCheck found ${data.size} issues in $secondsDouble seconds\n" +
+          "To ignore any of these findings, annotate the dependency declaration.\n" +
+          "For Kotlin files, use @Suppress(\"<the name of the issue>\") or " +
+          "@SuppressWarnings(\"<the name of the ID>\").\n" +
+          "For Groovy files, add a comment above the declaration: " +
+          "//noinspection <the name of the issue>."
+      )
     }
 
     val unFixed = grouped
       .entries
       .sortedBy { it.key }
-      .flatMap { (path, list) ->
+      .map { (path, list) ->
 
-        logger.printHeader("\t$path")
+        logger.printHeader("${tab(1)}$path")
 
-        val logStrings = mutableMapOf<Finding, String>()
+        val elements = list
+          .map { finding ->
 
-        val (fixed, toFix) = list
-          .distinct()
-          .onEach { finding ->
-            logStrings[finding] = finding.logString()
-          }
-          .partition { finding ->
+            finding.logElement().apply {
 
-            if (!autoCorrect) return@partition false
-
-            if (deleteUnused && finding is Deletable) {
-              finding.delete()
-            } else {
-              (finding as? Fixable)?.fix() ?: false
+              fixed = when {
+                !autoCorrect -> false
+                deleteUnused && finding is Deletable -> {
+                  finding.delete()
+                }
+                else -> {
+                  (finding as? Fixable)?.fix() ?: false
+                }
+              }
             }
           }
 
-        fixed.forEach { finding ->
-          logger.printWarning("\t\t${logStrings.getValue(finding)}")
+        if (elements.isEmpty()) return@map 0
+
+        val maxDependencyPath = maxOf(
+          elements.maxOf { it.dependencyPath.length },
+          "dependency".length
+        )
+        val maxProblemName = elements.maxOf { it.problemName.length }
+        val maxSource = maxOf(elements.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
+        val maxFilePathStr = elements.maxOf { it.filePathStr.length }
+
+        logger.printHeader(
+          tab(2) +
+            "dependency".padEnd(maxDependencyPath) +
+            tab(1) +
+            "name".padEnd(maxProblemName) +
+            tab(1) +
+            "source".padEnd(maxSource) +
+            tab(1) +
+            "build file".padEnd(maxFilePathStr)
+        )
+
+        elements.sortedWith(
+          compareBy(
+            { !it.fixed },
+            { it.positionOrNull }
+          )
+        ).forEach { logElement ->
+
+          logElement.log(
+            tab(2) +
+              logElement.dependencyPath.padEnd(maxDependencyPath) +
+              tab(1) +
+              logElement.problemName.padEnd(maxProblemName) +
+              tab(1) +
+              logElement.sourceOrNull.orEmpty().padEnd(maxSource) +
+              tab(1) +
+              logElement.filePathStr.padEnd(maxFilePathStr)
+          )
         }
 
-        toFix.forEach { finding ->
-          logger.printFailure("\t\t${logStrings.getValue(finding)}")
-        }
-
-        toFix
+        elements.count { !it.fixed }
       }
 
-    return unFixed.size
+    return unFixed.sum()
   }
 
   inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
@@ -135,4 +177,14 @@ abstract class ModuleCheckTask :
   }
 
   data class TimedResults<R>(val timeMillis: Long, val data: R)
+
+  private fun tab(numTabs: Int) = "    ".repeat(numTabs)
+
+  private fun LogElement.log(message: String) {
+    if (fixed) {
+      logger.printWarning(message)
+    } else {
+      logger.printFailure(message)
+    }
+  }
 }

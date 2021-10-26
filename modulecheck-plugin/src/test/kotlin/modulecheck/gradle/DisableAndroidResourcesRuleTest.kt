@@ -311,7 +311,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         project.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts:  unused R file generation:"
+          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts:".toRegex()
         }
       }
 
@@ -517,7 +517,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 3):  unused R file generation:"
+          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(21, 3\\):".toRegex()
         }
       }
 
@@ -535,7 +535,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (20, 1):  unused R file generation:"
+          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(20, 1\\):".toRegex()
         }
       }
 
@@ -557,7 +557,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (22, 5):  unused R file generation:"
+          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(22, 5\\):".toRegex()
         }
       }
 
@@ -577,7 +577,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }.writeIn(testProjectDir.toPath())
 
         shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "app/build.gradle.kts: (21, 3):  unused R file generation:"
+          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(21, 3\\):".toRegex()
         }
       }
     }

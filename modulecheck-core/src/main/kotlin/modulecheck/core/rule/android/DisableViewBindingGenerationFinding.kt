@@ -16,6 +16,7 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.api.positionOfStatement
@@ -28,7 +29,7 @@ data class DisableViewBindingGenerationFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val problemName = "unused ViewBinding generation"
+  override val problemName = "disableViewBinding"
 
   override val dependencyIdentifier = ""
 
@@ -45,6 +46,17 @@ data class DisableViewBindingGenerationFinding(
     val fileText = buildFile.readText()
 
     fileText.positionOfStatement(statement)
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = "",
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

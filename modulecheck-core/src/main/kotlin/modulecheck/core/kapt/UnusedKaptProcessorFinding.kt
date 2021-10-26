@@ -15,6 +15,7 @@
 
 package modulecheck.core.kapt
 
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.ConfigurationName
@@ -29,7 +30,18 @@ data class UnusedKaptProcessorFinding(
 
   override val dependencyIdentifier = dependencyPath
 
-  override val problemName = "unused ${configurationName.value} dependency"
+  override val problemName = "unusedKaptProcessor"
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = dependencyPath,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
+  }
 
   override val positionOrNull: Position? by lazy {
     // Kapt paths are different from other project dependencies.

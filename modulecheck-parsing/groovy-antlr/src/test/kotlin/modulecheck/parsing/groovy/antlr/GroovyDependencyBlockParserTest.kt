@@ -73,6 +73,79 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
+  fun `declaration with noinspection should include suppressed with argument`() {
+    val block = GroovyDependencyBlockParser()
+      .parse(
+        """
+       dependencies {
+         api project(':core:android')
+         //noinspection Unused, MustBeApi
+         api project(':core:jvm')
+         testImplementation project(':core:test')
+       }
+        """.trimIndent()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:android"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api project(':core:android')""",
+        statementWithSurroundingText = "  api project(':core:android')",
+        suppressed = listOf()
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api project(':core:jvm')""",
+        statementWithSurroundingText = "  //noinspection Unused, MustBeApi\n  api project(':core:jvm')",
+        suppressed = listOf("Unused", "MustBeApi")
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:test"),
+        configName = "testImplementation".asConfigurationName(),
+        declarationText = """testImplementation project(':core:test')""",
+        statementWithSurroundingText = "  testImplementation project(':core:test')",
+        suppressed = listOf()
+      )
+    )
+  }
+
+  @Test
+  fun `dependency block with noinspection comment should suppress those warnings in all declarations`() {
+    val block = GroovyDependencyBlockParser()
+      .parse(
+        """
+       //noinspection Unused, MustBeApi
+       dependencies {
+         api project(':core:android')
+         //noinspection InheritedDependency
+         api project(':core:jvm')
+       }
+        """.trimIndent()
+      ).single()
+
+    block.suppressAll shouldBe listOf("Unused", "MustBeApi")
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:android"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api project(':core:android')""",
+        statementWithSurroundingText = "  api project(':core:android')",
+        suppressed = listOf("Unused", "MustBeApi")
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api project(':core:jvm')""",
+        statementWithSurroundingText = "  //noinspection InheritedDependency\n  api project(':core:jvm')",
+        suppressed = listOf("InheritedDependency", "Unused", "MustBeApi")
+      )
+    )
+  }
+
+  @Test
   fun `string module dependency declaration with testFixtures should be parsed`() {
     val block = GroovyDependencyBlockParser()
       .parse(
@@ -129,7 +202,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(ModuleRef.StringRef(":core:test"), "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(
+      ModuleRef.StringRef(":core:test"),
+      "api".asConfigurationName()
+    ) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:test"),
         configName = "api".asConfigurationName(),

@@ -15,7 +15,7 @@
 
 package modulecheck.parsing
 
-abstract class DependenciesBlock(var contentString: String) {
+abstract class DependenciesBlock(var contentString: String, val suppressAll: List<String>) {
 
   protected val originalLines = contentString.lines().toMutableList()
 
@@ -34,7 +34,8 @@ abstract class DependenciesBlock(var contentString: String) {
   fun addNonModuleStatement(
     configName: ConfigurationName,
     parsedString: String,
-    coordinates: MavenCoordinates
+    coordinates: MavenCoordinates,
+    suppressed: List<String>
   ) {
     val originalString = getOriginalString(parsedString)
 
@@ -44,7 +45,8 @@ abstract class DependenciesBlock(var contentString: String) {
       statementWithSurroundingText = originalString,
       group = coordinates.group,
       moduleName = coordinates.moduleName,
-      version = coordinates.version
+      version = coordinates.version,
+      suppressed = suppressed + suppressAll
     )
     _allDeclarations.add(declaration)
     allExternalDeclarations.getOrPut(coordinates) { mutableListOf() }
@@ -54,7 +56,8 @@ abstract class DependenciesBlock(var contentString: String) {
   fun addUnknownStatement(
     configName: ConfigurationName,
     parsedString: String,
-    argument: String
+    argument: String,
+    suppressed: List<String>
   ) {
     val originalString = getOriginalString(parsedString)
 
@@ -62,7 +65,8 @@ abstract class DependenciesBlock(var contentString: String) {
       argument = argument,
       configName = configName,
       declarationText = parsedString,
-      statementWithSurroundingText = originalString
+      statementWithSurroundingText = originalString,
+      suppressed = suppressed + suppressAll
     )
     _allDeclarations.add(declaration)
   }
@@ -70,7 +74,8 @@ abstract class DependenciesBlock(var contentString: String) {
   fun addModuleStatement(
     configName: ConfigurationName,
     parsedString: String,
-    moduleRef: ModuleRef
+    moduleRef: ModuleRef,
+    suppressed: List<String>
   ) {
     val cm = ConfiguredModule(configName = configName, moduleRef = moduleRef)
 
@@ -80,7 +85,8 @@ abstract class DependenciesBlock(var contentString: String) {
       moduleRef = moduleRef,
       configName = configName,
       declarationText = parsedString,
-      statementWithSurroundingText = originalString
+      statementWithSurroundingText = originalString,
+      suppressed = suppressed + suppressAll
     )
 
     allModuleDeclarations.getOrPut(cm) { mutableListOf() }

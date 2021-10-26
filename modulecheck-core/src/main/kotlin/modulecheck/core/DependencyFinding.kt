@@ -16,10 +16,12 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Fixable
 import modulecheck.api.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.Project2
 
 abstract class DependencyFinding(
@@ -37,10 +39,26 @@ abstract class DependencyFinding(
       .positionOfStatement(statement)
   }
 
-  override val statementTextOrNull: String? by lazy {
+  override val statementOrNull: ModuleDependencyDeclaration? by lazy {
     dependencyProject
       .statementOrNullIn(buildFile, configurationName)
   }
+  override val statementTextOrNull: String? by lazy {
+    statementOrNull?.statementWithSurroundingText
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = fromStringOrEmpty(),
+      dependencyPath = dependencyProject.path,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
+  }
+
+  abstract fun fromStringOrEmpty(): String
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

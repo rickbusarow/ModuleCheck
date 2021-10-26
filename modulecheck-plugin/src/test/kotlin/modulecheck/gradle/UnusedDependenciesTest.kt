@@ -107,6 +107,119 @@ class UnusedDependenciesTest : BasePluginTest() {
     }
 
     @Test
+    fun `suppressed dependency which is unused should not be reported`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addProjectDependency("api", jvmSub1)
+            addProjectDependency("api", jvmSub2, "@Suppress(\"unused\")")
+            addProjectDependency("implementation", jvmSub3)
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |dependencies {
+        |  api(project(path = ":lib-1"))
+        |  @Suppress("unused")
+        |  api(project(path = ":lib-2"))
+        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |}
+        |""".trimMargin()
+    }
+
+    @Test
+    fun `suppressed unused at the dependency block should not report any unused`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("kotlin(\"jvm\")")
+            addBlock(
+              """
+              |@Suppress("unused")
+              |dependencies {
+              |  api(project(path = ":lib-1"))
+              |  api(project(path = ":lib-2"))
+              |  implementation(project(path = ":lib-3"))
+              |}
+              |""".trimMargin()
+            )
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/kotlin")) {
+            addFileSpec(myApp)
+          }
+        )
+      }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(
+          projectBuild
+            .addBlock(
+              """moduleCheck {
+            |  autoCorrect = true
+            |}
+          """.trimMargin()
+            ).build()
+        )
+      }
+        .writeIn(testProjectDir.toPath())
+
+      build("moduleCheckUnusedDependency").shouldSucceed()
+
+      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |}
+        |
+        |@Suppress("unused")
+        |dependencies {
+        |  api(project(path = ":lib-1"))
+        |  api(project(path = ":lib-2"))
+        |  implementation(project(path = ":lib-3"))
+        |}
+        |
+        |
+        |""".trimMargin()
+    }
+
+    @Test
     fun `with autoCorrect and preceding typesafe external dependency should be commented out`() {
       val appProject = ProjectSpec("app") {
         addBuildSpec(
@@ -297,8 +410,8 @@ class UnusedDependenciesTest : BasePluginTest() {
 
       shouldFailWithMessage("moduleCheckUnusedDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
-        it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
+        it shouldContain ":lib-2 \\s*unused .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*unused .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
       }
     }
 
@@ -340,8 +453,8 @@ class UnusedDependenciesTest : BasePluginTest() {
 
       shouldFailWithMessage("moduleCheckUnusedDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
-        it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
+        it shouldContain ":lib-2 \\s*unused .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*unused .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
       }
     }
 

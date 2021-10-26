@@ -18,8 +18,9 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.DependenciesBlock
 
 class KotlinDependenciesBlock(
-  contentString: String
-) : DependenciesBlock(contentString) {
+  contentString: String,
+  suppressAll: List<String>
+) : DependenciesBlock(contentString, suppressAll) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,

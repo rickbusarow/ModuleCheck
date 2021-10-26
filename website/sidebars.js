@@ -17,6 +17,7 @@ module.exports = {
   Docs: [
     "quickstart",
     "configuration",
+    "suppressing-findings",
     "ci-workflow",
     {
       type: "category",
