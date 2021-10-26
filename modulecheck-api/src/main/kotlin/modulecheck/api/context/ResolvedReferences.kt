@@ -16,7 +16,7 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 
@@ -29,7 +29,7 @@ data class ResolvedReferences(
     get() = Key
 
   companion object Key : ProjectContext.Key<ResolvedReferences> {
-    override operator fun invoke(project: Project2): ResolvedReferences {
+    override operator fun invoke(project: McProject): ResolvedReferences {
       val map = mutableMapOf<SourceSetName, MutableSet<ConfiguredProjectDependency>>()
 
       project

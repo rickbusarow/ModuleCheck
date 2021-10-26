@@ -23,7 +23,7 @@ interface ProjectContext {
   operator fun <E : Element> get(key: Key<E>): E
 
   interface Key<E : Element> {
-    operator fun invoke(project: Project2): E
+    operator fun invoke(project: McProject): E
   }
 
   interface Element {
@@ -31,7 +31,7 @@ interface ProjectContext {
   }
 }
 
-class ProjectContextImpl(val project: Project2) : ProjectContext {
+class ProjectContextImpl(val project: McProject) : ProjectContext {
 
   private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
 

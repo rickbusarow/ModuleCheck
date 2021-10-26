@@ -20,7 +20,7 @@ import modulecheck.core.parse
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings
@@ -48,7 +48,7 @@ class SortPluginsRule(
   @Suppress("SpreadOperator")
   private val comparator: Comparator<PluginDeclaration> = compareBy(*comparables)
 
-  override fun check(project: Project2): List<SortPluginsFinding> {
+  override fun check(project: McProject): List<SortPluginsFinding> {
     val block = PluginBlockParser.parse(project.buildFile) ?: return emptyList()
 
     val sortedPlugins = block.sortedPlugins(comparator)

@@ -26,8 +26,8 @@ import com.android.build.gradle.TestExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
-import modulecheck.api.AndroidProject2Impl
-import modulecheck.api.Project2Impl
+import modulecheck.api.RealAndroidMcProject
+import modulecheck.api.RealMcProject
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
@@ -51,20 +51,20 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class GradleProjectProvider(
   rootGradleProject: GradleProject,
-  override val projectCache: ConcurrentHashMap<String, Project2>
+  override val projectCache: ConcurrentHashMap<String, McProject>
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { it.path }
 
-  override fun get(path: String): Project2 {
+  override fun get(path: String): McProject {
     return projectCache.getOrPut(path) {
       createProject(path)
     }
   }
 
   @Suppress("UnstableApiUsage")
-  private fun createProject(path: String): Project2 {
+  private fun createProject(path: String): McProject {
     val gradleProject = gradleProjects.getValue(path)
 
     val configurations = gradleProject.configurations()
@@ -92,7 +92,7 @@ class GradleProjectProvider(
     }
 
     return if (isAndroid) {
-      AndroidProject2Impl(
+      RealAndroidMcProject(
         path = path,
         projectDir = gradleProject.projectDir,
         buildFile = gradleProject.buildFile,
@@ -109,7 +109,7 @@ class GradleProjectProvider(
         manifests = gradleProject.androidManifests().orEmpty()
       )
     } else {
-      Project2Impl(
+      RealMcProject(
         path = path,
         projectDir = gradleProject.projectDir,
         buildFile = gradleProject.buildFile,

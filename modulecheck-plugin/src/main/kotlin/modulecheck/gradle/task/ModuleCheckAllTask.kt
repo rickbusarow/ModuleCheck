@@ -18,7 +18,7 @@ package modulecheck.gradle.task
 import modulecheck.api.Finding
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.system.measureTimeMillis
@@ -27,7 +27,7 @@ abstract class ModuleCheckAllTask @Inject constructor(
   private val rules: List<ModuleCheckRule<Finding>>
 ) : ModuleCheckTask() {
 
-  override fun List<Project2>.getFindings(): List<Finding> {
+  override fun List<McProject>.getFindings(): List<Finding> {
     val props = ChecksSettings::class.declaredMemberProperties
       .associate { it.name to it.get(settings.checks) as Boolean }
 

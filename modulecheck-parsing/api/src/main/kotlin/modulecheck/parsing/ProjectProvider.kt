@@ -17,5 +17,5 @@ package modulecheck.parsing
 
 interface ProjectProvider : ProjectsAware {
 
-  fun get(path: String): Project2
+  fun get(path: String): McProject
 }

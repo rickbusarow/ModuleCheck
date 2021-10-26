@@ -23,7 +23,7 @@ import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
 import modulecheck.parsing.*
 
-fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
+fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   val mergedScopeNames = anvilScopeMerges
     .values
     .flatMap { it.keys }
@@ -35,7 +35,7 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
   return all.any { usesInConfig(mergedScopeNames, dependency.copy(configurationName = it.name)) }
 }
 
-fun Project2.usesInConfig(
+fun McProject.usesInConfig(
   mergedScopeNames: List<AnvilScopeName>,
   dependency: ConfiguredProjectDependency
 ): Boolean {
@@ -54,13 +54,13 @@ fun Project2.usesInConfig(
 
   if (javaIsUsed) return true
 
-  if (this !is AndroidProject2) return false
+  if (this !is AndroidMcProject) return false
 
   val rReferences =
     possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
       .filter { it.startsWith("R.") }
 
-  val dependencyAsAndroid = dependency.project as? AndroidProject2 ?: return false
+  val dependencyAsAndroid = dependency.project as? AndroidMcProject ?: return false
 
   return dependencyAsAndroid
     .androidResourceDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())

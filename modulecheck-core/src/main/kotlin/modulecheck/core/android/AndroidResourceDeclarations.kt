@@ -31,8 +31,8 @@ data class AndroidResourceDeclarations(
     get() = Key
 
   companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
-    override operator fun invoke(project: Project2): AndroidResourceDeclarations {
-      val android = project as? AndroidProject2
+    override operator fun invoke(project: McProject): AndroidResourceDeclarations {
+      val android = project as? AndroidMcProject
         ?: return AndroidResourceDeclarations(ConcurrentHashMap())
 
       val rPackage = android.androidPackageOrNull

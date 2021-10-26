@@ -33,9 +33,9 @@ data class ViewBindingFiles(
 
     private val snake_reg = "_([a-zA-Z])".toRegex()
 
-    override operator fun invoke(project: Project2): ViewBindingFiles {
+    override operator fun invoke(project: McProject): ViewBindingFiles {
 
-      if (project !is AndroidProject2) return ViewBindingFiles(ConcurrentHashMap())
+      if (project !is AndroidMcProject) return ViewBindingFiles(ConcurrentHashMap())
 
       val basePackage = project.androidPackageOrNull ?: return ViewBindingFiles(ConcurrentHashMap())
 

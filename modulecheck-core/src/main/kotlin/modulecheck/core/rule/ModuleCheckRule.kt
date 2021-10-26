@@ -16,7 +16,7 @@
 package modulecheck.core.rule
 
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
@@ -26,7 +26,7 @@ abstract class ModuleCheckRule<T> {
   abstract val id: String
   abstract val description: String
 
-  abstract fun check(project: Project2): List<T>
+  abstract fun check(project: McProject): List<T>
 
-  protected fun Project2.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+  protected fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
 }
