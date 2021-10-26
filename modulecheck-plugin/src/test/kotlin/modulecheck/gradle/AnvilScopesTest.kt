@@ -431,7 +431,7 @@ class AnvilScopesTest : BasePluginTest() {
       .writeIn(testProjectDir.toPath())
 
     shouldFailWithMessage("moduleCheckUnusedDependency") {
-      it shouldContain ":lib-2 \\s*unused .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
+      it shouldContain ":lib-2 \\s*unusedDependency .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
     }
   }
 }
