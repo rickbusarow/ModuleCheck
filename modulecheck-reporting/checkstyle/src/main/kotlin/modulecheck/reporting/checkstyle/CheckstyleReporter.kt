@@ -16,13 +16,12 @@
 package modulecheck.reporting.checkstyle
 
 import modulecheck.api.Finding.FindingResult
-import modulecheck.api.Reporter
 import org.unbescape.xml.XmlEscape
 import java.io.File
 
-class CheckstyleReporter : Reporter<String> {
+class CheckstyleReporter {
 
-  override fun reportResults(results: List<FindingResult>): String = buildString {
+  fun reportResults(results: List<FindingResult>): String = buildString {
 
     appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     appendLine("<checkstyle version=\"4.3\">")

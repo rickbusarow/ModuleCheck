@@ -17,14 +17,13 @@ package modulecheck.reporting.console
 
 import modulecheck.api.Finding
 import modulecheck.api.Logger
-import modulecheck.api.Reporter
 import java.util.*
 
 class LoggingReporter(
   private val logger: Logger
-) : Reporter<Unit> {
+) {
 
-  override fun reportResults(results: List<Finding.FindingResult>) {
+  fun reportResults(results: List<Finding.FindingResult>) {
 
     if (results.isEmpty()) return
 
