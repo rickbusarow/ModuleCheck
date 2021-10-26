@@ -111,9 +111,7 @@ values={[
 
    <TabItem value="Kotlin">
 
-```kotlin
-// top-level build.gradle.kts
-
+```kotlin title="root/build.gradle.kts"
 configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
 
   alwaysIgnore.set(setOf(":app"))
@@ -126,9 +124,7 @@ configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
 
 --or--
 
-```kotlin
-// top-level build.gradle.kts
-
+```kotlin title="root/build.gradle.kts"
 moduleCheck {
 
   alwaysIgnore.set(setOf(":app"))
@@ -144,9 +140,7 @@ moduleCheck {
 
 <TabItem value="Groovy">
 
-```groovy
-// top-level build.gradle
-
+```groovy title="root/build.gradle"
 moduleCheck {
 
   alwaysIgnore.set(setOf(":app"))
