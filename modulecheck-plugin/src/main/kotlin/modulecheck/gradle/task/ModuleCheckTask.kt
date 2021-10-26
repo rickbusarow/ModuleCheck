@@ -15,25 +15,28 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.api.Deletable
 import modulecheck.api.Finding
-import modulecheck.api.Finding.LogElement
-import modulecheck.api.Fixable
+import modulecheck.api.FindingFactory
+import modulecheck.api.FindingFixer
+import modulecheck.api.RealFindingFixer
+import modulecheck.core.ModuleCheckRunner
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectsAware
+import modulecheck.reporting.console.LoggingReporter
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.system.measureTimeMillis
 
-abstract class ModuleCheckTask :
+abstract class ModuleCheckTask<T : Finding> :
   DefaultTask(),
-  ProjectsAware {
+  ProjectsAware,
+  FindingFactory<T>,
+  FindingFixer by RealFindingFixer() {
 
   init {
     group = "moduleCheck"
@@ -58,133 +61,25 @@ abstract class ModuleCheckTask :
   val logger = GradleLogger(project)
 
   @TaskAction
-  fun evaluate() {
-    val results = measured {
-      project
-        .allprojects
-        .filter { it.buildFile.exists() }
-        .filterNot { it.path in settings.doNotCheck }
-        .map { projectProvider.get(it.path) }
-        .getFindings()
-        .distinct()
-        .filterNot { it.shouldSkip() }
-    }
+  fun run() {
 
-    val numIssues = results.finish()
+    val runner = ModuleCheckRunner(
+      settings = settings,
+      findingFactory = this,
+      logger = logger,
+      loggingReporter = LoggingReporter(logger),
+      findingFixer = RealFindingFixer()
+    )
 
-    if (numIssues > 0) {
-      throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
-    }
-  }
+    val projects = project
+      .allprojects
+      .filter { it.buildFile.exists() }
+      .filterNot { it.path in settings.doNotCheck }
+      .map { projectProvider.get(it.path) }
 
-  abstract fun List<McProject>.getFindings(): List<Finding>
+    val result = runner.run(projects)
 
-  private fun TimedResults<List<Finding>>.finish(): Int {
-    val grouped = data.groupBy { it.dependentPath }
-
-    @Suppress("MagicNumber")
-    val secondsDouble = timeMillis / 1000.0
-
-    if (data.isNotEmpty()) {
-      logger.printSuccessHeader(
-        "ModuleCheck found ${data.size} issues in $secondsDouble seconds\n" +
-          "To ignore any of these findings, annotate the dependency declaration.\n" +
-          "For Kotlin files, use @Suppress(\"<the name of the issue>\") or " +
-          "@SuppressWarnings(\"<the name of the ID>\").\n" +
-          "For Groovy files, add a comment above the declaration: " +
-          "//noinspection <the name of the issue>."
-      )
-    }
-
-    val unFixed = grouped
-      .entries
-      .sortedBy { it.key }
-      .map { (path, list) ->
-
-        logger.printHeader("${tab(1)}$path")
-
-        val elements = list
-          .map { finding ->
-
-            finding.logElement().apply {
-
-              fixed = when {
-                !autoCorrect -> false
-                deleteUnused && finding is Deletable -> {
-                  finding.delete()
-                }
-                else -> {
-                  (finding as? Fixable)?.fix() ?: false
-                }
-              }
-            }
-          }
-
-        if (elements.isEmpty()) return@map 0
-
-        val maxDependencyPath = maxOf(
-          elements.maxOf { it.dependencyPath.length },
-          "dependency".length
-        )
-        val maxProblemName = elements.maxOf { it.problemName.length }
-        val maxSource = maxOf(elements.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
-        val maxFilePathStr = elements.maxOf { it.filePathStr.length }
-
-        logger.printHeader(
-          tab(2) +
-            "dependency".padEnd(maxDependencyPath) +
-            tab(1) +
-            "name".padEnd(maxProblemName) +
-            tab(1) +
-            "source".padEnd(maxSource) +
-            tab(1) +
-            "build file".padEnd(maxFilePathStr)
-        )
-
-        elements.sortedWith(
-          compareBy(
-            { !it.fixed },
-            { it.positionOrNull }
-          )
-        ).forEach { logElement ->
-
-          logElement.log(
-            tab(2) +
-              logElement.dependencyPath.padEnd(maxDependencyPath) +
-              tab(1) +
-              logElement.problemName.padEnd(maxProblemName) +
-              tab(1) +
-              logElement.sourceOrNull.orEmpty().padEnd(maxSource) +
-              tab(1) +
-              logElement.filePathStr.padEnd(maxFilePathStr)
-          )
-        }
-
-        elements.count { !it.fixed }
-      }
-
-    return unFixed.sum()
-  }
-
-  inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
-    var r: R
-
-    val time = measureTimeMillis {
-      r = action()
-    }
-
-    return TimedResults(time, r)
-  }
-
-  data class TimedResults<R>(val timeMillis: Long, val data: R)
-
-  private fun tab(numTabs: Int) = "    ".repeat(numTabs)
-
-  private fun LogElement.log(message: String) {
-    if (fixed) {
-      logger.printWarning(message)
-    } else {
-      logger.printFailure(message)
-    }
+    result.exceptionOrNull()
+      ?.let { throw GradleException(it.message!!, it) }
   }
 }

@@ -15,7 +15,7 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.Finding.LogElement
+import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.ConfigurationName
@@ -32,14 +32,15 @@ data class UnusedKaptProcessorFinding(
 
   override val problemName = "unusedKaptProcessor"
 
-  override fun logElement(): LogElement {
-    return LogElement(
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
       dependentPath = dependentPath,
       problemName = problemName,
       sourceOrNull = null,
       dependencyPath = dependencyPath,
       positionOrNull = positionOrNull,
-      buildFile = buildFile
+      buildFile = buildFile,
+      fixed = fixed
     )
   }
 
