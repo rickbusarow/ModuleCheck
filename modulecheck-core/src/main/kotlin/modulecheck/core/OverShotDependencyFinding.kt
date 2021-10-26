@@ -27,7 +27,7 @@ data class OverShotDependencyFinding(
   override val dependencyProject: Project2,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
-) : DependencyFinding("demoted") {
+) : DependencyFinding("overshot") {
 
   override fun fix(): Boolean {
 
@@ -74,17 +74,14 @@ data class OverShotDependencyFinding(
     return false
   }
 
-  private fun matchingDeclaration(block: DependenciesBlock) =
-    (
-      block.allDeclarations
-        .filterIsInstance<ModuleDependencyDeclaration>()
-        .maxByOrNull { declaration -> declaration.configName == configurationName }
-        ?: block.allDeclarations
-          .filterNot { it is ModuleDependencyDeclaration }
-          .maxByOrNull { declaration -> declaration.configName == configurationName }
-        ?: block.allDeclarations
-          .lastOrNull()
-      )
+  private fun matchingDeclaration(block: DependenciesBlock) = block.allDeclarations
+    .filterIsInstance<ModuleDependencyDeclaration>()
+    .maxByOrNull { declaration -> declaration.configName == configurationName }
+    ?: block.allDeclarations
+      .filterNot { it is ModuleDependencyDeclaration }
+      .maxByOrNull { declaration -> declaration.configName == configurationName }
+    ?: block.allDeclarations
+      .lastOrNull()
 
   private fun newModuleDeclaration(match: DependencyDeclaration) = when (match) {
     is ExternalDependencyDeclaration -> dependencyProject.path
@@ -113,6 +110,8 @@ data class OverShotDependencyFinding(
         }
       }
   }
+
+  override fun fromStringOrEmpty(): String = ""
 
   override fun toString(): String {
     return "OverShotDependency(\n" +

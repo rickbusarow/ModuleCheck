@@ -98,6 +98,85 @@ internal class KotlinDependencyBlockParserTest {
   }
 
   @Test
+  fun `declaration with annotation should include annotation with argument`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+       dependencies {
+          api(project(":core:android"))
+          @Suppress("Unused")
+          api(project(":core:jvm"))
+          testImplementation(project(":core:test"))
+       }
+        """.trimIndent()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:android"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(project(":core:android"))""",
+        statementWithSurroundingText = "   api(project(\":core:android\"))",
+        suppressed = listOf()
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(project(":core:jvm"))""",
+        statementWithSurroundingText = "   @Suppress(\"Unused\")\n   api(project(\":core:jvm\"))",
+        suppressed = listOf("Unused")
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:test"),
+        configName = "testImplementation".asConfigurationName(),
+        declarationText = """testImplementation(project(":core:test"))""",
+        statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
+        suppressed = listOf()
+      )
+    )
+  }
+
+  @Test
+  fun `dependency block with Suppress annotation should include annotation with argument`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+       @Suppress("Unused")
+       dependencies {
+          api(project(":core:android"))
+          @Suppress("InheritedDependency")
+          api(project(":core:jvm"))
+          testImplementation(project(":core:test"))
+       }
+        """.trimIndent()
+      ).single()
+
+    block.allDeclarations shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:android"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(project(":core:android"))""",
+        statementWithSurroundingText = "   api(project(\":core:android\"))",
+        suppressed = listOf("Unused")
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:jvm"),
+        configName = "api".asConfigurationName(),
+        declarationText = """api(project(":core:jvm"))""",
+        statementWithSurroundingText = "   @Suppress(\"InheritedDependency\")\n   api(project(\":core:jvm\"))",
+        suppressed = listOf("InheritedDependency", "Unused")
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = ModuleRef.StringRef(":core:test"),
+        configName = "testImplementation".asConfigurationName(),
+        declarationText = """testImplementation(project(":core:test"))""",
+        statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
+        suppressed = listOf("Unused")
+      )
+    )
+  }
+
+  @Test
   fun `string module dependency declaration with testFixtures should be parsed`() {
     val block = KotlinDependencyBlockParser()
       .parse(

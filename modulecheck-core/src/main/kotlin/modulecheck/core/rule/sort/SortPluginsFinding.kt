@@ -16,6 +16,7 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.LogElement
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.parse
@@ -29,7 +30,7 @@ class SortPluginsFinding(
   override val buildFile: File,
   val comparator: Comparator<PluginDeclaration>
 ) : Finding, Fixable {
-  override val problemName = "unsorted plugins"
+  override val problemName = "unsortedPlugins"
 
   override val dependencyIdentifier = ""
 
@@ -47,6 +48,17 @@ class SortPluginsFinding(
     buildFile.writeText(fileText)
 
     return true
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = "",
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
   }
 }
 

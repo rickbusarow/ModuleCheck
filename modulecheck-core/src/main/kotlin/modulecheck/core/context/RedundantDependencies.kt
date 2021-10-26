@@ -38,12 +38,12 @@ data class RedundantDependencyFinding(
 
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
-  private fun fromStringOrEmpty(): String {
+  override fun fromStringOrEmpty(): String {
 
     return if (from.all { dependencyProject.path == it.path }) {
       ""
     } else {
-      " from: ${from.joinToString { it.path }}"
+      from.joinToString { it.path }
     }
   }
 }

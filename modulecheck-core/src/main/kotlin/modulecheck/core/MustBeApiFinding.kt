@@ -15,9 +15,11 @@
 
 package modulecheck.core
 
+import modulecheck.api.Finding.LogElement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.Project2
 import java.io.File
 
@@ -31,18 +33,33 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
-  override val statementTextOrNull: String? by lazy {
-    super.statementTextOrNull
+  override val statementOrNull: ModuleDependencyDeclaration? by lazy {
+    super.statementOrNull
       ?: source?.project
         ?.statementOrNullIn(buildFile, configurationName)
   }
+  override val statementTextOrNull: String? by lazy {
+    super.statementTextOrNull
+      ?: statementOrNull?.statementWithSurroundingText
+  }
 
-  private fun fromStringOrEmpty(): String {
+  override fun fromStringOrEmpty(): String {
     return if (dependencyProject.path == source?.project?.path) {
       ""
     } else {
-      " from: ${source?.project?.path}"
+      "${source?.project?.path}"
     }
+  }
+
+  override fun logElement(): LogElement {
+    return LogElement(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = fromStringOrEmpty(),
+      dependencyPath = dependencyProject.path,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile
+    )
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

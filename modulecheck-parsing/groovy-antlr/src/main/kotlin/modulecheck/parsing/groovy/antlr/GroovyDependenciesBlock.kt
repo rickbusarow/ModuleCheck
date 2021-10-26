@@ -18,8 +18,9 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.DependenciesBlock
 
 class GroovyDependenciesBlock(
-  contentString: String
-) : DependenciesBlock(contentString) {
+  contentString: String,
+  suppressAll: List<String>
+) : DependenciesBlock(contentString, suppressAll) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,
