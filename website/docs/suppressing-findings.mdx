@@ -15,11 +15,11 @@ The name of the check to disable can be found in the `name` column of console ou
 > Task :moduleCheck
 ModuleCheck found 3 issues in 6.157 seconds
 
- :app
-    dependency               name                   source    build file
-    :fat-and-leaky           inheritedDependency              /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
-    :fat-and-leaky           mustBeApi                        /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
-    :unused-lib              unused                           /Users/rbusarow/projects/sample/app/build.gradle.kts: (49, 3):
+:app
+  dependency      name                  build file
+  :fat-and-leaky  inheritedDependency   /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
+  :fat-and-leaky  mustBeApi             /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
+  :unused-lib     unusedDependency      /Users/rbusarow/projects/sample/app/build.gradle.kts: (49, 3):
 
 ```
 
@@ -35,7 +35,7 @@ ModuleCheck found 3 issues in 6.157 seconds
 @Suppress("mustBeApi") // don't switch anything to an api config
 dependencies {
 
-  @Suppress("unused") // don't comment out or delete this dependency
+  @Suppress("unusedDependency") // don't comment out or delete this dependency
   implementation(project(":unused-lib"))
 
   @Suppress("inheritedDependency") // don't add dependencies which are inherited from this fat jar
@@ -53,7 +53,7 @@ dependencies {
 dependencies {
 
   // don't comment out or delete this dependency
-  //noinspection unused
+  //noinspection unusedDependency
   implementation(project(":unused-lib"))
 
   // don't add dependencies which are inherited from this fat jar

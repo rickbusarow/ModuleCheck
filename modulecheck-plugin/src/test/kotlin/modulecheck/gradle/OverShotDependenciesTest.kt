@@ -100,7 +100,7 @@ class OverShotDependenciesTest : BasePluginTest() {
       |}
       |
       |dependencies {
-      |  // api(project(path = ":lib-1"))  // ModuleCheck finding [unused]
+      |  // api(project(path = ":lib-1"))  // ModuleCheck finding [unusedDependency]
       |  testImplementation(project(path = ":lib-1"))
       |}
       |""".trimMargin()
@@ -188,7 +188,7 @@ class OverShotDependenciesTest : BasePluginTest() {
       |}
       |
       |dependencies {
-      |  // api(project(path = ":lib-1"))  // ModuleCheck finding [unused]
+      |  // api(project(path = ":lib-1"))  // ModuleCheck finding [unusedDependency]
       |  androidTestImplementation(project(path = ":lib-1"))
       |  debugImplementation(project(path = ":lib-1"))
       |  testImplementation(project(path = ":lib-1"))

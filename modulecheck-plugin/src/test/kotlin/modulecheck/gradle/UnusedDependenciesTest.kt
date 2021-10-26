@@ -100,8 +100,8 @@ class UnusedDependenciesTest : BasePluginTest() {
         |
         |dependencies {
         |  api(project(path = ":lib-1"))
-        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
-        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unusedDependency]
+        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
@@ -113,7 +113,7 @@ class UnusedDependenciesTest : BasePluginTest() {
           ProjectBuildSpec {
             addPlugin("kotlin(\"jvm\")")
             addProjectDependency("api", jvmSub1)
-            addProjectDependency("api", jvmSub2, "@Suppress(\"unused\")")
+            addProjectDependency("api", jvmSub2, "@Suppress(\"unusedDependency\")")
             addProjectDependency("implementation", jvmSub3)
           }
         )
@@ -151,9 +151,9 @@ class UnusedDependenciesTest : BasePluginTest() {
         |
         |dependencies {
         |  api(project(path = ":lib-1"))
-        |  @Suppress("unused")
+        |  @Suppress("unusedDependency")
         |  api(project(path = ":lib-2"))
-        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
@@ -166,7 +166,7 @@ class UnusedDependenciesTest : BasePluginTest() {
             addPlugin("kotlin(\"jvm\")")
             addBlock(
               """
-              |@Suppress("unused")
+              |@Suppress("unusedDependency")
               |dependencies {
               |  api(project(path = ":lib-1"))
               |  api(project(path = ":lib-2"))
@@ -208,7 +208,7 @@ class UnusedDependenciesTest : BasePluginTest() {
         |  kotlin("jvm")
         |}
         |
-        |@Suppress("unused")
+        |@Suppress("unusedDependency")
         |dependencies {
         |  api(project(path = ":lib-1"))
         |  api(project(path = ":lib-2"))
@@ -266,8 +266,8 @@ class UnusedDependenciesTest : BasePluginTest() {
         |dependencies {
         |  api(project(path = ":lib-1"))
         |  api(libs.javax.inject)
-        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
-        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unusedDependency]
+        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
@@ -366,8 +366,8 @@ class UnusedDependenciesTest : BasePluginTest() {
         |
         |dependencies {
         |  "api"(project(path = ":lib-1"))
-        |  // "api"(project(path = ":lib-2"))  // ModuleCheck finding [unused]
-        |  // "implementation"(project(path = ":lib-3"))  // ModuleCheck finding [unused]
+        |  // "api"(project(path = ":lib-2"))  // ModuleCheck finding [unusedDependency]
+        |  // "implementation"(project(path = ":lib-3"))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
@@ -410,8 +410,8 @@ class UnusedDependenciesTest : BasePluginTest() {
 
       shouldFailWithMessage("moduleCheckUnusedDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain ":lib-2 \\s*unused .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*unused .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*unusedDependency .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*unusedDependency .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
       }
     }
 
@@ -453,8 +453,8 @@ class UnusedDependenciesTest : BasePluginTest() {
 
       shouldFailWithMessage("moduleCheckUnusedDependency") {
         it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain ":lib-2 \\s*unused .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*unused .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
+        it shouldContain ":lib-2 \\s*unusedDependency .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
+        it shouldContain ":lib-3 \\s*unusedDependency .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
       }
     }
 
@@ -502,7 +502,7 @@ class UnusedDependenciesTest : BasePluginTest() {
         |dependencies {
         |  api(project(path = ":lib-1")) {
         |  }
-        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
+        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
@@ -1021,7 +1021,7 @@ class UnusedDependenciesTest : BasePluginTest() {
         |}
         |
         |dependencies {
-        |  // testImplementation(testFixtures(project(":lib-1")))  // ModuleCheck finding [unused]
+        |  // testImplementation(testFixtures(project(":lib-1")))  // ModuleCheck finding [unusedDependency]
         |}
         |""".trimMargin()
     }
