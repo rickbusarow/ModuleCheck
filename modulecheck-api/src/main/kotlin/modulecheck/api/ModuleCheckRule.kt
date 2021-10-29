@@ -13,20 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule
+package modulecheck.api
 
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
-abstract class ModuleCheckRule<T> {
+interface ModuleCheckRule<T> {
 
-  abstract val settings: ModuleCheckSettings
-  abstract val id: String
-  abstract val description: String
+  val settings: ModuleCheckSettings
+  val id: String
+  val description: String
 
-  abstract fun check(project: McProject): List<T>
+  fun check(project: McProject): List<T>
+  fun shouldApply(checksSettings: ChecksSettings): Boolean
 
-  protected fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+  fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+}
+
+fun interface RuleFactory {
+
+  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<out Finding>>
 }

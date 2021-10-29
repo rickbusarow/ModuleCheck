@@ -13,27 +13,38 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle
+package modulecheck.core.rule
 
 import modulecheck.api.Finding
-import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.gradle.task.ModuleCheckTask
+import modulecheck.api.FindingFactory
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
-import org.gradle.api.tasks.Internal
-import javax.inject.Inject
 
-abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
-  @Internal
+class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>
-) : ModuleCheckTask<T>() {
-
-  init {
-    description = rule.description
-  }
+) : FindingFactory<Finding> {
 
   override fun evaluate(projects: List<McProject>): List<T> {
     return projects.flatMap { project ->
-      this.rule.check(project)
+      rule.check(project)
     }
+  }
+}
+
+class MultiRuleFindingFactory(
+  private val settings: ModuleCheckSettings,
+  private val rules: List<ModuleCheckRule<out Finding>>
+) : FindingFactory<Finding> {
+
+  override fun evaluate(projects: List<McProject>): List<Finding> {
+
+    val findings = projects.flatMap { proj ->
+      rules
+        .filter { it.shouldApply(settings.checks) }
+        .flatMap { it.check(proj) }
+    }
+
+    return findings
   }
 }

@@ -15,7 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.FindingResult
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
@@ -30,6 +29,10 @@ data class MustBeApiFinding(
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
 ) : DependencyFinding("mustBeApi") {
+
+  override val message: String
+    get() = "The dependency should be declared via an `api` configuration, since it provides " +
+      "a declaration which is referenced in this module's public API."
 
   override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
@@ -49,18 +52,6 @@ data class MustBeApiFinding(
     } else {
       "${source?.project?.path}"
     }
-  }
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = fromStringOrEmpty(),
-      dependencyPath = dependencyProject.path,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

@@ -16,7 +16,6 @@
 package modulecheck.core.rule.android
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.internal.positionOfStatement
@@ -28,6 +27,9 @@ data class DisableViewBindingGenerationFinding(
   override val dependentPath: String,
   override val buildFile: File
 ) : Finding, Fixable {
+
+  override val message: String
+    get() = "Android viewBinding generation is enabled, but no generated code is being used."
 
   override val problemName = "disableViewBinding"
 
@@ -46,18 +48,6 @@ data class DisableViewBindingGenerationFinding(
     val fileText = buildFile.readText()
 
     fileText.positionOfStatement(statement)
-  }
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = null,
-      dependencyPath = "",
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {

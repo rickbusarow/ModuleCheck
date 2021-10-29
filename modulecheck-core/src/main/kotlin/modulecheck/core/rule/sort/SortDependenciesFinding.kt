@@ -16,19 +16,26 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.parse
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
+import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
   override val buildFile: File,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {
+
+  override val message: String
+    get() = "Project/external dependency declarations are not sorted " +
+      "according to the defined pattern."
+
   override val problemName = "unsortedDependencies"
 
   override val dependencyIdentifier = ""
@@ -48,18 +55,6 @@ class SortDependenciesFinding(
     buildFile.writeText(fileText)
 
     return true
-  }
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = null,
-      dependencyPath = "",
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
   }
 }
 
@@ -85,3 +80,37 @@ internal fun sortedDependenciesFileText(
     "$sorted$whitespaceBeforeBrace}"
   }
 }
+
+internal fun DependenciesBlock.sortedDeclarations(
+  comparator: Comparator<String>
+): String {
+  return allDeclarations
+    .grouped(comparator)
+    .joinToString("\n\n") { declarations ->
+
+      declarations
+        .sortedBy { declaration ->
+          declaration.declarationText.lowercase(Locale.US)
+        }
+        .joinToString("\n") {
+          it.statementWithSurroundingText
+            .trimStart('\n')
+            .trimEnd()
+            .lines()
+            .joinToString("\n")
+        }
+    }
+    .suffixIfNot("\n")
+}
+
+internal fun List<DependencyDeclaration>.grouped(
+  comparator: Comparator<String>
+) = groupBy {
+  it.declarationText
+    .split("[^a-zA-Z-]".toRegex())
+    .filterNot { it.isEmpty() }
+    .take(2)
+    .joinToString("-")
+}
+  .toSortedMap(comparator)
+  .map { it.value }

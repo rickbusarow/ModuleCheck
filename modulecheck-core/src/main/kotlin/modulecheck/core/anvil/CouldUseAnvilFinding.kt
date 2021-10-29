@@ -13,10 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.core.anvil
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.internal.positionOf
@@ -28,6 +27,9 @@ data class CouldUseAnvilFinding(
   override val buildFile: File,
   override val dependentPath: String
 ) : Finding, Fixable {
+
+  override val message: String
+    get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
   override val problemName = "useAnvilFactories"
@@ -41,18 +43,6 @@ data class CouldUseAnvilFinding(
       ?.readText()
       ?.lines()
       ?.positionOf(statement, "kapt".asConfigurationName())
-  }
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = null,
-      dependencyPath = dependencyIdentifier,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
   }
 
   override val statementTextOrNull: String? get() = null

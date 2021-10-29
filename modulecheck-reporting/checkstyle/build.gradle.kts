@@ -20,26 +20,13 @@ plugins {
 
 dependencies {
 
-  api(libs.kotlin.compiler)
-
   api(projects.modulecheckApi)
-  api(projects.modulecheckParsing.api)
-  api(projects.modulecheckParsing.groovyAntlr)
-  api(projects.modulecheckParsing.psi)
-  api(projects.modulecheckParsing.xml)
-  api(projects.modulecheckReporting.checkstyle)
-  api(projects.modulecheckReporting.console)
 
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.groovyXml)
-  implementation(libs.semVer)
+  implementation(libs.unbescape)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlin.reflect)
 
   testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
 }

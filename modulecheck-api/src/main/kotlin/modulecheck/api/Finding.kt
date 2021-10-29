@@ -22,23 +22,29 @@ interface Finding {
 
   val problemName: String
   val dependentPath: String
+  val message: String
   val buildFile: File
 
   val statementOrNull: ModuleDependencyDeclaration? get() = null
   val statementTextOrNull: String? get() = null
   val positionOrNull: Position?
 
-  fun toResult(fixed: Boolean): FindingResult
+  fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = "",
+      positionOrNull = positionOrNull,
+      buildFile = buildFile,
+      message = message,
+      fixed = fixed
+    )
+  }
 
   fun shouldSkip(): Boolean = statementOrNull?.suppressed
     ?.contains(problemName)
     ?: false
-
-  fun logString(): String {
-    return "${buildFile.path}: ${positionString()} $problemName"
-  }
-
-  fun positionString() = positionOrNull?.logString() ?: ""
 
   data class Position(
     val row: Int,
@@ -57,10 +63,9 @@ interface Finding {
     val dependencyPath: String,
     val positionOrNull: Position?,
     val buildFile: File,
+    val message: String,
     val fixed: Boolean
   ) {
     val filePathString: String = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
-
-    val message: String = "TO DO"
   }
 }

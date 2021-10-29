@@ -16,18 +16,14 @@
 package modulecheck.reporting.console
 
 import modulecheck.api.Finding
-import modulecheck.api.Logger
+import modulecheck.api.Report
 import java.util.*
 
-class LoggingReporter(
-  private val logger: Logger
-) {
+class ReportFactory {
 
-  fun reportResults(results: List<Finding.FindingResult>) {
+  fun create(results: List<Finding.FindingResult>): Report = Report.build {
 
-    if (results.isEmpty()) return
-
-    logger.printHeader("-- ModuleCheck results --")
+    header("-- ModuleCheck results --")
 
     results.groupBy { it.dependentPath.lowercase(Locale.getDefault()) }
       .entries
@@ -35,7 +31,7 @@ class LoggingReporter(
 
         val path = values.first().dependentPath
 
-        logger.printHeader("\n${tab(1)}$path")
+        header("\n${tab(1)}$path")
 
         val maxDependencyPath = maxOf(
           values.maxOf { it.dependencyPath.length },
@@ -43,9 +39,8 @@ class LoggingReporter(
         )
         val maxProblemName = values.maxOf { it.problemName.length }
         val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
-        val maxFilePathStr = values.maxOf { it.filePathString.length }
 
-        logger.printHeader(
+        header(
           tab(2) +
             "   dependency".padEnd(maxDependencyPath) +
             tab(1) +
@@ -53,7 +48,7 @@ class LoggingReporter(
             tab(1) +
             "source".padEnd(maxSource) +
             tab(1) +
-            "build file".padEnd(maxFilePathStr)
+            "build file"
         )
 
         values.sortedWith(
@@ -69,20 +64,20 @@ class LoggingReporter(
             tab(1) +
             result.sourceOrNull.orEmpty().padEnd(maxSource) +
             tab(1) +
-            result.filePathString.padEnd(maxFilePathStr)
+            result.filePathString
 
           if (result.fixed) {
-            logger.printSuccess(tab(2) + "✔  ")
-            logger.printWarningLine(message)
+            success(tab(2) + "✔  ")
+            warningLine(message)
           } else {
-            logger.printFailure(tab(2) + "❌  ")
-            logger.printFailureLine(message)
+            failure(tab(2) + "❌  ")
+            failureLine(message)
           }
         }
       }
 
     // bottom padding
-    logger.printHeader("")
+    header("")
   }
 
   private fun tab(numTabs: Int) = "    ".repeat(numTabs)

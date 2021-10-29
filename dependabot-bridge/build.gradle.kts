@@ -34,6 +34,7 @@ dependencies {
   dependencySync("javax.inject:javax.inject:1")
   dependencySync("org.antlr:antlr4:4.9.2")
   dependencySync("org.antlr:antlr4-runtime:4.9.2")
+  dependencySync("org.unbescape:unbescape:1.1.6.RELEASE")
   dependencySync("net.swiftzer.semver:semver:1.1.1")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")

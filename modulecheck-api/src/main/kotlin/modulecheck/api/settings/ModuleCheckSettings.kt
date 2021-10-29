@@ -65,6 +65,11 @@ interface ModuleCheckSettings {
   val checks: ChecksSettings
 
   val sort: SortSettings
+
+  /**
+   * Configures reporting options
+   */
+  val reports: ReportsSettings
 }
 
 interface SortSettings {
@@ -117,4 +122,30 @@ interface ChecksSettings {
     const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
     const val DISABLE_VIEW_BINDING_DEFAULT = false
   }
+}
+
+interface ReportsSettings {
+
+  /**
+   * checkstyle-formatted xml report
+   */
+  val checkstyle: ReportSettings
+
+  /**
+   * plain-text report file matching the console output
+   */
+  val text: ReportSettings
+
+  companion object {
+    const val CHECKSTYLE_ENABLED_DEFAULT = false
+    const val CHECKSTYLE_PATH_DEFAULT = "build/reports/modulecheck/report.xml"
+
+    const val TEXT_ENABLED_DEFAULT = false
+    const val TEXT_PATH_DEFAULT = "build/reports/modulecheck/report.txt"
+  }
+}
+
+interface ReportSettings {
+  var enabled: Boolean
+  var outputPath: String
 }

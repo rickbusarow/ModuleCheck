@@ -13,16 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle
+package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.CouldUseAnvilFinding
-import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.anvil.AnvilFactoryParser
+import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.McProject
 
 class AnvilFactoryRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<CouldUseAnvilFinding>() {
+) : ModuleCheckRule<CouldUseAnvilFinding> {
 
   override val id = "AnvilFactoryGeneration"
   override val description = "Finds modules which could use Anvil's factory generation " +
@@ -30,5 +32,9 @@ class AnvilFactoryRule(
 
   override fun check(project: McProject): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project)
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.anvilFactoryGeneration
   }
 }

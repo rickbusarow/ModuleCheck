@@ -17,14 +17,15 @@ package modulecheck.gradle
 
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
+import modulecheck.api.FindingFactory
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.gradle.internal.isMissingManifestFile
-import modulecheck.gradle.task.ModuleCheckAllTask
+import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.kotlin.dsl.configure
-import kotlin.reflect.KClass
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -40,32 +41,26 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val factory = ModuleCheckRuleFactory()
 
-    // AnvilFactoryRule is defined in this module, so it can't be statically registered like the others
-    factory.register { AnvilFactoryRule(it) }
-
     val rules = factory.create(settings)
 
     rules.map { rule ->
       target.registerTask(
         name = "moduleCheck${rule.id}",
-        type = DynamicModuleCheckTask::class,
-        rules = rule
+        findingFactory = SingleRuleFindingFactory(rule)
       )
     }
 
     target.registerTask(
       name = "moduleCheck",
-      type = ModuleCheckAllTask::class,
-      rules = rules
+      findingFactory = MultiRuleFindingFactory(settings, rules)
     )
   }
 
   private fun Project.registerTask(
     name: String,
-    type: KClass<out Task>,
-    rules: Any
+    findingFactory: FindingFactory<*>
   ) {
-    tasks.register(name, type.java, rules)
+    tasks.register(name, ModuleCheckTask::class.java, findingFactory)
       .configure {
 
         allprojects

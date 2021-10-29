@@ -17,18 +17,18 @@ package modulecheck.api
 
 import modulecheck.api.Finding.FindingResult
 
-fun interface FindingFixer {
+fun interface FindingResultFactory {
 
-  fun toResults(
+  fun create(
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean
   ): List<Finding.FindingResult>
 }
 
-class RealFindingFixer : FindingFixer {
+class RealFindingResultFactory : FindingResultFactory {
 
-  override fun toResults(
+  override fun create(
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean

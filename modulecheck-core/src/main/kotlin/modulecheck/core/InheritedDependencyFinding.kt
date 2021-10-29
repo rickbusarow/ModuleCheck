@@ -15,7 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionIn
 import modulecheck.parsing.ConfigurationName
@@ -33,22 +32,13 @@ data class InheritedDependencyFinding(
   val source: ConfiguredProjectDependency?
 ) : DependencyFinding("inheritedDependency") {
 
+  override val message: String
+    get() = "Transitive dependencies which are directly referenced should be declared in this module."
+
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
   override val positionOrNull: Position? by lazy {
     source?.project?.positionIn(buildFile, configurationName)
-  }
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = fromStringOrEmpty(),
-      dependencyPath = dependencyProject.path,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
   }
 
   override fun fromStringOrEmpty(): String {

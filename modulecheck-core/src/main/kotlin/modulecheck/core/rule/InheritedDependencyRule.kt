@@ -15,7 +15,9 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.publicDependencies
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApi
@@ -25,7 +27,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class InheritedDependencyRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<InheritedDependencyFinding>() {
+) : ModuleCheckRule<InheritedDependencyFinding> {
 
   override val id = "InheritedDependency"
   override val description = "Finds project dependencies which are used in the current module, " +
@@ -92,5 +94,9 @@ class InheritedDependencyRule(
       .mapValues { it.value.toMutableSet() }
 
     return grouped.values.flatten()
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.inheritedDependency
   }
 }

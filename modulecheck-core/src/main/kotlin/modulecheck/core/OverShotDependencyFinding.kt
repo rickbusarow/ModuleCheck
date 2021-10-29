@@ -29,6 +29,11 @@ data class OverShotDependencyFinding(
   override val configurationName: ConfigurationName
 ) : DependencyFinding("overshot") {
 
+  override val message: String
+    get() = "The dependency is not used in the source set for which it is configured, but it is " +
+      "used in another source set which inherits from the first.  For example, a test-only " +
+      "dependency which is declared via `implementation` instead of `testImplementation`."
+
   override fun fix(): Boolean {
 
     val blocks = DependencyBlockParser

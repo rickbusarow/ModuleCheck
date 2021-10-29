@@ -16,7 +16,7 @@
 package modulecheck.gradle
 
 import modulecheck.api.KaptMatcher
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.settings.*
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
@@ -28,21 +28,25 @@ import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
-import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.api.settings.SortSettings
+import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.DEPENDENCY_COMPARATORS_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.PLUGIN_COMPARATORS_DEFAULT
 import modulecheck.gradle.internal.listProperty
 import modulecheck.gradle.internal.property
 import modulecheck.gradle.internal.setProperty
 import org.gradle.api.Action
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
 import org.gradle.kotlin.dsl.provideDelegate
 import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 open class ModuleCheckExtension @Inject constructor(
-  private val objects: ObjectFactory
+  objects: ObjectFactory,
+  projectLayout: ProjectLayout
 ) : ModuleCheckSettings {
 
   /**
@@ -97,11 +101,23 @@ open class ModuleCheckExtension @Inject constructor(
   fun sort(action: Action<SortExtension>) {
     action.execute(sort)
   }
+
+  /**
+   * Configures reporting options
+   */
+  override val reports = ReportsExtension(objects, projectLayout)
+
+  /**
+   * Configures reporting options
+   */
+  fun reports(action: Action<ReportsExtension>) {
+    action.execute(reports)
+  }
 }
 
 @Suppress("UnstableApiUsage")
 open class ChecksExtension @Inject constructor(
-  private val objects: ObjectFactory
+  objects: ObjectFactory
 ) : ChecksSettings {
   override var redundantDependency: Boolean by objects.property(REDUNDANT_DEPENDENCY_DEFAULT)
   override var unusedDependency: Boolean by objects.property(UNUSED_DEPENDENCY_DEFAULT)
@@ -120,10 +136,65 @@ open class ChecksExtension @Inject constructor(
 
 @Suppress("UnstableApiUsage")
 open class SortExtension @Inject constructor(
-  private val objects: ObjectFactory
+  objects: ObjectFactory
 ) : SortSettings {
-  override var pluginComparators by objects.listProperty(
-    PLUGIN_COMPARATORS_DEFAULT
+  override var pluginComparators by objects
+    .listProperty(PLUGIN_COMPARATORS_DEFAULT)
+
+  override var dependencyComparators by objects
+    .listProperty(DEPENDENCY_COMPARATORS_DEFAULT)
+}
+
+@Suppress("UnstableApiUsage")
+open class ReportsExtension @Inject constructor(
+  objects: ObjectFactory,
+  projectLayout: ProjectLayout
+) : ReportsSettings {
+
+  /**
+   * checkstyle-formatted xml report
+   */
+  override val checkstyle = ReportExtension(
+    objects = objects,
+    enabledDefault = CHECKSTYLE_ENABLED_DEFAULT,
+    outputPath = projectLayout.projectDirectory.dir(CHECKSTYLE_PATH_DEFAULT).toString()
   )
-  override var dependencyComparators by objects.listProperty(DEPENDENCY_COMPARATORS_DEFAULT)
+
+  /**
+   * checkstyle-formatted xml report
+   */
+  fun checkstyle(action: Action<ReportExtension>) {
+    action.execute(checkstyle)
+  }
+
+  /**
+   * plain-text report file matching the console output
+   */
+  override val text = ReportExtension(
+    objects = objects,
+    enabledDefault = TEXT_ENABLED_DEFAULT,
+    outputPath = projectLayout.projectDirectory.dir(TEXT_PATH_DEFAULT).toString()
+  )
+
+  /**
+   * plain-text report file matching the console output
+   */
+  fun text(action: Action<ReportExtension>) {
+    action.execute(text)
+  }
+}
+
+@Suppress("UnstableApiUsage")
+open class ReportExtension(
+  objects: ObjectFactory,
+  enabledDefault: Boolean,
+  outputPath: String
+) : ReportSettings {
+
+  override var enabled: Boolean by objects.property(enabledDefault)
+
+  /**
+   * Path for the generated file, relative to the project root.
+   */
+  override var outputPath: String by objects.property(outputPath)
 }

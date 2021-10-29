@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
@@ -22,7 +24,7 @@ import modulecheck.parsing.McProject
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<MustBeApiFinding>() {
+) : ModuleCheckRule<MustBeApiFinding> {
 
   override val id = "MustBeApi"
   override val description = "Finds project dependencies which are exposed by the module " +
@@ -39,6 +41,9 @@ class MustBeApiRule(
           source = it.source
         )
       }
-    // .distinctBy { it.dependencyProject }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.mustBeApi
   }
 }

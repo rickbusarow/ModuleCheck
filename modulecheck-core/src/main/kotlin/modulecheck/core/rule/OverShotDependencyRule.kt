@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.overshotDependencies
@@ -23,7 +25,7 @@ import modulecheck.parsing.all
 
 class OverShotDependencyRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<OverShotDependencyFinding>() {
+) : ModuleCheckRule<OverShotDependencyFinding> {
 
   override val id = "OverShotDependency"
   override val description = "Finds project dependencies which aren't used by the declaring" +
@@ -34,5 +36,9 @@ class OverShotDependencyRule(
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
       .sortedByDescending { it.configurationName }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.overShotDependency
   }
 }

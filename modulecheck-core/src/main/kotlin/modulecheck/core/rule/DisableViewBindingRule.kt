@@ -13,13 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule.android
+package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
@@ -27,7 +29,7 @@ import java.io.File
 
 class DisableViewBindingRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<DisableViewBindingGenerationFinding>() {
+) : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
   override val id = "DisableViewBinding"
   override val description = "Finds modules which have ViewBinding enabled, " +
@@ -84,6 +86,10 @@ class DisableViewBindingRule(
     } else {
       listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
     }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.disableViewBinding
   }
 
   companion object {
