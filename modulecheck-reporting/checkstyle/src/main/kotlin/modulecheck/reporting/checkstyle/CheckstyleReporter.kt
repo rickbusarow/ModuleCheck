@@ -21,7 +21,7 @@ import java.io.File
 
 class CheckstyleReporter {
 
-  fun reportResults(results: List<FindingResult>): String = buildString {
+  fun createXml(results: List<FindingResult>): String = buildString {
 
     appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
     appendLine("<checkstyle version=\"4.3\">")
@@ -43,6 +43,7 @@ class CheckstyleReporter {
           val line = "\t<error line=\"${row.xml()}\" " +
             "column=\"${column.xml()}\" " +
             "severity=\"${severity.xml()}\" " +
+            "dependency=\"${it.dependencyPath.xml()}\" " +
             "message=\"${it.message.xml()}\" " +
             "source=\"${source.xml()}\" />"
 

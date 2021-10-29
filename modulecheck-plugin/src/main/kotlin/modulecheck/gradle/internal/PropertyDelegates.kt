@@ -20,7 +20,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 internal inline fun <reified T : Any> ObjectFactory.setProperty(
-  initialValue: Set<T> = emptySet<T>()
+  initialValue: Set<T> = emptySet()
 ): ReadWriteProperty<Any, Set<T>> =
   object : ReadWriteProperty<Any, Set<T>> {
 

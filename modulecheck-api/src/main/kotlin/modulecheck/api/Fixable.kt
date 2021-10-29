@@ -15,12 +15,23 @@
 
 package modulecheck.api
 
+import modulecheck.api.Finding.FindingResult
+
 interface Fixable : Finding {
 
   val dependencyIdentifier: String
 
-  override fun logString(): String {
-    return "${buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
+      dependentPath = dependentPath,
+      problemName = problemName,
+      sourceOrNull = null,
+      dependencyPath = dependencyIdentifier,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile,
+      message = message,
+      fixed = fixed
+    )
   }
 
   fun fix(): Boolean = synchronized(buildFile) {

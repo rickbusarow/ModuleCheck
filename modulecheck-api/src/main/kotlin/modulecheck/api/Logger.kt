@@ -16,6 +16,9 @@
 package modulecheck.api
 
 interface Logger {
+
+  fun printReport(report: Report)
+
   fun printHeader(message: String)
   fun printWarning(message: String)
   fun printWarningLine(message: String)

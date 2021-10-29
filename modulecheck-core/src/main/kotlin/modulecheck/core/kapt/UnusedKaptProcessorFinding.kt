@@ -15,7 +15,6 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.ConfigurationName
@@ -28,21 +27,13 @@ data class UnusedKaptProcessorFinding(
   val configurationName: ConfigurationName
 ) : UnusedKaptFinding {
 
+  override val message: String
+    get() = "The annotation processor dependency is not used in this module.  " +
+      "This can be a significant performance hit."
+
   override val dependencyIdentifier = dependencyPath
 
   override val problemName = "unusedKaptProcessor"
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = null,
-      dependencyPath = dependencyPath,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
-  }
 
   override val positionOrNull: Position? by lazy {
     // Kapt paths are different from other project dependencies.

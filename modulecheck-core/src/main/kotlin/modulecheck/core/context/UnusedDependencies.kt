@@ -39,6 +39,9 @@ data class UnusedDependency(
 ) : DependencyFinding("unusedDependency"),
   Deletable {
 
+  override val message: String
+    get() = "The declared dependency is not used in this module."
+
   fun cpd() = ConfiguredProjectDependency(
     configurationName = configurationName,
     project = dependencyProject,

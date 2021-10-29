@@ -36,6 +36,11 @@ data class RedundantDependencyFinding(
 ) : DependencyFinding("redundant"),
   Deletable {
 
+  override val message: String
+    get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
+      "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
+      "file is desired."
+
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {

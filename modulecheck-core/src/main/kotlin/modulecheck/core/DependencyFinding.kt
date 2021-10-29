@@ -55,6 +55,7 @@ abstract class DependencyFinding(
       dependencyPath = dependencyProject.path,
       positionOrNull = positionOrNull,
       buildFile = buildFile,
+      message = message,
       fixed = fixed
     )
   }

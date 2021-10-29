@@ -27,6 +27,7 @@ dependencies {
   api(projects.modulecheckParsing.groovyAntlr)
   api(projects.modulecheckParsing.psi)
   api(projects.modulecheckParsing.xml)
+  api(projects.modulecheckReporting.checkstyle)
   api(projects.modulecheckReporting.console)
 
   implementation(libs.agp)

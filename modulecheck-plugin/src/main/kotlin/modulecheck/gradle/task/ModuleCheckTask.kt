@@ -67,7 +67,7 @@ abstract class ModuleCheckTask<T : Finding> :
       settings = settings,
       findingFactory = this,
       logger = logger,
-      loggingReporter = LoggingReporter(logger),
+      loggingReporter = LoggingReporter(),
       findingFixer = RealFindingFixer()
     )
 

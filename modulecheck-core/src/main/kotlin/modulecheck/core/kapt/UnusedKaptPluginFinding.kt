@@ -16,7 +16,6 @@
 package modulecheck.core.kapt
 
 import modulecheck.api.Finding
-import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
@@ -30,21 +29,13 @@ data class UnusedKaptPluginFinding(
   override val buildFile: File
 ) : UnusedKaptFinding {
 
+  override val message: String
+    get() = "The `$KAPT_PLUGIN_ID` plugin dependency declared, " +
+      "but no processor dependencies are declared."
+
   override val dependencyIdentifier = KAPT_PLUGIN_ID
 
   override val problemName = "unusedKaptPlugin"
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = problemName,
-      sourceOrNull = null,
-      dependencyPath = dependencyIdentifier,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      fixed = fixed
-    )
-  }
 
   override val positionOrNull: Position? by lazy {
     val text = buildFile

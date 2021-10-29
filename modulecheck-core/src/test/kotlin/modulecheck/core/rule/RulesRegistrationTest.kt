@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
 import modulecheck.api.KaptMatcher
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.settings.*
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
@@ -30,8 +30,10 @@ import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
-import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.api.settings.SortSettings
+import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.DEPENDENCY_COMPARATORS_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.PLUGIN_COMPARATORS_DEFAULT
 import org.junit.jupiter.api.Test
@@ -72,7 +74,8 @@ data class TestSettings(
   override var doNotCheck: Set<String> = emptySet(),
   override var additionalKaptMatchers: List<KaptMatcher> = emptyList(),
   override val checks: ChecksSettings = TestChecksSettings(),
-  override val sort: SortSettings = TestSortSettings()
+  override val sort: SortSettings = TestSortSettings(),
+  override val reports: ReportsSettings = TestReportsSettings()
 ) : ModuleCheckSettings {
   @Suppress("UNUSED")
   fun checks(block: ChecksSettings.() -> Unit) = Unit
@@ -99,3 +102,13 @@ class TestSortSettings(
   override var pluginComparators: List<String> = PLUGIN_COMPARATORS_DEFAULT,
   override var dependencyComparators: List<String> = DEPENDENCY_COMPARATORS_DEFAULT
 ) : SortSettings
+
+class TestReportsSettings(
+  override val checkstyle: ReportSettings = TestReportSettings(CHECKSTYLE_ENABLED_DEFAULT, CHECKSTYLE_PATH_DEFAULT),
+  override val text: ReportSettings = TestReportSettings(TEXT_ENABLED_DEFAULT, TEXT_PATH_DEFAULT)
+) : ReportsSettings
+
+class TestReportSettings(
+  override var enabled: Boolean,
+  override var outputPath: String
+) : ReportSettings

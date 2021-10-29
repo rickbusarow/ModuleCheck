@@ -21,7 +21,9 @@ import modulecheck.api.FindingFixer
 import modulecheck.api.Logger
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
+import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.LoggingReporter
+import java.io.File
 import kotlin.system.measureTimeMillis
 
 /**
@@ -40,9 +42,6 @@ class ModuleCheckRunner(
   val loggingReporter: LoggingReporter,
   val logger: Logger
 ) {
-
-  private val autoCorrect: Boolean = settings.autoCorrect
-  private val deleteUnused: Boolean = settings.deleteUnused
 
   fun run(projects: List<McProject>): Result<Unit> {
 
@@ -109,12 +108,30 @@ class ModuleCheckRunner(
 
         findingFixer.toResults(
           findings = list,
-          autoCorrect = autoCorrect,
-          deleteUnused = deleteUnused
+          autoCorrect = settings.autoCorrect,
+          deleteUnused = settings.deleteUnused
         )
       }
 
-    loggingReporter.reportResults(results)
+    val textReport = loggingReporter.reportResults(results)
+
+    logger.printReport(textReport)
+
+    if (settings.reports.text.enabled) {
+      val path = settings.reports.text.outputPath
+
+      File(path)
+        .also { it.parentFile.mkdirs() }
+        .writeText(textReport.joinToString())
+    }
+
+    if (settings.reports.checkstyle.enabled) {
+      val path = settings.reports.checkstyle.outputPath
+
+      File(path)
+        .also { it.parentFile.mkdirs() }
+        .writeText(CheckstyleReporter().createXml(results))
+    }
 
     return results.count { !it.fixed }
   }
