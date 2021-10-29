@@ -23,7 +23,7 @@ import modulecheck.parsing.all
 
 class UnusedDependencyRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<UnusedDependency>() {
+) : ModuleCheckRule<UnusedDependency> {
 
   override val id = "UnusedDependency"
   override val description = "Finds project dependencies which aren't used in the declaring module"

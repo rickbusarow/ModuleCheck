@@ -22,7 +22,7 @@ import modulecheck.parsing.McProject
 
 class MustBeApiRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<MustBeApiFinding>() {
+) : ModuleCheckRule<MustBeApiFinding> {
 
   override val id = "MustBeApi"
   override val description = "Finds project dependencies which are exposed by the module " +

@@ -13,18 +13,19 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule.sort
+package modulecheck.core.rule
 
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
-import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.rule.sort.SortPluginsFinding
+import modulecheck.core.rule.sort.sortedPlugins
 import modulecheck.parsing.McProject
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
 
 class SortPluginsRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<SortPluginsFinding>() {
+) : ModuleCheckRule<SortPluginsFinding> {
 
   override val id = "SortPlugins"
   override val description =

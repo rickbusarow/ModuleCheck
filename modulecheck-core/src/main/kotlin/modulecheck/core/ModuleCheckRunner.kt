@@ -15,14 +15,11 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding
-import modulecheck.api.FindingFactory
-import modulecheck.api.FindingFixer
-import modulecheck.api.Logger
+import modulecheck.api.*
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
 import modulecheck.reporting.checkstyle.CheckstyleReporter
-import modulecheck.reporting.console.LoggingReporter
+import modulecheck.reporting.console.ReportFactory
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -31,16 +28,17 @@ import kotlin.system.measureTimeMillis
  * various dependencies.
  *
  * @param findingFactory handles parsing of the projects in order to generate the findings
- * @param findingFixer attempts to apply fixes to the findings and returns a list of
+ * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
  *   [FindingResult][modulecheck.api.Finding.FindingResult]
- * @param loggingReporter handles console output of the results
+ * @param reportFactory handles console output of the results
  */
 class ModuleCheckRunner(
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
-  val findingFixer: FindingFixer,
-  val loggingReporter: LoggingReporter,
-  val logger: Logger
+  val logger: Logger,
+  val findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
+  val reportFactory: ReportFactory = ReportFactory(),
+  val checkstyleReporter: CheckstyleReporter = CheckstyleReporter()
 ) {
 
   fun run(projects: List<McProject>): Result<Unit> {
@@ -106,14 +104,14 @@ class ModuleCheckRunner(
       .groupBy { it.dependentPath }
       .flatMap { (_, list) ->
 
-        findingFixer.toResults(
+        findingResultFactory.create(
           findings = list,
           autoCorrect = settings.autoCorrect,
           deleteUnused = settings.deleteUnused
         )
       }
 
-    val textReport = loggingReporter.reportResults(results)
+    val textReport = reportFactory.create(results)
 
     logger.printReport(textReport)
 
@@ -130,7 +128,7 @@ class ModuleCheckRunner(
 
       File(path)
         .also { it.parentFile.mkdirs() }
-        .writeText(CheckstyleReporter().createXml(results))
+        .writeText(checkstyleReporter.createXml(results))
     }
 
     return results.count { !it.fixed }

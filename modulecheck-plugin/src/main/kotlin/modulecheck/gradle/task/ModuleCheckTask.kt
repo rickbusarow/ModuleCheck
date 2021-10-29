@@ -17,29 +17,34 @@ package modulecheck.gradle.task
 
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
-import modulecheck.api.FindingFixer
-import modulecheck.api.RealFindingFixer
+import modulecheck.api.RealFindingResultFactory
 import modulecheck.core.ModuleCheckRunner
+import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectsAware
-import modulecheck.reporting.console.LoggingReporter
+import modulecheck.reporting.console.ReportFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import java.util.concurrent.ConcurrentHashMap
+import javax.inject.Inject
 
-abstract class ModuleCheckTask<T : Finding> :
-  DefaultTask(),
-  ProjectsAware,
-  FindingFactory<T>,
-  FindingFixer by RealFindingFixer() {
+abstract class ModuleCheckTask<T : Finding> @Inject constructor(
+  private val findingFactory: FindingFactory<T>
+) : DefaultTask(),
+    ProjectsAware {
 
   init {
     group = "moduleCheck"
+    description = if (findingFactory is SingleRuleFindingFactory<*>) {
+      findingFactory.rule.description
+    } else {
+      "runs all enabled ModuleCheck rules"
+    }
   }
 
   @get:Input
@@ -65,10 +70,10 @@ abstract class ModuleCheckTask<T : Finding> :
 
     val runner = ModuleCheckRunner(
       settings = settings,
-      findingFactory = this,
+      findingFactory = findingFactory,
       logger = logger,
-      loggingReporter = LoggingReporter(),
-      findingFixer = RealFindingFixer()
+      reportFactory = ReportFactory(),
+      findingResultFactory = RealFindingResultFactory()
     )
 
     val projects = project

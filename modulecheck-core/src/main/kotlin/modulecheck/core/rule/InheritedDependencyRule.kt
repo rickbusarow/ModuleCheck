@@ -25,7 +25,7 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class InheritedDependencyRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<InheritedDependencyFinding>() {
+) : ModuleCheckRule<InheritedDependencyFinding> {
 
   override val id = "InheritedDependency"
   override val description = "Finds project dependencies which are used in the current module, " +

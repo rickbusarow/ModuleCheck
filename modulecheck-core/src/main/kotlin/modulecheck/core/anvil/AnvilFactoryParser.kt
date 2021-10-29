@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle
+package modulecheck.core.anvil
 
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
-import modulecheck.core.CouldUseAnvilFinding
 import modulecheck.parsing.McProject
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile

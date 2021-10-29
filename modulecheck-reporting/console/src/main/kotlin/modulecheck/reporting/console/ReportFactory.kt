@@ -19,9 +19,9 @@ import modulecheck.api.Finding
 import modulecheck.api.Report
 import java.util.*
 
-class LoggingReporter {
+class ReportFactory {
 
-  fun reportResults(results: List<Finding.FindingResult>): Report = Report.build {
+  fun create(results: List<Finding.FindingResult>): Report = Report.build {
 
     header("-- ModuleCheck results --")
 

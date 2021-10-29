@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule.sort
+package modulecheck.core.rule
 
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
-import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.rule.sort.SortDependenciesFinding
+import modulecheck.core.rule.sort.sortedDependenciesFileText
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.DependencyDeclaration
@@ -27,7 +28,7 @@ import java.util.*
 
 class SortDependenciesRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<SortDependenciesFinding>() {
+) : ModuleCheckRule<SortDependenciesFinding> {
 
   override val id = "SortDependencies"
   override val description = "Sorts all dependencies within a dependencies { ... } block"

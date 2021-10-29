@@ -15,18 +15,53 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.Finding
+import modulecheck.api.FindingFactory
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
-abstract class ModuleCheckRule<T> {
+interface ModuleCheckRule<T> {
 
-  abstract val settings: ModuleCheckSettings
-  abstract val id: String
-  abstract val description: String
+  val settings: ModuleCheckSettings
+  val id: String
+  val description: String
 
-  abstract fun check(project: McProject): List<T>
+  fun check(project: McProject): List<T>
+  fun shouldApply(settings: ModuleCheckSettings): Boolean
 
-  protected fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+  fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+}
+
+class SingleRuleFindingFactory<T : Finding>(
+  val rule: ModuleCheckRule<T>
+) : FindingFactory<Finding> {
+
+  override fun evaluate(projects: List<McProject>): List<T> {
+    return projects.flatMap { project ->
+      rule.check(project)
+    }
+  }
+}
+
+class MultiRuleFindingFactory(
+  private val settings: ModuleCheckSettings,
+  private val rules: List<ModuleCheckRule<*>>
+) : FindingFactory<Finding> {
+
+  override fun evaluate(projects: List<McProject>): List<Finding> {
+    val props = ChecksSettings::class.declaredMemberProperties
+      .associate { it.name to it.get(settings.checks) as Boolean }
+
+    val findings = projects.flatMap { proj ->
+      @Suppress("DEPRECATION")
+      rules
+        .filter { props[it.id.decapitalize()] ?: false }
+        .flatMap { it.check(proj) }
+    }
+
+    return findings
+  }
 }

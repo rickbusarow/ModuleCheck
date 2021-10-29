@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.core.anvil
 
 import modulecheck.api.Finding
 import modulecheck.api.Finding.Position

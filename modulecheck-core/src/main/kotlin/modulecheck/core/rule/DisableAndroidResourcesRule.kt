@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule.android
+package modulecheck.core.rule
 
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.ModuleCheckRule
+import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
 
 class DisableAndroidResourcesRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<UnusedResourcesGenerationFinding>() {
+) : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 
   override val id = "DisableAndroidResources"
   override val description =

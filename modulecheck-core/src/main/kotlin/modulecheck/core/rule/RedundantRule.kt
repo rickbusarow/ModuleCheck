@@ -23,7 +23,7 @@ import modulecheck.parsing.all
 
 class RedundantRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<RedundantDependencyFinding>() {
+) : ModuleCheckRule<RedundantDependencyFinding> {
 
   override val id = "RedundantDependency"
   override val description =

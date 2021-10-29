@@ -30,7 +30,7 @@ class CheckstyleReporter {
       .entries
       .forEach { (filePathString, values) ->
 
-        appendLine("<file name=\"${filePathString.xml()}\">")
+        appendLine("\t<file name=\"${filePathString.xml()}\">")
 
         values.forEach {
 
@@ -40,7 +40,7 @@ class CheckstyleReporter {
           val severity = if (it.fixed) "info" else "error"
           val source = "modulecheck." + it.problemName
 
-          val line = "\t<error line=\"${row.xml()}\" " +
+          val line = "\t\t<error line=\"${row.xml()}\" " +
             "column=\"${column.xml()}\" " +
             "severity=\"${severity.xml()}\" " +
             "dependency=\"${it.dependencyPath.xml()}\" " +
@@ -50,7 +50,7 @@ class CheckstyleReporter {
           appendLine(line)
         }
 
-        appendLine("</file>")
+        appendLine("\t</file>")
       }
 
     appendLine("</checkstyle>")

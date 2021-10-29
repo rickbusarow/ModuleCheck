@@ -30,7 +30,7 @@ internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
   override val settings: ModuleCheckSettings
-) : ModuleCheckRule<UnusedKaptFinding>() {
+) : ModuleCheckRule<UnusedKaptFinding> {
 
   private val kaptMatchers: List<KaptMatcher>
     get() = settings.additionalKaptMatchers + defaultKaptMatchers
