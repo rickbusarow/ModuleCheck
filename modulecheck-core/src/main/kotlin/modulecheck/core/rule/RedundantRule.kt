@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.core.context.RedundantDependencyFinding
@@ -34,5 +36,9 @@ class RedundantRule(
     return project[RedundantDependencies]
       .all()
       .distinctBy { it.positionOrNull }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.redundantDependency
   }
 }

@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
@@ -39,6 +41,9 @@ class MustBeApiRule(
           source = it.source
         )
       }
-    // .distinctBy { it.dependencyProject }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.mustBeApi
   }
 }

@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.UnusedDependencies
 import modulecheck.core.context.UnusedDependency
@@ -33,5 +35,9 @@ class UnusedDependencyRule(
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
       .distinctBy { it.statementTextOrNull }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.unusedDependency
   }
 }

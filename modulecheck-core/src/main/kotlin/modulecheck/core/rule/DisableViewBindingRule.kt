@@ -15,9 +15,11 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.AndroidMcProject
@@ -84,6 +86,10 @@ class DisableViewBindingRule(
     } else {
       listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
     }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.disableViewBinding
   }
 
   companion object {

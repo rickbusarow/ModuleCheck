@@ -16,8 +16,10 @@
 package modulecheck.core.rule
 
 import modulecheck.api.KaptMatcher
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.asMap
 import modulecheck.api.context.*
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.kapt.UnusedKaptFinding
 import modulecheck.core.kapt.UnusedKaptPluginFinding
@@ -82,6 +84,10 @@ class UnusedKaptRule(
           unusedFindings
         }
       }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.unusedKapt
   }
 
   private fun KaptMatcher.matchedIn(

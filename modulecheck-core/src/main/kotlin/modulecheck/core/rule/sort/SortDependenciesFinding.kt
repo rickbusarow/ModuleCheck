@@ -21,7 +21,10 @@ import modulecheck.api.Fixable
 import modulecheck.core.parse
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
+import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
@@ -77,3 +80,37 @@ internal fun sortedDependenciesFileText(
     "$sorted$whitespaceBeforeBrace}"
   }
 }
+
+internal fun DependenciesBlock.sortedDeclarations(
+  comparator: Comparator<String>
+): String {
+  return allDeclarations
+    .grouped(comparator)
+    .joinToString("\n\n") { declarations ->
+
+      declarations
+        .sortedBy { declaration ->
+          declaration.declarationText.lowercase(Locale.US)
+        }
+        .joinToString("\n") {
+          it.statementWithSurroundingText
+            .trimStart('\n')
+            .trimEnd()
+            .lines()
+            .joinToString("\n")
+        }
+    }
+    .suffixIfNot("\n")
+}
+
+internal fun List<DependencyDeclaration>.grouped(
+  comparator: Comparator<String>
+) = groupBy {
+  it.declarationText
+    .split("[^a-zA-Z-]".toRegex())
+    .filterNot { it.isEmpty() }
+    .take(2)
+    .joinToString("-")
+}
+  .toSortedMap(comparator)
+  .map { it.value }

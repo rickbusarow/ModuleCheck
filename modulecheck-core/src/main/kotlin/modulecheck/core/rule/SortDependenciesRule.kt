@@ -15,15 +15,14 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
-import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.DependencyDeclaration
 import modulecheck.parsing.McProject
-import org.jetbrains.kotlin.util.suffixIfNot
 import java.util.*
 
 class SortDependenciesRule(
@@ -69,40 +68,8 @@ class SortDependenciesRule(
       listOf(SortDependenciesFinding(project.path, project.buildFile, comparator))
     }
   }
-}
 
-fun List<DependencyDeclaration>.grouped(
-  comparator: Comparator<String>
-) = groupBy {
-  it.declarationText
-    .split("[^a-zA-Z-]".toRegex())
-    .filterNot { it.isEmpty() }
-    .take(2)
-    .joinToString("-")
-}
-  .toSortedMap(comparator)
-  .map { it.value }
-
-internal fun DependenciesBlock.sortedDeclarations(
-  comparator: Comparator<String>
-): String {
-  return allDeclarations
-    .grouped(comparator)
-    .joinToString("\n\n") { declarations ->
-
-      declarations
-        .sortedBy { declaration ->
-          // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-          @Suppress("DEPRECATION")
-          declaration.declarationText.toLowerCase(Locale.US)
-        }
-        .joinToString("\n") {
-          it.statementWithSurroundingText
-            .trimStart('\n')
-            .trimEnd()
-            .lines()
-            .joinToString("\n")
-        }
-    }
-    .suffixIfNot("\n")
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.sortDependencies
+  }
 }

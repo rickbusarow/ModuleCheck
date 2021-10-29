@@ -36,7 +36,7 @@ import javax.inject.Inject
 abstract class ModuleCheckTask<T : Finding> @Inject constructor(
   private val findingFactory: FindingFactory<T>
 ) : DefaultTask(),
-    ProjectsAware {
+  ProjectsAware {
 
   init {
     group = "moduleCheck"

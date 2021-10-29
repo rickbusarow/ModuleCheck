@@ -16,12 +16,9 @@
 package modulecheck.core.rule
 
 import modulecheck.api.Finding
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.RuleFactory
 import modulecheck.api.settings.ModuleCheckSettings
-
-interface RuleFactory {
-
-  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<out Finding>>
-}
 
 class ModuleCheckRuleFactory : RuleFactory {
 

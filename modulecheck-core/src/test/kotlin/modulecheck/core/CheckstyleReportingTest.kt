@@ -19,7 +19,6 @@ import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Finding.Position
 import modulecheck.api.PrintLogger
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.core.rule.TestSettings
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.testing.BaseTest

@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.sort.SortPluginsFinding
@@ -61,5 +63,9 @@ class SortPluginsRule(
     } else {
       listOf(SortPluginsFinding(project.path, project.buildFile, comparator))
     }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.sortPlugins
   }
 }

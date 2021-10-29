@@ -15,6 +15,8 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.overshotDependencies
@@ -34,5 +36,9 @@ class OverShotDependencyRule(
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
       .sortedByDescending { it.configurationName }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.overShotDependency
   }
 }

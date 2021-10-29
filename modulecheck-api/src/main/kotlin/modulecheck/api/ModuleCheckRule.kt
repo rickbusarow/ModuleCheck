@@ -13,28 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.core.rule
+package modulecheck.api
 
-import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.anvil.AnvilFactoryParser
-import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.McProject
+import modulecheck.parsing.psi.internal.asKtsFileOrNull
+import org.jetbrains.kotlin.psi.KtFile
 
-class AnvilFactoryRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<CouldUseAnvilFinding> {
+interface ModuleCheckRule<T> {
 
-  override val id = "AnvilFactoryGeneration"
-  override val description = "Finds modules which could use Anvil's factory generation " +
-    "instead of Dagger's"
+  val settings: ModuleCheckSettings
+  val id: String
+  val description: String
 
-  override fun check(project: McProject): List<CouldUseAnvilFinding> {
-    return AnvilFactoryParser.parse(project)
-  }
+  fun check(project: McProject): List<T>
+  fun shouldApply(checksSettings: ChecksSettings): Boolean
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.anvilFactoryGeneration
-  }
+  fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+}
+
+fun interface RuleFactory {
+
+  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<out Finding>>
 }

@@ -17,23 +17,9 @@ package modulecheck.core.rule
 
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
-import modulecheck.parsing.psi.internal.asKtsFileOrNull
-import org.jetbrains.kotlin.psi.KtFile
-
-interface ModuleCheckRule<T> {
-
-  val settings: ModuleCheckSettings
-  val id: String
-  val description: String
-
-  fun check(project: McProject): List<T>
-  fun shouldApply(settings: ModuleCheckSettings): Boolean
-
-  fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
-}
 
 class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>
@@ -48,17 +34,14 @@ class SingleRuleFindingFactory<T : Finding>(
 
 class MultiRuleFindingFactory(
   private val settings: ModuleCheckSettings,
-  private val rules: List<ModuleCheckRule<*>>
+  private val rules: List<ModuleCheckRule<out Finding>>
 ) : FindingFactory<Finding> {
 
   override fun evaluate(projects: List<McProject>): List<Finding> {
-    val props = ChecksSettings::class.declaredMemberProperties
-      .associate { it.name to it.get(settings.checks) as Boolean }
 
     val findings = projects.flatMap { proj ->
-      @Suppress("DEPRECATION")
       rules
-        .filter { props[it.id.decapitalize()] ?: false }
+        .filter { it.shouldApply(settings.checks) }
         .flatMap { it.check(proj) }
     }
 

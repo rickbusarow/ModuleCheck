@@ -15,7 +15,9 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.publicDependencies
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApi
@@ -92,5 +94,9 @@ class InheritedDependencyRule(
       .mapValues { it.value.toMutableSet() }
 
     return grouped.values.flatten()
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.inheritedDependency
   }
 }
