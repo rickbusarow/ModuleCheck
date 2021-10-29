@@ -15,8 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.FindingResult
-import modulecheck.api.Finding.Position
+import modulecheck.api.Finding
 import modulecheck.api.PrintLogger
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.reporting.checkstyle.CheckstyleReporter
@@ -25,20 +24,20 @@ import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReportingTest : BaseTest() {
+internal class TextReportingTest : BaseTest() {
 
   val baseSettings by resets {
     TestSettings().apply {
-      reports.checkstyle.outputPath = File(testProjectDir, reports.checkstyle.outputPath).path
+      reports.text.outputPath = File(testProjectDir, reports.text.outputPath).path
     }
   }
 
   @Test
-  fun `checkstyle report should not be created if disabled in settings`() {
+  fun `text report should not be created if disabled in settings`() {
 
-    baseSettings.reports.checkstyle.enabled = false
+    baseSettings.reports.text.enabled = false
 
-    val outputFile = File(baseSettings.reports.checkstyle.outputPath)
+    val outputFile = File(baseSettings.reports.text.outputPath)
 
     val runner = ModuleCheckRunner(
       settings = baseSettings,
@@ -52,12 +51,12 @@ internal class CheckstyleReportingTest : BaseTest() {
       },
       findingResultFactory = { _, _, _ ->
         listOf(
-          FindingResult(
+          Finding.FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             dependencyPath = "dependencyPath",
-            positionOrNull = Position(1, 2),
+            positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
             fixed = true
@@ -77,11 +76,11 @@ internal class CheckstyleReportingTest : BaseTest() {
   }
 
   @Test
-  fun `checkstyle report should be created if enabled in settings`() {
+  fun `text report should be created if enabled in settings`() {
 
-    baseSettings.reports.checkstyle.enabled = true
+    baseSettings.reports.text.enabled = true
 
-    val outputFile = File(baseSettings.reports.checkstyle.outputPath)
+    val outputFile = File(baseSettings.reports.text.outputPath)
 
     val runner = ModuleCheckRunner(
       settings = baseSettings,
@@ -95,12 +94,12 @@ internal class CheckstyleReportingTest : BaseTest() {
       },
       findingResultFactory = { _, _, _ ->
         listOf(
-          FindingResult(
+          Finding.FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             dependencyPath = "dependencyPath",
-            positionOrNull = Position(1, 2),
+            positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
             fixed = true
@@ -116,12 +115,12 @@ internal class CheckstyleReportingTest : BaseTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="buildFile">
-		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
+    outputFile.readText() shouldBe """-- ModuleCheck results --
+
+    dependentPath
+           dependency     name           source          build file
+        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
+
 """
   }
 }

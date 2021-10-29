@@ -39,7 +39,6 @@ class ReportFactory {
         )
         val maxProblemName = values.maxOf { it.problemName.length }
         val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
-        val maxFilePathStr = values.maxOf { it.filePathString.length }
 
         header(
           tab(2) +
@@ -49,7 +48,7 @@ class ReportFactory {
             tab(1) +
             "source".padEnd(maxSource) +
             tab(1) +
-            "build file".padEnd(maxFilePathStr)
+            "build file"
         )
 
         values.sortedWith(
@@ -65,7 +64,7 @@ class ReportFactory {
             tab(1) +
             result.sourceOrNull.orEmpty().padEnd(maxSource) +
             tab(1) +
-            result.filePathString.padEnd(maxFilePathStr)
+            result.filePathString
 
           if (result.fixed) {
             success(tab(2) + "✔  ")

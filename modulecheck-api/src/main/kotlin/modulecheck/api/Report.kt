@@ -23,7 +23,7 @@ data class Report(val entries: List<ReportEntry>) {
     entries
       .forEach { reportEntry ->
         when (reportEntry) {
-          is AppendNewLine -> appendLine(reportEntry.message)
+          is AppendNewLine -> appendLine(reportEntry.message.trimEnd())
           else -> append(reportEntry.message)
         }
       }
@@ -70,7 +70,7 @@ data class Report(val entries: List<ReportEntry>) {
   ) {
 
     fun header(message: String) {
-      entries.add(Header(message))
+      entries.add(Header(message.trimEnd()))
     }
 
     fun warning(message: String) {
@@ -78,7 +78,7 @@ data class Report(val entries: List<ReportEntry>) {
     }
 
     fun warningLine(message: String) {
-      entries.add(WarningLine(message))
+      entries.add(WarningLine(message.trimEnd()))
     }
 
     fun info(message: String) {
@@ -90,11 +90,11 @@ data class Report(val entries: List<ReportEntry>) {
     }
 
     fun failureLine(message: String) {
-      entries.add(FailureLine(message))
+      entries.add(FailureLine(message.trimEnd()))
     }
 
     fun failureHeader(message: String) {
-      entries.add(FailureHeader(message))
+      entries.add(FailureHeader(message.trimEnd()))
     }
 
     fun success(message: String) {
@@ -102,11 +102,11 @@ data class Report(val entries: List<ReportEntry>) {
     }
 
     fun successLine(message: String) {
-      entries.add(SuccessLine(message))
+      entries.add(SuccessLine(message.trimEnd()))
     }
 
     fun successHeader(message: String) {
-      entries.add(SuccessHeader(message))
+      entries.add(SuccessHeader(message.trimEnd()))
     }
   }
 
