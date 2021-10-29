@@ -21,19 +21,16 @@ plugins {
 
 dependencies {
 
-  compileOnly(gradleApi())
-
   api(libs.semVer)
 
+  compileOnly(gradleApi())
+
   implementation(libs.agp)
+  implementation(libs.groovy)
   implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
-  implementation(libs.groovy)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
 }

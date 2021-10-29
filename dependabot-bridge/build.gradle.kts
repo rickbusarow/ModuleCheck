@@ -28,14 +28,17 @@ dependencies {
   dependencySync("com.rickbusarow.hermit:hermit-mockk:0.9.5")
   dependencySync("com.squareup.anvil:gradle-plugin:2.3.7")
   dependencySync("com.squareup:kotlinpoet:1.10.2")
+
   dependencySync("io.kotest:kotest-assertions-core-jvm:4.6.3")
   dependencySync("io.kotest:kotest-property-jvm:4.6.3")
   dependencySync("io.kotest:kotest-runner-junit5-jvm:4.6.3")
+
   dependencySync("javax.inject:javax.inject:1")
-  dependencySync("org.antlr:antlr4:4.9.2")
-  dependencySync("org.antlr:antlr4-runtime:4.9.2")
-  dependencySync("org.unbescape:unbescape:1.1.6.RELEASE")
+
   dependencySync("net.swiftzer.semver:semver:1.1.1")
+
+  dependencySync("org.antlr:antlr4-runtime:4.9.2")
+  dependencySync("org.antlr:antlr4:4.9.2")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.31")
@@ -47,4 +50,5 @@ dependencies {
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.1")
   dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.1")
   dependencySync("org.junit.jupiter:junit-jupiter-params:5.8.1")
+  dependencySync("org.unbescape:unbescape:1.1.6.RELEASE")
 }

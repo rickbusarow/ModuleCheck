@@ -54,7 +54,6 @@ gradleEnterprise {
 
 rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
   ":dependabot-bridge",

@@ -23,21 +23,18 @@ dependencies {
 
   api(libs.kotlin.compiler)
 
-  api(projects.modulecheckParsing.api)
-
-  compileOnly(libs.groovyXml)
+  api(project(path = ":modulecheck-parsing:api"))
 
   compileOnly(gradleApi())
 
+  compileOnly(libs.groovyXml)
+
   implementation(libs.agp)
+  implementation(libs.groovy)
   implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
-  implementation(libs.groovy)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
 }
