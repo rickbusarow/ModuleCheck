@@ -19,7 +19,7 @@ import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.internal.uses
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -33,7 +33,7 @@ data class OverShotDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<OverShotDependencies> {
-    override operator fun invoke(project: Project2): OverShotDependencies {
+    override operator fun invoke(project: McProject): OverShotDependencies {
 
       val used = project.unusedDependencies
         .values

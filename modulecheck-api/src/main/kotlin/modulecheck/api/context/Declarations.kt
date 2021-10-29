@@ -16,7 +16,6 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.*
-import modulecheck.parsing.ProjectContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -29,7 +28,7 @@ data class Declarations(
     get() = Key
 
   companion object Key : ProjectContext.Key<Declarations> {
-    override operator fun invoke(project: Project2): Declarations {
+    override operator fun invoke(project: McProject): Declarations {
       val map = project
         .sourceSets
         .mapValues { (sourceSetName, _) ->
@@ -38,7 +37,7 @@ data class Declarations(
             .flatMap { jvmFile -> jvmFile.declarations }
             .toSet()
 
-          val baseAndroidPackage = (project as? AndroidProject2)?.androidPackageOrNull
+          val baseAndroidPackage = (project as? AndroidMcProject)?.androidPackageOrNull
             ?: return@mapValues jvmFiles
 
           jvmFiles

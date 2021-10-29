@@ -19,7 +19,7 @@ import modulecheck.api.Deletable
 import modulecheck.api.context.publicDependencies
 import modulecheck.core.DependencyFinding
 import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.asConfigurationName
 import java.io.File
@@ -29,10 +29,10 @@ import java.util.concurrent.ConcurrentMap
 data class RedundantDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: List<Project2>
+  val from: List<McProject>
 ) : DependencyFinding("redundant"),
   Deletable {
 
@@ -57,7 +57,7 @@ data class RedundantDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<RedundantDependencies> {
-    override operator fun invoke(project: Project2): RedundantDependencies {
+    override operator fun invoke(project: McProject): RedundantDependencies {
       val allApi = project
         .projectDependencies
         .value["api".asConfigurationName()]

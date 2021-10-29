@@ -1,3 +1,24 @@
+# 0.11.3
+
+### 🚀 Features
+
+- support suppressing findings ([#235](https://github.com/rbusarow/ModuleCheck/pull/235))
+
+### 🐛 Bug Fixes
+
+- support testFixtures ([#232](https://github.com/rbusarow/ModuleCheck/pull/232))
+
+### 🧰 Maintenance
+
+- Bump kotlinpoet from 1.10.1 to 1.10.2 ([#233](https://github.com/rbusarow/ModuleCheck/pull/233))
+- Bump gradle-plugin from 2.3.6 to 2.3.7 ([#229](https://github.com/rbusarow/ModuleCheck/pull/229))
+
+### ℹ️ Website
+
+- use titles in docs code snippets ([#237](https://github.com/rbusarow/ModuleCheck/pull/237))
+- clarify CI workflow docs ([#221](https://github.com/rbusarow/ModuleCheck/pull/221))
+- add example CI workflow to docs ([#220](https://github.com/rbusarow/ModuleCheck/pull/220))
+
 # 0.11.2
 
 ### 🐛 Bug Fixes

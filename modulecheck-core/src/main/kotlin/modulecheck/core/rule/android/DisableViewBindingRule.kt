@@ -20,8 +20,8 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.parsing.AndroidProject2
-import modulecheck.parsing.Project2
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import java.io.File
 
@@ -34,8 +34,8 @@ class DisableViewBindingRule(
     "but don't actually use any generated ViewBinding objects from that module"
 
   @Suppress("ReturnCount")
-  override fun check(project: Project2): List<DisableViewBindingGenerationFinding> {
-    val androidProject = project as? AndroidProject2 ?: return emptyList()
+  override fun check(project: McProject): List<DisableViewBindingGenerationFinding> {
+    val androidProject = project as? AndroidMcProject ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
     @Suppress("UnstableApiUsage")

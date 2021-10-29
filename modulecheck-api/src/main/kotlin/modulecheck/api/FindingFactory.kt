@@ -15,9 +15,9 @@
 
 package modulecheck.api
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 
 fun interface FindingFactory<T : Finding> {
 
-  fun List<Project2>.evaluate(): List<T>
+  fun evaluate(projects: List<McProject>): List<T>
 }

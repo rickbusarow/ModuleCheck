@@ -18,7 +18,7 @@ package modulecheck.gradle
 import modulecheck.api.Finding
 import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.gradle.task.ModuleCheckTask
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import org.gradle.api.tasks.Internal
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
     description = rule.description
   }
 
-  override fun List<Project2>.evaluate(): List<T> {
+  override fun List<McProject>.evaluate(): List<T> {
     return flatMap { project ->
       rule.check(project)
     }

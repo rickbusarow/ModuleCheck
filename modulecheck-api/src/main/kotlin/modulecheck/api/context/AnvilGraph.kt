@@ -16,7 +16,6 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.*
-import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
@@ -27,7 +26,7 @@ import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 data class AnvilGraph(
-  val project: Project2,
+  val project: McProject,
   val scopeContributions: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>,
   val scopeMerges: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
 ) : ProjectContext.Element {
@@ -43,7 +42,7 @@ data class AnvilGraph(
 
   companion object Key : ProjectContext.Key<AnvilGraph> {
 
-    override operator fun invoke(project: Project2): AnvilGraph {
+    override operator fun invoke(project: McProject): AnvilGraph {
       if (project.anvilGradlePlugin == null) return AnvilGraph(
         project = project,
         scopeContributions = emptyMap(),
@@ -87,7 +86,7 @@ data class AnvilGraph(
       "com.squareup.anvil.annotations.MergeSubcomponent"
     )
 
-    private fun Project2.declarationsForScopeName(
+    private fun McProject.declarationsForScopeName(
       allAnnotations: Set<String>,
       mergeAnnotations: Set<String>
     ): Pair<Map<AnvilScopeName, Set<DeclarationName>>, Map<AnvilScopeName, Set<DeclarationName>>> {
@@ -210,7 +209,7 @@ data class AnvilGraph(
       )
     }
 
-    private fun Project2.getAnvilScopeName(
+    private fun McProject.getAnvilScopeName(
       scopeNameEntry: AnvilScopeNameEntry,
       sourceSetName: SourceSetName,
       kotlinFile: KotlinFile
@@ -251,7 +250,7 @@ data class AnvilGraph(
       return AnvilScopeName(rawScopeName)
     }
 
-    private fun Project2.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
+    private fun McProject.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
       return configurations
         .map { (configurationName, _) ->
           configurationName.toSourceSetName() to projectDependencies.value[configurationName].orEmpty()

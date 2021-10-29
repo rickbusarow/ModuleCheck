@@ -19,7 +19,7 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.core.CouldUseAnvilFinding
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.toSourceSetName
@@ -37,7 +37,7 @@ object AnvilFactoryParser {
   private val minimumAnvilVersion = SemVer(2, 0, 11)
 
   @Suppress("ComplexMethod")
-  fun parse(project: Project2): List<CouldUseAnvilFinding> {
+  fun parse(project: McProject): List<CouldUseAnvilFinding> {
     val anvil = project.anvilGradlePlugin ?: return emptyList()
 
     if (anvil.generateDaggerFactories) return emptyList()

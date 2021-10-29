@@ -18,7 +18,7 @@ package modulecheck.gradle.task
 import modulecheck.api.Finding
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import javax.inject.Inject
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -26,13 +26,14 @@ abstract class ModuleCheckAllTask @Inject constructor(
   private val rules: List<ModuleCheckRule<Finding>>
 ) : ModuleCheckTask<Finding>() {
 
-  override fun List<Project2>.evaluate(): List<Finding> {
+  override fun evaluate(projects: List<McProject>): List<Finding> {
     val props = ChecksSettings::class.declaredMemberProperties
       .associate { it.name to it.get(settings.checks) as Boolean }
 
-    val findings = flatMap { proj ->
+    val findings = projects.flatMap { proj ->
       @Suppress("DEPRECATION")
-      rules
+      @Suppress("DEPRECATION")
+      this.rules
         .filter { props[it.id.decapitalize()] ?: false }
         .flatMap { it.check(proj) }
     }

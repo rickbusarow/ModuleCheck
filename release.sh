@@ -31,6 +31,9 @@
 # Set all versions in the root README to the new version
 ./gradlew updateProjectReadmeVersionRefs
 
+# Copy the CHANGELOG from project root to the website dir and update its formatting
+./gradlew updateWebsiteChangelog
+
 echo
 echo ' ___ _   _  ___ ___ ___  ___ ___'
 echo '/ __| | | |/ __/ __/ _ \/ __/ __|'

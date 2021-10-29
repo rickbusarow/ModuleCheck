@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.SourceSetName
 import java.io.File
@@ -31,7 +31,7 @@ data class JvmSourceFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
-    override operator fun invoke(project: Project2): JvmSourceFiles {
+    override operator fun invoke(project: McProject): JvmSourceFiles {
       val map = project
         .sourceSets
         .map { (name, sourceSet) ->

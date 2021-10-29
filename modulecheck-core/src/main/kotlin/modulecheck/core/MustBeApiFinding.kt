@@ -19,14 +19,14 @@ import modulecheck.api.Finding.FindingResult
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.Project2
 import java.io.File
 
 data class MustBeApiFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
 ) : DependencyFinding("mustBeApi") {

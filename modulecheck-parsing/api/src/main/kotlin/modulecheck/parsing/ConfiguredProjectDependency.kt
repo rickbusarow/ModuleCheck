@@ -33,7 +33,7 @@ data class ExternalDependency(
 
 data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
-  val project: Project2,
+  val project: McProject,
   val isTestFixture: Boolean
 ) : HasConfig {
 

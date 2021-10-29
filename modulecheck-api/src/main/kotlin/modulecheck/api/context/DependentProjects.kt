@@ -15,19 +15,19 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 
 data class DependentProjects(
-  internal val delegate: Set<Project2>
-) : Set<Project2> by delegate,
+  internal val delegate: Set<McProject>
+) : Set<McProject> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<DependentProjects>
     get() = Key
 
   companion object Key : ProjectContext.Key<DependentProjects> {
-    override operator fun invoke(project: Project2): DependentProjects {
+    override operator fun invoke(project: McProject): DependentProjects {
       val others = project.projectCache
         .values
         .filter { otherProject ->

@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.KaptProcessor
 import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
 import modulecheck.parsing.ProjectContext.*
 import modulecheck.parsing.all
@@ -33,7 +33,7 @@ data class KaptDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<KaptDependencies> {
-    override operator fun invoke(project: Project2): KaptDependencies {
+    override operator fun invoke(project: McProject): KaptDependencies {
       val map = project
         .configurations
         .filterNot { it.key.value.startsWith("_") }

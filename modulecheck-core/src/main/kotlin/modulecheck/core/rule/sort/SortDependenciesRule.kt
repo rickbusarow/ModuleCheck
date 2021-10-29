@@ -21,7 +21,7 @@ import modulecheck.core.rule.ModuleCheckRule
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.DependencyDeclaration
-import modulecheck.parsing.Project2
+import modulecheck.parsing.McProject
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.util.*
 
@@ -50,7 +50,7 @@ class SortDependenciesRule(
     }
   )
 
-  override fun check(project: Project2): List<SortDependenciesFinding> {
+  override fun check(project: McProject): List<SortDependenciesFinding> {
     val allSorted = DependencyBlockParser
       .parse(project.buildFile)
       .all { block ->

@@ -24,7 +24,7 @@ import java.io.File
 data class OverShotDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : DependencyFinding("overshot") {
