@@ -31,9 +31,9 @@ abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
     description = rule.description
   }
 
-  override fun List<McProject>.evaluate(): List<T> {
-    return flatMap { project ->
-      rule.check(project)
+  override fun evaluate(projects: List<McProject>): List<T> {
+    return projects.flatMap { project ->
+      this.rule.check(project)
     }
   }
 }

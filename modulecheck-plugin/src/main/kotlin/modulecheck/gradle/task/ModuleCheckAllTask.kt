@@ -32,7 +32,6 @@ abstract class ModuleCheckAllTask @Inject constructor(
 
     val findings = projects.flatMap { proj ->
       @Suppress("DEPRECATION")
-      @Suppress("DEPRECATION")
       this.rules
         .filter { props[it.id.decapitalize()] ?: false }
         .flatMap { it.check(proj) }
