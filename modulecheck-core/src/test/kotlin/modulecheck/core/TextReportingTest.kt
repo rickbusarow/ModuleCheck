@@ -118,7 +118,7 @@ internal class TextReportingTest : BaseTest() {
     outputFile.readText() shouldBe """-- ModuleCheck results --
 
     dependentPath
-           dependency     name           source          build file
+           dependency        name           source          build file
         ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
 
 """

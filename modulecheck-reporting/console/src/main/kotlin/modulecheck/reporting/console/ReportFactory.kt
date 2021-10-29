@@ -40,9 +40,12 @@ class ReportFactory {
         val maxProblemName = values.maxOf { it.problemName.length }
         val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
 
+        val fixPrefix = "   "
+
         header(
           tab(2) +
-            "   dependency".padEnd(maxDependencyPath) +
+            fixPrefix +
+            "dependency".padEnd(maxDependencyPath) +
             tab(1) +
             "name".padEnd(maxProblemName) +
             tab(1) +
@@ -67,10 +70,10 @@ class ReportFactory {
             result.filePathString
 
           if (result.fixed) {
-            success(tab(2) + "✔  ")
+            success(tab(2) + fixPrefix.replaceFirst(" ", "✔"))
             warningLine(message)
           } else {
-            failure(tab(2) + "❌  ")
+            failure(tab(2) + fixPrefix.replaceFirst(" ", "❌"))
             failureLine(message)
           }
         }
