@@ -15,7 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.FindingResult
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
