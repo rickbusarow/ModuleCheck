@@ -20,13 +20,11 @@ plugins {
 
 dependencies {
 
-  api(projects.modulecheckApi)
+  api(project(path = ":modulecheck-api"))
 
   implementation(libs.unbescape)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
 }

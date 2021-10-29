@@ -23,10 +23,10 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.semVer)
 
-  api(projects.modulecheckParsing.java)
-  api(projects.modulecheckParsing.api)
-  api(projects.modulecheckParsing.psi)
-  api(projects.modulecheckParsing.xml)
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:java"))
+  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:xml"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
@@ -36,7 +36,4 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
 }
