@@ -33,7 +33,7 @@ class SortPluginsFinding(
   override val message: String
     get() = "Plugin declarations are not sorted according to the defined pattern."
 
-  override val problemName = "unsortedPlugins"
+  override val findingName = "unsortedPlugins"
 
   override val dependencyIdentifier = ""
 

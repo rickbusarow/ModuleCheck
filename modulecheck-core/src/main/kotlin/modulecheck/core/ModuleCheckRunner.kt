@@ -53,6 +53,7 @@ class ModuleCheckRunner(
     val unfixedCountWithTime = measured {
       findingFactory.evaluate(projects)
         .distinct()
+        .filterIsInstance<Problem>()
         .filterNot { it.shouldSkip() }
         .also { totalFindings = it.size }
         .let { processFindings(it) }

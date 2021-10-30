@@ -24,17 +24,17 @@ class ModuleCheckRuleFactory : RuleFactory {
 
   private val rules: MutableList<(ModuleCheckSettings) -> ModuleCheckRule<out Finding>> =
     mutableListOf(
-      { DisableAndroidResourcesRule(it) },
-      { DisableViewBindingRule(it) },
-      { InheritedDependencyRule(it) },
-      { MustBeApiRule(it) },
-      { RedundantRule(it) },
+      { DisableAndroidResourcesRule() },
+      { DisableViewBindingRule() },
+      { InheritedDependencyRule() },
+      { MustBeApiRule() },
+      { RedundantRule() },
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
       { OverShotDependencyRule(it) },
       { UnusedDependencyRule(it) },
       { UnusedKaptRule(it) },
-      { AnvilFactoryRule(it) }
+      { AnvilFactoryRule() }
     )
 
   override fun create(

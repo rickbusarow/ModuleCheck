@@ -18,9 +18,17 @@ package modulecheck.api
 import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
 
+interface Problem : Finding {
+
+  fun shouldSkip(): Boolean = statementOrNull?.suppressed
+    ?.contains(findingName)
+    ?: false
+}
+
 interface Finding {
 
-  val problemName: String
+  val findingName: String
+
   val dependentPath: String
   val message: String
   val buildFile: File
@@ -32,7 +40,7 @@ interface Finding {
   fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = problemName,
+      problemName = findingName,
       sourceOrNull = null,
       dependencyPath = "",
       positionOrNull = positionOrNull,
@@ -41,10 +49,6 @@ interface Finding {
       fixed = fixed
     )
   }
-
-  fun shouldSkip(): Boolean = statementOrNull?.suppressed
-    ?.contains(problemName)
-    ?: false
 
   data class Position(
     val row: Int,

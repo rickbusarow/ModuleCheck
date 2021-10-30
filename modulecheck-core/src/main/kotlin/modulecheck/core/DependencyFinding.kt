@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.api.Finding
 import modulecheck.api.Finding.FindingResult
 import modulecheck.api.Fixable
+import modulecheck.api.Problem
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ConfigurationName
@@ -25,8 +26,9 @@ import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
 
 abstract class DependencyFinding(
-  override val problemName: String
-) : Fixable,
+  override val findingName: String
+) : Problem,
+  Fixable,
   Finding {
 
   abstract val dependencyProject: McProject
@@ -50,7 +52,7 @@ abstract class DependencyFinding(
   override fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = problemName,
+      problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       dependencyPath = dependencyProject.path,
       positionOrNull = positionOrNull,
@@ -66,7 +68,7 @@ abstract class DependencyFinding(
     if (this === other) return true
     if (other !is DependencyFinding) return false
 
-    if (problemName != other.problemName) return false
+    if (findingName != other.findingName) return false
     if (dependencyProject != other.dependencyProject) return false
     if (configurationName != other.configurationName) return false
 
@@ -74,7 +76,7 @@ abstract class DependencyFinding(
   }
 
   override fun hashCode(): Int {
-    var result = problemName.hashCode()
+    var result = findingName.hashCode()
     result = 31 * result + dependencyProject.hashCode()
     result = 31 * result + configurationName.hashCode()
     return result

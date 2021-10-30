@@ -17,15 +17,12 @@ package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.core.context.RedundantDependencyFinding
 import modulecheck.parsing.McProject
 import modulecheck.parsing.all
 
-class RedundantRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<RedundantDependencyFinding> {
+class RedundantRule : ModuleCheckRule<RedundantDependencyFinding> {
 
   override val id = "RedundantDependency"
   override val description =
