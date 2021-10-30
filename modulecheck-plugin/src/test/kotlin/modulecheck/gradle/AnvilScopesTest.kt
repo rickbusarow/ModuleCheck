@@ -104,15 +104,7 @@ class AnvilScopesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
@@ -176,15 +168,7 @@ class AnvilScopesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
@@ -258,15 +242,7 @@ class AnvilScopesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
@@ -339,15 +315,7 @@ class AnvilScopesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
@@ -417,15 +385,7 @@ class AnvilScopesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 

@@ -34,7 +34,8 @@ import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 abstract class ModuleCheckTask<T : Finding> @Inject constructor(
-  private val findingFactory: FindingFactory<T>
+  private val findingFactory: FindingFactory<T>,
+  private val autoCorrect: Boolean
 ) : DefaultTask(),
   ProjectsAware {
 
@@ -51,12 +52,6 @@ abstract class ModuleCheckTask<T : Finding> @Inject constructor(
   val settings: ModuleCheckExtension = project.extensions.getByType()
 
   @get:Input
-  val autoCorrect: Boolean = settings.autoCorrect
-
-  @get:Input
-  val deleteUnused: Boolean = settings.deleteUnused
-
-  @get:Input
   final override val projectCache = ConcurrentHashMap<String, McProject>()
 
   @get:Input
@@ -69,6 +64,7 @@ abstract class ModuleCheckTask<T : Finding> @Inject constructor(
   fun run() {
 
     val runner = ModuleCheckRunner(
+      autoCorrect = autoCorrect,
       settings = settings,
       findingFactory = findingFactory,
       logger = logger,

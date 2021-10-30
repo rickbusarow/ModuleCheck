@@ -84,22 +84,11 @@ class MustBeApiTest : BasePluginTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild .build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -156,10 +145,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -216,10 +202,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -279,10 +262,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -340,10 +320,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -419,10 +396,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -480,10 +454,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -559,10 +530,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -625,10 +593,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -724,10 +689,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -791,10 +753,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -894,10 +853,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      )
+shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -945,15 +901,7 @@ class MustBeApiTest : BasePluginTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -994,15 +942,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1042,15 +982,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1094,15 +1026,7 @@ ModuleCheck found 4 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1149,15 +1073,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1202,15 +1118,7 @@ ModuleCheck found 4 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1273,15 +1181,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1326,15 +1226,7 @@ ModuleCheck found 4 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1397,15 +1289,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1455,15 +1339,7 @@ ModuleCheck found 4 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1546,15 +1422,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1605,15 +1473,7 @@ ModuleCheck found 4 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1700,15 +1560,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 

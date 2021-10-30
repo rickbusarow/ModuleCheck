@@ -45,22 +45,38 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     rules.map { rule ->
       target.registerTask(
-        name = "moduleCheck${rule.id}",
-        findingFactory = SingleRuleFindingFactory(rule)
+        name = rule.id,
+        findingFactory = SingleRuleFindingFactory(rule),
+        autoCorrect = false
+      )
+    }
+    rules.map { rule ->
+      target.registerTask(
+        name = "${rule.id}Apply",
+        findingFactory = SingleRuleFindingFactory(rule),
+        autoCorrect = true
       )
     }
 
     target.registerTask(
       name = "moduleCheck",
-      findingFactory = MultiRuleFindingFactory(settings, rules)
+      findingFactory = MultiRuleFindingFactory(settings, rules),
+      autoCorrect = false
+    )
+
+    target.registerTask(
+      name = "moduleCheckApply",
+      findingFactory = MultiRuleFindingFactory(settings, rules),
+      autoCorrect = true
     )
   }
 
   private fun Project.registerTask(
     name: String,
-    findingFactory: FindingFactory<*>
+    findingFactory: FindingFactory<*>,
+    autoCorrect: Boolean
   ) {
-    tasks.register(name, ModuleCheckTask::class.java, findingFactory)
+    tasks.register(name, ModuleCheckTask::class.java, findingFactory, autoCorrect)
       .configure {
 
         allprojects

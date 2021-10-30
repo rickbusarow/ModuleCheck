@@ -50,16 +50,6 @@ open class ModuleCheckExtension @Inject constructor(
 ) : ModuleCheckSettings {
 
   /**
-   * ModuleCheck will attempt to fix its findings automatically. This means removing unused
-   * dependencies, changing the configuration to `api` if necessary, and adding inherited
-   * dependencies which should be declared explicitly.
-   *
-   * By default, ModuleCheck will "remove" declarations of unused dependencies by simply commenting
-   * them out. See the [deleteUnused] for the option to delete them entirely.
-   */
-  override var autoCorrect: Boolean by objects.property(true)
-
-  /**
    * If true, ModuleCheck will delete declarations of unused dependencies entirely.
    *
    * If false, ModuleCheck will comment out declarations of unused dependencies.

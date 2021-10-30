@@ -79,19 +79,11 @@ class UnusedDependenciesTest : BasePluginTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -135,19 +127,11 @@ ModuleCheck found 2 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
 
@@ -245,19 +229,11 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
@@ -306,7 +282,6 @@ ModuleCheck found 2 issues"""
           projectBuild
             .addBlock(
               """moduleCheck {
-            |  autoCorrect = true
             |  deleteUnused = true
             |}
           """.trimMargin()
@@ -315,7 +290,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
@@ -356,19 +331,11 @@ ModuleCheck found 2 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -411,15 +378,7 @@ ModuleCheck found 2 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -455,15 +414,7 @@ ModuleCheck found 2 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -498,19 +449,11 @@ ModuleCheck found 2 issues"""
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
@@ -587,15 +530,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -638,15 +573,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubprojects(jvmSub1)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -723,15 +650,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -822,15 +741,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -895,15 +806,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -966,15 +869,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1023,19 +918,11 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-1        unusedDependency              /app/build.gradle.kts: (6, 3):
 
@@ -1113,15 +1000,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1191,15 +1070,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1292,15 +1163,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubproject(androidSub1)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1384,15 +1247,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubproject(androidSub1)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1520,15 +1375,7 @@ ModuleCheck found 1 issue"""
         addSubproject(appProject)
         addSubproject(androidSub1)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -1607,15 +1454,7 @@ ModuleCheck found 1 issue"""
           }
         )
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 

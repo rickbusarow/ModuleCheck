@@ -33,6 +33,7 @@ import kotlin.system.measureTimeMillis
  * @param reportFactory handles console output of the results
  */
 class ModuleCheckRunner(
+  val autoCorrect: Boolean,
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
   val logger: Logger,
@@ -109,7 +110,7 @@ class ModuleCheckRunner(
 
         findingResultFactory.create(
           findings = list,
-          autoCorrect = settings.autoCorrect,
+          autoCorrect = autoCorrect,
           deleteUnused = settings.deleteUnused
         )
       }
