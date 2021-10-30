@@ -39,7 +39,7 @@ flowchart TB
 
   subgraph mGraph [runner 1]
     direction TB
-    ModuleCheck(./gradlew moduleCheck):::code --> ChangesModuleCheck
+    ModuleCheck(./gradlew moduleCheckApply):::code --> ChangesModuleCheck
     ChangesModuleCheck{Graph changes?} --- yesM[yes]:::lineLabel --> CommitModuleCheck(Commit changes and push):::stop
     ChangesModuleCheck --- noM[no]:::lineLabel --> EndModuleCheck("#10003;"):::good
   end
@@ -113,7 +113,7 @@ jobs:
 
       # performs tree-shaking on the Gradle dependency graph
       - name: modulecheck
-        run: ./gradlew modulecheck --no-daemon
+        run: ./gradlew moduleCheckApply --no-daemon
 
       # If ModuleCheck generated changes, commit and push those changes.
       # If there are no changes, then this is a no-op.
