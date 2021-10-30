@@ -24,7 +24,7 @@ import modulecheck.parsing.McProject
 import modulecheck.parsing.all
 
 class UnusedDependencyRule(
-  override val settings: ModuleCheckSettings
+  private val settings: ModuleCheckSettings
 ) : ModuleCheckRule<UnusedDependency> {
 
   override val id = "UnusedDependency"

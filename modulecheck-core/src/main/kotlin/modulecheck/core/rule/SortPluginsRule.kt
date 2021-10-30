@@ -26,7 +26,7 @@ import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
 
 class SortPluginsRule(
-  override val settings: ModuleCheckSettings
+  settings: ModuleCheckSettings
 ) : ModuleCheckRule<SortPluginsFinding> {
 
   override val id = "SortPlugins"

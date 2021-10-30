@@ -31,7 +31,7 @@ data class UnusedResourcesGenerationFinding(
   override val message: String
     get() = "`androidResources` generation is enabled, but no resources are defined in this module."
 
-  override val problemName = "disableAndroidResources"
+  override val findingName = "disableAndroidResources"
 
   override val dependencyIdentifier = ""
 

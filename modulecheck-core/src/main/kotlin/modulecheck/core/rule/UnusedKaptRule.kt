@@ -31,7 +31,7 @@ const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
-  override val settings: ModuleCheckSettings
+  private val settings: ModuleCheckSettings
 ) : ModuleCheckRule<UnusedKaptFinding> {
 
   private val kaptMatchers: List<KaptMatcher>

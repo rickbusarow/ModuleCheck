@@ -26,7 +26,7 @@ import modulecheck.parsing.McProject
 import java.util.*
 
 class SortDependenciesRule(
-  override val settings: ModuleCheckSettings
+  settings: ModuleCheckSettings
 ) : ModuleCheckRule<SortDependenciesFinding> {
 
   override val id = "SortDependencies"
