@@ -73,7 +73,7 @@ class ReportFactory {
             success(tab(2) + fixPrefix.replaceFirst(" ", "✔"))
             warningLine(message)
           } else {
-            failure(tab(2) + fixPrefix.replaceFirst(" ", "❌"))
+            failure(tab(2) + fixPrefix.replaceFirst(" ", "X"))
             failureLine(message)
           }
         }

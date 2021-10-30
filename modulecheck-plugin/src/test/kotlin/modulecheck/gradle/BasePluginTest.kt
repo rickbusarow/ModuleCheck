@@ -15,11 +15,11 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.collections.shouldContain
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import modulecheck.testing.BaseTest
+import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -57,10 +57,62 @@ abstract class BasePluginTest : BaseTest() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun shouldFailWithMessage(vararg tasks: String, messageBlock: (String) -> Unit) {
+  fun shouldSucceed(vararg tasks: String): BuildResult {
+    val result = gradleRunner.withArguments(*tasks).build()
+
+    result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
+
+    return result
+  }
+
+  fun shouldFail(vararg tasks: String): BuildResult {
     val result = gradleRunner.withArguments(*tasks).buildAndFail()
 
-    result.tasks.map { it.outcome } shouldContain TaskOutcome.FAILED
-    messageBlock(result.output.fixPath())
+    result.tasks.last().outcome shouldBe TaskOutcome.FAILED
+
+    return result
+  }
+
+  infix fun BuildResult.withTrimmedMessage(message: String) {
+
+    val trimmed = output
+      .normaliseLineSeparators()
+      .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
+      .fixPath() // normalize path separators
+      .let {
+        staticPrefixes.fold(it) { acc, prefix ->
+          acc.replace(prefix, "")
+        }
+      }
+      .let {
+        prefixRegexes.fold(it) { acc, prefix ->
+          acc.replace(prefix, "")
+        }
+      }
+      // replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues`
+      .replace(suffixRegex) { it.destructured.component1() }
+      .trim()
+
+    trimmed shouldBe message
+  }
+
+  companion object {
+
+    val staticPrefixes = listOf(
+      "Type-safe dependency accessors is an incubating feature.",
+      "Type-safe project accessors is an incubating feature.",
+      "-- ModuleCheck results --",
+      "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
+      "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins."
+    )
+
+    val prefixRegexes = listOf(
+      "> Task [^\\n]*".toRegex(),
+      "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
+      "BUILD SUCCESSFUL in \\d+m?s".toRegex(),
+      "\\d+ actionable tasks?: \\d+ executed".toRegex()
+    )
+
+    val suffixRegex = "(ModuleCheck found [\\d]+ issues?) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }

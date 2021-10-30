@@ -19,7 +19,6 @@ import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
@@ -117,7 +116,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -189,7 +188,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -271,7 +270,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -352,7 +351,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -430,8 +429,10 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFailWithMessage("moduleCheckUnusedDependency") {
-      it shouldContain ":lib-2 \\s*unusedDependency .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-    }
+    shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+           dependency    name                source    build file
+        X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+
+ModuleCheck found 1 issue"""
   }
 }

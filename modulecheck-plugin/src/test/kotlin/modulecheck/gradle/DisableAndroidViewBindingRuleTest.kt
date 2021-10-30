@@ -18,7 +18,6 @@ package modulecheck.gradle
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.PropertySpec
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
@@ -133,7 +132,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         )
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableViewBinding").shouldSucceed()
+      shouldSucceed("moduleCheckDisableViewBinding")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -223,7 +222,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableViewBinding").shouldSucceed()
+      shouldSucceed("moduleCheckDisableViewBinding")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -264,7 +263,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableViewBinding").shouldSucceed()
+      shouldSucceed("moduleCheckDisableViewBinding")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -307,7 +306,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableViewBinding").shouldSucceed()
+      shouldSucceed("moduleCheckDisableViewBinding")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -352,7 +351,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableViewBinding").shouldSucceed()
+      shouldSucceed("moduleCheckDisableViewBinding")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -409,7 +408,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
 
         project.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableViewBinding").shouldSucceed()
+        shouldSucceed("moduleCheckDisableViewBinding")
       }
 
       @Test
@@ -427,7 +426,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableViewBinding").shouldSucceed()
+        shouldSucceed("moduleCheckDisableViewBinding")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -468,7 +467,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableViewBinding").shouldSucceed()
+        shouldSucceed("moduleCheckDisableViewBinding")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -511,7 +510,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableViewBinding").shouldSucceed()
+        shouldSucceed("moduleCheckDisableViewBinding")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -556,7 +555,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableViewBinding").shouldSucceed()
+        shouldSucceed("moduleCheckDisableViewBinding")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -617,9 +616,11 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(22, 3\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+           dependency    name                  source    build file
+        X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
+
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -635,9 +636,11 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(21, 1\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+           dependency    name                  source    build file
+        X                disableViewBinding              /lib1/build.gradle.kts: (21, 1):
+
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -657,9 +660,11 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(23, 5\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+           dependency    name                  source    build file
+        X                disableViewBinding              /lib1/build.gradle.kts: (23, 5):
+
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -677,9 +682,11 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableViewBinding") {
-          it shouldContain "\\s*disableViewBinding .*/lib1/build.gradle.kts: \\(22, 3\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+           dependency    name                  source    build file
+        X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
+
+ModuleCheck found 1 issue"""
       }
     }
   }

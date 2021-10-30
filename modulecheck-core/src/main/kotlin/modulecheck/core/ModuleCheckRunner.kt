@@ -64,8 +64,11 @@ class ModuleCheckRunner(
     val secondsDouble = unfixedCountWithTime.timeMillis / 1000.0
 
     if (totalFindings > 0) {
+
+      val issuePlural = if (totalFindings == 1) "issue" else "issues"
+
       logger.printInfo(
-        "ModuleCheck found $totalFindings issues in $secondsDouble seconds.\n\n" +
+        "ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.\n\n" +
           "To ignore any of these findings, annotate the dependency declaration with " +
           "@Suppress(\"<the name of the issue>\") in Kotlin, or " +
           "//noinspection <the name of the issue> in Groovy.\n" +
@@ -113,7 +116,9 @@ class ModuleCheckRunner(
 
     val textReport = reportFactory.create(results)
 
-    logger.printReport(textReport)
+    if (results.isNotEmpty()) {
+      logger.printReport(textReport)
+    }
 
     if (settings.reports.text.enabled) {
       val path = settings.reports.text.outputPath

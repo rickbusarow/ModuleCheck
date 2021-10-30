@@ -18,7 +18,6 @@ package modulecheck.gradle
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.PropertySpec
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -117,10 +116,16 @@ class InheritedDependencyTest : BasePluginTest() {
         }
           .writeIn(testProjectDir.toPath())
 
-        build(
+        shouldSucceed(
           "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
-        ).shouldSucceed()
+        ) withTrimmedMessage """:app
+           dependency    name                   source    build file
+        ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
+        ✔  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
+        ✔  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
+
+ModuleCheck found 3 issues"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -209,10 +214,16 @@ class InheritedDependencyTest : BasePluginTest() {
         }
           .writeIn(testProjectDir.toPath())
 
-        build(
+        shouldSucceed(
           "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
-        ).shouldSucceed()
+        ) withTrimmedMessage """:app
+           dependency    name                   source    build file
+        ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+        ✔  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+        ✔  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 3 issues"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -288,14 +299,16 @@ class InheritedDependencyTest : BasePluginTest() {
         }
           .writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage(
+        shouldFail(
           "moduleCheckInheritedDependency",
           "moduleCheckSortDependencies"
-        ) {
-          it shouldContain ":lib-1 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-          it shouldContain ":lib-2 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-          it shouldContain ":lib-3 \\s*inheritedDependency \\s*:lib-4 .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        }
+        ) withTrimmedMessage """:app
+           dependency    name                   source    build file
+        X  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+        X  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+        X  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 3 issues"""
       }
     }
   }
