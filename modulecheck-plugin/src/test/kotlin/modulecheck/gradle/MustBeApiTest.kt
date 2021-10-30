@@ -17,7 +17,6 @@ package modulecheck.gradle
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -958,9 +957,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1053,12 +1054,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1103,9 +1106,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1156,12 +1161,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1207,9 +1214,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1276,12 +1285,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1327,9 +1338,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1396,12 +1409,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1452,9 +1467,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1541,12 +1558,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1598,9 +1617,11 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issues"""
     }
 
     @Test
@@ -1691,12 +1712,14 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain ":lib-1 \\s*mustBeApi .*/app/build.gradle.kts: \\(6, 3\\):".toRegex()
-        it shouldContain ":lib-2 \\s*mustBeApi .*/app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*mustBeApi .*/app/build.gradle.kts: \\(8, 3\\):".toRegex()
-        it shouldContain ":lib-4 \\s*mustBeApi .*/app/build.gradle.kts: \\(9, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+           dependency    name         source    build file
+        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
   }
 }

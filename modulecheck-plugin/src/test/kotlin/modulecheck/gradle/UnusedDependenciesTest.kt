@@ -16,7 +16,6 @@
 package modulecheck.gradle
 
 import com.squareup.kotlinpoet.*
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import org.junit.jupiter.api.Nested
@@ -408,11 +407,12 @@ class UnusedDependenciesTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckUnusedDependency") {
-        it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain ":lib-2 \\s*unusedDependency .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*unusedDependency .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+           dependency    name                source    build file
+        ❌  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
+
+ModuleCheck found 2 issues"""
     }
 
     @Test
@@ -451,11 +451,12 @@ class UnusedDependenciesTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckUnusedDependency") {
-        it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain ":lib-2 \\s*unusedDependency .*app/build.gradle.kts: \\(7, 3\\):".toRegex()
-        it shouldContain ":lib-3 \\s*unusedDependency .*app/build.gradle.kts: \\(8, 3\\):".toRegex()
-      }
+      shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+           dependency    name                source    build file
+        ❌  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
+        ❌  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
+
+ModuleCheck found 2 issues"""
     }
 
     @Test

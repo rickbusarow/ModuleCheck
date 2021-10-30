@@ -15,7 +15,6 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.collections.shouldContain
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
@@ -57,10 +56,45 @@ abstract class BasePluginTest : BaseTest() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun shouldFailWithMessage(vararg tasks: String, messageBlock: (String) -> Unit) {
+  fun BuildResult.shouldFail(): BuildResult = apply {
+    tasks.last().outcome shouldBe TaskOutcome.FAILED
+  }
+
+  fun shouldFail(vararg tasks: String): BuildResult {
     val result = gradleRunner.withArguments(*tasks).buildAndFail()
 
-    result.tasks.map { it.outcome } shouldContain TaskOutcome.FAILED
-    messageBlock(result.output.fixPath())
+    result.tasks.last().outcome shouldBe TaskOutcome.FAILED
+
+    return result
+  }
+
+  infix fun BuildResult.withTrimmedMessage(message: String) {
+    val trimmed = output
+      .fixPath() // normalize path separators
+      .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
+      .let {
+        staticPrefixes.fold(it) { acc, prefix ->
+          acc.replace(prefix, "")
+        }
+      }
+      .replace(prefixRegex, "") // remove the stuff which'll always be there
+      // replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues`
+      .replace(suffixRegex) { it.destructured.component1() }
+      .trim()
+
+    trimmed shouldBe message
+  }
+
+  companion object {
+
+    val staticPrefixes = listOf(
+      "Type-safe dependency accessors is an incubating feature.",
+      "Type-safe project accessors is an incubating feature.",
+      "-- ModuleCheck results --"
+    )
+
+    val prefixRegex = "> Task [^\\n]*".toRegex()
+
+    val suffixRegex = "(ModuleCheck found [\\d]+ issues) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }

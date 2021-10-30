@@ -15,7 +15,6 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
@@ -310,9 +309,11 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
 
         project.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts:".toRegex()
-        }
+        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ❌                disableAndroidResources              /app/build.gradle.kts:
+
+ModuleCheck found 1 issues"""
       }
 
       @Test
@@ -516,9 +517,11 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(21, 3\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ❌                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+
+ModuleCheck found 1 issues"""
       }
 
       @Test
@@ -534,9 +537,11 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(20, 1\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ❌                disableAndroidResources              /app/build.gradle.kts: (20, 1):
+
+ModuleCheck found 1 issues"""
       }
 
       @Test
@@ -556,9 +561,11 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(22, 5\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ❌                disableAndroidResources              /app/build.gradle.kts: (22, 5):
+
+ModuleCheck found 1 issues"""
       }
 
       @Test
@@ -576,9 +583,11 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFailWithMessage("moduleCheckDisableAndroidResources") {
-          it shouldContain "\\s*disableAndroidResources .*/app/build.gradle.kts: \\(21, 3\\):".toRegex()
-        }
+        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ❌                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+
+ModuleCheck found 1 issues"""
       }
     }
   }
