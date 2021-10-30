@@ -84,7 +84,7 @@ class MustBeApiTest : BasePluginTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(projectBuild .build())
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
@@ -145,7 +145,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -202,7 +202,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -262,7 +262,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -320,7 +320,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -396,7 +396,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -454,7 +454,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -530,7 +530,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -593,7 +593,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -689,7 +689,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -753,7 +753,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -853,7 +853,7 @@ shouldSucceed("mustBeApiApply")
       }
         .writeIn(testProjectDir.toPath())
 
-shouldSucceed("mustBeApiApply")
+      shouldSucceed("mustBeApiApply")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
