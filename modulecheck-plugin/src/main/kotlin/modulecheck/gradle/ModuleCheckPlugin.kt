@@ -45,14 +45,14 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     rules.map { rule ->
       target.registerTask(
-        name = rule.id,
+        name = "moduleCheck${rule.id}",
         findingFactory = SingleRuleFindingFactory(rule),
         autoCorrect = false
       )
     }
     rules.map { rule ->
       target.registerTask(
-        name = "${rule.id}Apply",
+        name = "moduleCheck${rule.id}Apply",
         findingFactory = SingleRuleFindingFactory(rule),
         autoCorrect = true
       )

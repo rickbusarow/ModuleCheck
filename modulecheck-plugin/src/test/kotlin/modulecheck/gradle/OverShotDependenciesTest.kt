@@ -81,19 +81,11 @@ class OverShotDependenciesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-          |  autoCorrect = true
-          |}
-        """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheck")
+    shouldSucceed("moduleCheckApply")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
       |  kotlin("jvm")
@@ -153,19 +145,11 @@ class OverShotDependenciesTest : BasePluginTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-          |  autoCorrect = true
-          |}
-        """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheck")
+    shouldSucceed("moduleCheckApply")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
       |  id("com.android.library")

@@ -104,21 +104,13 @@ class InheritedDependencyTest : BasePluginTest() {
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 
         shouldSucceed(
-          "moduleCheckInheritedDependency",
-          "moduleCheckSortDependencies"
+          "moduleCheckInheritedDependencyApply",
+          "moduleCheckSortDependenciesApply"
         ) withTrimmedMessage """:app
            dependency    name                   source    build file
         ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
@@ -202,21 +194,13 @@ ModuleCheck found 3 issues"""
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 
         shouldSucceed(
-          "moduleCheckInheritedDependency",
-          "moduleCheckSortDependencies"
+          "moduleCheckInheritedDependencyApply",
+          "moduleCheckSortDependenciesApply"
         ) withTrimmedMessage """:app
            dependency    name                   source    build file
         ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
@@ -287,15 +271,7 @@ ModuleCheck found 3 issues"""
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 

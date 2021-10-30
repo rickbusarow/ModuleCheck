@@ -285,21 +285,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
   inner class `resource generation is unused` {
 
     @Nested
-    inner class `auto-correct enabled` {
-
-      @BeforeEach
-      fun beforeEach() {
-        project.edit {
-          projectBuildSpec!!.edit {
-            addBlock(
-              """moduleCheck {
-              |  autoCorrect = true
-              |}
-              """.trimMargin()
-            )
-          }
-        }
-      }
+    inner class `with auto-correct` {
 
       @Test
       fun `default value of enabled enabled should fail`() {
@@ -309,7 +295,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
 
         project.writeIn(testProjectDir.toPath())
 
-        shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+        shouldFail("moduleCheckDisableAndroidResourcesApply") withTrimmedMessage """:app
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts:
 
@@ -331,7 +317,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+        shouldSucceed("moduleCheckDisableAndroidResourcesApply") withTrimmedMessage """:app
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
@@ -376,7 +362,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+        shouldSucceed("moduleCheckDisableAndroidResourcesApply") withTrimmedMessage """:app
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (20, 1):
 
@@ -423,7 +409,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+        shouldSucceed("moduleCheckDisableAndroidResourcesApply") withTrimmedMessage """:app
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (22, 5):
 
@@ -472,7 +458,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+        shouldSucceed("moduleCheckDisableAndroidResourcesApply") withTrimmedMessage """:app
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
@@ -506,21 +492,7 @@ ModuleCheck found 1 issue"""
     }
 
     @Nested
-    inner class `auto-correct disabled` {
-
-      @BeforeEach
-      fun beforeEach() {
-        project.edit {
-          projectBuildSpec!!.edit {
-            addBlock(
-              """moduleCheck {
-              |  autoCorrect = false
-              |}
-              """.trimMargin()
-            )
-          }
-        }
-      }
+    inner class `no auto-correct` {
 
       @Test
       fun `scoped and then dot qualified should fail`() {
