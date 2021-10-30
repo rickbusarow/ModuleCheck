@@ -74,8 +74,8 @@ abstract class BasePluginTest : BaseTest() {
 
   infix fun BuildResult.withTrimmedMessage(message: String) {
     val trimmed = output
-      .fixPath() // normalize path separators
       .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
+      .fixPath() // normalize path separators
       .let {
         staticPrefixes.fold(it) { acc, prefix ->
           acc.replace(prefix, "")
