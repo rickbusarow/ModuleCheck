@@ -96,10 +96,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -156,10 +156,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -216,10 +216,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -279,10 +279,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -340,10 +340,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -419,10 +419,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -480,10 +480,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -559,10 +559,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -625,10 +625,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -724,10 +724,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -791,10 +791,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -894,10 +894,10 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
+      shouldSucceed(
         "moduleCheckMustBeApi",
         "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      )
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -959,7 +959,7 @@ class MustBeApiTest : BasePluginTest() {
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1006,7 +1006,7 @@ ModuleCheck found 1 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      build("moduleCheckMustBeApi").shouldSucceed()
+      shouldSucceed("moduleCheckMustBeApi")
     }
 
     @Test
@@ -1056,10 +1056,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }
@@ -1108,7 +1108,7 @@ ModuleCheck found 4 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1163,10 +1163,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }
@@ -1216,7 +1216,7 @@ ModuleCheck found 4 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1287,10 +1287,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }
@@ -1340,7 +1340,7 @@ ModuleCheck found 4 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1411,10 +1411,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }
@@ -1469,7 +1469,7 @@ ModuleCheck found 4 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1560,10 +1560,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }
@@ -1619,7 +1619,7 @@ ModuleCheck found 4 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
 ModuleCheck found 1 issues"""
     }
@@ -1714,10 +1714,10 @@ ModuleCheck found 1 issues"""
 
       shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
            dependency    name         source    build file
-        ❌  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
-        ❌  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
-        ❌  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
-        ❌  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
 
 ModuleCheck found 4 issues"""
     }

@@ -58,12 +58,7 @@ class UnusedKaptTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFail("moduleCheckUnusedKapt") withTrimmedMessage """:app
-           dependency                              name                   source    build file
-        ❌  com.google.dagger:dagger-compiler          unusedKaptProcessor              /app/build.gradle.kts:
-        ❌  com.squareup.moshi:moshi-kotlin-codegen    unusedKaptProcessor              /app/build.gradle.kts:
-
-ModuleCheck found 2 issues"""
+    shouldFail("moduleCheckUnusedKapt")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -122,7 +117,7 @@ ModuleCheck found 2 issues"""
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedKapt")
   }
 
   @Test
@@ -170,7 +165,7 @@ ModuleCheck found 2 issues"""
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedKapt")
   }
 
   @Test
@@ -223,6 +218,6 @@ ModuleCheck found 2 issues"""
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedKapt")
   }
 }

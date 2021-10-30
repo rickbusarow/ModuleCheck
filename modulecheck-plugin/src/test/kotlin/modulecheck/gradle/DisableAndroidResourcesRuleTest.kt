@@ -89,7 +89,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
 
       project.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableAndroidResources").shouldSucceed()
+      shouldSucceed("moduleCheckDisableAndroidResources")
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -127,7 +127,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableAndroidResources").shouldSucceed()
+      shouldSucceed("moduleCheckDisableAndroidResources")
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -167,7 +167,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableAndroidResources").shouldSucceed()
+      shouldSucceed("moduleCheckDisableAndroidResources")
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -209,7 +209,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableAndroidResources").shouldSucceed()
+      shouldSucceed("moduleCheckDisableAndroidResources")
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -253,7 +253,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      build("moduleCheckDisableAndroidResources").shouldSucceed()
+      shouldSucceed("moduleCheckDisableAndroidResources")
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -311,7 +311,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
 
         shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
            dependency    name                       source    build file
-        ❌                disableAndroidResources              /app/build.gradle.kts:
+        X                disableAndroidResources              /app/build.gradle.kts:
 
 ModuleCheck found 1 issues"""
       }
@@ -331,7 +331,12 @@ ModuleCheck found 1 issues"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableAndroidResources").shouldSucceed()
+        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+
+ModuleCheck found 1 issues"""
+
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -371,7 +376,12 @@ ModuleCheck found 1 issues"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableAndroidResources").shouldSucceed()
+        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ✔                disableAndroidResources              /app/build.gradle.kts: (20, 1):
+
+ModuleCheck found 1 issues"""
+
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -413,7 +423,12 @@ ModuleCheck found 1 issues"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableAndroidResources").shouldSucceed()
+        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ✔                disableAndroidResources              /app/build.gradle.kts: (22, 5):
+
+ModuleCheck found 1 issues"""
+
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -457,7 +472,12 @@ ModuleCheck found 1 issues"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        build("moduleCheckDisableAndroidResources").shouldSucceed()
+        shouldSucceed("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
+           dependency    name                       source    build file
+        ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+
+ModuleCheck found 1 issues"""
+
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |}
@@ -519,7 +539,7 @@ ModuleCheck found 1 issues"""
 
         shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
            dependency    name                       source    build file
-        ❌                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+        X                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
 ModuleCheck found 1 issues"""
       }
@@ -539,7 +559,7 @@ ModuleCheck found 1 issues"""
 
         shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
            dependency    name                       source    build file
-        ❌                disableAndroidResources              /app/build.gradle.kts: (20, 1):
+        X                disableAndroidResources              /app/build.gradle.kts: (20, 1):
 
 ModuleCheck found 1 issues"""
       }
@@ -563,7 +583,7 @@ ModuleCheck found 1 issues"""
 
         shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
            dependency    name                       source    build file
-        ❌                disableAndroidResources              /app/build.gradle.kts: (22, 5):
+        X                disableAndroidResources              /app/build.gradle.kts: (22, 5):
 
 ModuleCheck found 1 issues"""
       }
@@ -585,7 +605,7 @@ ModuleCheck found 1 issues"""
 
         shouldFail("moduleCheckDisableAndroidResources") withTrimmedMessage """:app
            dependency    name                       source    build file
-        ❌                disableAndroidResources              /app/build.gradle.kts: (21, 3):
+        X                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
 ModuleCheck found 1 issues"""
       }

@@ -116,7 +116,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -188,7 +188,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -270,7 +270,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -351,7 +351,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheckUnusedDependency")
   }
 
   @Test
@@ -431,7 +431,7 @@ class AnvilScopesTest : BasePluginTest() {
 
     shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
            dependency    name                source    build file
-        ❌  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+        X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
 ModuleCheck found 1 issues"""
   }

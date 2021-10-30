@@ -56,8 +56,12 @@ abstract class BasePluginTest : BaseTest() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun BuildResult.shouldFail(): BuildResult = apply {
-    tasks.last().outcome shouldBe TaskOutcome.FAILED
+  fun shouldSucceed(vararg tasks: String): BuildResult {
+    val result = gradleRunner.withArguments(*tasks).build()
+
+    result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
+
+    return result
   }
 
   fun shouldFail(vararg tasks: String): BuildResult {
@@ -77,7 +81,11 @@ abstract class BasePluginTest : BaseTest() {
           acc.replace(prefix, "")
         }
       }
-      .replace(prefixRegex, "") // remove the stuff which'll always be there
+      .let {
+        prefixRegexes.fold(it) { acc, prefix ->
+          acc.replace(prefix, "")
+        }
+      }
       // replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues`
       .replace(suffixRegex) { it.destructured.component1() }
       .trim()
@@ -90,10 +98,17 @@ abstract class BasePluginTest : BaseTest() {
     val staticPrefixes = listOf(
       "Type-safe dependency accessors is an incubating feature.",
       "Type-safe project accessors is an incubating feature.",
-      "-- ModuleCheck results --"
+      "-- ModuleCheck results --",
+      "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
+      "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins."
     )
 
-    val prefixRegex = "> Task [^\\n]*".toRegex()
+    val prefixRegexes = listOf(
+      "> Task [^\\n]*".toRegex(),
+      "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
+      "BUILD SUCCESSFUL in \\d+m?s".toRegex(),
+      "\\d+ actionable tasks?: \\d+ executed".toRegex()
+    )
 
     val suffixRegex = "(ModuleCheck found [\\d]+ issues) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }

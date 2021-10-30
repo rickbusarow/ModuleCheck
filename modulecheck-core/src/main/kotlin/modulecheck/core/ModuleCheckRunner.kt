@@ -113,7 +113,9 @@ class ModuleCheckRunner(
 
     val textReport = reportFactory.create(results)
 
-    logger.printReport(textReport)
+    if (results.isNotEmpty()) {
+      logger.printReport(textReport)
+    }
 
     if (settings.reports.text.enabled) {
       val path = settings.reports.text.outputPath
