@@ -24,7 +24,7 @@ import modulecheck.parsing.McProject
 import modulecheck.parsing.all
 
 class OverShotDependencyRule(
-  override val settings: ModuleCheckSettings
+  val settings: ModuleCheckSettings
 ) : ModuleCheckRule<OverShotDependencyFinding> {
 
   override val id = "OverShotDependency"

@@ -17,14 +17,11 @@ package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
 
-class DisableAndroidResourcesRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<UnusedResourcesGenerationFinding> {
+class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 
   override val id = "DisableAndroidResources"
   override val description =

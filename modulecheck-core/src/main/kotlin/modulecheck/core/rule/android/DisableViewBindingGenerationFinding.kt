@@ -31,7 +31,7 @@ data class DisableViewBindingGenerationFinding(
   override val message: String
     get() = "Android viewBinding generation is enabled, but no generated code is being used."
 
-  override val problemName = "disableViewBinding"
+  override val findingName = "disableViewBinding"
 
   override val dependencyIdentifier = ""
 

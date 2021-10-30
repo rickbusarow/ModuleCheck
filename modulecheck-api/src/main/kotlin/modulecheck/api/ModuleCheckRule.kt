@@ -23,7 +23,6 @@ import org.jetbrains.kotlin.psi.KtFile
 
 interface ModuleCheckRule<T> {
 
-  val settings: ModuleCheckSettings
   val id: String
   val description: String
 

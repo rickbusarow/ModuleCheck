@@ -17,14 +17,14 @@ package modulecheck.api
 
 import modulecheck.api.Finding.FindingResult
 
-interface Fixable : Finding {
+interface Fixable : Finding, Problem {
 
   val dependencyIdentifier: String
 
   override fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = problemName,
+      problemName = findingName,
       sourceOrNull = null,
       dependencyPath = dependencyIdentifier,
       positionOrNull = positionOrNull,
@@ -69,7 +69,7 @@ interface Fixable : Finding {
     true
   }
 
-  fun fixLabel() = "  $FIX_LABEL [$problemName]"
+  fun fixLabel() = "  $FIX_LABEL [$findingName]"
 
   companion object {
 

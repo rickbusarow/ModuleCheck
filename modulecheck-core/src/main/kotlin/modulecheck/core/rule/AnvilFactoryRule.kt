@@ -17,14 +17,11 @@ package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.anvil.AnvilFactoryParser
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.McProject
 
-class AnvilFactoryRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<CouldUseAnvilFinding> {
+class AnvilFactoryRule : ModuleCheckRule<CouldUseAnvilFinding> {
 
   override val id = "AnvilFactoryGeneration"
   override val description = "Finds modules which could use Anvil's factory generation " +

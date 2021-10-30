@@ -36,7 +36,7 @@ class SortDependenciesFinding(
     get() = "Project/external dependency declarations are not sorted " +
       "according to the defined pattern."
 
-  override val problemName = "unsortedDependencies"
+  override val findingName = "unsortedDependencies"
 
   override val dependencyIdentifier = ""
 

@@ -32,7 +32,7 @@ data class CouldUseAnvilFinding(
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
-  override val problemName = "useAnvilFactories"
+  override val findingName = "useAnvilFactories"
 
   override val positionOrNull: Position? by lazy {
 
