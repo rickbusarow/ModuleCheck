@@ -19,6 +19,7 @@ import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import modulecheck.testing.BaseTest
+import org.gradle.kotlin.dsl.support.normaliseLineSeparators
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -73,9 +74,11 @@ abstract class BasePluginTest : BaseTest() {
   }
 
   infix fun BuildResult.withTrimmedMessage(message: String) {
+
     val trimmed = output
-      .fixPath() // normalize path separators
+      .normaliseLineSeparators()
       .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
+      .fixPath() // normalize path separators
       .let {
         staticPrefixes.fold(it) { acc, prefix ->
           acc.replace(prefix, "")
