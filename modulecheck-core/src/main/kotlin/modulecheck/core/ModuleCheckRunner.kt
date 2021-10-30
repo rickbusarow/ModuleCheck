@@ -50,7 +50,7 @@ class ModuleCheckRunner(
     // time does not include initial parsing from GradleProjectProvider,
     // but does include all source file parsing and the amount of time spent applying fixes
     val unfixedCountWithTime = measured {
-     findingFactory.evaluate(projects)
+      findingFactory.evaluate(projects)
         .distinct()
         .filterIsInstance<Problem>()
         .filterNot { it.shouldSkip() }
