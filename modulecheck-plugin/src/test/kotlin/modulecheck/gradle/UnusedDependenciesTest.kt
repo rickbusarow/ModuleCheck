@@ -151,7 +151,7 @@ ModuleCheck found 2 issues"""
            dependency    name                source    build file
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -514,7 +514,7 @@ ModuleCheck found 2 issues"""
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -1039,7 +1039,7 @@ ModuleCheck found 1 issues"""
            dependency    name                source    build file
         ✔  :lib-1        unusedDependency              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

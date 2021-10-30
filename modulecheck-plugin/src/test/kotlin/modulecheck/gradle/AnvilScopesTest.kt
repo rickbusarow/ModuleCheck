@@ -433,6 +433,6 @@ class AnvilScopesTest : BasePluginTest() {
            dependency    name                source    build file
         X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
   }
 }

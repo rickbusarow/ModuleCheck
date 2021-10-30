@@ -313,7 +313,7 @@ class DisableAndroidResourcesRuleTest : BasePluginTest() {
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts:
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -335,7 +335,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -380,7 +380,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (20, 1):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -427,7 +427,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (22, 5):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -476,7 +476,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         ✔                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -541,7 +541,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -561,7 +561,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts: (20, 1):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -585,7 +585,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts: (22, 5):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -607,7 +607,7 @@ ModuleCheck found 1 issues"""
            dependency    name                       source    build file
         X                disableAndroidResources              /app/build.gradle.kts: (21, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
     }
   }

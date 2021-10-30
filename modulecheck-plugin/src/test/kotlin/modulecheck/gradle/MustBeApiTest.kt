@@ -961,7 +961,7 @@ class MustBeApiTest : BasePluginTest() {
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1110,7 +1110,7 @@ ModuleCheck found 4 issues"""
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1218,7 +1218,7 @@ ModuleCheck found 4 issues"""
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1342,7 +1342,7 @@ ModuleCheck found 4 issues"""
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1471,7 +1471,7 @@ ModuleCheck found 4 issues"""
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1621,7 +1621,7 @@ ModuleCheck found 4 issues"""
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
     }
 
     @Test

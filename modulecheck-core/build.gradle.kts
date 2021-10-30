@@ -22,13 +22,14 @@ dependencies {
 
   api(libs.kotlin.compiler)
 
-  api(projects.modulecheckApi)
-  api(projects.modulecheckParsing.api)
-  api(projects.modulecheckParsing.groovyAntlr)
-  api(projects.modulecheckParsing.psi)
-  api(projects.modulecheckParsing.xml)
-  api(projects.modulecheckReporting.checkstyle)
-  api(projects.modulecheckReporting.console)
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:groovy-antlr"))
+  api(project(path = ":modulecheck-parsing:java"))
+  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:xml"))
+  api(project(path = ":modulecheck-reporting:checkstyle"))
+  api(project(path = ":modulecheck-reporting:console"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
@@ -40,6 +41,5 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.reflect)
 
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
+  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

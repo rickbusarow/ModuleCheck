@@ -21,24 +21,19 @@ plugins {
 
 dependencies {
 
+  api(project(path = ":modulecheck-parsing:api"))
+
   compileOnly(gradleApi())
 
-  implementation(libs.kotlin.compiler)
-
-  api(projects.modulecheckParsing.api)
-
+  implementation(libs.agp)
   implementation(libs.antlr.core)
   implementation(libs.antlr.runtime)
-
-  implementation(libs.agp)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
   implementation(libs.groovy)
+  implementation(libs.javaParser)
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
 }

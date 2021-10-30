@@ -620,7 +620,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -640,7 +640,7 @@ ModuleCheck found 1 issues"""
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (21, 1):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -664,7 +664,7 @@ ModuleCheck found 1 issues"""
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (23, 5):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
 
       @Test
@@ -686,7 +686,7 @@ ModuleCheck found 1 issues"""
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
 
-ModuleCheck found 1 issues"""
+ModuleCheck found 1 issue"""
       }
     }
   }

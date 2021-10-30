@@ -110,6 +110,6 @@ abstract class BasePluginTest : BaseTest() {
       "\\d+ actionable tasks?: \\d+ executed".toRegex()
     )
 
-    val suffixRegex = "(ModuleCheck found [\\d]+ issues) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
+    val suffixRegex = "(ModuleCheck found [\\d]+ issues?) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }

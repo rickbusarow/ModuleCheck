@@ -26,8 +26,11 @@ dependencies {
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
-  api(projects.modulecheckApi)
-  api(projects.modulecheckCore)
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-core"))
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:xml"))
+  api(project(path = ":modulecheck-reporting:console"))
 
   implementation(libs.agp)
   implementation(libs.anvil)
@@ -37,19 +40,13 @@ dependencies {
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
 
-  implementation(projects.modulecheckParsing.api)
-  implementation(projects.modulecheckParsing.groovyAntlr)
-  implementation(projects.modulecheckParsing.psi)
-  implementation(projects.modulecheckReporting.console)
-  implementation(projects.modulecheckReporting.checkstyle)
-
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinPoet)
 
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-specs"))
 }
 
 gradlePlugin {
