@@ -73,6 +73,9 @@ abstract class BasePluginTest : BaseTest() {
   }
 
   infix fun BuildResult.withTrimmedMessage(message: String) {
+
+    println("******************************************\n${testProjectDir.absolutePath}\n\n***************************************************")
+
     val trimmed = output
       .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
       .fixPath() // normalize path separators
