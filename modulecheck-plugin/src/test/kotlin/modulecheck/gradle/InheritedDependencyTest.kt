@@ -104,28 +104,31 @@ class InheritedDependencyTest : BasePluginTest() {
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 
-        shouldSucceed(
-          "moduleCheckInheritedDependency",
-          "moduleCheckSortDependencies"
-        ) withTrimmedMessage """:app
+        shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                   source    build file
+        ✔  :lib-4        overshot                         /app/build.gradle.kts:
+        ✔  :lib-4        unusedDependency                 /app/build.gradle.kts: (21, 3):
         ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
         ✔  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
         ✔  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (22, 3):
 
-ModuleCheck found 3 issues"""
+    :lib-2
+           dependency    name                source    build file
+        ✔  :lib-1        unusedDependency              /lib-2/build.gradle.kts: (6, 3):
+
+    :lib-3
+           dependency    name                source    build file
+        ✔  :lib-2        unusedDependency              /lib-3/build.gradle.kts: (6, 3):
+
+    :lib-4
+           dependency    name                source    build file
+        ✔  :lib-3        unusedDependency              /lib-4/build.gradle.kts: (6, 3):
+
+ModuleCheck found 8 issues"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
@@ -147,8 +150,8 @@ ModuleCheck found 3 issues"""
         |}
         |
         |dependencies {
-        |  androidTestImplementation(project(path = ":lib-4"))
-        |
+        |  // androidTestImplementation(project(path = ":lib-4"))  // ModuleCheck finding [unusedDependency]
+        |  implementation(project(path = ":lib-4"))
         |  api(project(path = ":lib-1"))
         |  api(project(path = ":lib-2"))
         |  api(project(path = ":lib-3"))
@@ -202,28 +205,29 @@ ModuleCheck found 3 issues"""
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 
-        shouldSucceed(
-          "moduleCheckInheritedDependency",
-          "moduleCheckSortDependencies"
-        ) withTrimmedMessage """:app
+        shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                   source    build file
         ✔  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
         ✔  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
         ✔  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 3 issues"""
+    :lib-2
+           dependency    name                source    build file
+        ✔  :lib-1        unusedDependency              /lib-2/build.gradle.kts: (6, 3):
+
+    :lib-3
+           dependency    name                source    build file
+        ✔  :lib-2        unusedDependency              /lib-3/build.gradle.kts: (6, 3):
+
+    :lib-4
+           dependency    name                source    build file
+        ✔  :lib-3        unusedDependency              /lib-4/build.gradle.kts: (6, 3):
+
+ModuleCheck found 6 issues"""
 
         File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -287,28 +291,29 @@ ModuleCheck found 3 issues"""
           addSubproject(appProject)
           addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
           addSettingsSpec(projectSettings.build())
-          addBuildSpec(
-            projectBuild
-              .addBlock(
-                """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-              ).build()
-          )
+          addBuildSpec(projectBuild.build())
         }
           .writeIn(testProjectDir.toPath())
 
-        shouldFail(
-          "moduleCheckInheritedDependency",
-          "moduleCheckSortDependencies"
-        ) withTrimmedMessage """:app
+        shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name                   source    build file
         X  :lib-1        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
         X  :lib-2        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
         X  :lib-3        inheritedDependency    :lib-4    /app/build.gradle.kts: (6, 3):
 
-ModuleCheck found 3 issues"""
+    :lib-2
+           dependency    name                source    build file
+        X  :lib-1        unusedDependency              /lib-2/build.gradle.kts: (6, 3):
+
+    :lib-3
+           dependency    name                source    build file
+        X  :lib-2        unusedDependency              /lib-3/build.gradle.kts: (6, 3):
+
+    :lib-4
+           dependency    name                source    build file
+        X  :lib-3        unusedDependency              /lib-4/build.gradle.kts: (6, 3):
+
+ModuleCheck found 6 issues"""
       }
     }
   }

@@ -32,7 +32,9 @@ import kotlin.system.measureTimeMillis
  *   [FindingResult][modulecheck.api.Finding.FindingResult]
  * @param reportFactory handles console output of the results
  */
+@Suppress("LongParameterList")
 class ModuleCheckRunner(
+  val autoCorrect: Boolean,
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
   val logger: Logger,
@@ -110,7 +112,7 @@ class ModuleCheckRunner(
 
         findingResultFactory.create(
           findings = list,
-          autoCorrect = settings.autoCorrect,
+          autoCorrect = autoCorrect,
           deleteUnused = settings.deleteUnused
         )
       }

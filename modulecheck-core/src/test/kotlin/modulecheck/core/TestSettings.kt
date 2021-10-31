@@ -20,7 +20,6 @@ import modulecheck.api.settings.*
 
 @Suppress("UNUSED_PARAMETER")
 data class TestSettings(
-  override var autoCorrect: Boolean = false,
   override var deleteUnused: Boolean = false,
   override var ignoreUnusedFinding: Set<String> = emptySet(),
   override var doNotCheck: Set<String> = emptySet(),

@@ -41,6 +41,7 @@ internal class CheckstyleReportingTest : BaseTest() {
     val outputFile = File(baseSettings.reports.checkstyle.outputPath)
 
     val runner = ModuleCheckRunner(
+      autoCorrect = false,
       settings = baseSettings,
       findingFactory = {
         listOf(
@@ -84,6 +85,7 @@ internal class CheckstyleReportingTest : BaseTest() {
     val outputFile = File(baseSettings.reports.checkstyle.outputPath)
 
     val runner = ModuleCheckRunner(
+      autoCorrect = false,
       settings = baseSettings,
       findingFactory = {
         listOf(
