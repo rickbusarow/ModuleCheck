@@ -50,7 +50,7 @@ class AnvilScopesTest : BasePluginTest() {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
         addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
-        addProjectDependency("implementation", jvmSub1)
+        addProjectDependency("api", jvmSub1)
       }
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin/com/example/lib2")) {
@@ -77,8 +77,8 @@ class AnvilScopesTest : BasePluginTest() {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
           addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -108,7 +108,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedDependency")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -141,8 +141,8 @@ class AnvilScopesTest : BasePluginTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -172,7 +172,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedDependency")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -225,8 +225,8 @@ class AnvilScopesTest : BasePluginTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -246,7 +246,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedDependency")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -298,8 +298,8 @@ class AnvilScopesTest : BasePluginTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -319,7 +319,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedDependency")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -368,8 +368,8 @@ class AnvilScopesTest : BasePluginTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -389,7 +389,7 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+    shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name                source    build file
         X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 

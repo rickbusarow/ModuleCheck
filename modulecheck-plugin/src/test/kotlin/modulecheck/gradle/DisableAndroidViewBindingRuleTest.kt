@@ -132,7 +132,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         )
       }.writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckDisableViewBinding")
+      shouldSucceed("moduleCheck")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -222,7 +222,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckDisableViewBinding")
+      shouldSucceed("moduleCheck")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -263,7 +263,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckDisableViewBinding")
+      shouldSucceed("moduleCheck")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -306,7 +306,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckDisableViewBinding")
+      shouldSucceed("moduleCheck")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -351,7 +351,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
         }
       }.writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckDisableViewBinding")
+      shouldSucceed("moduleCheck")
       File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -394,7 +394,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
 
         project.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableViewBindingApply")
+        shouldSucceed("moduleCheckAuto")
       }
 
       @Test
@@ -412,7 +412,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableViewBindingApply")
+        shouldSucceed("moduleCheckAuto")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -453,7 +453,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableViewBindingApply")
+        shouldSucceed("moduleCheckAuto")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -496,7 +496,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableViewBindingApply")
+        shouldSucceed("moduleCheckAuto")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -541,7 +541,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldSucceed("moduleCheckDisableViewBindingApply")
+        shouldSucceed("moduleCheckAuto")
         File(testProjectDir, "/lib1/build.gradle.kts").readText() shouldBe """plugins {
         |  id("com.android.library")
         |  kotlin("android")
@@ -588,7 +588,7 @@ class DisableAndroidViewBindingRuleTest : BasePluginTest() {
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+        shouldFail("moduleCheck") withTrimmedMessage """:lib1
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
 
@@ -608,7 +608,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+        shouldFail("moduleCheck") withTrimmedMessage """:lib1
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (21, 1):
 
@@ -632,7 +632,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+        shouldFail("moduleCheck") withTrimmedMessage """:lib1
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (23, 5):
 
@@ -654,7 +654,7 @@ ModuleCheck found 1 issue"""
           }
         }.writeIn(testProjectDir.toPath())
 
-        shouldFail("moduleCheckDisableViewBinding") withTrimmedMessage """:lib1
+        shouldFail("moduleCheck") withTrimmedMessage """:lib1
            dependency    name                  source    build file
         X                disableViewBinding              /lib1/build.gradle.kts: (22, 3):
 

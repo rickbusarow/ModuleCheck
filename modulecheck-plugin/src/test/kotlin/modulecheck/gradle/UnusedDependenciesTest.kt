@@ -83,7 +83,7 @@ class UnusedDependenciesTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -131,7 +131,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
 
@@ -186,7 +186,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -233,7 +233,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
@@ -290,7 +290,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (9, 3):
@@ -335,7 +335,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         ✔  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -382,7 +382,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name                source    build file
         X  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         X  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -418,7 +418,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckUnusedDependency") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name                source    build file
         X  :lib-2        unusedDependency              /app/build.gradle.kts: (7, 3):
         X  :lib-3        unusedDependency              /app/build.gradle.kts: (8, 3):
@@ -453,7 +453,7 @@ ModuleCheck found 2 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
@@ -501,7 +501,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -534,7 +534,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -577,7 +577,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -644,7 +644,6 @@ ModuleCheck found 1 issue"""
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
               }
             )
           }
@@ -654,7 +653,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -718,7 +717,6 @@ ModuleCheck found 1 issue"""
                 addPlugin("""id("com.android.library")""")
                 addPlugin("kotlin(\"android\")")
                 android = true
-                addProjectDependency("api", jvmSub1)
                 addBlock("android.buildFeatures.viewBinding = true")
               }
             )
@@ -745,7 +743,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -800,7 +798,6 @@ ModuleCheck found 1 issue"""
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
               }
             )
           }
@@ -810,7 +807,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -873,7 +870,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -922,7 +919,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependencyApply") withTrimmedMessage """:app
+      shouldSucceed("moduleCheckAuto") withTrimmedMessage """:app
            dependency    name                source    build file
         ✔  :lib-1        unusedDependency              /app/build.gradle.kts: (6, 3):
 
@@ -994,7 +991,7 @@ ModuleCheck found 1 issue"""
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
+                // addProjectDependency("api", jvmSub1)
               }
             )
           }
@@ -1004,7 +1001,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -1064,7 +1061,6 @@ ModuleCheck found 1 issue"""
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
               }
             )
           }
@@ -1074,7 +1070,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -1167,7 +1163,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -1251,7 +1247,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -1379,7 +1375,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
 
       // one last check to make sure the manifest wasn't generated, since that would invalidate the test
       File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
@@ -1448,7 +1444,6 @@ ModuleCheck found 1 issue"""
             addBuildSpec(
               ProjectBuildSpec {
                 addPlugin("kotlin(\"jvm\")")
-                addProjectDependency("api", jvmSub1)
               }
             )
           }
@@ -1458,7 +1453,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckUnusedDependency")
+      shouldSucceed("moduleCheck")
     }
   }
 }

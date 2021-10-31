@@ -18,13 +18,12 @@ package modulecheck.gradle
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.api.FindingFactory
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.core.rule.SingleRuleFindingFactory
+import modulecheck.core.rule.*
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.configure
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
@@ -43,41 +42,27 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val rules = factory.create(settings)
 
-    rules.map { rule ->
-      target.registerTask(
-        name = "moduleCheck${rule.id}",
-        findingFactory = SingleRuleFindingFactory(rule),
-        autoCorrect = false
-      )
-    }
-    rules.map { rule ->
-      target.registerTask(
-        name = "moduleCheck${rule.id}Apply",
-        findingFactory = SingleRuleFindingFactory(rule),
-        autoCorrect = true
-      )
-    }
-
-    target.registerTask(
-      name = "moduleCheck",
-      findingFactory = MultiRuleFindingFactory(settings, rules),
-      autoCorrect = false
+    target.registerTasks(
+      name = "moduleCheckSortDependencies",
+      findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings))
     )
-
-    target.registerTask(
-      name = "moduleCheckApply",
-      findingFactory = MultiRuleFindingFactory(settings, rules),
-      autoCorrect = true
+    target.registerTasks(
+      name = "moduleCheckSortPlugins",
+      findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings))
+    )
+    target.registerTasks(
+      name = "moduleCheck",
+      findingFactory = MultiRuleFindingFactory(settings, rules)
     )
   }
 
-  private fun Project.registerTask(
+  private fun Project.registerTasks(
     name: String,
-    findingFactory: FindingFactory<*>,
-    autoCorrect: Boolean
+    findingFactory: FindingFactory<*>
   ) {
-    tasks.register(name, ModuleCheckTask::class.java, findingFactory, autoCorrect)
-      .configure {
+
+    fun TaskProvider<*>.addDependencies() {
+      configure {
 
         allprojects
           .filter { it.isMissingManifestFile() }
@@ -88,5 +73,11 @@ class ModuleCheckPlugin : Plugin<Project> {
           .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
           .forEach { dependsOn(it) }
       }
+    }
+
+    tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
+      .addDependencies()
+    tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
+      .addDependencies()
   }
 }

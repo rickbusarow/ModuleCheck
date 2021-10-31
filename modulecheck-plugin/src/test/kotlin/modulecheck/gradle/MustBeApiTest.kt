@@ -88,7 +88,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -137,7 +137,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -186,7 +186,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -238,7 +238,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -288,7 +288,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -356,7 +356,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -406,7 +406,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -474,7 +474,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -529,7 +529,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -617,7 +617,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -673,7 +673,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -765,7 +765,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApiApply")
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -817,7 +817,7 @@ class MustBeApiTest : BasePluginTest() {
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -858,7 +858,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldSucceed("moduleCheckMustBeApi")
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -898,7 +898,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
@@ -942,7 +942,7 @@ ModuleCheck found 4 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -989,7 +989,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
@@ -1034,7 +1034,7 @@ ModuleCheck found 4 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -1097,7 +1097,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
@@ -1142,7 +1142,7 @@ ModuleCheck found 4 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -1205,7 +1205,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
@@ -1255,7 +1255,7 @@ ModuleCheck found 4 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -1338,7 +1338,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
@@ -1389,7 +1389,7 @@ ModuleCheck found 4 issues"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
 
@@ -1476,7 +1476,7 @@ ModuleCheck found 1 issue"""
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFail("moduleCheckMustBeApi") withTrimmedMessage """:app
+      shouldFail("moduleCheck") withTrimmedMessage """:app
            dependency    name         source    build file
         X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
         X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):

@@ -40,6 +40,7 @@ internal class TextReportingTest : BaseTest() {
     val outputFile = File(baseSettings.reports.text.outputPath)
 
     val runner = ModuleCheckRunner(
+      autoCorrect = false,
       settings = baseSettings,
       findingFactory = {
         listOf(
@@ -83,6 +84,7 @@ internal class TextReportingTest : BaseTest() {
     val outputFile = File(baseSettings.reports.text.outputPath)
 
     val runner = ModuleCheckRunner(
+      autoCorrect = false,
       settings = baseSettings,
       findingFactory = {
         listOf(

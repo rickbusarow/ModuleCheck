@@ -85,7 +85,7 @@ class OverShotDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckApply")
+    shouldSucceed("moduleCheckAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
       |  kotlin("jvm")
@@ -149,7 +149,7 @@ class OverShotDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckApply")
+    shouldSucceed("moduleCheckAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
       |  id("com.android.library")

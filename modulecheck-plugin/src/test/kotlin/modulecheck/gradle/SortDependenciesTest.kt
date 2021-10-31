@@ -68,7 +68,7 @@ class SortDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortDependenciesApply")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -138,7 +138,7 @@ class SortDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortDependenciesApply")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -217,7 +217,7 @@ class SortDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortDependenciesApply")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -312,8 +312,8 @@ class SortDependenciesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortDependenciesApply")
-    shouldSucceed("moduleCheckSortDependenciesApply")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -377,7 +377,7 @@ class SortDependenciesTest : BasePluginTest() {
 
     root.writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortDependenciesApply")
+    shouldSucceed("moduleCheckSortDependenciesAuto")
 
     File(testProjectDir, "/build.gradle.kts").readText() shouldBe """
         |buildscript {

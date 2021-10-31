@@ -71,7 +71,7 @@ class SortPluginsTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortPluginsApply")
+    shouldSucceed("moduleCheckSortPluginsAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -128,8 +128,8 @@ class SortPluginsTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckSortPluginsApply")
-    shouldSucceed("moduleCheckSortPluginsApply")
+    shouldSucceed("moduleCheckSortPluginsAuto")
+    shouldSucceed("moduleCheckSortPluginsAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

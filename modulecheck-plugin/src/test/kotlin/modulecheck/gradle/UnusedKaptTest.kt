@@ -58,7 +58,7 @@ class UnusedKaptTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFail("moduleCheckUnusedKapt")
+    shouldFail("moduleCheck")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -117,7 +117,7 @@ class UnusedKaptTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedKapt")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -165,7 +165,7 @@ class UnusedKaptTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedKapt")
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -218,6 +218,6 @@ class UnusedKaptTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldSucceed("moduleCheckUnusedKapt")
+    shouldSucceed("moduleCheck")
   }
 }
