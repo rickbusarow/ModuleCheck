@@ -31,7 +31,7 @@ interface McProject :
 
   val configurations: Map<ConfigurationName, Config>
 
-  val projectDependencies: Lazy<ProjectDependencies>
+  val projectDependencies: ProjectDependencies
 
   val hasKapt: Boolean
 
@@ -51,13 +51,9 @@ fun McProject.sourceOf(
   apiOnly: Boolean = false
 ): ConfiguredProjectDependency? {
   val toCheck = if (apiOnly) {
-    projectDependencies
-      .value[ConfigurationName.api]
-      .orEmpty()
+    projectDependencies[ConfigurationName.api].orEmpty()
   } else {
-    projectDependencies
-      .value
-      .main()
+    projectDependencies.main()
   }
 
   if (dependencyProject in toCheck) return ConfiguredProjectDependency(

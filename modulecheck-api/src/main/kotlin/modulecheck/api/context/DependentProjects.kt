@@ -21,7 +21,7 @@ import modulecheck.parsing.ProjectContext
 data class DependentProjects(
   internal val delegate: Set<McProject>
 ) : Set<McProject> by delegate,
-  ProjectContext.Element {
+    ProjectContext.Element {
 
   override val key: ProjectContext.Key<DependentProjects>
     get() = Key
@@ -33,10 +33,7 @@ data class DependentProjects(
         .filter { otherProject ->
           project.path in otherProject
             .projectDependencies
-            .value
-            .flatMap {
-              it.value.map { it.project.path }
-            }
+            .flatMap { it.value.map { it.project.path } }
         }
         .toSet()
 

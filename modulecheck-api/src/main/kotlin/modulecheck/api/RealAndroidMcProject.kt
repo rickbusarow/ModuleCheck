@@ -19,12 +19,11 @@ import modulecheck.parsing.*
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-data class RealAndroidMcProject(
+class RealAndroidMcProject(
   override val path: String,
   override val projectDir: File,
   override val buildFile: File,
   override val configurations: Map<ConfigurationName, Config>,
-  override val projectDependencies: Lazy<ProjectDependencies>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
   override val projectCache: ConcurrentHashMap<String, McProject>,
@@ -33,8 +32,11 @@ data class RealAndroidMcProject(
   override val viewBindingEnabled: Boolean,
   override val resourceFiles: Set<File>,
   override val androidPackageOrNull: String?,
-  override val manifests: Map<SourceSetName, File>
+  override val manifests: Map<SourceSetName, File>,
+  projectDependencies: Lazy<ProjectDependencies>
 ) : AndroidMcProject {
+
+  override val projectDependencies: ProjectDependencies by projectDependencies
 
   private val context = ProjectContextImpl(this)
 

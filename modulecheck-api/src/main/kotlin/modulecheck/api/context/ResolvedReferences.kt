@@ -37,8 +37,7 @@ data class ResolvedReferences(
         .mapValues { (configurationName, _) ->
 
           val projectDependencies = project
-            .projectDependencies
-            .value[configurationName]
+            .projectDependencies[configurationName]
             .orEmpty()
 
           project

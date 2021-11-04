@@ -77,12 +77,7 @@ data class UnusedDependencies(
         .sourceSets
         .flatMap { it.key.configurationNames() }
         .asSequence()
-        .flatMap { config ->
-          project
-            .projectDependencies
-            .value[config]
-            .orEmpty()
-        }
+        .flatMap { config -> project.projectDependencies[config].orEmpty() }
         .filterNot { cpd ->
           // test configurations have the main source project as a dependency.
           // without this, every project will report itself as unused.
@@ -119,8 +114,7 @@ data class UnusedDependencies(
         .map { (configurationName, _) ->
           val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
 
-          val configurationDependencies = projectDependencies
-            .value[configurationName]
+          val configurationDependencies = projectDependencies[configurationName]
             .orEmpty()
             .toSet()
 

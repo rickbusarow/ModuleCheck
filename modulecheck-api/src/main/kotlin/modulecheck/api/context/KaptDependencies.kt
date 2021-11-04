@@ -19,7 +19,7 @@ import modulecheck.api.KaptProcessor
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.ProjectContext.*
+import modulecheck.parsing.ProjectContext.Element
 import modulecheck.parsing.all
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -43,7 +43,6 @@ data class KaptDependencies(
           val external = config.externalDependencies
           val internal = project
             .projectDependencies
-            .value
             .all()
 
           val allDependencies = external + internal

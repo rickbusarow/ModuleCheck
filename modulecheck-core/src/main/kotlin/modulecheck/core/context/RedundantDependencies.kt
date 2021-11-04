@@ -64,14 +64,12 @@ data class RedundantDependencies(
   companion object Key : ProjectContext.Key<RedundantDependencies> {
     override operator fun invoke(project: McProject): RedundantDependencies {
       val allApi = project
-        .projectDependencies
-        .value["api".asConfigurationName()]
+        .projectDependencies["api".asConfigurationName()]
         .orEmpty()
         .toSet()
 
       val inheritedDependencyProjects = project
         .projectDependencies
-        .value
         .main()
         .flatMap {
           it

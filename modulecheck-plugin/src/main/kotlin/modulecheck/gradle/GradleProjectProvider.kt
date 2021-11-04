@@ -97,7 +97,6 @@ class GradleProjectProvider(
         projectDir = gradleProject.projectDir,
         buildFile = gradleProject.buildFile,
         configurations = configurations,
-        projectDependencies = projectDependencies,
         hasKapt = hasKapt,
         sourceSets = gradleProject.androidSourceSets(),
         projectCache = projectCache,
@@ -106,7 +105,8 @@ class GradleProjectProvider(
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         resourceFiles = gradleProject.androidResourceFiles(),
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
-        manifests = gradleProject.androidManifests().orEmpty()
+        manifests = gradleProject.androidManifests().orEmpty(),
+        projectDependencies = projectDependencies
       )
     } else {
       RealMcProject(
@@ -114,11 +114,11 @@ class GradleProjectProvider(
         projectDir = gradleProject.projectDir,
         buildFile = gradleProject.buildFile,
         configurations = configurations,
-        projectDependencies = projectDependencies,
         hasKapt = hasKapt,
         sourceSets = sourceSets,
         projectCache = projectCache,
-        anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull()
+        anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
+        projectDependencies = projectDependencies
       )
     }
   }
