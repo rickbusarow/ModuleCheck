@@ -19,17 +19,19 @@ import modulecheck.parsing.*
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-data class RealMcProject(
+class RealMcProject(
   override val path: String,
   override val projectDir: File,
   override val buildFile: File,
   override val configurations: Map<ConfigurationName, Config>,
-  override val projectDependencies: Lazy<ProjectDependencies>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
   override val projectCache: ConcurrentHashMap<String, McProject>,
-  override val anvilGradlePlugin: AnvilGradlePlugin?
+  override val anvilGradlePlugin: AnvilGradlePlugin?,
+  projectDependencies: Lazy<ProjectDependencies>
 ) : McProject {
+
+  override val projectDependencies: ProjectDependencies by projectDependencies
 
   private val context = ProjectContextImpl(this)
 

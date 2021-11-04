@@ -253,7 +253,7 @@ data class AnvilGraph(
     private fun McProject.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
       return configurations
         .map { (configurationName, _) ->
-          configurationName.toSourceSetName() to projectDependencies.value[configurationName].orEmpty()
+          configurationName.toSourceSetName() to projectDependencies[configurationName].orEmpty()
         }
         .groupBy { it.first }
         .map { it.key to it.value.flatMap { it.second } }

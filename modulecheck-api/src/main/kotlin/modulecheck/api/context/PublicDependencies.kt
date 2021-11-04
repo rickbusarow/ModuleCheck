@@ -39,13 +39,12 @@ data class PublicDependencies(
       includePrivate: Boolean = true
     ): Set<ConfiguredProjectDependency> {
       val privateDependencies = if (includePrivate) {
-        projectDependencies.value.main()
+        projectDependencies.main()
       } else {
         emptyList()
       }
 
-      val combined = privateDependencies + projectDependencies
-        .value[ConfigurationName.api]
+      val combined = privateDependencies + projectDependencies[ConfigurationName.api]
         .orEmpty()
 
       val inherited = combined

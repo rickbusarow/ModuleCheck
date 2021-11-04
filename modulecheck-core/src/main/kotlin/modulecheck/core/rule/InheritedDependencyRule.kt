@@ -37,7 +37,6 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
     val mainDependenciesPaths = project
       .projectDependencies
-      .value
       .main()
       .map { it.project.path }
       .toSet()
@@ -65,7 +64,6 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
         val sourceConfig by lazy(NONE) {
           project
             .projectDependencies
-            .value
             .main()
             .firstOrNull { it.project == source?.project }
             ?.configurationName ?: "api".asConfigurationName()

@@ -68,9 +68,7 @@ data class MustBeApi(
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
           // exclude anything which is inherited but already included in local `api` deps
-          cpd in project.projectDependencies
-            .value[ConfigurationName.api]
-            .orEmpty()
+          cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
         }
         .filter { cpd ->
           cpd
@@ -86,7 +84,6 @@ data class MustBeApi(
         .map { cpd ->
           val source = project
             .projectDependencies
-            .value
             .main()
             .firstOrNull { it.project == cpd.project }
             ?: ConfigurationName

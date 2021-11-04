@@ -77,7 +77,7 @@ data class OverShotDependencies(
               }
 
               top.flatMap { all.getValue(it.name) }
-                .filter { project.projectDependencies.value[it.configurationName]?.contains(it) != true }
+                .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
                 .toSet()
             }
         }
