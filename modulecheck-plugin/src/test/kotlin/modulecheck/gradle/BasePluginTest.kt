@@ -76,41 +76,25 @@ abstract class BasePluginTest : BaseTest() {
 
     val trimmed = output
       .normaliseLineSeparators()
-      .replace(testProjectDir.absolutePath, "") // replace absolute paths with relative ones
-      .let {
-        staticPrefixes.fold(it) { acc, prefix ->
-          acc.replace(prefix, "")
-        }
-      }
-      .let {
-        prefixRegexes.fold(it) { acc, prefix ->
-          acc.replace(prefix, "")
-        }
-      }
-      // replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues`
-      .replace(suffixRegex) { it.destructured.component1() }
+      .useRelativePaths()
+      .remove(
+        "Type-safe dependency accessors is an incubating feature.",
+        "Type-safe project accessors is an incubating feature.",
+        "-- ModuleCheck results --",
+        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
+        "You can use '--warning-mode all' to show the individual deprecation warnings and determine " +
+          "if they come from your own scripts or plugins."
+      )
+      // remove standard Gradle output noise
+      .remove(
+        "> Task [^\\n]*".toRegex(),
+        "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
+        "BUILD SUCCESSFUL in \\d+m?s".toRegex(),
+        "\\d+ actionable tasks?: \\d+ executed".toRegex()
+      )
+      .removeDuration()
       .trim()
 
     trimmed shouldBe message
-  }
-
-  companion object {
-
-    val staticPrefixes = listOf(
-      "Type-safe dependency accessors is an incubating feature.",
-      "Type-safe project accessors is an incubating feature.",
-      "-- ModuleCheck results --",
-      "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
-      "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins."
-    )
-
-    val prefixRegexes = listOf(
-      "> Task [^\\n]*".toRegex(),
-      "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
-      "BUILD SUCCESSFUL in \\d+m?s".toRegex(),
-      "\\d+ actionable tasks?: \\d+ executed".toRegex()
-    )
-
-    val suffixRegex = "(ModuleCheck found [\\d]+ issues?) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }
