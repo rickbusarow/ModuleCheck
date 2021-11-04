@@ -25,7 +25,10 @@ import io.kotest.matchers.shouldBe as kotestShouldBe
 abstract class BaseTest : HermitJUnit5() {
 
   val testProjectDir by resets {
-    val className = testInfo.testClass.get().simpleName
+    val className = testInfo.testClass.get()
+      // "simpleName" for a nested class is just the nested class name,
+      // so use the FqName and trim the package name to get qualified nested names
+      .let { it.canonicalName.removePrefix(it.packageName + ".") }
       .replace("[^a-zA-Z0-9]".toRegex(), "_")
 
     val testName = testInfo.displayName
@@ -38,7 +41,42 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  fun String.fixPath(): String = replace(File.separator, "/")
+  /** Replace CRLF and CR line endings with Unix LF endings.*/
+  fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
+
+  /** Replace Windows file separators with Unix ones, just for string comparison in tests */
+  fun String.fixFileSeparators(): String = replace(File.separator, "/")
+
+  fun String.clean(): String {
+    return normaliseLineSeparators()
+      .fixFileSeparators()
+      .useRelativePaths()
+      .remove("in [\\d\\.]+ seconds\\.".toRegex())
+      .trim()
+  }
+
+  /** replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues` */
+  fun String.removeDuration(): String {
+    return replace(durationSuffixRegex) { it.destructured.component1() }
+  }
+
+  /** replace absolute paths with relative ones */
+  fun String.useRelativePaths(): String {
+    return fixFileSeparators()
+      .remove(
+        // order matters here!!  absolute must go first
+        testProjectDir.absolutePath.fixFileSeparators(),
+        testProjectDir.path.fixFileSeparators()
+      )
+  }
+
+  fun String.remove(vararg strings: String): String = strings.fold(this) { acc, string ->
+    acc.replace(string, "")
+  }
+
+  fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, regex ->
+    acc.replace(regex, "")
+  }
 
   private var testInfo: TestInfo by Delegates.notNull()
 
@@ -69,5 +107,10 @@ abstract class BaseTest : HermitJUnit5() {
         .toTypedArray()
       throw assertionError
     }
+  }
+
+  companion object {
+    protected val durationSuffixRegex =
+      "(ModuleCheck found [\\d]+ issues?) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }

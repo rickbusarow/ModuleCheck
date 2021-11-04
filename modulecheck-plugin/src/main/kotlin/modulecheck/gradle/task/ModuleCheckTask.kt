@@ -68,8 +68,8 @@ abstract class ModuleCheckTask<T : Finding> @Inject constructor(
       settings = settings,
       findingFactory = findingFactory,
       logger = logger,
-      reportFactory = ReportFactory(),
-      findingResultFactory = RealFindingResultFactory()
+      findingResultFactory = RealFindingResultFactory(),
+      reportFactory = ReportFactory()
     )
 
     val projects = project
