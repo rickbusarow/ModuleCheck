@@ -20,8 +20,6 @@ import modulecheck.api.Finding.Position
 import modulecheck.api.PrintLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.reporting.checkstyle.CheckstyleReporter
-import modulecheck.reporting.console.ReportFactory
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -52,6 +50,7 @@ internal class CheckstyleReportingTest : BaseTest() {
           )
         )
       },
+      logger = PrintLogger(),
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
@@ -65,10 +64,7 @@ internal class CheckstyleReportingTest : BaseTest() {
             fixed = true
           )
         )
-      },
-      logger = PrintLogger(),
-      reportFactory = ReportFactory(),
-      checkstyleReporter = CheckstyleReporter()
+      }
     )
 
     val result = runner.run(listOf())
@@ -96,6 +92,7 @@ internal class CheckstyleReportingTest : BaseTest() {
           )
         )
       },
+      logger = PrintLogger(),
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
@@ -109,10 +106,7 @@ internal class CheckstyleReportingTest : BaseTest() {
             fixed = true
           )
         )
-      },
-      logger = PrintLogger(),
-      reportFactory = ReportFactory(),
-      checkstyleReporter = CheckstyleReporter()
+      }
     )
 
     val result = runner.run(listOf())

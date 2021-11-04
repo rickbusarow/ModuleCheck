@@ -63,6 +63,13 @@ data class Report(val entries: List<ReportEntry>) {
     value class SuccessHeader(override val message: String) : ReportEntry, AppendNewLine
 
     interface AppendNewLine
+
+    fun printToStdOut() {
+      when (this) {
+        is AppendNewLine -> println(message.trimEnd())
+        else -> print(message)
+      }
+    }
   }
 
   class ReportBuilderScope(

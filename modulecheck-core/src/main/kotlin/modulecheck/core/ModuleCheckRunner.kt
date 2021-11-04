@@ -33,7 +33,7 @@ import kotlin.system.measureTimeMillis
  * @param reportFactory handles console output of the results
  */
 @Suppress("LongParameterList")
-class ModuleCheckRunner(
+data class ModuleCheckRunner(
   val autoCorrect: Boolean,
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
@@ -66,13 +66,14 @@ class ModuleCheckRunner(
     @Suppress("MagicNumber")
     val secondsDouble = unfixedCountWithTime.timeMillis / 1000.0
 
+    val issuePlural = if (totalFindings == 1) "issue" else "issues"
+
+    logger.printInfo("ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.")
+
     if (totalFindings > 0) {
 
-      val issuePlural = if (totalFindings == 1) "issue" else "issues"
-
-      logger.printInfo(
-        "ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.\n\n" +
-          "To ignore any of these findings, annotate the dependency declaration with " +
+      logger.printWarning(
+        "\n\nTo ignore any of these findings, annotate the dependency declaration with " +
           "@Suppress(\"<the name of the issue>\") in Kotlin, or " +
           "//noinspection <the name of the issue> in Groovy.\n" +
           "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."

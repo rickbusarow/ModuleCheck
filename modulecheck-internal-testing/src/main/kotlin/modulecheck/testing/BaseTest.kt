@@ -38,7 +38,15 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  fun String.fixPath(): String = replace(File.separator, "/")
+  fun String.normaliseLineSeparators(): String = replace(File.separator, "/")
+
+  fun String.clean(): String {
+    return normaliseLineSeparators()
+      .replace("${testProjectDir.path}/", "") // replace absolute paths with relative ones
+      .replace("${testProjectDir.absolutePath}/", "") // replace absolute paths with relative ones
+      .replace("in [\\d\\.]+ seconds\\.".toRegex(), "")
+      .trim()
+  }
 
   private var testInfo: TestInfo by Delegates.notNull()
 
