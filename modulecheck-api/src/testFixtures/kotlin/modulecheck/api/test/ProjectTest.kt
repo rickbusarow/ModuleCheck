@@ -33,7 +33,8 @@ abstract class ProjectTest : BaseTest() {
   }
 
   fun McProjectBuilderScope.childProject(
-    path: String, config: McProjectBuilderScope.() -> Unit
+    path: String,
+    config: McProjectBuilderScope.() -> Unit
   ): McProject {
 
     val appendedPath = (this@childProject.path + path).replace(":{2,}".toRegex(), ":")

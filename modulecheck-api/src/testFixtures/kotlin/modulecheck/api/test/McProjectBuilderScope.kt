@@ -19,7 +19,8 @@ import modulecheck.parsing.*
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-class McProjectBuilderScope(
+@Suppress("LongParameterList")
+data class McProjectBuilderScope(
   var path: String,
   var projectDir: File,
   var buildFile: File,
