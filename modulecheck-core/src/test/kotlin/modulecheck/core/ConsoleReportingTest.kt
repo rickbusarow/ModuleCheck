@@ -72,7 +72,7 @@ internal class ConsoleReportingTest : BaseTest() {
 
     :lib1
            dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              lib1/build.gradle.kts:
+        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
 ModuleCheck found 1 issue
     """.trimIndent()
@@ -107,11 +107,11 @@ ModuleCheck found 1 issue
 
     :lib1
            dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              lib1/build.gradle.kts:
+        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
     :lib2
            dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              lib2/build.gradle.kts:
+        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
 
 ModuleCheck found 2 issues
     """.trimIndent()
