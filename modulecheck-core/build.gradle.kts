@@ -30,6 +30,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
+  api(project(path = ":modulecheck-reporting:graphviz"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
@@ -41,5 +42,8 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.reflect)
 
+  testImplementation(testFixtures(project(path = ":modulecheck-api")))
+
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-specs"))
 }

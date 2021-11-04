@@ -16,7 +16,10 @@
 plugins {
   javaLibrary
   id("com.vanniktech.maven.publish")
+  id("java-test-fixtures")
 }
+
+val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -32,6 +35,16 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
+
+  testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(libs.bundles.hermit)
+
+  if (isIdeSync) {
+    compileOnly(project(path = ":modulecheck-internal-testing"))
+    compileOnly(libs.bundles.hermit)
+    compileOnly(libs.bundles.jUnit)
+    compileOnly(libs.bundles.kotest)
+  }
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
