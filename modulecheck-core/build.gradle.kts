@@ -30,7 +30,6 @@ dependencies {
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
-  api(project(path = ":modulecheck-reporting:graphviz"))
 
   implementation(libs.agp)
   implementation(libs.groovy)

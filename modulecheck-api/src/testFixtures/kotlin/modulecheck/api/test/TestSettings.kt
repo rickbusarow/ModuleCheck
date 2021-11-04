@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.api.test
 
 import modulecheck.api.KaptMatcher
 import modulecheck.api.settings.*
