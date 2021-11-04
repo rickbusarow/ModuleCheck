@@ -16,6 +16,7 @@
 package modulecheck.testing
 
 import hermit.test.junit.HermitJUnit5
+import org.gradle.util.internal.TextUtil
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
@@ -41,10 +42,12 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  fun String.normaliseLineSeparators(): String = replace(File.separator, "/")
+  fun String.normaliseLineSeparators(): String = TextUtil.convertLineSeparatorsToUnix(this)
+  fun String.fixFileSeparators(): String = replace(File.separator, "/")
 
   fun String.clean(): String {
     return normaliseLineSeparators()
+      .fixFileSeparators()
       .useRelativePaths()
       .remove("in [\\d\\.]+ seconds\\.".toRegex())
       .trim()
@@ -57,11 +60,11 @@ abstract class BaseTest : HermitJUnit5() {
 
   /** replace absolute paths with relative ones */
   fun String.useRelativePaths(): String {
-    return normaliseLineSeparators()
+    return fixFileSeparators()
       .remove(
         // order matters here!!  absolute must go first
-        testProjectDir.absolutePath.normaliseLineSeparators(),
-        testProjectDir.path.normaliseLineSeparators()
+        testProjectDir.absolutePath.fixFileSeparators(),
+        testProjectDir.path.fixFileSeparators()
       )
   }
 

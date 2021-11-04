@@ -76,6 +76,7 @@ abstract class BasePluginTest : BaseTest() {
 
     val trimmed = output
       .normaliseLineSeparators()
+      .fixFileSeparators()
       .useRelativePaths()
       .remove(
         "Type-safe dependency accessors is an incubating feature.",
