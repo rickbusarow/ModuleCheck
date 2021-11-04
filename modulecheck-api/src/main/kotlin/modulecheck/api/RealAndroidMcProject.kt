@@ -19,6 +19,7 @@ import modulecheck.parsing.*
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
+@Suppress("LongParameterList")
 class RealAndroidMcProject(
   override val path: String,
   override val projectDir: File,
