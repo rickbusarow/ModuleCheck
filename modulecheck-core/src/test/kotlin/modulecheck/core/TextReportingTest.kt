@@ -17,6 +17,7 @@ package modulecheck.core
 
 import modulecheck.api.Finding
 import modulecheck.api.PrintLogger
+import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
