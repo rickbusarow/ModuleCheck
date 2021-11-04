@@ -202,6 +202,7 @@ class GradleProjectProvider(
               )
             }
         }
+        .toMutableMap()
       ProjectDependencies(map)
     }
 

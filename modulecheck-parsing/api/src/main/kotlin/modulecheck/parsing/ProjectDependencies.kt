@@ -16,8 +16,8 @@
 package modulecheck.parsing
 
 class ProjectDependencies(
-  map: Map<ConfigurationName, List<ConfiguredProjectDependency>>
-) : Map<ConfigurationName, List<ConfiguredProjectDependency>> by map {
+  map: MutableMap<ConfigurationName, List<ConfiguredProjectDependency>>
+) : MutableMap<ConfigurationName, List<ConfiguredProjectDependency>> by map {
   fun main(): List<ConfiguredProjectDependency> = ConfigurationName.main()
     .flatMap { configurationName ->
       get(configurationName).orEmpty()
@@ -32,4 +32,8 @@ class ProjectDependencies(
     .flatMap { configurationName ->
       get(configurationName).orEmpty()
     }
+
+  operator fun get(sourceSetName: SourceSetName): List<ConfiguredProjectDependency> {
+    return sourceSetName.configurationNames().flatMap { get(it).orEmpty() }
+  }
 }
