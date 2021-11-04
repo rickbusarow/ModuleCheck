@@ -16,7 +16,6 @@
 package modulecheck.testing
 
 import hermit.test.junit.HermitJUnit5
-import org.gradle.util.internal.TextUtil
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
@@ -42,7 +41,10 @@ abstract class BaseTest : HermitJUnit5() {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  fun String.normaliseLineSeparators(): String = TextUtil.convertLineSeparatorsToUnix(this)
+  /** Replace CRLF and CR line endings with Unix LF endings.*/
+  fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
+
+  /** Replace Windows file separators with Unix ones, just for string comparison in tests */
   fun String.fixFileSeparators(): String = replace(File.separator, "/")
 
   fun String.clean(): String {
