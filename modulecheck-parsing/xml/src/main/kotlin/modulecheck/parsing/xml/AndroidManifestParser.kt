@@ -20,10 +20,10 @@ import groovy.xml.XmlParser
 import java.io.File
 import kotlin.collections.MutableMap.MutableEntry
 
-object AndroidManifestParser {
-  private val parser = XmlParser()
+class AndroidManifestParser {
 
-  fun parse(file: File) = parser.parse(file)
+  fun parse(file: File): Map<String, String> = XmlParser()
+    .parse(file)
     .breadthFirst()
     .filterIsInstance<Node>()
     .mapNotNull { it.attributes() }
@@ -32,13 +32,12 @@ object AndroidManifestParser {
     .filterIsInstance<MutableEntry<String, String>>()
     .associate { it.key to it.value }
 
-  fun parseResources(file: File): Set<String> {
-    return parser.parse(file)
-      .breadthFirst()
-      .filterIsInstance<Node>()
-      .mapNotNull { it.attributes() }
-      .flatMap { it.values.mapNotNull { value -> value } }
-      .filterIsInstance<String>()
-      .toSet()
-  }
+  fun parseResources(file: File): Set<String> = XmlParser()
+    .parse(file)
+    .breadthFirst()
+    .filterIsInstance<Node>()
+    .mapNotNull { it.attributes() }
+    .flatMap { it.values.mapNotNull { value -> value } }
+    .filterIsInstance<String>()
+    .toSet()
 }

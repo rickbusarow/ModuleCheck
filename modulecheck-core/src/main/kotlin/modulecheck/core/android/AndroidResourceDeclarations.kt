@@ -37,6 +37,8 @@ data class AndroidResourceDeclarations(
 
       val rPackage = android.androidPackageOrNull
 
+      val resourceParser = AndroidResourceParser()
+
       val map = project
         .sourceSets
         .mapValues { (sourceSetName, _) ->
@@ -44,7 +46,7 @@ data class AndroidResourceDeclarations(
           if (rPackage != null) {
             project[ResSourceFiles][sourceSetName]
               .orEmpty()
-              .flatMap { AndroidResourceParser.parseFile(it) }
+              .flatMap { resourceParser.parseFile(it) }
               .toSet() + "$rPackage.R".asDeclarationName()
           } else {
             project[JvmFiles][sourceSetName]

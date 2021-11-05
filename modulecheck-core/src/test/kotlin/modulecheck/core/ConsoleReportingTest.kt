@@ -16,7 +16,6 @@
 package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
-import io.kotest.matchers.string.shouldStartWith
 import modulecheck.api.Finding
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
@@ -44,7 +43,7 @@ internal class ConsoleReportingTest : BaseTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldStartWith "ModuleCheck found 0 issues"
+      .clean() shouldBe "ModuleCheck found 0 issues"
   }
 
   @Test
@@ -68,12 +67,13 @@ internal class ConsoleReportingTest : BaseTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldStartWith """:lib1
-           dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+      .clean() shouldBe """
+          :lib1
+                 dependency                           name                 source    build file
+              X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+      ModuleCheck found 1 issue
+    """
   }
 
   @Test
@@ -101,16 +101,17 @@ ModuleCheck found 1 issue
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldStartWith """:lib1
-           dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+      .clean() shouldBe """
+        :lib1
+               dependency                           name                 source    build file
+            X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
-    :lib2
-           dependency                           name                 source    build file
-        X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
+        :lib2
+               dependency                           name                 source    build file
+            X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
 
-ModuleCheck found 2 issues
-    """.trimIndent()
+    ModuleCheck found 2 issues
+    """
   }
 
   @Test

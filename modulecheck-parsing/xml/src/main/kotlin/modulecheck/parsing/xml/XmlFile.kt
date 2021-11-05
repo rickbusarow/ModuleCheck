@@ -25,11 +25,11 @@ sealed interface XmlFile {
     val name: String = file.nameWithoutExtension
 
     val customViews: Set<String> by lazy {
-      AndroidLayoutParser.parseViews(file)
+      AndroidLayoutParser().parseViews(file)
         .toSet()
     }
     val resourceReferences: Set<String> by lazy {
-      AndroidLayoutParser.parseResources(file)
+      AndroidLayoutParser().parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
     }
@@ -45,7 +45,7 @@ sealed interface XmlFile {
   data class ManifestFile(val file: File) : XmlFile {
 
     val resourceReferences: Set<String> by lazy {
-      AndroidManifestParser.parseResources(file)
+      AndroidManifestParser().parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
     }

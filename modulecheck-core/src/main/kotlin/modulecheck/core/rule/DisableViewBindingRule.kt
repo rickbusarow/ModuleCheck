@@ -18,15 +18,14 @@ package modulecheck.core.rule
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.layoutFiles
 import modulecheck.api.context.possibleReferencesForSourceSetName
-import modulecheck.api.context.resSourceFiles
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.all
-import java.io.File
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
@@ -43,9 +42,8 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     if (!androidProject.viewBindingEnabled) return emptyList()
 
     val layouts = androidProject
-      .resSourceFiles
+      .layoutFiles
       .all()
-      .filter { it.path.matches(filterReg) }
 
     val dependents = project.dependendents
 
@@ -53,12 +51,12 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
       ?: return listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
 
     val usedLayouts = layouts
-      .filter { it.exists() }
-      .filter { file ->
+      .filter { it.file.exists() }
+      .filter { layoutFile ->
 
         // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
         @Suppress("DEPRECATION")
-        val generated = file
+        val generated = layoutFile.file
           .nameWithoutExtension
           .split("_")
           .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
@@ -90,9 +88,5 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {
     return checksSettings.disableViewBinding
-  }
-
-  companion object {
-    private val filterReg = """.*\${File.separator}layout.*\${File.separator}.*.xml""".toRegex()
   }
 }

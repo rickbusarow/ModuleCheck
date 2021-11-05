@@ -36,6 +36,8 @@ data class SourceSetName(val value: String) {
 
   companion object {
     val MAIN = SourceSetName("main")
+    val TEST = SourceSetName("test")
+    val ANDROID_TEST = SourceSetName("androidTest")
     val TEST_FIXTURES = SourceSetName("testFixtures")
   }
 }

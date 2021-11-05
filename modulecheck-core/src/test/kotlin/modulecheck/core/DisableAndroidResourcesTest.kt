@@ -15,10 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ProjectTest
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestChecksSettings
-import modulecheck.api.test.TestSettings
+import modulecheck.api.test.*
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.ConfigurationName
@@ -49,13 +46,13 @@ class DisableAndroidResourcesTest : ProjectTest() {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
-        """.trimIndent()
+        """
       )
       addResourceFile(
         "values/strings.xml",
@@ -70,7 +67,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
         package com.modulecheck.lib1
 
         val string = R.string.app_name
-        """.trimIndent()
+        """
       )
     }
 
@@ -83,7 +80,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Test
@@ -97,7 +94,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -107,7 +104,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
       addResourceFile(
         "values/strings.xml",
@@ -128,7 +125,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
         package com.modulecheck.lib2
 
         val string = R.string.app_name
-        """.trimIndent()
+        """
       )
     }
 
@@ -145,7 +142,7 @@ android {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Test
@@ -159,31 +156,34 @@ android {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+      """
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                       source    build file
-        X                disableAndroidResources              /lib1/build.gradle.kts:
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                       source    build file
+                X                disableAndroidResources              /lib1/build.gradle.kts:
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 
   @Test
@@ -197,7 +197,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -206,7 +206,7 @@ ModuleCheck found 1 issue
         android {
           buildFeatures.androidResources = true
         }
-        """.trimIndent()
+        """
       )
     }
 
@@ -222,12 +222,13 @@ android {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                       source    build file
-        ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                       source    build file
+                ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 
   @Test
@@ -241,33 +242,36 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
         android.buildFeatures.androidResources = true
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
-android.buildFeatures.androidResources = false"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+      android.buildFeatures.androidResources = false
+      """
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                       source    build file
-        ✔                disableAndroidResources              /lib1/build.gradle.kts: (5, 1):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                       source    build file
+                ✔                disableAndroidResources              /lib1/build.gradle.kts: (5, 1):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 
   @Test
@@ -281,7 +285,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -290,28 +294,31 @@ ModuleCheck found 1 issue
         android.buildFeatures {
           androidResources = true
         }
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
-android.buildFeatures {
-  androidResources = false
-}"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+      android.buildFeatures {
+        androidResources = false
+      }
+      """
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                       source    build file
-        ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
+      .clean() shouldBe """
+          :lib1
+                 dependency    name                       source    build file
+              ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+      ModuleCheck found 1 issue
+      """
   }
 
   @Test
@@ -325,7 +332,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -336,30 +343,33 @@ ModuleCheck found 1 issue
             androidResources = true
           }
         }
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
-android {
-  buildFeatures {
-    androidResources = false
-  }
-}"""
+    lib1.buildFile.readText() shouldBe """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+        android {
+          buildFeatures {
+            androidResources = false
+          }
+        }
+        """
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                       source    build file
-        ✔                disableAndroidResources              /lib1/build.gradle.kts: (7, 5):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                       source    build file
+                ✔                disableAndroidResources              /lib1/build.gradle.kts: (7, 5):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+    """
   }
 
   @Disabled("https://github.com/RBusarow/ModuleCheck/issues/255")
@@ -374,26 +384,28 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+      """
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Disabled("https://github.com/RBusarow/ModuleCheck/issues/255")
@@ -408,13 +420,13 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
-        """.trimIndent()
+        """
       )
     }
 
@@ -427,6 +439,6 @@ ModuleCheck found 1 issue
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 }

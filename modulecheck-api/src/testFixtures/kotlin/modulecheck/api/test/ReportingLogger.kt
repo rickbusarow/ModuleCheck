@@ -38,6 +38,9 @@ class ReportingLogger(
     entries.add(reportEntry)
     if (mirrorToStandardOut) {
       reportEntry.printToStdOut()
+      if (reportEntry is AppendNewLine) {
+        println()
+      }
     }
   }
 

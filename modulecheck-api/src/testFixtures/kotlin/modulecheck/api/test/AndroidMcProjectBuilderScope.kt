@@ -33,11 +33,38 @@ interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
     content: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ) {
-    val file = File(projectDir, "src/res/$name").createSafely(content)
+
+    require(!name.startsWith("layout/")) { "use `addLayoutFile` for layout files." }
+
+    val file = File(projectDir, "src/${sourceSetName.value}/res/$name").createSafely(content)
 
     val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
 
     sourceSets[sourceSetName] = old.copy(resourceFiles = old.resourceFiles + file)
+  }
+
+  fun addLayoutFile(
+    name: String,
+    @Language("xml")
+    content: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN
+  ) {
+    val file = File(projectDir, "src/${sourceSetName.value}/res/layout/$name").createSafely(content)
+
+    val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
+
+    sourceSets[sourceSetName] = old.copy(layoutFiles = old.layoutFiles + file)
+  }
+
+  fun addManifest(
+    @Language("xml")
+    content: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN
+  ) {
+    val file = File(projectDir, "src/${sourceSetName.value}/AndroidManifest.xml")
+      .createSafely(content)
+
+    manifests[sourceSetName] = file
   }
 }
 
