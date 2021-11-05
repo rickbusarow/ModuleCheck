@@ -118,7 +118,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       androidResourcesEnabled = false
 

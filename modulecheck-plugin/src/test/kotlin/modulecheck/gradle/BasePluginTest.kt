@@ -23,8 +23,6 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.TestInfo
-import kotlin.properties.Delegates
 import kotlin.text.RegexOption.IGNORE_CASE
 
 abstract class BasePluginTest : BaseTest() {
@@ -42,15 +40,13 @@ abstract class BasePluginTest : BaseTest() {
       .withProjectDir(testProjectDir)
   }
 
-  private var testInfo: TestInfo by Delegates.notNull()
-
   @BeforeEach
   fun beforeEach() {
     testProjectDir.deleteRecursively()
   }
 
   fun build(vararg tasks: String): BuildResult {
-    return gradleRunner.withArguments(*tasks).build()
+    return gradleRunner.withArguments(tasks.toList()).build()
   }
 
   fun BuildResult.shouldSucceed() {
@@ -58,7 +54,7 @@ abstract class BasePluginTest : BaseTest() {
   }
 
   fun shouldSucceed(vararg tasks: String): BuildResult {
-    val result = gradleRunner.withArguments(*tasks).build()
+    val result = build(*tasks)
 
     result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
 
@@ -85,13 +81,15 @@ abstract class BasePluginTest : BaseTest() {
         "> Run with --info or --debug option to get more log output.",
         "> Run with --scan to get full insights.",
         "* Get more help at https://help.gradle.org",
+        "Daemon will be stopped at the end of the build after running out of JVM memory",
       )
       // remove standard Gradle output noise
       .remove(
         "Execution failed for task ':moduleCheck(?:Auto|)\\'.".toRegex(IGNORE_CASE),
         "> Task [^\\n]*".toRegex(),
+        ".*Run with --.*".toRegex(),
         "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
-        "BUILD (?:SUCCESSFUL|FAILED) in \\d+m?s".toRegex(),
+        "BUILD (?:SUCCESSFUL|FAILED) in .*".toRegex(),
         "\\d+ actionable tasks?: \\d+ executed".toRegex(),
         "> ModuleCheck found \\d+ issues? which (?:was|were) not auto-corrected.".toRegex()
       )

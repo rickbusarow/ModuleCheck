@@ -63,7 +63,7 @@ class DisableViewBindingTest : ProjectTest() {
       addResourceFile("layout/fragment_lib1.xml", "")
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       viewBindingEnabled = false
 
