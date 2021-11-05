@@ -15,57 +15,40 @@
 
 package modulecheck.api.test
 
-import modulecheck.api.RealMcProject
+import modulecheck.api.RealAndroidMcProject
 import modulecheck.parsing.*
 import org.intellij.lang.annotations.Language
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 
-interface McProjectBuilderScope {
-  var path: String
-  var projectDir: File
-  var buildFile: File
-  val configurations: MutableMap<ConfigurationName, Config>
-  val projectDependencies: ProjectDependencies
-  var hasKapt: Boolean
-  val sourceSets: MutableMap<SourceSetName, SourceSet>
-  var anvilGradlePlugin: AnvilGradlePlugin?
-  val projectCache: ConcurrentHashMap<String, McProject>
+interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
+  var androidPackage: String
+  var androidResourcesEnabled: Boolean
+  var viewBindingEnabled: Boolean
+  val manifests: MutableMap<SourceSetName, File>
 
-  fun addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
-
-    projectDependencies[configurationName] = old + cpd
-  }
-
-  fun addSource(
+  fun addResourceFile(
     name: String,
-    @Language("kotlin")
+    @Language("xml")
     content: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ) {
-
-    val file = File(projectDir, "src/${sourceSetName.value}/$name")
-      .createSafely(content)
+    val file = File(projectDir, "src/res/$name").createSafely(content)
 
     val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
 
-    sourceSets[sourceSetName] = old.copy(jvmFiles = old.jvmFiles + file)
+    sourceSets[sourceSetName] = old.copy(resourceFiles = old.resourceFiles + file)
   }
 }
 
-@Suppress("LongParameterList")
-data class JvmMcProjectBuilderScope(
+data class RealAndroidMcProjectBuilderScope(
   override var path: String,
   override var projectDir: File,
   override var buildFile: File,
+  override var androidPackage: String,
+  override var androidResourcesEnabled: Boolean = true,
+  override var viewBindingEnabled: Boolean = true,
+  override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, Config> = mutableMapOf(),
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
@@ -74,13 +57,14 @@ data class JvmMcProjectBuilderScope(
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
   override val projectCache: ConcurrentHashMap<String, McProject> = ConcurrentHashMap()
-) : McProjectBuilderScope
+) : AndroidMcProjectBuilderScope
 
-internal fun createProject(
+internal fun createAndroidProject(
   projectCache: ConcurrentHashMap<String, McProject>,
   projectDir: File,
   path: String,
-  config: McProjectBuilderScope.() -> Unit
+  androidPackage: String,
+  config: AndroidMcProjectBuilderScope.() -> Unit
 ): McProject {
 
   val projectRoot = File(projectDir, path.replace(":", File.separator))
@@ -89,8 +73,19 @@ internal fun createProject(
   val buildFile = File(projectRoot, "build.gradle.kts")
     .also { it.createNewFile() }
 
-  val builder = JvmMcProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
+  val builder = RealAndroidMcProjectBuilderScope(
+    path = path,
+    projectDir = projectRoot,
+    buildFile = buildFile,
+    androidPackage = androidPackage,
+    projectCache = projectCache
+  )
     .also { it.config() }
+
+  builder.manifests.getOrPut(SourceSetName.MAIN) {
+    File(projectRoot, "src/main/AndroidManifest.xml")
+      .createSafely("<manifest package=\"$androidPackage\" />")
+  }
 
   builder.sourceSets
     .keys
@@ -107,7 +102,7 @@ internal fun createProject(
       )
     }
 
-  val delegate = RealMcProject(
+  val delegate = RealAndroidMcProject(
     path = builder.path,
     projectDir = builder.projectDir,
     buildFile = builder.buildFile,
@@ -116,6 +111,10 @@ internal fun createProject(
     sourceSets = builder.sourceSets,
     projectCache = builder.projectCache,
     anvilGradlePlugin = builder.anvilGradlePlugin,
+    androidResourcesEnabled = builder.androidResourcesEnabled,
+    viewBindingEnabled = builder.viewBindingEnabled,
+    androidPackageOrNull = builder.androidPackage,
+    manifests = builder.manifests,
     projectDependencies = lazy { builder.projectDependencies }
   )
 

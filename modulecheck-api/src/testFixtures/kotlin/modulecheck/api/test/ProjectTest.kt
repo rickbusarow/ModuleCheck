@@ -15,21 +15,22 @@
 
 package modulecheck.api.test
 
-import modulecheck.api.RealMcProject
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.McProject
 import modulecheck.testing.BaseTest
-import java.io.File
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import java.util.concurrent.ConcurrentHashMap
 
+@Execution(CONCURRENT)
 abstract class ProjectTest : BaseTest() {
 
   val projectCache: ConcurrentHashMap<String, McProject> by resets { ConcurrentHashMap() }
 
   fun project(path: String, config: McProjectBuilderScope.() -> Unit): McProject {
 
-    return createProject(path, config)
+    return createProject(projectCache, testProjectDir, path, config)
   }
 
   fun McProjectBuilderScope.childProject(
@@ -39,50 +40,42 @@ abstract class ProjectTest : BaseTest() {
 
     val appendedPath = (this@childProject.path + path).replace(":{2,}".toRegex(), ":")
 
-    return createProject(appendedPath, config)
+    return createProject(projectCache, testProjectDir, appendedPath, config)
   }
 
-  private fun createProject(path: String, config: McProjectBuilderScope.() -> Unit): McProject {
+  fun androidProject(
+    path: String,
+    androidPackage: String,
+    config: AndroidMcProjectBuilderScope.() -> Unit
+  ): McProject {
 
-    val projectRoot = File(testProjectDir, path.replace(":", File.separator))
-      .also { it.mkdirs() }
-
-    val buildFile = File(projectRoot, "build.gradle.kts")
-      .also { it.createNewFile() }
-
-    val builder = McProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
-      .also { it.config() }
-
-    val delegate = RealMcProject(
-      path = builder.path,
-      projectDir = builder.projectDir,
-      buildFile = builder.buildFile,
-      configurations = builder.configurations,
-      hasKapt = builder.hasKapt,
-      sourceSets = builder.sourceSets,
-      projectCache = builder.projectCache,
-      anvilGradlePlugin = builder.anvilGradlePlugin,
-      projectDependencies = lazy { builder.projectDependencies }
+    return createAndroidProject(
+      projectCache = projectCache,
+      projectDir = testProjectDir,
+      path = path,
+      androidPackage = androidPackage,
+      config = config
     )
+  }
 
-    return delegate
-      .also { projectCache[it.path] = it }
+  fun McProjectBuilderScope.androidChildProject(
+    path: String,
+    androidPackage: String,
+    config: AndroidMcProjectBuilderScope.() -> Unit
+  ): McProject {
+
+    val appendedPath = (this@androidChildProject.path + path).replace(":{2,}".toRegex(), ":")
+
+    return createAndroidProject(
+      projectCache = projectCache,
+      projectDir = testProjectDir,
+      path = appendedPath,
+      androidPackage = androidPackage,
+      config = config
+    )
   }
 
   fun McProject.addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
-
-    projectDependencies[configurationName] = old + cpd
-  }
-
-  fun McProjectBuilderScope.addDependency(
     configurationName: ConfigurationName,
     project: McProject,
     asTestFixture: Boolean = false

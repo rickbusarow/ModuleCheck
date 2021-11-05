@@ -16,10 +16,12 @@
 package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
+import modulecheck.api.context.resSourceFiles
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
+import modulecheck.parsing.all
 
 class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 
@@ -35,7 +37,7 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
     @Suppress("UnstableApiUsage")
     if (!androidProject.androidResourcesEnabled) return emptyList()
 
-    val noResources = androidProject.resourceFiles.isEmpty()
+    val noResources = androidProject.resSourceFiles.all().isEmpty()
 
     return if (noResources) {
       listOf(UnusedResourcesGenerationFinding(project.path, project.buildFile))

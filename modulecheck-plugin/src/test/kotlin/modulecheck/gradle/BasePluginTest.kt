@@ -25,6 +25,7 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import kotlin.properties.Delegates
+import kotlin.text.RegexOption.IGNORE_CASE
 
 abstract class BasePluginTest : BaseTest() {
 
@@ -75,23 +76,24 @@ abstract class BasePluginTest : BaseTest() {
   infix fun BuildResult.withTrimmedMessage(message: String) {
 
     val trimmed = output
-      .normaliseLineSeparators()
-      .fixFileSeparators()
-      .useRelativePaths()
+      .clean()
       .remove(
-        "Type-safe dependency accessors is an incubating feature.",
-        "Type-safe project accessors is an incubating feature.",
-        "-- ModuleCheck results --",
-        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
-        "You can use '--warning-mode all' to show the individual deprecation warnings and determine " +
-          "if they come from your own scripts or plugins."
+        "FAILURE: Build failed with an exception.",
+        "* What went wrong:",
+        "* Try:",
+        "> Run with --stacktrace option to get the stack trace.",
+        "> Run with --info or --debug option to get more log output.",
+        "> Run with --scan to get full insights.",
+        "* Get more help at https://help.gradle.org",
       )
       // remove standard Gradle output noise
       .remove(
+        "Execution failed for task ':moduleCheck(?:Auto|)\\'.".toRegex(IGNORE_CASE),
         "> Task [^\\n]*".toRegex(),
         "See https://docs\\.gradle\\.org/[^/]+/userguide/command_line_interface\\.html#sec:command_line_warnings".toRegex(),
-        "BUILD SUCCESSFUL in \\d+m?s".toRegex(),
-        "\\d+ actionable tasks?: \\d+ executed".toRegex()
+        "BUILD (?:SUCCESSFUL|FAILED) in \\d+m?s".toRegex(),
+        "\\d+ actionable tasks?: \\d+ executed".toRegex(),
+        "> ModuleCheck found \\d+ issues? which (?:was|were) not auto-corrected.".toRegex()
       )
       .removeDuration()
       .trim()

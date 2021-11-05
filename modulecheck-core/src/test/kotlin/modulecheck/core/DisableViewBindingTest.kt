@@ -1,0 +1,427 @@
+/*
+ * Copyright (C) 2021 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package modulecheck.core
+
+import modulecheck.api.test.ProjectTest
+import modulecheck.api.test.ReportingLogger
+import modulecheck.api.test.TestChecksSettings
+import modulecheck.api.test.TestSettings
+import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.parsing.ConfigurationName
+import org.junit.jupiter.api.Test
+
+class DisableViewBindingTest : ProjectTest() {
+
+  val ruleFactory by resets { ModuleCheckRuleFactory() }
+
+  val baseSettings by resets { TestSettings(checks = TestChecksSettings(disableViewBinding = true)) }
+  val logger by resets { ReportingLogger() }
+  val findingFactory by resets {
+    MultiRuleFindingFactory(
+      baseSettings,
+      ruleFactory.create(baseSettings)
+    )
+  }
+
+  @Test
+  fun `used ViewBinding in dependent module with no changes`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = false,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+      viewBindingEnabled = false
+
+      addSource(
+        "com/modulecheck/lib2/Source.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures.viewBinding = true
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+  }
+
+  @Test
+  fun `used ViewBinding in contributing module`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = false,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+
+      addSource(
+        "com/modulecheck/lib1/Source.kt",
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures.viewBinding = true
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding should pass if check is disabled`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = false,
+      settings = baseSettings.also { it.checks.disableViewBinding = false },
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures.viewBinding = true
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding without auto-correct should fail`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = false,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe false
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures.viewBinding = true
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """:lib1
+           dependency    name                  source    build file
+        X                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+
+ModuleCheck found 1 issue
+    """.trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding when scoped and then qualified should be fixed`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures.viewBinding = false
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """:lib1
+           dependency    name                  source    build file
+        ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+
+ModuleCheck found 1 issue
+    """.trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding when fully qualified should be fixed`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android.buildFeatures.viewBinding = true
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android.buildFeatures.viewBinding = false"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """:lib1
+           dependency    name                  source    build file
+        ✔                disableViewBinding              /lib1/build.gradle.kts: (6, 1):
+
+ModuleCheck found 1 issue
+    """.trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding when fully scoped should be fixed`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures {
+            viewBinding = true
+          }
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android {
+  buildFeatures {
+    viewBinding = false
+  }
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """:lib1
+           dependency    name                  source    build file
+        ✔                disableViewBinding              /lib1/build.gradle.kts: (8, 5):
+
+ModuleCheck found 1 issue
+    """.trimIndent()
+  }
+
+  @Test
+  fun `unused ViewBinding when qualified and then scoped should be fixed`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeText(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android.buildFeatures {
+          viewBinding = true
+        }
+        """.trimIndent()
+      )
+      addResourceFile("layout/fragment_lib1.xml", "")
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """plugins {
+  id("com.android.library")
+  kotlin("android")
+}
+
+android.buildFeatures {
+  viewBinding = false
+}"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """:lib1
+           dependency    name                  source    build file
+        ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+
+ModuleCheck found 1 issue
+    """.trimIndent()
+  }
+}
