@@ -59,6 +59,32 @@ interface McProjectBuilderScope {
 
     sourceSets[sourceSetName] = old.copy(jvmFiles = old.jvmFiles + file)
   }
+
+  @Suppress("LongParameterList")
+  fun addSourceSet(
+    name: SourceSetName,
+    classpathFiles: Set<File> = emptySet(),
+    outputFiles: Set<File> = emptySet(),
+    jvmFiles: Set<File> = emptySet(),
+    resourceFiles: Set<File> = emptySet(),
+    layoutFiles: Set<File> = emptySet()
+  ): SourceSet {
+
+    val new = SourceSet(
+      name = name,
+      classpathFiles = classpathFiles,
+      outputFiles = outputFiles,
+      jvmFiles = jvmFiles,
+      resourceFiles = resourceFiles,
+      layoutFiles = layoutFiles
+    )
+
+    val old = sourceSets.put(name, new)
+
+    require(old == null) { "A source set for that name already exists." }
+
+    return new
+  }
 }
 
 @Suppress("LongParameterList")

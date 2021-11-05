@@ -113,8 +113,10 @@ internal class TextReportingTest : BaseTest() {
     result.isSuccess shouldBe true
 
     outputFile.readText()
-      .clean() shouldBe """dependentPath
+      .clean() shouldBe """
+    dependentPath
            dependency        name           source          build file
-        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):"""
+        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
+        """
   }
 }

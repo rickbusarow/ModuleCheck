@@ -19,11 +19,8 @@ import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.McProject
 import modulecheck.testing.BaseTest
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT
 import java.util.concurrent.ConcurrentHashMap
 
-@Execution(CONCURRENT)
 abstract class ProjectTest : BaseTest() {
 
   val projectCache: ConcurrentHashMap<String, McProject> by resets { ConcurrentHashMap() }

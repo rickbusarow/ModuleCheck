@@ -23,18 +23,19 @@ import modulecheck.parsing.asDeclarationName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 
-object AndroidResourceParser {
-  private val parser = XmlParser()
+class AndroidResourceParser {
 
   fun parseFile(resDir: File): Set<DeclarationName> {
     val values = mutableSetOf<AndroidResource>()
+
+    val xmlParser = XmlParser()
 
     val resources = resDir
       .walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "xml" }
       .onEach { file ->
-        val parsed = parser.parse(file)
+        val parsed = xmlParser.parse(file)
 
         if (parsed.name() == "resources") {
           val t = parsed.children().cast<List<Node>>()

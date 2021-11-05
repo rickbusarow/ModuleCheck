@@ -258,9 +258,11 @@ class GradleProjectProvider(
 
   private fun GradleProject.androidPackageOrNull(): String? {
 
+    val manifestParser = AndroidManifestParser()
+
     return androidManifests()
       ?.filter { it.value.exists() }
-      ?.map { AndroidManifestParser.parse(it.value)["package"] }
+      ?.map { manifestParser.parse(it.value)["package"] }
       ?.distinct()
       ?.also {
         require(it.size == 1) {
@@ -333,7 +335,6 @@ class GradleProjectProvider(
             )
           }
       }
-
       ?.associateBy { it.name }
       .orEmpty()
   }

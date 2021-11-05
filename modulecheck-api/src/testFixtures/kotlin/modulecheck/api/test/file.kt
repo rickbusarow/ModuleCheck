@@ -28,22 +28,22 @@ fun File.createSafely(content: String? = null) = apply {
 }
 
 fun File.writeKotlin(
-  @Language("kotlin")
+  // @Language("kotlin")
   content: String
 ) {
-  writeText(content)
+  writeText(content.trimIndent())
 }
 
 fun File.writeGroovy(
   @Language("groovy")
   content: String
 ) {
-  writeText(content)
+  writeText(content.trimIndent())
 }
 
 fun File.writeJava(
   @Language("java")
   content: String
 ) {
-  writeText(content)
+  writeText(content.trimIndent())
 }

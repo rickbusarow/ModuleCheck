@@ -15,10 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ProjectTest
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestChecksSettings
-import modulecheck.api.test.TestSettings
+import modulecheck.api.test.*
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.ConfigurationName
@@ -48,7 +45,7 @@ class DisableViewBindingTest : ProjectTest() {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -58,13 +55,29 @@ class DisableViewBindingTest : ProjectTest() {
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     androidProject(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.api, lib1)
       viewBindingEnabled = false
 
       addSource(
@@ -75,24 +88,25 @@ class DisableViewBindingTest : ProjectTest() {
         import com.modulecheck.lib1.databinding.FragmentLib1Binding
 
         val binding = FragmentLib1Binding()
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = true
-}"""
+      android {
+        buildFeatures.viewBinding = true
+      }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Test
@@ -106,7 +120,7 @@ android {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -116,9 +130,25 @@ android {
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
 
       addSource(
         "com/modulecheck/lib1/Source.kt",
@@ -128,24 +158,25 @@ android {
         import com.modulecheck.lib1.databinding.FragmentLib1Binding
 
         val binding = FragmentLib1Binding()
-        """.trimIndent()
+        """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = true
-}"""
+      android {
+        buildFeatures.viewBinding = true
+      }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Test
@@ -159,7 +190,7 @@ android {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -169,25 +200,42 @@ android {
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = true
-}"""
+      android {
+        buildFeatures.viewBinding = true
+      }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues""".trimIndent()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 
   @Test
@@ -201,7 +249,7 @@ android {
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -211,30 +259,48 @@ android {
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = true
-}"""
+      android {
+        buildFeatures.viewBinding = true
+      }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                  source    build file
-        X                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                  source    build file
+                X                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+    """
   }
 
   @Test
@@ -248,7 +314,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -258,30 +324,31 @@ ModuleCheck found 1 issue
         android {
           buildFeatures.viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = false
-}"""
+      android {
+        buildFeatures.viewBinding = false
+      }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                  source    build file
-        ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+      .clean() shouldBe """
+              :lib1
+                     dependency    name                  source    build file
+                  ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+          ModuleCheck found 1 issue
+          """
   }
 
   @Test
@@ -295,7 +362,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -303,28 +370,46 @@ ModuleCheck found 1 issue
         }
 
         android.buildFeatures.viewBinding = true
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android.buildFeatures.viewBinding = false"""
+      android.buildFeatures.viewBinding = false"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                  source    build file
-        ✔                disableViewBinding              /lib1/build.gradle.kts: (6, 1):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                  source    build file
+                ✔                disableViewBinding              /lib1/build.gradle.kts: (6, 1):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 
   @Test
@@ -338,7 +423,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -350,32 +435,50 @@ ModuleCheck found 1 issue
             viewBinding = true
           }
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
 
-android {
-  buildFeatures {
-    viewBinding = false
-  }
-}"""
+        android {
+          buildFeatures {
+            viewBinding = false
+          }
+        }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                  source    build file
-        ✔                disableViewBinding              /lib1/build.gradle.kts: (8, 5):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                  source    build file
+                ✔                disableViewBinding              /lib1/build.gradle.kts: (8, 5):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 
   @Test
@@ -389,7 +492,7 @@ ModuleCheck found 1 issue
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeText(
+      buildFile.writeKotlin(
         """
         plugins {
           id("com.android.library")
@@ -399,29 +502,47 @@ ModuleCheck found 1 issue
         android.buildFeatures {
           viewBinding = true
         }
-        """.trimIndent()
+        """
       )
-      addResourceFile("layout/fragment_lib1.xml", "")
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
 
-android.buildFeatures {
-  viewBinding = false
-}"""
+        android.buildFeatures {
+          viewBinding = false
+        }"""
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """:lib1
-           dependency    name                  source    build file
-        ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
+      .clean() shouldBe """
+            :lib1
+                   dependency    name                  source    build file
+                ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
 
-ModuleCheck found 1 issue
-    """.trimIndent()
+        ModuleCheck found 1 issue
+        """
   }
 }
