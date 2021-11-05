@@ -32,7 +32,6 @@ import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
-import modulecheck.gradle.internal.testedExtensionOrNull
 import modulecheck.parsing.*
 import modulecheck.parsing.xml.AndroidManifestParser
 import net.swiftzer.semver.SemVer
@@ -103,7 +102,6 @@ class GradleProjectProvider(
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
-        resourceFiles = gradleProject.androidResourceFiles(),
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
         projectDependencies = projectDependencies
@@ -167,7 +165,7 @@ class GradleProjectProvider(
           DependencyBlockParser
             .parse(buildFile)
             .asSequence()
-            .map { block ->              block.getOrEmpty(coords, configuration.name.asConfigurationName())            }
+            .map { block -> block.getOrEmpty(coords, configuration.name.asConfigurationName()) }
             .firstOrNull()
             ?.firstOrNull()
             ?.statementWithSurroundingText
@@ -273,17 +271,6 @@ class GradleProjectProvider(
         }
       }
       ?.single()
-  }
-
-  private fun GradleProject.androidResourceFiles(): Set<File> {
-
-    return testedExtensionOrNull()
-      ?.sourceSets
-      ?.flatMap { sourceSet ->
-        sourceSet.res.getSourceFiles().toList()
-      }
-      .orEmpty()
-      .toSet()
   }
 
   private val BaseExtension.variants: DomainObjectSet<out BaseVariant>?

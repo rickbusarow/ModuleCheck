@@ -68,9 +68,7 @@ internal class ConsoleReportingTest : BaseTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldStartWith """-- ModuleCheck results --
-
-    :lib1
+      .clean() shouldStartWith """:lib1
            dependency                           name                 source    build file
         X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
@@ -103,9 +101,7 @@ ModuleCheck found 1 issue
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldStartWith """-- ModuleCheck results --
-
-    :lib1
+      .clean() shouldStartWith """:lib1
            dependency                           name                 source    build file
         X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
@@ -137,8 +133,7 @@ ModuleCheck found 2 issues
     runner.run(listOf())
 
     logger.collectReport()
-      .joinToString()
-      .clean() shouldContain "To ignore any of these findings, " +
+      .joinToString() shouldContain "To ignore any of these findings, " +
       "annotate the dependency declaration with " +
       "@Suppress(\"<the name of the issue>\") in Kotlin, " +
       "or //noinspection <the name of the issue> in Groovy.\n" +

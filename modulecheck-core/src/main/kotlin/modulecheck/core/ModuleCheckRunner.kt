@@ -81,9 +81,12 @@ data class ModuleCheckRunner(
     }
 
     return if (totalUnfixedIssues > 0) {
+
+      val wasPlural = if (totalFindings == 1) "was" else "were"
+
       Result.failure(
         ModuleCheckFailure(
-          "ModuleCheck found $totalUnfixedIssues issues which were not auto-corrected."
+          "ModuleCheck found $totalUnfixedIssues $issuePlural which $wasPlural not auto-corrected."
         )
       )
     } else {

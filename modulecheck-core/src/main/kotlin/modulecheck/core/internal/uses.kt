@@ -15,11 +15,8 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.context.Declarations
-import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.anvilScopeMerges
-import modulecheck.api.context.importsForSourceSetName
-import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.context.*
+import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
 import modulecheck.parsing.*
 
@@ -61,6 +58,16 @@ fun McProject.usesInConfig(
       .filter { it.startsWith("R.") }
 
   val dependencyAsAndroid = dependency.project as? AndroidMcProject ?: return false
+
+  val dataBindingIsUsed = dependencyAsAndroid
+    .androidDataBindingDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
+    .map { it.fqName }
+    .any { declaration ->
+      declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
+    }
+
+  if (dataBindingIsUsed) return true
 
   return dependencyAsAndroid
     .androidResourceDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())

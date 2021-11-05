@@ -19,14 +19,16 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.dependendents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.context.resSourceFiles
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.AndroidMcProject
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.all
 import java.io.File
 
-class DisableViewBindingRule  : ModuleCheckRule<DisableViewBindingGenerationFinding> {
+class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
   override val id = "DisableViewBinding"
   override val description = "Finds modules which have ViewBinding enabled, " +
@@ -41,7 +43,8 @@ class DisableViewBindingRule  : ModuleCheckRule<DisableViewBindingGenerationFind
     if (!androidProject.viewBindingEnabled) return emptyList()
 
     val layouts = androidProject
-      .resourceFiles
+      .resSourceFiles
+      .all()
       .filter { it.path.matches(filterReg) }
 
     val dependents = project.dependendents

@@ -29,7 +29,9 @@ abstract class BaseTest : HermitJUnit5() {
       // "simpleName" for a nested class is just the nested class name,
       // so use the FqName and trim the package name to get qualified nested names
       .let { it.canonicalName.removePrefix(it.packageName + ".") }
-      .replace("[^a-zA-Z0-9]".toRegex(), "_")
+      .split(".")
+      .joinToString("/")
+      .replace("[^a-zA-Z0-9/]".toRegex(), "_")
 
     val testName = testInfo.displayName
       .replace("[^a-zA-Z0-9]".toRegex(), "_")
@@ -51,6 +53,19 @@ abstract class BaseTest : HermitJUnit5() {
     return normaliseLineSeparators()
       .fixFileSeparators()
       .useRelativePaths()
+      .remove(
+        "Type-safe dependency accessors is an incubating feature.",
+        "Type-safe project accessors is an incubating feature.",
+        "-- ModuleCheck results --",
+        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 8.0.",
+        "You can use '--warning-mode all' to show the individual deprecation warnings and determine " +
+          "if they come from your own scripts or plugins.",
+        "To ignore any of these findings, " +
+          "annotate the dependency declaration with " +
+          "@Suppress(\"<the name of the issue>\") in Kotlin, " +
+          "or //noinspection <the name of the issue> in Groovy.",
+        "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
+      )
       .remove("in [\\d\\.]+ seconds\\.".toRegex())
       .trim()
   }
@@ -78,7 +93,7 @@ abstract class BaseTest : HermitJUnit5() {
     acc.replace(regex, "")
   }
 
-  private var testInfo: TestInfo by Delegates.notNull()
+  protected var testInfo: TestInfo by Delegates.notNull()
 
   // This is automatically injected by JUnit5
   @BeforeEach

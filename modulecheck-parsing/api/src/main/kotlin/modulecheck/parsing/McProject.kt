@@ -70,7 +70,6 @@ fun McProject.sourceOf(
 interface AndroidMcProject : McProject {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
-  val resourceFiles: Set<File>
   val androidPackageOrNull: String?
   val manifests: Map<SourceSetName, File>
 }

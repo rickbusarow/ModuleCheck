@@ -112,12 +112,9 @@ internal class TextReportingTest : BaseTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """-- ModuleCheck results --
-
-    dependentPath
+    outputFile.readText()
+      .clean() shouldBe """dependentPath
            dependency        name           source          build file
-        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
-
-"""
+        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):"""
   }
 }
