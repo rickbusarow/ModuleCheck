@@ -19,9 +19,6 @@ import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.McProject
 import modulecheck.testing.BaseTest
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.parallel.Execution
-import org.junit.jupiter.api.parallel.ExecutionMode
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class ProjectTest : BaseTest() {

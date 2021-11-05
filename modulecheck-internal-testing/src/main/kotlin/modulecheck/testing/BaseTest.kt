@@ -98,7 +98,7 @@ abstract class BaseTest : HermitJUnit5() {
     acc.replace(regex, "")
   }
 
-  private var testInfo: TestInfo by Delegates.notNull()
+  protected var testInfo: TestInfo by Delegates.notNull()
 
   // This is automatically injected by JUnit5
   @BeforeEach
