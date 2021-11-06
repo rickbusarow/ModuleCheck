@@ -21,13 +21,13 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: "12"
+          node-version: "14"
 
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'adopt'
-          java-version : '14'
+          distribution : 'temurin'
+          java-version : '11'
           cache: 'gradle'
 
       - uses: gradle/wrapper-validation-action@v1
@@ -46,8 +46,8 @@ jobs:
       - name: Build Docusaurus website
         run: |
           cd website
-          npm install
-          npm run build
+          yarn install
+          yarn run build
 
       - name: Deploy to GitHub Pages
         if: success()
