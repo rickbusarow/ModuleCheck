@@ -22,6 +22,7 @@ import modulecheck.core.parse
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
 import modulecheck.parsing.PluginsBlock
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 class SortPluginsFinding(
@@ -57,7 +58,20 @@ class SortPluginsFinding(
 internal fun PluginsBlock.sortedPlugins(
   comparator: Comparator<PluginDeclaration>
 ): String {
+  // Groovy parsing has the last whitespace at the end of the contentString block,
+  // so it gets chopped off when doing the replacement.
+  // Kotlin parsing includes it as part of the wrapping brackets,
+  // so there is no newline whitespace in the block.
+  // This regex finds whatever trailing whitespace/newline there is and carries it over to the new
+  // block.
+  val suffix = "(\\s*)\\z".toRegex()
+    .find(contentString)
+    ?.destructured
+    ?.component1()
+    ?: ""
+
   return allDeclarations
     .sortedWith(comparator)
     .joinToString("\n") { it.statementWithSurroundingText }
+    .suffixIfNot(suffix)
 }

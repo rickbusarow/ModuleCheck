@@ -46,4 +46,33 @@ internal class GroovyPluginsBlockParserTest {
       ),
     )
   }
+
+  @Test
+  fun `single declarations should only be counted once`() {
+    val block = GroovyPluginsBlockParser()
+      .parse(
+        """
+        plugins {
+          id 'io.gitlab.arturbosch.detekt' version '1.15.0'
+          javaLibrary
+          id 'org.jetbrains.kotlin.jvm'
+        }
+        """.trimIndent()
+      )!!
+
+    block.allDeclarations shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
+        statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'"""
+      ),
+      PluginDeclaration(
+        declarationText = """javaLibrary""",
+        statementWithSurroundingText = """  javaLibrary"""
+      ),
+      PluginDeclaration(
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
+        statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'"""
+      ),
+    )
+  }
 }

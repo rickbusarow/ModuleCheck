@@ -31,19 +31,28 @@ fun File.writeKotlin(
   // @Language("kotlin")
   content: String
 ) {
-  writeText(content.trimIndent())
+  check(extension in listOf("kts", "kt")) {
+    "Writing Kotlin to a non-Kotlin file with extension `$extension`."
+  }
+  createSafely(content.trimIndent())
 }
 
 fun File.writeGroovy(
   @Language("groovy")
   content: String
 ) {
-  writeText(content.trimIndent())
+  check(extension in listOf("groovy", "gradle")) {
+    "Writing Groovy to a non-Groovy file with extension `$extension`."
+  }
+  createSafely(content.trimIndent())
 }
 
 fun File.writeJava(
   @Language("java")
   content: String
 ) {
-  writeText(content.trimIndent())
+  check(extension == "java") {
+    "Writing Java to a non-Java file with extension `$extension`."
+  }
+  createSafely(content.trimIndent())
 }
