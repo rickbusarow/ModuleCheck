@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import org.jetbrains.kotlin.psi.*
@@ -40,11 +41,10 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
 
     if (!classOrObject.isPrivateOrInternal()) {
       val superTypes = classOrObject.superTypeListEntries
-        .mapNotNull {
-          it
-            .typeReference
-            ?.text
-            ?.removeGenericsAndSpecials()
+        .flatMap { superTypeListEntry ->
+          superTypeListEntry.getChildrenOfTypeRecursive<KtTypeReference>()
+            .flatMap { it.getChildrenOfTypeRecursive<KtNameReferenceExpression>() }
+            .map { it.text }
         }
 
       apiReferences.addAll(superTypes)
@@ -54,14 +54,11 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
   override fun visitProperty(property: KtProperty) {
     super.visitProperty(property)
     if (!property.isPrivateOrInternal()) {
-      val type = property
-        .typeReference
-        ?.text
-        ?.removeGenericsAndSpecials()
 
-      if (type != null) {
-        apiReferences.add(type)
-      }
+      val types = property.getChildrenOfTypeRecursive<KtNameReferenceExpression>()
+        .map { it.text }
+
+      apiReferences.addAll(types)
     }
   }
 
@@ -81,28 +78,21 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
     }
   }
 
-  fun parseValueParameters(params: List<KtParameter>) {
-    val valueTypes = params
-      .mapNotNull {
-        it.typeReference
-      }.filterNot { it.isFunctionalExpression() }
-      .mapNotNull {
-        it.typeElement
-          ?.text
-          ?.removeGenericsAndSpecials()
-      }
+  private fun parseValueParameters(params: List<KtParameter>) {
 
-    apiReferences.addAll(valueTypes)
+    val typeRefStrings = params.mapNotNull { it.typeReference }
+      .filterNot { it.isFunctionalExpression() }
+      .flatMap { it.getChildrenOfTypeRecursive<KtNameReferenceExpression>() }
+      .map { it.text }
+
+    apiReferences.addAll(typeRefStrings)
   }
 
-  fun parseTypeParameters(params: List<KtTypeParameter>) {
+  private fun parseTypeParameters(params: List<KtTypeParameter>) {
     val typeParameterTypes = params
-      .mapNotNull {
-        it.extendsBound
-          ?.typeElement
-          ?.text
-          ?.removeGenericsAndSpecials()
-      }
+      .flatMap { it.getChildrenOfTypeRecursive<KtTypeReference>() }
+      .flatMap { it.getChildrenOfTypeRecursive<KtNameReferenceExpression>() }
+      .map { it.text }
 
     apiReferences.addAll(typeParameterTypes)
   }
@@ -112,6 +102,18 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
     if (!function.isPrivateOrInternal()) {
       parseValueParameters(function.valueParameters)
       parseTypeParameters(function.typeParameters)
+
+      val types = function.typeReference // function.typeReference is the return type
+        ?.getChildrenOfTypeRecursive<KtNameReferenceExpression>()
+        .orEmpty()
+        .plus(
+          function.receiverTypeReference
+            ?.getChildrenOfTypeRecursive<KtNameReferenceExpression>()
+            .orEmpty()
+        )
+        .map { it.text }
+
+      apiReferences.addAll(types)
     }
   }
 
@@ -120,7 +122,6 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
 
     expression
       .takeIf { !it.isPartOf<KtImportDirective>() && !it.isPartOf<KtPackageDirective>() }
-      // ?.takeIf { it.children.isEmpty() }
       ?.run { qualifiedExpressions.add(this.text) }
   }
 
@@ -141,7 +142,4 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
 
     callableReferences.add(expression.text)
   }
-
-  fun String.removeGenericsAndSpecials() = replace("<[a-zA-Z?]>".toRegex(), "")
-    .replace("[^a-zA-Z.]".toRegex(), "")
 }

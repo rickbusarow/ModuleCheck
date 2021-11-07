@@ -19,3 +19,15 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
+
+inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
+  return generateSequence(children.asSequence()) { children ->
+    children.toList()
+      .flatMap { it.children.toList() }
+      .takeIf { it.isNotEmpty() }
+      ?.asSequence()
+  }
+    .flatten()
+    .filterIsInstance<T>()
+    .toList()
+}
