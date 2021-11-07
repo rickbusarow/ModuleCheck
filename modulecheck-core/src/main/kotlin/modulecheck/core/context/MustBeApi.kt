@@ -15,9 +15,19 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.context.*
-import modulecheck.parsing.*
+import modulecheck.api.context.Declarations
+import modulecheck.api.context.anvilScopeContributionsForSourceSetName
+import modulecheck.api.context.anvilScopeMerges
+import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.api.context.publicDependencies
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.sourceOf
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
@@ -77,8 +87,7 @@ data class MustBeApi(
             .map { it.fqName }
             .any { declared ->
 
-              declared in inheritedImports ||
-                declared in project.imports[SourceSetName.MAIN].orEmpty()
+              declared in inheritedImports
             }
         }
         .map { cpd ->
