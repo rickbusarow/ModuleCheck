@@ -111,7 +111,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -169,7 +169,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -227,7 +227,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -281,7 +281,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -333,7 +333,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -411,7 +411,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -529,7 +529,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -589,7 +589,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -649,7 +649,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -705,7 +705,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -759,7 +759,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
   }
 
   @Test
@@ -842,7 +842,7 @@ class SortDependenciesTest : ProjectTest() {
               ✔                unsortedDependencies              /lib1/build.gradle:
 
       ModuleCheck found 1 issue
-      """.trimIndent()
+    """.trimIndent()
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
