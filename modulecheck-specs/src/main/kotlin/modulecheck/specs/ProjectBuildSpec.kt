@@ -19,7 +19,7 @@ import java.nio.file.Path
 import java.util.*
 
 public val DEFAULT_GRADLE_VERSION: String = System
-  .getProperty("modulecheck.gradleVersion", "7.0")
+  .getProperty("modulecheck.gradleVersion", "7.3-rc-1")
   /*
   * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command line argument of "7".
   * That version doesn't resolve.  So if the String doesn't contain a period, just append ".0"
@@ -30,9 +30,9 @@ public val DEFAULT_GRADLE_VERSION: String = System
 public val DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS: Boolean =
   System.getProperty("modulecheck.useTypeSafeProjectAccessors")?.toBoolean() ?: true
 public val DEFAULT_KOTLIN_VERSION: String =
-  System.getProperty("modulecheck.kotlinVersion", "1.5.0-M2")
+  System.getProperty("modulecheck.kotlinVersion", "1.5.30")
 public val DEFAULT_AGP_VERSION: String =
-  System.getProperty("modulecheck.agpVersion", "7.0.0-alpha12")
+  System.getProperty("modulecheck.agpVersion", "7.0.3")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
@@ -108,6 +108,7 @@ public data class ProjectBuildSpec(
       |  dependencies {
       |    classpath("com.android.tools.build:gradle:$agpVersion")
       |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
       |  }
       |}
       |
@@ -130,8 +131,6 @@ public data class ProjectBuildSpec(
       |  defaultConfig {
       |    minSdkVersion(23)
       |    targetSdkVersion(30)
-      |    versionCode = 1
-      |    versionName = "1.0"
       |  }
       |
       |  buildTypes {
@@ -231,6 +230,18 @@ public class ProjectBuildSpecBuilder(
     val after = inlineComment?.let { " $it" } ?: ""
 
     dependencies.add("$prev$configuration(\"$dependencyPath\")$after")
+  }
+
+  public fun addTypesafeExternalDependency(
+    configuration: String,
+    reference: String,
+    comment: String? = null,
+    inlineComment: String? = null
+  ): ProjectBuildSpecBuilder = apply {
+    val prev = comment?.let { "$it\n  " } ?: ""
+    val after = inlineComment?.let { " $it" } ?: ""
+
+    dependencies.add("$prev$configuration($reference)$after")
   }
 
   public fun addProjectDependency(

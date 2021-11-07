@@ -15,12 +15,13 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.Project2
-import modulecheck.api.asConfigurationName
-import modulecheck.api.context.ProjectContext
-import modulecheck.api.publicDependencies
+import modulecheck.api.Deletable
+import modulecheck.api.context.publicDependencies
 import modulecheck.core.DependencyFinding
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.asConfigurationName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -28,13 +29,28 @@ import java.util.concurrent.ConcurrentMap
 data class RedundantDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: List<Project2>
-) : DependencyFinding("redundant") {
+  val from: List<McProject>
+) : DependencyFinding("redundant"),
+  Deletable {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from.joinToString { it.path }}"
+  override val message: String
+    get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
+      "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
+      "file is desired."
+
+  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
+
+  override fun fromStringOrEmpty(): String {
+
+    return if (from.all { dependencyProject.path == it.path }) {
+      ""
+    } else {
+      from.joinToString { it.path }
+    }
+  }
 }
 
 data class RedundantDependencies(
@@ -46,16 +62,14 @@ data class RedundantDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<RedundantDependencies> {
-    override operator fun invoke(project: Project2): RedundantDependencies {
+    override operator fun invoke(project: McProject): RedundantDependencies {
       val allApi = project
-        .projectDependencies
-        .value["api".asConfigurationName()]
+        .projectDependencies["api".asConfigurationName()]
         .orEmpty()
         .toSet()
 
       val inheritedDependencyProjects = project
         .projectDependencies
-        .value
         .main()
         .flatMap {
           it

@@ -19,12 +19,11 @@ import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 
-class AnvilScopesTest : BaseTest() {
+class AnvilScopesTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
@@ -47,40 +46,26 @@ class AnvilScopesTest : BaseTest() {
 
   @Test
   fun `module which contributes anvil scopes should not be unused in module which merges that scope`() {
-    val appComponent = FileSpec.builder("com.example.app", "AppComponent")
-      .addType(
-        TypeSpec.classBuilder("AppComponent")
-          .addAnnotation(
-            AnnotationSpec
-              .builder(ClassName.bestGuess("com.squareup.anvil.annotations.MergeComponent"))
-              .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
-              .build()
-          )
-          .build()
-      )
-      .build()
-
-    val lib2Component = ClassName("com.example.lib2", "Lib2Component")
-
     jvmSub2.edit {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
+        addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
+        addProjectDependency("api", jvmSub1)
       }
       addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFileSpec(
-            FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
-              .addType(
-                TypeSpec.classBuilder(lib2Component.simpleName)
-                  .addAnnotation(
-                    AnnotationSpec
-                      .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesBinding"))
-                      .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
-                      .build()
-                  )
-                  .build()
-              )
-              .build()
+        ProjectSrcSpec(Path.of("src/main/kotlin/com/example/lib2")) {
+          addRawFile(
+            "Lib2FooImpl.kt",
+            """package com.example.lib2
+                |
+                |import com.example.lib1.Lib1Class
+                |import com.squareup.anvil.annotations.ContributesBinding
+                |
+                |@ContributesBinding(Lib1Class::class)
+                |public class Lib2FooImpl : Foo
+                |
+                |interface Foo
+            |""".trimMargin()
           )
         }
       )
@@ -91,13 +76,24 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addExternalDependency("implementation", "com.google.dagger:dagger:2.38.1")
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFileSpec(appComponent)
+        ProjectSrcSpec(Path.of("src/main/kotlin/com/example/app")) {
+          addRawFile(
+            "AppComponent.kt",
+            """package com.example.app
+
+            |import com.example.lib1.Lib1Class
+            |import com.squareup.anvil.annotations.MergeComponent
+            |
+            |@MergeComponent(Lib1Class::class)
+            |public interface AppComponent
+                |""".trimMargin()
+          )
         }
       )
     }
@@ -108,60 +104,33 @@ class AnvilScopesTest : BaseTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
   fun `module which contributes anvil scopes with named argument should not be unused in module which merges that scope`() {
-    val appComponent = FileSpec.builder("com.example.app", "AppComponent")
-      .addType(
-        TypeSpec.classBuilder("AppComponent")
-          .addAnnotation(
-            AnnotationSpec
-              .builder(ClassName.bestGuess("com.squareup.anvil.annotations.MergeComponent"))
-              .addMember("%T::class", ClassName.bestGuess("com.example.lib1.Lib1Class"))
-              .build()
-          )
-          .build()
-      )
-      .build()
-
-    val lib2Component = ClassName("com.example.lib2", "Lib2Component")
-
     jvmSub2.edit {
       projectBuildSpec?.edit {
         addPlugin("id(\"com.squareup.anvil\")")
       }
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFileSpec(
-            FileSpec.builder(lib2Component.packageName, lib2Component.simpleName)
-              .addType(
-                TypeSpec.interfaceBuilder(lib2Component.simpleName)
-                  .addAnnotation(
-                    AnnotationSpec
-                      .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesBinding"))
-                      .addMember(
-                        "scope = %T::class",
-                        ClassName.bestGuess("com.example.lib1.Lib1Class")
-                      )
-                      .build()
-                  )
-                  .build()
-              )
-              .build()
+          addRawFile(
+            "AppComponent.kt",
+            """package com.example.lib2
+                |
+                |import com.example.lib1.Lib1Class
+                |import com.squareup.anvil.annotations.ContributesBinding
+                |
+                |@ContributesBinding(scope = Lib1Class::class)
+                |public class Lib2FooImpl : Foo
+                |
+                |interface Foo
+            |""".trimMargin()
           )
         }
       )
@@ -172,13 +141,23 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addFileSpec(appComponent)
+          addRawFile(
+            "AppComponent.kt",
+            """package com.example.app
+
+            |import com.example.lib1.Lib1Class
+            |import com.squareup.anvil.annotations.MergeComponent
+            |
+            |@MergeComponent(Lib1Class::class)
+            |public interface AppComponent
+                |""".trimMargin()
+          )
         }
       )
     }
@@ -189,19 +168,11 @@ class AnvilScopesTest : BaseTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -254,8 +225,8 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -271,19 +242,11 @@ class AnvilScopesTest : BaseTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -335,8 +298,8 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -352,19 +315,11 @@ class AnvilScopesTest : BaseTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -413,8 +368,8 @@ class AnvilScopesTest : BaseTest() {
         ProjectBuildSpec {
           addPlugin("kotlin(\"jvm\")")
           addPlugin("id(\"com.squareup.anvil\")")
-          addProjectDependency("implementation", jvmSub1)
-          addProjectDependency("implementation", jvmSub2)
+          addProjectDependency("api", jvmSub1)
+          addProjectDependency("api", jvmSub2)
         }
       )
       addSrcSpec(
@@ -430,20 +385,14 @@ class AnvilScopesTest : BaseTest() {
       addSubproject(appProject)
       addSubprojects(jvmSub1, jvmSub2)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFailWithMessage("moduleCheckUnusedDependency") {
-      it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-2"
-    }
+    shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name                source    build file
+        X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+
+ModuleCheck found 1 issue"""
   }
 }

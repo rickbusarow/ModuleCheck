@@ -15,26 +15,50 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.context.ProjectContext
+import modulecheck.api.Deletable
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.anvilScopeMergesForSourceSetName
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class UnusedDependency(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName
-) : DependencyFinding("unused") {
-  fun cpp() = ConfiguredProjectDependency(configurationName, dependencyProject)
+  override val configurationName: ConfigurationName,
+  val isTestFixture: Boolean
+) : DependencyFinding("unusedDependency"),
+  Deletable {
+
+  override val message: String
+    get() = "The declared dependency is not used in this module."
+
+  fun cpd() = ConfiguredProjectDependency(
+    configurationName = configurationName,
+    project = dependencyProject,
+    isTestFixture = isTestFixture
+  )
+
+  override fun toString(): String {
+    return "UnusedDependency(\n" +
+      "\tdependentPath='$dependentPath', \n" +
+      "\tbuildFile=$buildFile, \n" +
+      "\tdependencyProject=$dependencyProject, \n" +
+      "\tdependencyIdentifier='$dependencyIdentifier', \n" +
+      "\tconfigurationName=$configurationName\n" +
+      ")"
+  }
+
+  override fun fromStringOrEmpty(): String = ""
 }
 
 data class UnusedDependencies(
@@ -46,30 +70,23 @@ data class UnusedDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
-    override operator fun invoke(project: Project2): UnusedDependencies {
-      val neededForScopes = project.anvilScopeMap()
+    override operator fun invoke(project: McProject): UnusedDependencies {
+      val neededForScopes by lazy(NONE) { project.anvilScopeMap() }
 
       val unusedHere = project
-        .configurations
-        .values
+        .sourceSets
+        .flatMap { it.key.configurationNames() }
         .asSequence()
-        .filterNot { it.name.value.contains("detekt", true) }
-        .filterNot { it.name.value.contains("kapt", true) }
-        .flatMap { config ->
-          project
-            .projectDependencies
-            .value[config.name]
-            .orEmpty()
-        }
-        .filterNot { cpd ->
-          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
-        }
+        .flatMap { config -> project.projectDependencies[config].orEmpty() }
         .filterNot { cpd ->
           // test configurations have the main source project as a dependency.
           // without this, every project will report itself as unused.
           cpd.project.path == project.path
         }
         .filterNot { cpd -> project.uses(cpd) }
+        .filterNot { cpd ->
+          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
+        }
 
       val grouped = unusedHere.map { cpp ->
 
@@ -78,7 +95,8 @@ data class UnusedDependencies(
           buildFile = project.buildFile,
           dependencyProject = cpp.project,
           dependencyIdentifier = cpp.project.path,
-          configurationName = cpp.configurationName
+          configurationName = cpp.configurationName,
+          isTestFixture = cpp.isTestFixture
         )
       }
         .groupBy { it.configurationName }
@@ -87,7 +105,7 @@ data class UnusedDependencies(
       return UnusedDependencies(ConcurrentHashMap(grouped))
     }
 
-    private fun Project2.anvilScopeMap(): Map<ConfigurationName, List<Project2>> {
+    private fun McProject.anvilScopeMap(): Map<ConfigurationName, List<McProject>> {
       if (anvilGradlePlugin == null) {
         return mapOf()
       }
@@ -96,9 +114,11 @@ data class UnusedDependencies(
         .map { (configurationName, _) ->
           val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
 
-          val neededForScopeInConfig = projectDependencies
-            .value[configurationName]
+          val configurationDependencies = projectDependencies[configurationName]
             .orEmpty()
+            .toSet()
+
+          val neededForScopeInConfig = configurationDependencies
             .filter { cpd ->
 
               val contributed = cpd

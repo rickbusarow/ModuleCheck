@@ -15,6 +15,7 @@
 
 package modulecheck.specs
 
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import java.io.File
 import java.nio.file.Path
 
@@ -23,7 +24,8 @@ public data class ProjectSpec(
   public var projectSettingsSpec: ProjectSettingsSpec?,
   public var projectBuildSpec: ProjectBuildSpec?,
   public val subprojects: MutableList<ProjectSpec>,
-  public val projectSrcSpecs: MutableList<ProjectSrcSpec>
+  public val projectSrcSpecs: MutableList<ProjectSrcSpec>,
+  public val disableAutoManifest: Boolean
 ) {
 
   public fun toBuilder(): ProjectSpecBuilder = ProjectSpecBuilder(
@@ -31,7 +33,8 @@ public data class ProjectSpec(
     projectSettingsSpec = projectSettingsSpec,
     projectBuildSpec = projectBuildSpec,
     subprojects = subprojects,
-    projectSrcSpecs = projectSrcSpecs
+    projectSrcSpecs = projectSrcSpecs,
+    disableAutoManifest = disableAutoManifest
   )
 
   public inline fun edit(
@@ -39,10 +42,64 @@ public data class ProjectSpec(
   ): ProjectSpec = toBuilder().apply { init() }.build()
 
   public fun writeIn(path: Path) {
+    maybeAddManifest()
+
     projectSettingsSpec?.writeIn(path)
     projectBuildSpec?.writeIn(path)
     subprojects.forEach { it.writeIn(Path.of(path.toString(), it.gradlePath)) }
     projectSrcSpecs.forEach { it.writeIn(path) }
+
+    File(path.toFile(), "gradle").mkdirs()
+    path.newFile("gradle/libs.versions.toml")
+      .writeText(versionsToml)
+  }
+
+  // TODO - work on ProjectPoet and incorporate it here so I don't have to do these ugly hacks
+  /**
+   * If the project being written is an Android module, is missing a manifest,
+   * and hasn't enabled [disableAutoManifest], then automatically write one so that it doesn't
+   * need to be manually added in every test.
+   *
+   * The package name is derived by grabbing the maximum common package name out of all src files.
+   */
+  private fun maybeAddManifest() {
+
+    if (disableAutoManifest) return
+    if (projectBuildSpec?.android != true) return
+
+    val hasManifest = projectSrcSpecs
+      .asSequence()
+      .flatMap { it.rawFiles }
+      .any { it.fileName == "AndroidManifest.xml" }
+
+    if (hasManifest) return
+
+    val packageName = projectSrcSpecs
+      .asSequence()
+      .flatMap { it.fileSpecs }
+      .map { it.packageName }
+      .fold(null) { acc: String?, pName ->
+
+        acc?.zip(pName)
+          ?.takeWhile { it.first == it.second }
+          ?.joinToString("") { it.first.toString() }
+          ?.trimEnd('.')
+          ?: pName
+      }
+      ?: "com.example.${gradlePath.split(':').last()}"
+
+    edit {
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              "<manifest package=\"$packageName\" />"
+            )
+          )
+        }
+      )
+    }
   }
 
   public companion object {
@@ -58,12 +115,14 @@ public data class ProjectSpec(
   }
 }
 
+@Suppress("LongParameterList")
 public class ProjectSpecBuilder(
   public var gradlePath: String,
   public var projectSettingsSpec: ProjectSettingsSpec? = null,
   public var projectBuildSpec: ProjectBuildSpec? = null,
   public val subprojects: MutableList<ProjectSpec> = mutableListOf(),
   public val projectSrcSpecs: MutableList<ProjectSrcSpec> = mutableListOf(),
+  public var disableAutoManifest: Boolean = false,
   init: ProjectSpecBuilder.() -> Unit = {}
 ) : Builder<ProjectSpec> {
 
@@ -96,7 +155,8 @@ public class ProjectSpecBuilder(
     projectSettingsSpec = projectSettingsSpec,
     projectBuildSpec = projectBuildSpec,
     subprojects = subprojects,
-    projectSrcSpecs = projectSrcSpecs
+    projectSrcSpecs = projectSrcSpecs,
+    disableAutoManifest = disableAutoManifest
   )
 }
 

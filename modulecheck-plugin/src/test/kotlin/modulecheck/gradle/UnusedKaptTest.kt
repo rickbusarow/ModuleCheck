@@ -19,8 +19,6 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.TypeSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
@@ -29,7 +27,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class UnusedKaptTest : BaseTest() {
+class UnusedKaptTest : BasePluginTest() {
 
   @Test
   fun `unused`() {
@@ -60,10 +58,7 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFailWithMessage("moduleCheckUnusedKapt") {
-      it shouldContain "app/build.gradle.kts:  unused kapt dependency: com.google.dagger:dagger-compiler"
-      it shouldContain "app/build.gradle.kts:  unused kaptTest dependency: com.squareup.moshi:moshi-kotlin-codegen"
-    }
+    shouldFail("moduleCheck")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -122,7 +117,7 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -170,7 +165,7 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
@@ -223,6 +218,6 @@ class UnusedKaptTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedKapt").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 }

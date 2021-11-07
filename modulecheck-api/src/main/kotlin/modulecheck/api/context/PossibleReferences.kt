@@ -15,8 +15,9 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -31,14 +32,25 @@ data class PossibleReferences(
     get() = Key
 
   companion object Key : ProjectContext.Key<PossibleReferences> {
-    override operator fun invoke(project: Project2): PossibleReferences {
+    override operator fun invoke(project: McProject): PossibleReferences {
       val map = project
         .sourceSets
-        .mapValues { (_, sourceSet) ->
-          project[JvmFiles][sourceSet.name]
+        .mapValues { (name, sourceSet) ->
+          val jvm = project[JvmFiles][sourceSet.name]
             .orEmpty()
             .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
             .toSet()
+
+          val layout = project[LayoutFiles][name]
+            .orEmpty()
+            .flatMap { it.resourceReferencesAsRReferences }
+            .toSet()
+
+          val manifest = project.manifestFilesForSourceSetName(name)
+            ?.resourceReferencesAsRReferences
+            .orEmpty()
+
+          jvm + layout + manifest
         }
 
       return PossibleReferences(ConcurrentHashMap(map))

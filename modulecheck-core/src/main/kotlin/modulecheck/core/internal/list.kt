@@ -15,14 +15,8 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
-
-fun List<String>.positionOf(
-  project: Project2,
-  configurationName: ConfigurationName
-): Position? = positionOf(project.path, configurationName)
+import modulecheck.parsing.ConfigurationName
 
 fun List<String>.positionOf(
   path: String,

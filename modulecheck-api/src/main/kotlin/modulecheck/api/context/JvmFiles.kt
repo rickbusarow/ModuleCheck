@@ -15,10 +15,16 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.JvmFile
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.api.files.jvmFiles
+import modulecheck.parsing.JvmFile
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.java.JavaFile
+import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.psi.internal.asKtFile
+import org.jetbrains.kotlin.incremental.isJavaFile
+import org.jetbrains.kotlin.incremental.isKotlinFile
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -31,14 +37,21 @@ data class JvmFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<JvmFiles> {
-    override operator fun invoke(project: Project2): JvmFiles {
+    override operator fun invoke(project: McProject): JvmFiles {
       val map = project
         .sourceSets
-        .map { (name, sourceSet) ->
+        .map { (sourceSetName, _) ->
 
-          name to project
-            .jvmSourcesForSourceSetName(sourceSet.name)
-            .jvmFiles(project.bindingContextForSourceSetName(sourceSet.name))
+          sourceSetName to project
+            .jvmSourcesForSourceSetName(sourceSetName)
+            .flatMap { directory ->
+              directory.walkTopDown()
+                .asSequence()
+                .filter { maybeFile -> maybeFile.isFile }
+                .mapNotNull { file ->
+                  JvmFile.fromFile(file, project, sourceSetName)
+                }.toList()
+            }
         }.toMap()
 
       return JvmFiles(ConcurrentHashMap(map))
@@ -49,3 +62,20 @@ data class JvmFiles(
 val ProjectContext.jvmFiles: JvmFiles get() = get(JvmFiles)
 fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
   jvmFiles[sourceSetName].orEmpty()
+
+fun JvmFile.Companion.fromFile(
+  file: File,
+  project: McProject,
+  sourceSetName: SourceSetName
+): JvmFile? {
+  return when {
+    file.isKotlinFile(listOf("kt")) -> {
+      KotlinFile(
+        file.asKtFile(),
+        project.bindingContextForSourceSetName(sourceSetName)
+      )
+    }
+    file.isJavaFile() -> JavaFile(file)
+    else -> null
+  }
+}

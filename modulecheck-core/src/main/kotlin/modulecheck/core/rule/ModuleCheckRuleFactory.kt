@@ -15,41 +15,31 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Fixable
+import modulecheck.api.Finding
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.RuleFactory
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.rule.android.DisableAndroidResourcesRule
-import modulecheck.core.rule.android.DisableViewBindingRule
-import modulecheck.core.rule.sort.SortDependenciesRule
-import modulecheck.core.rule.sort.SortPluginsRule
-
-interface RuleFactory {
-
-  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<*>>
-  fun register(ruleFactory: (ModuleCheckSettings) -> ModuleCheckRule<out Fixable>)
-}
 
 class ModuleCheckRuleFactory : RuleFactory {
 
-  private val rules: MutableList<(ModuleCheckSettings) -> ModuleCheckRule<out Fixable>> =
+  private val rules: MutableList<(ModuleCheckSettings) -> ModuleCheckRule<out Finding>> =
     mutableListOf(
-      { DisableAndroidResourcesRule(it) },
-      { DisableViewBindingRule(it) },
-      { InheritedDependencyRule(it) },
-      { MustBeApiRule(it) },
-      { RedundantRule(it) },
+      { DisableAndroidResourcesRule() },
+      { DisableViewBindingRule() },
+      { InheritedDependencyRule() },
+      { MustBeApiRule() },
+      { RedundantRule() },
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
+      { OverShotDependencyRule(it) },
       { UnusedDependencyRule(it) },
       { UnusedKaptRule(it) },
+      { AnvilFactoryRule() }
     )
 
   override fun create(
     settings: ModuleCheckSettings
-  ): List<ModuleCheckRule<*>> {
+  ): List<ModuleCheckRule<out Finding>> {
     return rules.map { it.invoke(settings) }
-  }
-
-  override fun register(ruleFactory: (ModuleCheckSettings) -> ModuleCheckRule<out Fixable>) {
-    rules.add(ruleFactory)
   }
 }

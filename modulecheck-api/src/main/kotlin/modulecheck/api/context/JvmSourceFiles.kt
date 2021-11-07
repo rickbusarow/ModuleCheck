@@ -15,8 +15,9 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -30,7 +31,7 @@ data class JvmSourceFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
-    override operator fun invoke(project: Project2): JvmSourceFiles {
+    override operator fun invoke(project: McProject): JvmSourceFiles {
       val map = project
         .sourceSets
         .map { (name, sourceSet) ->

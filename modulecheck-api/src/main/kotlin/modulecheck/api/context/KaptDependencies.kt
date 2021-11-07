@@ -15,11 +15,12 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
 import modulecheck.api.KaptProcessor
-import modulecheck.api.Project2
-import modulecheck.api.all
-import modulecheck.api.context.ProjectContext.Element
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.ProjectContext.Element
+import modulecheck.parsing.all
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -32,7 +33,7 @@ data class KaptDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<KaptDependencies> {
-    override operator fun invoke(project: Project2): KaptDependencies {
+    override operator fun invoke(project: McProject): KaptDependencies {
       val map = project
         .configurations
         .filterNot { it.key.value.startsWith("_") }
@@ -42,7 +43,6 @@ data class KaptDependencies(
           val external = config.externalDependencies
           val internal = project
             .projectDependencies
-            .value
             .all()
 
           val allDependencies = external + internal

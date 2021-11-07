@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
 
 data class PublicDependencies(
   internal val delegate: Set<ConfiguredProjectDependency>
@@ -28,23 +29,22 @@ data class PublicDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<PublicDependencies> {
-    override operator fun invoke(project: Project2): PublicDependencies {
+    override operator fun invoke(project: McProject): PublicDependencies {
       return PublicDependencies(
         project.allPublicClassPathDependencyDeclarations()
       )
     }
 
-    private fun Project2.allPublicClassPathDependencyDeclarations(
+    private fun McProject.allPublicClassPathDependencyDeclarations(
       includePrivate: Boolean = true
     ): Set<ConfiguredProjectDependency> {
       val privateDependencies = if (includePrivate) {
-        projectDependencies.value.main()
+        projectDependencies.main()
       } else {
         emptyList()
       }
 
-      val combined = privateDependencies + projectDependencies
-        .value[ConfigurationName.api]
+      val combined = privateDependencies + projectDependencies[ConfigurationName.api]
         .orEmpty()
 
       val inherited = combined
@@ -60,3 +60,5 @@ data class PublicDependencies(
     }
   }
 }
+
+val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDependencies)

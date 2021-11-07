@@ -15,10 +15,11 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.psi.createBindingContext
-import modulecheck.psi.internal.ktFiles
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.psi.createBindingContext
+import modulecheck.parsing.psi.internal.ktFiles
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -32,7 +33,7 @@ data class BindingContexts(
     get() = Key
 
   companion object Key : ProjectContext.Key<BindingContexts> {
-    override operator fun invoke(project: Project2): BindingContexts {
+    override operator fun invoke(project: McProject): BindingContexts {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->

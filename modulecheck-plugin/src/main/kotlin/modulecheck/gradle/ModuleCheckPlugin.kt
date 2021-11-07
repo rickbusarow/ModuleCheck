@@ -15,23 +15,16 @@
 
 package modulecheck.gradle
 
-import modulecheck.api.Finding
-import modulecheck.api.KaptMatcher
-import modulecheck.api.Project2
-import modulecheck.api.settings.*
-import modulecheck.core.rule.ModuleCheckRule
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.gradle.task.ModuleCheckAllTask
+import com.android.build.gradle.tasks.GenerateBuildConfig
+import com.android.build.gradle.tasks.ManifestProcessorTask
+import modulecheck.api.FindingFactory
+import modulecheck.core.rule.*
+import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.ListProperty
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.SetProperty
-import org.gradle.api.tasks.Internal
-import org.gradle.kotlin.dsl.*
-import javax.inject.Inject
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.kotlin.dsl.configure
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
   extensions.configure(ModuleCheckExtension::class, config)
@@ -42,87 +35,49 @@ typealias GradleProject = Project
 class ModuleCheckPlugin : Plugin<Project> {
 
   override fun apply(target: Project) {
-    val settings = target.extensions.create("moduleCheck", ModuleCheckExtension::class.java)
+    val settings = target.extensions
+      .create("moduleCheck", ModuleCheckExtension::class.java)
 
     val factory = ModuleCheckRuleFactory()
 
-    // AnvilFactoryRule is defined in this module, so it can't be statically registered like the others
-    factory.register { AnvilFactoryRule(it) }
-
     val rules = factory.create(settings)
 
-    rules
-      .onEach { rule ->
-        target.tasks.register("moduleCheck${rule.id}", DynamicModuleCheckTask::class, rule)
+    target.registerTasks(
+      name = "moduleCheckSortDependencies",
+      findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings))
+    )
+    target.registerTasks(
+      name = "moduleCheckSortPlugins",
+      findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings))
+    )
+    target.registerTasks(
+      name = "moduleCheck",
+      findingFactory = MultiRuleFindingFactory(settings, rules)
+    )
+  }
+
+  private fun Project.registerTasks(
+    name: String,
+    findingFactory: FindingFactory<*>
+  ) {
+
+    fun TaskProvider<*>.addDependencies() {
+      configure {
+
+        allprojects
+          .filter { it.isMissingManifestFile() }
+          .flatMap { it.tasks.withType(ManifestProcessorTask::class.java) }
+          .forEach { dependsOn(it) }
+
+        allprojects
+          .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
+          .forEach { dependsOn(it) }
       }
-
-    target.tasks.register("moduleCheck", ModuleCheckAllTask::class.java, rules)
-  }
-}
-
-abstract class DynamicModuleCheckTask<T : Finding> @Inject constructor(
-  @Internal val rule: ModuleCheckRule<T>
-) : ModuleCheckTask() {
-
-  init {
-    description = rule.description
-  }
-
-  override fun List<Project2>.getFindings(): List<T> {
-    return flatMap { project ->
-      rule.check(project)
-    }
-  }
-}
-
-@Suppress("UnstableApiUsage")
-open class ModuleCheckExtension @Inject constructor(
-  private val objects: ObjectFactory
-) : ModuleCheckSettings {
-
-  @get:Internal
-  val autoCorrectProp: Property<Boolean> = objects.property<Boolean>().convention(true)
-  override var autoCorrect: Boolean
-    @Internal get() = autoCorrectProp.get()
-    set(value) = autoCorrectProp.set(value)
-
-  @get:Internal
-  val alwaysIgnoreProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
-  override var alwaysIgnore: Set<String>
-    @Internal get() = alwaysIgnoreProp.get()
-    set(value) = alwaysIgnoreProp.set(value)
-
-  @get:Internal
-  val ignoreAllProp: SetProperty<String> = objects.setProperty<String>().convention(emptySet())
-  override var ignoreAll: Set<String>
-    @Internal get() = ignoreAllProp.get()
-    set(value) = ignoreAllProp.set(value)
-
-  @get:Internal
-  val additionalKaptMatchersProp: ListProperty<KaptMatcher> =
-    objects.listProperty<KaptMatcher>().convention(emptyList())
-  override var additionalKaptMatchers: List<KaptMatcher>
-    @Internal get() = additionalKaptMatchersProp.get()
-    set(value) {
-      additionalKaptMatchersProp.set(value)
     }
 
-  @get:Internal
-  val checksSettingsProp: Property<ChecksSettings> =
-    objects.property<ChecksSettings>().convention(ChecksExtension())
-  override var checks: ChecksSettings
-    @Internal get() = checksSettingsProp.get()
-    set(value) = checksSettingsProp.set(value)
-
-  override fun checks(block: ChecksSettings.() -> Unit) = block.invoke(checks)
-
-  @get:Internal
-  val sortSettingsProp: Property<SortSettings> = objects.property<SortSettings>().convention(
-    SortExtension()
-  )
-  override var sort: SortSettings
-    @Internal get() = sortSettingsProp.get()
-    set(value) = sortSettingsProp.set(value)
-
-  override fun sort(block: SortSettings.() -> Unit) = block.invoke(sort)
+    tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
+      .addDependencies()
+    tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
+      .addDependencies()
+  }
 }

@@ -1,0 +1,100 @@
+{
+  "version-0.11.2/Docs": [
+    {
+      "type": "doc",
+      "id": "version-0.11.2/quickstart"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.11.2/configuration"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.11.2/ci-workflow"
+    },
+    {
+      "type": "category",
+      "label": "Rules",
+      "collapsed": false,
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/unused"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/must_be_api"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.11.2/rules/inherited_dependency"
+        },
+        {
+          "type": "category",
+          "label": "compiler",
+          "collapsed": false,
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/compiler/could_use_anvil_factory"
+            }
+          ],
+          "collapsible": true
+        },
+        {
+          "type": "category",
+          "label": "Kapt",
+          "collapsed": false,
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/unused_kapt_processor"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/unused_kapt_plugin"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/kapt/custom_kapt_matchers"
+            }
+          ],
+          "collapsible": true
+        },
+        {
+          "type": "category",
+          "label": "Sorting",
+          "collapsed": false,
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/sorting/sort_dependencies"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/sorting/sort_plugins"
+            }
+          ],
+          "collapsible": true
+        },
+        {
+          "type": "category",
+          "label": "Android",
+          "collapsed": false,
+          "items": [
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/android/disable_resources"
+            },
+            {
+              "type": "doc",
+              "id": "version-0.11.2/rules/android/disable_viewbinding"
+            }
+          ],
+          "collapsible": true
+        }
+      ],
+      "collapsible": true
+    }
+  ]
+}

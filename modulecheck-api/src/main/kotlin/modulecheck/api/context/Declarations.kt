@@ -15,13 +15,9 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.AndroidProject2
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-
-typealias DeclarationName = String
 
 data class Declarations(
   internal val delegate: ConcurrentMap<SourceSetName, Set<DeclarationName>>
@@ -32,25 +28,21 @@ data class Declarations(
     get() = Key
 
   companion object Key : ProjectContext.Key<Declarations> {
-    override operator fun invoke(project: Project2): Declarations {
+    override operator fun invoke(project: McProject): Declarations {
       val map = project
         .sourceSets
-        .mapValues { (_, sourceSet) ->
+        .mapValues { (sourceSetName, _) ->
 
-          val rPackage = (project as? AndroidProject2)?.androidPackageOrNull
+          val jvmFiles = project.jvmFilesForSourceSetName(sourceSetName)
+            .flatMap { jvmFile -> jvmFile.declarations }
+            .toSet()
 
-          val set = if (rPackage != null) {
-            project[JvmFiles][sourceSet.name]
-              .orEmpty()
-              .flatMap { it.declarations }
-              .toSet() + "$rPackage.R"
-          } else {
-            project[JvmFiles][sourceSet.name]
-              .orEmpty()
-              .flatMap { it.declarations }
-              .toSet()
-          }
-          set
+          val baseAndroidPackage = (project as? AndroidMcProject)?.androidPackageOrNull
+            ?: return@mapValues jvmFiles
+
+          jvmFiles
+            .plus("$baseAndroidPackage.R".asDeclarationName())
+            .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
         }
 
       return Declarations(ConcurrentHashMap(map))

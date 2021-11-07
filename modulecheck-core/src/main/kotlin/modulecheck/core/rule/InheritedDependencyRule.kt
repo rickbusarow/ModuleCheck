@@ -15,29 +15,28 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.*
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.context.publicDependencies
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApi
 import modulecheck.core.internal.uses
+import modulecheck.parsing.*
 import kotlin.LazyThreadSafetyMode.NONE
 
-class InheritedDependencyRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<InheritedDependencyFinding>() {
+class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
   override val id = "InheritedDependency"
   override val description = "Finds project dependencies which are used in the current module, " +
     "but are not actually directly declared as dependencies in the current module"
 
-  override fun check(project: Project2): List<InheritedDependencyFinding> {
+  override fun check(project: McProject): List<InheritedDependencyFinding> {
     val inherited = project.publicDependencies
     val used = inherited
       .filter { project.uses(it) }
 
     val mainDependenciesPaths = project
       .projectDependencies
-      .value
       .main()
       .map { it.project.path }
       .toSet()
@@ -52,14 +51,19 @@ class InheritedDependencyRule(
           .main()
           .asSequence()
           .mapNotNull { configName ->
-            project.sourceOf(ConfiguredProjectDependency(configName, overshot.project))
+            project.sourceOf(
+              ConfiguredProjectDependency(
+                configurationName = configName,
+                project = overshot.project,
+                isTestFixture = overshot.isTestFixture
+              )
+            )
           }
           .firstOrNull()
 
         val sourceConfig by lazy(NONE) {
           project
             .projectDependencies
-            .value
             .main()
             .firstOrNull { it.project == source?.project }
             ?.configurationName ?: "api".asConfigurationName()
@@ -77,7 +81,7 @@ class InheritedDependencyRule(
           dependencyProject = overshot.project,
           dependencyPath = overshot.project.path,
           configurationName = newConfig,
-          from = source
+          source = source
         )
       }
       .filterNot { it.dependencyPath in mainDependenciesPaths }
@@ -85,5 +89,9 @@ class InheritedDependencyRule(
       .mapValues { it.value.toMutableSet() }
 
     return grouped.values.flatten()
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.inheritedDependency
   }
 }

@@ -15,42 +15,38 @@
 
 plugins {
   javaLibrary
-  `maven-publish`
+  id("com.vanniktech.maven.publish")
+  id("java-test-fixtures")
 }
+
+val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
-  implementation(projects.modulecheckPsi)
+  api(libs.kotlin.compiler)
+  api(libs.semVer)
 
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:java"))
+  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:xml"))
+
+  implementation(libs.agp)
+  implementation(libs.groovy)
   implementation(libs.groovyXml)
+  implementation(libs.kotlin.reflect)
 
-  implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
-  implementation(libs.kotlinReflect)
-  implementation(libs.kotlinPoet)
-  implementation(libs.semVer)
-  implementation(libs.javaParser)
+  testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(libs.bundles.hermit)
 
+  if (isIdeSync) {
+    compileOnly(project(path = ":modulecheck-internal-testing"))
+    compileOnly(libs.bundles.hermit)
+    compileOnly(libs.bundles.jUnit)
+    compileOnly(libs.bundles.kotest)
+  }
+
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.bundles.hermit)
-
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
-}
-
-publishing {
-  publications {
-    create<MavenPublication>("maven") {
-
-      groupId = "com.rickbusarow.modulecheck"
-      artifactId = "modulecheck-api"
-
-      version = libs.versions.versionName.get()
-
-      from(components["java"])
-    }
-  }
 }

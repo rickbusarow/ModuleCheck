@@ -17,23 +17,13 @@ pluginManagement {
   repositories {
     gradlePluginPortal()
     mavenCentral()
-  }
-
-  resolutionStrategy {
-    eachPlugin {
-      when {
-        requested.id.id.startsWith("org.jetbrains.kotlin") -> useVersion("1.4.32")
-      }
-    }
+    mavenLocal()
   }
 }
 
 plugins {
   id("com.gradle.enterprise").version("3.5.2")
 }
-
-@Suppress("VariableNaming")
-val VERSION: String by extra.properties
 
 gradleEnterprise {
   buildScan {
@@ -44,7 +34,7 @@ gradleEnterprise {
     publishAlways()
 
     tag(if (System.getenv("CI").isNullOrBlank()) "Local" else "CI")
-    tag(VERSION)
+    tag(extra.properties["VERSION_NAME"] as String)
 
     val githubActionID = System.getenv("GITHUB_ACTION")
 
@@ -64,13 +54,19 @@ gradleEnterprise {
 
 rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(
+  ":dependabot-bridge",
   ":modulecheck-api",
   ":modulecheck-core",
   ":modulecheck-internal-testing",
+  ":modulecheck-parsing:api",
+  ":modulecheck-parsing:groovy-antlr",
+  ":modulecheck-parsing:java",
+  ":modulecheck-parsing:psi",
+  ":modulecheck-parsing:xml",
   ":modulecheck-plugin",
-  ":modulecheck-psi",
+  ":modulecheck-reporting:checkstyle",
+  ":modulecheck-reporting:console",
   ":modulecheck-specs"
 )

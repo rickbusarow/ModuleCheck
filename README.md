@@ -1,3 +1,8 @@
+[![Maven Central](https://img.shields.io/maven-central/v/com.rickbusarow.modulecheck/modulecheck-api?style=flat-square)](https://search.maven.org/search?q=com.rickbusarow.modulecheck)
+[![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/com.rickbusarow.module-check?style=flat-square)](https://plugins.gradle.org/plugin/com.rickbusarow.module-check)
+[![License](https://img.shields.io/badge/license-apache2.0-blue?style=flat-square.svg)](https://opensource.org/licenses/Apache-2.0)
+
+
 ### This is a work in progress, in a very early state, and there are bugs.
 
 ___
@@ -9,6 +14,8 @@ It does this **without performing a build**, which makes the parsing extremely f
 All inspection is done using Gradle build files, Java/Kotlin source, and `res` xml files for Kotlin.
 
 Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
+
+![Diagram of flattening module structure](website/static/img/modulecheck_diagram.png)
 
 ### Config
 ```kotlin
@@ -25,7 +32,7 @@ pluginManagement {
 // top-level build.gradle.kts
 
 plugins {
-  id("com.rickbusarow.module-check") version "0.10.0"
+  id("com.rickbusarow.module-check") version "0.11.3"
 }
 ```
 
@@ -36,60 +43,17 @@ all checks
 ./gradlew moduleCheck
 ```
 
-kapt checks
-```shell
-./gradlew moduleCheckKapt
+## License
+
+``` text
+Copyright (C) 2021 Rick Busarow
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+     http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 ```
-
-sorts
-```shell
-./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
-```
-
-unused
-```shell
-./gardlew moduleCheckUnused
-```
-
-redundant
-```shell
-./gradlew moduleCheckRedundant
-```
-
-overshot
-```shell
-./gradlew moduleCheckOvershot
-```
-
-
-### TODO
-
-#### Done
-- [X] kapt
-- [X] disable android resources
-- [X] disable viewbinding
-- [X] sort plugins
-- [X] sort dependencies
-- [X] overshot
-
-#### Partial
-- [ ] unused
-- [ ] redundant
-- [ ] used?
-- [ ] parse java files
-- [ ] auto-fix
-
-#### Backlog
-- [ ] disable android values ???
-- [ ] Reports
-  - [ ] checkstyle
-  - [ ] junit
-  - [ ] text
-- [ ] duplicates & different configs (like listed as `implementation` and `api`)
-- [ ] differentiate between java and android modules
-- [ ] parse resources (strings, drawables, icons, etc.)
-- [ ] imports for nested classes
-- [ ] minify (remove dependency if declared as api by dependency module)
-- [ ] disallow test dependencies if no test src directory
-- [ ] disallow androidTest dependencies if no androidTest src directory
-

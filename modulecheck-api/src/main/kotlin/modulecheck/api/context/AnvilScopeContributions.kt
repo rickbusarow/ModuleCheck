@@ -15,9 +15,11 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.api.anvil.AnvilScopeName
+import modulecheck.parsing.AnvilScopeName
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 
 data class AnvilScopeContributions(
   internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
@@ -29,7 +31,7 @@ data class AnvilScopeContributions(
 
   companion object Key : ProjectContext.Key<AnvilScopeContributions> {
 
-    override operator fun invoke(project: Project2): AnvilScopeContributions {
+    override operator fun invoke(project: McProject): AnvilScopeContributions {
       val map = project.anvilGraph.scopeContributions
 
       return AnvilScopeContributions(map)

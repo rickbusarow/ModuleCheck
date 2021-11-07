@@ -16,56 +16,99 @@
 package modulecheck.core.rule.sort
 
 import modulecheck.api.Finding
+import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
-import modulecheck.core.kotlinBuildFileOrNull
-import modulecheck.psi.DslBlockVisitor
-import modulecheck.psi.PsiElementWithSurroundingText
+import modulecheck.core.parse
+import modulecheck.parsing.DependenciesBlock
+import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 import java.util.*
 
 class SortDependenciesFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  private val visitor: DslBlockVisitor,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {
-  override val problemName = "unsorted dependencies"
+
+  override val message: String
+    get() = "Project/external dependency declarations are not sorted " +
+      "according to the defined pattern."
+
+  override val findingName = "unsortedDependencies"
 
   override val dependencyIdentifier = ""
 
-  override fun positionOrNull(): Finding.Position? = null
+  override val positionOrNull: Position? get() = null
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
+    var fileText = buildFile.readText()
 
-    val result = visitor.parse(kotlinBuildFile) ?: return false
+    DependencyBlockParser
+      .parse(buildFile)
+      .forEach { block ->
 
-    val sorted = result
-      .elements
-      .grouped(comparator)
-      .joinToString("\n\n") { list ->
-        list
-          .sortedBy { it.psiElement.text.toLowerCase(Locale.US) }
-          .joinToString("\n")
+        fileText = sortedDependenciesFileText(block, fileText, comparator)
       }
-      .trim()
 
-    val allText = buildFile.readText()
-
-    val newText = allText.replace(result.blockText, sorted)
-
-    buildFile.writeText(newText)
+    buildFile.writeText(fileText)
 
     return true
   }
 }
 
-fun List<PsiElementWithSurroundingText>.grouped(
+internal fun sortedDependenciesFileText(
+  block: DependenciesBlock,
+  fileText: String,
+  comparator: Comparator<String>
+): String {
+  val sorted = block.sortedDeclarations(comparator)
+
+  val trimmedContent = block.contentString
+    .trimStart('\n')
+    .trimEnd()
+
+  val escapedContent = Regex.escape(trimmedContent)
+
+  val blockRegex = "$escapedContent[\\n\\r]*(\\s*)}".toRegex()
+
+  return fileText.replace(blockRegex) { mr ->
+
+    val whitespaceBeforeBrace = mr.destructured.component1()
+
+    "$sorted$whitespaceBeforeBrace}"
+  }
+}
+
+internal fun DependenciesBlock.sortedDeclarations(
+  comparator: Comparator<String>
+): String {
+  return allDeclarations
+    .grouped(comparator)
+    .joinToString("\n\n") { declarations ->
+
+      declarations
+        .sortedBy { declaration ->
+          declaration.declarationText.lowercase(Locale.US)
+        }
+        .joinToString("\n") {
+          it.statementWithSurroundingText
+            .trimStart('\n')
+            .trimEnd()
+            .lines()
+            .joinToString("\n")
+        }
+    }
+    .suffixIfNot("\n")
+}
+
+internal fun List<DependencyDeclaration>.grouped(
   comparator: Comparator<String>
 ) = groupBy {
-  it.psiElement
-    .text
-    .split("[(.]".toRegex())
+  it.declarationText
+    .split("[^a-zA-Z-]".toRegex())
+    .filterNot { it.isEmpty() }
     .take(2)
     .joinToString("-")
 }

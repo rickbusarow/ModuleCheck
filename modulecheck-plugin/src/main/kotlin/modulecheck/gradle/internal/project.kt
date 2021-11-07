@@ -16,6 +16,8 @@
 package modulecheck.gradle.internal
 
 import com.android.build.gradle.TestedExtension
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.toSourceSetName
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
 import java.io.File
@@ -28,26 +30,6 @@ val Project.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
 val Project.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
 val Project.testKotlinRoot get() = File("$srcRoot/test/kotlin")
 
-fun Project.mainLayoutRootOrNull(): File? {
-  val file = File("$srcRoot/main/res/layout")
-  return if (file.exists()) file else null
-}
-
-fun Project.androidTestResRootOrNull(): File? {
-  val file = File("$srcRoot/androidTest/res")
-  return if (file.exists()) file else null
-}
-
-fun Project.mainResRootOrNull(): File? {
-  val file = File("$srcRoot/main/res")
-  return if (file.exists()) file else null
-}
-
-fun Project.testResRootOrNull(): File? {
-  val file = File("$srcRoot/test/res")
-  return if (file.exists()) file else null
-}
-
 fun FileTreeWalk.dirs(): Sequence<File> = asSequence().filter { it.isDirectory }
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
 
@@ -59,3 +41,30 @@ fun createFile(
 }
 
 fun Project.isAndroid(): Boolean = extensions.findByType(TestedExtension::class) != null
+
+fun Project.testedExtensionOrNull(): TestedExtension? = extensions
+  .findByType(TestedExtension::class)
+
+fun Project.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
+  ?.sourceSets
+  ?.associate { it.name.toSourceSetName() to it.manifest.srcFile }
+
+/**
+ * @return the main src `AndroidManifest.xml` file if it exists. This will typically be
+ *   `$projectDir/src/main/AndroidManifest.xml`, but if the position has
+ *   been changed in the Android extension, the new path will be used.
+ */
+fun Project.mainAndroidManifest() = testedExtensionOrNull()
+  ?.sourceSets
+  ?.getByName("main")
+  ?.manifest
+  ?.srcFile
+
+/**
+ * @return true if the project is an Android project and no manifest file exists at the location
+ *   defined in the Android extension
+ */
+fun Project.isMissingManifestFile() = mainAndroidManifest()
+  // the file must be declared, but not exist in order for this to be triggered
+  ?.let { !it.exists() }
+  ?: false

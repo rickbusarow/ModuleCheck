@@ -15,12 +15,12 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.*
-import modulecheck.api.anvil.AnvilScopeName
 import modulecheck.api.context.*
-import modulecheck.core.parser.android.androidResourceDeclarationsForSourceSetName
+import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
+import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
+import modulecheck.parsing.*
 
-fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
+fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   val mergedScopeNames = anvilScopeMerges
     .values
     .flatMap { it.keys }
@@ -29,58 +29,74 @@ fun Project2.uses(dependency: ConfiguredProjectDependency): Boolean {
 
   val all = config.inherited + config
 
-  val depProject = dependency.project
-
-  return all.any { usesInConfig(mergedScopeNames, it, depProject) }
+  return all.any { usesInConfig(mergedScopeNames, dependency.copy(configurationName = it.name)) }
 }
 
-fun Project2.usesInConfig(
+fun McProject.usesInConfig(
   mergedScopeNames: List<AnvilScopeName>,
-  config: Config,
-  projectDependency: Project2
+  dependency: ConfiguredProjectDependency
 ): Boolean {
-  val contributions = projectDependency
+  val contributions = dependency.project
     .anvilScopeContributionsForSourceSetName(SourceSetName.MAIN)
 
-  val dependencyDeclarations = projectDependency.allDependencyDeclarationsForConfig(config)
+  val dependencyDeclarations = dependency.allDependencyDeclarations()
 
   val javaIsUsed = mergedScopeNames.any { contributions.containsKey(it) } ||
-    dependencyDeclarations.any { declaration ->
-
-      declaration in importsForSourceSetName(config.name.toSourceSetName()) ||
-        declaration in possibleReferencesForSourceSetName(config.name.toSourceSetName())
-    }
+    dependencyDeclarations
+      .map { it.fqName }
+      .any { declaration ->
+        declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
+          declaration in possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
+      }
 
   if (javaIsUsed) return true
 
-  if (this !is AndroidProject2) return false
+  if (this !is AndroidMcProject) return false
 
   val rReferences =
-    possibleReferencesForSourceSetName(config.name.toSourceSetName())
+    possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
       .filter { it.startsWith("R.") }
 
-  val dependencyAsAndroid = projectDependency as? AndroidProject2 ?: return false
+  val dependencyAsAndroid = dependency.project as? AndroidMcProject ?: return false
 
-  val resourcesAreUsed = dependencyAsAndroid
-    .androidResourceDeclarationsForSourceSetName(config.name.toSourceSetName())
+  val dataBindingIsUsed = dependencyAsAndroid
+    .androidDataBindingDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
+    .map { it.fqName }
+    .any { declaration ->
+      declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
+        declaration in possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
+    }
+
+  if (dataBindingIsUsed) return true
+
+  return dependencyAsAndroid
+    .androidResourceDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
+    .map { it.fqName }
     .any { rDeclaration ->
       rDeclaration in rReferences
     }
-
-  return resourcesAreUsed
 }
 
-fun Project2.allDependencyDeclarationsForConfig(config: Config): Set<DeclarationName> {
-  val root = get(Declarations)[config.name.toSourceSetName()]
+fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName> {
+  val root = project[Declarations][configurationName.toSourceSetName()]
     .orEmpty()
 
-  val main = get(Declarations)[SourceSetName.MAIN]
+  val main = project[Declarations][SourceSetName.MAIN]
     .orEmpty()
 
-  val inherited = config.inherited.flatMap { inherited ->
-    get(Declarations)[inherited.name.toSourceSetName()]
-      .orEmpty()
+  val fixtures = if (isTestFixture) {
+    project[Declarations][SourceSetName.TEST_FIXTURES].orEmpty()
+  } else {
+    emptySet()
   }
 
-  return root + main + inherited.toSet()
+  val inherited = project.configurations[configurationName]
+    ?.inherited
+    ?.flatMap { inherited ->
+      project[Declarations][inherited.name.toSourceSetName()]
+        .orEmpty()
+    }
+    .orEmpty()
+
+  return root + main + fixtures + inherited.toSet()
 }

@@ -15,9 +15,9 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.*
 import modulecheck.api.context.*
-import modulecheck.api.files.KotlinFile
+import modulecheck.parsing.*
+import modulecheck.parsing.psi.KotlinFile
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
@@ -28,7 +28,8 @@ data class MustBeApi(
     get() = Key
 
   companion object Key : ProjectContext.Key<MustBeApi> {
-    override operator fun invoke(project: Project2): MustBeApi {
+    override operator fun invoke(project: McProject): MustBeApi {
+      // this is anything in the main classpath, including inherited dependencies
       val mainDependencies = project.publicDependencies
 
       val mergedScopeNames = project
@@ -56,23 +57,24 @@ data class MustBeApi(
 
           kotlinFile
             .apiReferences
-            .filterNot { it in declarationsInProject }
+            .filterNot { it.asDeclarationName() in declarationsInProject }
         }.toSet()
 
       val api = mainDependencies
         .asSequence()
-        // .filterNot { it.configurationName == ConfigurationName.api }
+        // Anything with an `api` config must be inherited,
+        // and will be handled by the InheritedDependencyRule.
+        .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
         .filterNot { cpd ->
-
-          cpd in project.projectDependencies
-            .value[ConfigurationName.api]
-            .orEmpty()
+          // exclude anything which is inherited but already included in local `api` deps
+          cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
         }
         .filter { cpd ->
           cpd
             .project[Declarations][SourceSetName.MAIN]
             .orEmpty()
+            .map { it.fqName }
             .any { declared ->
 
               declared in inheritedImports ||
@@ -82,14 +84,19 @@ data class MustBeApi(
         .map { cpd ->
           val source = project
             .projectDependencies
-            .value
             .main()
             .firstOrNull { it.project == cpd.project }
             ?: ConfigurationName
               .main()
               .asSequence()
               .mapNotNull { configName ->
-                project.sourceOf(ConfiguredProjectDependency(configName, cpd.project))
+                project.sourceOf(
+                  ConfiguredProjectDependency(
+                    configurationName = configName,
+                    project = cpd.project,
+                    isTestFixture = cpd.isTestFixture
+                  )
+                )
               }
               .firstOrNull()
           InheritedDependencyWithSource(cpd, source)

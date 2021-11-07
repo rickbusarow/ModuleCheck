@@ -15,20 +15,19 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Project2
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.api.ModuleCheckRule
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
+import modulecheck.parsing.McProject
 
-class MustBeApiRule(
-  override val settings: ModuleCheckSettings
-) : ModuleCheckRule<MustBeApiFinding>() {
+class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
 
   override val id = "MustBeApi"
   override val description = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
-  override fun check(project: Project2): List<MustBeApiFinding> {
+  override fun check(project: McProject): List<MustBeApiFinding> {
     return project[MustBeApi]
       .map {
         MustBeApiFinding(
@@ -39,6 +38,9 @@ class MustBeApiRule(
           source = it.source
         )
       }
-    // .distinctBy { it.dependencyProject }
+  }
+
+  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
+    return checksSettings.mustBeApi
   }
 }

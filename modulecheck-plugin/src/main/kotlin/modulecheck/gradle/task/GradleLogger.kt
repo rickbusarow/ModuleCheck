@@ -16,6 +16,8 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.Logger
+import modulecheck.api.Report
+import modulecheck.api.Report.ReportEntry.*
 import modulecheck.gradle.GradleProject
 import org.gradle.configurationcache.extensions.serviceOf
 import org.gradle.internal.logging.text.StyledTextOutput
@@ -27,11 +29,33 @@ class GradleLogger(project: GradleProject) : Logger {
     .serviceOf<StyledTextOutputFactory>()
     .create("modulecheck")
 
+  override fun printReport(report: Report) {
+    report.entries
+      .forEach { reportEntry ->
+        when (reportEntry) {
+          is Failure -> printFailure(reportEntry.message)
+          is FailureHeader -> printFailureHeader(reportEntry.message)
+          is FailureLine -> printFailureLine(reportEntry.message)
+          is Header -> printHeader(reportEntry.message)
+          is Info -> printInfo(reportEntry.message)
+          is Success -> printSuccess(reportEntry.message)
+          is SuccessHeader -> printSuccessHeader(reportEntry.message)
+          is SuccessLine -> printSuccessLine(reportEntry.message)
+          is Warning -> printWarning(reportEntry.message)
+          is WarningLine -> printWarningLine(reportEntry.message)
+        }
+      }
+  }
+
   override fun printHeader(message: String) {
     output.withStyle(StyledTextOutput.Style.Header).println(message)
   }
 
   override fun printWarning(message: String) {
+    output.withStyle(StyledTextOutput.Style.Description).text(message)
+  }
+
+  override fun printWarningLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
@@ -40,6 +64,10 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printFailure(message: String) {
+    output.withStyle(StyledTextOutput.Style.Failure).text(message)
+  }
+
+  override fun printFailureLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Failure).println(message)
   }
 
@@ -48,6 +76,10 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printSuccess(message: String) {
+    output.withStyle(StyledTextOutput.Style.Success).text(message)
+  }
+
+  override fun printSuccessLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Success).println(message)
   }
 

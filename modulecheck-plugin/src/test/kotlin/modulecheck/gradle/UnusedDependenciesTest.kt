@@ -16,15 +16,13 @@
 package modulecheck.gradle
 
 import com.squareup.kotlinpoet.*
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
-import modulecheck.specs.ProjectSrcSpecBuilder.XmlFile
-import org.junit.jupiter.api.Nested
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class UnusedDependenciesTest : BaseTest() {
+class UnusedDependenciesTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
@@ -45,316 +43,9 @@ class UnusedDependenciesTest : BaseTest() {
   private val lib1ClassName = ClassName("com.example.lib1", "Lib1Class")
 
   val jvmSub1 = jvmSubProject("lib-1", lib1ClassName)
-  val jvmSub2 = jvmSubProject("lib-2", ClassName("com.example.lib2", "Lib2Class"))
-  val jvmSub3 = jvmSubProject("lib-3", ClassName("com.example.lib3", "Lib3Class"))
-
-  @Nested
-  inner class `unused dependencies` {
-
-    private val myApp = FileSpec.builder("com.example.app", "MyApp")
-      .addImport("com.example.lib1", "Lib1Class")
-      .build()
-
-    @Test
-    fun `with autoCorrect should be removed`() {
-      val appProject = ProjectSpec("app") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addPlugin("kotlin(\"jvm\")")
-            addProjectDependency("api", jvmSub1)
-            addProjectDependency("api", jvmSub2)
-            addProjectDependency("implementation", jvmSub3)
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFileSpec(myApp)
-          }
-        )
-      }
-
-      ProjectSpec("project") {
-        applyEach(projects) { project ->
-          addSubproject(project)
-        }
-        addSubproject(appProject)
-        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
-        addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
-      }
-        .writeIn(testProjectDir.toPath())
-
-      build("moduleCheckUnusedDependency").shouldSucceed()
-
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
-        |  kotlin("jvm")
-        |}
-        |
-        |dependencies {
-        |  api(project(path = ":lib-1"))
-        |  // api(project(path = ":lib-2"))  // ModuleCheck finding [unused]
-        |  // implementation(project(path = ":lib-3"))  // ModuleCheck finding [unused]
-        |}
-        |""".trimMargin()
-    }
-
-    @Test
-    fun `with autoCorrect using string extension functions for configuration should be removed`() {
-      val appProject = ProjectSpec("app") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addProjectDependency("\"api\"", jvmSub1)
-            addProjectDependency("\"api\"", jvmSub2)
-            addProjectDependency("\"implementation\"", jvmSub3)
-            addPlugin("kotlin(\"jvm\")")
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFileSpec(myApp)
-          }
-        )
-      }
-      ProjectSpec("project") {
-        applyEach(projects) { project ->
-          addSubproject(project)
-        }
-        addSubproject(appProject)
-        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
-        addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
-      }
-        .writeIn(testProjectDir.toPath())
-
-      build("moduleCheckUnusedDependency").shouldSucceed()
-
-      File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
-        |  kotlin("jvm")
-        |}
-        |
-        |dependencies {
-        |  "api"(project(path = ":lib-1"))
-        |  // "api"(project(path = ":lib-2"))  // ModuleCheck finding [unused]
-        |  // "implementation"(project(path = ":lib-3"))  // ModuleCheck finding [unused]
-        |}
-        |""".trimMargin()
-    }
-
-    @Test
-    fun `without autoCorrect should fail with report`() {
-      val appProject = ProjectSpec("app") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addPlugin("kotlin(\"jvm\")")
-            addProjectDependency("api", jvmSub1)
-            addProjectDependency("api", jvmSub2)
-            addProjectDependency("implementation", jvmSub3)
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFileSpec(myApp)
-          }
-        )
-      }
-      ProjectSpec("project") {
-        applyEach(projects) { project ->
-          addSubproject(project)
-        }
-        addSubproject(appProject)
-        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
-        addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
-      }
-        .writeIn(testProjectDir.toPath())
-
-      shouldFailWithMessage("moduleCheckUnusedDependency") {
-        it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
-        it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
-      }
-    }
-
-    @Test
-    fun `without autoCorrect using string extension functions for configuration should fail with report`() {
-      val appProject = ProjectSpec("app") {
-        addBuildSpec(
-          ProjectBuildSpec {
-            addPlugin("kotlin(\"jvm\")")
-            addProjectDependency("\"api\"", jvmSub1)
-            addProjectDependency("\"api\"", jvmSub2)
-            addProjectDependency("\"implementation\"", jvmSub3)
-          }
-        )
-        addSrcSpec(
-          ProjectSrcSpec(Path.of("src/main/kotlin")) {
-            addFileSpec(myApp)
-          }
-        )
-      }
-      ProjectSpec("project") {
-        applyEach(projects) { project ->
-          addSubproject(project)
-        }
-        addSubproject(appProject)
-        addSubprojects(jvmSub1, jvmSub2, jvmSub3)
-        addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
-      }
-        .writeIn(testProjectDir.toPath())
-
-      shouldFailWithMessage("moduleCheckUnusedDependency") {
-        it shouldContain "> ModuleCheck found 2 issues which were not auto-corrected."
-        it shouldContain "app/build.gradle.kts: (7, 3):  unused: :lib-2"
-        it shouldContain "app/build.gradle.kts: (8, 3):  unused: :lib-3"
-      }
-    }
-  }
 
   @Test
-  fun `testImplementation used in test should not be unused`() {
-    val myTest = FileSpec.builder("com.example.app", "MyTest")
-      .addImport("com.example.lib1", "Lib1Class")
-      .build()
-
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          addPlugin("kotlin(\"jvm\")")
-          addProjectDependency("testImplementation", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/test/kotlin")) {
-          addFileSpec(myTest)
-        }
-      )
-    }
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
-      }
-      addSubproject(appProject)
-      addSubprojects(jvmSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
-
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `androidTestImplementation used in android test should not be unused`() {
-    val appProject = ProjectSpec("app") {
-      addBuildSpec(
-        ProjectBuildSpec {
-          android = true
-          addPlugin("""id("com.android.library")""")
-          addPlugin("kotlin(\"android\")")
-          addProjectDependency("androidTestImplementation", jvmSub1)
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/androidTest/java")) {
-          addFileSpec(
-            FileSpec.builder("com.example.app", "MyTest")
-              .addType(
-                TypeSpec.classBuilder("MyTest")
-                  .primaryConstructor(
-                    FunSpec.constructorBuilder()
-                      .addParameter("lib1Class", lib1ClassName)
-                      .build()
-                  )
-                  .build()
-              )
-              .build()
-          )
-        }
-      )
-    }
-    ProjectSpec("project") {
-      applyEach(projects) { project ->
-        addSubproject(project)
-      }
-      addSubproject(appProject)
-      addSubprojects(jvmSub1)
-      addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
-    }
-      .writeIn(testProjectDir.toPath())
-
-    build("moduleCheckUnusedDependency").shouldSucceed()
-  }
-
-  @Test
-  fun `module with a custom view used in a layout subject module should not be unused`() {
-    val activity_main_xml = XmlFile(
-      "activity_main.xml",
-      """<?xml version="1.0" encoding="utf-8"?>
-        |<androidx.constraintlayout.widget.ConstraintLayout
-        |  xmlns:android="http://schemas.android.com/apk/res/android"
-        |  android:id="@+id/fragment_container"
-        |  android:layout_width="match_parent"
-        |  android:layout_height="match_parent"
-        |  >
-        |
-        |  <com.example.lib1.Lib1View
-        |    android:layout_width="match_parent"
-        |    android:layout_height="match_parent"
-        |    />
-        |
-        |</androidx.constraintlayout.widget.ConstraintLayout>
-                """.trimMargin()
-    )
+  fun `module with a declaration used in an android module with kotlin source directory should not be unused`() {
     val appProject = ProjectSpec("app") {
       addBuildSpec(
         ProjectBuildSpec {
@@ -365,8 +56,21 @@ class UnusedDependenciesTest : BaseTest() {
         }
       )
       addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main/res/layout")) {
-          addXmlFile(activity_main_xml)
+        ProjectSrcSpec(Path.of("src/main/kotlin")) {
+          addRawFile(
+            "MyModule.kt",
+            """
+            package com.example.app
+
+            import com.example.lib1.AppScope
+            import com.squareup.anvil.annotations.ContributesTo
+            import dagger.Module
+
+            @Module
+            @ContributesTo(AppScope::class)
+            object MyModule
+            """.trimIndent()
+          )
         }
       )
     }
@@ -380,48 +84,38 @@ class UnusedDependenciesTest : BaseTest() {
         ProjectSpec("lib-1") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
-              addFileSpec(
-                FileSpec.builder("com.example.lib1", "Lib1View")
-                  .addType(
-                    TypeSpec.classBuilder("Lib1View")
-                      .addAnnotation(
-                        AnnotationSpec
-                          .builder(ClassName.bestGuess("com.squareup.anvil.annotations.ContributesMultibinding"))
-                          .addMember("%T", ClassName.bestGuess("com.example.lib1.AppScope"))
-                          .build()
-                      )
-                      .build()
-                  )
-                  .build()
+              addRawFile(
+                "AppScope.kt",
+                """
+                package com.example.lib1
+
+                import javax.inject.Scope
+                import kotlin.reflect.KClass
+
+                abstract class AppScope private constructor()
+                """.trimIndent()
               )
             }
           )
           addBuildSpec(
             ProjectBuildSpec {
               addPlugin("kotlin(\"jvm\")")
-              addProjectDependency("api", jvmSub1)
+              // addProjectDependency("api", jvmSub1)
             }
           )
         }
       )
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
   }
 
   @Test
-  fun `module with a string resource used in subject module should not be unused`() {
+  fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
+
     val appFile = FileSpec.builder("com.example.app", "MyApp")
       .addType(
         TypeSpec.classBuilder("MyApp")
@@ -457,8 +151,8 @@ class UnusedDependenciesTest : BaseTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main")) {
-          addXmlFile(
-            XmlFile(
+          addRawFile(
+            RawFile(
               "AndroidManifest.xml",
               """<manifest package="com.example.app" />
                 """.trimMargin()
@@ -469,25 +163,18 @@ class UnusedDependenciesTest : BaseTest() {
     }
 
     val androidSub1 = ProjectSpec("lib-1") {
+
+      // without this, the standard manifest will be generated and this test won't be testing anything
+      disableAutoManifest = true
+
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addXmlFile(
-            XmlFile(
+          addRawFile(
+            RawFile(
               "strings.xml",
               """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
-                """.trimMargin()
-            )
-          )
-        }
-      )
-      addSrcSpec(
-        ProjectSrcSpec(Path.of("src/main")) {
-          addXmlFile(
-            XmlFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.lib1" />
                 """.trimMargin()
             )
           )
@@ -498,6 +185,47 @@ class UnusedDependenciesTest : BaseTest() {
           addPlugin("""id("com.android.library")""")
           addPlugin("kotlin(\"android\")")
           android = true
+          // This reproduces the behavior of Auto-Manifest:
+          // https://github.com/GradleUp/auto-manifest
+          // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
+          // registered, and the manifest location is never changed from the default.  When I open
+          // the generated project dir and execute the task from terminal, it works fine...
+          // This does the same thing, but uses a different default directory.
+          addBlock(
+            """
+          |val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
+          |
+          |android {
+          |  sourceSets {
+          |    findByName("main")?.manifest {
+          |      srcFile(manifestFile.path)
+          |    }
+          |  }
+          |}
+          |
+          |val makeFile by tasks.registering {
+          |
+          |  doFirst {
+          |
+          |    manifestFile.parentFile.mkdirs()
+          |    manifestFile.writeText(
+          |      ""${'"'}<manifest package="com.example.lib1" /> ""${'"'}.trimMargin()
+          |    )
+          |  }
+          |}
+          |
+          |afterEvaluate {
+          |
+          |  tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java)
+          |    .configureEach { dependsOn(makeFile) }
+          |  tasks.withType(com.android.build.gradle.tasks.MergeResources::class.java)
+          |    .configureEach { dependsOn(makeFile) }
+          |  tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java)
+          |    .configureEach { dependsOn(makeFile)}
+          |
+          |}
+          """.trimMargin()
+          )
         }
       )
     }
@@ -506,18 +234,13 @@ class UnusedDependenciesTest : BaseTest() {
       addSubproject(appProject)
       addSubproject(androidSub1)
       addSettingsSpec(projectSettings.build())
-      addBuildSpec(
-        projectBuild
-          .addBlock(
-            """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-          ).build()
-      )
+      addBuildSpec(projectBuild.build())
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckUnusedDependency").shouldSucceed()
+    shouldSucceed("moduleCheck")
+
+    // one last check to make sure the manifest wasn't generated, since that would invalidate the test
+    File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
   }
 }

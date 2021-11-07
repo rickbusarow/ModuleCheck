@@ -15,8 +15,9 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -31,7 +32,7 @@ data class Imports(
     get() = Key
 
   companion object Key : ProjectContext.Key<Imports> {
-    override operator fun invoke(project: Project2): Imports {
+    override operator fun invoke(project: McProject): Imports {
       val ss = project.sourceSets
 
       val map = ss
@@ -46,9 +47,7 @@ data class Imports(
             .flatMap { it.customViews }
             .toSet()
 
-          val combined = jvm + layout
-
-          combined
+          jvm + layout
         }
 
       return Imports(ConcurrentHashMap(map))

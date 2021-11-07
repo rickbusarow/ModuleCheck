@@ -15,57 +15,61 @@
 
 plugins {
   javaLibrary
-  id("com.gradle.plugin-publish") version "0.14.0"
+  id("com.gradle.plugin-publish") version "0.16.0"
   id("java-gradle-plugin")
   `kotlin-dsl`
   `maven-publish`
 }
 
 dependencies {
-  compileOnly(gradleApi())
 
+  api(libs.javax.inject)
+  api(libs.kotlin.compiler)
+
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-core"))
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:xml"))
+  api(project(path = ":modulecheck-reporting:console"))
+
+  implementation(libs.agp)
   implementation(libs.anvil)
-  implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
-  implementation(libs.kotlinReflect)
-  implementation(libs.kotlinPoet)
-  implementation(libs.semVer)
   implementation(libs.javaParser)
+  implementation(libs.kotlin.gradle.plug)
+  implementation(libs.kotlin.gradle.plugin.api)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.semVer)
 
-  implementation(projects.modulecheckApi)
-  implementation(projects.modulecheckCore)
-  implementation(projects.modulecheckPsi)
-
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.kotlinPoet)
 
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-specs"))
 }
 
 gradlePlugin {
   plugins {
     create("moduleCheck") {
-      id = PluginCoordinates.ID
-      group = PluginCoordinates.GROUP
-      implementationClass = PluginCoordinates.IMPLEMENTATION_CLASS
-      version = libs.versions.versionName.get()
+      id = rootProject.extra.properties["PLUGIN_ID"] as String
+      group = "com.rickbusarow.modulecheck"
+      implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
+      version = project.extra.properties["VERSION_NAME"] as String
     }
   }
 }
 
 // Configuration Block for the Plugin Marker artifact on Plugin Central
 pluginBundle {
-  website = PluginBundle.WEBSITE
-  vcsUrl = PluginBundle.VCS
-  description = PluginBundle.DESCRIPTION
-  tags = PluginBundle.TAGS
+  website = "https://github.com/RBusarow/ModuleCheck"
+  vcsUrl = "https://github.com/RBusarow/ModuleCheck"
+  description = "Fast dependency graph validation for gradle"
+  tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
 
   plugins {
     getByName("moduleCheck") {
-      displayName = PluginBundle.DISPLAY_NAME
+      displayName = "Fast dependency graph validation for gradle"
     }
   }
 }

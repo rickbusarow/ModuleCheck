@@ -15,44 +15,34 @@
 
 plugins {
   javaLibrary
-  `maven-publish`
+  id("com.vanniktech.maven.publish")
 }
 
 dependencies {
 
-  implementation(projects.modulecheckApi)
-  implementation(projects.modulecheckPsi)
+  api(libs.kotlin.compiler)
 
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:groovy-antlr"))
+  api(project(path = ":modulecheck-parsing:java"))
+  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:xml"))
+  api(project(path = ":modulecheck-reporting:checkstyle"))
+  api(project(path = ":modulecheck-reporting:console"))
+
+  implementation(libs.agp)
+  implementation(libs.groovy)
   implementation(libs.groovyXml)
-
-  compileOnly(gradleApi())
-
-  implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
-  implementation(libs.kotlinReflect)
-  implementation(libs.kotlinPoet)
   implementation(libs.semVer)
-  implementation(libs.javaParser)
 
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.kotlin.reflect)
 
-  testImplementation(projects.modulecheckInternalTesting)
-  testImplementation(projects.modulecheckSpecs)
-}
+  testImplementation(testFixtures(project(path = ":modulecheck-api")))
 
-publishing {
-  publications {
-    create<MavenPublication>("maven") {
-
-      groupId = "com.rickbusarow.modulecheck"
-      artifactId = "modulecheck-core"
-
-      version = libs.versions.versionName.get()
-
-      from(components["java"])
-    }
-  }
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-specs"))
 }

@@ -19,26 +19,76 @@ import modulecheck.api.KaptMatcher
 
 interface ModuleCheckSettings {
 
-  var autoCorrect: Boolean
-  var alwaysIgnore: Set<String>
-  var ignoreAll: Set<String>
+  /**
+   * If true, ModuleCheck will delete declarations of unused dependencies entirely.
+   *
+   * If false, ModuleCheck will comment out declarations of unused dependencies.
+   *
+   * Default value is false.
+   */
+  var deleteUnused: Boolean
+
+  /**
+   * Set of modules which are allowed to be unused.
+   *
+   * For instance, given:
+   * ```
+   * ignoreUnusedFinding = setOf(":core")
+   * ```
+   * If a module declares `:core` as a dependency but does not use it, no finding will be reported.
+   */
+  var ignoreUnusedFinding: Set<String>
+
+  /**
+   * Set of modules which will not be excluded from error reporting.
+   * The most common use-case would be if the module is the root of a dependency graph,
+   * like an Android application module, and it needs everything in its classpath
+   * for dependency injection purposes.
+   */
+  var doNotCheck: Set<String>
+
+  /**
+   * List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck.
+   */
   var additionalKaptMatchers: List<KaptMatcher>
 
   val checks: ChecksSettings
-  fun checks(block: ChecksSettings.() -> Unit)
 
   val sort: SortSettings
-  fun sort(block: SortSettings.() -> Unit)
+
+  /**
+   * Configures reporting options
+   */
+  val reports: ReportsSettings
 }
 
 interface SortSettings {
   var pluginComparators: List<String>
   var dependencyComparators: List<String>
+
+  companion object {
+
+    val PLUGIN_COMPARATORS_DEFAULT = listOf(
+      """id\("com\.android.*"\)""",
+      """id\("android-.*"\)""",
+      """id\("java-library"\)""",
+      """kotlin\("jvm"\)""",
+      """android.*""",
+      """javaLibrary.*""",
+      """kotlin.*""",
+      """id.*"""
+    )
+    val DEPENDENCY_COMPARATORS_DEFAULT = listOf(
+      """.*""",
+      """kapt.*"""
+    )
+  }
 }
 
 interface ChecksSettings {
   var redundantDependency: Boolean
   var unusedDependency: Boolean
+  var overShotDependency: Boolean
   var mustBeApi: Boolean
   var inheritedDependency: Boolean
   var sortDependencies: Boolean
@@ -47,4 +97,45 @@ interface ChecksSettings {
   var anvilFactoryGeneration: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
+
+  companion object {
+
+    const val REDUNDANT_DEPENDENCY_DEFAULT = false
+    const val UNUSED_DEPENDENCY_DEFAULT = true
+    const val OVERSHOT_DEPENDENCY_DEFAULT = true
+    const val MUST_BE_API_DEFAULT = true
+    const val INHERITED_DEPENDENCY_DEFAULT = true
+    const val SORT_DEPENDENCIES_DEFAULT = false
+    const val SORT_PLUGINS_DEFAULT = false
+    const val UNUSED_KAPT_DEFAULT = true
+    const val ANVIL_FACTORY_GENERATION_DEFAULT = true
+    const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
+    const val DISABLE_VIEW_BINDING_DEFAULT = false
+  }
+}
+
+interface ReportsSettings {
+
+  /**
+   * checkstyle-formatted xml report
+   */
+  val checkstyle: ReportSettings
+
+  /**
+   * plain-text report file matching the console output
+   */
+  val text: ReportSettings
+
+  companion object {
+    const val CHECKSTYLE_ENABLED_DEFAULT = false
+    const val CHECKSTYLE_PATH_DEFAULT = "build/reports/modulecheck/report.xml"
+
+    const val TEXT_ENABLED_DEFAULT = false
+    const val TEXT_PATH_DEFAULT = "build/reports/modulecheck/report.txt"
+  }
+}
+
+interface ReportSettings {
+  var enabled: Boolean
+  var outputPath: String
 }

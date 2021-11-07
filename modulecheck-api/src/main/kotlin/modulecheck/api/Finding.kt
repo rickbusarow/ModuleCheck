@@ -15,69 +15,61 @@
 
 package modulecheck.api
 
-import modulecheck.psi.PsiElementWithSurroundingText
+import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
+
+interface Problem : Finding {
+
+  fun shouldSkip(): Boolean = statementOrNull?.suppressed
+    ?.contains(findingName)
+    ?: false
+}
 
 interface Finding {
 
-  val problemName: String
+  val findingName: String
+
   val dependentPath: String
+  val message: String
   val buildFile: File
 
-  fun logString(): String {
-    return "${buildFile.path}: ${positionString()} $problemName"
-  }
+  val statementOrNull: ModuleDependencyDeclaration? get() = null
+  val statementTextOrNull: String? get() = null
+  val positionOrNull: Position?
 
-  fun elementOrNull(): PsiElementWithSurroundingText? = null
-  fun positionOrNull(): Position?
-  fun positionString() = positionOrNull()?.logString() ?: ""
+  fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
+      dependentPath = dependentPath,
+      problemName = findingName,
+      sourceOrNull = null,
+      dependencyPath = "",
+      positionOrNull = positionOrNull,
+      buildFile = buildFile,
+      message = message,
+      fixed = fixed
+    )
+  }
 
   data class Position(
     val row: Int,
     val column: Int
-  ) {
+  ) : Comparable<Position> {
     fun logString(): String = "($row, $column): "
-  }
-}
-
-interface Fixable : Finding {
-
-  val dependencyIdentifier: String
-
-  override fun logString(): String {
-    return "${buildFile.path}: ${positionString()} $problemName: $dependencyIdentifier"
+    override fun compareTo(other: Position): Int {
+      return row.compareTo(other.row)
+    }
   }
 
-  fun fix(): Boolean = synchronized(buildFile) {
-    val text = buildFile.readText()
-
-    return elementOrNull()
-      ?.psiElement
-      ?.let { element ->
-
-        val newText = element.text
-          .lines()
-          .mapIndexed { index: Int, str: String ->
-            if (index == 0) {
-              INLINE_COMMENT + str + fixLabel()
-            } else {
-              INLINE_COMMENT + str
-            }
-          }
-          .joinToString("\n")
-
-        buildFile
-          .writeText(text.replaceFirst(element.text, newText))
-
-        true
-      } ?: false
-  }
-
-  fun fixLabel() = "  $FIX_LABEL [$problemName]"
-
-  companion object {
-
-    const val FIX_LABEL = "// ModuleCheck finding"
-    const val INLINE_COMMENT = "// "
+  data class FindingResult(
+    val dependentPath: String,
+    val problemName: String,
+    val sourceOrNull: String?,
+    val dependencyPath: String,
+    val positionOrNull: Position?,
+    val buildFile: File,
+    val message: String,
+    val fixed: Boolean
+  ) {
+    val filePathString: String = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
   }
 }

@@ -16,35 +16,43 @@
 package modulecheck.gradle.task
 
 import modulecheck.api.Finding
-import modulecheck.api.Fixable
-import modulecheck.api.Project2
-import modulecheck.api.ProjectsAware
+import modulecheck.api.FindingFactory
+import modulecheck.api.RealFindingResultFactory
+import modulecheck.core.ModuleCheckRunner
+import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectsAware
+import modulecheck.reporting.console.ReportFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.system.measureTimeMillis
+import javax.inject.Inject
 
-abstract class ModuleCheckTask :
-  DefaultTask(),
+abstract class ModuleCheckTask<T : Finding> @Inject constructor(
+  private val findingFactory: FindingFactory<T>,
+  private val autoCorrect: Boolean
+) : DefaultTask(),
   ProjectsAware {
 
   init {
     group = "moduleCheck"
+    description = if (findingFactory is SingleRuleFindingFactory<*>) {
+      findingFactory.rule.description
+    } else {
+      "runs all enabled ModuleCheck rules"
+    }
   }
 
   @get:Input
   val settings: ModuleCheckExtension = project.extensions.getByType()
 
   @get:Input
-  val autoCorrect: Boolean = settings.autoCorrect
-
-  @get:Input
-  final override val projectCache = ConcurrentHashMap<String, Project2>()
+  final override val projectCache = ConcurrentHashMap<String, McProject>()
 
   @get:Input
   val projectProvider = GradleProjectProvider(project.rootProject, projectCache)
@@ -53,70 +61,26 @@ abstract class ModuleCheckTask :
   val logger = GradleLogger(project)
 
   @TaskAction
-  fun evaluate() {
-    val results = measured {
-      project
-        .allprojects
-        .filter { it.buildFile.exists() }
-        .filterNot { it.path in settings.ignoreAll }
-        .map { projectProvider.get(it.path) }
-        .getFindings()
-        .distinct()
-    }
+  fun run() {
 
-    val numIssues = results.finish()
+    val runner = ModuleCheckRunner(
+      autoCorrect = autoCorrect,
+      settings = settings,
+      findingFactory = findingFactory,
+      logger = logger,
+      findingResultFactory = RealFindingResultFactory(),
+      reportFactory = ReportFactory()
+    )
 
-    if (numIssues > 0) {
-      throw GradleException("ModuleCheck found $numIssues issues which were not auto-corrected.")
-    }
+    val projects = project
+      .allprojects
+      .filter { it.buildFile.exists() }
+      .filterNot { it.path in settings.doNotCheck }
+      .map { projectProvider.get(it.path) }
+
+    val result = runner.run(projects)
+
+    result.exceptionOrNull()
+      ?.let { throw GradleException(it.message!!, it) }
   }
-
-  abstract fun List<Project2>.getFindings(): List<Finding>
-
-  private fun TimedResults<List<Finding>>.finish(): Int {
-    val grouped = data.groupBy { it.dependentPath }
-
-    @Suppress("MagicNumber")
-    val secondsDouble = timeMillis / 1000.0
-
-    if (data.isNotEmpty()) {
-      logger.printFailureHeader("ModuleCheck found ${data.size} issues in $secondsDouble seconds\n")
-    }
-
-    val unFixed = grouped
-      .entries
-      .sortedBy { it.key }
-      .flatMap { (path, list) ->
-
-        logger.printHeader("\t$path")
-
-        val (fixed, toFix) = list.partition { finding ->
-          autoCorrect && (finding as? Fixable)?.fix() ?: false
-        }
-
-        fixed.forEach { finding ->
-          logger.printWarning("\t\t${finding.logString()}")
-        }
-
-        toFix.forEach { finding ->
-          logger.printFailure("\t\t${finding.logString()}")
-        }
-
-        toFix
-      }
-
-    return unFixed.size
-  }
-
-  inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
-    var r: R
-
-    val time = measureTimeMillis {
-      r = action()
-    }
-
-    return TimedResults(time, r)
-  }
-
-  data class TimedResults<R>(val timeMillis: Long, val data: R)
 }

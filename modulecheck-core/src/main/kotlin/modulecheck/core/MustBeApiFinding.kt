@@ -15,37 +15,54 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
-import modulecheck.core.internal.positionIn
+import modulecheck.core.internal.statementOrNullIn
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
 
 data class MustBeApiFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
 ) : DependencyFinding("mustBeApi") {
 
-  override val dependencyIdentifier = dependencyProject.path + " from: ${source?.project?.path}"
+  override val message: String
+    get() = "The dependency should be declared via an `api` configuration, since it provides " +
+      "a declaration which is referenced in this module's public API."
 
-  override fun positionOrNull(): Position? {
-    return dependencyProject.positionIn(buildFile, configurationName)
-      ?: source?.project?.positionIn(buildFile, configurationName)
+  override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
+
+  override val statementOrNull: ModuleDependencyDeclaration? by lazy {
+    super.statementOrNull
+      ?: source?.project
+        ?.statementOrNullIn(buildFile, configurationName)
+  }
+  override val statementTextOrNull: String? by lazy {
+    super.statementTextOrNull
+      ?: statementOrNull?.statementWithSurroundingText
+  }
+
+  override fun fromStringOrEmpty(): String {
+    return if (dependencyProject.path == source?.project?.path) {
+      ""
+    } else {
+      "${source?.project?.path}"
+    }
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val element = elementOrNull() ?: return false
 
-    val oldText = element.toString()
-    val newText = oldText.replace(configurationName.value, "api")
+    val statement = statementTextOrNull ?: return false
+
+    val newText = statement.replace(configurationName.value, "api")
 
     val buildFileText = buildFile.readText()
 
-    buildFile.writeText(buildFileText.replace(oldText, newText))
+    buildFile.writeText(buildFileText.replace(statement, newText))
 
     return true
   }

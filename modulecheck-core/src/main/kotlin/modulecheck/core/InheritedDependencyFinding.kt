@@ -15,58 +15,70 @@
 
 package modulecheck.core
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
 import modulecheck.api.Finding.Position
-import modulecheck.api.Project2
 import modulecheck.core.internal.positionIn
-import modulecheck.psi.DslBlockVisitor
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.McProject
 import java.io.File
 
 data class InheritedDependencyFinding(
   override val dependentPath: String,
   override val buildFile: File,
-  override val dependencyProject: Project2,
+  override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val from: ConfiguredProjectDependency?
+  val source: ConfiguredProjectDependency?
 ) : DependencyFinding("inheritedDependency") {
 
-  override val dependencyIdentifier = dependencyPath + " from: ${from?.project?.path}"
+  override val message: String
+    get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
-  override fun positionOrNull(): Position? {
-    return from?.project?.positionIn(buildFile, configurationName)
+  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
+
+  override val positionOrNull: Position? by lazy {
+    source?.project?.positionIn(buildFile, configurationName)
+  }
+
+  override fun fromStringOrEmpty(): String {
+    return if (dependencyProject.path == source?.project?.path) {
+      ""
+    } else {
+      "${source?.project?.path}"
+    }
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val visitor = DslBlockVisitor("dependencies")
+    val fromPath = source?.project?.path ?: return false
+    val fromConfigName = source.configurationName
 
-    val fromPath = from?.project?.path ?: return false
-    val fromConfigName = from.configurationName.value
+    val blocks = DependencyBlockParser.parse(buildFile)
 
-    val kotlinBuildFile = kotlinBuildFileOrNull() ?: return false
-
-    val result = visitor.parse(kotlinBuildFile) ?: return false
-
-    val match = result.elements.firstOrNull {
-      val text = it.psiElement.text
-
-      text.contains("\"$fromPath\"") && text.contains(fromConfigName)
+    val (block, match) = blocks.firstNotNullOfOrNull { block ->
+      block to block.getOrEmpty(fromPath, fromConfigName)
     }
-      ?.toString() ?: return false
+      ?.let { (block, declarations) ->
+
+        val matchStatement = declarations.firstOrNull()
+          ?.statementWithSurroundingText
+          ?: return false
+
+        block to matchStatement
+      }
+      ?: return false
 
     val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
-      .replaceFirst(fromConfigName, configurationName.value)
+      .replaceFirst(fromConfigName.value, configurationName.value)
 
-    // This won't match without .trimStart()
-    val newDependencies = result.blockText.replaceFirst(
-      oldValue = match.trimStart(),
-      newValue = (newDeclaration + "\n" + match).trimStart()
+    val newDependencies = block.contentString.replaceFirst(
+      oldValue = match,
+      newValue = (newDeclaration + "\n" + match)
     )
 
     val text = buildFile.readText()
 
-    val newText = text.replaceFirst(result.blockText, newDependencies)
+    val newText = text.replaceFirst(block.contentString, newDependencies)
 
     buildFile.writeText(newText)
 

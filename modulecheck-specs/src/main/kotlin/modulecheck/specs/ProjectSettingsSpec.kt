@@ -20,7 +20,6 @@ import java.nio.file.Path
 public data class ProjectSettingsSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
   public var agpVersion: String = DEFAULT_AGP_VERSION,
-  public var useTypeSafeProjectAccessors: Boolean = DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS,
   public val includes: MutableList<String>
 ) {
 
@@ -36,9 +35,8 @@ public data class ProjectSettingsSpec(
 
   public fun writeIn(path: Path) {
     path.toFile().mkdirs()
-    path.newFile("settings.gradle.kts").writeText(
-      pluginManagement() + featurePreviews() + includes()
-    )
+    path.newFile("settings.gradle.kts")
+      .writeText(pluginManagement() + typeSafe() + includes())
   }
 
   private fun pluginManagement() =
@@ -62,13 +60,11 @@ public data class ProjectSettingsSpec(
        |
        |""".trimMargin()
 
-  private fun featurePreviews(): String {
-    return buildString {
-      if (useTypeSafeProjectAccessors) {
-        appendLine("enableFeaturePreview(\"TYPESAFE_PROJECT_ACCESSORS\")\n")
-      }
-    }
-  }
+  private fun typeSafe() = """
+    |enableFeaturePreview("VERSION_CATALOGS")
+    |enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+    |
+  """.trimMargin()
 
   private fun includes() = includes.joinToString(",\n", "include(\n", "\n)") { "  \":$it\"" }
 
@@ -85,7 +81,6 @@ public data class ProjectSettingsSpec(
 public class ProjectSettingsSpecBuilder(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
   public var agpVersion: String = DEFAULT_AGP_VERSION,
-  public var useTypeSafeProjectAccessors: Boolean = DEFAULT_USE_TYPE_SAFE_PROJECT_ACCESSORS,
   public val includes: MutableList<String> = mutableListOf(),
   init: ProjectSettingsSpecBuilder.() -> Unit = {}
 ) : Builder<ProjectSettingsSpec> {
@@ -101,7 +96,6 @@ public class ProjectSettingsSpecBuilder(
   override fun build(): ProjectSettingsSpec = ProjectSettingsSpec(
     kotlinVersion = kotlinVersion,
     agpVersion = agpVersion,
-    useTypeSafeProjectAccessors = useTypeSafeProjectAccessors,
     includes = includes
   )
 }

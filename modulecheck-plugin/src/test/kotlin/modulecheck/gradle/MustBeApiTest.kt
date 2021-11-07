@@ -17,14 +17,13 @@ package modulecheck.gradle
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import io.kotest.matchers.string.shouldContain
 import modulecheck.specs.*
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class MustBeApiTest : BaseTest() {
+class MustBeApiTest : BasePluginTest() {
 
   val projects = List(10) {
     ProjectSpec.builder("lib-$it")
@@ -85,22 +84,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -145,22 +133,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -205,22 +182,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -268,22 +234,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -329,22 +284,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -408,22 +352,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -469,22 +402,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -548,22 +470,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -614,22 +525,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -713,22 +613,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -780,22 +669,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -883,22 +761,11 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = true
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      build(
-        "moduleCheckMustBeApi",
-        "moduleCheckSortDependencies"
-      ).shouldSucceed()
+      shouldSucceed("moduleCheckAuto")
 
       File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")
@@ -946,21 +813,52 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
+    }
+
+    @Test
+    fun `single implementation property which is suppressed should succeed`() {
+      val appProject = ProjectSpec("app") {
+        addBuildSpec(
+          ProjectBuildSpec {
+            addPlugin("""kotlin("jvm")""")
+            addProjectDependency("implementation", jvmSub4, "@Suppress(\"mustBeApi\")")
+          }
+        )
+        addSrcSpec(
+          ProjectSrcSpec(Path.of("src/main/java")) {
+            addFileSpec(
+              FileSpec.builder("com.example.app", "MyApp")
+                .addProperty(PropertySpec.builder("lib1Class", lib1ClassName).build())
+                .addProperty(PropertySpec.builder("lib2Class", lib2ClassName).build())
+                .addProperty(PropertySpec.builder("lib3Class", lib3ClassName).build())
+                .addProperty(PropertySpec.builder("lib4Class", lib4ClassName).build())
+                .build()
+            )
+          }
+        )
       }
+
+      ProjectSpec("project") {
+        applyEach(projects) { project ->
+          addSubproject(project)
+        }
+        addSubproject(appProject)
+        addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
+        addSettingsSpec(projectSettings.build())
+        addBuildSpec(projectBuild.build())
+      }
+        .writeIn(testProjectDir.toPath())
+
+      shouldSucceed("moduleCheck")
     }
 
     @Test
@@ -996,24 +894,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1046,21 +938,15 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1099,24 +985,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1150,21 +1030,15 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1219,24 +1093,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1270,21 +1138,15 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1339,24 +1201,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1395,21 +1251,15 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1484,24 +1334,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
 
     @Test
@@ -1541,21 +1385,15 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (6, 3):
+
+ModuleCheck found 1 issue"""
     }
 
     @Test
@@ -1634,24 +1472,18 @@ class MustBeApiTest : BaseTest() {
         addSubproject(appProject)
         addSubprojects(jvmSub1, jvmSub2, jvmSub3, jvmSub4)
         addSettingsSpec(projectSettings.build())
-        addBuildSpec(
-          projectBuild
-            .addBlock(
-              """moduleCheck {
-            |  autoCorrect = false
-            |}
-          """.trimMargin()
-            ).build()
-        )
+        addBuildSpec(projectBuild.build())
       }
         .writeIn(testProjectDir.toPath())
 
-      shouldFailWithMessage("moduleCheckMustBeApi") {
-        it shouldContain "/app/build.gradle.kts: (6, 3):  mustBeApi: :lib-1 from: :lib-1"
-        it shouldContain "/app/build.gradle.kts: (7, 3):  mustBeApi: :lib-2 from: :lib-2"
-        it shouldContain "/app/build.gradle.kts: (8, 3):  mustBeApi: :lib-3 from: :lib-3"
-        it shouldContain "/app/build.gradle.kts: (9, 3):  mustBeApi: :lib-4 from: :lib-4"
-      }
+      shouldFail("moduleCheck") withTrimmedMessage """:app
+           dependency    name         source    build file
+        X  :lib-1        mustBeApi              /app/build.gradle.kts: (6, 3):
+        X  :lib-2        mustBeApi              /app/build.gradle.kts: (7, 3):
+        X  :lib-3        mustBeApi              /app/build.gradle.kts: (8, 3):
+        X  :lib-4        mustBeApi              /app/build.gradle.kts: (9, 3):
+
+ModuleCheck found 4 issues"""
     }
   }
 }

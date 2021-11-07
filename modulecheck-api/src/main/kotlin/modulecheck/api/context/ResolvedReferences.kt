@@ -15,37 +15,36 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfigurationName
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 
 data class ResolvedReferences(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>>
-) : ConcurrentMap<ConfigurationName, Set<ConfiguredProjectDependency>> by delegate,
+  internal val delegate: Map<SourceSetName, Set<ConfiguredProjectDependency>>
+) : Map<SourceSetName, Set<ConfiguredProjectDependency>> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResolvedReferences>
     get() = Key
 
   companion object Key : ProjectContext.Key<ResolvedReferences> {
-    override operator fun invoke(project: Project2): ResolvedReferences {
-      val map = project
+    override operator fun invoke(project: McProject): ResolvedReferences {
+      val map = mutableMapOf<SourceSetName, MutableSet<ConfiguredProjectDependency>>()
+
+      project
         .configurations
         .mapValues { (configurationName, _) ->
 
           val projectDependencies = project
-            .projectDependencies
-            .value[configurationName]
+            .projectDependencies[configurationName]
             .orEmpty()
 
           project
             .jvmFilesForSourceSetName(configurationName.toSourceSetName())
-            .flatMap { jvmFile ->
+            .forEach { jvmFile ->
 
-              jvmFile
+              val t = jvmFile
                 .maybeExtraReferences
                 .mapNotNull { possible ->
                   projectDependencies
@@ -53,19 +52,22 @@ data class ResolvedReferences(
                       it.project
                         .declarations[SourceSetName.MAIN]
                         .orEmpty()
-                        .any { it == possible }
+                        .any { it.fqName == possible }
                     }
                 }
+
+              map
+                .getOrPut(configurationName.toSourceSetName()) { mutableSetOf() }
+                .addAll(t)
             }
-            .toSet()
         }
 
-      return ResolvedReferences(ConcurrentHashMap(map))
+      return ResolvedReferences(map)
     }
   }
 }
 
 val ProjectContext.resolvedReferences: ResolvedReferences get() = get(ResolvedReferences)
-fun ProjectContext.resolvedReferencesForConfigurationName(
-  configurationName: ConfigurationName
-): Set<ConfiguredProjectDependency> = resolvedReferences[configurationName].orEmpty()
+fun ProjectContext.resolvedReferencesForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<ConfiguredProjectDependency> = resolvedReferences[sourceSetName].orEmpty()

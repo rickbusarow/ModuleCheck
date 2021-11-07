@@ -15,17 +15,15 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.shouldBe
 import modulecheck.specs.ProjectBuildSpec
 import modulecheck.specs.ProjectSettingsSpec
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.KtsFile
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
 
-class SortPluginsTest : BaseTest() {
+class SortPluginsTest : BasePluginTest() {
 
   @Test
   fun `sorting`() {
@@ -53,8 +51,8 @@ class SortPluginsTest : BaseTest() {
           )
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/kotlin")) {
-              addKtsFile(KtsFile("androidLibrary.gradle.kts", ""))
-              addKtsFile(KtsFile("javaLibrary.gradle.kts", ""))
+              addRawFile("androidLibrary.gradle.kts", "")
+              addRawFile("javaLibrary.gradle.kts", "")
             }
           )
         }
@@ -73,7 +71,65 @@ class SortPluginsTest : BaseTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    build("moduleCheckSortPlugins").shouldSucceed()
+    shouldSucceed("moduleCheckSortPluginsAuto")
+
+    File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
+        |  kotlin("jvm")
+        |  javaLibrary
+        |  id("io.gitlab.arturbosch.detekt") version "1.15.0"
+        |}
+        |
+        |""".trimMargin()
+  }
+
+  @Test
+  fun `sorting should be idempotent`() {
+    ProjectSpec("project") {
+      addSettingsSpec(
+        ProjectSettingsSpec {
+          addInclude("app")
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("id(\"com.rickbusarow.module-check\")")
+          buildScript()
+        }
+      )
+      addSubproject(
+        ProjectSpec("buildSrc") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("`kotlin-dsl`")
+              addRepository("mavenCentral()")
+              addRepository("google()")
+              addRepository("jcenter()")
+            }
+          )
+          addSrcSpec(
+            ProjectSrcSpec(Path.of("src/main/kotlin")) {
+              addRawFile("androidLibrary.gradle.kts", "")
+              addRawFile("javaLibrary.gradle.kts", "")
+            }
+          )
+        }
+      )
+      addSubproject(
+        ProjectSpec("app") {
+          addBuildSpec(
+            ProjectBuildSpec {
+              addPlugin("javaLibrary")
+              addPlugin("kotlin(\"jvm\")")
+              addPlugin("id(\"io.gitlab.arturbosch.detekt\") version \"1.15.0\"")
+            }
+          )
+        }
+      )
+    }
+      .writeIn(testProjectDir.toPath())
+
+    shouldSucceed("moduleCheckSortPluginsAuto")
+    shouldSucceed("moduleCheckSortPluginsAuto")
 
     File(testProjectDir, "/app/build.gradle.kts").readText() shouldBe """plugins {
         |  kotlin("jvm")

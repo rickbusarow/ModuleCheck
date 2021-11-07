@@ -1,0 +1,75 @@
+{
+  "version-0.10.0/Basics": [
+    {
+      "type": "doc",
+      "id": "version-0.10.0/quickstart"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.10.0/configuration"
+    }
+  ],
+  "version-0.10.0/Rules": [
+    {
+      "type": "doc",
+      "id": "version-0.10.0/rules/unused"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.10.0/rules/redundant"
+    },
+    {
+      "type": "doc",
+      "id": "version-0.10.0/rules/overshot"
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Kapt",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/kapt/unused_kapt_processor"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/kapt/unused_kapt_plugin"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/kapt/custom_kapt_matchers"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Sorting",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/sorting/sort_dependencies"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/sorting/sort_plugins"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "type": "category",
+      "label": "Android",
+      "items": [
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/android/disable_resources"
+        },
+        {
+          "type": "doc",
+          "id": "version-0.10.0/rules/android/disable_viewbinding"
+        }
+      ]
+    }
+  ]
+}

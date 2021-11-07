@@ -15,14 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.ConfiguredProjectDependency
-import modulecheck.api.Project2
-import modulecheck.api.SourceSetName
-import modulecheck.api.anvil.AnvilScopeName
-import modulecheck.api.anvil.AnvilScopeNameEntry
-import modulecheck.api.anvil.RawAnvilAnnotatedType
-import modulecheck.api.files.KotlinFile
-import modulecheck.psi.internal.getByNameOrIndex
+import modulecheck.parsing.*
+import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.psi.asDeclarationName
+import modulecheck.parsing.psi.internal.getByNameOrIndex
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -30,7 +26,7 @@ import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 data class AnvilGraph(
-  val project: Project2,
+  val project: McProject,
   val scopeContributions: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>,
   val scopeMerges: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
 ) : ProjectContext.Element {
@@ -46,7 +42,7 @@ data class AnvilGraph(
 
   companion object Key : ProjectContext.Key<AnvilGraph> {
 
-    override operator fun invoke(project: Project2): AnvilGraph {
+    override operator fun invoke(project: McProject): AnvilGraph {
       if (project.anvilGradlePlugin == null) return AnvilGraph(
         project = project,
         scopeContributions = emptyMap(),
@@ -90,7 +86,7 @@ data class AnvilGraph(
       "com.squareup.anvil.annotations.MergeSubcomponent"
     )
 
-    private fun Project2.declarationsForScopeName(
+    private fun McProject.declarationsForScopeName(
       allAnnotations: Set<String>,
       mergeAnnotations: Set<String>
     ): Pair<Map<AnvilScopeName, Set<DeclarationName>>, Map<AnvilScopeName, Set<DeclarationName>>> {
@@ -208,12 +204,12 @@ data class AnvilGraph(
         .trim()
 
       return RawAnvilAnnotatedType(
-        declarationName = typeFqName.asString(),
+        declarationName = typeFqName.asDeclarationName(),
         anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
       )
     }
 
-    private fun Project2.getAnvilScopeName(
+    private fun McProject.getAnvilScopeName(
       scopeNameEntry: AnvilScopeNameEntry,
       sourceSetName: SourceSetName,
       kotlinFile: KotlinFile
@@ -224,7 +220,9 @@ data class AnvilGraph(
       // then use that fully qualified import
       val rawScopeName = kotlinFile.imports.firstOrNull { import ->
         import.endsWith(scopeNameEntry.name)
-      } // if the scope is wildcard-imported
+      }
+        ?.asDeclarationName()
+        // if the scope is wildcard-imported
         ?: dependenciesBySourceSetName[sourceSetName]
           .orEmpty()
           .asSequence()
@@ -234,26 +232,28 @@ data class AnvilGraph(
               .orEmpty()
           }
           .filter { dn ->
-            dn in kotlinFile.maybeExtraReferences
+            dn.fqName in kotlinFile.maybeExtraReferences
           }
           .firstOrNull { dn ->
-            dn.endsWith(scopeNameEntry.name)
+            dn.fqName.endsWith(scopeNameEntry.name)
           } // Scope must be defined in this same module
         ?: kotlinFile
           .maybeExtraReferences
           .firstOrNull { maybeExtra ->
             maybeExtra.startsWith(kotlinFile.packageFqName) &&
               maybeExtra.endsWith(scopeNameEntry.name)
-          } // Scope must be defined in this same package
-        ?: kotlinFile.packageFqName + "." + scopeNameEntry.name
+          }
+          ?.asDeclarationName()
+        // Scope must be defined in this same package
+        ?: "${kotlinFile.packageFqName}.${scopeNameEntry.name}".asDeclarationName()
 
       return AnvilScopeName(rawScopeName)
     }
 
-    private fun Project2.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
+    private fun McProject.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
       return configurations
         .map { (configurationName, _) ->
-          configurationName.toSourceSetName() to projectDependencies.value[configurationName].orEmpty()
+          configurationName.toSourceSetName() to projectDependencies[configurationName].orEmpty()
         }
         .groupBy { it.first }
         .map { it.key to it.value.flatMap { it.second } }

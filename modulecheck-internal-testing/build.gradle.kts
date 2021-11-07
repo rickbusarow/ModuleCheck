@@ -19,24 +19,16 @@ plugins {
 
 dependencies {
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.7")
+  api(libs.bundles.hermit)
+  api(libs.bundles.jUnit)
+  api(libs.bundles.kotest)
 
   compileOnly(gradleApi())
 
-  implementation(projects.modulecheckApi)
-  implementation(projects.modulecheckCore)
-  implementation(projects.modulecheckPlugin)
-  implementation(projects.modulecheckSpecs)
+  compileOnly(libs.groovyXml)
 
-  implementation(libs.androidGradlePlugin)
-  implementation(libs.kotlinCompiler)
-  implementation(libs.kotlinGradlePlugin)
-  implementation(libs.kotlinReflect)
+  implementation(libs.agp)
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)
-  implementation(libs.semVer)
-  implementation(libs.javaParser)
-
-  api(libs.bundles.jUnit)
-  api(libs.bundles.kotest)
-  api(libs.bundles.hermit)
 }
