@@ -56,6 +56,6 @@ class RealMcProject(
   }
 
   override fun toString(): String {
-    return "Project2Impl(path='$path')"
+    return "McProject('$path')"
   }
 }

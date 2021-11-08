@@ -16,13 +16,15 @@
 package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
-import modulecheck.api.context.publicDependencies
+import modulecheck.api.context.classpathDependencies
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
-import modulecheck.core.context.mustBeApi
+import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
-import modulecheck.parsing.*
-import kotlin.LazyThreadSafetyMode.NONE
+import modulecheck.parsing.McProject
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.all
+import modulecheck.parsing.requireSourceOf
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
@@ -31,64 +33,54 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     "but are not actually directly declared as dependencies in the current module"
 
   override fun check(project: McProject): List<InheritedDependencyFinding> {
-    val inherited = project.publicDependencies
-    val used = inherited
+    val used = project.classpathDependencies.all()
       .filter { project.uses(it) }
 
-    val mainDependenciesPaths = project
-      .projectDependencies
-      .main()
-      .map { it.project.path }
-      .toSet()
+    val dependencyPathCache = mutableMapOf<SourceSetName, Set<String>>()
+    fun pathsForSourceSet(sourceSetName: SourceSetName): Set<String> {
+      return dependencyPathCache.getOrPut(sourceSetName) {
+        project.projectDependencies[sourceSetName].map { it.project.path }.toSet()
+      }
+    }
 
-    val grouped = used
-      .asSequence()
-      .filterNot { it.project.path in mainDependenciesPaths }
+    return used.asSequence()
+      .filterNot { it.project.path in pathsForSourceSet(it.configurationName.toSourceSetName()) }
       .distinct()
-      .map { overshot ->
+      .map { inherited ->
 
-        val source = ConfigurationName
-          .main()
-          .asSequence()
-          .mapNotNull { configName ->
-            project.sourceOf(
-              ConfiguredProjectDependency(
-                configurationName = configName,
-                project = overshot.project,
-                isTestFixture = overshot.isTestFixture
-              )
-            )
-          }
-          .firstOrNull()
+        val source = project
+          .requireSourceOf(
+            dependencyProject = inherited.project,
+            sourceSetName = inherited.configurationName.toSourceSetName(),
+            isTestFixture = inherited.isTestFixture,
+            apiOnly = false
+          )
 
-        val sourceConfig by lazy(NONE) {
-          project
-            .projectDependencies
-            .main()
-            .firstOrNull { it.project == source?.project }
-            ?.configurationName ?: "api".asConfigurationName()
+        val mustBeApi = inherited.project.mustBeApiIn(project)
+
+        val newConfig = if (mustBeApi) {
+          source.configurationName.apiVariant()
+        } else {
+          source.configurationName
         }
-
-        val mustBeApi = project
-          .mustBeApi
-          .any { it.configuredProjectDependency.project == overshot.project }
-
-        val newConfig = if (mustBeApi) ConfigurationName.api else sourceConfig
 
         InheritedDependencyFinding(
           dependentPath = project.path,
+          dependentProject = project,
           buildFile = project.buildFile,
-          dependencyProject = overshot.project,
-          dependencyPath = overshot.project.path,
+          dependencyProject = inherited.project,
+          dependencyPath = inherited.project.path,
           configurationName = newConfig,
           source = source
         )
       }
-      .filterNot { it.dependencyPath in mainDependenciesPaths }
       .groupBy { it.configurationName }
-      .mapValues { it.value.toMutableSet() }
-
-    return grouped.values.flatten()
+      .mapValues { (_, findings) ->
+        findings.distinctBy { it.source.isTestFixture to it.dependencyPath }
+          .sorted()
+      }
+      .values
+      .flatten()
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

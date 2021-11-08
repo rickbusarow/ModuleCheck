@@ -82,6 +82,22 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       .toSourceSetName()
   }
 
+  /**
+   * Returns the '-api' version of the current configuration.
+   *
+   * In                           Returns
+   * | api                        | api
+   * | implementation             | api
+   * | compileOnly                | api
+   * | testImplementation         | testApi
+   * | debug                      | debugApi
+   * | androidTestImplementation  | androidTestApi
+   *
+   * @return for any main/common configuration, just returns `api`. For any other configuration, it
+   *   returns the [SourceSetName] appended with `Api`.
+   */
+  fun apiVariant() = toSourceSetName().apiConfig()
+
   override fun compareTo(other: ConfigurationName): Int {
     return value.compareTo(other.value)
   }
@@ -98,6 +114,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     val compile = ConfigurationName("compile")
     val runtimeOnly = ConfigurationName("runtimeOnly")
     val runtime = ConfigurationName("runtime")
+    val testImplementation = ConfigurationName("testImplementation")
 
     /**
      * The order of this list matters.

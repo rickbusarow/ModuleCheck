@@ -118,20 +118,7 @@ internal fun createProject(
   val builder = JvmMcProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
     .also { it.config() }
 
-  builder.sourceSets
-    .keys
-    .flatMap { it.configurationNames() }
-    .forEach { configurationName ->
-
-      builder.configurations.putIfAbsent(
-        configurationName,
-        Config(
-          name = configurationName,
-          externalDependencies = emptySet(),
-          inherited = emptySet()
-        )
-      )
-    }
+  builder.populateConfigs()
 
   val delegate = RealMcProject(
     path = builder.path,
@@ -147,4 +134,31 @@ internal fun createProject(
 
   return delegate
     .also { projectCache[it.path] = it }
+}
+
+internal fun McProjectBuilderScope.populateConfigs() {
+  sourceSets
+    .keys
+    // add main source set configs first so that they can be safely looked up for inheriting configs
+    .sortedByDescending { it == SourceSetName.MAIN }
+    .flatMap { it.configurationNames() }
+    .forEach { configurationName ->
+
+      val inherited = if (configurationName.toSourceSetName() == SourceSetName.MAIN) {
+        emptySet()
+      } else {
+        SourceSetName.MAIN.configurationNames()
+          .map { configurations.getValue(it) }
+          .toSet()
+      }
+
+      configurations.putIfAbsent(
+        configurationName,
+        Config(
+          name = configurationName,
+          externalDependencies = emptySet(),
+          inherited = inherited
+        )
+      )
+    }
 }
