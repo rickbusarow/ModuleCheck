@@ -33,6 +33,14 @@ value class SourceSetName(val value: String) {
     }
   }
 
+  fun apiConfig(): ConfigurationName {
+    return if (this == MAIN) {
+      ConfigurationName.api
+    } else {
+      "${value}Api".asConfigurationName()
+    }
+  }
+
   override fun toString(): String = "SourceSetName('$value')"
 
   companion object {

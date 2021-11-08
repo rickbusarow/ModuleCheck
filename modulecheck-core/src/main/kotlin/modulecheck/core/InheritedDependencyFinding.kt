@@ -25,12 +25,14 @@ import java.io.File
 
 data class InheritedDependencyFinding(
   override val dependentPath: String,
+  val dependentProject: McProject,
   override val buildFile: File,
   override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val source: ConfiguredProjectDependency?
-) : DependencyFinding("inheritedDependency") {
+  val source: ConfiguredProjectDependency
+) : DependencyFinding("inheritedDependency"),
+  Comparable<InheritedDependencyFinding> {
 
   override val message: String
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
@@ -38,25 +40,24 @@ data class InheritedDependencyFinding(
   override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
 
   override val positionOrNull: Position? by lazy {
-    source?.project?.positionIn(buildFile, configurationName)
+    source.project.positionIn(buildFile, source.configurationName)
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependencyProject.path == source?.project?.path) {
+    return if (dependencyProject.path == source.project.path) {
       ""
     } else {
-      "${source?.project?.path}"
+      source.project.path
     }
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val fromPath = source?.project?.path ?: return false
-    val fromConfigName = source.configurationName
+    val fromPath = source.project.path
 
     val blocks = DependencyBlockParser.parse(buildFile)
 
     val (block, match) = blocks.firstNotNullOfOrNull { block ->
-      block to block.getOrEmpty(fromPath, fromConfigName)
+      block to block.getOrEmpty(fromPath, source.configurationName)
     }
       ?.let { (block, declarations) ->
 
@@ -69,7 +70,7 @@ data class InheritedDependencyFinding(
       ?: return false
 
     val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
-      .replaceFirst(fromConfigName.value, configurationName.value)
+      .replaceFirst(source.configurationName.value, configurationName.value)
 
     val newDependencies = block.contentString.replaceFirst(
       oldValue = match,
@@ -83,5 +84,14 @@ data class InheritedDependencyFinding(
     buildFile.writeText(newText)
 
     return true
+  }
+
+  override fun compareTo(other: InheritedDependencyFinding): Int {
+
+    return compareBy<InheritedDependencyFinding>(
+      { it.configurationName },
+      { it.source.isTestFixture },
+      { it.dependencyPath }
+    ).compare(this, other)
   }
 }

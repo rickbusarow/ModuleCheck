@@ -15,10 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.*
 
 data class PublicDependencies(
   internal val delegate: Set<ConfiguredProjectDependency>
@@ -39,7 +36,7 @@ data class PublicDependencies(
       includePrivate: Boolean = true
     ): Set<ConfiguredProjectDependency> {
       val privateDependencies = if (includePrivate) {
-        projectDependencies.main()
+        projectDependencies.all()
       } else {
         emptyList()
       }

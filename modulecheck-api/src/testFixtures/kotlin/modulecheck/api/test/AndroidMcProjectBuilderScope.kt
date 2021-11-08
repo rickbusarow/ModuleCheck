@@ -114,20 +114,7 @@ internal fun createAndroidProject(
       .createSafely("<manifest package=\"$androidPackage\" />")
   }
 
-  builder.sourceSets
-    .keys
-    .flatMap { it.configurationNames() }
-    .forEach { configurationName ->
-
-      builder.configurations.putIfAbsent(
-        configurationName,
-        Config(
-          name = configurationName,
-          externalDependencies = emptySet(),
-          inherited = emptySet()
-        )
-      )
-    }
+  builder.populateConfigs()
 
   val delegate = RealAndroidMcProject(
     path = builder.path,

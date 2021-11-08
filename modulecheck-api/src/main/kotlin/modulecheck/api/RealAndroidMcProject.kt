@@ -60,6 +60,6 @@ class RealAndroidMcProject(
   }
 
   override fun toString(): String {
-    return "AndroidProject2Impl(path='$path')"
+    return "AndroidMcProject('$path')"
   }
 }

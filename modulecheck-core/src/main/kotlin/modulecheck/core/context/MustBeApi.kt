@@ -15,19 +15,9 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.context.Declarations
-import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.anvilScopeMerges
-import modulecheck.api.context.jvmFilesForSourceSetName
-import modulecheck.api.context.publicDependencies
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.asDeclarationName
+import modulecheck.api.context.*
+import modulecheck.parsing.*
 import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.sourceOf
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
@@ -57,18 +47,7 @@ data class MustBeApi(
         }
         .filterNot { it.configurationName == ConfigurationName.api }
 
-      val declarationsInProject = project[Declarations][SourceSetName.MAIN]
-        .orEmpty()
-
-      val inheritedImports = project
-        .jvmFilesForSourceSetName(SourceSetName.MAIN)
-        .filterIsInstance<KotlinFile>()
-        .flatMap { kotlinFile ->
-
-          kotlinFile
-            .apiReferences
-            .filterNot { it.asDeclarationName() in declarationsInProject }
-        }.toSet()
+      val importsFromDependencies = project.importsFromDependencies()
 
       val api = mainDependencies
         .asSequence()
@@ -80,34 +59,18 @@ data class MustBeApi(
           // exclude anything which is inherited but already included in local `api` deps
           cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
         }
-        .filter { cpd ->
-          cpd
-            .project[Declarations][SourceSetName.MAIN]
-            .orEmpty()
-            .map { it.fqName }
-            .any { declared ->
-
-              declared in inheritedImports
-            }
-        }
+        .filter { it.project.mustBeApiIn(project, importsFromDependencies) }
         .map { cpd ->
           val source = project
             .projectDependencies
             .main()
             .firstOrNull { it.project == cpd.project }
-            ?: ConfigurationName
-              .main()
-              .asSequence()
-              .mapNotNull { configName ->
-                project.sourceOf(
-                  ConfiguredProjectDependency(
-                    configurationName = configName,
-                    project = cpd.project,
-                    isTestFixture = cpd.isTestFixture
-                  )
-                )
-              }
-              .firstOrNull()
+            ?: project.sourceOfOrNull(
+              dependencyProject = cpd.project,
+              sourceSetName = SourceSetName.MAIN,
+              isTestFixture = cpd.isTestFixture,
+              apiOnly = false
+            )
           InheritedDependencyWithSource(cpd, source)
         }
         .distinctBy { it.configuredProjectDependency }
@@ -116,6 +79,31 @@ data class MustBeApi(
       return MustBeApi(api)
     }
   }
+}
+
+private fun McProject.importsFromDependencies(): Set<String> {
+
+  val declarationsInProject = declarations[SourceSetName.MAIN]
+    .orEmpty()
+
+  return jvmFilesForSourceSetName(SourceSetName.MAIN)
+    .filterIsInstance<KotlinFile>()
+    .flatMap { kotlinFile ->
+
+      kotlinFile
+        .apiReferences
+        .filterNot { it.asDeclarationName() in declarationsInProject }
+    }.toSet()
+}
+
+fun McProject.mustBeApiIn(
+  dependentProject: McProject,
+  importsFromDependencies: Set<String> = dependentProject.importsFromDependencies()
+): Boolean {
+  return declarations[SourceSetName.MAIN]
+    .orEmpty()
+    .map { it.fqName }
+    .any { declared -> declared in importsFromDependencies }
 }
 
 data class InheritedDependencyWithSource(
