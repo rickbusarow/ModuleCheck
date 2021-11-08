@@ -37,7 +37,7 @@ dependencies {
 
   dependencySync("net.swiftzer.semver:semver:1.1.1")
 
-  dependencySync("org.antlr:antlr4-runtime:4.9.2")
+  dependencySync("org.antlr:antlr4-runtime:4.9.3")
   dependencySync("org.antlr:antlr4:4.9.2")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")
