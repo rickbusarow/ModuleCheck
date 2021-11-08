@@ -44,10 +44,7 @@ class SortDependenciesRule(
   @Suppress("SpreadOperator")
   private val comparator: Comparator<String> = compareBy(
     *elementComparables,
-    { // we have to use `toLowerCase()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-      @Suppress("DEPRECATION")
-      it.toLowerCase(Locale.US)
-    }
+    { it.lowercase(Locale.US) }
   )
 
   override fun check(project: McProject): List<SortDependenciesFinding> {

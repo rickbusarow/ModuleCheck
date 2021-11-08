@@ -15,7 +15,8 @@
 
 package modulecheck.parsing
 
-data class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
+@JvmInline
+value class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
     // creating "implementation" instead of "mainImplementation"
@@ -53,7 +54,6 @@ data class ConfigurationName(val value: String) : Comparable<ConfigurationName> 
     //  | kapt             | main
     //  etc.
     if (this.startsWith(kapt.value)) {
-      @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
       return removePrefix(kapt.value)
         .decapitalize()
         .toSourceSetName()
@@ -77,7 +77,6 @@ data class ConfigurationName(val value: String) : Comparable<ConfigurationName> 
     //  | releaseCompileOnly  | release
     //  | testImplementation  | test
     //  etc.
-    @Suppress("DEPRECATION") // we have to use `decapitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     return removeSuffix(configType)
       .decapitalize()
       .toSourceSetName()
@@ -86,6 +85,8 @@ data class ConfigurationName(val value: String) : Comparable<ConfigurationName> 
   override fun compareTo(other: ConfigurationName): Int {
     return value.compareTo(other.value)
   }
+
+  override fun toString(): String = "ConfigurationName('$value')"
 
   companion object {
 
@@ -113,7 +114,6 @@ data class ConfigurationName(val value: String) : Comparable<ConfigurationName> 
       runtime.value
     )
 
-    @Suppress("DEPRECATION") // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
     private val baseConfigurationsCapitalized = baseConfigurations
       .map { it.capitalize() }
       .toSet()

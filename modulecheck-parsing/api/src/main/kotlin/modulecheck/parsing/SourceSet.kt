@@ -16,9 +16,9 @@
 package modulecheck.parsing
 
 import java.io.File
-import java.util.*
 
-data class SourceSetName(val value: String) {
+@JvmInline
+value class SourceSetName(val value: String) {
 
   fun configurationNames(): List<ConfigurationName> {
 
@@ -27,12 +27,13 @@ data class SourceSetName(val value: String) {
     } else {
       ConfigurationName.baseConfigurations
         .map {
-          @Suppress("DEPRECATION")
-          "${this.value}${it.capitalize(Locale.US)}"
+          "${this.value}${it.capitalize()}"
             .asConfigurationName()
         }
     }
   }
+
+  override fun toString(): String = "SourceSetName('$value')"
 
   companion object {
     val MAIN = SourceSetName("main")

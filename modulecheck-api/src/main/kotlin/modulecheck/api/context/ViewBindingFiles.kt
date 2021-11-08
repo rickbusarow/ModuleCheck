@@ -16,7 +16,6 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.*
-import modulecheck.parsing.ProjectContext
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -44,7 +43,6 @@ data class ViewBindingFiles(
           layoutFiles
             .map { layoutFile ->
 
-              @Suppress("DEPRECATION")
               layoutFile.name
                 .capitalize(Locale.US)
                 .replace(snake_reg) { matchResult ->
