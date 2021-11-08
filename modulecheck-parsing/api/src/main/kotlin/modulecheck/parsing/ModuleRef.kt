@@ -64,7 +64,6 @@ internal fun String.typeSafeName(): String = split(projectSplitRegex)
     if (index == 0) {
       s.propertyAccessName()
     } else {
-      @Suppress("DEPRECATION")
       s.capitalize(Locale.getDefault())
     }
   }
@@ -85,8 +84,7 @@ private fun String.propertyAccessName(): String {
 
   val lower = caps
     .joinToString("") {
-      @Suppress("DEPRECATION")
-      it.toString().toLowerCase()
+      it.toString().lowercase()
     }
 
   return this.replaceFirst(this.substring(0, caps.size), lower)

@@ -22,10 +22,7 @@ import modulecheck.api.context.layoutFiles
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.AndroidMcProject
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.all
+import modulecheck.parsing.*
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
@@ -54,8 +51,6 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
       .filter { it.file.exists() }
       .filter { layoutFile ->
 
-        // we have to use `capitalize()` for compatibility with Kotlin 1.4.x and Gradle < 7.0
-        @Suppress("DEPRECATION")
         val generated = layoutFile.file
           .nameWithoutExtension
           .split("_")
