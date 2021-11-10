@@ -61,7 +61,7 @@ kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kot
 
 kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
 
-semVer = "net.swiftzer.semver:semver:1.1.1"
+semVer = "net.swiftzer.semver:semver:1.1.2"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
