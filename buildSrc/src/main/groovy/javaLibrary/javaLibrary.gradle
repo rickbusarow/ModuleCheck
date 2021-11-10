@@ -35,7 +35,7 @@ tasks.withType(org.gradle.api.tasks.testing.Test)
     }
 
     testLogging {
-      events 'passed', 'failed'
+      events 'failed'// , 'passed'
       exceptionFormat 'FULL'
       showCauses true
       showExceptions true
