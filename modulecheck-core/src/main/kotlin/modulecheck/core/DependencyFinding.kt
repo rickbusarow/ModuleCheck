@@ -41,12 +41,12 @@ abstract class DependencyFinding(
       .positionOfStatement(statement)
   }
 
-  override val statementOrNull: ModuleDependencyDeclaration? by lazy {
+  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
     dependencyProject
       .statementOrNullIn(buildFile, configurationName)
   }
   override val statementTextOrNull: String? by lazy {
-    statementOrNull?.statementWithSurroundingText
+    declarationOrNull?.statementWithSurroundingText
   }
 
   override fun toResult(fixed: Boolean): FindingResult {

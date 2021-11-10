@@ -36,14 +36,10 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
-  override val statementOrNull: ModuleDependencyDeclaration? by lazy {
-    super.statementOrNull
+  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
+    super.declarationOrNull
       ?: source?.project
         ?.statementOrNullIn(buildFile, configurationName)
-  }
-  override val statementTextOrNull: String? by lazy {
-    super.statementTextOrNull
-      ?: statementOrNull?.statementWithSurroundingText
   }
 
   override fun fromStringOrEmpty(): String {
@@ -56,13 +52,15 @@ data class MustBeApiFinding(
 
   override fun fix(): Boolean = synchronized(buildFile) {
 
-    val statement = statementTextOrNull ?: return false
+    val declaration = declarationOrNull ?: return false
 
-    val newText = statement.replace(configurationName.value, "api")
+    val oldStatement = declaration.statementWithSurroundingText
+    val newStatement = declaration.replace(ConfigurationName.api)
+      .statementWithSurroundingText
 
     val buildFileText = buildFile.readText()
 
-    buildFile.writeText(buildFileText.replace(statement, newText))
+    buildFile.writeText(buildFileText.replace(oldStatement, newStatement))
 
     return true
   }

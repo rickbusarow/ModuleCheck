@@ -19,6 +19,8 @@ import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.McProject
 import modulecheck.testing.BaseTest
+import java.io.File
+import java.nio.charset.Charset
 import java.util.concurrent.ConcurrentHashMap
 
 abstract class ProjectTest : BaseTest() {
@@ -86,4 +88,8 @@ abstract class ProjectTest : BaseTest() {
   }
 
   fun allProjects(): List<McProject> = projectCache.values.toList()
+
+  fun File.writeText(content: String) {
+    writeText(content.trimIndent(), Charset.defaultCharset())
+  }
 }

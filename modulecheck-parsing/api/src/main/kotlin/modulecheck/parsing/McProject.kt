@@ -64,61 +64,6 @@ fun McProject.isAndroid(): Boolean {
   return this is AndroidMcProject
 }
 
-fun McProject.requireSourceOf(
-  dependencyProject: McProject,
-  sourceSetName: SourceSetName,
-  isTestFixture: Boolean,
-  apiOnly: Boolean
-): ConfiguredProjectDependency {
-  return sourceOfOrNull(
-    dependencyProject = dependencyProject,
-    sourceSetName = sourceSetName,
-    isTestFixture = isTestFixture,
-    apiOnly = apiOnly
-  )
-    ?: throw IllegalArgumentException(
-      "Unable to find source of the dependency project '${dependencyProject.path}' in the " +
-        "dependent project '$path', including transitive dependencies."
-    )
-}
-
-fun McProject.sourceOfOrNull(
-  dependencyProject: McProject,
-  sourceSetName: SourceSetName,
-  isTestFixture: Boolean,
-  apiOnly: Boolean
-): ConfiguredProjectDependency? {
-
-  val baseConfigNames = if (apiOnly) {
-    configurations[sourceSetName.apiConfig()]?.inherited
-      .orEmpty()
-      .map { it.name } + sourceSetName.apiConfig()
-  } else {
-    sourceSetName.configurationNames()
-  }
-
-  val testFixturesConfigNames = if (isTestFixture && apiOnly) {
-    listOf(SourceSetName.TEST_FIXTURES.apiConfig())
-  } else if (isTestFixture) {
-    SourceSetName.TEST_FIXTURES.configurationNames()
-  } else listOf()
-
-  val toCheck = (baseConfigNames + testFixturesConfigNames)
-    .mapNotNull { projectDependencies[it] }
-    .flatten()
-
-  return toCheck.firstOrNull { it.project == dependencyProject }
-    ?: toCheck.firstOrNull { cpd ->
-      cpd.project
-        .sourceOfOrNull(
-          dependencyProject = dependencyProject,
-          sourceSetName = SourceSetName.MAIN,
-          isTestFixture = cpd.isTestFixture,
-          apiOnly = true
-        ) != null
-    }
-}
-
 interface AndroidMcProject : McProject {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean

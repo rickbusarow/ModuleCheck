@@ -65,11 +65,10 @@ data class MustBeApi(
             .projectDependencies
             .main()
             .firstOrNull { it.project == cpd.project }
-            ?: project.sourceOfOrNull(
-              dependencyProject = cpd.project,
+            ?: project.apiDependencySources.sourceOfOrNull(
+              dependencyProjectPath = cpd.project.path,
               sourceSetName = SourceSetName.MAIN,
-              isTestFixture = cpd.isTestFixture,
-              apiOnly = false
+              isTestFixture = cpd.isTestFixture
             )
           InheritedDependencyWithSource(cpd, source)
         }

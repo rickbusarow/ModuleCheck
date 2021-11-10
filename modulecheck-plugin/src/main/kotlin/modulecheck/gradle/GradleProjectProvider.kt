@@ -72,8 +72,6 @@ class GradleProjectProvider(
     val hasKapt = gradleProject
       .plugins
       .hasPlugin(KAPT_PLUGIN_ID)
-    val sourceSets = gradleProject
-      .jvmSourceSets()
 
     val testedExtension = gradleProject
       .extensions
@@ -113,7 +111,7 @@ class GradleProjectProvider(
         buildFile = gradleProject.buildFile,
         configurations = configurations,
         hasKapt = hasKapt,
-        sourceSets = sourceSets,
+        sourceSets = gradleProject.jvmSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         projectDependencies = projectDependencies

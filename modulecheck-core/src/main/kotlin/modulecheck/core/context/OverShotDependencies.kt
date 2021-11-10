@@ -46,37 +46,43 @@ data class OverShotDependencies(
                 .takeIf { !it.equals(ConfigurationName.api.value, ignoreCase = true) }
                 ?: ConfigurationName.implementation.value
 
-              val all = project.configurations
-                .values
+              val allUsedByConfigName = project.sourceSets
+                .keys
                 .asSequence()
-                .filterNot { it.name.nameWithoutSourceSet().isBlank() }
-                .sortedByDescending {
-                  it.name.nameWithoutSourceSet()
-                    .equals(configSuffix, ignoreCase = true)
-                }
-                .mapNotNull { dependentConfig ->
+                .mapNotNull { sourceSetName ->
 
-                  ConfiguredProjectDependency(
-                    configurationName = dependentConfig.name,
-                    project = unused.dependencyProject,
-                    isTestFixture = unused.cpd().isTestFixture
-                  )
-                    .takeIf { project.uses(it) }
+                  sourceSetName.configurationNames()
+                    .filterNot { it == unused.configurationName }
+                    // check the same config as the unused configuration first.
+                    // for instance, if `api` is unused, check `debugApi`, `testApi`, etc.
+                    .sortedByDescending {
+                      it.nameWithoutSourceSet().equals(configSuffix, ignoreCase = true)
+                    }
+                    .firstNotNullOfOrNull { configName ->
+                      ConfiguredProjectDependency(
+                        configurationName = configName,
+                        project = unused.dependencyProject,
+                        isTestFixture = unused.cpd().isTestFixture
+                      )
+                        .takeIf { project.uses(it) }
+                    }
                 }
-                .distinctBy { it.configurationName.toSourceSetName() }
                 .groupBy { it.configurationName }
 
-              val allConfigs = all.values
+              val allConfigs = allUsedByConfigName.values
                 .flatMap { cpds ->
                   cpds.map { project.configurations.getValue(it.configurationName) }
                 }
                 .distinct()
 
-              val top = allConfigs.filter { cfg ->
+              // Remove redundant configs
+              // For instance, don't add a `testImplementation` declaration if `implementation` is
+              // already being added.
+              val trimmedConfigs = allConfigs.filter { cfg ->
                 cfg.inherited.none { it in allConfigs }
               }
 
-              top.flatMap { all.getValue(it.name) }
+              trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
                 .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
                 .toSet()
             }
