@@ -35,8 +35,8 @@ jobs:
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'adopt'
-          java-version : '14'
+          distribution : 'temurin'
+          java-version : '11'
           cache: 'gradle'
 
       - uses: burrunan/gradle-cache-action@v1
