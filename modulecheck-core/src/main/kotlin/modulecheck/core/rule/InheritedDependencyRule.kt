@@ -23,8 +23,6 @@ import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.all
-import modulecheck.parsing.requireSourceOf
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
@@ -33,7 +31,14 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     "but are not actually directly declared as dependencies in the current module"
 
   override fun check(project: McProject): List<InheritedDependencyFinding> {
+
+    val mainDirectDependencies = project.projectDependencies.main()
+      .map { it.project }
+      .toSet()
+
     val used = project.classpathDependencies.all()
+      .filterNot { it.contributed.project in mainDirectDependencies }
+      .distinctBy { it.contributed.project.path }
       .filter { project.uses(it) }
 
     val dependencyPathCache = mutableMapOf<SourceSetName, Set<String>>()
@@ -44,17 +49,12 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     }
 
     return used.asSequence()
-      .filterNot { it.project.path in pathsForSourceSet(it.configurationName.toSourceSetName()) }
+      .filterNot { it.contributed.project.path in pathsForSourceSet(it.source.configurationName.toSourceSetName()) }
       .distinct()
-      .map { inherited ->
+      .map { transitive ->
 
-        val source = project
-          .requireSourceOf(
-            dependencyProject = inherited.project,
-            sourceSetName = inherited.configurationName.toSourceSetName(),
-            isTestFixture = inherited.isTestFixture,
-            apiOnly = false
-          )
+        val source = transitive.source
+        val inherited = transitive.contributed
 
         val mustBeApi = inherited.project.mustBeApiIn(project)
 

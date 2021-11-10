@@ -21,6 +21,7 @@ import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.SourceSetName
 import org.junit.jupiter.api.Test
 
 class MustBeApiTest : ProjectTest() {
@@ -53,7 +54,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -69,7 +70,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -80,7 +81,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -124,7 +125,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class<T>
-        """.trimIndent()
+        """
       )
     }
 
@@ -140,7 +141,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -151,7 +152,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class<String>()
-        """.trimIndent()
+        """
       )
     }
 
@@ -195,7 +196,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -211,7 +212,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -222,7 +223,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         val lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -266,7 +267,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -282,7 +283,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -293,7 +294,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         private val lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -331,7 +332,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -347,7 +348,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -360,7 +361,7 @@ class MustBeApiTest : ProjectTest() {
         class Lib2Class {
           private val lib1Class = Lib1Class()
         }
-        """.trimIndent()
+        """
       )
     }
 
@@ -398,7 +399,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -414,7 +415,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -425,7 +426,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         internal val lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -438,6 +439,72 @@ class MustBeApiTest : ProjectTest() {
 
         dependencies {
           implementation(project(path = ":lib1"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `public property from dependency in test source should not require API`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+        }
+        """
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """,
+        SourceSetName.TEST
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
         }
         """
 
@@ -463,7 +530,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -479,7 +546,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -492,7 +559,7 @@ class MustBeApiTest : ProjectTest() {
         class Lib2Class {
           internal val lib1Class = Lib1Class()
         }
-        """.trimIndent()
+        """
       )
     }
 
@@ -530,7 +597,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         open class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -546,7 +613,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -557,7 +624,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         class Lib2Class : Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -585,6 +652,81 @@ class MustBeApiTest : ProjectTest() {
   }
 
   @Test
+  fun `auto-correct should only replace the configuration invocation text`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":implementation") {
+      addSource(
+        "com/modulecheck/implementation/Lib1Class.kt",
+        """
+        package com.modulecheck.implementation
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // this module dependency is an implementation
+          // implementation can be the beginning of the comment
+          implementation(project(path = ":implementation")) // it's an implementation
+        }
+        """
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.implementation.Lib1Class
+
+        class Lib2Class : Lib1Class()
+        """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // this module dependency is an implementation
+          // implementation can be the beginning of the comment
+          api(project(path = ":implementation")) // it's an implementation
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency         name         source    build file
+                ✔  :implementation    mustBeApi              /lib2/build.gradle.kts: (8, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
   fun `supertype of internal class from implementation with auto-correct should not be changed`() {
 
     val runner = ModuleCheckRunner(
@@ -601,7 +743,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         open class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -617,7 +759,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -628,7 +770,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         internal class Lib2Class : Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -666,7 +808,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -682,7 +824,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -693,7 +835,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         fun lib1Class(): Lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -737,7 +879,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -753,7 +895,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -764,7 +906,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         internal fun lib1Class(): Lib1Class = Lib1Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -802,7 +944,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -818,7 +960,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -829,7 +971,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         fun bindLib1(clazz: Lib1Class): Lib1Class = clazz
-        """.trimIndent()
+        """
       )
     }
 
@@ -873,7 +1015,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -889,7 +1031,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -900,7 +1042,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         fun foo(t: List<Lib1Class>) = Unit
-        """.trimIndent()
+        """
       )
     }
 
@@ -944,7 +1086,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -960,7 +1102,7 @@ class MustBeApiTest : ProjectTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -971,7 +1113,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib1.Lib1Class
 
         fun <T: Lib1Class> foo(t: T) = Unit
-        """.trimIndent()
+        """
       )
     }
 
@@ -1015,7 +1157,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1026,7 +1168,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         class Lib3Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1044,7 +1186,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1057,7 +1199,7 @@ class MustBeApiTest : ProjectTest() {
 
         val lib1Class = Lib1Class()
         val lib3Class = Lib3Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -1103,7 +1245,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         open class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1114,7 +1256,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         interface Lib3Interface
-        """.trimIndent()
+        """
       )
     }
 
@@ -1132,7 +1274,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1144,7 +1286,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib3.Lib3Interface
 
         class Lib2Class : Lib1Class(), Lib3Interface
-        """.trimIndent()
+        """
       )
     }
 
@@ -1190,7 +1332,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1201,7 +1343,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         class Lib3Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1219,7 +1361,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1232,7 +1374,7 @@ class MustBeApiTest : ProjectTest() {
 
         fun lib1Class(): Lib1Class = Lib1Class()
         fun lib3Class(): Lib3Class = Lib3Class()
-        """.trimIndent()
+        """
       )
     }
 
@@ -1278,7 +1420,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1289,7 +1431,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         class Lib3Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1307,7 +1449,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1320,7 +1462,7 @@ class MustBeApiTest : ProjectTest() {
 
         fun bindLib1(clazz: Lib1Class): Lib1Class = clazz
         fun bindLib3(clazz: Lib3Class): Lib3Class = clazz
-        """.trimIndent()
+        """
       )
     }
 
@@ -1366,7 +1508,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1377,7 +1519,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         class Lib3Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1395,7 +1537,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1407,7 +1549,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib3.Lib3Class
 
         fun foo(lib1s: List<Lib1Class>, lib3Comparator: Comparator<Lib3Class>) = Unit
-        """.trimIndent()
+        """
       )
     }
 
@@ -1453,7 +1595,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib1
 
         class Lib1Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1464,7 +1606,7 @@ class MustBeApiTest : ProjectTest() {
         package com.modulecheck.lib3
 
         class Lib3Class
-        """.trimIndent()
+        """
       )
     }
 
@@ -1482,7 +1624,7 @@ class MustBeApiTest : ProjectTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib3"))
         }
-        """.trimIndent()
+        """
       )
 
       addSource(
@@ -1494,7 +1636,7 @@ class MustBeApiTest : ProjectTest() {
         import com.modulecheck.lib3.Lib3Class
 
         fun <T : Lib1Class, R : Lib3Class> foo(t: T): R = TODO()
-        """.trimIndent()
+        """
       )
     }
 

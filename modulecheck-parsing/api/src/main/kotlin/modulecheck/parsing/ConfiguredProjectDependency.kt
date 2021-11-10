@@ -55,3 +55,8 @@ data class ConfiguredProjectDependency(
     return result
   }
 }
+
+data class TransitiveProjectDependency(
+  val source: ConfiguredProjectDependency,
+  val contributed: ConfiguredProjectDependency
+)

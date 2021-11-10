@@ -137,6 +137,103 @@ class InheritedDependenciesTest : ProjectTest() {
   }
 
   @Test
+  fun `not inherited when source only declares as implementation config`() {
+
+    // A Kotlin build of this project would actually fail since :lib1 isn't in :lib3's classpath,
+    // but the test is still useful since it's just assuring that behavior is consistent
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = false,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+
+        open class Lib2Class
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz = Lib1Class()
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+  }
+
+  @Test
   fun `inherited from api dependency with auto-correct should be fixed`() {
 
     val runner = ModuleCheckRunner(
@@ -232,6 +329,106 @@ class InheritedDependenciesTest : ProjectTest() {
                 ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
+  fun `inherited via testApi should not cause infinite loop`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.lib2.Lib2Class
+
+        open class Lib1Class
+        private val lib2Class = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testApi, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testApi(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib1ClassTest.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    lib1.addDependency(ConfigurationName.implementation, lib2)
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+
+    lib1.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib2"))
+        }
+        """
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testApi(project(path = ":lib1"))
+        }
         """
   }
 
@@ -770,5 +967,166 @@ class InheritedDependenciesTest : ProjectTest() {
 
         ModuleCheck found 1 issue
         """
+  }
+
+  @Test
+  fun `not inherited when only used in tests and already declared as testImplementation`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `not inherited when exposed as api but used in tests and already declared as testImplementation`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.testImplementation, lib1)
+      addDependency(ConfigurationName.testImplementation, lib2)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+          testImplementation(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+          testImplementation(project(path = ":lib2"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
   }
 }

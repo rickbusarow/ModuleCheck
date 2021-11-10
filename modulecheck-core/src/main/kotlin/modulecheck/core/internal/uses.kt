@@ -20,6 +20,16 @@ import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
 import modulecheck.parsing.*
 
+fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
+
+  val syntheticCpd = dependency.contributed
+    .copy(
+      configurationName = dependency.source.configurationName
+    )
+
+  return uses(syntheticCpd)
+}
+
 fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   val mergedScopeNames = anvilScopeMerges
     .values

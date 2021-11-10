@@ -21,6 +21,7 @@ import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.McProject
+import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 
 data class InheritedDependencyFinding(
@@ -62,19 +63,23 @@ data class InheritedDependencyFinding(
       ?.let { (block, declarations) ->
 
         val matchStatement = declarations.firstOrNull()
-          ?.statementWithSurroundingText
           ?: return false
 
         block to matchStatement
       }
       ?: return false
 
-    val newDeclaration = match.replaceFirst(fromPath, dependencyPath)
-      .replaceFirst(source.configurationName.value, configurationName.value)
+    val newDeclaration = match.replace(
+      configName = configurationName, modulePath = dependencyPath
+    )
+
+    val oldStatement = match.statementWithSurroundingText
+    val newStatement = newDeclaration.statementWithSurroundingText
+      .plus(oldStatement.prefixIfNot("\n"))
 
     val newDependencies = block.contentString.replaceFirst(
-      oldValue = match,
-      newValue = (newDeclaration + "\n" + match)
+      oldValue = oldStatement,
+      newValue = newStatement
     )
 
     val text = buildFile.readText()

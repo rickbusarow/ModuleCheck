@@ -20,7 +20,7 @@ import java.io.File
 
 interface Problem : Finding {
 
-  fun shouldSkip(): Boolean = statementOrNull?.suppressed
+  fun shouldSkip(): Boolean = declarationOrNull?.suppressed
     ?.contains(findingName)
     ?: false
 }
@@ -33,7 +33,7 @@ interface Finding {
   val message: String
   val buildFile: File
 
-  val statementOrNull: ModuleDependencyDeclaration? get() = null
+  val declarationOrNull: ModuleDependencyDeclaration? get() = null
   val statementTextOrNull: String? get() = null
   val positionOrNull: Position?
 
