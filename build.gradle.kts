@@ -327,7 +327,6 @@ val startSite by tasks.registering(Exec::class) {
   group = "website"
 
   dependsOn(
-    versionDocs,
     updateWebsiteChangelog,
     updateWebsiteNextDocsVersionRefs,
     updateWebsitePackageJsonVersion

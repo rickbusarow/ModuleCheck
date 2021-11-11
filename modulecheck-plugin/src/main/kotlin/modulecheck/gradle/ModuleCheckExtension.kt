@@ -18,6 +18,7 @@ package modulecheck.gradle
 import modulecheck.api.KaptMatcher
 import modulecheck.api.settings.*
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.DEPTHS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.INHERITED_DEPENDENCY_DEFAULT
@@ -30,6 +31,8 @@ import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.DEPENDENCY_COMPARATORS_DEFAULT
@@ -122,6 +125,7 @@ open class ChecksExtension @Inject constructor(
     DISABLE_ANDROID_RESOURCES_DEFAULT
   )
   override var disableViewBinding: Boolean by objects.property(DISABLE_VIEW_BINDING_DEFAULT)
+  override var depths: Boolean by objects.property(DEPTHS_DEFAULT)
 }
 
 @Suppress("UnstableApiUsage")
@@ -171,6 +175,22 @@ open class ReportsExtension @Inject constructor(
    */
   fun text(action: Action<ReportExtension>) {
     action.execute(text)
+  }
+
+  /**
+   * report of the depth for each source set for each module
+   */
+  override val depths = ReportExtension(
+    objects = objects,
+    enabledDefault = DEPTHS_ENABLED_DEFAULT,
+    outputPath = projectLayout.projectDirectory.dir(DEPTHS_PATH_DEFAULT).toString()
+  )
+
+  /**
+   * report of the depth for each source set for each module
+   */
+  fun depths(action: Action<ReportExtension>) {
+    action.execute(depths)
   }
 }
 

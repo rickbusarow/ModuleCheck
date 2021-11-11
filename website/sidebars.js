@@ -27,6 +27,7 @@ module.exports = {
         "rules/unused",
         "rules/must_be_api",
         "rules/inherited_dependency",
+        "rules/depths",
         {
           type: "category",
           label: "compiler",

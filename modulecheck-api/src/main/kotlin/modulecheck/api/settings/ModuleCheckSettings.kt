@@ -97,6 +97,7 @@ interface ChecksSettings {
   var anvilFactoryGeneration: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
+  var depths: Boolean
 
   companion object {
 
@@ -111,6 +112,7 @@ interface ChecksSettings {
     const val ANVIL_FACTORY_GENERATION_DEFAULT = true
     const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
     const val DISABLE_VIEW_BINDING_DEFAULT = false
+    const val DEPTHS_DEFAULT = false
   }
 }
 
@@ -126,12 +128,20 @@ interface ReportsSettings {
    */
   val text: ReportSettings
 
+  /**
+   * report of the depth for each source set for each module
+   */
+  val depths: ReportSettings
+
   companion object {
     const val CHECKSTYLE_ENABLED_DEFAULT = false
     const val CHECKSTYLE_PATH_DEFAULT = "build/reports/modulecheck/report.xml"
 
     const val TEXT_ENABLED_DEFAULT = false
     const val TEXT_PATH_DEFAULT = "build/reports/modulecheck/report.txt"
+
+    const val DEPTHS_ENABLED_DEFAULT = false
+    const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depth.txt"
   }
 }
 
