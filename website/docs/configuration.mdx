@@ -55,15 +55,15 @@ moduleCheck {
   reports {
     checkstyle {
       enabled = true  // default is false
-      outputFile = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
+      outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
     }
     depths {
       enabled = true  // default is false
-      outputFile = "${project.buildDir}/reports/modulecheck/depths.txt"
+      outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
     }
     text {
       enabled = true  // default is false
-      outputFile = "${project.buildDir}/reports/modulecheck/report.txt"
+      outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
     }
   }
 }
