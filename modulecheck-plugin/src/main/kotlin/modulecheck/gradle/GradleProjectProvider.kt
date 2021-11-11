@@ -152,11 +152,6 @@ class GradleProjectProvider(
       .filterIsInstance<ExternalModuleDependency>()
       .map { dep ->
 
-        /*
-        val isTestFixture = dep.requestedCapabilities.filterIsInstance<ImmutableCapability>()
-          .any { it.name.equals(dep.name + TEST_FIXTURES_SUFFIX) }
-         */
-
         val statementTextLazy = lazy psiLazy@{
           val coords = MavenCoordinates(dep.group, dep.name, dep.version)
 
