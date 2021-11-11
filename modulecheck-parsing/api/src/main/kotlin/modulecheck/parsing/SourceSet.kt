@@ -60,4 +60,15 @@ data class SourceSet(
   val jvmFiles: Set<File> = emptySet(),
   val resourceFiles: Set<File> = emptySet(),
   val layoutFiles: Set<File> = emptySet()
-)
+) {
+  fun hasExistingSourceFiles() = jvmFiles.hasExistingFiles() ||
+    resourceFiles.hasExistingFiles() ||
+    layoutFiles.hasExistingFiles()
+
+  private fun Set<File>.hasExistingFiles(): Boolean {
+    return any { dir ->
+      dir.walkBottomUp()
+        .any { file -> file.isFile && file.exists() }
+    }
+  }
+}
