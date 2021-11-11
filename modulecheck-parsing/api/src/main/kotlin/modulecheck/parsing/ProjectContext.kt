@@ -33,7 +33,7 @@ interface ProjectContext {
 
 class RealProjectContext(val project: McProject) : ProjectContext {
 
-  private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
+  private val cache = ConcurrentHashMap<Key<*>, Element>()
 
   override operator fun <E : Element> get(key: Key<E>): E {
     @Suppress("UNCHECKED_CAST")
