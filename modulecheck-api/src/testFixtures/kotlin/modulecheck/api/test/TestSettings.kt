@@ -47,7 +47,8 @@ data class TestChecksSettings(
   override var unusedKapt: Boolean = ChecksSettings.UNUSED_KAPT_DEFAULT,
   override var anvilFactoryGeneration: Boolean = ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT,
   override var disableAndroidResources: Boolean = ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT,
-  override var disableViewBinding: Boolean = ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT
+  override var disableViewBinding: Boolean = ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT,
+  override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
 ) : ChecksSettings
 
 class TestSortSettings(
@@ -63,6 +64,10 @@ class TestReportsSettings(
   override val text: ReportSettings = TestReportSettings(
     ReportsSettings.TEXT_ENABLED_DEFAULT,
     ReportsSettings.TEXT_PATH_DEFAULT
+  ),
+  override val depths: ReportSettings = TestReportSettings(
+    ReportsSettings.DEPTHS_ENABLED_DEFAULT,
+    ReportsSettings.DEPTHS_PATH_DEFAULT
   )
 ) : ReportsSettings
 

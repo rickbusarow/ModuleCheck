@@ -19,8 +19,11 @@ import modulecheck.api.*
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
 import modulecheck.reporting.checkstyle.CheckstyleReporter
+import modulecheck.reporting.console.DepthLogFactory
+import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
 import java.io.File
+import kotlin.properties.Delegates
 import kotlin.system.measureTimeMillis
 
 /**
@@ -48,19 +51,26 @@ data class ModuleCheckRunner(
     // total findings, whether they're fixed or not
     var totalFindings = 0
 
+    var allFindings by Delegates.notNull<List<Finding>>()
+
     // number of findings which couldn't be fixed
     // time does not include initial parsing from GradleProjectProvider,
     // but does include all source file parsing and the amount of time spent applying fixes
     val unfixedCountWithTime = measured {
-      findingFactory.evaluate(projects)
+      allFindings = findingFactory.evaluate(projects)
         .distinct()
-        .filterIsInstance<Problem>()
+
+      allFindings.filterIsInstance<Problem>()
         .filterNot { it.shouldSkip() }
         .also { totalFindings = it.size }
         .let { processFindings(it) }
     }
 
     val totalUnfixedIssues = unfixedCountWithTime.data
+
+    val depths = allFindings.filterIsInstance<DepthFinding>()
+    maybeLogDepths(depths)
+    maybeReportDepths(depths)
 
     // Replace this with kotlinx Duration APIs as soon as it's stable
     @Suppress("MagicNumber")
@@ -144,6 +154,26 @@ data class ModuleCheckRunner(
     }
 
     return results.count { !it.fixed }
+  }
+
+  private fun maybeLogDepths(depths: List<DepthFinding>) {
+    if (depths.isNotEmpty()) {
+      val depthLog = DepthLogFactory().create(depths)
+
+      logger.printReport(depthLog)
+    }
+  }
+
+  private fun maybeReportDepths(depths: List<DepthFinding>) {
+    if (settings.reports.depths.enabled) {
+      val path = settings.reports.depths.outputPath
+
+      val depthReport = DepthReportFactory().create(depths)
+
+      File(path)
+        .also { it.parentFile.mkdirs() }
+        .writeText(depthReport.joinToString())
+    }
   }
 
   private inline fun <T, R> T.measured(action: T.() -> R): TimedResults<R> {
