@@ -31,7 +31,7 @@ interface ProjectContext {
   }
 }
 
-class ProjectContextImpl(val project: McProject) : ProjectContext {
+class RealProjectContext(val project: McProject) : ProjectContext {
 
   private val cache = ConcurrentHashMap<ProjectContext.Key<*>, ProjectContext.Element>()
 
