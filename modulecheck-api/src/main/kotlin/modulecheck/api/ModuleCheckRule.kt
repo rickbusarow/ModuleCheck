@@ -26,7 +26,7 @@ interface ModuleCheckRule<T> {
   val id: String
   val description: String
 
-  fun check(project: McProject): List<T>
+  suspend fun check(project: McProject): List<T>
   fun shouldApply(checksSettings: ChecksSettings): Boolean
 
   fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()

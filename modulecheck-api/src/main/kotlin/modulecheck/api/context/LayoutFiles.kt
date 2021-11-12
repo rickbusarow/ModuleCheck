@@ -31,7 +31,7 @@ data class LayoutFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<LayoutFiles> {
-    override operator fun invoke(project: McProject): LayoutFiles {
+    override suspend operator fun invoke(project: McProject): LayoutFiles {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->
@@ -46,8 +46,7 @@ data class LayoutFiles(
   }
 }
 
-val ProjectContext.layoutFiles: LayoutFiles get() = get(LayoutFiles)
-fun ProjectContext.layoutFilesForSourceSetName(
+suspend fun ProjectContext.layoutFiles(): LayoutFiles = get(LayoutFiles)
+suspend fun ProjectContext.layoutFilesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<XmlFile.LayoutFile> =
-  layoutFiles[sourceSetName].orEmpty()
+): Set<XmlFile.LayoutFile> = layoutFiles()[sourceSetName].orEmpty()

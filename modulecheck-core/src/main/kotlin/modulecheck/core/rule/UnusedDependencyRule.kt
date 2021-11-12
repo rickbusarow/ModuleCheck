@@ -30,8 +30,8 @@ class UnusedDependencyRule(
   override val id = "UnusedDependency"
   override val description = "Finds project dependencies which aren't used in the declaring module"
 
-  override fun check(project: McProject): List<UnusedDependency> {
-    return project[UnusedDependencies]
+  override suspend fun check(project: McProject): List<UnusedDependency> {
+    return project.get(UnusedDependencies)
       .all()
       .filterNot { it.dependencyProject.path in settings.ignoreUnusedFinding }
       .distinctBy { it.statementTextOrNull }

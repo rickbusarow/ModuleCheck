@@ -31,7 +31,7 @@ data class AndroidResourceDeclarations(
     get() = Key
 
   companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
-    override operator fun invoke(project: McProject): AndroidResourceDeclarations {
+    override suspend operator fun invoke(project: McProject): AndroidResourceDeclarations {
       val android = project as? AndroidMcProject
         ?: return AndroidResourceDeclarations(ConcurrentHashMap())
 
@@ -44,12 +44,12 @@ data class AndroidResourceDeclarations(
         .mapValues { (sourceSetName, _) ->
 
           if (rPackage != null) {
-            project[ResSourceFiles][sourceSetName]
+            project.get(ResSourceFiles)[sourceSetName]
               .orEmpty()
               .flatMap { resourceParser.parseFile(it) }
               .toSet() + "$rPackage.R".asDeclarationName()
           } else {
-            project[JvmFiles][sourceSetName]
+            project.get(JvmFiles)[sourceSetName]
               .orEmpty()
               .flatMap { it.declarations }
               .toSet()
@@ -61,10 +61,10 @@ data class AndroidResourceDeclarations(
   }
 }
 
-val ProjectContext.androidResourceDeclarations: AndroidResourceDeclarations
-  get() = get(AndroidResourceDeclarations)
+suspend fun ProjectContext.androidResourceDeclarations(): AndroidResourceDeclarations =
+  get(AndroidResourceDeclarations)
 
-fun ProjectContext.androidResourceDeclarationsForSourceSetName(
+suspend fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<DeclarationName> {
   return get(AndroidResourceDeclarations)[sourceSetName].orEmpty()

@@ -18,6 +18,8 @@ package modulecheck.core.context
 import modulecheck.api.Deletable
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.anvilScopeMergesForSourceSetName
+import modulecheck.api.util.filterNotBlocking
+import modulecheck.api.util.lazyDeferred
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import modulecheck.parsing.ConfigurationName
@@ -27,7 +29,6 @@ import modulecheck.parsing.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
-import kotlin.LazyThreadSafetyMode.NONE
 
 data class UnusedDependency(
   override val dependentPath: String,
@@ -70,8 +71,8 @@ data class UnusedDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
-    override operator fun invoke(project: McProject): UnusedDependencies {
-      val neededForScopes by lazy(NONE) { project.anvilScopeMap() }
+    override suspend operator fun invoke(project: McProject): UnusedDependencies {
+      val neededForScopes  = lazyDeferred { project.anvilScopeMap() }
 
       val unusedHere = project
         .sourceSets
@@ -83,9 +84,9 @@ data class UnusedDependencies(
           // without this, every project will report itself as unused.
           cpd.project.path == project.path
         }
-        .filterNot { cpd -> project.uses(cpd) }
-        .filterNot { cpd ->
-          cpd.project in neededForScopes[cpd.configurationName].orEmpty()
+        .filterNotBlocking { cpd -> project.uses(cpd) }
+        .filterNotBlocking { cpd ->
+          cpd.project in neededForScopes.await()[cpd.configurationName].orEmpty()
         }
 
       val grouped = unusedHere.map { cpp ->
@@ -105,7 +106,7 @@ data class UnusedDependencies(
       return UnusedDependencies(ConcurrentHashMap(grouped))
     }
 
-    private fun McProject.anvilScopeMap(): Map<ConfigurationName, List<McProject>> {
+    private suspend fun McProject.anvilScopeMap(): Map<ConfigurationName, List<McProject>> {
       if (anvilGradlePlugin == null) {
         return mapOf()
       }
@@ -138,4 +139,4 @@ data class UnusedDependencies(
   }
 }
 
-val ProjectContext.unusedDependencies: UnusedDependencies get() = get(UnusedDependencies)
+suspend fun ProjectContext.unusedDependencies(): UnusedDependencies = get(UnusedDependencies)

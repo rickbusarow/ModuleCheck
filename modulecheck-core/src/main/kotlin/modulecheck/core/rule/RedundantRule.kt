@@ -29,8 +29,8 @@ class RedundantRule : ModuleCheckRule<RedundantDependencyFinding> {
     "Finds project dependencies which are declared as `api` in dependent " +
       "projects, but also declared in the current project unnecessarily"
 
-  override fun check(project: McProject): List<RedundantDependencyFinding> {
-    return project[RedundantDependencies]
+  override suspend fun check(project: McProject): List<RedundantDependencyFinding> {
+    return project.get(RedundantDependencies)
       .all()
       .distinctBy { it.positionOrNull }
   }

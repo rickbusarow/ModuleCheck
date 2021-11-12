@@ -19,5 +19,5 @@ import modulecheck.parsing.McProject
 
 fun interface FindingFactory<T : Finding> {
 
-  fun evaluate(projects: List<McProject>): List<T>
+  suspend fun evaluate(projects: List<McProject>): List<T>
 }

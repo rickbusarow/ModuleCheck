@@ -32,17 +32,17 @@ data class Imports(
     get() = Key
 
   companion object Key : ProjectContext.Key<Imports> {
-    override operator fun invoke(project: McProject): Imports {
+    override suspend operator fun invoke(project: McProject): Imports {
       val ss = project.sourceSets
 
       val map = ss
         .mapValues { (name, _) ->
 
-          val jvm = project[JvmFiles][name]
+          val jvm = project.get(JvmFiles)[name]
             .orEmpty()
             .flatMap { it.imports }
             .toSet()
-          val layout = project[LayoutFiles][name]
+          val layout = project.get(LayoutFiles)[name]
             .orEmpty()
             .flatMap { it.customViews }
             .toSet()
@@ -55,7 +55,7 @@ data class Imports(
   }
 }
 
-val ProjectContext.imports: Imports get() = get(Imports)
-fun ProjectContext.importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName> {
-  return imports[sourceSetName].orEmpty()
+suspend fun ProjectContext.imports(): Imports = get(Imports)
+suspend fun ProjectContext.importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName> {
+  return imports()[sourceSetName].orEmpty()
 }

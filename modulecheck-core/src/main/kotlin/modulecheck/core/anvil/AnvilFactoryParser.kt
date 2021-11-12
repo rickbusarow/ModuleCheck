@@ -18,12 +18,12 @@ package modulecheck.core.anvil
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.util.lazyDeferred
 import modulecheck.parsing.McProject
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.toSourceSetName
 import net.swiftzer.semver.SemVer
-import kotlin.LazyThreadSafetyMode.NONE
 
 object AnvilFactoryParser {
 
@@ -36,7 +36,7 @@ object AnvilFactoryParser {
   private val minimumAnvilVersion = SemVer(2, 0, 11)
 
   @Suppress("ComplexMethod")
-  fun parse(project: McProject): List<CouldUseAnvilFinding> {
+  suspend fun parse(project: McProject): List<CouldUseAnvilFinding> {
     val anvil = project.anvilGradlePlugin ?: return emptyList()
 
     if (anvil.generateDaggerFactories) return emptyList()
@@ -51,7 +51,7 @@ object AnvilFactoryParser {
       project.importsForSourceSetName("androidTest".toSourceSetName()) +
       project.importsForSourceSetName("test".toSourceSetName())
 
-    val maybeExtra by lazy(NONE) {
+    val maybeExtra = lazyDeferred {
       project.possibleReferencesForSourceSetName("androidTest".toSourceSetName()) +
         project.possibleReferencesForSourceSetName("main".toSourceSetName()) +
         project.possibleReferencesForSourceSetName("test".toSourceSetName())
@@ -59,8 +59,8 @@ object AnvilFactoryParser {
 
     val createsComponent = allImports.contains(daggerComponent) ||
       allImports.contains(anvilMergeComponent) ||
-      maybeExtra.contains(daggerComponent) ||
-      maybeExtra.contains(anvilMergeComponent)
+      maybeExtra.await().contains(daggerComponent) ||
+      maybeExtra.await().contains(anvilMergeComponent)
 
     if (createsComponent) return emptyList()
 
@@ -89,7 +89,7 @@ object AnvilFactoryParser {
     if (!usesDaggerInKotlin) return emptyList()
 
     val couldBeAnvil =
-      !allImports.contains(daggerComponent) && !maybeExtra.contains(daggerComponent)
+      !allImports.contains(daggerComponent) && !maybeExtra.await().contains(daggerComponent)
 
     return if (couldBeAnvil) {
       listOf(CouldUseAnvilFinding(project.buildFile, project.path))

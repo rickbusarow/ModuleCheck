@@ -51,7 +51,7 @@ class SortPluginsRule(
   @Suppress("SpreadOperator")
   private val comparator: Comparator<PluginDeclaration> = compareBy(*comparables)
 
-  override fun check(project: McProject): List<SortPluginsFinding> {
+  override suspend fun check(project: McProject): List<SortPluginsFinding> {
     val block = PluginBlockParser.parse(project.buildFile) ?: return emptyList()
 
     val sortedPlugins = block.sortedPlugins(comparator)

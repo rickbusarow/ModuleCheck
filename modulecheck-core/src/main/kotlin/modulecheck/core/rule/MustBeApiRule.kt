@@ -27,8 +27,8 @@ class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
   override val description = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
-  override fun check(project: McProject): List<MustBeApiFinding> {
-    return project[MustBeApi]
+  override suspend fun check(project: McProject): List<MustBeApiFinding> {
+    return project.get(MustBeApi)
       .map {
         MustBeApiFinding(
           dependentPath = project.path,

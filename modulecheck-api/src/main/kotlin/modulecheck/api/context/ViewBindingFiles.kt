@@ -32,13 +32,13 @@ data class ViewBindingFiles(
 
     private val snake_reg = "_([a-zA-Z])".toRegex()
 
-    override operator fun invoke(project: McProject): ViewBindingFiles {
+    override suspend operator fun invoke(project: McProject): ViewBindingFiles {
 
       if (project !is AndroidMcProject) return ViewBindingFiles(ConcurrentHashMap())
 
       val basePackage = project.androidPackageOrNull ?: return ViewBindingFiles(ConcurrentHashMap())
 
-      val map = project.layoutFiles
+      val map = project.layoutFiles()
         .mapValues { (_, layoutFiles) ->
           layoutFiles
             .map { layoutFile ->
@@ -62,7 +62,7 @@ data class ViewBindingFiles(
   }
 }
 
-val ProjectContext.viewBindingFiles: ViewBindingFiles get() = get(ViewBindingFiles)
-fun ProjectContext.viewBindingFilesForSourceSetName(
+suspend fun ProjectContext.viewBindingFiles(): ViewBindingFiles = get(ViewBindingFiles)
+suspend fun ProjectContext.viewBindingFilesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<DeclarationName> = viewBindingFiles[sourceSetName].orEmpty()
+): Set<DeclarationName> = viewBindingFiles()[sourceSetName].orEmpty()

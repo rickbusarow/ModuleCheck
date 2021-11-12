@@ -15,6 +15,7 @@
 
 package modulecheck.core
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.api.*
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
@@ -46,7 +47,7 @@ data class ModuleCheckRunner(
   val checkstyleReporter: CheckstyleReporter = CheckstyleReporter()
 ) {
 
-  fun run(projects: List<McProject>): Result<Unit> {
+  fun run(projects: List<McProject>): Result<Unit> = runBlocking {
 
     // total findings, whether they're fixed or not
     var totalFindings = 0
@@ -90,7 +91,7 @@ data class ModuleCheckRunner(
       )
     }
 
-    return if (totalUnfixedIssues > 0) {
+    if (totalUnfixedIssues > 0) {
 
       val wasPlural = if (totalFindings == 1) "was" else "were"
 

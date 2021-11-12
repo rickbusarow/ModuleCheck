@@ -33,7 +33,7 @@ data class BindingContexts(
     get() = Key
 
   companion object Key : ProjectContext.Key<BindingContexts> {
-    override operator fun invoke(project: McProject): BindingContexts {
+    override suspend operator fun invoke(project: McProject): BindingContexts {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->
@@ -53,6 +53,7 @@ data class BindingContexts(
   }
 }
 
-val ProjectContext.bindingContexts: BindingContexts get() = get(BindingContexts)
-fun ProjectContext.bindingContextForSourceSetName(sourceSetName: SourceSetName): BindingContext =
-  bindingContexts[sourceSetName] ?: BindingContext.EMPTY
+suspend fun ProjectContext.bindingContexts(): BindingContexts = get(BindingContexts)
+suspend fun ProjectContext.bindingContextForSourceSetName(
+  sourceSetName: SourceSetName
+): BindingContext = bindingContexts()[sourceSetName] ?: BindingContext.EMPTY

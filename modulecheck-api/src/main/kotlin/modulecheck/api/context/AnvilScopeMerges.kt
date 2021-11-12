@@ -15,11 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.AnvilScopeName
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.*
 
 data class AnvilScopeMerges(
   internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
@@ -31,17 +27,16 @@ data class AnvilScopeMerges(
 
   companion object Key : ProjectContext.Key<AnvilScopeMerges> {
 
-    override operator fun invoke(project: McProject): AnvilScopeMerges {
-      val map = project.anvilGraph.scopeMerges
+    override suspend operator fun invoke(project: McProject): AnvilScopeMerges {
+      val map = project.anvilGraph().scopeMerges
 
       return AnvilScopeMerges(map)
     }
   }
 }
 
-val ProjectContext.anvilScopeMerges: AnvilScopeMerges
-  get() = get(AnvilScopeMerges)
+suspend fun ProjectContext.anvilScopeMerges(): AnvilScopeMerges = get(AnvilScopeMerges)
 
-fun ProjectContext.anvilScopeMergesForSourceSetName(
+suspend fun ProjectContext.anvilScopeMergesForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeMerges[sourceSetName].orEmpty()
+): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeMerges()[sourceSetName].orEmpty()

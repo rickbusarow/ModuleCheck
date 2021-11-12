@@ -16,7 +16,12 @@
 package modulecheck.core.android
 
 import modulecheck.api.context.ResSourceFiles
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -34,7 +39,7 @@ data class AndroidDataBindingDeclarations(
     private val filterReg =
       """.*\${java.io.File.separator}layout.*\${java.io.File.separator}.*.xml""".toRegex()
 
-    override operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
+    override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
 
       val android = project as? AndroidMcProject
         ?: return AndroidDataBindingDeclarations(ConcurrentHashMap())
@@ -46,7 +51,7 @@ data class AndroidDataBindingDeclarations(
         .sourceSets
         .mapValues { (sourceSetName, _) ->
 
-          project[ResSourceFiles][sourceSetName]
+          project.get(ResSourceFiles)[sourceSetName]
             .orEmpty()
             .asSequence()
             .filter { it.exists() }
@@ -76,10 +81,10 @@ data class AndroidDataBindingDeclarations(
   }
 }
 
-val ProjectContext.androidDataBindingDeclarations: AndroidDataBindingDeclarations
-  get() = get(AndroidDataBindingDeclarations)
+suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingDeclarations =
+  get(AndroidDataBindingDeclarations)
 
-fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
+suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<DeclarationName> {
   return get(AndroidDataBindingDeclarations)[sourceSetName].orEmpty()

@@ -31,20 +31,19 @@ data class ClassPaths(
     get() = Key
 
   companion object Key : ProjectContext.Key<ClassPaths> {
-    override operator fun invoke(project: McProject): ClassPaths {
+    override suspend operator fun invoke(project: McProject): ClassPaths {
       val map = project
         .sourceSets
         .values
-        .map { sourceSet ->
+        .associate { sourceSet ->
           sourceSet.name to (sourceSet.classpathFiles + sourceSet.outputFiles).toSet()
         }
-        .toMap()
 
       return ClassPaths(ConcurrentHashMap(map))
     }
   }
 }
 
-val ProjectContext.classPaths: ClassPaths get() = get(ClassPaths)
-fun ProjectContext.classpathForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  classPaths[sourceSetName].orEmpty()
+suspend fun ProjectContext.classPaths(): ClassPaths = get(ClassPaths)
+suspend fun ProjectContext.classpathForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  classPaths()[sourceSetName].orEmpty()

@@ -26,7 +26,7 @@ class DepthRule : ModuleCheckRule<DepthFinding> {
   override val id = "Depth"
   override val description = "The longest path between this module and its leaf nodes"
 
-  override fun check(project: McProject): List<DepthFinding> {
+  override suspend fun check(project: McProject): List<DepthFinding> {
     return project.sourceSets.keys
       .map { project.depthForSourceSetName(it) }
   }

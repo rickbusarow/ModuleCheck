@@ -31,13 +31,13 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
       "but don't actually use any resources from the module"
 
   @Suppress("ReturnCount")
-  override fun check(project: McProject): List<UnusedResourcesGenerationFinding> {
+  override suspend fun check(project: McProject): List<UnusedResourcesGenerationFinding> {
     val androidProject = project as? AndroidMcProject ?: return emptyList()
 
     @Suppress("UnstableApiUsage")
     if (!androidProject.androidResourcesEnabled) return emptyList()
 
-    val noResources = androidProject.resSourceFiles.all().isEmpty()
+    val noResources = androidProject.resSourceFiles().all().isEmpty()
 
     return if (noResources) {
       listOf(UnusedResourcesGenerationFinding(project.path, project.buildFile))

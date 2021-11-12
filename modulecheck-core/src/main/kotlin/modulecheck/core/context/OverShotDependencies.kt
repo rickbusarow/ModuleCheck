@@ -33,9 +33,9 @@ data class OverShotDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<OverShotDependencies> {
-    override operator fun invoke(project: McProject): OverShotDependencies {
+    override suspend operator fun invoke(project: McProject): OverShotDependencies {
 
-      val used = project.unusedDependencies
+      val used = project.unusedDependencies()
         .values
         .flatMap { allUnused ->
           allUnused
@@ -48,7 +48,6 @@ data class OverShotDependencies(
 
               val allUsedByConfigName = project.sourceSets
                 .keys
-                .asSequence()
                 .mapNotNull { sourceSetName ->
 
                   sourceSetName.configurationNames()

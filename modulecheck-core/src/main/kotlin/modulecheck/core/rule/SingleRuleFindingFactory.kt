@@ -25,7 +25,7 @@ class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>
 ) : FindingFactory<Finding> {
 
-  override fun evaluate(projects: List<McProject>): List<T> {
+  override suspend fun evaluate(projects: List<McProject>): List<T> {
     return projects.flatMap { project ->
       rule.check(project)
     }
@@ -37,7 +37,7 @@ class MultiRuleFindingFactory(
   private val rules: List<ModuleCheckRule<out Finding>>
 ) : FindingFactory<Finding> {
 
-  override fun evaluate(projects: List<McProject>): List<Finding> {
+  override suspend fun evaluate(projects: List<McProject>): List<Finding> {
 
     val findings = projects.flatMap { proj ->
       rules

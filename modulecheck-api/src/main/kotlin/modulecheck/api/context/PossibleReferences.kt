@@ -32,16 +32,16 @@ data class PossibleReferences(
     get() = Key
 
   companion object Key : ProjectContext.Key<PossibleReferences> {
-    override operator fun invoke(project: McProject): PossibleReferences {
+    override suspend operator fun invoke(project: McProject): PossibleReferences {
       val map = project
         .sourceSets
         .mapValues { (name, sourceSet) ->
-          val jvm = project[JvmFiles][sourceSet.name]
+          val jvm = project.get(JvmFiles)[sourceSet.name]
             .orEmpty()
             .flatMap { jvmFile -> jvmFile.maybeExtraReferences }
             .toSet()
 
-          val layout = project[LayoutFiles][name]
+          val layout = project.get(LayoutFiles)[name]
             .orEmpty()
             .flatMap { it.resourceReferencesAsRReferences }
             .toSet()
@@ -58,8 +58,7 @@ data class PossibleReferences(
   }
 }
 
-val ProjectContext.possibleReferences: PossibleReferences get() = get(PossibleReferences)
-fun ProjectContext.possibleReferencesForSourceSetName(
+suspend fun ProjectContext.possibleReferences(): PossibleReferences = get(PossibleReferences)
+suspend fun ProjectContext.possibleReferencesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<PossibleReferenceName> =
-  possibleReferences[sourceSetName].orEmpty()
+): Set<PossibleReferenceName> = possibleReferences()[sourceSetName].orEmpty()

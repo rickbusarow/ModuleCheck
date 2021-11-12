@@ -129,4 +129,4 @@ data class OverShotDependencyFinding(
   }
 }
 
-val ProjectContext.overshotDependencies: OverShotDependencies get() = get(OverShotDependencies)
+suspend fun ProjectContext.overshotDependencies(): OverShotDependencies = get(OverShotDependencies)

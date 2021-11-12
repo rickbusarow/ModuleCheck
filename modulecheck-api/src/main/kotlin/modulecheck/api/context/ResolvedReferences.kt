@@ -29,7 +29,7 @@ data class ResolvedReferences(
     get() = Key
 
   companion object Key : ProjectContext.Key<ResolvedReferences> {
-    override operator fun invoke(project: McProject): ResolvedReferences {
+    override suspend operator fun invoke(project: McProject): ResolvedReferences {
       val map = mutableMapOf<SourceSetName, MutableSet<ConfiguredProjectDependency>>()
 
       project
@@ -50,7 +50,7 @@ data class ResolvedReferences(
                   projectDependencies
                     .firstOrNull {
                       it.project
-                        .declarations[SourceSetName.MAIN]
+                        .declarations()[SourceSetName.MAIN]
                         .orEmpty()
                         .any { it.fqName == possible }
                     }
@@ -67,7 +67,7 @@ data class ResolvedReferences(
   }
 }
 
-val ProjectContext.resolvedReferences: ResolvedReferences get() = get(ResolvedReferences)
-fun ProjectContext.resolvedReferencesForSourceSetName(
+suspend fun ProjectContext.resolvedReferences():  ResolvedReferences  = get(ResolvedReferences)
+suspend fun ProjectContext.resolvedReferencesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<ConfiguredProjectDependency> = resolvedReferences[sourceSetName].orEmpty()
+): Set<ConfiguredProjectDependency> = resolvedReferences()[sourceSetName].orEmpty()
