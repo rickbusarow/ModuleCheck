@@ -15,6 +15,7 @@
 
 package modulecheck.api.context
 
+import modulecheck.api.util.flatMapBlocking
 import modulecheck.parsing.*
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
@@ -42,7 +43,7 @@ data class AnvilGraph(
 
   companion object Key : ProjectContext.Key<AnvilGraph> {
 
-    override operator fun invoke(project: McProject): AnvilGraph {
+    override suspend operator fun invoke(project: McProject): AnvilGraph {
       if (project.anvilGradlePlugin == null) return AnvilGraph(
         project = project,
         scopeContributions = emptyMap(),
@@ -86,7 +87,7 @@ data class AnvilGraph(
       "com.squareup.anvil.annotations.MergeSubcomponent"
     )
 
-    private fun McProject.declarationsForScopeName(
+    private suspend fun McProject.declarationsForScopeName(
       allAnnotations: Set<String>,
       mergeAnnotations: Set<String>
     ): Pair<Map<AnvilScopeName, Set<DeclarationName>>, Map<AnvilScopeName, Set<DeclarationName>>> {
@@ -209,7 +210,7 @@ data class AnvilGraph(
       )
     }
 
-    private fun McProject.getAnvilScopeName(
+    private suspend fun McProject.getAnvilScopeName(
       scopeNameEntry: AnvilScopeNameEntry,
       sourceSetName: SourceSetName,
       kotlinFile: KotlinFile
@@ -226,9 +227,9 @@ data class AnvilGraph(
         ?: dependenciesBySourceSetName[sourceSetName]
           .orEmpty()
           .asSequence()
-          .flatMap { cpd ->
+          .flatMapBlocking { cpd ->
             cpd.project
-              .declarations[SourceSetName.MAIN]
+              .declarations()[SourceSetName.MAIN]
               .orEmpty()
           }
           .filter { dn ->
@@ -262,5 +263,4 @@ data class AnvilGraph(
   }
 }
 
-val ProjectContext.anvilGraph: AnvilGraph
-  get() = get(AnvilGraph)
+suspend fun ProjectContext.anvilGraph(): AnvilGraph = get(AnvilGraph)

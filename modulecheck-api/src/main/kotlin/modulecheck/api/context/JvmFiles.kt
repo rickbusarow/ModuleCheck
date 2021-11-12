@@ -37,7 +37,7 @@ data class JvmFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<JvmFiles> {
-    override operator fun invoke(project: McProject): JvmFiles {
+    override suspend operator fun invoke(project: McProject): JvmFiles {
       val map = project
         .sourceSets
         .map { (sourceSetName, _) ->
@@ -46,11 +46,9 @@ data class JvmFiles(
             .jvmSourcesForSourceSetName(sourceSetName)
             .flatMap { directory ->
               directory.walkTopDown()
-                .asSequence()
                 .filter { maybeFile -> maybeFile.isFile }
-                .mapNotNull { file ->
-                  JvmFile.fromFile(file, project, sourceSetName)
-                }.toList()
+                .toList() // sequence map functions aren't inline, so no suspend
+                .mapNotNull { file -> JvmFile.fromFile(file, project, sourceSetName) }
             }
         }.toMap()
 
@@ -59,11 +57,11 @@ data class JvmFiles(
   }
 }
 
-val ProjectContext.jvmFiles: JvmFiles get() = get(JvmFiles)
-fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
-  jvmFiles[sourceSetName].orEmpty()
+suspend fun ProjectContext.jvmFiles(): JvmFiles = get(JvmFiles)
+suspend fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
+  jvmFiles()[sourceSetName].orEmpty()
 
-fun JvmFile.Companion.fromFile(
+suspend fun JvmFile.Companion.fromFile(
   file: File,
   project: McProject,
   sourceSetName: SourceSetName

@@ -18,6 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.util.mapBlocking
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
@@ -30,13 +31,13 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
   override val description = "Finds project dependencies which are used in the current module, " +
     "but are not actually directly declared as dependencies in the current module"
 
-  override fun check(project: McProject): List<InheritedDependencyFinding> {
+  override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
 
     val mainDirectDependencies = project.projectDependencies.main()
       .map { it.project }
       .toSet()
 
-    val used = project.classpathDependencies.all()
+    val used = project.classpathDependencies().all()
       .filterNot { it.contributed.project in mainDirectDependencies }
       .distinctBy { it.contributed.project.path }
       .filter { project.uses(it) }
@@ -51,7 +52,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     return used.asSequence()
       .filterNot { it.contributed.project.path in pathsForSourceSet(it.source.configurationName.toSourceSetName()) }
       .distinct()
-      .map { transitive ->
+      .mapBlocking { transitive ->
 
         val source = transitive.source
         val inherited = transitive.contributed

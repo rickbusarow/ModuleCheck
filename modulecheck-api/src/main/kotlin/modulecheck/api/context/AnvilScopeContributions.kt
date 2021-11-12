@@ -15,11 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.AnvilScopeName
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.*
 
 data class AnvilScopeContributions(
   internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
@@ -31,17 +27,17 @@ data class AnvilScopeContributions(
 
   companion object Key : ProjectContext.Key<AnvilScopeContributions> {
 
-    override operator fun invoke(project: McProject): AnvilScopeContributions {
-      val map = project.anvilGraph.scopeContributions
+    override suspend operator fun invoke(project: McProject): AnvilScopeContributions {
+      val map = project.anvilGraph().scopeContributions
 
       return AnvilScopeContributions(map)
     }
   }
 }
 
-val ProjectContext.anvilScopeContributions: AnvilScopeContributions
-  get() = get(AnvilScopeContributions)
+suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
+  get(AnvilScopeContributions)
 
-fun ProjectContext.anvilScopeContributionsForSourceSetName(
+suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions[sourceSetName].orEmpty()
+): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions()[sourceSetName].orEmpty()

@@ -15,6 +15,7 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -32,10 +33,10 @@ data class ClasspathDependencies(
   }
 
   override operator fun get(key: SourceSetName): List<TransitiveProjectDependency> {
-    return delegate.getOrPut(key) { project.fullTree(key) }
+    return delegate.getOrPut(key) { runBlocking { project.fullTree(key) } }
   }
 
-  private fun McProject.fullTree(
+  private suspend fun McProject.fullTree(
     sourceSetName: SourceSetName
   ): List<TransitiveProjectDependency> {
 
@@ -59,7 +60,7 @@ data class ClasspathDependencies(
         .flatMap { apiConfig ->
 
           sourceCpd.project
-            .classpathDependencies[apiConfig.toSourceSetName()]
+            .classpathDependencies()[apiConfig.toSourceSetName()]
             .asSequence()
             .filter { it.contributed.configurationName.isApi() }
             .filterNot { it.contributed.project.path in directDependencyPaths }
@@ -76,10 +77,11 @@ data class ClasspathDependencies(
   }
 
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
-    override operator fun invoke(project: McProject): ClasspathDependencies {
+    override suspend operator fun invoke(project: McProject): ClasspathDependencies {
       return ClasspathDependencies(ConcurrentHashMap(), project)
     }
   }
 }
 
-val ProjectContext.classpathDependencies: ClasspathDependencies get() = get(ClasspathDependencies)
+suspend fun ProjectContext.classpathDependencies(): ClasspathDependencies =
+  get(ClasspathDependencies)

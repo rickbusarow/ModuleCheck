@@ -16,6 +16,7 @@
 package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
+import modulecheck.api.util.mapBlocking
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import java.io.File
@@ -36,7 +37,7 @@ data class DepthFinding(
   override val findingName: String
     get() = "depth"
 
-  fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Sequence<DepthFinding> {
+  suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Sequence<DepthFinding> {
     return generateSequence(sequenceOf(this)) { findings ->
       findings
         .map { finding ->
@@ -49,7 +50,7 @@ data class DepthFinding(
 
           finding.dependentProject
             .projectDependencies[sourceSet]
-            .map { it.project.depthForSourceSetName(SourceSetName.MAIN) }
+            .mapBlocking { it.project.depthForSourceSetName(SourceSetName.MAIN) }
         }
         .takeIf { it.firstOrNull() != null }
         ?.flatten()

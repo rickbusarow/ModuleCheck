@@ -28,7 +28,7 @@ data class Declarations(
     get() = Key
 
   companion object Key : ProjectContext.Key<Declarations> {
-    override operator fun invoke(project: McProject): Declarations {
+    override suspend operator fun invoke(project: McProject): Declarations {
       val map = project
         .sourceSets
         .mapValues { (sourceSetName, _) ->
@@ -50,4 +50,4 @@ data class Declarations(
   }
 }
 
-val ProjectContext.declarations: Declarations get() = get(Declarations)
+suspend fun ProjectContext.declarations():  Declarations  = get(Declarations)

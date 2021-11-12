@@ -15,6 +15,7 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
@@ -34,32 +35,32 @@ data class Depths(
 
   override val entries: MutableSet<MutableEntry<SourceSetName, DepthFinding>>
     get() {
-      populateAll()
+      runBlocking { populateAll() }
       return delegate.entries
     }
 
   override val values: MutableCollection<DepthFinding>
     get() {
-      populateAll()
+      runBlocking { populateAll() }
       return delegate.values
     }
   override val keys: MutableSet<SourceSetName>
     get() {
-      populateAll()
+      runBlocking { populateAll() }
       return delegate.keys
     }
 
-  internal fun populateAll() {
+  internal suspend fun populateAll() {
     project.sourceSets
       .keys
       .forEach { fetchForSourceSet(it) }
   }
 
   override operator fun get(key: SourceSetName): DepthFinding {
-    return delegate.getOrPut(key) { fetchForSourceSet(key) }
+    return runBlocking { delegate.getOrPut(key) { fetchForSourceSet(key) } }
   }
 
-  private fun fetchForSourceSet(key: SourceSetName): DepthFinding {
+  private suspend fun fetchForSourceSet(key: SourceSetName): DepthFinding {
     val (childDepth, children) = project.projectDependencies[key]
       .map { it.project }
       .distinct()
@@ -81,15 +82,15 @@ data class Depths(
   }
 
   companion object Key : ProjectContext.Key<Depths> {
-    override operator fun invoke(project: McProject): Depths {
+    override suspend operator fun invoke(project: McProject): Depths {
 
       return Depths(ConcurrentHashMap(), project)
     }
   }
 }
 
-val McProject.depths: Depths get() = get(Depths).also { it.populateAll() }
+suspend fun McProject.depths(): Depths = get(Depths).also { it.populateAll() }
 
-fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): DepthFinding {
+suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): DepthFinding {
   return get(Depths)[sourceSetName]
 }

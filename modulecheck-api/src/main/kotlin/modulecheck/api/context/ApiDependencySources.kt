@@ -45,7 +45,7 @@ data class ApiDependencySources(
   override val key: ProjectContext.Key<ApiDependencySources>
     get() = ApiDependencySources
 
-  fun sourceOfOrNull(
+  suspend fun sourceOfOrNull(
     dependencyProjectPath: String,
     sourceSetName: SourceSetName,
     isTestFixture: Boolean
@@ -65,7 +65,7 @@ data class ApiDependencySources(
       }
     }
 
-    val sourceOrNull = project.classpathDependencies[sourceSetName]
+    val sourceOrNull = project.classpathDependencies()[sourceSetName]
       .firstOrNull { transitive ->
         transitive.contributed.project.path == dependencyProjectPath &&
           transitive.contributed.isTestFixture == isTestFixture
@@ -91,20 +91,20 @@ data class ApiDependencySources(
   }
 
   companion object Key : ProjectContext.Key<ApiDependencySources> {
-    override fun invoke(project: McProject): ApiDependencySources {
+    override suspend fun invoke(project: McProject): ApiDependencySources {
       return ApiDependencySources(ConcurrentHashMap(), project)
     }
   }
 }
 
-val ProjectContext.apiDependencySources: ApiDependencySources get() = get(ApiDependencySources)
+suspend fun ProjectContext.apiDependencySources(): ApiDependencySources = get(ApiDependencySources)
 
-fun McProject.requireSourceOf(
+suspend fun McProject.requireSourceOf(
   dependencyProject: McProject,
   sourceSetName: SourceSetName,
   isTestFixture: Boolean
 ): ConfiguredProjectDependency {
-  return apiDependencySources.sourceOfOrNull(
+  return apiDependencySources().sourceOfOrNull(
     dependencyProjectPath = dependencyProject.path,
     sourceSetName = sourceSetName,
     isTestFixture = isTestFixture

@@ -16,6 +16,8 @@
 package modulecheck.core.context
 
 import modulecheck.api.context.*
+import modulecheck.api.util.filterBlocking
+import modulecheck.api.util.mapBlocking
 import modulecheck.parsing.*
 import modulecheck.parsing.psi.KotlinFile
 
@@ -28,12 +30,12 @@ data class MustBeApi(
     get() = Key
 
   companion object Key : ProjectContext.Key<MustBeApi> {
-    override operator fun invoke(project: McProject): MustBeApi {
+    override suspend operator fun invoke(project: McProject): MustBeApi {
       // this is anything in the main classpath, including inherited dependencies
-      val mainDependencies = project.publicDependencies
+      val mainDependencies = project.publicDependencies()
 
       val mergedScopeNames = project
-        .anvilScopeMerges
+        .anvilScopeMerges()
         .values
         .flatMap { it.keys }
 
@@ -59,13 +61,13 @@ data class MustBeApi(
           // exclude anything which is inherited but already included in local `api` deps
           cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
         }
-        .filter { it.project.mustBeApiIn(project, importsFromDependencies) }
-        .map { cpd ->
+        .filterBlocking { it.project.mustBeApiIn(importsFromDependencies) }
+        .mapBlocking { cpd ->
           val source = project
             .projectDependencies
             .main()
             .firstOrNull { it.project == cpd.project }
-            ?: project.apiDependencySources.sourceOfOrNull(
+            ?: project.apiDependencySources().sourceOfOrNull(
               dependencyProjectPath = cpd.project.path,
               sourceSetName = SourceSetName.MAIN,
               isTestFixture = cpd.isTestFixture
@@ -80,9 +82,9 @@ data class MustBeApi(
   }
 }
 
-private fun McProject.importsFromDependencies(): Set<String> {
+private suspend fun McProject.importsFromDependencies(): Set<String> {
 
-  val declarationsInProject = declarations[SourceSetName.MAIN]
+  val declarationsInProject = declarations()[SourceSetName.MAIN]
     .orEmpty()
 
   return jvmFilesForSourceSetName(SourceSetName.MAIN)
@@ -95,11 +97,20 @@ private fun McProject.importsFromDependencies(): Set<String> {
     }.toSet()
 }
 
-fun McProject.mustBeApiIn(
-  dependentProject: McProject,
-  importsFromDependencies: Set<String> = dependentProject.importsFromDependencies()
+suspend fun McProject.mustBeApiIn(
+  dependentProject: McProject
 ): Boolean {
-  return declarations[SourceSetName.MAIN]
+  val importsFromDependencies = dependentProject.importsFromDependencies()
+  return declarations()[SourceSetName.MAIN]
+    .orEmpty()
+    .map { it.fqName }
+    .any { declared -> declared in importsFromDependencies }
+}
+
+suspend fun McProject.mustBeApiIn(
+  importsFromDependencies: Set<String>
+): Boolean {
+  return declarations()[SourceSetName.MAIN]
     .orEmpty()
     .map { it.fqName }
     .any { declared -> declared in importsFromDependencies }
@@ -110,4 +121,4 @@ data class InheritedDependencyWithSource(
   val source: ConfiguredProjectDependency?
 )
 
-val ProjectContext.mustBeApi: MustBeApi get() = get(MustBeApi)
+suspend fun ProjectContext.mustBeApi(): MustBeApi = get(MustBeApi)

@@ -32,7 +32,7 @@ data class ManifestFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<ManifestFiles> {
-    override operator fun invoke(project: McProject): ManifestFiles {
+    override suspend operator fun invoke(project: McProject): ManifestFiles {
 
       if (project !is AndroidMcProject) return ManifestFiles(ConcurrentHashMap())
 
@@ -47,12 +47,11 @@ data class ManifestFiles(
   }
 }
 
-val ProjectContext.manifestFiles: ManifestFiles
-  get() = get(ManifestFiles)
+suspend fun ProjectContext.manifestFiles(): ManifestFiles = get(ManifestFiles)
 
-fun ProjectContext.manifestFilesForSourceSetName(
+suspend fun ProjectContext.manifestFilesForSourceSetName(
   sourceSetName: SourceSetName
-): XmlFile.ManifestFile? = manifestFiles[sourceSetName]
+): XmlFile.ManifestFile? = manifestFiles()[sourceSetName]
   ?.takeIf { it.file.exists() }
-  ?: manifestFiles[SourceSetName.MAIN]
+  ?: manifestFiles()[SourceSetName.MAIN]
     ?.takeIf { it.file.exists() }

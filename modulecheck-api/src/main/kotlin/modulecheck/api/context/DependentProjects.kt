@@ -27,7 +27,7 @@ data class DependentProjects(
     get() = Key
 
   companion object Key : ProjectContext.Key<DependentProjects> {
-    override operator fun invoke(project: McProject): DependentProjects {
+    override suspend operator fun invoke(project: McProject): DependentProjects {
       val others = project.projectCache
         .values
         .filter { otherProject ->
@@ -42,5 +42,5 @@ data class DependentProjects(
   }
 }
 
-val ProjectContext.dependentProjects: DependentProjects get() = get(DependentProjects)
-val ProjectContext.dependendents: DependentProjects get() = get(DependentProjects)
+suspend fun ProjectContext.dependentProjects():  DependentProjects  = get(DependentProjects)
+suspend fun ProjectContext.dependendents():  DependentProjects  = get(DependentProjects)

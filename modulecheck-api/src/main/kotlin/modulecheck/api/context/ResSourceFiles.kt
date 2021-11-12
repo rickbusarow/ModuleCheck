@@ -31,7 +31,7 @@ data class ResSourceFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<ResSourceFiles> {
-    override operator fun invoke(project: McProject): ResSourceFiles {
+    override suspend operator fun invoke(project: McProject): ResSourceFiles {
       val map = project
         .sourceSets
         .mapValues { (_, sourceSet) ->
@@ -44,6 +44,6 @@ data class ResSourceFiles(
   }
 }
 
-val ProjectContext.resSourceFiles: ResSourceFiles get() = get(ResSourceFiles)
-fun ProjectContext.resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  resSourceFiles[sourceSetName].orEmpty()
+suspend fun ProjectContext.resSourceFiles(): ResSourceFiles = get(ResSourceFiles)
+suspend fun ProjectContext.resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  resSourceFiles()[sourceSetName].orEmpty()

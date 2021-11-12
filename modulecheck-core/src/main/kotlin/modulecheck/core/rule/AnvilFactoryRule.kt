@@ -27,7 +27,7 @@ class AnvilFactoryRule : ModuleCheckRule<CouldUseAnvilFinding> {
   override val description = "Finds modules which could use Anvil's factory generation " +
     "instead of Dagger's"
 
-  override fun check(project: McProject): List<CouldUseAnvilFinding> {
+  override suspend fun check(project: McProject): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project)
   }
 

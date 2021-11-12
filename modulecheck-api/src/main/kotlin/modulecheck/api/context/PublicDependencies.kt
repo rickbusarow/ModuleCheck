@@ -26,7 +26,7 @@ data class PublicDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<PublicDependencies> {
-    override operator fun invoke(project: McProject): PublicDependencies {
+    override suspend operator fun invoke(project: McProject): PublicDependencies {
       return PublicDependencies(
         project.allPublicClassPathDependencyDeclarations()
       )
@@ -58,4 +58,4 @@ data class PublicDependencies(
   }
 }
 
-val ProjectContext.publicDependencies: PublicDependencies get() = get(PublicDependencies)
+suspend fun ProjectContext.publicDependencies(): PublicDependencies = get(PublicDependencies)

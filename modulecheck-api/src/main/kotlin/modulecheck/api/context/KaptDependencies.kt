@@ -33,7 +33,7 @@ data class KaptDependencies(
     get() = Key
 
   companion object Key : ProjectContext.Key<KaptDependencies> {
-    override operator fun invoke(project: McProject): KaptDependencies {
+    override suspend operator fun invoke(project: McProject): KaptDependencies {
       val map = project
         .configurations
         .filterNot { it.key.value.startsWith("_") }
@@ -59,8 +59,7 @@ data class KaptDependencies(
   }
 }
 
-val ProjectContext.kaptDependencies: KaptDependencies get() = get(KaptDependencies)
-fun ProjectContext.kaptDependenciesForConfig(
+suspend fun ProjectContext.kaptDependencies(): KaptDependencies = get(KaptDependencies)
+suspend fun ProjectContext.kaptDependenciesForConfig(
   configurationName: ConfigurationName
-): Set<KaptProcessor> =
-  kaptDependencies[configurationName].orEmpty()
+): Set<KaptProcessor> = kaptDependencies()[configurationName].orEmpty()

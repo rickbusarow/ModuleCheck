@@ -22,10 +22,7 @@ import modulecheck.api.context.layoutFiles
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.AndroidMcProject
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.all
+import modulecheck.parsing.*
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
@@ -34,7 +31,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     "but don't actually use any generated ViewBinding objects from that module"
 
   @Suppress("ReturnCount")
-  override fun check(project: McProject): List<DisableViewBindingGenerationFinding> {
+  override suspend fun check(project: McProject): List<DisableViewBindingGenerationFinding> {
     val androidProject = project as? AndroidMcProject ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
@@ -42,10 +39,10 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     if (!androidProject.viewBindingEnabled) return emptyList()
 
     val layouts = androidProject
-      .layoutFiles
+      .layoutFiles()
       .all()
 
-    val dependents = project.dependendents
+    val dependents = project.dependendents()
 
     val basePackage = project.androidPackageOrNull
       ?: return listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))

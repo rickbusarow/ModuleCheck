@@ -41,7 +41,7 @@ class UnusedKaptRule(
   override val description = "Finds unused kapt processor dependencies " +
     "and warns if the kapt plugin is applied but unused"
 
-  override fun check(project: McProject): List<UnusedKaptFinding> {
+  override suspend fun check(project: McProject): List<UnusedKaptFinding> {
     val matchers = kaptMatchers.asMap()
 
     return project
@@ -53,7 +53,7 @@ class UnusedKaptRule(
       }
       .flatMap { (configurationName, imports) ->
 
-        val processors = project.kaptDependencies[configurationName].orEmpty()
+        val processors = project.kaptDependencies()[configurationName].orEmpty()
 
         // unused means that none of the processor's annotations are used in any import
         val unusedMatchers = processors
@@ -73,7 +73,7 @@ class UnusedKaptRule(
             )
           }
 
-        val unusedPlugin = project[KaptDependencies]
+        val unusedPlugin = project.get(KaptDependencies)
           .values
           .flatten()
           .size == unusedFindings.size && project.hasKapt && unusedFindings.isNotEmpty()

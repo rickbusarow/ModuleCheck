@@ -31,7 +31,7 @@ data class JvmSourceFiles(
     get() = Key
 
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
-    override operator fun invoke(project: McProject): JvmSourceFiles {
+    override suspend operator fun invoke(project: McProject): JvmSourceFiles {
       val map = project
         .sourceSets
         .map { (name, sourceSet) ->
@@ -44,6 +44,6 @@ data class JvmSourceFiles(
   }
 }
 
-val ProjectContext.jvmSourceFiles: JvmSourceFiles get() = get(JvmSourceFiles)
-fun ProjectContext.jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  jvmSourceFiles[sourceSetName].orEmpty()
+suspend fun ProjectContext.jvmSourceFiles(): JvmSourceFiles = get(JvmSourceFiles)
+suspend fun ProjectContext.jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+  jvmSourceFiles()[sourceSetName].orEmpty()

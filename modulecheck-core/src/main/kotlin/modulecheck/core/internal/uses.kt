@@ -20,7 +20,7 @@ import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
 import modulecheck.parsing.*
 
-fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
+suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 
   val syntheticCpd = dependency.contributed
     .copy(
@@ -30,8 +30,8 @@ fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
   return uses(syntheticCpd)
 }
 
-fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
-  val mergedScopeNames = anvilScopeMerges
+suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
+  val mergedScopeNames = anvilScopeMerges()
     .values
     .flatMap { it.keys }
 
@@ -42,7 +42,7 @@ fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   return all.any { usesInConfig(mergedScopeNames, dependency.copy(configurationName = it.name)) }
 }
 
-fun McProject.usesInConfig(
+suspend fun McProject.usesInConfig(
   mergedScopeNames: List<AnvilScopeName>,
   dependency: ConfiguredProjectDependency
 ): Boolean {
@@ -87,15 +87,15 @@ fun McProject.usesInConfig(
     }
 }
 
-fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName> {
-  val root = project[Declarations][configurationName.toSourceSetName()]
+suspend fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName> {
+  val root = project.get(Declarations)[configurationName.toSourceSetName()]
     .orEmpty()
 
-  val main = project[Declarations][SourceSetName.MAIN]
+  val main = project.get(Declarations)[SourceSetName.MAIN]
     .orEmpty()
 
   val fixtures = if (isTestFixture) {
-    project[Declarations][SourceSetName.TEST_FIXTURES].orEmpty()
+    project.get(Declarations)[SourceSetName.TEST_FIXTURES].orEmpty()
   } else {
     emptySet()
   }
@@ -103,7 +103,7 @@ fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName
   val inherited = project.configurations[configurationName]
     ?.inherited
     ?.flatMap { inherited ->
-      project[Declarations][inherited.name.toSourceSetName()]
+      project.get(Declarations)[inherited.name.toSourceSetName()]
         .orEmpty()
     }
     .orEmpty()

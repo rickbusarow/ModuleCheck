@@ -47,7 +47,7 @@ class SortDependenciesRule(
     { it.lowercase(Locale.US) }
   )
 
-  override fun check(project: McProject): List<SortDependenciesFinding> {
+  override suspend fun check(project: McProject): List<SortDependenciesFinding> {
     val allSorted = DependencyBlockParser
       .parse(project.buildFile)
       .all { block ->
