@@ -25,6 +25,9 @@ dependencies {
 
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-core"))

@@ -20,6 +20,9 @@ minSdk = "23"
 spotless = "5.10.1"
 targetSdk = "30"
 taskTree = "1.5"
+kotlinx-coroutines = "1.5.2"
+
+rickBusarow-dispatch = "1.0.0-beta10"
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
@@ -59,7 +62,24 @@ kotlinPoet = "com.squareup:kotlinpoet:1.10.2"
 
 kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-coreCommon = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
+
+rickBusarow-dispatch-core = { module = "com.rickbusarow.dispatch:dispatch-core", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-detekt = { module = "com.rickbusarow.dispatch:dispatch-detekt", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-espresso = { module = "com.rickbusarow.dispatch:dispatch-android-espresso", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-lifecycle = { module = "com.rickbusarow.dispatch:dispatch-android-lifecycle", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-lifecycleExtensions = { module = "com.rickbusarow.dispatch:dispatch-android-lifecycle-extensions", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-test-core = { module = "com.rickbusarow.dispatch:dispatch-test", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch-test-junit4", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
+rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
 
 semVer = "net.swiftzer.semver:semver:1.1.2"
 

@@ -31,6 +31,10 @@ dependencies {
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
 
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
+
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
