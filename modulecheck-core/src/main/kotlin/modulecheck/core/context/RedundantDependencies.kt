@@ -21,7 +21,6 @@ import modulecheck.core.DependencyFinding
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.asConfigurationName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -64,7 +63,7 @@ data class RedundantDependencies(
   companion object Key : ProjectContext.Key<RedundantDependencies> {
     override suspend operator fun invoke(project: McProject): RedundantDependencies {
       val allApi = project
-        .projectDependencies["api".asConfigurationName()]
+        .projectDependencies[ConfigurationName.api]
         .orEmpty()
         .toSet()
 

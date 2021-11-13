@@ -19,7 +19,7 @@ import modulecheck.api.Finding
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.internal.positionOf
-import modulecheck.parsing.asConfigurationName
+import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.existsOrNull
 import java.io.File
 
@@ -42,7 +42,7 @@ data class CouldUseAnvilFinding(
       .existsOrNull()
       ?.readText()
       ?.lines()
-      ?.positionOf(statement, "kapt".asConfigurationName())
+      ?.positionOf(statement, ConfigurationName.kapt)
   }
 
   override val statementTextOrNull: String? get() = null
