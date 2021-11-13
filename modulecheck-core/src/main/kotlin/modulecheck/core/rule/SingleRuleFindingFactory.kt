@@ -15,6 +15,9 @@
 
 package modulecheck.core.rule
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
 import modulecheck.api.ModuleCheckRule
@@ -26,8 +29,11 @@ class SingleRuleFindingFactory<T : Finding>(
 ) : FindingFactory<Finding> {
 
   override suspend fun evaluate(projects: List<McProject>): List<T> {
-    return projects.flatMap { project ->
-      rule.check(project)
+    return coroutineScope {
+      projects
+        .map { project -> async { rule.check(project) } }
+        .awaitAll()
+        .flatten()
     }
   }
 }
@@ -38,13 +44,14 @@ class MultiRuleFindingFactory(
 ) : FindingFactory<Finding> {
 
   override suspend fun evaluate(projects: List<McProject>): List<Finding> {
-
-    val findings = projects.flatMap { proj ->
-      rules
-        .filter { it.shouldApply(settings.checks) }
-        .flatMap { it.check(proj) }
+    return coroutineScope {
+      projects.flatMap { project ->
+        rules
+          .filter { it.shouldApply(settings.checks) }
+          .map { rule -> async { rule.check(project) } }
+      }
+        .awaitAll()
+        .flatten()
     }
-
-    return findings
   }
 }

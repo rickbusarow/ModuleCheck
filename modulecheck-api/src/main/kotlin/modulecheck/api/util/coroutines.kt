@@ -32,6 +32,7 @@ import kotlinx.coroutines.sync.withLock
  * suspend fun getExpensive() = expensive.await()
  * ```
  */
+@Suppress("DeferredIsResult")
 inline fun <reified T> lazyDeferred(crossinline action: suspend () -> T): Deferred<T> {
   val delegate = CompletableDeferred<T>()
 
@@ -77,8 +78,4 @@ fun <T, R> Sequence<T>.mapBlocking(transform: suspend (T) -> R): Sequence<R> {
 
 fun <T, R> Sequence<T>.flatMapBlocking(transform: suspend (T) -> Iterable<R>): Sequence<R> {
   return flatMap { runBlocking { transform(it) } }
-}
-
-fun <T, R : Any> Sequence<T>.mapNotNullBlocking(transform: suspend (T) -> R?): Sequence<R> {
-  return mapNotNull { runBlocking { transform(it) } }
 }
