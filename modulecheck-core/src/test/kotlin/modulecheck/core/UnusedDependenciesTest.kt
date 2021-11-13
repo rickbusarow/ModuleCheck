@@ -23,7 +23,6 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.AnvilGradlePlugin
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.asConfigurationName
 import net.swiftzer.semver.SemVer
 import org.junit.jupiter.api.Test
 
