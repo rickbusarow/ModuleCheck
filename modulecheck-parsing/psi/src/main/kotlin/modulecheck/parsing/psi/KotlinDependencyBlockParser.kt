@@ -148,6 +148,8 @@ private fun KtCallExpression.parseStatements(
   )
 }
 
+/* ktlint-disable no-multi-spaces */
+
 internal fun KtCallExpression.getStringModuleNameOrNull(): String? {
   return this                                         // implementation(project(path = ":foo:bar"))
     .valueArguments                                   // [project(path = ":foo:bar")]
@@ -239,6 +241,6 @@ internal fun KtAnnotatedExpression.suppressedNames(): List<String> = annotationE
   .flatMap { it.valueArgumentList?.arguments.orEmpty() }
   .mapNotNull {
     it.getChildOfType<KtStringTemplateExpression>() // "Unused"
-      ?.getChildOfType<KtLiteralStringTemplateEntry>()  // Unused
+      ?.getChildOfType<KtLiteralStringTemplateEntry>() // Unused
       ?.text
   }

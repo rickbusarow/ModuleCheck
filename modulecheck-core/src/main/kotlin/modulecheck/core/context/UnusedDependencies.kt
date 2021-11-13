@@ -72,7 +72,7 @@ data class UnusedDependencies(
 
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override suspend operator fun invoke(project: McProject): UnusedDependencies {
-      val neededForScopes  = lazyDeferred { project.anvilScopeMap() }
+      val neededForScopes = lazyDeferred { project.anvilScopeMap() }
 
       val unusedHere = project
         .sourceSets
