@@ -108,6 +108,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
   companion object {
 
+    val androidTestImplementation = ConfigurationName("androidTestImplementation")
     val api = ConfigurationName("api")
     val compile = ConfigurationName("compile")
     val compileOnly = ConfigurationName("compileOnly")
@@ -173,10 +174,10 @@ data class Config(
 
 fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
   return listOfNotNull(
-    get("api".asConfigurationName()),
-    get("compileOnly".asConfigurationName()),
-    get("implementation".asConfigurationName()),
-    get("runtimeOnly".asConfigurationName())
+    get(ConfigurationName.api),
+    get(ConfigurationName.compileOnly),
+    get(ConfigurationName.implementation),
+    get(ConfigurationName.runtimeOnly)
   ).flatten()
 }
 

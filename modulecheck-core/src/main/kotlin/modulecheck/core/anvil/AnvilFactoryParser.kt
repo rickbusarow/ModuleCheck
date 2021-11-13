@@ -20,9 +20,9 @@ import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.util.lazyDeferred
 import modulecheck.parsing.McProject
+import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.toSourceSetName
 import net.swiftzer.semver.SemVer
 
 object AnvilFactoryParser {
@@ -47,14 +47,14 @@ object AnvilFactoryParser {
 
     if (!hasAnvil) return emptyList()
 
-    val allImports = project.importsForSourceSetName("main".toSourceSetName()) +
-      project.importsForSourceSetName("androidTest".toSourceSetName()) +
-      project.importsForSourceSetName("test".toSourceSetName())
+    val allImports = project.importsForSourceSetName(SourceSetName.MAIN) +
+      project.importsForSourceSetName(SourceSetName.ANDROID_TEST) +
+      project.importsForSourceSetName(SourceSetName.TEST)
 
     val maybeExtra = lazyDeferred {
-      project.possibleReferencesForSourceSetName("androidTest".toSourceSetName()) +
-        project.possibleReferencesForSourceSetName("main".toSourceSetName()) +
-        project.possibleReferencesForSourceSetName("test".toSourceSetName())
+      project.possibleReferencesForSourceSetName(SourceSetName.ANDROID_TEST) +
+        project.possibleReferencesForSourceSetName(SourceSetName.MAIN) +
+        project.possibleReferencesForSourceSetName(SourceSetName.TEST)
     }
 
     val createsComponent = allImports.contains(daggerComponent) ||
@@ -65,7 +65,7 @@ object AnvilFactoryParser {
     if (createsComponent) return emptyList()
 
     val usesDaggerInJava = project
-      .jvmFilesForSourceSetName("main".toSourceSetName())
+      .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<JavaFile>()
       .any { file ->
         file.imports.contains(daggerInject) ||
@@ -77,7 +77,7 @@ object AnvilFactoryParser {
     if (usesDaggerInJava) return emptyList()
 
     val usesDaggerInKotlin = project
-      .jvmFilesForSourceSetName("main".toSourceSetName())
+      .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<KotlinFile>()
       .any { file ->
         file.imports.contains(daggerInject) ||

@@ -34,7 +34,7 @@ internal class GroovyDependencyBlockParserTest {
 
     block.allDeclarations shouldBe listOf(
       ExternalDependencyDeclaration(
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = "api 'com.foo:bar:1.2.3.4'",
         statementWithSurroundingText = "   api 'com.foo:bar:1.2.3.4'",
         group = "com.foo",
@@ -56,16 +56,16 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(ModuleRef.StringRef(":core:jvm"), "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(ModuleRef.StringRef(":core:jvm"), ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm') // trailing comment"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       )
@@ -89,21 +89,21 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:android"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:android')""",
         statementWithSurroundingText = "  api project(':core:android')",
         suppressed = listOf()
       ),
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = "  //noinspection Unused, MustBeApi\n  api project(':core:jvm')",
         suppressed = listOf("Unused", "MustBeApi")
       ),
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:test"),
-        configName = "testImplementation".asConfigurationName(),
+        configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation project(':core:test')""",
         statementWithSurroundingText = "  testImplementation project(':core:test')",
         suppressed = listOf()
@@ -130,14 +130,14 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:android"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:android')""",
         statementWithSurroundingText = "  api project(':core:android')",
         suppressed = listOf("Unused", "MustBeApi")
       ),
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = "  //noinspection InheritedDependency\n  api project(':core:jvm')",
         suppressed = listOf("InheritedDependency", "Unused", "MustBeApi")
@@ -159,7 +159,7 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api testFixtures(project(':core:jvm'))""",
         statementWithSurroundingText = """   api testFixtures(project(':core:jvm'))"""
       )
@@ -180,7 +180,7 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.TypeSafeRef("core.jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api testFixtures(projects.core.jvm)""",
         statementWithSurroundingText = """   api testFixtures(projects.core.jvm)"""
       )
@@ -204,11 +204,11 @@ internal class GroovyDependencyBlockParserTest {
 
     block.getOrEmpty(
       ModuleRef.StringRef(":core:test"),
-      "api".asConfigurationName()
+      ConfigurationName.api
     ) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:test"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:test') {
           |     exclude group: 'androidx.appcompat'
           |   }
@@ -220,10 +220,10 @@ internal class GroovyDependencyBlockParserTest {
       )
     )
 
-    block.getOrEmpty(":core:jvm", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
@@ -245,10 +245,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:test", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:test"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:test') {
           |     exclude group: 'androidx.appcompat'
           |   }
@@ -262,10 +262,10 @@ internal class GroovyDependencyBlockParserTest {
       )
     )
 
-    block.getOrEmpty(":core:jvm", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "   api project(':core:jvm')"
       )
@@ -285,10 +285,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:jvm", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = "api project(':core:jvm')",
         statementWithSurroundingText = "\n   api project(':core:jvm')"
       )
@@ -307,19 +307,19 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:jvm", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       )
     )
 
-    block.getOrEmpty(":core:jvm", "implementation".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "implementation".asConfigurationName(),
+        configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:jvm')""",
         statementWithSurroundingText = """   implementation project(':core:jvm')"""
       )
@@ -340,10 +340,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:android", "implementation".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:android"),
-        configName = "implementation".asConfigurationName(),
+        configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
    // single-line comment
@@ -368,10 +368,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:android", "implementation".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:android"),
-        configName = "implementation".asConfigurationName(),
+        configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
    /*
@@ -394,10 +394,10 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:android", "implementation".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:android"),
-        configName = "implementation".asConfigurationName(),
+        configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """   /* single-line block comment */ implementation project(':core:android')"""
       )
@@ -416,16 +416,16 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:jvm", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
         statementWithSurroundingText = """   api project(':core:jvm')"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.StringRef(":core:jvm"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api (   project(':core:jvm'))""",
         statementWithSurroundingText = """   api (   project(':core:jvm'))"""
       )
@@ -444,19 +444,19 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.getOrEmpty(":core:test", "api".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.TypeSafeRef("core.test"),
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = """api projects.core.test""",
         statementWithSurroundingText = """   api projects.core.test"""
       )
     )
 
-    block.getOrEmpty(":http-logging", "implementation".asConfigurationName()) shouldBe listOf(
+    block.getOrEmpty(":http-logging", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = ModuleRef.TypeSafeRef("httpLogging"),
-        configName = "implementation".asConfigurationName(),
+        configName = ConfigurationName.implementation,
         declarationText = """implementation projects.httpLogging""",
         statementWithSurroundingText = """   implementation projects.httpLogging"""
       )
@@ -493,7 +493,7 @@ internal class GroovyDependencyBlockParserTest {
     block.allDeclarations shouldBe listOf(
       UnknownDependencyDeclaration(
         argument = "libs.ktlint",
-        configName = "api".asConfigurationName(),
+        configName = ConfigurationName.api,
         declarationText = "api libs.ktlint",
         statementWithSurroundingText = "  api libs.ktlint"
       )
