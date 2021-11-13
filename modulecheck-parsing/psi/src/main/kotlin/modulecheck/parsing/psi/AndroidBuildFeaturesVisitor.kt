@@ -54,7 +54,7 @@ class AndroidBuildFeaturesVisitor {
     var element: PsiElementWithSurroundingText? = null
 
     val visitor = dotQualifiedExpressionRecursiveVisitor vis@{ expression ->
-
+      /* ktlint-disable no-multi-spaces */
       if (expression.text.startsWith(fullyQualifiedStart)) {
         val binary = expression                // android.buildFeatures { ... }
           .getChildOfType<KtCallExpression>()                   // buildFeatures { ... }
@@ -74,6 +74,7 @@ class AndroidBuildFeaturesVisitor {
           return@vis
         }
       }
+      /* ktlint-enable no-multi-spaces */
     }
 
     visitor.visitFile(this)

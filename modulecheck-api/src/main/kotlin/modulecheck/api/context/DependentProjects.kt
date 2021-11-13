@@ -42,5 +42,5 @@ data class DependentProjects(
   }
 }
 
-suspend fun ProjectContext.dependentProjects():  DependentProjects  = get(DependentProjects)
-suspend fun ProjectContext.dependendents():  DependentProjects  = get(DependentProjects)
+suspend fun ProjectContext.dependentProjects(): DependentProjects = get(DependentProjects)
+suspend fun ProjectContext.dependendents(): DependentProjects = get(DependentProjects)

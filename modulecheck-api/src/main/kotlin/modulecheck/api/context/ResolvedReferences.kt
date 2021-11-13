@@ -67,7 +67,7 @@ data class ResolvedReferences(
   }
 }
 
-suspend fun ProjectContext.resolvedReferences():  ResolvedReferences  = get(ResolvedReferences)
+suspend fun ProjectContext.resolvedReferences(): ResolvedReferences = get(ResolvedReferences)
 suspend fun ProjectContext.resolvedReferencesForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<ConfiguredProjectDependency> = resolvedReferences()[sourceSetName].orEmpty()

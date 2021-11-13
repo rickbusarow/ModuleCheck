@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package  modulecheck.specs
+package modulecheck.specs
 
 import java.nio.file.Path
 

@@ -113,7 +113,6 @@ allprojects {
 
     disabledRules.set(
       kotlin.collections.setOf(
-        "no-multi-spaces",
         "no-wildcard-imports",
         "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
         "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't

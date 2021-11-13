@@ -53,6 +53,7 @@ class ExternalDependencyDeclarationVisitor(
         .referenceExpression()
         .takeIf { it?.text == configuration }
         ?.let {
+          /* ktlint-disable no-multi-spaces */
           innerExpression                                     // implementation(dependencyNotation = "com.google.dagger:dagger:2.32")
             .valueArguments                                   // [dependencyNotation = "com.google.dagger:dagger:2.32"]
             .firstOrNull()                                    // dependencyNotation = "com.google.dagger:dagger:2.32"
@@ -65,6 +66,7 @@ class ExternalDependencyDeclarationVisitor(
                 found = true
               }
             }
+          /* ktlint-enable no-multi-spaces */
         }
     }
 

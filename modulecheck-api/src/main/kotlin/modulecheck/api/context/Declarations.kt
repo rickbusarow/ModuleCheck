@@ -50,4 +50,4 @@ data class Declarations(
   }
 }
 
-suspend fun ProjectContext.declarations():  Declarations  = get(Declarations)
+suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
