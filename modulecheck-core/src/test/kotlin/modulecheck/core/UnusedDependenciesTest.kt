@@ -627,7 +627,7 @@ class UnusedDependenciesTest : ProjectTest() {
     }
 
     val lib2 = project(":lib2") {
-      addDependency("testImplementation".asConfigurationName(), lib1)
+      addDependency(ConfigurationName.testImplementation, lib1)
 
       buildFile.writeText(
         """
@@ -693,7 +693,7 @@ class UnusedDependenciesTest : ProjectTest() {
     }
 
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
-      addDependency("androidTestImplementation".asConfigurationName(), lib1)
+      addDependency(ConfigurationName.androidTestImplementation, lib1)
 
       buildFile.writeText(
         """
@@ -969,7 +969,7 @@ class UnusedDependenciesTest : ProjectTest() {
     }
 
     val lib2 = project(":lib2") {
-      addDependency("testImplementation".asConfigurationName(), lib1, asTestFixture = true)
+      addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
       buildFile.writeText(
         """
@@ -1036,7 +1036,7 @@ class UnusedDependenciesTest : ProjectTest() {
     }
 
     val lib2 = project(":lib2") {
-      addDependency("testImplementation".asConfigurationName(), lib1, asTestFixture = true)
+      addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
       addSourceSet(SourceSetName.TEST)
 
       buildFile.writeText(
