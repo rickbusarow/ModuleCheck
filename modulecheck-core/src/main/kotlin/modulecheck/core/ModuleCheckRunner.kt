@@ -15,6 +15,7 @@
 
 package modulecheck.core
 
+import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.*
 import modulecheck.api.settings.ModuleCheckSettings
@@ -44,11 +45,11 @@ data class ModuleCheckRunner(
   val logger: Logger,
   val findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
   val reportFactory: ReportFactory = ReportFactory(),
-  val checkstyleReporter: CheckstyleReporter = CheckstyleReporter()
+  val checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
+  val dispatcherProvider: DispatcherProvider = DispatcherProvider()
 ) {
 
-  fun run(projects: List<McProject>): Result<Unit> = runBlocking {
-
+  fun run(projects: List<McProject>): Result<Unit> = runBlocking(dispatcherProvider.io) {
     // total findings, whether they're fixed or not
     var totalFindings = 0
 
@@ -58,8 +59,7 @@ data class ModuleCheckRunner(
     // time does not include initial parsing from GradleProjectProvider,
     // but does include all source file parsing and the amount of time spent applying fixes
     val unfixedCountWithTime = measured {
-      allFindings = findingFactory.evaluate(projects)
-        .distinct()
+      allFindings = findingFactory.evaluate(projects).distinct()
 
       allFindings.filterIsInstance<Problem>()
         .filterNot { it.shouldSkip() }
