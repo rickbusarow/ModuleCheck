@@ -41,7 +41,7 @@ dependencies {
   dependencySync("org.antlr:antlr4:4.9.3")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")
-  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.31")
+  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.0")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.31")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
   dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.5.31")
