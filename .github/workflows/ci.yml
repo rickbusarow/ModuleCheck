@@ -135,7 +135,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kotlin-version: [ 1.5.31, 1.6.0-RC ]
+        kotlin-version: [ 1.5.31, 1.6.0 ]
         gradle-version: [ 7.1, 7.3 ] # 7.0.2 breaks Anvil?
         agp-version: [ 7.0.3 ]
 
