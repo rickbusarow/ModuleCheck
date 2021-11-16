@@ -33,6 +33,7 @@ data class UnknownDependencyDeclaration(
 
 data class ModuleDependencyDeclaration(
   val moduleRef: ModuleRef,
+  val moduleAccess: String,
   override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String,
@@ -41,10 +42,12 @@ data class ModuleDependencyDeclaration(
 
   fun replace(
     configName: ConfigurationName = this.configName,
-    modulePath: String = this.moduleRef.value
+    modulePath: String = this.moduleRef.value,
+    testFixtures: Boolean
   ): ModuleDependencyDeclaration {
 
-    val newDeclaration = declarationText.replaceFirst(this.configName.value, configName.value)
+    val newDeclaration = declarationText.addOrRemoveTestFixtures(testFixtures)
+      .replaceFirst(this.configName.value, configName.value)
       .replaceFirst(moduleRef.value, modulePath)
 
     val newModuleRef = if (modulePath.startsWith(':')) {
@@ -57,11 +60,26 @@ data class ModuleDependencyDeclaration(
 
     return ModuleDependencyDeclaration(
       moduleRef = newModuleRef,
+      moduleAccess = moduleAccess,
       configName = configName,
       declarationText = newDeclaration,
       statementWithSurroundingText = newStatement,
       suppressed = suppressed
     )
+  }
+
+  private fun String.addOrRemoveTestFixtures(
+    testFixtures: Boolean
+  ): String {
+
+    val escapedModuleAccess = Regex.escape(moduleAccess)
+    val regex = "testFixtures\\s*\\(\\s*$escapedModuleAccess\\s*\\)".toRegex()
+
+    return when {
+      testFixtures && regex.containsMatchIn(this) -> this
+      testFixtures -> "testFixtures($this)"
+      else -> replace(regex, moduleAccess)
+    }
   }
 }
 

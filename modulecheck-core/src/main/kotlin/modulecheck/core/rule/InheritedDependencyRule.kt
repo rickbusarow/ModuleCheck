@@ -72,7 +72,8 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
           dependencyProject = inherited.project,
           dependencyPath = inherited.project.path,
           configurationName = newConfig,
-          source = source
+          source = source,
+          isTestFixture = inherited.isTestFixture
         )
       }
       .groupBy { it.configurationName }

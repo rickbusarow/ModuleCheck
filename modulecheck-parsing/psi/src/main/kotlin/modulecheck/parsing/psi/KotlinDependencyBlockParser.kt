@@ -102,14 +102,17 @@ private fun KtCallExpression.parseStatements(
     .text
     .replace("\"", "")
 
-  val moduleNameString = getStringModuleNameOrNull()
+  val moduleNamePair = getStringModuleNameOrNull()
     ?: getTypeSafeModuleNameOrNull()
 
-  if (moduleNameString != null) {
+  if (moduleNamePair != null) {
+
+    val (moduleAccess, moduleRef) = moduleNamePair
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      moduleRef = ModuleRef.from(moduleNameString),
+      moduleRef = ModuleRef.from(moduleRef),
+      moduleAccess = moduleAccess,
       suppressed = suppressed
     )
     return
@@ -127,14 +130,18 @@ private fun KtCallExpression.parseStatements(
     return
   }
 
-  val testFixturesModuleNameString = getStringTestFixturesModuleNameOrNull()
+  val testFixturesModuleNamePair = getStringTestFixturesModuleNameOrNull()
     ?: getTypeSafeTestFixturesModuleNameOrNull()
 
-  if (testFixturesModuleNameString != null) {
+  if (testFixturesModuleNamePair != null) {
+
+    val (moduleAccess, moduleRef) = testFixturesModuleNamePair
+
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      moduleRef = ModuleRef.from(testFixturesModuleNameString),
+      moduleRef = ModuleRef.from(moduleRef),
+      moduleAccess = moduleAccess,
       suppressed = suppressed
     )
     return
@@ -150,44 +157,64 @@ private fun KtCallExpression.parseStatements(
 
 /* ktlint-disable no-multi-spaces */
 
-internal fun KtCallExpression.getStringModuleNameOrNull(): String? {
-  return this                                         // implementation(project(path = ":foo:bar"))
-    .valueArguments                                   // [project(path = ":foo:bar")]
-    .firstOrNull()                                    // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
-    ?.valueArguments                                  // [path = ":foo:bar"]
-    ?.firstOrNull()                                   // path = ":foo:bar"
-    ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-    ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
-    ?.text
+internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>? {
+  return this                                             // implementation(project(path = ":foo:bar"))
+    .valueArguments                                       // [project(path = ":foo:bar")]
+    .firstOrNull()                                        // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+    ?.let { moduleAccessCallExpression ->
+
+      val moduleAccess = moduleAccessCallExpression.text
+
+      moduleAccessCallExpression
+        .valueArguments                                   // [path = ":foo:bar"]
+        .firstOrNull()                                    // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        ?.text
+        ?.let { moduleRef -> moduleAccess to moduleRef }
+    }
 }
 
-internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): String? {
+internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String>? {
   return this                                       // implementation(projects.foo.bar)
     .valueArguments                                 // [projects.foo.bar]
     .firstOrNull()                                  // projects.foo.bar
     ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
-    ?.text
-    ?.takeIf { it.startsWith("projects.") }
-    ?.removePrefix("projects.")
+    ?.let { moduleAccessCallExpression ->
+
+      val moduleAccess = moduleAccessCallExpression.text
+
+      moduleAccessCallExpression.text
+        ?.takeIf { it.startsWith("projects.") }
+        ?.removePrefix("projects.")
+        ?.let { moduleRef -> moduleAccess to moduleRef }
+    }
 }
 
-internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): String? {
-  return this                                         // implementation(testFixtures(project(path = ":foo:bar")))
-    .valueArguments                                   // [testFixtures(project(path = ":foo:bar"))]
-    .firstOrNull()                                    // testFixtures(project(path = ":foo:bar"))
-    ?.getChildOfType<KtCallExpression>()              // testFixtures(project(path = ":foo:bar"))
-    ?.valueArguments                                  // [project(path = ":foo:bar")]
-    ?.firstOrNull()                                   // project(path = ":foo:bar")
-    ?.getChildOfType<KtCallExpression>()              // project(path = ":foo:bar")
-    ?.valueArguments                                  // [path = ":foo:bar"]
-    ?.firstOrNull()                                   // path = ":foo:bar"
-    ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
-    ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
-    ?.text
+internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<String, String>? {
+  return this                                             // implementation(testFixtures(project(path = ":foo:bar")))
+    .valueArguments                                       // [testFixtures(project(path = ":foo:bar"))]
+    .firstOrNull()                                        // testFixtures(project(path = ":foo:bar"))
+    ?.getChildOfType<KtCallExpression>()                  // testFixtures(project(path = ":foo:bar"))
+    ?.valueArguments                                      // [project(path = ":foo:bar")]
+    ?.firstOrNull()                                       // project(path = ":foo:bar")
+    ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
+    ?.let { moduleAccessCallExpression ->
+
+      val moduleAccess = moduleAccessCallExpression.text
+
+      moduleAccessCallExpression
+        .valueArguments                                   // [path = ":foo:bar"]
+        .firstOrNull()                                    // path = ":foo:bar"
+        ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
+        ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
+        ?.text
+        ?.let { moduleRef -> moduleAccess to moduleRef }
+    }
 }
 
-internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): String? {
+internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<String, String>? {
   return this                                       // implementation(testFixtures(projects.foo.bar))
     .valueArguments                                 // [testFixtures(projects.foo.bar)]
     .firstOrNull()                                  // testFixtures(projects.foo.bar)
@@ -195,9 +222,16 @@ internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): String?
     ?.valueArguments                                // [projects.foo.bar]
     ?.firstOrNull()                                 // projects.foo.bar
     ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
-    ?.text
-    ?.takeIf { it.startsWith("projects.") }
-    ?.removePrefix("projects.")
+    ?.let { moduleAccessCallExpression ->
+
+      val moduleAccess = moduleAccessCallExpression.text
+
+      moduleAccessCallExpression
+        .text
+        ?.takeIf { it.startsWith("projects.") }
+        ?.removePrefix("projects.")
+        ?.let { moduleRef -> moduleAccess to moduleRef }
+    }
 }
 
 @Suppress("MaxLineLength")
