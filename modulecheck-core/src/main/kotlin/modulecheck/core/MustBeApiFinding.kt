@@ -55,7 +55,10 @@ data class MustBeApiFinding(
     val declaration = declarationOrNull ?: return false
 
     val oldStatement = declaration.statementWithSurroundingText
-    val newStatement = declaration.replace(ConfigurationName.api)
+    val newStatement = declaration.replace(
+      configName = ConfigurationName.api,
+      testFixtures = source?.isTestFixture ?: false
+    )
       .statementWithSurroundingText
 
     val buildFileText = buildFile.readText()

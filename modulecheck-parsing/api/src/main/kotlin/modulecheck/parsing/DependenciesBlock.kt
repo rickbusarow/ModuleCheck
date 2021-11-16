@@ -71,10 +71,15 @@ abstract class DependenciesBlock(var contentString: String, val suppressAll: Lis
     _allDeclarations.add(declaration)
   }
 
+  /**
+   * @param moduleRef `:my:project:lib1` or `my.project.lib1`
+   * @param moduleAccess `project(:my:project:lib1)` or `projects.my.project.lib1`
+   */
   fun addModuleStatement(
     configName: ConfigurationName,
     parsedString: String,
     moduleRef: ModuleRef,
+    moduleAccess: String,
     suppressed: List<String>
   ) {
     val cm = ConfiguredModule(configName = configName, moduleRef = moduleRef)
@@ -83,6 +88,7 @@ abstract class DependenciesBlock(var contentString: String, val suppressAll: Lis
 
     val declaration = ModuleDependencyDeclaration(
       moduleRef = moduleRef,
+      moduleAccess = moduleAccess,
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,

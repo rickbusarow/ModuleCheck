@@ -50,20 +50,62 @@ class GroovyDependencyBlockParser {
       }
     }
 
-    val projectDepVisitor = object : GroovyParserBaseVisitor<String?>() {
+    // visits the config block which might follow a dependency declaration,
+    // such as for `exclude` or a `reason`
+    val closureVisitor = object : GroovyParserBaseVisitor<String?>() {
 
       override fun shouldVisitNextChild(
         node: RuleNode?,
         currentResult: String?
       ): Boolean = currentResult == null
 
-      override fun visitExpressionListElement(ctx: ExpressionListElementContext?): String? {
+      override fun visitClosure(ctx: ClosureContext?): String? {
+        return ctx?.originalText(stream)
+      }
+    }
+
+    val projectDepVisitor = object : GroovyParserBaseVisitor<Pair<String, String>?>() {
+
+      override fun shouldVisitNextChild(
+        node: RuleNode?,
+        currentResult: Pair<String, String>?
+      ): Boolean = currentResult == null
+
+      fun ExpressionListElementContext.configClosure() =
+        children.firstNotNullOfOrNull { it.accept(closureVisitor) }
+
+      override fun visitExpressionListElement(
+        ctx: ExpressionListElementContext?
+      ): Pair<String, String>? {
+
+        // if the statement includes a config block (it isn't null), then delete it
+        fun String.maybeRemove(token: String?): String {
+          token ?: return this
+          return replace(token, "").trimEnd()
+        }
+
         return visitChildren(ctx) ?: when (ctx?.start?.text) {
           "projects" -> {
-            ctx.originalText(stream).removePrefix("projects.")
+            val original = ctx.originalText(stream)
+
+            original.removePrefix("projects.").let { typeSafe ->
+              // Groovy parsing includes any config closure in this context,
+              // so it would be `projects.foo.bar { exclude ... }`
+              // remove that config closure from the full module access since it's actually part
+              // of the parent configuration statement
+              original.maybeRemove(ctx.configClosure()) to typeSafe
+            }
           }
           "project" -> {
-            ctx.accept(rawModuleNameVisitor)
+            val original = ctx.originalText(stream)
+
+            // Groovy parsing includes any config closure in this context,
+            // so it would be `project(':foo:bar') { exclude ... }`
+            // remove that config closure from the full module access since it's actually part
+            // of the parent configuration statement
+            ctx.accept(rawModuleNameVisitor)?.let { name ->
+              original.maybeRemove(ctx.configClosure()) to name
+            }
           }
           else -> {
             null
@@ -142,13 +184,15 @@ class GroovyDependencyBlockParser {
                 .orEmpty()
               pendingNoInspectionComment = null
 
-              val moduleRefString = projectDepVisitor.visit(ctx)
+              val moduleNamePair = projectDepVisitor.visit(ctx)
 
-              if (moduleRefString != null) {
+              if (moduleNamePair != null) {
+                val (moduleAccess, moduleRef) = moduleNamePair
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(stream),
-                  moduleRef = ModuleRef.from(moduleRefString),
+                  moduleRef = ModuleRef.from(moduleRef),
+                  moduleAccess = moduleAccess,
                   suppressed = suppressed
                 )
                 return

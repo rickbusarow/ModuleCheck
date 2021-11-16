@@ -22,7 +22,6 @@ import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 
 internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
   override fun visit(tree: ParseTree) {
-    super.visit(tree)
 
     println(
       """ ------------------------------------------------------------  ${tree::class.java.simpleName}
@@ -31,10 +30,10 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
     """.trimMargin()
     )
+    super.visit(tree)
   }
 
   override fun visitChildren(node: RuleNode) {
-    super.visitChildren(node)
     println(
       """ ------------------------------------------------------------  ${node::class.java.simpleName}
       |
@@ -42,10 +41,10 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
     """.trimMargin()
     )
+    super.visitChildren(node)
   }
 
   override fun visitExpression(ctx: GroovyParser.ExpressionContext) {
-    super.visitExpression(ctx)
     println(
       """ ------------------------------------------------------------  ${ctx::class.java.simpleName}
       |
@@ -53,5 +52,6 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
     """.trimMargin()
     )
+    super.visitExpression(ctx)
   }
 }

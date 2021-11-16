@@ -31,7 +31,8 @@ data class InheritedDependencyFinding(
   override val dependencyProject: McProject,
   val dependencyPath: String,
   override val configurationName: ConfigurationName,
-  val source: ConfiguredProjectDependency
+  val source: ConfiguredProjectDependency,
+  val isTestFixture: Boolean
 ) : DependencyFinding("inheritedDependency"),
   Comparable<InheritedDependencyFinding> {
 
@@ -70,7 +71,9 @@ data class InheritedDependencyFinding(
       ?: return false
 
     val newDeclaration = match.replace(
-      configName = configurationName, modulePath = dependencyPath
+      configName = configurationName,
+      modulePath = dependencyPath,
+      testFixtures = isTestFixture
     )
 
     val oldStatement = match.statementWithSurroundingText
