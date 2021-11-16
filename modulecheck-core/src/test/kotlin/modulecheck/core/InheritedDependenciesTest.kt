@@ -788,6 +788,7 @@ class InheritedDependenciesTest : ProjectTest() {
     }
 
     val lib2 = project(":lib2") {
+      addDependency("testFixturesImplementation".asConfigurationName(), lib1)
       addDependency("testFixturesApi".asConfigurationName(), lib1, asTestFixture = true)
 
       buildFile.writeText(
@@ -797,6 +798,7 @@ class InheritedDependenciesTest : ProjectTest() {
         }
 
         dependencies {
+          testFixturesImplementation(project(path = ":lib1"))
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
         """.trimIndent()
@@ -1075,6 +1077,175 @@ class InheritedDependenciesTest : ProjectTest() {
             :lib3
                    dependency    name                   source    build file
                 ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+
+         ModuleCheck found 3 issues
+        """
+  }
+
+  @Test
+  fun `inherited main source testFixture in same module with auto-correct should be fixed as normal testImplementation`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib1/test/FakeLib1Class.kt",
+        """
+        package com.modulecheck.lib1.test
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class FakeLib1Class : Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST_FIXTURES
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(testFixtures(project(path = ":lib1")))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib1.test.FakeLib2Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = FakeLib2Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+          testImplementation(testFixtures(project(path = ":lib1")))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
+  fun `inherited main source testFixture in same module with auto-correct should be fixed as normal api`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib1/test/FakeLib1Class.kt",
+        """
+        package com.modulecheck.lib1.test
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class FakeLib1Class : Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST_FIXTURES
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1, asTestFixture = true)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(testFixtures(project(path = ":lib1")))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib1.test.FakeLib2Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = FakeLib2Class()
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          implementation(testFixtures(project(path = ":lib1")))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 3 issues
         """

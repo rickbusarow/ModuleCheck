@@ -34,30 +34,35 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
   override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
 
     val mainDirectDependencies = project.projectDependencies.main()
-      .map { it.project }
+      .map { it.project to it.isTestFixture }
       .toSet()
 
     val used = project.classpathDependencies().all()
-      .filterNot { it.contributed.project in mainDirectDependencies }
-      .distinctBy { it.contributed.project.path }
+      .filterNot { mainDirectDependencies.contains(it.contributed.project to it.contributed.isTestFixture) }
+      .distinctBy { it.contributed.project.path to it.contributed.isTestFixture }
       .filter { project.uses(it) }
 
-    val dependencyPathCache = mutableMapOf<SourceSetName, Set<String>>()
-    fun pathsForSourceSet(sourceSetName: SourceSetName): Set<String> {
+    val dependencyPathCache = mutableMapOf<SourceSetName, Set<Pair<String, Boolean>>>()
+    fun pathsForSourceSet(sourceSetName: SourceSetName): Set<Pair<String, Boolean>> {
       return dependencyPathCache.getOrPut(sourceSetName) {
-        project.projectDependencies[sourceSetName].map { it.project.path }.toSet()
+        project.projectDependencies[sourceSetName]
+          .map { it.project.path to it.isTestFixture }
+          .toSet()
       }
     }
 
     return used.asSequence()
-      .filterNot { it.contributed.project.path in pathsForSourceSet(it.source.configurationName.toSourceSetName()) }
+      .filterNot {
+        pathsForSourceSet(it.source.configurationName.toSourceSetName())
+          .contains((it.contributed.project.path to it.contributed.isTestFixture))
+      }
       .distinct()
       .mapBlocking { transitive ->
 
         val source = transitive.source
         val inherited = transitive.contributed
 
-        val mustBeApi = inherited.project.mustBeApiIn(project)
+        val mustBeApi = inherited.project.mustBeApiIn(project, inherited.isTestFixture)
 
         val newConfig = if (mustBeApi) {
           source.configurationName.apiVariant()

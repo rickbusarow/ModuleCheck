@@ -61,7 +61,7 @@ data class MustBeApi(
           // exclude anything which is inherited but already included in local `api` deps
           cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
         }
-        .filterBlocking { it.project.mustBeApiIn(importsFromDependencies) }
+        .filterBlocking { it.project.mustBeApiIn(importsFromDependencies, it.isTestFixture) }
         .mapBlocking { cpd ->
           val source = project
             .projectDependencies
@@ -98,22 +98,28 @@ private suspend fun McProject.importsFromDependencies(): Set<String> {
 }
 
 suspend fun McProject.mustBeApiIn(
-  dependentProject: McProject
+  dependentProject: McProject,
+  isTestFixtures: Boolean
 ): Boolean {
   val importsFromDependencies = dependentProject.importsFromDependencies()
-  return declarations()[SourceSetName.MAIN]
-    .orEmpty()
-    .map { it.fqName }
-    .any { declared -> declared in importsFromDependencies }
+  return mustBeApiIn(importsFromDependencies, isTestFixtures)
 }
 
 suspend fun McProject.mustBeApiIn(
-  importsFromDependencies: Set<String>
+  importsFromDependencies: Set<String>,
+  isTestFixtures: Boolean
 ): Boolean {
-  return declarations()[SourceSetName.MAIN]
-    .orEmpty()
-    .map { it.fqName }
-    .any { declared -> declared in importsFromDependencies }
+
+  val declarations = if (isTestFixtures) {
+    declarations()[SourceSetName.TEST_FIXTURES]
+  } else {
+    declarations()[SourceSetName.MAIN]
+  } ?: return false
+
+  return declarations
+    .any { declared ->
+      declared.fqName in importsFromDependencies
+    }
 }
 
 data class InheritedDependencyWithSource(
