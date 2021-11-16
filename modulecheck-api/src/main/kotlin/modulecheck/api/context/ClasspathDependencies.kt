@@ -71,9 +71,12 @@ data class ClasspathDependencies(
     }
       .toSet()
 
-    val directPairs = directDependencies.map { TransitiveProjectDependency(it, it) }
+    val directTransitive = directDependencies.map { TransitiveProjectDependency(it, it) }
 
-    return directPairs + inherited
+    val mainFromTestFixtures = directDependencies.filter { it.isTestFixture }
+      .map { TransitiveProjectDependency(it, it.copy(isTestFixture = false)) }
+
+    return directTransitive + inherited + mainFromTestFixtures
   }
 
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
