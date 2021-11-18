@@ -1069,14 +1069,14 @@ class InheritedDependenciesTest : ProjectTest() {
     logger.collectReport()
       .joinToString()
       .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+             :lib2
+                    dependency    name                source    build file
+                 ✔  :lib1         overshot                      /lib2/build.gradle.kts:
+                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+             :lib3
+                    dependency    name                   source    build file
+                 ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
 
          ModuleCheck found 3 issues
         """
@@ -1247,7 +1247,7 @@ class InheritedDependenciesTest : ProjectTest() {
                    dependency    name                   source    build file
                 ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
 
-        ModuleCheck found 3 issues
+        ModuleCheck found 1 issue
         """
   }
 
