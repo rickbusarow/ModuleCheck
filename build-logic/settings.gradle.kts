@@ -12,34 +12,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-plugins {
-  id 'org.jetbrains.kotlin.jvm'
-  id 'com.android.lint'
-}
 
-java {
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
-}
+enableFeaturePreview("VERSION_CATALOGS")
 
-tasks.register("testJvm") {
-  dependsOn("test")
-}
-
-//noinspection UnnecessaryQualifiedReference
-tasks.withType(org.gradle.api.tasks.testing.Test)
-  .configureEach {
-
-    useJUnitPlatform {
-      includeEngines("junit-vintage", "junit-jupiter")
-    }
-
-    testLogging {
-      events 'failed'// , 'passed'
-      exceptionFormat 'FULL'
-      showCauses true
-      showExceptions true
-      showStackTraces true
-    }
-
+pluginManagement {
+  @Suppress("UnstableApiUsage")
+  repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    maven("https://plugins.gradle.org/m2/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
   }
+}
+
+dependencyResolutionManagement {
+  @Suppress("UnstableApiUsage")
+  repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    maven("https://plugins.gradle.org/m2/")
+  }
+
+  @Suppress("UnstableApiUsage")
+  versionCatalogs {
+    create("libs") {
+      from(files("../gradle/libs.versions.toml"))
+    }
+  }
+}
+
+include(":mcbuild")

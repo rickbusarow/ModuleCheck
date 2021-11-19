@@ -14,7 +14,7 @@
  */
 
 plugins {
-  javaLibrary
+  id("mcbuild")
 }
 
 dependencies {

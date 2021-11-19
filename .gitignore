@@ -30,7 +30,7 @@ Thumbs.db
 *.ipr
 *.iws
 /.idea/*
-/.gradle/*
+*/.gradle/*
 
 # IDEA/Android Studio Ignore exceptions
 !/.idea/vcs.xml

@@ -17,7 +17,20 @@ pluginManagement {
   repositories {
     gradlePluginPortal()
     mavenCentral()
+    google()
     mavenLocal()
+  }
+  @Suppress("UnstableApiUsage")
+  includeBuild("build-logic")
+}
+
+dependencyResolutionManagement {
+  @Suppress("UnstableApiUsage")
+  repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    maven("https://plugins.gradle.org/m2/")
   }
 }
 
@@ -34,7 +47,6 @@ gradleEnterprise {
     publishAlways()
 
     tag(if (System.getenv("CI").isNullOrBlank()) "Local" else "CI")
-    tag(extra.properties["VERSION_NAME"] as String)
 
     val githubActionID = System.getenv("GITHUB_ACTION")
 

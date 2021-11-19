@@ -14,31 +14,21 @@
  */
 
 plugins {
-  id("mcbuild")
+  id("com.github.ben-manes.versions")
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
+fun isNonStable(version: String): Boolean {
+  val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+  val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+  val isStable = stableKeyword || regex.matches(version)
+  return isStable.not()
 }
 
-dependencies {
-
-  api(libs.kotlin.compiler)
-
-  api(project(path = ":modulecheck-parsing:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+tasks.named(
+  "dependencyUpdates",
+  com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask::class.java
+).configure {
+  rejectVersionIf {
+    isNonStable(candidate.version) && !isNonStable(currentVersion)
+  }
 }

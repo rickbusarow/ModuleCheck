@@ -13,32 +13,22 @@
  * limitations under the License.
  */
 
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 plugins {
-  id("mcbuild")
+  id("org.jlleitschuh.gradle.ktlint")
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
-}
+extensions.configure(KtlintExtension::class.java) {
+  debug.set(false)
 
-dependencies {
-
-  api(libs.kotlin.compiler)
-
-  api(project(path = ":modulecheck-parsing:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+  outputToConsole.set(true)
+  disabledRules.set(
+    setOf(
+      "no-wildcard-imports",
+      "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
+      "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
+      "experimental:argument-list-wrapping" // doesn't work half the time
+    )
+  )
 }

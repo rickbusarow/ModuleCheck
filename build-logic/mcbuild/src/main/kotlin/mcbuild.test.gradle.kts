@@ -13,23 +13,27 @@
  * limitations under the License.
  */
 
-plugins {
-  id 'groovy-gradle-plugin'
-}
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
-repositories {
-  mavenCentral()
-  google()
-}
+tasks.withType<Test> {
+  useJUnitPlatform()
 
-dependencies {
+  testLogging {
+    events = setOf(/*PASSED, */FAILED)
+    exceptionFormat = TestExceptionFormat.FULL
+    showExceptions = true
+    showCauses = true
+    showStackTraces = true
+  }
 
-  compileOnly(gradleApi())
-
-  implementation(libs.agp)
-
-  implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradle.plug)
-
-  implementation(libs.kotlinx.knit)
+  project
+    .properties
+    .asSequence()
+    .filter { (key, value) ->
+      key.startsWith("modulecheck") && value != null
+    }
+    .forEach { (key, value) ->
+      systemProperty(key, value!!)
+    }
 }

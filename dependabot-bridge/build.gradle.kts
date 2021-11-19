@@ -15,6 +15,7 @@
 
 plugins {
   id("com.rickbusarow.gradle-dependency-sync") version "0.11.4"
+  base
 }
 
 dependencies {
@@ -66,5 +67,21 @@ dependencies {
   dependencySync("com.rickbusarow.dispatch:dispatch-test-junit4:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-test-junit5:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-android-viewmodel:1.0.0-beta10")
+  dependencySync("com.google.dagger:dagger:2.39.1")
+  dependencySync("com.google.dagger:dagger-compiler:2.39.1")
+  dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.5.31")
+  dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.6.0")
+  dependencySync("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
+  dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
+  dependencySync("com.squareup.anvil:annotations:2.3.9")
+  dependencySync("com.squareup.anvil:compiler-api:2.3.9")
+  dependencySync("com.squareup.anvil:compiler:2.3.9")
+  dependencySync("com.squareup.anvil:compiler-utils:2.3.9")
+  dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
+  dependencySync("com.github.ben-manes:gradle-versions-plugin:0.39.0")
+  dependencySync("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.18.1")
+  dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.18.0")
+  dependencySync("com.github.tschuchortdev:kotlin-compile-testing:1.4.5")
+  dependencySync("gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0")
   dependencySync("org.unbescape:unbescape:1.1.6.RELEASE")
 }
