@@ -13,13 +13,8 @@
  * limitations under the License.
  */
 
-enableFeaturePreview("VERSION_CATALOGS")
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+package modulecheck.builds
 
-dependencyResolutionManagement {
-  versionCatalogs {
-    create("libs") {
-      from(files("../gradle/libs.versions.toml"))
-    }
-  }
+fun interface ArtifactIdListener {
+  fun onChanged(artifactId: String)
 }

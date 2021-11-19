@@ -14,31 +14,22 @@
  */
 
 plugins {
-  id("mcbuild")
+  base
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
-}
+// delete any empty directories
+tasks.withType<Delete> {
 
-dependencies {
+  doLast {
 
-  api(libs.kotlin.compiler)
+    val subprojectDirs = subprojects
+      .map { it.projectDir.path }
 
-  api(project(path = ":modulecheck-parsing:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+    projectDir.walkBottomUp()
+      .filter { it.isDirectory }
+      .filterNot { dir -> subprojectDirs.any { dir.path.startsWith(it) } }
+      .filterNot { it.path.contains(".gradle") }
+      .filter { it.listFiles()?.isEmpty() != false }
+      .forEach { it.deleteRecursively() }
+  }
 }

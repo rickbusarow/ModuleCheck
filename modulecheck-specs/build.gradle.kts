@@ -13,14 +13,8 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode
-
 plugins {
-  javaLibrary
-}
-
-kotlin {
-  explicitApi = ExplicitApiMode.Strict
+  id("mcbuild")
 }
 
 dependencies {

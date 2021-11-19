@@ -13,32 +13,8 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.builds
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
-}
-
-dependencies {
-
-  api(libs.kotlin.compiler)
-
-  api(project(path = ":modulecheck-parsing:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+fun interface DIListener {
+  fun onChanged(anvil: Boolean, dagger: Boolean)
 }

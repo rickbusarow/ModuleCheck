@@ -14,9 +14,12 @@
  */
 
 plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
+  id("mcbuild")
   groovy
+}
+
+mcbuild {
+  artifactId = "modulecheck-parsing-xml"
 }
 
 dependencies {

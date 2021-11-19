@@ -14,9 +14,13 @@
  */
 
 plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
+  id("mcbuild")
   id("java-test-fixtures")
+}
+
+mcbuild {
+  artifactId = "modulecheck-api"
+  anvil = true
 }
 
 val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()

@@ -1,28 +1,87 @@
 [versions]
+
 androidTools = "7.0.3"
+
+androidx-compose = "1.1.0-alpha04"
+androidx-fragment = "1.3.6"
+androidx-lifecycle = "2.3.1"
+androidx-navigation = "2.4.0-alpha09"
+androidx-paging = "3.0.1"
+androidx-room = "2.4.0-alpha04"
+androidx-startup = "1.1.0"
+androidx-test-espresso = "3.4.0"
+androidx-test = "1.4.0"
+androidx-work = "2.6.0"
+
 antlr = "4.9.3"
-anvil = "2.3.9"
-benManes = "0.36.0"
+autoManifest = "1.0.4"
+benManes = "0.39.0"
 changeTracker = "0.7.4"
+coil = "1.3.2"
 compileSdk = "30"
-dependencyAnalysis = "0.63.0"
-dokka = "1.4.20"
-gradleDoctor = "0.7.0"
+dependencyAnalysis = "0.78.0"
+detekt = "1.18.1"
+dokka = "1.5.31"
+exhaustive = "0.2.0"
+
+google-accompanist = "0.18.0"
+google-dagger = "2.39.1"
+google-material = "1.4.0"
+
+gradleDoctor = "0.7.3"
 groovy = "3.0.9"
 hermit = "0.9.5"
 jUnit = "5.8.1"
 knit = "0.3.0"
 kotest = "4.6.3"
 kotlin = "1.6.0"
-kotlinter = "3.4.4"
-mavenPublish = "0.13.0"
-minSdk = "23"
-spotless = "5.10.1"
-targetSdk = "30"
-taskTree = "1.5"
-kotlinx-coroutines = "1.5.2"
 
+kotlinx-atomicfu = "0.16.3"
+kotlinx-coroutines = "1.5.2"
+kotlinx-knit = "0.3.0"
+
+ktlint = "10.2.0"
+
+mavenPublish = "0.13.0"
+
+rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
+rickBusarow-moduleCheck = "0.11.3"
+rickBusarow-tangle = "0.13.2"
+
+square-anvil = "2.3.9"
+#square-anvil = "2.3.9-1-6-0"
+square-moshi = "1.12.0"
+square-okhttp = "4.9.1"
+square-retrofit = "2.9.0"
+square-workflow = "1.0.0"
+
+targetSdk = "30"
+taskTree = "2.1.0"
+
+vanniktech-publish = "0.18.0"
+
+zacSweers-moshix = "0.14.1"
+
+[plugins]
+
+anvil = { id = "com.squareup.anvil", version.ref = "square-anvil" }
+autoManifest = { id = "com.gradleup.auto.manifest", version.ref = "autoManifest" }
+benManes = { id = "com.github.ben-manes.versions", version.ref = "benManes" }
+dependencyAnalysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependencyAnalysis" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+exhaustive = { id = "app.cash.exhaustive:exhaustive-gradle", version.ref = "exhaustive" }
+gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+taskTree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
+
+dependencySync = { id = "com.rickbusarow.dependency-sync", version.ref = "rickBusarow-dependencySync" }
+moduleCheck = { id = "com.rickbusarow.module-check", version.ref = "rickBusarow-moduleCheck" }
+tangle = { id = "com.rickbusarow.tangle", version.ref = "rickBusarow-tangle" }
+
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+kotlinx-knit = { id = "kotlinx-knit", version.ref = "kotlinx-knit" }
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
@@ -30,7 +89,14 @@ agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" 
 antlr-core = { module = "org.antlr:antlr4", version.ref = "antlr" }
 antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }
 
-anvil = { module = "com.squareup.anvil:gradle-plugin", version.ref = "anvil" }
+benManes-gradle = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "benManes" }
+
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
+dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+
+google-dagger-api = { module = "com.google.dagger:dagger", version.ref = "google-dagger" }
+google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
 
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
@@ -45,6 +111,8 @@ javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.23.1"
 
 javax-inject = "javax.inject:javax.inject:1"
 
+jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:3.4.4"
+
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "jUnit" }
@@ -53,14 +121,16 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.r
 kotest-properties = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
 kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
 
+kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
 kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+
+kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.5"
 
 kotlinPoet = "com.squareup:kotlinpoet:1.10.2"
-
-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "kotlinter" }
 
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -70,6 +140,8 @@ kotlinx-coroutines-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-co
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
+
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 
 rickBusarow-dispatch-core = { module = "com.rickbusarow.dispatch:dispatch-core", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-detekt = { module = "com.rickbusarow.dispatch:dispatch-detekt", version.ref = "rickBusarow-dispatch" }
@@ -81,9 +153,20 @@ rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch
 rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
 
+scabbard = "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0"
+
 semVer = "net.swiftzer.semver:semver:1.1.2"
 
+square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "square-anvil" }
+square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "square-anvil" }
+square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "square-anvil" }
+square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "square-anvil" }
+square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "square-anvil" }
+
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
+
+vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.18.0"
+vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]

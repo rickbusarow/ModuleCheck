@@ -14,8 +14,12 @@
  */
 
 plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
+  id("mcbuild")
+}
+
+mcbuild {
+  artifactId = "modulecheck-core"
+  dagger = true
 }
 
 dependencies {

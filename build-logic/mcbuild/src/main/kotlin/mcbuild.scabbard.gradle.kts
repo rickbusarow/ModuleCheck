@@ -14,31 +14,21 @@
  */
 
 plugins {
-  id("mcbuild")
+  id("scabbard.gradle")
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
+scabbard {
+  enabled = true
+  fullBindingGraphValidation = true
+  outputFormat = "svg"
 }
-
-dependencies {
-
-  api(libs.kotlin.compiler)
-
-  api(project(path = ":modulecheck-parsing:api"))
-
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+configurations.all {
+  resolutionStrategy {
+    eachDependency {
+      if (requested.group == "com.github.kittinunf.result") {
+        useVersion("3.0.1")
+        because("Transitive dependency of Scabbard, currently not available on mavenCentral()")
+      }
+    }
+  }
 }

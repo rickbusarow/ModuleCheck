@@ -14,9 +14,11 @@
  */
 
 plugins {
-  javaLibrary
-  id("com.vanniktech.maven.publish")
-  groovy
+  id("mcbuild")
+}
+
+mcbuild {
+  artifactId = "modulecheck-parsing-psi"
 }
 
 dependencies {

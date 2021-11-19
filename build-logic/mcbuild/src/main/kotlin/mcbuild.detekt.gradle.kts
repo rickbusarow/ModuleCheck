@@ -13,32 +13,31 @@
  * limitations under the License.
  */
 
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
-  id("mcbuild")
+  id("io.gitlab.arturbosch.detekt")
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-java"
+detekt {
+
+  parallel = true
+  config = files("$rootDir/detekt/detekt-config.yml")
+
+  reports {
+    xml.enabled = false
+    html.enabled = true
+    txt.enabled = false
+  }
 }
 
-dependencies {
+tasks.withType<Detekt> {
 
-  api(libs.kotlin.compiler)
+  setSource(files(projectDir))
 
-  api(project(path = ":modulecheck-parsing:api"))
+  include("**/*.kt", "**/*.kts")
+  exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
 
-  compileOnly(gradleApi())
-
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+  // Target version of the generated JVM bytecode. It is used for type resolution.
+  this.jvmTarget = "1.8"
 }
