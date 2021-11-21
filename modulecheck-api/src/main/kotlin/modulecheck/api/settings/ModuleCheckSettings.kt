@@ -133,6 +133,11 @@ interface ReportsSettings {
    */
   val depths: ReportSettings
 
+  /**
+   * create dependency graphs for each source set for each module
+   */
+  val graphs: PerModuleReportSettings
+
   companion object {
     const val CHECKSTYLE_ENABLED_DEFAULT = false
     const val CHECKSTYLE_PATH_DEFAULT = "build/reports/modulecheck/report.xml"
@@ -142,10 +147,17 @@ interface ReportsSettings {
 
     const val DEPTHS_ENABLED_DEFAULT = false
     const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depth.txt"
+
+    const val GRAPH_ENABLED_DEFAULT = false
   }
 }
 
 interface ReportSettings {
   var enabled: Boolean
   var outputPath: String
+}
+
+interface PerModuleReportSettings {
+  var enabled: Boolean
+  var outputPath: String?
 }

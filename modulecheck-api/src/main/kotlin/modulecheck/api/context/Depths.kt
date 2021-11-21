@@ -60,8 +60,8 @@ data class Depths(
     return runBlocking { delegate.getOrPut(key) { fetchForSourceSet(key) } }
   }
 
-  private suspend fun fetchForSourceSet(key: SourceSetName): DepthFinding {
-    val (childDepth, children) = project.projectDependencies[key]
+  private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): DepthFinding {
+    val (childDepth, children) = project.projectDependencies[sourceSetName]
       .map { it.project }
       .distinct()
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
@@ -76,7 +76,7 @@ data class Depths(
       dependentPath = project.path,
       depth = childDepth + 1,
       children = children,
-      sourceSetName = key,
+      sourceSetName = sourceSetName,
       buildFile = project.buildFile
     )
   }

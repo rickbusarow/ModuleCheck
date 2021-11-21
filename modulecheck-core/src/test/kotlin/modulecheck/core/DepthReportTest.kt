@@ -51,7 +51,7 @@ internal class DepthReportTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -81,7 +81,7 @@ internal class DepthReportTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -219,7 +219,7 @@ internal class DepthReportTest : ProjectTest() {
     )
 
     val lib1 = project(":lib1") {
-      addSourceSet(SourceSetName("test"))
+      addSourceSet(SourceSetName.TEST)
     }
 
     val lib2 = project(":lib2") {
@@ -267,7 +267,7 @@ internal class DepthReportTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
     val debug1 = project(":debug1") {
       addDependency(ConfigurationName.implementation, lib1)
     }

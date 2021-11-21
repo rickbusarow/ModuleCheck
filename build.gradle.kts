@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import io.gitlab.arturbosch.detekt.detekt
-
 buildscript {
   dependencies {
     classpath(libs.agp)

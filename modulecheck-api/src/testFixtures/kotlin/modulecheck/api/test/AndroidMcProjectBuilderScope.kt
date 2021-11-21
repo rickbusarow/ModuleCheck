@@ -115,6 +115,7 @@ internal fun createAndroidProject(
   }
 
   builder.populateConfigs()
+  builder.populateSourceSets()
 
   val delegate = RealAndroidMcProject(
     path = builder.path,

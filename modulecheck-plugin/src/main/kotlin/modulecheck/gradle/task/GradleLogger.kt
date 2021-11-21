@@ -60,7 +60,7 @@ class GradleLogger(project: GradleProject) : Logger {
   }
 
   override fun printInfo(message: String) {
-    output.withStyle(StyledTextOutput.Style.Info).println(message)
+    output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
   override fun printFailure(message: String) {

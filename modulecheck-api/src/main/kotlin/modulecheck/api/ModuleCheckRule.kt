@@ -21,7 +21,7 @@ import modulecheck.parsing.McProject
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 
-interface ModuleCheckRule<T> {
+interface ModuleCheckRule<T : Finding> {
 
   val id: String
   val description: String

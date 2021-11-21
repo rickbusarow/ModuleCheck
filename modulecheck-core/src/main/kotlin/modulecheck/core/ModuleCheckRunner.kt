@@ -24,6 +24,7 @@ import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.DepthLogFactory
 import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
+import modulecheck.reporting.graphviz.GraphvizFileWriter
 import java.io.File
 import kotlin.properties.Delegates
 import kotlin.system.measureTimeMillis
@@ -46,6 +47,7 @@ data class ModuleCheckRunner(
   val findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
   val reportFactory: ReportFactory = ReportFactory(),
   val checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
+  val graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings),
   val dispatcherProvider: DispatcherProvider = DispatcherProvider()
 ) {
 
@@ -72,6 +74,7 @@ data class ModuleCheckRunner(
     val depths = allFindings.filterIsInstance<DepthFinding>()
     maybeLogDepths(depths)
     maybeReportDepths(depths)
+    maybeCreateGraphs(depths)
 
     // Replace this with kotlinx Duration APIs as soon as it's stable
     @Suppress("MagicNumber")
@@ -174,6 +177,12 @@ data class ModuleCheckRunner(
       File(path)
         .also { it.parentFile.mkdirs() }
         .writeText(depthReport.joinToString())
+    }
+  }
+
+  private suspend fun maybeCreateGraphs(depths: List<DepthFinding>) {
+    if (settings.reports.graphs.enabled) {
+      graphvizFileWriter.write(depths)
     }
   }
 

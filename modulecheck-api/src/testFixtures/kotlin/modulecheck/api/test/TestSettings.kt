@@ -68,6 +68,9 @@ class TestReportsSettings(
   override val depths: ReportSettings = TestReportSettings(
     ReportsSettings.DEPTHS_ENABLED_DEFAULT,
     ReportsSettings.DEPTHS_PATH_DEFAULT
+  ),
+  override val graphs: PerModuleReportSettings = TestPerModuleReportSettings(
+    enabled = ReportsSettings.GRAPH_ENABLED_DEFAULT, outputPath = null
   )
 ) : ReportsSettings
 
@@ -75,3 +78,8 @@ class TestReportSettings(
   override var enabled: Boolean,
   override var outputPath: String
 ) : ReportSettings
+
+class TestPerModuleReportSettings(
+  override var enabled: Boolean,
+  override var outputPath: String?
+) : PerModuleReportSettings
