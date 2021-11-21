@@ -15,9 +15,19 @@
 
 package modulecheck.gradle
 
-import com.squareup.kotlinpoet.*
-import modulecheck.specs.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asTypeName
+import modulecheck.specs.ProjectBuildSpec
+import modulecheck.specs.ProjectBuildSpecBuilder
+import modulecheck.specs.ProjectSettingsSpecBuilder
+import modulecheck.specs.ProjectSpec
+import modulecheck.specs.ProjectSrcSpec
 import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
+import modulecheck.specs.applyEach
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path

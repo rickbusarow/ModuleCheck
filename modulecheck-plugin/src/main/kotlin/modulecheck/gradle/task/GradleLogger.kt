@@ -18,7 +18,16 @@ package modulecheck.gradle.task
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.api.Logger
 import modulecheck.api.Report
-import modulecheck.api.Report.ReportEntry.*
+import modulecheck.api.Report.ReportEntry.Failure
+import modulecheck.api.Report.ReportEntry.FailureHeader
+import modulecheck.api.Report.ReportEntry.FailureLine
+import modulecheck.api.Report.ReportEntry.Header
+import modulecheck.api.Report.ReportEntry.Info
+import modulecheck.api.Report.ReportEntry.Success
+import modulecheck.api.Report.ReportEntry.SuccessHeader
+import modulecheck.api.Report.ReportEntry.SuccessLine
+import modulecheck.api.Report.ReportEntry.Warning
+import modulecheck.api.Report.ReportEntry.WarningLine
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.GradleProject
 import org.gradle.configurationcache.extensions.serviceOf

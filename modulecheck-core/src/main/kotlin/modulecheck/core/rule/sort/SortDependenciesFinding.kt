@@ -24,7 +24,7 @@ import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.DependencyDeclaration
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 class SortDependenciesFinding(
   override val dependentPath: String,

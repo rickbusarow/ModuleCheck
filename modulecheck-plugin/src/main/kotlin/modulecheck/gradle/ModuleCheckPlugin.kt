@@ -18,7 +18,12 @@ package modulecheck.gradle
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.api.FindingFactory
-import modulecheck.core.rule.*
+import modulecheck.core.rule.DepthRule
+import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.core.rule.SingleRuleFindingFactory
+import modulecheck.core.rule.SortDependenciesRule
+import modulecheck.core.rule.SortPluginsRule
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin

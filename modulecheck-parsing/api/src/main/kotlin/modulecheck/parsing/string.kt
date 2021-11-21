@@ -15,7 +15,7 @@
 
 package modulecheck.parsing
 
-import java.util.*
+import java.util.Locale
 
 fun String.decapitalize(
   locale: Locale = Locale.US

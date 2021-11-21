@@ -20,7 +20,7 @@ import org.jetbrains.kotlin.util.prefixIfNot
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
-import java.util.*
+import java.util.UUID
 import kotlin.properties.Delegates
 import io.kotest.matchers.shouldBe as kotestShouldBe
 

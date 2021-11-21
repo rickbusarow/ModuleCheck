@@ -65,7 +65,8 @@ internal class AndroidBuildFeaturesVisitorTest : HermitJUnit5() {
 
     testFile.writeText(block)
 
-    visitor.find(testFileKt, "viewBinding").toString() shouldBe "buildFeatures.viewBinding = $enabled"
+    visitor.find(testFileKt, "viewBinding")
+      .toString() shouldBe "buildFeatures.viewBinding = $enabled"
   }
 
   @TestFactory

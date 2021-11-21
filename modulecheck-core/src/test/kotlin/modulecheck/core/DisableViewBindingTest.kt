@@ -15,7 +15,11 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.*
+import modulecheck.api.test.ProjectTest
+import modulecheck.api.test.ReportingLogger
+import modulecheck.api.test.TestChecksSettings
+import modulecheck.api.test.TestSettings
+import modulecheck.api.test.writeKotlin
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.ConfigurationName

@@ -16,7 +16,15 @@
 package modulecheck.api.test
 
 import modulecheck.api.RealMcProject
-import modulecheck.parsing.*
+import modulecheck.parsing.AnvilGradlePlugin
+import modulecheck.parsing.Config
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectCache
+import modulecheck.parsing.ProjectDependencies
+import modulecheck.parsing.SourceSet
+import modulecheck.parsing.SourceSetName
 import org.intellij.lang.annotations.Language
 import java.io.File
 

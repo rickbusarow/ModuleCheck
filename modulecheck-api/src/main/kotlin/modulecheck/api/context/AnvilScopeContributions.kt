@@ -15,7 +15,11 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.*
+import modulecheck.parsing.AnvilScopeName
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
 
 data class AnvilScopeContributions(
   internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>

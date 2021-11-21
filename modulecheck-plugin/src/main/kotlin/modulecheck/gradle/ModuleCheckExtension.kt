@@ -16,7 +16,7 @@
 package modulecheck.gradle
 
 import modulecheck.api.KaptMatcher
-import modulecheck.api.settings.*
+import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DEPTHS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
@@ -29,6 +29,10 @@ import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
+import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.api.settings.PerModuleReportSettings
+import modulecheck.api.settings.ReportSettings
+import modulecheck.api.settings.ReportsSettings
 import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_ENABLED_DEFAULT
@@ -36,6 +40,7 @@ import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.GRAPH_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
+import modulecheck.api.settings.SortSettings
 import modulecheck.api.settings.SortSettings.Companion.DEPENDENCY_COMPARATORS_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.PLUGIN_COMPARATORS_DEFAULT
 import modulecheck.gradle.internal.listProperty

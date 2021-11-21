@@ -16,7 +16,15 @@
 package modulecheck.api.context
 
 import modulecheck.api.util.flatMapBlocking
-import modulecheck.parsing.*
+import modulecheck.parsing.AnvilScopeName
+import modulecheck.parsing.AnvilScopeNameEntry
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.RawAnvilAnnotatedType
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex

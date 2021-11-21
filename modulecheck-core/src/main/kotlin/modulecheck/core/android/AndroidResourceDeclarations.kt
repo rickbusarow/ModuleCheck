@@ -17,7 +17,12 @@ package modulecheck.core.android
 
 import modulecheck.api.context.JvmFiles
 import modulecheck.api.context.ResSourceFiles
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import modulecheck.parsing.xml.AndroidResourceParser
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

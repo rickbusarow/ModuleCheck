@@ -16,7 +16,12 @@
 package modulecheck.api.test
 
 import modulecheck.api.KaptMatcher
-import modulecheck.api.settings.*
+import modulecheck.api.settings.ChecksSettings
+import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.api.settings.PerModuleReportSettings
+import modulecheck.api.settings.ReportSettings
+import modulecheck.api.settings.ReportsSettings
+import modulecheck.api.settings.SortSettings
 
 @Suppress("UNUSED_PARAMETER")
 data class TestSettings(

@@ -16,7 +16,11 @@
 package modulecheck.parsing.groovy.antlr
 
 import io.kotest.matchers.shouldBe
-import modulecheck.parsing.*
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ExternalDependencyDeclaration
+import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.ModuleRef
+import modulecheck.parsing.UnknownDependencyDeclaration
 import org.junit.jupiter.api.Test
 
 internal class GroovyDependencyBlockParserTest {

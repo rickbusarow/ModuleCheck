@@ -15,7 +15,17 @@
 
 package modulecheck.api
 
-import modulecheck.api.Report.ReportEntry.*
+import modulecheck.api.Report.ReportEntry.AppendNewLine
+import modulecheck.api.Report.ReportEntry.Failure
+import modulecheck.api.Report.ReportEntry.FailureHeader
+import modulecheck.api.Report.ReportEntry.FailureLine
+import modulecheck.api.Report.ReportEntry.Header
+import modulecheck.api.Report.ReportEntry.Info
+import modulecheck.api.Report.ReportEntry.Success
+import modulecheck.api.Report.ReportEntry.SuccessHeader
+import modulecheck.api.Report.ReportEntry.SuccessLine
+import modulecheck.api.Report.ReportEntry.Warning
+import modulecheck.api.Report.ReportEntry.WarningLine
 
 data class Report(val entries: List<ReportEntry>) {
 

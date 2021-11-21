@@ -16,9 +16,17 @@
 package modulecheck.core
 
 import modulecheck.core.context.OverShotDependencies
-import modulecheck.parsing.*
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.DependenciesBlock
+import modulecheck.parsing.DependencyBlockParser
+import modulecheck.parsing.DependencyDeclaration
+import modulecheck.parsing.ExternalDependencyDeclaration
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.parsing.ModuleRef.StringRef
 import modulecheck.parsing.ModuleRef.TypeSafeRef
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.UnknownDependencyDeclaration
 import java.io.File
 
 data class OverShotDependencyFinding(

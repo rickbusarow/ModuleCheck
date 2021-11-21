@@ -15,7 +15,17 @@
 
 package modulecheck.api
 
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.AnvilGradlePlugin
+import modulecheck.parsing.Config
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectCache
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.ProjectDependencies
+import modulecheck.parsing.RealProjectContext
+import modulecheck.parsing.SourceSet
+import modulecheck.parsing.SourceSetName
 import java.io.File
 
 @Suppress("LongParameterList")
