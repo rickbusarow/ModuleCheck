@@ -33,21 +33,14 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
 
       - uses: burrunan/gradle-cache-action@v1
-        name: Update website's changelog
+        name: build website
         with:
           gradle-dependencies-cache-key: |
             gradle/libs.versions.toml
           arguments: |
-            updateWebsiteChangelog
+            buildSite
           concurrent: true
           gradle-build-scan-report: false
-
-      # Install and build Docusaurus website
-      - name: Build Docusaurus website
-        run: |
-          cd website
-          yarn install
-          yarn run build
 
       - name: Deploy to GitHub Pages
         if: success()
