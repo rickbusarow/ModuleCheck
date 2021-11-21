@@ -13,20 +13,19 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.dagger
 
-mcbuild {
-  artifactId = "modulecheck-reporting-console"
-  anvil = true
-}
+object Components {
 
-dependencies {
+  @PublishedApi
+  @Suppress("ObjectPropertyNaming", "ObjectPropertyName")
+  internal val _components = mutableSetOf<Any>()
 
-  api(project(path = ":modulecheck-api"))
+  fun add(component: Any) {
+    _components.add(component)
+  }
 
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
+  inline fun <reified T> get(): T = _components
+    .filterIsInstance<T>()
+    .single()
 }

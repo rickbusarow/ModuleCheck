@@ -19,7 +19,6 @@ import modulecheck.api.RealMcProject
 import modulecheck.parsing.*
 import org.intellij.lang.annotations.Language
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 
 interface McProjectBuilderScope {
   var path: String
@@ -30,7 +29,7 @@ interface McProjectBuilderScope {
   var hasKapt: Boolean
   val sourceSets: MutableMap<SourceSetName, SourceSet>
   var anvilGradlePlugin: AnvilGradlePlugin?
-  val projectCache: ConcurrentHashMap<String, McProject>
+  val projectCache: ProjectCache
 
   fun addDependency(
     configurationName: ConfigurationName,
@@ -104,11 +103,11 @@ data class JvmMcProjectBuilderScope(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  override val projectCache: ConcurrentHashMap<String, McProject> = ConcurrentHashMap()
+  override val projectCache: ProjectCache = ProjectCache()
 ) : McProjectBuilderScope
 
 internal fun createProject(
-  projectCache: ConcurrentHashMap<String, McProject>,
+  projectCache: ProjectCache,
   projectDir: File,
   path: String,
   config: McProjectBuilderScope.() -> Unit

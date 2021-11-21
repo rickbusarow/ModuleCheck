@@ -21,10 +21,11 @@ import modulecheck.api.DepthFinding
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.child
 import java.io.File
+import javax.inject.Inject
 
-class GraphvizFileWriter(
+class GraphvizFileWriter @Inject constructor(
   private val settings: ModuleCheckSettings,
-  private val graphvizFactory: GraphvizFactory = GraphvizFactory()
+  private val graphvizFactory: GraphvizFactory
 ) {
 
   suspend fun write(depths: List<DepthFinding>) = coroutineScope {

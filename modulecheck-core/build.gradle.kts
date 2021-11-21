@@ -35,6 +35,7 @@ dependencies {
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
+  api(project(path = ":modulecheck-runtime"))
 
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
@@ -53,6 +54,7 @@ dependencies {
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.reflect)
+  testImplementation(libs.rickBusarow.dispatch.test.core)
 
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
 

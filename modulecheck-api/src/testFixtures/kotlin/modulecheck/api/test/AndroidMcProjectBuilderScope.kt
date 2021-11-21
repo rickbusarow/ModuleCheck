@@ -19,7 +19,6 @@ import modulecheck.api.RealAndroidMcProject
 import modulecheck.parsing.*
 import org.intellij.lang.annotations.Language
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 
 interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
   var androidPackage: String
@@ -83,11 +82,11 @@ data class RealAndroidMcProjectBuilderScope(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  override val projectCache: ConcurrentHashMap<String, McProject> = ConcurrentHashMap()
+  override val projectCache: ProjectCache = ProjectCache()
 ) : AndroidMcProjectBuilderScope
 
 internal fun createAndroidProject(
-  projectCache: ConcurrentHashMap<String, McProject>,
+  projectCache: ProjectCache,
   projectDir: File,
   path: String,
   androidPackage: String,

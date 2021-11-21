@@ -17,7 +17,6 @@ package modulecheck.api
 
 import modulecheck.parsing.*
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 
 @Suppress("LongParameterList")
 class RealAndroidMcProject(
@@ -27,7 +26,7 @@ class RealAndroidMcProject(
   override val configurations: Map<ConfigurationName, Config>,
   override val hasKapt: Boolean,
   override val sourceSets: Map<SourceSetName, SourceSet>,
-  override val projectCache: ConcurrentHashMap<String, McProject>,
+  override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,

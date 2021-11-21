@@ -19,6 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-graphviz"
+  anvil = true
 }
 
 dependencies {

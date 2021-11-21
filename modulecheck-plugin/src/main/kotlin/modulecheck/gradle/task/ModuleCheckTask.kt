@@ -17,27 +17,20 @@ package modulecheck.gradle.task
 
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
-import modulecheck.api.RealFindingResultFactory
-import modulecheck.core.ModuleCheckRunner
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.gradle.GradleProjectProvider
+import modulecheck.dagger.Components
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectsAware
-import modulecheck.reporting.console.ReportFactory
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.getByType
-import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
-abstract class ModuleCheckTask<T : Finding> @Inject constructor(
+open class ModuleCheckTask<T : Finding> @Inject constructor(
   private val findingFactory: FindingFactory<T>,
   private val autoCorrect: Boolean
-) : DefaultTask(),
-  ProjectsAware {
+) : DefaultTask() {
 
   init {
     group = "moduleCheck"
@@ -51,26 +44,16 @@ abstract class ModuleCheckTask<T : Finding> @Inject constructor(
   @get:Input
   val settings: ModuleCheckExtension = project.extensions.getByType()
 
-  @get:Input
-  final override val projectCache = ConcurrentHashMap<String, McProject>()
-
-  @get:Input
-  val projectProvider = GradleProjectProvider(project.rootProject, projectCache)
-
-  @get:Input
-  val logger = GradleLogger(project)
-
   @TaskAction
   fun run() {
 
-    val runner = ModuleCheckRunner(
-      autoCorrect = autoCorrect,
-      settings = settings,
-      findingFactory = findingFactory,
-      logger = logger,
-      findingResultFactory = RealFindingResultFactory(),
-      reportFactory = ReportFactory()
-    )
+    val component = DaggerTaskComponent.factory()
+      .create(project, settings, findingFactory)
+
+    Components.add(component)
+
+    val runner = component.runnerFactory.create(autoCorrect)
+    val projectProvider = component.gradleProjectProvider.create(project)
 
     val projects = project
       .allprojects

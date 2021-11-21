@@ -40,6 +40,7 @@ plugins {
 mcbuild {
   // this is just used for `publishToMavenLocal`
   artifactId = "com.rickbusarow.module-check"
+  dagger = true
 }
 
 dependencies {
@@ -55,6 +56,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:api"))
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-reporting:console"))
+  api(project(path = ":modulecheck-runtime"))
 
   implementation(libs.agp)
   implementation(libs.square.anvil.gradle)

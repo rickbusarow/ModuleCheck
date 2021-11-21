@@ -15,7 +15,12 @@
 
 package modulecheck.parsing
 
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.SingleIn
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
+import javax.inject.Inject
 import kotlin.contracts.contract
 
 @Suppress("TooManyFunctions")
@@ -70,3 +75,6 @@ interface AndroidMcProject : McProject {
   val androidPackageOrNull: String?
   val manifests: Map<SourceSetName, File>
 }
+
+@SingleIn(AppScope::class)
+class ProjectCache @Inject constructor() : ConcurrentMap<String, McProject> by ConcurrentHashMap()

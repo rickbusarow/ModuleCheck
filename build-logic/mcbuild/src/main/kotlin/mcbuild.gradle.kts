@@ -26,10 +26,6 @@ plugins {
   id("mcbuild.test")
 }
 
-val GROUP = "com.rickbusarow.modulecheck"
-val PLUGIN_ID = "com.rickbusarow.module-check"
-val VERSION_NAME = "0.11.3"
-
 val settings = extensions.create<ModuleCheckBuildExtension>(
   "mcbuild",
   ArtifactIdListener { onNewArtifactId(it) },

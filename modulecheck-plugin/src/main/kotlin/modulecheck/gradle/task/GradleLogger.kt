@@ -15,15 +15,21 @@
 
 package modulecheck.gradle.task
 
+import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.api.Logger
 import modulecheck.api.Report
 import modulecheck.api.Report.ReportEntry.*
+import modulecheck.dagger.AppScope
 import modulecheck.gradle.GradleProject
 import org.gradle.configurationcache.extensions.serviceOf
 import org.gradle.internal.logging.text.StyledTextOutput
 import org.gradle.internal.logging.text.StyledTextOutputFactory
+import javax.inject.Inject
 
-class GradleLogger(project: GradleProject) : Logger {
+@ContributesBinding(AppScope::class)
+class GradleLogger @Inject constructor(
+  project: GradleProject
+) : Logger {
 
   private val output: StyledTextOutput = project
     .serviceOf<StyledTextOutputFactory>()

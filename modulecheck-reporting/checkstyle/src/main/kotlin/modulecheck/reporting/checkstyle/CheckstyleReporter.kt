@@ -18,8 +18,9 @@ package modulecheck.reporting.checkstyle
 import modulecheck.api.Finding.FindingResult
 import org.unbescape.xml.XmlEscape
 import java.io.File
+import javax.inject.Inject
 
-class CheckstyleReporter {
+class CheckstyleReporter @Inject constructor() {
 
   fun createXml(results: List<FindingResult>): String = buildString {
 

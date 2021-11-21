@@ -13,20 +13,13 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.dagger
 
-mcbuild {
-  artifactId = "modulecheck-reporting-console"
-  anvil = true
-}
+import javax.inject.Scope
+import kotlin.reflect.KClass
 
-dependencies {
+abstract class AppScope private constructor()
 
-  api(project(path = ":modulecheck-api"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-}
+@Scope
+@Retention(AnnotationRetention.RUNTIME)
+annotation class SingleIn(val clazz: KClass<*>)

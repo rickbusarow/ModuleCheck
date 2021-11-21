@@ -18,8 +18,9 @@ package modulecheck.reporting.console
 import modulecheck.api.Finding
 import modulecheck.api.Report
 import java.util.*
+import javax.inject.Inject
 
-class ReportFactory {
+class ReportFactory @Inject constructor() {
 
   fun create(results: List<Finding.FindingResult>): Report = Report.build {
 

@@ -18,15 +18,17 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-console"
-  anvil = true
+  artifactId = "modulecheck-runtime"
+  dagger = true
 }
 
 dependencies {
 
-  api(project(path = ":modulecheck-api"))
+  api(libs.kotlinx.coroutines.core)
+  api(libs.rickBusarow.dispatch.core)
 
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-reporting:checkstyle"))
+  api(project(path = ":modulecheck-reporting:console"))
+  api(project(path = ":modulecheck-reporting:graphviz"))
 }
