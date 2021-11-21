@@ -26,6 +26,9 @@ import com.android.build.gradle.TestExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import modulecheck.api.RealAndroidMcProject
 import modulecheck.api.RealMcProject
 import modulecheck.core.parse
@@ -45,12 +48,12 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.LazyThreadSafetyMode.NONE
 
-class GradleProjectProvider(
+class GradleProjectProvider @AssistedInject constructor(
+  @Assisted
   rootGradleProject: GradleProject,
-  override val projectCache: ConcurrentHashMap<String, McProject>
+  override val projectCache: ProjectCache
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -334,5 +337,10 @@ class GradleProjectProvider(
 
   companion object {
     private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
+  }
+
+  @AssistedFactory
+  interface Factory {
+    fun create(rootGradleProject: GradleProject): GradleProjectProvider
   }
 }

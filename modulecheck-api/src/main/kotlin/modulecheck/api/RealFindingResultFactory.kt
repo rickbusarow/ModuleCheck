@@ -15,11 +15,30 @@
 
 package modulecheck.api
 
-fun interface FindingResultFactory {
+import com.squareup.anvil.annotations.ContributesBinding
+import modulecheck.dagger.AppScope
+import javax.inject.Inject
 
-  fun create(
+@ContributesBinding(AppScope::class)
+class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
+
+  override fun create(
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean
-  ): List<Finding.FindingResult>
+  ): List<Finding.FindingResult> {
+
+    return findings.onEach { it.positionOrNull }
+      .map { finding ->
+
+        val fixed = when {
+          !autoCorrect -> false
+          deleteUnused && finding is Deletable -> finding.delete()
+          finding is Fixable -> finding.fix()
+          else -> false
+        }
+
+        finding.toResult(fixed)
+      }
+  }
 }

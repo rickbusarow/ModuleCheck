@@ -15,15 +15,17 @@
 
 package modulecheck.api.test
 
-import modulecheck.parsing.*
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectCache
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
-import java.util.concurrent.ConcurrentHashMap
 
 abstract class ProjectTest : BaseTest() {
 
-  val projectCache: ConcurrentHashMap<String, McProject> by resets { ConcurrentHashMap() }
+  val projectCache: ProjectCache by resets { ProjectCache() }
 
   fun project(path: String, config: McProjectBuilderScope.() -> Unit = {}): McProject {
 

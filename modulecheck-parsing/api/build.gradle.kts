@@ -19,6 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-api"
+  anvil = true
 }
 
 dependencies {
@@ -27,6 +28,8 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
+
+  api(project(path = ":modulecheck-dagger"))
 
   compileOnly(gradleApi())
 

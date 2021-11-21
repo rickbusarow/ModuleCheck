@@ -26,8 +26,9 @@ import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.isAndroid
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.*
+import javax.inject.Inject
 
-class GraphvizFactory {
+class GraphvizFactory @Inject constructor() {
 
   suspend fun create(root: DepthFinding): String = buildString {
 

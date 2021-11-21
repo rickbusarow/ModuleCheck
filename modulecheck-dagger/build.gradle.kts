@@ -18,15 +18,13 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-console"
+  artifactId = "modulecheck-dagger"
   anvil = true
 }
 
 dependencies {
 
-  api(project(path = ":modulecheck-api"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
 }

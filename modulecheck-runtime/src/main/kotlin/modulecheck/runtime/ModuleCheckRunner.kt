@@ -13,8 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.runtime
 
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.*
@@ -39,16 +42,17 @@ import kotlin.system.measureTimeMillis
  * @param reportFactory handles console output of the results
  */
 @Suppress("LongParameterList")
-data class ModuleCheckRunner(
-  val autoCorrect: Boolean,
+data class ModuleCheckRunner @AssistedInject constructor(
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
   val logger: Logger,
-  val findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
-  val reportFactory: ReportFactory = ReportFactory(),
-  val checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
-  val graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings),
-  val dispatcherProvider: DispatcherProvider = DispatcherProvider()
+  val findingResultFactory: FindingResultFactory,
+  val reportFactory: ReportFactory,
+  val checkstyleReporter: CheckstyleReporter,
+  val graphvizFileWriter: GraphvizFileWriter,
+  val dispatcherProvider: DispatcherProvider,
+  @Assisted
+  val autoCorrect: Boolean
 ) {
 
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(dispatcherProvider.io) {
@@ -197,6 +201,11 @@ data class ModuleCheckRunner(
   }
 
   data class TimedResults<R>(val timeMillis: Long, val data: R)
+
+  @AssistedFactory
+  interface Factory {
+    fun create(autoCorrect: Boolean): ModuleCheckRunner
+  }
 }
 
 private class ModuleCheckFailure(message: String) : Exception(message)

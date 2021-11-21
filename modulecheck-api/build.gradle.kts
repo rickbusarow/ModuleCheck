@@ -33,6 +33,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:api"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
