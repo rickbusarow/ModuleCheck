@@ -19,7 +19,7 @@ import hermit.test.Hermit
 import hermit.test.LazyResets
 import java.io.File
 import java.nio.file.Files
-import java.util.*
+import java.util.UUID
 
 fun Hermit.tempDir(path: String = UUID.randomUUID().toString()): LazyResets<File> {
   return object : LazyResets<File> {

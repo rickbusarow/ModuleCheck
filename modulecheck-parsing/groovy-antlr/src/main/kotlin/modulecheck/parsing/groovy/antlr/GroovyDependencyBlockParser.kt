@@ -17,7 +17,11 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import groovyjarjarantlr4.v4.runtime.*
+import groovyjarjarantlr4.v4.runtime.CharStream
+import groovyjarjarantlr4.v4.runtime.CharStreams
+import groovyjarjarantlr4.v4.runtime.CommonTokenStream
+import groovyjarjarantlr4.v4.runtime.ParserRuleContext
+import groovyjarjarantlr4.v4.runtime.RuleContext
 import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.MavenCoordinates
@@ -25,7 +29,13 @@ import modulecheck.parsing.ModuleRef
 import modulecheck.parsing.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyLangLexer
 import org.apache.groovy.parser.antlr4.GroovyLangParser
-import org.apache.groovy.parser.antlr4.GroovyParser.*
+import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
+import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.NlsContext
+import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
+import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 
 class GroovyDependencyBlockParser {

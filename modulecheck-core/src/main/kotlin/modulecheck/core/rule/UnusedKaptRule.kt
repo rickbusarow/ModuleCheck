@@ -18,7 +18,11 @@ package modulecheck.core.rule
 import modulecheck.api.KaptMatcher
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.asMap
-import modulecheck.api.context.*
+import modulecheck.api.context.ImportName
+import modulecheck.api.context.KaptDependencies
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.kaptDependencies
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.kapt.UnusedKaptFinding

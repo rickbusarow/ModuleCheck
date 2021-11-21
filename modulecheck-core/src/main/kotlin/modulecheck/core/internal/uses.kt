@@ -15,10 +15,20 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.context.*
+import modulecheck.api.context.Declarations
+import modulecheck.api.context.anvilScopeContributionsForSourceSetName
+import modulecheck.api.context.anvilScopeMerges
+import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.AnvilScopeName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.TransitiveProjectDependency
 
 suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 

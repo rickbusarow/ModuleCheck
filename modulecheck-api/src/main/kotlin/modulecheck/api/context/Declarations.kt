@@ -15,7 +15,12 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.DeclarationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 

@@ -25,7 +25,11 @@ import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.isAndroid
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.*
+import modulecheck.reporting.graphviz.GraphvizFactory.Color.ANDROID_GREEN
+import modulecheck.reporting.graphviz.GraphvizFactory.Color.API_RED
+import modulecheck.reporting.graphviz.GraphvizFactory.Color.BLACK
+import modulecheck.reporting.graphviz.GraphvizFactory.Color.IMPLEMENTATION_GREEN
+import modulecheck.reporting.graphviz.GraphvizFactory.Color.JAVA_ORANGE
 import javax.inject.Inject
 
 class GraphvizFactory @Inject constructor() {

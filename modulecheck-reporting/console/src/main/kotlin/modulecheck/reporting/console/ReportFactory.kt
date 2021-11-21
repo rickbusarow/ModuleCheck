@@ -17,7 +17,7 @@ package modulecheck.reporting.console
 
 import modulecheck.api.Finding
 import modulecheck.api.Report
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 class ReportFactory @Inject constructor() {

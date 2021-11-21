@@ -20,7 +20,12 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
-import modulecheck.api.*
+import modulecheck.api.DepthFinding
+import modulecheck.api.Finding
+import modulecheck.api.FindingFactory
+import modulecheck.api.FindingResultFactory
+import modulecheck.api.Logger
+import modulecheck.api.Problem
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.McProject
 import modulecheck.reporting.checkstyle.CheckstyleReporter

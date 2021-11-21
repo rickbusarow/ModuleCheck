@@ -16,7 +16,11 @@
 package modulecheck.api.context
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.*
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.TransitiveProjectDependency
 import java.util.concurrent.ConcurrentHashMap
 
 data class ClasspathDependencies(

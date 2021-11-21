@@ -15,8 +15,18 @@
 
 package modulecheck.parsing.psi
 
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtBinaryExpression
+import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtFunctionLiteral
+import org.jetbrains.kotlin.psi.KtLambdaArgument
+import org.jetbrains.kotlin.psi.KtLambdaExpression
+import org.jetbrains.kotlin.psi.binaryExpressionRecursiveVisitor
+import org.jetbrains.kotlin.psi.callExpressionRecursiveVisitor
+import org.jetbrains.kotlin.psi.dotQualifiedExpressionRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
+import org.jetbrains.kotlin.psi.referenceExpressionRecursiveVisitor
 
 class AndroidBuildFeaturesVisitor {
 

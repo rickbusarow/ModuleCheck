@@ -70,8 +70,8 @@ enableFeaturePreview("VERSION_CATALOGS")
 include(
   ":dependabot-bridge",
   ":modulecheck-api",
-  ":modulecheck-dagger",
   ":modulecheck-core",
+  ":modulecheck-dagger",
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:api",
   ":modulecheck-parsing:groovy-antlr",

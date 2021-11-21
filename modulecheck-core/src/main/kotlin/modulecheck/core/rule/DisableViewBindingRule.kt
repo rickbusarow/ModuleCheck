@@ -22,7 +22,11 @@ import modulecheck.api.context.layoutFiles
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.*
+import modulecheck.parsing.AndroidMcProject
+import modulecheck.parsing.McProject
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.all
+import modulecheck.parsing.capitalize
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 

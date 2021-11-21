@@ -15,10 +15,20 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.context.*
+import modulecheck.api.context.anvilScopeContributionsForSourceSetName
+import modulecheck.api.context.anvilScopeMerges
+import modulecheck.api.context.apiDependencySources
+import modulecheck.api.context.declarations
+import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.api.context.publicDependencies
 import modulecheck.api.util.filterBlocking
 import modulecheck.api.util.mapBlocking
-import modulecheck.parsing.*
+import modulecheck.parsing.ConfigurationName
+import modulecheck.parsing.ConfiguredProjectDependency
+import modulecheck.parsing.McProject
+import modulecheck.parsing.ProjectContext
+import modulecheck.parsing.SourceSetName
+import modulecheck.parsing.asDeclarationName
 import modulecheck.parsing.psi.KotlinFile
 
 data class MustBeApi(

@@ -23,7 +23,7 @@ import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.McProject
-import java.util.*
+import java.util.Locale
 
 class SortDependenciesRule(
   settings: ModuleCheckSettings
