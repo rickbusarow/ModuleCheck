@@ -123,12 +123,22 @@ fun File.updateModuleCheckVersionRef(version: String) {
   writeText(newText)
 }
 
+val yarnInstall by tasks.registering(Exec::class) {
+
+  description = "runs `yarn install` for the website"
+  group = "website"
+
+  workingDir("./website")
+  commandLine("yarn", "install")
+}
+
 val startSite by tasks.registering(Exec::class) {
 
   description = "launches the local development website"
   group = "website"
 
   dependsOn(
+    yarnInstall,
     updateWebsiteChangelog,
     updateWebsiteNextDocsVersionRefs,
     updateWebsitePackageJsonVersion
@@ -140,10 +150,11 @@ val startSite by tasks.registering(Exec::class) {
 
 val buildSite by tasks.registering(Exec::class) {
 
-  description = "launches the local development website"
+  description = "builds the website"
   group = "website"
 
   dependsOn(
+    yarnInstall,
     versionDocs,
     updateWebsiteChangelog,
     updateWebsiteNextDocsVersionRefs,
@@ -151,7 +162,6 @@ val buildSite by tasks.registering(Exec::class) {
   )
 
   workingDir("./website")
-  commandLine("yarn", "install")
   commandLine("yarn", "run", "build")
 }
 
