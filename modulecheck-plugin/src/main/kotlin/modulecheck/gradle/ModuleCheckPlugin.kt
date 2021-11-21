@@ -55,6 +55,10 @@ class ModuleCheckPlugin : Plugin<Project> {
       findingFactory = SingleRuleFindingFactory(DepthRule())
     )
     target.registerTasks(
+      name = "moduleCheckGraphs",
+      findingFactory = SingleRuleFindingFactory(DepthRule())
+    )
+    target.registerTasks(
       name = "moduleCheck",
       findingFactory = MultiRuleFindingFactory(settings, rules)
     )

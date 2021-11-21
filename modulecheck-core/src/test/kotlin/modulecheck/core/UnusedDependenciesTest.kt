@@ -49,7 +49,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -100,7 +100,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -151,7 +151,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -201,7 +201,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -248,7 +248,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -295,7 +295,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -347,7 +347,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -397,7 +397,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -448,7 +448,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -502,7 +502,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -557,7 +557,7 @@ class UnusedDependenciesTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -1036,7 +1036,6 @@ class UnusedDependenciesTest : ProjectTest() {
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
-      addSourceSet(SourceSetName.TEST)
 
       buildFile.writeText(
         """

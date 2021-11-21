@@ -13,17 +13,19 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
-
-import java.io.File
-import java.nio.file.Path
-
-fun File.existsOrNull(): File? = if (exists()) this else null
-
-fun File.child(vararg childPath: String): File {
-  return File(this, childPath.joinToString(File.separator))
+plugins {
+  id("mcbuild")
 }
 
-fun Path.child(vararg childPath: String): File {
-  return File(toFile(), childPath.joinToString(File.separator))
+mcbuild {
+  artifactId = "modulecheck-reporting-graphviz"
+}
+
+dependencies {
+
+  api(project(path = ":modulecheck-api"))
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 }

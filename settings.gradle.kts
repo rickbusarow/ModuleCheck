@@ -80,5 +80,6 @@ include(
   ":modulecheck-plugin",
   ":modulecheck-reporting:checkstyle",
   ":modulecheck-reporting:console",
+  ":modulecheck-reporting:graphviz",
   ":modulecheck-specs"
 )

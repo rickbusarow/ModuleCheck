@@ -15,9 +15,7 @@
 
 package modulecheck.api.test
 
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
+import modulecheck.parsing.*
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
@@ -27,14 +25,14 @@ abstract class ProjectTest : BaseTest() {
 
   val projectCache: ConcurrentHashMap<String, McProject> by resets { ConcurrentHashMap() }
 
-  fun project(path: String, config: McProjectBuilderScope.() -> Unit): McProject {
+  fun project(path: String, config: McProjectBuilderScope.() -> Unit = {}): McProject {
 
     return createProject(projectCache, testProjectDir, path, config)
   }
 
   fun McProjectBuilderScope.childProject(
     path: String,
-    config: McProjectBuilderScope.() -> Unit
+    config: McProjectBuilderScope.() -> Unit = {}
   ): McProject {
 
     val appendedPath = (this@childProject.path + path).replace(":{2,}".toRegex(), ":")
@@ -45,7 +43,7 @@ abstract class ProjectTest : BaseTest() {
   fun androidProject(
     path: String,
     androidPackage: String,
-    config: AndroidMcProjectBuilderScope.() -> Unit
+    config: AndroidMcProjectBuilderScope.() -> Unit = {}
   ): McProject {
 
     return createAndroidProject(
@@ -60,7 +58,7 @@ abstract class ProjectTest : BaseTest() {
   fun McProjectBuilderScope.androidChildProject(
     path: String,
     androidPackage: String,
-    config: AndroidMcProjectBuilderScope.() -> Unit
+    config: AndroidMcProjectBuilderScope.() -> Unit = {}
   ): McProject {
 
     val appendedPath = (this@androidChildProject.path + path).replace(":{2,}".toRegex(), ":")

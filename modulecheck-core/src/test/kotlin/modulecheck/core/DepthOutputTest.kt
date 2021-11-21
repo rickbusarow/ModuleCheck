@@ -39,7 +39,7 @@ internal class DepthOutputTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -75,7 +75,7 @@ internal class DepthOutputTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -113,7 +113,7 @@ internal class DepthOutputTest : ProjectTest() {
       logger = logger
     )
 
-    val lib1 = project(":lib1") {}
+    val lib1 = project(":lib1")
     val debug1 = project(":debug1") {}
 
     val lib2 = project(":lib2") {

@@ -34,6 +34,11 @@ dependencies {
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
+  api(project(path = ":modulecheck-reporting:graphviz"))
+
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
 
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)

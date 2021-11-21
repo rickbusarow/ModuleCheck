@@ -67,10 +67,12 @@ internal inline fun <reified T : Any> ObjectFactory.property(
     }
   }
 
-internal inline fun <reified T> ObjectFactory.nullableProperty(): ReadWriteProperty<Any, T?> =
+internal inline fun <reified T> ObjectFactory.nullableProperty(
+  initialValue: T?
+): ReadWriteProperty<Any, T?> =
   object : ReadWriteProperty<Any, T?> {
 
-    val delegate = property(T::class.java)
+    val delegate = property(T::class.java).convention(initialValue)
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T? {
       return delegate.orNull

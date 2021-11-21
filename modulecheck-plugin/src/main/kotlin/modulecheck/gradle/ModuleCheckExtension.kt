@@ -33,11 +33,13 @@ import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_ENABLED_DEF
 import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_PATH_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.GRAPH_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.DEPENDENCY_COMPARATORS_DEFAULT
 import modulecheck.api.settings.SortSettings.Companion.PLUGIN_COMPARATORS_DEFAULT
 import modulecheck.gradle.internal.listProperty
+import modulecheck.gradle.internal.nullableProperty
 import modulecheck.gradle.internal.property
 import modulecheck.gradle.internal.setProperty
 import org.gradle.api.Action
@@ -192,6 +194,22 @@ open class ReportsExtension @Inject constructor(
   fun depths(action: Action<ReportExtension>) {
     action.execute(depths)
   }
+
+  /**
+   * create dependency graphs for each source set for each module
+   */
+  override val graphs = PerModuleReportExtension(
+    objects = objects,
+    enabledDefault = GRAPH_ENABLED_DEFAULT,
+    outputPath = null
+  )
+
+  /**
+   * create dependency graphs for each source set for each module
+   */
+  fun graphs(action: Action<PerModuleReportExtension>) {
+    action.execute(graphs)
+  }
 }
 
 @Suppress("UnstableApiUsage")
@@ -207,4 +225,21 @@ open class ReportExtension(
    * Path for the generated file, relative to the project root.
    */
   override var outputPath: String by objects.property(outputPath)
+}
+
+@Suppress("UnstableApiUsage")
+open class PerModuleReportExtension(
+  objects: ObjectFactory,
+  enabledDefault: Boolean,
+  outputPath: String?
+) : PerModuleReportSettings {
+
+  override var enabled: Boolean by objects.property(enabledDefault)
+
+  /**
+   * Path to the root directory of the generated files, relative to the project root.
+   *
+   * If this is null, then reports will be created in `$projectDir/build/reports/modulecheck/`.
+   */
+  override var outputPath: String? by objects.nullableProperty(outputPath)
 }

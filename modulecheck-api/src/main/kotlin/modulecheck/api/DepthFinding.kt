@@ -16,10 +16,10 @@
 package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
-import modulecheck.api.util.mapBlocking
 import modulecheck.parsing.McProject
 import modulecheck.parsing.SourceSetName
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 data class DepthFinding(
   val dependentProject: McProject,
@@ -37,26 +37,28 @@ data class DepthFinding(
   override val findingName: String
     get() = "depth"
 
-  suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Sequence<DepthFinding> {
-    return generateSequence(sequenceOf(this)) { findings ->
-      findings
-        .map { finding ->
+  private val treeCache = ConcurrentHashMap<SourceSetName, Set<DepthFinding>>()
 
-          val sourceSet = if (finding == this@DepthFinding) {
-            sourceSetName
-          } else {
-            SourceSetName.MAIN
-          }
+  suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<DepthFinding> {
 
-          finding.dependentProject
-            .projectDependencies[sourceSet]
-            .mapBlocking { it.project.depthForSourceSetName(SourceSetName.MAIN) }
-        }
-        .takeIf { it.firstOrNull() != null }
-        ?.flatten()
+    val existing = treeCache[sourceSetName]
+
+    if (existing != null) {
+      return existing
     }
-      .flatten()
-      .distinctBy { it.dependentPath }
+
+    val children = dependentProject
+      .projectDependencies[sourceSetName]
+      .flatMap {
+        it.project.depthForSourceSetName(SourceSetName.MAIN)
+          .fullTree(SourceSetName.MAIN)
+      }
+
+    val set = children.toSet() + this
+
+    treeCache[sourceSetName] = set
+
+    return set
   }
 
   override fun compareTo(other: DepthFinding): Int {

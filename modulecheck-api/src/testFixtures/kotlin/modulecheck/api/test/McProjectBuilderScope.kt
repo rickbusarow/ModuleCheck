@@ -38,6 +38,11 @@ interface McProjectBuilderScope {
     asTestFixture: Boolean = false
   ) {
 
+    val sourceSetName = configurationName.toSourceSetName()
+    if (!sourceSets.containsKey(sourceSetName)) {
+      addSourceSet(sourceSetName)
+    }
+
     val old = projectDependencies[configurationName].orEmpty()
 
     val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
@@ -119,6 +124,7 @@ internal fun createProject(
     .also { it.config() }
 
   builder.populateConfigs()
+  builder.populateSourceSets()
 
   val delegate = RealMcProject(
     path = builder.path,
@@ -161,4 +167,13 @@ internal fun McProjectBuilderScope.populateConfigs() {
         )
       )
     }
+}
+
+internal fun McProjectBuilderScope.populateSourceSets() {
+  configurations
+    .keys
+    .map { it.toSourceSetName() }
+    .distinct()
+    .filterNot { sourceSets.containsKey(it) }
+    .forEach { addSourceSet(it) }
 }
