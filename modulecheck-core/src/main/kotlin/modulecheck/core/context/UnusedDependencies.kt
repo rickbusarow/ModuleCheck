@@ -22,10 +22,10 @@ import modulecheck.api.util.filterNotBlocking
 import modulecheck.api.util.lazyDeferred
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

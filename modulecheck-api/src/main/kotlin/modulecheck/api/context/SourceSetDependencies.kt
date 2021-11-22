@@ -15,10 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.TransitiveProjectDependency
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
+import modulecheck.project.SourceSetName
+import modulecheck.project.TransitiveProjectDependency
 import java.util.concurrent.ConcurrentHashMap
 
 data class SourceSetDependencies(

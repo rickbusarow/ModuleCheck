@@ -17,10 +17,10 @@ package modulecheck.core.internal
 
 import modulecheck.api.Finding.Position
 import modulecheck.core.parse
-import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
 import java.io.File
 
 fun McProject.statementOrNullIn(

@@ -22,7 +22,7 @@ import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>

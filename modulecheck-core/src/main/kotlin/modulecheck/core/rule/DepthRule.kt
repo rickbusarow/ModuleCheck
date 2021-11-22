@@ -19,7 +19,7 @@ import modulecheck.api.DepthFinding
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 class DepthRule : ModuleCheckRule<DepthFinding> {
 

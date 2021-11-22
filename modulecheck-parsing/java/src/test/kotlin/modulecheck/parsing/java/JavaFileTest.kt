@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.java
 
-import modulecheck.parsing.DeclarationName
+import modulecheck.project.DeclarationName
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File

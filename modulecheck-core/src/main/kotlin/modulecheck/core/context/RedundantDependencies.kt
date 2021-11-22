@@ -18,9 +18,9 @@ package modulecheck.core.context
 import modulecheck.api.Deletable
 import modulecheck.api.context.publicDependencies
 import modulecheck.core.DependencyFinding
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

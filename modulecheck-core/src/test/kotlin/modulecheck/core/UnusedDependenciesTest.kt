@@ -20,9 +20,9 @@ import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.parsing.AnvilGradlePlugin
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.ConfigurationName
+import modulecheck.project.SourceSetName
+import modulecheck.project.temp.AnvilGradlePlugin
 import net.swiftzer.semver.SemVer
 import org.junit.jupiter.api.Test
 

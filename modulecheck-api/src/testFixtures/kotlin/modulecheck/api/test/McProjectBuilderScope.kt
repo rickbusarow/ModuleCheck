@@ -15,16 +15,17 @@
 
 package modulecheck.api.test
 
-import modulecheck.api.RealMcProject
-import modulecheck.parsing.AnvilGradlePlugin
-import modulecheck.parsing.Config
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectCache
-import modulecheck.parsing.ProjectDependencies
-import modulecheck.parsing.SourceSet
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.Config
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.ExternalDependencies
+import modulecheck.project.McProject
+import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectDependencies
+import modulecheck.project.SourceSet
+import modulecheck.project.SourceSetName
+import modulecheck.project.impl.RealMcProject
+import modulecheck.project.temp.AnvilGradlePlugin
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -34,6 +35,7 @@ interface McProjectBuilderScope {
   var buildFile: File
   val configurations: MutableMap<ConfigurationName, Config>
   val projectDependencies: ProjectDependencies
+  val externalDependencies: ExternalDependencies
   var hasKapt: Boolean
   val sourceSets: MutableMap<SourceSetName, SourceSet>
   var anvilGradlePlugin: AnvilGradlePlugin?
@@ -106,6 +108,7 @@ data class JvmMcProjectBuilderScope(
   override var buildFile: File,
   override val configurations: MutableMap<ConfigurationName, Config> = mutableMapOf(),
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
+  override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
   override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
@@ -142,7 +145,8 @@ internal fun createProject(
     sourceSets = builder.sourceSets,
     projectCache = builder.projectCache,
     anvilGradlePlugin = builder.anvilGradlePlugin,
-    projectDependencies = lazy { builder.projectDependencies }
+    projectDependencies = lazy { builder.projectDependencies },
+    externalDependencies = lazy { builder.externalDependencies }
   )
 
   return delegate
@@ -169,7 +173,6 @@ internal fun McProjectBuilderScope.populateConfigs() {
         configurationName,
         Config(
           name = configurationName,
-          externalDependencies = emptySet(),
           inherited = inherited
         )
       )

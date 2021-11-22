@@ -19,7 +19,7 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
 

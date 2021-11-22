@@ -28,24 +28,27 @@ val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 dependencies {
 
   api(libs.kotlin.compiler)
-  api(libs.semVer)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
+  api(libs.semVer)
 
   api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:core"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:xml"))
+  api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-project:impl"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
 
-  testFixturesApi(project(path = ":modulecheck-internal-testing"))
   testFixturesApi(libs.bundles.hermit)
+
+  testFixturesApi(project(path = ":modulecheck-internal-testing"))
 
   if (isIdeSync) {
     compileOnly(project(path = ":modulecheck-internal-testing"))

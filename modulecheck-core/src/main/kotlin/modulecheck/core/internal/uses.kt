@@ -22,13 +22,13 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
-import modulecheck.parsing.AndroidMcProject
-import modulecheck.parsing.AnvilScopeName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.TransitiveProjectDependency
+import modulecheck.project.AndroidMcProject
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.DeclarationName
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
+import modulecheck.project.TransitiveProjectDependency
+import modulecheck.project.temp.AnvilScopeName
 
 suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 

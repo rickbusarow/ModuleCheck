@@ -16,8 +16,8 @@
 package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 

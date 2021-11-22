@@ -21,11 +21,11 @@ import modulecheck.api.test.TestSettings
 import modulecheck.api.test.createSafely
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSet
-import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.child
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
+import modulecheck.project.SourceSet
+import modulecheck.project.SourceSetName
 import org.junit.jupiter.api.Test
 import java.io.File
 

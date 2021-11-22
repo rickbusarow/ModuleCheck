@@ -25,9 +25,15 @@ mcbuild {
 dependencies {
 
   api(libs.kotlin.compiler)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
+  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:core"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
@@ -36,14 +42,6 @@ dependencies {
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
   api(project(path = ":modulecheck-runtime"))
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
 
   implementation(libs.agp)
   implementation(libs.groovy)
@@ -56,8 +54,8 @@ dependencies {
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
-  testImplementation(testFixtures(project(path = ":modulecheck-api")))
-
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-specs"))
+
+  testImplementation(testFixtures(project(path = ":modulecheck-api")))
 }

@@ -15,15 +15,16 @@
 
 package modulecheck.api.test
 
-import modulecheck.api.RealAndroidMcProject
-import modulecheck.parsing.AnvilGradlePlugin
-import modulecheck.parsing.Config
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectCache
-import modulecheck.parsing.ProjectDependencies
-import modulecheck.parsing.SourceSet
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.Config
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ExternalDependencies
+import modulecheck.project.McProject
+import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectDependencies
+import modulecheck.project.SourceSet
+import modulecheck.project.SourceSetName
+import modulecheck.project.impl.RealAndroidMcProject
+import modulecheck.project.temp.AnvilGradlePlugin
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -84,6 +85,7 @@ data class RealAndroidMcProjectBuilderScope(
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, Config> = mutableMapOf(),
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
+  override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
   override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
@@ -136,7 +138,8 @@ internal fun createAndroidProject(
     viewBindingEnabled = builder.viewBindingEnabled,
     androidPackageOrNull = builder.androidPackage,
     manifests = builder.manifests,
-    projectDependencies = lazy { builder.projectDependencies }
+    projectDependencies = lazy { builder.projectDependencies },
+    externalDependencies = lazy { builder.externalDependencies }
   )
 
   return delegate

@@ -15,8 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
 
 data class DependentProjects(
   internal val delegate: Set<McProject>

@@ -17,10 +17,10 @@ package modulecheck.core
 
 import modulecheck.api.Finding.Position
 import modulecheck.core.internal.positionIn
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.McProject
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 

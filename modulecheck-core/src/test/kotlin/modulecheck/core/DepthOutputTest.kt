@@ -20,7 +20,7 @@ import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.parsing.ConfigurationName
+import modulecheck.project.ConfigurationName
 import org.junit.jupiter.api.Test
 
 internal class DepthOutputTest : ProjectTest() {

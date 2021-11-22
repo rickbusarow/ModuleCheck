@@ -17,7 +17,7 @@ package modulecheck.reporting.console
 
 import modulecheck.api.DepthFinding
 import modulecheck.api.Report
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.SourceSetName
 
 class DepthLogFactory {
 

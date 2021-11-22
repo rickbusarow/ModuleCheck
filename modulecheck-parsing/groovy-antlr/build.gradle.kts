@@ -24,7 +24,7 @@ mcbuild {
 
 dependencies {
 
-  api(project(path = ":modulecheck-parsing:api"))
+  api(project(path = ":modulecheck-parsing:core"))
 
   compileOnly(gradleApi())
 

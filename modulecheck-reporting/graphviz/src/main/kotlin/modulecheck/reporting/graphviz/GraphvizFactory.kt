@@ -21,10 +21,10 @@ import kotlinx.coroutines.coroutineScope
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.context.sourceSetDependencies
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.isAndroid
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
+import modulecheck.project.isAndroid
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.ANDROID_GREEN
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.API_RED
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.BLACK

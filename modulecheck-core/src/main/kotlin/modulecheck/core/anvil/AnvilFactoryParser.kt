@@ -19,10 +19,10 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.possibleReferencesForSourceSetName
 import modulecheck.api.util.lazyDeferred
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
 import net.swiftzer.semver.SemVer
 
 object AnvilFactoryParser {

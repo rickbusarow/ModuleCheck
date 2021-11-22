@@ -18,8 +18,8 @@ package modulecheck.parsing.xml
 import groovy.util.Node
 import groovy.xml.XmlParser
 import modulecheck.parsing.AndroidResource
-import modulecheck.parsing.DeclarationName
-import modulecheck.parsing.asDeclarationName
+import modulecheck.project.DeclarationName
+import modulecheck.project.asDeclarationName
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.File
 

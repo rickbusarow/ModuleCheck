@@ -16,10 +16,10 @@
 package modulecheck.core
 
 import modulecheck.core.internal.statementOrNullIn
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.McProject
 import java.io.File
 
 data class MustBeApiFinding(

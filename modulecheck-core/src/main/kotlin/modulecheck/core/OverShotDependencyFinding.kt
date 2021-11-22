@@ -16,12 +16,12 @@
 package modulecheck.core
 
 import modulecheck.core.context.OverShotDependencies
-import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.ProjectContext
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
 import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 

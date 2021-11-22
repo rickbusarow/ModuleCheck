@@ -17,7 +17,7 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ModuleRef
-import modulecheck.parsing.asConfigurationName
+import modulecheck.project.asConfigurationName
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
