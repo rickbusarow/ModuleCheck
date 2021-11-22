@@ -74,7 +74,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
   dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
   dependencySync("com.squareup.anvil:annotations:2.3.9")
-  dependencySync("com.squareup.anvil:compiler-api:2.3.9-1-6-0")
+  dependencySync("com.squareup.anvil:compiler-api:2.3.9")
   dependencySync("com.squareup.anvil:compiler:2.3.9")
   dependencySync("com.squareup.anvil:compiler-utils:2.3.9")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
