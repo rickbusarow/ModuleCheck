@@ -29,28 +29,29 @@ import com.squareup.anvil.plugin.AnvilExtension
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import modulecheck.api.RealAndroidMcProject
-import modulecheck.api.RealMcProject
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
-import modulecheck.parsing.AnvilGradlePlugin
-import modulecheck.parsing.Config
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.ExternalDependency
 import modulecheck.parsing.MavenCoordinates
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectCache
-import modulecheck.parsing.ProjectDependencies
 import modulecheck.parsing.ProjectProvider
-import modulecheck.parsing.SourceSet
-import modulecheck.parsing.SourceSetName
-import modulecheck.parsing.asConfigurationName
-import modulecheck.parsing.toSourceSetName
 import modulecheck.parsing.xml.AndroidManifestParser
+import modulecheck.project.Config
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.ExternalDependencies
+import modulecheck.project.ExternalDependency
+import modulecheck.project.McProject
+import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectDependencies
+import modulecheck.project.SourceSet
+import modulecheck.project.SourceSetName
+import modulecheck.project.asConfigurationName
+import modulecheck.project.impl.RealAndroidMcProject
+import modulecheck.project.impl.RealMcProject
+import modulecheck.project.temp.AnvilGradlePlugin
+import modulecheck.project.toSourceSetName
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
@@ -86,6 +87,8 @@ class GradleProjectProvider @AssistedInject constructor(
     val configurations = gradleProject.configurations()
 
     val projectDependencies = gradleProject.projectDependencies()
+    val externalDependencies = gradleProject.externalDependencies()
+
     val hasKapt = gradleProject
       .plugins
       .hasPlugin(KAPT_PLUGIN_ID)
@@ -119,7 +122,8 @@ class GradleProjectProvider @AssistedInject constructor(
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
-        projectDependencies = projectDependencies
+        projectDependencies = projectDependencies,
+        externalDependencies = externalDependencies
       )
     } else {
       RealMcProject(
@@ -131,28 +135,25 @@ class GradleProjectProvider @AssistedInject constructor(
         sourceSets = gradleProject.jvmSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
-        projectDependencies = projectDependencies
+        projectDependencies = projectDependencies,
+        externalDependencies = externalDependencies
       )
     }
   }
 
   private fun GradleProject.configurations(): Map<ConfigurationName, Config> {
-    val externalDependencyCache = mutableMapOf<String, Set<ExternalDependency>>()
 
     fun Configuration.foldConfigs(): Set<Configuration> {
       return extendsFrom + extendsFrom.flatMap { it.foldConfigs() }
     }
 
     fun Configuration.toConfig(): Config {
-      val external = externalDependencyCache.getOrPut(name) {
-        externalDependencies(this)
-      }
 
       val configs = foldConfigs()
         .map { it.toConfig() }
         .toSet()
 
-      return Config(name.asConfigurationName(), external, configs)
+      return Config(name.asConfigurationName(), configs)
     }
     return configurations
       .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
@@ -164,31 +165,42 @@ class GradleProjectProvider @AssistedInject constructor(
       }
   }
 
-  private fun GradleProject.externalDependencies(configuration: Configuration) =
-    configuration.dependencies
-      .filterIsInstance<ExternalModuleDependency>()
-      .map { dep ->
+  private fun GradleProject.externalDependencies(): Lazy<ExternalDependencies> = lazy {
+    val map = configurations
+      .associate { configuration ->
 
-        val statementTextLazy = lazy psiLazy@{
-          val coords = MavenCoordinates(dep.group, dep.name, dep.version)
+        val externalDependencies = configuration.dependencies
+          .filterIsInstance<ExternalModuleDependency>()
+          .map { dep ->
 
-          DependencyBlockParser
-            .parse(buildFile)
-            .asSequence()
-            .map { block -> block.getOrEmpty(coords, configuration.name.asConfigurationName()) }
-            .firstOrNull()
-            ?.firstOrNull()
-            ?.statementWithSurroundingText
-        }
-        ExternalDependency(
-          configurationName = configuration.name.asConfigurationName(),
-          group = dep.group,
-          moduleName = dep.name,
-          version = dep.version,
-          statementTextLazy = statementTextLazy
-        )
+            val statementTextLazy = lazy psiLazy@{
+              val coords = MavenCoordinates(dep.group, dep.name, dep.version)
+
+              DependencyBlockParser
+                .parse(buildFile)
+                .asSequence()
+                .map { block ->
+                  block.getOrEmpty(coords, configuration.name.asConfigurationName())
+                }
+                .firstOrNull()
+                ?.firstOrNull()
+                ?.statementWithSurroundingText
+            }
+            ExternalDependency(
+              configurationName = configuration.name.asConfigurationName(),
+              group = dep.group,
+              moduleName = dep.name,
+              version = dep.version,
+              statementTextLazy = statementTextLazy
+            )
+          }
+
+        configuration.name.asConfigurationName() to externalDependencies
       }
-      .toSet()
+      .toMutableMap()
+
+    ExternalDependencies(map)
+  }
 
   private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> =
     lazy {

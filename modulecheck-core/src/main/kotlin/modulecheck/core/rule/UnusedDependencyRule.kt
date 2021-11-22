@@ -20,8 +20,8 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.context.UnusedDependencies
 import modulecheck.core.context.UnusedDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.all
+import modulecheck.project.McProject
+import modulecheck.project.all
 
 class UnusedDependencyRule(
   private val settings: ModuleCheckSettings

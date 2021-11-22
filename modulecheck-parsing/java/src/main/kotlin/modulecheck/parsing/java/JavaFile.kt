@@ -25,9 +25,9 @@ import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
-import modulecheck.parsing.DeclarationName
 import modulecheck.parsing.JvmFile
-import modulecheck.parsing.asDeclarationName
+import modulecheck.project.DeclarationName
+import modulecheck.project.asDeclarationName
 import java.io.File
 import kotlin.properties.Delegates
 

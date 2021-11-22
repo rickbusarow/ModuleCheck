@@ -15,10 +15,10 @@
 
 package modulecheck.api.test
 
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectCache
+import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.McProject
+import modulecheck.project.ProjectCache
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset

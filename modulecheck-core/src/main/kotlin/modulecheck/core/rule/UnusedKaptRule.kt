@@ -29,7 +29,7 @@ import modulecheck.core.kapt.UnusedKaptFinding
 import modulecheck.core.kapt.UnusedKaptPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"

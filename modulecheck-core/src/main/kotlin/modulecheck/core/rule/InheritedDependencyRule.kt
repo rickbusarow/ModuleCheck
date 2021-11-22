@@ -22,8 +22,8 @@ import modulecheck.api.util.mapBlocking
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
-import modulecheck.parsing.McProject
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 

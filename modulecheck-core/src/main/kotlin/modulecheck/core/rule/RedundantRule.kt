@@ -19,8 +19,8 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.core.context.RedundantDependencyFinding
-import modulecheck.parsing.McProject
-import modulecheck.parsing.all
+import modulecheck.project.McProject
+import modulecheck.project.all
 
 class RedundantRule : ModuleCheckRule<RedundantDependencyFinding> {
 

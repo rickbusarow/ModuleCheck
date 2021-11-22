@@ -15,11 +15,11 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
 import modulecheck.parsing.psi.createBindingContext
 import modulecheck.parsing.psi.internal.ktFiles
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
+import modulecheck.project.SourceSetName
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

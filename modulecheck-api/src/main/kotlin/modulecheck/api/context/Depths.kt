@@ -17,9 +17,9 @@ package modulecheck.api.context
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
+import modulecheck.project.SourceSetName
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import kotlin.collections.MutableMap.MutableEntry

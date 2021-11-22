@@ -19,7 +19,7 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.anvil.AnvilFactoryParser
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 class AnvilFactoryRule : ModuleCheckRule<CouldUseAnvilFinding> {
 

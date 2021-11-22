@@ -27,7 +27,7 @@ import modulecheck.api.FindingResultFactory
 import modulecheck.api.Logger
 import modulecheck.api.Problem
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.DepthLogFactory
 import modulecheck.reporting.console.DepthReportFactory

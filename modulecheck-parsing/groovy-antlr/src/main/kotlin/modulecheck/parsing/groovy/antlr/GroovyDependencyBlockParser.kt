@@ -26,7 +26,7 @@ import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ModuleRef
-import modulecheck.parsing.asConfigurationName
+import modulecheck.project.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyLangLexer
 import org.apache.groovy.parser.antlr4.GroovyLangParser
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext

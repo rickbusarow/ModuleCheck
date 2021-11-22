@@ -19,9 +19,9 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.resSourceFiles
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
-import modulecheck.parsing.AndroidMcProject
-import modulecheck.parsing.McProject
-import modulecheck.parsing.all
+import modulecheck.project.AndroidMcProject
+import modulecheck.project.McProject
+import modulecheck.project.all
 
 class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 

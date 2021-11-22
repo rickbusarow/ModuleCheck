@@ -16,11 +16,11 @@
 package modulecheck.api.context
 
 import modulecheck.api.KaptProcessor
-import modulecheck.parsing.ConfigurationName
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.ProjectContext.Element
-import modulecheck.parsing.all
+import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
+import modulecheck.project.ProjectContext.Element
+import modulecheck.project.all
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
@@ -38,9 +38,9 @@ data class KaptDependencies(
         .configurations
         .filterNot { it.key.value.startsWith("_") }
         .filter { it.key.value.contains("kapt", true) }
-        .mapValues { (configName, config) ->
+        .mapValues { (configName, _) ->
 
-          val external = config.externalDependencies
+          val external = project.externalDependencies[configName].orEmpty()
           val internal = project
             .projectDependencies
             .all()

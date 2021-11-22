@@ -17,8 +17,8 @@ package modulecheck.api
 
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.McProject
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
+import modulecheck.project.McProject
 import org.jetbrains.kotlin.psi.KtFile
 
 interface ModuleCheckRule<T : Finding> {

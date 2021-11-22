@@ -19,10 +19,10 @@ import modulecheck.api.context.ApiDependencySources.SourceKey
 import modulecheck.api.context.ApiDependencySources.SourceResult
 import modulecheck.api.context.ApiDependencySources.SourceResult.Found
 import modulecheck.api.context.ApiDependencySources.SourceResult.NOT_PRESENT
-import modulecheck.parsing.ConfiguredProjectDependency
-import modulecheck.parsing.McProject
-import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.SourceSetName
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.McProject
+import modulecheck.project.ProjectContext
+import modulecheck.project.SourceSetName
 import java.util.concurrent.ConcurrentHashMap
 
 data class ApiDependencySources(

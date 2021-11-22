@@ -15,7 +15,7 @@
 
 package modulecheck.api
 
-import modulecheck.parsing.McProject
+import modulecheck.project.McProject
 
 fun interface FindingFactory<T : Finding> {
 
