@@ -20,12 +20,8 @@ import modulecheck.api.Finding.Position
 fun String.positionOfStatement(statement: String): Position {
 
   val lines = lines()
-  val trimmedLastStatementLine = statement.trimEnd()
-    .lines()
-    .last()
-    .trimStart()
 
-  var index = indexOf(trimmedLastStatementLine)
+  var index = indexOf(statement.trimStart())
 
   var row = 0
 

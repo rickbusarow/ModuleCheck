@@ -83,18 +83,21 @@ data class OverShotDependencies(
 
               trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
                 .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
+                .map { it to unused.configurationName }
                 .toSet()
             }
         }
 
-      val grouped = used.map { cpp ->
+      val grouped = used.map { (cpp, originalConfigurationName) ->
 
         OverShotDependencyFinding(
           dependentPath = project.path,
           buildFile = project.buildFile,
           dependencyProject = cpp.project,
           dependencyIdentifier = cpp.project.path,
-          configurationName = cpp.configurationName
+          configurationName = cpp.configurationName,
+          originalConfigurationName = originalConfigurationName,
+          isTestFixture = cpp.isTestFixture
         )
       }
         .groupBy { it.configurationName }

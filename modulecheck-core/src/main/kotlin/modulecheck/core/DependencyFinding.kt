@@ -35,7 +35,7 @@ abstract class DependencyFinding(
   abstract val configurationName: ConfigurationName
 
   override val positionOrNull by lazy {
-    val statement = statementTextOrNull ?: return@lazy null
+    val statement = declarationOrNull?.declarationText ?: return@lazy null
 
     buildFile.readText()
       .positionOfStatement(statement)

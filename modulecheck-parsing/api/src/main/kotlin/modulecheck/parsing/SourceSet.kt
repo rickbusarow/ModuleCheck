@@ -44,9 +44,10 @@ value class SourceSetName(val value: String) {
   override fun toString(): String = "SourceSetName('$value')"
 
   companion object {
+    val ANDROID_TEST = SourceSetName("androidTest")
+    val DEBUG = SourceSetName("debug")
     val MAIN = SourceSetName("main")
     val TEST = SourceSetName("test")
-    val ANDROID_TEST = SourceSetName("androidTest")
     val TEST_FIXTURES = SourceSetName("testFixtures")
   }
 }
