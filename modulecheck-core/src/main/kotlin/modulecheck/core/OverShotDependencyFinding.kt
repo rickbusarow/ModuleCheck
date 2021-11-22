@@ -19,14 +19,10 @@ import modulecheck.core.context.OverShotDependencies
 import modulecheck.parsing.ConfigurationName
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.DependencyDeclaration
-import modulecheck.parsing.ExternalDependencyDeclaration
 import modulecheck.parsing.McProject
 import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.ModuleRef.StringRef
-import modulecheck.parsing.ModuleRef.TypeSafeRef
 import modulecheck.parsing.ProjectContext
-import modulecheck.parsing.UnknownDependencyDeclaration
+import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 
 data class OverShotDependencyFinding(
@@ -34,7 +30,9 @@ data class OverShotDependencyFinding(
   override val buildFile: File,
   override val dependencyProject: McProject,
   override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName
+  override val configurationName: ConfigurationName,
+  val originalConfigurationName: ConfigurationName,
+  val isTestFixture: Boolean
 ) : DependencyFinding("overshot") {
 
   override val message: String
@@ -47,44 +45,40 @@ data class OverShotDependencyFinding(
     val blocks = DependencyBlockParser
       .parse(buildFile)
 
-    val blockMatchPairOrNull = blocks.firstNotNullOfOrNull { block ->
+    val sourceDeclaration = blocks.firstNotNullOfOrNull { block ->
+
+      block.getOrEmpty(dependencyProject.path, originalConfigurationName)
+        .firstOrNull()
+    } ?: return false
+
+    val positionBlockDeclarationPair = blocks.firstNotNullOfOrNull { block ->
 
       val match = matchingDeclaration(block) ?: return@firstNotNullOfOrNull null
 
       block to match
-    }
+    } ?: return false
 
-    if (blockMatchPairOrNull != null) {
+    val (block, positionDeclaration) = positionBlockDeclarationPair
 
-      val (block, match) = blockMatchPairOrNull
+    val newDeclaration = sourceDeclaration.replace(configurationName, testFixtures = isTestFixture)
 
-      val moduleDeclaration = newModuleDeclaration(match)
+    val oldStatement = positionDeclaration.statementWithSurroundingText
+    val newStatement = oldStatement.plus(
+      newDeclaration.statementWithSurroundingText
+        .prefixIfNot("\n")
+    )
 
-      val newDeclaration = newDeclarationText(match, moduleDeclaration)
+    val newBlock = block.contentString.replaceFirst(
+      oldValue = oldStatement,
+      newValue = newStatement
+    )
 
-      val oldDeclarationLine = match.statementWithSurroundingText
-        .lines()
-        .first { it.contains(match.declarationText.lines().first()) }
+    val fileText = buildFile.readText()
+      .replace(block.contentString, newBlock)
 
-      val indent = "(\\s*)".toRegex()
-        .find(oldDeclarationLine)
-        ?.destructured
-        ?.component1()
-        ?: "  "
+    buildFile.writeText(fileText)
 
-      val newBlock = block.contentString.replace(
-        match.declarationText,
-        match.declarationText + "\n$indent" + newDeclaration
-      )
-
-      val fileText = buildFile.readText()
-        .replace(block.contentString, newBlock)
-
-      buildFile.writeText(fileText)
-      return true
-    }
-
-    return false
+    return true
   }
 
   private fun matchingDeclaration(block: DependenciesBlock) = block.allDeclarations
@@ -95,34 +89,6 @@ data class OverShotDependencyFinding(
       .maxByOrNull { declaration -> declaration.configName == configurationName }
     ?: block.allDeclarations
       .lastOrNull()
-
-  private fun newModuleDeclaration(match: DependencyDeclaration) = when (match) {
-    is ExternalDependencyDeclaration -> dependencyProject.path
-    is ModuleDependencyDeclaration -> when (match.moduleRef) {
-      is StringRef -> dependencyProject.path
-      is TypeSafeRef -> StringRef(dependencyProject.path).toTypeSafe().value
-    }
-    is UnknownDependencyDeclaration -> dependencyProject.path
-  }
-
-  private fun newDeclarationText(match: DependencyDeclaration, moduleDeclaration: String): String {
-    return match.declarationText
-      .replace(match.configName.value, configurationName.value)
-      .let {
-        when (match) {
-          is ExternalDependencyDeclaration -> it.replace("""(["']).*(["'])""".toRegex()) { mr ->
-            val quotes = mr.destructured.component1()
-
-            "project($quotes$moduleDeclaration$quotes)"
-          }
-          is ModuleDependencyDeclaration -> it.replace(match.moduleRef.value, moduleDeclaration)
-          is UnknownDependencyDeclaration -> it.replace(
-            match.argument,
-            "project(\"$moduleDeclaration\")"
-          )
-        }
-      }
-  }
 
   override fun fromStringOrEmpty(): String = ""
 
