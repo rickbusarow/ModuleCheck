@@ -15,15 +15,15 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ProjectTest
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
-import modulecheck.api.test.createSafely
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
+import modulecheck.project.test.ProjectTest
+import modulecheck.project.test.createSafely
 import org.junit.jupiter.api.Test
 import java.io.File
 

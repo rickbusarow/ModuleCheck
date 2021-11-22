@@ -15,7 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ProjectTest
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
@@ -23,6 +22,7 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSetName
 import modulecheck.project.asConfigurationName
+import modulecheck.project.test.ProjectTest
 import org.junit.jupiter.api.Test
 
 class InheritedDependenciesTest : ProjectTest() {

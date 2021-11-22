@@ -15,14 +15,14 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ProjectTest
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.api.test.writeGroovy
-import modulecheck.api.test.writeKotlin
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.project.test.ProjectTest
+import modulecheck.project.test.writeGroovy
+import modulecheck.project.test.writeKotlin
 import org.junit.jupiter.api.Test
 import java.io.File
 

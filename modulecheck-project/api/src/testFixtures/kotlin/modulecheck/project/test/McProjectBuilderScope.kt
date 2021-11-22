@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.test
+package modulecheck.project.test
 
 import modulecheck.project.Config
 import modulecheck.project.ConfigurationName
@@ -133,24 +133,7 @@ internal fun createProject(
   val builder = JvmMcProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
     .also { it.config() }
 
-  builder.populateConfigs()
-  builder.populateSourceSets()
-
-  val delegate = RealMcProject(
-    path = builder.path,
-    projectDir = builder.projectDir,
-    buildFile = builder.buildFile,
-    configurations = builder.configurations,
-    hasKapt = builder.hasKapt,
-    sourceSets = builder.sourceSets,
-    projectCache = builder.projectCache,
-    anvilGradlePlugin = builder.anvilGradlePlugin,
-    projectDependencies = lazy { builder.projectDependencies },
-    externalDependencies = lazy { builder.externalDependencies }
-  )
-
-  return delegate
-    .also { projectCache[it.path] = it }
+  return builder.toProject()
 }
 
 internal fun McProjectBuilderScope.populateConfigs() {
@@ -186,4 +169,26 @@ internal fun McProjectBuilderScope.populateSourceSets() {
     .distinct()
     .filterNot { sourceSets.containsKey(it) }
     .forEach { addSourceSet(it) }
+}
+
+fun McProjectBuilderScope.toProject(): RealMcProject {
+
+  populateConfigs()
+  populateSourceSets()
+
+  val delegate = RealMcProject(
+    path = path,
+    projectDir = projectDir,
+    buildFile = buildFile,
+    configurations = configurations,
+    hasKapt = hasKapt,
+    sourceSets = sourceSets,
+    projectCache = projectCache,
+    anvilGradlePlugin = anvilGradlePlugin,
+    projectDependencies = lazy { projectDependencies },
+    externalDependencies = lazy { externalDependencies }
+  )
+
+  return delegate
+    .also { projectCache[it.path] = it }
 }
