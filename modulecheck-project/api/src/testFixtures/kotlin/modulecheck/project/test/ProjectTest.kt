@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.api.test
+package modulecheck.project.test
 
+import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -30,6 +31,58 @@ abstract class ProjectTest : BaseTest() {
   fun project(path: String, config: McProjectBuilderScope.() -> Unit = {}): McProject {
 
     return createProject(projectCache, testProjectDir, path, config)
+  }
+
+  fun McProject.toBuilder(): McProjectBuilderScope {
+
+    return JvmMcProjectBuilderScope(
+      path = path,
+      projectDir = projectDir,
+      buildFile = buildFile,
+      configurations = configurations.toMutableMap(),
+      projectDependencies = projectDependencies,
+      externalDependencies = externalDependencies,
+      hasKapt = hasKapt,
+      sourceSets = sourceSets.toMutableMap(),
+      anvilGradlePlugin = anvilGradlePlugin,
+      projectCache = projectCache
+    )
+  }
+
+  fun AndroidMcProject.toBuilder(): AndroidMcProjectBuilderScope {
+
+    requireNotNull(androidPackageOrNull) {
+      "The receiver Android project's `androidPackageOrNull` property can't be null here."
+    }
+
+    return RealAndroidMcProjectBuilderScope(
+      path = path,
+      projectDir = projectDir,
+      buildFile = buildFile,
+      androidPackage = androidPackageOrNull!!,
+      androidResourcesEnabled = androidResourcesEnabled,
+      viewBindingEnabled = viewBindingEnabled,
+      manifests = manifests.toMutableMap(),
+      configurations = configurations.toMutableMap(),
+      projectDependencies = projectDependencies,
+      externalDependencies = externalDependencies,
+      hasKapt = hasKapt,
+      sourceSets = sourceSets.toMutableMap(),
+      anvilGradlePlugin = anvilGradlePlugin,
+      projectCache = projectCache
+    )
+  }
+
+  fun McProject.edit(config: McProjectBuilderScope.() -> Unit = {}): McProject {
+    return toBuilder()
+      .also { it.config() }
+      .toProject()
+  }
+
+  fun AndroidMcProject.edit(config: AndroidMcProjectBuilderScope.() -> Unit = {}): McProject {
+    return toBuilder()
+      .also { it.config() }
+      .toProject()
   }
 
   fun McProjectBuilderScope.childProject(

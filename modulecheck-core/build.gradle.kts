@@ -58,4 +58,5 @@ dependencies {
   testImplementation(project(path = ":modulecheck-specs"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
+  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.test
+package modulecheck.project.test
 
 import modulecheck.project.Config
 import modulecheck.project.ConfigurationName
@@ -125,21 +125,29 @@ internal fun createAndroidProject(
   builder.populateConfigs()
   builder.populateSourceSets()
 
+  return builder.toProject()
+}
+
+fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
+
+  populateConfigs()
+  populateSourceSets()
+
   val delegate = RealAndroidMcProject(
-    path = builder.path,
-    projectDir = builder.projectDir,
-    buildFile = builder.buildFile,
-    configurations = builder.configurations,
-    hasKapt = builder.hasKapt,
-    sourceSets = builder.sourceSets,
-    projectCache = builder.projectCache,
-    anvilGradlePlugin = builder.anvilGradlePlugin,
-    androidResourcesEnabled = builder.androidResourcesEnabled,
-    viewBindingEnabled = builder.viewBindingEnabled,
-    androidPackageOrNull = builder.androidPackage,
-    manifests = builder.manifests,
-    projectDependencies = lazy { builder.projectDependencies },
-    externalDependencies = lazy { builder.externalDependencies }
+    path = path,
+    projectDir = projectDir,
+    buildFile = buildFile,
+    configurations = configurations,
+    hasKapt = hasKapt,
+    sourceSets = sourceSets,
+    projectCache = projectCache,
+    anvilGradlePlugin = anvilGradlePlugin,
+    androidResourcesEnabled = androidResourcesEnabled,
+    viewBindingEnabled = viewBindingEnabled,
+    androidPackageOrNull = androidPackage,
+    manifests = manifests,
+    projectDependencies = lazy { projectDependencies },
+    externalDependencies = lazy { externalDependencies }
   )
 
   return delegate
