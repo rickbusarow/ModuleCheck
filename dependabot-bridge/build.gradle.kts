@@ -82,7 +82,7 @@ dependencies {
   dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.2.0")
   dependencySync("org.jmailen.gradle:kotlinter-gradle:3.4.4")
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.2")
-  dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-  dependencySync("org.junit.jupiter:junit-jupiter-params:5.8.1")
+  dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+  dependencySync("org.junit.jupiter:junit-jupiter-params:5.8.2")
   dependencySync("org.unbescape:unbescape:1.1.6.RELEASE")
 }
