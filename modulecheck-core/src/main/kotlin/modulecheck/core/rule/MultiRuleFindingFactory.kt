@@ -25,19 +25,19 @@ import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.project.McProject
 
 class MultiRuleFindingFactory(
-    private val settings: ModuleCheckSettings,
-    private val rules: List<ModuleCheckRule<out Finding>>
+  private val settings: ModuleCheckSettings,
+  private val rules: List<ModuleCheckRule<out Finding>>
 ) : FindingFactory<Finding> {
 
   override suspend fun evaluate(projects: List<McProject>): List<Finding> {
     return coroutineScope {
-        projects.flatMap { project ->
-            rules
-                .filter { it.shouldApply(settings.checks) }
-                .map { rule -> async { rule.check(project) } }
-        }
-            .awaitAll()
-            .flatten()
+      projects.flatMap { project ->
+        rules
+          .filter { it.shouldApply(settings.checks) }
+          .map { rule -> async { rule.check(project) } }
+      }
+        .awaitAll()
+        .flatten()
     }
   }
 }
