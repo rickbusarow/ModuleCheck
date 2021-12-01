@@ -18,12 +18,12 @@ package modulecheck.core.rule
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.util.mapBlocking
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetName
+import modulecheck.utils.mapBlocking
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 

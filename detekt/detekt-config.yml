@@ -28,7 +28,7 @@ processors:
   # - 'ProjectCLOCProcessor'
   # - 'ProjectLOCProcessor'
   # - 'ProjectSLOCProcessor'
-    - 'LicenseHeaderLoaderExtension'
+  # - 'LicenseHeaderLoaderExtension'
 
 console-reports:
   active: true
@@ -38,6 +38,7 @@ console-reports:
      - 'NotificationReport'
   #  - 'FindingsReport'
      - 'FileBasedFindingsReport'
+     - 'LiteFindingsReport'
 
 output-reports:
   active: true
@@ -61,6 +62,10 @@ comments:
   EndOfSentenceFormat:
     active: false
     endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
+  OutdatedDocumentation:
+    active: false
+    matchTypeParameters: true
+    matchDeclarationsOrder: true
   UndocumentedPublicClass:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
@@ -110,14 +115,13 @@ complexity:
   LongMethod:
     active: false
     threshold: 60
-    ignoreAnnotated: []
   LongParameterList:
     active: true
     functionThreshold: 6
     constructorThreshold: 7
     ignoreDefaultParameters: false
     ignoreDataClasses: true
-    ignoreAnnotated: []
+    ignoreAnnotatedParameter: []
   MethodOverloading:
     active: false
     threshold: 6
@@ -137,7 +141,7 @@ complexity:
     excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
   TooManyFunctions:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     thresholdInFiles: 13
     thresholdInClasses: 13
@@ -152,6 +156,12 @@ coroutines:
   active: true
   GlobalCoroutineUsage:
     active: false
+  InjectDispatcher:
+    active: false
+    dispatcherNames:
+      - 'IO'
+      - 'Default'
+      - 'Unconfined'
   RedundantSuspendModifier:
     active: false
   SleepInsteadOfDelay:
@@ -218,7 +228,7 @@ exceptions:
     active: true
     ignoreLabeled: false
   SwallowedException:
-    active: false
+    active: true
     ignoredExceptionTypes:
       - 'InterruptedException'
       - 'MalformedURLException'
@@ -234,7 +244,6 @@ exceptions:
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     exceptions:
       - 'ArrayIndexOutOfBoundsException'
-      - 'Error'
       - 'Exception'
       - 'IllegalArgumentException'
       - 'IllegalMonitorStateException'
@@ -313,7 +322,7 @@ formatting:
     active: true
     autoCorrect: true
   MultiLineIfElse:
-    active: true
+    active: false
     autoCorrect: true
   NoBlankLineBeforeRbrace:
     active: true
@@ -349,9 +358,9 @@ formatting:
     active: true
     autoCorrect: true
   NoWildcardImports:
-    active: false
-  PackageName:
     active: true
+  PackageName:
+    active: false
     autoCorrect: true
   ParameterListWrapping:
     active: true
@@ -440,8 +449,6 @@ naming:
     functionPattern: '([a-zA-Z][a-zA-Z0-9]*)|(`.*`)'
     excludeClassPattern: '$^'
     ignoreOverridden: true
-    ignoreAnnotated:
-      - 'Composable'
   FunctionParameterNaming:
     active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
@@ -450,8 +457,11 @@ naming:
     ignoreOverridden: true
   InvalidPackageDeclaration:
     active: false
-    excludes: ['**/*.kts']
     rootPackage: ''
+  LambdaParameterNaming:
+    active: false
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
+    parameterPattern: '[a-z][A-Za-z0-9]*|_'
   MatchingDeclarationName:
     active: true
     mustBeFirst: true
@@ -556,10 +566,12 @@ potential-bugs:
   LateinitUsage:
     active: false
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
-    excludeAnnotatedProperties: []
     ignoreOnClassesPattern: ''
   MapGetWithNotNullAssertionOperator:
     active: false
+  MissingPackageDeclaration:
+    active: false
+    excludes: ['**/*.kts']
   MissingWhenCase:
     active: true
     allowElseExpression: true
@@ -579,6 +591,7 @@ potential-bugs:
     active: true
   UnsafeCallOnNullableType:
     active: true
+    excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
   UnsafeCast:
     active: true
   UnusedUnaryOperator:
@@ -620,6 +633,7 @@ style:
       - 'STOPSHIP:'
       - 'TODO:'
     allowedPatterns: ''
+    customMessage: ''
   ForbiddenImport:
     active: false
     imports: []
@@ -644,8 +658,6 @@ style:
     ignoreOverridableFunction: true
     ignoreActualFunction: true
     excludedFunctions: ''
-    excludeAnnotatedFunction:
-      - 'dagger.Provides'
   LibraryCodeMustSpecifyReturnType:
     active: true
     excludes: ['**']
@@ -734,11 +746,9 @@ style:
     active: false
   UnderscoresInNumericLiterals:
     active: false
-    acceptableDecimalLength: 5
+    acceptableLength: 4
   UnnecessaryAbstractClass:
     active: true
-    excludeAnnotatedClasses:
-      - 'dagger.Module'
   UnnecessaryAnnotationUseSiteTarget:
     active: false
   UnnecessaryApply:
@@ -760,6 +770,8 @@ style:
   UnusedPrivateMember:
     active: true
     allowedNames: '(_|ignored|expected|serialVersionUID)'
+  UseAnyOrNoneInsteadOfFind:
+    active: false
   UseArrayLiteralsInAnnotations:
     active: false
   UseCheckNotNull:
@@ -768,7 +780,6 @@ style:
     active: false
   UseDataClass:
     active: false
-    excludeAnnotatedClasses: []
     allowVars: false
   UseEmptyCounterpart:
     active: false
@@ -791,8 +802,7 @@ style:
   VarCouldBeVal:
     active: true
   WildcardImport:
-    active: false
+    active: true
     excludes: ['**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/iosTest/**']
     excludeImports:
       - 'java.util.*'
-      - 'kotlinx.android.synthetic.*'

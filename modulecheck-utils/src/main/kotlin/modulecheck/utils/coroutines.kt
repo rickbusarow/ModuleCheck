@@ -13,10 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.api.util
+package modulecheck.utils
 
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -32,31 +33,42 @@ import kotlinx.coroutines.sync.withLock
  * suspend fun getExpensive() = expensive.await()
  * ```
  */
-@Suppress("DeferredIsResult")
-inline fun <reified T> lazyDeferred(crossinline action: suspend () -> T): Deferred<T> {
-  val delegate = CompletableDeferred<T>()
+fun <T> lazyDeferred(action: suspend () -> T): LazyDeferred<T> {
 
-  val lock = Mutex()
+  return LazyDeferredImpl(
+    action = action,
+    delegate = CompletableDeferred(),
+    lock = Mutex(false)
+  )
+}
 
-  return object : Deferred<T> by delegate {
+fun interface LazyDeferred<T> {
+  suspend fun await(): T
+}
 
-    override suspend fun join() {
-      lock.withLock {
-        if (!delegate.isCompleted) {
-          delegate.complete(action())
-        }
-      }
-      return delegate.join()
+suspend fun <T> Collection<LazyDeferred<T>>.awaitAll(): List<T> {
+  return if (isEmpty()) {
+    emptyList()
+  } else {
+    coroutineScope {
+      map { it.await() }
     }
+  }
+}
 
-    override suspend fun await(): T {
-      lock.withLock {
-        if (!delegate.isCompleted) {
-          delegate.complete(action())
-        }
+internal class LazyDeferredImpl<T>(
+  private val action: suspend () -> T,
+  private val delegate: CompletableDeferred<T>,
+  private val lock: Mutex
+) : LazyDeferred<T> {
+
+  override suspend fun await(): T {
+    lock.withLock {
+      if (!delegate.isCompleted) {
+        delegate.complete(action())
       }
-      return delegate.await()
     }
+    return delegate.await()
   }
 }
 

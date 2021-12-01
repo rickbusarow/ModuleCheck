@@ -85,5 +85,6 @@ include(
   ":modulecheck-reporting:console",
   ":modulecheck-reporting:graphviz",
   ":modulecheck-runtime",
-  ":modulecheck-specs"
+  ":modulecheck-specs",
+  ":modulecheck-utils"
 )
