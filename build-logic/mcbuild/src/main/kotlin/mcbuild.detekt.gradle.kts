@@ -23,15 +23,15 @@ detekt {
 
   parallel = true
   config = files("$rootDir/detekt/detekt-config.yml")
-
-  reports {
-    xml.enabled = false
-    html.enabled = true
-    txt.enabled = false
-  }
 }
 
 tasks.withType<Detekt> {
+
+  reports {
+    xml.required.set(true)
+    html.required.set(true)
+    txt.required.set(false)
+  }
 
   setSource(files(projectDir))
 
