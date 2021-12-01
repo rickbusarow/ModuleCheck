@@ -19,13 +19,13 @@ import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.parsing.child
 import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
 import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.createSafely
+import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 import java.io.File
 

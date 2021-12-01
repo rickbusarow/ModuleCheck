@@ -18,8 +18,7 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-core"
-  anvil = true
+  artifactId = "modulecheck-utils"
 }
 
 dependencies {
@@ -27,20 +26,9 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
-
-  api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
-  implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.square.turbine)
 }
