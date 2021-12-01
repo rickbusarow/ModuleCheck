@@ -163,6 +163,8 @@ square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.r
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "square-anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "square-anvil" }
 
+square-turbine = "app.cash.turbine:turbine:0.7.0"
+
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
 vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.18.0"

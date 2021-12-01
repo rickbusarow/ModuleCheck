@@ -15,13 +15,13 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.capitalize
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
+import modulecheck.utils.capitalize
 import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

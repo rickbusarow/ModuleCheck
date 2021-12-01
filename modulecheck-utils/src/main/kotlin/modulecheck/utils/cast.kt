@@ -13,14 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.utils
 
-import java.util.Locale
+@Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
+inline fun <T> Any.cast(): T = this as T
 
-fun String.decapitalize(
-  locale: Locale = Locale.US
-) = replaceFirstChar { it.lowercase(locale) }
+@Suppress("NOTHING_TO_INLINE")
+inline fun <T : Any> T?.requireNotNull(): T = requireNotNull(this)
 
-fun String.capitalize(
-  locale: Locale = Locale.US
-) = replaceFirstChar { it.uppercase(locale) }
+inline fun <T : Any> T?.requireNotNull(lazyMessage: () -> Any): T =
+  requireNotNull(this, lazyMessage)
+
+inline fun <reified T : Any> Any?.safeAs(): T? = this as? T

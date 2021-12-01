@@ -15,6 +15,7 @@
 
 package modulecheck.parsing
 
+import modulecheck.utils.capitalize
 import java.util.Locale
 
 sealed interface ModuleRef {

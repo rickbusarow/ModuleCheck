@@ -43,6 +43,7 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-runtime"))
+  api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
   implementation(libs.javaParser)

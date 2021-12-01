@@ -21,8 +21,6 @@ import modulecheck.api.context.apiDependencySources
 import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.publicDependencies
-import modulecheck.api.util.filterBlocking
-import modulecheck.api.util.mapBlocking
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
@@ -30,6 +28,8 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
+import modulecheck.utils.filterBlocking
+import modulecheck.utils.mapBlocking
 
 data class MustBeApi(
   internal val delegate: Set<InheritedDependencyWithSource>
