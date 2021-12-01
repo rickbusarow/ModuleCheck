@@ -46,6 +46,7 @@ dependencies {
   dependencySync("com.squareup.anvil:compiler:2.3.10")
   dependencySync("com.squareup.anvil:gradle-plugin:2.3.10")
   dependencySync("com.squareup:kotlinpoet:1.10.2")
+  dependencySync("app.cash.turbine:turbine:0.7.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.18.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
 
@@ -65,7 +66,7 @@ dependencies {
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
   dependencySync("org.codehaus.groovy:groovy:3.0.9")
   dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.0")
-  dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.5.32")
+  dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.6.0")
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.32")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.32")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.32")
