@@ -18,14 +18,14 @@ package modulecheck.core.context
 import modulecheck.api.Deletable
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.anvilScopeMergesForSourceSetName
-import modulecheck.api.util.filterNotBlocking
-import modulecheck.api.util.lazyDeferred
 import modulecheck.core.DependencyFinding
 import modulecheck.core.internal.uses
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.filterNotBlocking
+import modulecheck.utils.lazyDeferred
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap

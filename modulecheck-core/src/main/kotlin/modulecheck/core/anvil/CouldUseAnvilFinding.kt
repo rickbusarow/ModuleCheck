@@ -19,8 +19,8 @@ import modulecheck.api.Finding
 import modulecheck.api.Finding.Position
 import modulecheck.api.Fixable
 import modulecheck.core.internal.positionOf
-import modulecheck.parsing.existsOrNull
 import modulecheck.project.ConfigurationName
+import modulecheck.utils.existsOrNull
 import java.io.File
 
 data class CouldUseAnvilFinding(

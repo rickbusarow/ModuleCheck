@@ -15,7 +15,6 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.util.flatMapBlocking
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
@@ -28,6 +27,7 @@ import modulecheck.project.asDeclarationName
 import modulecheck.project.temp.AnvilScopeName
 import modulecheck.project.temp.AnvilScopeNameEntry
 import modulecheck.project.temp.RawAnvilAnnotatedType
+import modulecheck.utils.flatMapBlocking
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry

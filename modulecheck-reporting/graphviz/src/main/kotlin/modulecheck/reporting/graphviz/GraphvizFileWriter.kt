@@ -19,7 +19,7 @@ import dispatch.core.launchIO
 import kotlinx.coroutines.coroutineScope
 import modulecheck.api.DepthFinding
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.child
+import modulecheck.utils.child
 import java.io.File
 import javax.inject.Inject
 

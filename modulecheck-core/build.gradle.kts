@@ -42,6 +42,7 @@ dependencies {
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
   api(project(path = ":modulecheck-runtime"))
+  api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
