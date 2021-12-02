@@ -33,3 +33,16 @@ tasks.withType<Delete> {
       .forEach { it.deleteRecursively() }
   }
 }
+
+tasks.register("cleanGradle", SourceTask::class.java) {
+
+  source(".gradle")
+
+  doLast {
+
+    projectDir.walkBottomUp()
+      .filter { it.isDirectory }
+      .filter { it.path.contains(".gradle") }
+      .forEach { it.deleteRecursively() }
+  }
+}
