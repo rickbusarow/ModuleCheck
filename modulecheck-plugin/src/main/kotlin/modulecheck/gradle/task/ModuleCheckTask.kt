@@ -15,10 +15,12 @@
 
 package modulecheck.gradle.task
 
+import kotlinx.coroutines.cancel
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.dagger.Components
+import modulecheck.dagger.DispatcherProviderComponent
 import modulecheck.gradle.ModuleCheckExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
@@ -50,20 +52,32 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
     val component = DaggerTaskComponent.factory()
       .create(project, settings, findingFactory)
 
-    Components.add(component)
+    try {
 
-    val runner = component.runnerFactory.create(autoCorrect)
-    val projectProvider = component.gradleProjectProvider.create(project)
+      Components.add(component)
 
-    val projects = project
-      .allprojects
-      .filter { it.buildFile.exists() }
-      .filterNot { it.path in settings.doNotCheck }
-      .map { projectProvider.get(it.path) }
+      val runner = component.runnerFactory.create(autoCorrect)
+      val projectProvider = component.gradleProjectProvider.create(project)
 
-    val result = runner.run(projects)
+      val projects = project
+        .allprojects
+        .filter { it.buildFile.exists() }
+        .filterNot { it.path in settings.doNotCheck }
+        .map { projectProvider.get(it.path) }
 
-    result.exceptionOrNull()
-      ?.let { throw GradleException(it.message!!, it) }
+      val result = runner.run(projects)
+
+      result.exceptionOrNull()
+        ?.let { throw GradleException(it.message!!, it) }
+    } finally {
+
+      val dispatcherProvider = Components.get<DispatcherProviderComponent>()
+        .dispatcherProvider
+
+      dispatcherProvider.default.cancel()
+      dispatcherProvider.io.cancel()
+
+      Components.clear()
+    }
   }
 }

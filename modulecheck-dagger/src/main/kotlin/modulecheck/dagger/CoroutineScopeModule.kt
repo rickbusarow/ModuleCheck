@@ -43,11 +43,18 @@ object CoroutineScopeModule {
   fun provideMainCoroutineScope(): MainCoroutineScope = MainCoroutineScope()
 
   @Provides
-  fun provideMainImmediateCoroutineScope(): MainImmediateCoroutineScope = MainImmediateCoroutineScope()
+  fun provideMainImmediateCoroutineScope(): MainImmediateCoroutineScope =
+    MainImmediateCoroutineScope()
 
   @Provides
   fun provideUnconfinedCoroutineScope(): UnconfinedCoroutineScope = UnconfinedCoroutineScope()
 
+  @SingleIn(AppScope::class)
   @Provides
   fun provideDispatcherProvider(): DispatcherProvider = DispatcherProvider()
+}
+
+@ContributesTo(AppScope::class)
+interface DispatcherProviderComponent {
+  val dispatcherProvider: DispatcherProvider
 }
