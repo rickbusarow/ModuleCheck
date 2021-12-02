@@ -44,7 +44,7 @@ dependencies {
   dependencySync("com.squareup.anvil:compiler-api:2.3.10")
   dependencySync("com.squareup.anvil:compiler-utils:2.3.10")
   dependencySync("com.squareup.anvil:compiler:2.3.10")
-  dependencySync("com.squareup.anvil:gradle-plugin:2.3.10-1-6-0")
+  dependencySync("com.squareup.anvil:gradle-plugin:2.3.10")
   dependencySync("com.squareup:kotlinpoet:1.10.2")
   dependencySync("app.cash.turbine:turbine:0.7.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.18.0")
