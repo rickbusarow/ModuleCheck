@@ -19,9 +19,8 @@ import modulecheck.api.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
-import modulecheck.core.overshotDependencies
+import modulecheck.core.context.overshotDependencies
 import modulecheck.project.McProject
-import modulecheck.project.all
 
 class OverShotDependencyRule(
   val settings: ModuleCheckSettings

@@ -1185,7 +1185,7 @@ class UnusedDependenciesTest : ProjectTest() {
         """
         package com.modulecheck.lib2
 
-        val appName = R.string.app_name
+        val theString = R.string.app_name
         """.trimIndent()
       )
     }

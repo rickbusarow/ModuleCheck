@@ -1141,6 +1141,75 @@ class MustBeApiTest : ProjectTest() {
   }
 
   @Test
+  fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
+
+    val runner = ModuleCheckRunner(
+      autoCorrect = true,
+      settings = baseSettings,
+      findingFactory = findingFactory,
+      logger = logger
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        fun <T: com.modulecheck.lib1.Lib1Class> foo(t: T) = Unit
+        """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency    name         source    build file
+                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
   fun `two public public properties from implementation with auto-correct should be fixed`() {
 
     val runner = ModuleCheckRunner(

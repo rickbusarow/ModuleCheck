@@ -15,13 +15,11 @@
 
 package modulecheck.core
 
-import modulecheck.core.context.OverShotDependencies
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
-import modulecheck.project.ProjectContext
 import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 
@@ -102,5 +100,3 @@ data class OverShotDependencyFinding(
       ")"
   }
 }
-
-suspend fun ProjectContext.overshotDependencies(): OverShotDependencies = get(OverShotDependencies)

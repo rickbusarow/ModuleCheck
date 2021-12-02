@@ -21,89 +21,95 @@ import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
 
 data class OverShotDependencies(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<OverShotDependencyFinding>>
-) : ConcurrentMap<ConfigurationName, Set<OverShotDependencyFinding>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<ConfigurationName, List<OverShotDependencyFinding>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<OverShotDependencies>
     get() = Key
 
+  suspend fun get(configurationName: ConfigurationName): List<OverShotDependencyFinding> {
+    return delegate.getOrPut(configurationName) {
+
+      project.unusedDependencies()
+        .get(configurationName)
+        .flatMap { unused ->
+
+          val configSuffix = unused.configurationName
+            .nameWithoutSourceSet()
+            .takeIf { !it.equals(ConfigurationName.api.value, ignoreCase = true) }
+            ?: ConfigurationName.implementation.value
+
+          val allUsedByConfigName = project.sourceSets
+            .keys
+            .mapNotNull { sourceSetName ->
+
+              sourceSetName.configurationNames()
+                .filterNot { it == unused.configurationName }
+                // check the same config as the unused configuration first.
+                // for instance, if `api` is unused, check `debugApi`, `testApi`, etc.
+                .sortedByDescending {
+                  it.nameWithoutSourceSet().equals(configSuffix, ignoreCase = true)
+                }
+                .firstNotNullOfOrNull { configName ->
+                  ConfiguredProjectDependency(
+                    configurationName = configName,
+                    project = unused.dependencyProject,
+                    isTestFixture = unused.cpd().isTestFixture
+                  )
+                    .takeIf { project.uses(it) }
+                }
+            }
+            .groupBy { it.configurationName }
+
+          val allConfigs = allUsedByConfigName.values
+            .flatMap { cpds ->
+              cpds.map { project.configurations.getValue(it.configurationName) }
+            }
+            .distinct()
+
+          // Remove redundant configs
+          // For instance, don't add a `testImplementation` declaration if `implementation` is
+          // already being added.
+          val trimmedConfigs = allConfigs.filter { cfg ->
+            cfg.inherited.none { it in allConfigs }
+          }
+
+          trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
+            .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
+            .map { it to unused.configurationName }
+            .toSet()
+        }
+        .map { (cpp, originalConfigurationName) ->
+
+          OverShotDependencyFinding(
+            dependentPath = project.path,
+            buildFile = project.buildFile,
+            dependencyProject = cpp.project,
+            dependencyIdentifier = cpp.project.path,
+            configurationName = cpp.configurationName,
+            originalConfigurationName = originalConfigurationName,
+            isTestFixture = cpp.isTestFixture
+          )
+        }
+        .sortedBy { it.dependencyProject }
+        .distinctBy { it.dependencyProject }
+    }
+  }
+
+  suspend fun all(): List<OverShotDependencyFinding> {
+    return project.configurations.keys.flatMap { get(it) }
+  }
+
   companion object Key : ProjectContext.Key<OverShotDependencies> {
     override suspend operator fun invoke(project: McProject): OverShotDependencies {
 
-      val used = project.unusedDependencies()
-        .values
-        .flatMap { allUnused ->
-          allUnused
-            .flatMap { unused ->
-
-              val configSuffix = unused.configurationName
-                .nameWithoutSourceSet()
-                .takeIf { !it.equals(ConfigurationName.api.value, ignoreCase = true) }
-                ?: ConfigurationName.implementation.value
-
-              val allUsedByConfigName = project.sourceSets
-                .keys
-                .mapNotNull { sourceSetName ->
-
-                  sourceSetName.configurationNames()
-                    .filterNot { it == unused.configurationName }
-                    // check the same config as the unused configuration first.
-                    // for instance, if `api` is unused, check `debugApi`, `testApi`, etc.
-                    .sortedByDescending {
-                      it.nameWithoutSourceSet().equals(configSuffix, ignoreCase = true)
-                    }
-                    .firstNotNullOfOrNull { configName ->
-                      ConfiguredProjectDependency(
-                        configurationName = configName,
-                        project = unused.dependencyProject,
-                        isTestFixture = unused.cpd().isTestFixture
-                      )
-                        .takeIf { project.uses(it) }
-                    }
-                }
-                .groupBy { it.configurationName }
-
-              val allConfigs = allUsedByConfigName.values
-                .flatMap { cpds ->
-                  cpds.map { project.configurations.getValue(it.configurationName) }
-                }
-                .distinct()
-
-              // Remove redundant configs
-              // For instance, don't add a `testImplementation` declaration if `implementation` is
-              // already being added.
-              val trimmedConfigs = allConfigs.filter { cfg ->
-                cfg.inherited.none { it in allConfigs }
-              }
-
-              trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
-                .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
-                .map { it to unused.configurationName }
-                .toSet()
-            }
-        }
-
-      val grouped = used.map { (cpp, originalConfigurationName) ->
-
-        OverShotDependencyFinding(
-          dependentPath = project.path,
-          buildFile = project.buildFile,
-          dependencyProject = cpp.project,
-          dependencyIdentifier = cpp.project.path,
-          configurationName = cpp.configurationName,
-          originalConfigurationName = originalConfigurationName,
-          isTestFixture = cpp.isTestFixture
-        )
-      }
-        .groupBy { it.configurationName }
-        .mapValues { it.value.toSet() }
-
-      return OverShotDependencies(ConcurrentHashMap(grouped))
+      return OverShotDependencies(SafeCache(), project)
     }
   }
 }
+
+suspend fun ProjectContext.overshotDependencies(): OverShotDependencies = get(OverShotDependencies)
