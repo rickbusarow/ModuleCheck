@@ -16,6 +16,7 @@
 package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
+import modulecheck.api.finding.Finding
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache

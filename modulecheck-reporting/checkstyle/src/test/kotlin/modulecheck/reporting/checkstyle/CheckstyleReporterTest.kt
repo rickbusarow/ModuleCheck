@@ -16,8 +16,8 @@
 package modulecheck.reporting.checkstyle
 
 import io.kotest.matchers.shouldBe
-import modulecheck.api.Finding.FindingResult
-import modulecheck.api.Finding.Position
+import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.Finding.Position
 import org.junit.jupiter.api.Test
 import java.io.File
 

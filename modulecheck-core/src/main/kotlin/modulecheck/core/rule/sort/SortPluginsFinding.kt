@@ -15,9 +15,9 @@
 
 package modulecheck.core.rule.sort
 
-import modulecheck.api.Finding
-import modulecheck.api.Finding.Position
-import modulecheck.api.Fixable
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.Position
+import modulecheck.api.finding.Fixable
 import modulecheck.core.parse
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration

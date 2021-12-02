@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.ModuleCheckRule
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.context.RedundantDependencies

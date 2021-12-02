@@ -15,11 +15,11 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.dependents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.layoutFiles
 import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.project.AndroidMcProject

@@ -16,8 +16,8 @@
 package modulecheck.core.rule
 
 import modulecheck.api.DepthFinding
-import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.depthForSourceSetName
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.project.McProject
 

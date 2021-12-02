@@ -15,7 +15,7 @@
 
 package modulecheck.reporting.console
 
-import modulecheck.api.Finding
+import modulecheck.api.finding.Finding
 import modulecheck.project.Report
 import java.util.Locale
 import javax.inject.Inject

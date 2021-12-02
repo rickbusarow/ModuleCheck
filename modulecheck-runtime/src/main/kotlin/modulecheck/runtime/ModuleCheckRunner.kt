@@ -21,10 +21,10 @@ import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
-import modulecheck.api.Finding
-import modulecheck.api.FindingFactory
-import modulecheck.api.FindingResultFactory
-import modulecheck.api.Problem
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.FindingFactory
+import modulecheck.api.finding.FindingResultFactory
+import modulecheck.api.finding.Problem
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.project.Logger
 import modulecheck.project.McProject

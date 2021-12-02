@@ -15,10 +15,10 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.Finding
-import modulecheck.api.Finding.Position
-import modulecheck.api.Fixable
-import modulecheck.api.Problem
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.Position
+import modulecheck.api.finding.Fixable
+import modulecheck.api.finding.Problem
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import java.io.File

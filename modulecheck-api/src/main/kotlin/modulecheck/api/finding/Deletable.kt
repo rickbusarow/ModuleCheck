@@ -13,13 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.api.finding
 
-fun interface FindingResultFactory {
+interface Deletable : Finding {
 
-  fun create(
-    findings: List<Finding>,
-    autoCorrect: Boolean,
-    deleteUnused: Boolean
-  ): List<Finding.FindingResult>
+  fun delete(): Boolean = synchronized(buildFile) {
+    val text = buildFile.readText()
+
+    val element = statementTextOrNull ?: return false
+
+    buildFile
+      .writeText(text.replaceFirst(element + '\n', ""))
+
+    return true
+  }
 }

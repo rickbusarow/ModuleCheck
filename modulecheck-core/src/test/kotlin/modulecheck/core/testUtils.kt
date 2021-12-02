@@ -16,10 +16,10 @@
 package modulecheck.core
 
 import dispatch.core.DispatcherProvider
-import modulecheck.api.Finding
-import modulecheck.api.FindingFactory
-import modulecheck.api.FindingResultFactory
-import modulecheck.api.RealFindingResultFactory
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.FindingFactory
+import modulecheck.api.finding.FindingResultFactory
+import modulecheck.api.finding.RealFindingResultFactory
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.project.Logger
 import modulecheck.reporting.checkstyle.CheckstyleReporter

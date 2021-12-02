@@ -15,7 +15,7 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.Finding.Position
+import modulecheck.api.finding.Finding.Position
 import modulecheck.core.internal.positionOf
 import modulecheck.project.ConfigurationName
 import java.io.File

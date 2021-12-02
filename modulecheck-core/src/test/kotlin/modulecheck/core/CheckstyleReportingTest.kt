@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding.FindingResult
-import modulecheck.api.Finding.Position
+import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.Finding.Position
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.project.PrintLogger
