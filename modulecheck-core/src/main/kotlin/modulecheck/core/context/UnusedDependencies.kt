@@ -15,126 +15,76 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.Deletable
-import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.anvilScopeMergesForSourceSetName
-import modulecheck.core.DependencyFinding
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
+import modulecheck.api.context.anvilScopeDependenciesForSourceSetName
+import modulecheck.core.UnusedDependency
 import modulecheck.core.internal.uses
 import modulecheck.project.ConfigurationName
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.filterNotBlocking
+import modulecheck.utils.SafeCache
+import modulecheck.utils.filterAsync
 import modulecheck.utils.lazyDeferred
-import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
-
-data class UnusedDependency(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
-  override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName,
-  val isTestFixture: Boolean
-) : DependencyFinding("unusedDependency"),
-  Deletable {
-
-  override val message: String
-    get() = "The declared dependency is not used in this module."
-
-  fun cpd() = ConfiguredProjectDependency(
-    configurationName = configurationName,
-    project = dependencyProject,
-    isTestFixture = isTestFixture
-  )
-
-  override fun toString(): String {
-    return "UnusedDependency(\n" +
-      "\tdependentPath='$dependentPath', \n" +
-      "\tbuildFile=$buildFile, \n" +
-      "\tdependencyProject=$dependencyProject, \n" +
-      "\tdependencyIdentifier='$dependencyIdentifier', \n" +
-      "\tconfigurationName=$configurationName\n" +
-      ")"
-  }
-
-  override fun fromStringOrEmpty(): String = ""
-}
+import modulecheck.utils.mapAsync
 
 data class UnusedDependencies(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<UnusedDependency>>
-) : ConcurrentMap<ConfigurationName, Set<UnusedDependency>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<ConfigurationName, Set<UnusedDependency>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<UnusedDependencies>
     get() = Key
 
+  suspend fun all(): List<UnusedDependency> {
+    return project.sourceSets
+      .flatMap { it.key.configurationNames() }
+      .mapAsync { configurationName -> get(configurationName) }
+      .toList()
+      .flatten()
+      .distinct()
+  }
+
+  suspend fun get(configurationName: ConfigurationName): Set<UnusedDependency> {
+
+    return delegate.getOrPut(configurationName) {
+      val deps = project.projectDependencies[configurationName] ?: return@getOrPut emptySet()
+
+      val neededForScopes = lazyDeferred {
+        project.anvilScopeDependenciesForSourceSetName(configurationName.toSourceSetName())
+          .map { it.project }
+          .toSet()
+      }
+
+      deps.filterNot { cpd ->
+        // test configurations have the main source project as a dependency.
+        // without this, every project will report itself as unused.
+        cpd.project.path == project.path
+      }
+        .asFlow()
+        .filterAsync { cpd ->
+          !project.uses(cpd) && !neededForScopes.await().contains(cpd.project)
+        }
+        .map { cpd ->
+          UnusedDependency(
+            dependentPath = project.path,
+            buildFile = project.buildFile,
+            dependencyProject = cpd.project,
+            dependencyIdentifier = cpd.project.path,
+            configurationName = cpd.configurationName,
+            isTestFixture = cpd.isTestFixture
+          )
+        }
+        .toSet()
+    }
+  }
+
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override suspend operator fun invoke(project: McProject): UnusedDependencies {
-      val neededForScopes = lazyDeferred { project.anvilScopeMap() }
 
-      val unusedHere = project
-        .sourceSets
-        .flatMap { it.key.configurationNames() }
-        .asSequence()
-        .flatMap { config -> project.projectDependencies[config].orEmpty() }
-        .filterNot { cpd ->
-          // test configurations have the main source project as a dependency.
-          // without this, every project will report itself as unused.
-          cpd.project.path == project.path
-        }
-        .filterNotBlocking { cpd -> project.uses(cpd) }
-        .filterNotBlocking { cpd ->
-          cpd.project in neededForScopes.await()[cpd.configurationName].orEmpty()
-        }
-
-      val grouped = unusedHere.map { cpp ->
-
-        UnusedDependency(
-          dependentPath = project.path,
-          buildFile = project.buildFile,
-          dependencyProject = cpp.project,
-          dependencyIdentifier = cpp.project.path,
-          configurationName = cpp.configurationName,
-          isTestFixture = cpp.isTestFixture
-        )
-      }
-        .groupBy { it.configurationName }
-        .mapValues { it.value.toSet() }
-
-      return UnusedDependencies(ConcurrentHashMap(grouped))
-    }
-
-    private suspend fun McProject.anvilScopeMap(): Map<ConfigurationName, List<McProject>> {
-      if (anvilGradlePlugin == null) {
-        return mapOf()
-      }
-
-      return configurations
-        .map { (configurationName, _) ->
-          val merged = anvilScopeMergesForSourceSetName(configurationName.toSourceSetName())
-
-          val configurationDependencies = projectDependencies[configurationName]
-            .orEmpty()
-            .toSet()
-
-          val neededForScopeInConfig = configurationDependencies
-            .filter { cpd ->
-
-              val contributed = cpd
-                .project
-                .anvilScopeContributionsForSourceSetName(cpd.configurationName.toSourceSetName())
-
-              contributed.any { cont ->
-                cont.key in merged.keys
-              }
-            }
-            .map { it.project }
-
-          configurationName to neededForScopeInConfig
-        }
-        .toMap()
+      return UnusedDependencies(SafeCache(), project)
     }
   }
 }

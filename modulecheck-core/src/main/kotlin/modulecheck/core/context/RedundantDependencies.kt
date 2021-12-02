@@ -15,91 +15,67 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.Deletable
-import modulecheck.api.context.publicDependencies
-import modulecheck.core.DependencyFinding
-import modulecheck.project.ConfigurationName
+import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.classpathDependencies
+import modulecheck.core.RedundantDependencyFinding
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
-
-data class RedundantDependencyFinding(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
-  val dependencyPath: String,
-  override val configurationName: ConfigurationName,
-  val from: List<McProject>
-) : DependencyFinding("redundant"),
-  Deletable {
-
-  override val message: String
-    get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
-      "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
-      "file is desired."
-
-  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
-
-  override fun fromStringOrEmpty(): String {
-
-    return if (from.all { dependencyProject.path == it.path }) {
-      ""
-    } else {
-      from.joinToString { it.path }
-    }
-  }
-}
+import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
+import modulecheck.utils.mapAsync
 
 data class RedundantDependencies(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>>
-) : ConcurrentMap<ConfigurationName, Set<RedundantDependencyFinding>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, List<RedundantDependencyFinding>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<RedundantDependencies>
     get() = Key
 
-  companion object Key : ProjectContext.Key<RedundantDependencies> {
-    override suspend operator fun invoke(project: McProject): RedundantDependencies {
-      val allApi = project
-        .projectDependencies[ConfigurationName.api]
-        .orEmpty()
+  suspend fun all(): List<RedundantDependencyFinding> {
+    return project.sourceSets
+      .keys
+      .mapAsync { get(it) }
+      .toList()
+      .flatten()
+  }
+
+  suspend fun get(sourceSetName: SourceSetName): List<RedundantDependencyFinding> {
+
+    return delegate.getOrPut(sourceSetName) {
+
+      val allDirect = sourceSetName.configurationNames()
+        .flatMap { project.projectDependencies[it].orEmpty() }
         .toSet()
 
       val inheritedDependencyProjects = project
-        .projectDependencies
-        .main()
-        .flatMap {
-          it
-            .project
-            .publicDependencies()
-            .map { it.project }
-            .toSet()
-        }
+        .classpathDependencies()
+        .get(sourceSetName)
+        .groupBy { it.contributed.project }
 
-      val redundant = allApi
-        .filter { it.project in inheritedDependencyProjects }
-        .map {
-          val from = allApi
-            .filter { inherited -> inherited.project == it.project }
-            .map { it.project }
+      allDirect
+        .mapNotNull { direct ->
+
+          val fromCpd = inheritedDependencyProjects[direct.project]
+            ?.map { it.source }
+            ?: return@mapNotNull null
 
           RedundantDependencyFinding(
             dependentPath = project.path,
             buildFile = project.buildFile,
-            dependencyProject = it.project,
-            dependencyPath = it.project.path,
-            configurationName = it.configurationName,
-            from = from
+            dependencyProject = direct.project,
+            dependencyPath = direct.project.path,
+            configurationName = direct.configurationName,
+            from = fromCpd
           )
         }
+    }
+  }
 
-      val grouped = redundant
-        .groupBy { it.configurationName }
-        .mapValues { it.value.toSet() }
+  companion object Key : ProjectContext.Key<RedundantDependencies> {
+    override suspend operator fun invoke(project: McProject): RedundantDependencies {
 
-      return RedundantDependencies(ConcurrentHashMap(grouped))
+      return RedundantDependencies(SafeCache(), project)
     }
   }
 }
