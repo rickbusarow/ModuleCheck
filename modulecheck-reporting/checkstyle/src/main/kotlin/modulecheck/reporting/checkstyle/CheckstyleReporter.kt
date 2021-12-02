@@ -15,7 +15,7 @@
 
 package modulecheck.reporting.checkstyle
 
-import modulecheck.api.Finding.FindingResult
+import modulecheck.api.finding.Finding.FindingResult
 import org.unbescape.xml.XmlEscape
 import java.io.File
 import javax.inject.Inject

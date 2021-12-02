@@ -17,7 +17,7 @@ package modulecheck.gradle
 
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
-import modulecheck.api.FindingFactory
+import modulecheck.api.finding.FindingFactory
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory

@@ -18,8 +18,8 @@ package modulecheck.gradle.task
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import modulecheck.api.Finding
-import modulecheck.api.FindingFactory
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.FindingFactory
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn

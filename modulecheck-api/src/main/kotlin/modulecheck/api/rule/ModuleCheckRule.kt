@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.api.rule
 
+import modulecheck.api.finding.Finding
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.psi.internal.asKtsFileOrNull

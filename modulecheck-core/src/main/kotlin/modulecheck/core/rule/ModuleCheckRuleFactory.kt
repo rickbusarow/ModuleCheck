@@ -15,9 +15,9 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.Finding
-import modulecheck.api.ModuleCheckRule
-import modulecheck.api.RuleFactory
+import modulecheck.api.finding.Finding
+import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.api.rule.RuleFactory
 import modulecheck.api.settings.ModuleCheckSettings
 
 class ModuleCheckRuleFactory : RuleFactory {
