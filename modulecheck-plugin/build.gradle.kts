@@ -41,6 +41,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:core"))
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-project:impl"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-runtime"))
   api(project(path = ":modulecheck-utils"))

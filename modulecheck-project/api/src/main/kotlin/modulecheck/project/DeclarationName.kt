@@ -18,4 +18,9 @@ package modulecheck.project
 @JvmInline
 value class DeclarationName(val fqName: String)
 
+data class DeclarationNameWithSource(
+  val declarationName: DeclarationName,
+  val sourceProject: McProject
+)
+
 fun String.asDeclarationName(): DeclarationName = DeclarationName(this)

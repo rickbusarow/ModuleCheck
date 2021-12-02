@@ -27,11 +27,17 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
 import modulecheck.parsing.JvmFile
 import modulecheck.project.DeclarationName
+import modulecheck.project.McProject
 import modulecheck.project.asDeclarationName
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 import java.io.File
 import kotlin.properties.Delegates
 
-class JavaFile(val file: File) : JvmFile() {
+class JavaFile(
+  project: McProject,
+  val file: File
+) : JvmFile(project) {
 
   override val name = file.name
 
@@ -116,7 +122,7 @@ class JavaFile(val file: File) : JvmFile() {
       }.toSet()
   }
 
-  override val maybeExtraReferences: Set<String> by lazy {
+  override val maybeExtraReferences: LazyDeferred<Set<String>> = lazyDeferred {
     parsed.classOrInterfaceTypes
       .map { it.nameWithScope }
       .flatMap { name ->

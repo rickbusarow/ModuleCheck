@@ -18,32 +18,33 @@ package modulecheck.api.context
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class ClassPaths(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<File>>
-) : ConcurrentMap<SourceSetName, Set<File>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<File>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ClassPaths>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Set<File> {
+    return delegate.getOrPut(sourceSetName) {
+      val sourceSet = project.sourceSets[sourceSetName] ?: return@getOrPut emptySet()
+
+      (sourceSet.classpathFiles + sourceSet.outputFiles).toSet()
+    }
+  }
+
   companion object Key : ProjectContext.Key<ClassPaths> {
     override suspend operator fun invoke(project: McProject): ClassPaths {
-      val map = project
-        .sourceSets
-        .values
-        .associate { sourceSet ->
-          sourceSet.name to (sourceSet.classpathFiles + sourceSet.outputFiles).toSet()
-        }
 
-      return ClassPaths(ConcurrentHashMap(map))
+      return ClassPaths(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.classPaths(): ClassPaths = get(ClassPaths)
 suspend fun ProjectContext.classpathForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  classPaths()[sourceSetName].orEmpty()
+  classPaths().get(sourceSetName)

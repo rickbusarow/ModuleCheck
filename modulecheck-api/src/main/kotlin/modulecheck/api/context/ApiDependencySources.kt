@@ -15,21 +15,18 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.context.ApiDependencySources.SourceKey
-import modulecheck.api.context.ApiDependencySources.SourceResult
 import modulecheck.api.context.ApiDependencySources.SourceResult.Found
 import modulecheck.api.context.ApiDependencySources.SourceResult.NOT_PRESENT
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
+import modulecheck.utils.SafeCache
 
 data class ApiDependencySources(
-  internal val delegate: ConcurrentHashMap<SourceKey, SourceResult>,
+  private val delegate: SafeCache<SourceKey, SourceResult>,
   private val project: McProject
-) : Map<SourceKey, SourceResult> by delegate,
-  ProjectContext.Element {
+) : ProjectContext.Element {
 
   data class SourceKey(
     val sourceSetName: SourceSetName,
@@ -51,35 +48,22 @@ data class ApiDependencySources(
     isTestFixture: Boolean
   ): ConfiguredProjectDependency? {
 
-    val fromCacheOrNull = delegate[
-      SourceKey(
-        sourceSetName = sourceSetName,
-        dependencyProjectPath = dependencyProjectPath,
-        isTestFixture = isTestFixture
-      )
-    ]
-    if (fromCacheOrNull != null) {
-      return when (fromCacheOrNull) {
-        is Found -> fromCacheOrNull.sourceDependency
-        NOT_PRESENT -> null
-      }
-    }
+    val key = SourceKey(
+      sourceSetName = sourceSetName,
+      dependencyProjectPath = dependencyProjectPath,
+      isTestFixture = isTestFixture
+    )
 
-    val sourceOrNull = project.classpathDependencies()[sourceSetName]
-      .firstOrNull { transitive ->
-        transitive.contributed.project.path == dependencyProjectPath &&
-          transitive.contributed.isTestFixture == isTestFixture
-      }
-      ?.source
+    val fromCacheOrNull = delegate.getOrPut(key) {
 
-    // cache the result for next time
-    delegate.getOrPut(
-      SourceKey(
-        sourceSetName = sourceSetName,
-        dependencyProjectPath = dependencyProjectPath,
-        isTestFixture = isTestFixture
-      )
-    ) {
+      val sourceOrNull = project.classpathDependencies()
+        .get(sourceSetName)
+        .firstOrNull { transitive ->
+          transitive.contributed.project.path == dependencyProjectPath &&
+            transitive.contributed.isTestFixture == isTestFixture
+        }
+        ?.source
+
       if (sourceOrNull != null) {
         Found(sourceOrNull)
       } else {
@@ -87,12 +71,15 @@ data class ApiDependencySources(
       }
     }
 
-    return sourceOrNull
+    return when (fromCacheOrNull) {
+      is Found -> fromCacheOrNull.sourceDependency
+      NOT_PRESENT -> null
+    }
   }
 
   companion object Key : ProjectContext.Key<ApiDependencySources> {
     override suspend fun invoke(project: McProject): ApiDependencySources {
-      return ApiDependencySources(ConcurrentHashMap(), project)
+      return ApiDependencySources(SafeCache(), project)
     }
   }
 }

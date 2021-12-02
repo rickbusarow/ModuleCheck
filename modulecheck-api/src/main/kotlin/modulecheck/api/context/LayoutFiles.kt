@@ -16,32 +16,43 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.xml.XmlFile
+import modulecheck.parsing.xml.XmlFile.LayoutFile
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
 
 data class LayoutFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<XmlFile.LayoutFile>>
-) : ConcurrentMap<SourceSetName, Set<XmlFile.LayoutFile>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<LayoutFile>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<LayoutFiles>
     get() = Key
 
+  suspend fun all(): Map<SourceSetName, Set<LayoutFile>> {
+    return project.sourceSets
+      .mapValues { (sourceSetName, _) ->
+        get(sourceSetName)
+      }
+  }
+
+  suspend fun get(sourceSetName: SourceSetName): Set<LayoutFile> {
+
+    return delegate.getOrPut(sourceSetName) {
+
+      val sourceSet = project.sourceSets[sourceSetName] ?: return@getOrPut emptySet()
+      sourceSet
+        .layoutFiles
+        .map { XmlFile.LayoutFile(it) }
+        .toSet()
+    }
+  }
+
   companion object Key : ProjectContext.Key<LayoutFiles> {
     override suspend operator fun invoke(project: McProject): LayoutFiles {
-      val map = project
-        .sourceSets
-        .mapValues { (_, sourceSet) ->
-          sourceSet
-            .layoutFiles
-            .map { XmlFile.LayoutFile(it) }
-            .toSet()
-        }
 
-      return LayoutFiles(ConcurrentHashMap(map))
+      return LayoutFiles(SafeCache(), project)
     }
   }
 }
@@ -49,4 +60,4 @@ data class LayoutFiles(
 suspend fun ProjectContext.layoutFiles(): LayoutFiles = get(LayoutFiles)
 suspend fun ProjectContext.layoutFilesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<XmlFile.LayoutFile> = layoutFiles()[sourceSetName].orEmpty()
+): Set<XmlFile.LayoutFile> = layoutFiles().get(sourceSetName)

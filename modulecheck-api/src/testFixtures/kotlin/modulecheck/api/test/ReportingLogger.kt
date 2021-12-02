@@ -15,20 +15,20 @@
 
 package modulecheck.api.test
 
-import modulecheck.api.Logger
-import modulecheck.api.Report
-import modulecheck.api.Report.ReportEntry
-import modulecheck.api.Report.ReportEntry.AppendNewLine
-import modulecheck.api.Report.ReportEntry.Failure
-import modulecheck.api.Report.ReportEntry.FailureHeader
-import modulecheck.api.Report.ReportEntry.FailureLine
-import modulecheck.api.Report.ReportEntry.Header
-import modulecheck.api.Report.ReportEntry.Info
-import modulecheck.api.Report.ReportEntry.Success
-import modulecheck.api.Report.ReportEntry.SuccessHeader
-import modulecheck.api.Report.ReportEntry.SuccessLine
-import modulecheck.api.Report.ReportEntry.Warning
-import modulecheck.api.Report.ReportEntry.WarningLine
+import modulecheck.project.Logger
+import modulecheck.project.Report
+import modulecheck.project.Report.ReportEntry
+import modulecheck.project.Report.ReportEntry.AppendNewLine
+import modulecheck.project.Report.ReportEntry.Failure
+import modulecheck.project.Report.ReportEntry.FailureHeader
+import modulecheck.project.Report.ReportEntry.FailureLine
+import modulecheck.project.Report.ReportEntry.Header
+import modulecheck.project.Report.ReportEntry.Info
+import modulecheck.project.Report.ReportEntry.Success
+import modulecheck.project.Report.ReportEntry.SuccessHeader
+import modulecheck.project.Report.ReportEntry.SuccessLine
+import modulecheck.project.Report.ReportEntry.Warning
+import modulecheck.project.Report.ReportEntry.WarningLine
 
 class ReportingLogger(
   private val mirrorToStandardOut: Boolean = true

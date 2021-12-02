@@ -20,38 +20,43 @@ import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
+import modulecheck.utils.existsOrNull
 
 data class ManifestFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, XmlFile.ManifestFile>
-) : ConcurrentMap<SourceSetName, XmlFile.ManifestFile> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, XmlFile.ManifestFile?>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ManifestFiles>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): XmlFile.ManifestFile? {
+    if (project !is AndroidMcProject) return null
+
+    return delegate.getOrPut(sourceSetName) {
+      val file = project.manifests[sourceSetName]
+        ?.existsOrNull()
+        ?: return@getOrPut null
+
+      XmlFile.ManifestFile(file)
+    }
+  }
+
   companion object Key : ProjectContext.Key<ManifestFiles> {
     override suspend operator fun invoke(project: McProject): ManifestFiles {
 
-      if (project !is AndroidMcProject) return ManifestFiles(ConcurrentHashMap())
-
-      val map = project
-        .manifests
-        .mapValues { (_, file) ->
-          XmlFile.ManifestFile(file)
-        }
-
-      return ManifestFiles(ConcurrentHashMap(map))
+      return ManifestFiles(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.manifestFiles(): ManifestFiles = get(ManifestFiles)
 
-suspend fun ProjectContext.manifestFilesForSourceSetName(
+suspend fun ProjectContext.manifestFileForSourceSetName(
   sourceSetName: SourceSetName
-): XmlFile.ManifestFile? = manifestFiles()[sourceSetName]
+): XmlFile.ManifestFile? = manifestFiles()
+  .get(sourceSetName)
   ?.takeIf { it.file.exists() }
-  ?: manifestFiles()[SourceSetName.MAIN]
+  ?: manifestFiles().get(SourceSetName.MAIN)
     ?.takeIf { it.file.exists() }

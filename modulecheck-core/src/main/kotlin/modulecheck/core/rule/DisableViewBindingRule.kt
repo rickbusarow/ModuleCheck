@@ -16,10 +16,10 @@
 package modulecheck.core.rule
 
 import modulecheck.api.ModuleCheckRule
-import modulecheck.api.context.dependendents
+import modulecheck.api.context.dependents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.layoutFiles
-import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.project.AndroidMcProject
@@ -45,8 +45,9 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     val layouts = androidProject
       .layoutFiles()
       .all()
+      .all()
 
-    val dependents = project.dependendents()
+    val dependents = project.dependents()
 
     val basePackage = project.androidPackageOrNull
       ?: return listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
@@ -72,7 +73,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
             dep
               .importsForSourceSetName(SourceSetName.MAIN)
               .contains(reference) || dep
-              .possibleReferencesForSourceSetName(SourceSetName.MAIN)
+              .referencesForSourceSetName(SourceSetName.MAIN)
               .contains(reference)
           }
       }

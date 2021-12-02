@@ -15,13 +15,15 @@
 
 package modulecheck.core.anvil
 
+import kotlinx.coroutines.flow.filterIsInstance
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
-import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetName
+import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 import net.swiftzer.semver.SemVer
 
@@ -52,9 +54,9 @@ object AnvilFactoryParser {
       project.importsForSourceSetName(SourceSetName.TEST)
 
     val maybeExtra = lazyDeferred {
-      project.possibleReferencesForSourceSetName(SourceSetName.ANDROID_TEST) +
-        project.possibleReferencesForSourceSetName(SourceSetName.MAIN) +
-        project.possibleReferencesForSourceSetName(SourceSetName.TEST)
+      project.referencesForSourceSetName(SourceSetName.ANDROID_TEST) +
+        project.referencesForSourceSetName(SourceSetName.MAIN) +
+        project.referencesForSourceSetName(SourceSetName.TEST)
     }
 
     val createsComponent = allImports.contains(daggerComponent) ||
@@ -70,8 +72,8 @@ object AnvilFactoryParser {
       .any { file ->
         file.imports.contains(daggerInject) ||
           file.imports.contains(daggerModule) ||
-          file.maybeExtraReferences.contains(daggerInject) ||
-          file.maybeExtraReferences.contains(daggerModule)
+          file.maybeExtraReferences.await().contains(daggerInject) ||
+          file.maybeExtraReferences.await().contains(daggerModule)
       }
 
     if (usesDaggerInJava) return emptyList()
@@ -82,8 +84,8 @@ object AnvilFactoryParser {
       .any { file ->
         file.imports.contains(daggerInject) ||
           file.imports.contains(daggerModule) ||
-          file.maybeExtraReferences.contains(daggerInject) ||
-          file.maybeExtraReferences.contains(daggerModule)
+          file.maybeExtraReferences.await().contains(daggerInject) ||
+          file.maybeExtraReferences.await().contains(daggerModule)
       }
 
     if (!usesDaggerInKotlin) return emptyList()

@@ -33,12 +33,13 @@ import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
+import modulecheck.gradle.task.GradleLogger
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.MavenCoordinates
 import modulecheck.parsing.ProjectProvider
 import modulecheck.parsing.xml.AndroidManifestParser
 import modulecheck.project.Config
-import modulecheck.project.ConfigurationName
+import modulecheck.project.Configurations
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.ExternalDependency
@@ -46,7 +47,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.SourceSet
-import modulecheck.project.SourceSetName
+import modulecheck.project.SourceSets
 import modulecheck.project.asConfigurationName
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
@@ -68,7 +69,8 @@ import kotlin.LazyThreadSafetyMode.NONE
 class GradleProjectProvider @AssistedInject constructor(
   @Assisted
   rootGradleProject: GradleProject,
-  override val projectCache: ProjectCache
+  override val projectCache: ProjectCache,
+  private val gradleLogger: GradleLogger
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -122,6 +124,7 @@ class GradleProjectProvider @AssistedInject constructor(
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
+        logger = gradleLogger,
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
@@ -135,13 +138,14 @@ class GradleProjectProvider @AssistedInject constructor(
         sourceSets = gradleProject.jvmSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
+        logger = gradleLogger,
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
     }
   }
 
-  private fun GradleProject.configurations(): Map<ConfigurationName, Config> {
+  private fun GradleProject.configurations(): Configurations {
 
     fun Configuration.foldConfigs(): Set<Configuration> {
       return extendsFrom + extendsFrom.flatMap { it.foldConfigs() }
@@ -155,7 +159,8 @@ class GradleProjectProvider @AssistedInject constructor(
 
       return Config(name.asConfigurationName(), configs)
     }
-    return configurations
+
+    val map = configurations
       .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
       .associate { configuration ->
 
@@ -163,6 +168,7 @@ class GradleProjectProvider @AssistedInject constructor(
 
         configuration.name.asConfigurationName() to config
       }
+    return Configurations(map)
   }
 
   private fun GradleProject.externalDependencies(): Lazy<ExternalDependencies> = lazy {
@@ -226,8 +232,8 @@ class GradleProjectProvider @AssistedInject constructor(
       ProjectDependencies(map)
     }
 
-  private fun GradleProject.jvmSourceSets(): Map<SourceSetName, SourceSet> {
-    return convention
+  private fun GradleProject.jvmSourceSets(): SourceSets {
+    val map = convention
       .findPlugin(JavaPluginConvention::class.java)
       ?.sourceSets
       ?.map { gradleSourceSet ->
@@ -252,6 +258,8 @@ class GradleProjectProvider @AssistedInject constructor(
       }
       ?.associateBy { it.name }
       .orEmpty()
+
+    return SourceSets(map)
   }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
@@ -311,8 +319,8 @@ class GradleProjectProvider @AssistedInject constructor(
       else -> emptyList()
     }
 
-  private fun GradleProject.androidSourceSets(): Map<SourceSetName, SourceSet> {
-    return extensions
+  private fun GradleProject.androidSourceSets(): SourceSets {
+    val map = extensions
       .findByType(BaseExtension::class.java)
       ?.variants
       ?.flatMap { variant ->
@@ -359,6 +367,8 @@ class GradleProjectProvider @AssistedInject constructor(
       }
       ?.associateBy { it.name }
       .orEmpty()
+
+    return SourceSets(map)
   }
 
   companion object {

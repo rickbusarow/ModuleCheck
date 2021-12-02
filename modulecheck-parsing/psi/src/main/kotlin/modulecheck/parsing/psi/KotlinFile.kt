@@ -16,27 +16,44 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.JvmFile
+import modulecheck.parsing.psi.internal.fqNameOrNull
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
+import modulecheck.utils.awaitAll
+import modulecheck.utils.lazyDeferred
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class KotlinFile(
+  project: McProject,
   val ktFile: KtFile,
-  val bindingContext: BindingContext
-) : JvmFile() {
+  val bindingContext: BindingContext,
+  val sourceSetName: SourceSetName
+) : JvmFile(project) {
 
   override val name = ktFile.name
 
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
 
-  override val imports by lazy {
-
+  private val importDirectives by lazy {
     usedImportsVisitor
       .usedImports()
+      .toSet()
+  }
+
+  override val imports by lazy {
+    importDirectives
       .mapNotNull { importDirective ->
         importDirective
           .importPath
           ?.pathStr
       }
+      .toSet()
+  }
+
+  val constructorInjectedParams = lazyDeferred {
+    referenceVisitor.constructorInjected
+      .mapNotNull { it.fqNameOrNull(project, sourceSetName) }
       .toSet()
   }
 
@@ -59,24 +76,28 @@ class KotlinFile(
       .toSet()
   }
 
-  val apiReferences by lazy {
+  val apiReferences = lazyDeferred {
+    // referenceVisitor.apiReferences
+    //   .mapNotNull { it.fqNameOrNull(project, sourceSetName) }
+    //   // .map { FqName(it.text) }
+    //   .toSet()
 
-    val replacedWildcards = wildcardImports.flatMap { wildardImport ->
+    val apiRefsAsStrings = referenceVisitor.apiReferences.map { it.text }
 
-      referenceVisitor.apiReferences.map { apiReference ->
-        wildardImport.replace("*", apiReference)
+    val replacedWildcards = wildcardImports.flatMap { wildcardImport ->
+
+      apiRefsAsStrings.map { apiReference ->
+        wildcardImport.replace("*", apiReference)
       }
     }
       .toSet()
 
-    val simple = referenceVisitor.apiReferences + referenceVisitor.apiReferences.map {
+    val simple = apiRefsAsStrings + apiRefsAsStrings.map {
       ktFile.packageFqName.asString() + "." + it
     }
 
     val imported = imports.filter { imp ->
-      referenceVisitor.apiReferences.any { ref ->
-        imp.endsWith(ref)
-      }
+      apiRefsAsStrings.any { ref -> imp.endsWith(ref) }
     }
 
     imported + simple + replacedWildcards
@@ -88,51 +109,55 @@ class KotlinFile(
   }
 
   private val referenceVisitor by lazy {
-    ReferenceVisitor()
+    ReferenceVisitor(this)
       .also { ktFile.accept(it) }
   }
 
-  private val typeReferences by lazy {
+  private val typeReferences = lazyDeferred {
     referenceVisitor.typeReferences
-      .mapNotNull { tr ->
-        CHILD_PARAMETERS_REGEX.find(tr)?.value
-      }
-      .filterNot { it in imports }
+      // .filterNot { it.isPartOf<KtImportDirective>() }
+      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
+      .map { it.text }
       .toSet()
   }
 
-  private val callableReferences by lazy {
+  private val callableReferences = lazyDeferred {
     referenceVisitor.callableReferences
-      .mapNotNull { tr ->
-        CHILD_PARAMETERS_REGEX.find(tr)?.value
-      }
+      // .filterNot { it.isPartOf<KtImportDirective>() }
+      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
+      .map { it.text }
       .toSet()
   }
 
-  private val qualifiedExpressions by lazy {
+  private val qualifiedExpressions = lazyDeferred {
     referenceVisitor.qualifiedExpressions
-      .mapNotNull { tr ->
-        CHILD_PARAMETERS_REGEX.find(tr)?.value
-      }
+      // .filterNot { it.isPartOf<KtImportDirective>() }
+      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
+      .map { it.text }
       .toSet()
   }
 
-  override val maybeExtraReferences by lazy {
-
-    val allOther = typeReferences + callableReferences + qualifiedExpressions
+  override val maybeExtraReferences = lazyDeferred {
+    val allOther = listOf(
+      typeReferences,
+      callableReferences,
+      qualifiedExpressions
+    )
+      .awaitAll()
+      .flatten()
+      .toSet()
 
     allOther + allOther.map {
-      ktFile.packageFqName.asString() + "." + it
-    } + wildcardImports.flatMap { wi ->
+      "$packageFqName.$it"
+    } + wildcardImports.flatMap { wildcardImport ->
 
-      allOther.map { tr ->
-        wi.replace("*", tr)
+      allOther.map { referenceString ->
+        wildcardImport.replace("*", referenceString)
       }
     }
       .toSet()
-  }
-
-  companion object {
-    private val CHILD_PARAMETERS_REGEX = """^[a-zA-Z\d._`]*""".toRegex()
   }
 }

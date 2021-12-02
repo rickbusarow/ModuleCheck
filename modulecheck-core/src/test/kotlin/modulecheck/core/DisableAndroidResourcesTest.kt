@@ -120,7 +120,7 @@ class DisableAndroidResourcesTest : ProjectTest() {
     }
 
     androidProject(":lib2", "com.modulecheck.lib2") {
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.api, lib1)
       androidResourcesEnabled = false
 
       addSource(
@@ -128,21 +128,22 @@ class DisableAndroidResourcesTest : ProjectTest() {
         """
         package com.modulecheck.lib2
 
-        val string = R.string.app_name
+        val name = R.string.app_name
         """
       )
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
 
-android {
-  buildFeatures.viewBinding = true
-}"""
+      android {
+        buildFeatures.viewBinding = true
+      }"""
 
     logger.collectReport()
       .joinToString()

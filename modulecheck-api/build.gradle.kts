@@ -39,7 +39,6 @@ dependencies {
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-project:impl"))
   api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)

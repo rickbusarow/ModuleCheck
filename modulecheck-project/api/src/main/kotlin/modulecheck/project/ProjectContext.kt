@@ -17,7 +17,7 @@ package modulecheck.project
 
 import modulecheck.project.ProjectContext.Element
 import modulecheck.project.ProjectContext.Key
-import java.util.concurrent.ConcurrentHashMap
+import modulecheck.utils.SafeCache
 
 interface ProjectContext {
   suspend fun <E : Element> get(key: Key<E>): E
@@ -33,9 +33,10 @@ interface ProjectContext {
 
 class RealProjectContext(val project: McProject) : ProjectContext {
 
-  private val cache = ConcurrentHashMap<Key<*>, Element>()
+  private val cache = SafeCache<Key<*>, Element>()
 
   override suspend fun <E : Element> get(key: Key<E>): E {
+
     @Suppress("UNCHECKED_CAST")
     return cache.getOrPut(key) { key.invoke(project) } as E
   }

@@ -15,6 +15,11 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.mapNotNull
 import modulecheck.parsing.JvmFile
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
@@ -22,58 +27,77 @@ import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class JvmFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, List<JvmFile>>
-) : ConcurrentMap<SourceSetName, List<JvmFile>> by delegate,
-  ProjectContext.Element {
+  internal val flowsCache: SafeCache<SourceSetName, Flow<JvmFile>>,
+  internal val filesCache: SafeCache<String, JvmFile>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<JvmFiles>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Flow<JvmFile> {
+    return flowsCache.getOrPut(sourceSetName) {
+      @OptIn(FlowPreview::class)
+      project
+        .sourceSets[sourceSetName]
+        ?.jvmFiles
+        .orEmpty()
+        .asFlow()
+        .flatMapConcat { directory ->
+          directory.walkTopDown()
+            .filter { maybeFile -> maybeFile.isFile }
+            // Only use Sequence/Flow APIs here so that everything is lazy.
+            .asFlow()
+            .mapNotNull { file -> getFile(file, project, sourceSetName) }
+        }
+    }
+  }
+
+  private suspend fun getFile(
+    file: File,
+    project: McProject,
+    sourceSetName: SourceSetName
+  ): JvmFile? {
+
+    val isKotlin = when {
+      file.isKotlinFile(listOf("kt")) -> true
+      file.isJavaFile() -> false
+      else -> return null
+    }
+
+    return filesCache.getOrPut(file.path) {
+      when {
+        isKotlin -> {
+          KotlinFile(
+            project = project,
+            ktFile = file.asKtFile(),
+            bindingContext = project.bindingContextForSourceSetName(sourceSetName),
+            sourceSetName = sourceSetName
+          )
+        }
+        else -> JavaFile(
+          project = project,
+          file = file
+        )
+      }
+    }
+  }
+
   companion object Key : ProjectContext.Key<JvmFiles> {
     override suspend operator fun invoke(project: McProject): JvmFiles {
-      val map = project
-        .sourceSets
-        .map { (sourceSetName, _) ->
 
-          sourceSetName to project
-            .jvmSourcesForSourceSetName(sourceSetName)
-            .flatMap { directory ->
-              directory.walkTopDown()
-                .filter { maybeFile -> maybeFile.isFile }
-                .toList() // sequence map functions aren't inline, so no suspend
-                .mapNotNull { file -> JvmFile.fromFile(file, project, sourceSetName) }
-            }
-        }.toMap()
-
-      return JvmFiles(ConcurrentHashMap(map))
+      return JvmFiles(SafeCache(), SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.jvmFiles(): JvmFiles = get(JvmFiles)
-suspend fun ProjectContext.jvmFilesForSourceSetName(sourceSetName: SourceSetName): List<JvmFile> =
-  jvmFiles()[sourceSetName].orEmpty()
-
-suspend fun JvmFile.Companion.fromFile(
-  file: File,
-  project: McProject,
+suspend fun ProjectContext.jvmFilesForSourceSetName(
   sourceSetName: SourceSetName
-): JvmFile? {
-  return when {
-    file.isKotlinFile(listOf("kt")) -> {
-      KotlinFile(
-        file.asKtFile(),
-        project.bindingContextForSourceSetName(sourceSetName)
-      )
-    }
-    file.isJavaFile() -> JavaFile(file)
-    else -> null
-  }
-}
+): Flow<JvmFile> = jvmFiles().get(sourceSetName)

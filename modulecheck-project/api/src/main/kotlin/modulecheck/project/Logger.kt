@@ -13,19 +13,35 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.project
 
-import modulecheck.api.Report.ReportEntry.AppendNewLine
-import modulecheck.api.Report.ReportEntry.Failure
-import modulecheck.api.Report.ReportEntry.FailureHeader
-import modulecheck.api.Report.ReportEntry.FailureLine
-import modulecheck.api.Report.ReportEntry.Header
-import modulecheck.api.Report.ReportEntry.Info
-import modulecheck.api.Report.ReportEntry.Success
-import modulecheck.api.Report.ReportEntry.SuccessHeader
-import modulecheck.api.Report.ReportEntry.SuccessLine
-import modulecheck.api.Report.ReportEntry.Warning
-import modulecheck.api.Report.ReportEntry.WarningLine
+import modulecheck.project.Report.ReportEntry.AppendNewLine
+import modulecheck.project.Report.ReportEntry.Failure
+import modulecheck.project.Report.ReportEntry.FailureHeader
+import modulecheck.project.Report.ReportEntry.FailureLine
+import modulecheck.project.Report.ReportEntry.Header
+import modulecheck.project.Report.ReportEntry.Info
+import modulecheck.project.Report.ReportEntry.Success
+import modulecheck.project.Report.ReportEntry.SuccessHeader
+import modulecheck.project.Report.ReportEntry.SuccessLine
+import modulecheck.project.Report.ReportEntry.Warning
+import modulecheck.project.Report.ReportEntry.WarningLine
+
+interface Logger {
+
+  fun printReport(report: Report)
+
+  fun printHeader(message: String)
+  fun printWarning(message: String)
+  fun printWarningLine(message: String)
+  fun printInfo(message: String)
+  fun printFailure(message: String)
+  fun printFailureLine(message: String)
+  fun printFailureHeader(message: String)
+  fun printSuccess(message: String)
+  fun printSuccessLine(message: String)
+  fun printSuccessHeader(message: String)
+}
 
 data class Report(val entries: List<ReportEntry>) {
 

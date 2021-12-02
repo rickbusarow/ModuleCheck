@@ -13,10 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.core.android
+package modulecheck.api.context
 
-import modulecheck.api.context.JvmFiles
-import modulecheck.api.context.ResSourceFiles
 import modulecheck.parsing.xml.AndroidResourceParser
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.DeclarationName
@@ -24,44 +22,44 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
+import modulecheck.utils.flatMapSetConcat
 
 data class AndroidResourceDeclarations(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<DeclarationName>>
-) : ConcurrentMap<SourceSetName, Set<DeclarationName>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidResourceDeclarations>
     get() = Key
 
-  companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
-    override suspend operator fun invoke(project: McProject): AndroidResourceDeclarations {
-      val android = project as? AndroidMcProject
-        ?: return AndroidResourceDeclarations(ConcurrentHashMap())
+  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
 
-      val rPackage = android.androidPackageOrNull
+    return delegate.getOrPut(sourceSetName) {
+
+      val android = project as? AndroidMcProject
+        ?: return@getOrPut emptySet()
+
+      val rName = android.androidRFqNameOrNull
 
       val resourceParser = AndroidResourceParser()
 
-      val map = project
-        .sourceSets
-        .mapValues { (sourceSetName, _) ->
+      if (rName != null) {
+        project.resourcesForSourceSetName(sourceSetName)
+          .flatMap { resourceParser.parseFile(it) }
+          .toSet() + rName.asDeclarationName()
+      } else {
+        project.get(JvmFiles)
+          .get(sourceSetName)
+          .flatMapSetConcat { it.declarations }
+      }
+    }
+  }
 
-          if (rPackage != null) {
-            project.get(ResSourceFiles)[sourceSetName]
-              .orEmpty()
-              .flatMap { resourceParser.parseFile(it) }
-              .toSet() + "$rPackage.R".asDeclarationName()
-          } else {
-            project.get(JvmFiles)[sourceSetName]
-              .orEmpty()
-              .flatMap { it.declarations }
-              .toSet()
-          }
-        }
+  companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
+    override suspend operator fun invoke(project: McProject): AndroidResourceDeclarations {
 
-      return AndroidResourceDeclarations(ConcurrentHashMap(map))
+      return AndroidResourceDeclarations(SafeCache(), project)
     }
   }
 }
@@ -72,5 +70,5 @@ suspend fun ProjectContext.androidResourceDeclarations(): AndroidResourceDeclara
 suspend fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
 ): Set<DeclarationName> {
-  return get(AndroidResourceDeclarations)[sourceSetName].orEmpty()
+  return androidResourceDeclarations().get(sourceSetName)
 }

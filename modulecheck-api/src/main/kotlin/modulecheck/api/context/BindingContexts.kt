@@ -20,35 +20,35 @@ import modulecheck.parsing.psi.internal.ktFiles
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import org.jetbrains.kotlin.resolve.BindingContext
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class BindingContexts(
-  internal val delegate: ConcurrentMap<SourceSetName, BindingContext>
-) : ConcurrentMap<SourceSetName, BindingContext> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, BindingContext>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<BindingContexts>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): BindingContext {
+    return delegate.getOrPut(sourceSetName) {
+
+      val classPath = project
+        .classpathForSourceSetName(sourceSetName)
+        .map { it.path }
+      val jvmSources = project
+        .jvmSourcesForSourceSetName(sourceSetName)
+        .ktFiles()
+
+      createBindingContext(classPath, jvmSources)
+    }
+  }
+
   companion object Key : ProjectContext.Key<BindingContexts> {
     override suspend operator fun invoke(project: McProject): BindingContexts {
-      val map = project
-        .sourceSets
-        .mapValues { (_, sourceSet) ->
 
-          val classPath = project
-            .classpathForSourceSetName(sourceSet.name)
-            .map { it.path }
-          val jvmSources = project
-            .jvmSourcesForSourceSetName(sourceSet.name)
-            .ktFiles()
-
-          createBindingContext(classPath, jvmSources)
-        }
-
-      return BindingContexts(ConcurrentHashMap(map))
+      return BindingContexts(SafeCache(), project)
     }
   }
 }
@@ -56,4 +56,4 @@ data class BindingContexts(
 suspend fun ProjectContext.bindingContexts(): BindingContexts = get(BindingContexts)
 suspend fun ProjectContext.bindingContextForSourceSetName(
   sourceSetName: SourceSetName
-): BindingContext = bindingContexts()[sourceSetName] ?: BindingContext.EMPTY
+): BindingContext = bindingContexts().get(sourceSetName)

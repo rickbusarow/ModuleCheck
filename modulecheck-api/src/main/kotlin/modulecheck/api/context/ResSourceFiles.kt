@@ -18,32 +18,39 @@ package modulecheck.api.context
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class ResSourceFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<File>>
-) : ConcurrentMap<SourceSetName, Set<File>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<File>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResSourceFiles>
     get() = Key
 
+  suspend fun all(): Set<File> {
+    return project.sourceSets.keys
+      .flatMap { get(it) }
+      .toSet()
+  }
+
+  suspend fun get(sourceSetName: SourceSetName): Set<File> {
+    return delegate.getOrPut(sourceSetName) {
+      project.sourceSets[sourceSetName]
+        ?.resourceFiles
+        .orEmpty()
+    }
+  }
+
   companion object Key : ProjectContext.Key<ResSourceFiles> {
     override suspend operator fun invoke(project: McProject): ResSourceFiles {
-      val map = project
-        .sourceSets
-        .mapValues { (_, sourceSet) ->
 
-          sourceSet.resourceFiles
-        }
-
-      return ResSourceFiles(ConcurrentHashMap(map))
+      return ResSourceFiles(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.resSourceFiles(): ResSourceFiles = get(ResSourceFiles)
 suspend fun ProjectContext.resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  resSourceFiles()[sourceSetName].orEmpty()
+  resSourceFiles().get(sourceSetName)

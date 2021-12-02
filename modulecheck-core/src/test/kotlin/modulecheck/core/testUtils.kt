@@ -19,9 +19,9 @@ import dispatch.core.DispatcherProvider
 import modulecheck.api.Finding
 import modulecheck.api.FindingFactory
 import modulecheck.api.FindingResultFactory
-import modulecheck.api.Logger
 import modulecheck.api.RealFindingResultFactory
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.project.Logger
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory

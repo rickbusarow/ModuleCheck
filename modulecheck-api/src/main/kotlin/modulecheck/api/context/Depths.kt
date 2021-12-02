@@ -15,40 +15,19 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
-import kotlin.collections.MutableMap.MutableEntry
+import modulecheck.utils.SafeCache
 
 data class Depths(
-  internal val delegate: ConcurrentMap<SourceSetName, DepthFinding>,
+  private val delegate: SafeCache<SourceSetName, DepthFinding>,
   private val project: McProject
-) : ConcurrentMap<SourceSetName, DepthFinding> by delegate,
-  ProjectContext.Element {
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Depths>
     get() = Key
-
-  override val entries: MutableSet<MutableEntry<SourceSetName, DepthFinding>>
-    get() {
-      runBlocking { populateAll() }
-      return delegate.entries
-    }
-
-  override val values: MutableCollection<DepthFinding>
-    get() {
-      runBlocking { populateAll() }
-      return delegate.values
-    }
-  override val keys: MutableSet<SourceSetName>
-    get() {
-      runBlocking { populateAll() }
-      return delegate.keys
-    }
 
   internal suspend fun populateAll() {
     project.sourceSets
@@ -56,8 +35,8 @@ data class Depths(
       .forEach { fetchForSourceSet(it) }
   }
 
-  override operator fun get(key: SourceSetName): DepthFinding {
-    return runBlocking { delegate.getOrPut(key) { fetchForSourceSet(key) } }
+  suspend fun get(key: SourceSetName): DepthFinding {
+    return delegate.getOrPut(key) { fetchForSourceSet(key) }
   }
 
   private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): DepthFinding {
@@ -84,7 +63,7 @@ data class Depths(
   companion object Key : ProjectContext.Key<Depths> {
     override suspend operator fun invoke(project: McProject): Depths {
 
-      return Depths(ConcurrentHashMap(), project)
+      return Depths(SafeCache(), project)
     }
   }
 }
@@ -92,5 +71,5 @@ data class Depths(
 suspend fun McProject.depths(): Depths = get(Depths).also { it.populateAll() }
 
 suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): DepthFinding {
-  return get(Depths)[sourceSetName]
+  return get(Depths).get(sourceSetName)
 }

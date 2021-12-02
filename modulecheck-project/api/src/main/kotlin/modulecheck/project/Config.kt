@@ -18,8 +18,13 @@ package modulecheck.project
 import modulecheck.project.temp.capitalize
 import modulecheck.project.temp.decapitalize
 
+class Configurations(
+  delegate: Map<ConfigurationName, Config>
+) : Map<ConfigurationName, Config> by delegate
+
 @JvmInline
 value class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
+
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
     // creating "implementation" instead of "mainImplementation"

@@ -20,21 +20,30 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.temp.AnvilScopeName
+import modulecheck.utils.SafeCache
 
 data class AnvilScopeContributions(
-  internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
-) : Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclarationName>> {
+    return delegate.getOrPut(sourceSetName) {
+      project.anvilGraph().get(sourceSetName)
+        .mapValues { (_, declarations) ->
+          declarations.contributions
+        }
+        .filter { it.value.isNotEmpty() }
+    }
+  }
+
   companion object Key : ProjectContext.Key<AnvilScopeContributions> {
 
     override suspend operator fun invoke(project: McProject): AnvilScopeContributions {
-      val map = project.anvilGraph().scopeContributions
-
-      return AnvilScopeContributions(map)
+      return AnvilScopeContributions(SafeCache(), project)
     }
   }
 }
@@ -44,4 +53,4 @@ suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
 
 suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions()[sourceSetName].orEmpty()
+): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions().get(sourceSetName)

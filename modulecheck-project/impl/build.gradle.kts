@@ -29,6 +29,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-project:api"))
 
