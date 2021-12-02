@@ -17,6 +17,7 @@
 
 package modulecheck.parsing.psi.internal
 
+import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import org.jetbrains.kotlin.psi.KtFile
@@ -34,3 +35,18 @@ fun File.asKtsFileOrNull(): KtFile? =
 fun File.asKtFile(): KtFile =
   (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, readText()) as? KtFile)
     ?: throw FileNotFoundException("could not find file $this")
+
+fun KtFile(
+  @Language("kotlin")
+  content: String
+): KtFile = KtFile(name = "Source.kt", content = content)
+
+fun KtFile(
+  name: String,
+  @Language("kotlin")
+  content: String
+): KtFile = psiFileFactory.createFileFromText(
+  name,
+  KotlinLanguage.INSTANCE,
+  content.trimIndent()
+) as KtFile

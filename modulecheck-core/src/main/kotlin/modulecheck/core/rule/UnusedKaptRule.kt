@@ -18,11 +18,11 @@ package modulecheck.core.rule
 import modulecheck.api.KaptMatcher
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.asMap
-import modulecheck.api.context.ImportName
 import modulecheck.api.context.KaptDependencies
+import modulecheck.api.context.ReferenceName
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.kaptDependencies
-import modulecheck.api.context.possibleReferencesForSourceSetName
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.kapt.UnusedKaptFinding
@@ -53,11 +53,10 @@ class UnusedKaptRule(
       .keys
       .map { configName ->
         configName to project.importsForSourceSetName(configName.toSourceSetName()) +
-          project.possibleReferencesForSourceSetName(configName.toSourceSetName())
+          project.referencesForSourceSetName(configName.toSourceSetName())
       }
       .flatMap { (configurationName, imports) ->
-
-        val processors = project.kaptDependencies()[configurationName].orEmpty()
+        val processors = project.kaptDependencies().get(configurationName)
 
         // unused means that none of the processor's annotations are used in any import
         val unusedMatchers = processors
@@ -67,7 +66,7 @@ class UnusedKaptRule(
             matcher.matchedIn(imports)
           }
 
-        val unusedFindings = unusedMatchers
+        val unusedProcessorFindings = unusedMatchers
           .map {
             UnusedKaptProcessorFinding(
               project.path,
@@ -77,15 +76,14 @@ class UnusedKaptRule(
             )
           }
 
-        val unusedPlugin = project.get(KaptDependencies)
-          .values
-          .flatten()
-          .size == unusedFindings.size && project.hasKapt && unusedFindings.isNotEmpty()
+        val pluginIsUnused = project.get(KaptDependencies)
+          .all()
+          .size == unusedProcessorFindings.size && project.hasKapt && unusedProcessorFindings.isNotEmpty()
 
-        if (unusedPlugin) {
-          unusedFindings + UnusedKaptPluginFinding(project.path, project.buildFile)
+        if (pluginIsUnused) {
+          unusedProcessorFindings + UnusedKaptPluginFinding(project.path, project.buildFile)
         } else {
-          unusedFindings
+          unusedProcessorFindings
         }
       }
   }
@@ -95,7 +93,7 @@ class UnusedKaptRule(
   }
 
   private fun KaptMatcher.matchedIn(
-    imports: Set<ImportName>
+    imports: Set<ReferenceName>
   ): Boolean = annotationImports
     .any { annotationRegex ->
 

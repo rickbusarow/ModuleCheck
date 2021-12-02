@@ -18,32 +18,34 @@ package modulecheck.api.context
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class JvmSourceFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<File>>
-) : ConcurrentMap<SourceSetName, Set<File>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<File>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<JvmSourceFiles>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Set<File> {
+    return delegate.getOrPut(sourceSetName) {
+      val sourceSet = project.sourceSets[sourceSetName] ?: return@getOrPut emptySet()
+
+      sourceSet.jvmFiles
+    }
+  }
+
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
     override suspend operator fun invoke(project: McProject): JvmSourceFiles {
-      val map = project
-        .sourceSets
-        .map { (name, sourceSet) ->
 
-          name to sourceSet.jvmFiles
-        }.toMap()
-
-      return JvmSourceFiles(ConcurrentHashMap(map))
+      return JvmSourceFiles(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.jvmSourceFiles(): JvmSourceFiles = get(JvmSourceFiles)
-suspend fun ProjectContext.jvmSourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
-  jvmSourceFiles()[sourceSetName].orEmpty()
+suspend fun ProjectContext.jvmSourcesForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<File> = jvmSourceFiles().get(sourceSetName)

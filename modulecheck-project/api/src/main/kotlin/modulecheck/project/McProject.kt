@@ -18,6 +18,7 @@ package modulecheck.project
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.project.temp.AnvilGradlePlugin
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
@@ -35,15 +36,22 @@ interface McProject :
   val projectDir: File
   val buildFile: File
 
-  val configurations: Map<ConfigurationName, Config>
+  val configurations: Configurations
 
   val projectDependencies: ProjectDependencies
   val externalDependencies: ExternalDependencies
 
   val hasKapt: Boolean
 
-  val sourceSets: Map<SourceSetName, SourceSet>
+  val sourceSets: SourceSets
   val anvilGradlePlugin: AnvilGradlePlugin?
+
+  val logger: Logger
+
+  suspend fun resolveFqNameOrNull(
+    declarationName: FqName,
+    sourceSetName: SourceSetName
+  ): FqName?
 }
 
 /**
@@ -75,6 +83,7 @@ interface AndroidMcProject : McProject {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
   val androidPackageOrNull: String?
+  val androidRFqNameOrNull: String?
   val manifests: Map<SourceSetName, File>
 }
 

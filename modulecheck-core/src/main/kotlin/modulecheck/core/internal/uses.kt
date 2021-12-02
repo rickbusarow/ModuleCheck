@@ -16,12 +16,12 @@
 package modulecheck.core.internal
 
 import modulecheck.api.context.Declarations
+import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
+import modulecheck.api.context.androidResourceDeclarationsForSourceSetName
+import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.anvilScopeMerges
 import modulecheck.api.context.importsForSourceSetName
-import modulecheck.api.context.possibleReferencesForSourceSetName
-import modulecheck.core.android.androidDataBindingDeclarationsForSourceSetName
-import modulecheck.core.android.androidResourceDeclarationsForSourceSetName
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.DeclarationName
@@ -41,9 +41,8 @@ suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 }
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
-  val mergedScopeNames = anvilScopeMerges()
-    .values
-    .flatMap { it.keys }
+  val mergedScopeNames = anvilGraph()
+    .mergedScopeNames()
 
   val config = configurations[dependency.configurationName] ?: return false
 
@@ -61,30 +60,37 @@ suspend fun McProject.usesInConfig(
 
   val dependencyDeclarations = dependency.allDependencyDeclarations()
 
-  val javaIsUsed = mergedScopeNames.any { contributions.containsKey(it) } ||
-    dependencyDeclarations
-      .map { it.fqName }
-      .any { declaration ->
-        declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
-          declaration in possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
-      }
+  val usedForAnvil = mergedScopeNames.any { contributions.containsKey(it) }
+
+  val javaIsUsed = usedForAnvil || dependencyDeclarations
+    .map { it.fqName }
+    .any { declaration ->
+
+      val imports = importsForSourceSetName(dependency.configurationName.toSourceSetName())
+      val refs = referencesForSourceSetName(dependency.configurationName.toSourceSetName())
+
+      val imported = declaration in imports
+      val referenced = declaration in refs
+
+      imported || referenced
+    }
 
   if (javaIsUsed) return true
 
   if (this !is AndroidMcProject) return false
 
-  val rReferences =
-    possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
-      .filter { it.startsWith("R.") }
-
   val dependencyAsAndroid = dependency.project as? AndroidMcProject ?: return false
+
+  val rReferences =
+    referencesForSourceSetName(dependency.configurationName.toSourceSetName())
+      .filter { it.startsWith("R.") }
 
   val dataBindingIsUsed = dependencyAsAndroid
     .androidDataBindingDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
     .map { it.fqName }
     .any { declaration ->
       declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
-        declaration in possibleReferencesForSourceSetName(dependency.configurationName.toSourceSetName())
+        declaration in referencesForSourceSetName(dependency.configurationName.toSourceSetName())
     }
 
   if (dataBindingIsUsed) return true
@@ -98,14 +104,12 @@ suspend fun McProject.usesInConfig(
 }
 
 suspend fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName> {
-  val root = project.get(Declarations)[configurationName.toSourceSetName()]
-    .orEmpty()
+  val root = project.get(Declarations).get(configurationName.toSourceSetName())
 
-  val main = project.get(Declarations)[SourceSetName.MAIN]
-    .orEmpty()
+  val main = project.get(Declarations).get(SourceSetName.MAIN)
 
   val fixtures = if (isTestFixture) {
-    project.get(Declarations)[SourceSetName.TEST_FIXTURES].orEmpty()
+    project.get(Declarations).get(SourceSetName.TEST_FIXTURES)
   } else {
     emptySet()
   }
@@ -113,8 +117,7 @@ suspend fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<Declara
   val inherited = project.configurations[configurationName]
     ?.inherited
     ?.flatMap { inherited ->
-      project.get(Declarations)[inherited.name.toSourceSetName()]
-        .orEmpty()
+      project.get(Declarations).get(inherited.name.toSourceSetName())
     }
     .orEmpty()
 

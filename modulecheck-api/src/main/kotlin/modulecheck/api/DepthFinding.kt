@@ -18,8 +18,8 @@ package modulecheck.api
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetName
+import modulecheck.utils.SafeCache
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 
 data class DepthFinding(
   val dependentProject: McProject,
@@ -37,28 +37,18 @@ data class DepthFinding(
   override val findingName: String
     get() = "depth"
 
-  private val treeCache = ConcurrentHashMap<SourceSetName, Set<DepthFinding>>()
+  private val treeCache = SafeCache<SourceSetName, Set<DepthFinding>>()
 
   suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<DepthFinding> {
-
-    val existing = treeCache[sourceSetName]
-
-    if (existing != null) {
-      return existing
+    return treeCache.getOrPut(sourceSetName) {
+      val children = dependentProject
+        .projectDependencies[sourceSetName]
+        .flatMap {
+          it.project.depthForSourceSetName(SourceSetName.MAIN)
+            .fullTree(SourceSetName.MAIN)
+        }
+      children.toSet() + this
     }
-
-    val children = dependentProject
-      .projectDependencies[sourceSetName]
-      .flatMap {
-        it.project.depthForSourceSetName(SourceSetName.MAIN)
-          .fullTree(SourceSetName.MAIN)
-      }
-
-    val set = children.toSet() + this
-
-    treeCache[sourceSetName] = set
-
-    return set
   }
 
   override fun compareTo(other: DepthFinding): Int {

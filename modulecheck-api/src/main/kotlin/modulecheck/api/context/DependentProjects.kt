@@ -19,7 +19,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 
 data class DependentProjects(
-  internal val delegate: Set<McProject>
+  private val delegate: Set<McProject>
 ) : Set<McProject> by delegate,
   ProjectContext.Element {
 
@@ -32,8 +32,9 @@ data class DependentProjects(
         .values
         .filter { otherProject ->
           project.path in otherProject
-            .projectDependencies
-            .flatMap { it.value.map { it.project.path } }
+            .classpathDependencies()
+            .all()
+            .map { it.contributed.project.path }
         }
         .toSet()
 
@@ -42,5 +43,8 @@ data class DependentProjects(
   }
 }
 
-suspend fun ProjectContext.dependentProjects(): DependentProjects = get(DependentProjects)
-suspend fun ProjectContext.dependendents(): DependentProjects = get(DependentProjects)
+/**
+ * All projects which are downstream of the receiver project, including those which only inherit via
+ * another dependency's `api` configuration without declaring the dependency directly.
+ */
+suspend fun ProjectContext.dependents(): DependentProjects = get(DependentProjects)

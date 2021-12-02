@@ -21,18 +21,43 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
+import modulecheck.utils.SafeCache
 import modulecheck.utils.capitalize
 import java.util.Locale
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
 
 data class ViewBindingFiles(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<DeclarationName>>
-) : ConcurrentMap<SourceSetName, Set<DeclarationName>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ViewBindingFiles>
     get() = Key
+
+  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
+
+    if (project !is AndroidMcProject) return emptySet()
+
+    val basePackage = project.androidPackageOrNull ?: return emptySet()
+
+    return delegate.getOrPut(sourceSetName) {
+
+      project.layoutFiles()
+        .get(sourceSetName)
+        .map { layoutFile ->
+          layoutFile.name
+            .capitalize(Locale.US)
+            .replace(snake_reg) { matchResult ->
+              matchResult.destructured
+                .component1()
+                .uppercase()
+            }
+            .plus("Binding")
+            .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
+            .asDeclarationName()
+        }
+        .toSet()
+    }
+  }
 
   companion object Key : ProjectContext.Key<ViewBindingFiles> {
 
@@ -40,30 +65,7 @@ data class ViewBindingFiles(
 
     override suspend operator fun invoke(project: McProject): ViewBindingFiles {
 
-      if (project !is AndroidMcProject) return ViewBindingFiles(ConcurrentHashMap())
-
-      val basePackage = project.androidPackageOrNull ?: return ViewBindingFiles(ConcurrentHashMap())
-
-      val map = project.layoutFiles()
-        .mapValues { (_, layoutFiles) ->
-          layoutFiles
-            .map { layoutFile ->
-
-              layoutFile.name
-                .capitalize(Locale.US)
-                .replace(snake_reg) { matchResult ->
-                  matchResult.destructured
-                    .component1()
-                    .uppercase()
-                }
-                .plus("Binding")
-                .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclarationName()
-            }
-            .toSet()
-        }
-
-      return ViewBindingFiles(ConcurrentHashMap(map))
+      return ViewBindingFiles(SafeCache(), project)
     }
   }
 }
@@ -71,4 +73,4 @@ data class ViewBindingFiles(
 suspend fun ProjectContext.viewBindingFiles(): ViewBindingFiles = get(ViewBindingFiles)
 suspend fun ProjectContext.viewBindingFilesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<DeclarationName> = viewBindingFiles()[sourceSetName].orEmpty()
+): Set<DeclarationName> = viewBindingFiles().get(sourceSetName)

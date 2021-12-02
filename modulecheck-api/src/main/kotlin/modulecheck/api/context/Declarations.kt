@@ -21,36 +21,37 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
+import modulecheck.utils.flatMapSetConcat
 
 data class Declarations(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<DeclarationName>>
-) : ConcurrentMap<SourceSetName, Set<DeclarationName>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
+    return delegate.getOrPut(sourceSetName) {
+
+      val jvmFiles = project.jvmFilesForSourceSetName(sourceSetName)
+        .flatMapSetConcat { jvmFile -> jvmFile.declarations }
+
+      val rName = (project as? AndroidMcProject)?.androidRFqNameOrNull
+        ?: return@getOrPut jvmFiles
+
+      jvmFiles
+        .plus(rName.asDeclarationName())
+        .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
+        .plus(project.androidResourceDeclarationsForSourceSetName(sourceSetName))
+    }
+  }
+
   companion object Key : ProjectContext.Key<Declarations> {
     override suspend operator fun invoke(project: McProject): Declarations {
-      val map = project
-        .sourceSets
-        .mapValues { (sourceSetName, _) ->
 
-          val jvmFiles = project.jvmFilesForSourceSetName(sourceSetName)
-            .flatMap { jvmFile -> jvmFile.declarations }
-            .toSet()
-
-          val baseAndroidPackage = (project as? AndroidMcProject)?.androidPackageOrNull
-            ?: return@mapValues jvmFiles
-
-          jvmFiles
-            .plus("$baseAndroidPackage.R".asDeclarationName())
-            .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
-        }
-
-      return Declarations(ConcurrentHashMap(map))
+      return Declarations(SafeCache(), project)
     }
   }
 }

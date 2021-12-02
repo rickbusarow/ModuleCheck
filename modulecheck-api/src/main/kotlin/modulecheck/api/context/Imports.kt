@@ -18,44 +18,44 @@ package modulecheck.api.context
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
+import modulecheck.utils.flatMapSetConcat
 
-typealias ImportName = String
+typealias ReferenceName = String
 
 data class Imports(
-  internal val delegate: ConcurrentMap<SourceSetName, Set<ImportName>>
-) : ConcurrentMap<SourceSetName, Set<ImportName>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Set<ReferenceName>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Imports>
     get() = Key
 
+  suspend fun get(sourceSetName: SourceSetName): Set<ReferenceName> {
+    return delegate.getOrPut(sourceSetName) {
+      val jvm = project.get(JvmFiles)
+        .get(sourceSetName)
+        .flatMapSetConcat { it.imports }
+      val layout = project.get(LayoutFiles)
+        .get(sourceSetName)
+        .flatMap { it.customViews }
+        .toSet()
+
+      jvm + layout
+    }
+  }
+
   companion object Key : ProjectContext.Key<Imports> {
     override suspend operator fun invoke(project: McProject): Imports {
-      val ss = project.sourceSets
 
-      val map = ss
-        .mapValues { (name, _) ->
-
-          val jvm = project.get(JvmFiles)[name]
-            .orEmpty()
-            .flatMap { it.imports }
-            .toSet()
-          val layout = project.get(LayoutFiles)[name]
-            .orEmpty()
-            .flatMap { it.customViews }
-            .toSet()
-
-          jvm + layout
-        }
-
-      return Imports(ConcurrentHashMap(map))
+      return Imports(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.imports(): Imports = get(Imports)
-suspend fun ProjectContext.importsForSourceSetName(sourceSetName: SourceSetName): Set<ImportName> {
-  return imports()[sourceSetName].orEmpty()
+suspend fun ProjectContext.importsForSourceSetName(
+  sourceSetName: SourceSetName
+): Set<ReferenceName> {
+  return imports().get(sourceSetName)
 }

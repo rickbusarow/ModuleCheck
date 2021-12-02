@@ -15,12 +15,17 @@
 
 package modulecheck.core.context
 
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.anvilScopeMerges
 import modulecheck.api.context.apiDependencySources
+import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
-import modulecheck.api.context.publicDependencies
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
@@ -28,11 +33,11 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
-import modulecheck.utils.filterBlocking
-import modulecheck.utils.mapBlocking
+import modulecheck.utils.filterAsync
+import modulecheck.utils.flatMapListConcat
 
 data class MustBeApi(
-  internal val delegate: Set<InheritedDependencyWithSource>
+  private val delegate: Set<InheritedDependencyWithSource>
 ) : Set<InheritedDependencyWithSource> by delegate,
   ProjectContext.Element {
 
@@ -42,13 +47,14 @@ data class MustBeApi(
   companion object Key : ProjectContext.Key<MustBeApi> {
     override suspend operator fun invoke(project: McProject): MustBeApi {
       // this is anything in the main classpath, including inherited dependencies
-      val mainDependencies = project.publicDependencies()
+      val mainDependencies = project.classpathDependencies()
+        .get(SourceSetName.MAIN)
+        .map { it.contributed }
 
-      val mergedScopeNames = project
-        .anvilScopeMerges()
-        .values
-        .flatMap { it.keys }
+      val mergedScopeNames = project.anvilGraph()
+        .mergedScopeNames()
 
+      // projects with a @Contributes(...) annotation somewhere
       val scopeContributingProjects = mainDependencies
         .filter { (_, projectDependency) ->
 
@@ -61,18 +67,24 @@ data class MustBeApi(
 
       val importsFromDependencies = project.importsFromDependencies()
 
+      val directApiProjects = project.projectDependencies[ConfigurationName.api]
+        .orEmpty()
+        .map { it.project }
+        .toSet()
+
       val api = mainDependencies
         .asSequence()
         // Anything with an `api` config must be inherited,
         // and will be handled by the InheritedDependencyRule.
         .filterNot { it.configurationName == ConfigurationName.api }
         .plus(scopeContributingProjects)
+        .distinctBy { it.project }
         .filterNot { cpd ->
           // exclude anything which is inherited but already included in local `api` deps
-          cpd in project.projectDependencies[ConfigurationName.api].orEmpty()
+          cpd.project in directApiProjects
         }
-        .filterBlocking { it.project.mustBeApiIn(importsFromDependencies, it.isTestFixture) }
-        .mapBlocking { cpd ->
+        .filterAsync { it.project.mustBeApiIn(importsFromDependencies, it.isTestFixture) }
+        .map { cpd ->
           val source = project
             .projectDependencies
             .main()
@@ -84,6 +96,7 @@ data class MustBeApi(
             )
           InheritedDependencyWithSource(cpd, source)
         }
+        .toList()
         .distinctBy { it.configuredProjectDependency }
         .toSet()
 
@@ -94,16 +107,18 @@ data class MustBeApi(
 
 private suspend fun McProject.importsFromDependencies(): Set<String> {
 
-  val declarationsInProject = declarations()[SourceSetName.MAIN]
-    .orEmpty()
+  val declarationsInProject = declarations()
+    .get(SourceSetName.MAIN)
 
   return jvmFilesForSourceSetName(SourceSetName.MAIN)
     .filterIsInstance<KotlinFile>()
-    .flatMap { kotlinFile ->
+    .flatMapListConcat { kotlinFile ->
 
       kotlinFile
         .apiReferences
+        .await()
         .filterNot { it.asDeclarationName() in declarationsInProject }
+      // .map { it.asString() }
     }.toSet()
 }
 
@@ -121,10 +136,10 @@ suspend fun McProject.mustBeApiIn(
 ): Boolean {
 
   val declarations = if (isTestFixtures) {
-    declarations()[SourceSetName.TEST_FIXTURES]
+    declarations().get(SourceSetName.TEST_FIXTURES)
   } else {
-    declarations()[SourceSetName.MAIN]
-  } ?: return false
+    declarations().get(SourceSetName.MAIN)
+  }
 
   return declarations
     .any { declared ->

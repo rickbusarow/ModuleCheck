@@ -15,29 +15,27 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.TransitiveProjectDependency
-import java.util.concurrent.ConcurrentHashMap
+import modulecheck.utils.SafeCache
 
 data class ClasspathDependencies(
-  internal val delegate: MutableMap<SourceSetName, List<TransitiveProjectDependency>>,
+  private val delegate: SafeCache<SourceSetName, List<TransitiveProjectDependency>>,
   private val project: McProject
-) : Map<SourceSetName, List<TransitiveProjectDependency>> by delegate,
-  ProjectContext.Element {
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ClasspathDependencies>
     get() = Key
 
-  fun all(): List<TransitiveProjectDependency> {
+  suspend fun all(): List<TransitiveProjectDependency> {
     return project.sourceSets.keys.flatMap { get(it) }
   }
 
-  override operator fun get(key: SourceSetName): List<TransitiveProjectDependency> {
-    return delegate.getOrPut(key) { runBlocking { project.fullTree(key) } }
+  suspend fun get(key: SourceSetName): List<TransitiveProjectDependency> {
+    return delegate.getOrPut(key) { project.fullTree(key) }
   }
 
   private suspend fun McProject.fullTree(
@@ -64,7 +62,8 @@ data class ClasspathDependencies(
         .flatMap { apiConfig ->
 
           sourceCpd.project
-            .classpathDependencies()[apiConfig.toSourceSetName()]
+            .classpathDependencies()
+            .get(apiConfig.toSourceSetName())
             .asSequence()
             .filter { it.contributed.configurationName.isApi() }
             .filterNot { it.contributed.project.path in directDependencyPaths }
@@ -85,7 +84,7 @@ data class ClasspathDependencies(
 
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
     override suspend operator fun invoke(project: McProject): ClasspathDependencies {
-      return ClasspathDependencies(ConcurrentHashMap(), project)
+      return ClasspathDependencies(SafeCache(), project)
     }
   }
 }

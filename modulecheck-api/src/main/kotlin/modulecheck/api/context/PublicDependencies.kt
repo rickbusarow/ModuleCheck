@@ -22,7 +22,7 @@ import modulecheck.project.ProjectContext
 import modulecheck.project.all
 
 data class PublicDependencies(
-  internal val delegate: Set<ConfiguredProjectDependency>
+  private val delegate: Set<ConfiguredProjectDependency>
 ) : Set<ConfiguredProjectDependency> by delegate,
   ProjectContext.Element {
 

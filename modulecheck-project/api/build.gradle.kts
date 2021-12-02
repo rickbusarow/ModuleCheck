@@ -27,12 +27,14 @@ val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
+  api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
   api(project(path = ":modulecheck-dagger"))
+  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 

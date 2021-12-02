@@ -15,18 +15,21 @@
 
 package modulecheck.project.impl
 
+import modulecheck.api.context.resolvedDeclarationNames
+import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.project.AndroidMcProject
-import modulecheck.project.Config
-import modulecheck.project.ConfigurationName
+import modulecheck.project.Configurations
 import modulecheck.project.ExternalDependencies
+import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.RealProjectContext
-import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
+import modulecheck.project.SourceSets
 import modulecheck.project.temp.AnvilGradlePlugin
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
 @Suppress("LongParameterList")
@@ -34,21 +37,26 @@ class RealAndroidMcProject(
   override val path: String,
   override val projectDir: File,
   override val buildFile: File,
-  override val configurations: Map<ConfigurationName, Config>,
+  override val configurations: Configurations,
   override val hasKapt: Boolean,
-  override val sourceSets: Map<SourceSetName, SourceSet>,
+  override val sourceSets: SourceSets,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
   override val androidPackageOrNull: String?,
   override val manifests: Map<SourceSetName, File>,
+  override val logger: Logger,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>
 ) : AndroidMcProject {
 
   override val projectDependencies: ProjectDependencies by projectDependencies
   override val externalDependencies: ExternalDependencies by externalDependencies
+
+  override val androidRFqNameOrNull: String? by lazy {
+    androidPackageOrNull?.let { "$it.R" }
+  }
 
   private val context = RealProjectContext(this)
 
@@ -73,5 +81,17 @@ class RealAndroidMcProject(
 
   override fun toString(): String {
     return "AndroidMcProject('$path')"
+  }
+
+  override suspend fun resolveFqNameOrNull(
+    declarationName: FqName,
+    sourceSetName: SourceSetName
+  ): FqName? {
+
+    return resolvedDeclarationNames().getSource(
+      declarationName.asDeclarationName(),
+      sourceSetName
+    )
+      ?.run { declarationName }
   }
 }

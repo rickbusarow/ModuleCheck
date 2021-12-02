@@ -17,6 +17,7 @@ package modulecheck.project.temp
 
 import modulecheck.project.DeclarationName
 import net.swiftzer.semver.SemVer
+import org.jetbrains.kotlin.name.FqName
 
 data class AnvilGradlePlugin(
   val version: SemVer,
@@ -33,5 +34,8 @@ data class RawAnvilAnnotatedType(
   val anvilScopeNameEntry: AnvilScopeNameEntry
 )
 
-data class AnvilScopeName(val fqName: DeclarationName)
+data class AnvilScopeName(val fqName: FqName) {
+  override fun toString(): String = fqName.asString()
+}
+
 data class AnvilScopeNameEntry(val name: String)

@@ -17,12 +17,15 @@ package modulecheck.project.test
 
 import modulecheck.project.Config
 import modulecheck.project.ConfigurationName
+import modulecheck.project.Configurations
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
+import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
+import modulecheck.project.SourceSets
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.temp.AnvilGradlePlugin
 import org.intellij.lang.annotations.Language
@@ -137,15 +140,16 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     path = path,
     projectDir = projectDir,
     buildFile = buildFile,
-    configurations = configurations,
+    configurations = Configurations(configurations),
     hasKapt = hasKapt,
-    sourceSets = sourceSets,
+    sourceSets = SourceSets(sourceSets),
     projectCache = projectCache,
     anvilGradlePlugin = anvilGradlePlugin,
     androidResourcesEnabled = androidResourcesEnabled,
     viewBindingEnabled = viewBindingEnabled,
     androidPackageOrNull = androidPackage,
     manifests = manifests,
+    logger = PrintLogger(),
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }
   )

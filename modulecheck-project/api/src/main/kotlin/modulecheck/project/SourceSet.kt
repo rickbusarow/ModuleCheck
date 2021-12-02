@@ -15,6 +15,7 @@
 
 package modulecheck.project
 
+import modulecheck.utils.capitalize
 import java.io.File
 
 data class SourceSet(
@@ -36,3 +37,44 @@ data class SourceSet(
     }
   }
 }
+
+@JvmInline
+value class SourceSetName(val value: String) {
+
+  fun configurationNames(): List<ConfigurationName> {
+
+    return if (this == MAIN) {
+      ConfigurationName.main()
+    } else {
+      ConfigurationName.baseConfigurations
+        .map {
+          "${this.value}${it.capitalize()}"
+            .asConfigurationName()
+        }
+    }
+  }
+
+  fun apiConfig(): ConfigurationName {
+    return if (this == MAIN) {
+      ConfigurationName.api
+    } else {
+      "${value}Api".asConfigurationName()
+    }
+  }
+
+  override fun toString(): String = "SourceSetName('$value')"
+
+  companion object {
+    val ANDROID_TEST = SourceSetName("androidTest")
+    val DEBUG = SourceSetName("debug")
+    val MAIN = SourceSetName("main")
+    val TEST = SourceSetName("test")
+    val TEST_FIXTURES = SourceSetName("testFixtures")
+  }
+}
+
+fun String.toSourceSetName(): SourceSetName = SourceSetName(this)
+
+class SourceSets(
+  delegate: Map<SourceSetName, SourceSet>
+) : Map<SourceSetName, SourceSet> by delegate

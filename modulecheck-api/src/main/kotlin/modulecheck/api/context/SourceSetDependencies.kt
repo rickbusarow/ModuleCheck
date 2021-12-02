@@ -19,10 +19,10 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.TransitiveProjectDependency
-import java.util.concurrent.ConcurrentHashMap
+import modulecheck.utils.SafeCache
 
 data class SourceSetDependencies(
-  internal val delegate: MutableMap<SourceSetName, List<TransitiveProjectDependency>>,
+  private val delegate: SafeCache<SourceSetName, List<TransitiveProjectDependency>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
@@ -75,7 +75,7 @@ data class SourceSetDependencies(
 
   companion object Key : ProjectContext.Key<SourceSetDependencies> {
     override suspend operator fun invoke(project: McProject): SourceSetDependencies {
-      return SourceSetDependencies(ConcurrentHashMap(), project)
+      return SourceSetDependencies(SafeCache(), project)
     }
   }
 }

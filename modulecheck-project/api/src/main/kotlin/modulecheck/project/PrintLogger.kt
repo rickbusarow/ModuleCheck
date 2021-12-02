@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.project
 
 class PrintLogger : Logger {
   override fun printReport(report: Report) {

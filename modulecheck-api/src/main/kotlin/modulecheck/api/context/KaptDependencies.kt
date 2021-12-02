@@ -21,40 +21,46 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
 import modulecheck.project.all
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
+import modulecheck.utils.SafeCache
 
 data class KaptDependencies(
-  internal val delegate: ConcurrentMap<ConfigurationName, Set<KaptProcessor>>
-) : ConcurrentMap<ConfigurationName, Set<KaptProcessor>> by delegate,
-  Element {
+  private val delegate: SafeCache<ConfigurationName, Set<KaptProcessor>>,
+  private val project: McProject
+) : Element {
 
   override val key: ProjectContext.Key<KaptDependencies>
     get() = Key
 
+  suspend fun all(): List<KaptProcessor> {
+    return project.configurations
+      .filterNot { it.key.value.startsWith("_") }
+      .filter { it.key.value.contains("kapt", true) }
+      .flatMap { get(it.key) }
+  }
+
+  suspend fun get(configurationName: ConfigurationName): Set<KaptProcessor> {
+    return delegate.getOrPut(configurationName) {
+      val external = project.externalDependencies[configurationName].orEmpty()
+      val internal = project
+        .projectDependencies
+        .all()
+
+      val allDependencies = external + internal
+
+      allDependencies
+        .filterNot { it.name == KAPT_PLUGIN_COORDS }
+        .filter { it.configurationName == configurationName }
+        .map { KaptProcessor(it.name) }
+        .toSet()
+    }
+  }
+
   companion object Key : ProjectContext.Key<KaptDependencies> {
+
+    internal const val KAPT_PLUGIN_COORDS = "org.jetbrains.kotlin:kotlin-annotation-processing-gradle"
+
     override suspend operator fun invoke(project: McProject): KaptDependencies {
-      val map = project
-        .configurations
-        .filterNot { it.key.value.startsWith("_") }
-        .filter { it.key.value.contains("kapt", true) }
-        .mapValues { (configName, _) ->
-
-          val external = project.externalDependencies[configName].orEmpty()
-          val internal = project
-            .projectDependencies
-            .all()
-
-          val allDependencies = external + internal
-
-          allDependencies
-            .filterNot { it.name == "org.jetbrains.kotlin:kotlin-annotation-processing-gradle" }
-            .filter { it.configurationName == configName }
-            .map { KaptProcessor(it.name) }
-            .toSet()
-        }
-
-      return KaptDependencies(ConcurrentHashMap(map))
+      return KaptDependencies(SafeCache(), project)
     }
   }
 }
@@ -62,4 +68,4 @@ data class KaptDependencies(
 suspend fun ProjectContext.kaptDependencies(): KaptDependencies = get(KaptDependencies)
 suspend fun ProjectContext.kaptDependenciesForConfig(
   configurationName: ConfigurationName
-): Set<KaptProcessor> = kaptDependencies()[configurationName].orEmpty()
+): Set<KaptProcessor> = kaptDependencies().get(configurationName).orEmpty()

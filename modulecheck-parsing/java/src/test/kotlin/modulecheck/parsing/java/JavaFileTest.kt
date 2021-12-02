@@ -16,11 +16,14 @@
 package modulecheck.parsing.java
 
 import modulecheck.project.DeclarationName
-import modulecheck.testing.BaseTest
+import modulecheck.project.McProject
+import modulecheck.project.SourceSetName
+import modulecheck.project.test.ProjectTest
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class JavaFileTest : BaseTest() {
+internal class JavaFileTest : ProjectTest() {
 
   @Test
   fun `enum constants should count as declarations`() {
@@ -30,7 +33,7 @@ internal class JavaFileTest : BaseTest() {
     package com.example;
 
     public enum Color { RED, BLUE }
-      """.trimIndent()
+      """
     )
 
     javaFile.declarations shouldBe listOf(
@@ -50,7 +53,7 @@ internal class JavaFileTest : BaseTest() {
     public class Constants {
       public enum Color { RED, BLUE }
     }
-      """.trimIndent()
+      """
     )
 
     javaFile.declarations shouldBe listOf(
@@ -72,7 +75,7 @@ internal class JavaFileTest : BaseTest() {
 
       public static final int MY_VALUE = 250;
     }
-      """.trimIndent()
+      """
     )
 
     javaFile.declarations shouldBe listOf(
@@ -95,7 +98,7 @@ internal class JavaFileTest : BaseTest() {
         public static final int MY_VALUE = 250;
       }
     }
-      """.trimIndent()
+      """
     )
 
     javaFile.declarations shouldBe listOf(
@@ -105,12 +108,28 @@ internal class JavaFileTest : BaseTest() {
     )
   }
 
-  fun file(content: String): JavaFile {
+  fun simpleProject() = project(":lib") {
+    addSource(
+      "com/lib1/Lib1Class.kt",
+      """
+        package com.lib1
+
+        class Lib1Class
+      """,
+      SourceSetName.MAIN
+    )
+  }
+
+  fun file(
+    @Language("java")
+    content: String,
+    project: McProject = simpleProject()
+  ): JavaFile {
     testProjectDir.mkdirs()
 
     val javaFile = File(testProjectDir, "javaFile.java")
-      .also { it.writeText(content) }
+      .also { it.writeText(content.trimIndent()) }
 
-    return JavaFile(javaFile)
+    return JavaFile(project, javaFile)
   }
 }

@@ -16,9 +16,9 @@
 package modulecheck.core
 
 import modulecheck.api.Finding
-import modulecheck.api.PrintLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.project.PrintLogger
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File

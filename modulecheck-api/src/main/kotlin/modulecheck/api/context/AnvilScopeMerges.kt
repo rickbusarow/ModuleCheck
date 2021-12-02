@@ -20,21 +20,34 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.temp.AnvilScopeName
+import modulecheck.utils.SafeCache
 
 data class AnvilScopeMerges(
-  internal val delegate: Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>
-) : Map<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>> by delegate,
-  ProjectContext.Element {
+  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>,
+  private val project: McProject
+) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeMerges>
     get() = Key
 
+  suspend fun all(): List<Map<AnvilScopeName, Set<DeclarationName>>> {
+    return project.sourceSets.keys.map { get(it) }
+  }
+
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclarationName>> {
+    return delegate.getOrPut(sourceSetName) {
+      project.anvilGraph().get(sourceSetName)
+        .mapValues { (_, declarations) ->
+          declarations.merges
+        }
+        .filter { it.value.isNotEmpty() }
+    }
+  }
+
   companion object Key : ProjectContext.Key<AnvilScopeMerges> {
 
     override suspend operator fun invoke(project: McProject): AnvilScopeMerges {
-      val map = project.anvilGraph().scopeMerges
-
-      return AnvilScopeMerges(map)
+      return AnvilScopeMerges(SafeCache(), project)
     }
   }
 }
@@ -43,4 +56,4 @@ suspend fun ProjectContext.anvilScopeMerges(): AnvilScopeMerges = get(AnvilScope
 
 suspend fun ProjectContext.anvilScopeMergesForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeMerges()[sourceSetName].orEmpty()
+): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeMerges().get(sourceSetName)
