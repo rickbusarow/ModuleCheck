@@ -37,15 +37,18 @@ jobs:
           java-version : '11'
           cache: 'gradle'
 
-      - uses: burrunan/gradle-cache-action@v1
-        name: detekt
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            detekt --no-daemon
-          concurrent: true
-          gradle-build-scan-report: false
+#      - uses: burrunan/gradle-cache-action@v1
+#        name: detekt
+#        with:
+#          gradle-dependencies-cache-key: |
+#            gradle/libs.versions.toml
+#          arguments: |
+#            detekt --no-daemon
+#          concurrent: true
+#          gradle-build-scan-report: false
+
+      - name: detekt
+        run: ./gradlew detekt --no-daemon
 
   ktlint:
 
@@ -67,15 +70,18 @@ jobs:
           cache: 'gradle'
 
       # formats all src files
-      - uses: burrunan/gradle-cache-action@v1
-        name: KtLint format
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            ktlintformat
-          concurrent: true
-          gradle-build-scan-report: false
+#      - uses: burrunan/gradle-cache-action@v1
+#        name: KtLint format
+#        with:
+#          gradle-dependencies-cache-key: |
+#            gradle/libs.versions.toml
+#          arguments: |
+#            ktlintformat
+#          concurrent: true
+#          gradle-build-scan-report: false
+
+      - name: KtLint format
+        run: ./gradlew ktlintformat --no-daemon
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes
@@ -112,15 +118,18 @@ jobs:
           commit_message: update docs versions
           commit_options: '--no-verify --signoff'
 
-      - uses: burrunan/gradle-cache-action@v1
-        name: Update version in website package.json
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            updateWebsitePackageJsonVersion
-          concurrent: true
-          gradle-build-scan-report: false
+#      - uses: burrunan/gradle-cache-action@v1
+#        name: Update version in website package.json
+#        with:
+#          gradle-dependencies-cache-key: |
+#            gradle/libs.versions.toml
+#          arguments: |
+#            updateWebsitePackageJsonVersion
+#          concurrent: true
+#          gradle-build-scan-report: false
+
+      - name: Update version in website package.json
+        run: ./gradlew updateWebsitePackageJsonVersion
 
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -201,15 +210,18 @@ jobs:
           java-version : '11'
           cache: 'gradle'
 
-      - uses: burrunan/gradle-cache-action@v1
-        name: all tests
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            testJvm
-          concurrent: true
-          gradle-build-scan-report: false
+#      - uses: burrunan/gradle-cache-action@v1
+#        name: all tests
+#        with:
+#          gradle-dependencies-cache-key: |
+#            gradle/libs.versions.toml
+#          arguments: |
+#            testJvm
+#          concurrent: true
+#          gradle-build-scan-report: false
+
+      - name: all tests
+        run: ./gradlew testJvm
 
       - name: Archive test results
         uses: actions/upload-artifact@v2
