@@ -15,7 +15,13 @@
 
 @file:Suppress("SpellCheckingInspection", "VariableNaming")
 
-import modulecheck.builds.*
+import modulecheck.builds.ArtifactIdListener
+import modulecheck.builds.DIListener
+import modulecheck.builds.ModuleCheckBuildExtension
+import modulecheck.builds.applyAnvil
+import modulecheck.builds.applyDagger
+import modulecheck.builds.configurePublishing
+import modulecheck.builds.libsCatalog
 
 plugins {
   id("mcbuild.clean")
