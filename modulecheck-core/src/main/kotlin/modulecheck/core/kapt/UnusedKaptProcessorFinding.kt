@@ -33,7 +33,7 @@ data class UnusedKaptProcessorFinding(
 
   override val dependencyIdentifier = dependencyPath
 
-  override val findingName = "unusedKaptProcessor"
+  override val findingName = "unusedKaptProcessor (${configurationName.value})"
 
   override val positionOrNull: Position? by lazy {
     // Kapt paths are different from other project dependencies.

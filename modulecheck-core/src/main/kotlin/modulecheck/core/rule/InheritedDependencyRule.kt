@@ -15,6 +15,7 @@
 
 package modulecheck.core.rule
 
+import kotlinx.coroutines.flow.toList
 import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.settings.ChecksSettings
@@ -23,7 +24,7 @@ import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetName
-import modulecheck.utils.mapBlocking
+import modulecheck.utils.mapAsync
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
@@ -57,7 +58,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
           .contains((it.contributed.project.path to it.contributed.isTestFixture))
       }
       .distinct()
-      .mapBlocking { transitive ->
+      .mapAsync { transitive ->
 
         val source = transitive.source
         val inherited = transitive.contributed
@@ -81,6 +82,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
           isTestFixture = inherited.isTestFixture
         )
       }
+      .toList()
       .groupBy { it.configurationName }
       .mapValues { (_, findings) ->
         findings.distinctBy { it.source.isTestFixture to it.dependencyPath }
