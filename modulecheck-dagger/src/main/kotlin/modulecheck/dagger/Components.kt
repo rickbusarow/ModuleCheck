@@ -28,4 +28,8 @@ object Components {
   inline fun <reified T> get(): T = _components
     .filterIsInstance<T>()
     .single()
+
+  fun clear() {
+    _components.clear()
+  }
 }
