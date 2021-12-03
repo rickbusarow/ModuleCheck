@@ -15,7 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding
+import modulecheck.api.finding.Finding
 import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import org.jetbrains.kotlin.psi.KtFile
 

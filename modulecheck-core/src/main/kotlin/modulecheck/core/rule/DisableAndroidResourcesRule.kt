@@ -15,8 +15,8 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.resSourceFiles
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.project.AndroidMcProject

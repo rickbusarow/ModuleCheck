@@ -15,9 +15,9 @@
 
 package modulecheck.core.anvil
 
-import modulecheck.api.Finding
-import modulecheck.api.Finding.Position
-import modulecheck.api.Fixable
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.Position
+import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
 import modulecheck.project.ConfigurationName
 import modulecheck.utils.existsOrNull

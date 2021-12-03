@@ -13,9 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.api.finding
 
-import modulecheck.api.Finding.FindingResult
+import modulecheck.api.finding.Finding.FindingResult
+
+interface Problem : Finding {
+
+  fun shouldSkip(): Boolean = declarationOrNull?.suppressed
+    ?.contains(findingName)
+    ?: false
+}
 
 interface Fixable : Finding, Problem {
 

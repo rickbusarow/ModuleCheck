@@ -16,7 +16,7 @@
 package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
-import modulecheck.api.Finding
+import modulecheck.api.finding.Finding
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding

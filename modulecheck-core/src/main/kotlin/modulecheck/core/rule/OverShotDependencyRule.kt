@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.ModuleCheckRule
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding

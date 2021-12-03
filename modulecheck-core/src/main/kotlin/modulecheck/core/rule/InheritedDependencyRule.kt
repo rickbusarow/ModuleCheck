@@ -16,8 +16,8 @@
 package modulecheck.core.rule
 
 import kotlinx.coroutines.flow.toList
-import modulecheck.api.ModuleCheckRule
 import modulecheck.api.context.classpathDependencies
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApiIn

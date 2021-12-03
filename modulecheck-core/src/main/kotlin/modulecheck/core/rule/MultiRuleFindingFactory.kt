@@ -18,9 +18,9 @@ package modulecheck.core.rule
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import modulecheck.api.Finding
-import modulecheck.api.FindingFactory
-import modulecheck.api.ModuleCheckRule
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.FindingFactory
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.project.McProject
 

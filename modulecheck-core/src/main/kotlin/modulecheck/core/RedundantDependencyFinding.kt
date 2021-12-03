@@ -15,7 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.Deletable
+import modulecheck.api.finding.Deletable
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject

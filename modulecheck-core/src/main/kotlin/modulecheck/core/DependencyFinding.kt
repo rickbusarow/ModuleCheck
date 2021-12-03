@@ -15,10 +15,10 @@
 
 package modulecheck.core
 
-import modulecheck.api.Finding
-import modulecheck.api.Finding.FindingResult
-import modulecheck.api.Fixable
-import modulecheck.api.Problem
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.Fixable
+import modulecheck.api.finding.Problem
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ModuleDependencyDeclaration

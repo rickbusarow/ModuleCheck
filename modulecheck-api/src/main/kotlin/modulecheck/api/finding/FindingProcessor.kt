@@ -13,27 +13,36 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.api.finding
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
-class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
+fun interface FindingProcessor {
 
-  override fun create(
-    findings: List<Finding>,
+  fun List<Finding>.toResults(
+    autoCorrect: Boolean,
+    deleteUnused: Boolean
+  ): List<Finding.FindingResult>
+}
+
+@ContributesBinding(AppScope::class)
+class RealFindingProcessor @Inject constructor() : FindingProcessor {
+
+  override fun List<Finding>.toResults(
     autoCorrect: Boolean,
     deleteUnused: Boolean
   ): List<Finding.FindingResult> {
 
-    return findings.onEach { it.positionOrNull }
+    return onEach { it.positionOrNull }
       .map { finding ->
 
         val fixed = when {
           !autoCorrect -> false
-          deleteUnused && finding is Deletable -> finding.delete()
+          deleteUnused && finding is Deletable -> {
+            finding.delete()
+          }
           finding is Fixable -> finding.fix()
           else -> false
         }

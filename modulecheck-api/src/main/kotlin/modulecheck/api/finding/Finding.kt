@@ -13,17 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.api
+package modulecheck.api.finding
 
 import modulecheck.parsing.ModuleDependencyDeclaration
 import java.io.File
-
-interface Problem : Finding {
-
-  fun shouldSkip(): Boolean = declarationOrNull?.suppressed
-    ?.contains(findingName)
-    ?: false
-}
 
 interface Finding {
 
