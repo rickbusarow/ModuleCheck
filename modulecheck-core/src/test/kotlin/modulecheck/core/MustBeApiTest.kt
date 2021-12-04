@@ -15,36 +15,30 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSetName
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
-class MustBeApiTest : ProjectTest() {
+class MustBeApiTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `public property from implementation without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -111,11 +105,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public generic property from implementation without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -182,11 +174,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public property from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -253,11 +243,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `private property from implementation with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -318,11 +306,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `private property from implementation inside public class with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -385,11 +371,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `internal property from implementation with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -450,11 +434,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public property from dependency in test source should not require API`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -516,11 +498,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `internal property in class from implementation with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -583,11 +563,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `supertype from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -654,11 +632,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `auto-correct should only replace the configuration invocation text`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":implementation") {
@@ -729,11 +705,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `supertype of internal class from implementation with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -794,11 +768,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public return type from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -865,11 +837,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `internal return type from implementation with auto-correct should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -930,11 +900,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public argument type from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1001,11 +969,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public type argument from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1072,11 +1038,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public generic bound type from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1143,11 +1107,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1212,11 +1174,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public public properties from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1300,11 +1260,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public supertypes from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1387,11 +1345,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public return types from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1475,11 +1431,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public argument types from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1563,11 +1517,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public type arguments from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1650,11 +1602,9 @@ class MustBeApiTest : ProjectTest() {
   @Test
   fun `two public generic bound types from implementation with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {

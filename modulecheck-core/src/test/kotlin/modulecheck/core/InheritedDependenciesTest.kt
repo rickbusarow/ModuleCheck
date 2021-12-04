@@ -15,37 +15,31 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSetName
 import modulecheck.project.asConfigurationName
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
-class InheritedDependenciesTest : ProjectTest() {
+class InheritedDependenciesTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `inherited from api dependency without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -142,11 +136,9 @@ class InheritedDependenciesTest : ProjectTest() {
     // A Kotlin build of this project would actually fail since :lib1 isn't in :lib3's classpath,
     // but the test is still useful since it's just assuring that behavior is consistent
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -236,11 +228,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited from api dependency with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -335,11 +325,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited via testApi should not cause infinite loop`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -435,11 +423,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited from implementation dependency with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -534,11 +520,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited from implementation dependency and part of API with auto-correct should be fixed as api config`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -633,11 +617,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `deeply inherited from testImplementation dependency with auto-correct should be fixed as testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -768,11 +750,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited testFixtures from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -872,11 +852,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited testFixtures from api with auto-correct should be fixed as testFixtures via testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -979,11 +957,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited main source from api with auto-correct should be fixed as normal testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1085,11 +1061,9 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1170,11 +1144,10 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal api`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      settings = settings,
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1254,11 +1227,10 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `not inherited when only used in tests and already declared as testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      settings = settings,
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1319,11 +1291,10 @@ class InheritedDependenciesTest : ProjectTest() {
   @Test
   fun `not inherited when exposed as api but used in tests and already declared as testImplementation`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      settings = settings,
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {

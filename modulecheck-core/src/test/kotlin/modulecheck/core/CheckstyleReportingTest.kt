@@ -19,14 +19,13 @@ import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.project.PrintLogger
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReportingTest : ProjectTest() {
+internal class CheckstyleReportingTest : RunnerTest() {
 
-  val baseSettings by resets {
+  override val settings by resets {
     TestSettings().apply {
       reports.checkstyle.outputPath = File(testProjectDir, reports.checkstyle.outputPath).path
     }
@@ -35,22 +34,20 @@ internal class CheckstyleReportingTest : ProjectTest() {
   @Test
   fun `checkstyle report should not be created if disabled in settings`() {
 
-    baseSettings.reports.checkstyle.enabled = false
+    settings.reports.checkstyle.enabled = false
 
-    val outputFile = File(baseSettings.reports.checkstyle.outputPath)
+    val outputFile = File(settings.reports.checkstyle.outputPath)
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = testProjectDir
           )
         )
-      },
-      logger = PrintLogger(),
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
@@ -77,22 +74,20 @@ internal class CheckstyleReportingTest : ProjectTest() {
   @Test
   fun `checkstyle report should be created if enabled in settings`() {
 
-    baseSettings.reports.checkstyle.enabled = true
+    settings.reports.checkstyle.enabled = true
 
-    val outputFile = File(baseSettings.reports.checkstyle.outputPath)
+    val outputFile = File(settings.reports.checkstyle.outputPath)
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = testProjectDir
           )
         )
-      },
-      logger = PrintLogger(),
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(

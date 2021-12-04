@@ -17,26 +17,19 @@ package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
 import modulecheck.api.finding.Finding
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class ConsoleReportingTest : ProjectTest() {
-
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
+internal class ConsoleReportingTest : RunnerTest() {
 
   @Test
   fun `zero findings should report '0 issues' to console`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = { listOf() },
-      logger = logger
+      findingFactory = findingFactory()
     )
 
     runner.run(listOf())
@@ -49,18 +42,16 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `one finding should report '1 issue' to console`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
-      },
-      logger = logger
+      )
     )
 
     runner.run(listOf())
@@ -79,10 +70,9 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `multiple findings should report 'n issues' to console`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
@@ -93,8 +83,7 @@ internal class ConsoleReportingTest : ProjectTest() {
             buildFile = File(testProjectDir, "lib2/build.gradle.kts")
           )
         )
-      },
-      logger = logger
+      )
     )
 
     runner.run(listOf())
@@ -117,18 +106,16 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `non-zero findings should print suppression advice to console`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
-      },
-      logger = logger
+      )
     )
 
     runner.run(listOf())
@@ -144,11 +131,9 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `zero findings should succeed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = { listOf() },
-      logger = logger
+      findingFactory = findingFactory()
     )
 
     runner.run(listOf()).isSuccess shouldBe true
@@ -157,18 +142,16 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `all findings fixed should succeed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
-      },
-      logger = logger,
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           Finding.FindingResult(
@@ -191,18 +174,16 @@ internal class ConsoleReportingTest : ProjectTest() {
   @Test
   fun `non-zero unfixed findings should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
-      },
-      logger = logger,
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           Finding.FindingResult(

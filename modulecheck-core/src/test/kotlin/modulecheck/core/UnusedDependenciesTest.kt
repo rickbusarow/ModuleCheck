@@ -15,38 +15,32 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSetName
 import modulecheck.project.temp.AnvilGradlePlugin
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import net.swiftzer.semver.SemVer
 import org.junit.jupiter.api.Test
 
-class UnusedDependenciesTest : ProjectTest() {
+class UnusedDependenciesTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `unused without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -93,11 +87,9 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct should be commented out`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -144,11 +136,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct and deleteUnused should be deleted`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -194,11 +186,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused but suppressed with auto-correct and deleteUnused should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -241,11 +233,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused but suppressed at the block level should not be changed`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -288,11 +280,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct with preceding typesafe external dependency should be deleted`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -340,11 +332,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct with string extension function for config should be deleted`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -390,11 +382,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused without auto-correct with string extension function for config should fail`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -441,11 +433,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct and deleteUnused following dependency config block should be deleted`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = true
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = true),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -495,11 +487,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused with auto-correct following dependency config block should be commented out`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -550,11 +542,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `dependencies from non-jvm configurations should be ignored`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -607,11 +599,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `testImplementation used in test should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -673,11 +665,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `androidTestImplementation used in androidTest should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -741,11 +733,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `custom view used in a layout file should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -815,11 +807,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `module contributing a used generated DataBinding object should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -883,11 +875,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `declaration used via a wildcard import should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -948,11 +940,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `testFixtures declaration used in test should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1015,11 +1007,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `unused from testFixtures with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1076,11 +1068,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `static member declaration used via wildcard import should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -1145,11 +1137,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `string resource used in module should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -1211,11 +1203,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `string resource used in manifest should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -1288,11 +1280,11 @@ class UnusedDependenciesTest : ProjectTest() {
   @Test
   fun `declaration used via class reference wtih wildcard import should not be unused`() {
 
-    val runner = ModuleCheckRunner(
+    settings.deleteUnused = false
+
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings.copy(deleteUnused = false),
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {

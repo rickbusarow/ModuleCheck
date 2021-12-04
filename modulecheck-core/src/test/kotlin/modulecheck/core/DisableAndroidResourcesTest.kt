@@ -15,38 +15,34 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.writeKotlin
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-class DisableAndroidResourcesTest : ProjectTest() {
+class DisableAndroidResourcesTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings(checks = TestChecksSettings(disableAndroidResources = true)) }
-  val logger by resets { ReportingLogger() }
+  override val settings by resets { TestSettings(checks = TestChecksSettings(disableAndroidResources = true)) }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `resource generation is used in contributing module with no changes`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -90,11 +86,9 @@ class DisableAndroidResourcesTest : ProjectTest() {
   @Test
   fun `resource generation is used in dependent module with no changes`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -153,11 +147,9 @@ class DisableAndroidResourcesTest : ProjectTest() {
   @Test
   fun `unused resource generation without autocorrect should fail and be reported`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -194,11 +186,9 @@ class DisableAndroidResourcesTest : ProjectTest() {
   @Test
   fun `unused resource generation when scoped and then qualified should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -239,11 +229,9 @@ android {
   @Test
   fun `unused resource generation when fully qualified should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -282,11 +270,9 @@ android {
   @Test
   fun `unused resource generation when qualified and then scoped should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -329,11 +315,9 @@ android {
   @Test
   fun `unused resource generation when fully scoped should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -381,11 +365,9 @@ android {
   @Test
   fun `unused resource generation with autocorrect and no explicit buildFeatures property should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
@@ -417,11 +399,9 @@ android {
   @Test
   fun `unused resource generation with autocorrect and no android block should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {

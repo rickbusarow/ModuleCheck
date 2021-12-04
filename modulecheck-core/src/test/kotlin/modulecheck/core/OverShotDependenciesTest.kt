@@ -15,36 +15,30 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSetName
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
-class OverShotDependenciesTest : ProjectTest() {
+class OverShotDependenciesTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `overshot as api but used in test without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -112,11 +106,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot as implementation but used in debug without auto-correct should fail`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -184,11 +176,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot as api but used in test with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -257,11 +247,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot as implementation but used in debug with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -330,11 +318,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot as api but used in test with another testFixture with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -424,11 +410,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot as api with config block and comment with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -526,11 +510,9 @@ class OverShotDependenciesTest : ProjectTest() {
   @Test
   fun `overshot testFixture as api but used in test with another testFixture with auto-correct should be fixed`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
