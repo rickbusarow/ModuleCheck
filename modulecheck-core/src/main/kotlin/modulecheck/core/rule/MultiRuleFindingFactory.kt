@@ -44,7 +44,8 @@ class MultiRuleFindingFactory(
   }
 
   private suspend fun evaluate(
-    projects: List<McProject>, predicate: (ModuleCheckRule<*>) -> Boolean
+    projects: List<McProject>,
+    predicate: (ModuleCheckRule<*>) -> Boolean
   ): List<Finding> {
     return coroutineScope {
       projects.flatMap { project ->
