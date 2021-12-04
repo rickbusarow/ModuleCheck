@@ -15,8 +15,10 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.flow.toSet
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.filterAsync
 
 data class DependentProjects(
   private val delegate: Set<McProject>
@@ -30,7 +32,7 @@ data class DependentProjects(
     override suspend operator fun invoke(project: McProject): DependentProjects {
       val others = project.projectCache
         .values
-        .filter { otherProject ->
+        .filterAsync { otherProject ->
           project.path in otherProject
             .classpathDependencies()
             .all()

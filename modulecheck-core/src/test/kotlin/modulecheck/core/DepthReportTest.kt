@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSet
@@ -242,6 +243,112 @@ internal class DepthReportTest : RunnerTest() {
       :lib2
           source set      depth    most expensive dependencies
           main            1        [:lib1]
+
+      """
+  }
+
+  @Test
+  fun `depth report should be calculated after fixes are applied`() {
+
+    settings.checks.depths = true
+    settings.reports.depths.enabled = true
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = MultiRuleFindingFactory(
+        settings,
+        ruleFactory.create(settings)
+      )
+    )
+
+    val lib1 = project(":lib1") {
+
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """.trimIndent()
+      )
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+    }
+
+    project(":app") {
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib2)
+
+      addSource(
+        "com/modulecheck/app/App.kt",
+        """
+        package com.modulecheck.app
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class App {
+          private val lib1Class = Lib1Class()
+          private val lib2Class = Lib2Class()
+        }
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+          :lib2
+                 dependency    name                source    build file
+              ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+
+      -- ModuleCheck main source set depth results --
+          depth    modules
+          0        [:lib1, :lib2]
+          1        [:app]
+
+      ModuleCheck found 1 issue
+        """
+
+    outputFile.readText() shouldBe """
+      -- ModuleCheck Depth results --
+
+      :app
+          source set      depth    most expensive dependencies
+          main            1        [:lib1, :lib2]
+
+      :lib1
+          source set      depth    most expensive dependencies
+          main            0        []
+
+      :lib2
+          source set      depth    most expensive dependencies
+          main            0        []
 
       """
   }

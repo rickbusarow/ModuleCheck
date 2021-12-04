@@ -33,6 +33,9 @@ interface ModuleCheckRule<T : Finding> {
   fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
 }
 
+interface ReportOnlyRule<T : Finding> : ModuleCheckRule<T>
+interface SortRule<T : Finding> : ModuleCheckRule<T>
+
 fun interface RuleFactory {
 
   fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<out Finding>>

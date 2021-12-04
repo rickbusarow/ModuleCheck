@@ -21,13 +21,33 @@ import kotlinx.coroutines.coroutineScope
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
 import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.api.rule.ReportOnlyRule
+import modulecheck.api.rule.SortRule
 import modulecheck.project.McProject
 
 class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>
 ) : FindingFactory<Finding> {
 
-  override suspend fun evaluate(projects: List<McProject>): List<T> {
+  override suspend fun evaluateFixable(projects: List<McProject>): List<T> {
+    return if (rule !is SortRule && rule !is ReportOnlyRule) {
+      evaluateRule(projects)
+    } else emptyList()
+  }
+
+  override suspend fun evaluateSorts(projects: List<McProject>): List<T> {
+    return if (rule is SortRule) {
+      evaluateRule(projects)
+    } else emptyList()
+  }
+
+  override suspend fun evaluateReports(projects: List<McProject>): List<T> {
+    return if (rule is ReportOnlyRule) {
+      evaluateRule(projects)
+    } else emptyList()
+  }
+
+  private suspend fun evaluateRule(projects: List<McProject>): List<T> {
     return coroutineScope {
       projects
         .map { project -> async { rule.check(project) } }

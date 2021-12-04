@@ -29,6 +29,7 @@ import com.squareup.anvil.plugin.AnvilExtension
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
@@ -68,7 +69,8 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 class GradleProjectProvider @AssistedInject constructor(
   @Assisted
-  rootGradleProject: GradleProject,
+  private val rootGradleProject: GradleProject,
+  private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
   private val gradleLogger: GradleLogger
 ) : ProjectProvider {
@@ -80,6 +82,17 @@ class GradleProjectProvider @AssistedInject constructor(
     return projectCache.getOrPut(path) {
       createProject(path)
     }
+  }
+
+  override fun getAll(): List<McProject> {
+    return rootGradleProject.allprojects
+      .filter { it.buildFile.exists() }
+      .filterNot { it.path in settings.doNotCheck }
+      .map { get(it.path) }
+  }
+
+  override fun clearCaches() {
+    projectCache.clearContexts()
   }
 
   @Suppress("UnstableApiUsage")

@@ -17,7 +17,9 @@ package modulecheck.api.finding
 
 import modulecheck.project.McProject
 
-fun interface FindingFactory<T : Finding> {
+interface FindingFactory<T : Finding> {
 
-  suspend fun evaluate(projects: List<McProject>): List<T>
+  suspend fun evaluateFixable(projects: List<McProject>): List<T>
+  suspend fun evaluateSorts(projects: List<McProject>): List<T>
+  suspend fun evaluateReports(projects: List<McProject>): List<T>
 }

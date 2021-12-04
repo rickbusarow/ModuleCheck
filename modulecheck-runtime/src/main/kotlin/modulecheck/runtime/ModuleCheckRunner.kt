@@ -22,10 +22,12 @@ import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.FindingFactory
 import modulecheck.api.finding.FindingResultFactory
 import modulecheck.api.finding.Problem
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.parsing.ProjectProvider
 import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.reporting.checkstyle.CheckstyleReporter
@@ -34,7 +36,6 @@ import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import java.io.File
-import kotlin.properties.Delegates
 import kotlin.system.measureTimeMillis
 
 /**
@@ -57,6 +58,8 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val graphvizFileWriter: GraphvizFileWriter,
   val dispatcherProvider: DispatcherProvider,
   @Assisted
+  val projectProvider: ProjectProvider,
+  @Assisted
   val autoCorrect: Boolean
 ) {
 
@@ -64,21 +67,46 @@ data class ModuleCheckRunner @AssistedInject constructor(
     // total findings, whether they're fixed or not
     var totalFindings = 0
 
-    var allFindings by Delegates.notNull<List<Finding>>()
+    val allFindings = mutableListOf<Finding>()
 
     // number of findings which couldn't be fixed
     // time does not include initial parsing from GradleProjectProvider,
     // but does include all source file parsing and the amount of time spent applying fixes
-    val unfixedCountWithTime = measured {
-      allFindings = findingFactory.evaluate(projects).distinct()
+    val resultsWithTime = measured {
+      val fixableFindings = findingFactory.evaluateFixable(projects).distinct()
 
-      allFindings.filterIsInstance<Problem>()
+      val fixableResults = fixableFindings.filterIsInstance<Problem>()
         .filterNot { it.shouldSkip() }
-        .also { totalFindings = it.size }
+        .also { totalFindings += it.size }
         .let { processFindings(it) }
+
+      projectProvider.clearCaches()
+
+      val sortFindings = findingFactory.evaluateSorts(projectProvider.getAll())
+        .distinct()
+
+      val sortsResults = sortFindings.filterIsInstance<Problem>()
+        .filterNot { it.shouldSkip() }
+        .also { totalFindings += it.size }
+        .let { processFindings(it) }
+
+      projectProvider.clearCaches()
+
+      val reportOnlyFindings = findingFactory.evaluateReports(projectProvider.getAll())
+        .distinct()
+
+      processFindings(reportOnlyFindings)
+
+      allFindings += (fixableFindings + sortFindings + reportOnlyFindings)
+
+      fixableResults + sortsResults // + reportResults
     }
 
-    val totalUnfixedIssues = unfixedCountWithTime.data
+    val allResults = resultsWithTime.data
+
+    reportResults(allResults)
+
+    val totalUnfixedIssues = allResults.count { !it.fixed }
 
     val depths = allFindings.filterIsInstance<DepthFinding>()
     maybeLogDepths(depths)
@@ -87,7 +115,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
     // Replace this with kotlinx Duration APIs as soon as it's stable
     @Suppress("MagicNumber")
-    val secondsDouble = unfixedCountWithTime.timeMillis / 1000.0
+    val secondsDouble = resultsWithTime.timeMillis / 1000.0
 
     val issuePlural = if (totalFindings == 1) "issue" else "issues"
 
@@ -120,7 +148,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
   /**
    * Tries to fix all findings one project at a time, then reports the results.
    */
-  private fun processFindings(findings: List<Finding>): Int {
+  private fun processFindings(findings: List<Finding>): List<FindingResult> {
 
     // TODO - The order of applying fixes is stable, which may be important in troubleshooting, but
     //   it's probably not perfect. There is a chance that up-stream changes to a dependency can
@@ -144,6 +172,14 @@ data class ModuleCheckRunner @AssistedInject constructor(
         )
       }
 
+    return results
+  }
+
+  /**
+   * Creates any applicable reports.
+   */
+  private fun reportResults(results: List<Finding.FindingResult>) {
+
     val textReport = reportFactory.create(results)
 
     if (results.isNotEmpty()) {
@@ -165,8 +201,6 @@ data class ModuleCheckRunner @AssistedInject constructor(
         .also { it.parentFile.mkdirs() }
         .writeText(checkstyleReporter.createXml(results))
     }
-
-    return results.count { !it.fixed }
   }
 
   private fun maybeLogDepths(depths: List<DepthFinding>) {
@@ -209,7 +243,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
   @AssistedFactory
   interface Factory {
-    fun create(autoCorrect: Boolean): ModuleCheckRunner
+    fun create(projectProvider: ProjectProvider, autoCorrect: Boolean): ModuleCheckRunner
   }
 }
 

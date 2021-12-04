@@ -86,7 +86,11 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     return if (usedLayouts.isNotEmpty()) {
       emptyList()
     } else {
-      listOf(DisableViewBindingGenerationFinding(project, project.path, project.buildFile))
+      listOf(
+        DisableViewBindingGenerationFinding(
+          dependentProject = project, project.path, buildFile = project.buildFile
+        )
+      )
     }
   }
 

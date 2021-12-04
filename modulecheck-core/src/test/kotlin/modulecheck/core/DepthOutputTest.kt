@@ -17,6 +17,7 @@ package modulecheck.core
 
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.runtime.test.RunnerTest
@@ -59,6 +60,54 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app]
 
         ModuleCheck found 0 issues
+        """
+  }
+
+  @Test
+  fun `reported depths should be from after fixes are applied`() {
+
+    settings.checks.depths = true
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = MultiRuleFindingFactory(
+        settings,
+        ruleFactory.create(settings)
+      )
+    )
+
+    val lib1 = project(":lib1")
+
+    project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency    name                source    build file
+                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+
+        -- ModuleCheck main source set depth results --
+            depth    modules
+            0        [:lib1, :lib2]
+
+        ModuleCheck found 1 issue
         """
   }
 

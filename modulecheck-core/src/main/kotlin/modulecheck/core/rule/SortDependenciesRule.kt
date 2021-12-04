@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
@@ -27,7 +27,7 @@ import java.util.Locale
 
 class SortDependenciesRule(
   settings: ModuleCheckSettings
-) : ModuleCheckRule<SortDependenciesFinding> {
+) : SortRule<SortDependenciesFinding> {
 
   override val id = "SortDependencies"
   override val description = "Sorts all dependencies within a dependencies { ... } block"

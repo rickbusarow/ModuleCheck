@@ -23,7 +23,9 @@ import modulecheck.api.finding.RealFindingResultFactory
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
+import modulecheck.parsing.ProjectProvider
 import modulecheck.project.Logger
+import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
@@ -42,6 +44,7 @@ abstract class RunnerTest : ProjectTest() {
     findingFactory: FindingFactory<out Finding>,
     settings: ModuleCheckSettings = this.settings,
     logger: Logger = this.logger,
+    projectProvider: ProjectProvider = this.projectProvider,
     findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
     reportFactory: ReportFactory = ReportFactory(),
     checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
@@ -56,20 +59,17 @@ abstract class RunnerTest : ProjectTest() {
     reportFactory = reportFactory,
     checkstyleReporter = checkstyleReporter,
     graphvizFileWriter = graphvizFileWriter,
-    dispatcherProvider = dispatcherProvider
+    dispatcherProvider = dispatcherProvider,
+    projectProvider = projectProvider
   )
 
   fun findingFactory(
-    findings: List<Finding> = emptyList()
-  ): FindingFactory<*> = FindingFactory { findings }
-
-  // fun findingFactory(
-  //   fixable: List<Finding> = emptyList(),
-  // sorts: List<Finding> = emptyList(),
-  // reports: List<Finding> = emptyList()
-  // ): FindingFactory<*> = object : FindingFactory<Finding> {
-  // override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> = fixable
-  // override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts
-  // override suspend fun evaluateReports(projects: List<McProject>): List<Finding> = reports
-  // }
+    fixable: List<Finding> = emptyList(),
+    sorts: List<Finding> = emptyList(),
+    reports: List<Finding> = emptyList()
+  ): FindingFactory<*> = object : FindingFactory<Finding> {
+    override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> = fixable
+    override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts
+    override suspend fun evaluateReports(projects: List<McProject>): List<Finding> = reports
+  }
 }
