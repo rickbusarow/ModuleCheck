@@ -15,32 +15,34 @@
 
 package modulecheck.core
 
+import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding.Position
+import modulecheck.api.finding.addDependency
 import modulecheck.core.internal.positionIn
-import modulecheck.parsing.DependencyBlockParser
-import modulecheck.project.ConfigurationName
+import modulecheck.core.internal.statementOrNullIn
+import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import org.jetbrains.kotlin.util.prefixIfNot
-import java.io.File
 
 data class InheritedDependencyFinding(
-  override val dependentPath: String,
-  val dependentProject: McProject,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
-  val dependencyPath: String,
-  override val configurationName: ConfigurationName,
-  val source: ConfiguredProjectDependency,
-  val isTestFixture: Boolean
-) : DependencyFinding("inheritedDependency"),
+  override val dependentProject: McProject,
+  override val newDependency: ConfiguredProjectDependency,
+  val source: ConfiguredProjectDependency
+) : ProjectDependencyFinding("inheritedDependency"),
+  AddsDependency,
   Comparable<InheritedDependencyFinding> {
 
   override val message: String
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
-  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
+  override val dependencyIdentifier get() = newDependency.path + fromStringOrEmpty()
+  override val dependencyProject get() = newDependency.project
+  override val configurationName get() = newDependency.configurationName
 
+  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
+    source.project
+      .statementOrNullIn(buildFile, source.configurationName)
+  }
   override val positionOrNull: Position? by lazy {
     source.project.positionIn(buildFile, source.configurationName)
   }
@@ -54,42 +56,16 @@ data class InheritedDependencyFinding(
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val fromPath = source.project.path
 
-    val blocks = DependencyBlockParser.parse(buildFile)
+    val oldDeclaration = declarationOrNull ?: return false
 
-    val (block, match) = blocks.firstNotNullOfOrNull { block ->
-      block to block.getOrEmpty(fromPath, source.configurationName)
-    }
-      ?.let { (block, declarations) ->
-
-        val matchStatement = declarations.firstOrNull()
-          ?: return false
-
-        block to matchStatement
-      }
-      ?: return false
-
-    val newDeclaration = match.replace(
-      configName = configurationName,
-      modulePath = dependencyPath,
-      testFixtures = isTestFixture
+    val newDeclaration = oldDeclaration.replace(
+      configName = newDependency.configurationName,
+      modulePath = newDependency.path,
+      testFixtures = newDependency.isTestFixture
     )
 
-    val oldStatement = match.statementWithSurroundingText
-    val newStatement = newDeclaration.statementWithSurroundingText
-      .plus(oldStatement.prefixIfNot("\n"))
-
-    val newDependencies = block.contentString.replaceFirst(
-      oldValue = oldStatement,
-      newValue = newStatement
-    )
-
-    val text = buildFile.readText()
-
-    val newText = text.replaceFirst(block.contentString, newDependencies)
-
-    buildFile.writeText(newText)
+    dependentProject.addDependency(newDependency, newDeclaration, oldDeclaration)
 
     return true
   }
@@ -99,7 +75,7 @@ data class InheritedDependencyFinding(
     return compareBy<InheritedDependencyFinding>(
       { it.configurationName },
       { it.source.isTestFixture },
-      { it.dependencyPath }
+      { it.newDependency.path }
     ).compare(this, other)
   }
 }

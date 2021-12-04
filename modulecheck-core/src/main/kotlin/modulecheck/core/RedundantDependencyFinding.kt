@@ -16,27 +16,28 @@
 package modulecheck.core
 
 import modulecheck.api.finding.Deletable
+import modulecheck.api.finding.RemovesDependency
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import java.io.File
 
 data class RedundantDependencyFinding(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
-  val dependencyPath: String,
+  override val dependentProject: McProject,
+  override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val from: List<ConfiguredProjectDependency>
-) : DependencyFinding("redundant"),
+) : ProjectDependencyFinding("redundant"),
+  RemovesDependency,
   Deletable {
+
+  override val dependencyProject = oldDependency.project
 
   override val message: String
     get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
       "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
       "file is desired."
 
-  override val dependencyIdentifier = dependencyPath + fromStringOrEmpty()
+  override val dependencyIdentifier = oldDependency.project.path + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {
 

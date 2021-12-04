@@ -86,13 +86,10 @@ data class OverShotDependencies(
         .map { (cpp, originalConfigurationName) ->
 
           OverShotDependencyFinding(
-            dependentPath = project.path,
-            buildFile = project.buildFile,
-            dependencyProject = cpp.project,
-            dependencyIdentifier = cpp.project.path,
-            configurationName = cpp.configurationName,
-            originalConfigurationName = originalConfigurationName,
-            isTestFixture = cpp.isTestFixture
+            dependentProject = project,
+            newDependency = cpp,
+            oldDependency = cpp.copy(configurationName = originalConfigurationName),
+            configurationName = cpp.configurationName
           )
         }
         .sortedBy { it.dependencyProject }

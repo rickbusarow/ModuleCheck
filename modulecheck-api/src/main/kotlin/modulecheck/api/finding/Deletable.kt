@@ -18,12 +18,12 @@ package modulecheck.api.finding
 interface Deletable : Finding {
 
   fun delete(): Boolean = synchronized(buildFile) {
-    val text = buildFile.readText()
 
-    val element = statementTextOrNull ?: return false
+    val declaration = declarationOrNull ?: return false
 
-    buildFile
-      .writeText(text.replaceFirst(element + '\n', ""))
+    require(this is RemovesDependency)
+
+    dependentProject.removeDependencyWithDelete(oldDependency, declaration)
 
     return true
   }

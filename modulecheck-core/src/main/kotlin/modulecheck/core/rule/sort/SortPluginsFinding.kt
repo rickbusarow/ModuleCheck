@@ -22,10 +22,12 @@ import modulecheck.core.parse
 import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.PluginDeclaration
 import modulecheck.parsing.PluginsBlock
+import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 class SortPluginsFinding(
+  override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File,
   val comparator: Comparator<PluginDeclaration>

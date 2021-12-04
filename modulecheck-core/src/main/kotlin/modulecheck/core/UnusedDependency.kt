@@ -16,28 +16,29 @@
 package modulecheck.core
 
 import modulecheck.api.finding.Deletable
+import modulecheck.api.finding.RemovesDependency
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import java.io.File
 
 data class UnusedDependency(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
+  override val dependentProject: McProject,
+  override val oldDependency: ConfiguredProjectDependency,
   override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName,
-  val isTestFixture: Boolean
-) : DependencyFinding("unusedDependency"),
+  override val configurationName: ConfigurationName
+) : ProjectDependencyFinding("unusedDependency"),
+  RemovesDependency,
   Deletable {
+
+  override val dependencyProject = oldDependency.project
 
   override val message: String
     get() = "The declared dependency is not used in this module."
 
   fun cpd() = ConfiguredProjectDependency(
-    configurationName = configurationName,
-    project = dependencyProject,
-    isTestFixture = isTestFixture
+    configurationName = oldDependency.configurationName,
+    project = oldDependency.project,
+    isTestFixture = oldDependency.isTestFixture
   )
 
   override fun toString(): String {

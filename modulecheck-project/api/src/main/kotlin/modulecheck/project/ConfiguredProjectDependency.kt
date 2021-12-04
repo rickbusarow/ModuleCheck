@@ -21,6 +21,8 @@ data class ConfiguredProjectDependency(
   val isTestFixture: Boolean
 ) : HasConfig {
 
+  val path = project.path
+
   override val name = project.path
 
   override fun equals(other: Any?): Boolean {

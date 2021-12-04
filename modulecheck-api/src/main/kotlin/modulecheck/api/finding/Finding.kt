@@ -16,9 +16,12 @@
 package modulecheck.api.finding
 
 import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.project.McProject
 import java.io.File
 
 interface Finding {
+
+  val dependentProject: McProject
 
   val findingName: String
 
