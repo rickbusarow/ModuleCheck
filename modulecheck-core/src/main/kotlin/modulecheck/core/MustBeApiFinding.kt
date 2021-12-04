@@ -15,20 +15,27 @@
 
 package modulecheck.core
 
+import modulecheck.api.finding.AddsDependency
+import modulecheck.api.finding.RemovesDependency
+import modulecheck.api.finding.addDependency
+import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import java.io.File
 
 data class MustBeApiFinding(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
+  override val dependentProject: McProject,
+  override val newDependency: ConfiguredProjectDependency,
+  override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
-) : DependencyFinding("mustBeApi") {
+) : ProjectDependencyFinding("mustBeApi"),
+  AddsDependency,
+  RemovesDependency {
+
+  override val dependencyProject get() = oldDependency.project
 
   override val message: String
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
@@ -37,7 +44,7 @@ data class MustBeApiFinding(
   override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
   override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
-    super.declarationOrNull
+    super<ProjectDependencyFinding>.declarationOrNull
       ?: source?.project
         ?.statementOrNullIn(buildFile, configurationName)
   }
@@ -52,18 +59,15 @@ data class MustBeApiFinding(
 
   override fun fix(): Boolean = synchronized(buildFile) {
 
-    val declaration = declarationOrNull ?: return false
+    val oldDeclaration = declarationOrNull ?: return false
 
-    val oldStatement = declaration.statementWithSurroundingText
-    val newStatement = declaration.replace(
-      configName = ConfigurationName.api,
-      testFixtures = source?.isTestFixture ?: false
+    val newDeclaration = oldDeclaration.replace(
+      configName = newDependency.configurationName,
+      testFixtures = newDependency.isTestFixture
     )
-      .statementWithSurroundingText
 
-    val buildFileText = buildFile.readText()
-
-    buildFile.writeText(buildFileText.replace(oldStatement, newStatement))
+    dependentProject.addDependency(newDependency, newDeclaration, oldDeclaration)
+    dependentProject.removeDependencyWithDelete(oldDependency, oldDeclaration)
 
     return true
   }

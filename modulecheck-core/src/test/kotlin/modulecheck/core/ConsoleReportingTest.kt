@@ -20,11 +20,11 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.testing.BaseTest
+import modulecheck.project.test.ProjectTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class ConsoleReportingTest : BaseTest() {
+internal class ConsoleReportingTest : ProjectTest() {
 
   val baseSettings by resets { TestSettings() }
   val logger by resets { ReportingLogger() }
@@ -55,8 +55,8 @@ internal class ConsoleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts"),
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
       },
@@ -85,12 +85,12 @@ internal class ConsoleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts"),
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           ),
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib2/build.gradle.kts"),
-            dependentPath = ":lib2"
+            dependentProject = project(":lib2"),
+            buildFile = File(testProjectDir, "lib2/build.gradle.kts")
           )
         )
       },
@@ -123,8 +123,8 @@ internal class ConsoleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts"),
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
       },
@@ -163,8 +163,8 @@ internal class ConsoleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts"),
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
       },
@@ -197,8 +197,8 @@ internal class ConsoleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = File(testProjectDir, "lib1/build.gradle.kts"),
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
       },

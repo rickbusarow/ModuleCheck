@@ -20,13 +20,16 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
 import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
 import modulecheck.utils.existsOrNull
 import java.io.File
 
 data class CouldUseAnvilFinding(
-  override val buildFile: File,
-  override val dependentPath: String
+  override val dependentProject: McProject,
+  override val buildFile: File
 ) : Finding, Fixable {
+
+  override val dependentPath = dependentProject.path
 
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."

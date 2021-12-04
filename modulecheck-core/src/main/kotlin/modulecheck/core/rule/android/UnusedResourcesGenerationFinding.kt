@@ -21,9 +21,11 @@ import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.kotlinBuildFileOrNull
 import modulecheck.parsing.psi.AndroidBuildFeaturesVisitor
+import modulecheck.project.McProject
 import java.io.File
 
 data class UnusedResourcesGenerationFinding(
+  override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File
 ) : Finding, Fixable {

@@ -21,11 +21,13 @@ import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
 import modulecheck.core.rule.KAPT_PLUGIN_ID
+import modulecheck.project.McProject
 import java.io.File
 
 interface UnusedKaptFinding : Finding, Fixable, Problem
 
 data class UnusedKaptPluginFinding(
+  override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File
 ) : UnusedKaptFinding {

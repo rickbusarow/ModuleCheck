@@ -15,23 +15,25 @@
 
 package modulecheck.core
 
+import modulecheck.api.finding.AddsDependency
+import modulecheck.api.finding.RemovesDependency
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.project.ConfigurationName
+import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.prefixIfNot
-import java.io.File
 
 data class OverShotDependencyFinding(
-  override val dependentPath: String,
-  override val buildFile: File,
-  override val dependencyProject: McProject,
-  override val dependencyIdentifier: String,
-  override val configurationName: ConfigurationName,
-  val originalConfigurationName: ConfigurationName,
-  val isTestFixture: Boolean
-) : DependencyFinding("overshot") {
+  override val dependentProject: McProject,
+  override val newDependency: ConfiguredProjectDependency,
+  override val oldDependency: ConfiguredProjectDependency,
+  override val configurationName: ConfigurationName
+) : ProjectDependencyFinding("overshot"), AddsDependency, RemovesDependency {
+
+  override val dependencyProject get() = oldDependency.project
+  override val dependencyIdentifier: String get() = newDependency.path
 
   override val message: String
     get() = "The dependency is not used in the source set for which it is configured, but it is " +
@@ -45,7 +47,7 @@ data class OverShotDependencyFinding(
 
     val sourceDeclaration = blocks.firstNotNullOfOrNull { block ->
 
-      block.getOrEmpty(dependencyProject.path, originalConfigurationName)
+      block.getOrEmpty(dependencyProject.path, oldDependency.configurationName)
         .firstOrNull()
     } ?: return false
 
@@ -58,7 +60,9 @@ data class OverShotDependencyFinding(
 
     val (block, positionDeclaration) = positionBlockDeclarationPair
 
-    val newDeclaration = sourceDeclaration.replace(configurationName, testFixtures = isTestFixture)
+    val newDeclaration = sourceDeclaration.replace(
+      configurationName, testFixtures = newDependency.isTestFixture
+    )
 
     val oldStatement = positionDeclaration.statementWithSurroundingText
     val newStatement = oldStatement.plus(
@@ -75,6 +79,9 @@ data class OverShotDependencyFinding(
       .replace(block.contentString, newBlock)
 
     buildFile.writeText(fileText)
+
+    // dependencyProject.removeDependencyWithDelete(oldDependency)
+    // dependencyProject.addDependency(newDependency)
 
     return true
   }

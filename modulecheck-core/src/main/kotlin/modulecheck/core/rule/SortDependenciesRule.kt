@@ -62,7 +62,14 @@ class SortDependenciesRule(
     return if (allSorted) {
       emptyList()
     } else {
-      listOf(SortDependenciesFinding(project.path, project.buildFile, comparator))
+      listOf(
+        SortDependenciesFinding(
+          dependentProject = project,
+          dependentPath = project.path,
+          buildFile = project.buildFile,
+          comparator = comparator
+        )
+      )
     }
   }
 

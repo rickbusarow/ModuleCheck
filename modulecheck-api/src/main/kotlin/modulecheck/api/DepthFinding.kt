@@ -23,7 +23,7 @@ import modulecheck.utils.SafeCache
 import java.io.File
 
 data class DepthFinding(
-  val dependentProject: McProject,
+  override val dependentProject: McProject,
   override val dependentPath: String,
   val depth: Int,
   val children: List<DepthFinding>,

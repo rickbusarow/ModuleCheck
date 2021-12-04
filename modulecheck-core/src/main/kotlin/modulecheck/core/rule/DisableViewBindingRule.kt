@@ -50,7 +50,11 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     val dependents = project.dependents()
 
     val basePackage = project.androidPackageOrNull
-      ?: return listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
+      ?: return listOf(
+        DisableViewBindingGenerationFinding(
+          dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
+        )
+      )
 
     val usedLayouts = layouts
       .filter { it.file.exists() }
@@ -82,7 +86,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     return if (usedLayouts.isNotEmpty()) {
       emptyList()
     } else {
-      listOf(DisableViewBindingGenerationFinding(project.path, project.buildFile))
+      listOf(DisableViewBindingGenerationFinding(project, project.path, project.buildFile))
     }
   }
 

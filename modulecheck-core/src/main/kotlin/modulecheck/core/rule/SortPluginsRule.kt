@@ -61,7 +61,14 @@ class SortPluginsRule(
     return if (sorted) {
       emptyList()
     } else {
-      listOf(SortPluginsFinding(project.path, project.buildFile, comparator))
+      listOf(
+        SortPluginsFinding(
+          dependentProject = project,
+          dependentPath = project.path,
+          buildFile = project.buildFile,
+          comparator = comparator
+        )
+      )
     }
   }
 

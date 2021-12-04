@@ -16,12 +16,28 @@
 package modulecheck.api.finding
 
 import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.project.ConfiguredProjectDependency
 
 interface Problem : Finding {
 
   fun shouldSkip(): Boolean = declarationOrNull?.suppressed
     ?.contains(findingName)
     ?: false
+}
+
+interface RemovesDependency : Fixable {
+
+  val oldDependency: ConfiguredProjectDependency
+}
+
+interface AddsDependency : Fixable {
+
+  val newDependency: ConfiguredProjectDependency
+}
+
+interface HasSource : Finding {
+
+  val source: ConfiguredProjectDependency
 }
 
 interface Fixable : Finding, Problem {
@@ -43,35 +59,11 @@ interface Fixable : Finding, Problem {
 
   fun fix(): Boolean = synchronized(buildFile) {
 
-    val text = buildFile.readText()
+    val declaration = declarationOrNull ?: return false
 
-    val statementText = statementTextOrNull ?: return false
+    require(this is RemovesDependency)
 
-    val lines = statementText.lines()
-    val lastIndex = lines.lastIndex
-    val newText = lines
-      .mapIndexed { index: Int, str: String ->
-
-        // don't comment out a blank line
-        if (str.isBlank()) return@mapIndexed str
-
-        val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
-          val (whitespace, code) = mr.destructured
-          "$whitespace$INLINE_COMMENT$code"
-        }
-
-        if (index == lastIndex) {
-          commented + fixLabel()
-        } else {
-          commented
-        }
-      }
-      .joinToString("\n")
-
-    buildFile
-      .writeText(
-        text.replaceFirst(statementText, newText)
-      )
+    dependentProject.removeDependencyWithComment(oldDependency, declaration, fixLabel())
 
     true
   }

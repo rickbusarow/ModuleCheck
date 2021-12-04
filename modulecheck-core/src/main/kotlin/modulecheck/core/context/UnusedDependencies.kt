@@ -69,12 +69,10 @@ data class UnusedDependencies(
         }
         .map { cpd ->
           UnusedDependency(
-            dependentPath = project.path,
-            buildFile = project.buildFile,
-            dependencyProject = cpd.project,
+            dependentProject = project,
+            oldDependency = cpd,
             dependencyIdentifier = cpd.project.path,
-            configurationName = cpd.configurationName,
-            isTestFixture = cpd.isTestFixture
+            configurationName = cpd.configurationName
           )
         }
         .toSet()

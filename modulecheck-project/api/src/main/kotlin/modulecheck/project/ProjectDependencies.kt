@@ -36,4 +36,14 @@ class ProjectDependencies(
   operator fun get(sourceSetName: SourceSetName): List<ConfiguredProjectDependency> {
     return sourceSetName.configurationNames().flatMap { get(it).orEmpty() }
   }
+
+  fun add(cpd: ConfiguredProjectDependency) {
+    val oldDependencies = get(cpd.configurationName) ?: emptyList()
+    put(cpd.configurationName, oldDependencies + cpd)
+  }
+
+  fun remove(cpd: ConfiguredProjectDependency) {
+    val oldDependencies = get(cpd.configurationName) ?: emptyList()
+    put(cpd.configurationName, oldDependencies.filter { it != cpd })
+  }
 }

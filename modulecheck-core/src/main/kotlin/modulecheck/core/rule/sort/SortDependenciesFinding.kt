@@ -22,11 +22,13 @@ import modulecheck.core.parse
 import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.DependencyDeclaration
+import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 import java.util.Locale
 
 class SortDependenciesFinding(
+  override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File,
   private val comparator: Comparator<String>

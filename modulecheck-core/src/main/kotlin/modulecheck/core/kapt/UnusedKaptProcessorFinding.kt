@@ -18,9 +18,11 @@ package modulecheck.core.kapt
 import modulecheck.api.finding.Finding.Position
 import modulecheck.core.internal.positionOf
 import modulecheck.project.ConfigurationName
+import modulecheck.project.McProject
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
+  override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File,
   val dependencyPath: String,

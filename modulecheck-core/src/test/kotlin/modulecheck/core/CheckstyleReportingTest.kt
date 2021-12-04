@@ -20,11 +20,11 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.project.PrintLogger
-import modulecheck.testing.BaseTest
+import modulecheck.project.test.ProjectTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReportingTest : BaseTest() {
+internal class CheckstyleReportingTest : ProjectTest() {
 
   val baseSettings by resets {
     TestSettings().apply {
@@ -45,8 +45,8 @@ internal class CheckstyleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = testProjectDir,
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = testProjectDir
           )
         )
       },
@@ -87,8 +87,8 @@ internal class CheckstyleReportingTest : BaseTest() {
       findingFactory = {
         listOf(
           CouldUseAnvilFinding(
-            buildFile = testProjectDir,
-            dependentPath = ":lib1"
+            dependentProject = project(":lib1"),
+            buildFile = testProjectDir
           )
         )
       },

@@ -24,12 +24,16 @@ import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.ModuleDependencyDeclaration
 import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
+import java.io.File
 
-abstract class DependencyFinding(
+abstract class ProjectDependencyFinding(
   override val findingName: String
 ) : Problem,
   Fixable,
   Finding {
+
+  final override val dependentPath: String get() = dependentProject.path
+  final override val buildFile: File get() = dependentProject.buildFile
 
   abstract val dependencyProject: McProject
   abstract val configurationName: ConfigurationName
@@ -66,7 +70,7 @@ abstract class DependencyFinding(
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is DependencyFinding) return false
+    if (other !is ProjectDependencyFinding) return false
 
     if (findingName != other.findingName) return false
     if (dependencyProject != other.dependencyProject) return false

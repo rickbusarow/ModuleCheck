@@ -43,7 +43,7 @@ import kotlin.system.measureTimeMillis
  *
  * @param findingFactory handles parsing of the projects in order to generate the findings
  * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
- *   [FindingResult][modulecheck.api.Finding.FindingResult]
+ *   [FindingResult][modulecheck.api.finding.Finding.FindingResult]
  * @param reportFactory handles console output of the results
  */
 @Suppress("LongParameterList")

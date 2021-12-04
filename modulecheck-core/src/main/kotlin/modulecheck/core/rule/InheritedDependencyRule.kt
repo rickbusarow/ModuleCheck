@@ -72,20 +72,15 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
         }
 
         InheritedDependencyFinding(
-          dependentPath = project.path,
           dependentProject = project,
-          buildFile = project.buildFile,
-          dependencyProject = inherited.project,
-          dependencyPath = inherited.project.path,
-          configurationName = newConfig,
-          source = source,
-          isTestFixture = inherited.isTestFixture
+          newDependency = inherited.copy(newConfig),
+          source = source
         )
       }
       .toList()
       .groupBy { it.configurationName }
       .mapValues { (_, findings) ->
-        findings.distinctBy { it.source.isTestFixture to it.dependencyPath }
+        findings.distinctBy { it.source.isTestFixture to it.newDependency.path }
           .sorted()
       }
       .values

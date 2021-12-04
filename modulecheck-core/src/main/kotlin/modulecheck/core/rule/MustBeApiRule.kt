@@ -19,6 +19,7 @@ import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
+import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
 
 class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
@@ -31,9 +32,9 @@ class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
     return project.get(MustBeApi)
       .map {
         MustBeApiFinding(
-          dependentPath = project.path,
-          buildFile = project.buildFile,
-          dependencyProject = it.configuredProjectDependency.project,
+          dependentProject = project,
+          newDependency = it.configuredProjectDependency.copy(configurationName = ConfigurationName.api),
+          oldDependency = it.configuredProjectDependency,
           configurationName = it.configuredProjectDependency.configurationName,
           source = it.source
         )

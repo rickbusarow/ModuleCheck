@@ -21,7 +21,6 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
-import modulecheck.project.all
 
 class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 
@@ -40,7 +39,11 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
     val noResources = androidProject.resSourceFiles().all().isEmpty()
 
     return if (noResources) {
-      listOf(UnusedResourcesGenerationFinding(project.path, project.buildFile))
+      listOf(
+        UnusedResourcesGenerationFinding(
+          dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
+        )
+      )
     } else {
       emptyList()
     }
