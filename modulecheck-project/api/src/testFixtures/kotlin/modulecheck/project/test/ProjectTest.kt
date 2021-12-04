@@ -15,12 +15,12 @@
 
 package modulecheck.project.test
 
+import modulecheck.parsing.ProjectProvider
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
@@ -37,6 +37,12 @@ abstract class ProjectTest : BaseTest() {
 
       override fun get(path: String): McProject {
         return projectCache.getValue(path)
+      }
+
+      override fun getAll(): List<McProject> = allProjects()
+
+      override fun clearCaches() {
+        allProjects().forEach { it.clearContext() }
       }
     }
   }

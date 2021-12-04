@@ -56,14 +56,10 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
 
       Components.add(component)
 
-      val runner = component.runnerFactory.create(autoCorrect)
       val projectProvider = component.gradleProjectProvider.create(project)
+      val runner = component.runnerFactory.create(projectProvider, autoCorrect)
 
-      val projects = project
-        .allprojects
-        .filter { it.buildFile.exists() }
-        .filterNot { it.path in settings.doNotCheck }
-        .map { projectProvider.get(it.path) }
+      val projects = projectProvider.getAll()
 
       val result = runner.run(projects)
 

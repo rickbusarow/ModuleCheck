@@ -17,11 +17,11 @@ package modulecheck.core.rule
 
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
-import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.api.rule.ReportOnlyRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.project.McProject
 
-class DepthRule : ModuleCheckRule<DepthFinding> {
+class DepthRule : ReportOnlyRule<DepthFinding> {
 
   override val id = "Depth"
   override val description = "The longest path between this module and its leaf nodes"

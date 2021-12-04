@@ -15,14 +15,9 @@
 
 package modulecheck.project
 
-import modulecheck.dagger.AppScope
-import modulecheck.dagger.SingleIn
 import modulecheck.project.temp.AnvilGradlePlugin
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentMap
-import javax.inject.Inject
 import kotlin.contracts.contract
 
 @Suppress("TooManyFunctions")
@@ -86,6 +81,3 @@ interface AndroidMcProject : McProject {
   val androidRFqNameOrNull: String?
   val manifests: Map<SourceSetName, File>
 }
-
-@SingleIn(AppScope::class)
-class ProjectCache @Inject constructor() : ConcurrentMap<String, McProject> by ConcurrentHashMap()

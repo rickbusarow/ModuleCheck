@@ -24,7 +24,6 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
-import modulecheck.project.RealProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.SourceSets
 import modulecheck.project.temp.AnvilGradlePlugin
@@ -50,7 +49,11 @@ class RealMcProject(
 
   override val externalDependencies: ExternalDependencies by externalDependencies
 
-  private val context = RealProjectContext(this)
+  private val context = ProjectContext(this)
+
+  override fun clearContext() {
+    context.clearContext()
+  }
 
   override suspend fun <E : ProjectContext.Element> get(key: ProjectContext.Key<E>): E {
     return context.get(key)

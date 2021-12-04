@@ -22,6 +22,8 @@ import modulecheck.utils.SafeCache
 interface ProjectContext {
   suspend fun <E : Element> get(key: Key<E>): E
 
+  fun clearContext()
+
   interface Key<E : Element> {
     suspend operator fun invoke(project: McProject): E
   }
@@ -29,15 +31,23 @@ interface ProjectContext {
   interface Element {
     val key: Key<*>
   }
+
+  companion object {
+    operator fun invoke(project: McProject): ProjectContext = RealProjectContext(project)
+  }
 }
 
-class RealProjectContext(val project: McProject) : ProjectContext {
+internal class RealProjectContext(val project: McProject) : ProjectContext {
 
-  private val cache = SafeCache<Key<*>, Element>()
+  private var cache = SafeCache<Key<*>, Element>()
 
   override suspend fun <E : Element> get(key: Key<E>): E {
 
     @Suppress("UNCHECKED_CAST")
     return cache.getOrPut(key) { key.invoke(project) } as E
+  }
+
+  override fun clearContext() {
+    cache = SafeCache()
   }
 }

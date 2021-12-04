@@ -36,7 +36,7 @@ interface SafeCache<K : Any, V> {
   }
 }
 
-class RealSafeCache<K : Any, V>(
+internal class RealSafeCache<K : Any, V>(
   delegate: ConcurrentHashMap<K, V> = ConcurrentHashMap(),
   private val lockCache: ConcurrentHashMap<K, Mutex> = ConcurrentHashMap<K, Mutex>()
 ) : SafeCache<K, V> {

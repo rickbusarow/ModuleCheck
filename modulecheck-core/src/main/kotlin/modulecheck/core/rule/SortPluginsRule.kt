@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.parse
@@ -27,7 +27,7 @@ import modulecheck.project.McProject
 
 class SortPluginsRule(
   settings: ModuleCheckSettings
-) : ModuleCheckRule<SortPluginsFinding> {
+) : SortRule<SortPluginsFinding> {
 
   override val id = "SortPlugins"
   override val description =

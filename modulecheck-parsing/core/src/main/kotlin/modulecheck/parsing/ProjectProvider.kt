@@ -21,4 +21,8 @@ import modulecheck.project.McProject
 interface ProjectProvider : HasProjectCache {
 
   fun get(path: String): McProject
+
+  fun getAll(): List<McProject>
+
+  fun clearCaches()
 }
