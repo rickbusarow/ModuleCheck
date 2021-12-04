@@ -20,6 +20,7 @@ import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
@@ -27,6 +28,18 @@ import java.nio.charset.Charset
 abstract class ProjectTest : BaseTest() {
 
   val projectCache: ProjectCache by resets { ProjectCache() }
+
+  val projectProvider: ProjectProvider by resets {
+    object : ProjectProvider {
+
+      override val projectCache: ProjectCache
+        get() = this@ProjectTest.projectCache
+
+      override fun get(path: String): McProject {
+        return projectCache.getValue(path)
+      }
+    }
+  }
 
   fun project(path: String, config: McProjectBuilderScope.() -> Unit = {}): McProject {
 

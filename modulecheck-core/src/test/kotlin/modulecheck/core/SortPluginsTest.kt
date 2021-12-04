@@ -15,38 +15,34 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.writeGroovy
 import modulecheck.project.test.writeKotlin
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class SortPluginsTest : ProjectTest() {
+class SortPluginsTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets { TestSettings(checks = TestChecksSettings(sortPlugins = true)) }
-  val logger by resets { ReportingLogger() }
+  override val settings by resets { TestSettings(checks = TestChecksSettings(sortPlugins = true)) }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `kts out-of-order plugins should be sorted`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -85,11 +81,9 @@ class SortPluginsTest : ProjectTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -143,11 +137,9 @@ class SortPluginsTest : ProjectTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -188,11 +180,9 @@ class SortPluginsTest : ProjectTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {

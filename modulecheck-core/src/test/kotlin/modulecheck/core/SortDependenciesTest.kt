@@ -15,40 +15,36 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.writeGroovy
 import modulecheck.project.test.writeKotlin
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-class SortDependenciesTest : ProjectTest() {
+class SortDependenciesTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
-  val baseSettings by resets {
+  override val settings by resets {
     TestSettings(checks = TestChecksSettings(sortDependencies = true))
   }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets {
     MultiRuleFindingFactory(
-      baseSettings,
-      ruleFactory.create(baseSettings)
+      settings,
+      ruleFactory.create(settings)
     )
   }
 
   @Test
   fun `kts out-of-order dependencies should be sorted`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -122,11 +118,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `kts multi-line comments should move with their declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -180,11 +174,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `kts multi-line kdoc comments should move with their declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -238,11 +230,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `kts preceding comments should move with their declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -292,11 +282,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `kts trailing comments should move with their declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -344,11 +332,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -458,11 +444,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -540,11 +524,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy multi-line comments should move with declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -600,11 +582,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy multi-line javadoc comments should move with declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -660,11 +640,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy preceding comments should move with declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -716,11 +694,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy trailing comments should move with declarations`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -770,11 +746,9 @@ class SortDependenciesTest : ProjectTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = true,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {

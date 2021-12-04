@@ -15,12 +15,15 @@
 
 plugins {
   id("mcbuild")
+  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-runtime"
   dagger = true
 }
+
+val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -31,4 +34,19 @@ dependencies {
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
+
+  testFixturesApi(libs.bundles.hermit)
+
+  testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(project(path = ":modulecheck-project:impl"))
+  testFixturesApi(testFixtures(project(path = ":modulecheck-api")))
+  testFixturesApi(testFixtures(project(path = ":modulecheck-project:api")))
+
+  if (isIdeSync) {
+    compileOnly(project(path = ":modulecheck-internal-testing"))
+    compileOnly(project(path = ":modulecheck-project:impl"))
+    compileOnly(libs.bundles.hermit)
+    compileOnly(libs.bundles.jUnit)
+    compileOnly(libs.bundles.kotest)
+  }
 }

@@ -15,24 +15,20 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.createSafely
+import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class GraphVizReportTest : ProjectTest() {
+internal class GraphVizReportTest : RunnerTest() {
 
-  val baseSettings by resets { TestSettings() }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   fun McProject.graphFile(sourceSet: String = "main"): File {
@@ -48,13 +44,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `graph report should not be created if disabled in settings`() {
 
-    baseSettings.reports.graphs.enabled = false
+    settings.reports.graphs.enabled = false
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -78,13 +72,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `depth report should be created if enabled in settings`() {
 
-    baseSettings.reports.graphs.enabled = true
+    settings.reports.graphs.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -126,13 +118,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `graph should be created for zero-depth source sets if the source set is not empty`() {
 
-    baseSettings.reports.graphs.enabled = true
+    settings.reports.graphs.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -164,13 +154,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `graph should not be created for an existing source set if it has no files`() {
 
-    baseSettings.reports.graphs.enabled = true
+    settings.reports.graphs.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -187,13 +175,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `test source set graph should be test-specific`() {
 
-    baseSettings.reports.graphs.enabled = true
+    settings.reports.graphs.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -286,13 +272,11 @@ internal class GraphVizReportTest : ProjectTest() {
   @Test
   fun `debug source set graph should be debug-specific`() {
 
-    baseSettings.reports.graphs.enabled = true
+    settings.reports.graphs.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")

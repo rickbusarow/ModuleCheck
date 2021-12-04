@@ -15,40 +15,39 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
+import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.project.ConfigurationName
 import modulecheck.project.SourceSet
 import modulecheck.project.SourceSetName
-import modulecheck.project.test.ProjectTest
 import modulecheck.project.test.createSafely
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class DepthReportTest : ProjectTest() {
+internal class DepthReportTest : RunnerTest() {
 
-  val baseSettings by resets {
+  val ruleFactory by resets { ModuleCheckRuleFactory() }
+
+  override val settings by resets {
     TestSettings().apply {
       reports.depths.outputPath = File(testProjectDir, reports.depths.outputPath).path
     }
   }
-  val logger by resets { ReportingLogger() }
   val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
-  val outputFile by resets { File(baseSettings.reports.depths.outputPath) }
+  val outputFile by resets { File(settings.reports.depths.outputPath) }
 
   @Test
   fun `depth report should not be created if disabled in settings`() {
 
-    baseSettings.reports.depths.enabled = false
+    settings.reports.depths.enabled = false
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -72,13 +71,11 @@ internal class DepthReportTest : ProjectTest() {
   @Test
   fun `depth report should be created if enabled in settings`() {
 
-    baseSettings.reports.depths.enabled = true
+    settings.reports.depths.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")
@@ -113,13 +110,11 @@ internal class DepthReportTest : ProjectTest() {
   @Test
   fun `depth report should include zero-depth source sets if they're not empty`() {
 
-    baseSettings.reports.depths.enabled = true
+    settings.reports.depths.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -166,13 +161,11 @@ internal class DepthReportTest : ProjectTest() {
   @Test
   fun `depth report should not include zero-depth source sets if they have no files`() {
 
-    baseSettings.reports.depths.enabled = true
+    settings.reports.depths.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -209,13 +202,11 @@ internal class DepthReportTest : ProjectTest() {
   @Test
   fun `test source set depths should use the main depth of the dependency`() {
 
-    baseSettings.reports.depths.enabled = true
+    settings.reports.depths.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1") {
@@ -258,13 +249,11 @@ internal class DepthReportTest : ProjectTest() {
   @Test
   fun `debug source set depth should be reported`() {
 
-    baseSettings.reports.depths.enabled = true
+    settings.reports.depths.enabled = true
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = findingFactory,
-      logger = logger
+      findingFactory = findingFactory
     )
 
     val lib1 = project(":lib1")

@@ -18,14 +18,13 @@ package modulecheck.core
 import modulecheck.api.finding.Finding
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
-import modulecheck.project.PrintLogger
-import modulecheck.project.test.ProjectTest
+import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class TextReportingTest : ProjectTest() {
+internal class TextReportingTest : RunnerTest() {
 
-  val baseSettings by resets {
+  override val settings by resets {
     TestSettings().apply {
       reports.text.outputPath = File(testProjectDir, reports.text.outputPath).path
     }
@@ -34,22 +33,20 @@ internal class TextReportingTest : ProjectTest() {
   @Test
   fun `text report should not be created if disabled in settings`() {
 
-    baseSettings.reports.text.enabled = false
+    settings.reports.text.enabled = false
 
-    val outputFile = File(baseSettings.reports.text.outputPath)
+    val outputFile = File(settings.reports.text.outputPath)
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = testProjectDir
           )
         )
-      },
-      logger = PrintLogger(),
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           Finding.FindingResult(
@@ -76,22 +73,20 @@ internal class TextReportingTest : ProjectTest() {
   @Test
   fun `text report should be created if enabled in settings`() {
 
-    baseSettings.reports.text.enabled = true
+    settings.reports.text.enabled = true
 
-    val outputFile = File(baseSettings.reports.text.outputPath)
+    val outputFile = File(settings.reports.text.outputPath)
 
-    val runner = ModuleCheckRunner(
+    val runner = runner(
       autoCorrect = false,
-      settings = baseSettings,
-      findingFactory = {
+      findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
             dependentProject = project(":lib1"),
             buildFile = testProjectDir
           )
         )
-      },
-      logger = PrintLogger(),
+      ),
       findingResultFactory = { _, _, _ ->
         listOf(
           Finding.FindingResult(
