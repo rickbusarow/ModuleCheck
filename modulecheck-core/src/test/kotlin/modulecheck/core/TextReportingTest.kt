@@ -20,7 +20,6 @@ import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.project.PrintLogger
 import modulecheck.project.test.ProjectTest
-import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
