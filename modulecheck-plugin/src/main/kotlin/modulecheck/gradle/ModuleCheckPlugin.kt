@@ -67,7 +67,6 @@ class ModuleCheckPlugin : Plugin<Project> {
       name = "moduleCheckGraphs",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
       config = {
-        // settings.checks.depths = true
         settings.reports.graphs.enabled = true
       }
     )

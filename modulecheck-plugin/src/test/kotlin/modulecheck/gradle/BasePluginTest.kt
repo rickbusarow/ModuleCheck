@@ -15,17 +15,17 @@
 
 package modulecheck.gradle
 
+import modulecheck.project.test.ProjectTest
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
-import modulecheck.testing.BaseTest
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
 import kotlin.text.RegexOption.IGNORE_CASE
 
-abstract class BasePluginTest : BaseTest() {
+abstract class BasePluginTest : ProjectTest() {
 
   val kotlinVersion = DEFAULT_KOTLIN_VERSION
   val agpVersion = DEFAULT_AGP_VERSION
