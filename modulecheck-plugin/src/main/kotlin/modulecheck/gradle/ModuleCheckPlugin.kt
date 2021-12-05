@@ -57,11 +57,19 @@ class ModuleCheckPlugin : Plugin<Project> {
     )
     target.registerTasks(
       name = "moduleCheckDepths",
-      findingFactory = SingleRuleFindingFactory(DepthRule())
+      findingFactory = SingleRuleFindingFactory(DepthRule()),
+      config = {
+        settings.checks.depths = true
+        settings.reports.depths.enabled = true
+      }
     )
     target.registerTasks(
       name = "moduleCheckGraphs",
-      findingFactory = SingleRuleFindingFactory(DepthRule())
+      findingFactory = SingleRuleFindingFactory(DepthRule()),
+      config = {
+        // settings.checks.depths = true
+        settings.reports.graphs.enabled = true
+      }
     )
     target.registerTasks(
       name = "moduleCheck",
@@ -71,7 +79,8 @@ class ModuleCheckPlugin : Plugin<Project> {
 
   private fun Project.registerTasks(
     name: String,
-    findingFactory: FindingFactory<*>
+    findingFactory: FindingFactory<*>,
+    config: (() -> Unit)? = null
   ) {
 
     fun TaskProvider<*>.addDependencies() {
@@ -89,8 +98,10 @@ class ModuleCheckPlugin : Plugin<Project> {
     }
 
     tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
+      .also { if (config != null) it.configure { doFirst { config() } } }
       .addDependencies()
     tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
+      .also { if (config != null) it.configure { doFirst { config() } } }
       .addDependencies()
   }
 }
