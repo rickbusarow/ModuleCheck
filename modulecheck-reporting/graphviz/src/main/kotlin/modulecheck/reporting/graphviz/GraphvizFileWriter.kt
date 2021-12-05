@@ -53,7 +53,7 @@ class GraphvizFileWriter @Inject constructor(
             "build",
             "reports",
             "modulecheck",
-            "graph",
+            "graphs",
             "${depth.sourceSetName.value}.dot"
           )
 

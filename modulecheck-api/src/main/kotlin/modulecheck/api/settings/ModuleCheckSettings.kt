@@ -146,7 +146,7 @@ interface ReportsSettings {
     const val TEXT_PATH_DEFAULT = "build/reports/modulecheck/report.txt"
 
     const val DEPTHS_ENABLED_DEFAULT = false
-    const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depth.txt"
+    const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depths.txt"
 
     const val GRAPH_ENABLED_DEFAULT = false
   }

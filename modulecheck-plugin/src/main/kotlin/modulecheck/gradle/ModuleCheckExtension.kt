@@ -244,7 +244,7 @@ open class PerModuleReportExtension(
   /**
    * Path to the root directory of the generated files, relative to the project root.
    *
-   * If this is null, then reports will be created in `$projectDir/build/reports/modulecheck/`.
+   * If this is null, then reports will be created in `$projectDir/build/reports/modulecheck/graphs/`.
    */
   override var outputPath: String? by objects.nullableProperty(outputPath)
 }

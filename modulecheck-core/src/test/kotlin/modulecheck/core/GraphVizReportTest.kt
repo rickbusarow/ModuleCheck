@@ -36,7 +36,7 @@ internal class GraphVizReportTest : RunnerTest() {
       "build",
       "reports",
       "modulecheck",
-      "graph",
+      "graphs",
       "$sourceSet.dot"
     )
   }

@@ -131,7 +131,7 @@ internal fun createProject(
     .also { it.mkdirs() }
 
   val buildFile = File(projectRoot, "build.gradle.kts")
-    .also { it.createNewFile() }
+    .createSafely()
 
   val builder = JvmMcProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
     .also { it.config() }
