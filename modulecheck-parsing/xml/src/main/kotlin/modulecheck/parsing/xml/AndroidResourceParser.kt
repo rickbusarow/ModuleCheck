@@ -54,7 +54,12 @@ class AndroidResourceParser {
       .toSet() + values
 
     return resources
-      .map { "R.${it.prefix}.${it.name}".asDeclarationName() }
+      .flatMap {
+        listOf(
+          "R.${it.prefix}".asDeclarationName(),
+          "R.${it.prefix}.${it.name}".asDeclarationName()
+        )
+      }
       .toSet()
   }
 }

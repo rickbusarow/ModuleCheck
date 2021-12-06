@@ -187,6 +187,114 @@ internal class KotlinFileTest : ProjectTest() {
     )
   }
 
+  @Test
+  fun `api references should not include concatenated matches if the reference is already imported`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import androidx.lifecycle.ViewModel
+
+      class MyViewModel : ViewModel() {
+
+        fun someFunction() {
+          viewEffect(resourceProvider.getString(R.string.playstore_url))
+        }
+      }
+    """
+      )
+
+      file.apiReferences.await() shouldBe listOf("androidx.lifecycle.ViewModel")
+    }
+
+  @Test
+  fun `explicit type of public property in public class should be api reference`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib.Config
+
+      class MyClass {
+
+        val config : Config = ConfigImpl(
+          googleApiKey = getString(R.string.google_places_api_key),
+        )
+      }
+    """
+      )
+
+      file.apiReferences.await() shouldBe listOf("com.lib.Config")
+    }
+
+  @Test
+  fun `explicit fully qualified type of public property in public class should be api reference`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      class MyClass {
+
+        val config : com.lib.Config = ConfigImpl(
+          googleApiKey = getString(R.string.google_places_api_key),
+        )
+      }
+    """
+      )
+
+      file.apiReferences.await() shouldBe listOf("com.lib.Config", "com.test.com.lib.Config")
+    }
+
+  @Test
+  fun `explicit type of public property in internal class should not be api reference`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib.Config
+
+      internal class MyClass {
+
+        val config : Config = ConfigImpl(
+          googleApiKey = getString(R.string.google_places_api_key),
+        )
+      }
+    """
+      )
+
+      file.apiReferences.await() shouldBe listOf()
+    }
+
+  @Test
+  fun `implicit type of public property in public class should be api reference`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib.Config
+
+      class MyClass {
+
+        val config = Config(
+          googleApiKey = getString(R.string.google_places_api_key),
+        )
+      }
+    """
+      )
+
+      file.apiReferences.await() shouldBe listOf("com.lib.Config")
+    }
+
   fun simpleProject() = project(":lib") {
     addSource(
       "com/lib1/Lib1Class.kt",

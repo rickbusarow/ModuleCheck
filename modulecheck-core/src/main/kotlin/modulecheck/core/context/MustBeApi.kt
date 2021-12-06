@@ -15,6 +15,8 @@
 
 package modulecheck.core.context
 
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -25,14 +27,20 @@ import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.psi.internal.file
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
+import modulecheck.utils.any
 import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat
+import modulecheck.utils.flatMapSetConcat
+import modulecheck.utils.lazyDeferred
+import modulecheck.utils.mapAsync
+import kotlin.LazyThreadSafetyMode.NONE
 
 data class MustBeApi(
   private val delegate: Set<InheritedDependencyWithSource>
@@ -63,12 +71,16 @@ data class MustBeApi(
         }
         .filterNot { it.configurationName == ConfigurationName.api }
 
-      val importsFromDependencies = project.importsFromDependencies()
+      val importsFromDependencies = project.referencesFromDependencies()
 
       val directApiProjects = project.projectDependencies[ConfigurationName.api]
         .orEmpty()
         .map { it.project }
         .toSet()
+
+      val directMainDependencies by lazy(NONE) {
+        project.projectDependencies.main().map { it.project }
+      }
 
       val api = mainDependencies
         .asSequence()
@@ -81,7 +93,13 @@ data class MustBeApi(
           // exclude anything which is inherited but already included in local `api` deps
           cpd.project in directApiProjects
         }
-        .filterAsync { it.project.mustBeApiIn(importsFromDependencies, it.isTestFixture) }
+        .filterAsync {
+          it.project.mustBeApiIn(
+            referencesFromDependencies = importsFromDependencies,
+            isTestFixtures = it.isTestFixture,
+            directMainDependencies = directMainDependencies
+          )
+        }
         .map { cpd ->
           val source = project
             .projectDependencies
@@ -103,7 +121,7 @@ data class MustBeApi(
   }
 }
 
-private suspend fun McProject.importsFromDependencies(): Set<String> {
+private suspend fun McProject.referencesFromDependencies(): Set<String> {
 
   val declarationsInProject = declarations()
     .get(SourceSetName.MAIN)
@@ -124,25 +142,56 @@ suspend fun McProject.mustBeApiIn(
   dependentProject: McProject,
   isTestFixtures: Boolean
 ): Boolean {
-  val importsFromDependencies = dependentProject.importsFromDependencies()
-  return mustBeApiIn(importsFromDependencies, isTestFixtures)
+  val referencesFromDependencies = dependentProject.referencesFromDependencies()
+  val directMainDependencies = dependentProject.projectDependencies.main()
+    .map { it.project }
+  return mustBeApiIn(
+    referencesFromDependencies = referencesFromDependencies,
+    isTestFixtures = isTestFixtures,
+    directMainDependencies = directMainDependencies
+  )
 }
 
-suspend fun McProject.mustBeApiIn(
-  importsFromDependencies: Set<String>,
-  isTestFixtures: Boolean
+private suspend fun McProject.mustBeApiIn(
+  referencesFromDependencies: Set<String>,
+  isTestFixtures: Boolean,
+  directMainDependencies: List<McProject>
 ): Boolean {
 
-  val declarations = if (isTestFixtures) {
-    declarations().get(SourceSetName.TEST_FIXTURES)
-  } else {
-    declarations().get(SourceSetName.MAIN)
+  suspend fun McProject.declarations(isTestFixtures: Boolean): Set<String> {
+    return if (isTestFixtures) {
+      declarations().get(SourceSetName.TEST_FIXTURES)
+    } else {
+      declarations().get(SourceSetName.MAIN)
+    }
+      .map { it.fqName }
+      .toSet()
   }
 
-  return declarations
-    .any { declared ->
-      declared.fqName in importsFromDependencies
-    }
+  val declarations = declarations(isTestFixtures)
+
+  val rTypeMatcher = "^R(?:\\.[a-zA-Z0-9_]+)?$".toRegex()
+
+  val (rTypes, nonRTypeReferences) = referencesFromDependencies
+    .partition { rTypeMatcher.matches(it) }
+
+  val apiFromRProperties = nonRTypeReferences
+    .any { ref -> ref in declarations }
+
+  if (apiFromRProperties) return true
+
+  val rTypesFromExisting = lazyDeferred {
+    directMainDependencies
+      .mapAsync { directProject ->
+        directProject.declarations(isTestFixtures = false)
+          .filter { rType -> rTypeMatcher.matches(rType) }
+      }
+      .flatMapSetConcat { it.toSet() }
+  }
+
+  return rTypes.asFlow()
+    .filter { it in declarations }
+    .any { rReference -> rReference in rTypesFromExisting.await() }
 }
 
 data class InheritedDependencyWithSource(
