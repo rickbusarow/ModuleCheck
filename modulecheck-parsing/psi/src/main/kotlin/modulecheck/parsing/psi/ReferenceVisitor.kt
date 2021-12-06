@@ -37,6 +37,8 @@ import org.jetbrains.kotlin.psi.KtReferenceExpression
 import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeReference
+import org.jetbrains.kotlin.psi.psiUtil.containingClass
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.isFunctionalExpression
 
 @Suppress("TooManyFunctions")
@@ -68,9 +70,16 @@ class ReferenceVisitor(
 
   override fun visitProperty(property: KtProperty) {
     super.visitProperty(property)
-    if (!property.isPrivateOrInternal()) {
+    if (!property.isPrivateOrInternal() && property.containingClass()
+        ?.isPrivateOrInternal() != true
+    ) {
 
-      apiReferences += property.parseTypeReferences()
+      val propertyType = property.getChildOfType<KtTypeReference>()
+        ?: property.initializer?.getChildOfType<KtNameReferenceExpression>()
+
+      if (propertyType != null) {
+        apiReferences += propertyType
+      }
     }
   }
 
