@@ -28,7 +28,7 @@ fun File.createSafely(content: String? = null) = apply {
 }
 
 fun File.writeKotlin(
-  // @Language("kotlin")
+  @Language("kotlin")
   content: String
 ) {
   check(extension in listOf("kts", "kt")) {

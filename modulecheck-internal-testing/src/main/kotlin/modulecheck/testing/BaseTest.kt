@@ -104,7 +104,7 @@ abstract class BaseTest : HermitJUnit5() {
   @BeforeEach
   internal fun injectTestInfo(testInfo: TestInfo) {
     this.testInfo = testInfo
-    testProjectDir.delete()
+    testProjectDir.deleteRecursively()
   }
 
   infix fun String.shouldBe(expected: String) {

@@ -30,7 +30,7 @@ class GraphvizFileWriter @Inject constructor(
 
   suspend fun write(depths: List<DepthFinding>) = coroutineScope {
 
-    val rootOrNull = settings.reports.graphs.outputPath?.let { File(it) }
+    val rootOrNull = settings.reports.graphs.outputDir?.let { File(it) }
 
     depths
       .filter {
