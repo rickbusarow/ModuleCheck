@@ -26,7 +26,7 @@ import org.gradle.kotlin.dsl.apply
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.11.4"
+const val VERSION_NAME = "0.11.3"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(
