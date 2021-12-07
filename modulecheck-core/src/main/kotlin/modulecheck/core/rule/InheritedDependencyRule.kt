@@ -63,7 +63,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
         val source = transitive.source
         val inherited = transitive.contributed
 
-        val mustBeApi = inherited.configurationName
+        val mustBeApi = source.configurationName
           .toSourceSetName() == SourceSetName.MAIN && inherited.project
           .mustBeApiIn(project, inherited.isTestFixture)
 

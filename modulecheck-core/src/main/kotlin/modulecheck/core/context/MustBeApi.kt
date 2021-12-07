@@ -27,7 +27,6 @@ import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.psi.internal.file
 import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
