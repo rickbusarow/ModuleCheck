@@ -206,7 +206,7 @@ open class ReportsExtension @Inject constructor(
   override val graphs = PerModuleReportExtension(
     objects = objects,
     enabledDefault = GRAPH_ENABLED_DEFAULT,
-    outputPath = null
+    outputDir = null
   )
 
   /**
@@ -236,7 +236,7 @@ open class ReportExtension(
 open class PerModuleReportExtension(
   objects: ObjectFactory,
   enabledDefault: Boolean,
-  outputPath: String?
+  outputDir: String?
 ) : PerModuleReportSettings {
 
   override var enabled: Boolean by objects.property(enabledDefault)
@@ -246,5 +246,5 @@ open class PerModuleReportExtension(
    *
    * If this is null, then reports will be created in `$projectDir/build/reports/modulecheck/graphs/`.
    */
-  override var outputPath: String? by objects.nullableProperty(outputPath)
+  override var outputDir: String? by objects.nullableProperty(outputDir)
 }

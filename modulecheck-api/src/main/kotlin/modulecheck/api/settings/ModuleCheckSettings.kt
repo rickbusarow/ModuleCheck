@@ -159,5 +159,5 @@ interface ReportSettings {
 
 interface PerModuleReportSettings {
   var enabled: Boolean
-  var outputPath: String?
+  var outputDir: String?
 }
