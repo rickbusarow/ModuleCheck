@@ -33,7 +33,7 @@ groovy = "3.0.9"
 hermit = "0.9.5"
 jUnit = "5.8.2"
 knit = "0.3.0"
-kotest = "5.0.1"
+kotest = "5.0.2"
 kotlin = "1.5.32"
 
 kotlinx-atomicfu = "0.16.3"
