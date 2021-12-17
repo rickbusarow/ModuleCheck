@@ -58,6 +58,10 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
           .contains((it.contributed.project.path to it.contributed.isTestFixture))
       }
       .distinct()
+      // Projects shouldn't inherit themselves.  This false-positive can happen if a test
+      // fixture/utilities module depends upon a module, and that module uses the test module in
+      // testImplementation.
+      .filterNot { transitive -> transitive.contributed.project == project }
       .mapAsync { transitive ->
 
         val source = transitive.source

@@ -19,6 +19,7 @@ import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSetName.Companion
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
@@ -221,6 +222,81 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib2"))
+        }
+        """
+  }
+
+  @Test
+  fun `not inherited when target and subject are the same`() {
+
+    val runner = runner(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.lib2.Lib2Class
+
+        abstract class Lib1Class : Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        abstract class Lib2Class
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2ClassTest.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz : Lib2Class = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+    lib1.addDependency(ConfigurationName.api, lib2)
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
         }
         """
   }
