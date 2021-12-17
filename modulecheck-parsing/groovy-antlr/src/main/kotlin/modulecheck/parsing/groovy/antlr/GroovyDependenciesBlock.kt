@@ -18,28 +18,15 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.gradle.DependenciesBlock
 
 class GroovyDependenciesBlock(
-  fullText: String,
-  contentString: String,
+  override val fullText: String,
+  override val lambdaContent: String,
   suppressAll: List<String>
-) : DependenciesBlock(
-  fullText = fullText,
-  contentString = contentString,
-  suppressAll = suppressAll
-) {
+) : DependenciesBlock(suppressAll = suppressAll) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,
     parsedString: String
   ): Boolean {
     return originalLine.contains(parsedString)
-  }
-
-  override fun toString(): String {
-    return "GroovyDependenciesBlock(\n" +
-      "\tallModuleDeclarations=${
-      allModuleDeclarations.toList()
-        .joinToString(",\n\t\t", "\n\t\t")
-      },\n" +
-      ")"
   }
 }

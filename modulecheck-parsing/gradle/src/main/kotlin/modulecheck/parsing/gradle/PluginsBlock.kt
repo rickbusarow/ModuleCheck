@@ -15,16 +15,15 @@
 
 package modulecheck.parsing.gradle
 
-abstract class PluginsBlock(
-  val fullText: String,
-  var contentString: String
-) {
+import java.io.File
 
-  protected val originalLines = contentString.lines().toMutableList()
+abstract class PluginsBlock : Block<PluginDeclaration> {
+
+  protected val originalLines by lazy { lambdaContent.lines().toMutableList() }
 
   private val _allDeclarations = mutableListOf<PluginDeclaration>()
 
-  val allDeclarations: List<PluginDeclaration>
+  override val settings: List<PluginDeclaration>
     get() = _allDeclarations
 
   protected val allBlockStatements = mutableListOf<String>()
@@ -49,5 +48,14 @@ abstract class PluginsBlock(
     }
 
     return originalStringLines.joinToString("\n")
+  }
+}
+
+interface PluginsBlockProvider {
+
+  fun get(): PluginsBlock?
+
+  fun interface Factory {
+    fun create(buildFile: File): PluginsBlockProvider
   }
 }

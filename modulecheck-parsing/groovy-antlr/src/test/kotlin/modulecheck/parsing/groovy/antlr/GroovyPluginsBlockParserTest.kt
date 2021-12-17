@@ -34,7 +34,7 @@ internal class GroovyPluginsBlockParserTest {
         """.trimIndent()
       )!!
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment"""
@@ -60,7 +60,7 @@ internal class GroovyPluginsBlockParserTest {
         """.trimIndent()
       )!!
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'"""

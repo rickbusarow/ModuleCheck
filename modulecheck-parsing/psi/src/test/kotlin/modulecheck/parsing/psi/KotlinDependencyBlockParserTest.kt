@@ -41,7 +41,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
         configName = ConfigurationName.api,
         declarationText = """api("com.foo:bar:1.2.3.4")""",
@@ -64,7 +64,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = """project(path = ":core:jvm")""",
@@ -119,7 +119,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = """project(":core:android")""",
@@ -162,7 +162,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = """project(":core:android")""",
@@ -201,7 +201,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = """project(":core:jvm")""",
@@ -223,7 +223,7 @@ internal class KotlinDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = TypeSafeRef("core.jvm"),
         moduleAccess = "projects.core.jvm",
@@ -546,7 +546,7 @@ internal class KotlinDependencyBlockParserTest {
         |""".trimMargin()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       UnknownDependencyDeclaration(
         argument = "libs.ktlint",
         configName = ConfigurationName.api,

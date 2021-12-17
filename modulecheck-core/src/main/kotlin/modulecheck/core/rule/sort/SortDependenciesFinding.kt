@@ -65,7 +65,7 @@ internal fun sortedDependenciesFileText(
 ): String {
   val sorted = block.sortedDeclarations(comparator)
 
-  val trimmedContent = block.contentString
+  val trimmedContent = block.lambdaContent
     .trimStart('\n')
     .trimEnd()
 
@@ -84,7 +84,7 @@ internal fun sortedDependenciesFileText(
 internal fun DependenciesBlock.sortedDeclarations(
   comparator: Comparator<String>
 ): String {
-  return allDeclarations
+  return settings
     .grouped(comparator)
     .joinToString("\n\n") { declarations ->
 

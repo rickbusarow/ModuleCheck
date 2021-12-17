@@ -13,20 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi
+package modulecheck.parsing.gradle
 
-import modulecheck.parsing.gradle.DependenciesBlock
+sealed interface AgpBlock : Block<Assignment> {
 
-class KotlinDependenciesBlock(
-  override val fullText: String,
-  override val lambdaContent: String,
-  suppressAll: List<String>
-) : DependenciesBlock(suppressAll = suppressAll) {
+  data class AndroidBlock(
+    override val fullText: String,
+    override val lambdaContent: String,
+    override val settings: List<Assignment>
+  ) : AgpBlock
 
-  override fun originalLineMatchesParsed(
-    originalLine: String,
-    parsedString: String
-  ): Boolean {
-    return originalLine.contains(parsedString)
-  }
+  data class BuildFeaturesBlock(
+    override val fullText: String,
+    override val lambdaContent: String,
+    override val settings: List<Assignment>
+  ) : AgpBlock
 }
+
+data class Assignment(
+  val fullText: String,
+  val propertyFullName: String,
+  val value: String,
+  val assignmentText: String
+)

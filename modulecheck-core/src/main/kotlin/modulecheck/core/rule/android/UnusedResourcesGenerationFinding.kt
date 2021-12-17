@@ -19,7 +19,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
-import modulecheck.parsing.gradle.Block
+import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.project.McProject
 import modulecheck.utils.indent
 import modulecheck.utils.minimumIndent
@@ -122,7 +122,7 @@ data class UnusedResourcesGenerationFinding(
       ?: (oldText.suffixIfNot("\n") + "\n$androidBlock")
   }
 
-  private fun Block.withAddedStatement(newStatement: String): String {
+  private fun AgpBlock.withAddedStatement(newStatement: String): String {
 
     val indent = lambdaContent.minimumIndent()
 

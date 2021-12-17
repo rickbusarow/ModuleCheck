@@ -18,22 +18,13 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.gradle.PluginsBlock
 
 class GroovyPluginsBlock(
-  fullText: String,
-  contentString: String
-) : PluginsBlock(fullText, contentString) {
+  override val fullText: String,
+  override val lambdaContent: String
+) : PluginsBlock() {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->
 
       originalLine.trimStart().contains(parsedString)
     }
-
-  override fun toString(): String {
-    return "GroovyPluginsBlock(\n" +
-      "\tallDeclarations=${
-      allDeclarations.toList()
-        .joinToString(",\n\t\t", "\n\t\t")
-      },\n" +
-      ")"
-  }
 }

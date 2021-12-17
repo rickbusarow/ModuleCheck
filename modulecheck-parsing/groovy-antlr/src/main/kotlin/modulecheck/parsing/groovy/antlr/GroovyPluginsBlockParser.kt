@@ -44,7 +44,7 @@ class GroovyPluginsBlockParser @Inject constructor() {
 
           val pluginsBlock = GroovyPluginsBlock(
             fullText = statement.originalText(),
-            contentString = blockBody
+            lambdaContent = blockBody
           )
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {

@@ -159,7 +159,7 @@ class GroovyDependencyBlockParser @Inject constructor() {
 
           val dependenciesBlock = GroovyDependenciesBlock(
             fullText = statement.originalText(),
-            contentString = blockBody,
+            lambdaContent = blockBody,
             suppressAll = blockSuppressed
           )
 

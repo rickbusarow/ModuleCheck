@@ -18,9 +18,9 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.gradle.PluginsBlock
 
 class KotlinPluginsBlock(
-  fullText: String,
-  contentString: String
-) : PluginsBlock(fullText, contentString) {
+  override val fullText: String,
+  override val lambdaContent: String
+) : PluginsBlock() {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

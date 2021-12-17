@@ -69,13 +69,13 @@ data class OverShotDependencyFinding(
         .prefixIfNot("\n")
     )
 
-    val newBlock = block.contentString.replaceFirst(
+    val newBlock = block.lambdaContent.replaceFirst(
       oldValue = oldStatement,
       newValue = newStatement
     )
 
     val fileText = buildFile.readText()
-      .replace(block.contentString, newBlock)
+      .replace(block.lambdaContent, newBlock)
 
     buildFile.writeText(fileText)
 
@@ -85,13 +85,13 @@ data class OverShotDependencyFinding(
     return true
   }
 
-  private fun matchingDeclaration(block: DependenciesBlock) = block.allDeclarations
+  private fun matchingDeclaration(block: DependenciesBlock) = block.settings
     .filterIsInstance<ModuleDependencyDeclaration>()
     .maxByOrNull { declaration -> declaration.configName == configurationName }
-    ?: block.allDeclarations
+    ?: block.settings
       .filterNot { it is ModuleDependencyDeclaration }
       .maxByOrNull { declaration -> declaration.configName == configurationName }
-    ?: block.allDeclarations
+    ?: block.settings
       .lastOrNull()
 
   override fun fromStringOrEmpty(): String = ""

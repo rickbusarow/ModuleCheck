@@ -60,7 +60,7 @@ class KotlinDependencyBlockParser @Inject constructor() {
 
         val block = KotlinDependenciesBlock(
           fullText = fullText,
-          contentString = blockWhiteSpace + contentString,
+          lambdaContent = blockWhiteSpace + contentString,
           suppressAll = blockSuppressed
         )
 
