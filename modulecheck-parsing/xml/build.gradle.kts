@@ -27,6 +27,7 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:core"))
+  api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())
 

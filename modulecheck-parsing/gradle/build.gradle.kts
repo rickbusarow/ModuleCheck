@@ -18,7 +18,7 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-core"
+  artifactId = "modulecheck-parsing-gradle"
   anvil = true
 }
 
@@ -29,7 +29,6 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())

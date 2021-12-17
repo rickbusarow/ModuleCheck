@@ -30,10 +30,9 @@ dependencies {
   api(libs.semVer)
 
   api(project(path = ":modulecheck-dagger"))
+  api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
-  api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
-  api(project(path = ":modulecheck-parsing:xml"))
 
   compileOnly(gradleApi())
 
