@@ -27,3 +27,7 @@ fun File.child(vararg childPath: String): File {
 fun Path.child(vararg childPath: String): File {
   return File(toFile(), childPath.joinToString(File.separator))
 }
+
+fun File.minimumIndent(): String {
+  return readText().minimumIndent()
+}

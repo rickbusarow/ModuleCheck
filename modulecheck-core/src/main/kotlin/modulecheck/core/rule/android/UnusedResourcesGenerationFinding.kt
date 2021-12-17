@@ -19,9 +19,11 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
-import modulecheck.core.kotlinBuildFileOrNull
-import modulecheck.parsing.psi.AndroidBuildFeaturesVisitor
+import modulecheck.parsing.gradle.Block
 import modulecheck.project.McProject
+import modulecheck.utils.indent
+import modulecheck.utils.minimumIndent
+import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class UnusedResourcesGenerationFinding(
@@ -38,10 +40,11 @@ data class UnusedResourcesGenerationFinding(
   override val dependencyIdentifier = ""
 
   override val statementTextOrNull: String? by lazy {
-    val buildFile = kotlinBuildFileOrNull() ?: return@lazy null
 
-    AndroidBuildFeaturesVisitor().find(buildFile, "androidResources")
-      ?.statementText
+    dependentProject.buildFileParser.androidSettings()
+      .assignments
+      .firstOrNull { it.propertyFullName == "androidResources" }
+      ?.assignmentText
   }
 
   override val positionOrNull: Position? by lazy {
@@ -53,16 +56,80 @@ data class UnusedResourcesGenerationFinding(
   }
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val ktFile = kotlinBuildFileOrNull() ?: return false
 
-    val oldBlock = statementTextOrNull ?: return false
+    val settings = dependentProject.buildFileParser.androidSettings()
 
-    val newBlock = oldBlock.replace("true", "false")
+    val newText = settings.assignments
+      .filter { it.propertyFullName == "androidResources" && it.value == "true" }
+      .takeIf { it.isNotEmpty() }
+      ?.fold(buildFile.readText()) { oldText, assignment ->
 
-    val oldText = ktFile.text
+        val newAssignmentText = assignment.assignmentText.replace(assignment.value, "false")
 
-    buildFile.writeText(oldText.replace(oldBlock, newBlock))
+        val newFullText = assignment.fullText
+          .replace(assignment.assignmentText, newAssignmentText)
+
+        oldText.replace(assignment.fullText, newFullText)
+      }
+      ?: settings.buildFeaturesBlocks.firstOrNull()
+        ?.withAddedStatement("androidResources = false")
+      ?: settings.androidBlocks.firstOrNull()
+        ?.withAddedStatement("buildFeatures.androidResources = false")
+      ?: newAndroidBlock()
+
+    buildFile.writeText(newText)
 
     return true
+  }
+
+  private fun newAndroidBlock(): String {
+
+    val indent = buildFile.minimumIndent()
+
+    val androidBlock = buildString {
+      appendLine("android {")
+      indent(indent) {
+        appendLine("buildFeatures {")
+
+        indent(indent) {
+          appendLine("androidResources = false")
+        }
+        appendLine('}')
+      }
+      appendLine('}')
+    }
+
+    val oldText = buildFile.readText()
+
+    return dependentProject.buildFileParser
+      .pluginsBlock()
+      ?.fullText
+      ?.let { oldPlugins ->
+
+        val new = "$oldPlugins\n\n$androidBlock"
+
+        oldText.replace(oldPlugins, new)
+      }
+      ?: dependentProject.buildFileParser
+        .dependenciesBlocks()
+        .firstOrNull()
+        ?.fullText
+        ?.let { oldDependencies ->
+
+          val new = "$androidBlock\n$oldDependencies"
+          oldText.replace(oldDependencies, new)
+        }
+      ?: (oldText.suffixIfNot("\n") + "\n$androidBlock")
+  }
+
+  private fun Block.withAddedStatement(newStatement: String): String {
+
+    val indent = lambdaContent.minimumIndent()
+
+    val newContent = lambdaContent.plus("\n$indent$newStatement")
+
+    val newBlockText = fullText.replace(lambdaContent, newContent)
+
+    return buildFile.readText().replace(fullText, newBlockText)
   }
 }

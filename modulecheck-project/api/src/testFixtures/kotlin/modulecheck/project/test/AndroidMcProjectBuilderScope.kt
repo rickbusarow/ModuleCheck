@@ -21,6 +21,16 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
+import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
+import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
+import modulecheck.parsing.psi.KotlinAndroidGradleParser
+import modulecheck.parsing.psi.KotlinDependencyBlockParser
+import modulecheck.parsing.psi.KotlinPluginsBlockParser
+import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
+import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
+import modulecheck.parsing.wiring.RealPluginsBlockProvider
+import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
@@ -131,6 +141,31 @@ internal fun createAndroidProject(
   return builder.toProject()
 }
 
+fun buildFileParser(buildFile: File): BuildFileParser {
+
+  return BuildFileParser(
+    {
+      RealDependenciesBlocksProvider(
+        groovyParser = GroovyDependencyBlockParser(),
+        kotlinParser = KotlinDependencyBlockParser(), buildFile = buildFile
+      )
+    },
+    {
+      RealPluginsBlockProvider(
+        groovyParser = GroovyPluginsBlockParser(),
+        kotlinParser = KotlinPluginsBlockParser(), buildFile = buildFile
+      )
+    },
+    {
+      RealAndroidGradleSettingsProvider(
+        groovyParser = GroovyAndroidGradleParser(),
+        kotlinParser = KotlinAndroidGradleParser(), buildFile = buildFile
+      )
+    },
+    buildFile
+  )
+}
+
 fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
 
   populateConfigs()
@@ -147,6 +182,7 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     anvilGradlePlugin = anvilGradlePlugin,
     androidResourcesEnabled = androidResourcesEnabled,
     viewBindingEnabled = viewBindingEnabled,
+    buildFileParser = buildFileParser(buildFile),
     androidPackageOrNull = androidPackage,
     manifests = manifests,
     logger = PrintLogger(),

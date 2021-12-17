@@ -41,10 +41,10 @@ data class InheritedDependencyFinding(
 
   override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
     source.project
-      .statementOrNullIn(buildFile, source.configurationName)
+      .statementOrNullIn(dependentProject, source.configurationName)
   }
   override val positionOrNull: Position? by lazy {
-    source.project.positionIn(buildFile, source.configurationName)
+    source.project.positionIn(dependentProject, source.configurationName)
   }
 
   override fun fromStringOrEmpty(): String {

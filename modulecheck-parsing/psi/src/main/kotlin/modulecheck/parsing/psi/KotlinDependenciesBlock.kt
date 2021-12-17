@@ -18,9 +18,14 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.gradle.DependenciesBlock
 
 class KotlinDependenciesBlock(
+  fullText: String,
   contentString: String,
   suppressAll: List<String>
-) : DependenciesBlock(contentString, suppressAll) {
+) : DependenciesBlock(
+  fullText = fullText,
+  contentString = contentString,
+  suppressAll = suppressAll
+) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,

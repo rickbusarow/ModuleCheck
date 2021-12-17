@@ -18,18 +18,54 @@ package modulecheck.parsing.psi
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
-fun everythingPrinter() = object : KtTreeVisitorVoid() {
+internal fun everythingPrinter() = object : KtTreeVisitorVoid() {
+
+  private val parentNameMap = mutableMapOf<PsiElement, String>()
+
   override fun visitElement(element: PsiElement) {
 
-    val thisName = element::class.java.simpleName
-    val parentName = element.parent?.let { it::class.java.simpleName }
+    val thisName = element::class.java.simpleName // + element.extendedTypes()
+    val parentName = element.parentName()
 
     println(
-      """ ******************************** -- $thisName  ${parentName?.let { "-- parent: $parentName" } ?: ""}
+      """ ******************************** -- $thisName  -- parent: $parentName
       |${element.text}
       |_________________________________________________________________________________
     """.trimMargin()
     )
     super.visitElement(element)
   }
+
+  private fun PsiElement.parentName() = parent?.let { parent ->
+
+    parentNameMap.getOrPut(parent) {
+      val typeCount = parentNameMap.keys.count { it::class == parent::class }
+
+      val simpleName = parent::class.java.simpleName
+
+      val start = if (typeCount == 0) {
+        simpleName
+      } else {
+        "$simpleName (${typeCount + 1})"
+      }
+
+      start // + parent.extendedTypes()
+    }
+  }
+
+  @Suppress("UnusedPrivateMember")
+  private fun PsiElement.extendedTypes(): String {
+    return this::class.supertypes
+      .ifEmpty { return "" }
+      .joinToString(prefix = " [ ", postfix = " ] ") { kType ->
+        kType.toString()
+          .replace("""org\.jetbrains[a-zA-Z\\.]*\.psi\.(?:stubs\.)?""".toRegex(), "")
+          .replace("org.jetbrains.kotlin.com.intellij.navigation.", "")
+          .replace("impl.source.tree.", "")
+      }
+  }
+}
+
+internal fun PsiElement.printEverything() {
+  accept(everythingPrinter())
 }

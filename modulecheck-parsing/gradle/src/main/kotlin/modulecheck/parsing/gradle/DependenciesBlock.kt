@@ -19,6 +19,7 @@ import modulecheck.parsing.gradle.ModuleRef.StringRef
 import java.io.File
 
 abstract class DependenciesBlock(
+  val fullText: String,
   var contentString: String,
   val suppressAll: List<String>
 ) {

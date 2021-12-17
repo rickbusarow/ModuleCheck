@@ -18,6 +18,8 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ModuleRef
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.nameSafe
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
@@ -25,79 +27,60 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
-import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
-import org.jetbrains.kotlin.psi.callExpressionRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
-import org.jetbrains.kotlin.psi.psiUtil.parents
+import javax.inject.Inject
 
-class KotlinDependencyBlockParser {
+class KotlinDependencyBlockParser @Inject constructor() {
 
   @Suppress("ReturnCount")
   fun parse(file: KtFile): List<KotlinDependenciesBlock> {
-    var blockWhiteSpace: String? = null
 
-    val blocks = mutableListOf<KotlinDependenciesBlock>()
+    val blocks = file.getChildrenOfTypeRecursive<KtCallExpression>()
+      .filter { it.nameSafe() == "dependencies" }
+      .filterNot { it.inBuildscript() }
+      .mapNotNull { fullBlock ->
 
-    fun blockVisitor(
-      blockSuppressed: List<String>
-    ) = blockExpressionRecursiveVisitor { blockExpression ->
-
-      val block = KotlinDependenciesBlock(
-        contentString = (blockWhiteSpace ?: "") + blockExpression.text,
-        suppressAll = blockSuppressed
-      )
-
-      blockExpression
-        .children
-        .forEach { element ->
-
-          when (element) {
-            is KtAnnotatedExpression -> {
-              val suppressed = element.suppressedNames()
-
-              element.getChildOfType<KtCallExpression>()?.parseStatements(block, suppressed)
-            }
-            is KtCallExpression -> {
-              element.parseStatements(block, listOf())
-            }
-          }
-        }
-
-      blocks.add(block)
-    }
-
-    val callVisitor = callExpressionRecursiveVisitor { expression ->
-
-      if (expression.getChildOfType<KtNameReferenceExpression>()?.text == "dependencies") {
-
-        val blockSuppressed = (expression.parent as? KtAnnotatedExpression)
+        val blockSuppressed = (fullBlock.parent as? KtAnnotatedExpression)
           ?.suppressedNames()
           .orEmpty()
 
-        // recursively look for an enclosing KtCallExpression parent (`buildscript { ... }`)
-        // then walk down to find its name reference (`buildscript`)
-        val parentExpressionName = expression.parents
-          .filterIsInstance<KtCallExpression>()
-          .firstOrNull()
-          ?.getChildOfType<KtNameReferenceExpression>()
-          ?.text
+        val fullText = fullBlock.text
 
-        // skip the dependencies block inside buildscript
-        if (parentExpressionName == "buildscript") {
-          return@callExpressionRecursiveVisitor
-        }
+        val contentBlock = fullBlock.findDescendantOfType<KtBlockExpression>()
+          ?: return@mapNotNull null
 
-        expression.findDescendantOfType<KtBlockExpression>()?.let {
-          blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
-          blockVisitor(blockSuppressed).visitBlockExpression(it)
-        }
+        val contentString = contentBlock.text
+
+        val blockWhiteSpace = (contentBlock.prevSibling as? PsiWhiteSpace)?.text
+          ?.trimStart('\n', '\r')
+          ?: ""
+
+        val block = KotlinDependenciesBlock(
+          fullText = fullText,
+          contentString = blockWhiteSpace + contentString,
+          suppressAll = blockSuppressed
+        )
+
+        contentBlock.children
+          .forEach { element ->
+
+            when (element) {
+              is KtAnnotatedExpression -> {
+                val suppressed = element.suppressedNames()
+
+                element.getChildOfType<KtCallExpression>()?.parseStatements(block, suppressed)
+              }
+              is KtCallExpression -> {
+                element.parseStatements(block, listOf())
+              }
+            }
+          }
+
+        block
       }
-    }
-
-    file.accept(callVisitor)
 
     return blocks
   }

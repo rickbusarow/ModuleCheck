@@ -24,3 +24,47 @@ fun String.decapitalize(
 fun String.capitalize(
   locale: Locale = Locale.US
 ) = replaceFirstChar { it.uppercase(locale) }
+
+fun String.minimumIndent(
+  absoluteMinimum: String = "  "
+): String {
+
+  if (contains("\t")) return "\t"
+
+  return lines()
+    .map { it.indentWidth() }
+    .filter { it > 0 }
+    .minOrNull()
+    ?.let { " ".repeat(it) }
+    ?: absoluteMinimum
+}
+
+private fun String.indentWidth(): Int =
+  indexOfFirst { !it.isWhitespace() }.let { if (it == -1) length else it }
+
+class IndentScope(private val indent: String, private val stringBuilder: StringBuilder) {
+
+  fun append(str: String) {
+    stringBuilder.append(indent + str)
+  }
+
+  fun appendLine(str: String) {
+    stringBuilder.appendLine(indent + str)
+  }
+
+  fun append(c: Char) {
+    stringBuilder.append(indent + c)
+  }
+
+  fun appendLine(c: Char) {
+    stringBuilder.appendLine(indent + c)
+  }
+
+  fun indent(indent: String, action: IndentScope.() -> Unit) {
+    IndentScope(this.indent + indent, stringBuilder).action()
+  }
+}
+
+fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
+  IndentScope(indent, this).action()
+}

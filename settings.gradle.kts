@@ -78,6 +78,7 @@ include(
   ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",
+  ":modulecheck-parsing:wiring",
   ":modulecheck-parsing:xml",
   ":modulecheck-plugin",
   ":modulecheck-project:api",

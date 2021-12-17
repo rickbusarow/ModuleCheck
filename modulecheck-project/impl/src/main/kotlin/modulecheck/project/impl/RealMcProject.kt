@@ -20,6 +20,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.psi.asDeclarationName
+import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.Logger
 import modulecheck.project.McProject
@@ -40,6 +41,7 @@ class RealMcProject(
   override val sourceSets: SourceSets,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
+  override val buildFileParser: BuildFileParser,
   override val logger: Logger,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>

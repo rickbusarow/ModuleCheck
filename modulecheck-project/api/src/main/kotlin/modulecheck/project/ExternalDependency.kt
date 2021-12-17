@@ -21,8 +21,7 @@ data class ExternalDependency(
   override val configurationName: ConfigurationName,
   val group: String?,
   val moduleName: String?,
-  val version: String?,
-  val statementTextLazy: Lazy<String?>
+  val version: String?
 ) : HasConfig {
   override val name = "${group ?: ""}:${moduleName ?: ""}"
   val nameWithVersion = "${group ?: ""}:${moduleName ?: ""}:${version ?: ""}"

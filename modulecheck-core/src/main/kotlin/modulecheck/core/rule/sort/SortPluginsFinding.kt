@@ -18,8 +18,6 @@ package modulecheck.core.rule.sort
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
-import modulecheck.core.parse
-import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.parsing.gradle.PluginsBlock
 import modulecheck.project.McProject
@@ -43,7 +41,8 @@ class SortPluginsFinding(
   override val positionOrNull: Position? get() = null
 
   override fun fix(): Boolean = synchronized(buildFile) {
-    val block = PluginBlockParser.parse(buildFile) ?: return false
+    val block = dependentProject.buildFileParser
+      .pluginsBlock() ?: return false
 
     var fileText = buildFile.readText()
 

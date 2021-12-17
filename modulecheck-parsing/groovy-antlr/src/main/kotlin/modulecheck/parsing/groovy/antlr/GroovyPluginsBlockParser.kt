@@ -15,27 +15,20 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import groovyjarjarantlr4.v4.runtime.CharStreams
-import groovyjarjarantlr4.v4.runtime.CommonTokenStream
-import org.apache.groovy.parser.antlr4.GroovyLangLexer
-import org.apache.groovy.parser.antlr4.GroovyLangParser
-import org.apache.groovy.parser.antlr4.GroovyParser
+import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import javax.inject.Inject
 
-class GroovyPluginsBlockParser {
+class GroovyPluginsBlockParser @Inject constructor() {
 
-  fun parse(file: String): GroovyPluginsBlock? {
-
-    val stream = CharStreams.fromString(file)
-
-    val lexer = GroovyLangLexer(stream)
-    val tokens = CommonTokenStream(lexer)
+  fun parse(file: String): GroovyPluginsBlock? = parse(file) {
 
     var block: GroovyPluginsBlock? = null
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
 
-      override fun visitScriptStatement(ctx: GroovyParser.ScriptStatementContext?) {
+      override fun visitScriptStatement(ctx: ScriptStatementContext?) {
         super.visitScriptStatement(ctx)
 
         val statement = ctx?.statement()
@@ -49,15 +42,18 @@ class GroovyPluginsBlockParser {
             ?.removePrefix("\n")
             ?: return
 
-          val pluginsBlock = GroovyPluginsBlock(blockBody)
+          val pluginsBlock = GroovyPluginsBlock(
+            fullText = statement.originalText(),
+            contentString = blockBody
+          )
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
-            override fun visitBlockStatement(ctx: GroovyParser.BlockStatementContext) {
+            override fun visitBlockStatement(ctx: BlockStatementContext) {
               super.visitBlockStatement(ctx)
 
               pluginsBlock.addStatement(
-                parsedString = ctx.originalText(stream)
+                parsedString = ctx.originalText()
               )
             }
           }
@@ -69,9 +65,7 @@ class GroovyPluginsBlockParser {
       }
     }
 
-    GroovyLangParser(tokens)
-      .compilationUnit()
-      .accept(visitor)
+    parser.accept(visitor)
 
     return block
   }

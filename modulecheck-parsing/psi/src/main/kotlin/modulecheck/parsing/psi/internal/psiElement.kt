@@ -23,15 +23,19 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtPureElement
+import org.jetbrains.kotlin.psi.KtScriptInitializer
 import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeArgumentList
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import java.io.File
@@ -223,4 +227,36 @@ suspend fun PsiElement.fqNameOrNull(
     ?.let { return it }
 
   return null
+}
+
+fun KtCallExpression.nameSafe(): String? {
+  return getChildOfType<KtNameReferenceExpression>()?.text
+}
+
+fun KtBlockExpression.nameSafe(): String? {
+
+  val call: KtCallExpression? = getChildOfType<KtScriptInitializer>()
+    ?.getChildOfType()
+    ?: getChildOfType()
+
+  call?.getChildOfType<KtNameReferenceExpression>()
+    ?.text
+    ?.let { simpleName -> return simpleName }
+
+  val dotQualified: KtDotQualifiedExpression? = getChildOfType<KtScriptInitializer>()
+    ?.getChildOfType()
+    ?: getChildOfType()
+
+  dotQualified?.let { dot ->
+
+    val sel = dot.selectorExpression
+      ?.getChildOfType<KtNameReferenceExpression>()
+      ?.text
+
+    return "${dot.receiverExpression.text}.$sel"
+  }
+
+  return getChildOfType<KtBlockExpression>()
+    ?.getChildOfType<KtDotQualifiedExpression>()
+    ?.text
 }

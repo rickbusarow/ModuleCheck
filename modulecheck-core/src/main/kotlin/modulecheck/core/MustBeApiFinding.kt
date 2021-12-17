@@ -46,7 +46,7 @@ data class MustBeApiFinding(
   override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
     super<ProjectDependencyFinding>.declarationOrNull
       ?: source?.project
-        ?.statementOrNullIn(buildFile, configurationName)
+        ?.statementOrNullIn(dependentProject, configurationName)
   }
 
   override fun fromStringOrEmpty(): String {

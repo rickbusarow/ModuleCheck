@@ -47,6 +47,7 @@ dependencies {
   testFixturesApi(libs.bundles.hermit)
 
   testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(project(path = ":modulecheck-parsing:wiring"))
   testFixturesApi(project(path = ":modulecheck-project:impl"))
 
   if (isIdeSync) {

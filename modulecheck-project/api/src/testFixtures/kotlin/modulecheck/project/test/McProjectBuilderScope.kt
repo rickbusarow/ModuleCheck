@@ -188,6 +188,7 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
     sourceSets = SourceSets(sourceSets),
     projectCache = projectCache,
     anvilGradlePlugin = anvilGradlePlugin,
+    buildFileParser = buildFileParser(buildFile),
     logger = PrintLogger(),
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }

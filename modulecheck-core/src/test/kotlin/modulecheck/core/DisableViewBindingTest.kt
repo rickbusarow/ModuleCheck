@@ -346,6 +346,144 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
+  fun `unused ViewBinding without buildFeatures block should be fixed`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          mindSdk(21)
+        }
+        """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        mindSdk(21)
+        buildFeatures.viewBinding = false
+      }"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+              :lib1
+                     dependency    name                  source    build file
+                  ✔                disableViewBinding              /lib1/build.gradle.kts:
+
+          ModuleCheck found 1 issue
+          """
+  }
+
+  @Test
+  fun `unused ViewBinding without android block should add android block under existing plugins block`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+        """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures {
+          viewBinding = false
+        }
+      }"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+              :lib1
+                     dependency    name                  source    build file
+                  ✔                disableViewBinding              /lib1/build.gradle.kts:
+
+          ModuleCheck found 1 issue
+          """
+  }
+
+  @Test
+  fun `unused ViewBinding without android or plugins block should add android block above dependencies block`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        apply(plugin = "com.android.library")
+        apply(plugin = "org.jetbrains.kotlin-android")
+
+        dependencies {
+        }
+        """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      apply(plugin = "com.android.library")
+      apply(plugin = "org.jetbrains.kotlin-android")
+
+      android {
+        buildFeatures {
+          viewBinding = false
+        }
+      }
+
+      dependencies {
+      }
+      """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+              :lib1
+                     dependency    name                  source    build file
+                  ✔                disableViewBinding              /lib1/build.gradle.kts:
+
+          ModuleCheck found 1 issue
+          """
+  }
+
+  @Test
   fun `unused ViewBinding when fully qualified should be fixed`() {
 
     val runner = runner(

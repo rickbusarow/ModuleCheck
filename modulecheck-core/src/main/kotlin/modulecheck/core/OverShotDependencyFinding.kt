@@ -17,7 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.RemovesDependency
-import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
@@ -42,8 +41,8 @@ data class OverShotDependencyFinding(
 
   override fun fix(): Boolean {
 
-    val blocks = DependencyBlockParser
-      .parse(buildFile)
+    val blocks = dependentProject.buildFileParser
+      .dependenciesBlocks()
 
     val sourceDeclaration = blocks.firstNotNullOfOrNull { block ->
 
