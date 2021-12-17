@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.PluginsBlock
+import modulecheck.parsing.gradle.PluginsBlock
 
 class KotlinPluginsBlock(contentString: String) : PluginsBlock(contentString) {
 

@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.java
 
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test

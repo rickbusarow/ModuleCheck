@@ -21,12 +21,12 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.mapNotNull
 import modulecheck.parsing.JvmFile
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.incremental.isKotlinFile

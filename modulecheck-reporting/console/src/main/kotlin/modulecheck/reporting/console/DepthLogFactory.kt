@@ -16,8 +16,8 @@
 package modulecheck.reporting.console
 
 import modulecheck.api.DepthFinding
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.Report
-import modulecheck.project.SourceSetName
 
 class DepthLogFactory {
 

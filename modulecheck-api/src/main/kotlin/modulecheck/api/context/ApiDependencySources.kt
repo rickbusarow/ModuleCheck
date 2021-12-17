@@ -17,10 +17,10 @@ package modulecheck.api.context
 
 import modulecheck.api.context.ApiDependencySources.SourceResult.Found
 import modulecheck.api.context.ApiDependencySources.SourceResult.NOT_PRESENT
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache
 
 data class ApiDependencySources(

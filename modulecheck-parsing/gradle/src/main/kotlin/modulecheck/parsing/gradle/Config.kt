@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle
 
-import modulecheck.project.temp.capitalize
-import modulecheck.project.temp.decapitalize
+import modulecheck.utils.capitalize
+import modulecheck.utils.decapitalize
 
 class Configurations(
   delegate: Map<ConfigurationName, Config>

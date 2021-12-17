@@ -18,8 +18,8 @@ package modulecheck.core.internal
 import modulecheck.api.finding.Finding.Position
 import modulecheck.core.parse
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.McProject
 import java.io.File
 

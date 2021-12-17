@@ -17,8 +17,8 @@ package modulecheck.core
 
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.ConfigurationName
-import modulecheck.project.SourceSetName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 

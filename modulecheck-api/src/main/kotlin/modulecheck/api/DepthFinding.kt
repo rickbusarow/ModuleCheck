@@ -17,8 +17,8 @@ package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.finding.Finding
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache
 import java.io.File
 

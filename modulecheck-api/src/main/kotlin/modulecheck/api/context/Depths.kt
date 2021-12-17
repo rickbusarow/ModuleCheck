@@ -16,9 +16,9 @@
 package modulecheck.api.context
 
 import modulecheck.api.DepthFinding
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache
 
 data class Depths(

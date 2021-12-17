@@ -22,8 +22,8 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.utils.mapAsync
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {

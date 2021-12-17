@@ -15,7 +15,7 @@
 
 package modulecheck.api.finding
 
-import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.McProject
 import java.io.File
 

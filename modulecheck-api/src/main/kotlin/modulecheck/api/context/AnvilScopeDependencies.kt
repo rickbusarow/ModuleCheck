@@ -15,10 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.utils.SafeCache
 
 data class AnvilScopeDependencies(
@@ -61,7 +61,8 @@ data class AnvilScopeDependencies(
   }
 }
 
-suspend fun ProjectContext.anvilScopeDependencies(): AnvilScopeDependencies = get(AnvilScopeDependencies)
+suspend fun ProjectContext.anvilScopeDependencies(): AnvilScopeDependencies =
+  get(AnvilScopeDependencies)
 
 suspend fun ProjectContext.anvilScopeDependenciesForSourceSetName(
   sourceSetName: SourceSetName

@@ -22,7 +22,7 @@ import modulecheck.core.parse
 import modulecheck.core.rule.sort.SortPluginsFinding
 import modulecheck.core.rule.sort.sortedPlugins
 import modulecheck.parsing.PluginBlockParser
-import modulecheck.parsing.PluginDeclaration
+import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.project.McProject
 
 class SortPluginsRule(

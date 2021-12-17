@@ -17,7 +17,7 @@ package modulecheck.core.kapt
 
 import modulecheck.api.finding.Finding.Position
 import modulecheck.core.internal.positionOf
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.McProject
 import java.io.File
 

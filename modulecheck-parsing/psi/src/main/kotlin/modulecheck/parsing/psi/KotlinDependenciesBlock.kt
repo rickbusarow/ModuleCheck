@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.DependenciesBlock
+import modulecheck.parsing.gradle.DependenciesBlock
 
 class KotlinDependenciesBlock(
   contentString: String,

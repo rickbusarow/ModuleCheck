@@ -16,11 +16,11 @@
 package modulecheck.api.context
 
 import modulecheck.api.KaptProcessor
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
-import modulecheck.project.all
 import modulecheck.utils.SafeCache
 
 data class KaptDependencies(
@@ -57,7 +57,8 @@ data class KaptDependencies(
 
   companion object Key : ProjectContext.Key<KaptDependencies> {
 
-    internal const val KAPT_PLUGIN_COORDS = "org.jetbrains.kotlin:kotlin-annotation-processing-gradle"
+    internal const val KAPT_PLUGIN_COORDS =
+      "org.jetbrains.kotlin:kotlin-annotation-processing-gradle"
 
     override suspend operator fun invoke(project: McProject): KaptDependencies {
       return KaptDependencies(SafeCache(), project)

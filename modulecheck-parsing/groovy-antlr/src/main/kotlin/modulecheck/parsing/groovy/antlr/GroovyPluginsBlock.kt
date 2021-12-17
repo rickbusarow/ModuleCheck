@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.parsing.PluginsBlock
+import modulecheck.parsing.gradle.PluginsBlock
 
 class GroovyPluginsBlock(
   contentString: String

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.gradle
 
 import modulecheck.utils.capitalize
 import java.util.Locale

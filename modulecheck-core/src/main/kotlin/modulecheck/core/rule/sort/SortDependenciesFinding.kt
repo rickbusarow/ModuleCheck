@@ -19,9 +19,9 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.parse
-import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.DependencyDeclaration
+import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File

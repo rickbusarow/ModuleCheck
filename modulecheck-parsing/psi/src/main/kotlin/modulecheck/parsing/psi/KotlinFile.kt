@@ -16,9 +16,9 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.JvmFile
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.fqNameOrNull
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
 import org.jetbrains.kotlin.psi.KtFile

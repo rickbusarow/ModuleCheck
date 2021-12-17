@@ -19,7 +19,7 @@ import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.test.writeKotlin
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Disabled

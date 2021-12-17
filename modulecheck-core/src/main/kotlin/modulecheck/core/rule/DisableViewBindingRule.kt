@@ -22,10 +22,10 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.all
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
-import modulecheck.project.all
 import modulecheck.utils.capitalize
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {

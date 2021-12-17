@@ -13,11 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.gradle
 
-import modulecheck.parsing.ModuleRef.StringRef
-import modulecheck.parsing.ModuleRef.TypeSafeRef
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ModuleRef.StringRef
+import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
+
+interface Declaration {
+
+  val statementWithSurroundingText: String
+  val declarationText: String
+}
 
 sealed interface DependencyDeclaration : Declaration {
   val configName: ConfigurationName

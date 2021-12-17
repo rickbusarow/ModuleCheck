@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilScopeDependenciesForSourceSetName
 import modulecheck.core.UnusedDependency
 import modulecheck.core.internal.uses
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
