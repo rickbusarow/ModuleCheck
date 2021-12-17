@@ -16,7 +16,7 @@
 package modulecheck.parsing.groovy.antlr
 
 import io.kotest.matchers.shouldBe
-import modulecheck.parsing.PluginDeclaration
+import modulecheck.parsing.gradle.PluginDeclaration
 import org.junit.jupiter.api.Test
 
 internal class GroovyPluginsBlockParserTest {

@@ -15,6 +15,8 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.ConfigurationName
+
 data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
   val project: McProject,

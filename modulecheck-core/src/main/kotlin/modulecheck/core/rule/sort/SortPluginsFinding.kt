@@ -20,8 +20,8 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.parse
 import modulecheck.parsing.PluginBlockParser
-import modulecheck.parsing.PluginDeclaration
-import modulecheck.parsing.PluginsBlock
+import modulecheck.parsing.gradle.PluginDeclaration
+import modulecheck.parsing.gradle.PluginsBlock
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File

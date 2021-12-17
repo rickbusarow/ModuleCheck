@@ -15,10 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.project.temp.AnvilScopeName
 import modulecheck.utils.SafeCache
 

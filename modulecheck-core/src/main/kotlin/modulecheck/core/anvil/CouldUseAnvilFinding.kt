@@ -19,7 +19,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.utils.existsOrNull
 import java.io.File

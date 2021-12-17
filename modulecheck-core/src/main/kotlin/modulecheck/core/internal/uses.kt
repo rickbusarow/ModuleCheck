@@ -22,11 +22,11 @@ import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.project.TransitiveProjectDependency
 import modulecheck.project.temp.AnvilScopeName
 

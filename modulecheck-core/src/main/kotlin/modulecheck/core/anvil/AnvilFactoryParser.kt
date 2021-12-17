@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.filterIsInstance
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 import net.swiftzer.semver.SemVer

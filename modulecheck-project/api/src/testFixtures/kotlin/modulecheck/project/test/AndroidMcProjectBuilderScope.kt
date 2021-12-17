@@ -15,17 +15,17 @@
 
 package modulecheck.project.test
 
-import modulecheck.project.Config
-import modulecheck.project.ConfigurationName
-import modulecheck.project.Configurations
+import modulecheck.parsing.gradle.Config
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.SourceSet
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSets
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
-import modulecheck.project.SourceSet
-import modulecheck.project.SourceSetName
-import modulecheck.project.SourceSets
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.temp.AnvilGradlePlugin
 import org.intellij.lang.annotations.Language

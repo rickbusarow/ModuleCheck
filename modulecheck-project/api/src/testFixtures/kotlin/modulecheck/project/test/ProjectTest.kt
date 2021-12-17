@@ -16,8 +16,8 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.ProjectProvider
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.AndroidMcProject
-import modulecheck.project.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache

@@ -20,9 +20,9 @@ import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.project.ConfigurationName
-import modulecheck.project.SourceSet
-import modulecheck.project.SourceSetName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSet
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.test.createSafely
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test

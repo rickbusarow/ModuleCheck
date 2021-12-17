@@ -20,7 +20,7 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.addDependency
 import modulecheck.core.internal.positionIn
 import modulecheck.core.internal.statementOrNullIn
-import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 

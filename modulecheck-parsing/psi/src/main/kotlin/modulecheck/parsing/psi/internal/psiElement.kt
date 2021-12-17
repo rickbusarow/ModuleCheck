@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.psi.internal
 
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name

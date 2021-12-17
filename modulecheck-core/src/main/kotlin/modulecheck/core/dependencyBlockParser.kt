@@ -15,10 +15,10 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.PluginBlockParser
-import modulecheck.parsing.PluginsBlock
+import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.parsing.gradle.PluginsBlock
 import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser

@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.parsing.DependenciesBlock
+import modulecheck.parsing.gradle.DependenciesBlock
 
 class GroovyDependenciesBlock(
   contentString: String,

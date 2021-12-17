@@ -18,9 +18,9 @@ package modulecheck.parsing.psi
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetName
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.name.FqName

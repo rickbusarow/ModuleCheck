@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.runBlocking
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
@@ -29,7 +30,6 @@ import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.project.temp.AnvilScopeName
 import modulecheck.project.temp.AnvilScopeNameEntry
 import modulecheck.project.temp.RawAnvilAnnotatedType

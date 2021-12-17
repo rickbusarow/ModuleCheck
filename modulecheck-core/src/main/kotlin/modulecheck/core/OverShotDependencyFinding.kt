@@ -17,10 +17,10 @@ package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.RemovesDependency
-import modulecheck.parsing.DependenciesBlock
 import modulecheck.parsing.DependencyBlockParser
-import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.prefixIfNot

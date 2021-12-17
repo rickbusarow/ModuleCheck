@@ -20,8 +20,8 @@ import modulecheck.api.finding.RemovesDependency
 import modulecheck.api.finding.addDependency
 import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.internal.statementOrNullIn
-import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 

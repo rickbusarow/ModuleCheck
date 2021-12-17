@@ -16,17 +16,17 @@
 package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclarationNames
+import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.project.AndroidMcProject
-import modulecheck.project.Configurations
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
-import modulecheck.project.SourceSetName
-import modulecheck.project.SourceSets
 import modulecheck.project.temp.AnvilGradlePlugin
 import org.jetbrains.kotlin.name.FqName
 import java.io.File

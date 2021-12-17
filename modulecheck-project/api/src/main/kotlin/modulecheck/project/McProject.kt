@@ -15,6 +15,11 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.Config
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSets
 import modulecheck.project.temp.AnvilGradlePlugin
 import org.jetbrains.kotlin.name.FqName
 import java.io.File

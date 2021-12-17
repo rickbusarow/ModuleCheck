@@ -16,7 +16,7 @@
 package modulecheck.parsing.psi
 
 import io.kotest.matchers.shouldBe
-import modulecheck.parsing.PluginDeclaration
+import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.parsing.psi.internal.psiFileFactory
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile

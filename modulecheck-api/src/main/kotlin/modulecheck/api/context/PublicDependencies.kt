@@ -15,11 +15,11 @@
 
 package modulecheck.api.context
 
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.all
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.all
 
 data class PublicDependencies(
   private val delegate: Set<ConfiguredProjectDependency>

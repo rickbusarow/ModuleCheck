@@ -16,12 +16,12 @@
 package modulecheck.parsing.psi
 
 import io.kotest.matchers.shouldBe
-import modulecheck.parsing.ExternalDependencyDeclaration
-import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.parsing.ModuleRef
-import modulecheck.parsing.UnknownDependencyDeclaration
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ExternalDependencyDeclaration
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.ModuleRef
+import modulecheck.parsing.gradle.UnknownDependencyDeclaration
 import modulecheck.parsing.psi.internal.psiFileFactory
-import modulecheck.project.ConfigurationName
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.utils.addToStdlib.cast

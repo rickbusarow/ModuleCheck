@@ -15,6 +15,9 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
+
 class ExternalDependencies(
   map: MutableMap<ConfigurationName, List<ExternalDependency>>
 ) : MutableMap<ConfigurationName, List<ExternalDependency>> by map {

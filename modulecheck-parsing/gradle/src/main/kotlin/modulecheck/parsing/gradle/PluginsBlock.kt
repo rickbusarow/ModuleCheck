@@ -13,9 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.gradle
 
-abstract class PluginsBlock(var contentString: String) {
+abstract class PluginsBlock(
+  var contentString: String
+) {
 
   protected val originalLines = contentString.lines().toMutableList()
 

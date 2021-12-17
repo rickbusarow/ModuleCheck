@@ -15,11 +15,11 @@
 
 package modulecheck.api.context
 
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.SourceSetName
 import modulecheck.project.asDeclarationName
 import modulecheck.utils.SafeCache
 import modulecheck.utils.flatMapSetConcat

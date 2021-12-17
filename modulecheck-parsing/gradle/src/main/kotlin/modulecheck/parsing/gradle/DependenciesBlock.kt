@@ -13,11 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.gradle
 
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ModuleRef.StringRef
+import java.io.File
 
-abstract class DependenciesBlock(var contentString: String, val suppressAll: List<String>) {
+abstract class DependenciesBlock(
+  var contentString: String,
+  val suppressAll: List<String>
+) {
 
   protected val originalLines = contentString.lines().toMutableList()
 
@@ -107,11 +111,11 @@ abstract class DependenciesBlock(var contentString: String, val suppressAll: Lis
     moduleRef: String,
     configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
-    return getOrEmpty(ModuleRef.StringRef(moduleRef), configName)
+    return getOrEmpty(StringRef(moduleRef), configName)
   }
 
   fun getOrEmpty(
-    moduleRef: ModuleRef.StringRef,
+    moduleRef: StringRef,
     configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
 
@@ -201,4 +205,13 @@ abstract class DependenciesBlock(var contentString: String, val suppressAll: Lis
   }
 
   protected data class ConfiguredModule(val configName: ConfigurationName, val moduleRef: ModuleRef)
+}
+
+interface DependenciesBlocksProvider {
+
+  fun get(): List<DependenciesBlock>
+
+  fun interface Factory {
+    fun create(buildFile: File): DependenciesBlocksProvider
+  }
 }

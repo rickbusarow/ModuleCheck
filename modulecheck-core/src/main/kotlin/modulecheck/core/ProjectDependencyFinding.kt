@@ -21,8 +21,8 @@ import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
-import modulecheck.parsing.ModuleDependencyDeclaration
-import modulecheck.project.ConfigurationName
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.McProject
 import java.io.File
 

@@ -15,7 +15,7 @@
 
 package modulecheck.api.finding
 
-import modulecheck.parsing.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.prefixIfNot

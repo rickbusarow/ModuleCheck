@@ -74,6 +74,7 @@ include(
   ":modulecheck-dagger",
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:core",
+  ":modulecheck-parsing:gradle",
   ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",

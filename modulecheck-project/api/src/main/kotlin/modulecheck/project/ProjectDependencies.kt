@@ -15,6 +15,9 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
+
 class ProjectDependencies(
   map: MutableMap<ConfigurationName, List<ConfiguredProjectDependency>>
 ) : MutableMap<ConfigurationName, List<ConfiguredProjectDependency>> by map {
