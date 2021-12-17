@@ -38,13 +38,14 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-core"))
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:core"))
+  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-parsing:xml"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-project:impl"))
-  api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-runtime"))
-  api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
   implementation(libs.javaParser)
@@ -59,8 +60,8 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinPoet)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-specs"))
+  testImplementation(project(path = ":modulecheck-utils"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
