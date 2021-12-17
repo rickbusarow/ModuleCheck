@@ -26,6 +26,8 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:core"))
+  api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
@@ -40,6 +42,5 @@ dependencies {
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }

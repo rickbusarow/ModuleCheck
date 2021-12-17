@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-core"
-  dagger = true
+  anvil = true
 }
 
 dependencies {
@@ -33,16 +33,10 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:core"))
-  api(project(path = ":modulecheck-parsing:groovy-antlr"))
+  api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
-  api(project(path = ":modulecheck-parsing:wiring"))
-  api(project(path = ":modulecheck-parsing:xml"))
-  api(project(path = ":modulecheck-reporting:checkstyle"))
-  api(project(path = ":modulecheck-reporting:console"))
-  api(project(path = ":modulecheck-reporting:graphviz"))
-  api(project(path = ":modulecheck-runtime"))
+  api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
@@ -55,9 +49,6 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))

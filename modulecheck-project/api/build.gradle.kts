@@ -47,6 +47,9 @@ dependencies {
   testFixturesApi(libs.bundles.hermit)
 
   testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(project(path = ":modulecheck-parsing:core"))
+  testFixturesApi(project(path = ":modulecheck-parsing:groovy-antlr"))
+  testFixturesApi(project(path = ":modulecheck-parsing:psi"))
   testFixturesApi(project(path = ":modulecheck-parsing:wiring"))
   testFixturesApi(project(path = ":modulecheck-project:impl"))
 

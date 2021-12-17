@@ -35,6 +35,7 @@ dependencies {
 
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:core"))
+  api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:xml"))
@@ -47,8 +48,6 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   testFixturesApi(libs.bundles.hermit)
-
-  testFixturesApi(project(path = ":modulecheck-internal-testing"))
 
   if (isIdeSync) {
     compileOnly(project(path = ":modulecheck-internal-testing"))
