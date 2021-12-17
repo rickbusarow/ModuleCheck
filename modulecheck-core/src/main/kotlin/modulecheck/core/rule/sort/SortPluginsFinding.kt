@@ -48,7 +48,7 @@ class SortPluginsFinding(
 
     val sorted = block.sortedPlugins(comparator)
 
-    fileText = fileText.replace(block.contentString, sorted)
+    fileText = fileText.replace(block.lambdaContent, sorted)
 
     buildFile.writeText(fileText)
 
@@ -66,12 +66,12 @@ internal fun PluginsBlock.sortedPlugins(
   // This regex finds whatever trailing whitespace/newline there is and carries it over to the new
   // block.
   val suffix = "(\\s*)\\z".toRegex()
-    .find(contentString)
+    .find(lambdaContent)
     ?.destructured
     ?.component1()
     ?: ""
 
-  return allDeclarations
+  return settings
     .sortedWith(comparator)
     .joinToString("\n") { it.statementWithSurroundingText }
     .suffixIfNot(suffix)

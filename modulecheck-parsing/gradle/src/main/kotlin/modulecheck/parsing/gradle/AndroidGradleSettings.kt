@@ -13,20 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi
+package modulecheck.parsing.gradle
 
-import modulecheck.parsing.gradle.DependenciesBlock
+import java.io.File
 
-class KotlinDependenciesBlock(
-  override val fullText: String,
-  override val lambdaContent: String,
-  suppressAll: List<String>
-) : DependenciesBlock(suppressAll = suppressAll) {
+data class AndroidGradleSettings(
+  val assignments: List<Assignment>,
+  val androidBlocks: List<AgpBlock.AndroidBlock>,
+  val buildFeaturesBlocks: List<AgpBlock.BuildFeaturesBlock>
+)
 
-  override fun originalLineMatchesParsed(
-    originalLine: String,
-    parsedString: String
-  ): Boolean {
-    return originalLine.contains(parsedString)
+interface AndroidGradleSettingsProvider {
+
+  fun get(): AndroidGradleSettings
+
+  fun interface Factory {
+    fun create(buildFile: File): AndroidGradleSettingsProvider
   }
 }

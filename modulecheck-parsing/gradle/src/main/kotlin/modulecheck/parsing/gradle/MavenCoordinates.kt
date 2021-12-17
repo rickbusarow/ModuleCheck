@@ -33,7 +33,7 @@ data class MavenCoordinates(
 ) {
   companion object {
 
-    val MATCHER = "([\\w\\.]+):([\\w\\-]+):([\\w\\.]+)".toRegex()
+    private val MATCHER = "([\\w\\.]+):([\\w\\-]+):([\\w\\.]+)".toRegex()
 
     fun parseOrNull(coordinateString: String): MavenCoordinates? {
       return MATCHER.find(coordinateString)

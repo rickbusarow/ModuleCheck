@@ -15,55 +15,8 @@
 
 package modulecheck.parsing.gradle
 
-import modulecheck.parsing.gradle.Block.AndroidBlock
-import modulecheck.parsing.gradle.Block.BuildFeaturesBlock
-import java.io.File
-
-data class Assignment(
-  val fullText: String,
-  val propertyFullName: String,
-  val value: String,
-  val assignmentText: String
-)
-
-sealed interface Block {
+sealed interface Block<T> {
   val fullText: String
   val lambdaContent: String
-  val settings: List<Assignment>
-
-  data class AndroidBlock(
-    override val fullText: String,
-    override val lambdaContent: String,
-    override val settings: List<Assignment>
-  ) : Block
-
-  data class BuildFeaturesBlock(
-    override val fullText: String,
-    override val lambdaContent: String,
-    override val settings: List<Assignment>
-  ) : Block
-}
-
-data class AndroidGradleSettings(
-  val assignments: List<Assignment>,
-  val androidBlocks: List<AndroidBlock>,
-  val buildFeaturesBlocks: List<BuildFeaturesBlock>
-)
-
-interface AndroidGradleSettingsProvider {
-
-  fun get(): AndroidGradleSettings
-
-  fun interface Factory {
-    fun create(buildFile: File): AndroidGradleSettingsProvider
-  }
-}
-
-interface PluginsBlockProvider {
-
-  fun get(): PluginsBlock?
-
-  fun interface Factory {
-    fun create(buildFile: File): PluginsBlockProvider
-  }
+  val settings: List<T>
 }

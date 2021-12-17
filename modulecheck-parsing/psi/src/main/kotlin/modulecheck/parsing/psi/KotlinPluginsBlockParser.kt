@@ -49,7 +49,7 @@ class KotlinPluginsBlockParser @Inject constructor() {
 
         val pluginsBlock = KotlinPluginsBlock(
           fullText = fullText,
-          contentString = blockWhiteSpace + contentString
+          lambdaContent = blockWhiteSpace + contentString
         )
 
         contentBlock.children

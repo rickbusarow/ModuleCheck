@@ -19,22 +19,20 @@ import modulecheck.parsing.gradle.ModuleRef.StringRef
 import java.io.File
 
 abstract class DependenciesBlock(
-  val fullText: String,
-  var contentString: String,
   val suppressAll: List<String>
-) {
+) : Block<DependencyDeclaration> {
 
-  protected val originalLines = contentString.lines().toMutableList()
+  private val originalLines by lazy { lambdaContent.lines().toMutableList() }
 
   private val _allDeclarations = mutableListOf<DependencyDeclaration>()
 
-  val allDeclarations: List<DependencyDeclaration>
+  override val settings: List<DependencyDeclaration>
     get() = _allDeclarations
 
-  protected val allExternalDeclarations =
+  private val allExternalDeclarations =
     mutableMapOf<MavenCoordinates, MutableList<ExternalDependencyDeclaration>>()
 
-  protected val allModuleDeclarations =
+  private val allModuleDeclarations =
     mutableMapOf<ConfiguredModule, MutableList<ModuleDependencyDeclaration>>()
   protected val allBlockStatements = mutableListOf<String>()
 

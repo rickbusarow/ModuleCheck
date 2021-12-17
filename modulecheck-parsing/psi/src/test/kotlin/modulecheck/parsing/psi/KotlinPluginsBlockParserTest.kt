@@ -39,7 +39,7 @@ internal class KotlinPluginsBlockParserTest {
         """.trimIndent()
       )
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """kotlin("jvm")""",
         statementWithSurroundingText = """  kotlin("jvm") // trailing comment"""

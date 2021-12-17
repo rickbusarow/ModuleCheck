@@ -56,7 +56,7 @@ class SortPluginsRule(
 
     val sortedPlugins = block.sortedPlugins(comparator)
 
-    val sorted = block.contentString == sortedPlugins
+    val sorted = block.lambdaContent == sortedPlugins
 
     return if (sorted) {
       emptyList()

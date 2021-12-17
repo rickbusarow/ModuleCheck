@@ -17,10 +17,10 @@ package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.ParserRuleContext
 import modulecheck.parsing.AndroidGradleParser
+import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
+import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.Assignment
-import modulecheck.parsing.gradle.Block.AndroidBlock
-import modulecheck.parsing.gradle.Block.BuildFeaturesBlock
 import modulecheck.utils.requireNotNull
 import org.apache.groovy.parser.antlr4.GroovyParser.AssignmentExprAltContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureOrLambdaExpressionContext
@@ -105,9 +105,9 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
 
                   buildFeaturesBlocks.add(
                     BuildFeaturesBlock(
-                      android.originalText(),
-                      buildFeaturesLambda,
-                      assignments
+                      fullText = android.originalText(),
+                      lambdaContent = buildFeaturesLambda,
+                      settings = assignments
                     )
                   )
                 }
@@ -133,9 +133,9 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
               if (buildFeaturesLambdaContent != null) {
                 buildFeaturesBlocks.add(
                   BuildFeaturesBlock(
-                    android.originalText(),
-                    buildFeaturesLambdaContent,
-                    assignments
+                    fullText = android.originalText(),
+                    lambdaContent = buildFeaturesLambdaContent,
+                    settings = assignments
                   )
                 )
               }

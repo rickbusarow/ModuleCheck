@@ -17,10 +17,10 @@ package modulecheck.parsing.groovy.antlr
 
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
+import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.Assignment
-import modulecheck.parsing.gradle.Block.AndroidBlock
-import modulecheck.parsing.gradle.Block.BuildFeaturesBlock
 import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest

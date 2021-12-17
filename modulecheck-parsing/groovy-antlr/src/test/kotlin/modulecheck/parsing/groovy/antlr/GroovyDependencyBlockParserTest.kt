@@ -38,7 +38,7 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ExternalDependencyDeclaration(
         configName = ConfigurationName.api,
         declarationText = "api 'com.foo:bar:1.2.3.4'",
@@ -94,7 +94,7 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
@@ -138,7 +138,7 @@ internal class GroovyDependencyBlockParserTest {
 
     block.suppressAll shouldBe listOf("Unused", "MustBeApi")
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
@@ -169,7 +169,7 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -191,7 +191,7 @@ internal class GroovyDependencyBlockParserTest {
         """.trimIndent()
       ).single()
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = TypeSafeRef("core.jvm"),
         moduleAccess = "projects.core.jvm",
@@ -517,9 +517,9 @@ internal class GroovyDependencyBlockParserTest {
         |""".trimMargin()
       ).single()
 
-    block.contentString shouldBe "  api libs.ktlint\n"
+    block.lambdaContent shouldBe "  api libs.ktlint\n"
 
-    block.allDeclarations shouldBe listOf(
+    block.settings shouldBe listOf(
       UnknownDependencyDeclaration(
         argument = "libs.ktlint",
         configName = ConfigurationName.api,

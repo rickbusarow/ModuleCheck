@@ -50,7 +50,7 @@ class SortDependenciesRule(
       .dependenciesBlocks()
       .all { block ->
 
-        if (block.contentString.isBlank()) return@all true
+        if (block.lambdaContent.isBlank()) return@all true
 
         val fileText = project.buildFile.readText()
 
