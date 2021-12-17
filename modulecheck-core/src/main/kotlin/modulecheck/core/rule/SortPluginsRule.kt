@@ -18,10 +18,8 @@ package modulecheck.core.rule
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.parse
 import modulecheck.core.rule.sort.SortPluginsFinding
 import modulecheck.core.rule.sort.sortedPlugins
-import modulecheck.parsing.PluginBlockParser
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.project.McProject
 
@@ -52,7 +50,9 @@ class SortPluginsRule(
   private val comparator: Comparator<PluginDeclaration> = compareBy(*comparables)
 
   override suspend fun check(project: McProject): List<SortPluginsFinding> {
-    val block = PluginBlockParser.parse(project.buildFile) ?: return emptyList()
+    val block = project.buildFileParser
+      .pluginsBlock()
+      ?: return emptyList()
 
     val sortedPlugins = block.sortedPlugins(comparator)
 

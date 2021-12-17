@@ -17,18 +17,10 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import groovyjarjarantlr4.v4.runtime.CharStream
-import groovyjarjarantlr4.v4.runtime.CharStreams
-import groovyjarjarantlr4.v4.runtime.CommonTokenStream
-import groovyjarjarantlr4.v4.runtime.ParserRuleContext
-import groovyjarjarantlr4.v4.runtime.RuleContext
-import groovyjarjarantlr4.v4.runtime.misc.Interval
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ModuleRef
 import modulecheck.parsing.gradle.asConfigurationName
-import org.apache.groovy.parser.antlr4.GroovyLangLexer
-import org.apache.groovy.parser.antlr4.GroovyLangParser
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
@@ -37,16 +29,12 @@ import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
 import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import javax.inject.Inject
 
-class GroovyDependencyBlockParser {
+class GroovyDependencyBlockParser @Inject constructor() {
 
-  fun parse(file: String): List<GroovyDependenciesBlock> {
+  fun parse(file: String): List<GroovyDependenciesBlock> = parse(file) {
     val dependenciesBlocks = mutableListOf<GroovyDependenciesBlock>()
-
-    val stream = CharStreams.fromString(file)
-
-    val lexer = GroovyLangLexer(stream)
-    val tokens = CommonTokenStream(lexer)
 
     val rawModuleNameVisitor = object : GroovyParserBaseVisitor<String?>() {
 
@@ -56,7 +44,7 @@ class GroovyDependencyBlockParser {
       ): Boolean = currentResult == null
 
       override fun visitStringLiteral(ctx: StringLiteralContext?): String? {
-        return ctx?.originalText(stream)?.replace("""["']""".toRegex(), "")
+        return ctx?.originalText()?.replace("""["']""".toRegex(), "")
       }
     }
 
@@ -70,7 +58,7 @@ class GroovyDependencyBlockParser {
       ): Boolean = currentResult == null
 
       override fun visitClosure(ctx: ClosureContext?): String? {
-        return ctx?.originalText(stream)
+        return ctx?.originalText()
       }
     }
 
@@ -96,7 +84,7 @@ class GroovyDependencyBlockParser {
 
         return visitChildren(ctx) ?: when (ctx?.start?.text) {
           "projects" -> {
-            val original = ctx.originalText(stream)
+            val original = ctx.originalText()
 
             original.removePrefix("projects.").let { typeSafe ->
               // Groovy parsing includes any config closure in this context,
@@ -107,7 +95,7 @@ class GroovyDependencyBlockParser {
             }
           }
           "project" -> {
-            val original = ctx.originalText(stream)
+            val original = ctx.originalText()
 
             // Groovy parsing includes any config closure in this context,
             // so it would be `project(':foo:bar') { exclude ... }`
@@ -132,7 +120,7 @@ class GroovyDependencyBlockParser {
       ): Boolean = currentResult == null
 
       override fun visitExpressionListElement(ctx: ExpressionListElementContext): String {
-        return ctx.originalText(stream)
+        return ctx.originalText()
       }
     }
 
@@ -155,7 +143,7 @@ class GroovyDependencyBlockParser {
         if (statement?.start?.text == "dependencies") {
 
           val originalBlockBody = statement.parentOfType<ScriptStatementContext>()
-            ?.originalText(stream)
+            ?.originalText()
             ?: return
 
           val blockBody = BLOCK_BODY_REGEX.find(originalBlockBody)
@@ -169,7 +157,11 @@ class GroovyDependencyBlockParser {
             .orEmpty()
           pendingBlockNoInspectionComment = null
 
-          val dependenciesBlock = GroovyDependenciesBlock(blockBody, blockSuppressed)
+          val dependenciesBlock = GroovyDependenciesBlock(
+            fullText = statement.originalText(),
+            contentString = blockBody,
+            suppressAll = blockSuppressed
+          )
 
           super.visitScriptStatement(ctx)
 
@@ -200,7 +192,7 @@ class GroovyDependencyBlockParser {
                 val (moduleAccess, moduleRef) = moduleNamePair
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
-                  parsedString = ctx.originalText(stream),
+                  parsedString = ctx.originalText(),
                   moduleRef = ModuleRef.from(moduleRef),
                   moduleAccess = moduleAccess,
                   suppressed = suppressed
@@ -214,7 +206,7 @@ class GroovyDependencyBlockParser {
               if (mavenCoordinates != null) {
                 dependenciesBlock.addNonModuleStatement(
                   configName = config.asConfigurationName(),
-                  parsedString = ctx.originalText(stream),
+                  parsedString = ctx.originalText(),
                   coordinates = mavenCoordinates,
                   suppressed = suppressed
                 )
@@ -225,7 +217,7 @@ class GroovyDependencyBlockParser {
 
               dependenciesBlock.addUnknownStatement(
                 configName = config.asConfigurationName(),
-                parsedString = ctx.originalText(stream),
+                parsedString = ctx.originalText(),
                 argument = argument,
                 suppressed = suppressed
               )
@@ -239,9 +231,7 @@ class GroovyDependencyBlockParser {
       }
     }
 
-    GroovyLangParser(tokens)
-      .compilationUnit()
-      .accept(visitor)
+    parser.accept(visitor)
 
     return dependenciesBlocks
   }
@@ -249,25 +239,5 @@ class GroovyDependencyBlockParser {
   companion object {
     val BLOCK_BODY_REGEX = """dependencies\s*\{([\s\S]*)\}""".toRegex()
     val NO_INSPECTION_REGEX = """//noinspection \s*([\s\S]*)$""".toRegex()
-  }
-}
-
-inline fun <reified T> RuleContext.parentOfType(): T? {
-  return generateSequence(this as? RuleContext?) { it.parent }
-    .filterIsInstance<T>()
-    .firstOrNull()
-}
-
-fun ParserRuleContext.originalText(stream: CharStream): String {
-  return stream.getText(Interval(start.startIndex, stop.stopIndex))
-}
-
-inline fun blockStatementVisitor(
-  crossinline action: (BlockStatementContext) -> Unit
-): GroovyParserBaseVisitor<Unit> {
-  return object : GroovyParserBaseVisitor<Unit>() {
-    override fun visitBlockStatement(ctx: BlockStatementContext) {
-      action(ctx)
-    }
   }
 }

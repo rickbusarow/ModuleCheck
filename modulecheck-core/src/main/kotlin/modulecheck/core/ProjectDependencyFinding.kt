@@ -47,7 +47,7 @@ abstract class ProjectDependencyFinding(
 
   override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
     dependencyProject
-      .statementOrNullIn(buildFile, configurationName)
+      .statementOrNullIn(dependentProject, configurationName)
   }
   override val statementTextOrNull: String? by lazy {
     declarationOrNull?.statementWithSurroundingText

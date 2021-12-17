@@ -16,19 +16,16 @@
 package modulecheck.core.internal
 
 import modulecheck.api.finding.Finding.Position
-import modulecheck.core.parse
-import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.McProject
-import java.io.File
 
 fun McProject.statementOrNullIn(
-  dependentBuildFile: File,
+  dependentProject: McProject,
   configuration: ConfigurationName
 ): ModuleDependencyDeclaration? {
-  return DependencyBlockParser
-    .parse(dependentBuildFile)
+  return dependentProject.buildFileParser
+    .dependenciesBlocks()
     .firstNotNullOfOrNull { block ->
       block.getOrEmpty(path, configuration)
         .takeIf { it.isNotEmpty() }
@@ -37,12 +34,15 @@ fun McProject.statementOrNullIn(
 }
 
 fun McProject.positionIn(
-  dependentBuildFile: File,
+  dependentProject: McProject,
   configuration: ConfigurationName
 ): Position? {
 
-  val statement = statementOrNullIn(dependentBuildFile, configuration) ?: return null
+  val statement = statementOrNullIn(
+    dependentProject = dependentProject,
+    configuration = configuration
+  ) ?: return null
 
-  return dependentBuildFile.readText()
+  return dependentProject.buildFile.readText()
     .positionOfStatement(statement.statementWithSurroundingText)
 }

@@ -18,48 +18,31 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-core"
-  dagger = true
+  artifactId = "modulecheck-parsing-wiring"
+  anvil = true
 }
 
 dependencies {
 
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
-  api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
-  api(libs.rickBusarow.dispatch.core)
+  api(libs.semVer)
 
-  api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:core"))
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
-  api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-parsing:xml"))
-  api(project(path = ":modulecheck-reporting:checkstyle"))
-  api(project(path = ":modulecheck-reporting:console"))
-  api(project(path = ":modulecheck-reporting:graphviz"))
-  api(project(path = ":modulecheck-runtime"))
-  api(project(path = ":modulecheck-utils"))
+
+  compileOnly(gradleApi())
 
   implementation(libs.agp)
   implementation(libs.groovy)
-  implementation(libs.groovyXml)
-  implementation(libs.semVer)
+  implementation(libs.javaParser)
+  implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlin.reflect)
-  testImplementation(libs.rickBusarow.dispatch.test.core)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-api")))
-  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
-  testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
 }

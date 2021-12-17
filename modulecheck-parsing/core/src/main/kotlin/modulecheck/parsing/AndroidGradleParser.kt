@@ -15,8 +15,10 @@
 
 package modulecheck.parsing
 
-interface Declaration {
+import modulecheck.parsing.gradle.AndroidGradleSettings
+import java.io.File
 
-  val statementWithSurroundingText: String
-  val declarationText: String
+interface AndroidGradleParser {
+
+  fun parse(buildFile: File): AndroidGradleSettings
 }

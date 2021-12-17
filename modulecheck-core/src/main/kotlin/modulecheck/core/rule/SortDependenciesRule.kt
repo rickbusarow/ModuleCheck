@@ -18,10 +18,8 @@ package modulecheck.core.rule
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.parse
 import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
-import modulecheck.parsing.DependencyBlockParser
 import modulecheck.project.McProject
 import java.util.Locale
 
@@ -48,8 +46,8 @@ class SortDependenciesRule(
   )
 
   override suspend fun check(project: McProject): List<SortDependenciesFinding> {
-    val allSorted = DependencyBlockParser
-      .parse(project.buildFile)
+    val allSorted = project.buildFileParser
+      .dependenciesBlocks()
       .all { block ->
 
         if (block.contentString.isBlank()) return@all true

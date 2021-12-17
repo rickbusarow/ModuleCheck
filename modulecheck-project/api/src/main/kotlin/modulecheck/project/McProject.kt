@@ -46,6 +46,8 @@ interface McProject :
   val sourceSets: SourceSets
   val anvilGradlePlugin: AnvilGradlePlugin?
 
+  val buildFileParser: BuildFileParser
+
   val logger: Logger
 
   suspend fun resolveFqNameOrNull(

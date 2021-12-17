@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.project.AndroidMcProject
+import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.Logger
 import modulecheck.project.McProject
@@ -43,6 +44,7 @@ class RealAndroidMcProject(
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
+  override val buildFileParser: BuildFileParser,
   override val androidPackageOrNull: String?,
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,

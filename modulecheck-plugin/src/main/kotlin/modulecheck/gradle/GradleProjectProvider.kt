@@ -30,21 +30,19 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.parse
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.task.GradleLogger
-import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.ProjectProvider
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.Configurations
-import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.toSourceSetName
 import modulecheck.parsing.xml.AndroidManifestParser
+import modulecheck.project.BuildFileParser
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.ExternalDependency
@@ -72,7 +70,8 @@ class GradleProjectProvider @AssistedInject constructor(
   private val rootGradleProject: GradleProject,
   private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
-  private val gradleLogger: GradleLogger
+  private val gradleLogger: GradleLogger,
+  private val buildFileParserFactory: BuildFileParser.Factory
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -135,6 +134,7 @@ class GradleProjectProvider @AssistedInject constructor(
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
+        buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
@@ -152,6 +152,7 @@ class GradleProjectProvider @AssistedInject constructor(
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         logger = gradleLogger,
+        buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
@@ -192,25 +193,11 @@ class GradleProjectProvider @AssistedInject constructor(
           .filterIsInstance<ExternalModuleDependency>()
           .map { dep ->
 
-            val statementTextLazy = lazy psiLazy@{
-              val coords = MavenCoordinates(dep.group, dep.name, dep.version)
-
-              DependencyBlockParser
-                .parse(buildFile)
-                .asSequence()
-                .map { block ->
-                  block.getOrEmpty(coords, configuration.name.asConfigurationName())
-                }
-                .firstOrNull()
-                ?.firstOrNull()
-                ?.statementWithSurroundingText
-            }
             ExternalDependency(
               configurationName = configuration.name.asConfigurationName(),
               group = dep.group,
               moduleName = dep.name,
-              version = dep.version,
-              statementTextLazy = statementTextLazy
+              version = dep.version
             )
           }
 

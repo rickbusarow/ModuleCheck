@@ -15,53 +15,54 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.nameSafe
 import org.jetbrains.kotlin.com.intellij.psi.PsiComment
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.psi.callExpressionRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
+import javax.inject.Inject
 
-class KotlinPluginsBlockParser {
+class KotlinPluginsBlockParser @Inject constructor() {
 
   @Suppress("ReturnCount")
   fun parse(file: KtFile): KotlinPluginsBlock? {
-    var blockWhiteSpace: String? = null
 
     var block: KotlinPluginsBlock? = null
 
-    val blockVisitor = blockExpressionRecursiveVisitor { blockExpression ->
+    file.getChildrenOfTypeRecursive<KtCallExpression>()
+      .firstOrNull { it.nameSafe() == "plugins" }
+      ?.let { fullBlock ->
 
-      val pluginsBlock = KotlinPluginsBlock((blockWhiteSpace ?: "") + blockExpression.text)
+        val fullText = fullBlock.text
 
-      // Different plugin declarations initially parse as different types,
-      // like KtCallExpression, KtBinaryExpression, or KtNamedReference.
-      // The only thing that they all have in common is that they're all direct children
-      // of the KtBlockExpression.
-      // Anything which isn't a comment or whitespace must be a new plugin declaration
-      blockExpression
-        .children
-        .filterNot { it is PsiComment || it is PsiWhiteSpace }
-        .forEach { statement ->
+        val contentBlock = fullBlock.findDescendantOfType<KtBlockExpression>()
+          ?: return@let null
 
-          pluginsBlock.addStatement(
-            parsedString = statement.text
-          )
-        }
+        val contentString = contentBlock.text
 
-      block = pluginsBlock
-    }
+        val blockWhiteSpace = (contentBlock.prevSibling as? PsiWhiteSpace)?.text
+          ?.trimStart('\n', '\r')
+          ?: ""
 
-    val callVisitor = callExpressionRecursiveVisitor { expression ->
-      if (expression.text.matches(""".*plugins\s*\{[\s\S]*""".toRegex())) {
-        expression.findDescendantOfType<KtBlockExpression>()?.let {
-          blockWhiteSpace = (it.prevSibling as? PsiWhiteSpace)?.text?.trimStart('\n', '\r')
-          blockVisitor.visitBlockExpression(it)
-        }
+        val pluginsBlock = KotlinPluginsBlock(
+          fullText = fullText,
+          contentString = blockWhiteSpace + contentString
+        )
+
+        contentBlock.children
+          .filterNot { it is PsiComment || it is PsiWhiteSpace }
+          .forEach { statement ->
+
+            pluginsBlock.addStatement(
+              parsedString = statement.text
+            )
+          }
+
+        block = pluginsBlock
       }
-    }
-
-    file.accept(callVisitor)
 
     return block
   }

@@ -21,10 +21,15 @@ import org.apache.groovy.parser.antlr4.GroovyParser
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 
 internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
+
+  private val dashes = "------------------------------------------------------------"
+
   override fun visit(tree: ParseTree) {
 
+    val parent = tree.parent?.let { it::class.java.simpleName }
+
     println(
-      """ ------------------------------------------------------------  ${tree::class.java.simpleName}
+      """ $dashes  ${tree::class.java.simpleName}    -- parent: $parent
       |
       |`${tree.text}`
       |
@@ -34,8 +39,11 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
   }
 
   override fun visitChildren(node: RuleNode) {
+
+    val parent = node.parent?.let { it::class.java.simpleName }
+
     println(
-      """ ------------------------------------------------------------  ${node::class.java.simpleName}
+      """ $dashes  ${node::class.java.simpleName}    -- parent: $parent
       |
       |`${node.text}`
       |
@@ -45,8 +53,11 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
   }
 
   override fun visitExpression(ctx: GroovyParser.ExpressionContext) {
+
+    val parent = ctx.parent?.let { it::class.java.simpleName }
+
     println(
-      """ ------------------------------------------------------------  ${ctx::class.java.simpleName}
+      """ $dashes  ${ctx::class.java.simpleName}    -- parent: $parent
       |
       |`${ctx.text}`
       |

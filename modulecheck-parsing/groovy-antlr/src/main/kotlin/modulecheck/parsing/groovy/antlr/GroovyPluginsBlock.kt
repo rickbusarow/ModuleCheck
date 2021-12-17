@@ -18,8 +18,9 @@ package modulecheck.parsing.groovy.antlr
 import modulecheck.parsing.gradle.PluginsBlock
 
 class GroovyPluginsBlock(
+  fullText: String,
   contentString: String
-) : PluginsBlock(contentString) {
+) : PluginsBlock(fullText, contentString) {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

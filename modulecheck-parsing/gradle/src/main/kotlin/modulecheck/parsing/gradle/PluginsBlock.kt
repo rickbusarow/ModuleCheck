@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle
 
 abstract class PluginsBlock(
+  val fullText: String,
   var contentString: String
 ) {
 

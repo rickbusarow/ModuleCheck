@@ -18,8 +18,6 @@ package modulecheck.core.rule.sort
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
-import modulecheck.core.parse
-import modulecheck.parsing.DependencyBlockParser
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.project.McProject
@@ -47,8 +45,8 @@ class SortDependenciesFinding(
   override fun fix(): Boolean = synchronized(buildFile) {
     var fileText = buildFile.readText()
 
-    DependencyBlockParser
-      .parse(buildFile)
+    dependentProject.buildFileParser
+      .dependenciesBlocks()
       .forEach { block ->
 
         fileText = sortedDependenciesFileText(block, fileText, comparator)
