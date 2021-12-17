@@ -63,7 +63,7 @@ data class AnvilGraph(
     "com.squareup.anvil.annotations.MergeSubcomponent"
   )
 
-  val allAnnotations = mergeAnnotations + contributeAnnotations
+  private val allAnnotations = mergeAnnotations + contributeAnnotations
 
   override val key: ProjectContext.Key<AnvilGraph>
     get() = Key
@@ -191,7 +191,7 @@ data class AnvilGraph(
     val contributeArguments: Set<RawAnvilAnnotatedType>
   )
 
-  fun KtAnnotationEntry.toRawAnvilAnnotatedType(typeFqName: FqName): RawAnvilAnnotatedType? {
+  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(typeFqName: FqName): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList
       ?.getByNameOrIndex(0, "scope")
       ?: return null
