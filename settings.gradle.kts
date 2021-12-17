@@ -73,6 +73,7 @@ include(
   ":modulecheck-core",
   ":modulecheck-dagger",
   ":modulecheck-internal-testing",
+  ":modulecheck-parsing:anvil",
   ":modulecheck-parsing:core",
   ":modulecheck-parsing:gradle",
   ":modulecheck-parsing:groovy-antlr",
