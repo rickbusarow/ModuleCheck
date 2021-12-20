@@ -60,7 +60,7 @@ dependencies {
 
   dependencySync("javax.inject:javax.inject:1")
 
-  dependencySync("net.swiftzer.semver:semver:1.1.2")
+  dependencySync("net.swiftzer.semver:semver:1.2.0")
 
   dependencySync("org.antlr:antlr4-runtime:4.9.3")
   dependencySync("org.antlr:antlr4:4.9.3")
