@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.xml
+package modulecheck.parsing.android
 
 import groovy.util.Node
 import groovy.xml.XmlParser
-import modulecheck.parsing.AndroidResource
-import modulecheck.project.DeclarationName
-import modulecheck.project.asDeclarationName
-import org.jetbrains.kotlin.utils.addToStdlib.cast
+import modulecheck.parsing.source.AndroidResource
+import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.asDeclarationName
+import modulecheck.utils.cast
 import java.io.File
 
 class AndroidResourceParser {

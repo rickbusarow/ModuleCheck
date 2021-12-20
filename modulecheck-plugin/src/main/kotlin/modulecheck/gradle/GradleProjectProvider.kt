@@ -34,14 +34,13 @@ import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.task.GradleLogger
-import modulecheck.parsing.ProjectProvider
+import modulecheck.parsing.android.AndroidManifestParser
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.toSourceSetName
-import modulecheck.parsing.xml.AndroidManifestParser
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
@@ -49,6 +48,7 @@ import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
+import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
 import modulecheck.project.temp.AnvilGradlePlugin

@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.AndroidGradleParser
 import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
+import modulecheck.parsing.gradle.AndroidGradleParser
 import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.Assignment
 import modulecheck.parsing.psi.internal.asKtFile

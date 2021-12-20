@@ -36,6 +36,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 

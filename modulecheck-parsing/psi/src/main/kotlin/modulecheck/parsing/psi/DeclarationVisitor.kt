@@ -16,8 +16,8 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
-import modulecheck.project.DeclarationName
-import modulecheck.project.asDeclarationName
+import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.asDeclarationName
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 

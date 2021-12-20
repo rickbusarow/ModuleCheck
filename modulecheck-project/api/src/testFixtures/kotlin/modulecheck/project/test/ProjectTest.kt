@@ -15,12 +15,12 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.ProjectProvider
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset

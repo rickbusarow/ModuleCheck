@@ -16,7 +16,7 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.DeclarationName
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.temp.AnvilScopeName
