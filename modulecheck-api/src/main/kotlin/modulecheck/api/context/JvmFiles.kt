@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.mapNotNull
-import modulecheck.parsing.JvmFile
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.java.JavaFile
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.internal.asKtFile
+import modulecheck.parsing.source.JvmFile
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
@@ -82,7 +82,6 @@ data class JvmFiles(
           )
         }
         else -> JavaFile(
-          project = project,
           file = file
         )
       }

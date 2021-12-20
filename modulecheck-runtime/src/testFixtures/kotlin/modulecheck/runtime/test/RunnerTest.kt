@@ -23,9 +23,9 @@ import modulecheck.api.finding.RealFindingResultFactory
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
-import modulecheck.parsing.ProjectProvider
 import modulecheck.project.Logger
 import modulecheck.project.McProject
+import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory

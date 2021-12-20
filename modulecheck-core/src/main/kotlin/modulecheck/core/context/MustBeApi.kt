@@ -29,10 +29,10 @@ import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.asDeclarationName
 import modulecheck.utils.any
 import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat

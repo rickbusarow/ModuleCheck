@@ -13,14 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.android
 
-@JvmInline
-value class DeclarationName(val fqName: String)
+import groovy.util.Node
+import groovy.xml.XmlParser
+import java.io.File
 
-data class DeclarationNameWithSource(
-  val declarationName: DeclarationName,
-  val sourceProject: McProject
-)
+class AndroidLayoutParser {
 
-fun String.asDeclarationName(): DeclarationName = DeclarationName(this)
+  fun parseViews(file: File): Set<String> = XmlParser()
+    .parse(file)
+    .breadthFirst()
+    .filterIsInstance<Node>()
+    .mapNotNull { it.name() as? String }
+    .toSet()
+
+  fun parseResources(file: File): Set<String> = XmlParser()
+    .parse(file)
+    .breadthFirst()
+    .filterIsInstance<Node>()
+    .mapNotNull { it.attributes() }
+    .flatMap { it.values.mapNotNull { value -> value } }
+    .filterIsInstance<String>()
+    .toSet()
+}

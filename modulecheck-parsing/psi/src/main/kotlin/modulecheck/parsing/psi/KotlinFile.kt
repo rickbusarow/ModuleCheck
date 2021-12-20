@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.JvmFile
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.fqNameOrNull
+import modulecheck.parsing.source.JvmFile
 import modulecheck.project.McProject
 import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
@@ -29,7 +29,7 @@ class KotlinFile(
   val ktFile: KtFile,
   val bindingContext: BindingContext,
   val sourceSetName: SourceSetName
-) : JvmFile(project) {
+) : JvmFile() {
 
   override val name = ktFile.name
 

@@ -15,9 +15,9 @@
 
 package modulecheck.api.context
 
+import modulecheck.parsing.android.XmlFile
+import modulecheck.parsing.android.XmlFile.LayoutFile
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.xml.XmlFile
-import modulecheck.parsing.xml.XmlFile.LayoutFile
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache

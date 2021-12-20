@@ -26,8 +26,8 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.KotlinFile
 import modulecheck.parsing.psi.asDeclarationName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.ConfiguredProjectDependency
-import modulecheck.project.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.temp.AnvilScopeName

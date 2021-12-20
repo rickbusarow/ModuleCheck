@@ -18,4 +18,8 @@ package modulecheck.project
 interface ProjectProvider : HasProjectCache {
 
   fun get(path: String): McProject
+
+  fun getAll(): List<McProject>
+
+  fun clearCaches()
 }

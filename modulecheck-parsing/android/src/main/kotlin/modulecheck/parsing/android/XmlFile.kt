@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.xml
+package modulecheck.parsing.android
 
-import modulecheck.parsing.AndroidResource
+import modulecheck.parsing.source.AndroidResource
 import java.io.File
 
-sealed interface XmlFile {
+interface XmlFile {
 
-  data class LayoutFile(val file: File) : XmlFile {
+  val file: File
+
+  data class LayoutFile(override val file: File) : XmlFile {
 
     val name: String = file.nameWithoutExtension
 
@@ -42,7 +44,7 @@ sealed interface XmlFile {
     }
   }
 
-  data class ManifestFile(val file: File) : XmlFile {
+  data class ManifestFile(override val file: File) : XmlFile {
 
     val resourceReferences: Set<String> by lazy {
       AndroidManifestParser().parseResources(file)
