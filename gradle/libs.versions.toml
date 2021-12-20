@@ -34,7 +34,7 @@ hermit = "0.9.5"
 jUnit = "5.8.2"
 knit = "0.3.0"
 kotest = "5.0.1"
-kotlin = "1.5.32"
+kotlin = "1.6.10"
 
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.5.2"
@@ -155,7 +155,7 @@ rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-a
 
 scabbard = "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0"
 
-semVer = "net.swiftzer.semver:semver:1.1.2"
+semVer = "net.swiftzer.semver:semver:1.2.0"
 
 square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "square-anvil" }
 square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "square-anvil" }
