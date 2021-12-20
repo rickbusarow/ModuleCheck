@@ -155,7 +155,7 @@ rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-a
 
 scabbard = "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0"
 
-semVer = "net.swiftzer.semver:semver:1.1.2"
+semVer = "net.swiftzer.semver:semver:1.2.0"
 
 square-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "square-anvil" }
 square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "square-anvil" }
