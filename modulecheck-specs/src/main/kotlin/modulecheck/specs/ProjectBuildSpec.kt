@@ -18,7 +18,7 @@ package modulecheck.specs
 import java.nio.file.Path
 
 public val DEFAULT_GRADLE_VERSION: String = System
-  .getProperty("modulecheck.gradleVersion", "7.3")
+  .getProperty("modulecheck.gradleVersion", "7.3.2")
   /*
   * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command line argument of "7".
   * That version doesn't resolve.  So if the String doesn't contain a period, just append ".0"
