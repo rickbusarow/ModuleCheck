@@ -13,12 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.source
 
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import java.io.File
+@JvmInline
+value class DeclarationName(val fqName: String)
 
-interface AndroidGradleParser {
-
-  fun parse(buildFile: File): AndroidGradleSettings
-}
+fun String.asDeclarationName(): DeclarationName = DeclarationName(this)

@@ -15,7 +15,7 @@
 
 package modulecheck.project.temp
 
-import modulecheck.project.DeclarationName
+import modulecheck.parsing.source.DeclarationName
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 

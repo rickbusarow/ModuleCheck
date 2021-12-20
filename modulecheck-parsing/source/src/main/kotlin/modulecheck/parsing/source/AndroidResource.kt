@@ -13,27 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.source
 
 import java.io.File
 
-sealed class AndroidResource(val prefix: kotlin.String) {
+sealed class AndroidResource(val prefix: String) {
 
-  abstract val name: kotlin.String
+  abstract val name: String
 
-  data class Anim(override val name: kotlin.String) : AndroidResource("anim")
-  data class Animator(override val name: kotlin.String) : AndroidResource("animator")
-  data class Arrays(override val name: kotlin.String) : AndroidResource("arrays")
-  data class Color(override val name: kotlin.String) : AndroidResource("color")
-  data class Dimen(override val name: kotlin.String) : AndroidResource("dimen")
-  data class Drawable(override val name: kotlin.String) : AndroidResource("drawable")
-  data class Font(override val name: kotlin.String) : AndroidResource("font")
-  data class Layout(override val name: kotlin.String) : AndroidResource("layout")
-  data class Menu(override val name: kotlin.String) : AndroidResource("menu")
-  data class Mipmap(override val name: kotlin.String) : AndroidResource("mipmap")
-  data class Raw(override val name: kotlin.String) : AndroidResource("raw")
-  data class String(override val name: kotlin.String) : AndroidResource("string")
-  data class Style(override val name: kotlin.String) : AndroidResource("style")
+  data class AndroidString(override val name: String) : AndroidResource("string")
+  data class Anim(override val name: String) : AndroidResource("anim")
+  data class Animator(override val name: String) : AndroidResource("animator")
+  data class Arrays(override val name: String) : AndroidResource("arrays")
+  data class Color(override val name: String) : AndroidResource("color")
+  data class Dimen(override val name: String) : AndroidResource("dimen")
+  data class Drawable(override val name: String) : AndroidResource("drawable")
+  data class Font(override val name: String) : AndroidResource("font")
+  data class Layout(override val name: String) : AndroidResource("layout")
+  data class Menu(override val name: String) : AndroidResource("menu")
+  data class Mipmap(override val name: String) : AndroidResource("mipmap")
+  data class Raw(override val name: String) : AndroidResource("raw")
+  data class Style(override val name: String) : AndroidResource("style")
 
   companion object {
 
@@ -56,16 +56,16 @@ sealed class AndroidResource(val prefix: kotlin.String) {
         dir.startsWith("menu") -> Menu(name)
         dir.startsWith("mipmap") -> Mipmap(name)
         dir.startsWith("raw") -> Raw(name)
-        dir.startsWith("string") -> String(name)
-        dir.startsWith("values") -> Style(name)
+        dir.startsWith("string") -> AndroidString(name)
         dir.startsWith("style") -> Style(name)
+        dir.startsWith("values") -> Style(name)
         dir.startsWith("xml") -> Style(name)
         else -> null
       }
     }
 
     @Suppress("ComplexMethod")
-    fun fromValuePair(type: kotlin.String, name: kotlin.String): AndroidResource? {
+    fun fromValuePair(type: String, name: String): AndroidResource? {
       return when (type) {
         "anim" -> Anim(name)
         "animator" -> Animator(name)
@@ -78,14 +78,14 @@ sealed class AndroidResource(val prefix: kotlin.String) {
         "menu" -> Menu(name)
         "mipmap" -> Mipmap(name)
         "raw" -> Raw(name)
-        "string" -> String(name)
+        "string" -> AndroidString(name)
         "style" -> Style(name)
         else -> null
       }
     }
 
     @Suppress("ComplexMethod")
-    fun fromString(str: kotlin.String): AndroidResource? {
+    fun fromString(str: String): AndroidResource? {
       val (prefix, name) = REGEX.find(str)?.destructured ?: return null
 
       return fromValuePair(prefix, name)

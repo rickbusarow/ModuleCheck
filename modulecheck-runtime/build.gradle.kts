@@ -31,7 +31,6 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:core"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))

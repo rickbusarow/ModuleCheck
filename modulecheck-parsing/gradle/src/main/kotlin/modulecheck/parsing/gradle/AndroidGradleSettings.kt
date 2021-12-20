@@ -31,3 +31,8 @@ interface AndroidGradleSettingsProvider {
     fun create(buildFile: File): AndroidGradleSettingsProvider
   }
 }
+
+interface AndroidGradleParser {
+
+  fun parse(buildFile: File): AndroidGradleSettings
+}

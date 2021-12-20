@@ -25,19 +25,17 @@ import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
-import modulecheck.parsing.JvmFile
-import modulecheck.project.DeclarationName
-import modulecheck.project.McProject
-import modulecheck.project.asDeclarationName
+import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 import kotlin.properties.Delegates
 
 class JavaFile(
-  project: McProject,
   val file: File
-) : JvmFile(project) {
+) : JvmFile() {
 
   override val name = file.name
 

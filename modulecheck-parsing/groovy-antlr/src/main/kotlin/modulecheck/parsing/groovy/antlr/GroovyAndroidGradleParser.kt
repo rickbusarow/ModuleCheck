@@ -16,9 +16,9 @@
 package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.ParserRuleContext
-import modulecheck.parsing.AndroidGradleParser
 import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
+import modulecheck.parsing.gradle.AndroidGradleParser
 import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.Assignment
 import modulecheck.utils.requireNotNull
