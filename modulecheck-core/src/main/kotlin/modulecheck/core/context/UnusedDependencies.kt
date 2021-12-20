@@ -40,7 +40,7 @@ data class UnusedDependencies(
 
   suspend fun all(): List<UnusedDependency> {
     return project.sourceSets
-      .flatMap { it.key.configurationNames() }
+      .flatMap { it.key.javaConfigurationNames() }
       .mapAsync { configurationName -> get(configurationName) }
       .toList()
       .flatten()

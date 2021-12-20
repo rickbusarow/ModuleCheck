@@ -144,13 +144,13 @@ internal fun McProjectBuilderScope.populateConfigs() {
     .keys
     // add main source set configs first so that they can be safely looked up for inheriting configs
     .sortedByDescending { it == SourceSetName.MAIN }
-    .flatMap { it.configurationNames() }
+    .flatMap { it.javaConfigurationNames() }
     .forEach { configurationName ->
 
       val inherited = if (configurationName.toSourceSetName() == SourceSetName.MAIN) {
         emptySet()
       } else {
-        SourceSetName.MAIN.configurationNames()
+        SourceSetName.MAIN.javaConfigurationNames()
           .map { configurations.getValue(it) }
           .toSet()
       }

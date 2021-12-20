@@ -47,7 +47,7 @@ data class OverShotDependencies(
             .keys
             .mapNotNull { sourceSetName ->
 
-              sourceSetName.configurationNames()
+              sourceSetName.javaConfigurationNames()
                 .filterNot { it == unused.configurationName }
                 // check the same config as the unused configuration first.
                 // for instance, if `api` is unused, check `debugApi`, `testApi`, etc.

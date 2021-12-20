@@ -41,12 +41,12 @@ data class SourceSet(
 @JvmInline
 value class SourceSetName(val value: String) {
 
-  fun configurationNames(): List<ConfigurationName> {
+  fun javaConfigurationNames(): List<ConfigurationName> {
 
     return if (this == MAIN) {
       ConfigurationName.main()
     } else {
-      ConfigurationName.baseConfigurations
+      ConfigurationName.mainConfigurations
         .map {
           "${this.value}${it.capitalize()}"
             .asConfigurationName()

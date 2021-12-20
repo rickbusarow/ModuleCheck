@@ -44,7 +44,7 @@ data class RedundantDependencies(
 
     return delegate.getOrPut(sourceSetName) {
 
-      val allDirect = sourceSetName.configurationNames()
+      val allDirect = sourceSetName.javaConfigurationNames()
         .flatMap { project.projectDependencies[it].orEmpty() }
         .toSet()
 
