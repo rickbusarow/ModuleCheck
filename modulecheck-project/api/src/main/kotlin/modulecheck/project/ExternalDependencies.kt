@@ -37,6 +37,6 @@ class ExternalDependencies(
     }
 
   operator fun get(sourceSetName: SourceSetName): List<ExternalDependency> {
-    return sourceSetName.configurationNames().flatMap { get(it).orEmpty() }
+    return sourceSetName.javaConfigurationNames().flatMap { get(it).orEmpty() }
   }
 }

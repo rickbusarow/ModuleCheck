@@ -28,7 +28,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
     // creating "implementation" instead of "mainImplementation"
-    in baseConfigurations -> SourceSetName.MAIN
+    in mainConfigurations -> SourceSetName.MAIN
     // all other configurations (like "test", "debug", or "androidTest")
     // are just "$sourceSetName${baseConfigurationName.capitalize()}"
     else -> this.value.extractSourceSetName()
@@ -74,7 +74,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     //  | compileOnlyApi   | main
     //  | implementation   | main
     //  etc.
-    val configType = baseConfigurationsCapitalized
+    val configType = mainConfigurationsCapitalized
       .find { this.endsWith(it) }
       ?: return toSourceSetName()
 
@@ -132,7 +132,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
      * The order of this list matters.
      * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
      */
-    internal val baseConfigurations = listOf(
+    internal val mainConfigurations = listOf(
       compileOnlyApi.value,
       api.value,
       kapt.value,
@@ -143,7 +143,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       runtime.value
     )
 
-    private val baseConfigurationsCapitalized = baseConfigurations
+    private val mainConfigurationsCapitalized = mainConfigurations
       .map { it.capitalize() }
       .toSet()
 

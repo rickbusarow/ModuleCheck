@@ -37,7 +37,7 @@ class ProjectDependencies(
     }
 
   operator fun get(sourceSetName: SourceSetName): List<ConfiguredProjectDependency> {
-    return sourceSetName.configurationNames().flatMap { get(it).orEmpty() }
+    return sourceSetName.javaConfigurationNames().flatMap { get(it).orEmpty() }
   }
 
   fun add(cpd: ConfiguredProjectDependency) {
