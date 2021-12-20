@@ -20,6 +20,7 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.parsing.gradle.AgpBlock
+import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.project.McProject
 import modulecheck.utils.indent
 import modulecheck.utils.minimumIndent
@@ -39,12 +40,15 @@ data class DisableViewBindingGenerationFinding(
 
   override val dependencyIdentifier = ""
 
+  override val declarationOrNull: DependencyDeclaration?
+    get() = null
+
   override val statementTextOrNull: String? by lazy {
 
     dependentProject.buildFileParser.androidSettings()
       .assignments
       .firstOrNull { it.propertyFullName == "viewBinding" }
-      ?.assignmentText
+      ?.declarationText
   }
 
   override val positionOrNull: Position? by lazy {
@@ -64,10 +68,10 @@ data class DisableViewBindingGenerationFinding(
       .takeIf { it.isNotEmpty() }
       ?.fold(buildFile.readText()) { oldText, assignment ->
 
-        val newAssignmentText = assignment.assignmentText.replace(assignment.value, "false")
+        val newAssignmentText = assignment.declarationText.replace(assignment.value, "false")
 
         val newFullText = assignment.fullText
-          .replace(assignment.assignmentText, newAssignmentText)
+          .replace(assignment.declarationText, newAssignmentText)
 
         oldText.replace(assignment.fullText, newFullText)
       }

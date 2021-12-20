@@ -15,7 +15,8 @@
 
 package modulecheck.api.finding
 
-interface Deletable : Finding {
+interface Deletable : Finding,
+  DependencyFinding {
 
   fun delete(): Boolean = synchronized(buildFile) {
 
@@ -23,7 +24,7 @@ interface Deletable : Finding {
 
     require(this is RemovesDependency)
 
-    dependentProject.removeDependencyWithDelete(oldDependency, declaration)
+    dependentProject.removeDependencyWithDelete(declaration, oldDependency)
 
     return true
   }

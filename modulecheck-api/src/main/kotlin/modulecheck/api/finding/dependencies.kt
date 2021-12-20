@@ -15,15 +15,17 @@
 
 package modulecheck.api.finding
 
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.util.prefixIfNot
 
 fun McProject.addDependency(
   cpd: ConfiguredProjectDependency,
-  newDeclaration: ModuleDependencyDeclaration,
-  markerDeclaration: ModuleDependencyDeclaration
+  newDeclaration: DependencyDeclaration,
+  markerDeclaration: DependencyDeclaration
 ) = synchronized(buildFile) {
 
   val oldStatement = markerDeclaration.statementWithSurroundingText
@@ -39,9 +41,9 @@ fun McProject.addDependency(
 }
 
 fun McProject.removeDependencyWithComment(
-  cpd: ConfiguredProjectDependency,
-  declaration: ModuleDependencyDeclaration,
-  fixLabel: String
+  declaration: Declaration,
+  fixLabel: String,
+  configuredDependency: ConfiguredDependency? = null
 ) = synchronized(buildFile) {
 
   val text = buildFile.readText()
@@ -71,12 +73,15 @@ fun McProject.removeDependencyWithComment(
 
   buildFile.writeText(text.replaceFirst(statementText, newText))
 
-  projectDependencies.remove(cpd)
+  if (configuredDependency is ConfiguredProjectDependency) {
+
+    projectDependencies.remove(configuredDependency)
+  }
 }
 
 fun McProject.removeDependencyWithDelete(
-  cpd: ConfiguredProjectDependency,
-  declaration: ModuleDependencyDeclaration
+  declaration: Declaration,
+  configuredDependency: ConfiguredDependency? = null
 ) = synchronized(buildFile) {
   val text = buildFile.readText()
 
@@ -84,5 +89,7 @@ fun McProject.removeDependencyWithDelete(
     text.replaceFirst(declaration.statementWithSurroundingText + '\n', "")
   )
 
-  projectDependencies.remove(cpd)
+  if (configuredDependency is ConfiguredProjectDependency) {
+    projectDependencies.remove(configuredDependency)
+  }
 }

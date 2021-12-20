@@ -15,7 +15,7 @@
 
 package modulecheck.api.finding
 
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
 import java.io.File
 
@@ -29,8 +29,6 @@ interface Finding {
   val message: String
   val buildFile: File
 
-  val declarationOrNull: ModuleDependencyDeclaration? get() = null
-  val statementTextOrNull: String? get() = null
   val positionOrNull: Position?
 
   fun toResult(fixed: Boolean): FindingResult {
@@ -68,4 +66,10 @@ interface Finding {
   ) {
     val filePathString: String = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
   }
+}
+
+interface DependencyFinding {
+
+  val declarationOrNull: Declaration?
+  val statementTextOrNull: String?
 }

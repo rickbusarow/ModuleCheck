@@ -17,5 +17,6 @@ package modulecheck.parsing.gradle
 
 data class PluginDeclaration(
   override val declarationText: String,
-  override val statementWithSurroundingText: String
+  override val statementWithSurroundingText: String,
+  override val suppressed: List<String> = emptyList()
 ) : Declaration

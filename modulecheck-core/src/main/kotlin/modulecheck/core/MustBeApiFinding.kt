@@ -67,7 +67,7 @@ data class MustBeApiFinding(
     )
 
     dependentProject.addDependency(newDependency, newDeclaration, oldDeclaration)
-    dependentProject.removeDependencyWithDelete(oldDependency, oldDeclaration)
+    dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
 
     return true
   }

@@ -15,6 +15,7 @@
 
 package modulecheck.core
 
+import modulecheck.api.finding.DependencyFinding
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Fixable
@@ -30,7 +31,8 @@ abstract class ProjectDependencyFinding(
   override val findingName: String
 ) : Problem,
   Fixable,
-  Finding {
+  Finding,
+  DependencyFinding {
 
   final override val dependentPath: String get() = dependentProject.path
   final override val buildFile: File get() = dependentProject.buildFile

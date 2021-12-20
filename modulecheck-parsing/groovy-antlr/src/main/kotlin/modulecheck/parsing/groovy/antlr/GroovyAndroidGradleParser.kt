@@ -63,7 +63,7 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
           fullText = fullText,
           propertyFullName = propertyName,
           value = valueText,
-          assignmentText = assignmentText
+          declarationText = assignmentText
         )
       }
 
