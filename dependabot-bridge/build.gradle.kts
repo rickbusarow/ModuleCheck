@@ -60,7 +60,7 @@ dependencies {
 
   dependencySync("javax.inject:javax.inject:1")
 
-  dependencySync("net.swiftzer.semver:semver:1.1.2")
+  dependencySync("net.swiftzer.semver:semver:1.2.0")
 
   dependencySync("org.antlr:antlr4-runtime:4.9.3")
   dependencySync("org.antlr:antlr4:4.9.3")
@@ -69,7 +69,7 @@ dependencies {
   dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.0")
   dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.5.32")
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.32")
-  dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.32")
+  dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.6.10")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.32")
   dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.5.32")
   dependencySync("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.32")
