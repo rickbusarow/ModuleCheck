@@ -19,7 +19,8 @@ import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 
-interface Problem : Finding,
+interface Problem :
+  Finding,
   DependencyFinding {
 
   val dependencyIdentifier: String
