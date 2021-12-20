@@ -33,8 +33,8 @@ groovy = "3.0.9"
 hermit = "0.9.5"
 jUnit = "5.8.2"
 knit = "0.3.0"
-kotest = "5.0.1"
-kotlin = "1.5.32"
+kotest = "5.0.3"
+kotlin = "1.6.10"
 
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.5.2"
@@ -49,8 +49,8 @@ rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-moduleCheck = "0.11.3"
 rickBusarow-tangle = "0.13.2"
 
+#square-anvil = "2.3.10"
 square-anvil = "2.3.10"
-#square-anvil = "2.3.10-1-6-0"
 square-moshi = "1.12.0"
 square-okhttp = "4.9.1"
 square-retrofit = "2.9.0"
@@ -172,5 +172,5 @@ vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", ve
 
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]
-kotest = ["kotest-assertions", "kotest-properties", "kotest-runner"]
+kotest = ["kotest-assertions", "kotest-properties"]
 hermit = ["hermit-core", "hermit-jUnit5"]
