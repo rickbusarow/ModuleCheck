@@ -18,7 +18,7 @@ package modulecheck.specs
 import java.nio.file.Path
 
 public val DEFAULT_GRADLE_VERSION: String = System
-  .getProperty("modulecheck.gradleVersion", "7.3")
+  .getProperty("modulecheck.gradleVersion", "7.3.2")
   /*
   * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command line argument of "7".
   * That version doesn't resolve.  So if the String doesn't contain a period, just append ".0"
@@ -27,13 +27,16 @@ public val DEFAULT_GRADLE_VERSION: String = System
     if (prop.contains('.')) prop else "$prop.0"
   }
 public val DEFAULT_KOTLIN_VERSION: String =
-  System.getProperty("modulecheck.kotlinVersion", "1.6.0")
+  System.getProperty("modulecheck.kotlinVersion", "1.6.10")
 public val DEFAULT_AGP_VERSION: String =
   System.getProperty("modulecheck.agpVersion", "7.0.3")
+public val DEFAULT_ANVIL_VERSION: String =
+  System.getProperty("modulecheck.anvilVersion", "2.3.10-1-6-0")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
   public var agpVersion: String = DEFAULT_AGP_VERSION,
+  public var anvilVersion: String = DEFAULT_ANVIL_VERSION,
   public val plugins: MutableList<String>,
   public val imports: MutableList<String>,
   public val blocks: MutableList<String>,
@@ -105,7 +108,7 @@ public data class ProjectBuildSpec(
       |  dependencies {
       |    classpath("com.android.tools.build:gradle:$agpVersion")
       |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-      |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
+      |    classpath("com.squareup.anvil:gradle-plugin:$anvilVersion")
       |  }
       |}
       |
