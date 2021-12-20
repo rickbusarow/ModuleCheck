@@ -172,5 +172,5 @@ vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", ve
 
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]
-kotest = ["kotest-assertions", "kotest-properties", "kotest-runner"]
+kotest = ["kotest-assertions", "kotest-properties"]
 hermit = ["hermit-core", "hermit-jUnit5"]
