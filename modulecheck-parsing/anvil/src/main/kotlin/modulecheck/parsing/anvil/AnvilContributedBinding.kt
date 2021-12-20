@@ -16,7 +16,7 @@
 package modulecheck.parsing.anvil
 
 import modulecheck.parsing.psi.KotlinFile
-import modulecheck.project.DeclarationName
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.temp.AnvilScopeNameEntry
 import org.jetbrains.kotlin.name.FqName

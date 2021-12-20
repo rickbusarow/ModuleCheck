@@ -28,8 +28,8 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-parsing:core"))
   api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:source"))
 
   compileOnly(gradleApi())
 
