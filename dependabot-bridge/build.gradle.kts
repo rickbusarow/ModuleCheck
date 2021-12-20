@@ -55,8 +55,8 @@ dependencies {
 
   dependencySync("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
   dependencySync("io.kotest:kotest-assertions-core-jvm:5.0.3")
-  dependencySync("io.kotest:kotest-property-jvm:5.0.1")
-  dependencySync("io.kotest:kotest-runner-junit5-jvm:5.0.1")
+  dependencySync("io.kotest:kotest-property-jvm:5.0.3")
+  dependencySync("io.kotest:kotest-runner-junit5-jvm:5.0.3")
 
   dependencySync("javax.inject:javax.inject:1")
 
