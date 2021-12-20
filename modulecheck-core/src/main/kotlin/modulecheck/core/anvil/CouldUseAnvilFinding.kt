@@ -20,6 +20,7 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.project.McProject
 import modulecheck.utils.existsOrNull
 import java.io.File
@@ -36,6 +37,9 @@ data class CouldUseAnvilFinding(
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
   override val findingName = "useAnvilFactories"
+
+  override val declarationOrNull: DependencyDeclaration?
+    get() = null
 
   override val positionOrNull: Position? by lazy {
 

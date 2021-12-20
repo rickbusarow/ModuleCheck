@@ -17,7 +17,7 @@ package modulecheck.project
 
 import modulecheck.parsing.gradle.ConfigurationName
 
-interface HasConfig {
+sealed interface ConfiguredDependency {
   val configurationName: ConfigurationName
   val name: String
 }

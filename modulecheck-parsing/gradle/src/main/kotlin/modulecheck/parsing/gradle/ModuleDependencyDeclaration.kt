@@ -18,15 +18,8 @@ package modulecheck.parsing.gradle
 import modulecheck.parsing.gradle.ModuleRef.StringRef
 import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
 
-interface Declaration {
-
-  val statementWithSurroundingText: String
-  val declarationText: String
-}
-
 sealed interface DependencyDeclaration : Declaration {
   val configName: ConfigurationName
-  val suppressed: List<String>
 }
 
 data class UnknownDependencyDeclaration(

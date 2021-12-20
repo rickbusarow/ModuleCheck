@@ -42,6 +42,12 @@ class SortDependenciesFinding(
 
   override val positionOrNull: Position? get() = null
 
+  override val declarationOrNull: DependencyDeclaration?
+    get() = null
+
+  override val statementTextOrNull: String?
+    get() = null
+
   override fun fix(): Boolean = synchronized(buildFile) {
     var fileText = buildFile.readText()
 
