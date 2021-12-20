@@ -18,7 +18,7 @@ package modulecheck.api.context
 import modulecheck.api.context.ResolvedDeclarationNames.SourceResult.Found
 import modulecheck.api.context.ResolvedDeclarationNames.SourceResult.NOT_PRESENT
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.DeclarationName
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache

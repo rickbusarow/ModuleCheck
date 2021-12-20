@@ -16,8 +16,7 @@
 package modulecheck.parsing.java
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.DeclarationName
-import modulecheck.project.McProject
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
@@ -122,14 +121,13 @@ internal class JavaFileTest : ProjectTest() {
 
   fun file(
     @Language("java")
-    content: String,
-    project: McProject = simpleProject()
+    content: String
   ): JavaFile {
     testProjectDir.mkdirs()
 
     val javaFile = File(testProjectDir, "javaFile.java")
       .also { it.writeText(content.trimIndent()) }
 
-    return JavaFile(project, javaFile)
+    return JavaFile(javaFile)
   }
 }

@@ -15,23 +15,24 @@
 
 plugins {
   id("mcbuild")
-  groovy
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-xml"
+  artifactId = "modulecheck-parsing-core"
+  anvil = true
 }
 
 dependencies {
 
-  api(libs.kotlin.compiler)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
+  api(libs.semVer)
 
-  api(project(path = ":modulecheck-parsing:core"))
-  api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
-
-  compileOnly(libs.groovyXml)
 
   implementation(libs.agp)
   implementation(libs.groovy)

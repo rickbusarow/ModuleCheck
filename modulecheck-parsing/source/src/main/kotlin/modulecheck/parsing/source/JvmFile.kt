@@ -13,15 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing
+package modulecheck.parsing.source
 
-import modulecheck.project.AndroidMcProject
-import modulecheck.project.DeclarationName
-import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
 
-abstract class JvmFile(private val project: McProject) {
+abstract class JvmFile {
   abstract val name: String
   abstract val packageFqName: String
   abstract val imports: Set<String>
@@ -40,23 +36,6 @@ abstract class JvmFile(private val project: McProject) {
 
   abstract val wildcardImports: Set<String>
   abstract val maybeExtraReferences: LazyDeferred<Set<String>>
-
-  val androidRReferences = lazyDeferred {
-    val rFqName = (project as? AndroidMcProject)
-      ?.androidRFqNameOrNull
-      ?: return@lazyDeferred emptySet<String>()
-
-    val packagePrefix = (project as? AndroidMcProject)
-      ?.androidPackageOrNull
-      ?.let { "$it." }
-      ?: return@lazyDeferred emptySet<String>()
-
-    maybeExtraReferences.await()
-      .filter { it.startsWith(rFqName) }
-      .plus(imports.filter { it.startsWith(rFqName) })
-      .map { it.removePrefix(packagePrefix) }
-      .toSet()
-  }
 
   companion object
 }

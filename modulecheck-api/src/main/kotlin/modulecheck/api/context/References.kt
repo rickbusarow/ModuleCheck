@@ -16,6 +16,7 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
@@ -34,11 +35,28 @@ data class References(
   }
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): Set<ReferenceName> {
+
+    val androidRFqNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
+    val packagePrefix = (project as? AndroidMcProject)
+      ?.androidPackageOrNull
+      ?.let { "$it." }
+
     val jvm = project.get(JvmFiles)
       .get(sourceSetName)
       .flatMapSetConcat { jvmFile ->
-        jvmFile.maybeExtraReferences.await()
-          .plus(jvmFile.androidRReferences.await())
+        val maybeExtra = jvmFile.maybeExtraReferences.await()
+
+        if (androidRFqNameOrNull == null || packagePrefix == null) {
+          return@flatMapSetConcat maybeExtra
+        }
+
+        val rReferences = maybeExtra
+          .filter { it.startsWith(androidRFqNameOrNull) }
+          .plus(jvmFile.imports.filter { it.startsWith(androidRFqNameOrNull) })
+          .map { it.removePrefix(packagePrefix) }
+          .toSet()
+
+        maybeExtra + rReferences
       }
 
     val layout = project.get(LayoutFiles)
