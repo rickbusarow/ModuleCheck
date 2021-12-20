@@ -18,17 +18,20 @@ package modulecheck.project.test
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
+import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealMcProject
 import modulecheck.project.temp.AnvilGradlePlugin
+import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -50,16 +53,51 @@ interface McProjectBuilderScope {
     asTestFixture: Boolean = false
   ) {
 
-    val sourceSetName = configurationName.toSourceSetName()
-    if (!sourceSets.containsKey(sourceSetName)) {
-      addSourceSet(sourceSetName)
-    }
+    configurationName.maybeAddToSourceSetsAndConfigurations()
 
     val old = projectDependencies[configurationName].orEmpty()
 
     val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
+  }
+
+  fun addExternalDependency(
+    configurationName: ConfigurationName,
+    coordinates: String,
+    asTestFixture: Boolean = false
+  ) {
+
+    val maven = MavenCoordinates.parseOrNull(coordinates)
+      .requireNotNull {
+        "The external coordinate string `$coordinates` must match the Maven coordinate pattern."
+      }
+
+    configurationName.maybeAddToSourceSetsAndConfigurations()
+
+    val old = externalDependencies[configurationName].orEmpty()
+
+    val external = ExternalDependency(
+      configurationName = configurationName,
+      group = maven.group,
+      moduleName = maven.moduleName,
+      version = maven.version
+    )
+
+    externalDependencies[configurationName] = old + external
+  }
+
+  private fun ConfigurationName.maybeAddToSourceSetsAndConfigurations() {
+    val sourceSetName = toSourceSetName()
+    if (!sourceSets.containsKey(sourceSetName)) {
+      addSourceSet(sourceSetName)
+    }
+    // If the configuration is not from Java plugin, then it won't be automatically added from
+    // source sets.  Plugins like Kapt don't make their configs inherit from each other,
+    // so just add an empty set for inherited.
+    if (this !in sourceSetName.javaConfigurationNames()) {
+      configurations[this] = Config(this, emptySet())
+    }
   }
 
   fun addSource(

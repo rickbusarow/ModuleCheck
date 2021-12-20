@@ -17,7 +17,9 @@ package modulecheck.core.internal
 
 import modulecheck.api.finding.Finding.Position
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 
 fun McProject.statementOrNullIn(
@@ -28,6 +30,19 @@ fun McProject.statementOrNullIn(
     .dependenciesBlocks()
     .firstNotNullOfOrNull { block ->
       block.getOrEmpty(path, configuration)
+        .takeIf { it.isNotEmpty() }
+    }
+    ?.firstOrNull()
+}
+
+fun ExternalDependency.statementOrNullIn(
+  dependentProject: McProject,
+  configuration: ConfigurationName
+): ExternalDependencyDeclaration? {
+  return dependentProject.buildFileParser
+    .dependenciesBlocks()
+    .firstNotNullOfOrNull { block ->
+      block.getOrEmpty(coords, configuration)
         .takeIf { it.isNotEmpty() }
     }
     ?.firstOrNull()

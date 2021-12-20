@@ -15,22 +15,24 @@
 
 package modulecheck.core.kapt
 
+import modulecheck.api.finding.Deletable
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
+import modulecheck.api.finding.removeDependencyWithComment
+import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
 import modulecheck.core.rule.KAPT_PLUGIN_ID
+import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.project.McProject
 import java.io.File
-
-interface UnusedKaptFinding : Finding, Fixable, Problem
 
 data class UnusedKaptPluginFinding(
   override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File
-) : UnusedKaptFinding {
+) : Finding, Problem, Fixable, Deletable {
 
   override val message: String
     get() = "The `$KAPT_PLUGIN_ID` plugin dependency declared, " +
@@ -59,5 +61,38 @@ data class UnusedKaptPluginFinding(
       .indexOfFirst { it != ' ' }
 
     Position(row + 1, col + 1)
+  }
+
+  override val declarationOrNull: PluginDeclaration? by lazy {
+
+    sequenceOf(
+      "id(\"$KAPT_PLUGIN_ID\")",
+      "id \"$KAPT_PLUGIN_ID\"",
+      "id '$KAPT_PLUGIN_ID'",
+      KAPT_PLUGIN_FUN
+    ).firstNotNullOfOrNull { id ->
+      dependentProject.buildFileParser.pluginsBlock()?.getById(id)
+    }
+  }
+  override val statementTextOrNull: String? by lazy {
+    declarationOrNull?.statementWithSurroundingText
+  }
+
+  override fun fix(): Boolean = synchronized(buildFile) {
+
+    val declaration = declarationOrNull ?: return false
+
+    dependentProject.removeDependencyWithComment(declaration, fixLabel())
+
+    true
+  }
+
+  override fun delete(): Boolean = synchronized(buildFile) {
+
+    val declaration = declarationOrNull ?: return false
+
+    dependentProject.removeDependencyWithDelete(declaration)
+
+    return true
   }
 }

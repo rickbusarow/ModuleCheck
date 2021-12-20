@@ -17,15 +17,11 @@
 
 package modulecheck.api
 
-data class KaptProcessor(val coordinates: String)
-
-class KaptMatcher(
+data class KaptMatcher(
   val name: String,
   val processor: String,
-  annotationImports: List<String>
+  val annotationImports: List<String>
 ) {
-
-  val annotationImports = annotationImports.map { it.toRegex() }
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true

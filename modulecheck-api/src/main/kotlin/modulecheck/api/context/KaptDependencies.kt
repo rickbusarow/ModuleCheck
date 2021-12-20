@@ -15,30 +15,30 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.KaptProcessor
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.all
+import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
 import modulecheck.utils.SafeCache
 
 data class KaptDependencies(
-  private val delegate: SafeCache<ConfigurationName, Set<KaptProcessor>>,
+  private val delegate: SafeCache<ConfigurationName, Set<ConfiguredDependency>>,
   private val project: McProject
 ) : Element {
 
   override val key: ProjectContext.Key<KaptDependencies>
     get() = Key
 
-  suspend fun all(): List<KaptProcessor> {
+  suspend fun all(): List<ConfiguredDependency> {
     return project.configurations
       .filterNot { it.key.value.startsWith("_") }
       .filter { it.key.value.contains("kapt", true) }
       .flatMap { get(it.key) }
   }
 
-  suspend fun get(configurationName: ConfigurationName): Set<KaptProcessor> {
+  suspend fun get(configurationName: ConfigurationName): Set<ConfiguredDependency> {
     return delegate.getOrPut(configurationName) {
       val external = project.externalDependencies[configurationName].orEmpty()
       val internal = project
@@ -50,7 +50,6 @@ data class KaptDependencies(
       allDependencies
         .filterNot { it.name == KAPT_PLUGIN_COORDS }
         .filter { it.configurationName == configurationName }
-        .map { KaptProcessor(it.name) }
         .toSet()
     }
   }
@@ -69,4 +68,4 @@ data class KaptDependencies(
 suspend fun ProjectContext.kaptDependencies(): KaptDependencies = get(KaptDependencies)
 suspend fun ProjectContext.kaptDependenciesForConfig(
   configurationName: ConfigurationName
-): Set<KaptProcessor> = kaptDependencies().get(configurationName).orEmpty()
+): Set<ConfiguredDependency> = kaptDependencies().get(configurationName).orEmpty()

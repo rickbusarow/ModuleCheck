@@ -21,7 +21,7 @@ data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
   val project: McProject,
   val isTestFixture: Boolean
-) : HasConfig {
+) : ConfiguredDependency {
 
   val path = project.path
 

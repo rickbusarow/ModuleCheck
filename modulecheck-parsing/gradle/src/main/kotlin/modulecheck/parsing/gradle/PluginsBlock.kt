@@ -40,6 +40,14 @@ abstract class PluginsBlock : Block<PluginDeclaration> {
 
   protected abstract fun findOriginalStringIndex(parsedString: String): Int
 
+  fun getById(pluginId: String): PluginDeclaration? {
+    val regex = pluginId.let { Regex.escape(it) }
+      .replace("\\.", "\\s*\\.\\s*")
+      .toRegex()
+
+    return settings.firstOrNull { it.declarationText.contains(regex) }
+  }
+
   private fun getOriginalString(parsedString: String): String {
     val originalStringIndex = findOriginalStringIndex(parsedString)
 

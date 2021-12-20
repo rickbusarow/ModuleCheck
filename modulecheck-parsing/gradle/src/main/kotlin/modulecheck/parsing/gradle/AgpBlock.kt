@@ -34,5 +34,7 @@ data class Assignment(
   val fullText: String,
   val propertyFullName: String,
   val value: String,
-  val assignmentText: String
-)
+  override val declarationText: String,
+  override val statementWithSurroundingText: String = declarationText,
+  override val suppressed: List<String> = emptyList()
+) : Declaration

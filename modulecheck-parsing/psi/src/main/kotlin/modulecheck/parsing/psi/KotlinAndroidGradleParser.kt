@@ -118,7 +118,7 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
       fullText = fullText,
       propertyFullName = propertyFullName,
       value = value,
-      assignmentText = assignmentText
+      declarationText = assignmentText
     )
   }
 }

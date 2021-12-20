@@ -15,9 +15,18 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.finding.Finding.Position
-import modulecheck.core.internal.positionOf
+import modulecheck.api.finding.DependencyFinding
+import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Fixable
+import modulecheck.api.finding.Problem
+import modulecheck.api.finding.RemovesDependency
+import modulecheck.core.internal.positionOfStatement
+import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.project.ConfiguredDependency
+import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import java.io.File
 
@@ -25,34 +34,44 @@ data class UnusedKaptProcessorFinding(
   override val dependentProject: McProject,
   override val dependentPath: String,
   override val buildFile: File,
-  val dependencyPath: String,
+  override val oldDependency: ConfiguredDependency,
   val configurationName: ConfigurationName
-) : UnusedKaptFinding {
+) : Finding,
+  Problem,
+  Fixable,
+  DependencyFinding,
+  RemovesDependency {
 
   override val message: String
     get() = "The annotation processor dependency is not used in this module.  " +
       "This can be a significant performance hit."
 
-  override val dependencyIdentifier = dependencyPath
+  override val dependencyIdentifier = when (oldDependency) {
+    is ConfiguredProjectDependency -> oldDependency.path
+    is ExternalDependency -> oldDependency.name
+  }
 
   override val findingName = "unusedKaptProcessor (${configurationName.value})"
 
-  override val positionOrNull: Position? by lazy {
-    // Kapt paths are different from other project dependencies.
-    // Given a module of `:foo:bar:baz` in a project named `my-proj`,
-    // the resolved artifact is `my-proj.foo.bar.baz`.
-    // Reverse that to get the coordinates actually written in the build file.
-    val correctedPath = dependencyPath.split(".")
-      .drop(1)
-      .joinToString(":", ":")
+  override val declarationOrNull: DependencyDeclaration? by lazy {
+    when (oldDependency) {
+      is ConfiguredProjectDependency ->
+        oldDependency.project
+          .statementOrNullIn(dependentProject, oldDependency.configurationName)
+      is ExternalDependency ->
+        oldDependency
+          .statementOrNullIn(dependentProject, oldDependency.configurationName)
+    }
+  }
 
-    buildFile
-      .readText()
-      .lines()
-      .positionOf(dependencyPath, configurationName)
-      ?: buildFile
-        .readText()
-        .lines()
-        .positionOf(correctedPath, configurationName)
+  override val statementTextOrNull: String? by lazy {
+    declarationOrNull?.statementWithSurroundingText
+  }
+
+  override val positionOrNull by lazy {
+    val statement = declarationOrNull?.declarationText ?: return@lazy null
+
+    buildFile.readText()
+      .positionOfStatement(statement)
   }
 }

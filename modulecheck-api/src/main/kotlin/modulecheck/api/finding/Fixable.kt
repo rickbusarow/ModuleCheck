@@ -16,18 +16,35 @@
 package modulecheck.api.finding
 
 import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 
-interface Problem : Finding {
+interface Problem : Finding,
+  DependencyFinding {
+
+  val dependencyIdentifier: String
 
   fun shouldSkip(): Boolean = declarationOrNull?.suppressed
     ?.contains(findingName)
     ?: false
+
+  override fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
+      dependentPath = dependentPath,
+      problemName = findingName,
+      sourceOrNull = null,
+      dependencyPath = dependencyIdentifier,
+      positionOrNull = positionOrNull,
+      buildFile = buildFile,
+      message = message,
+      fixed = fixed
+    )
+  }
 }
 
 interface RemovesDependency : Fixable {
 
-  val oldDependency: ConfiguredProjectDependency
+  val oldDependency: ConfiguredDependency
 }
 
 interface AddsDependency : Fixable {
@@ -42,28 +59,13 @@ interface HasSource : Finding {
 
 interface Fixable : Finding, Problem {
 
-  val dependencyIdentifier: String
-
-  override fun toResult(fixed: Boolean): FindingResult {
-    return FindingResult(
-      dependentPath = dependentPath,
-      problemName = findingName,
-      sourceOrNull = null,
-      dependencyPath = dependencyIdentifier,
-      positionOrNull = positionOrNull,
-      buildFile = buildFile,
-      message = message,
-      fixed = fixed
-    )
-  }
-
   fun fix(): Boolean = synchronized(buildFile) {
 
     val declaration = declarationOrNull ?: return false
 
     require(this is RemovesDependency)
 
-    dependentProject.removeDependencyWithComment(oldDependency, declaration, fixLabel())
+    dependentProject.removeDependencyWithComment(declaration, fixLabel(), oldDependency)
 
     true
   }

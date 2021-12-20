@@ -13,18 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.MavenCoordinates
+interface Declaration {
 
-data class ExternalDependency(
-  override val configurationName: ConfigurationName,
-  val group: String?,
-  val moduleName: String,
-  val version: String?
-) : ConfiguredDependency {
-  val coords = MavenCoordinates(group, moduleName, version)
-  override val name = "${group ?: ""}:$moduleName"
-  val nameWithVersion = "${group ?: ""}:$moduleName:${version ?: ""}"
+  val statementWithSurroundingText: String
+  val declarationText: String
+  val suppressed: List<String>
 }
