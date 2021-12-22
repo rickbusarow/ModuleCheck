@@ -18,9 +18,7 @@ package modulecheck.api.rule
 import modulecheck.api.finding.Finding
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.parsing.psi.internal.asKtsFileOrNull
 import modulecheck.project.McProject
-import org.jetbrains.kotlin.psi.KtFile
 
 interface ModuleCheckRule<T : Finding> {
 
@@ -29,8 +27,6 @@ interface ModuleCheckRule<T : Finding> {
 
   suspend fun check(project: McProject): List<T>
   fun shouldApply(checksSettings: ChecksSettings): Boolean
-
-  fun McProject.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
 }
 
 interface ReportOnlyRule<T : Finding> : ModuleCheckRule<T>

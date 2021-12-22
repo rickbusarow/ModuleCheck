@@ -27,17 +27,20 @@ import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
+import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
+import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
+import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealAndroidMcProject
-import modulecheck.project.temp.AnvilGradlePlugin
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -171,6 +174,12 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
   populateConfigs()
   populateSourceSets()
 
+  val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
+    RealJvmFileProvider(
+      fileCache = FileCache(), project = project, sourceSetName = sourceSetName
+    )
+  }
+
   val delegate = RealAndroidMcProject(
     path = path,
     projectDir = projectDir,
@@ -186,6 +195,7 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     androidPackageOrNull = androidPackage,
     manifests = manifests,
     logger = PrintLogger(),
+    jvmFileProviderFactory = jvmFileProviderFactory,
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }
   )

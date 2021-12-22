@@ -19,12 +19,14 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.psi.internal.KtFile
+import modulecheck.parsing.psi.internal.PsiElementResolver
+import modulecheck.parsing.psi.internal.psiFileFactory
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.psi.KtFile
 import org.junit.jupiter.api.Test
 
 internal class KotlinFileTest : ProjectTest() {
@@ -312,12 +314,27 @@ internal class KotlinFileTest : ProjectTest() {
     content: String,
     project: McProject = simpleProject(),
     sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): KotlinFile {
+  ): RealKotlinFile {
 
     val kt = KtFile(content)
 
-    return KotlinFile(project, kt, BindingContext.EMPTY, sourceSetName)
+    return RealKotlinFile(kt, PsiElementResolver(project, sourceSetName))
   }
 
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
+
+  fun KtFile(
+    @Language("kotlin")
+    content: String
+  ): KtFile = KtFile(name = "Source.kt", content = content)
+
+  fun KtFile(
+    name: String,
+    @Language("kotlin")
+    content: String
+  ): KtFile = psiFileFactory.createFileFromText(
+    name,
+    KotlinLanguage.INSTANCE,
+    content.trimIndent()
+  ) as KtFile
 }

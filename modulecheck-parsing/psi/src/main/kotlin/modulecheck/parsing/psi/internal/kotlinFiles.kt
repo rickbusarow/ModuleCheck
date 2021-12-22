@@ -24,13 +24,19 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 import java.io.FileNotFoundException
 
-fun Collection<File>.ktFiles() = asSequence()
-  .filter { it.isKotlinFile(listOf("kt")) }
-  .map { it.asKtFile() }
+fun Collection<File>.ktFiles(): List<KtFile> = asSequence()
+  .mapNotNull { it.asKtFileOrNull() }
   .toList()
 
-fun File.asKtsFileOrNull(): KtFile? =
-  if (exists() && isKotlinFile(listOf("kts"))) asKtFile() else null
+fun File.isKotlinFile(): Boolean = exists() && isKotlinFile(listOf("kts", "kt"))
+fun File.isKotlinScriptFile(): Boolean = exists() && isKotlinFile(listOf("kts"))
+fun File.isKtFile(): Boolean = exists() && isKotlinFile(listOf("kt"))
+
+fun File.asKotlinScriptFileOrNull(): KtFile? =
+  if (exists() && isKotlinScriptFile()) asKtFile() else null
+
+fun File.asKtFileOrNull(): KtFile? =
+  if (exists() && isKtFile()) asKtFile() else null
 
 fun File.asKtFile(): KtFile =
   (psiFileFactory.createFileFromText(name, KotlinLanguage.INSTANCE, readText()) as? KtFile)

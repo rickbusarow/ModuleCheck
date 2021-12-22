@@ -24,6 +24,7 @@ import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Provider
 
 class RealAndroidGradleSettingsProvider(
   private val groovyParser: GroovyAndroidGradleParser,
@@ -44,13 +45,13 @@ class RealAndroidGradleSettingsProvider(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val groovyParser: GroovyAndroidGradleParser,
-    private val kotlinParser: KotlinAndroidGradleParser
+    private val groovyParserProvider: Provider<GroovyAndroidGradleParser>,
+    private val kotlinParserProvider: Provider<KotlinAndroidGradleParser>
   ) : AndroidGradleSettingsProvider.Factory {
     override fun create(buildFile: File): RealAndroidGradleSettingsProvider {
       return RealAndroidGradleSettingsProvider(
-        groovyParser = groovyParser,
-        kotlinParser = kotlinParser,
+        groovyParser = groovyParserProvider.get(),
+        kotlinParser = kotlinParserProvider.get(),
         buildFile = buildFile
       )
     }

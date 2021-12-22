@@ -41,6 +41,8 @@ import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.toSourceSetName
+import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
@@ -51,7 +53,6 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
-import modulecheck.project.temp.AnvilGradlePlugin
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
@@ -71,7 +72,8 @@ class GradleProjectProvider @AssistedInject constructor(
   private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
   private val gradleLogger: GradleLogger,
-  private val buildFileParserFactory: BuildFileParser.Factory
+  private val buildFileParserFactory: BuildFileParser.Factory,
+  private val jvmFileProviderFactory: RealJvmFileProvider.Factory
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -138,6 +140,7 @@ class GradleProjectProvider @AssistedInject constructor(
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
+        jvmFileProviderFactory = jvmFileProviderFactory,
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
@@ -152,6 +155,7 @@ class GradleProjectProvider @AssistedInject constructor(
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         logger = gradleLogger,
+        jvmFileProviderFactory = jvmFileProviderFactory,
         buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies

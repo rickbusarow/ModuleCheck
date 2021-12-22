@@ -15,7 +15,11 @@
 
 package modulecheck.parsing.source
 
+import org.jetbrains.kotlin.name.FqName
+
 @JvmInline
 value class DeclarationName(val fqName: String)
 
 fun String.asDeclarationName(): DeclarationName = DeclarationName(this)
+
+fun FqName.asDeclarationName(): DeclarationName = DeclarationName(asString())

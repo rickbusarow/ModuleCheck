@@ -24,6 +24,7 @@ mcbuild {
 
 dependencies {
 
+  api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)

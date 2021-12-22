@@ -31,7 +31,7 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-parsing:gradle"))
-  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())
