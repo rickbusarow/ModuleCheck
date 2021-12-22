@@ -25,6 +25,7 @@ import modulecheck.parsing.psi.internal.asKtFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 import javax.inject.Inject
+import javax.inject.Provider
 
 class RealDependenciesBlocksProvider(
   private val groovyParser: GroovyDependencyBlockParser,
@@ -45,13 +46,13 @@ class RealDependenciesBlocksProvider(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val groovyParser: GroovyDependencyBlockParser,
-    private val kotlinParser: KotlinDependencyBlockParser,
+    private val groovyParserProvider: Provider<GroovyDependencyBlockParser>,
+    private val kotlinParserProvider: Provider<KotlinDependencyBlockParser>,
   ) : DependenciesBlocksProvider.Factory {
     override fun create(buildFile: File): RealDependenciesBlocksProvider {
       return RealDependenciesBlocksProvider(
-        groovyParser = groovyParser,
-        kotlinParser = kotlinParser,
+        groovyParser = groovyParserProvider.get(),
+        kotlinParser = kotlinParserProvider.get(),
         buildFile = buildFile
       )
     }

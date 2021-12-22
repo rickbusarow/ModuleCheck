@@ -28,7 +28,7 @@ import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject

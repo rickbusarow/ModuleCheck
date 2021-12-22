@@ -13,10 +13,20 @@
  * limitations under the License.
  */
 
-package modulecheck.core
+package modulecheck.parsing.psi.internal
 
-import modulecheck.api.finding.Finding
-import modulecheck.parsing.psi.internal.asKtsFileOrNull
-import org.jetbrains.kotlin.psi.KtFile
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.project.McProject
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.name.FqName
 
-fun Finding.kotlinBuildFileOrNull(): KtFile? = buildFile.asKtsFileOrNull()
+class PsiElementResolver(
+  private val project: McProject,
+  private val sourceSetName: SourceSetName
+) {
+  suspend fun fqNameOrNull(
+    token: PsiElement
+  ): FqName? {
+    return token.fqNameOrNull(project, sourceSetName)
+  }
+}

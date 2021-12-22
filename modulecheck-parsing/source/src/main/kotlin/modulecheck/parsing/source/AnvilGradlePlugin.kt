@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.project.temp
+package modulecheck.parsing.source
 
-import modulecheck.parsing.source.DeclarationName
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 

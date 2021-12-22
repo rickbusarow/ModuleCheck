@@ -17,25 +17,29 @@ package modulecheck.parsing.source
 
 import modulecheck.utils.LazyDeferred
 
-abstract class JvmFile {
-  abstract val name: String
-  abstract val packageFqName: String
-  abstract val imports: Set<String>
-  abstract val declarations: Set<DeclarationName>
+interface JvmFile {
+  val name: String
+  val packageFqName: String
+  val imports: Set<String>
+  val declarations: Set<DeclarationName>
 
-  override fun toString(): String {
-    return """${this::class.simpleName}(
-      |packageFqName='$packageFqName',
-      |
-      |importDirectives=$imports,
-      |
-      |declarations=$declarations
-      |
-      |)""".trimMargin()
-  }
+  val wildcardImports: Set<String>
+  val maybeExtraReferences: LazyDeferred<Set<String>>
 
-  abstract val wildcardImports: Set<String>
-  abstract val maybeExtraReferences: LazyDeferred<Set<String>>
+  fun getScopeArguments(
+    allAnnotations: Set<String>,
+    mergeAnnotations: Set<String>
+  ): ScopeArgumentParseResult
 
-  companion object
+  data class ScopeArgumentParseResult(
+    val mergeArguments: Set<RawAnvilAnnotatedType>,
+    val contributeArguments: Set<RawAnvilAnnotatedType>
+  )
 }
+
+interface KotlinFile : JvmFile {
+
+  val apiReferences: LazyDeferred<Set<String>>
+}
+
+interface JavaFile : JvmFile

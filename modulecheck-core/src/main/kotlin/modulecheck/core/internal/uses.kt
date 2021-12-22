@@ -23,12 +23,12 @@ import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.TransitiveProjectDependency
-import modulecheck.project.temp.AnvilScopeName
 
 suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 

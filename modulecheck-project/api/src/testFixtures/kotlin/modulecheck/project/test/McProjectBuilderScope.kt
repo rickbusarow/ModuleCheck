@@ -22,15 +22,18 @@ import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.wiring.FileCache
+import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.ExternalDependency
+import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealMcProject
-import modulecheck.project.temp.AnvilGradlePlugin
 import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import java.io.File
@@ -217,6 +220,12 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
   populateConfigs()
   populateSourceSets()
 
+  val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
+    RealJvmFileProvider(
+      fileCache = FileCache(), project = project, sourceSetName = sourceSetName
+    )
+  }
+
   val delegate = RealMcProject(
     path = path,
     projectDir = projectDir,
@@ -228,6 +237,7 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
     anvilGradlePlugin = anvilGradlePlugin,
     buildFileParser = buildFileParser(buildFile),
     logger = PrintLogger(),
+    jvmFileProviderFactory = jvmFileProviderFactory,
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }
   )
