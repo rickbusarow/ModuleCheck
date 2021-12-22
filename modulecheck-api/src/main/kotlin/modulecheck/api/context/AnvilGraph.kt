@@ -18,27 +18,20 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.psi.asDeclarationName
-import modulecheck.parsing.psi.internal.getByNameOrIndex
+import modulecheck.parsing.source.AnvilScopeName
+import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.temp.AnvilScopeName
-import modulecheck.project.temp.AnvilScopeNameEntry
-import modulecheck.project.temp.RawAnvilAnnotatedType
 import modulecheck.utils.SafeCache
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtAnnotated
-import org.jetbrains.kotlin.psi.KtAnnotationEntry
-import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import kotlin.LazyThreadSafetyMode.NONE
 
 data class AnvilScopedDeclarations(
@@ -96,7 +89,7 @@ data class AnvilGraph(
     val map = mutableMapOf<AnvilScopeName, AnvilScopedDeclarations>()
     suspend fun RawAnvilAnnotatedType.declarations(
       sourceSetName: SourceSetName,
-      kotlinFile: KotlinFile
+      kotlinFile: JvmFile
     ): AnvilScopedDeclarations {
       val scopeName = getAnvilScopeName(
         scopeNameEntry = anvilScopeNameEntry,
@@ -115,7 +108,7 @@ data class AnvilGraph(
 
     jvmFilesForSourceSetName(sourceSetName)
       // Anvil only works with Kotlin, so no point in trying to parse Java files
-      .filterIsInstance<KotlinFile>()
+      // .filterIsInstance<KotlinFile>()
       // only re-visit files which have Anvil annotations
       .filter { kotlinFile ->
         kotlinFile.imports.any { it in allAnnotations } ||
@@ -146,72 +139,10 @@ data class AnvilGraph(
     return map
   }
 
-  private fun KotlinFile.getScopeArguments(
-    allAnnotations: Set<String>,
-    mergeAnnotations: Set<String>
-  ): ScopeArgumentParseResult {
-    val mergeArguments = mutableSetOf<RawAnvilAnnotatedType>()
-    val contributeArguments = mutableSetOf<RawAnvilAnnotatedType>()
-
-    val visitor = classOrObjectRecursiveVisitor vis@{ classOrObject ->
-
-      val typeFqName = classOrObject.fqName ?: return@vis
-      val annotated = classOrObject.safeAs<KtAnnotated>() ?: return@vis
-
-      annotated
-        .annotationEntries
-        .filter { annotationEntry ->
-          val typeRef = annotationEntry.typeReference?.text ?: return@filter false
-
-          allAnnotations.any { it.endsWith(typeRef) }
-        }
-        .forEach { annotationEntry ->
-          val typeRef = annotationEntry.typeReference!!.text
-
-          val raw = annotationEntry.toRawAnvilAnnotatedType(typeFqName) ?: return@forEach
-
-          if (mergeAnnotations.any { it.endsWith(typeRef) }) {
-            mergeArguments.add(raw)
-          } else {
-            contributeArguments.add(raw)
-          }
-        }
-    }
-
-    ktFile.accept(visitor)
-
-    return ScopeArgumentParseResult(
-      mergeArguments = mergeArguments,
-      contributeArguments = contributeArguments
-    )
-  }
-
-  internal data class ScopeArgumentParseResult(
-    val mergeArguments: Set<RawAnvilAnnotatedType>,
-    val contributeArguments: Set<RawAnvilAnnotatedType>
-  )
-
-  fun KtAnnotationEntry.toRawAnvilAnnotatedType(typeFqName: FqName): RawAnvilAnnotatedType? {
-    val valueArgument = valueArgumentList
-      ?.getByNameOrIndex(0, "scope")
-      ?: return null
-
-    val entryText = valueArgument
-      .text
-      .replace(".+[=]+".toRegex(), "") // remove named arguments
-      .replace("::class", "")
-      .trim()
-
-    return RawAnvilAnnotatedType(
-      declarationName = typeFqName.asDeclarationName(),
-      anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
-    )
-  }
-
   private suspend fun McProject.getAnvilScopeName(
     scopeNameEntry: AnvilScopeNameEntry,
     sourceSetName: SourceSetName,
-    kotlinFile: KotlinFile
+    kotlinFile: JvmFile
   ): AnvilScopeName {
     val dependenciesBySourceSetName = dependenciesBySourceSetName()
 

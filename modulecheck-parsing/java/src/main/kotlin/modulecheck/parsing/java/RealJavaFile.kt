@@ -26,16 +26,17 @@ import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
 import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.JavaFile
+import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 import kotlin.properties.Delegates
 
-class JavaFile(
+class RealJavaFile(
   val file: File
-) : JvmFile() {
+) : JavaFile {
 
   override val name = file.name
 
@@ -155,6 +156,13 @@ class JavaFile(
     }.visit(this)
 
     return name
+  }
+
+  override fun getScopeArguments(
+    allAnnotations: Set<String>,
+    mergeAnnotations: Set<String>
+  ): ScopeArgumentParseResult {
+    return ScopeArgumentParseResult(mergeArguments = emptySet(), contributeArguments = emptySet())
   }
 }
 

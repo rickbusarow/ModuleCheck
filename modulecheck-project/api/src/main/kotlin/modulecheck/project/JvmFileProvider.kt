@@ -13,14 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.project.temp
+package modulecheck.project
 
-import java.util.Locale
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.JvmFile
+import java.io.File
 
-fun String.decapitalize(
-  locale: Locale = Locale.US
-) = replaceFirstChar { it.lowercase(locale) }
+fun interface JvmFileProvider {
+  suspend fun getOrNull(file: File): JvmFile?
 
-fun String.capitalize(
-  locale: Locale = Locale.US
-) = replaceFirstChar { it.uppercase(locale) }
+  fun interface Factory {
+    fun create(project: McProject, sourceSetName: SourceSetName): JvmFileProvider
+  }
+}

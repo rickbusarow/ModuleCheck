@@ -21,20 +21,15 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.mapNotNull
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.java.JavaFile
-import modulecheck.parsing.psi.KotlinFile
-import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.source.JvmFile
+import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
-import org.jetbrains.kotlin.incremental.isJavaFile
-import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 
 data class JvmFiles(
-  internal val flowsCache: SafeCache<SourceSetName, Flow<JvmFile>>,
-  internal val filesCache: SafeCache<String, JvmFile>,
+  internal val fileFactoryCache: SafeCache<SourceSetName, JvmFileProvider>,
   private val project: McProject
 ) : ProjectContext.Element {
 
@@ -42,56 +37,35 @@ data class JvmFiles(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): Flow<JvmFile> {
-    return flowsCache.getOrPut(sourceSetName) {
-      @OptIn(FlowPreview::class)
-      project
-        .sourceSets[sourceSetName]
-        ?.jvmFiles
-        .orEmpty()
-        .asFlow()
-        .flatMapConcat { directory ->
-          directory.walkTopDown()
-            .filter { maybeFile -> maybeFile.isFile }
-            // Only use Sequence/Flow APIs here so that everything is lazy.
-            .asFlow()
-            .mapNotNull { file -> getFile(file, project, sourceSetName) }
-        }
-    }
+    @OptIn(FlowPreview::class)
+    return project
+      .sourceSets[sourceSetName]
+      ?.jvmFiles
+      .orEmpty()
+      .asFlow()
+      .flatMapConcat { directory ->
+        directory.walkTopDown()
+          .filter { maybeFile -> maybeFile.isFile }
+          // Only use Sequence/Flow APIs here so that everything is lazy.
+          .asFlow()
+          .mapNotNull { file -> getFile(file, sourceSetName) }
+      }
   }
 
   private suspend fun getFile(
     file: File,
-    project: McProject,
     sourceSetName: SourceSetName
   ): JvmFile? {
 
-    val isKotlin = when {
-      file.isKotlinFile(listOf("kt")) -> true
-      file.isJavaFile() -> false
-      else -> return null
-    }
-
-    return filesCache.getOrPut(file.path) {
-      when {
-        isKotlin -> {
-          KotlinFile(
-            project = project,
-            ktFile = file.asKtFile(),
-            bindingContext = project.bindingContextForSourceSetName(sourceSetName),
-            sourceSetName = sourceSetName
-          )
-        }
-        else -> JavaFile(
-          file = file
-        )
-      }
-    }
+    return fileFactoryCache.getOrPut(sourceSetName) {
+      project.jvmFileProviderFactory.create(project, sourceSetName)
+    }.getOrNull(file)
   }
 
   companion object Key : ProjectContext.Key<JvmFiles> {
     override suspend operator fun invoke(project: McProject): JvmFiles {
 
-      return JvmFiles(SafeCache(), SafeCache(), project)
+      return JvmFiles(SafeCache(), project)
     }
   }
 }

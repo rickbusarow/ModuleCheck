@@ -20,8 +20,8 @@ import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.java.JavaFile
-import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.source.JavaFile
+import modulecheck.parsing.source.KotlinFile
 import modulecheck.project.McProject
 import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred

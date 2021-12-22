@@ -19,16 +19,17 @@ import modulecheck.api.context.resolvedDeclarationNames
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
-import modulecheck.parsing.psi.asDeclarationName
+import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
+import modulecheck.project.JvmFileProvider
 import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
-import modulecheck.project.temp.AnvilGradlePlugin
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
@@ -48,6 +49,7 @@ class RealAndroidMcProject(
   override val androidPackageOrNull: String?,
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,
+  override val jvmFileProviderFactory: JvmFileProvider.Factory,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>
 ) : AndroidMcProject {

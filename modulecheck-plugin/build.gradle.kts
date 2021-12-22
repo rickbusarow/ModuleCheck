@@ -41,6 +41,7 @@ dependencies {
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-project:impl"))

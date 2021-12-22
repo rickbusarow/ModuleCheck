@@ -122,12 +122,12 @@ internal class JavaFileTest : ProjectTest() {
   fun file(
     @Language("java")
     content: String
-  ): JavaFile {
+  ): RealJavaFile {
     testProjectDir.mkdirs()
 
     val javaFile = File(testProjectDir, "javaFile.java")
       .also { it.writeText(content.trimIndent()) }
 
-    return JavaFile(javaFile)
+    return RealJavaFile(javaFile)
   }
 }
