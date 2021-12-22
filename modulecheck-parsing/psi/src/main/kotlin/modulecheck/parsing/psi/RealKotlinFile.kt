@@ -36,6 +36,7 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.requireNotNull
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -81,13 +82,13 @@ class RealKotlinFile(
 
   override val constructorInjectedTypes = lazyDeferred {
     referenceVisitor.constructorInjected
-      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .mapNotNull { it.fqNameOrNull() }
       .toSet()
   }
 
   override val memberInjectedTypes = lazyDeferred {
     referenceVisitor.memberInjected
-      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .mapNotNull { it.fqNameOrNull() }
       .toSet()
   }
 
@@ -113,7 +114,7 @@ class RealKotlinFile(
         val scope = annotationEntry
           .findAnnotationArgument<KtClassLiteralExpression>(name = "scope", index = 0)
           ?.let {
-            psiResolver.fqNameOrNull(it)
+            it.fqNameOrNull()
             // The PsiElement in question here will always be a class reference, so if it can't be
             // resolved, it's either a third-party type which is imported via a wildcard, or it's
             // a stdlib type which doesn't need an import, like `Unit::class`.  Falling back to just
@@ -144,21 +145,35 @@ class RealKotlinFile(
           .filter { it.containingClassOrObject == clazz }
           .mapNotNull { property ->
             property.getChildOfType<KtTypeReference>()
-              ?.let { psiResolver.fqNameOrNull(it) }
+              ?.let { it.fqNameOrNull() }
               ?.let { referencedType -> AnvilBindingReference(referencedType, scope) }
           }
       }
   }
 
   override val moduleBindingReferences = lazyDeferred {
+
+    contributedModulesToComponents.await()
+      .first
+      .map { (clazz, scope) ->
+        clazz.getChildrenOfTypeRecursive<KtProperty>()
+          // In case of nesting classes/interfaces,
+          // only use properties from their directly containing class.
+          .filter { it.containingClassOrObject == clazz }
+          .filter { it.hasAnnotation(this, FqNames.binds) }
+          .onEach { println(" ------     receiver       --> ${it.receiverTypeReference?.fqNameOrNull()}") }
+          .onEach { println(" ------     type           --> ${it.typeReference?.fqNameOrNull()}") }
+          .onEach { println(" ------     bound property --> ${it.text}") }
+      }
+
     referenceVisitor.moduleBindingReferences
-      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .mapNotNull { it.fqNameOrNull() }
       .toSet()
   }
 
   override val boundTypes = lazyDeferred {
     referenceVisitor.inheritanceBoundTypes
-      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .mapNotNull { it.fqNameOrNull() }
       .toSet()
   }
 
@@ -318,6 +333,8 @@ class RealKotlinFile(
   ) {
     override fun toString(): String = "scope -- $scope  -- class --${clazz.fqName}"
   }
+
+  private suspend fun PsiElement.fqNameOrNull(): FqName? = psiResolver.fqNameOrNull(this)
 
   private companion object {
     val operatorSet = setOf(

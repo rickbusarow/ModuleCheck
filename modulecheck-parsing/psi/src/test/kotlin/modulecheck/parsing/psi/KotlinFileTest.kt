@@ -443,10 +443,8 @@ internal class KotlinFileTest : ProjectTest() {
       @com.squareup.anvil.annotations.ContributesTo(Unit::class)
       interface SomeModule {
         @get:Binds
-        val Lib2Class.lib1Class: com.lib1.Lib1Class
+        val com.lib1.Lib1ClassImpl.lib1Class: com.lib1.Lib1Class
       }
-
-      class Lib2Class: Lib1Class()
     """
         )
 
@@ -570,7 +568,9 @@ internal class KotlinFileTest : ProjectTest() {
       """
         package com.lib1
 
-        class Lib1Class
+        open class Lib1Class
+
+        class Lib1ClassImpl : Lib1Class()
       """,
       SourceSetName.MAIN
     )
