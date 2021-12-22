@@ -23,7 +23,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.AnvilScopeNameEntry
+import modulecheck.parsing.source.AnvilScope
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
@@ -92,7 +92,7 @@ data class AnvilGraph(
       kotlinFile: JvmFile
     ): AnvilScopedDeclarations {
       val scopeName = getAnvilScopeName(
-        scopeNameEntry = anvilScopeNameEntry,
+        scopeNameEntry = anvilScope,
         sourceSetName = sourceSetName,
         kotlinFile = kotlinFile
       )
@@ -140,7 +140,7 @@ data class AnvilGraph(
   }
 
   private suspend fun McProject.getAnvilScopeName(
-    scopeNameEntry: AnvilScopeNameEntry,
+    scopeNameEntry: AnvilScope,
     sourceSetName: SourceSetName,
     kotlinFile: JvmFile
   ): AnvilScopeName {
@@ -153,7 +153,7 @@ data class AnvilGraph(
     // if scope is directly imported (most likely),
     // then use that fully qualified import
     val rawScopeName = kotlinFile.imports.firstOrNull { import ->
-      import.endsWith(scopeNameEntry.name)
+      import.endsWith(scopeNameEntry.fqName)
     }
       ?.let { FqName(it) }
       // if the scope is wildcard-imported
@@ -165,7 +165,7 @@ data class AnvilGraph(
             .declarations()
             .get(SourceSetName.MAIN)
             .filter { it.fqName in maybeExtraReferences }
-            .firstOrNull { it.fqName.endsWith(scopeNameEntry.name) }
+            .firstOrNull { it.fqName.endsWith(scopeNameEntry.fqName) }
         }
         .firstOrNull()
         ?.let { FqName(it.fqName) }
@@ -173,11 +173,11 @@ data class AnvilGraph(
       ?: maybeExtraReferences
         .firstOrNull { maybeExtra ->
           maybeExtra.startsWith(kotlinFile.packageFqName) &&
-            maybeExtra.endsWith(scopeNameEntry.name)
+            maybeExtra.endsWith(scopeNameEntry.fqName)
         }
         ?.let { FqName(it) }
       // Scope must be defined in this same package
-      ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.name}")
+      ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.fqName}")
 
     return AnvilScopeName(rawScopeName)
   }

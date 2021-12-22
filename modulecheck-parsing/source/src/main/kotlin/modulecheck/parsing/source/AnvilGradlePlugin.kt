@@ -30,11 +30,23 @@ data class AnvilAnnotatedType(
 
 data class RawAnvilAnnotatedType(
   val declarationName: DeclarationName,
-  val anvilScopeNameEntry: AnvilScopeNameEntry
+  val anvilScope: AnvilScope
 )
 
-data class AnvilScopeName(val fqName: FqName) {
+@JvmInline
+value class AnvilScopeName(val fqName: FqName) {
   override fun toString(): String = fqName.asString()
 }
 
-data class AnvilScopeNameEntry(val name: String)
+data class AnvilScope(val fqName: String)
+
+data class AnvilBoundType(
+  val boundType: FqName,
+  val realType: FqName = boundType,
+  val scopeOrNull: AnvilScopeName? = null
+)
+
+data class AnvilBindingReference(
+  val referencedType: FqName,
+  val scopeOrNull: AnvilScopeName? = null
+)

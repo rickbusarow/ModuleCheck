@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
+import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.psi.KtScriptInitializer
@@ -35,10 +36,15 @@ import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeArgumentList
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
+import org.jetbrains.kotlin.psi.KtValueArgument
+import org.jetbrains.kotlin.psi.KtValueArgumentName
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
+import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
+import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import java.io.File
+import kotlin.LazyThreadSafetyMode.NONE
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
 
@@ -56,19 +62,37 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
 
 fun KtAnnotated.hasAnnotation(file: KotlinFile, annotationFqName: FqName): Boolean {
 
-  if (annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }) {
-    return true
-  }
+  return findAnnotation(file = file, annotationFqName = annotationFqName) != null
+}
+
+fun KtAnnotated.findAnnotation(
+  file: KotlinFile,
+  annotationFqName: FqName
+): KtAnnotationEntry? {
+
+  // First, look for fully qualified annotations like `@javax.inject.Inject`.
+  annotationEntries
+    .firstOrNull { it.typeReference?.typeElement?.text == annotationFqName.asString() }
+    ?.let { return it }
 
   val samePackage = annotationFqName.parent().asString() == file.packageFqName
 
-  if (!samePackage && !file.imports.contains(annotationFqName.asString())) {
-    return false
+  val isImported by lazy(NONE) {
+    file.imports.contains(annotationFqName.asString())
+  }
+  val hasStarImport by lazy(NONE) {
+    file.wildcardImports.any { annotationFqName.asString().startsWith(it.removeSuffix("*")) }
+  }
+  // e.g. `@Inject` instead of fully qualified
+  val canUseShortName = samePackage || isImported || hasStarImport
+  if (!canUseShortName) {
+    return null
   }
 
+  val shortAnnotationName = annotationFqName.shortName().asString()
+
   return annotationEntries
-    .mapNotNull { it.typeReference?.typeElement?.text }
-    .any { it == annotationFqName.shortName().asString() }
+    .firstOrNull { it.typeReference?.text == shortAnnotationName }
 }
 
 suspend fun McProject.canResolveFqName(
@@ -220,6 +244,15 @@ suspend fun PsiElement.fqNameOrNull(
   )
     ?.let { return it }
 
+  // If the referenced type is declared within the same scope, it doesn't need to be imported.
+  declarationsWithinScope()
+    // Top-level declarations are already handled by "$packageName.$classReference", so skip those.
+    .filterNot { it.isTopLevelKtOrJavaMember() }
+    .mapNotNull { it.fqName }
+    .filter { it.asString().endsWith(classReference) }
+    .firstNotNullOfOrNull { project.resolveFqNameOrNull(it, sourceSetName) }
+    ?.let { return it }
+
   // Check if it's a named import.
   containingKtFile.importDirectives
     .firstOrNull { classReference == it.importPath?.importedName?.asString() }
@@ -227,6 +260,12 @@ suspend fun PsiElement.fqNameOrNull(
     ?.let { return it }
 
   return null
+}
+
+fun PsiElement.declarationsWithinScope(): Sequence<KtNamedDeclaration> {
+  return parents.filterIsInstance<KtNamedDeclaration>()
+    .flatMap { it.children.filterIsInstance<KtNamedDeclaration>() + it }
+    .distinct()
 }
 
 fun KtCallExpression.nameSafe(): String? {
@@ -259,4 +298,37 @@ fun KtBlockExpression.nameSafe(): String? {
   return getChildOfType<KtBlockExpression>()
     ?.getChildOfType<KtDotQualifiedExpression>()
     ?.text
+}
+
+inline fun <reified T> KtAnnotationEntry.findAnnotationArgument(
+  name: String,
+  index: Int
+): T? {
+  val annotationValues = valueArguments
+    .asSequence()
+    .filterIsInstance<KtValueArgument>()
+
+  // First check if the is any named parameter. Named parameters allow a different order of
+  // arguments.
+  annotationValues
+    .firstNotNullOfOrNull { valueArgument ->
+      val children = valueArgument.children
+      if (children.size == 2 && children[0] is KtValueArgumentName &&
+        (children[0] as KtValueArgumentName).asName.asString() == name &&
+        children[1] is T
+      ) {
+        children[1] as T
+      } else {
+        null
+      }
+    }
+    ?.let { return it }
+
+  // If there is no named argument, then take the first argument, which must be a class literal
+  // expression, e.g. @ContributesTo(Unit::class)
+  return annotationValues
+    .elementAtOrNull(index)
+    ?.let { valueArgument ->
+      valueArgument.children.firstOrNull() as? T
+    }
 }

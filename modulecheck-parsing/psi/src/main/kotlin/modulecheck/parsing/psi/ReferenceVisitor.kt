@@ -21,11 +21,13 @@ import modulecheck.parsing.psi.internal.hasAnnotation
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCallableReferenceExpression
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtConstructor
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
@@ -39,6 +41,7 @@ import org.jetbrains.kotlin.psi.KtSecondaryConstructor
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.psiUtil.containingClass
+import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.isFunctionalExpression
 
@@ -52,7 +55,15 @@ class ReferenceVisitor(
   internal val typeReferences: MutableSet<PsiElement> = mutableSetOf()
 
   internal val apiReferences: MutableSet<PsiElement> = mutableSetOf()
-  internal val constructorInjected: MutableList<PsiElement> = mutableListOf()
+
+  internal val constructorInjected: MutableSet<PsiElement> = mutableSetOf()
+  internal val memberInjected: MutableSet<PsiElement> = mutableSetOf()
+
+  internal val moduleBindingReferences: MutableSet<PsiElement> = mutableSetOf()
+
+  internal val boundByInject: MutableSet<KtClassOrObject> = mutableSetOf()
+
+  internal val inheritanceBoundTypes: MutableSet<PsiElement> = mutableSetOf()
 
   override fun visitReferenceExpression(expression: KtReferenceExpression) {
     super.visitReferenceExpression(expression)
@@ -71,8 +82,9 @@ class ReferenceVisitor(
 
   override fun visitProperty(property: KtProperty) {
     super.visitProperty(property)
-    if (!property.isPrivateOrInternal() && property.containingClass()
-      ?.isPrivateOrInternal() != true
+    if (
+      !property.isPrivateOrInternal() &&
+      property.containingClass()?.isPrivateOrInternal() != true
     ) {
 
       val propertyType = property.getChildOfType<KtTypeReference>()
@@ -80,6 +92,10 @@ class ReferenceVisitor(
 
       if (propertyType != null) {
         apiReferences += propertyType
+
+        if (property.hasAnnotation(kotlinFile, FqNames.inject)) {
+          memberInjected += propertyType
+        }
       }
     }
   }
@@ -87,33 +103,33 @@ class ReferenceVisitor(
   override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) = runBlocking {
     super.visitPrimaryConstructor(constructor)
 
-    if (!constructor.isPrivateOrInternal()) {
-      val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
-
-      apiReferences += valueTypeRefs
-
-      if (constructor.hasAnnotation(kotlinFile, FqNames.inject)) {
-        constructorInjected += valueTypeRefs
-      }
-
-      apiReferences += constructor.typeParameters.parseTypeReferences()
-    }
+    constructor.parseConstructor()
   }
 
   override fun visitSecondaryConstructor(constructor: KtSecondaryConstructor) = runBlocking {
     super.visitSecondaryConstructor(constructor)
-    if (!constructor.isPrivateOrInternal()) {
 
-      val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
+    constructor.parseConstructor()
+  }
 
-      apiReferences += valueTypeRefs
+  private fun <T : KtConstructor<T>> KtConstructor<T>.parseConstructor() {
 
-      if (constructor.hasAnnotation(kotlinFile, FqNames.inject)) {
-        constructorInjected += valueTypeRefs
+    if (isPrivateOrInternal()) return
+
+    val valueTypeRefs = valueParameters.parseTypeReferences()
+
+    apiReferences += valueTypeRefs
+
+    if (hasAnnotation(kotlinFile, FqNames.inject)) {
+
+      constructorInjected += valueTypeRefs
+
+      boundByInject += containingClassOrObject.requireNotNull {
+        "unable to find a containing class for the constructor $text"
       }
-
-      apiReferences += constructor.typeParameters.parseTypeReferences()
     }
+
+    apiReferences += typeParameters.parseTypeReferences()
   }
 
   override fun visitNamedFunction(function: KtNamedFunction) = runBlocking {

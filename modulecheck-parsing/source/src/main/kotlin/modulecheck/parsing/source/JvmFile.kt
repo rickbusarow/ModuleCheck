@@ -16,6 +16,7 @@
 package modulecheck.parsing.source
 
 import modulecheck.utils.LazyDeferred
+import org.jetbrains.kotlin.name.FqName
 
 interface JvmFile {
   val name: String
@@ -40,6 +41,13 @@ interface JvmFile {
 interface KotlinFile : JvmFile {
 
   val apiReferences: LazyDeferred<Set<String>>
+  val constructorInjectedTypes: LazyDeferred<Set<FqName>>
+  val memberInjectedTypes: LazyDeferred<Set<FqName>>
+  val componentBindingReferences: LazyDeferred<List<AnvilBindingReference>>
+  val moduleBindingReferences: LazyDeferred<Set<FqName>>
+  val boundTypes: LazyDeferred<Set<FqName>>
+
+  val simpleBoundTypes: LazyDeferred<Set<AnvilBoundType>>
 }
 
 interface JavaFile : JvmFile

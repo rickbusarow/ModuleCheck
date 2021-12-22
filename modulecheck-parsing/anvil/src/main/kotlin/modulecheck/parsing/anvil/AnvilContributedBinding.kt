@@ -15,16 +15,19 @@
 
 package modulecheck.parsing.anvil
 
-import modulecheck.parsing.psi.KotlinFile
+import modulecheck.parsing.psi.internal.findAnnotationArgument
+import modulecheck.parsing.source.AnvilScope
 import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.KotlinFile
 import modulecheck.project.McProject
-import modulecheck.project.temp.AnvilScopeNameEntry
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.*
+import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtClassLiteralExpression
+import org.jetbrains.kotlin.psi.KtClassOrObject
 
 data class AnvilContributedBinding(
   val declarationName: DeclarationName,
-  val anvilScopeNameEntry: AnvilScopeNameEntry,
+  val anvilScope: AnvilScope,
   val boundType: DeclarationName,
   val replaces: List<DeclarationName>
 )
@@ -45,37 +48,4 @@ fun KtClassOrObject.boundTypeOrNull(
 
   fromSuperType.typeReference
   TODO()
-}
-
-public inline fun <reified T> KtAnnotationEntry.findAnnotationArgument(
-  name: String,
-  index: Int
-): T? {
-  val annotationValues = valueArguments
-    .asSequence()
-    .filterIsInstance<KtValueArgument>()
-
-  // First check if the is any named parameter. Named parameters allow a different order of
-  // arguments.
-  annotationValues
-    .firstNotNullOfOrNull { valueArgument ->
-      val children = valueArgument.children
-      if (children.size == 2 && children[0] is KtValueArgumentName &&
-        (children[0] as KtValueArgumentName).asName.asString() == name &&
-        children[1] is T
-      ) {
-        children[1] as T
-      } else {
-        null
-      }
-    }
-    ?.let { return it }
-
-  // If there is no named argument, then take the first argument, which must be a class literal
-  // expression, e.g. @ContributesTo(Unit::class)
-  return annotationValues
-    .elementAtOrNull(index)
-    ?.let { valueArgument ->
-      valueArgument.children.firstOrNull() as? T
-    }
 }

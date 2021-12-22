@@ -16,6 +16,7 @@
 package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
+import com.squareup.anvil.annotations.ContributesTo
 import modulecheck.dagger.AppScope
 import modulecheck.parsing.gradle.PluginsBlock
 import modulecheck.parsing.gradle.PluginsBlockProvider

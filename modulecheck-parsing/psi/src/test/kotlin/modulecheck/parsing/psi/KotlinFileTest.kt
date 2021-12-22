@@ -21,21 +21,28 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.psiFileFactory
+import modulecheck.parsing.source.AnvilBindingReference
+import modulecheck.parsing.source.AnvilBoundType
+import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class KotlinFileTest : ProjectTest() {
 
-  @Test
-  fun `fully qualified annotated primary constructor arguments should be injected`() = test {
+  @Nested
+  inner class `constructor injection` {
 
-    val file = createFile(
-      """
+    @Test
+    fun `fully qualified annotated primary constructor arguments should be injected`() = test {
+
+      val file = createFile(
+        """
       package com.test
 
       import com.lib1.Lib1Class
@@ -44,18 +51,17 @@ internal class KotlinFileTest : ProjectTest() {
         val lib1Class: Lib1Class
       )
     """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldBe listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
 
-  @Test
-  fun `fully qualified annotated secondary constructor arguments should be injected`() = test {
+    @Test
+    fun `fully qualified annotated secondary constructor arguments should be injected`() = test {
 
-    val file = createFile(
-      """
+      val file = createFile(
+        """
       package com.test
 
       import com.lib1.Lib1Class
@@ -69,18 +75,17 @@ internal class KotlinFileTest : ProjectTest() {
         }
       }
     """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldBe listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
 
-  @Test
-  fun `imported annotated primary constructor arguments should be injected`() = test {
+    @Test
+    fun `imported annotated primary constructor arguments should be injected`() = test {
 
-    val file = createFile(
-      """
+      val file = createFile(
+        """
       package com.test
 
       import com.lib1.Lib1Class
@@ -90,18 +95,18 @@ internal class KotlinFileTest : ProjectTest() {
         val lib1Class: Lib1Class
       )
     """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldBe listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
 
-  @Test
-  fun `wildcard-imported annotated primary constructor arguments should be injected`() = test {
+    @Test
+    fun `wildcard-imported types and imported annotated primary constructor arguments should be injected`() =
+      test {
 
-    val file = createFile(
-      """
+        val file = createFile(
+          """
       package com.test
 
       import com.lib1.*
@@ -111,18 +116,38 @@ internal class KotlinFileTest : ProjectTest() {
         val lib1Class: Lib1Class
       )
     """
-    )
+        )
 
-    file.constructorInjectedParams.await() shouldContainExactlyInAnyOrder listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+        file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+      }
 
-  @Test
-  fun `fully qualified arguments in annotated primary constructor should be injected`() = test {
+    @Test
+    fun `wildcard-imported types and wildcard-imported annotated primary constructor arguments should be injected`() =
+      test {
 
-    val file = createFile(
-      """
+        val file = createFile(
+          """
+      package com.test
+
+      import com.lib1.*
+      import javax.inject.*
+
+      class InjectClass @Inject constructor(
+        val lib1Class: Lib1Class
+      )
+    """
+        )
+
+        file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+      }
+
+    @Test
+    fun `fully qualified arguments in annotated primary constructor should be injected`() = test {
+
+      val file = createFile(
+        """
       package com.test
 
       import javax.inject.Inject
@@ -131,18 +156,44 @@ internal class KotlinFileTest : ProjectTest() {
         val lib1Class: com.lib1.Lib1Class
       )
       """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldContainExactlyInAnyOrder listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
 
-  @Test
-  fun `imported annotated secondary constructor arguments should be injected`() = test {
+    @Test
+    fun `types wrapped in a Provider in annotated primary constructor should be injected`() = test {
 
-    val file = createFile(
+      val file = createFile(
+        """
+      package com.test
+
+      import javax.inject.Inject
+      import javax.inject.Provider
+
+      class InjectClass @Inject constructor(
+        val lib1Class: Provider<com.lib1.Lib1Class>
+      )
       """
+      )
+
+      file.constructorInjectedTypes.await() shouldBe listOf(
+        "com.lib1.Lib1Class",
+        "javax.inject.Provider"
+      )
+      file.constructorInjectedTypes.await() shouldBe listOf(
+        "com.lib1.Lib1Class",
+        "javax.inject.Provider"
+      )
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
+
+    @Test
+    fun `imported annotated secondary constructor arguments should be injected`() = test {
+
+      val file = createFile(
+        """
       package com.test
 
       import com.lib1.Lib1Class
@@ -157,18 +208,17 @@ internal class KotlinFileTest : ProjectTest() {
         }
       }
     """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldBe listOf(
-      FqName("com.lib1.Lib1Class")
-    )
-  }
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
 
-  @Test
-  fun `arguments from overloaded constructor without annotation should not be injected`() = test {
+    @Test
+    fun `arguments from overloaded constructor without annotation should not be injected`() = test {
 
-    val file = createFile(
-      """
+      val file = createFile(
+        """
       package com.test
 
       import com.lib1.Lib1Class
@@ -182,11 +232,228 @@ internal class KotlinFileTest : ProjectTest() {
         constructor(lib1Class: Lib1Class, other: FqName) : this(lib1Class)
       }
     """
-    )
+      )
 
-    file.constructorInjectedParams.await() shouldBe listOf(
-      FqName("com.lib1.Lib1Class")
-    )
+      file.constructorInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe listOf("com.test.InjectClass")
+    }
+  }
+
+  @Nested
+  inner class `member injection` {
+
+    @Test
+    fun `fully qualified annotated lateinit properties with explicit imported types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      import com.lib1.Lib1Class
+
+      class InjectClass {
+        @javax.inject.Inject lateinit var lib1Class: Lib1Class
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+
+    @Test
+    fun `fully qualified annotated nullable properties with explicit imported types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      import com.lib1.Lib1Class
+
+      class InjectClass {
+        @javax.inject.Inject var lib1Class: Lib1Class? = null
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+
+    @Test
+    fun `fully qualified annotated lateinit properties with explicit fully qualified types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      class InjectClass {
+        @javax.inject.Inject lateinit var lib1Class: com.lib1.Lib1Class
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+
+    @Test
+    fun `fully qualified annotated nullable properties with explicit fully qualified types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      class InjectClass {
+        @javax.inject.Inject var lib1Class: com.lib1.Lib1Class? = null
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+
+    @Test
+    fun `annotated lateinit properties with explicit imported types should be injected`() = test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib1.Lib1Class
+      import javax.inject.Inject
+
+      class InjectClass {
+        @Inject lateinit var lib1Class: Lib1Class
+      }
+    """
+      )
+
+      file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe emptyList()
+    }
+
+    @Test
+    fun `annotated nullable properties with explicit imported types should be injected`() = test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib1.Lib1Class
+      import javax.inject.Inject
+
+      class InjectClass {
+        @Inject var lib1Class: Lib1Class? = null
+      }
+    """
+      )
+
+      file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+      file.simpleBoundTypes.await() shouldBe emptyList()
+    }
+
+    @Test
+    fun `annotated lateinit properties with explicit fully qualified types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      import javax.inject.Inject
+
+      class InjectClass {
+        @Inject lateinit var lib1Class: com.lib1.Lib1Class
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+
+    @Test
+    fun `annotated nullable properties with explicit fully qualified types should be injected`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      import javax.inject.Inject
+
+      class InjectClass {
+        @Inject var lib1Class: com.lib1.Lib1Class? = null
+      }
+    """
+        )
+
+        file.memberInjectedTypes.await() shouldBe listOf("com.lib1.Lib1Class")
+        file.simpleBoundTypes.await() shouldBe emptyList()
+      }
+  }
+
+  @Nested
+  inner class `component bindings` {
+
+    @Test
+    fun `fully qualified ContributesTo component interface with fully qualified types should be a binding reference`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      @com.squareup.anvil.annotations.ContributesTo(Unit::class)
+      interface SomeComponent {
+        val lib1Class: com.lib1.Lib1Class
+      }
+    """
+        )
+
+        file.componentBindingReferences.await() shouldBe listOf(
+          AnvilBindingReference(
+            FqName("com.lib1.Lib1Class"),
+            AnvilScopeName(FqName("Unit"))
+          )
+        )
+      }
+  }
+
+  @Nested
+  inner class `module bindings` {
+
+    @Test
+    fun `fully qualified Module and ContributesTo interface with getter Binds annotation should be bound`() =
+      test {
+
+        val file = createFile(
+          """
+      package com.test
+
+      import dagger.Binds
+
+      @dagger.Module
+      @com.squareup.anvil.annotations.ContributesTo(Unit::class)
+      interface SomeModule {
+        @get:Binds
+        val Lib2Class.lib1Class: com.lib1.Lib1Class
+      }
+
+      class Lib2Class: Lib1Class()
+    """
+        )
+
+        file.moduleBindingReferences.await() shouldBe listOf("com.test.Lib2Class")
+
+        file.boundTypes.await() shouldBe listOf("com.lib1.Lib2Class")
+      }
   }
 
   @Test
@@ -307,6 +574,37 @@ internal class KotlinFileTest : ProjectTest() {
       """,
       SourceSetName.MAIN
     )
+  }
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline infix fun Set<FqName>.shouldBe(expected: List<String>) {
+    map { it.asString() } shouldContainExactlyInAnyOrder expected
+  }
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline infix fun Collection<AnvilBoundType>.shouldBe(expected: List<String>) {
+
+    onEach { boundType ->
+      require(boundType.boundType == boundType.realType) {
+        """An ${boundType::class.java.simpleName} in this collection has a different bound type than its real type.
+          |
+          |  bound type: ${boundType.boundType}
+          |  real type:  ${boundType.realType}
+          |
+          |This `shouldBe` is meant to be a convenience function for `@Inject`-annotated constructors only.
+          |For complex bindings, compare the collection to a `List<AnvilBoundType>`.
+        """.trimMargin()
+      }
+      require(boundType.scopeOrNull == null) {
+        """An ${boundType::class.java.simpleName} in this collection has a defined `${AnvilScopeName::class.java.simpleName}`
+          |which cannot be captured in this assertion.
+          |
+          |This `shouldBe` is meant to be a convenience function for `@Inject`-annotated constructors only.
+          |For complex bindings, compare the collection to a `List<AnvilBoundType>`.
+        """.trimMargin()
+      }
+    }
+      .map { it.boundType.asString() } shouldContainExactlyInAnyOrder expected
   }
 
   fun createFile(

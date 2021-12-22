@@ -16,11 +16,18 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.psi.internal.PsiElementResolver
+import modulecheck.parsing.psi.internal.findAnnotation
+import modulecheck.parsing.psi.internal.findAnnotationArgument
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.hasAnnotation
 import modulecheck.parsing.psi.internal.identifier
+import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
-import modulecheck.parsing.source.AnvilScopeNameEntry
+import modulecheck.parsing.source.AnvilBindingReference
+import modulecheck.parsing.source.AnvilBoundType
+import modulecheck.parsing.source.AnvilScope
+import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
@@ -28,12 +35,22 @@ import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtClassLiteralExpression
+import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtImportDirective
+import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.psi.KtPackageDirective
+import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
+import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class RealKotlinFile(
@@ -62,8 +79,85 @@ class RealKotlinFile(
       .toSet()
   }
 
-  val constructorInjectedParams = lazyDeferred {
+  override val constructorInjectedTypes = lazyDeferred {
     referenceVisitor.constructorInjected
+      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .toSet()
+  }
+
+  override val memberInjectedTypes = lazyDeferred {
+    referenceVisitor.memberInjected
+      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .toSet()
+  }
+
+  val classesAndInnerClasses by lazy {
+    ktFile.getChildrenOfTypeRecursive<KtClassOrObject>()
+  }
+
+  override val simpleBoundTypes = lazyDeferred {
+    referenceVisitor.boundByInject
+      .mapNotNull { clazz ->
+        clazz.fqName?.let { AnvilBoundType(it) }
+      }
+      .toSet()
+  }
+
+  private val contributesToClasses = lazyDeferred {
+
+    classesAndInnerClasses
+      .mapNotNull { clazz ->
+        val annotationEntry = clazz.findAnnotation(this, FqNames.contributesTo)
+          ?: return@mapNotNull null
+
+        val scope = annotationEntry
+          .findAnnotationArgument<KtClassLiteralExpression>(name = "scope", index = 0)
+          ?.let {
+            psiResolver.fqNameOrNull(it)
+            // The PsiElement in question here will always be a class reference, so if it can't be
+            // resolved, it's either a third-party type which is imported via a wildcard, or it's
+            // a stdlib type which doesn't need an import, like `Unit::class`.  Falling back to just
+            // using the class's simple name should be fine.
+              ?: FqName(it.getChildOfType<KtNameReferenceExpression>().requireNotNull().text)
+          }
+          ?.let { AnvilScopeName(it) }
+          ?: return@mapNotNull null
+
+        AnvilScopedClassOrObject(clazz, scope)
+      }
+  }
+
+  private val contributedModulesToComponents = lazyDeferred {
+
+    contributesToClasses.await()
+      .partition { it.clazz.hasAnnotation(this, FqNames.module) }
+  }
+
+  override val componentBindingReferences = lazyDeferred {
+
+    contributedModulesToComponents.await()
+      .second
+      .flatMap { (clazz, scope) ->
+        clazz.getChildrenOfTypeRecursive<KtProperty>()
+          // In case of nesting classes/interfaces,
+          // only use properties from their directly containing class.
+          .filter { it.containingClassOrObject == clazz }
+          .mapNotNull { property ->
+            property.getChildOfType<KtTypeReference>()
+              ?.let { psiResolver.fqNameOrNull(it) }
+              ?.let { referencedType -> AnvilBindingReference(referencedType, scope) }
+          }
+      }
+  }
+
+  override val moduleBindingReferences = lazyDeferred {
+    referenceVisitor.moduleBindingReferences
+      .mapNotNull { psiResolver.fqNameOrNull(it) }
+      .toSet()
+  }
+
+  override val boundTypes = lazyDeferred {
+    referenceVisitor.inheritanceBoundTypes
       .mapNotNull { psiResolver.fqNameOrNull(it) }
       .toSet()
   }
@@ -81,8 +175,8 @@ class RealKotlinFile(
   override val wildcardImports by lazy {
 
     ktFile.importDirectives
-      .filter { it.identifier()?.contains("*") != false }
-      .mapNotNull { it.importPath?.pathStr }
+      .filter { it.importPath?.isAllUnder == true }
+      .mapNotNull { it.importPath?.fqName?.asString() }
       .toSet()
   }
 
@@ -90,16 +184,16 @@ class RealKotlinFile(
 
     val apiRefsAsStrings = referenceVisitor.apiReferences.map { it.text }
 
-    val replacedWildcards = wildcardImports.flatMap { wildcardImport ->
-
-      apiRefsAsStrings.map { apiReference ->
-        wildcardImport.replace("*", apiReference)
-      }
-    }
-
     val (resolved, unresolved) = apiRefsAsStrings.map { reference ->
       imports.firstOrNull { it.endsWith(reference) } ?: reference
     }.partition { it in imports }
+
+    val replacedWildcards = wildcardImports.flatMap { wildcardImport ->
+
+      unresolved.map { apiReference ->
+        "$wildcardImport.$apiReference"
+      }
+    }
 
     val simple = unresolved + unresolved.map {
       ktFile.packageFqName.asString() + "." + it
@@ -115,8 +209,8 @@ class RealKotlinFile(
 
   private val typeReferences = lazyDeferred {
     referenceVisitor.typeReferences
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
@@ -124,8 +218,8 @@ class RealKotlinFile(
 
   private val callableReferences = lazyDeferred {
     referenceVisitor.callableReferences
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
@@ -133,32 +227,30 @@ class RealKotlinFile(
 
   private val qualifiedExpressions = lazyDeferred {
     referenceVisitor.qualifiedExpressions
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
   }
 
   override val maybeExtraReferences = lazyDeferred {
-    val allOther = listOf(
+
+    val unresolved = listOf(
       typeReferences,
       callableReferences,
       qualifiedExpressions
     )
       .awaitAll()
       .flatten()
-      .toSet()
+      .map { reference -> imports.firstOrNull { it.endsWith(reference) } ?: reference }
+      .filterNot { it in imports }
 
-    allOther + allOther.map {
-      "$packageFqName.$it"
-    } + wildcardImports.flatMap { wildcardImport ->
-
-      allOther.map { referenceString ->
-        wildcardImport.replace("*", referenceString)
-      }
+    val all = unresolved + unresolved.flatMap { reference ->
+      wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference"
     }
-      .toSet()
+
+    all.toSet()
   }
 
   override fun getScopeArguments(
@@ -201,7 +293,9 @@ class RealKotlinFile(
     )
   }
 
-  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(typeFqName: FqName): RawAnvilAnnotatedType? {
+  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(
+    typeFqName: FqName
+  ): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList
       ?.getByNameOrIndex(0, "scope")
       ?: return null
@@ -214,8 +308,15 @@ class RealKotlinFile(
 
     return RawAnvilAnnotatedType(
       declarationName = typeFqName.asDeclarationName(),
-      anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
+      anvilScope = AnvilScope(entryText)
     )
+  }
+
+  internal data class AnvilScopedClassOrObject(
+    val clazz: KtClassOrObject,
+    val scope: AnvilScopeName
+  ) {
+    override fun toString(): String = "scope -- $scope  -- class --${clazz.fqName}"
   }
 
   private companion object {

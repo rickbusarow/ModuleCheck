@@ -31,6 +31,8 @@ dependencies {
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
+  compileOnly(libs.google.dagger.api)
+  compileOnly(libs.square.anvil.annotations)
 
   implementation(libs.agp)
   implementation(libs.groovy)
