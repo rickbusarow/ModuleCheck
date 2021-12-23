@@ -44,8 +44,8 @@ interface KotlinFile : JvmFile {
   val constructorInjectedTypes: LazyDeferred<Set<FqName>>
   val memberInjectedTypes: LazyDeferred<Set<FqName>>
   val componentBindingReferences: LazyDeferred<List<AnvilBindingReference>>
-  val moduleBindingReferences: LazyDeferred<Set<FqName>>
-  val boundTypes: LazyDeferred<Set<FqName>>
+  val moduleBindingReferences: LazyDeferred<Set<AnvilBindingReference>>
+  val boundTypes: LazyDeferred<Set<AnvilBoundType>>
 
   val simpleBoundTypes: LazyDeferred<Set<AnvilBoundType>>
 }

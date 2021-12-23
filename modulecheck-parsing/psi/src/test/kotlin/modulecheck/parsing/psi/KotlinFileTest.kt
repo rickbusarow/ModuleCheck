@@ -419,8 +419,7 @@ internal class KotlinFileTest : ProjectTest() {
 
         file.componentBindingReferences.await() shouldBe listOf(
           AnvilBindingReference(
-            FqName("com.lib1.Lib1Class"),
-            AnvilScopeName(FqName("Unit"))
+            referencedType = "com.lib1.Lib1Class", scopeOrNull = "Unit"
           )
         )
       }
@@ -430,28 +429,116 @@ internal class KotlinFileTest : ProjectTest() {
   inner class `module bindings` {
 
     @Test
-    fun `fully qualified Module and ContributesTo interface with getter Binds annotation should be bound`() =
-      test {
+    fun `extension property with getter Binds annotation should be bound`() = test {
 
-        val file = createFile(
-          """
+      val file = createFile(
+        """
       package com.test
 
+      import com.squareup.anvil.annotations.ContributesTo
       import dagger.Binds
+      import dagger.Module
 
-      @dagger.Module
-      @com.squareup.anvil.annotations.ContributesTo(Unit::class)
+      @Module
+      @ContributesTo(Unit::class)
       interface SomeModule {
         @get:Binds
         val com.lib1.Lib1ClassImpl.lib1Class: com.lib1.Lib1Class
       }
     """
+      )
+
+      file.moduleBindingReferences.await() shouldBe setOf(
+        AnvilBindingReference(
+          referencedType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
         )
+      )
 
-        file.moduleBindingReferences.await() shouldBe listOf("com.test.Lib2Class")
+      file.boundTypes.await() shouldBe setOf(
+        AnvilBoundType(
+          boundType = "com.lib1.Lib1Class",
+          realType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
+        )
+      )
+    }
 
-        file.boundTypes.await() shouldBe listOf("com.lib1.Lib2Class")
+    @Test
+    fun `extension function with Binds annotation should be bound`() = test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib1.Lib1Class
+      import com.lib1.Lib1ClassImpl
+      import com.squareup.anvil.annotations.ContributesTo
+      import dagger.Binds
+      import dagger.Module
+
+      @Module
+      @ContributesTo(Unit::class)
+      interface SomeModule {
+        @Binds
+        fun Lib1ClassImpl.bindLib1Class(): Lib1Class
       }
+    """
+      )
+
+      file.moduleBindingReferences.await() shouldBe setOf(
+        AnvilBindingReference(
+          referencedType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
+        )
+      )
+
+      file.boundTypes.await() shouldBe setOf(
+        AnvilBoundType(
+          boundType = "com.lib1.Lib1Class",
+          realType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
+        )
+      )
+    }
+
+    @Test
+    fun `single argument function with Binds annotation should be bound`() = test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.lib1.Lib1Class
+      import com.lib1.Lib1ClassImpl
+      import com.squareup.anvil.annotations.ContributesTo
+      import dagger.Binds
+      import dagger.Module
+
+      @Module
+      @ContributesTo(Unit::class)
+      interface SomeModule {
+        @Binds
+        fun bindLib1Class(impl: Lib1ClassImpl): Lib1Class
+      }
+    """
+      )
+
+      file.moduleBindingReferences.await() shouldBe setOf(
+        AnvilBindingReference(
+          referencedType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
+        )
+      )
+
+      file.boundTypes.await() shouldBe setOf(
+        AnvilBoundType(
+          boundType = "com.lib1.Lib1Class",
+          realType = "com.lib1.Lib1ClassImpl",
+          scopeOrNull = "Unit"
+        )
+      )
+    }
   }
 
   @Test
@@ -620,6 +707,22 @@ internal class KotlinFileTest : ProjectTest() {
   }
 
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
+
+  private fun AnvilBindingReference(
+    referencedType: String, scopeOrNull: String? = null
+  ): AnvilBindingReference = AnvilBindingReference(
+    referencedType = FqName(referencedType),
+    scopeOrNull = scopeOrNull?.let { AnvilScopeName(FqName(it)) })
+
+  private fun AnvilBoundType(
+    boundType: String,
+    realType: String = boundType,
+    scopeOrNull: String? = null
+  ): AnvilBoundType = AnvilBoundType(
+    boundType = FqName(boundType),
+    realType = FqName(realType),
+    scopeOrNull = scopeOrNull?.let { AnvilScopeName(FqName(it)) }
+  )
 
   fun KtFile(
     @Language("kotlin")

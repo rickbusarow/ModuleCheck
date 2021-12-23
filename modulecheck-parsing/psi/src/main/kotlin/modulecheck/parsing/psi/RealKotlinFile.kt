@@ -15,6 +15,13 @@
 
 package modulecheck.parsing.psi
 
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.findAnnotation
 import modulecheck.parsing.psi.internal.findAnnotationArgument
@@ -35,14 +42,18 @@ import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
+import modulecheck.utils.mapAsyncNotNull
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.safeAs
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.psi.KtCallableDeclaration
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
@@ -52,7 +63,6 @@ import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class RealKotlinFile(
   val ktFile: KtFile,
@@ -134,10 +144,19 @@ class RealKotlinFile(
       .partition { it.clazz.hasAnnotation(this, FqNames.module) }
   }
 
+  private val contributedModules = lazyDeferred {
+
+    contributedModulesToComponents.await().first
+  }
+
+  private val contributedComponents = lazyDeferred {
+
+    contributedModulesToComponents.await().second
+  }
+
   override val componentBindingReferences = lazyDeferred {
 
-    contributedModulesToComponents.await()
-      .second
+    contributedComponents.await()
       .flatMap { (clazz, scope) ->
         clazz.getChildrenOfTypeRecursive<KtProperty>()
           // In case of nesting classes/interfaces,
@@ -145,7 +164,7 @@ class RealKotlinFile(
           .filter { it.containingClassOrObject == clazz }
           .mapNotNull { property ->
             property.getChildOfType<KtTypeReference>()
-              ?.let { it.fqNameOrNull() }
+              ?.fqNameOrNull()
               ?.let { referencedType -> AnvilBindingReference(referencedType, scope) }
           }
       }
@@ -153,28 +172,55 @@ class RealKotlinFile(
 
   override val moduleBindingReferences = lazyDeferred {
 
-    contributedModulesToComponents.await()
-      .first
-      .map { (clazz, scope) ->
-        clazz.getChildrenOfTypeRecursive<KtProperty>()
-          // In case of nesting classes/interfaces,
-          // only use properties from their directly containing class.
-          .filter { it.containingClassOrObject == clazz }
-          .filter { it.hasAnnotation(this, FqNames.binds) }
-          .onEach { println(" ------     receiver       --> ${it.receiverTypeReference?.fqNameOrNull()}") }
-          .onEach { println(" ------     type           --> ${it.typeReference?.fqNameOrNull()}") }
-          .onEach { println(" ------     bound property --> ${it.text}") }
-      }
+    contributedModules.await()
+      .asFlow()
+      .scopedCallablesWithAnnotation(FqNames.binds)
+      .mapAsyncNotNull { (callableDeclaration, scope) ->
 
-    referenceVisitor.moduleBindingReferences
-      .mapNotNull { it.fqNameOrNull() }
+        callableDeclaration.realBoundTypeOrNull()
+          ?.fqNameOrNull()
+          ?.let { AnvilBindingReference(it, scope) }
+      }
       .toSet()
   }
 
   override val boundTypes = lazyDeferred {
-    referenceVisitor.inheritanceBoundTypes
-      .mapNotNull { it.fqNameOrNull() }
+
+    contributedModules.await()
+      .asFlow()
+      .scopedCallablesWithAnnotation(FqNames.binds)
+      .mapAsyncNotNull { (callableDeclaration, scope) ->
+        val realType = callableDeclaration.realBoundTypeOrNull()?.fqNameOrNull()
+          ?: return@mapAsyncNotNull null
+        val boundType = callableDeclaration.typeReference?.fqNameOrNull()
+          ?: return@mapAsyncNotNull null
+
+        AnvilBoundType(
+          boundType = boundType, realType = realType, scopeOrNull = scope
+        )
+      }
       .toSet()
+  }
+
+  private fun KtCallableDeclaration.realBoundTypeOrNull(): KtTypeReference? {
+    return receiverTypeReference
+      ?: (this as? KtFunction)?.valueParameters
+        ?.singleOrNull()
+        ?.typeReference
+  }
+
+  @OptIn(FlowPreview::class)
+  private fun Flow<AnvilScopedClassOrObject>.scopedCallablesWithAnnotation(
+    annotationFqName: FqName
+  ): Flow<AnvilScopedCallable> = flatMapMerge { (clazz, scope) ->
+    clazz.getChildrenOfTypeRecursive<KtProperty>()
+      .plus(clazz.getChildrenOfTypeRecursive<KtFunction>())
+      .asFlow()
+      // In case of nesting classes/interfaces,
+      // only use properties from their directly containing class.
+      .filter { it.containingClassOrObject == clazz }
+      .filter { it.hasAnnotation(this@RealKotlinFile, annotationFqName) }
+      .map { AnvilScopedCallable(it, scope) }
   }
 
   override val declarations by lazy {
@@ -332,6 +378,13 @@ class RealKotlinFile(
     val scope: AnvilScopeName
   ) {
     override fun toString(): String = "scope -- $scope  -- class --${clazz.fqName}"
+  }
+
+  internal data class AnvilScopedCallable(
+    val callable: KtCallableDeclaration,
+    val scope: AnvilScopeName
+  ) {
+    override fun toString(): String = "scope -- $scope  -- class --${callable.fqName}"
   }
 
   private suspend fun PsiElement.fqNameOrNull(): FqName? = psiResolver.fqNameOrNull(this)

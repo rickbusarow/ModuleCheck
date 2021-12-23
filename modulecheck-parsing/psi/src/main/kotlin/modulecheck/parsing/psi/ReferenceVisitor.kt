@@ -59,11 +59,7 @@ class ReferenceVisitor(
   internal val constructorInjected: MutableSet<PsiElement> = mutableSetOf()
   internal val memberInjected: MutableSet<PsiElement> = mutableSetOf()
 
-  internal val moduleBindingReferences: MutableSet<PsiElement> = mutableSetOf()
-
   internal val boundByInject: MutableSet<KtClassOrObject> = mutableSetOf()
-
-  internal val inheritanceBoundTypes: MutableSet<PsiElement> = mutableSetOf()
 
   override fun visitReferenceExpression(expression: KtReferenceExpression) {
     super.visitReferenceExpression(expression)
