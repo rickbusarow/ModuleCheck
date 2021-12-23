@@ -37,7 +37,7 @@ kotest = "5.0.3"
 kotlin = "1.6.10"
 
 kotlinx-atomicfu = "0.16.3"
-kotlinx-coroutines = "1.5.2"
+kotlinx-coroutines = "1.6.0"
 kotlinx-knit = "0.3.0"
 
 ktlint = "10.2.0"
