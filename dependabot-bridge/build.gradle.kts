@@ -78,7 +78,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.5.2")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.2")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-  dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.5.2")
+  dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.0")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
   dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
