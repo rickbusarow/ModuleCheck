@@ -18,11 +18,12 @@ package modulecheck.parsing.java
 import com.github.javaparser.StaticJavaParser
 import com.github.javaparser.ast.ImportDeclaration
 import com.github.javaparser.ast.Node
-import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.EnumConstantDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
+import com.github.javaparser.ast.body.VariableDeclarator
+import com.github.javaparser.ast.expr.SimpleName
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
 import com.github.javaparser.ast.type.ClassOrInterfaceType
@@ -48,7 +49,7 @@ class RealJavaFile(
 
   data class ParsedFile(
     val packageFqName: String,
-    val imports: NodeList<ImportDeclaration>,
+    val imports: List<ImportDeclaration>,
     val classOrInterfaceTypes: Set<ClassOrInterfaceType>,
     val typeDeclarations: List<TypeDeclaration<*>>,
     val fieldDeclarations: Set<DeclarationName>,
@@ -70,16 +71,27 @@ class RealJavaFile(
 
     StaticJavaParser.getConfiguration().setSymbolResolver(symbolSolver)
 
-    val compilationUnit = StaticJavaParser.parse(file)
-
     val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
     val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
     val memberDeclarations = mutableSetOf<DeclarationName>()
     val enumDeclarations = mutableSetOf<DeclarationName>()
 
+    var packageFqName = ""
+    var imports = listOf<ImportDeclaration>()
+
+    // This is a band-aid for JavaParser's lack of support for Java Records.  Parsing a file with
+    // records will just throw an exception...
+    val compilationUnit = runCatching { StaticJavaParser.parse(file) }.getOrNull()
+
+    if (compilationUnit != null) {
+
+      packageFqName = compilationUnit.packageDeclaration.get().nameAsString
+      imports = compilationUnit.imports
+    }
+
     // compilationUnit.printEverything()
 
-    compilationUnit.childrenRecursive()
+    compilationUnit?.childrenRecursive()
       .forEach { node ->
 
         when (node) {
@@ -103,8 +115,8 @@ class RealJavaFile(
       }
 
     ParsedFile(
-      packageFqName = compilationUnit.packageDeclaration.get().nameAsString,
-      imports = compilationUnit.imports,
+      packageFqName = packageFqName,
+      imports = imports,
       classOrInterfaceTypes = classOrInterfaceTypes,
       typeDeclarations = typeDeclarations.distinct(),
       fieldDeclarations = memberDeclarations,
@@ -159,12 +171,42 @@ class RealJavaFile(
     typeDeclarations: List<TypeDeclaration<*>>
   ): String
     where T : Node, T : Resolvable<R> {
-    val simpleName = resolve().name
+    val simpleName = when (this) {
+      is MethodDeclaration -> name.asString()
+      is FieldDeclaration -> requireChildOfType<VariableDeclarator>().nameAsString
+      is EnumConstantDeclaration -> nameAsString
+      else -> {
+
+        println(
+          """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  the problem node  -- ${this::class}
+          |$this
+          |_____________________--
+        """.trimMargin()
+        )
+
+        printEverything()
+
+        kotlin.runCatching { resolve().name }
+          .getOrNull()
+          ?: simpleName()
+      }
+    }
 
     val parentTypeFqName = typeDeclarations
       .last { isDescendantOf(it) }
       .fullyQualifiedName.get()
     return "$parentTypeFqName.$simpleName"
+  }
+
+  private fun <T : Node> T.simpleName(): String {
+
+    return if (this is SimpleName) {
+      asString()
+    } else {
+      getChildrenOfTypeRecursive<SimpleName>()
+        .first()
+        .asString()
+    }
   }
 
   override fun getScopeArguments(
