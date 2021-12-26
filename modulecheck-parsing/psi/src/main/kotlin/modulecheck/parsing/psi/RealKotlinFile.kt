@@ -304,8 +304,7 @@ class RealKotlinFile(
     )
       .awaitAll()
       .flatten()
-      .map { reference -> imports.firstOrNull { it.endsWith(reference) } ?: reference }
-      .filterNot { it in imports }
+      .filter { reference -> imports.none { it.endsWith(reference) } }
 
     val all = unresolved + unresolved.flatMap { reference ->
       wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference"

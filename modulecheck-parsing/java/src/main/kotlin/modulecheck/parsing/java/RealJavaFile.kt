@@ -21,10 +21,16 @@ import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.NodeList
 import com.github.javaparser.ast.body.EnumConstantDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
+import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
-import com.github.javaparser.ast.expr.SimpleName
+import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
+import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import com.github.javaparser.resolution.Resolvable
+import com.github.javaparser.resolution.declarations.ResolvedDeclaration
+import com.github.javaparser.symbolsolver.JavaSymbolSolver
+import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver
+import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
@@ -32,7 +38,7 @@ import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
-import kotlin.properties.Delegates
+import kotlin.contracts.contract
 
 class RealJavaFile(
   val file: File
@@ -50,40 +56,58 @@ class RealJavaFile(
   )
 
   private val parsed by lazy {
-    val unit = StaticJavaParser.parse(file)
+
+    // Set up a minimal type solver that only looks at the classes used to run this sample.
+    val combinedTypeSolver = CombinedTypeSolver()
+      .apply {
+        add(ReflectionTypeSolver())
+        // TODO
+        //  consider adding this with source dirs for all dependencies?
+        //  add(JavaParserTypeSolver())
+      }
+
+    val symbolSolver = JavaSymbolSolver(combinedTypeSolver)
+
+    StaticJavaParser.getConfiguration().setSymbolResolver(symbolSolver)
+
+    val compilationUnit = StaticJavaParser.parse(file)
 
     val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
     val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
-    val fieldDeclarations = mutableSetOf<DeclarationName>()
+    val memberDeclarations = mutableSetOf<DeclarationName>()
     val enumDeclarations = mutableSetOf<DeclarationName>()
 
-    val iterator = NodeVisitor { node ->
+    // compilationUnit.printEverything()
 
-      when (node) {
-        is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
-        is TypeDeclaration<*> -> typeDeclarations.add(node)
-        is FieldDeclaration -> {
+    compilationUnit.childrenRecursive()
+      .forEach { node ->
 
-          if (node.isStatic && node.isPublic) {
-            fieldDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+        when (node) {
+          is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
+          is TypeDeclaration<*> -> typeDeclarations.add(node)
+          is MethodDeclaration -> {
+
+            if (node.canBeImported()) {
+              memberDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+            }
           }
-        }
-        is EnumConstantDeclaration -> {
-          enumDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+          is FieldDeclaration -> {
+            if (node.canBeImported()) {
+              memberDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+            }
+          }
+          is EnumConstantDeclaration -> {
+            enumDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
+          }
         }
       }
 
-      true
-    }
-
-    iterator.visit(unit)
-
     ParsedFile(
-      packageFqName = unit.packageDeclaration.get().nameAsString,
-      imports = unit.imports,
+      packageFqName = compilationUnit.packageDeclaration.get().nameAsString,
+      imports = compilationUnit.imports,
       classOrInterfaceTypes = classOrInterfaceTypes,
       typeDeclarations = typeDeclarations.distinct(),
-      fieldDeclarations = fieldDeclarations,
+      fieldDeclarations = memberDeclarations,
       enumDeclarations = enumDeclarations
     )
   }
@@ -91,71 +115,56 @@ class RealJavaFile(
   override val packageFqName by lazy { parsed.packageFqName }
 
   override val imports by lazy {
-    parsed
-      .imports
-      .map {
-        it.toString()
-          .replace("import", "")
-          .replace(";", "")
-          .trim()
-      }.toSet()
+    parsed.imports
+      .filterNot { it.isAsterisk }
+      .map { it.nameAsString }
+      .toSet()
   }
 
   override val declarations by lazy {
     parsed.typeDeclarations
-      .map { it.fullyQualifiedName.get().asDeclarationName() }
+      .asSequence()
+      .filterNot { it.isPrivate }
+      .mapNotNull { declaration ->
+        declaration.fullyQualifiedName
+          .getOrNull()
+          ?.asDeclarationName()
+      }
       .toSet()
       .plus(parsed.fieldDeclarations)
       .plus(parsed.enumDeclarations)
   }
 
   override val wildcardImports: Set<String> by lazy {
-    parsed
-      .imports
+    parsed.imports
       .filter { it.isAsterisk }
-      .map {
-        it.toString()
-          .replace("import", "")
-          .replace(";", "")
-          .trim()
-      }.toSet()
-  }
-
-  override val maybeExtraReferences: LazyDeferred<Set<String>> = lazyDeferred {
-    parsed.classOrInterfaceTypes
-      .map { it.nameWithScope }
-      .flatMap { name ->
-        wildcardImports.map { wildcardImport ->
-          wildcardImport.replace("*", name)
-        }
-      }
+      .map { it.nameAsString }
       .toSet()
   }
 
-  private fun <T> T.fqName(typeDeclarations: List<TypeDeclaration<*>>): String
-    where T : Node, T : Resolvable<*> {
-    val simpleName = simpleName()
+  override val maybeExtraReferences: LazyDeferred<Set<String>> = lazyDeferred {
+
+    val unresolved = parsed.classOrInterfaceTypes
+      .map { it.nameWithScope }
+      .filter { name -> imports.none { import -> import.endsWith(name) } }
+
+    val all = unresolved + unresolved.flatMap { reference ->
+      wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference"
+    }
+
+    all.toSet()
+  }
+
+  private fun <T, R : ResolvedDeclaration> T.fqName(
+    typeDeclarations: List<TypeDeclaration<*>>
+  ): String
+    where T : Node, T : Resolvable<R> {
+    val simpleName = resolve().name
 
     val parentTypeFqName = typeDeclarations
       .last { isDescendantOf(it) }
       .fullyQualifiedName.get()
     return "$parentTypeFqName.$simpleName"
-  }
-
-  private fun <T> T.simpleName(): String
-    where T : Node, T : Resolvable<*> {
-    var name: String by Delegates.notNull()
-
-    NodeVisitor { node ->
-      if (node is SimpleName) {
-        name = node.asString()
-        false
-      } else {
-        true
-      }
-    }.visit(this)
-
-    return name
   }
 
   override fun getScopeArguments(
@@ -166,15 +175,12 @@ class RealJavaFile(
   }
 }
 
-internal class NodeVisitor(
-  private val predicate: (node: Node) -> Boolean
-) {
+fun <T> T.canBeImported(): Boolean
+  where T : NodeWithStaticModifier<T>, T : NodeWithPrivateModifier<T> {
 
-  fun visit(node: Node) {
-    if (predicate(node)) {
-      node.childNodes.forEach { child ->
-        visit(child)
-      }
-    }
+  contract {
+    returns(true) implies (this@canBeImported is Resolvable<*>)
   }
+
+  return isStatic() && !isPrivate() && this is Resolvable<*>
 }

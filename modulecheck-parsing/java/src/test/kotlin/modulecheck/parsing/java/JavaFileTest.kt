@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.java
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.project.test.ProjectTest
@@ -106,6 +107,82 @@ internal class JavaFileTest : ProjectTest() {
       DeclarationName("com.example.Constants.Values.MY_VALUE")
     )
   }
+
+  @Test
+  fun `public static functions should count as declarations`() {
+
+    val javaFile = file(
+      """
+    package com.example;
+
+    public class Utils {
+
+      public static void foo() {}
+    }
+      """
+    )
+
+    javaFile.declarations shouldBe listOf(
+      DeclarationName("com.example.Utils"),
+      DeclarationName("com.example.Utils.foo")
+    )
+  }
+
+  @Test
+  fun `public member property type with wildcard import should count as reference`() = runBlocking {
+
+    val javaFile = file(
+      """
+    package com.example;
+
+    import com.lib1.*;
+
+    public class Utils {
+
+      public Lib1Class lib1Class;
+    }
+      """
+    )
+
+    javaFile.declarations shouldBe listOf(
+      DeclarationName("com.example.Utils")
+    )
+    javaFile.imports shouldBe listOf()
+    javaFile.maybeExtraReferences.await() shouldBe listOf(
+      "Lib1Class",
+      "com.lib1.Lib1Class",
+      "com.example.Lib1Class"
+    )
+  }
+
+  @Test
+  fun `public member property generic type with wildcard import should count as reference`() =
+    runBlocking {
+
+      val javaFile = file(
+        """
+    package com.example;
+
+    import com.lib1.*;
+    import java.util.List;
+
+    public class Utils {
+
+      public List<Lib1Class> lib1Classes;
+    }
+      """
+      )
+
+      javaFile.declarations shouldBe listOf(
+        DeclarationName("com.example.Utils")
+      )
+      javaFile.imports shouldBe listOf("java.util.List")
+      javaFile.maybeExtraReferences.await() shouldBe listOf(
+        "Lib1Class",
+        "com.lib1.Lib1Class",
+        "com.example.Lib1Class"
+      )
+    }
 
   fun simpleProject() = project(":lib") {
     addSource(
