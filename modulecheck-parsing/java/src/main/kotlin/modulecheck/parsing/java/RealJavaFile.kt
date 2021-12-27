@@ -76,8 +76,8 @@ class RealJavaFile(
     val memberDeclarations = mutableSetOf<DeclarationName>()
     val enumDeclarations = mutableSetOf<DeclarationName>()
 
-    var packageFqName = ""
-    var imports = listOf<ImportDeclaration>()
+    val packageFqName: String
+    val imports: List<ImportDeclaration>
 
     // This is a band-aid for JavaParser's lack of support for Java Records.  Parsing a file with
     // records will just throw an exception...
@@ -87,12 +87,31 @@ class RealJavaFile(
 
       packageFqName = compilationUnit.packageDeclaration.get().nameAsString
       imports = compilationUnit.imports
+    } else {
+      // If parsing fails because of Records, use simple Regex parsing to get imports and package.
+      val namePartReg = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*"
+
+      val packageReg = "\\s*package\\s+($namePartReg(?:\\.$namePartReg)*);".toRegex()
+      val importReg = "\\s*import\\s+((?:static\\s+)?)($namePartReg(?:\\.$namePartReg)*);".toRegex()
+
+      val text = file.readText()
+
+      packageFqName = packageReg.find(text)?.value ?: ""
+
+      imports = importReg.findAll(text)
+        .map { it.destructured }
+        .map { (static, name) ->
+          val isStatic = static.isNotBlank()
+          val isAsterisk = name.endsWith(".*")
+          ImportDeclaration(name, isStatic, isAsterisk)
+        }
+        .toList()
     }
 
     // compilationUnit.printEverything()
 
     compilationUnit?.childrenRecursive()
-      .forEach { node ->
+      ?.forEach { node ->
 
         when (node) {
           is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
