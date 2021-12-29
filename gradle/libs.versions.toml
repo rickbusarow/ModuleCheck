@@ -108,8 +108,8 @@ hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref =
 hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
 hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
 
-javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
 javaParser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaParser" }
+javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
 
 javax-inject = "javax.inject:javax.inject:1"
 
