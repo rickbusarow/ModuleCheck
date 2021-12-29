@@ -19,6 +19,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.java.JavaParserNodeResolver
 import modulecheck.parsing.java.RealJavaFile
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
@@ -59,7 +60,14 @@ class RealJvmFileProvider(
             sourceSetName = sourceSetName
           )
         )
-        else -> RealJavaFile(file)
+        else -> RealJavaFile(
+          file = file,
+          javaVersion = project.javaSourceVersion,
+          nodeResolver = JavaParserNodeResolver(
+            project = project,
+            sourceSetName = sourceSetName
+          )
+        )
       }
     }
   }

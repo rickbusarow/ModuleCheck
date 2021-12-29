@@ -25,23 +25,21 @@ dependencies {
 
   api(libs.kotlin.compiler)
 
+  api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
-  compileOnly("org.codehaus.groovy:groovy-xml:3.0.9")
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.javaParser)
+  implementation(libs.javaParser.symbols)
+  implementation(libs.javaParser.core)
   implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
 
-  testImplementation(project(path = ":modulecheck-parsing:gradle"))
   testImplementation(project(path = ":modulecheck-parsing:java"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))

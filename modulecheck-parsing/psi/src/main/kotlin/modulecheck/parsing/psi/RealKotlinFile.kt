@@ -21,8 +21,8 @@ import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import modulecheck.parsing.source.AnvilScopeNameEntry
-import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
@@ -201,7 +201,9 @@ class RealKotlinFile(
     )
   }
 
-  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(typeFqName: FqName): RawAnvilAnnotatedType? {
+  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(
+    typeFqName: FqName
+  ): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList
       ?.getByNameOrIndex(0, "scope")
       ?: return null
