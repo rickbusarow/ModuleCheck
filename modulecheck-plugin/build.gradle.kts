@@ -48,7 +48,6 @@ dependencies {
   api(project(path = ":modulecheck-runtime"))
 
   implementation(libs.agp)
-  implementation(libs.javaParser)
   implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlin.gradle.plugin.api)
   implementation(libs.kotlin.reflect)
