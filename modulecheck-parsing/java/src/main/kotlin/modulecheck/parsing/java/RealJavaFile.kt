@@ -66,8 +66,7 @@ import kotlin.contracts.contract
 
 class RealJavaFile(
   val file: File,
-  private val javaVersion: JavaVersion,
-  private val nodeResolver: JavaParserNodeResolver
+  private val javaVersion: JavaVersion
 ) : JavaFile {
 
   override val name = file.name
@@ -298,6 +297,7 @@ fun <T> T.canBeImported(): Boolean
   return isStatic() && !isPrivate() && this is Resolvable<*>
 }
 
+@Suppress("ComplexMethod")
 internal fun JavaVersion.toLanguageLevel(): LanguageLevel {
   return when (this) {
     VERSION_1_1 -> LanguageLevel.JAVA_1_1
@@ -314,6 +314,9 @@ internal fun JavaVersion.toLanguageLevel(): LanguageLevel {
     VERSION_12 -> LanguageLevel.JAVA_12
     VERSION_13 -> LanguageLevel.JAVA_13
     VERSION_14 -> LanguageLevel.JAVA_14
+    // TODO
+    //  Gradle itself leaks JavaParser 3.17.0 to its classpath, so these later versions of Java
+    //  won't resolve
     // VERSION_15 -> LanguageLevel.JAVA_15
     // VERSION_16 -> LanguageLevel.JAVA_16
     // VERSION_17 -> LanguageLevel.JAVA_17

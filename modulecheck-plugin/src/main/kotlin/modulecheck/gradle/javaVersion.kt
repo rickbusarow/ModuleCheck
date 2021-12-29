@@ -40,7 +40,7 @@ import org.gradle.api.JavaVersion.VERSION_HIGHER
 
 typealias GradleJavaVersion = org.gradle.api.JavaVersion
 
-@Suppress("UnstableApiUsage")
+@Suppress("UnstableApiUsage", "ComplexMethod")
 fun GradleJavaVersion.toJavaVersion(): JavaVersion {
   return when (this) {
     VERSION_1_1 -> JavaVersion.VERSION_1_1

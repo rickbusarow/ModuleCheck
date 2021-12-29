@@ -68,6 +68,7 @@ internal fun String.javaLangFqNameOrNull(): FqName? {
   }
 }
 
+@Suppress("SwallowedException")
 internal fun ClassOrInterfaceType.fqNameOrNull(): FqName? {
 
   return try {
