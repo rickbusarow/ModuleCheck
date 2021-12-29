@@ -17,6 +17,7 @@ package modulecheck.parsing.java
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest

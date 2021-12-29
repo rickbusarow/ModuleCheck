@@ -419,7 +419,7 @@ internal class KotlinFileTest : ProjectTest() {
 
         file.componentBindingReferences.await() shouldBe listOf(
           AnvilBindingReference(
-            referencedType = "com.lib1.Lib1Class", scopeOrNull = "Unit"
+            referencedType = "com.lib1.Lib1Class", scopeOrNull = "kotlin.Unit"
           )
         )
       }
@@ -451,7 +451,7 @@ internal class KotlinFileTest : ProjectTest() {
       file.moduleBindingReferences.await() shouldBe setOf(
         AnvilBindingReference(
           referencedType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
 
@@ -459,7 +459,7 @@ internal class KotlinFileTest : ProjectTest() {
         AnvilBoundType(
           boundType = "com.lib1.Lib1Class",
           realType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
     }
@@ -489,7 +489,7 @@ internal class KotlinFileTest : ProjectTest() {
       file.moduleBindingReferences.await() shouldBe setOf(
         AnvilBindingReference(
           referencedType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
 
@@ -497,7 +497,7 @@ internal class KotlinFileTest : ProjectTest() {
         AnvilBoundType(
           boundType = "com.lib1.Lib1Class",
           realType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
     }
@@ -527,7 +527,7 @@ internal class KotlinFileTest : ProjectTest() {
       file.moduleBindingReferences.await() shouldBe setOf(
         AnvilBindingReference(
           referencedType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
 
@@ -535,7 +535,7 @@ internal class KotlinFileTest : ProjectTest() {
         AnvilBoundType(
           boundType = "com.lib1.Lib1Class",
           realType = "com.lib1.Lib1ClassImpl",
-          scopeOrNull = "Unit"
+          scopeOrNull = "kotlin.Unit"
         )
       )
     }

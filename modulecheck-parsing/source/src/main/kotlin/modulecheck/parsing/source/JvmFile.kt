@@ -50,6 +50,10 @@ interface KotlinFile : JvmFile {
   )
 }
 
+interface JavaFile : JvmFile {
+  val apiReferences: Set<FqName>
+}
+
 enum class JavaVersion {
   VERSION_1_1,
   VERSION_1_2,

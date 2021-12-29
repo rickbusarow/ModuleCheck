@@ -35,8 +35,6 @@ import modulecheck.parsing.source.AnvilBindingReference
 import modulecheck.parsing.source.AnvilBoundType
 import modulecheck.parsing.source.AnvilScope
 import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
-import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.RawAnvilAnnotatedType
