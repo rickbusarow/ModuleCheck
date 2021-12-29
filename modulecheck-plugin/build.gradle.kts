@@ -17,7 +17,7 @@ import modulecheck.builds.VERSION_NAME
 
 plugins {
   id("mcbuild")
-  id("com.gradle.plugin-publish") version "0.18.0"
+  id("com.gradle.plugin-publish") version "0.19.0"
   id("java-gradle-plugin")
   `kotlin-dsl`
 }
