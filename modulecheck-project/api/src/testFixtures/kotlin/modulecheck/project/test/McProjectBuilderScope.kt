@@ -23,6 +23,7 @@ import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.ConfiguredProjectDependency
@@ -49,6 +50,7 @@ interface McProjectBuilderScope {
   val sourceSets: MutableMap<SourceSetName, SourceSet>
   var anvilGradlePlugin: AnvilGradlePlugin?
   val projectCache: ProjectCache
+  val javaSourceVersion: JavaVersion
 
   fun addDependency(
     configurationName: ConfigurationName,
@@ -158,7 +160,8 @@ data class JvmMcProjectBuilderScope(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  override val projectCache: ProjectCache = ProjectCache()
+  override val projectCache: ProjectCache = ProjectCache(),
+  override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
 ) : McProjectBuilderScope
 
 internal fun createProject(
@@ -238,6 +241,7 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
     buildFileParser = buildFileParser(buildFile),
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,
+    javaSourceVersion = javaSourceVersion,
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }
   )

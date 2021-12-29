@@ -20,6 +20,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.BuildFileParser
@@ -50,6 +51,7 @@ class RealAndroidMcProject(
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
+  override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>
 ) : AndroidMcProject {

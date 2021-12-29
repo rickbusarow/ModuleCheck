@@ -42,7 +42,6 @@ dependencies {
 
   implementation(libs.agp)
   implementation(libs.groovy)
-  implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
 
   testFixturesApi(libs.bundles.hermit)

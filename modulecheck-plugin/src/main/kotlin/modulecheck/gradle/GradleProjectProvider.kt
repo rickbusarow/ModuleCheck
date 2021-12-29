@@ -42,6 +42,7 @@ import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.toSourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ConfiguredProjectDependency
@@ -141,6 +142,7 @@ class GradleProjectProvider @AssistedInject constructor(
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
+        javaSourceVersion = gradleProject.javaVersion(),
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
@@ -157,6 +159,7 @@ class GradleProjectProvider @AssistedInject constructor(
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
         buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
+        javaSourceVersion = gradleProject.javaVersion(),
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies
       )
@@ -235,6 +238,14 @@ class GradleProjectProvider @AssistedInject constructor(
         .toMutableMap()
       ProjectDependencies(map)
     }
+
+  private fun GradleProject.javaVersion(): JavaVersion {
+    return convention
+      .findPlugin(JavaPluginConvention::class.java)
+      ?.sourceCompatibility
+      ?.toJavaVersion()
+      ?: JavaVersion.VERSION_1_8
+  }
 
   private fun GradleProject.jvmSourceSets(): SourceSets {
     val map = convention

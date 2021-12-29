@@ -20,6 +20,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
@@ -45,6 +46,7 @@ class RealMcProject(
   override val buildFileParser: BuildFileParser,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
+  override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>
 ) : McProject {

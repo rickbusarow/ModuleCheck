@@ -13,31 +13,8 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.parsing.java
 
-mcbuild {
-  artifactId = "modulecheck-parsing-gradle"
-  anvil = true
-}
+import java.util.Optional
 
-dependencies {
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
-
-  api(project(path = ":modulecheck-utils"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-}
+internal fun <T> Optional<T>.getOrNull(): T? = takeIf { it.isPresent }?.get()

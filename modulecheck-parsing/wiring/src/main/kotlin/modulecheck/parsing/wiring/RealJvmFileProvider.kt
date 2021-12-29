@@ -59,7 +59,10 @@ class RealJvmFileProvider(
             sourceSetName = sourceSetName
           )
         )
-        else -> RealJavaFile(file)
+        else -> RealJavaFile(
+          file = file,
+          javaVersion = project.javaSourceVersion
+        )
       }
     }
   }

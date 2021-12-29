@@ -16,6 +16,7 @@
 package modulecheck.parsing.source
 
 import modulecheck.utils.LazyDeferred
+import org.jetbrains.kotlin.name.FqName
 
 interface JvmFile {
   val name: String
@@ -25,6 +26,11 @@ interface JvmFile {
 
   val wildcardImports: Set<String>
   val maybeExtraReferences: LazyDeferred<Set<String>>
+}
+
+interface KotlinFile : JvmFile {
+
+  val apiReferences: LazyDeferred<Set<String>>
 
   fun getScopeArguments(
     allAnnotations: Set<String>,
@@ -37,9 +43,30 @@ interface JvmFile {
   )
 }
 
-interface KotlinFile : JvmFile {
-
-  val apiReferences: LazyDeferred<Set<String>>
+interface JavaFile : JvmFile {
+  val apiReferences: Set<FqName>
 }
 
-interface JavaFile : JvmFile
+enum class JavaVersion {
+  VERSION_1_1,
+  VERSION_1_2,
+  VERSION_1_3,
+  VERSION_1_4,
+  VERSION_1_5,
+  VERSION_1_6,
+  VERSION_1_7,
+  VERSION_1_8,
+  VERSION_1_9,
+  VERSION_1_10,
+  VERSION_11,
+  VERSION_12,
+  VERSION_13,
+  VERSION_14,
+  VERSION_15,
+  VERSION_16,
+  VERSION_17,
+  VERSION_18,
+  VERSION_19,
+  VERSION_20,
+  VERSION_HIGHER;
+}
