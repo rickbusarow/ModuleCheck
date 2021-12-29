@@ -33,7 +33,6 @@ dependencies {
   implementation(libs.antlr.core)
   implementation(libs.antlr.runtime)
   implementation(libs.groovy)
-  implementation(libs.javaParser)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
 

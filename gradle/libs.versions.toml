@@ -21,7 +21,7 @@ coil = "1.3.2"
 compileSdk = "30"
 dependencyAnalysis = "0.78.0"
 detekt = "1.19.0"
-dokka = "1.6.0"
+dokka = "1.6.10"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
@@ -32,6 +32,7 @@ gradleDoctor = "0.7.3"
 groovy = "3.0.9"
 hermit = "0.9.5"
 jUnit = "5.8.2"
+javaParser = "3.23.1"
 knit = "0.3.0"
 kotest = "5.0.3"
 kotlin = "1.5.32"
@@ -40,7 +41,7 @@ kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.0"
 kotlinx-knit = "0.3.0"
 
-ktlint = "10.2.0"
+ktlint = "10.2.1"
 
 mavenPublish = "0.13.0"
 
@@ -107,11 +108,10 @@ hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref =
 hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
 hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
 
-javaParser = "com.github.javaparser:javaparser-symbol-solver-core:3.23.1"
+javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
+javaParser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaParser" }
 
 javax-inject = "javax.inject:javax.inject:1"
-
-jmailen-gradle-kotlinter-gradle = "org.jmailen.gradle:kotlinter-gradle:3.4.4"
 
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }

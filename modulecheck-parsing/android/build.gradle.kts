@@ -36,7 +36,6 @@ dependencies {
 
   implementation(libs.agp)
   implementation(libs.groovy)
-  implementation(libs.javaParser)
   implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)

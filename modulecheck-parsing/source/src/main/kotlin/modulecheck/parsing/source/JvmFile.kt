@@ -26,16 +26,6 @@ interface JvmFile {
 
   val wildcardImports: Set<String>
   val maybeExtraReferences: LazyDeferred<Set<String>>
-
-  fun getScopeArguments(
-    allAnnotations: Set<String>,
-    mergeAnnotations: Set<String>
-  ): ScopeArgumentParseResult
-
-  data class ScopeArgumentParseResult(
-    val mergeArguments: Set<RawAnvilAnnotatedType>,
-    val contributeArguments: Set<RawAnvilAnnotatedType>
-  )
 }
 
 interface KotlinFile : JvmFile {
@@ -48,6 +38,38 @@ interface KotlinFile : JvmFile {
   val boundTypes: LazyDeferred<Set<AnvilBoundType>>
 
   val simpleBoundTypes: LazyDeferred<Set<AnvilBoundType>>
+
+  fun getScopeArguments(
+    allAnnotations: Set<String>,
+    mergeAnnotations: Set<String>
+  ): ScopeArgumentParseResult
+
+  data class ScopeArgumentParseResult(
+    val mergeArguments: Set<RawAnvilAnnotatedType>,
+    val contributeArguments: Set<RawAnvilAnnotatedType>
+  )
 }
 
-interface JavaFile : JvmFile
+enum class JavaVersion {
+  VERSION_1_1,
+  VERSION_1_2,
+  VERSION_1_3,
+  VERSION_1_4,
+  VERSION_1_5,
+  VERSION_1_6,
+  VERSION_1_7,
+  VERSION_1_8,
+  VERSION_1_9,
+  VERSION_1_10,
+  VERSION_11,
+  VERSION_12,
+  VERSION_13,
+  VERSION_14,
+  VERSION_15,
+  VERSION_16,
+  VERSION_17,
+  VERSION_18,
+  VERSION_19,
+  VERSION_20,
+  VERSION_HIGHER;
+}

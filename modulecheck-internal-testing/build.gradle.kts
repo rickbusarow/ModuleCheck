@@ -23,6 +23,8 @@ dependencies {
   api(libs.bundles.jUnit)
   api(libs.bundles.kotest)
 
+  api(project(path = ":modulecheck-utils"))
+
   compileOnly(gradleApi())
 
   compileOnly(libs.groovyXml)

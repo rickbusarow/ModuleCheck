@@ -16,6 +16,7 @@
 package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.psi.kotlinStdLibNames
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -258,6 +259,16 @@ suspend fun PsiElement.fqNameOrNull(
     .firstOrNull { classReference == it.importPath?.importedName?.asString() }
     ?.importedFqName
     ?.let { return it }
+
+  // If this doesn't work, then maybe a class from the Kotlin package is used.
+  sequenceOf(
+    "kotlin.jvm.$classReference",
+    "java.lang.$classReference",
+    "kotlin.$classReference",
+    "kotlin.collections.$classReference"
+  )
+    .firstOrNull { it in kotlinStdLibNames }
+    ?.let { return FqName(it) }
 
   return null
 }

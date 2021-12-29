@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import kotlin.contracts.contract
@@ -50,6 +51,8 @@ interface McProject :
 
   val logger: Logger
   val jvmFileProviderFactory: JvmFileProvider.Factory
+
+  val javaSourceVersion: JavaVersion
 
   suspend fun resolveFqNameOrNull(
     declarationName: FqName,

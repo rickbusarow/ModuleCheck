@@ -15,49 +15,64 @@
 
 package modulecheck.parsing.java
 
-import com.github.javaparser.StaticJavaParser
-import com.github.javaparser.ast.ImportDeclaration
+import com.github.javaparser.JavaParser
+import com.github.javaparser.ParserConfiguration
+import com.github.javaparser.ParserConfiguration.LanguageLevel
+import com.github.javaparser.ast.CompilationUnit
 import com.github.javaparser.ast.Node
-import com.github.javaparser.ast.body.EnumConstantDeclaration
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
-import com.github.javaparser.ast.body.TypeDeclaration
-import com.github.javaparser.ast.body.VariableDeclarator
-import com.github.javaparser.ast.expr.SimpleName
+import com.github.javaparser.ast.nodeTypes.NodeWithTypeParameters
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
 import com.github.javaparser.ast.type.ClassOrInterfaceType
+import com.github.javaparser.ast.type.Type
 import com.github.javaparser.resolution.Resolvable
-import com.github.javaparser.resolution.declarations.ResolvedDeclaration
 import com.github.javaparser.symbolsolver.JavaSymbolSolver
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver
-import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaFile
-import modulecheck.parsing.source.JvmFile.ScopeArgumentParseResult
+import modulecheck.parsing.source.JavaVersion
+import modulecheck.parsing.source.JavaVersion.VERSION_11
+import modulecheck.parsing.source.JavaVersion.VERSION_12
+import modulecheck.parsing.source.JavaVersion.VERSION_13
+import modulecheck.parsing.source.JavaVersion.VERSION_14
+import modulecheck.parsing.source.JavaVersion.VERSION_15
+import modulecheck.parsing.source.JavaVersion.VERSION_16
+import modulecheck.parsing.source.JavaVersion.VERSION_17
+import modulecheck.parsing.source.JavaVersion.VERSION_18
+import modulecheck.parsing.source.JavaVersion.VERSION_19
+import modulecheck.parsing.source.JavaVersion.VERSION_1_1
+import modulecheck.parsing.source.JavaVersion.VERSION_1_10
+import modulecheck.parsing.source.JavaVersion.VERSION_1_2
+import modulecheck.parsing.source.JavaVersion.VERSION_1_3
+import modulecheck.parsing.source.JavaVersion.VERSION_1_4
+import modulecheck.parsing.source.JavaVersion.VERSION_1_5
+import modulecheck.parsing.source.JavaVersion.VERSION_1_6
+import modulecheck.parsing.source.JavaVersion.VERSION_1_7
+import modulecheck.parsing.source.JavaVersion.VERSION_1_8
+import modulecheck.parsing.source.JavaVersion.VERSION_1_9
+import modulecheck.parsing.source.JavaVersion.VERSION_20
+import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
+import modulecheck.utils.mapToSet
+import org.jetbrains.kotlin.name.FqName
 import java.io.File
+import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract
 
 class RealJavaFile(
-  val file: File
+  val file: File,
+  private val javaVersion: JavaVersion,
+  private val nodeResolver: JavaParserNodeResolver
 ) : JavaFile {
 
   override val name = file.name
 
-  data class ParsedFile(
-    val packageFqName: String,
-    val imports: List<ImportDeclaration>,
-    val classOrInterfaceTypes: Set<ClassOrInterfaceType>,
-    val typeDeclarations: List<TypeDeclaration<*>>,
-    val fieldDeclarations: Set<DeclarationName>,
-    val enumDeclarations: Set<DeclarationName>
-  )
-
-  private val parsed by lazy {
-
+  private val parserConfiguration by lazy(NONE) {
     // Set up a minimal type solver that only looks at the classes used to run this sample.
     val combinedTypeSolver = CombinedTypeSolver()
       .apply {
@@ -69,84 +84,27 @@ class RealJavaFile(
 
     val symbolSolver = JavaSymbolSolver(combinedTypeSolver)
 
-    StaticJavaParser.getConfiguration().setSymbolResolver(symbolSolver)
-
-    val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
-    val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
-    val memberDeclarations = mutableSetOf<DeclarationName>()
-    val enumDeclarations = mutableSetOf<DeclarationName>()
-
-    val packageFqName: String
-    val imports: List<ImportDeclaration>
-
-    // This is a band-aid for JavaParser's lack of support for Java Records.  Parsing a file with
-    // records will just throw an exception...
-    val compilationUnit = runCatching { StaticJavaParser.parse(file) }.getOrNull()
-
-    if (compilationUnit != null) {
-
-      packageFqName = compilationUnit.packageDeclaration.get().nameAsString
-      imports = compilationUnit.imports
-    } else {
-      // If parsing fails because of Records, use simple Regex parsing to get imports and package.
-      val namePartReg = "\\p{javaJavaIdentifierStart}\\p{javaJavaIdentifierPart}*"
-
-      val packageReg = "\\s*package\\s+($namePartReg(?:\\.$namePartReg)*);".toRegex()
-      val importReg = "\\s*import\\s+((?:static\\s+)?)($namePartReg(?:\\.$namePartReg)*);".toRegex()
-
-      val text = file.readText()
-
-      packageFqName = packageReg.find(text)?.value ?: ""
-
-      imports = importReg.findAll(text)
-        .map { it.destructured }
-        .map { (static, name) ->
-          val isStatic = static.isNotBlank()
-          val isAsterisk = name.endsWith(".*")
-          ImportDeclaration(name, isStatic, isAsterisk)
-        }
-        .toList()
-    }
-
-    // compilationUnit.printEverything()
-
-    compilationUnit?.childrenRecursive()
-      ?.forEach { node ->
-
-        when (node) {
-          is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
-          is TypeDeclaration<*> -> typeDeclarations.add(node)
-          is MethodDeclaration -> {
-
-            if (node.canBeImported()) {
-              memberDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
-            }
-          }
-          is FieldDeclaration -> {
-            if (node.canBeImported()) {
-              memberDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
-            }
-          }
-          is EnumConstantDeclaration -> {
-            enumDeclarations.add(DeclarationName(node.fqName(typeDeclarations)))
-          }
-        }
+    ParserConfiguration()
+      .apply {
+        setSymbolResolver(symbolSolver)
+        languageLevel = javaVersion.toLanguageLevel()
       }
-
-    ParsedFile(
-      packageFqName = packageFqName,
-      imports = imports,
-      classOrInterfaceTypes = classOrInterfaceTypes,
-      typeDeclarations = typeDeclarations.distinct(),
-      fieldDeclarations = memberDeclarations,
-      enumDeclarations = enumDeclarations
-    )
   }
+
+  private val compilationUnit: CompilationUnit by lazy {
+
+    JavaParser(parserConfiguration)
+      .parse(file)
+      .result
+      .get()
+  }
+
+  private val parsed by ParsedFile.fromCompilationUnitLazy(compilationUnit)
 
   override val packageFqName by lazy { parsed.packageFqName }
 
   override val imports by lazy {
-    parsed.imports
+    compilationUnit.imports
       .filterNot { it.isAsterisk }
       .map { it.nameAsString }
       .toSet()
@@ -167,73 +125,167 @@ class RealJavaFile(
   }
 
   override val wildcardImports: Set<String> by lazy {
-    parsed.imports
+    compilationUnit.imports
       .filter { it.isAsterisk }
       .map { it.nameAsString }
       .toSet()
   }
 
+  private val typeReferenceNames: Set<String> by lazy {
+
+    compilationUnit
+      .getChildrenOfTypeRecursive<ClassOrInterfaceType>()
+      // A qualified type like `com.Foo` will have a nested ClassOrInterfaceType of `com`.
+      // Filter out those nested types, since they seem like they're always just noise.
+      .filterNot { it.parentNode.getOrNull() is ClassOrInterfaceType }
+      .flatMap { it.typeReferencesRecursive() }
+      .mapNotNull { type ->
+
+        val typeNames = type.getTypeParameterNamesInScope().toSet()
+
+        type.nameWithScope
+          .takeIf { it !in typeNames }
+      }
+      .toSet()
+  }
+
   override val maybeExtraReferences: LazyDeferred<Set<String>> = lazyDeferred {
 
-    val unresolved = parsed.classOrInterfaceTypes
-      .map { it.nameWithScope }
+    val unresolved = typeReferenceNames
       .filter { name -> imports.none { import -> import.endsWith(name) } }
+      .filter { name -> name.javaLangFqNameOrNull() == null }
 
     val all = unresolved + unresolved.flatMap { reference ->
-      wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference"
+      reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
+        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
     }
 
     all.toSet()
   }
 
-  private fun <T, R : ResolvedDeclaration> T.fqName(
-    typeDeclarations: List<TypeDeclaration<*>>
-  ): String
-    where T : Node, T : Resolvable<R> {
-    val simpleName = when (this) {
-      is MethodDeclaration -> name.asString()
-      is FieldDeclaration -> requireChildOfType<VariableDeclarator>().nameAsString
-      is EnumConstantDeclaration -> nameAsString
-      else -> {
+  override val apiReferences: Set<FqName> by lazy {
 
-        println(
-          """~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  the problem node  -- ${this::class}
-          |$this
-          |_____________________--
-        """.trimMargin()
-        )
-
-        printEverything()
-
-        kotlin.runCatching { resolve().name }
-          .getOrNull()
-          ?: simpleName()
+    val members = compilationUnit.childrenRecursive()
+      // Only look at references which are inside public classes.  This includes nested classes
+      // which may be (incorrectly) inside private or package-private classes.
+      .filter { node ->
+        node.getParentsOfTypeRecursive<ClassOrInterfaceDeclaration>()
+          .all { parentClass -> parentClass.isPublic || parentClass.isProtected }
       }
+
+    val simpleRefs = members
+      .flatMap {
+        when (it) {
+          is MethodDeclaration -> it.apiReferences()
+          is FieldDeclaration -> it.apiReferences()
+          else -> emptyList()
+        }
+      }
+      .toList()
+
+    val resolved = mutableSetOf<String>()
+    val unresolved = mutableSetOf<String>()
+
+    simpleRefs.forEach { reference ->
+
+      val resolvedOrNull = imports.firstOrNull { it.endsWith(reference) }
+        ?: reference.javaLangFqNameOrNull()?.asString()
+
+      if (resolvedOrNull != null) {
+        resolved.add(resolvedOrNull)
+        return@forEach
+      }
+
+      unresolved.add(reference)
     }
 
-    val parentTypeFqName = typeDeclarations
-      .last { isDescendantOf(it) }
-      .fullyQualifiedName.get()
-    return "$parentTypeFqName.$simpleName"
-  }
-
-  private fun <T : Node> T.simpleName(): String {
-
-    return if (this is SimpleName) {
-      asString()
-    } else {
-      getChildrenOfTypeRecursive<SimpleName>()
-        .first()
-        .asString()
+    val guesses = unresolved + unresolved.flatMap { reference ->
+      reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
+        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
     }
-  }
 
-  override fun getScopeArguments(
-    allAnnotations: Set<String>,
-    mergeAnnotations: Set<String>
-  ): ScopeArgumentParseResult {
-    return ScopeArgumentParseResult(mergeArguments = emptySet(), contributeArguments = emptySet())
+    (resolved + guesses)
+      .mapToSet { FqName(it) }
   }
+}
+
+/**
+ * Includes all types referenced by the receiver [ClassOrInterfaceType], optionally including
+ * itself.
+ *
+ * For instance, given the function:
+ *
+ * ```
+ * public javax.inject.Provider<List<String>> getStringListProvider() { /* ... */ }
+ * ```
+ *
+ * This function with will return a sequence of ['javax.inject.Provider', 'List', 'String'].
+ *
+ * @return A Sequence of all [Type]s referenced by the receiver class type.
+ */
+fun ClassOrInterfaceType.typeReferencesRecursive(): Sequence<ClassOrInterfaceType> {
+
+  return generateSequence(sequenceOf(this)) { types ->
+    types.map { type ->
+      type.typeArguments
+        ?.getOrNull()
+        ?.asSequence()
+        ?.filterIsInstance<ClassOrInterfaceType>()
+        .orEmpty()
+    }
+      .flatten()
+      .takeIf { it.iterator().hasNext() }
+  }
+    .flatten()
+}
+
+fun FieldDeclaration.apiReferences(): List<String> {
+  return (elementType as? ClassOrInterfaceType)?.typeReferencesRecursive()
+    .orEmpty()
+    .map { it.nameWithScope }
+    .toList()
+}
+
+fun MethodDeclaration.apiReferences(): List<String> {
+
+  if (!isProtected && !isPublic) return emptyList()
+
+  val typeParameterBounds = typeParameters.flatMap { it.typeBound }
+    .flatMap { it.typeReferencesRecursive() }
+    .map { it.nameWithScope }
+    .distinct()
+
+  val typeParameterNames = typeParameters.mapToSet { it.nameAsString }
+
+  val returnTypes: Sequence<String> = sequenceOf(type as? ClassOrInterfaceType)
+    .filterNotNull()
+    .plus(type.getChildrenOfTypeRecursive())
+    .filterNot { it.parentNode.getOrNull() is ClassOrInterfaceType }
+    .flatMap { classType ->
+      classType.typeReferencesRecursive()
+        .map { it.nameWithScope }
+    }
+    .filterNot { it in typeParameterNames }
+
+  val arguments = parameters
+    .map { it.type }
+    .filterIsInstance<ClassOrInterfaceType>()
+    .flatMap { classType ->
+      classType.typeReferencesRecursive()
+        .map { it.nameWithScope }
+    }
+    .filterNot { it in typeParameterNames }
+
+  return typeParameterBounds + returnTypes + arguments
+}
+
+internal fun Node.getTypeParameterNamesInScope(): Sequence<String> {
+  val parent = parentNode.getOrNull() ?: return emptySequence()
+  return generateSequence(parent) { p ->
+    p.parentNode.getOrNull()
+  }
+    .filterIsInstance<NodeWithTypeParameters<*>>()
+    .flatMap { node -> node.typeParameters.map { it.nameAsString } }
 }
 
 fun <T> T.canBeImported(): Boolean
@@ -244,4 +296,33 @@ fun <T> T.canBeImported(): Boolean
   }
 
   return isStatic() && !isPrivate() && this is Resolvable<*>
+}
+
+internal fun JavaVersion.toLanguageLevel(): LanguageLevel {
+  return when (this) {
+    VERSION_1_1 -> LanguageLevel.JAVA_1_1
+    VERSION_1_2 -> LanguageLevel.JAVA_1_2
+    VERSION_1_3 -> LanguageLevel.JAVA_1_3
+    VERSION_1_4 -> LanguageLevel.JAVA_1_4
+    VERSION_1_5 -> LanguageLevel.JAVA_5
+    VERSION_1_6 -> LanguageLevel.JAVA_6
+    VERSION_1_7 -> LanguageLevel.JAVA_7
+    VERSION_1_8 -> LanguageLevel.JAVA_8
+    VERSION_1_9 -> LanguageLevel.JAVA_9
+    VERSION_1_10 -> LanguageLevel.JAVA_10
+    VERSION_11 -> LanguageLevel.JAVA_11
+    VERSION_12 -> LanguageLevel.JAVA_12
+    VERSION_13 -> LanguageLevel.JAVA_13
+    VERSION_14 -> LanguageLevel.JAVA_14
+    // VERSION_15 -> LanguageLevel.JAVA_15
+    // VERSION_16 -> LanguageLevel.JAVA_16
+    // VERSION_17 -> LanguageLevel.JAVA_17
+    VERSION_15 -> LanguageLevel.CURRENT
+    VERSION_16 -> LanguageLevel.CURRENT
+    VERSION_17 -> LanguageLevel.CURRENT
+    VERSION_18 -> LanguageLevel.CURRENT
+    VERSION_19 -> LanguageLevel.CURRENT
+    VERSION_20 -> LanguageLevel.CURRENT
+    VERSION_HIGHER -> LanguageLevel.CURRENT
+  }
 }
