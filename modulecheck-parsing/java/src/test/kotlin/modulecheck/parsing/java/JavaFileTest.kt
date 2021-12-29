@@ -518,8 +518,7 @@ internal class JavaFileTest :
       .also { it.writeText(content.trimIndent()) }
 
     return RealJavaFile(
-      file = file, javaVersion = javaVersion,
-      nodeResolver = JavaParserNodeResolver(project, sourceSetName)
+      file = file, javaVersion = javaVersion
     )
   }
 }
