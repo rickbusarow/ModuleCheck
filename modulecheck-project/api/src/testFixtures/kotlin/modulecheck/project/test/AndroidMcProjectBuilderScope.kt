@@ -28,6 +28,7 @@ import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
@@ -107,7 +108,8 @@ data class RealAndroidMcProjectBuilderScope(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  override val projectCache: ProjectCache = ProjectCache()
+  override val projectCache: ProjectCache = ProjectCache(),
+  override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
 ) : AndroidMcProjectBuilderScope
 
 internal fun createAndroidProject(
@@ -196,6 +198,7 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     manifests = manifests,
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,
+    javaSourceVersion = javaSourceVersion,
     projectDependencies = lazy { projectDependencies },
     externalDependencies = lazy { externalDependencies }
   )

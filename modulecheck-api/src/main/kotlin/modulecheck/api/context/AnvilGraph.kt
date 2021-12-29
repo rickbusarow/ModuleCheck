@@ -18,6 +18,7 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.runBlocking
@@ -26,6 +27,7 @@ import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -108,7 +110,7 @@ data class AnvilGraph(
 
     jvmFilesForSourceSetName(sourceSetName)
       // Anvil only works with Kotlin, so no point in trying to parse Java files
-      // .filterIsInstance<KotlinFile>()
+      .filterIsInstance<KotlinFile>()
       // only re-visit files which have Anvil annotations
       .filter { kotlinFile ->
         kotlinFile.imports.any { it in allAnnotations } ||
