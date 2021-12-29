@@ -68,3 +68,15 @@ class IndentScope(private val indent: String, private val stringBuilder: StringB
 fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
   IndentScope(indent, this).action()
 }
+
+fun String.remove(vararg strings: String): String = strings.fold(this) { acc, string ->
+  acc.replace(string, "")
+}
+
+fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, regex ->
+  acc.replace(regex, "")
+}
+
+inline fun <T, R> Collection<T>.mapToSet(transform: (T) -> R): Set<R> {
+  return mapTo(mutableSetOf<R>(), transform)
+}
