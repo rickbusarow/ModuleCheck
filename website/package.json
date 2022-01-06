@@ -17,7 +17,7 @@
     "@mdx-js/react": "^1.6.21",
     "clsx": "^1.1.1",
     "mdx-mermaid": "^1.1.0",
-    "mermaid": "^8.13.2",
+    "mermaid": "^8.13.8",
     "react": "^16.8.4",
     "react-dom": "^16.8.4"
   },
