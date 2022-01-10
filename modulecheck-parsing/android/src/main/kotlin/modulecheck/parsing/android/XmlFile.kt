@@ -15,48 +15,83 @@
 
 package modulecheck.parsing.android
 
+import kotlinx.coroutines.FlowPreview
 import modulecheck.parsing.source.AndroidResource
+import modulecheck.parsing.source.HasReferences
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.parsing.source.asExplicitReference
+import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.asDataSource
+import modulecheck.utils.mapToSet
 import java.io.File
 
-interface XmlFile {
+interface XmlFile : HasReferences {
 
   val file: File
 
-  data class LayoutFile(override val file: File) : XmlFile {
+  val resourceReferencesAsRReferences: Set<String>
+
+  data class LayoutFile(
+    override val file: File
+  ) : XmlFile {
 
     val name: String = file.nameWithoutExtension
 
-    val customViews: Set<String> by lazy {
-      AndroidLayoutParser().parseViews(file)
-        .toSet()
+    val customViews: Lazy<Set<Reference>> = lazy {
+      AndroidLayoutParser().parseViews(file).mapToSet { it.asExplicitReference() }
     }
-    val resourceReferences: Set<String> by lazy {
+
+    private val rawResources: Set<String> by lazy {
       AndroidLayoutParser().parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
     }
 
-    val resourceReferencesAsRReferences: Set<String> by lazy {
-      resourceReferences
+    override val resourceReferencesAsRReferences: Set<String> by lazy {
+      rawResources
         .mapNotNull { AndroidResource.fromString(it) }
         .map { "R.${it.prefix}.${it.name}" }
         .toSet()
     }
+
+    @OptIn(FlowPreview::class)
+    override fun references(): List<DataSource<Reference>> {
+
+      return listOf(
+        customViews.asDataSource(),
+        lazy {
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedRReference(it) }
+        }.asDataSource()
+      )
+    }
   }
 
-  data class ManifestFile(override val file: File) : XmlFile {
+  data class ManifestFile(
+    override val file: File
+  ) : XmlFile {
 
-    val resourceReferences: Set<String> by lazy {
+    private val rawResources: Set<String> by lazy {
       AndroidManifestParser().parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
     }
 
-    val resourceReferencesAsRReferences: Set<String> by lazy {
-      resourceReferences
+    override val resourceReferencesAsRReferences: Set<String> by lazy {
+      rawResources
         .mapNotNull { AndroidResource.fromString(it) }
         .map { "R.${it.prefix}.${it.name}" }
         .toSet()
+    }
+
+    @OptIn(FlowPreview::class)
+    override fun references(): List<DataSource<Reference>> {
+
+      return listOf(
+        lazy {
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedRReference(it) }
+        }.asDataSource()
+      )
     }
   }
 

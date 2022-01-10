@@ -15,7 +15,6 @@
 
 package modulecheck.core.context
 
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
@@ -50,7 +49,8 @@ data class UnusedDependencies(
   suspend fun get(configurationName: ConfigurationName): Set<UnusedDependency> {
 
     return delegate.getOrPut(configurationName) {
-      val deps = project.projectDependencies[configurationName] ?: return@getOrPut emptySet()
+      val dependencies = project.projectDependencies[configurationName]
+        ?: return@getOrPut emptySet()
 
       val neededForScopes = lazyDeferred {
         project.anvilScopeDependenciesForSourceSetName(configurationName.toSourceSetName())
@@ -58,12 +58,10 @@ data class UnusedDependencies(
           .toSet()
       }
 
-      deps.filterNot { cpd ->
+      dependencies
         // test configurations have the main source project as a dependency.
         // without this, every project will report itself as unused.
-        cpd.project.path == project.path
-      }
-        .asFlow()
+        .filterNot { cpd -> cpd.project.path == project.path }
         .filterAsync { cpd ->
           !project.uses(cpd) && !neededForScopes.await().contains(cpd.project)
         }

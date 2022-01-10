@@ -55,10 +55,11 @@ import modulecheck.parsing.source.JavaVersion.VERSION_1_8
 import modulecheck.parsing.source.JavaVersion.VERSION_1_9
 import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
+import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.parsing.source.asExplicitReference
 import modulecheck.utils.mapToSet
+import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
@@ -102,10 +103,10 @@ class RealJavaFile(
 
   override val packageFqName by lazy { parsed.packageFqName }
 
-  override val imports by lazy {
+  override val importsLazy = lazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
-      .map { it.nameAsString }
+      .map { it.nameAsString.asExplicitReference() }
       .toSet()
   }
 
@@ -123,7 +124,7 @@ class RealJavaFile(
       .plus(parsed.enumDeclarations)
   }
 
-  override val wildcardImports: Set<String> by lazy {
+  private val wildcardImports: Set<String> by lazy {
     compilationUnit.imports
       .filter { it.isAsterisk }
       .map { it.nameAsString }
@@ -148,21 +149,28 @@ class RealJavaFile(
       .toSet()
   }
 
-  override val maybeExtraReferences: LazyDeferred<Set<String>> = lazyDeferred {
+  override val interpretedReferencesLazy = lazy {
+
+    val importNames = importsLazy.value.map { it.fqName }
 
     val unresolved = typeReferenceNames
-      .filter { name -> imports.none { import -> import.endsWith(name) } }
+      .filter { name -> importNames.none { importName -> importName.endsWith(name) } }
       .filter { name -> name.javaLangFqNameOrNull() == null }
 
-    val all = unresolved + unresolved.flatMap { reference ->
-      reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
-        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
-    }
+    unresolved.mapToSet { reference ->
 
-    all.toSet()
+      val constructed = reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
+        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
+
+      val all = (constructed + reference).toSet()
+
+      InterpretedReference(all)
+    }
   }
 
   override val apiReferences: Set<FqName> by lazy {
+
+    val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
 
     val members = compilationUnit.childrenRecursive()
       // Only look at references which are inside public classes.  This includes nested classes

@@ -15,6 +15,10 @@
 
 package modulecheck.parsing.source
 
+import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.Reference.InterpretedReference
+import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.utils.LazySet
 import org.jetbrains.kotlin.name.FqName
 
 @JvmInline
@@ -23,3 +27,28 @@ value class DeclarationName(val fqName: String)
 fun String.asDeclarationName(): DeclarationName = DeclarationName(this)
 
 fun FqName.asDeclarationName(): DeclarationName = DeclarationName(asString())
+
+operator fun Set<DeclarationName>.contains(reference: Reference): Boolean {
+  return when (reference) {
+    is InterpretedReference -> reference.possibleNames.any { it in this }
+    is ExplicitReference -> reference.fqName.asDeclarationName() in this
+    is UnqualifiedRReference -> reference.fqName.asDeclarationName() in this
+  }
+}
+
+suspend fun LazySet<DeclarationName>.contains(reference: Reference): Boolean {
+  return when (reference) {
+    is InterpretedReference -> reference.possibleNames.any { contains(it) }
+    is ExplicitReference -> contains(reference.fqName.asDeclarationName())
+    is UnqualifiedRReference -> contains(reference.fqName.asDeclarationName())
+  }
+}
+
+@JvmName("containsDeclarationName")
+operator fun Set<DeclarationName>.contains(nameAsString: String): Boolean {
+  return nameAsString.asDeclarationName() in this
+}
+
+suspend fun LazySet<DeclarationName>.contains(nameAsString: String): Boolean {
+  return contains(nameAsString.asDeclarationName())
+}

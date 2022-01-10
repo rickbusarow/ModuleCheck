@@ -15,11 +15,14 @@
 
 package modulecheck.core.context
 
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.apiDependencySources
@@ -28,15 +31,17 @@ import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.contains
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.LazySet
 import modulecheck.utils.any
 import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat
-import modulecheck.utils.flatMapSetConcat
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapAsync
 import kotlin.LazyThreadSafetyMode.NONE
@@ -132,8 +137,7 @@ private suspend fun McProject.referencesFromDependencies(): Set<String> {
       kotlinFile
         .apiReferences
         .await()
-        .filterNot { it.asDeclarationName() in declarationsInProject }
-      // .map { it.asString() }
+        .filterNot { declarationsInProject.contains(it) }
     }.toSet()
 }
 
@@ -151,20 +155,19 @@ suspend fun McProject.mustBeApiIn(
   )
 }
 
+@OptIn(FlowPreview::class)
 private suspend fun McProject.mustBeApiIn(
   referencesFromDependencies: Set<String>,
   isTestFixtures: Boolean,
   directMainDependencies: List<McProject>
 ): Boolean {
 
-  suspend fun McProject.declarations(isTestFixtures: Boolean): Set<String> {
+  suspend fun McProject.declarations(isTestFixtures: Boolean): LazySet<DeclarationName> {
     return if (isTestFixtures) {
       declarations().get(SourceSetName.TEST_FIXTURES)
     } else {
       declarations().get(SourceSetName.MAIN)
     }
-      .map { it.fqName }
-      .toSet()
   }
 
   val declarations = declarations(isTestFixtures)
@@ -174,23 +177,23 @@ private suspend fun McProject.mustBeApiIn(
   val (rTypes, nonRTypeReferences) = referencesFromDependencies
     .partition { rTypeMatcher.matches(it) }
 
-  val apiFromRProperties = nonRTypeReferences
-    .any { ref -> ref in declarations }
+  nonRTypeReferences
+    .firstOrNull { ref -> declarations.contains(ref) }
+    ?.let { return true }
 
-  if (apiFromRProperties) return true
-
-  val rTypesFromExisting = lazyDeferred {
+  val rTypesFromExisting: LazyDeferred<Set<DeclarationName>> = lazyDeferred {
     directMainDependencies
       .mapAsync { directProject ->
         directProject.declarations(isTestFixtures = false)
-          .filter { rType -> rTypeMatcher.matches(rType) }
+          .filter { rType -> rTypeMatcher.matches(rType.fqName) }
       }
-      .flatMapSetConcat { it.toSet() }
+      .flattenMerge()
+      .toSet()
   }
 
   return rTypes.asFlow()
-    .filter { it in declarations }
-    .any { rReference -> rReference in rTypesFromExisting.await() }
+    .filter { declarations.contains(it) }
+    .any { rReference -> rTypesFromExisting.await().contains(rReference) }
 }
 
 data class InheritedDependencyWithSource(

@@ -45,6 +45,7 @@ data class OverShotDependencies(
 
           val allUsedByConfigName = project.sourceSets
             .keys
+            .filterNot { it == unused.configurationName.toSourceSetName() }
             .mapNotNull { sourceSetName ->
 
               sourceSetName.javaConfigurationNames()
@@ -67,7 +68,7 @@ data class OverShotDependencies(
 
           val allConfigs = allUsedByConfigName.values
             .flatMap { cpds ->
-              cpds.map { project.configurations.getValue(it.configurationName) }
+              cpds.mapNotNull { project.configurations[it.configurationName] }
             }
             .distinct()
 

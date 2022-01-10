@@ -17,8 +17,6 @@ package modulecheck.core.rule
 
 import modulecheck.api.KaptMatcher
 import modulecheck.api.asMap
-import modulecheck.api.context.ReferenceName
-import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.kaptDependencies
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.finding.Finding
@@ -28,7 +26,13 @@ import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.kapt.UnusedKaptPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.Reference.InterpretedReference
+import modulecheck.parsing.source.Reference.UnqualifiedRReference
 import modulecheck.project.McProject
+import modulecheck.utils.LazySet
+import modulecheck.utils.any
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
@@ -54,16 +58,20 @@ class UnusedKaptRule(
       .configurations
       .keys
       .filter { it.value.startsWith("kapt") }
-      .map { configName ->
-        configName to project.importsForSourceSetName(configName.toSourceSetName()) +
-          project.referencesForSourceSetName(configName.toSourceSetName())
-      }
-      .flatMap { (configurationName, imports) ->
-        val processors = kaptDependencies.get(configurationName)
+      .flatMap { configName ->
+
+        val processors = kaptDependencies.get(configName)
+
+        val references = project.referencesForSourceSetName(configName.toSourceSetName())
 
         // unused means that none of the processor's annotations are used in any import
         val unusedProcessors = processors
-          .filter { matchers[it.name]?.matchedIn(imports) == false }
+          .filterNot {
+
+            val matcher = matchers[it.name] ?: return@filterNot true
+
+            matcher.matchedIn(references)
+          }
 
         val unusedProcessorFindings = unusedProcessors
           .map { processor ->
@@ -72,12 +80,12 @@ class UnusedKaptRule(
               dependentPath = project.path,
               buildFile = project.buildFile,
               oldDependency = processor,
-              configurationName = configurationName
+              configurationName = configName
             )
           }
 
-        val pluginIsUnused = allKaptDependencies
-          .size == unusedProcessorFindings.size && project.hasKapt && unusedProcessorFindings.isNotEmpty()
+        val pluginIsUnused = allKaptDependencies.size == unusedProcessorFindings.size &&
+          project.hasKapt && unusedProcessorFindings.isNotEmpty()
 
         if (pluginIsUnused) {
           unusedProcessorFindings + UnusedKaptPluginFinding(
@@ -95,15 +103,21 @@ class UnusedKaptRule(
     return checksSettings.unusedKapt
   }
 
-  private fun KaptMatcher.matchedIn(
-    imports: Set<ReferenceName>
+  private suspend fun KaptMatcher.matchedIn(
+    references: LazySet<Reference>
   ): Boolean = annotationImports
     .map { it.toRegex() }
     .any { annotationRegex ->
 
-      imports.any { import ->
+      references.any { referenceName ->
 
-        annotationRegex.matches(import)
+        when (referenceName) {
+          is ExplicitReference -> annotationRegex.matches(referenceName.fqName)
+          is InterpretedReference -> {
+            referenceName.possibleNames.any { annotationRegex.matches(it) }
+          }
+          is UnqualifiedRReference -> annotationRegex.matches(referenceName.fqName)
+        }
       }
     }
 }

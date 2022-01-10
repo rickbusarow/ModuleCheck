@@ -21,56 +21,55 @@ import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
+import modulecheck.utils.capitalize
+import modulecheck.utils.emptyLazySet
+import modulecheck.utils.lazyDataSource
+import modulecheck.utils.lazySet
 import java.util.Locale
 
 data class AndroidDataBindingDeclarations(
-  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidDataBindingDeclarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
+
+    if (project !is AndroidMcProject) return emptyLazySet()
+
+    val basePackage = project.androidPackageOrNull ?: return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
 
-      val android = project as? AndroidMcProject
-        ?: return@getOrPut emptySet()
-
-      val basePackage = android.androidPackageOrNull
-        ?: return@getOrPut emptySet()
-
-      project.resourcesForSourceSetName(sourceSetName)
-        .asSequence()
-        .filter { it.exists() }
-        .filter { it.path.matches(filterReg) }
-        .map { file ->
-
-          val generated = file
-            .nameWithoutExtension
-            .split("_")
-            .joinToString("") { fragment ->
-              fragment.replaceFirstChar {
-                if (it.isLowerCase()) {
-                  it.titlecase(Locale.getDefault())
-                } else {
-                  it.toString()
+      lazySet(
+        lazyDataSource {
+          project.layoutFiles()
+            .get(sourceSetName)
+            .map { layoutFile ->
+              layoutFile.name
+                .capitalize(Locale.US)
+                .replace(snake_reg) { matchResult ->
+                  matchResult.destructured
+                    .component1()
+                    .uppercase()
                 }
-              }
-            } + "Binding"
-
-          "$basePackage.databinding.$generated".asDeclarationName()
+                .plus("Binding")
+                .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
+                .asDeclarationName()
+            }
+            .toSet()
         }
-        .toSet()
+      )
     }
   }
 
   companion object Key : ProjectContext.Key<AndroidDataBindingDeclarations> {
 
-    private val filterReg =
-      """.*\${java.io.File.separator}layout.*\${java.io.File.separator}.*.xml""".toRegex()
+    private val snake_reg = "_([a-zA-Z])".toRegex()
 
     override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
 
@@ -84,6 +83,4 @@ suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingD
 
 suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): Set<DeclarationName> {
-  return get(AndroidDataBindingDeclarations).get(sourceSetName)
-}
+): LazySet<DeclarationName> = androidDataBindingDeclarations().get(sourceSetName)
