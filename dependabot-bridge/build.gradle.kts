@@ -48,7 +48,7 @@ dependencies {
   dependencySync("com.squareup.anvil:compiler:2.3.10")
   dependencySync("com.squareup.anvil:gradle-plugin:2.3.10")
   dependencySync("com.squareup:kotlinpoet:1.10.2")
-  dependencySync("com.github.javaparser:javaparser-core:3.23.1")
+  dependencySync("com.github.javaparser:javaparser-core:3.24.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.18.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
 
