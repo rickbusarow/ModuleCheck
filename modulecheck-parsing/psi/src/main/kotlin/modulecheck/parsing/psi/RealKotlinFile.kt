@@ -44,11 +44,11 @@ import modulecheck.parsing.source.asExplicitReference
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapAsyncNotNull
+import modulecheck.utils.mapToSet
 import modulecheck.utils.requireNotNull
 import modulecheck.utils.safeAs
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import modulecheck.utils.mapToSet
 import modulecheck.utils.unsafeLazy
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -59,12 +59,10 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
-import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtPackageDirective
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtTypeReference
-import org.jetbrains.kotlin.psi.KtPackageDirective
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
@@ -124,17 +122,17 @@ class RealKotlinFile(
 
     classesAndInnerClasses
       .mapNotNull { clazz ->
-        val annotationEntry = clazz.findAnnotation(this, FqNames.contributesTo)
+        val annotationEntry = clazz.findAnnotation(FqNames.contributesTo)
           ?: return@mapNotNull null
 
         val scope = annotationEntry
           .findAnnotationArgument<KtClassLiteralExpression>(name = "scope", index = 0)
           ?.let {
             it.fqNameOrNull()
-            // The PsiElement in question here will always be a class reference, so if it can't be
-            // resolved, it's either a third-party type which is imported via a wildcard, or it's
-            // a stdlib type which doesn't need an import, like `Unit::class`.  Falling back to just
-            // using the class's simple name should be fine.
+              // The PsiElement in question here will always be a class reference, so if it can't be
+              // resolved, it's either a third-party type which is imported via a wildcard, or it's
+              // a stdlib type which doesn't need an import, like `Unit::class`.  Falling back to just
+              // using the class's simple name should be fine.
               ?: FqName(it.getChildOfType<KtNameReferenceExpression>().requireNotNull().text)
           }
           ?.let { AnvilScopeName(it) }
@@ -147,7 +145,7 @@ class RealKotlinFile(
   private val contributedModulesToComponents = lazyDeferred {
 
     contributesToClasses.await()
-      .partition { it.clazz.hasAnnotation(this, FqNames.module) }
+      .partition { it.clazz.hasAnnotation(FqNames.module) }
   }
 
   private val contributedModules = lazyDeferred {
@@ -225,7 +223,7 @@ class RealKotlinFile(
       // In case of nesting classes/interfaces,
       // only use properties from their directly containing class.
       .filter { it.containingClassOrObject == clazz }
-      .filter { it.hasAnnotation(this@RealKotlinFile, annotationFqName) }
+      .filter { it.hasAnnotation(annotationFqName) }
       .map { AnvilScopedCallable(it, scope) }
   }
 
@@ -272,7 +270,7 @@ class RealKotlinFile(
   }
 
   private val referenceVisitor by lazy {
-    ReferenceVisitor(this)
+    ReferenceVisitor()
       .also { ktFile.accept(it) }
   }
 

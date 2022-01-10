@@ -709,10 +709,12 @@ internal class KotlinFileTest : ProjectTest() {
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
 
   private fun AnvilBindingReference(
-    referencedType: String, scopeOrNull: String? = null
+    referencedType: String,
+    scopeOrNull: String? = null
   ): AnvilBindingReference = AnvilBindingReference(
     referencedType = FqName(referencedType),
-    scopeOrNull = scopeOrNull?.let { AnvilScopeName(FqName(it)) })
+    scopeOrNull = scopeOrNull?.let { AnvilScopeName(FqName(it)) }
+  )
 
   private fun AnvilBoundType(
     boundType: String,

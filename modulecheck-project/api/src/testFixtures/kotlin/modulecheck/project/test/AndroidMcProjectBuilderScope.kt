@@ -109,7 +109,7 @@ data class RealAndroidMcProjectBuilderScope(
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
   override val projectCache: ProjectCache = ProjectCache(),
-  override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
+  override var javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
 ) : AndroidMcProjectBuilderScope
 
 internal fun createAndroidProject(

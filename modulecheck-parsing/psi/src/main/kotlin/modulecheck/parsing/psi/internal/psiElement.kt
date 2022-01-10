@@ -17,9 +17,8 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNames
-import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.contains
 import modulecheck.project.McProject
+import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -46,29 +45,26 @@ import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import java.io.File
-import kotlin.LazyThreadSafetyMode.NONE
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
 
 inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
-  return generateSequence(children.asSequence()) { children ->
-    children.toList()
-      .flatMap { it.children.toList() }
-      .takeIf { it.isNotEmpty() }
-      ?.asSequence()
+  return generateSequence(sequenceOf(this)) { children ->
+    children.flatMap { it.children.asSequence() }
+      .takeIf { it.iterator().hasNext() }
   }
     .flatten()
+    .drop(1)
     .filterIsInstance<T>()
     .toList()
 }
 
-fun KtAnnotated.hasAnnotation(file: KotlinFile, annotationFqName: FqName): Boolean {
+fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 
-  return findAnnotation(file = file, annotationFqName = annotationFqName) != null
+  return findAnnotation(annotationFqName = annotationFqName) != null
 }
 
 fun KtAnnotated.findAnnotation(
-  file: KotlinFile,
   annotationFqName: FqName
 ): KtAnnotationEntry? {
 
@@ -77,16 +73,24 @@ fun KtAnnotated.findAnnotation(
     .firstOrNull { it.typeReference?.typeElement?.text == annotationFqName.asString() }
     ?.let { return it }
 
-  val samePackage = annotationFqName.parent().asString() == file.packageFqName
+  val ktFile = containingKtFile
+
+  val annotationNameParent = annotationFqName.parent()
+
+  val samePackage = annotationNameParent == ktFile.packageFqName
 
   val isImported by unsafeLazy {
-    file.importsLazy.value.contains(annotationFqName.asString())
-  }
-  val hasStarImport by unsafeLazy {
-    file.wildcardImports.any { annotationFqName.asString().startsWith(it.removeSuffix("*")) }
+    ktFile.importDirectives.any { importDirective ->
+
+      if (importDirective.isAllUnder) {
+        importDirective.importPath?.fqName == annotationNameParent
+      } else {
+        importDirective.importPath?.fqName == annotationFqName
+      }
+    }
   }
   // e.g. `@Inject` instead of fully qualified
-  val canUseShortName = samePackage || isImported || hasStarImport
+  val canUseShortName = samePackage || isImported
   if (!canUseShortName) {
     return null
   }
@@ -312,6 +316,7 @@ fun KtBlockExpression.nameSafe(): String? {
     ?.text
 }
 
+@Suppress("ComplexCondition")
 inline fun <reified T> KtAnnotationEntry.findAnnotationArgument(
   name: String,
   index: Int

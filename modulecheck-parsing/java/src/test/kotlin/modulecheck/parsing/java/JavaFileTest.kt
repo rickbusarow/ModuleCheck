@@ -17,10 +17,10 @@ package modulecheck.parsing.java
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.Reference
+import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
@@ -514,9 +514,9 @@ internal class JavaFileTest :
   @Test
   fun `public static functions should count as declarations`() {
 
-    val javaFile = file(
+    val file = file(
       """
-    package com.example;
+    package com.test;
 
     public class Utils {
 
@@ -525,18 +525,20 @@ internal class JavaFileTest :
       """
     )
 
-    javaFile.declarations shouldBe listOf(
-      DeclarationName("com.example.Utils"),
-      DeclarationName("com.example.Utils.foo")
+    file shouldBe javaFile(
+      declarations = setOf(
+        "com.test.Utils",
+        "com.test.Utils.foo"
+      )
     )
   }
 
   @Test
   fun `public member property type with wildcard import should count as reference`() = runBlocking {
 
-    val javaFile = file(
+    val file = file(
       """
-    package com.example;
+    package com.test;
 
     import com.lib1.*;
 
@@ -547,14 +549,14 @@ internal class JavaFileTest :
       """
     )
 
-    javaFile.declarations shouldBe listOf(
-      DeclarationName("com.example.Utils")
-    )
-    javaFile.imports shouldBe listOf()
-    javaFile.maybeExtraReferences.await() shouldBe listOf(
-      "Lib1Class",
-      "com.lib1.Lib1Class",
-      "com.example.Lib1Class"
+    file shouldBe javaFile(
+      declarations = setOf("com.test.Utils"),
+      apiReferences = setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class"),
+      interpretedReferences = interpreted(
+        "Lib1Class",
+        "com.lib1.Lib1Class",
+        "com.test.Lib1Class"
+      )
     )
   }
 
@@ -562,9 +564,9 @@ internal class JavaFileTest :
   fun `public member property generic type with wildcard import should count as reference`() =
     runBlocking {
 
-      val javaFile = file(
+      val file = file(
         """
-    package com.example;
+    package com.test;
 
     import com.lib1.*;
     import java.util.List;
@@ -576,18 +578,33 @@ internal class JavaFileTest :
       """
       )
 
-      javaFile.declarations shouldBe listOf(
-        DeclarationName("com.example.Utils")
-      )
-      javaFile.imports shouldBe listOf("java.util.List")
-      javaFile.maybeExtraReferences.await() shouldBe listOf(
-        "Lib1Class",
-        "com.lib1.Lib1Class",
-        "com.example.Lib1Class"
+      file shouldBe javaFile(
+        imports = setOf("java.util.List"),
+        declarations = setOf("com.test.Utils"),
+        apiReferences = setOf(
+          "java.util.List",
+          "Lib1Class",
+          "com.lib1.Lib1Class",
+          "com.test.Lib1Class"
+        ),
+        interpretedReferences = interpreted(
+          "Lib1Class",
+          "com.lib1.Lib1Class",
+          "com.test.Lib1Class"
+        )
       )
     }
 
-  fun simpleProject() = project(":lib") {
+  fun interpreted(vararg names: String) = setOf(
+    Reference.InterpretedReference(names.toSet())
+  )
+
+  fun simpleProject(
+    javaVersion: JavaVersion = VERSION_14
+  ) = project(":lib") {
+
+    javaSourceVersion = javaVersion
+
     addSource(
       "com/lib1/Lib1Class.kt",
       """
@@ -602,7 +619,9 @@ internal class JavaFileTest :
   fun file(
     @Language("java")
     content: String,
-    javaVersion: JavaVersion = VERSION_14
+    sourceSetName: SourceSetName = SourceSetName.MAIN,
+    javaVersion: JavaVersion = VERSION_14,
+    project: McProject = simpleProject(javaVersion)
   ): RealJavaFile {
     testProjectDir.mkdirs()
 

@@ -50,7 +50,7 @@ interface McProjectBuilderScope {
   val sourceSets: MutableMap<SourceSetName, SourceSet>
   var anvilGradlePlugin: AnvilGradlePlugin?
   val projectCache: ProjectCache
-  val javaSourceVersion: JavaVersion
+  var javaSourceVersion: JavaVersion
 
   fun addDependency(
     configurationName: ConfigurationName,
@@ -161,7 +161,7 @@ data class JvmMcProjectBuilderScope(
   ),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
   override val projectCache: ProjectCache = ProjectCache(),
-  override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
+  override var javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
 ) : McProjectBuilderScope
 
 internal fun createProject(

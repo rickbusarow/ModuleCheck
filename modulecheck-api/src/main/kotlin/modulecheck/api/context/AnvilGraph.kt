@@ -20,10 +20,9 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScope
+import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
@@ -33,8 +32,8 @@ import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
+import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.name.FqName
-import kotlin.LazyThreadSafetyMode.NONE
 
 data class AnvilScopedDeclarations(
   val scopeName: AnvilScopeName,
@@ -151,7 +150,7 @@ data class AnvilGraph(
     val dependenciesBySourceSetName = dependenciesBySourceSetName()
 
     val maybeExtraReferences by unsafeLazy {
-        kotlinFile.interpretedReferencesLazy.value
+      kotlinFile.interpretedReferencesLazy.value
     }
 
     // if scope is directly imported (most likely),
@@ -167,13 +166,13 @@ data class AnvilGraph(
           cpd.project
             .declarations()
             .get(SourceSetName.MAIN)
-            .filter { maybeExtraReferences.value.contains(it) }
+            .filter { maybeExtraReferences.contains(it) }
             .firstOrNull { it.fqName.endsWith(scopeNameEntry.fqName) }
         }
         .firstOrNull()
         ?.let { FqName(it.fqName) }
       // Scope must be defined in this same module
-      ?: maybeExtraReferences.value
+      ?: maybeExtraReferences
         .flatMap { it.startingWith(kotlinFile.packageFqName) }
         .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.fqName) }
         ?.let { FqName(it) }
