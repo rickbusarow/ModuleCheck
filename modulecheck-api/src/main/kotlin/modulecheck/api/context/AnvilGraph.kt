@@ -16,7 +16,6 @@
 package modulecheck.api.context
 
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
@@ -29,6 +28,7 @@ import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
+import modulecheck.parsing.source.contains
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -113,9 +113,11 @@ data class AnvilGraph(
       .filterIsInstance<KotlinFile>()
       // only re-visit files which have Anvil annotations
       .filter { kotlinFile ->
-        kotlinFile.imports.any { it in allAnnotations } ||
-          kotlinFile.maybeExtraReferences.await()
-            .any { it in allAnnotations }
+
+        allAnnotations.any { annotationName ->
+          kotlinFile.importsLazy.value.contains(annotationName) ||
+            kotlinFile.interpretedReferencesLazy.value.contains(annotationName)
+        }
       }
       .collect { kotlinFile ->
 
@@ -149,14 +151,13 @@ data class AnvilGraph(
     val dependenciesBySourceSetName = dependenciesBySourceSetName()
 
     val maybeExtraReferences by lazy(NONE) {
-      runBlocking { kotlinFile.maybeExtraReferences.await() }
+      runBlocking { kotlinFile.interpretedReferencesLazy }
     }
 
     // if scope is directly imported (most likely),
     // then use that fully qualified import
-    val rawScopeName = kotlinFile.imports.firstOrNull { import ->
-      import.endsWith(scopeNameEntry.name)
-    }
+    val rawScopeName = kotlinFile.importsLazy.value
+      .firstNotNullOfOrNull { it.endingWith(scopeNameEntry.name).firstOrNull() }
       ?.let { FqName(it) }
       // if the scope is wildcard-imported
       ?: dependenciesBySourceSetName[sourceSetName]
@@ -166,17 +167,15 @@ data class AnvilGraph(
           cpd.project
             .declarations()
             .get(SourceSetName.MAIN)
-            .filter { it.fqName in maybeExtraReferences }
+            .filter { maybeExtraReferences.value.contains(it) }
             .firstOrNull { it.fqName.endsWith(scopeNameEntry.name) }
         }
         .firstOrNull()
         ?.let { FqName(it.fqName) }
       // Scope must be defined in this same module
-      ?: maybeExtraReferences
-        .firstOrNull { maybeExtra ->
-          maybeExtra.startsWith(kotlinFile.packageFqName) &&
-            maybeExtra.endsWith(scopeNameEntry.name)
-        }
+      ?: maybeExtraReferences.value
+        .flatMap { it.startingWith(kotlinFile.packageFqName) }
+        .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name) }
         ?.let { FqName(it) }
       // Scope must be defined in this same package
       ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.name}")

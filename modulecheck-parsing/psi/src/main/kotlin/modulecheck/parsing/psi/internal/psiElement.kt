@@ -18,6 +18,7 @@ package modulecheck.parsing.psi.internal
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNames
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.contains
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
@@ -63,7 +64,7 @@ fun KtAnnotated.hasAnnotation(file: KotlinFile, annotationFqName: FqName): Boole
 
   val samePackage = annotationFqName.parent().asString() == file.packageFqName
 
-  if (!samePackage && !file.imports.contains(annotationFqName.asString())) {
+  if (!samePackage && !file.importsLazy.value.contains(annotationFqName.asString())) {
     return false
   }
 

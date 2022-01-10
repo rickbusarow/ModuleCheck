@@ -15,36 +15,64 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
+import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
+import modulecheck.utils.LazySet
+import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
-import modulecheck.utils.flatMapSetConcat
+import modulecheck.utils.dataSource
+import modulecheck.utils.lazySet
+import modulecheck.utils.mapToSet
 
 data class Declarations(
-  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
     return delegate.getOrPut(sourceSetName) {
 
-      val jvmFiles = project.jvmFilesForSourceSetName(sourceSetName)
-        .flatMapSetConcat { jvmFile -> jvmFile.declarations }
+      val inheritedSourceSetsNames = sourceSetName.javaConfigurationNames()
+        .flatMapTo(mutableSetOf(sourceSetName)) { configName ->
+          project.configurations[configName]
+            ?.inherited
+            ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
+            .orEmpty()
+        }
 
-      val rName = (project as? AndroidMcProject)?.androidRFqNameOrNull
-        ?: return@getOrPut jvmFiles
+      val rNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
 
-      jvmFiles
-        .plus(rName.asDeclarationName())
-        .plus(project.viewBindingFilesForSourceSetName(sourceSetName))
-        .plus(project.androidResourceDeclarationsForSourceSetName(sourceSetName))
+      val sets = mutableListOf<LazySet<DeclarationName>>()
+
+      val sources = inheritedSourceSetsNames
+        .flatMap { inherited ->
+          project.jvmFilesForSourceSetName(inherited)
+            .toList()
+            .map { dataSource(HIGH) { it.declarations } }
+        }
+        .toMutableList()
+
+      if (rNameOrNull != null) {
+        sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
+      }
+
+      if (project.isAndroid()) {
+        sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetName))
+
+        sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetName))
+      }
+
+      lazySet(sets, sources)
     }
   }
 
@@ -57,3 +85,11 @@ data class Declarations(
 }
 
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
+
+suspend fun ConfiguredProjectDependency.declarations(): LazySet<DeclarationName> {
+  return if (isTestFixture) {
+    project.declarations().get(SourceSetName.TEST_FIXTURES)
+  } else {
+    project.declarations().get(SourceSetName.MAIN)
+  }
+}

@@ -64,7 +64,10 @@ fun Project.mainAndroidManifest() = testedExtensionOrNull()
  * @return true if the project is an Android project and no manifest file exists at the location
  *   defined in the Android extension
  */
-fun Project.isMissingManifestFile() = mainAndroidManifest()
-  // the file must be declared, but not exist in order for this to be triggered
-  ?.let { !it.exists() }
-  ?: false
+fun Project.isMissingManifestFile(): Boolean {
+
+  return mainAndroidManifest()
+    // the file must be declared, but not exist in order for this to be triggered
+    ?.let { !it.exists() }
+    ?: false
+}

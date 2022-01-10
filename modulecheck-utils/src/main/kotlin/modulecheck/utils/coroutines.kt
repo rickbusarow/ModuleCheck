@@ -15,62 +15,7 @@
 
 package modulecheck.utils
 
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-
-/**
- * Lazily invokes [action] the first time [await][Deferred.await] or [join][kotlinx.coroutines.Job.join] is called.
- *
- * This [action] is only invoked once.  The caller's coroutine is used to execute this action.
- *
- * ```
- * val expensive = lazyDeferred { repository.getAll() }
- *
- * suspend fun getExpensive() = expensive.await()
- * ```
- */
-fun <T> lazyDeferred(action: suspend () -> T): LazyDeferred<T> {
-
-  return LazyDeferredImpl(
-    action = action,
-    delegate = CompletableDeferred(),
-    lock = Mutex(false)
-  )
-}
-
-fun interface LazyDeferred<T> {
-  suspend fun await(): T
-}
-
-suspend fun <T> Collection<LazyDeferred<T>>.awaitAll(): List<T> {
-  return if (isEmpty()) {
-    emptyList()
-  } else {
-    coroutineScope {
-      map { it.await() }
-    }
-  }
-}
-
-internal class LazyDeferredImpl<T>(
-  private val action: suspend () -> T,
-  private val delegate: CompletableDeferred<T>,
-  private val lock: Mutex
-) : LazyDeferred<T> {
-
-  override suspend fun await(): T {
-    lock.withLock {
-      if (!delegate.isCompleted) {
-        delegate.complete(action())
-      }
-    }
-    return delegate.await()
-  }
-}
 
 fun <T, R> List<T>.mapBlocking(transform: suspend (T) -> R): List<R> {
   return map { runBlocking { transform(it) } }

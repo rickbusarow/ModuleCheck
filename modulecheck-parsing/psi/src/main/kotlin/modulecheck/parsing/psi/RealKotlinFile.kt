@@ -19,20 +19,26 @@ import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
+import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.RawAnvilAnnotatedType
+import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.asExplicitReference
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.awaitAll
 import modulecheck.utils.lazyDeferred
+import modulecheck.utils.mapToSet
+import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.psi.KtPackageDirective
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
@@ -45,7 +51,7 @@ class RealKotlinFile(
 
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
 
-  override val imports by lazy {
+  override val importsLazy = lazy {
 
     ktFile.importDirectives
       .asSequence()
@@ -58,6 +64,7 @@ class RealKotlinFile(
         importDirective
           .importPath
           ?.pathStr
+          ?.asExplicitReference()
       }
       .toSet()
   }
@@ -78,7 +85,7 @@ class RealKotlinFile(
       .toSet()
   }
 
-  override val wildcardImports by lazy {
+  private val wildcardImports by lazy {
 
     ktFile.importDirectives
       .filter { it.identifier()?.contains("*") != false }
@@ -97,9 +104,11 @@ class RealKotlinFile(
       }
     }
 
+    val importsNames = importsLazy.value.mapToSet { it.fqName }
+
     val (resolved, unresolved) = apiRefsAsStrings.map { reference ->
-      imports.firstOrNull { it.endsWith(reference) } ?: reference
-    }.partition { it in imports }
+      importsNames.firstOrNull { it.endsWith(reference) } ?: reference
+    }.partition { it in importsNames }
 
     val simple = unresolved + unresolved.map {
       ktFile.packageFqName.asString() + "." + it
@@ -113,52 +122,56 @@ class RealKotlinFile(
       .also { ktFile.accept(it) }
   }
 
-  private val typeReferences = lazyDeferred {
+  private val typeReferences by lazy {
     referenceVisitor.typeReferences
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
   }
 
-  private val callableReferences = lazyDeferred {
+  private val callableReferences by lazy {
     referenceVisitor.callableReferences
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
   }
 
-  private val qualifiedExpressions = lazyDeferred {
+  private val qualifiedExpressions by lazy {
     referenceVisitor.qualifiedExpressions
-      // .filterNot { it.isPartOf<KtImportDirective>() }
-      // .filterNot { it.isPartOf<KtPackageDirective>() }
+      .filterNot { it.isPartOf<KtImportDirective>() }
+      .filterNot { it.isPartOf<KtPackageDirective>() }
       // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
       .map { it.text }
       .toSet()
   }
 
-  override val maybeExtraReferences = lazyDeferred {
-    val allOther = listOf(
+  override val interpretedReferencesLazy = lazy {
+
+    val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
+
+    val unresolved = listOf(
       typeReferences,
       callableReferences,
       qualifiedExpressions
     )
-      .awaitAll()
       .flatten()
-      .toSet()
+      .filter { reference -> imports.none { it.endsWith(reference) } }
 
-    allOther + allOther.map {
-      "$packageFqName.$it"
-    } + wildcardImports.flatMap { wildcardImport ->
+    val trimmedWildcards = wildcardImports.map { it.removeSuffix(".*") }
 
-      allOther.map { referenceString ->
-        wildcardImport.replace("*", referenceString)
-      }
+    unresolved.mapToSet { reference ->
+
+      val constructed = reference.kotlinStdLibNameOrNull()?.let { listOf(it.asString()) }
+        ?: (trimmedWildcards.map { "$it.$reference" } + "$packageFqName.$reference")
+
+      val all = (constructed + reference).toSet()
+
+      InterpretedReference(all)
     }
-      .toSet()
   }
 
   override fun getScopeArguments(

@@ -528,7 +528,7 @@ class OverShotDependenciesTest : RunnerTest() {
     }
 
     val lib2 = project(":lib2") {
-      addDependency(ConfigurationName("testFixturesApi"), lib1)
+      addDependency(ConfigurationName("testFixturesApi"), lib1, asTestFixture = true)
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",

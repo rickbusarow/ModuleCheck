@@ -15,27 +15,33 @@
 
 package modulecheck.parsing.java
 
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaFile
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.asExplicitReference
 import modulecheck.testing.trimmedShouldBe
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.mapToSet
 import org.jetbrains.kotlin.name.FqName
 
 data class TestJavaFile(
   override val name: String,
   override val packageFqName: String,
-  override val imports: Set<String>,
+  val imports: Set<Reference>,
   override val declarations: Set<DeclarationName>,
-  override val wildcardImports: Set<String>,
-  val maybeExtraReferencesSet: Set<String>,
+  val interpretedReferences: Set<Reference>,
   val apiReferencesStrings: Set<String>
 ) : JavaFile {
 
-  override val maybeExtraReferences = lazyDeferred { maybeExtraReferencesSet }
-
   override val apiReferences: Set<FqName> = apiReferencesStrings.mapToSet { FqName(it) }
+
+  override val interpretedReferencesLazy: Lazy<Set<Reference>> = lazy { interpretedReferences }
+
+  override val importsLazy: Lazy<Set<Reference>> = lazy { imports }
+
+  override fun references(): List<DataSource<Reference>> {
+    return super.references()
+  }
 }
 
 interface JavaFileTestUtils {
@@ -48,7 +54,7 @@ interface JavaFileTestUtils {
     imports: Set<String> = emptySet(),
     declarations: Set<String> = emptySet(),
     wildcardImports: Set<String> = emptySet(),
-    maybeExtraReferences: Set<String> = emptySet(),
+    interpretedReferences: Set<Reference> = emptySet(),
     apiReferences: Set<String> = emptySet()
   ): TestJavaFile
 
@@ -68,28 +74,24 @@ class RealJavaFileTestUtils : JavaFileTestUtils {
     imports: Set<String>,
     declarations: Set<String>,
     wildcardImports: Set<String>,
-    maybeExtraReferences: Set<String>,
+    interpretedReferences: Set<Reference>,
     apiReferences: Set<String>
   ): TestJavaFile = TestJavaFile(
     name = name,
     packageFqName = packageFqName,
-    imports = imports,
+    imports = imports.mapToSet { it.asExplicitReference() },
     declarations = declarations.map { DeclarationName(it) }.toSet(),
-    wildcardImports = wildcardImports,
-    maybeExtraReferencesSet = maybeExtraReferences,
+    interpretedReferences = interpretedReferences,
     apiReferencesStrings = apiReferences
   )
 
   override fun JavaFile.toTestFile(): TestJavaFile = (this as? TestJavaFile)
-    ?: runBlocking {
-      TestJavaFile(
-        name = name,
-        packageFqName = packageFqName,
-        imports = imports,
-        declarations = declarations,
-        wildcardImports = wildcardImports,
-        maybeExtraReferencesSet = maybeExtraReferences.await(),
-        apiReferencesStrings = apiReferences.mapToSet { it.asString() }
-      )
-    }
+    ?: TestJavaFile(
+      name = name,
+      packageFqName = packageFqName,
+      imports = importsLazy.value,
+      declarations = declarations,
+      interpretedReferences = interpretedReferencesLazy.value,
+      apiReferencesStrings = apiReferences.mapToSet { it.asString() }
+    )
 }

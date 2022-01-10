@@ -15,60 +15,49 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.AndroidMcProject
+import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.ProjectContext.Element
+import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
-import modulecheck.utils.flatMapSetConcat
+import modulecheck.utils.lazySet
+import modulecheck.utils.mapAsync
 
 data class References(
-  private val delegate: SafeCache<SourceSetName, Set<ReferenceName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
   private val project: McProject
-) : ProjectContext.Element {
+) : Element {
 
   override val key: ProjectContext.Key<References>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Set<ReferenceName> {
+  suspend fun all(): LazySet<Reference> {
+
+    return project.sourceSets
+      .keys
+      .mapAsync { get(it) }
+      .toList()
+      .let { lazySet(children = it, listOf()) }
+  }
+
+  suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
     return delegate.getOrPut(sourceSetName) { fetchNewReferences(sourceSetName) }
   }
 
-  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): Set<ReferenceName> {
+  @OptIn(FlowPreview::class)
+  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
-    val androidRFqNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
-    val packagePrefix = (project as? AndroidMcProject)
-      ?.androidPackageOrNull
-      ?.let { "$it." }
+    val allLazy = project.jvmFilesForSourceSetName(sourceSetName)
+      .toList()
+      .plus(project.layoutFilesForSourceSetName(sourceSetName))
+      .plus(listOfNotNull(project.manifestFileForSourceSetName(sourceSetName)))
+      .flatMap { it.references() }
 
-    val jvm = project.get(JvmFiles)
-      .get(sourceSetName)
-      .flatMapSetConcat { jvmFile ->
-        val maybeExtra = jvmFile.maybeExtraReferences.await()
-
-        if (androidRFqNameOrNull == null || packagePrefix == null) {
-          return@flatMapSetConcat maybeExtra
-        }
-
-        val rReferences = maybeExtra
-          .filter { it.startsWith(androidRFqNameOrNull) }
-          .plus(jvmFile.imports.filter { it.startsWith(androidRFqNameOrNull) })
-          .map { it.removePrefix(packagePrefix) }
-          .toSet()
-
-        maybeExtra + rReferences
-      }
-
-    val layout = project.get(LayoutFiles)
-      .get(sourceSetName)
-      .flatMap { it.resourceReferencesAsRReferences }
-      .toSet()
-
-    val manifest = project.manifestFileForSourceSetName(sourceSetName)
-      ?.resourceReferencesAsRReferences
-      .orEmpty()
-
-    return jvm + layout + manifest
+    return lazySet(emptyList(), allLazy)
   }
 
   companion object Key : ProjectContext.Key<References> {
@@ -80,6 +69,7 @@ data class References(
 }
 
 suspend fun ProjectContext.references(): References = get(References)
+
 suspend fun ProjectContext.referencesForSourceSetName(
   sourceSetName: SourceSetName
-): Set<String> = references().get(sourceSetName)
+): LazySet<Reference> = references().get(sourceSetName)

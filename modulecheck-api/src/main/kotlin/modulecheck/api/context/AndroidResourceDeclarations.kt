@@ -22,37 +22,36 @@ import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
-import modulecheck.utils.flatMapSetConcat
+import modulecheck.utils.dataSource
+import modulecheck.utils.emptyLazySet
+import modulecheck.utils.lazySet
 
 data class AndroidResourceDeclarations(
-  private val delegate: SafeCache<SourceSetName, Set<DeclarationName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidResourceDeclarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Set<DeclarationName> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
 
     return delegate.getOrPut(sourceSetName) {
 
       val android = project as? AndroidMcProject
-        ?: return@getOrPut emptySet()
+        ?: return@getOrPut emptyLazySet()
 
-      val rName = android.androidRFqNameOrNull
+      val rName = android.androidRFqNameOrNull ?: return@getOrPut emptyLazySet()
 
       val resourceParser = AndroidResourceParser()
 
-      if (rName != null) {
-        project.resourcesForSourceSetName(sourceSetName)
-          .flatMap { resourceParser.parseFile(it) }
-          .toSet() + rName.asDeclarationName()
-      } else {
-        project.get(JvmFiles)
-          .get(sourceSetName)
-          .flatMapSetConcat { it.declarations }
-      }
+      val dataProviders = project.resourcesForSourceSetName(sourceSetName)
+        .map { dataSource { resourceParser.parseFile(it) } }
+        .plus(dataSource { setOf(rName.asDeclarationName()) })
+
+      lazySet(sources = dataProviders)
     }
   }
 
@@ -69,6 +68,6 @@ suspend fun ProjectContext.androidResourceDeclarations(): AndroidResourceDeclara
 
 suspend fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): Set<DeclarationName> {
+): LazySet<DeclarationName> {
   return androidResourceDeclarations().get(sourceSetName)
 }
