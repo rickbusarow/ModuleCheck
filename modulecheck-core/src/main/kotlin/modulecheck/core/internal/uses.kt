@@ -15,23 +15,40 @@
 
 package modulecheck.core.internal
 
-import modulecheck.api.context.Declarations
-import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
-import modulecheck.api.context.androidResourceDeclarationsForSourceSetName
 import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.declarations
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.project.AndroidMcProject
+import modulecheck.parsing.source.contains
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.TransitiveProjectDependency
+import modulecheck.utils.any
 
 suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 
+  /*
+  In the case of a transitive dependency, we want to find out whether that inherited dependency
+  is used in the configuration of the dependency declaration which provides it.
+
+  Given this config:
+  ┌────────┐                      ┌────────┐          ┌────────┐
+  │ :lib3  │──testImplementation─▶│ :lib2  │────api──▶│ :lib1  │
+  └────────┘                      └────────┘          └────────┘
+
+  We'd want to check whether :lib3 uses :lib1, but with the `testImplementation` configuration.  We
+  don't want to check whether :lib3 uses :lib1 in `api`, because :lib2 only provides it to
+  `testImplementation`.
+
+  We want to see whether this configuration is valid:
+                                   ┌────────┐          ┌────────┐
+                       ┌──────────▶│ :lib2  │────api──▶│ :lib1  │
+              testImplementation   └────────┘          ▲────────┘
+  ┌────────┐───────────┘                               │
+  │ :lib3  │                                           │
+  └────────┘───────────────────testImplementation──────┘
+  */
   val syntheticCpd = dependency.contributed
     .copy(
       configurationName = dependency.source.configurationName
@@ -41,85 +58,24 @@ suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
 }
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
-  val mergedScopeNames = anvilGraph()
-    .mergedScopeNames()
 
-  val config = configurations[dependency.configurationName] ?: return false
+  val sourceSetName = dependency.configurationName.toSourceSetName()
 
-  val all = config.inherited + config
+  val dependencyDeclarations = dependency.declarations()
 
-  return all.any { usesInConfig(mergedScopeNames, dependency.copy(configurationName = it.name)) }
-}
+  val refs = referencesForSourceSetName(sourceSetName)
 
-suspend fun McProject.usesInConfig(
-  mergedScopeNames: List<AnvilScopeName>,
-  dependency: ConfiguredProjectDependency
-): Boolean {
-  val contributions = dependency.project
+  // Check whether human-written code references the dependency first.
+  val usedInStaticSource = refs
+    .any { reference -> dependencyDeclarations.contains(reference) }
+
+  if (usedInStaticSource) return true
+
+  // If there are no references is manually/human written static code, then parse the Anvil graph.
+  val anvilContributions = dependency.project
     .anvilScopeContributionsForSourceSetName(SourceSetName.MAIN)
 
-  val dependencyDeclarations = dependency.allDependencyDeclarations()
-
-  val usedForAnvil = mergedScopeNames.any { contributions.containsKey(it) }
-
-  val javaIsUsed = usedForAnvil || dependencyDeclarations
-    .map { it.fqName }
-    .any { declaration ->
-
-      val imports = importsForSourceSetName(dependency.configurationName.toSourceSetName())
-      val refs = referencesForSourceSetName(dependency.configurationName.toSourceSetName())
-
-      val imported = declaration in imports
-      val referenced = declaration in refs
-
-      imported || referenced
-    }
-
-  if (javaIsUsed) return true
-
-  if (this !is AndroidMcProject) return false
-
-  val dependencyAsAndroid = dependency.project as? AndroidMcProject ?: return false
-
-  val rReferences =
-    referencesForSourceSetName(dependency.configurationName.toSourceSetName())
-      .filter { it.startsWith("R.") }
-
-  val dataBindingIsUsed = dependencyAsAndroid
-    .androidDataBindingDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
-    .map { it.fqName }
-    .any { declaration ->
-      declaration in importsForSourceSetName(dependency.configurationName.toSourceSetName()) ||
-        declaration in referencesForSourceSetName(dependency.configurationName.toSourceSetName())
-    }
-
-  if (dataBindingIsUsed) return true
-
-  return dependencyAsAndroid
-    .androidResourceDeclarationsForSourceSetName(dependency.configurationName.toSourceSetName())
-    .map { it.fqName }
-    .any { rDeclaration ->
-      rDeclaration in rReferences
-    }
-}
-
-suspend fun ConfiguredProjectDependency.allDependencyDeclarations(): Set<DeclarationName> {
-  val root = project.get(Declarations).get(configurationName.toSourceSetName())
-
-  val main = project.get(Declarations).get(SourceSetName.MAIN)
-
-  val fixtures = if (isTestFixture) {
-    project.get(Declarations).get(SourceSetName.TEST_FIXTURES)
-  } else {
-    emptySet()
-  }
-
-  val inherited = project.configurations[configurationName]
-    ?.inherited
-    ?.flatMap { inherited ->
-      project.get(Declarations).get(inherited.name.toSourceSetName())
-    }
-    .orEmpty()
-
-  return root + main + fixtures + inherited.toSet()
+  return anvilGraph()
+    .mergedScopeNames()
+    .any { anvilContributions.containsKey(it) }
 }

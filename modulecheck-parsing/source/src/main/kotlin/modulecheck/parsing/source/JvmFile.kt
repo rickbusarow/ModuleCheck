@@ -15,17 +15,30 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.coroutines.FlowPreview
 import modulecheck.utils.LazyDeferred
+import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.LazySet.DataSource.Priority.HIGH
+import modulecheck.utils.LazySet.DataSource.Priority.LOW
+import modulecheck.utils.asDataSource
 import org.jetbrains.kotlin.name.FqName
 
-interface JvmFile {
+interface JvmFile : HasReferences {
   val name: String
   val packageFqName: String
-  val imports: Set<String>
   val declarations: Set<DeclarationName>
 
-  val wildcardImports: Set<String>
-  val maybeExtraReferences: LazyDeferred<Set<String>>
+  val importsLazy: Lazy<Set<Reference>>
+  val interpretedReferencesLazy: Lazy<Set<Reference>>
+
+  @OptIn(FlowPreview::class)
+  override fun references(): List<DataSource<Reference>> {
+
+    return listOf(
+      importsLazy.asDataSource(HIGH),
+      interpretedReferencesLazy.asDataSource(LOW)
+    )
+  }
 }
 
 interface KotlinFile : JvmFile {

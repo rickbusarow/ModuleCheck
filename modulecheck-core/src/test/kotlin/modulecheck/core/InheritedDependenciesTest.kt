@@ -823,7 +823,7 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `inherited testFixtures from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
+  fun `inherited testFixtures and implementation from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
 
     val runner = runner(
       autoCorrect = true,
@@ -831,6 +831,14 @@ class InheritedDependenciesTest : RunnerTest() {
     )
 
     val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Interface.kt",
+        """
+        package com.modulecheck.lib1
+
+        interface Lib1Interface
+        """.trimIndent()
+      )
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -854,6 +862,107 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           testFixturesImplementation(project(path = ":lib1"))
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib1.Lib1Interface
+
+        open class Lib2Class : Lib1Class(), Lib1Interface
+        """.trimIndent(),
+        SourceSetName.TEST_FIXTURES
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(testFixtures(project(path = ":lib2")))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(testFixtures(project(path = ":lib1")))
+          testImplementation(testFixtures(project(path = ":lib2")))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib3
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
+  fun `inherited testFixtures from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent(),
+        SourceSetName.TEST_FIXTURES
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency("testFixturesApi".asConfigurationName(), lib1, asTestFixture = true)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
         """.trimIndent()
@@ -1284,7 +1393,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          implementation(testFixtures(project(path = ":lib1")))
+          api(testFixtures(project(path = ":lib1")))
         }
         """
 
@@ -1294,8 +1403,9 @@ class InheritedDependenciesTest : RunnerTest() {
             :lib2
                    dependency    name                   source    build file
                 ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
+                ✔  :lib1         mustBeApi                        /lib2/build.gradle.kts: (6, 3):
 
-        ModuleCheck found 1 issue
+        ModuleCheck found 2 issues
         """
   }
 

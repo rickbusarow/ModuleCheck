@@ -18,6 +18,7 @@ package modulecheck.parsing.psi.internal
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNames
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.contains
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
@@ -78,10 +79,10 @@ fun KtAnnotated.findAnnotation(
 
   val samePackage = annotationFqName.parent().asString() == file.packageFqName
 
-  val isImported by lazy(NONE) {
-    file.imports.contains(annotationFqName.asString())
+  val isImported by unsafeLazy {
+    file.importsLazy.value.contains(annotationFqName.asString())
   }
-  val hasStarImport by lazy(NONE) {
+  val hasStarImport by unsafeLazy {
     file.wildcardImports.any { annotationFqName.asString().startsWith(it.removeSuffix("*")) }
   }
   // e.g. `@Inject` instead of fully qualified

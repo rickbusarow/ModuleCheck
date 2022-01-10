@@ -19,6 +19,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -29,6 +30,13 @@ suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
   val matching = firstOrNull(predicate)
 
   return matching != null
+}
+
+fun <T> Flow<T>.distinct(): Flow<T> = flow {
+  val past = mutableSetOf<T>()
+  collect {
+    if (past.add(it)) emit(it)
+  }
 }
 
 suspend fun <T> Flow<T>.contains(element: T): Boolean {

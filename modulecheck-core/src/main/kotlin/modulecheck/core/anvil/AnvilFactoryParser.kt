@@ -16,21 +16,23 @@
 package modulecheck.core.anvil
 
 import kotlinx.coroutines.flow.filterIsInstance
-import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.jvmFilesForSourceSetName
-import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.api.context.references
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.contains
 import modulecheck.project.McProject
 import modulecheck.utils.any
-import modulecheck.utils.lazyDeferred
 import net.swiftzer.semver.SemVer
 
 object AnvilFactoryParser {
 
-  private const val anvilMergeComponent = "com.squareup.anvil.annotations.MergeComponent"
-  private const val daggerComponent = "dagger.Component"
+  private val anvilMergeComponent =
+    "com.squareup.anvil.annotations.MergeComponent".asExplicitReference()
+  private val daggerComponent = "dagger.Component".asExplicitReference()
+
   private const val daggerInject = "dagger.Inject"
   private const val daggerModule = "dagger.Module"
 
@@ -49,20 +51,10 @@ object AnvilFactoryParser {
 
     if (!hasAnvil) return emptyList()
 
-    val allImports = project.importsForSourceSetName(SourceSetName.MAIN) +
-      project.importsForSourceSetName(SourceSetName.ANDROID_TEST) +
-      project.importsForSourceSetName(SourceSetName.TEST)
+    val allRefs = project.references().all()
 
-    val maybeExtra = lazyDeferred {
-      project.referencesForSourceSetName(SourceSetName.ANDROID_TEST) +
-        project.referencesForSourceSetName(SourceSetName.MAIN) +
-        project.referencesForSourceSetName(SourceSetName.TEST)
-    }
-
-    val createsComponent = allImports.contains(daggerComponent) ||
-      allImports.contains(anvilMergeComponent) ||
-      maybeExtra.await().contains(daggerComponent) ||
-      maybeExtra.await().contains(anvilMergeComponent)
+    val createsComponent = allRefs.contains(daggerComponent) ||
+      allRefs.contains(anvilMergeComponent)
 
     if (createsComponent) return emptyList()
 
@@ -70,10 +62,10 @@ object AnvilFactoryParser {
       .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<JavaFile>()
       .any { file ->
-        file.imports.contains(daggerInject) ||
-          file.imports.contains(daggerModule) ||
-          file.maybeExtraReferences.await().contains(daggerInject) ||
-          file.maybeExtraReferences.await().contains(daggerModule)
+        file.importsLazy.value.contains(daggerInject) ||
+          file.importsLazy.value.contains(daggerModule) ||
+          file.interpretedReferencesLazy.value.contains(daggerInject) ||
+          file.interpretedReferencesLazy.value.contains(daggerModule)
       }
 
     if (usesDaggerInJava) return emptyList()
@@ -82,21 +74,14 @@ object AnvilFactoryParser {
       .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<KotlinFile>()
       .any { file ->
-        file.imports.contains(daggerInject) ||
-          file.imports.contains(daggerModule) ||
-          file.maybeExtraReferences.await().contains(daggerInject) ||
-          file.maybeExtraReferences.await().contains(daggerModule)
+        file.importsLazy.value.contains(daggerInject) ||
+          file.importsLazy.value.contains(daggerModule) ||
+          file.interpretedReferencesLazy.value.contains(daggerInject) ||
+          file.interpretedReferencesLazy.value.contains(daggerModule)
       }
 
     if (!usesDaggerInKotlin) return emptyList()
 
-    val couldBeAnvil =
-      !allImports.contains(daggerComponent) && !maybeExtra.await().contains(daggerComponent)
-
-    return if (couldBeAnvil) {
-      listOf(CouldUseAnvilFinding(project, project.buildFile))
-    } else {
-      listOf()
-    }
+    return listOf(CouldUseAnvilFinding(project, project.buildFile))
   }
 }

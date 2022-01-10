@@ -19,7 +19,8 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaVersion
-import modulecheck.project.McProject
+import modulecheck.parsing.source.JavaVersion.VERSION_14
+import modulecheck.parsing.source.Reference
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
@@ -256,7 +257,11 @@ internal class JavaFileTest :
       file shouldBe javaFile(
         wildcardImports = setOf("com.lib1"),
         declarations = setOf("com.test.ParsedClass"),
-        maybeExtraReferences = setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class"),
+        interpretedReferences = setOf(
+          Reference.InterpretedReference(
+            setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class")
+          )
+        ),
         apiReferences = setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class")
       )
     }
@@ -278,7 +283,11 @@ internal class JavaFileTest :
       file shouldBe javaFile(
         declarations = setOf("com.test.ParsedClass"),
         apiReferences = setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class"),
-        maybeExtraReferences = setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class")
+        interpretedReferences = setOf(
+          Reference.InterpretedReference(
+            setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class")
+          )
+        )
       )
     }
 
@@ -373,7 +382,7 @@ internal class JavaFileTest :
         imports = setOf("java.util.List"),
         declarations = setOf("com.test.ParsedClass"),
         apiReferences = setOf("java.lang.CharSequence", "java.util.List"),
-        maybeExtraReferences = setOf()
+        interpretedReferences = setOf()
       )
     }
 
@@ -425,10 +434,14 @@ internal class JavaFileTest :
             "com.lib1.Lib1Class",
             "com.test.Lib1Class"
           ),
-          maybeExtraReferences = setOf(
-            "Lib1Class",
-            "com.lib1.Lib1Class",
-            "com.test.Lib1Class"
+          interpretedReferences = setOf(
+            Reference.InterpretedReference(
+              setOf(
+                "Lib1Class",
+                "com.lib1.Lib1Class",
+                "com.test.Lib1Class"
+              )
+            )
           )
         )
       }
@@ -485,10 +498,14 @@ internal class JavaFileTest :
             "Lib1Class",
             "com.test.Lib1Class"
           ),
-          maybeExtraReferences = setOf(
-            "Lib1Class",
-            "com.lib1.Lib1Class",
-            "com.test.Lib1Class"
+          interpretedReferences = setOf(
+            Reference.InterpretedReference(
+              setOf(
+                "Lib1Class",
+                "com.lib1.Lib1Class",
+                "com.test.Lib1Class"
+              )
+            )
           )
         )
       }
@@ -585,9 +602,7 @@ internal class JavaFileTest :
   fun file(
     @Language("java")
     content: String,
-    javaVersion: JavaVersion = JavaVersion.VERSION_14,
-    project: McProject = simpleProject(),
-    sourceSetName: SourceSetName = SourceSetName.MAIN
+    javaVersion: JavaVersion = VERSION_14
   ): RealJavaFile {
     testProjectDir.mkdirs()
 

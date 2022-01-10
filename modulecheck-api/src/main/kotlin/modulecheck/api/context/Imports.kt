@@ -15,33 +15,40 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.LazySet
+import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
-import modulecheck.utils.flatMapSetConcat
-
-typealias ReferenceName = String
+import modulecheck.utils.asDataSource
+import modulecheck.utils.lazySet
 
 data class Imports(
-  private val delegate: SafeCache<SourceSetName, Set<ReferenceName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Imports>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Set<ReferenceName> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
     return delegate.getOrPut(sourceSetName) {
-      val jvm = project.get(JvmFiles)
+
+      val jvm: List<DataSource<Reference>> = project.get(JvmFiles)
         .get(sourceSetName)
-        .flatMapSetConcat { it.imports }
+        .map { it.importsLazy.asDataSource(HIGH) }
+        .toList()
+
       val layout = project.get(LayoutFiles)
         .get(sourceSetName)
-        .flatMap { it.customViews }
-        .toSet()
+        .map { it.customViews.asDataSource() }
 
-      jvm + layout
+      lazySet(sources = layout + jvm)
     }
   }
 
@@ -56,6 +63,6 @@ data class Imports(
 suspend fun ProjectContext.imports(): Imports = get(Imports)
 suspend fun ProjectContext.importsForSourceSetName(
   sourceSetName: SourceSetName
-): Set<ReferenceName> {
+): LazySet<Reference> {
   return imports().get(sourceSetName)
 }

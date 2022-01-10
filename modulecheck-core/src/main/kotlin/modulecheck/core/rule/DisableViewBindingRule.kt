@@ -15,15 +15,16 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.context.androidResourceReferencesForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.importsForSourceSetName
 import modulecheck.api.context.layoutFiles
-import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.all
+import modulecheck.parsing.source.asExplicitReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.capitalize
@@ -65,7 +66,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
           .split("_")
           .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
 
-        val reference = "$basePackage.databinding.$generated"
+        val reference = "$basePackage.databinding.$generated".asExplicitReference()
 
         val usedInProject = project
           .importsForSourceSetName(SourceSetName.MAIN)
@@ -77,7 +78,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
             dep
               .importsForSourceSetName(SourceSetName.MAIN)
               .contains(reference) || dep
-              .referencesForSourceSetName(SourceSetName.MAIN)
+              .androidResourceReferencesForSourceSetName(SourceSetName.MAIN)
               .contains(reference)
           }
       }
