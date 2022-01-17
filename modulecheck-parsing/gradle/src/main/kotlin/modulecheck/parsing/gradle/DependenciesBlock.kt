@@ -15,11 +15,12 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.ModuleRef.StringRef
-import java.io.File
 
 abstract class DependenciesBlock(
-  val suppressAll: List<String>
+  val suppressAll: List<String>,
+  private val configurationNameTransform: ConfigurationNameTransform
 ) : Block<DependencyDeclaration> {
 
   private val originalLines by lazy { lambdaContent.lines().toMutableList() }
@@ -51,7 +52,8 @@ abstract class DependenciesBlock(
       group = coordinates.group,
       moduleName = coordinates.moduleName,
       version = coordinates.version,
-      suppressed = suppressed + suppressAll
+      suppressed = suppressed + suppressAll,
+      configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
     allExternalDeclarations.getOrPut(coordinates) { mutableListOf() }
@@ -71,7 +73,8 @@ abstract class DependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed + suppressAll
+      suppressed = suppressed + suppressAll,
+      configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
   }
@@ -97,7 +100,8 @@ abstract class DependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed + suppressAll
+      suppressed = suppressed + suppressAll,
+      configurationNameTransform = configurationNameTransform
     )
 
     allModuleDeclarations.getOrPut(cm) { mutableListOf() }
@@ -211,6 +215,6 @@ interface DependenciesBlocksProvider {
   fun get(): List<DependenciesBlock>
 
   fun interface Factory {
-    fun create(buildFile: File): DependenciesBlocksProvider
+    fun create(invokesConfigurationNames: InvokesConfigurationNames): DependenciesBlocksProvider
   }
 }

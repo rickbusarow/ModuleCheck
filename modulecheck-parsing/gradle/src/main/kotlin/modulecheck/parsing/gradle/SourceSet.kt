@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.utils.capitalize
+import modulecheck.utils.mapToSet
 import java.io.File
 
 data class SourceSet(
@@ -62,12 +63,55 @@ value class SourceSetName(val value: String) {
     }
   }
 
+  fun implementationConfig(): ConfigurationName {
+    return if (this == MAIN) {
+      ConfigurationName.implementation
+    } else {
+      "${value}Implementation".asConfigurationName()
+    }
+  }
+
+  fun inheritedSourceSetNames(
+    hasConfigurations: HasConfigurations,
+    includeSelf: Boolean
+  ): Set<SourceSetName> {
+    val seed = if (includeSelf) {
+      mutableSetOf(this, MAIN)
+    } else {
+      mutableSetOf(MAIN)
+    }
+
+    return javaConfigurationNames()
+      .flatMapTo(seed) { configurationName ->
+        hasConfigurations.configurations[configurationName]
+          ?.inherited
+          ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
+          .orEmpty()
+      }
+  }
+
+  fun inheritsFrom(
+    other: SourceSetName,
+    hasConfigurations: HasConfigurations
+  ): Boolean {
+    return other.javaConfigurationNames()
+      .any { otherConfig ->
+        hasConfigurations.configurations[otherConfig]
+          ?.inherited
+          ?.any { it.name.toSourceSetName() == this }
+          ?: false
+      }
+  }
+
   override fun toString(): String = "SourceSetName('$value')"
 
   companion object {
     val ANDROID_TEST = SourceSetName("androidTest")
+    val ANVIL = SourceSetName("anvil")
     val DEBUG = SourceSetName("debug")
+    val KAPT = SourceSetName("kapt")
     val MAIN = SourceSetName("main")
+    val RELEASE = SourceSetName("release")
     val TEST = SourceSetName("test")
     val TEST_FIXTURES = SourceSetName("testFixtures")
   }

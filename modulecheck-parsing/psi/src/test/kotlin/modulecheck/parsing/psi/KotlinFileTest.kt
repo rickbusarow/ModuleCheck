@@ -297,18 +297,6 @@ internal class KotlinFileTest : ProjectTest() {
       file.apiReferences.await() shouldBe listOf("com.lib.Config")
     }
 
-  fun simpleProject() = project(":lib") {
-    addSource(
-      "com/lib1/Lib1Class.kt",
-      """
-        package com.lib1
-
-        class Lib1Class
-      """,
-      SourceSetName.MAIN
-    )
-  }
-
   fun createFile(
     @Language("kotlin")
     content: String,

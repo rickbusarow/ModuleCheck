@@ -16,7 +16,6 @@
 package modulecheck.parsing.java
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.Reference
@@ -508,18 +507,6 @@ internal class JavaFileTest :
           )
         )
       }
-  }
-
-  fun simpleProject() = project(":lib") {
-    addSource(
-      "com/lib1/Lib1Class.kt",
-      """
-        package com.lib1
-
-        class Lib1Class
-      """,
-      SourceSetName.MAIN
-    )
   }
 
   fun file(
