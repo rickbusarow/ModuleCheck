@@ -47,4 +47,11 @@ data class ConfiguredProjectDependency(
 data class TransitiveProjectDependency(
   val source: ConfiguredProjectDependency,
   val contributed: ConfiguredProjectDependency
-)
+) {
+  override fun toString(): String {
+    return """TransitiveProjectDependency(
+      |  source=$source
+      |  contributed=$contributed
+      |)""".trimMargin()
+  }
+}

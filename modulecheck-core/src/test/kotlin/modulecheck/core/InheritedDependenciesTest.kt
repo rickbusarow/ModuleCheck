@@ -398,6 +398,309 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `inherited as internalImplementation from internalApi dependency with auto-correct should be fixed`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency("internalApi".asConfigurationName(), lib2)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "internalApi"(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        val clazz2 = Lib2Class()
+        """.trimIndent(),
+        SourceSetName("internal")
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "internalImplementation"(project(path = ":lib1"))
+          "internalApi"(project(path = ":lib2"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib3
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
+  fun `inherited as internalImplementation from api dependency with auto-correct should be fixed`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+      addSourceSet(SourceSetName("internal"))
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3ClassInternal.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName("internal")
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "internalImplementation"(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib3
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
+  fun `non-standard config name should be invoked as function if it's already used that way`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency("internalImplementation".asConfigurationName(), lib2)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          internalImplementation(project(path = ":lib2"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent(),
+        SourceSetName("internal")
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib3.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          internalImplementation(project(path = ":lib1"))
+          internalImplementation(project(path = ":lib2"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib3
+                   dependency    name                   source    build file
+                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 1 issue
+        """
+  }
+
+  @Test
   fun `inherited via testApi should not cause infinite loop`() {
 
     val runner = runner(
@@ -1158,7 +1461,7 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     val lib2 = project(":lib2") {
-      addDependency("api".asConfigurationName(), lib1)
+      addDependency("testFixturesApi".asConfigurationName(), lib1)
 
       buildFile.writeText(
         """
@@ -1167,7 +1470,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          api(testFixtures(project(path = ":lib1")))
+          testFixturesApi(testFixtures(project(path = ":lib1")))
         }
         """.trimIndent()
       )
@@ -1229,16 +1532,11 @@ class InheritedDependenciesTest : RunnerTest() {
     logger.collectReport()
       .joinToString()
       .clean() shouldBe """
-             :lib2
-                    dependency    name                source    build file
-                 ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
              :lib3
                     dependency    name                   source    build file
                  ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
 
-         ModuleCheck found 3 issues
+         ModuleCheck found 1 issue
         """
   }
 

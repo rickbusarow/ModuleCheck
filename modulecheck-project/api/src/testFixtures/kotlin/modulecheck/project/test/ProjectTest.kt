@@ -16,6 +16,7 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -157,6 +158,26 @@ abstract class ProjectTest : BaseTest() {
     val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
+  }
+
+  fun simpleProject(
+    buildFileText: String? = null,
+    path: String = ":lib"
+  ) = project(path) {
+
+    if (buildFileText != null) {
+      buildFile.writeText(buildFileText)
+    }
+
+    addSource(
+      "com/lib1/Lib1Class.kt",
+      """
+        package com.lib1
+
+        class Lib1Class
+      """,
+      SourceSetName.MAIN
+    )
   }
 
   fun allProjects(): List<McProject> = projectCache.values.toList()

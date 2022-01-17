@@ -21,7 +21,7 @@ class GroovyDependenciesBlock(
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>
-) : DependenciesBlock(suppressAll = suppressAll) {
+) : DependenciesBlock(suppressAll = suppressAll, configurationNameTransform = { it.value }) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,
