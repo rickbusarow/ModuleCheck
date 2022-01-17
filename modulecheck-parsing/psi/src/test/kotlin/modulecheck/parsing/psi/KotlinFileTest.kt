@@ -272,7 +272,7 @@ internal class KotlinFileTest : ProjectTest() {
     """
       )
 
-      file.apiReferences.await() shouldBe listOf()
+      file.apiReferences.await() shouldBe setOf()
     }
 
   @Test
