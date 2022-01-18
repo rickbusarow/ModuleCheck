@@ -40,20 +40,23 @@ class RealMcProject(
   override val buildFile: File,
   override val configurations: Configurations,
   override val hasKapt: Boolean,
+  override val hasTestFixturesPlugin: Boolean,
   override val sourceSets: SourceSets,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
-  override val buildFileParser: BuildFileParser,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
   override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,
-  externalDependencies: Lazy<ExternalDependencies>
+  externalDependencies: Lazy<ExternalDependencies>,
+  buildFileParserFactory: BuildFileParser.Factory
 ) : McProject {
 
   override val projectDependencies: ProjectDependencies by projectDependencies
 
   override val externalDependencies: ExternalDependencies by externalDependencies
+
+  override val buildFileParser: BuildFileParser by lazy { buildFileParserFactory.create(this) }
 
   private val context = ProjectContext(this)
 

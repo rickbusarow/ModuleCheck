@@ -22,26 +22,26 @@ import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.AndroidGradleSettingsProvider
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependenciesBlocksProvider
+import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.PluginsBlock
 import modulecheck.parsing.gradle.PluginsBlockProvider
-import java.io.File
 
 class BuildFileParser @AssistedInject constructor(
   dependenciesBlocksProviderFactory: DependenciesBlocksProvider.Factory,
   pluginsBlockProviderFactory: PluginsBlockProvider.Factory,
   androidGradleSettingsProviderFactory: AndroidGradleSettingsProvider.Factory,
   @Assisted
-  private val buildFile: File
+  private val invokesConfigurationNames: InvokesConfigurationNames
 ) {
 
   private val dependenciesBlocksProvider by lazy {
-    dependenciesBlocksProviderFactory.create(buildFile)
+    dependenciesBlocksProviderFactory.create(invokesConfigurationNames)
   }
   private val pluginsBlockProvider by lazy {
-    pluginsBlockProviderFactory.create(buildFile)
+    pluginsBlockProviderFactory.create(invokesConfigurationNames.buildFile)
   }
   private val androidGradleSettingsProvider by lazy {
-    androidGradleSettingsProviderFactory.create(buildFile)
+    androidGradleSettingsProviderFactory.create(invokesConfigurationNames.buildFile)
   }
 
   fun pluginsBlock(): PluginsBlock? = pluginsBlockProvider.get()
@@ -49,7 +49,7 @@ class BuildFileParser @AssistedInject constructor(
   fun androidSettings(): AndroidGradleSettings = androidGradleSettingsProvider.get()
 
   @AssistedFactory
-  interface Factory {
-    fun create(buildFile: File): BuildFileParser
+  fun interface Factory {
+    fun create(invokesConfigurationNames: InvokesConfigurationNames): BuildFileParser
   }
 }

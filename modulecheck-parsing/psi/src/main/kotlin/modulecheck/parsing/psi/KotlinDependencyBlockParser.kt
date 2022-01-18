@@ -15,9 +15,12 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ModuleRef
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.buildFileInvocationText
+import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
@@ -25,7 +28,6 @@ import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
-import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
@@ -36,7 +38,9 @@ import javax.inject.Inject
 class KotlinDependencyBlockParser @Inject constructor() {
 
   @Suppress("ReturnCount")
-  fun parse(file: KtFile): List<KotlinDependenciesBlock> {
+  fun parse(invokesConfigurationNames: InvokesConfigurationNames): List<KotlinDependenciesBlock> {
+
+    val file = invokesConfigurationNames.buildFile.asKtFile()
 
     val blocks = file.getChildrenOfTypeRecursive<KtCallExpression>()
       .filter { it.nameSafe() == "dependencies" }
@@ -61,7 +65,8 @@ class KotlinDependencyBlockParser @Inject constructor() {
         val block = KotlinDependenciesBlock(
           fullText = fullText,
           lambdaContent = blockWhiteSpace + contentString,
-          suppressAll = blockSuppressed
+          suppressAll = blockSuppressed,
+          configurationNameTransform = { it.buildFileInvocationText(invokesConfigurationNames) }
         )
 
         contentBlock.children
