@@ -184,8 +184,10 @@ class GradleProjectProvider @AssistedInject constructor(
 
     fun Configuration.toConfig(): Config {
 
-      return Config(name = name.asConfigurationName(),
-        inherited = allInherited().mapToSet { it.toConfig() })
+      return Config(
+        name = name.asConfigurationName(),
+        inherited = allInherited().mapToSet { it.toConfig() }
+      )
     }
 
     val map = configurations
