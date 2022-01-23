@@ -94,12 +94,15 @@ value class SourceSetName(val value: String) {
     other: SourceSetName,
     hasConfigurations: HasConfigurations
   ): Boolean {
-    return other.javaConfigurationNames()
-      .any { otherConfig ->
-        hasConfigurations.configurations[otherConfig]
-          ?.inherited
-          ?.any { it.name.toSourceSetName() == this }
-          ?: false
+
+    val otherConfigNames = other.javaConfigurationNames()
+
+    return javaConfigurationNames()
+      .asSequence()
+      .mapNotNull { hasConfigurations.configurations[it] }
+      .map { config -> config.inherited.mapToSet { it.name } }
+      .any { inheritedNames ->
+        inheritedNames.any { inherited -> inherited in otherConfigNames }
       }
   }
 
