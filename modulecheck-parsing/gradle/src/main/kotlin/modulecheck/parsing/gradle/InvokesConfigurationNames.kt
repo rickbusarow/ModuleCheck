@@ -45,6 +45,7 @@ interface HasPath {
 }
 
 interface HasConfigurations {
+  val sourceSets: SourceSets
   val configurations: Configurations
 }
 
@@ -58,6 +59,12 @@ interface HasConfigurations {
  */
 fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationName): Set<Config> {
   return configurations.values
+    .asSequence()
+    .map { it.name.toSourceSetName() }
+    .flatMap { sourceSet ->
+      sourceSet.javaConfigurationNames()
+        .mapNotNull { configName -> configurations[configName] }
+    }
     .filter { inheritingConfig ->
       inheritingConfig.inherited
         .any { inheritedConfig ->

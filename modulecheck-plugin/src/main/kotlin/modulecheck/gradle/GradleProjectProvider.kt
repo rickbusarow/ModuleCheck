@@ -54,6 +54,7 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
+import modulecheck.utils.mapToSet
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
@@ -173,17 +174,18 @@ class GradleProjectProvider @AssistedInject constructor(
 
   private fun GradleProject.configurations(): Configurations {
 
-    fun Configuration.foldConfigs(): Set<Configuration> {
-      return extendsFrom + extendsFrom.flatMap { it.foldConfigs() }
+    fun Configuration.allInherited(): Set<Configuration> {
+      return generateSequence(extendsFrom.asSequence()) { extended ->
+        extended.flatMap { it.extendsFrom.asSequence() }
+          .takeIf { it.iterator().hasNext() }
+      }.flatten()
+        .toSet()
     }
 
     fun Configuration.toConfig(): Config {
 
-      val configs = foldConfigs()
-        .map { it.toConfig() }
-        .toSet()
-
-      return Config(name.asConfigurationName(), configs)
+      return Config(name = name.asConfigurationName(),
+        inherited = allInherited().mapToSet { it.toConfig() })
     }
 
     val map = configurations
