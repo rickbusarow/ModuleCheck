@@ -22,7 +22,6 @@ import modulecheck.parsing.gradle.HasPath
 import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.PluginAware
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import org.jetbrains.kotlin.name.FqName
@@ -46,7 +45,6 @@ interface McProject :
   val projectDependencies: ProjectDependencies
   val externalDependencies: ExternalDependencies
 
-  val sourceSets: SourceSets
   val anvilGradlePlugin: AnvilGradlePlugin?
 
   override val hasAnvil: Boolean

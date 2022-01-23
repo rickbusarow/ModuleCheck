@@ -70,23 +70,23 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     // used in `main`, the function will stop there instead of returning a list of `main`, `debug`,
     // `test`, etc.
     suspend fun List<TransitiveProjectDependency>.allUsed(): List<TransitiveProjectDependency> {
-      return fold(listOf()) { acc, transitiveProjectDependency ->
+      return foldRight(listOf()) { transitiveProjectDependency, alreadyUsed ->
 
         val contributedSourceSet = transitiveProjectDependency.contributed
           .configurationName
           .toSourceSetName()
 
-        val alreadyUsedUpstream = acc.any {
+        val alreadyUsedUpstream = alreadyUsed.any {
           val usedSourceSet = it.contributed.configurationName.toSourceSetName()
           contributedSourceSet.inheritsFrom(usedSourceSet, project)
         }
 
         when {
-          alreadyUsedUpstream -> acc
+          alreadyUsedUpstream -> alreadyUsed
           project.uses(transitiveProjectDependency.contributed) -> {
-            acc + transitiveProjectDependency
+            alreadyUsed + transitiveProjectDependency
           }
-          else -> acc
+          else -> alreadyUsed
         }
       }
     }
