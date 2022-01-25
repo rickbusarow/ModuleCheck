@@ -616,6 +616,18 @@ internal class JavaFileTest :
     )
   }
 
+  fun simpleProject() = project(":lib") {
+    addSource(
+      "com/lib1/Lib1Class.kt",
+      """
+        package com.lib1
+
+        class Lib1Class
+      """,
+      SourceSetName.MAIN
+    )
+  }
+
   fun file(
     @Language("java")
     content: String,
@@ -629,7 +641,8 @@ internal class JavaFileTest :
       .also { it.writeText(content.trimIndent()) }
 
     return RealJavaFile(
-      file = file, javaVersion = javaVersion,
+      file = file,
+      javaVersion = javaVersion,
       nodeResolver = JavaParserNodeResolver(project, sourceSetName)
     )
   }

@@ -15,20 +15,17 @@
 
 package modulecheck.parsing.psi
 
-import io.kotest.matchers.shouldBe
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleRef.StringRef
 import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
 import modulecheck.parsing.gradle.UnknownDependencyDeclaration
-import modulecheck.parsing.psi.internal.psiFileFactory
-import org.jetbrains.kotlin.idea.KotlinLanguage
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.utils.addToStdlib.cast
+import modulecheck.project.McProject
+import modulecheck.project.test.ProjectTest
 import org.junit.jupiter.api.Test
 
-internal class KotlinDependencyBlockParserTest {
+internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `external declaration`() {
@@ -556,11 +553,8 @@ internal class KotlinDependencyBlockParserTest {
     )
   }
 
-  fun KotlinDependencyBlockParser.parse(string: String): List<KotlinDependenciesBlock> {
-    val file = psiFileFactory
-      .createFileFromText("build.gradle.kts", KotlinLanguage.INSTANCE, string)
-      .cast<KtFile>()
-
-    return parse(file)
-  }
+  fun KotlinDependencyBlockParser.parse(
+    string: String,
+    project: McProject = simpleProject(buildFileText = string)
+  ): List<KotlinDependenciesBlock> = parse(project)
 }

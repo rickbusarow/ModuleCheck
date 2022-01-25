@@ -29,7 +29,6 @@ import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
 import modulecheck.utils.lazySet
-import modulecheck.utils.mapToSet
 
 data class Declarations(
   private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
@@ -42,13 +41,10 @@ data class Declarations(
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
     return delegate.getOrPut(sourceSetName) {
 
-      val inheritedSourceSetsNames = sourceSetName.javaConfigurationNames()
-        .flatMapTo(mutableSetOf(sourceSetName)) { configName ->
-          project.configurations[configName]
-            ?.inherited
-            ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
-            .orEmpty()
-        }
+      val inheritedSourceSetsNames = sourceSetName.inheritedSourceSetNames(
+        project,
+        includeSelf = true
+      )
 
       val rNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
 

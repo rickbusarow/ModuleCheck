@@ -54,6 +54,7 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
+import modulecheck.utils.mapToSet
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.Configuration
@@ -109,6 +110,9 @@ class GradleProjectProvider @AssistedInject constructor(
     val hasKapt = gradleProject
       .plugins
       .hasPlugin(KAPT_PLUGIN_ID)
+    val hasTestFixturesPlugin = gradleProject
+      .pluginManager
+      .hasPlugin(TEST_FIXTURES_PLUGIN_ID)
 
     val testedExtension = gradleProject
       .extensions
@@ -132,19 +136,20 @@ class GradleProjectProvider @AssistedInject constructor(
         buildFile = gradleProject.buildFile,
         configurations = configurations,
         hasKapt = hasKapt,
+        hasTestFixturesPlugin = hasTestFixturesPlugin,
         sourceSets = gradleProject.androidSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
-        buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
         androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
         javaSourceVersion = gradleProject.javaVersion(),
         projectDependencies = projectDependencies,
-        externalDependencies = externalDependencies
+        externalDependencies = externalDependencies,
+        buildFileParserFactory = buildFileParserFactory
       )
     } else {
       RealMcProject(
@@ -153,32 +158,36 @@ class GradleProjectProvider @AssistedInject constructor(
         buildFile = gradleProject.buildFile,
         configurations = configurations,
         hasKapt = hasKapt,
+        hasTestFixturesPlugin = hasTestFixturesPlugin,
         sourceSets = gradleProject.jvmSourceSets(),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
-        buildFileParser = buildFileParserFactory.create(gradleProject.buildFile),
         javaSourceVersion = gradleProject.javaVersion(),
         projectDependencies = projectDependencies,
-        externalDependencies = externalDependencies
+        externalDependencies = externalDependencies,
+        buildFileParserFactory = buildFileParserFactory
       )
     }
   }
 
   private fun GradleProject.configurations(): Configurations {
 
-    fun Configuration.foldConfigs(): Set<Configuration> {
-      return extendsFrom + extendsFrom.flatMap { it.foldConfigs() }
+    fun Configuration.allInherited(): Set<Configuration> {
+      return generateSequence(extendsFrom.asSequence()) { extended ->
+        extended.flatMap { it.extendsFrom.asSequence() }
+          .takeIf { it.iterator().hasNext() }
+      }.flatten()
+        .toSet()
     }
 
     fun Configuration.toConfig(): Config {
 
-      val configs = foldConfigs()
-        .map { it.toConfig() }
-        .toSet()
-
-      return Config(name.asConfigurationName(), configs)
+      return Config(
+        name = name.asConfigurationName(),
+        inherited = allInherited().mapToSet { it.toConfig() }
+      )
     }
 
     val map = configurations
@@ -365,7 +374,10 @@ class GradleProjectProvider @AssistedInject constructor(
             val layoutFiles = resourceFiles
               .filter {
                 it.isFile && it.path
-                  .replace(File.separator, "/") // replace `\` from Windows paths with `/`.
+                  .replace(
+                    File.separator,
+                    "/"
+                  ) // replaceDestructured `\` from Windows paths with `/`.
                   .contains("""/res/layout.*/.*.xml""".toRegex())
               }
               .toSet()
@@ -388,6 +400,7 @@ class GradleProjectProvider @AssistedInject constructor(
 
   companion object {
     private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
+    private const val TEST_FIXTURES_PLUGIN_ID = "java-test-fixtures"
   }
 
   @AssistedFactory

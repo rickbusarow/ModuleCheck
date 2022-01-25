@@ -15,11 +15,13 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.Config
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.HasBuildFile
+import modulecheck.parsing.gradle.HasConfigurations
+import modulecheck.parsing.gradle.HasDependencyDeclarations
+import modulecheck.parsing.gradle.HasPath
+import modulecheck.parsing.gradle.InvokesConfigurationNames
+import modulecheck.parsing.gradle.PluginAware
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import org.jetbrains.kotlin.name.FqName
@@ -30,22 +32,26 @@ import kotlin.contracts.contract
 interface McProject :
   ProjectContext,
   Comparable<McProject>,
-  HasProjectCache {
-
-  val path: String
+  HasPath,
+  HasProjectCache,
+  HasBuildFile,
+  HasConfigurations,
+  HasDependencyDeclarations,
+  InvokesConfigurationNames,
+  PluginAware {
 
   val projectDir: File
-  val buildFile: File
-
-  val configurations: Configurations
 
   val projectDependencies: ProjectDependencies
   val externalDependencies: ExternalDependencies
 
-  val hasKapt: Boolean
-
-  val sourceSets: SourceSets
   val anvilGradlePlugin: AnvilGradlePlugin?
+
+  override val hasAnvil: Boolean
+    get() = anvilGradlePlugin != null
+
+  override val hasAGP: Boolean
+    get() = this is AndroidMcProject
 
   val buildFileParser: BuildFileParser
 
@@ -54,28 +60,25 @@ interface McProject :
 
   val javaSourceVersion: JavaVersion
 
+  override fun getConfigurationInvocations(): Set<String> = configurationInvocations()
+
   suspend fun resolveFqNameOrNull(
     declarationName: FqName,
     sourceSetName: SourceSetName
   ): FqName?
 }
 
-/**
- * Reverse lookup of all the configurations which inherit another configuration.
- *
- * For instance, every java/kotlin configuration (`implementation`, `testImplementation`, etc.)
- * within a project inherits from the common `api` configuration,
- * so `someProject.inheritingConfigurations(ConfigurationName.api)` would return all other
- * java/kotlin configurations within that project.
- */
-fun McProject.inheritingConfigurations(configurationName: ConfigurationName): Set<Config> {
-  return configurations.values
-    .filter { inheritingConfig ->
-      inheritingConfig.inherited
-        .any { inheritedConfig ->
-          inheritedConfig.name == configurationName
-        }
-    }.toSet()
+private fun McProject.configurationInvocations(): Set<String> {
+  return buildFileParser.dependenciesBlocks()
+    .flatMap { it.settings }
+    .mapNotNull { declaration ->
+
+      val declarationText = declaration.declarationText.trim()
+
+      declaration.configName.value
+        .takeIf { declarationText.startsWith(it) }
+    }
+    .toSet()
 }
 
 fun McProject.isAndroid(): Boolean {

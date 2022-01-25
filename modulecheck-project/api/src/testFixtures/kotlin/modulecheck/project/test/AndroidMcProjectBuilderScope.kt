@@ -104,6 +104,7 @@ data class RealAndroidMcProjectBuilderScope(
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
+  override var hasTestFixturesPlugin: Boolean = false,
   override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
@@ -146,29 +147,35 @@ internal fun createAndroidProject(
   return builder.toProject()
 }
 
-fun buildFileParser(buildFile: File): BuildFileParser {
+fun buildFileParserFactory(): BuildFileParser.Factory {
 
-  return BuildFileParser(
-    {
-      RealDependenciesBlocksProvider(
-        groovyParser = GroovyDependencyBlockParser(),
-        kotlinParser = KotlinDependencyBlockParser(), buildFile = buildFile
-      )
-    },
-    {
-      RealPluginsBlockProvider(
-        groovyParser = GroovyPluginsBlockParser(),
-        kotlinParser = KotlinPluginsBlockParser(), buildFile = buildFile
-      )
-    },
-    {
-      RealAndroidGradleSettingsProvider(
-        groovyParser = GroovyAndroidGradleParser(),
-        kotlinParser = KotlinAndroidGradleParser(), buildFile = buildFile
-      )
-    },
-    buildFile
-  )
+  return BuildFileParser.Factory { invokesConfigurationNames ->
+
+    BuildFileParser(
+      {
+        RealDependenciesBlocksProvider(
+          groovyParser = GroovyDependencyBlockParser(),
+          kotlinParser = KotlinDependencyBlockParser(),
+          invokesConfigurationNames = invokesConfigurationNames
+        )
+      },
+      {
+        RealPluginsBlockProvider(
+          groovyParser = GroovyPluginsBlockParser(),
+          kotlinParser = KotlinPluginsBlockParser(),
+          buildFile = invokesConfigurationNames.buildFile
+        )
+      },
+      {
+        RealAndroidGradleSettingsProvider(
+          groovyParser = GroovyAndroidGradleParser(),
+          kotlinParser = KotlinAndroidGradleParser(),
+          buildFile = invokesConfigurationNames.buildFile
+        )
+      },
+      invokesConfigurationNames
+    )
+  }
 }
 
 fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
@@ -188,19 +195,20 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     buildFile = buildFile,
     configurations = Configurations(configurations),
     hasKapt = hasKapt,
+    hasTestFixturesPlugin = hasTestFixturesPlugin,
     sourceSets = SourceSets(sourceSets),
     projectCache = projectCache,
     anvilGradlePlugin = anvilGradlePlugin,
     androidResourcesEnabled = androidResourcesEnabled,
     viewBindingEnabled = viewBindingEnabled,
-    buildFileParser = buildFileParser(buildFile),
     androidPackageOrNull = androidPackage,
     manifests = manifests,
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,
     javaSourceVersion = javaSourceVersion,
     projectDependencies = lazy { projectDependencies },
-    externalDependencies = lazy { externalDependencies }
+    externalDependencies = lazy { externalDependencies },
+    buildFileParserFactory = buildFileParserFactory()
   )
 
   return delegate

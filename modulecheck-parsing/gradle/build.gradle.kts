@@ -15,12 +15,15 @@
 
 plugins {
   id("mcbuild")
+  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-parsing-gradle"
   anvil = true
 }
+
+val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -36,6 +39,12 @@ dependencies {
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  if (isIdeSync) {
+    compileOnly(libs.bundles.hermit)
+    compileOnly(libs.bundles.jUnit)
+    compileOnly(libs.bundles.kotest)
+  }
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

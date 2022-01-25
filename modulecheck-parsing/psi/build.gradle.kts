@@ -45,5 +45,6 @@ dependencies {
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
 
+  testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }

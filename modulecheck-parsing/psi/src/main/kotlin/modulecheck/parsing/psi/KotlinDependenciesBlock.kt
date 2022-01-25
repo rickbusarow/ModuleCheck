@@ -16,12 +16,17 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
 
 class KotlinDependenciesBlock(
   override val fullText: String,
   override val lambdaContent: String,
-  suppressAll: List<String>
-) : DependenciesBlock(suppressAll = suppressAll) {
+  suppressAll: List<String>,
+  configurationNameTransform: ConfigurationNameTransform
+) : DependenciesBlock(
+  suppressAll = suppressAll,
+  configurationNameTransform = configurationNameTransform
+) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,

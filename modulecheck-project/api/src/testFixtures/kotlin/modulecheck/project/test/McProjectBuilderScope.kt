@@ -47,6 +47,7 @@ interface McProjectBuilderScope {
   val projectDependencies: ProjectDependencies
   val externalDependencies: ExternalDependencies
   var hasKapt: Boolean
+  var hasTestFixturesPlugin: Boolean
   val sourceSets: MutableMap<SourceSetName, SourceSet>
   var anvilGradlePlugin: AnvilGradlePlugin?
   val projectCache: ProjectCache
@@ -141,7 +142,10 @@ interface McProjectBuilderScope {
 
     val old = sourceSets.put(name, new)
 
-    require(old == null) { "A source set for that name already exists." }
+    require(old == null) {
+      "A source set for the name '${name.value}' already exists.  " +
+        "You can probably just delete this line?"
+    }
 
     return new
   }
@@ -156,6 +160,7 @@ data class JvmMcProjectBuilderScope(
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
+  override var hasTestFixturesPlugin: Boolean = false,
   override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
     SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
   ),
@@ -235,15 +240,16 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
     buildFile = buildFile,
     configurations = Configurations(configurations),
     hasKapt = hasKapt,
+    hasTestFixturesPlugin = hasTestFixturesPlugin,
     sourceSets = SourceSets(sourceSets),
     projectCache = projectCache,
     anvilGradlePlugin = anvilGradlePlugin,
-    buildFileParser = buildFileParser(buildFile),
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,
     javaSourceVersion = javaSourceVersion,
     projectDependencies = lazy { projectDependencies },
-    externalDependencies = lazy { externalDependencies }
+    externalDependencies = lazy { externalDependencies },
+    buildFileParserFactory = buildFileParserFactory()
   )
 
   return delegate

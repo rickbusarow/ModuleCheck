@@ -106,7 +106,24 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    */
   fun apiVariant() = toSourceSetName().apiConfig()
 
+  /**
+   * Returns the '-implementation' version of the current configuration.
+   *
+   * In                           Returns
+   * | implementation             | implementation
+   * | implementation             | implementation
+   * | compileOnly                | implementation
+   * | testImplementation         | testImplementation
+   * | debug                      | debugImplementation
+   * | androidTestImplementation  | androidTestImplementation
+   *
+   * @return for any main/common configuration, just returns `implementation`. For any other configuration, it
+   *   returns the [SourceSetName] appended with `Implementation`.
+   */
+  fun implementationVariant() = toSourceSetName().implementationConfig()
+
   fun isApi(): Boolean = this == apiVariant()
+  fun isImplementation(): Boolean = this == implementationVariant()
 
   override fun compareTo(other: ConfigurationName): Int {
     return value.compareTo(other.value)

@@ -41,23 +41,26 @@ class RealAndroidMcProject(
   override val buildFile: File,
   override val configurations: Configurations,
   override val hasKapt: Boolean,
+  override val hasTestFixturesPlugin: Boolean,
   override val sourceSets: SourceSets,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
-  override val buildFileParser: BuildFileParser,
   override val androidPackageOrNull: String?,
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
   override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,
-  externalDependencies: Lazy<ExternalDependencies>
+  externalDependencies: Lazy<ExternalDependencies>,
+  buildFileParserFactory: BuildFileParser.Factory
 ) : AndroidMcProject {
 
   override val projectDependencies: ProjectDependencies by projectDependencies
   override val externalDependencies: ExternalDependencies by externalDependencies
+
+  override val buildFileParser: BuildFileParser by lazy { buildFileParserFactory.create(this) }
 
   override val androidRFqNameOrNull: String? by lazy {
     androidPackageOrNull?.let { "$it.R" }

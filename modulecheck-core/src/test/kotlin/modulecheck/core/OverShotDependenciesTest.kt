@@ -245,7 +245,78 @@ class OverShotDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `overshot as implementation but used in debug with auto-correct should be fixed`() {
+  fun `overshot in android project as implementation but used in debug with auto-correct should be fixed`() {
+
+    val runner = runner(
+      autoCorrect = true,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          debugImplementation(project(path = ":lib1"))
+        }
+        """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """
+            :lib2
+                   dependency    name                source    build file
+                ✔  :lib1         overshot                      /lib2/build.gradle.kts:
+                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+
+        ModuleCheck found 2 issues
+        """
+  }
+
+  @Test
+  fun `overshot in non-android as implementation but used in debug with auto-correct should be fixed with quotes`() {
 
     val runner = runner(
       autoCorrect = true,
@@ -299,7 +370,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
-          debugImplementation(project(path = ":lib1"))
+          "debugImplementation"(project(path = ":lib1"))
         }
         """
 

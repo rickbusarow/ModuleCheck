@@ -24,7 +24,7 @@ dependencies {
 
   dependencySync("com.android.tools.build:gradle:7.0.3")
   dependencySync("com.github.ben-manes:gradle-versions-plugin:0.39.0")
-  dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.23.1")
+  dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.24.0")
   dependencySync("com.github.tschuchortdev:kotlin-compile-testing:1.4.7")
   dependencySync("com.google.dagger:dagger-compiler:2.40.5")
   dependencySync("com.google.dagger:dagger:2.40.5")
@@ -48,16 +48,16 @@ dependencies {
   dependencySync("com.squareup.anvil:compiler:2.3.10")
   dependencySync("com.squareup.anvil:gradle-plugin:2.3.10")
   dependencySync("com.squareup:kotlinpoet:1.10.2")
-  dependencySync("com.github.javaparser:javaparser-core:3.23.1")
+  dependencySync("com.github.javaparser:javaparser-core:3.24.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.18.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
 
   dependencySync("gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0")
 
   dependencySync("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
-  dependencySync("io.kotest:kotest-assertions-core-jvm:5.0.3")
-  dependencySync("io.kotest:kotest-property-jvm:5.0.3")
-  dependencySync("io.kotest:kotest-runner-junit5-jvm:5.0.3")
+  dependencySync("io.kotest:kotest-assertions-core-jvm:5.1.0")
+  dependencySync("io.kotest:kotest-property-jvm:5.1.0")
+  dependencySync("io.kotest:kotest-runner-junit5-jvm:5.1.0")
 
   dependencySync("javax.inject:javax.inject:1")
 
