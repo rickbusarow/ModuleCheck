@@ -15,9 +15,9 @@
 
 package modulecheck.gradle
 
-import modulecheck.project.test.createSafely
-import modulecheck.project.test.writeGroovy
-import modulecheck.project.test.writeKotlin
+import modulecheck.testing.createSafely
+import modulecheck.testing.writeGroovy
+import modulecheck.testing.writeKotlin
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.memberProperties

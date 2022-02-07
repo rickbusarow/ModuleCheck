@@ -16,28 +16,31 @@
 package modulecheck.parsing.android
 
 import groovy.util.Node
-import groovy.xml.XmlParser
 import java.io.File
 import kotlin.collections.MutableMap.MutableEntry
 
 class AndroidManifestParser {
 
-  fun parse(file: File): Map<String, String> = XmlParser()
-    .parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.entries }
-    .filterNotNull()
-    .filterIsInstance<MutableEntry<String, String>>()
-    .associate { it.key to it.value }
+  fun parse(file: File): Map<String, String> {
+    val node = SafeXmlParser().parse(file) ?: return emptyMap()
 
-  fun parseResources(file: File): Set<String> = XmlParser()
-    .parse(file)
-    .breadthFirst()
-    .filterIsInstance<Node>()
-    .mapNotNull { it.attributes() }
-    .flatMap { it.values.mapNotNull { value -> value } }
-    .filterIsInstance<String>()
-    .toSet()
+    return node.breadthFirst()
+      .filterIsInstance<Node>()
+      .mapNotNull { it.attributes() }
+      .flatMap { it.entries }
+      .filterNotNull()
+      .filterIsInstance<MutableEntry<String, String>>()
+      .associate { it.key to it.value }
+  }
+
+  fun parseResources(file: File): Set<String> {
+    val node = SafeXmlParser().parse(file) ?: return emptySet()
+
+    return node.breadthFirst()
+      .filterIsInstance<Node>()
+      .mapNotNull { it.attributes() }
+      .flatMap { it.values.mapNotNull { value -> value } }
+      .filterIsInstance<String>()
+      .toSet()
+  }
 }

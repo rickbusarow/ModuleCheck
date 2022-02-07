@@ -15,8 +15,8 @@
 
 package modulecheck.gradle
 
-import modulecheck.project.test.createSafely
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.testing.createSafely
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 

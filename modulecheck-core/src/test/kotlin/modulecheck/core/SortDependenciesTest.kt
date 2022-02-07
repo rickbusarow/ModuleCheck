@@ -19,9 +19,9 @@ import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.test.writeGroovy
-import modulecheck.project.test.writeKotlin
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.testing.writeGroovy
+import modulecheck.testing.writeKotlin
 import org.junit.jupiter.api.Test
 import java.io.File
 
