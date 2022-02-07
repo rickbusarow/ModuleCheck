@@ -13,30 +13,31 @@
  * limitations under the License.
  */
 
+@file:Suppress("ForbiddenImport")
+
 package modulecheck.parsing.android
 
 import groovy.util.Node
 import java.io.File
+import groovy.xml.XmlParser as GroovyXmlParser
 
-class AndroidLayoutParser {
+class SafeXmlParser {
 
-  fun parseViews(file: File): Set<String> {
-    val node = SafeXmlParser().parse(file) ?: return emptySet()
+  private val delegate = GroovyXmlParser()
 
-    return node.breadthFirst()
-      .filterIsInstance<Node>()
-      .mapNotNull { it.name() as? String }
-      .toSet()
+  fun parse(file: File): Node? {
+    return kotlin.runCatching { parse(file.readText()) }
+      .getOrNull()
   }
 
-  fun parseResources(file: File): Set<String> {
-    val node = SafeXmlParser().parse(file) ?: return emptySet()
-
-    return node.breadthFirst()
-      .filterIsInstance<Node>()
-      .mapNotNull { it.attributes() }
-      .flatMap { it.values.mapNotNull { value -> value } }
-      .filterIsInstance<String>()
-      .toSet()
+  fun parse(text: String): Node? {
+    return delegate.parseText(text.sanitizeXml())
   }
+}
+
+// https://www.w3.org/TR/xml/#charsets
+// https://github.com/RBusarow/ModuleCheck/issues/375
+private fun String.sanitizeXml(): String {
+  val xml10Pattern = "[^\u0009\r\n\u0020-\uD7FF\uE000-\uFFFD\ud800\udc00-\udbff\udfff]"
+  return replace(xml10Pattern.toRegex(), " ") // .remove("\ud83d").remove("\ud83e")
 }

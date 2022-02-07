@@ -23,8 +23,8 @@ import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.test.createSafely
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.testing.createSafely
 import org.junit.jupiter.api.Test
 import java.io.File
 

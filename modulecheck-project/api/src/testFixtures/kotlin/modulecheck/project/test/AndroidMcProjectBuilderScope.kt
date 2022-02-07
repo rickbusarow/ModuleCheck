@@ -42,6 +42,7 @@ import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealAndroidMcProject
+import modulecheck.testing.createSafely
 import org.intellij.lang.annotations.Language
 import java.io.File
 

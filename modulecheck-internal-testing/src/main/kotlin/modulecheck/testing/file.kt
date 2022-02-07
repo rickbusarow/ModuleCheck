@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.test
+package modulecheck.testing
 
 import org.intellij.lang.annotations.Language
 import java.io.File

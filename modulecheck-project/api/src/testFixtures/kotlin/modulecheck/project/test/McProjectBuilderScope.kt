@@ -35,6 +35,7 @@ import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealMcProject
+import modulecheck.testing.createSafely
 import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import java.io.File

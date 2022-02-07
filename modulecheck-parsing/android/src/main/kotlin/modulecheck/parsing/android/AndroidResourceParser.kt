@@ -16,11 +16,9 @@
 package modulecheck.parsing.android
 
 import groovy.util.Node
-import groovy.xml.XmlParser
 import modulecheck.parsing.source.AndroidResource
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.utils.cast
 import java.io.File
 
 class AndroidResourceParser {
@@ -28,26 +26,27 @@ class AndroidResourceParser {
   fun parseFile(resDir: File): Set<DeclarationName> {
     val values = mutableSetOf<AndroidResource>()
 
-    val xmlParser = XmlParser()
+    val xmlParser = SafeXmlParser()
 
     val resources = resDir
       .walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "xml" }
       .onEach { file ->
-        val parsed = xmlParser.parse(file)
+
+        val parsed = xmlParser.parse(file) ?: return@onEach
 
         if (parsed.name() == "resources") {
-          val t = parsed.children().cast<List<Node>>()
 
-          t.forEach { node ->
+          parsed.children()
+            .filterIsInstance<Node>()
+            .forEach { node ->
 
-            AndroidResource.fromValuePair(
-              node.name()
-                .toString(),
-              node.attributes().values.first()?.toString() ?: ""
-            )?.also { values.add(it) }
-          }
+              AndroidResource.fromValuePair(
+                type = node.name().toString(),
+                name = node.attributes().values.first()?.toString() ?: ""
+              )?.also { values.add(it) }
+            }
         }
       }
       .mapNotNull { file -> AndroidResource.fromFile(file) }

@@ -38,6 +38,9 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+
+  testImplementation(gradleApi())
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
