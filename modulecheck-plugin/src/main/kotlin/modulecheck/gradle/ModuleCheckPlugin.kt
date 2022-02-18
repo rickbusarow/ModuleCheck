@@ -74,6 +74,16 @@ class ModuleCheckPlugin : Plugin<Project> {
       name = "moduleCheck",
       findingFactory = MultiRuleFindingFactory(settings, rules)
     )
+    // if (target.rootProject == target) {
+    //   target.subprojects
+    //     .filter { it.buildFile.exists() }
+    //     .forEach {
+    //       it.registerTasks(
+    //         name = "moduleCheck",
+    //         findingFactory = MultiRuleFindingFactory(settings, rules)
+    //       )
+    //     }
+    // }
   }
 
   private fun Project.registerTasks(

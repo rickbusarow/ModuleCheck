@@ -19,13 +19,17 @@ import kotlinx.coroutines.cancel
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.dagger.Components
 import modulecheck.dagger.DispatcherProviderComponent
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.parsing.gradle.SourceSet
+import modulecheck.parsing.gradle.toSourceSetName
+import modulecheck.utils.cast
 import org.gradle.api.DefaultTask
-import org.gradle.api.GradleException
+import org.gradle.api.logging.LogLevel.WARN
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
+import org.gradle.kotlin.dsl.findByType
 import org.gradle.kotlin.dsl.getByType
 import javax.inject.Inject
 
@@ -46,34 +50,48 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
   @get:Input
   val settings: ModuleCheckExtension = project.extensions.getByType()
 
+  private val component
+    get() = DaggerTaskComponent.factory()
+      .create(project, settings, findingFactory)
+
+  private val result by lazy {
+
+    project.extensions.findByType<JavaPluginExtension>()
+      ?.sourceSets
+      .orEmpty()
+      .map { it.name }
+      .let {
+        println("variant names -- $it")
+      }
+
+    SourceSet("dumb!".toSourceSetName())
+  }
+  // private val result by lazy {
+  //   val projectProvider = component.gradleProjectProvider.create(project)
+  //
+  //   val runner = component.runnerFactory.create(projectProvider, autoCorrect)
+  //
+  //   val projects = projectProvider.getAll()
+  //
+  //   runner.run(projects)
+  // }
+
   @TaskAction
   fun run() {
 
-    val component = DaggerTaskComponent.factory()
-      .create(project, settings, findingFactory)
+    logger.log(WARN, result.toString())
 
     try {
 
-      Components.add(component)
-
-      val projectProvider = component.gradleProjectProvider.create(project)
-      val runner = component.runnerFactory.create(projectProvider, autoCorrect)
-
-      val projects = projectProvider.getAll()
-
-      val result = runner.run(projects)
-
-      result.exceptionOrNull()
-        ?.let { throw GradleException(it.message!!, it) }
+      // result.exceptionOrNull()
+      //   ?.let { throw GradleException(it.message!!, it) }
     } finally {
 
-      val dispatcherProvider = Components.get<DispatcherProviderComponent>()
+      val dispatcherProvider = component.cast<DispatcherProviderComponent>()
         .dispatcherProvider
 
       dispatcherProvider.default.cancel()
       dispatcherProvider.io.cancel()
-
-      Components.clear()
     }
   }
 }

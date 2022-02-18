@@ -37,12 +37,12 @@ import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
 class GradleLogger @Inject constructor(
-  project: GradleProject
+  // project: GradleProject
 ) : Logger {
 
-  private val output: StyledTextOutput = project
-    .serviceOf<StyledTextOutputFactory>()
-    .create("modulecheck")
+  // private val output: StyledTextOutput = project
+  //   .serviceOf<StyledTextOutputFactory>()
+  //   .create("modulecheck")
 
   override fun printReport(report: Report) {
     report.entries
@@ -63,42 +63,42 @@ class GradleLogger @Inject constructor(
   }
 
   override fun printHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.Header).println(message)
+    // output.withStyle(StyledTextOutput.Style.Header).println(message)
   }
 
   override fun printWarning(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).text(message)
+    // output.withStyle(StyledTextOutput.Style.Description).text(message)
   }
 
   override fun printWarningLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).println(message)
+    // output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
   override fun printInfo(message: String) {
-    output.withStyle(StyledTextOutput.Style.Description).println(message)
+    // output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
   override fun printFailure(message: String) {
-    output.withStyle(StyledTextOutput.Style.Failure).text(message)
+    // output.withStyle(StyledTextOutput.Style.Failure).text(message)
   }
 
   override fun printFailureLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Failure).println(message)
+    // output.withStyle(StyledTextOutput.Style.Failure).println(message)
   }
 
   override fun printFailureHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.FailureHeader).println(message)
+    // output.withStyle(StyledTextOutput.Style.FailureHeader).println(message)
   }
 
   override fun printSuccess(message: String) {
-    output.withStyle(StyledTextOutput.Style.Success).text(message)
+    // output.withStyle(StyledTextOutput.Style.Success).text(message)
   }
 
   override fun printSuccessLine(message: String) {
-    output.withStyle(StyledTextOutput.Style.Success).println(message)
+    // output.withStyle(StyledTextOutput.Style.Success).println(message)
   }
 
   override fun printSuccessHeader(message: String) {
-    output.withStyle(StyledTextOutput.Style.SuccessHeader).println(message)
+    // output.withStyle(StyledTextOutput.Style.SuccessHeader).println(message)
   }
 }
