@@ -33,7 +33,7 @@ jobs:
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'temurin'
+          distribution : 'adopt'
           java-version : '11'
           cache: 'gradle'
 
@@ -65,7 +65,7 @@ jobs:
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'temurin'
+          distribution : 'adopt'
           java-version : '11'
           cache: 'gradle'
 
@@ -165,7 +165,7 @@ jobs:
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'temurin'
+          distribution : 'adopt'
           java-version : '11'
           cache: 'gradle'
 
@@ -213,7 +213,7 @@ jobs:
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
-          distribution : 'temurin'
+          distribution : 'adopt'
           java-version : '11'
           cache: 'gradle'
 

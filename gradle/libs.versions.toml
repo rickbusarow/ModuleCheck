@@ -15,7 +15,7 @@ androidx-work = "2.6.0"
 
 antlr = "4.9.3"
 autoManifest = "1.0.4"
-benManes = "0.39.0"
+benManes = "0.42.0"
 changeTracker = "0.7.4"
 coil = "1.3.2"
 compileSdk = "30"
