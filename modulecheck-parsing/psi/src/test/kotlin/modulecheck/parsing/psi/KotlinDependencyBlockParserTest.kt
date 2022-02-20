@@ -396,7 +396,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """
    // single-line comment
-   implementation(project(":core:android"))"""
+   implementation(project(":core:android"))
+        """
       )
     )
   }
@@ -427,7 +428,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
    /*
    block comment
    */
-   implementation(project(":core:android"))"""
+   implementation(project(":core:android"))
+        """
       )
     )
   }
@@ -540,7 +542,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         |dependencies {
         |  api(libs.ktlint)
         |}
-        |""".trimMargin()
+        |
+        """.trimMargin()
       ).single()
 
     block.settings shouldBe listOf(

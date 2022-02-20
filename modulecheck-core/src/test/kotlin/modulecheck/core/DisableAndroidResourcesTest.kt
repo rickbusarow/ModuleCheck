@@ -59,7 +59,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
         """<resources>
             |  <string name="app_name" translatable="false">MyApp</string>
             |</resources>
-            """.trimMargin()
+        """.trimMargin()
       )
       addSource(
         "com/modulecheck/lib1/Source.kt",
@@ -76,7 +76,8 @@ class DisableAndroidResourcesTest : RunnerTest() {
     lib1.buildFile.readText() shouldBe """plugins {
   id("com.android.library")
   kotlin("android")
-}"""
+}
+    """
 
     logger.collectReport()
       .joinToString()
@@ -109,7 +110,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
         """<resources>
             |  <string name="app_name" translatable="false">MyApp</string>
             |</resources>
-            """.trimMargin()
+        """.trimMargin()
       )
     }
 
@@ -137,7 +138,8 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -170,7 +172,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
         id("com.android.library")
         kotlin("android")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -180,7 +182,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
                 X                disableAndroidResources              /lib1/build.gradle.kts:
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -213,7 +215,8 @@ class DisableAndroidResourcesTest : RunnerTest() {
 }
 android {
   buildFeatures.androidResources = false
-}"""
+}
+    """
 
     logger.collectReport()
       .joinToString()
@@ -223,7 +226,7 @@ android {
                 ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -260,7 +263,8 @@ android {
       android {
         mindSdk(21)
         buildFeatures.androidResources = false
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -270,7 +274,7 @@ android {
                   ✔                disableAndroidResources              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -304,7 +308,8 @@ android {
         buildFeatures {
           androidResources = false
         }
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -314,7 +319,7 @@ android {
                   ✔                disableAndroidResources              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -351,7 +356,7 @@ android {
 
       dependencies {
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -361,7 +366,7 @@ android {
                   ✔                disableAndroidResources              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -392,7 +397,7 @@ android {
         kotlin("android")
       }
       android.buildFeatures.androidResources = false
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -402,7 +407,7 @@ android {
                 ✔                disableAndroidResources              /lib1/build.gradle.kts: (5, 1):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -437,7 +442,7 @@ android {
       android.buildFeatures {
         androidResources = false
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -447,7 +452,7 @@ android {
               ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
 
       ModuleCheck found 1 issue
-      """
+    """
   }
 
   @Test
@@ -486,7 +491,7 @@ android {
             androidResources = false
           }
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -526,7 +531,7 @@ android {
         id("com.android.library")
         kotlin("android")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -558,7 +563,8 @@ android {
     lib1.buildFile.readText() shouldBe """plugins {
   id("com.android.library")
   kotlin("android")
-}"""
+}
+    """
 
     logger.collectReport()
       .joinToString()

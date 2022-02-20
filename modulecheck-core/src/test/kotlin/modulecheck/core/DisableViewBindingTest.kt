@@ -72,7 +72,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -102,7 +103,8 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -145,7 +147,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
 
       addSource(
@@ -170,7 +173,8 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -215,7 +219,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -229,7 +234,8 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -272,7 +278,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -286,7 +293,8 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -332,7 +340,8 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = false
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -342,7 +351,7 @@ class DisableViewBindingTest : RunnerTest() {
                   ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -379,7 +388,8 @@ class DisableViewBindingTest : RunnerTest() {
       android {
         mindSdk(21)
         buildFeatures.viewBinding = false
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -389,7 +399,7 @@ class DisableViewBindingTest : RunnerTest() {
                   ✔                disableViewBinding              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -423,7 +433,8 @@ class DisableViewBindingTest : RunnerTest() {
         buildFeatures {
           viewBinding = false
         }
-      }"""
+      }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -433,7 +444,7 @@ class DisableViewBindingTest : RunnerTest() {
                   ✔                disableViewBinding              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -470,7 +481,7 @@ class DisableViewBindingTest : RunnerTest() {
 
       dependencies {
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -480,7 +491,7 @@ class DisableViewBindingTest : RunnerTest() {
                   ✔                disableViewBinding              /lib1/build.gradle.kts:
 
           ModuleCheck found 1 issue
-          """
+    """
   }
 
   @Test
@@ -517,7 +528,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -529,7 +541,8 @@ class DisableViewBindingTest : RunnerTest() {
         kotlin("android")
       }
 
-      android.buildFeatures.viewBinding = false"""
+      android.buildFeatures.viewBinding = false
+    """
 
     logger.collectReport()
       .joinToString()
@@ -539,7 +552,7 @@ class DisableViewBindingTest : RunnerTest() {
                 ✔                disableViewBinding              /lib1/build.gradle.kts: (6, 1):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -580,7 +593,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -596,7 +610,8 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures {
             viewBinding = false
           }
-        }"""
+        }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -606,7 +621,7 @@ class DisableViewBindingTest : RunnerTest() {
                 ✔                disableViewBinding              /lib1/build.gradle.kts: (8, 5):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -645,7 +660,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -659,7 +675,8 @@ class DisableViewBindingTest : RunnerTest() {
 
         android.buildFeatures {
           viewBinding = false
-        }"""
+        }
+    """
 
     logger.collectReport()
       .joinToString()
@@ -669,6 +686,6 @@ class DisableViewBindingTest : RunnerTest() {
                 ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 }

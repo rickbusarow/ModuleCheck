@@ -74,7 +74,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kapt("$dagger")
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -85,7 +85,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
                 X  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -126,7 +126,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           api("$dagger")
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -181,7 +181,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kapt("$dagger")
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -237,7 +237,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kaptTest("$dagger")
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -282,7 +282,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor (kapt)]
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -293,6 +293,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
               ✔  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
 
       ModuleCheck found 2 issues
-      """
+    """
   }
 }

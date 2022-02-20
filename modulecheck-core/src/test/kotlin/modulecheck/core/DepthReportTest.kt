@@ -105,7 +105,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -156,7 +156,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -197,7 +197,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -244,7 +244,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -333,7 +333,7 @@ internal class DepthReportTest : RunnerTest() {
           1        [:app]
 
       ModuleCheck found 1 issue
-        """
+    """
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -350,7 +350,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            0        []
 
-      """
+    """
   }
 
   @Test
@@ -407,6 +407,6 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 }

@@ -69,7 +69,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation(project(path = "lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
-      """
+        """
       )
     }
 
@@ -102,7 +102,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -138,7 +138,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -158,7 +158,7 @@ class SortDependenciesTest : RunnerTest() {
         */
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -194,7 +194,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -214,7 +214,7 @@ class SortDependenciesTest : RunnerTest() {
          */
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -248,7 +248,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -266,7 +266,7 @@ class SortDependenciesTest : RunnerTest() {
         // preceding comment
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -299,7 +299,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1")) // trailing comment
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -316,7 +316,7 @@ class SortDependenciesTest : RunnerTest() {
 
         runtimeOnly(project(path = "lib-1")) // trailing comment
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -359,7 +359,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation(project(path = "lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
-      """
+        """
       )
     }
 
@@ -392,7 +392,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -434,7 +434,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -475,7 +475,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
         api 'com.squareup:kotlinpoet:1.7.2'
       }
-      """
+        """
       )
     }
 
@@ -508,7 +508,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -546,7 +546,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -566,7 +566,7 @@ class SortDependenciesTest : RunnerTest() {
         */
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -604,7 +604,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -624,7 +624,7 @@ class SortDependenciesTest : RunnerTest() {
          */
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -660,7 +660,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -678,7 +678,7 @@ class SortDependenciesTest : RunnerTest() {
         // preceding comment
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -713,7 +713,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1") // trailing comment
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -730,7 +730,7 @@ class SortDependenciesTest : RunnerTest() {
 
         runtimeOnly project(path = "lib-1") // trailing comment
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -778,7 +778,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation project(path = "lib-2")
         testImplementation project(path = "lib-8")
       }
-      """
+        """
       )
     }
 
@@ -811,7 +811,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -853,7 +853,7 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()

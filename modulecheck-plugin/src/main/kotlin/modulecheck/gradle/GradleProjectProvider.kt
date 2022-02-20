@@ -323,7 +323,7 @@ class GradleProjectProvider @AssistedInject constructor(
           """ModuleCheck only supports a single base package.  The following packages are present for module `$path`:
           |
           |${it.joinToString("\n")}
-        """.trimMargin()
+          """.trimMargin()
         }
       }
       ?.single()

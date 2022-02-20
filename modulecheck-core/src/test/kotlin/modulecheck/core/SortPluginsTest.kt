@@ -53,7 +53,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         kotlin("jvm")
       }
-      """
+        """
       )
     }
 
@@ -65,7 +65,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -94,7 +94,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         kotlin("jvm")
       }
-      """
+        """
       )
     }
 
@@ -106,7 +106,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -127,7 +127,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -152,7 +152,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+        """
       )
     }
 
@@ -164,7 +164,7 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -195,7 +195,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+        """
       )
     }
 
@@ -207,7 +207,7 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -228,7 +228,7 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
     logger.collectReport()
       .joinToString()

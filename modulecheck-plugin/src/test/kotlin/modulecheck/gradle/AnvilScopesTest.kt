@@ -70,7 +70,8 @@ class AnvilScopesTest : BasePluginTest() {
                 |public class Lib2FooImpl : Foo
                 |
                 |interface Foo
-            |""".trimMargin()
+            |
+            """.trimMargin()
           )
         }
       )
@@ -97,7 +98,8 @@ class AnvilScopesTest : BasePluginTest() {
             |
             |@MergeComponent(Lib1Class::class)
             |public interface AppComponent
-                |""".trimMargin()
+                |
+            """.trimMargin()
           )
         }
       )
@@ -135,7 +137,8 @@ class AnvilScopesTest : BasePluginTest() {
                 |public class Lib2FooImpl : Foo
                 |
                 |interface Foo
-            |""".trimMargin()
+            |
+            """.trimMargin()
           )
         }
       )
@@ -161,7 +164,8 @@ class AnvilScopesTest : BasePluginTest() {
             |
             |@MergeComponent(Lib1Class::class)
             |public interface AppComponent
-                |""".trimMargin()
+                |
+            """.trimMargin()
           )
         }
       )
@@ -398,6 +402,7 @@ class AnvilScopesTest : BasePluginTest() {
            dependency    name                source    build file
         X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
-ModuleCheck found 1 issue"""
+ModuleCheck found 1 issue
+    """
   }
 }

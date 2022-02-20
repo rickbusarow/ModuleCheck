@@ -71,7 +71,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -81,7 +81,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -120,7 +120,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -130,7 +130,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -170,7 +170,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
         dependencies {
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -180,7 +180,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -223,7 +223,7 @@ class UnusedDependenciesTest : RunnerTest() {
           @Suppress("unusedDependency")
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -270,7 +270,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -316,7 +316,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(libs.javax.inject)
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -326,7 +326,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -366,7 +366,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
         dependencies {
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -376,7 +376,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -417,7 +417,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           "implementation"(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -427,7 +427,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -471,7 +471,7 @@ class UnusedDependenciesTest : RunnerTest() {
           api(libs.javax.inject) {
           }
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -481,7 +481,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (8, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -526,7 +526,7 @@ class UnusedDependenciesTest : RunnerTest() {
           }
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -536,7 +536,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (8, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -583,7 +583,7 @@ class UnusedDependenciesTest : RunnerTest() {
           fakeConfig(project(path = ":lib1"))
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -593,7 +593,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (9, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -655,7 +655,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -723,7 +723,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           androidTestImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -782,7 +782,8 @@ class UnusedDependenciesTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -797,7 +798,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -865,7 +866,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -930,7 +931,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -997,7 +998,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1052,7 +1053,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1062,7 +1063,7 @@ class UnusedDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -1127,7 +1128,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1193,7 +1194,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1255,7 +1256,7 @@ class UnusedDependenciesTest : RunnerTest() {
               android:theme="@style/AppTheme"
               />
           </manifest>
-          """
+        """
       )
     }
 
@@ -1270,7 +1271,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1342,7 +1343,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()

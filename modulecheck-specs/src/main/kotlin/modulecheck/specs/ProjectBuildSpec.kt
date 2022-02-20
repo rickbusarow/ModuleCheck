@@ -123,7 +123,8 @@ public data class ProjectBuildSpec(
       |  }
       |
       |}
-      |""".trimMargin()
+      |
+  """.trimMargin()
 
   private fun androidBlock() = if (!android) "" else """android {
       |  compileSdkVersion(30)
@@ -140,7 +141,8 @@ public data class ProjectBuildSpec(
       |  }
       |}
       |
-      |""".trimMargin()
+      |
+  """.trimMargin()
 
   private fun dependenciesBlock() = if (dependencies.isEmpty()) "" else buildString {
     appendLine("dependencies {")

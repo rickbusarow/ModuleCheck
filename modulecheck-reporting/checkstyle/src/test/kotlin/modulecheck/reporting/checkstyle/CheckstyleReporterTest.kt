@@ -33,7 +33,7 @@ internal class CheckstyleReporterTest {
     result shouldBe """<?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="4.3">
 </checkstyle>
-"""
+    """
   }
 
   @Test
@@ -62,7 +62,7 @@ internal class CheckstyleReporterTest {
 		<error line="1" column="2" severity="error" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
 	</file>
 </checkstyle>
-"""
+    """
   }
 
   @Test
@@ -91,7 +91,7 @@ internal class CheckstyleReporterTest {
 		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
 	</file>
 </checkstyle>
-"""
+    """
   }
 
   @Test
@@ -144,6 +144,6 @@ internal class CheckstyleReporterTest {
 		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
 	</file>
 </checkstyle>
-"""
+    """
   }
 }

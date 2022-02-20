@@ -114,6 +114,6 @@ internal class CheckstyleReportingTest : RunnerTest() {
 		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
 	</file>
 </checkstyle>
-"""
+    """
   }
 }

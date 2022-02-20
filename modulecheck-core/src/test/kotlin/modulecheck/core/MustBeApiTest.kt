@@ -89,7 +89,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -99,7 +99,7 @@ class MustBeApiTest : RunnerTest() {
                 X  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -158,7 +158,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -168,7 +168,7 @@ class MustBeApiTest : RunnerTest() {
                 X  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -227,7 +227,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -237,7 +237,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -296,7 +296,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -361,7 +361,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -424,7 +424,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -488,7 +488,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -553,7 +553,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -616,7 +616,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -626,7 +626,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -689,7 +689,7 @@ class MustBeApiTest : RunnerTest() {
           // implementation can be the beginning of the comment
           api(project(path = ":implementation")) // it's an implementation
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -699,7 +699,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :implementation    mustBeApi              /lib2/build.gradle.kts: (8, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -758,7 +758,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -821,7 +821,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -831,7 +831,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -890,7 +890,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -953,7 +953,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -963,7 +963,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -1022,7 +1022,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1032,7 +1032,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -1091,7 +1091,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1101,7 +1101,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -1158,7 +1158,7 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1168,7 +1168,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -1243,7 +1243,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1254,7 +1254,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -1328,7 +1328,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1339,7 +1339,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -1414,7 +1414,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1425,7 +1425,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -1500,7 +1500,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1511,7 +1511,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -1585,7 +1585,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1596,7 +1596,7 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -1670,7 +1670,7 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -1681,6 +1681,6 @@ class MustBeApiTest : RunnerTest() {
                 ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 }

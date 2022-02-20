@@ -60,7 +60,7 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 
   @Test
@@ -108,7 +108,7 @@ internal class DepthOutputTest : RunnerTest() {
             0        [:lib1, :lib2]
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -144,7 +144,7 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 
   @Test
@@ -184,6 +184,6 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app, :debug2]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 }

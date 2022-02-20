@@ -52,6 +52,7 @@ data class TransitiveProjectDependency(
     return """TransitiveProjectDependency(
       |  source=$source
       |  contributed=$contributed
-      |)""".trimMargin()
+      |)
+    """.trimMargin()
   }
 }

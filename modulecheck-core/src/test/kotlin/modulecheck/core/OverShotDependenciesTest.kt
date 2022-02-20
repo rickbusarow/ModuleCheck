@@ -89,7 +89,7 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -100,7 +100,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -159,7 +159,7 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -170,7 +170,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -230,7 +230,7 @@ class OverShotDependenciesTest : RunnerTest() {
           // api(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -241,7 +241,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -301,7 +301,7 @@ class OverShotDependenciesTest : RunnerTest() {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           debugImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -312,7 +312,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -372,7 +372,7 @@ class OverShotDependenciesTest : RunnerTest() {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           "debugImplementation"(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -383,7 +383,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -464,7 +464,7 @@ class OverShotDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib2")))
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -475,7 +475,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -564,7 +564,7 @@ class OverShotDependenciesTest : RunnerTest() {
             because("this is a test")
           }
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -575,7 +575,7 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (7, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -657,7 +657,7 @@ class OverShotDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib2")))
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """
+    """
 
     logger.collectReport()
       .joinToString()
@@ -668,6 +668,6 @@ class OverShotDependenciesTest : RunnerTest() {
                 ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (6, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 }

@@ -112,6 +112,6 @@ internal class TextReportingTest : RunnerTest() {
     dependentPath
            dependency        name           source          build file
         ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
-        """
+    """
   }
 }
