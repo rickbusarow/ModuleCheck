@@ -1,4 +1,4 @@
-name: Release Drafter
+name: Publish snapshot
 
 on:
   workflow_dispatch:
