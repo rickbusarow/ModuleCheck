@@ -154,6 +154,9 @@ jobs:
             anvil-version: 2.3.10-1-6-0
           - kotlin-version: 1.6.10
             anvil-version: 2.3.10
+            # AGP 7.1.1 requires Gradle 7.2+
+          - gradle-version: 7.1
+            agp-version: 7.1.1
 
     steps:
       - uses: actions/checkout@v2
