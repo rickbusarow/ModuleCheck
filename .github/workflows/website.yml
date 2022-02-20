@@ -25,6 +25,11 @@ jobs:
           cache: yarn
           cache-dependency-path: website/yarn.lock
 
+      - name: Install Yarn
+        working-directory: website
+        run: |
+          yarn install --frozen-lockfile
+
       - name: Set up JDK
         uses : actions/setup-java@v2
         with :
