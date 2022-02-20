@@ -31,7 +31,7 @@ public val DEFAULT_KOTLIN_VERSION: String =
 public val DEFAULT_AGP_VERSION: String =
   System.getProperty("modulecheck.agpVersion", "7.0.3")
 public val DEFAULT_ANVIL_VERSION: String =
-  System.getProperty("modulecheck.anvilVersion", "2.3.10-1-6-0")
+  System.getProperty("modulecheck.anvilVersion", "2.3.11-1-6-10")
 
 public data class ProjectBuildSpec(
   public var kotlinVersion: String = DEFAULT_KOTLIN_VERSION,
