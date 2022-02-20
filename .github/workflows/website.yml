@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 14.x
           cache: yarn
+          cache-dependency-path: website/yarn.lock
 
       - name: Set up JDK
         uses : actions/setup-java@v2
