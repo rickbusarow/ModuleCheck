@@ -15,7 +15,6 @@
 
 package modulecheck.api.context
 
-import com.squareup.anvil.annotations.ContributesSubcomponent
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
