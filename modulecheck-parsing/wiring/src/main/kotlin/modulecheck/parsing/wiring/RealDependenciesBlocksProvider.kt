@@ -32,7 +32,7 @@ class RealDependenciesBlocksProvider(
   private val invokesConfigurationNames: InvokesConfigurationNames
 ) : DependenciesBlocksProvider {
 
-  override fun get(): List<DependenciesBlock> {
+  override suspend fun get(): List<DependenciesBlock> {
     val buildFile = invokesConfigurationNames.buildFile
 
     return when {

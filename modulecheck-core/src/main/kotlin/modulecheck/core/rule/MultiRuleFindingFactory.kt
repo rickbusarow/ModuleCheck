@@ -15,16 +15,17 @@
 
 package modulecheck.core.rule
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.depths
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.rule.ReportOnlyRule
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
+import modulecheck.utils.mapAsync
 
 class MultiRuleFindingFactory(
   private val settings: ModuleCheckSettings,
@@ -47,14 +48,20 @@ class MultiRuleFindingFactory(
     projects: List<McProject>,
     predicate: (ModuleCheckRule<*>) -> Boolean
   ): List<Finding> {
-    return coroutineScope {
-      projects.flatMap { project ->
-        rules
-          .filter { predicate(it) && it.shouldApply(settings.checks) }
-          .map { rule -> async { rule.check(project) } }
-      }
-        .awaitAll()
-        .flatten()
-    }
+
+    // Sort all projects by depth, so that zero-dependency modules are first and the most expensive
+    // are last.  This is just a simple way of building up cached data, so that when the
+    // heavy-weight modules are evaluated, they can pull declarations and other data from cache.
+    val sortedProjects = projects.mapAsync { it.depths().get(SourceSetName.MAIN).depth to it }
+      .toList()
+      .sortedBy { it.first }
+      .map { it.second }
+
+    return rules.filter { predicate(it) && it.shouldApply(settings.checks) }
+      .flatMap { rule ->
+        sortedProjects.mapAsync { project ->
+          rule.check(project)
+        }.toList()
+      }.flatten()
   }
 }

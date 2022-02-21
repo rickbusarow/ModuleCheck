@@ -212,7 +212,7 @@ abstract class DependenciesBlock(
 
 interface DependenciesBlocksProvider {
 
-  fun get(): List<DependenciesBlock>
+  suspend fun get(): List<DependenciesBlock>
 
   fun interface Factory {
     fun create(invokesConfigurationNames: InvokesConfigurationNames): DependenciesBlocksProvider

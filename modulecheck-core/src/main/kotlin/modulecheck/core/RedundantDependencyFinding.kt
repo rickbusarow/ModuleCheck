@@ -26,7 +26,7 @@ data class RedundantDependencyFinding(
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val from: List<ConfiguredProjectDependency>
-) : ProjectDependencyFinding("redundant"),
+) : AbstractProjectDependencyFinding("redundant"),
   RemovesDependency,
   Deletable {
 

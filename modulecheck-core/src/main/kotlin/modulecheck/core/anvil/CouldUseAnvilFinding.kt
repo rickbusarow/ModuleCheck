@@ -20,9 +20,11 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
 import modulecheck.utils.existsOrNull
+import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class CouldUseAnvilFinding(
@@ -38,12 +40,11 @@ data class CouldUseAnvilFinding(
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
   override val findingName = "useAnvilFactories"
 
-  override val declarationOrNull: DependencyDeclaration?
-    get() = null
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred { null }
 
-  override val positionOrNull: Position? by lazy {
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
 
-    val statement = statementTextOrNull ?: return@lazy null
+    val statement = statementTextOrNull.await() ?: return@lazyDeferred null
 
     buildFile
       .existsOrNull()
@@ -52,5 +53,5 @@ data class CouldUseAnvilFinding(
       ?.positionOf(statement, ConfigurationName.kapt)
   }
 
-  override val statementTextOrNull: String? get() = null
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred { null }
 }

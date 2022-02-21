@@ -18,50 +18,50 @@ package modulecheck.core
 import modulecheck.api.finding.DependencyFinding
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
+import modulecheck.api.finding.ProjectDependencyFinding
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.project.McProject
+import modulecheck.parsing.gradle.Declaration
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 import java.io.File
 
-abstract class ProjectDependencyFinding(
+abstract class AbstractProjectDependencyFinding(
   override val findingName: String
 ) : Problem,
   Fixable,
   Finding,
-  DependencyFinding {
+  DependencyFinding,
+  ProjectDependencyFinding {
 
   final override val dependentPath: String get() = dependentProject.path
   final override val buildFile: File get() = dependentProject.buildFile
 
-  abstract val dependencyProject: McProject
-  abstract val configurationName: ConfigurationName
-
-  override val positionOrNull by lazy {
-    val statement = declarationOrNull?.declarationText ?: return@lazy null
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
+    val statement = declarationOrNull.await()?.declarationText ?: return@lazyDeferred null
 
     buildFile.readText()
       .positionOfStatement(statement)
   }
 
-  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     dependencyProject
       .statementOrNullIn(dependentProject, configurationName)
   }
-  override val statementTextOrNull: String? by lazy {
-    declarationOrNull?.statementWithSurroundingText
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
+    declarationOrNull.await()?.statementWithSurroundingText
   }
 
-  override fun toResult(fixed: Boolean): FindingResult {
+  override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       dependencyPath = dependencyProject.path,
-      positionOrNull = positionOrNull,
+      positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
       message = message,
       fixed = fixed
@@ -72,7 +72,7 @@ abstract class ProjectDependencyFinding(
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is ProjectDependencyFinding) return false
+    if (other !is AbstractProjectDependencyFinding) return false
 
     if (findingName != other.findingName) return false
     if (dependencyProject != other.dependencyProject) return false

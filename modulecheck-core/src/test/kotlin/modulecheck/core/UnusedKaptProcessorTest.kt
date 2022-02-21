@@ -81,8 +81,8 @@ class UnusedKaptProcessorTest : RunnerTest() {
       .clean() shouldBe """
             :app
                    dependency                           name                          source    build file
-                X  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
                 X  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
+                X  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
 
         ModuleCheck found 2 issues
         """
@@ -289,8 +289,8 @@ class UnusedKaptProcessorTest : RunnerTest() {
       .clean() shouldBe """
           :app
                  dependency                           name                          source    build file
-              ✔  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
               ✔  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
+              ✔  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
 
       ModuleCheck found 2 issues
       """

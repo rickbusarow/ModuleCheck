@@ -60,7 +60,7 @@ interface McProject :
 
   val javaSourceVersion: JavaVersion
 
-  override fun getConfigurationInvocations(): Set<String> = configurationInvocations()
+  override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 
   suspend fun resolveFqNameOrNull(
     declarationName: FqName,
@@ -68,7 +68,7 @@ interface McProject :
   ): FqName?
 }
 
-private fun McProject.configurationInvocations(): Set<String> {
+private suspend fun McProject.configurationInvocations(): Set<String> {
   return buildFileParser.dependenciesBlocks()
     .flatMap { it.settings }
     .mapNotNull { declaration ->

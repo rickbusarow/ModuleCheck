@@ -28,3 +28,26 @@ inline fun <T, R> Iterable<T>.flatMapToSet(
 ): Set<R> {
   return flatMapTo(destination, transform)
 }
+
+/**
+ * Returns a list of all elements sorted according to the specified [selectors].
+ *
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ */
+public fun <T> Iterable<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): List<T> {
+  if (this is Collection) {
+    if (size <= 1) return this.toList()
+    @Suppress("UNCHECKED_CAST")
+    return (toTypedArray<Any?>() as Array<T>).apply { sortWith(compareBy(*selectors)) }.asList()
+  }
+  return toMutableList().apply { sortWith(compareBy(*selectors)) }
+}
+
+/**
+ * Returns a list of all elements sorted according to the specified [selectors].
+ *
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ */
+public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Comparable<*>): List<T> {
+  return sortedWith(*selectors).reversed()
+}

@@ -60,7 +60,7 @@ sealed interface LazySet<E> : Flow<E> {
     val cache: Set<E>,
     val remaining: List<DataSource<E>>
   ) {
-    private val remainingMap by unsafeLazy {
+    private val remainingMap by lazy {
       remaining.groupBy { it.priority }
     }
 
