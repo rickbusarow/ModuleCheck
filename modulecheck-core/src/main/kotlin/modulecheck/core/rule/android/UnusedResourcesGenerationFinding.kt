@@ -20,9 +20,11 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.parsing.gradle.AgpBlock
-import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
 import modulecheck.utils.indent
+import modulecheck.utils.lazyDeferred
 import modulecheck.utils.minimumIndent
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
@@ -40,10 +42,9 @@ data class UnusedResourcesGenerationFinding(
 
   override val dependencyIdentifier = ""
 
-  override val declarationOrNull: DependencyDeclaration?
-    get() = null
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred { null }
 
-  override val statementTextOrNull: String? by lazy {
+  override val statementTextOrNull = lazyDeferred {
 
     dependentProject.buildFileParser.androidSettings()
       .assignments
@@ -51,15 +52,15 @@ data class UnusedResourcesGenerationFinding(
       ?.declarationText
   }
 
-  override val positionOrNull: Position? by lazy {
-    val statement = statementTextOrNull ?: return@lazy null
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
+    val statement = statementTextOrNull.await() ?: return@lazyDeferred null
 
     val fileText = buildFile.readText()
 
     fileText.positionOfStatement(statement)
   }
 
-  override fun fix(): Boolean = synchronized(buildFile) {
+  override suspend fun fix(): Boolean {
 
     val settings = dependentProject.buildFileParser.androidSettings()
 
@@ -86,7 +87,7 @@ data class UnusedResourcesGenerationFinding(
     return true
   }
 
-  private fun newAndroidBlock(): String {
+  private suspend fun newAndroidBlock(): String {
 
     val indent = buildFile.minimumIndent()
 

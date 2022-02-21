@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.psi
 
+import io.kotest.common.runBlocking
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
@@ -556,5 +557,5 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
   fun KotlinDependencyBlockParser.parse(
     string: String,
     project: McProject = simpleProject(buildFileText = string)
-  ): List<KotlinDependenciesBlock> = parse(project)
+  ): List<KotlinDependenciesBlock> = runBlocking { parse(project) }
 }

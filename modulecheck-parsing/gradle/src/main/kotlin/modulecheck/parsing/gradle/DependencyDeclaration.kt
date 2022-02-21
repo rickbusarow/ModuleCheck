@@ -24,7 +24,7 @@ sealed interface DependencyDeclaration : Declaration {
   val configName: ConfigurationName
 
   fun interface ConfigurationNameTransform {
-    operator fun invoke(configurationName: ConfigurationName): String
+    suspend operator fun invoke(configurationName: ConfigurationName): String
   }
 }
 
@@ -71,7 +71,7 @@ data class ModuleDependencyDeclaration(
   val configurationNameTransform: ConfigurationNameTransform
 ) : DependencyDeclaration {
 
-  fun replace(
+  suspend fun replace(
     configName: ConfigurationName = this.configName,
     modulePath: String = this.moduleRef.value,
     testFixtures: Boolean

@@ -22,7 +22,7 @@ import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 
-fun McProject.statementOrNullIn(
+suspend fun McProject.statementOrNullIn(
   dependentProject: McProject,
   configuration: ConfigurationName
 ): ModuleDependencyDeclaration? {
@@ -35,7 +35,7 @@ fun McProject.statementOrNullIn(
     ?.firstOrNull()
 }
 
-fun ExternalDependency.statementOrNullIn(
+suspend fun ExternalDependency.statementOrNullIn(
   dependentProject: McProject,
   configuration: ConfigurationName
 ): ExternalDependencyDeclaration? {
@@ -48,7 +48,7 @@ fun ExternalDependency.statementOrNullIn(
     ?.firstOrNull()
 }
 
-fun McProject.positionIn(
+suspend fun McProject.positionIn(
   dependentProject: McProject,
   configuration: ConfigurationName
 ): Position? {

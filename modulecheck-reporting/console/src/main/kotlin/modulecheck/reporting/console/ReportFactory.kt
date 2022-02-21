@@ -28,6 +28,7 @@ class ReportFactory @Inject constructor() {
 
     results.groupBy { it.dependentPath.lowercase(Locale.getDefault()) }
       .entries
+      .sortedBy { it.key }
       .forEach { (_, values) ->
 
         val path = values.first().dependentPath
@@ -58,7 +59,10 @@ class ReportFactory @Inject constructor() {
         values.sortedWith(
           compareBy(
             { !it.fixed },
-            { it.positionOrNull }
+            { it.dependencyPath },
+            { it.positionOrNull },
+            { it.problemName },
+            { it.sourceOrNull }
           )
         ).forEach { result ->
 

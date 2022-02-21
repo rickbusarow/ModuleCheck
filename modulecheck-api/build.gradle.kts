@@ -48,10 +48,10 @@ dependencies {
   testFixturesApi(libs.bundles.hermit)
 
   if (isIdeSync) {
-    compileOnly(project(path = ":modulecheck-internal-testing"))
-    compileOnly(libs.bundles.hermit)
-    compileOnly(libs.bundles.jUnit)
-    compileOnly(libs.bundles.kotest)
+    testCompileOnly(project(path = ":modulecheck-internal-testing"))
+    testCompileOnly(libs.bundles.hermit)
+    testCompileOnly(libs.bundles.jUnit)
+    testCompileOnly(libs.bundles.kotest)
   }
 
   testImplementation(libs.bundles.hermit)

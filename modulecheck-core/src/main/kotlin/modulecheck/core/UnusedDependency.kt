@@ -26,7 +26,7 @@ data class UnusedDependency(
   override val oldDependency: ConfiguredProjectDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
-) : ProjectDependencyFinding("unusedDependency"),
+) : AbstractProjectDependencyFinding("unusedDependency"),
   RemovesDependency,
   Deletable {
 

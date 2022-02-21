@@ -88,8 +88,8 @@ internal class CheckstyleReportingTest : RunnerTest() {
           )
         )
       ),
-      findingResultFactory = { _, _, _ ->
-        listOf(
+      findingResultFactory = { findings, _, _ ->
+        findings.map {
           FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
@@ -100,7 +100,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
             message = "message",
             fixed = true
           )
-        )
+        }
       }
     )
 

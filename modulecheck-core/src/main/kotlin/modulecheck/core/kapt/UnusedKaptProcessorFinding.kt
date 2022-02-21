@@ -17,17 +17,20 @@ package modulecheck.core.kapt
 
 import modulecheck.api.finding.DependencyFinding
 import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
@@ -53,7 +56,7 @@ data class UnusedKaptProcessorFinding(
 
   override val findingName = "unusedKaptProcessor (${configurationName.value})"
 
-  override val declarationOrNull: DependencyDeclaration? by lazy {
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     when (oldDependency) {
       is ConfiguredProjectDependency ->
         oldDependency.project
@@ -64,12 +67,12 @@ data class UnusedKaptProcessorFinding(
     }
   }
 
-  override val statementTextOrNull: String? by lazy {
-    declarationOrNull?.statementWithSurroundingText
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
+    declarationOrNull.await()?.statementWithSurroundingText
   }
 
-  override val positionOrNull by lazy {
-    val statement = declarationOrNull?.declarationText ?: return@lazy null
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
+    val statement = declarationOrNull.await()?.declarationText ?: return@lazyDeferred null
 
     buildFile.readText()
       .positionOfStatement(statement)

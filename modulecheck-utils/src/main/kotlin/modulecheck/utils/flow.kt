@@ -24,6 +24,9 @@ import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
+import java.lang.Integer.max
 
 suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
   val matching = firstOrNull(predicate)
@@ -60,25 +63,68 @@ suspend fun <T, R> Flow<T>.flatMapSetConcat(
   }
 }
 
+private val DEFAULT_CONCURRENCY: Int
+  get() = max(Runtime.getRuntime().availableProcessors(), 2)
+
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <T, R> Flow<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
+fun <T, R> Flow<T>.mapAsync(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> R
+): Flow<R> {
+  val semaphore = Semaphore(concurrency)
   return channelFlow {
-    this@mapAsync.onEach { send(transform(it)) }
-      .launchIn(this)
+    semaphore.withPermit {
+      this@mapAsync.onEach { send(transform(it)) }
+        .launchIn(this)
+    }
   }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <T, R> Iterable<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
+fun <T, R> Iterable<T>.mapAsync(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> R
+): Flow<R> {
+
+  val semaphore = Semaphore(concurrency)
   return channelFlow {
-    forEach { launch { send(transform(it)) } }
+    forEach {
+      semaphore.withPermit {
+        launch { send(transform(it)) }
+      }
+    }
   }
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun <T, R> Sequence<T>.mapAsync(transform: suspend (T) -> R): Flow<R> {
+fun <T> Iterable<T>.onEachAsync(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  action: suspend (T) -> Unit
+): Flow<T> {
+
+  val semaphore = Semaphore(concurrency)
   return channelFlow {
-    forEach { launch { send(transform(it)) } }
+    forEach {
+      semaphore.withPermit {
+        launch {
+          action(it)
+          send(it)
+        }
+      }
+    }
+  }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <T, R> Sequence<T>.mapAsync(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> R
+): Flow<R> {
+  val semaphore = Semaphore(concurrency)
+  return channelFlow {
+    forEach {
+      semaphore.withPermit { launch { send(transform(it)) } }
+    }
   }
 }
 

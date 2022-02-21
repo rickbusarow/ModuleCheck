@@ -17,9 +17,12 @@ package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.Position
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
 import modulecheck.utils.SafeCache
+import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class DepthFinding(
@@ -33,8 +36,7 @@ data class DepthFinding(
 
   override val message: String
     get() = "The longest path between this module and its leaf nodes"
-  override val positionOrNull: Finding.Position?
-    get() = null
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
   override val findingName: String
     get() = "depth"
 

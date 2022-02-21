@@ -24,8 +24,10 @@ import modulecheck.api.finding.removeDependencyWithComment
 import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.rule.KAPT_PLUGIN_FUN
 import modulecheck.core.rule.KAPT_PLUGIN_ID
-import modulecheck.parsing.gradle.PluginDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedKaptPluginFinding(
@@ -42,7 +44,7 @@ data class UnusedKaptPluginFinding(
 
   override val findingName = "unusedKaptPlugin"
 
-  override val positionOrNull: Position? by lazy {
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     val text = buildFile
       .readText()
 
@@ -55,7 +57,7 @@ data class UnusedKaptPluginFinding(
           line.contains("plugin = \"$KAPT_PLUGIN_ID\")")
       }
 
-    if (row < 0) return@lazy null
+    if (row < 0) return@lazyDeferred null
 
     val col = lines[row]
       .indexOfFirst { it != ' ' }
@@ -63,7 +65,7 @@ data class UnusedKaptPluginFinding(
     Position(row + 1, col + 1)
   }
 
-  override val declarationOrNull: PluginDeclaration? by lazy {
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
 
     sequenceOf(
       "id(\"$KAPT_PLUGIN_ID\")",
@@ -74,22 +76,22 @@ data class UnusedKaptPluginFinding(
       dependentProject.buildFileParser.pluginsBlock()?.getById(id)
     }
   }
-  override val statementTextOrNull: String? by lazy {
-    declarationOrNull?.statementWithSurroundingText
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
+    declarationOrNull.await()?.statementWithSurroundingText
   }
 
-  override fun fix(): Boolean = synchronized(buildFile) {
+  override suspend fun fix(): Boolean {
 
-    val declaration = declarationOrNull ?: return false
+    val declaration = declarationOrNull.await() ?: return false
 
     dependentProject.removeDependencyWithComment(declaration, fixLabel())
 
-    true
+    return true
   }
 
-  override fun delete(): Boolean = synchronized(buildFile) {
+  override suspend fun delete(): Boolean {
 
-    val declaration = declarationOrNull ?: return false
+    val declaration = declarationOrNull.await() ?: return false
 
     dependentProject.removeDependencyWithDelete(declaration)
 
