@@ -15,6 +15,7 @@
 
 package modulecheck.api.context
 
+import com.squareup.anvil.annotations.ContributesSubcomponent
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
@@ -50,10 +51,13 @@ data class AnvilGraph(
   private val contributeAnnotations = setOf(
     "com.squareup.anvil.annotations.ContributesTo",
     "com.squareup.anvil.annotations.ContributesBinding",
-    "com.squareup.anvil.annotations.ContributesMultibinding"
+    "com.squareup.anvil.annotations.ContributesMultibinding",
+    "com.squareup.anvil.annotations.ContributesSubcomponent"
   )
 
   private val mergeAnnotations = setOf(
+    "com.squareup.anvil.annotations.compat.MergeInterfaces",
+    "com.squareup.anvil.annotations.compat.MergeModules",
     "com.squareup.anvil.annotations.MergeComponent",
     "com.squareup.anvil.annotations.MergeSubcomponent"
   )
