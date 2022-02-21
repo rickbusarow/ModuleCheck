@@ -44,7 +44,6 @@ import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapAsync
-import kotlin.LazyThreadSafetyMode.NONE
 
 data class MustBeApi(
   private val delegate: Set<InheritedDependencyWithSource>
@@ -82,7 +81,7 @@ data class MustBeApi(
         .map { it.project }
         .toSet()
 
-      val directMainDependencies by lazy(NONE) {
+      val directMainDependencies by lazy {
         project.projectDependencies.main().map { it.project }
       }
 

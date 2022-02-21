@@ -20,15 +20,18 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.addDependency
 import modulecheck.core.internal.positionIn
 import modulecheck.core.internal.statementOrNullIn
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 
 data class InheritedDependencyFinding(
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val source: ConfiguredProjectDependency
-) : ProjectDependencyFinding("inheritedDependency"),
+) : AbstractProjectDependencyFinding("inheritedDependency"),
   AddsDependency,
   Comparable<InheritedDependencyFinding> {
 
@@ -39,11 +42,11 @@ data class InheritedDependencyFinding(
   override val dependencyProject get() = newDependency.project
   override val configurationName get() = newDependency.configurationName
 
-  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     source.project
       .statementOrNullIn(dependentProject, source.configurationName)
   }
-  override val positionOrNull: Position? by lazy {
+  override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     source.project.positionIn(dependentProject, source.configurationName)
   }
 
@@ -55,9 +58,9 @@ data class InheritedDependencyFinding(
     }
   }
 
-  override fun fix(): Boolean = synchronized(buildFile) {
+  override suspend fun fix(): Boolean {
 
-    val oldDeclaration = declarationOrNull ?: return false
+    val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
 
     val newDeclaration = oldDeclaration.replace(
       configName = newDependency.configurationName,

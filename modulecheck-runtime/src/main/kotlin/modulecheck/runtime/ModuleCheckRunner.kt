@@ -148,31 +148,12 @@ data class ModuleCheckRunner @AssistedInject constructor(
   /**
    * Tries to fix all findings one project at a time, then reports the results.
    */
-  private fun processFindings(findings: List<Finding>): List<FindingResult> {
-
-    // TODO - The order of applying fixes is stable, which may be important in troubleshooting, but
-    //   it's probably not perfect. There is a chance that up-stream changes to a dependency can
-    //   change what must be done to the dependent module. This *should* be mitigated by analyzing
-    //   everything before applying any fixes, and by including "inherited" and "overshot"
-    //   dependencies.
-    //
-    //   If stability ever becomes a problem, the next step would be to try applying
-    //   fixes by order of "depth", where the highest-depth modules are changed first.  This would
-    //   have to be done **per source set**, where changes are only applied to that source set's
-    //   configs.  The main source set would be done first for the entire project tree, then test,
-    //   debug, etc.
-    val results = findings
-      .groupBy { it.dependentPath }
-      .flatMap { (_, list) ->
-
-        findingResultFactory.create(
-          findings = list,
-          autoCorrect = autoCorrect,
-          deleteUnused = settings.deleteUnused
-        )
-      }
-
-    return results
+  private suspend fun processFindings(findings: List<Finding>): List<FindingResult> {
+    return findingResultFactory.create(
+      findings = findings,
+      autoCorrect = autoCorrect,
+      deleteUnused = settings.deleteUnused
+    )
   }
 
   /**

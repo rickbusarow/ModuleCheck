@@ -18,6 +18,8 @@ package modulecheck.project
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import modulecheck.parsing.gradle.AndroidGradleSettings
 import modulecheck.parsing.gradle.AndroidGradleSettingsProvider
 import modulecheck.parsing.gradle.DependenciesBlock
@@ -44,9 +46,14 @@ class BuildFileParser @AssistedInject constructor(
     androidGradleSettingsProviderFactory.create(invokesConfigurationNames.buildFile)
   }
 
-  fun pluginsBlock(): PluginsBlock? = pluginsBlockProvider.get()
-  fun dependenciesBlocks(): List<DependenciesBlock> = dependenciesBlocksProvider.get()
-  fun androidSettings(): AndroidGradleSettings = androidGradleSettingsProvider.get()
+  private val lock = Mutex(locked = false)
+
+  suspend fun pluginsBlock(): PluginsBlock? = lock.withLock { pluginsBlockProvider.get() }
+  suspend fun dependenciesBlocks(): List<DependenciesBlock> =
+    lock.withLock { dependenciesBlocksProvider.get() }
+
+  suspend fun androidSettings(): AndroidGradleSettings =
+    lock.withLock { androidGradleSettingsProvider.get() }
 
   @AssistedFactory
   fun interface Factory {

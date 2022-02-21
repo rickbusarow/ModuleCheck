@@ -16,6 +16,7 @@
 package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
+import modulecheck.api.finding.ModifiesDependency
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.DependenciesBlock
@@ -29,7 +30,10 @@ data class OverShotDependencyFinding(
   override val newDependency: ConfiguredProjectDependency,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName
-) : ProjectDependencyFinding("overshot"), AddsDependency, RemovesDependency {
+) : AbstractProjectDependencyFinding("overshot"),
+  ModifiesDependency,
+  AddsDependency,
+  RemovesDependency {
 
   override val dependencyProject get() = oldDependency.project
   override val dependencyIdentifier: String get() = newDependency.path
@@ -39,7 +43,7 @@ data class OverShotDependencyFinding(
       "used in another source set which inherits from the first.  For example, a test-only " +
       "dependency which is declared via `implementation` instead of `testImplementation`."
 
-  override fun fix(): Boolean {
+  override suspend fun fix(): Boolean {
 
     val blocks = dependentProject.buildFileParser
       .dependenciesBlocks()

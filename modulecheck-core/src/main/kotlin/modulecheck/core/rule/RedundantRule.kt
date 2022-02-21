@@ -31,7 +31,7 @@ class RedundantRule : ModuleCheckRule<RedundantDependencyFinding> {
   override suspend fun check(project: McProject): List<RedundantDependencyFinding> {
     return project.get(RedundantDependencies)
       .all()
-      .distinctBy { it.positionOrNull }
+      .distinctBy { it.positionOrNull.await() }
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

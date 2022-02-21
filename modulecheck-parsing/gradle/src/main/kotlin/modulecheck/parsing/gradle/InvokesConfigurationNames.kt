@@ -37,7 +37,7 @@ interface HasBuildFile {
 
 interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
 
-  fun getConfigurationInvocations(): Set<String>
+  suspend fun getConfigurationInvocations(): Set<String>
 }
 
 interface HasPath {
@@ -91,7 +91,7 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
  * @param project the project in which the configuration name is being used
  * @return `true` if we can know for sure that it's pre-compiled.  `false` if we aren't certain.
  */
-fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
+suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
   where T : PluginAware,
         T : HasDependencyDeclarations {
   return when (toSourceSetName()) {
@@ -117,7 +117,7 @@ fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
  * @return The text used to add a dependency using this [ConfigurationName], in this project.
  * @see isDefinitelyPrecompiledForProject
  */
-fun ConfigurationName.buildFileInvocationText(
+suspend fun ConfigurationName.buildFileInvocationText(
   invokesConfigurationNames: InvokesConfigurationNames
 ): String {
 

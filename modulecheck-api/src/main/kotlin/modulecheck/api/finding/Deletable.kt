@@ -19,9 +19,9 @@ interface Deletable :
   Finding,
   DependencyFinding {
 
-  fun delete(): Boolean = synchronized(buildFile) {
+  suspend fun delete(): Boolean {
 
-    val declaration = declarationOrNull ?: return false
+    val declaration = declarationOrNull.await() ?: return false
 
     require(this is RemovesDependency)
 

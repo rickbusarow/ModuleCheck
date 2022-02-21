@@ -16,14 +16,18 @@
 package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
+import modulecheck.api.finding.ModifiesDependency
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.api.finding.addDependency
 import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 
 data class MustBeApiFinding(
   override val dependentProject: McProject,
@@ -31,7 +35,8 @@ data class MustBeApiFinding(
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
-) : ProjectDependencyFinding("mustBeApi"),
+) : AbstractProjectDependencyFinding("mustBeApi"),
+  ModifiesDependency,
   AddsDependency,
   RemovesDependency {
 
@@ -43,8 +48,8 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
 
-  override val declarationOrNull: ModuleDependencyDeclaration? by lazy {
-    super<ProjectDependencyFinding>.declarationOrNull
+  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
+    super.declarationOrNull.await()
       ?: source?.project
         ?.statementOrNullIn(dependentProject, configurationName)
   }
@@ -57,9 +62,9 @@ data class MustBeApiFinding(
     }
   }
 
-  override fun fix(): Boolean = synchronized(buildFile) {
+  override suspend fun fix(): Boolean {
 
-    val oldDeclaration = declarationOrNull ?: return false
+    val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
 
     val newDeclaration = oldDeclaration.replace(
       configName = newDependency.configurationName,

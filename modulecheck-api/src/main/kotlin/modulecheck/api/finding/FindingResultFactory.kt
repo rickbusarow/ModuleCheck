@@ -16,13 +16,17 @@
 package modulecheck.api.finding
 
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.flow.toList
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.dagger.AppScope
+import modulecheck.utils.mapAsync
+import modulecheck.utils.onEachAsync
+import modulecheck.utils.sortedWith
 import javax.inject.Inject
 
 fun interface FindingResultFactory {
 
-  fun create(
+  suspend fun create(
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean
@@ -32,23 +36,55 @@ fun interface FindingResultFactory {
 @ContributesBinding(AppScope::class)
 class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
 
-  override fun create(
+  override suspend fun create(
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean
   ): List<FindingResult> {
 
-    return findings.onEach { it.positionOrNull }
-      .map { finding ->
-
-        val fixed = when {
-          !autoCorrect -> false
-          deleteUnused && finding is Deletable -> finding.delete()
-          finding is Fixable -> finding.fix()
-          else -> false
-        }
-
-        finding.toResult(fixed)
+    return findings
+      .onEachAsync { finding ->
+        // This is a hack to ensure that the position reported
+        // reflects the position *before* fixes have been applied
+        finding.positionOrNull.await()
       }
+      .toList()
+      .groupBy { it.dependentPath }
+      .toList()
+      .mapAsync { (_, findings) ->
+        findings
+          /*
+          Add all dependencies before removing any, because we need to find the source
+          dependency in order to determine where to put the new one.  The source may also need
+          to be removed, so that needs to happen later.
+          For the same reason, if a finding *modifies* a dependency, then it implements both the
+          Adds- and Removes- interfaces.  Do all the add-only work, then modify, then remove.
+
+          Remember that Boolean Comparables are sorted so that true values are at the end.
+          */
+          .sortedWith(
+            // only Adds-, without Modifies-
+            { !(it is AddsDependency && it !is ModifiesDependency) },
+            // ModifiesDependency is second
+            { it !is ModifiesDependency },
+            // Sort by type, ish.  Classes aren't Comparable
+            { it::class.java.simpleName },
+            // Amongst findings of the same type, sort by path (if it exists)
+            { (it as? ProjectDependencyFinding)?.dependencyProject?.path ?: "" }
+          )
+          .map { finding ->
+
+            val fixed = when {
+              !autoCorrect -> false
+              deleteUnused && finding is Deletable -> finding.delete()
+              finding is Fixable -> finding.fix()
+              else -> false
+            }
+
+            finding.toResult(fixed)
+          }
+      }
+      .toList()
+      .flatten()
   }
 }

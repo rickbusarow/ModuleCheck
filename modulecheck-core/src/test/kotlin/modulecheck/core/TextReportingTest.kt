@@ -87,8 +87,8 @@ internal class TextReportingTest : RunnerTest() {
           )
         )
       ),
-      findingResultFactory = { _, _, _ ->
-        listOf(
+      findingResultFactory = { findings, _, _ ->
+        findings.map {
           Finding.FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
@@ -99,7 +99,7 @@ internal class TextReportingTest : RunnerTest() {
             message = "message",
             fixed = true
           )
-        )
+        }
       }
     )
 
