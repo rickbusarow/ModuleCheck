@@ -108,6 +108,14 @@ function Home() {
 
             &nbsp;
 
+            <a href="https://oss.sonatype.org/#nexus-search;quick~com.rickbusarow.modulecheck">
+              <img
+                src="https://img.shields.io/nexus/s/com.rickbusarow.modulecheck/modulecheck-api?label=snapshots&server=https%3A%2F%2Foss.sonatype.org&style=for-the-badge"
+                alt="Snapshots" />
+            </a>
+
+            &nbsp;
+
             <a href="https://github.com/rbusarow/ModuleCheck/blob/main/LICENSE">
               <img
                 src="https://img.shields.io/badge/license-apache2.0-blue?style=for-the-badge"
