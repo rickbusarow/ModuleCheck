@@ -36,10 +36,10 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
 
   init {
     group = "moduleCheck"
-    description = if (findingFactory is SingleRuleFindingFactory<*>) {
-      findingFactory.rule.description
-    } else {
-      "runs all enabled ModuleCheck rules"
+    description = when {
+      findingFactory is SingleRuleFindingFactory<*> -> findingFactory.rule.description
+      autoCorrect -> "runs all enabled ModuleCheck rules with auto-correct"
+      else -> "runs all enabled ModuleCheck rules"
     }
   }
 

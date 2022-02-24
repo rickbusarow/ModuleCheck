@@ -49,16 +49,19 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     target.registerTasks(
       name = "moduleCheckSortDependencies",
-      findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings))
+      findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings)),
+      includeAuto = true
     )
     target.registerTasks(
       name = "moduleCheckSortPlugins",
-      findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings))
+      findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings)),
+      includeAuto = true
     )
     target.registerTasks(
       name = "moduleCheckDepths",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
-      config = {
+      includeAuto = false,
+      doFirstAction = {
         settings.checks.depths = true
         settings.reports.depths.enabled = true
       }
@@ -66,20 +69,23 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.registerTasks(
       name = "moduleCheckGraphs",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
-      config = {
+      includeAuto = false,
+      doFirstAction = {
         settings.reports.graphs.enabled = true
       }
     )
     target.registerTasks(
       name = "moduleCheck",
-      findingFactory = MultiRuleFindingFactory(settings, rules)
+      findingFactory = MultiRuleFindingFactory(settings, rules),
+      includeAuto = true
     )
   }
 
   private fun Project.registerTasks(
     name: String,
     findingFactory: FindingFactory<*>,
-    config: (() -> Unit)? = null
+    includeAuto: Boolean,
+    doFirstAction: (() -> Unit)? = null
   ) {
 
     fun TaskProvider<*>.addDependencies() {
@@ -97,10 +103,12 @@ class ModuleCheckPlugin : Plugin<Project> {
     }
 
     tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
-      .also { if (config != null) it.configure { doFirst { config() } } }
+      .also { if (doFirstAction != null) it.configure { doFirst { doFirstAction() } } }
       .addDependencies()
-    tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
-      .also { if (config != null) it.configure { doFirst { config() } } }
-      .addDependencies()
+    if (includeAuto) {
+      tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
+        .also { if (doFirstAction != null) it.configure { doFirst { doFirstAction() } } }
+        .addDependencies()
+    }
   }
 }
