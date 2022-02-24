@@ -41,9 +41,10 @@ data class AndroidDataBindingDeclarations(
 
     if (project !is AndroidMcProject) return emptyLazySet()
 
-    val basePackage = project.androidPackageOrNull ?: return emptyLazySet()
-
     return delegate.getOrPut(sourceSetName) {
+
+      val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
+        ?: return@getOrPut emptyLazySet()
 
       lazySet(
         lazyDataSource {

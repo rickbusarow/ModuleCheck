@@ -58,7 +58,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
       return configurationName.toSourceSetName()
         // Check the receiver's configuration first, but if the dependency isn't used there, also
         // check the upstream configurations.
-        .inheritedSourceSetNames(project, includeSelf = true)
+        .withUpstream(project)
         .any { sourceSet ->
           dependencyPathsForSourceSet(sourceSet)
             .contains(this.project.path to isTestFixture)

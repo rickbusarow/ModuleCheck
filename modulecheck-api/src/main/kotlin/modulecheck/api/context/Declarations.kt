@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
+import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
@@ -41,32 +41,30 @@ data class Declarations(
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
     return delegate.getOrPut(sourceSetName) {
 
-      val inheritedSourceSetsNames = sourceSetName.inheritedSourceSetNames(
-        project,
-        includeSelf = true
-      )
-
-      val rNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
-
       val sets = mutableListOf<LazySet<DeclarationName>>()
+      val sources = mutableListOf<DataSource<DeclarationName>>()
 
-      val sources = inheritedSourceSetsNames
-        .flatMap { inherited ->
-          project.jvmFilesForSourceSetName(inherited)
+      sourceSetName
+        .withUpstream(project)
+        .forEach { sourceSetOrUpstream ->
+
+          val rNameOrNull = project.androidRFqNameForSourceSetName(sourceSetOrUpstream)
+
+          project.jvmFilesForSourceSetName(sourceSetOrUpstream)
             .toList()
             .map { dataSource(HIGH) { it.declarations } }
+            .let { sources.addAll(it) }
+
+          if (rNameOrNull != null) {
+            sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
+          }
+
+          if (project.isAndroid()) {
+            sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream))
+
+            sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream))
+          }
         }
-        .toMutableList()
-
-      if (rNameOrNull != null) {
-        sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
-      }
-
-      if (project.isAndroid()) {
-        sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetName))
-
-        sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetName))
-      }
 
       lazySet(sets, sources)
     }

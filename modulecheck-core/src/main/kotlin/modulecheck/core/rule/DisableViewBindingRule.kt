@@ -15,19 +15,20 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.context.androidBasePackagesForSourceSetName
 import modulecheck.api.context.androidResourceReferencesForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.importsForSourceSetName
-import modulecheck.api.context.layoutFiles
+import modulecheck.api.context.layoutFilesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.all
 import modulecheck.parsing.source.asExplicitReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.capitalize
+import modulecheck.utils.existsOrNull
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
@@ -43,56 +44,58 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     @Suppress("UnstableApiUsage")
     if (!androidProject.viewBindingEnabled) return emptyList()
 
-    val layouts = androidProject
-      .layoutFiles()
-      .all()
-      .all()
-
     val dependents = project.dependents()
 
-    val basePackage = project.androidPackageOrNull
-      ?: return listOf(
-        DisableViewBindingGenerationFinding(
-          dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
-        )
-      )
+    project.sourceSets.keys
+      .forEach { sourceSetName ->
 
-    val usedLayouts = layouts
-      .filter { it.file.exists() }
-      .filter { layoutFile ->
+        val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
+          ?: return@forEach
 
-        val generated = layoutFile.file
-          .nameWithoutExtension
-          .split("_")
-          .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+        val generatedBindings = project.layoutFilesForSourceSetName(sourceSetName)
+          .mapNotNull { it.file.existsOrNull() }
+          .map { layoutFile ->
+            val simpleBindingName = layoutFile.nameWithoutExtension
+              .split("_")
+              .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
 
-        val reference = "$basePackage.databinding.$generated".asExplicitReference()
+            // fully qualified
+            "$basePackage.databinding.$simpleBindingName".asExplicitReference()
+          }
 
-        val usedInProject = project
-          .importsForSourceSetName(SourceSetName.MAIN)
-          .contains(reference)
+        val usedInProject = sourceSetName.withDownStream(project)
+          .any { sourceSetNameOrDownstream ->
 
-        usedInProject || dependents
+            generatedBindings.any { generated ->
+
+              project.importsForSourceSetName(sourceSetNameOrDownstream)
+                .contains(generated)
+            }
+          }
+
+        if (usedInProject) return emptyList()
+
+        // TODO -- this needs to be changed to respect the source sets of the downstream project
+        val usedInDependent = dependents
           .any { dep ->
 
-            dep
-              .importsForSourceSetName(SourceSetName.MAIN)
-              .contains(reference) || dep
-              .androidResourceReferencesForSourceSetName(SourceSetName.MAIN)
-              .contains(reference)
+            generatedBindings.any { generated ->
+              dep
+                .importsForSourceSetName(SourceSetName.MAIN)
+                .contains(generated) || dep
+                .androidResourceReferencesForSourceSetName(SourceSetName.MAIN)
+                .contains(generated)
+            }
           }
-      }
-      .toList()
 
-    return if (usedLayouts.isNotEmpty()) {
-      emptyList()
-    } else {
-      listOf(
-        DisableViewBindingGenerationFinding(
-          dependentProject = project, project.path, buildFile = project.buildFile
-        )
+        if (usedInDependent) return emptyList()
+      }
+
+    return listOf(
+      DisableViewBindingGenerationFinding(
+        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
       )
-    }
+    )
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

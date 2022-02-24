@@ -71,6 +71,10 @@ interface XmlFile : HasReferences {
     override val file: File
   ) : XmlFile {
 
+    val basePackage: String? by lazy {
+      AndroidManifestParser().parse(file)["package"]
+    }
+
     private val rawResources: Set<String> by lazy {
       AndroidManifestParser().parseResources(file)
         .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
