@@ -37,8 +37,8 @@ internal data class ParsedFile(
   companion object {
     fun fromCompilationUnitLazy(compilationUnit: CompilationUnit): Lazy<ParsedFile> {
       return lazy {
-        val packageFqName = compilationUnit.packageDeclaration.get().nameAsString
-        val imports = compilationUnit.imports
+        val packageFqName = compilationUnit.packageDeclaration.getOrNull()?.nameAsString ?: ""
+        val imports = compilationUnit.imports.orEmpty()
 
         val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
         val typeDeclarations = mutableListOf<TypeDeclaration<*>>()

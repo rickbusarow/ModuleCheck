@@ -164,6 +164,44 @@ internal class JavaFileTest :
         declarations = setOf("com.test.MyRecord")
       )
     }
+
+    // reproducer for https://github.com/RBusarow/ModuleCheck/issues/399
+    @Test
+    fun `file without package should put declarations at the root`() {
+
+      val file = file(
+        """
+
+    import com.lib1.Lib1Class;
+
+    public static record MyRecord(Lib1Class lib1Class) {}
+      """,
+        javaVersion = JavaVersion.VERSION_16
+      )
+
+      file shouldBe javaFile(
+        packageFqName = "",
+        imports = setOf("com.lib1.Lib1Class"),
+        declarations = setOf("MyRecord")
+      )
+    }
+
+    @Test
+    fun `file without imports should still parse`() {
+
+      val file = file(
+        """
+    package com.test;
+
+    public class MyClass {}
+      """,
+        javaVersion = JavaVersion.VERSION_16
+      )
+
+      file shouldBe javaFile(
+        declarations = setOf("com.test.MyClass")
+      )
+    }
   }
 
   @Nested
