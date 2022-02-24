@@ -38,6 +38,7 @@ Thumbs.db
 !/.idea/inspectionProfiles/
 !/.idea/scopes/
 !/.idea/codeStyleSettings.xml
+!/.idea/dictionaries/*
 !/.idea/encodings.xml
 !/.idea/copyright/
 !/.idea/compiler.xml

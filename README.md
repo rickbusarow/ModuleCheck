@@ -15,6 +15,8 @@ All inspection is done using Gradle build files, Java/Kotlin source, and `res` x
 
 Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.github.io/ModuleCheck/).
 
+For snapshots, use the "next" version for documentation: https://rbusarow.github.io/ModuleCheck/docs/next/
+
 ![Diagram of flattening module structure](website/static/img/modulecheck_diagram.png)
 
 ### Config
@@ -43,6 +45,10 @@ plugins {
 all checks
 ```shell
 ./gradlew moduleCheck
+```
+all checks with auto-correct
+```shell
+./gradlew moduleCheckAuto
 ```
 
 ## License
