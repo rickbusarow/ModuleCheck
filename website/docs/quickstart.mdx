@@ -25,6 +25,8 @@ values={[
 pluginManagement {
   repositories {
     gradlePluginPortal()
+    // Add for SNAPSHOT builds
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 ```
@@ -47,6 +49,10 @@ plugins {
 pluginManagement {
   repositories {
     gradlePluginPortal()
+    // Add for SNAPSHOT builds
+    maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
   }
 }
 ```
@@ -69,29 +75,29 @@ all checks
 ./gradlew moduleCheck
 ```
 
-kapt checks
+all checks with auto-correct
 ```shell
-./gradlew moduleCheckKapt
+./gradlew moduleCheckAuto
 ```
 
-sorts
+check sorting
 ```shell
 ./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
 ```
 
-unused
+apply sorting
 ```shell
-./gardlew moduleCheckUnused
+./gradlew moduleCheckSortPluginsAuto moduleCheckSortDependenciesAuto
 ```
 
-redundant
+report depths of each module
 ```shell
-./gradlew moduleCheckRedundant
+./gradlew moduleCheckDepths
 ```
 
-overshot
+generate (module-only) dependency graphs
 ```shell
-./gradlew moduleCheckOvershot
+./gradlew moduleCheckGraphs
 ```
 
 ## Configuration

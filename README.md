@@ -24,6 +24,8 @@ Documentation is at [https://rbusarow.github.io/ModuleCheck](https://rbusarow.gi
 pluginManagement {
   repositories {
     gradlePluginPortal()
+    // Add for SNAPSHOT builds
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 ```
