@@ -43,7 +43,8 @@ data class AndroidResourceDeclarations(
       val android = project as? AndroidMcProject
         ?: return@getOrPut emptyLazySet()
 
-      val rName = android.androidRFqNameOrNull ?: return@getOrPut emptyLazySet()
+      val rName = android.androidRFqNameForSourceSetName(sourceSetName)
+        ?: return@getOrPut emptyLazySet()
 
       val resourceParser = AndroidResourceParser()
 

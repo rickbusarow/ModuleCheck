@@ -47,7 +47,6 @@ class RealAndroidMcProject(
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
-  override val androidPackageOrNull: String?,
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
@@ -61,10 +60,6 @@ class RealAndroidMcProject(
   override val externalDependencies: ExternalDependencies by externalDependencies
 
   override val buildFileParser: BuildFileParser by lazy { buildFileParserFactory.create(this) }
-
-  override val androidRFqNameOrNull: String? by lazy {
-    androidPackageOrNull?.let { "$it.R" }
-  }
 
   private val context = ProjectContext(this)
 

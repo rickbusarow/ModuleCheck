@@ -71,15 +71,10 @@ value class SourceSetName(val value: String) {
     }
   }
 
-  fun inheritedSourceSetNames(
-    hasConfigurations: HasConfigurations,
-    includeSelf: Boolean
+  fun withUpstream(
+    hasConfigurations: HasConfigurations
   ): Set<SourceSetName> {
-    val seed = if (includeSelf) {
-      mutableSetOf(this, MAIN)
-    } else {
-      mutableSetOf(MAIN)
-    }
+    val seed = mutableSetOf(this, MAIN)
 
     return javaConfigurationNames()
       .flatMapTo(seed) { configurationName ->
@@ -87,6 +82,16 @@ value class SourceSetName(val value: String) {
           ?.inherited
           ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
           .orEmpty()
+      }
+  }
+
+  fun withDownStream(
+    hasConfigurations: HasConfigurations
+  ): List<SourceSetName> {
+    return hasConfigurations.sourceSets.keys
+      .filter { it.inheritsFrom(this, hasConfigurations) }
+      .let { inheriting ->
+        listOf(this) + inheriting
       }
   }
 

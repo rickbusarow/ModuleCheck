@@ -34,7 +34,6 @@ import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.task.GradleLogger
-import modulecheck.parsing.android.AndroidManifestParser
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
@@ -142,7 +141,6 @@ class GradleProjectProvider @AssistedInject constructor(
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
-        androidPackageOrNull = gradleProject.androidPackageOrNull(),
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
@@ -308,25 +306,6 @@ class GradleProjectProvider @AssistedInject constructor(
       ?.get() == true
 
     return AnvilGradlePlugin(version, enabled)
-  }
-
-  private fun GradleProject.androidPackageOrNull(): String? {
-
-    val manifestParser = AndroidManifestParser()
-
-    return androidManifests()
-      ?.filter { it.value.exists() }
-      ?.map { manifestParser.parse(it.value)["package"] }
-      ?.distinct()
-      ?.also {
-        require(it.size == 1) {
-          """ModuleCheck only supports a single base package.  The following packages are present for module `$path`:
-          |
-          |${it.joinToString("\n")}
-        """.trimMargin()
-        }
-      }
-      ?.single()
   }
 
   private val BaseExtension.variants: DomainObjectSet<out BaseVariant>?

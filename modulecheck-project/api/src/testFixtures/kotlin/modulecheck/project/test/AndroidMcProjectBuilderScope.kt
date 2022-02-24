@@ -43,11 +43,11 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.testing.createSafely
+import modulecheck.utils.child
 import org.intellij.lang.annotations.Language
 import java.io.File
 
 interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
-  var androidPackage: String
   var androidResourcesEnabled: Boolean
   var viewBindingEnabled: Boolean
   val manifests: MutableMap<SourceSetName, File>
@@ -97,7 +97,6 @@ data class RealAndroidMcProjectBuilderScope(
   override var path: String,
   override var projectDir: File,
   override var buildFile: File,
-  override var androidPackage: String,
   override var androidResourcesEnabled: Boolean = true,
   override var viewBindingEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
@@ -132,13 +131,12 @@ internal fun createAndroidProject(
     path = path,
     projectDir = projectRoot,
     buildFile = buildFile,
-    androidPackage = androidPackage,
     projectCache = projectCache
   )
     .also { it.config() }
 
   builder.manifests.getOrPut(SourceSetName.MAIN) {
-    File(projectRoot, "src/main/AndroidManifest.xml")
+    projectRoot.child("src/main/AndroidManifest.xml")
       .createSafely("<manifest package=\"$androidPackage\" />")
   }
 
@@ -202,7 +200,6 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     anvilGradlePlugin = anvilGradlePlugin,
     androidResourcesEnabled = androidResourcesEnabled,
     viewBindingEnabled = viewBindingEnabled,
-    androidPackageOrNull = androidPackage,
     manifests = manifests,
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,

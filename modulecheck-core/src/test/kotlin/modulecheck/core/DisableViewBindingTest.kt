@@ -20,8 +20,11 @@ import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.testing.createSafely
 import modulecheck.testing.writeKotlin
+import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 
 class DisableViewBindingTest : RunnerTest() {
@@ -157,6 +160,227 @@ class DisableViewBindingTest : RunnerTest() {
 
         val binding = FragmentLib1Binding()
         """
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures.viewBinding = true
+      }"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `ViewBinding from main is used in debug source set`() {
+
+    val runner = runner(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """
+      )
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>"""
+      )
+
+      // Setting a debug base package, but it's never used.  The inferred FqName for the generated
+      // binding should still reflect the main source set even though it's evaluating a file in
+      // debug.
+      manifests[SourceSetName.DEBUG] = projectDir.child("src/debug/AndroidManifest.xml")
+        .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
+
+      addSource(
+        "com/modulecheck/lib1/SourceDebug.kt",
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures.viewBinding = true
+      }"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `ViewBinding from debug with different base package is used in debug source set`() {
+
+    val runner = runner(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """
+      )
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>""",
+        SourceSetName.DEBUG
+      )
+
+      manifests[SourceSetName.DEBUG] = projectDir.child("src/debug/AndroidManifest.xml")
+        .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
+
+      addSource(
+        "com/modulecheck/lib1/SourceDebug.kt",
+        """
+        package com.modulecheck.lib1.debug
+
+        import com.modulecheck.lib1.debug.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    runner.run(allProjects()).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures.viewBinding = true
+      }"""
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `ViewBinding from debug without different base package is used in debug source set`() {
+
+    val runner = runner(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile.writeKotlin(
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """
+      )
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          >
+
+          <com.modulecheck.lib1.Lib1View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>""",
+        SourceSetName.DEBUG
+      )
+
+      // The layout file is in debug, so it's generated in debug.  But it doesn't have a custom
+      // package for debug, so it should be generated using the base package from main.
+
+      addSource(
+        "com/modulecheck/lib1/SourceDebug.kt",
+        """
+        package com.modulecheck.lib1.debug
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """,
+        SourceSetName.DEBUG
       )
     }
 

@@ -45,14 +45,14 @@ data class AndroidResourceReferences(
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
-    val androidRFqNameOrNull = (project as? AndroidMcProject)?.androidRFqNameOrNull
-    val packagePrefix = (project as? AndroidMcProject)
-      ?.androidPackageOrNull
-      ?.let { "$it." }
+    val androidRFqNameOrNull = (project as? AndroidMcProject)
+      ?.androidRFqNameForSourceSetName(sourceSetName)
+      ?: return emptyLazySet()
 
-    if (androidRFqNameOrNull == null || packagePrefix == null) {
-      return emptyLazySet()
-    }
+    val packagePrefix = (project as? AndroidMcProject)
+      ?.androidBasePackagesForSourceSetName(sourceSetName)
+      ?.let { "$it." }
+      ?: return emptyLazySet()
 
     val jvm = project.jvmFilesForSourceSetName(sourceSetName)
       .map { jvmFile ->

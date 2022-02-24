@@ -15,6 +15,8 @@
 
 package modulecheck.project.test
 
+import io.kotest.common.runBlocking
+import modulecheck.api.context.androidBasePackagesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.AndroidMcProject
@@ -23,6 +25,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
+import modulecheck.utils.requireNotNull
 import java.io.File
 import java.nio.charset.Charset
 
@@ -69,17 +72,17 @@ abstract class ProjectTest : BaseTest() {
     )
   }
 
-  fun AndroidMcProject.toBuilder(): AndroidMcProjectBuilderScope {
+  fun AndroidMcProject.toBuilder(): AndroidMcProjectBuilderScope = runBlocking {
 
-    requireNotNull(androidPackageOrNull) {
-      "The receiver Android project's `androidPackageOrNull` property can't be null here."
-    }
+    androidBasePackagesForSourceSetName(SourceSetName.MAIN)
+      .requireNotNull {
+        "The receiver Android project's base package property can't be null here."
+      }
 
-    return RealAndroidMcProjectBuilderScope(
+    RealAndroidMcProjectBuilderScope(
       path = path,
       projectDir = projectDir,
       buildFile = buildFile,
-      androidPackage = androidPackageOrNull!!,
       androidResourcesEnabled = androidResourcesEnabled,
       viewBindingEnabled = viewBindingEnabled,
       manifests = manifests.toMutableMap(),
