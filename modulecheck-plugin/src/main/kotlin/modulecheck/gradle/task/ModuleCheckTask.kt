@@ -19,9 +19,9 @@ import kotlinx.coroutines.cancel
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.dagger.Components
 import modulecheck.dagger.DispatcherProviderComponent
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.utils.cast
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
@@ -54,8 +54,6 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
 
     try {
 
-      Components.add(component)
-
       val projectProvider = component.gradleProjectProvider.create(project)
       val runner = component.runnerFactory.create(projectProvider, autoCorrect)
 
@@ -67,13 +65,11 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
         ?.let { throw GradleException(it.message!!, it) }
     } finally {
 
-      val dispatcherProvider = Components.get<DispatcherProviderComponent>()
+      val dispatcherProvider = component.cast<DispatcherProviderComponent>()
         .dispatcherProvider
 
       dispatcherProvider.default.cancel()
       dispatcherProvider.io.cancel()
-
-      Components.clear()
     }
   }
 }
