@@ -16,6 +16,7 @@
 package modulecheck.parsing.source
 
 import java.io.File
+import kotlin.io.path.name
 
 sealed class AndroidResource(val prefix: String) {
 
@@ -41,7 +42,7 @@ sealed class AndroidResource(val prefix: String) {
 
     @Suppress("ComplexMethod")
     fun fromFile(file: File): AndroidResource? {
-      val dir = file.parent.split('/').last()
+      val dir = file.toPath()?.parent?.name ?: return null
       val name = file.nameWithoutExtension
 
       return when {

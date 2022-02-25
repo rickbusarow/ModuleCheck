@@ -29,6 +29,13 @@ inline fun <T, R> Iterable<T>.flatMapToSet(
   return flatMapTo(destination, transform)
 }
 
+inline fun <T, R> Sequence<T>.flatMapToSet(
+  destination: MutableSet<R> = mutableSetOf(),
+  transform: (T) -> Iterable<R>
+): Set<R> {
+  return flatMapTo(destination, transform)
+}
+
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
