@@ -19,46 +19,45 @@ import groovy.util.Node
 import modulecheck.parsing.source.AndroidResource
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
+import modulecheck.utils.flatMapToSet
 import java.io.File
 
 class AndroidResourceParser {
 
   fun parseFile(resDir: File): Set<DeclarationName> {
-    val values = mutableSetOf<AndroidResource>()
 
     val xmlParser = SafeXmlParser()
 
-    val resources = resDir
+    return resDir
       .walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "xml" }
-      .onEach { file ->
+      .flatMap { file ->
 
-        val parsed = xmlParser.parse(file) ?: return@onEach
+        val fromFile = listOfNotNull(AndroidResource.fromFile(file))
 
-        if (parsed.name() == "resources") {
+        val fromContents = xmlParser.parse(file)
+          ?.takeIf { it.name() == "resources" }
+          ?.children()
+          ?.filterIsInstance<Node>()
+          ?.mapNotNull { node ->
 
-          parsed.children()
-            .filterIsInstance<Node>()
-            .forEach { node ->
+            val name = node.attributes()["name"]?.toString() ?: return@mapNotNull null
 
-              AndroidResource.fromValuePair(
-                type = node.name().toString(),
-                name = node.attributes().values.firstOrNull()?.toString() ?: ""
-              )?.also { values.add(it) }
-            }
-        }
+            AndroidResource.fromValuePair(
+              type = node.name().toString(),
+              name = name
+            )
+          }
+          .orEmpty()
+
+        fromFile + fromContents
       }
-      .mapNotNull { file -> AndroidResource.fromFile(file) }
-      .toSet() + values
-
-    return resources
-      .flatMap {
+      .flatMapToSet {
         listOf(
           "R.${it.prefix}".asDeclarationName(),
           "R.${it.prefix}.${it.name}".asDeclarationName()
         )
       }
-      .toSet()
   }
 }

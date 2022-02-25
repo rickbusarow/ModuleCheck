@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.android
 
-import kotlinx.coroutines.FlowPreview
 import modulecheck.parsing.source.AndroidResource
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.Reference
@@ -55,7 +54,6 @@ interface XmlFile : HasReferences {
         .toSet()
     }
 
-    @OptIn(FlowPreview::class)
     override fun references(): List<DataSource<Reference>> {
 
       return listOf(
@@ -88,7 +86,6 @@ interface XmlFile : HasReferences {
         .toSet()
     }
 
-    @OptIn(FlowPreview::class)
     override fun references(): List<DataSource<Reference>> {
 
       return listOf(
