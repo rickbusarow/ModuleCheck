@@ -44,7 +44,7 @@ class AndroidResourceParser {
 
               AndroidResource.fromValuePair(
                 type = node.name().toString(),
-                name = node.attributes().values.first()?.toString() ?: ""
+                name = node.attributes().values.firstOrNull()?.toString() ?: ""
               )?.also { values.add(it) }
             }
         }
