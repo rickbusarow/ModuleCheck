@@ -16,7 +16,7 @@ jobs:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.0
         env:
-          access_token: '${{ secrets.PERSONAL_ACCESS_TOKEN }}'
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
   build:
 
@@ -24,10 +24,16 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
       - uses: gradle/wrapper-validation-action@v1
