@@ -167,7 +167,7 @@ square-turbine = "app.cash.turbine:turbine:0.7.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
-vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.18.0"
+vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.19.0"
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 
 [bundles]
