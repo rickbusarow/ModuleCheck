@@ -175,7 +175,9 @@ val updateProjectReadmeVersionRefs by tasks.registering {
 }
 
 fun File.updateModuleCheckVersionRef(
-  version: String, failOnChanges: Boolean, updateTaskName: String = ""
+  version: String,
+  failOnChanges: Boolean,
+  updateTaskName: String = ""
 ) {
 
   val group = GROUP
