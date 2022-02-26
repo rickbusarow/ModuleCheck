@@ -63,7 +63,7 @@ interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
 
     val file = File(projectDir, "src/${sourceSetName.value}/res/$name").createSafely(content)
 
-    val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
+    val old = maybeAddSourceSet(sourceSetName)
 
     sourceSets[sourceSetName] = old.copy(resourceFiles = old.resourceFiles + file)
   }
@@ -76,7 +76,7 @@ interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
   ) {
     val file = File(projectDir, "src/${sourceSetName.value}/res/layout/$name").createSafely(content)
 
-    val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
+    val old = maybeAddSourceSet(sourceSetName)
 
     sourceSets[sourceSetName] = old.copy(layoutFiles = old.layoutFiles + file)
   }

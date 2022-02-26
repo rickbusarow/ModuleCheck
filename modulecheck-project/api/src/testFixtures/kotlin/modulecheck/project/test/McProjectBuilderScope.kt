@@ -96,9 +96,7 @@ interface McProjectBuilderScope {
 
   private fun ConfigurationName.maybeAddToSourceSetsAndConfigurations() {
     val sourceSetName = toSourceSetName()
-    if (!sourceSets.containsKey(sourceSetName)) {
-      addSourceSet(sourceSetName)
-    }
+    maybeAddSourceSet(sourceSetName)
     // If the configuration is not from Java plugin, then it won't be automatically added from
     // source sets.  Plugins like Kapt don't make their configs inherit from each other,
     // so just add an empty set for inherited.
@@ -110,14 +108,14 @@ interface McProjectBuilderScope {
   fun addSource(
     name: String,
     @Language("kotlin")
-    content: String,
+    kotlin: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ) {
 
     val file = File(projectDir, "src/${sourceSetName.value}/$name")
-      .createSafely(content)
+      .createSafely(kotlin)
 
-    val old = sourceSets.getOrPut(sourceSetName) { SourceSet(sourceSetName) }
+    val old = maybeAddSourceSet(sourceSetName)
 
     sourceSets[sourceSetName] = old.copy(jvmFiles = old.jvmFiles + file)
   }
@@ -132,23 +130,40 @@ interface McProjectBuilderScope {
     layoutFiles: Set<File> = emptySet()
   ): SourceSet {
 
-    val new = SourceSet(
-      name = name,
-      classpathFiles = classpathFiles,
-      outputFiles = outputFiles,
-      jvmFiles = jvmFiles,
-      resourceFiles = resourceFiles,
-      layoutFiles = layoutFiles
-    )
-
-    val old = sourceSets.put(name, new)
+    val old = sourceSets[name]
 
     require(old == null) {
       "A source set for the name '${name.value}' already exists.  " +
         "You can probably just delete this line?"
     }
 
-    return new
+    return maybeAddSourceSet(name, classpathFiles, outputFiles, jvmFiles, resourceFiles)
+  }
+
+  @Suppress("LongParameterList")
+  fun maybeAddSourceSet(
+    name: SourceSetName,
+    classpathFiles: Set<File> = emptySet(),
+    outputFiles: Set<File> = emptySet(),
+    jvmFiles: Set<File> = emptySet(),
+    resourceFiles: Set<File> = emptySet(),
+    layoutFiles: Set<File> = emptySet()
+  ): SourceSet {
+
+    if (name == SourceSetName.TEST_FIXTURES) {
+      hasTestFixturesPlugin = true
+    }
+
+    return sourceSets.getOrPut(name) {
+      SourceSet(
+        name = name,
+        classpathFiles = classpathFiles,
+        outputFiles = outputFiles,
+        jvmFiles = jvmFiles,
+        resourceFiles = resourceFiles,
+        layoutFiles = layoutFiles
+      )
+    }
   }
 }
 
