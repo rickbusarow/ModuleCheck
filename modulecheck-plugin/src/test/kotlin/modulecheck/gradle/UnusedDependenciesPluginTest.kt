@@ -125,24 +125,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
   @Test
   fun `module with an auto-generated manifest and a string resource used in subject module should not be unused`() {
 
-    val appFile = FileSpec.builder("com.example.app", "MyApp")
-      .addType(
-        TypeSpec.classBuilder("MyApp")
-          .addProperty(
-            PropertySpec.builder("appNameRes", Int::class.asTypeName())
-              .getter(
-                FunSpec.getterBuilder()
-                  .addCode(
-                    """return %T.string.app_name""",
-                    ClassName.bestGuess("com.example.app.R")
-                  )
-                  .build()
-              )
-              .build()
-          )
-          .build()
-      )
-      .build()
+    val appFile = createAppFile()
 
     val appProject = ProjectSpec("app") {
       addBuildSpec(
@@ -321,4 +304,83 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
 
     shouldSucceed("moduleCheck")
   }
+
+  @Test
+  fun `module with generated string resource used in subject module should not be unused`() {
+    val appProject = ProjectSpec("app") {
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addProjectDependency("api", jvmSub1)
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main/java")) {
+          addFileSpec(createAppFile())
+        }
+      )
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/main")) {
+          addRawFile(
+            RawFile(
+              "AndroidManifest.xml",
+              """<manifest package="com.example.app" />
+                """.trimMargin()
+            )
+          )
+        }
+      )
+    }
+
+    val androidSub1 = ProjectSpec("lib-1") {
+
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addBlock(
+            """
+          |android {
+          |  defaultConfig {
+          |    resValue("string", "app_name", "AppName")
+          |  }
+          |}
+          """.trimMargin()
+          )
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      addSubproject(appProject)
+      addSubproject(androidSub1)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(projectBuild.build())
+    }
+      .writeIn(testProjectDir.toPath())
+
+    shouldSucceed("moduleCheck")
+  }
+
+  fun createAppFile() = FileSpec.builder("com.example.app", "MyApp")
+    .addType(
+      TypeSpec.classBuilder("MyApp")
+        .addProperty(
+          PropertySpec.builder("appNameRes", Int::class.asTypeName())
+            .getter(
+              FunSpec.getterBuilder()
+                .addCode(
+                  """return %T.string.app_name""",
+                  ClassName.bestGuess("com.example.app.R")
+                )
+                .build()
+            )
+            .build()
+        )
+        .build()
+    )
+    .build()
 }
