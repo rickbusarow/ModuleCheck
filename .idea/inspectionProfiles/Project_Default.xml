@@ -7,13 +7,14 @@
     <inspection_tool class="FunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="namePattern" value="[`|A-Za-z][A-Za-z\d]*" />
     </inspection_tool>
+    <inspection_tool class="IncorrectFormatting" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="MemberVisibilityCanBePrivate" enabled="true" level="INFO" enabled_by_default="true">
       <scope name="Tests" level="INFO" enabled="false" />
     </inspection_tool>
     <inspection_tool class="PrivatePropertyName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <scope name="Tests" level="WEAK WARNING" enabled="true" />
     </inspection_tool>
-    <inspection_tool class="Reformat" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="Reformat" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RemoveRedundantBackticks" enabled="true" level="WARNING" enabled_by_default="true">
       <scope name="Tests" level="WARNING" enabled="false" />
     </inspection_tool>
