@@ -24,39 +24,13 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
 
-      - name: Set up JDK
-        uses : actions/setup-java@v2
-        with :
-          distribution : 'adopt'
-          java-version : '11'
-          cache: 'gradle'
-
-#      - uses: burrunan/gradle-cache-action@v1
-#        name: detekt
-#        with:
-#          gradle-dependencies-cache-key: |
-#            gradle/libs.versions.toml
-#          arguments: |
-#            detekt --no-daemon
-#          concurrent: true
-#          gradle-build-scan-report: false
-
-      - name: detekt
-        run: ./gradlew detekt --no-daemon
-
-  ktlint:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
-
-    steps:
-      - uses: actions/checkout@v2
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -69,26 +43,49 @@ jobs:
           java-version : '11'
           cache: 'gradle'
 
-      # formats all src files
-#      - uses: burrunan/gradle-cache-action@v1
-#        name: KtLint format
-#        with:
-#          gradle-dependencies-cache-key: |
-#            gradle/libs.versions.toml
-#          arguments: |
-#            ktlintformat
-#          concurrent: true
-#          gradle-build-scan-report: false
+      - name: detekt
+        run: ./gradlew detekt --no-daemon
 
-      - name: KtLint format
-        run: ./gradlew ktlintformat --no-daemon
+  ktlint:
+
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+
+    steps:
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses : actions/setup-java@v2
+        with :
+          distribution : 'adopt'
+          java-version : '11'
+          cache: 'gradle'
+
+      - name: KtLint format (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: ./gradlew ktlintformat -q --no-daemon
 
       # If KtLint generated changes, commit and push those changes.
-      - name: commit changes
+      - name: commit changes (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply KtLint format
           commit_options: '--no-verify --signoff'
+
+      - name: KtLint check (used by forks)
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: ./gradlew ktlintCheck -q --no-daemon
 
   versioning:
 
@@ -96,7 +93,13 @@ jobs:
     if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -109,8 +112,13 @@ jobs:
           java-version : '14'
           cache: 'gradle'
 
-      - name: Sync versions in website docs
+      - name: Sync versions in website docs (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: ./gradlew updateWebsiteNextDocsVersionRefs --no-daemon
+
+      - name: Check versions in website docs (used by forks)
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: ./gradlew checkWebsiteNextDocsVersionRefs --no-daemon
 
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -118,20 +126,16 @@ jobs:
           commit_message: update docs versions
           commit_options: '--no-verify --signoff'
 
-#      - uses: burrunan/gradle-cache-action@v1
-#        name: Update version in website package.json
-#        with:
-#          gradle-dependencies-cache-key: |
-#            gradle/libs.versions.toml
-#          arguments: |
-#            updateWebsitePackageJsonVersion
-#          concurrent: true
-#          gradle-build-scan-report: false
+      - name: Update version in website package.json (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: ./gradlew updateWebsitePackageJsonVersion --no-daemon
 
-      - name: Update version in website package.json
-        run: ./gradlew updateWebsitePackageJsonVersion
+      - name: Check version in website package.json (used by forks)
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: ./gradlew checkWebsitePackageJsonVersion --no-daemon
 
-      - name: commit changes
+      - name: commit changes (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update website versions
@@ -156,10 +160,16 @@ jobs:
             anvil-version: 2.3.11
 
     steps:
-      - uses: actions/checkout@v2
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
       - name: Set up JDK
@@ -204,10 +214,16 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v2
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           fetch-depth: 0
 
       - name: Set up JDK
@@ -216,16 +232,6 @@ jobs:
           distribution : 'adopt'
           java-version : '11'
           cache: 'gradle'
-
-#      - uses: burrunan/gradle-cache-action@v1
-#        name: all tests
-#        with:
-#          gradle-dependencies-cache-key: |
-#            gradle/libs.versions.toml
-#          arguments: |
-#            testJvm
-#          concurrent: true
-#          gradle-build-scan-report: false
 
       - name: all tests
         run: ./gradlew testJvm

@@ -21,6 +21,26 @@ import modulecheck.builds.VERSION_NAME
  * Looks for all references to ModuleCheck artifacts in the md/mdx files
  * in the un-versioned /website/docs. Updates all versions to the pre-release version.
  */
+val checkWebsiteNextDocsVersionRefs by tasks.registering {
+
+  description = "Checks the \"next\" version docs for version changes"
+  group = "website"
+
+  doLast {
+
+    fileTree("$rootDir/website/docs") {
+      include("**/*.md*")
+    }
+      .forEach { file ->
+        file.updateModuleCheckVersionRef(VERSION_NAME, failOnChanges = true)
+      }
+  }
+}
+
+/**
+ * Looks for all references to ModuleCheck artifacts in the md/mdx files
+ * in the un-versioned /website/docs. Updates all versions to the pre-release version.
+ */
 val updateWebsiteNextDocsVersionRefs by tasks.registering {
 
   description = "Updates the \"next\" version docs to use the next artifact version"
@@ -32,7 +52,7 @@ val updateWebsiteNextDocsVersionRefs by tasks.registering {
       include("**/*.md*")
     }
       .forEach { file ->
-        file.updateModuleCheckVersionRef(VERSION_NAME)
+        file.updateModuleCheckVersionRef(VERSION_NAME, failOnChanges = false)
       }
   }
 }
@@ -76,10 +96,52 @@ val updateWebsitePackageJsonVersion by tasks.registering {
 }
 
 /**
+ * Updates the "moduleCheck" version in package.json
+ */
+val checkWebsitePackageJsonVersion by tasks.registering {
+
+  description = "Checks the \"ModuleCheck\" version in package.json"
+  group = "website"
+
+  doLast {
+
+    // this isn't very robust, but it's fine for this use-case
+    val versionReg = """(\s*"version"\s*:\s*")[^"]*("\s*,)""".toRegex()
+
+    // just in case some child object gets a "version" field, ignore it.
+    // This only works if the correct field comes first (which it does).
+    var foundOnce = false
+
+    with(File("$rootDir/website/package.json")) {
+      val oldText = readText()
+      val newText = oldText
+        .lines()
+        .joinToString("\n") { line ->
+
+          line.replace(versionReg) { matchResult ->
+
+            if (!foundOnce) {
+              foundOnce = true
+              val (prefix, suffix) = matchResult.destructured
+              "$prefix$VERSION_NAME$suffix"
+            } else {
+              line
+            }
+          }
+        }
+      require(oldText == newText) {
+        "The website package.json version is out of date.  " +
+          "Run `./gradlew updateWebsitePackageJsonVersion` to update."
+      }
+    }
+  }
+}
+
+/**
  * Looks for all references to ModuleCheck artifacts in the project README.md
  * to the current released version.
  */
-val updateProjectReadmeVersionRefs by tasks.registering {
+val checkProjectReadmeVersionRefs by tasks.registering {
 
   description =
     "Updates the project-level README to use the latest published version in maven coordinates"
@@ -88,11 +150,33 @@ val updateProjectReadmeVersionRefs by tasks.registering {
   doLast {
 
     File("$rootDir/README.md")
-      .updateModuleCheckVersionRef(VERSION_NAME)
+      .updateModuleCheckVersionRef(
+        VERSION_NAME,
+        failOnChanges = true,
+        "updateProjectReadmeVersionRefs"
+      )
   }
 }
 
-fun File.updateModuleCheckVersionRef(version: String) {
+/**
+ * Looks for all references to ModuleCheck artifacts in the project README.md
+ * to the current released version.
+ */
+val updateProjectReadmeVersionRefs by tasks.registering {
+
+  description = "Checks the project-level README for version changes"
+  group = "documentation"
+
+  doLast {
+
+    File("$rootDir/README.md")
+      .updateModuleCheckVersionRef(VERSION_NAME, failOnChanges = false)
+  }
+}
+
+fun File.updateModuleCheckVersionRef(
+  version: String, failOnChanges: Boolean, updateTaskName: String = ""
+) {
 
   val group = GROUP
 
@@ -102,7 +186,9 @@ fun File.updateModuleCheckVersionRef(version: String) {
     """^([^'"\n]*['"])$pluginId[^'"]*(['"].*) version (['"])[^'"]*(['"].*)${'$'}""".toRegex()
   val moduleRegex = """^([^'"\n]*['"])$group:([^:]*):[^'"]*(['"].*)${'$'}""".toRegex()
 
-  val newText = readText()
+  val oldText = readText()
+
+  val newText = oldText
     .lines()
     .joinToString("\n") { line ->
       line
@@ -119,6 +205,11 @@ fun File.updateModuleCheckVersionRef(version: String) {
           "$config$group:$module:$version$suffix"
         }
     }
+
+  require(oldText == newText || !failOnChanges) {
+    "ModuleCheck version references in $path are out of date.  " +
+      "Run `./gradlew $updateTaskName` to update."
+  }
 
   writeText(newText)
 }
