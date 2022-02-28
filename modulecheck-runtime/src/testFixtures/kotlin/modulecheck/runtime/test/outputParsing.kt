@@ -80,7 +80,9 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
         val split = line.split(DELIM)
           .map { segment -> segment.trim().takeIf { it.isNotBlank() } }
 
-        val (fixedString, dependency, nameWithTokens, source, positionRaw) = split
+        val (fixedString, configuration, dependency, nameWithTokens, source) = split
+        // Destructuring a List<String> only supports 5 components, so do the 6th manually.
+        val positionRaw = split[5]
 
         val name = nameWithTokens.requireNotNull().trim()
 
@@ -100,28 +102,33 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
         val t = when (name) {
           "inheritedDependency" -> inheritedDependency(
             fixed,
+            configuration,
             dependency,
             source,
             position
           )
           "mustBeApi" -> mustBeApi(
             fixed = fixed,
+            configuration = configuration,
             dependency = dependency,
             position = position
           )
           "overshot" -> overshot(
             fixed = fixed,
+            configuration = configuration,
             dependency = dependency,
             position = position
           )
           "redundant" -> redundant(
             fixed = fixed,
+            configuration = configuration,
             dependency = dependency,
             source = source,
             position = position
           )
           "unusedDependency" -> unusedDependency(
             fixed = fixed,
+            configuration = configuration,
             dependency = dependency,
             position = position
           )
@@ -137,6 +144,7 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
           )
           "unusedKaptProcessor" -> unusedKaptProcessor(
             fixed = fixed,
+            configuration = configuration,
             dependency = dependency,
             position = position
           )

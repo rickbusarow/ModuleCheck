@@ -398,11 +398,12 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFail("moduleCheck") withTrimmedMessage """:app
-           dependency    name                source    build file
-        X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+    shouldFail("moduleCheck") withTrimmedMessage """
+    :app
+               configuration    dependency    name                source    build file
+            X  api              :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
-ModuleCheck found 1 issue
+    ModuleCheck found 1 issue
     """
   }
 }

@@ -97,11 +97,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = false,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = false,
+          configuration = "api",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -171,11 +173,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = false,
+          configuration = "debugImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = false,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -246,11 +250,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -321,11 +327,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
+          configuration = "debugImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -396,11 +404,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
+          configuration = "debugImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -492,11 +502,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         overshot(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -596,11 +608,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         overshot(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           position = "7, 3"
         )
@@ -693,11 +707,13 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         overshot(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           position = "6, 3"
         )

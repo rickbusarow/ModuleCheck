@@ -96,6 +96,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = false,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -165,6 +166,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = false,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -234,6 +236,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -613,6 +616,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -686,6 +690,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":implementation",
           position = "8, 3"
         )
@@ -816,6 +821,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -946,6 +952,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -1015,6 +1022,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -1084,6 +1092,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -1151,6 +1160,7 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -1236,11 +1246,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )
@@ -1325,11 +1337,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )
@@ -1415,11 +1429,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )
@@ -1505,11 +1521,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )
@@ -1594,11 +1612,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )
@@ -1683,11 +1703,13 @@ class MustBeApiTest : RunnerTest() {
       ":lib2" to listOf(
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib3",
           position = "7, 3"
         )

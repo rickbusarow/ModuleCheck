@@ -54,6 +54,7 @@ internal class TextReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
@@ -94,6 +95,7 @@ internal class TextReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
@@ -112,8 +114,8 @@ internal class TextReportingTest : RunnerTest() {
       .clean()
       .remove("\u200B") shouldBe """
       dependentPath
-             dependency        name           source          build file
-          ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
+             configuration        dependency        name           source          build file
+          ✔  configurationName    dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
     """
   }
 }

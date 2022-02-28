@@ -78,6 +78,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = false,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -127,6 +128,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -177,6 +179,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -319,6 +322,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "7, 3"
         )
@@ -369,6 +373,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -420,6 +425,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = false,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -474,6 +480,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "8, 3"
         )
@@ -529,6 +536,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "8, 3"
         )
@@ -586,6 +594,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "9, 3"
         )
@@ -1044,6 +1053,7 @@ class UnusedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         unusedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           position = "6, 3"
         )
