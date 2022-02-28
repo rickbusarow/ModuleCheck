@@ -127,6 +127,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = false,
+          configuration = "api",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -391,6 +392,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -490,6 +492,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "internalImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -599,6 +602,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -707,6 +711,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "internalImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -806,6 +811,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "internalImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1000,6 +1006,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1098,6 +1105,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1226,12 +1234,14 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib2",
           position = "6, 3"
         )
@@ -1239,12 +1249,14 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib4" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = ":lib3",
           position = "6, 3"
         ),
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib2",
           source = ":lib3",
           position = "6, 3"
@@ -1357,6 +1369,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1458,6 +1471,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1559,11 +1573,13 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
+          configuration = "testFixturesImplementation",
           dependency = ":lib1",
           position = null
         ),
         unusedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           position = "6, 3"
         )
@@ -1571,6 +1587,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1671,6 +1688,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1755,6 +1773,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "testImplementation",
           dependency = ":lib1",
           source = null,
           position = "6, 3"
@@ -1839,12 +1858,14 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         inheritedDependency(
           fixed = true,
+          configuration = "api",
           dependency = ":lib1",
           source = null,
           position = "6, 3"
         ),
         mustBeApi(
           fixed = true,
+          configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
         )

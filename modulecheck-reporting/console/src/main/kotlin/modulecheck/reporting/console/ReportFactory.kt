@@ -35,6 +35,10 @@ class ReportFactory @Inject constructor() {
 
         header("\n${tab(1)}$path")
 
+        val maxConfigurationName = maxOf(
+          values.maxOf { it.configurationName.length },
+          "configuration".length
+        )
         val maxDependencyPath = maxOf(
           values.maxOf { it.dependencyPath.length },
           "dependency".length
@@ -47,6 +51,8 @@ class ReportFactory @Inject constructor() {
         header(
           tab(2) +
             fixPrefix +
+            "configuration".padEnd(maxConfigurationName) +
+            tab(1) +
             "dependency".padEnd(maxDependencyPath) +
             tab(1) +
             "name".padEnd(maxProblemName) +
@@ -66,7 +72,9 @@ class ReportFactory @Inject constructor() {
           )
         ).forEach { result ->
 
-          val message = result.dependencyPath.padEnd(maxDependencyPath) +
+          val message = result.configurationName.padEnd(maxConfigurationName) +
+            tab(1) +
+            result.dependencyPath.padEnd(maxDependencyPath) +
             tab(1) +
             result.problemName.padEnd(maxProblemName) +
             tab(1) +

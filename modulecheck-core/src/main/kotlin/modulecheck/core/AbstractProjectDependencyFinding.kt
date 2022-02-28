@@ -60,6 +60,7 @@ abstract class AbstractProjectDependencyFinding(
       dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
+      configurationName = configurationName.value,
       dependencyPath = dependencyProject.path,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,

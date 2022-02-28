@@ -326,8 +326,8 @@ internal class DepthReportTest : RunnerTest() {
       .clean()
       .remove("\u200B") shouldBe """
           :lib2
-                 dependency    name                source    build file
-              ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+                 configuration     dependency    name                source    build file
+              ✔  implementation    :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
       -- ModuleCheck main source set depth results --
           depth    modules

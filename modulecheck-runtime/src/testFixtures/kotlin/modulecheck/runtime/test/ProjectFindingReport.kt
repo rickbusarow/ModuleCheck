@@ -18,12 +18,14 @@ package modulecheck.runtime.test
 sealed interface ProjectFindingReport {
 
   val fixed: Boolean
+  val configuration: String? get() = null
   val dependency: String? get() = null
   val source: String? get() = null
   val position: String? get() = null
 
   data class inheritedDependency(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val source: String?,
     override val position: String?
@@ -31,18 +33,21 @@ sealed interface ProjectFindingReport {
 
   data class mustBeApi(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val position: String?
   ) : ProjectFindingReport
 
   data class overshot(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val position: String?
   ) : ProjectFindingReport
 
   data class redundant(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val source: String?,
     override val position: String?
@@ -50,16 +55,15 @@ sealed interface ProjectFindingReport {
 
   data class unusedDependency(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val position: String?
   ) : ProjectFindingReport
 
   data class depth(override val fixed: Boolean) : ProjectFindingReport
   data class useAnvilFactories(override val fixed: Boolean) : ProjectFindingReport
-  data class disableViewBinding(
-    override val fixed: Boolean,
-    override val position: String?
-  ) : ProjectFindingReport
+  data class disableViewBinding(override val fixed: Boolean, override val position: String?) :
+    ProjectFindingReport
 
   data class unsortedDependencies(override val fixed: Boolean) : ProjectFindingReport
   data class unsortedPlugins(override val fixed: Boolean) : ProjectFindingReport
@@ -67,16 +71,16 @@ sealed interface ProjectFindingReport {
     override val fixed: Boolean,
     override val dependency: String?,
     override val position: String?
-  ) : ProjectFindingReport
+  ) :
+    ProjectFindingReport
 
   data class unusedKaptProcessor(
     override val fixed: Boolean,
+    override val configuration: String?,
     override val dependency: String?,
     override val position: String?
   ) : ProjectFindingReport
 
-  data class disableAndroidResources(
-    override val fixed: Boolean,
-    override val position: String?
-  ) : ProjectFindingReport
+  data class disableAndroidResources(override val fixed: Boolean, override val position: String?) :
+    ProjectFindingReport
 }
