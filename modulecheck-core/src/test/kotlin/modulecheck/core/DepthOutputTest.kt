@@ -21,6 +21,7 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 
 internal class DepthOutputTest : RunnerTest() {
@@ -60,7 +61,7 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 
   @Test
@@ -98,7 +99,8 @@ internal class DepthOutputTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
             :lib2
                    dependency    name                source    build file
                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
@@ -108,7 +110,7 @@ internal class DepthOutputTest : RunnerTest() {
             0        [:lib1, :lib2]
 
         ModuleCheck found 1 issue
-        """
+    """
   }
 
   @Test
@@ -144,7 +146,7 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 
   @Test
@@ -184,6 +186,6 @@ internal class DepthOutputTest : RunnerTest() {
             2        [:app, :debug2]
 
         ModuleCheck found 0 issues
-        """
+    """
   }
 }

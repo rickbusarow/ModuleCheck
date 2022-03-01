@@ -31,7 +31,7 @@ internal class JavaEverythingPrinter {
       """ ******************************** -- $thisName  -- parent: $parentName
       |$node
       |_________________________________________________________________________________
-    """.trimMargin()
+      """.trimMargin()
     )
 
     node.childNodes.forEach { child ->

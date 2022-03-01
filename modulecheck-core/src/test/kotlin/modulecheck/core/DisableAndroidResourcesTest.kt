@@ -20,9 +20,9 @@ import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeKotlin
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class DisableAndroidResourcesTest : RunnerTest() {
@@ -59,7 +59,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
         """<resources>
             |  <string name="app_name" translatable="false">MyApp</string>
             |</resources>
-            """.trimMargin()
+        """.trimMargin()
       )
       addSource(
         "com/modulecheck/lib1/Source.kt",
@@ -73,14 +73,14 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -109,7 +109,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
         """<resources>
             |  <string name="app_name" translatable="false">MyApp</string>
             |</resources>
-            """.trimMargin()
+        """.trimMargin()
       )
     }
 
@@ -137,11 +137,10 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -166,21 +165,17 @@ class DisableAndroidResourcesTest : RunnerTest() {
     runner.run(allProjects()).isSuccess shouldBe false
 
     lib1.buildFile.readText() shouldBe """
-      plugins {
-        id("com.android.library")
-        kotlin("android")
-      }
-      """
+    plugins {
+      id("com.android.library")
+      kotlin("android")
+    }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                       source    build file
-                X                disableAndroidResources              /lib1/build.gradle.kts:
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(false, null)
+      )
+    )
   }
 
   @Test
@@ -207,23 +202,21 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}
-android {
-  buildFeatures.androidResources = false
-}"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+      android {
+        buildFeatures.androidResources = false
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                       source    build file
-                ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, "6, 3")
+      )
+    )
   }
 
   @Test
@@ -260,17 +253,14 @@ android {
       android {
         mindSdk(21)
         buildFeatures.androidResources = false
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                       source    build file
-                  ✔                disableAndroidResources              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
   }
 
   @Test
@@ -304,17 +294,14 @@ android {
         buildFeatures {
           androidResources = false
         }
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                       source    build file
-                  ✔                disableAndroidResources              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
   }
 
   @Test
@@ -351,17 +338,13 @@ android {
 
       dependencies {
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                       source    build file
-                  ✔                disableAndroidResources              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
   }
 
   @Test
@@ -392,17 +375,13 @@ android {
         kotlin("android")
       }
       android.buildFeatures.androidResources = false
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                       source    build file
-                ✔                disableAndroidResources              /lib1/build.gradle.kts: (5, 1):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, "5, 1")
+      )
+    )
   }
 
   @Test
@@ -437,17 +416,13 @@ android {
       android.buildFeatures {
         androidResources = false
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                       source    build file
-              ✔                disableAndroidResources              /lib1/build.gradle.kts: (6, 3):
-
-      ModuleCheck found 1 issue
-      """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, "6, 3")
+      )
+    )
   }
 
   @Test
@@ -486,20 +461,15 @@ android {
             androidResources = false
           }
         }
-        """
-
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                       source    build file
-                ✔                disableAndroidResources              /lib1/build.gradle.kts: (7, 5):
-
-        ModuleCheck found 1 issue
     """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, "7, 5")
+      )
+    )
   }
 
-  @Disabled("https://github.com/RBusarow/ModuleCheck/issues/255")
   @Test
   fun `unused resource generation with autocorrect and no explicit buildFeatures property should be fixed`() {
 
@@ -519,21 +489,28 @@ android {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    runner.run(allProjects()).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
         id("com.android.library")
         kotlin("android")
       }
-      """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+      android {
+        buildFeatures {
+          androidResources = false
+        }
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
   }
 
-  @Disabled("https://github.com/RBusarow/ModuleCheck/issues/255")
   @Test
   fun `unused resource generation with autocorrect and no android block should be fixed`() {
 
@@ -553,15 +530,25 @@ android {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    runner.run(allProjects()).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """plugins {
-  id("com.android.library")
-  kotlin("android")
-}"""
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures {
+          androidResources = false
+        }
+      }
+    """
   }
 }

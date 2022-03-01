@@ -19,6 +19,7 @@ import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
 import modulecheck.testing.writeKotlin
@@ -69,7 +70,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation(project(path = "lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
-      """
+        """
       )
     }
 
@@ -102,17 +103,11 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -138,7 +133,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -158,17 +153,11 @@ class SortDependenciesTest : RunnerTest() {
         */
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -194,7 +183,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -214,17 +203,11 @@ class SortDependenciesTest : RunnerTest() {
          */
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -248,7 +231,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1"))
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -266,17 +249,11 @@ class SortDependenciesTest : RunnerTest() {
         // preceding comment
         runtimeOnly(project(path = "lib-1"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -299,7 +276,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly(project(path = "lib-1")) // trailing comment
         api(project(path = "lib-3"))
       }
-      """
+        """
       )
     }
 
@@ -316,17 +293,11 @@ class SortDependenciesTest : RunnerTest() {
 
         runtimeOnly(project(path = "lib-1")) // trailing comment
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -359,7 +330,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation(project(path = "lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
-      """
+        """
       )
     }
 
@@ -392,17 +363,12 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle.kts:
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
 
-      ModuleCheck found 1 issue
-    """.trimIndent()
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -434,11 +400,9 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation(project(path = "lib-5"))
         testImplementation(project(path = "lib-8"))
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -475,7 +439,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
         api 'com.squareup:kotlinpoet:1.7.2'
       }
-      """
+        """
       )
     }
 
@@ -508,17 +472,11 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -546,7 +504,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -566,17 +524,11 @@ class SortDependenciesTest : RunnerTest() {
         */
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -604,7 +556,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -624,17 +576,11 @@ class SortDependenciesTest : RunnerTest() {
          */
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -660,7 +606,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1")
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -678,17 +624,11 @@ class SortDependenciesTest : RunnerTest() {
         // preceding comment
         runtimeOnly project(path = "lib-1")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -713,7 +653,7 @@ class SortDependenciesTest : RunnerTest() {
         runtimeOnly project(path = "lib-1") // trailing comment
         api project(path = "lib-3")
       }
-      """
+        """
       )
     }
 
@@ -730,17 +670,11 @@ class SortDependenciesTest : RunnerTest() {
 
         runtimeOnly project(path = "lib-1") // trailing comment
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
   }
 
   @Test
@@ -778,7 +712,7 @@ class SortDependenciesTest : RunnerTest() {
         implementation project(path = "lib-2")
         testImplementation project(path = "lib-8")
       }
-      """
+        """
       )
     }
 
@@ -811,17 +745,11 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name                    source    build file
-              ✔                unsortedDependencies              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedDependencies(fixed = true))
+    )
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -853,10 +781,8 @@ class SortDependenciesTest : RunnerTest() {
         testImplementation project(path = "lib-5")
         testImplementation project(path = "lib-8")
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 }

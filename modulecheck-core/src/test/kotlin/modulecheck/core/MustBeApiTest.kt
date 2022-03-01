@@ -19,6 +19,7 @@ import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
@@ -89,17 +90,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                X  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = false,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -158,17 +159,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                X  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = false,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -227,17 +228,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -296,11 +297,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -361,11 +360,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -424,11 +421,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -488,11 +483,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -553,11 +546,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -616,17 +607,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -689,17 +680,17 @@ class MustBeApiTest : RunnerTest() {
           // implementation can be the beginning of the comment
           api(project(path = ":implementation")) // it's an implementation
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency         name         source    build file
-                ✔  :implementation    mustBeApi              /lib2/build.gradle.kts: (8, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":implementation",
+          position = "8, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -758,11 +749,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -821,17 +810,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -890,11 +879,9 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -953,17 +940,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1022,17 +1009,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1091,17 +1078,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1158,17 +1145,17 @@ class MustBeApiTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1243,18 +1230,22 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1328,18 +1319,22 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1414,18 +1409,22 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1500,18 +1499,22 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1585,18 +1588,22 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1670,17 +1677,21 @@ class MustBeApiTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name         source    build file
-                ✔  :lib1         mustBeApi              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib3         mustBeApi              /lib2/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          dependency = ":lib3",
+          position = "7, 3"
+        )
+      )
+    )
   }
 }

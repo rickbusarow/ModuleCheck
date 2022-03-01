@@ -42,7 +42,7 @@ class ReportFactory @Inject constructor() {
         val maxProblemName = values.maxOf { it.problemName.length }
         val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
 
-        val fixPrefix = "   "
+        val fixPrefix = "   ​"
 
         header(
           tab(2) +
@@ -88,5 +88,6 @@ class ReportFactory @Inject constructor() {
     header("")
   }
 
-  private fun tab(numTabs: Int) = "    ".repeat(numTabs)
+  // use `​` (\u200B) as an invisible token for parsing.
+  private fun tab(numTabs: Int) = "\u200B    ".repeat(numTabs)
 }

@@ -112,7 +112,7 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":lib2";}
         {rank = same; ":app";}
       }
-      """
+    """
   }
 
   @Test
@@ -148,7 +148,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
         {rank = same; ":lib1";}
       }
-      """
+    """
   }
 
   @Test
@@ -225,7 +225,7 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":lib2";}
         {rank = same; ":app";}
       }
-      """
+    """
 
     app.graphFile("test").readText() shouldBe """
       strict digraph DependencyGraph {
@@ -249,7 +249,7 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":test1";}
         {rank = same; ":app";}
       }
-      """
+    """
 
     lib1.graphFile("test").readText() shouldBe """
       strict digraph DependencyGraph {
@@ -266,7 +266,7 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":lib2";}
         {rank = same; ":lib1";}
       }
-      """
+    """
   }
 
   @Test
@@ -321,7 +321,7 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":lib2";}
         {rank = same; ":app";}
       }
-      """
+    """
 
     app.graphFile("debug").readText() shouldBe """
       strict digraph DependencyGraph {
@@ -349,6 +349,6 @@ internal class GraphVizReportTest : RunnerTest() {
         {rank = same; ":debug2";}
         {rank = same; ":app";}
       }
-      """
+    """
   }
 }

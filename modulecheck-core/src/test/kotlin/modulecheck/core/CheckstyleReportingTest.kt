@@ -108,12 +108,13 @@ internal class CheckstyleReportingTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="buildFile">
-		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
-"""
+    outputFile.readText() shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      	<file name="buildFile">
+      		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      	</file>
+      </checkstyle>
+    """
   }
 }
