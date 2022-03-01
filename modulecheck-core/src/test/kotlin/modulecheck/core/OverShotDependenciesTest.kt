@@ -19,6 +19,8 @@ import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.runtime.test.ProjectFindingReport.overshot
+import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
@@ -89,18 +91,22 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                X  :lib1         overshot                      /lib2/build.gradle.kts:
-                X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = false,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = false,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -159,18 +165,22 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                X  :lib1         overshot                      /lib2/build.gradle.kts:
-                X  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = false,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = false,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -230,18 +240,22 @@ class OverShotDependenciesTest : RunnerTest() {
           // api(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -301,18 +315,22 @@ class OverShotDependenciesTest : RunnerTest() {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           debugImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -372,18 +390,22 @@ class OverShotDependenciesTest : RunnerTest() {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           "debugImplementation"(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -464,18 +486,22 @@ class OverShotDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib2")))
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib3/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -564,18 +590,22 @@ class OverShotDependenciesTest : RunnerTest() {
             because("this is a test")
           }
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib3/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "7, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -657,17 +687,21 @@ class OverShotDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib2")))
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                source    build file
-                ✔  :lib1         overshot                      /lib3/build.gradle.kts:
-                ✔  :lib1         unusedDependency              /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        overshot(
+          fixed = true,
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 }

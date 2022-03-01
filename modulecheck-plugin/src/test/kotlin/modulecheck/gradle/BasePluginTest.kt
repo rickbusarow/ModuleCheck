@@ -95,6 +95,7 @@ abstract class BasePluginTest : ProjectTest() {
         "> ModuleCheck found \\d+ issues? which (?:was|were) not auto-corrected.".toRegex()
       )
       .removeDuration()
+      .remove("\u200B")
       .trim()
 
     trimmed shouldBe message

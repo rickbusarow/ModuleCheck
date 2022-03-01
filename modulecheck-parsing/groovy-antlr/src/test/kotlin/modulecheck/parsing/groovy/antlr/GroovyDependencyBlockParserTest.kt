@@ -369,8 +369,10 @@ internal class GroovyDependencyBlockParserTest {
         configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
-   // single-line comment
-   implementation project(':core:android')"""
+          |
+          |   // single-line comment
+          |   implementation project(':core:android')
+        """.trimMargin()
       )
     )
   }
@@ -398,10 +400,12 @@ internal class GroovyDependencyBlockParserTest {
         configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
-   /*
-   block comment
-   */
-   implementation project(':core:android')"""
+          |
+          |   /*
+          |   block comment
+          |   */
+          |   implementation project(':core:android')
+        """.trimMargin()
       )
     )
   }
@@ -514,7 +518,8 @@ internal class GroovyDependencyBlockParserTest {
         |dependencies {
         |  api libs.ktlint
         |}
-        |""".trimMargin()
+        |
+        """.trimMargin()
       ).single()
 
     block.lambdaContent shouldBe "  api libs.ktlint\n"

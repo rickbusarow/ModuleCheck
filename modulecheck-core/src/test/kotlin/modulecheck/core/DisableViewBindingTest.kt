@@ -21,6 +21,7 @@ import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.createSafely
 import modulecheck.testing.writeKotlin
@@ -75,7 +76,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -105,11 +107,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -148,7 +149,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
 
       addSource(
@@ -173,11 +175,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -216,7 +217,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
 
       // Setting a debug base package, but it's never used.  The inferred FqName for the generated
@@ -248,11 +250,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -291,7 +292,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>""",
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """,
         SourceSetName.DEBUG
       )
 
@@ -321,11 +323,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -364,7 +365,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>""",
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """,
         SourceSetName.DEBUG
       )
 
@@ -394,11 +396,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -439,7 +440,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -453,11 +455,10 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -496,7 +497,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -510,17 +512,12 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = true
-      }"""
-
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                  source    build file
-                X                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 1 issue
+      }
     """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(false, "7, 3"))
+    )
   }
 
   @Test
@@ -556,17 +553,12 @@ class DisableViewBindingTest : RunnerTest() {
 
       android {
         buildFeatures.viewBinding = false
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                  source    build file
-                  ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, "7, 3"))
+    )
   }
 
   @Test
@@ -603,17 +595,12 @@ class DisableViewBindingTest : RunnerTest() {
       android {
         mindSdk(21)
         buildFeatures.viewBinding = false
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                  source    build file
-                  ✔                disableViewBinding              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, null))
+    )
   }
 
   @Test
@@ -647,17 +634,12 @@ class DisableViewBindingTest : RunnerTest() {
         buildFeatures {
           viewBinding = false
         }
-      }"""
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                  source    build file
-                  ✔                disableViewBinding              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, null))
+    )
   }
 
   @Test
@@ -694,17 +676,11 @@ class DisableViewBindingTest : RunnerTest() {
 
       dependencies {
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-              :lib1
-                     dependency    name                  source    build file
-                  ✔                disableViewBinding              /lib1/build.gradle.kts:
-
-          ModuleCheck found 1 issue
-          """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, null))
+    )
   }
 
   @Test
@@ -741,7 +717,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -753,17 +730,12 @@ class DisableViewBindingTest : RunnerTest() {
         kotlin("android")
       }
 
-      android.buildFeatures.viewBinding = false"""
+      android.buildFeatures.viewBinding = false
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                  source    build file
-                ✔                disableViewBinding              /lib1/build.gradle.kts: (6, 1):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, "6, 1"))
+    )
   }
 
   @Test
@@ -804,7 +776,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -820,17 +793,12 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures {
             viewBinding = false
           }
-        }"""
+        }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                  source    build file
-                ✔                disableViewBinding              /lib1/build.gradle.kts: (8, 5):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, "8, 5"))
+    )
   }
 
   @Test
@@ -869,7 +837,8 @@ class DisableViewBindingTest : RunnerTest() {
             android:layout_height="match_parent"
             />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>"""
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """
       )
     }
 
@@ -883,16 +852,11 @@ class DisableViewBindingTest : RunnerTest() {
 
         android.buildFeatures {
           viewBinding = false
-        }"""
+        }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib1
-                   dependency    name                  source    build file
-                ✔                disableViewBinding              /lib1/build.gradle.kts: (7, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(disableViewBinding(true, "7, 3"))
+    )
   }
 }

@@ -19,6 +19,7 @@ import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.runtime.test.ProjectFindingReport.unsortedPlugins
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
 import modulecheck.testing.writeKotlin
@@ -53,7 +54,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         kotlin("jvm")
       }
-      """
+        """
       )
     }
 
@@ -65,17 +66,11 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name               source    build file
-              ✔                unsortedPlugins              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedPlugins(fixed = true))
+    )
   }
 
   @Test
@@ -94,7 +89,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         kotlin("jvm")
       }
-      """
+        """
       )
     }
 
@@ -106,17 +101,11 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name               source    build file
-              ✔                unsortedPlugins              /lib1/build.gradle.kts:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedPlugins(fixed = true))
+    )
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -127,11 +116,9 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -152,7 +139,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+        """
       )
     }
 
@@ -164,17 +151,11 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name               source    build file
-              ✔                unsortedPlugins              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedPlugins(fixed = true))
+    )
   }
 
   @Test
@@ -195,7 +176,7 @@ class SortPluginsTest : RunnerTest() {
         javaLibrary
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+        """
       )
     }
 
@@ -207,17 +188,11 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :lib1
-                 dependency    name               source    build file
-              ✔                unsortedPlugins              /lib1/build.gradle:
-
-      ModuleCheck found 1 issue
-    """.trimIndent()
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unsortedPlugins(fixed = true))
+    )
     logger.clear()
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -228,10 +203,8 @@ class SortPluginsTest : RunnerTest() {
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
         id 'org.jetbrains.kotlin.jvm'
       }
-      """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 }

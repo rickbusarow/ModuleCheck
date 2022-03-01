@@ -19,6 +19,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -108,10 +109,11 @@ internal class TextReportingTest : RunnerTest() {
     result.isSuccess shouldBe true
 
     outputFile.readText()
-      .clean() shouldBe """
-    dependentPath
-           dependency        name           source          build file
-        ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
-        """
+      .clean()
+      .remove("\u200B") shouldBe """
+      dependentPath
+             dependency        name           source          build file
+          ✔  dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
+    """
   }
 }

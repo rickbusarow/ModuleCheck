@@ -19,6 +19,7 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.api.finding.Finding
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -36,7 +37,8 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe "ModuleCheck found 0 issues"
+      .clean()
+      .remove("\u200B") shouldBe "ModuleCheck found 0 issues"
   }
 
   @Test
@@ -58,7 +60,8 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
           :lib1
                  dependency                           name                 source    build file
               X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
@@ -90,7 +93,8 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
         :lib1
                dependency                           name                 source    build file
             X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:

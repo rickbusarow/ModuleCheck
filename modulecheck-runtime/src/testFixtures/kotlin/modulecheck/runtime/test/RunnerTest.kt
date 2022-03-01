@@ -72,4 +72,10 @@ abstract class RunnerTest : ProjectTest() {
     override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts
     override suspend fun evaluateReports(projects: List<McProject>): List<Finding> = reports
   }
+
+  fun ReportingLogger.parsedReport(): List<Pair<String, List<ProjectFindingReport>>> {
+    return collectReport().joinToString()
+      .clean()
+      .parseReportOutput()
+  }
 }
