@@ -39,7 +39,8 @@ data class KaptMatcher(
       |  name='$name',
       |  processor='$processor',
       |  annotationImports=${annotationImports.joinToString("\n    ", "\n    ")}
-      |)""".trimMargin()
+      |)
+    """.trimMargin()
   }
 }
 

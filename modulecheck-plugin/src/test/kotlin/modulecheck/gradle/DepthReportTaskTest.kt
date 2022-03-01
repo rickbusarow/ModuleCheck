@@ -118,6 +118,6 @@ internal class DepthReportTaskTest : BasePluginTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 }
