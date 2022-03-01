@@ -87,7 +87,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
                 X  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
 
         ModuleCheck found 2 issues
-        """
+    """
   }
 
   @Test
@@ -290,6 +290,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
               ✔  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
 
       ModuleCheck found 2 issues
-      """
+    """
   }
 }

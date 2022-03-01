@@ -31,7 +31,7 @@ internal fun everythingPrinter() = object : KtTreeVisitorVoid() {
       """ ******************************** -- $thisName  -- parent: $parentName
       |${element.text}
       |_________________________________________________________________________________
-    """.trimMargin()
+      """.trimMargin()
     )
     super.visitElement(element)
   }

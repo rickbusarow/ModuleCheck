@@ -40,7 +40,7 @@ internal class JavaFileTest :
     package com.test;
 
     public enum Color { RED, BLUE }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -62,7 +62,7 @@ internal class JavaFileTest :
     public class Constants {
       public enum Color { RED, BLUE }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -86,7 +86,7 @@ internal class JavaFileTest :
 
       public static final int MY_VALUE = 250;
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -112,7 +112,7 @@ internal class JavaFileTest :
         public static final int MY_VALUE = 250;
       }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -135,7 +135,7 @@ internal class JavaFileTest :
 
       public static void foo() {}
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -155,7 +155,7 @@ internal class JavaFileTest :
     import com.lib1.Lib1Class;
 
     public static record MyRecord(Lib1Class lib1Class) {}
-      """,
+        """,
         javaVersion = JavaVersion.VERSION_16
       )
 
@@ -175,7 +175,7 @@ internal class JavaFileTest :
     import com.lib1.Lib1Class;
 
     public static record MyRecord(Lib1Class lib1Class) {}
-      """,
+        """,
         javaVersion = JavaVersion.VERSION_16
       )
 
@@ -194,7 +194,7 @@ internal class JavaFileTest :
     package com.test;
 
     public class MyClass {}
-      """,
+        """,
         javaVersion = JavaVersion.VERSION_16
       )
 
@@ -220,7 +220,7 @@ internal class JavaFileTest :
 
       public Lib1Class foo() { return Lib1Class(); }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -243,7 +243,7 @@ internal class JavaFileTest :
 
       private Lib1Class foo() { return Lib1Class(); }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -265,7 +265,7 @@ internal class JavaFileTest :
 
       Lib1Class foo() { return Lib1Class(); }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -287,7 +287,7 @@ internal class JavaFileTest :
 
       public Lib1Class foo() { return Lib1Class(); }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -313,7 +313,7 @@ internal class JavaFileTest :
 
       public com.lib1.Lib1Class foo() { return Lib1Class(); }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -341,7 +341,7 @@ internal class JavaFileTest :
 
       public List<Lib1Class> foo() { return null; }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -364,7 +364,7 @@ internal class JavaFileTest :
 
       public <E> List<E> foo() { return null; }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -388,7 +388,7 @@ internal class JavaFileTest :
 
       public <E> List<E> foo() { return null; }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -411,7 +411,7 @@ internal class JavaFileTest :
 
       public <E extends CharSequence> List<E> foo() { return null; }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -435,7 +435,7 @@ internal class JavaFileTest :
 
       public <E> List<E> foo(String name) { return null; }
     }
-      """
+        """
       )
 
       file shouldBe javaFile(
@@ -459,7 +459,7 @@ internal class JavaFileTest :
 
       public Lib1Class lib1Class;
     }
-      """
+          """
         )
 
         file shouldBe javaFile(
@@ -496,7 +496,7 @@ internal class JavaFileTest :
 
       public Lib1Class lib1Class;
     }
-      """
+          """
         )
 
         file shouldBe javaFile(
@@ -521,7 +521,7 @@ internal class JavaFileTest :
 
       public List<Lib1Class> lib1Classes;
     }
-      """
+          """
         )
 
         file shouldBe javaFile(

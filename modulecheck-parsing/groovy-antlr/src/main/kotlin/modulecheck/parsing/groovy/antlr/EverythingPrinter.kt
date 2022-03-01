@@ -33,7 +33,7 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
       |`${tree.text}`
       |
-    """.trimMargin()
+      """.trimMargin()
     )
     super.visit(tree)
   }
@@ -47,7 +47,7 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
       |`${node.text}`
       |
-    """.trimMargin()
+      """.trimMargin()
     )
     super.visitChildren(node)
   }
@@ -61,7 +61,7 @@ internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
       |
       |`${ctx.text}`
       |
-    """.trimMargin()
+      """.trimMargin()
     )
     super.visitExpression(ctx)
   }

@@ -58,7 +58,8 @@ public data class ProjectSettingsSpec(
        |  }
        |}
        |
-       |""".trimMargin()
+       |
+    """.trimMargin()
 
   private fun typeSafe() = """
     |enableFeaturePreview("VERSION_CATALOGS")

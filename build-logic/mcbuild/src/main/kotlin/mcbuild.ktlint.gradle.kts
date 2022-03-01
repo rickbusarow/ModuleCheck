@@ -21,7 +21,7 @@ plugins {
 
 extensions.configure(KtlintExtension::class.java) {
   debug.set(false)
-  version.set("0.43.2")
+  version.set("0.44.0")
   outputToConsole.set(true)
   disabledRules.set(
     setOf(
