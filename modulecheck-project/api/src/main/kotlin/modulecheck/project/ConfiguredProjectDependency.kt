@@ -46,10 +46,10 @@ data class ConfiguredProjectDependency(
   override fun toString(): String {
 
     val declaration = if (isTestFixture) {
-        "${configurationName.value}(testFixtures(project(path = \"$path\")))"
-      } else {
-        "${configurationName.value}(project(path = \"$path\"))"
-      }
+      "${configurationName.value}(testFixtures(project(path = \"$path\")))"
+    } else {
+      "${configurationName.value}(project(path = \"$path\"))"
+    }
 
     return "ConfiguredProjectDependency( $declaration )"
   }
