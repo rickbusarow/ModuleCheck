@@ -133,7 +133,10 @@ infix fun <T, U : T> T.trimmedShouldBe(expected: U?) {
     @Suppress("MagicNumber")
     assertionError.stackTrace = assertionError
       .stackTrace
-      .filterNot { it.className == BaseTest::class.qualifiedName }
+      .dropWhile {
+        it.className == BaseTest::class.qualifiedName ||
+          it.className == "${BaseTest::class.qualifiedName}Kt"
+      }
       .take(5) // keep stack traces short
       .toTypedArray()
     throw assertionError
