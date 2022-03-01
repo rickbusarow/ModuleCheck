@@ -47,7 +47,8 @@ internal class KotlinPluginsBlockParserTest {
       PluginDeclaration(
         declarationText = """javaLibrary""",
         statementWithSurroundingText = """  // comment
-          |  javaLibrary""".trimMargin()
+          |  javaLibrary
+        """.trimMargin()
       ),
       PluginDeclaration(
         declarationText = """id("io.gitlab.arturbosch.detekt") version "1.15.0"""",

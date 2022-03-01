@@ -25,6 +25,7 @@ import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.createSafely
+import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -105,7 +106,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -156,7 +157,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -197,7 +198,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -244,7 +245,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 
   @Test
@@ -322,10 +323,11 @@ internal class DepthReportTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
           :lib2
-                 dependency    name                source    build file
-              ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
+                 configuration     dependency    name                source    build file
+              ✔  implementation    :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
 
       -- ModuleCheck main source set depth results --
           depth    modules
@@ -333,7 +335,7 @@ internal class DepthReportTest : RunnerTest() {
           1        [:app]
 
       ModuleCheck found 1 issue
-        """
+    """
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -350,7 +352,7 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            0        []
 
-      """
+    """
   }
 
   @Test
@@ -407,6 +409,6 @@ internal class DepthReportTest : RunnerTest() {
           source set      depth    most expensive dependencies
           main            1        [:lib1]
 
-      """
+    """
   }
 }

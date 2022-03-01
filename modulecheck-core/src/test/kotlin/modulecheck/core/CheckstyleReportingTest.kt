@@ -54,6 +54,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
@@ -94,6 +95,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
@@ -108,12 +110,13 @@ internal class CheckstyleReportingTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="buildFile">
-		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
-"""
+    outputFile.readText() shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      	<file name="buildFile">
+      		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      	</file>
+      </checkstyle>
+    """
   }
 }

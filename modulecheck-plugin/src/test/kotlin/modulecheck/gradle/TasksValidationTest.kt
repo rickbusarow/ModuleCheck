@@ -47,9 +47,7 @@ class TasksValidationTest : BasePluginTest() {
       projectDir.child("settings.gradle.kts").createSafely()
     }
 
-    shouldSucceed("mcTasks")
-      .withTrimmedMessage(
-        """
+    shouldSucceed("mcTasks") withTrimmedMessage """
         moduleCheck - runs all enabled ModuleCheck rules
         moduleCheckAuto - runs all enabled ModuleCheck rules with auto-correct
         moduleCheckDepths - The longest path between this module and its leaf nodes
@@ -58,7 +56,6 @@ class TasksValidationTest : BasePluginTest() {
         moduleCheckSortDependenciesAuto - Sorts all dependencies within a dependencies { ... } block
         moduleCheckSortPlugins - Sorts Gradle plugins which are applied using the plugins { ... } block
         moduleCheckSortPluginsAuto - Sorts Gradle plugins which are applied using the plugins { ... } block
-        """
-      )
+    """
   }
 }

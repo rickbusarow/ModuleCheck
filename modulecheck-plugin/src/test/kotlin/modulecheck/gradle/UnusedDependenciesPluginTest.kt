@@ -165,7 +165,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
             RawFile(
               "AndroidManifest.xml",
               """<manifest package="com.example.app" />
-                """.trimMargin()
+              """.trimMargin()
             )
           )
         }
@@ -185,7 +185,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
               """<resources>
                 |  <string name="app_name" translatable="false">MyApp</string>
                 |</resources>
-                """.trimMargin()
+              """.trimMargin()
             )
           )
         }
@@ -234,7 +234,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
           |    .configureEach { dependsOn(makeFile)}
           |
           |}
-          """.trimMargin()
+            """.trimMargin()
           )
         }
       )

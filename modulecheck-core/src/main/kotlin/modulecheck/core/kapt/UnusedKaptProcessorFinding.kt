@@ -15,6 +15,7 @@
 
 package modulecheck.core.kapt
 
+import modulecheck.api.finding.ConfigurationFinding
 import modulecheck.api.finding.DependencyFinding
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
@@ -38,11 +39,12 @@ data class UnusedKaptProcessorFinding(
   override val dependentPath: String,
   override val buildFile: File,
   override val oldDependency: ConfiguredDependency,
-  val configurationName: ConfigurationName
+  override val configurationName: ConfigurationName
 ) : Finding,
   Problem,
   Fixable,
   DependencyFinding,
+  ConfigurationFinding,
   RemovesDependency {
 
   override val message: String
@@ -54,7 +56,7 @@ data class UnusedKaptProcessorFinding(
     is ExternalDependency -> oldDependency.name
   }
 
-  override val findingName = "unusedKaptProcessor (${configurationName.value})"
+  override val findingName = "unusedKaptProcessor"
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     when (oldDependency) {

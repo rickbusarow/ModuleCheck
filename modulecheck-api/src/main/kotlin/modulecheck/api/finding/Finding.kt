@@ -38,6 +38,7 @@ interface Finding {
       dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = null,
+      configurationName = "",
       dependencyPath = "",
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
@@ -60,6 +61,7 @@ interface Finding {
     val dependentPath: String,
     val problemName: String,
     val sourceOrNull: String?,
+    val configurationName: String,
     val dependencyPath: String,
     val positionOrNull: Position?,
     val buildFile: File,
@@ -76,7 +78,13 @@ interface DependencyFinding {
   val statementTextOrNull: LazyDeferred<String?>
 }
 
-interface ProjectDependencyFinding {
-  val dependencyProject: McProject
+interface ConfigurationFinding {
+
   val configurationName: ConfigurationName
+}
+
+interface ProjectDependencyFinding : ConfigurationFinding {
+  val dependencyProject: McProject
+
+  override val configurationName: ConfigurationName
 }

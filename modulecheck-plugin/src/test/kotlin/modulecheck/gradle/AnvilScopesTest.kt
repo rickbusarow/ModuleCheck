@@ -62,15 +62,16 @@ class AnvilScopesTest : BasePluginTest() {
           addRawFile(
             "Lib2FooImpl.kt",
             """package com.example.lib2
-                |
-                |import com.example.lib1.Lib1Class
-                |import com.squareup.anvil.annotations.ContributesBinding
-                |
-                |@ContributesBinding(Lib1Class::class)
-                |public class Lib2FooImpl : Foo
-                |
-                |interface Foo
-            |""".trimMargin()
+            |
+            |import com.example.lib1.Lib1Class
+            |import com.squareup.anvil.annotations.ContributesBinding
+            |
+            |@ContributesBinding(Lib1Class::class)
+            |public class Lib2FooImpl : Foo
+            |
+            |interface Foo
+            |
+            """.trimMargin()
           )
         }
       )
@@ -97,7 +98,8 @@ class AnvilScopesTest : BasePluginTest() {
             |
             |@MergeComponent(Lib1Class::class)
             |public interface AppComponent
-                |""".trimMargin()
+            |
+            """.trimMargin()
           )
         }
       )
@@ -127,15 +129,16 @@ class AnvilScopesTest : BasePluginTest() {
           addRawFile(
             "AppComponent.kt",
             """package com.example.lib2
-                |
-                |import com.example.lib1.Lib1Class
-                |import com.squareup.anvil.annotations.ContributesBinding
-                |
-                |@ContributesBinding(scope = Lib1Class::class)
-                |public class Lib2FooImpl : Foo
-                |
-                |interface Foo
-            |""".trimMargin()
+            |
+            |import com.example.lib1.Lib1Class
+            |import com.squareup.anvil.annotations.ContributesBinding
+            |
+            |@ContributesBinding(scope = Lib1Class::class)
+            |public class Lib2FooImpl : Foo
+            |
+            |interface Foo
+            |
+            """.trimMargin()
           )
         }
       )
@@ -161,7 +164,8 @@ class AnvilScopesTest : BasePluginTest() {
             |
             |@MergeComponent(Lib1Class::class)
             |public interface AppComponent
-                |""".trimMargin()
+            |
+            """.trimMargin()
           )
         }
       )
@@ -394,10 +398,12 @@ class AnvilScopesTest : BasePluginTest() {
     }
       .writeIn(testProjectDir.toPath())
 
-    shouldFail("moduleCheck") withTrimmedMessage """:app
-           dependency    name                source    build file
-        X  :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+    shouldFail("moduleCheck") withTrimmedMessage """
+    :app
+               configuration    dependency    name                source    build file
+            X  api              :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
 
-ModuleCheck found 1 issue"""
+    ModuleCheck found 1 issue
+    """
   }
 }

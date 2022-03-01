@@ -15,13 +15,13 @@
 
 package modulecheck.reporting.checkstyle
 
-import io.kotest.matchers.shouldBe
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CheckstyleReporterTest {
+internal class CheckstyleReporterTest : BaseTest() {
 
   @Test
   fun `empty result list should create checkstyle xml with no child attributes`() {
@@ -30,10 +30,11 @@ internal class CheckstyleReporterTest {
 
     println("`$result`")
 
-    result shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-</checkstyle>
-"""
+    result shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      </checkstyle>
+    """
   }
 
   @Test
@@ -45,6 +46,7 @@ internal class CheckstyleReporterTest {
           dependentPath = "dependentPath",
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
+          configurationName = "configurationName",
           dependencyPath = "dependencyPath",
           positionOrNull = Position(1, 2),
           buildFile = File("buildFile"),
@@ -56,13 +58,14 @@ internal class CheckstyleReporterTest {
 
     println("`$result`")
 
-    result shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="buildFile">
-		<error line="1" column="2" severity="error" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
-"""
+    result shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      	<file name="buildFile">
+      		<error line="1" column="2" severity="error" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      	</file>
+      </checkstyle>
+    """
   }
 
   @Test
@@ -74,6 +77,7 @@ internal class CheckstyleReporterTest {
           dependentPath = "dependentPath",
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
+          configurationName = "configurationName",
           dependencyPath = "dependencyPath",
           positionOrNull = Position(1, 2),
           buildFile = File("buildFile"),
@@ -85,13 +89,14 @@ internal class CheckstyleReporterTest {
 
     println("`$result`")
 
-    result shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="buildFile">
-		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
-"""
+    result shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      	<file name="buildFile">
+      		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      	</file>
+      </checkstyle>
+    """
   }
 
   @Test
@@ -103,6 +108,7 @@ internal class CheckstyleReporterTest {
           dependentPath = "lib1/build.gradle.kts",
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
+          configurationName = "configurationName",
           dependencyPath = "path1",
           positionOrNull = Position(1, 2),
           buildFile = File("lib1/build.gradle.kts"),
@@ -113,6 +119,7 @@ internal class CheckstyleReporterTest {
           dependentPath = "lib1/build.gradle.kts",
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
+          configurationName = "configurationName",
           dependencyPath = "path2",
           positionOrNull = Position(2, 2),
           buildFile = File("lib1/build.gradle.kts"),
@@ -123,6 +130,7 @@ internal class CheckstyleReporterTest {
           dependentPath = "lib2/build.gradle.kts",
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
+          configurationName = "configurationName",
           dependencyPath = "path1",
           positionOrNull = Position(1, 2),
           buildFile = File("lib2/build.gradle.kts"),
@@ -134,16 +142,17 @@ internal class CheckstyleReporterTest {
 
     println("`$result`")
 
-    result shouldBe """<?xml version="1.0" encoding="UTF-8"?>
-<checkstyle version="4.3">
-	<file name="lib1/build.gradle.kts">
-		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
-		<error line="2" column="2" severity="info" dependency="path2" message="message" source="modulecheck.problemName" />
-	</file>
-	<file name="lib2/build.gradle.kts">
-		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
-	</file>
-</checkstyle>
-"""
+    result shouldBe """
+      <?xml version="1.0" encoding="UTF-8"?>
+      <checkstyle version="4.3">
+      	<file name="lib1/build.gradle.kts">
+      		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
+      		<error line="2" column="2" severity="info" dependency="path2" message="message" source="modulecheck.problemName" />
+      	</file>
+      	<file name="lib2/build.gradle.kts">
+      		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
+      	</file>
+      </checkstyle>
+    """
   }
 }

@@ -42,6 +42,17 @@ data class ConfiguredProjectDependency(
     result = 31 * result + project.hashCode()
     return result
   }
+
+  override fun toString(): String {
+
+    val declaration = if (isTestFixture) {
+      "${configurationName.value}(testFixtures(project(path = \"$path\")))"
+    } else {
+      "${configurationName.value}(project(path = \"$path\"))"
+    }
+
+    return "ConfiguredProjectDependency( $declaration )"
+  }
 }
 
 data class TransitiveProjectDependency(
@@ -50,8 +61,9 @@ data class TransitiveProjectDependency(
 ) {
   override fun toString(): String {
     return """TransitiveProjectDependency(
-      |  source=$source
+      |       source=$source
       |  contributed=$contributed
-      |)""".trimMargin()
+      |)
+    """.trimMargin()
   }
 }

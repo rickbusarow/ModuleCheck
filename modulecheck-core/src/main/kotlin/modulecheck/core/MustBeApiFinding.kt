@@ -85,6 +85,7 @@ data class MustBeApiFinding(
       |   configurationName=$configurationName,
       |   source=$source,
       |   dependencyIdentifier='$dependencyIdentifier'
-      |)""".trimMargin()
+      |)
+    """.trimMargin()
   }
 }

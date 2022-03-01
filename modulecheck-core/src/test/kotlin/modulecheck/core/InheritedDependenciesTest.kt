@@ -20,6 +20,10 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
+import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
+import modulecheck.runtime.test.ProjectFindingReport.overshot
+import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
@@ -117,17 +121,19 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                X  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = false,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -210,9 +216,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
 
     lib3.buildFile.readText() shouldBe """
         plugins {
@@ -222,7 +226,7 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """
+    """
   }
 
   @Test
@@ -285,9 +289,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -297,7 +299,7 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
   }
 
   @Test
@@ -384,17 +386,19 @@ class InheritedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -482,17 +486,19 @@ class InheritedDependenciesTest : RunnerTest() {
           "internalImplementation"(project(path = ":lib1"))
           "internalApi"(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "internalImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -590,17 +596,19 @@ class InheritedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -697,17 +705,19 @@ class InheritedDependenciesTest : RunnerTest() {
           "internalImplementation"(project(path = ":lib1"))
           api(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "internalImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -795,17 +805,19 @@ class InheritedDependenciesTest : RunnerTest() {
           internalImplementation(project(path = ":lib1"))
           internalImplementation(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "internalImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -881,9 +893,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
 
     lib1.buildFile.readText() shouldBe """
         plugins {
@@ -893,7 +903,7 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib2"))
         }
-        """
+    """
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -903,7 +913,7 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testApi(project(path = ":lib1"))
         }
-        """
+    """
   }
 
   @Test
@@ -990,17 +1000,19 @@ class InheritedDependenciesTest : RunnerTest() {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1087,17 +1099,19 @@ class InheritedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
           implementation(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1214,23 +1228,41 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib2"))
           testImplementation(project(path = ":lib3"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-                ✔  :lib2         unusedDependency                 /lib3/build.gradle.kts: (6, 3):
-
-            :lib4
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib3     /lib4/build.gradle.kts: (6, 3):
-                ✔  :lib2         inheritedDependency    :lib3     /lib4/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 4 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        ),
+        unusedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib2",
+          position = "6, 3"
+        )
+      ),
+      ":lib4" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = ":lib3",
+          position = "6, 3"
+        ),
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib2",
+          source = ":lib3",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1331,17 +1363,19 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib1")))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1431,17 +1465,19 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib1")))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib3
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1531,22 +1567,33 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(testFixtures(project(path = ":lib1")))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-             :lib2
-                    dependency    name                source    build file
-                 ✔  :lib1         overshot                      /lib2/build.gradle.kts:
-                 ✔  :lib1         unusedDependency              /lib2/build.gradle.kts: (6, 3):
-
-             :lib3
-                    dependency    name                   source    build file
-                 ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-         ModuleCheck found 3 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "testFixturesImplementation",
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      ),
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1635,17 +1682,19 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-             :lib3
-                    dependency    name                   source    build file
-                 ✔  :lib1         inheritedDependency    :lib2     /lib3/build.gradle.kts: (6, 3):
-
-         ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1718,17 +1767,19 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 1 issue
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          source = null,
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1801,18 +1852,25 @@ class InheritedDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
           api(testFixtures(project(path = ":lib1")))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :lib2
-                   dependency    name                   source    build file
-                ✔  :lib1         inheritedDependency              /lib2/build.gradle.kts: (6, 3):
-                ✔  :lib1         mustBeApi                        /lib2/build.gradle.kts: (6, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = null,
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -1872,11 +1930,9 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -1967,10 +2023,8 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
           testImplementation(project(path = ":lib2"))
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """ModuleCheck found 0 issues"""
+    logger.parsedReport() shouldBe listOf()
   }
 }

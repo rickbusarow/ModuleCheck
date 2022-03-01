@@ -20,6 +20,8 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
+import modulecheck.runtime.test.ProjectFindingReport.unusedKaptProcessor
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
@@ -74,18 +76,23 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kapt("$dagger")
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-            :app
-                   dependency                           name                          source    build file
-                X  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
-                X  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
-
-        ModuleCheck found 2 issues
-        """
+    logger.parsedReport() shouldBe listOf(
+      ":app" to listOf(
+        unusedKaptProcessor(
+          fixed = false,
+          configuration = "kapt",
+          dependency = "com.google.dagger:dagger-compiler",
+          position = "7, 3"
+        ),
+        unusedKaptPlugin(
+          fixed = false,
+          dependency = "org.jetbrains.kotlin.kapt",
+          position = "3, 3"
+        )
+      )
+    )
   }
 
   @Test
@@ -126,11 +133,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           api("$dagger")
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe "ModuleCheck found 0 issues"
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -181,11 +186,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kapt("$dagger")
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe "ModuleCheck found 0 issues"
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -237,11 +240,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
         dependencies {
           kaptTest("$dagger")
         }
-        """
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe "ModuleCheck found 0 issues"
+    logger.parsedReport() shouldBe listOf()
   }
 
   @Test
@@ -274,25 +275,30 @@ class UnusedKaptProcessorTest : RunnerTest() {
     runner.run(allProjects()).isSuccess shouldBe true
 
     app.buildFile.readText() shouldBe """
-        plugins {
-          kotlin("jvm")
-          // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]
-        }
+      plugins {
+        kotlin("jvm")
+        // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]
+      }
 
-        dependencies {
-          // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor (kapt)]
-        }
-        """
+      dependencies {
+        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor]
+      }
+    """
 
-    logger.collectReport()
-      .joinToString()
-      .clean() shouldBe """
-          :app
-                 dependency                           name                          source    build file
-              ✔  com.google.dagger:dagger-compiler    unusedKaptProcessor (kapt)              /app/build.gradle.kts: (7, 3):
-              ✔  org.jetbrains.kotlin.kapt            unusedKaptPlugin                        /app/build.gradle.kts: (3, 3):
-
-      ModuleCheck found 2 issues
-      """
+    logger.parsedReport() shouldBe listOf(
+      ":app" to listOf(
+        unusedKaptProcessor(
+          fixed = true,
+          configuration = "kapt",
+          dependency = "com.google.dagger:dagger-compiler",
+          position = "7, 3"
+        ),
+        unusedKaptPlugin(
+          fixed = true,
+          dependency = "org.jetbrains.kotlin.kapt",
+          position = "3, 3"
+        )
+      )
+    )
   }
 }

@@ -36,7 +36,7 @@ abstract class BaseTest : HermitJUnit5() {
       .let { it.canonicalName.removePrefix(it.packageName + ".") }
       .split(".")
       .joinToString("/")
-      .replace("[^a-zA-Z0-9/]".toRegex(), "_")
+      .replace("[^a-zA-Z\\d/]".toRegex(), "_")
 
     val testName = testInfo.testMethod.get().name
       .replace("[^a-zA-Z0-9]".toRegex(), "_")
@@ -71,7 +71,7 @@ abstract class BaseTest : HermitJUnit5() {
           "or //noinspection <the name of the issue> in Groovy.",
         "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
       )
-      .remove("in [\\d\\.]+ seconds\\.".toRegex())
+      .remove("in [\\d.]+ seconds\\.".toRegex())
       .trimEnd()
       .trimStart('\n')
   }
@@ -114,7 +114,7 @@ abstract class BaseTest : HermitJUnit5() {
 
   companion object {
     protected val durationSuffixRegex =
-      "(ModuleCheck found [\\d]+ issues?) in [\\d\\.]+ seconds\\.[\\s\\S]*".toRegex()
+      "(ModuleCheck found \\d+ issues?) in [\\d.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }
 
@@ -133,7 +133,10 @@ infix fun <T, U : T> T.trimmedShouldBe(expected: U?) {
     @Suppress("MagicNumber")
     assertionError.stackTrace = assertionError
       .stackTrace
-      .filterNot { it.className == BaseTest::class.qualifiedName }
+      .dropWhile {
+        it.className == BaseTest::class.qualifiedName ||
+          it.className == "${BaseTest::class.qualifiedName}Kt"
+      }
       .take(5) // keep stack traces short
       .toTypedArray()
     throw assertionError

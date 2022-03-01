@@ -19,6 +19,7 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.api.finding.Finding
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -36,7 +37,8 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe "ModuleCheck found 0 issues"
+      .clean()
+      .remove("\u200B") shouldBe "ModuleCheck found 0 issues"
   }
 
   @Test
@@ -58,10 +60,11 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
           :lib1
-                 dependency                           name                 source    build file
-              X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+                 configuration    dependency                           name                 source    build file
+              X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
     """
@@ -90,14 +93,15 @@ internal class ConsoleReportingTest : RunnerTest() {
 
     logger.collectReport()
       .joinToString()
-      .clean() shouldBe """
+      .clean()
+      .remove("\u200B") shouldBe """
         :lib1
-               dependency                           name                 source    build file
-            X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+               configuration    dependency                           name                 source    build file
+            X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
 
         :lib2
-               dependency                           name                 source    build file
-            X  com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
+               configuration    dependency                           name                 source    build file
+            X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
 
     ModuleCheck found 2 issues
     """
@@ -158,6 +162,7 @@ internal class ConsoleReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
@@ -190,6 +195,7 @@ internal class ConsoleReportingTest : RunnerTest() {
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
+            configurationName = "configurationName",
             dependencyPath = "dependencyPath",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),

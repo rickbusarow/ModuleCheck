@@ -125,6 +125,6 @@ internal class GraphReportTaskTest : BasePluginTest() {
         {rank = same; ":lib2";}
         {rank = same; ":app";}
       }
-      """
+    """
   }
 }

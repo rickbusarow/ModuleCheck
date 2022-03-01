@@ -129,7 +129,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     return value.compareTo(other.value)
   }
 
-  override fun toString(): String = "ConfigurationName('$value')"
+  override fun toString(): String = "`$value`"
 
   companion object {
 

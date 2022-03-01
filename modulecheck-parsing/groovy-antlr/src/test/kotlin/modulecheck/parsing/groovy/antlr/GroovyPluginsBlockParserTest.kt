@@ -42,7 +42,8 @@ internal class GroovyPluginsBlockParserTest {
       PluginDeclaration(
         declarationText = """id 'com.squareup.anvil' version '2.34.0'""",
         statementWithSurroundingText = """  // comment
-          |  id 'com.squareup.anvil' version '2.34.0'""".trimMargin()
+          |  id 'com.squareup.anvil' version '2.34.0'
+        """.trimMargin()
       ),
     )
   }

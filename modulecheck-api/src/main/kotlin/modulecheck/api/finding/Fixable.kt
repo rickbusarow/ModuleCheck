@@ -18,6 +18,7 @@ package modulecheck.api.finding
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.utils.safeAs
 
 interface Problem :
   Finding,
@@ -34,6 +35,7 @@ interface Problem :
       dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = null,
+      configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
       dependencyPath = dependencyIdentifier,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
