@@ -43,7 +43,7 @@ internal class KotlinFileTest : ProjectTest() {
       class InjectClass @javax.inject.Inject constructor(
         val lib1Class: Lib1Class
       )
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldBe listOf(
@@ -68,7 +68,7 @@ internal class KotlinFileTest : ProjectTest() {
           this.lib1Class = lib1Class
         }
       }
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldBe listOf(
@@ -89,7 +89,7 @@ internal class KotlinFileTest : ProjectTest() {
       class InjectClass @Inject constructor(
         val lib1Class: Lib1Class
       )
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldBe listOf(
@@ -110,7 +110,7 @@ internal class KotlinFileTest : ProjectTest() {
       class InjectClass @Inject constructor(
         val lib1Class: Lib1Class
       )
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldContainExactlyInAnyOrder listOf(
@@ -156,7 +156,7 @@ internal class KotlinFileTest : ProjectTest() {
           this.lib1Class = lib1Class
         }
       }
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldBe listOf(
@@ -181,7 +181,7 @@ internal class KotlinFileTest : ProjectTest() {
 
         constructor(lib1Class: Lib1Class, other: FqName) : this(lib1Class)
       }
-    """
+      """
     )
 
     file.constructorInjectedParams.await() shouldBe listOf(
@@ -205,7 +205,7 @@ internal class KotlinFileTest : ProjectTest() {
           viewEffect(resourceProvider.getString(R.string.playstore_url))
         }
       }
-    """
+        """
       )
 
       file.apiReferences.await() shouldBe listOf("androidx.lifecycle.ViewModel")
@@ -227,7 +227,7 @@ internal class KotlinFileTest : ProjectTest() {
           googleApiKey = getString(R.string.google_places_api_key),
         )
       }
-    """
+        """
       )
 
       file.apiReferences.await() shouldBe listOf("com.lib.Config")
@@ -247,7 +247,7 @@ internal class KotlinFileTest : ProjectTest() {
           googleApiKey = getString(R.string.google_places_api_key),
         )
       }
-    """
+        """
       )
 
       file.apiReferences.await() shouldBe listOf("com.lib.Config", "com.test.com.lib.Config")
@@ -269,7 +269,7 @@ internal class KotlinFileTest : ProjectTest() {
           googleApiKey = getString(R.string.google_places_api_key),
         )
       }
-    """
+        """
       )
 
       file.apiReferences.await() shouldBe setOf()
@@ -291,7 +291,7 @@ internal class KotlinFileTest : ProjectTest() {
           googleApiKey = getString(R.string.google_places_api_key),
         )
       }
-    """
+        """
       )
 
       file.apiReferences.await() shouldBe listOf("com.lib.Config")

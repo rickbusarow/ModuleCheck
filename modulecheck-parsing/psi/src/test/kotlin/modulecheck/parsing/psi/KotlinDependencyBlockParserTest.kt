@@ -36,7 +36,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
        dependencies {
           api("com.foo:bar:1.2.3.4")
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -59,7 +59,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
        dependencies {
          "api"(project(path = ":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -82,7 +82,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api(project(":core:jvm")) // trailing comment
           api(project(":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
@@ -114,7 +114,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api(project(":core:jvm"))
           testImplementation(project(":core:test"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -157,7 +157,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api(project(":core:jvm"))
           testImplementation(project(":core:test"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -196,7 +196,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
        dependencies {
           api(testFixtures(project(":core:jvm")))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -218,7 +218,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
        dependencies {
           api(testFixtures(projects.core.jvm))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -244,7 +244,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
           api(project(":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
@@ -256,7 +256,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           |     exclude(group = "androidx.appcompat")
           |   }
         """.trimMargin(),
-        statementWithSurroundingText = """   api(project(":core:test")) {
+        statementWithSurroundingText = """
+          |   api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
           |   }
         """.trimMargin()
@@ -286,7 +287,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
             exclude(group = "androidx.appcompat")
           }
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
@@ -299,7 +300,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           |   }
         """.trimMargin(),
         statementWithSurroundingText = """
-          |
+
           |   api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
           |   }
@@ -328,7 +329,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
           api(project(":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
@@ -351,7 +352,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           implementation(project(":core:jvm"))
           api(project(":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
@@ -386,7 +387,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           // single-line comment
           implementation(project(":core:android"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
@@ -396,8 +397,10 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """
-   // single-line comment
-   implementation(project(":core:android"))"""
+
+       |   // single-line comment
+       |   implementation(project(":core:android"))
+        """.trimMargin()
       )
     )
   }
@@ -415,7 +418,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           */
           implementation(project(":core:android"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
@@ -425,10 +428,12 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """
-   /*
-   block comment
-   */
-   implementation(project(":core:android"))"""
+
+        |   /*
+        |   block comment
+        |   */
+        |   implementation(project(":core:android"))
+        """.trimMargin()
       )
     )
   }
@@ -442,7 +447,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api("com.foo:bar:1.2.3.4") // inline comment
           /* single-line block comment */ implementation(project(":core:android"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
@@ -465,7 +470,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api(project(":core:jvm"))
           api (   project(":core:jvm"))
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
@@ -495,7 +500,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
           api(projects.core.test)
           implementation(projects.httpLogging)
        }
-        """.trimIndent()
+        """
       ).single()
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
@@ -524,24 +529,25 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
     val block = KotlinDependencyBlockParser()
       .parse(
         """
-        |buildscript {
-        |  repositories {
-        |    mavenCentral()
-        |    google()
-        |    jcenter()
-        |    maven("https://plugins.gradle.org/m2/")
-        |    maven("https://oss.sonatype.org/content/repositories/snapshots")
-        |  }
-        |  dependencies {
-        |    classpath("com.android.tools.build:gradle:7.0.2")
-        |    classpath("com.squareup.anvil:gradle-plugin:2.3.4")
-        |    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
-        |  }
-        |}
-        |dependencies {
-        |  api(libs.ktlint)
-        |}
-        |""".trimMargin()
+        buildscript {
+          repositories {
+            mavenCentral()
+            google()
+            jcenter()
+            maven("https://plugins.gradle.org/m2/")
+            maven("https://oss.sonatype.org/content/repositories/snapshots")
+          }
+          dependencies {
+            classpath("com.android.tools.build:gradle:7.0.2")
+            classpath("com.squareup.anvil:gradle-plugin:2.3.4")
+            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30")
+          }
+        }
+        dependencies {
+          api(libs.ktlint)
+        }
+
+        """
       ).single()
 
     block.settings shouldBe listOf(
@@ -556,6 +562,6 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   fun KotlinDependencyBlockParser.parse(
     string: String,
-    project: McProject = simpleProject(buildFileText = string)
+    project: McProject = simpleProject(buildFileText = string.trimIndent())
   ): List<KotlinDependenciesBlock> = runBlocking { parse(project) }
 }
