@@ -95,7 +95,7 @@ internal class DepthReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -142,7 +142,7 @@ internal class DepthReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -187,7 +187,7 @@ internal class DepthReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -230,7 +230,7 @@ internal class DepthReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -337,7 +337,7 @@ internal class DepthReportTest : RunnerTest() {
       ModuleCheck found 1 issue
     """
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -389,7 +389,7 @@ internal class DepthReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app

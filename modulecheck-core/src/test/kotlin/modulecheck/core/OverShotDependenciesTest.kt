@@ -83,7 +83,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -159,7 +159,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -235,7 +235,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -312,7 +312,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -389,7 +389,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -486,7 +486,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -586,7 +586,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -691,7 +691,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }

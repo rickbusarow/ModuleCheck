@@ -67,7 +67,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -124,7 +124,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -177,7 +177,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -231,7 +231,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -274,7 +274,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]

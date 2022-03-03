@@ -94,7 +94,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    app.graphFile().readText() shouldBe """
+    app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -139,7 +139,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    lib1.graphFile().readText() shouldBe """
+    lib1.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -207,7 +207,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    app.graphFile().readText() shouldBe """
+    app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -227,7 +227,7 @@ internal class GraphVizReportTest : RunnerTest() {
       }
     """
 
-    app.graphFile("test").readText() shouldBe """
+    app.graphFile("test") shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -251,7 +251,7 @@ internal class GraphVizReportTest : RunnerTest() {
       }
     """
 
-    lib1.graphFile("test").readText() shouldBe """
+    lib1.graphFile("test") shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -303,7 +303,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     result.isSuccess shouldBe true
 
-    app.graphFile().readText() shouldBe """
+    app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];
@@ -323,7 +323,7 @@ internal class GraphVizReportTest : RunnerTest() {
       }
     """
 
-    app.graphFile("debug").readText() shouldBe """
+    app.graphFile("debug") shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];

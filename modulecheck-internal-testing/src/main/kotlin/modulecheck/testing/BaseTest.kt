@@ -100,6 +100,11 @@ abstract class BaseTest : HermitJUnit5() {
     testProjectDir.deleteRecursively()
   }
 
+  infix fun File.shouldHaveText(expected: String) {
+
+    readText() shouldBe expected
+  }
+
   infix fun String.shouldBe(expected: String) {
 
     val actualClean = prefixIfNot("\n").trimIndent()

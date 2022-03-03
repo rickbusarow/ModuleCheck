@@ -64,7 +64,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -114,7 +114,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -166,7 +166,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -218,7 +218,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -263,7 +263,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -308,7 +308,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -360,7 +360,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -411,7 +411,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -465,7 +465,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -520,7 +520,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -577,7 +577,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -653,7 +653,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -718,7 +718,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -791,7 +791,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -857,7 +857,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -921,7 +921,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -986,7 +986,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1039,7 +1039,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1115,7 +1115,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1178,7 +1178,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1253,7 +1253,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -1323,7 +1323,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     runner.run(allProjects()).isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           id("com.squareup.anvil")
