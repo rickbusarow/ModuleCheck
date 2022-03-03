@@ -32,6 +32,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
+import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.task.GradleLogger
@@ -105,7 +106,7 @@ class GradleProjectProvider @AssistedInject constructor(
     val externalDependencies = gradleProject.externalDependencies()
 
     val hasKapt = gradleProject
-      .plugins
+      .pluginManager
       .hasPlugin(KAPT_PLUGIN_ID)
 
     val androidTestedExtension = gradleProject
@@ -122,6 +123,10 @@ class GradleProjectProvider @AssistedInject constructor(
       .pluginManager
       .hasPlugin(TEST_FIXTURES_PLUGIN_ID) || androidTestedExtension?.testFixtures?.enable == true
 
+    val hasKotlinAndroidExtensions = gradleProject
+      .pluginManager
+      .hasPlugin(KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID)
+
     return if (isAndroid) {
       RealAndroidMcProject(
         path = path,
@@ -135,6 +140,7 @@ class GradleProjectProvider @AssistedInject constructor(
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
         viewBindingEnabled = androidTestedExtension?.buildFeatures?.viewBinding == true,
+        kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
