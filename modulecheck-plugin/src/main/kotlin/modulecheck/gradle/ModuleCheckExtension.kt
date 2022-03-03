@@ -20,6 +20,7 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DEPTHS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.INHERITED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.MUST_BE_API_DEFAULT
@@ -131,6 +132,9 @@ open class ChecksExtension @Inject constructor(
     DISABLE_ANDROID_RESOURCES_DEFAULT
   )
   override var disableViewBinding: Boolean by objects.property(DISABLE_VIEW_BINDING_DEFAULT)
+  override var disableKotlinAndroidExtensions: Boolean by objects.property(
+    DISABLE_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
+  )
   override var depths: Boolean by objects.property(DEPTHS_DEFAULT)
 }
 

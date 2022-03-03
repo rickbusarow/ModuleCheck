@@ -93,5 +93,6 @@ fun McProject.isAndroid(): Boolean {
 interface AndroidMcProject : McProject {
   val androidResourcesEnabled: Boolean
   val viewBindingEnabled: Boolean
+  val kotlinAndroidExtensionEnabled: Boolean
   val manifests: Map<SourceSetName, File>
 }

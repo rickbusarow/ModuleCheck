@@ -47,6 +47,7 @@ class RealAndroidMcProject(
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val androidResourcesEnabled: Boolean,
   override val viewBindingEnabled: Boolean,
+  override val kotlinAndroidExtensionEnabled: Boolean,
   override val manifests: Map<SourceSetName, File>,
   override val logger: Logger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,

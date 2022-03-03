@@ -43,6 +43,7 @@ class ConfigValidationTest : BasePluginTest() {
       "anvilFactoryGeneration",
       "depths",
       "disableAndroidResources",
+      "disableKotlinAndroidExtensions",
       "disableViewBinding",
       "inheritedDependency",
       "mustBeApi",
@@ -86,6 +87,7 @@ class ConfigValidationTest : BasePluginTest() {
             anvilFactoryGeneration = true  // default is true
             disableAndroidResources = false  // default is false
             disableViewBinding = false  // default is false
+            disableKotlinAndroidExtensions = false  // default is false
             depths = false  // default is false
           }
 
@@ -169,6 +171,7 @@ class ConfigValidationTest : BasePluginTest() {
             anvilFactoryGeneration = true  // default is true
             disableAndroidResources = false  // default is false
             disableViewBinding = false  // default is false
+            disableKotlinAndroidExtensions = false  // default is false
             depths = false  // default is false
           }
 

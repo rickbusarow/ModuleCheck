@@ -50,6 +50,7 @@ import java.io.File
 interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
   var androidResourcesEnabled: Boolean
   var viewBindingEnabled: Boolean
+  var kotlinAndroidExtensionEnabled: Boolean
   val manifests: MutableMap<SourceSetName, File>
 
   fun addResourceFile(
@@ -99,6 +100,7 @@ data class RealAndroidMcProjectBuilderScope(
   override var buildFile: File,
   override var androidResourcesEnabled: Boolean = true,
   override var viewBindingEnabled: Boolean = true,
+  override var kotlinAndroidExtensionEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, Config> = mutableMapOf(),
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
@@ -200,6 +202,7 @@ fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
     anvilGradlePlugin = anvilGradlePlugin,
     androidResourcesEnabled = androidResourcesEnabled,
     viewBindingEnabled = viewBindingEnabled,
+    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
     logger = PrintLogger(),
     jvmFileProviderFactory = jvmFileProviderFactory,

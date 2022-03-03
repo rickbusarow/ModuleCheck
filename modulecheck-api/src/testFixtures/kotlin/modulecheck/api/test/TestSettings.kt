@@ -53,6 +53,7 @@ data class TestChecksSettings(
   override var anvilFactoryGeneration: Boolean = ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT,
   override var disableAndroidResources: Boolean = ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT,
   override var disableViewBinding: Boolean = ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT,
+  override var disableKotlinAndroidExtensions: Boolean = ChecksSettings.DISABLE_KOTLIN_ANDROID_EXTENSIONS_DEFAULT,
   override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
 ) : ChecksSettings
 

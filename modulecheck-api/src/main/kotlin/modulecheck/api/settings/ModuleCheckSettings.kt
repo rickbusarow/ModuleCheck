@@ -97,6 +97,7 @@ interface ChecksSettings {
   var anvilFactoryGeneration: Boolean
   var disableAndroidResources: Boolean
   var disableViewBinding: Boolean
+  var disableKotlinAndroidExtensions: Boolean
   var depths: Boolean
 
   companion object {
@@ -112,6 +113,7 @@ interface ChecksSettings {
     const val ANVIL_FACTORY_GENERATION_DEFAULT = true
     const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
     const val DISABLE_VIEW_BINDING_DEFAULT = false
+    const val DISABLE_KOTLIN_ANDROID_EXTENSIONS_DEFAULT = false
     const val DEPTHS_DEFAULT = false
   }
 }
