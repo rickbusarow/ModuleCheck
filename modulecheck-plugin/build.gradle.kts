@@ -19,7 +19,6 @@ plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish") version "0.20.0"
   id("java-gradle-plugin")
-  `kotlin-dsl`
 }
 
 mcbuild {
