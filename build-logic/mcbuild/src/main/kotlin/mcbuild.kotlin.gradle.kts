@@ -19,9 +19,11 @@ plugins {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
   .configureEach {
-
     kotlinOptions {
       allWarningsAsErrors = false
+
+      languageVersion = "1.5"
+      apiVersion = "1.5"
 
       jvmTarget = "1.8"
 

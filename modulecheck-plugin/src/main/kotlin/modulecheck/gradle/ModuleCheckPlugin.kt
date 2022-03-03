@@ -29,10 +29,9 @@ import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
-import org.gradle.kotlin.dsl.configure
 
 fun Project.moduleCheck(config: ModuleCheckExtension.() -> Unit) {
-  extensions.configure(ModuleCheckExtension::class, config)
+  extensions.configure(ModuleCheckExtension::class.java, config)
 }
 
 typealias GradleProject = Project
@@ -89,25 +88,24 @@ class ModuleCheckPlugin : Plugin<Project> {
   ) {
 
     fun TaskProvider<*>.addDependencies() {
-      configure {
-
+      configure { mcTask ->
         allprojects
           .filter { it.isMissingManifestFile() }
           .flatMap { it.tasks.withType(ManifestProcessorTask::class.java) }
-          .forEach { dependsOn(it) }
+          .forEach { mcTask.dependsOn(it) }
 
         allprojects
           .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
-          .forEach { dependsOn(it) }
+          .forEach { mcTask.dependsOn(it) }
       }
     }
 
     tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
-      .also { if (doFirstAction != null) it.configure { doFirst { doFirstAction() } } }
+      .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
       .addDependencies()
     if (includeAuto) {
       tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
-        .also { if (doFirstAction != null) it.configure { doFirst { doFirstAction() } } }
+        .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
         .addDependencies()
     }
   }

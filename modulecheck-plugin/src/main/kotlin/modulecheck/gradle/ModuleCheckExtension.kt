@@ -50,7 +50,6 @@ import modulecheck.gradle.internal.setProperty
 import org.gradle.api.Action
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
-import org.gradle.kotlin.dsl.provideDelegate
 import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")

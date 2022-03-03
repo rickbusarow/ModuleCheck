@@ -19,7 +19,6 @@ import com.android.build.gradle.TestedExtension
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.findByType
 import java.io.File
 
 val Project.srcRoot get() = File("$projectDir/src")
@@ -40,10 +39,10 @@ fun createFile(
   File(path).writeText(text)
 }
 
-fun Project.isAndroid(): Boolean = extensions.findByType(TestedExtension::class) != null
+fun Project.isAndroid(): Boolean = extensions.findByType(TestedExtension::class.java) != null
 
 fun Project.testedExtensionOrNull(): TestedExtension? = extensions
-  .findByType(TestedExtension::class)
+  .findByType(TestedExtension::class.java)
 
 fun Project.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
   ?.sourceSets
