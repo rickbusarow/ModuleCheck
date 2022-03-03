@@ -84,6 +84,9 @@ sealed interface ProjectFindingReport {
   data class disableAndroidResources(override val fixed: Boolean, override val position: String?) :
     ProjectFindingReport
 
-  data class disableKotlinAndroidExtensions(override val fixed: Boolean, override val position: String?) :
+  data class disableKotlinAndroidExtensions(
+    override val fixed: Boolean,
+    override val position: String?
+  ) :
     ProjectFindingReport
 }
