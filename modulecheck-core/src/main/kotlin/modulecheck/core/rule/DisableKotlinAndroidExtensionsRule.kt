@@ -19,19 +19,20 @@ import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
-import modulecheck.core.rule.android.UnusedKotlinSyntheticImportsFinding
+import modulecheck.core.UnusedPluginFinding
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
+private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-extensions\")"
 
-class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedKotlinSyntheticImportsFinding> {
+class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
 
   override val id = "DisableKotlinAndroidExtensions"
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
-  override suspend fun check(project: McProject): List<UnusedKotlinSyntheticImportsFinding> {
+  override suspend fun check(project: McProject): List<UnusedPluginFinding> {
     val androidProject = project as? AndroidMcProject ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
@@ -48,8 +49,11 @@ class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedKotlinSynthetic
 
     return if (usedInProject) emptyList()
     else listOf(
-      UnusedKotlinSyntheticImportsFinding(
-        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
+      UnusedPluginFinding(
+        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile,
+        findingName = "disableKotlinAndroidExtensions",
+        pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
+        kotlinPluginFunction = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
       )
     )
   }
