@@ -33,11 +33,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `used ViewBinding in dependent module with no changes`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -80,7 +75,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -98,11 +95,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `used ViewBinding in contributing module`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -141,7 +133,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -159,11 +153,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `ViewBinding from main is used in debug source set`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -209,7 +198,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -227,11 +218,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `ViewBinding from debug with different base package is used in debug source set`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -275,7 +261,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -293,11 +281,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `ViewBinding from debug without different base package is used in debug source set`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -341,7 +324,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -362,11 +347,6 @@ class DisableViewBindingTest : RunnerTest() {
 
     settings.checks.disableViewBinding = false
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -393,7 +373,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -412,11 +394,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `unused ViewBinding without auto-correct should fail`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -443,7 +420,9 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe false
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -464,11 +443,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `unused ViewBinding when scoped and then qualified should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -484,7 +458,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -505,11 +479,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `unused ViewBinding without buildFeatures block should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -525,7 +494,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -547,11 +516,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `unused ViewBinding without android block should add android block under existing plugins block`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -563,7 +527,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -586,11 +550,6 @@ class DisableViewBindingTest : RunnerTest() {
   @Test
   fun `unused ViewBinding without android or plugins block should add android block above dependencies block`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -603,7 +562,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       apply(plugin = "com.android.library")
@@ -626,11 +585,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `unused ViewBinding when fully qualified should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -656,7 +610,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -674,11 +628,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `unused ViewBinding when fully scoped should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -708,7 +657,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
         plugins {
@@ -730,11 +679,6 @@ class DisableViewBindingTest : RunnerTest() {
 
   @Test
   fun `unused ViewBinding when qualified and then scoped should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -762,7 +706,7 @@ class DisableViewBindingTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
         plugins {

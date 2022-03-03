@@ -27,11 +27,6 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as api but used in test without auto-correct should fail`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
@@ -70,7 +65,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(autoCorrect = false).isSuccess shouldBe false
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -102,11 +97,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot as implementation but used in debug without auto-correct should fail`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -146,7 +136,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(autoCorrect = false).isSuccess shouldBe false
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -178,11 +168,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot as api but used in test with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -222,7 +207,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -255,11 +240,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot in android project as implementation but used in debug with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -299,7 +279,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -332,11 +312,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot in non-android as implementation but used in debug with auto-correct should be fixed with quotes`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -376,7 +351,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -409,11 +384,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot as api but used in test with another testFixture with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -473,7 +443,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile.readText() shouldBe """
         plugins {
@@ -507,11 +477,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot as api with config block and comment with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -573,7 +538,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile.readText() shouldBe """
         plugins {
@@ -613,11 +578,6 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot testFixture as api but used in test with another testFixture with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -678,7 +638,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile.readText() shouldBe """
         plugins {

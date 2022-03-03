@@ -52,34 +52,9 @@ abstract class RunnerTest : ProjectTest() {
   }
 
   @Suppress("LongParameterList")
-  fun runner(
-    autoCorrect: Boolean = true,
-    findingFactory: FindingFactory<out Finding> = this.findingFactory,
-    settings: ModuleCheckSettings = this.settings,
-    logger: Logger = this.logger,
-    projectProvider: ProjectProvider = this.projectProvider,
-    findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
-    reportFactory: ReportFactory = ReportFactory(),
-    checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
-    graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings, GraphvizFactory()),
-    dispatcherProvider: DispatcherProvider = DispatcherProvider()
-  ): ModuleCheckRunner = ModuleCheckRunner(
-    autoCorrect = autoCorrect,
-    settings = settings,
-    findingFactory = findingFactory,
-    logger = logger,
-    findingResultFactory = findingResultFactory,
-    reportFactory = reportFactory,
-    checkstyleReporter = checkstyleReporter,
-    graphvizFileWriter = graphvizFileWriter,
-    dispatcherProvider = dispatcherProvider,
-    projectProvider = projectProvider
-  )
-
-  @Suppress("LongParameterList")
   fun run(
     autoCorrect: Boolean = true,
-    strictResolution: Boolean = true,
+    strictResolution: Boolean = false,
     findingFactory: FindingFactory<out Finding> = this.findingFactory,
     settings: ModuleCheckSettings = this.settings,
     logger: Logger = this.logger,

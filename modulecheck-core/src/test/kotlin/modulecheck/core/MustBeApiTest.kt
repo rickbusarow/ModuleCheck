@@ -26,11 +26,6 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public property from implementation without auto-correct should fail`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
@@ -69,7 +64,9 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -95,11 +92,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public generic property from implementation without auto-correct should fail`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -139,7 +131,9 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -165,11 +159,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public property from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -209,7 +198,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -235,11 +224,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `private property from implementation with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -279,7 +263,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -296,11 +280,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `private property from implementation inside public class with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -342,7 +321,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -359,11 +338,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `internal property from implementation with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -403,7 +377,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -420,11 +394,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public property from dependency in test source should not require API`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -465,7 +434,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -482,11 +451,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `internal property in class from implementation with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -528,7 +492,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -545,11 +509,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `supertype from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -589,7 +548,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -615,11 +574,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `auto-correct should only replace the configuration invocation text`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":implementation") {
       addSource(
@@ -661,7 +615,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -689,11 +643,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `supertype of internal class from implementation with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -733,7 +682,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -750,11 +699,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public return type from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -794,7 +738,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -820,11 +764,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `internal return type from implementation with auto-correct should not be changed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -864,7 +803,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -881,11 +820,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public argument type from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -925,7 +859,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -951,11 +885,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public type argument from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -995,7 +924,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1021,11 +950,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public generic bound type from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1065,7 +989,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1091,11 +1015,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1133,7 +1052,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1159,11 +1078,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public public properties from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1218,7 +1132,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1251,11 +1165,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public supertypes from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1309,7 +1218,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1342,11 +1251,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public return types from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1401,7 +1305,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1434,11 +1338,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public argument types from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1493,7 +1392,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1526,11 +1425,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public type arguments from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1584,7 +1478,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {
@@ -1617,11 +1511,6 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `two public generic bound types from implementation with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1675,7 +1564,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile.readText() shouldBe """
         plugins {

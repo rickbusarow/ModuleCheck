@@ -266,9 +266,7 @@ class InheritedDependenciesTest : RunnerTest() {
     }
     lib1.addDependency(ConfigurationName.api, lib2)
 
-    run(
-      autoCorrect = false
-    ).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     logger.parsedReport() shouldBe listOf()
 

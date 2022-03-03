@@ -30,11 +30,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `unused from kapt configuration without autoCorrect should fail`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val app = project(":app") {
       hasKapt = true
 
@@ -54,7 +49,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
 
     app.buildFile.readText() shouldBe """
         plugins {
@@ -87,11 +84,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `unused from non-kapt configuration without autoCorrect should pass without changes`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val app = project(":app") {
       hasKapt = true
 
@@ -111,7 +103,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe true
 
     app.buildFile.readText() shouldBe """
         plugins {
@@ -129,11 +123,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
   @Test
   fun `used in main with main kapt should pass without changes`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val app = project(":app") {
       hasKapt = true
@@ -164,7 +153,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe true
 
     app.buildFile.readText() shouldBe """
         plugins {
@@ -182,11 +173,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
   @Test
   fun `used in test with test kapt should pass without changes`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val app = project(":app") {
       hasKapt = true
@@ -218,7 +204,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe true
 
     app.buildFile.readText() shouldBe """
         plugins {
@@ -236,11 +224,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
   @Test
   fun `unused with main kapt with autoCorrect and no other processors should remove processor and plugin`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val app = project(":app") {
       hasKapt = true
@@ -261,7 +244,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     app.buildFile.readText() shouldBe """
       plugins {
