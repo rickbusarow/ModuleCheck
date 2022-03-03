@@ -157,7 +157,7 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
             kotlin("android")
             kotlin("android-extensions")
           }
-          """
+      """
     )
   }
 
@@ -179,7 +179,7 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
               />
 
           </androidx.constraintlayout.widget.ConstraintLayout>
-          """
+      """
     )
   }
 }
