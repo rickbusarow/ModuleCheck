@@ -107,7 +107,7 @@ internal class DepthReportTaskTest : BasePluginTest() {
 
     root.projectDir.child(
       "build", "reports", "modulecheck", "depths.txt"
-    ).readText() shouldBe """
+    ) shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app

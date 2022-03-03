@@ -78,7 +78,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -136,7 +136,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -201,7 +201,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -264,7 +264,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -327,7 +327,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -376,7 +376,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -423,7 +423,7 @@ class DisableViewBindingTest : RunnerTest() {
       autoCorrect = false,
     ).isSuccess shouldBe false
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -459,7 +459,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -495,7 +495,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -528,7 +528,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -563,7 +563,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       apply(plugin = "com.android.library")
       apply(plugin = "org.jetbrains.kotlin-android")
 
@@ -611,7 +611,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -658,7 +658,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -707,7 +707,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")

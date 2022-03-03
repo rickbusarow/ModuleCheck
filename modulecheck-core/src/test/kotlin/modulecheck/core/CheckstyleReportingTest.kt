@@ -102,7 +102,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       }
     ).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">

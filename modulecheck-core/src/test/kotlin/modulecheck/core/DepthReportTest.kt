@@ -78,7 +78,7 @@ internal class DepthReportTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -118,7 +118,7 @@ internal class DepthReportTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -156,7 +156,7 @@ internal class DepthReportTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -192,7 +192,7 @@ internal class DepthReportTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -296,7 +296,7 @@ internal class DepthReportTest : RunnerTest() {
       ModuleCheck found 1 issue
     """
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app
@@ -341,7 +341,7 @@ internal class DepthReportTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    outputFile.readText() shouldBe """
+    outputFile shouldHaveText """
       -- ModuleCheck Depth results --
 
       :app

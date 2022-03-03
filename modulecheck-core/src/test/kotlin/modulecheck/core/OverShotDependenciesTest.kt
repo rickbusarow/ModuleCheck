@@ -67,7 +67,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -138,7 +138,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -209,7 +209,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -281,7 +281,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -353,7 +353,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -445,7 +445,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -540,7 +540,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -640,7 +640,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }

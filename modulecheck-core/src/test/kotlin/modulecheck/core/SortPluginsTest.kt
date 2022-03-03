@@ -44,7 +44,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         javaLibrary
@@ -74,7 +74,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         javaLibrary
@@ -89,7 +89,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         javaLibrary
@@ -119,7 +119,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         javaLibrary
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
@@ -151,7 +151,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         javaLibrary
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'
@@ -166,7 +166,7 @@ class SortPluginsTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         javaLibrary
         id 'io.gitlab.arturbosch.detekt' version '1.15.0'

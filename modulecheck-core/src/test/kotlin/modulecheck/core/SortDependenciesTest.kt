@@ -60,7 +60,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -118,7 +118,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -163,7 +163,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -206,7 +206,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -246,7 +246,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -295,7 +295,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -332,7 +332,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
       }
@@ -399,7 +399,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -459,7 +459,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -506,7 +506,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -551,7 +551,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -593,7 +593,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -647,7 +647,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }
@@ -683,7 +683,7 @@ class SortDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id 'org.jetbrains.kotlin.jvm'
       }

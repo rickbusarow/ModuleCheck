@@ -53,7 +53,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe false
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -107,7 +107,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -157,7 +157,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -208,7 +208,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
           kotlin("kapt")
@@ -246,7 +246,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    app.buildFile.readText() shouldBe """
+    app.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
         // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]
