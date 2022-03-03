@@ -107,7 +107,7 @@ internal class GraphReportTaskTest : BasePluginTest() {
 
     root.projectDir.child(
       "app", "build", "reports", "modulecheck", "graphs", "main.dot"
-    ).readText() shouldBe """
+    ) shouldHaveText """
       strict digraph DependencyGraph {
         ratio=0.5;
         node [style="rounded,filled" shape=box];

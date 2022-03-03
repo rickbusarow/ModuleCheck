@@ -58,7 +58,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -109,7 +109,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -139,7 +139,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run(autoCorrect = false).isSuccess shouldBe false
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
     plugins {
       id("com.android.library")
       kotlin("android")
@@ -172,7 +172,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -209,7 +209,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -244,7 +244,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -281,7 +281,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       apply(plugin = "com.android.library")
       apply(plugin = "org.jetbrains.kotlin-android")
 
@@ -319,7 +319,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -353,7 +353,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -391,7 +391,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -426,7 +426,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")
@@ -468,7 +468,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     )
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
       plugins {
         id("com.android.library")
         kotlin("android")

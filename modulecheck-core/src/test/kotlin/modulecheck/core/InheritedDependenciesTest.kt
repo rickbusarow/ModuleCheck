@@ -99,7 +99,7 @@ class InheritedDependenciesTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe false
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -202,7 +202,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     logger.parsedReport() shouldBe listOf()
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -270,7 +270,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     logger.parsedReport() shouldBe listOf()
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -351,7 +351,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -446,7 +446,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -551,7 +551,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -655,7 +655,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -750,7 +750,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -844,7 +844,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     logger.parsedReport() shouldBe listOf()
 
-    lib1.buildFile.readText() shouldBe """
+    lib1.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -854,7 +854,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
     """
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -935,7 +935,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1029,7 +1029,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1152,7 +1152,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib4.buildFile.readText() shouldBe """
+    lib4.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1283,7 +1283,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1380,7 +1380,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1477,7 +1477,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1587,7 +1587,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1667,7 +1667,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1746,7 +1746,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1819,7 +1819,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1905,7 +1905,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib3.buildFile.readText() shouldBe """
+    lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }

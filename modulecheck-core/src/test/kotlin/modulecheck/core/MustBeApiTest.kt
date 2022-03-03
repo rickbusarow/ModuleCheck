@@ -68,7 +68,7 @@ class MustBeApiTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -135,7 +135,7 @@ class MustBeApiTest : RunnerTest() {
       autoCorrect = false
     ).isSuccess shouldBe false
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -200,7 +200,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -265,7 +265,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -323,7 +323,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -379,7 +379,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -436,7 +436,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -494,7 +494,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -550,7 +550,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -617,7 +617,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -684,7 +684,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -740,7 +740,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -805,7 +805,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -861,7 +861,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -926,7 +926,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -991,7 +991,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1054,7 +1054,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1134,7 +1134,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1220,7 +1220,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1307,7 +1307,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1394,7 +1394,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1480,7 +1480,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
@@ -1566,7 +1566,7 @@ class MustBeApiTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
+    lib2.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
         }
