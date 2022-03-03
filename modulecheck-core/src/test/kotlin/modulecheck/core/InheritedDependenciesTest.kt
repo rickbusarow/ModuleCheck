@@ -1477,16 +1477,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
-    lib2.buildFile.readText() shouldBe """
-        plugins {
-          kotlin("jvm")
-        }
-
-        dependencies {
-          api(testFixtures(project(path = ":lib1")))
-        }
-    """
-
     lib3.buildFile.readText() shouldBe """
         plugins {
           kotlin("jvm")
