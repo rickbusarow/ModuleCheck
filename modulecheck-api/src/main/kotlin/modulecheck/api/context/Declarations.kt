@@ -28,6 +28,7 @@ import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
+import modulecheck.utils.emptyDataSource
 import modulecheck.utils.lazySet
 
 data class Declarations(
@@ -37,6 +38,13 @@ data class Declarations(
 
   override val key: ProjectContext.Key<Declarations>
     get() = Key
+
+  suspend fun all(): LazySet<DeclarationName> {
+    return project.sourceSets
+      .keys
+      .map { project.declarations().get(it) }
+      .let { lazySet(it, emptyDataSource()) }
+  }
 
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
     return delegate.getOrPut(sourceSetName) {

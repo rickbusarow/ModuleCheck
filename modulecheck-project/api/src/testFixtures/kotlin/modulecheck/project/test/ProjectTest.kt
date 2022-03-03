@@ -15,16 +15,28 @@
 
 package modulecheck.project.test
 
+import io.kotest.assertions.fail
 import io.kotest.common.runBlocking
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.androidBasePackagesForSourceSetName
+import modulecheck.api.context.classpathDependencies
+import modulecheck.api.context.declarations
+import modulecheck.api.context.references
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.Reference.InterpretedReference
+import modulecheck.parsing.source.Reference.UnqualifiedRReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
+import modulecheck.utils.emptyDataSource
+import modulecheck.utils.lazySet
 import modulecheck.utils.requireNotNull
 import java.io.File
 import java.nio.charset.Charset
@@ -187,5 +199,59 @@ abstract class ProjectTest : BaseTest() {
 
   fun File.writeText(content: String) {
     writeText(content.trimIndent(), Charset.defaultCharset())
+  }
+
+  suspend fun resolveReferences() {
+
+    projectCache.values
+      .forEach { project ->
+
+        val thisProjectDeclarations = project.declarations().all()
+
+        val allDependencies = project.classpathDependencies().all().map { it.contributed }
+          .plus(project.projectDependencies.values.flatten())
+          .map { dependency -> dependency.declarations() }
+          .plus(thisProjectDeclarations)
+          .let { lazySet(it, emptyDataSource()) }
+          .map { it.fqName }
+          .toSet()
+
+        project.references().all()
+          .toList()
+          .forEach eachRef@{ reference ->
+
+            val referenceName = when (reference) {
+              is ExplicitReference -> reference.fqName
+              is InterpretedReference -> return@eachRef
+              is UnqualifiedRReference -> reference.fqName
+            }
+
+            // Only check for references which would be provided by internal projects. Using a
+            // block-list is a bit of a hack, but it's safer to have to add than remove.
+            if (referenceName.startsWith("androidx")) return@eachRef
+
+            val unresolved = !allDependencies.contains(referenceName)
+
+            if (unresolved) {
+              fail(
+                """
+                |Project ${project.path} has a reference which must be declared in a dependency project.
+                |
+                |-- reference:
+                |   $referenceName
+                |
+                |-- all declarations:
+                |${allDependencies.joinToString("\n") { "   $it" }}
+                |
+                |-- all dependencies:
+                |${project.projectDependencies.values.flatten().joinToString("\n") { "   $it" }}
+                |
+                |_________
+                """.trimMargin()
+
+              )
+            }
+          }
+      }
   }
 }

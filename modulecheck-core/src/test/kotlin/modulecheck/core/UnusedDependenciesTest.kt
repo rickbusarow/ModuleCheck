@@ -15,8 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
@@ -27,22 +25,8 @@ import org.junit.jupiter.api.Test
 
 class UnusedDependenciesTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
-
   @Test
   fun `unused without auto-correct should fail`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1")
 
@@ -62,7 +46,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(autoCorrect = false).isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -89,11 +73,6 @@ class UnusedDependenciesTest : RunnerTest() {
   @Test
   fun `unused with auto-correct should be commented out`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -112,7 +91,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -141,11 +120,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -164,7 +138,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -192,11 +166,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -216,7 +185,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -237,11 +206,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -261,7 +225,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -282,11 +246,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -306,7 +265,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -335,11 +294,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -358,7 +312,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -386,11 +340,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -409,7 +358,9 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -438,11 +389,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -463,7 +409,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -493,11 +439,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -518,7 +459,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -549,11 +490,6 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -575,7 +511,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -606,11 +542,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `testImplementation used in test should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -651,7 +582,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -670,11 +601,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `androidTestImplementation used in androidTest should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       addSource(
@@ -716,7 +642,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -736,11 +662,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `custom view used in a layout file should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       addSource(
@@ -789,7 +710,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -809,11 +730,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `module contributing a used generated DataBinding object should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       viewBindingEnabled = true
@@ -855,7 +771,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -875,11 +791,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `declaration used via a wildcard import should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -919,7 +830,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -938,11 +849,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `testFixtures declaration used in test should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -984,7 +890,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1003,11 +909,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `unused from testFixtures with auto-correct should be fixed`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1037,7 +938,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1065,11 +966,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `static member declaration used via wildcard import should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1113,7 +1009,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1132,11 +1028,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `string resource used in module should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
 
@@ -1176,7 +1067,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1196,11 +1087,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `string resource used in manifest should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
 
@@ -1251,7 +1137,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1271,11 +1157,6 @@ class UnusedDependenciesTest : RunnerTest() {
   fun `declaration used via class reference wtih wildcard import should not be unused`() {
 
     settings.deleteUnused = false
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1321,7 +1202,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {

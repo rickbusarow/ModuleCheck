@@ -15,8 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
@@ -29,22 +27,8 @@ import org.junit.jupiter.api.Test
 
 class InheritedDependenciesTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
-
   @Test
   fun `inherited from api dependency without auto-correct should fail`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -111,7 +95,9 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -141,11 +127,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
     // A Kotlin build of this project would actually fail since :lib1 isn't in :lib3's classpath,
     // but the test is still useful since it's just assuring that behavior is consistent
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -214,7 +195,10 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      autoCorrect = false,
+      strictResolution = false
+    ).isSuccess shouldBe true
 
     logger.parsedReport() shouldBe listOf()
 
@@ -231,11 +215,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `not inherited when target and subject are the same`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
 
@@ -287,7 +266,7 @@ class InheritedDependenciesTest : RunnerTest() {
     }
     lib1.addDependency(ConfigurationName.api, lib2)
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     logger.parsedReport() shouldBe listOf()
 
@@ -304,11 +283,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited from api dependency with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -375,7 +349,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -403,11 +377,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited as internalImplementation from internalApi dependency with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -475,7 +444,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -503,11 +472,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited as in main but also used in debug should only be added to main`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -585,7 +549,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -613,11 +577,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited as internalImplementation from api dependency with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -694,7 +653,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -722,11 +681,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `non-standard config name should be invoked as function if it's already used that way`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -794,7 +748,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -822,11 +776,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited via testApi should not cause infinite loop`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
 
@@ -891,7 +840,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     lib1.addDependency(ConfigurationName.implementation, lib2)
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     logger.parsedReport() shouldBe listOf()
 
@@ -918,11 +867,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited from implementation dependency with auto-correct should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -989,7 +933,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1017,11 +961,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited from implementation dependency and part of API with auto-correct should be fixed as api config`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1088,7 +1027,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1116,11 +1055,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `deeply inherited from testImplementation dependency with auto-correct should be fixed as testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1216,7 +1150,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib4.buildFile shouldHaveText """
         plugins {
@@ -1267,11 +1201,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited testFixtures and implementation from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1352,7 +1281,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1380,11 +1309,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited testFixtures from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1454,7 +1378,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1482,11 +1406,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited testFixtures from api with auto-correct should be fixed as testFixtures via testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1556,7 +1475,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1598,11 +1517,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited main source from api with auto-correct should be fixed as normal testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1671,7 +1585,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -1699,11 +1613,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1747,16 +1656,16 @@ class InheritedDependenciesTest : RunnerTest() {
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
-        import com.modulecheck.lib1.test.FakeLib2Class
+        import com.modulecheck.lib1.test.FakeLib1Class
 
         val clazz = Lib1Class()
-        private val clazz2 = FakeLib2Class()
+        private val clazz2 = FakeLib1Class()
         """.trimIndent(),
         SourceSetName.TEST
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1784,12 +1693,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal api`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      settings = settings,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1833,15 +1736,15 @@ class InheritedDependenciesTest : RunnerTest() {
         package com.modulecheck.lib2
 
         import com.modulecheck.lib1.Lib1Class
-        import com.modulecheck.lib1.test.FakeLib2Class
+        import com.modulecheck.lib1.test.FakeLib1Class
 
         val clazz = Lib1Class()
-        private val clazz2 = FakeLib2Class()
+        private val clazz2 = FakeLib1Class()
         """.trimIndent()
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1875,12 +1778,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `not inherited when only used in tests and already declared as testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      settings = settings,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1920,7 +1817,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1937,12 +1834,6 @@ class InheritedDependenciesTest : RunnerTest() {
 
   @Test
   fun `not inherited when exposed as api but used in tests and already declared as testImplementation`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      settings = settings,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSource(
@@ -2012,7 +1903,7 @@ class InheritedDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib3.buildFile shouldHaveText """
         plugins {

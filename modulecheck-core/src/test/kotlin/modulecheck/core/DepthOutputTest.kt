@@ -16,7 +16,6 @@
 package modulecheck.core
 
 import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
@@ -26,17 +25,10 @@ import org.junit.jupiter.api.Test
 
 internal class DepthOutputTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   @Test
   fun `main source set depths should be reported`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1")
 
@@ -49,7 +41,10 @@ internal class DepthOutputTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    runner.run(allProjects())
+    run(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
 
     logger.collectReport()
       .joinToString()
@@ -69,14 +64,6 @@ internal class DepthOutputTest : RunnerTest() {
 
     settings.checks.depths = true
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = MultiRuleFindingFactory(
-        settings,
-        ruleFactory.create(settings)
-      )
-    )
-
     val lib1 = project(":lib1")
 
     project(":lib2") {
@@ -95,7 +82,12 @@ internal class DepthOutputTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      findingFactory = MultiRuleFindingFactory(
+        settings,
+        ruleFactory.create(settings)
+      )
+    ).isSuccess shouldBe true
 
     logger.collectReport()
       .joinToString()
@@ -116,11 +108,6 @@ internal class DepthOutputTest : RunnerTest() {
   @Test
   fun `test source set depths should not be reported`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -134,7 +121,10 @@ internal class DepthOutputTest : RunnerTest() {
 
     lib1.addDependency(ConfigurationName("testImplementation"), lib2)
 
-    runner.run(allProjects())
+    run(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
 
     logger.collectReport()
       .joinToString()
@@ -151,11 +141,6 @@ internal class DepthOutputTest : RunnerTest() {
 
   @Test
   fun `debug source set depth should not be reported even if it's longer`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1")
     val debug1 = project(":debug1") {}
@@ -174,7 +159,10 @@ internal class DepthOutputTest : RunnerTest() {
       addDependency(ConfigurationName("debugImplementation"), debug2)
     }
 
-    runner.run(allProjects())
+    run(
+      autoCorrect = false,
+      findingFactory = findingFactory
+    )
 
     logger.collectReport()
       .joinToString()

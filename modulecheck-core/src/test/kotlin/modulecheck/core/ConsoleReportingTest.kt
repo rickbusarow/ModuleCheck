@@ -16,7 +16,8 @@
 package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
-import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.Finding.Position
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
@@ -28,12 +29,10 @@ internal class ConsoleReportingTest : RunnerTest() {
   @Test
   fun `zero findings should report '0 issues' to console`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory()
     )
-
-    runner.run(listOf())
 
     logger.collectReport()
       .joinToString()
@@ -44,7 +43,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   @Test
   fun `one finding should report '1 issue' to console`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -55,8 +54,6 @@ internal class ConsoleReportingTest : RunnerTest() {
         )
       )
     )
-
-    runner.run(listOf())
 
     logger.collectReport()
       .joinToString()
@@ -73,7 +70,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   @Test
   fun `multiple findings should report 'n issues' to console`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -88,8 +85,6 @@ internal class ConsoleReportingTest : RunnerTest() {
         )
       )
     )
-
-    runner.run(listOf())
 
     logger.collectReport()
       .joinToString()
@@ -110,7 +105,7 @@ internal class ConsoleReportingTest : RunnerTest() {
   @Test
   fun `non-zero findings should print suppression advice to console`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -121,8 +116,6 @@ internal class ConsoleReportingTest : RunnerTest() {
         )
       )
     )
-
-    runner.run(listOf())
 
     logger.collectReport()
       .joinToString() shouldContain "To ignore any of these findings, " +
@@ -135,18 +128,16 @@ internal class ConsoleReportingTest : RunnerTest() {
   @Test
   fun `zero findings should succeed`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory()
-    )
-
-    runner.run(listOf()).isSuccess shouldBe true
+    ).isSuccess shouldBe true
   }
 
   @Test
   fun `all findings fixed should succeed`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -158,28 +149,26 @@ internal class ConsoleReportingTest : RunnerTest() {
       ),
       findingResultFactory = { _, _, _ ->
         listOf(
-          Finding.FindingResult(
+          FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyPath = "dependencyPath",
-            positionOrNull = Finding.Position(1, 2),
+            positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
             fixed = true
           )
         )
       }
-    )
-
-    runner.run(listOf()).isSuccess shouldBe true
+    ).isSuccess shouldBe true
   }
 
   @Test
   fun `non-zero unfixed findings should fail`() {
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -191,21 +180,19 @@ internal class ConsoleReportingTest : RunnerTest() {
       ),
       findingResultFactory = { _, _, _ ->
         listOf(
-          Finding.FindingResult(
+          FindingResult(
             dependentPath = "dependentPath",
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyPath = "dependencyPath",
-            positionOrNull = Finding.Position(1, 2),
+            positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
             fixed = false
           )
         )
       }
-    )
-
-    runner.run(listOf()).isFailure shouldBe true
+    ).isFailure shouldBe true
   }
 }

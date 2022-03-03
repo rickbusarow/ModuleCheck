@@ -17,8 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.runtime.test.ProjectFindingReport.unsortedPlugins
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
@@ -28,23 +26,10 @@ import java.io.File
 
 class SortPluginsTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets { TestSettings(checks = TestChecksSettings(sortPlugins = true)) }
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `kts out-of-order plugins should be sorted`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
@@ -58,7 +43,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -76,11 +61,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -93,7 +73,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -108,7 +88,7 @@ class SortPluginsTest : RunnerTest() {
     )
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -124,11 +104,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -143,7 +118,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -161,11 +136,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -180,7 +150,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {
@@ -195,7 +165,7 @@ class SortPluginsTest : RunnerTest() {
     )
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
       plugins {

@@ -29,7 +29,7 @@ import java.io.File
 
 internal class GraphVizReportTest : RunnerTest() {
 
-  val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   fun McProject.graphFile(sourceSet: String = "main"): File {
     return projectDir.child(
@@ -46,11 +46,6 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = false
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -62,9 +57,7 @@ internal class GraphVizReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib2.graphFile().exists() shouldBe false
   }
@@ -73,11 +66,6 @@ internal class GraphVizReportTest : RunnerTest() {
   fun `depth report should be created if enabled in settings`() {
 
     settings.reports.graphs.enabled = true
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1")
 
@@ -90,9 +78,7 @@ internal class GraphVizReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
@@ -120,11 +106,6 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
 
       val myFile = File(projectDir, "src/main/kotlin/MyFile.kt").createSafely()
@@ -135,9 +116,7 @@ internal class GraphVizReportTest : RunnerTest() {
       )
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
@@ -156,18 +135,11 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       sourceSets[SourceSetName.MAIN] = SourceSet(name = SourceSetName.MAIN)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.graphFile().exists() shouldBe false
   }
@@ -176,11 +148,6 @@ internal class GraphVizReportTest : RunnerTest() {
   fun `test source set graph should be test-specific`() {
 
     settings.reports.graphs.enabled = true
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       addSourceSet(SourceSetName.TEST)
@@ -203,9 +170,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     lib1.addDependency(ConfigurationName("testImplementation"), lib2)
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
@@ -274,11 +239,6 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
     val debug1 = project(":debug1") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -299,9 +259,7 @@ internal class GraphVizReportTest : RunnerTest() {
       addDependency(ConfigurationName("debugImplementation"), debug2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
       strict digraph DependencyGraph {
