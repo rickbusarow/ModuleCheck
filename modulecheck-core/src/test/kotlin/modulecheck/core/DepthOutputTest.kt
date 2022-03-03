@@ -16,7 +16,6 @@
 package modulecheck.core
 
 import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
@@ -26,9 +25,7 @@ import org.junit.jupiter.api.Test
 
 internal class DepthOutputTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   @Test
   fun `main source set depths should be reported`() {

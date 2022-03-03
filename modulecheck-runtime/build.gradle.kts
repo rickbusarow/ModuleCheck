@@ -38,6 +38,8 @@ dependencies {
 
   testFixturesApi(libs.bundles.hermit)
 
+  testFixturesApi(project(path = ":modulecheck-core"))
+
   testFixturesApi(testFixtures(project(path = ":modulecheck-api")))
   testFixturesApi(testFixtures(project(path = ":modulecheck-project:api")))
 

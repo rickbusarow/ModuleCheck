@@ -17,8 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.RunnerTest
@@ -27,15 +25,7 @@ import org.junit.jupiter.api.Test
 
 class DisableAndroidResourcesTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets { TestSettings(checks = TestChecksSettings(disableAndroidResources = true)) }
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `resource generation is used in contributing module with no changes`() {

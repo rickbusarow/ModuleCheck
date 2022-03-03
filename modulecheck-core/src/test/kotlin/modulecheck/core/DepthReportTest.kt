@@ -17,7 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
@@ -31,14 +30,12 @@ import java.io.File
 
 internal class DepthReportTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets {
     TestSettings().apply {
       reports.depths.outputPath = File(testProjectDir, reports.depths.outputPath).path
     }
   }
-  val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   val outputFile by resets { File(settings.reports.depths.outputPath) }
 

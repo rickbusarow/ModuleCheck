@@ -17,8 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
@@ -30,15 +28,7 @@ import org.junit.jupiter.api.Test
 
 class DisableViewBindingTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets { TestSettings(checks = TestChecksSettings(disableViewBinding = true)) }
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `used ViewBinding in dependent module with no changes`() {
@@ -69,14 +59,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }
@@ -142,14 +125,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
 
@@ -210,14 +186,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
 
@@ -285,14 +254,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """,
         SourceSetName.DEBUG
       )
@@ -358,14 +320,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """,
         SourceSetName.DEBUG
       )
@@ -433,14 +388,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }
@@ -490,14 +438,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }
@@ -710,14 +651,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }
@@ -769,14 +703,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }
@@ -830,14 +757,7 @@ class DisableViewBindingTest : RunnerTest() {
           android:id="@+id/fragment_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          >
-
-          <com.modulecheck.lib1.Lib1View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          />
         """
       )
     }

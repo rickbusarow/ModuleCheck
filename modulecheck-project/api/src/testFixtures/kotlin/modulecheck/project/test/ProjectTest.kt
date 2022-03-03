@@ -15,16 +15,28 @@
 
 package modulecheck.project.test
 
+import io.kotest.assertions.fail
 import io.kotest.common.runBlocking
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.androidBasePackagesForSourceSetName
+import modulecheck.api.context.classpathDependencies
+import modulecheck.api.context.declarations
+import modulecheck.api.context.references
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.Reference.InterpretedReference
+import modulecheck.parsing.source.Reference.UnqualifiedRReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
+import modulecheck.utils.emptyDataSource
+import modulecheck.utils.lazySet
 import modulecheck.utils.requireNotNull
 import java.io.File
 import java.nio.charset.Charset
@@ -187,5 +199,56 @@ abstract class ProjectTest : BaseTest() {
 
   fun File.writeText(content: String) {
     writeText(content.trimIndent(), Charset.defaultCharset())
+  }
+
+  suspend fun resolveReferences() {
+
+    projectCache.values
+      .forEach { project ->
+
+        val thisProjectDeclarations = project.declarations().all()
+
+        val allDependencies = project.classpathDependencies().all().map { it.contributed }
+          .plus(project.projectDependencies.values.flatten())
+          .map { dependency -> dependency.declarations() }
+          .plus(thisProjectDeclarations)
+          .let { lazySet(it, emptyDataSource()) }
+          .map { it.fqName }
+          .toSet()
+
+        project.references().all()
+          .toList()
+          .forEach { reference ->
+
+            val refs = when (reference) {
+              is ExplicitReference -> listOf(reference.fqName)
+              is InterpretedReference -> reference.possibleNames
+              is UnqualifiedRReference -> listOf(reference.fqName)
+            }
+
+            val contained = refs.filter { it.startsWith("com.modulecheck") }
+              .any { it in allDependencies }
+
+            if (!contained) {
+              fail(
+                """
+              |Project ${project.path} has a reference which must be declared in a dependency project.
+              |
+              |-- reference:
+              |${'\t'}$reference
+              |
+              |-- all declarations:
+              |${allDependencies.joinToString("\n") { "\t$it" }}
+              |
+              |-- all dependencies:
+              |${project.projectDependencies.values.flatten().joinToString("\n") { "\t$it" }}
+              |
+              |_________
+                """.trimMargin()
+
+              )
+            }
+          }
+      }
   }
 }

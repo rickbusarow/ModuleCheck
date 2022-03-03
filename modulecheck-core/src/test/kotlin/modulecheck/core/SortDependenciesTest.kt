@@ -17,8 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
@@ -28,16 +26,8 @@ import java.io.File
 
 class SortDependenciesTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets {
     TestSettings(checks = TestChecksSettings(sortDependencies = true))
-  }
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
   }
 
   @Test
