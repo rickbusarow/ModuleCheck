@@ -29,7 +29,7 @@ import java.io.File
 
 internal class GraphVizReportTest : RunnerTest() {
 
-  val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
 
   fun McProject.graphFile(sourceSet: String = "main"): File {
     return projectDir.child(

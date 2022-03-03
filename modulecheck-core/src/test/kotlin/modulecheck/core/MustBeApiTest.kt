@@ -15,8 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
@@ -24,15 +22,6 @@ import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
 class MustBeApiTest : RunnerTest() {
-
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `public property from implementation without auto-correct should fail`() {

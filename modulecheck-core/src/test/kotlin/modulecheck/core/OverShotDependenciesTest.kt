@@ -15,8 +15,6 @@
 
 package modulecheck.core
 
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.overshot
@@ -25,15 +23,6 @@ import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 
 class OverShotDependenciesTest : RunnerTest() {
-
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `overshot as api but used in test without auto-correct should fail`() {
