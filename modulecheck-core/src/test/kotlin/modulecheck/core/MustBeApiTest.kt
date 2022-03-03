@@ -40,7 +40,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -50,7 +50,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -107,7 +107,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -117,7 +117,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -174,7 +174,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -184,7 +184,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -239,7 +239,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -249,7 +249,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -295,7 +295,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -305,7 +305,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -353,7 +353,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -363,7 +363,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -409,7 +409,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -419,7 +419,7 @@ class MustBeApiTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -466,7 +466,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -476,7 +476,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -524,7 +524,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -534,7 +534,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -589,7 +589,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -601,7 +601,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":implementation")) // it's an implementation
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -658,7 +658,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -668,7 +668,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -714,7 +714,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -724,7 +724,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -779,7 +779,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -789,7 +789,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -835,7 +835,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -845,7 +845,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -900,7 +900,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -910,7 +910,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -965,7 +965,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -975,7 +975,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1030,7 +1030,7 @@ class MustBeApiTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1040,7 +1040,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib1"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1105,7 +1105,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1116,7 +1116,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1192,7 +1192,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1203,7 +1203,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1278,7 +1278,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1289,7 +1289,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1365,7 +1365,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1376,7 +1376,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1452,7 +1452,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1463,7 +1463,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1538,7 +1538,7 @@ class MustBeApiTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1549,7 +1549,7 @@ class MustBeApiTest : RunnerTest() {
           implementation(project(path = ":lib3"))
         }
         """
-      )
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",

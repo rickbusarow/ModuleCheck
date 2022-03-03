@@ -113,7 +113,7 @@ interface McProjectBuilderScope {
   ) {
 
     val file = File(projectDir, "src/${sourceSetName.value}/$name")
-      .createSafely(kotlin)
+      .createSafely(kotlin.trimIndent())
 
     val old = maybeAddSourceSet(sourceSetName)
 
@@ -138,6 +138,10 @@ interface McProjectBuilderScope {
     }
 
     return maybeAddSourceSet(name, classpathFiles, outputFiles, jvmFiles, resourceFiles)
+  }
+
+  operator fun File.invoke(text: () -> String) {
+    writeText(text().trimIndent())
   }
 
   @Suppress("LongParameterList")

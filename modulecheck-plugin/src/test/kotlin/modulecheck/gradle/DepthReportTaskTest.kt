@@ -27,13 +27,13 @@ internal class DepthReportTaskTest : BasePluginTest() {
 
     val root = project(":") {
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.rickbusarow.module-check")
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       projectDir.child("settings.gradle.kts")
         .createSafely(
@@ -66,17 +66,17 @@ internal class DepthReportTaskTest : BasePluginTest() {
         )
 
       project(":lib1") {
-        buildFile.writeText(
+        buildFile {
           """
           plugins {
             kotlin("jvm")
           }
-          """.trimIndent()
-        )
+          """
+        }
       }
 
       project(":lib2") {
-        buildFile.writeText(
+        buildFile {
           """
           plugins {
             kotlin("jvm")
@@ -84,12 +84,12 @@ internal class DepthReportTaskTest : BasePluginTest() {
           dependencies {
             implementation(project(":lib1"))
           }
-          """.trimIndent()
-        )
+          """
+        }
       }
 
       project(":app") {
-        buildFile.writeText(
+        buildFile {
           """
           plugins {
             kotlin("jvm")
@@ -98,8 +98,8 @@ internal class DepthReportTaskTest : BasePluginTest() {
             implementation(project(":lib1"))
             implementation(project(":lib2"))
           }
-          """.trimIndent()
-        )
+          """
+        }
       }
     }
 

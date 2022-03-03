@@ -41,7 +41,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -50,8 +50,8 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -112,7 +112,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -121,8 +121,8 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -183,7 +183,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -192,8 +192,8 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -255,7 +255,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -264,8 +264,8 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -327,7 +327,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -336,8 +336,8 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -416,7 +416,7 @@ class OverShotDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1)
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -426,8 +426,8 @@ class OverShotDependenciesTest : RunnerTest() {
           api(project(path = ":lib1"))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -508,7 +508,7 @@ class OverShotDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1)
       addDependency(ConfigurationName.testImplementation, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -521,8 +521,8 @@ class OverShotDependenciesTest : RunnerTest() {
           }
           testImplementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -611,7 +611,7 @@ class OverShotDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1, asTestFixture = true)
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -621,8 +621,8 @@ class OverShotDependenciesTest : RunnerTest() {
           api(testFixtures(project(path = ":lib1")))
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """

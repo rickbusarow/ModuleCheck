@@ -35,7 +35,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
       addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -46,7 +46,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
-      )
+      }
     }
 
     run(
@@ -89,7 +89,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
       addExternalDependency(ConfigurationName.api, dagger)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -100,7 +100,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
           api("$dagger")
         }
         """
-      )
+      }
     }
 
     run(
@@ -129,7 +129,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
       addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -140,7 +140,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
-      )
+      }
       addSource(
         "com/modulecheck/app/App.kt",
         """
@@ -179,7 +179,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
       addExternalDependency("kaptTest".asConfigurationName(), dagger)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -190,7 +190,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kaptTest("$dagger")
         }
         """
-      )
+      }
       addSource(
         "com/modulecheck/app/App.kt",
         """
@@ -230,7 +230,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
 
       addExternalDependency(ConfigurationName.kapt, dagger)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -241,7 +241,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
           kapt("$dagger")
         }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true

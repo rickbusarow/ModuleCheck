@@ -69,7 +69,7 @@ internal class DepthOutputTest : RunnerTest() {
     project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -78,8 +78,8 @@ internal class DepthOutputTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run(
