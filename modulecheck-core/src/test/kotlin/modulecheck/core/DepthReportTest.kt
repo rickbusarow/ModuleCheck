@@ -44,11 +44,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = false
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -60,9 +55,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.exists() shouldBe false
   }
@@ -72,11 +65,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
 
     val lib2 = project(":lib2") {
@@ -88,9 +76,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -111,11 +97,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
 
       val myFile = File(projectDir, "src/main/kotlin/MyFile.kt").createSafely()
@@ -135,9 +116,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -162,11 +141,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       sourceSets[SourceSetName.MAIN] = SourceSet(name = SourceSetName.MAIN)
     }
@@ -180,9 +154,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -203,11 +175,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       addSourceSet(SourceSetName.TEST)
     }
@@ -223,9 +190,7 @@ internal class DepthReportTest : RunnerTest() {
 
     lib1.addDependency(ConfigurationName("testImplementation"), lib2)
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --
@@ -250,14 +215,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.checks.depths = true
     settings.reports.depths.enabled = true
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = MultiRuleFindingFactory(
-        settings,
-        ruleFactory.create(settings)
-      )
-    )
 
     val lib1 = project(":lib1") {
 
@@ -316,7 +273,12 @@ internal class DepthReportTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(
+      findingFactory = MultiRuleFindingFactory(
+        settings,
+        ruleFactory.create(settings)
+      )
+    ).isSuccess shouldBe true
 
     logger.collectReport()
       .joinToString()
@@ -357,11 +319,6 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1")
     val debug1 = project(":debug1") {
       addDependency(ConfigurationName.implementation, lib1)
@@ -382,9 +339,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName("debugImplementation"), debug2)
     }
 
-    val result = runner.run(allProjects())
-
-    result.isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     outputFile.readText() shouldBe """
       -- ModuleCheck Depth results --

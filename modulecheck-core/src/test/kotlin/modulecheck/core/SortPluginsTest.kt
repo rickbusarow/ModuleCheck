@@ -31,11 +31,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `kts out-of-order plugins should be sorted`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -48,7 +43,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -66,11 +61,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -83,7 +73,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -98,7 +88,7 @@ class SortPluginsTest : RunnerTest() {
     )
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -114,11 +104,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -133,7 +118,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -151,11 +136,6 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -170,7 +150,7 @@ class SortPluginsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -185,7 +165,7 @@ class SortPluginsTest : RunnerTest() {
     )
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {

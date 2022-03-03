@@ -38,7 +38,7 @@ internal class TextReportingTest : RunnerTest() {
 
     val outputFile = File(settings.reports.text.outputPath)
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -63,11 +63,7 @@ internal class TextReportingTest : RunnerTest() {
           )
         )
       }
-    )
-
-    val result = runner.run(listOf())
-
-    result.isSuccess shouldBe true
+    ).isSuccess shouldBe true
 
     outputFile.exists() shouldBe false
   }
@@ -79,7 +75,7 @@ internal class TextReportingTest : RunnerTest() {
 
     val outputFile = File(settings.reports.text.outputPath)
 
-    val runner = runner(
+    run(
       autoCorrect = false,
       findingFactory = findingFactory(
         listOf(
@@ -104,11 +100,7 @@ internal class TextReportingTest : RunnerTest() {
           )
         }
       }
-    )
-
-    val result = runner.run(listOf())
-
-    result.isSuccess shouldBe true
+    ).isSuccess shouldBe true
 
     outputFile.readText()
       .clean()

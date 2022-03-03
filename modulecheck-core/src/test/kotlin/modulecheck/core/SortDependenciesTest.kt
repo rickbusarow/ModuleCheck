@@ -33,11 +33,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts out-of-order dependencies should be sorted`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -64,7 +59,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -103,11 +98,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts multi-line comments should move with their declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -127,7 +117,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -153,11 +143,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts multi-line kdoc comments should move with their declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -177,7 +162,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -203,11 +188,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts preceding comments should move with their declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -225,7 +205,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -249,11 +229,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts trailing comments should move with their declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
         """
@@ -270,7 +245,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -292,11 +267,6 @@ class SortDependenciesTest : RunnerTest() {
 
   @Test
   fun `kts sorting should be idempotent`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       buildFile.writeKotlin(
@@ -324,7 +294,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -361,7 +331,7 @@ class SortDependenciesTest : RunnerTest() {
 
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -398,11 +368,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -433,7 +398,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -472,11 +437,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy multi-line comments should move with declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -498,7 +458,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -524,11 +484,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy multi-line javadoc comments should move with declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -550,7 +505,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -576,11 +531,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy preceding comments should move with declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -600,7 +550,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -624,11 +574,6 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy trailing comments should move with declarations`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = project(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
@@ -647,7 +592,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -669,11 +614,6 @@ class SortDependenciesTest : RunnerTest() {
 
   @Test
   fun `groovy sorting should be idempotent`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
 
     val lib1 = project(":lib1") {
       buildFile.delete()
@@ -706,7 +646,7 @@ class SortDependenciesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -742,7 +682,7 @@ class SortDependenciesTest : RunnerTest() {
     )
     logger.clear()
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {

@@ -218,32 +218,35 @@ abstract class ProjectTest : BaseTest() {
 
         project.references().all()
           .toList()
-          .forEach { reference ->
+          .forEach eachRef@{ reference ->
 
-            val refs = when (reference) {
-              is ExplicitReference -> listOf(reference.fqName)
-              is InterpretedReference -> reference.possibleNames
-              is UnqualifiedRReference -> listOf(reference.fqName)
+            val referenceName = when (reference) {
+              is ExplicitReference -> reference.fqName
+              is InterpretedReference -> return@eachRef
+              is UnqualifiedRReference -> reference.fqName
             }
 
-            val contained = refs.filter { it.startsWith("com.modulecheck") }
-              .any { it in allDependencies }
+            // Only check for references which would be provided by internal projects. Using a
+            // block-list is a bit of a hack, but it's safer to have to add than remove.
+            if (referenceName.startsWith("androidx")) return@eachRef
 
-            if (!contained) {
+            val unresolved = !allDependencies.contains(referenceName)
+
+            if (unresolved) {
               fail(
                 """
-              |Project ${project.path} has a reference which must be declared in a dependency project.
-              |
-              |-- reference:
-              |${'\t'}$reference
-              |
-              |-- all declarations:
-              |${allDependencies.joinToString("\n") { "\t$it" }}
-              |
-              |-- all dependencies:
-              |${project.projectDependencies.values.flatten().joinToString("\n") { "\t$it" }}
-              |
-              |_________
+                |Project ${project.path} has a reference which must be declared in a dependency project.
+                |
+                |-- reference:
+                |   $referenceName
+                |
+                |-- all declarations:
+                |${allDependencies.joinToString("\n") { "   $it" }}
+                |
+                |-- all dependencies:
+                |${project.projectDependencies.values.flatten().joinToString("\n") { "   $it" }}
+                |
+                |_________
                 """.trimMargin()
 
               )

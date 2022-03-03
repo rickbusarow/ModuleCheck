@@ -30,11 +30,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `resource generation is used in contributing module with no changes`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -61,7 +56,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -75,11 +70,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
   @Test
   fun `resource generation is used in dependent module with no changes`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
@@ -117,7 +107,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -136,11 +126,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without autocorrect should fail and be reported`() {
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -152,7 +137,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(autoCorrect = false).isSuccess shouldBe false
 
     lib1.buildFile.readText() shouldBe """
     plugins {
@@ -171,11 +156,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when scoped and then qualified should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -190,7 +170,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -212,11 +192,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without buildFeatures block should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -232,7 +207,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -256,11 +231,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without android block should add android block under existing plugins block`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -272,7 +242,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -297,11 +267,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without android or plugins block should add android block above dependencies block`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -314,7 +279,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       apply(plugin = "com.android.library")
@@ -340,11 +305,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when fully qualified should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -357,7 +317,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -377,11 +337,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when qualified and then scoped should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -396,7 +351,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -418,11 +373,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when fully scoped should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -439,7 +389,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
         plugins {
@@ -463,11 +413,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation with autocorrect and no explicit buildFeatures property should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -479,7 +424,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -504,11 +449,6 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation with autocorrect and no android block should be fixed`() {
 
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile.writeKotlin(
         """
@@ -520,7 +460,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run().isSuccess shouldBe true
 
     logger.parsedReport() shouldBe listOf(
       ":lib1" to listOf(
