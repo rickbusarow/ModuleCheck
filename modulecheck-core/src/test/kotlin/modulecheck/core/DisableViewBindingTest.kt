@@ -22,7 +22,6 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.createSafely
-import modulecheck.testing.writeKotlin
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 
@@ -34,7 +33,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `used ViewBinding in dependent module with no changes`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -45,7 +44,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -97,7 +96,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `used ViewBinding in contributing module`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -108,7 +107,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -155,7 +154,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `ViewBinding from main is used in debug source set`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -166,7 +165,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -220,7 +219,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `ViewBinding from debug with different base package is used in debug source set`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -231,7 +230,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -283,7 +282,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `ViewBinding from debug without different base package is used in debug source set`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -294,7 +293,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -348,7 +347,7 @@ class DisableViewBindingTest : RunnerTest() {
     settings.checks.disableViewBinding = false
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -359,7 +358,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -395,7 +394,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding without auto-correct should fail`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -406,7 +405,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -444,7 +443,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding when scoped and then qualified should be fixed`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -455,7 +454,7 @@ class DisableViewBindingTest : RunnerTest() {
           buildFeatures.viewBinding = true
         }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -480,7 +479,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding without buildFeatures block should be fixed`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -491,7 +490,7 @@ class DisableViewBindingTest : RunnerTest() {
           mindSdk(21)
         }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -517,14 +516,14 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding without android block should add android block under existing plugins block`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
           kotlin("android")
         }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -551,7 +550,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding without android or plugins block should add android block above dependencies block`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         apply(plugin = "com.android.library")
         apply(plugin = "org.jetbrains.kotlin-android")
@@ -559,7 +558,7 @@ class DisableViewBindingTest : RunnerTest() {
         dependencies {
         }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -587,7 +586,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding when fully qualified should be fixed`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -596,7 +595,7 @@ class DisableViewBindingTest : RunnerTest() {
 
         android.buildFeatures.viewBinding = true
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -630,7 +629,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding when fully scoped should be fixed`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -643,7 +642,7 @@ class DisableViewBindingTest : RunnerTest() {
           }
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>
@@ -681,7 +680,7 @@ class DisableViewBindingTest : RunnerTest() {
   fun `unused ViewBinding when qualified and then scoped should be fixed`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -692,7 +691,7 @@ class DisableViewBindingTest : RunnerTest() {
           viewBinding = true
         }
         """
-      )
+      }
       addLayoutFile(
         "fragment_lib1.xml",
         """<?xml version="1.0" encoding="utf-8"?>

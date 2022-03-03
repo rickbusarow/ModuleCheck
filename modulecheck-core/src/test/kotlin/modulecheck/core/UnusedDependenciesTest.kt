@@ -33,7 +33,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -42,8 +42,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run(autoCorrect = false).isSuccess shouldBe false
@@ -78,7 +78,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -87,8 +87,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -125,7 +125,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -134,8 +134,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -171,7 +171,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -181,8 +181,8 @@ class UnusedDependenciesTest : RunnerTest() {
           @Suppress("unusedDependency")
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -211,7 +211,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -221,8 +221,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -251,7 +251,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -261,8 +261,8 @@ class UnusedDependenciesTest : RunnerTest() {
           api(libs.javax.inject)
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -299,7 +299,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -308,8 +308,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           "implementation"(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -345,7 +345,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -354,8 +354,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           "implementation"(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run(
@@ -394,7 +394,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -405,8 +405,8 @@ class UnusedDependenciesTest : RunnerTest() {
           }
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -444,7 +444,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -455,8 +455,8 @@ class UnusedDependenciesTest : RunnerTest() {
           }
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -495,7 +495,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -507,8 +507,8 @@ class UnusedDependenciesTest : RunnerTest() {
           fakeConfig(project(path = ":lib1"))
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -557,7 +557,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -566,8 +566,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Test.kt",
@@ -616,7 +616,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.androidTestImplementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -626,8 +626,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           androidTestImplementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Test.kt",
@@ -677,7 +677,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -687,8 +687,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addLayoutFile(
         "fragment_lib2.xml",
@@ -745,7 +745,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -755,8 +755,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       viewBindingEnabled = false
 
       addSource(
@@ -806,7 +806,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -815,8 +815,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -865,7 +865,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -874,8 +874,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -925,7 +925,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -934,8 +934,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     run().isSuccess shouldBe true
@@ -985,7 +985,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -994,8 +994,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1044,7 +1044,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -1054,8 +1054,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
@@ -1103,7 +1103,7 @@ class UnusedDependenciesTest : RunnerTest() {
     val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           id("com.android.library")
@@ -1113,8 +1113,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addManifest(
         """
@@ -1173,7 +1173,7 @@ class UnusedDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1)
       anvilGradlePlugin = AnvilGradlePlugin(SemVer(2, 3, 8), true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1183,8 +1183,8 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",

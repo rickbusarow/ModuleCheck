@@ -20,7 +20,6 @@ import modulecheck.api.test.TestSettings
 import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
-import modulecheck.testing.writeKotlin
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -34,7 +33,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts out-of-order dependencies should be sorted`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -56,7 +55,7 @@ class SortDependenciesTest : RunnerTest() {
         api("com.squareup:kotlinpoet:1.7.2")
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -99,7 +98,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts multi-line comments should move with their declarations`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -114,7 +113,7 @@ class SortDependenciesTest : RunnerTest() {
         api(project(path = "lib-3"))
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -144,7 +143,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts multi-line kdoc comments should move with their declarations`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -159,7 +158,7 @@ class SortDependenciesTest : RunnerTest() {
         api(project(path = "lib-3"))
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -189,7 +188,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts preceding comments should move with their declarations`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -202,7 +201,7 @@ class SortDependenciesTest : RunnerTest() {
         api(project(path = "lib-3"))
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -230,7 +229,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts trailing comments should move with their declarations`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -242,7 +241,7 @@ class SortDependenciesTest : RunnerTest() {
         api(project(path = "lib-3"))
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -269,7 +268,7 @@ class SortDependenciesTest : RunnerTest() {
   fun `kts sorting should be idempotent`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         kotlin("jvm")
@@ -291,7 +290,7 @@ class SortDependenciesTest : RunnerTest() {
         api("com.squareup:kotlinpoet:1.7.2")
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true

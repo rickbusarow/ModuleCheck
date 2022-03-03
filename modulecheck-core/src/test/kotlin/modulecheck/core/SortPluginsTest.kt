@@ -20,7 +20,6 @@ import modulecheck.api.test.TestSettings
 import modulecheck.runtime.test.ProjectFindingReport.unsortedPlugins
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy
-import modulecheck.testing.writeKotlin
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -32,7 +31,7 @@ class SortPluginsTest : RunnerTest() {
   fun `kts out-of-order plugins should be sorted`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
@@ -40,7 +39,7 @@ class SortPluginsTest : RunnerTest() {
         kotlin("jvm")
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true
@@ -62,7 +61,7 @@ class SortPluginsTest : RunnerTest() {
   fun `kts sorting should be idempotent`() {
 
     val lib1 = project(":lib1") {
-      buildFile.writeKotlin(
+      buildFile {
         """
       plugins {
         id("io.gitlab.arturbosch.detekt") version "1.15.0"
@@ -70,7 +69,7 @@ class SortPluginsTest : RunnerTest() {
         kotlin("jvm")
       }
         """
-      )
+      }
     }
 
     run().isSuccess shouldBe true

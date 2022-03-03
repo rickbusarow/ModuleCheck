@@ -44,7 +44,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -53,8 +53,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -70,7 +70,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -79,8 +79,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -142,7 +142,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -151,8 +151,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -170,7 +170,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -179,8 +179,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -233,7 +233,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -242,8 +242,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -298,7 +298,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -307,8 +307,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -324,7 +324,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -333,8 +333,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -392,7 +392,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -401,8 +401,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -418,7 +418,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency("internalApi".asConfigurationName(), lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -427,8 +427,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           "internalApi"(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -487,7 +487,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -496,8 +496,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -513,7 +513,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -522,8 +522,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -592,7 +592,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -601,8 +601,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -619,7 +619,7 @@ class InheritedDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib2)
       addSourceSet(SourceSetName("internal"))
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -628,8 +628,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -696,7 +696,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -705,8 +705,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -722,7 +722,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency("internalImplementation".asConfigurationName(), lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -731,8 +731,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           internalImplementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -779,7 +779,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib1 = project(":lib1") {
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -788,8 +788,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -806,7 +806,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testApi, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -815,8 +815,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testApi(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -882,7 +882,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -891,8 +891,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -908,7 +908,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.implementation, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -917,8 +917,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -976,7 +976,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -985,8 +985,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1002,7 +1002,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.implementation, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1011,8 +1011,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1070,7 +1070,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1079,8 +1079,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1096,7 +1096,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1105,8 +1105,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1122,7 +1122,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib4 = project(":lib4") {
       addDependency(ConfigurationName.testImplementation, lib3)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1131,8 +1131,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib3"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib4/Lib4Class.kt",
         """
@@ -1226,7 +1226,7 @@ class InheritedDependenciesTest : RunnerTest() {
       addDependency("testFixturesImplementation".asConfigurationName(), lib1)
       addDependency("testFixturesApi".asConfigurationName(), lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1236,8 +1236,8 @@ class InheritedDependenciesTest : RunnerTest() {
           testFixturesImplementation(project(path = ":lib1"))
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1255,7 +1255,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1264,8 +1264,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1325,7 +1325,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency("testFixturesApi".asConfigurationName(), lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1334,8 +1334,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1352,7 +1352,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1361,8 +1361,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1422,7 +1422,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency("api".asConfigurationName(), lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1431,8 +1431,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1449,7 +1449,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1458,8 +1458,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1532,7 +1532,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency("testFixturesApi".asConfigurationName(), lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1541,8 +1541,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1559,7 +1559,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1568,8 +1568,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib2")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1639,7 +1639,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1648,8 +1648,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1719,7 +1719,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1, asTestFixture = true)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1728,8 +1728,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(testFixtures(project(path = ":lib1")))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1793,7 +1793,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1802,8 +1802,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           testImplementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1849,7 +1849,7 @@ class InheritedDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1858,8 +1858,8 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           api(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -1876,7 +1876,7 @@ class InheritedDependenciesTest : RunnerTest() {
       addDependency(ConfigurationName.testImplementation, lib1)
       addDependency(ConfigurationName.testImplementation, lib2)
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -1886,8 +1886,8 @@ class InheritedDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1"))
           testImplementation(project(path = ":lib2"))
         }
-        """.trimIndent()
-      )
+        """
+      }
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """

@@ -240,7 +240,7 @@ internal class DepthReportTest : RunnerTest() {
         """.trimIndent()
       )
 
-      buildFile.writeText(
+      buildFile {
         """
         plugins {
           kotlin("jvm")
@@ -249,8 +249,8 @@ internal class DepthReportTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
         }
-        """.trimIndent()
-      )
+        """
+      }
     }
 
     project(":app") {
