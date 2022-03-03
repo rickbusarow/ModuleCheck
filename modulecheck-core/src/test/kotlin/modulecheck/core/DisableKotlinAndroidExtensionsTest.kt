@@ -45,58 +45,24 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions should pass if check is disabled`() {
-
     settings.checks.disableKotlinAndroidExtensions = false
+    val runner = runner(autoCorrect = false)
 
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
-
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
-        """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-          kotlin("android-extensions")
-        }
-        """
-      )
+    androidProject(":lib1", "com.modulecheck.lib1") {
+      writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
-
-    lib1.buildFile.readText() shouldBe """
-      plugins {
-        id("com.android.library")
-        kotlin("android")
-        kotlin("android-extensions")
-      }
-    """
-
     logger.parsedReport() shouldBe listOf()
   }
 
   @Test
   fun `unused KotlinAndroidExtensions without auto-correct should fail`() {
-
-    val runner = runner(
-      autoCorrect = false,
-      findingFactory = findingFactory
-    )
+    val runner = runner(autoCorrect = false)
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
-        """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-          kotlin("android-extensions")
-        }
-        """
-      )
+      writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
 
@@ -110,30 +76,17 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
       }
     """
 
-    // TODO put the correct position
     logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableKotlinAndroidExtensions(false, null))
+      ":lib1" to listOf(disableKotlinAndroidExtensions(fixed = false, position = "4, 3"))
     )
   }
 
   @Test
   fun `used KotlinAndroidExtensions should pass and should not be corrected`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
+    val runner = runner(autoCorrect = true)
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
-        """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-          kotlin("android-extensions")
-        }
-        """
-      )
+      writeBuildFileWithPlugin()
       addAnyLayoutFile()
       addSource(
         "com/modulecheck/lib1/Source.kt",
@@ -153,7 +106,6 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
         }
         """
       )
-
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -171,22 +123,10 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions should be fixed`() {
-
-    val runner = runner(
-      autoCorrect = true,
-      findingFactory = findingFactory
-    )
+    val runner = runner(autoCorrect = true)
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      buildFile.writeKotlin(
-        """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-          kotlin("android-extensions")
-        }
-        """
-      )
+      writeBuildFileWithPlugin()
     }
 
     runner.run(allProjects()).isSuccess shouldBe true
@@ -195,11 +135,29 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
       plugins {
         id("com.android.library")
         kotlin("android")
+        // kotlin("android-extensions")  // ModuleCheck finding [disableKotlinAndroidExtensions]
       }
     """
 
     logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableKotlinAndroidExtensions(true, "7, 3"))
+      ":lib1" to listOf(disableKotlinAndroidExtensions(fixed = true, position = "4, 3"))
+    )
+  }
+
+  private fun runner(autoCorrect: Boolean) = runner(
+    autoCorrect = autoCorrect,
+    findingFactory = findingFactory
+  )
+
+  private fun AndroidMcProjectBuilderScope.writeBuildFileWithPlugin() {
+    buildFile.writeKotlin(
+      """
+          plugins {
+            id("com.android.library")
+            kotlin("android")
+            kotlin("android-extensions")
+          }
+          """
     )
   }
 

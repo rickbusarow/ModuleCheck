@@ -23,7 +23,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.core.kapt.UnusedKaptPluginFinding
+import modulecheck.core.UnusedPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.parsing.source.Reference
@@ -35,7 +35,7 @@ import modulecheck.utils.LazySet
 import modulecheck.utils.any
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
-internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
+private const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
   private val settings: ModuleCheckSettings
@@ -88,10 +88,13 @@ class UnusedKaptRule(
           project.hasKapt && unusedProcessorFindings.isNotEmpty()
 
         if (pluginIsUnused) {
-          unusedProcessorFindings + UnusedKaptPluginFinding(
+          unusedProcessorFindings + UnusedPluginFinding(
             dependentProject = project,
             dependentPath = project.path,
-            buildFile = project.buildFile
+            buildFile = project.buildFile,
+            findingName = "unusedKaptPlugin",
+            pluginId = KAPT_PLUGIN_ID,
+            kotlinPluginFunction = KAPT_PLUGIN_FUN
           )
         } else {
           unusedProcessorFindings
