@@ -39,7 +39,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
-import modulecheck.parsing.gradle.toSourceSetName
+import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
@@ -271,7 +271,7 @@ class GradleProjectProvider @AssistedInject constructor(
           ?: gradleSourceSet.allJava.files
 
         SourceSet(
-          name = gradleSourceSet.name.toSourceSetName(),
+          name = gradleSourceSet.name.asSourceSetName(),
           classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
           outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
           jvmFiles = jvmFiles,
@@ -362,7 +362,7 @@ class GradleProjectProvider @AssistedInject constructor(
               .toSet()
 
             SourceSet(
-              name = sourceProvider.name.toSourceSetName(),
+              name = sourceProvider.name.asSourceSetName(),
               classpathFiles = emptySet(),
               outputFiles = setOf(), // TODO
               jvmFiles = jvmFiles,

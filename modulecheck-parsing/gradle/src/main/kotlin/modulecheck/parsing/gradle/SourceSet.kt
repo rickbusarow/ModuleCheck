@@ -125,7 +125,7 @@ value class SourceSetName(val value: String) {
   }
 }
 
-fun String.toSourceSetName(): SourceSetName = SourceSetName(this)
+fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 
 class SourceSets(
   delegate: Map<SourceSetName, SourceSet>

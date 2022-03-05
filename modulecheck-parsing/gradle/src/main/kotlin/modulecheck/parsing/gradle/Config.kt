@@ -64,7 +64,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     if (this.startsWith(kapt.value)) {
       return removePrefix(kapt.value)
         .decapitalize()
-        .toSourceSetName()
+        .asSourceSetName()
     }
 
     // All the base JVM configurations omit "main" from their configuration name
@@ -76,7 +76,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     //  etc.
     val configType = mainConfigurationsCapitalized
       .find { this.endsWith(it) }
-      ?: return toSourceSetName()
+      ?: return asSourceSetName()
 
     // For any other configuration, the formula is $sourceSetName${baseConfigurationName.capitalize()}
     //
@@ -87,7 +87,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     //  etc.
     return removeSuffix(configType)
       .decapitalize()
-      .toSourceSetName()
+      .asSourceSetName()
   }
 
   /**
