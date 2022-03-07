@@ -29,7 +29,7 @@ google-dagger = "2.41"
 google-material = "1.4.0"
 
 gradleDoctor = "0.8.0"
-groovy = "3.0.9"
+groovy = "3.0.10"
 hermit = "0.9.5"
 jUnit = "5.8.2"
 javaParser = "3.24.0"
