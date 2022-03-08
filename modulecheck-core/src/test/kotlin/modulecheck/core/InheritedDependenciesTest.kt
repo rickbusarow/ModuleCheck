@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.ProjectFindingReport.overshot
@@ -209,6 +210,106 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib2"))
+        }
+    """
+  }
+
+  @Test
+  fun `an upstream config cannot inherit a dependency from a downstream config`() {
+
+    // A Kotlin build of this project would actually fail since :lib1 isn't in :lib3's classpath,
+    // but the test is still useful since it's just assuring that behavior is consistent
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+
+        open class Lib2Class
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency("debugImplementation".asConfigurationName(), lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugImplementation(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3ClassDebug.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz2 = Lib2Class()
+        """.trimIndent(),
+        "debug".asSourceSetName()
+      )
+    }
+
+    run(
+      autoCorrect = false,
+      strictResolution = false
+    ).isSuccess shouldBe true
+
+    logger.parsedReport() shouldBe listOf()
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugImplementation(project(path = ":lib2"))
         }
     """
   }
@@ -943,6 +1044,194 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies {
           implementation(project(path = ":lib1"))
           implementation(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited implementation from implementation with string extension should be added with string invocation`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.implementation, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "implementation"(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "implementation"(project(path = ":lib1"))
+          "implementation"(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited implementation from api with string extension should be added with precompiled function`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "api"(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+          "api"(project(path = ":lib2"))
         }
     """
 
