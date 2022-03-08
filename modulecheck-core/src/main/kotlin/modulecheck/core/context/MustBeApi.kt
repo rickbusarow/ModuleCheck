@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.apiDependencySources
+import modulecheck.api.context.dependencySources
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.jvmFilesForSourceSetName
@@ -108,7 +108,7 @@ data class MustBeApi(
             .projectDependencies
             .main()
             .firstOrNull { it.project == cpd.project }
-            ?: project.apiDependencySources().sourceOfOrNull(
+            ?: project.dependencySources().sourceOfOrNull(
               dependencyProjectPath = cpd.project.path,
               sourceSetName = SourceSetName.MAIN,
               isTestFixture = cpd.isTestFixture
