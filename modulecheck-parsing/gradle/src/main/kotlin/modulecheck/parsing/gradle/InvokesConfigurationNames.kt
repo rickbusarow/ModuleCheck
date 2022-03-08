@@ -66,7 +66,7 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
         .mapNotNull { configName -> configurations[configName] }
     }
     .filter { inheritingConfig ->
-      inheritingConfig.inherited
+      inheritingConfig.upstream
         .any { inheritedConfig ->
           inheritedConfig.name == configurationName
         }

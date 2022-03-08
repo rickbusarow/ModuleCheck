@@ -76,7 +76,7 @@ data class OverShotDependencies(
           // For instance, don't add a `testImplementation` declaration if `implementation` is
           // already being added.
           val trimmedConfigs = allConfigs.filter { cfg ->
-            cfg.inherited.none { it in allConfigs }
+            cfg.upstream.none { it in allConfigs }
           }
 
           trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }

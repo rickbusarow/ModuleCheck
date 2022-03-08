@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSetName.Companion
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
@@ -99,9 +100,9 @@ interface McProjectBuilderScope {
     maybeAddSourceSet(sourceSetName)
     // If the configuration is not from Java plugin, then it won't be automatically added from
     // source sets.  Plugins like Kapt don't make their configs inherit from each other,
-    // so just add an empty set for inherited.
+    // so just add an empty sequence for up/downstream.
     if (this !in sourceSetName.javaConfigurationNames()) {
-      configurations[this] = Config(this, emptySet())
+      configurations[this] = Config(this, emptySequence(), emptySequence())
     }
   }
 
@@ -208,7 +209,7 @@ internal fun createProject(
   return builder.toProject()
 }
 
-internal fun McProjectBuilderScope.populateConfigs() {
+internal fun McProjectBuilderScope.populateConfigsFromSourceSets() {
   sourceSets
     .keys
     // add main source set configs first so that they can be safely looked up for inheriting configs
@@ -216,19 +217,32 @@ internal fun McProjectBuilderScope.populateConfigs() {
     .flatMap { it.javaConfigurationNames() }
     .forEach { configurationName ->
 
-      val inherited = if (configurationName.toSourceSetName() == SourceSetName.MAIN) {
-        emptySet()
+      val upstream = if (configurationName.toSourceSetName() == SourceSetName.MAIN) {
+        emptySequence()
       } else {
         SourceSetName.MAIN.javaConfigurationNames()
           .map { configurations.getValue(it) }
-          .toSet()
+          .asSequence()
+      }
+
+      val downstream = if (configurationName.toSourceSetName() != SourceSetName.MAIN) {
+        emptySequence()
+      } else if (!configurationName.isApi()) {
+        emptySequence()
+      } else {
+        sourceSets.keys
+          .filterNot { it == Companion.MAIN }
+          .asSequence()
+          .flatMap { it.javaConfigurationNames() }
+          .map { configurations.getValue(it) }
       }
 
       configurations.putIfAbsent(
         configurationName,
         Config(
           name = configurationName,
-          inherited = inherited
+          upstreamSequence = upstream,
+          downstreamSequence = downstream
         )
       )
     }
@@ -245,8 +259,8 @@ internal fun McProjectBuilderScope.populateSourceSets() {
 
 fun McProjectBuilderScope.toProject(): RealMcProject {
 
-  populateConfigs()
   populateSourceSets()
+  populateConfigsFromSourceSets()
 
   val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
     RealJvmFileProvider(
