@@ -24,7 +24,7 @@ import modulecheck.core.context.mustBeApiIn
 import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.inheritingConfigurations
+import modulecheck.parsing.gradle.names
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.TransitiveProjectDependency
@@ -155,9 +155,11 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
   private fun TransitiveProjectDependency.withInheritingVariants(
     project: McProject
   ): Sequence<TransitiveProjectDependency> {
-    return sequenceOf(this) + project.inheritingConfigurations(source.configurationName)
+    return sequenceOf(this) + project.configurations
+      .getValue(source.configurationName)
+      .withDownstream()
       .asSequence()
-      .map { config -> config.name }
+      .names()
       .filter { name -> name.isImplementation() }
       .map { configName -> withContributedConfiguration(configName) }
   }

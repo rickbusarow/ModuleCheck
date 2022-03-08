@@ -140,7 +140,7 @@ internal fun createAndroidProject(
       .createSafely("<manifest package=\"$androidPackage\" />")
   }
 
-  builder.populateConfigs()
+  builder.populateConfigsFromSourceSets()
   builder.populateSourceSets()
 
   return builder.toProject()
@@ -179,7 +179,7 @@ fun buildFileParserFactory(): BuildFileParser.Factory {
 
 fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
 
-  populateConfigs()
+  populateConfigsFromSourceSets()
   populateSourceSets()
 
   val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->

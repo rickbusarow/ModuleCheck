@@ -34,7 +34,6 @@ import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.existingFiles
 import modulecheck.gradle.task.GradleLogger
-import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
@@ -53,10 +52,8 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
-import modulecheck.utils.mapToSet
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
@@ -172,27 +169,11 @@ class GradleProjectProvider @AssistedInject constructor(
 
   private fun GradleProject.configurations(): Configurations {
 
-    fun Configuration.allInherited(): Set<Configuration> {
-      return generateSequence(extendsFrom.asSequence()) { extended ->
-        extended.flatMap { it.extendsFrom.asSequence() }
-          .takeIf { it.iterator().hasNext() }
-      }.flatten()
-        .toSet()
-    }
-
-    fun Configuration.toConfig(): Config {
-
-      return Config(
-        name = name.asConfigurationName(),
-        inherited = allInherited().mapToSet { it.toConfig() }
-      )
-    }
-
     val map = configurations
       .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
       .associate { configuration ->
 
-        val config = configuration.toConfig()
+        val config = configuration.toConfig(configurations)
 
         configuration.name.asConfigurationName() to config
       }
@@ -353,10 +334,8 @@ class GradleProjectProvider @AssistedInject constructor(
             val layoutFiles = resourceFiles
               .filter {
                 it.isFile && it.path
-                  .replace(
-                    File.separator,
-                    "/"
-                  ) // replaceDestructured `\` from Windows paths with `/`.
+                  // replace `\` from Windows paths with `/`.
+                  .replace(File.separator, "/")
                   .contains("""/res/layout.*/.*.xml""".toRegex())
               }
               .toSet()

@@ -79,7 +79,7 @@ value class SourceSetName(val value: String) {
     return javaConfigurationNames()
       .flatMapTo(seed) { configurationName ->
         hasConfigurations.configurations[configurationName]
-          ?.inherited
+          ?.upstream
           ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
           .orEmpty()
       }
@@ -105,7 +105,7 @@ value class SourceSetName(val value: String) {
     return javaConfigurationNames()
       .asSequence()
       .mapNotNull { hasConfigurations.configurations[it] }
-      .map { config -> config.inherited.mapToSet { it.name } }
+      .map { config -> config.upstream.mapToSet { it.name } }
       .any { inheritedNames ->
         inheritedNames.any { inherited -> inherited in otherConfigNames }
       }
