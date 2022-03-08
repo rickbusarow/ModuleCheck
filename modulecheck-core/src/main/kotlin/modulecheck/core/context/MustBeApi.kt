@@ -25,9 +25,9 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
-import modulecheck.api.context.dependencySources
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
+import modulecheck.api.context.dependencySources
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
