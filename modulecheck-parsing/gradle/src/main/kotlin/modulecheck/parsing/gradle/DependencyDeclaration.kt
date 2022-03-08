@@ -72,17 +72,39 @@ data class ModuleDependencyDeclaration(
 ) : DependencyDeclaration {
 
   suspend fun replace(
-    configName: ConfigurationName = this.configName,
+    newConfigName: ConfigurationName = this.configName,
     modulePath: String = this.moduleRef.value,
     testFixtures: Boolean
   ): ModuleDependencyDeclaration {
 
-    val newConfigText = configurationNameTransform(configName)
+    val newConfigText = configurationNameTransform(newConfigName)
+
+    // Figure out if the old configuration is used as a string extension, like:
+    // `"implementation"(...)`  instead of `implementation(...)`
+    val quotedOldConfig = "\"${configName.value}\""
+    val configIsInQuotes = declarationText.startsWith(quotedOldConfig)
+
+    /*
+    If the old config is a string extension, then we need to perform a String.replace(...) on
+    the full string including the quotes, instead of just the configuration name. Otherwise, we
+    can wind up with a precompiled config name (api, implementation, etc.) inside quotes.
+
+    This isn't a very likely scenario if the SourceSet/Configuration hierarchies are working
+    properly, but it's possible.  One scenario would be if the build file simply has an `"api"(...)`
+    somewhere -- perhaps automatically added by the IDE's intention.  This might be the only string
+    extension in the whole project, but without this check, autocorrect would use string extensions
+    whenever that `"api"(...)` dependency is the source.
+    */
+    val configToReplace = if (configIsInQuotes) {
+      quotedOldConfig
+    } else {
+      configName.value
+    }
 
     val newDeclaration = declarationText.addOrRemoveTestFixtures(testFixtures)
-      .replaceFirst(this.configName.value, newConfigText)
+      .replaceFirst(configToReplace, newConfigText)
       .replaceFirst(moduleRef.value, modulePath)
-      .maybeFixDoubleQuotes()
+      .maybeFixExtraQuotes()
 
     val newModuleRef = if (modulePath.startsWith(':')) {
       StringRef(modulePath)
@@ -94,14 +116,14 @@ data class ModuleDependencyDeclaration(
 
     return copy(
       moduleRef = newModuleRef,
-      configName = configName,
+      configName = newConfigName,
       declarationText = newDeclaration,
       statementWithSurroundingText = newStatement
     )
   }
 
   /** replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"` */
-  private fun String.maybeFixDoubleQuotes(): String {
+  private fun String.maybeFixExtraQuotes(): String {
     return replaceDestructured("\"\"([^\"]*)\"\"".toRegex()) { group1 ->
       "\"$group1\""
     }

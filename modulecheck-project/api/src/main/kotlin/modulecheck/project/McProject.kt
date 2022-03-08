@@ -77,6 +77,8 @@ private suspend fun McProject.configurationInvocations(): Set<String> {
 
       declaration.configName.value
         .takeIf { declarationText.startsWith(it) }
+        ?: "\"${declaration.configName.value}\""
+          .takeIf { declarationText.startsWith(it) }
     }
     .toSet()
 }
