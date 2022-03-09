@@ -17,7 +17,7 @@
 plugins {
   `kotlin-dsl`
   base
-  id("org.jlleitschuh.gradle.ktlint")
+  alias(libs.plugins.ktlint)
 }
 
 val kotlinVersion = libs.versions.kotlin.get()
@@ -40,22 +40,16 @@ dependencies {
 }
 
 java {
-  // force Java 8 source when building java-only artifacts.
   // This is different from the Kotlin jvm target.
-  sourceCompatibility = JavaVersion.VERSION_1_8
-  targetCompatibility = JavaVersion.VERSION_1_8
+  toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
 
-extensions.configure(org.jlleitschuh.gradle.ktlint.KtlintExtension::class.java) {
-  debug.set(false)
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
 
-  outputToConsole.set(true)
-  disabledRules.set(
-    setOf(
-      "no-wildcard-imports",
-      "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-      "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-      "experimental:argument-list-wrapping" // doesn't work half the time
-    )
-  )
+    languageVersion = "1.5"
+    apiVersion = "1.5"
+
+    jvmTarget = "11"
+  }
 }

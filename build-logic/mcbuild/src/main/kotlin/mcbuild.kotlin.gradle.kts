@@ -22,10 +22,16 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
     kotlinOptions {
       allWarningsAsErrors = false
 
-      languageVersion = "1.5"
-      apiVersion = "1.5"
+      val kotlinMajor = "1.5"
 
-      jvmTarget = "1.8"
+      languageVersion = kotlinMajor
+      apiVersion = kotlinMajor
+
+      val javaMajor = "11"
+
+      jvmTarget = javaMajor
+      sourceCompatibility = javaMajor
+      targetCompatibility = javaMajor
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-Xinline-classes",

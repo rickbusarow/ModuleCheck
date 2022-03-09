@@ -19,12 +19,9 @@ plugins {
   kotlin("jvm")
 }
 
-extensions.getByType(JavaPluginExtension::class).apply {
-
-  // force Java 8 source when building java-only artifacts.
+java {
   // This is different from the Kotlin jvm target.
-  sourceCompatibility = JavaVersion.VERSION_11
-  targetCompatibility = JavaVersion.VERSION_11
+  toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
 
 val lintMain by tasks.registering {
