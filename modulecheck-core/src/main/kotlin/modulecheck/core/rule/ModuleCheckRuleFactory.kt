@@ -28,7 +28,7 @@ class ModuleCheckRuleFactory : RuleFactory {
       { DepthRule() },
       { DisableAndroidResourcesRule() },
       { DisableViewBindingRule() },
-      { DisableKotlinAndroidExtensionsRule() },
+      { UnusedKotlinAndroidExtensionsRule() },
       { InheritedDependencyRule() },
       { MustBeApiRule() },
       { OverShotDependencyRule(it) },

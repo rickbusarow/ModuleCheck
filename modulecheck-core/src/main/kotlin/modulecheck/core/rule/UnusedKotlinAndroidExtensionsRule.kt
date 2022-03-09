@@ -26,9 +26,9 @@ import modulecheck.project.McProject
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
 private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-extensions\")"
 
-class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
+class UnusedKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
 
-  override val id = "DisableKotlinAndroidExtensions"
+  override val id = "UnusedKotlinAndroidExtensions"
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
@@ -51,7 +51,7 @@ class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> 
     else listOf(
       UnusedPluginFinding(
         dependentProject = project, dependentPath = project.path, buildFile = project.buildFile,
-        findingName = "disableKotlinAndroidExtensions",
+        findingName = "unusedKotlinAndroidExtensions",
         pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
         kotlinPluginFunction = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
       )
@@ -59,6 +59,6 @@ class DisableKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> 
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.disableKotlinAndroidExtensions
+    return checksSettings.unusedKotlinAndroidExtensions
   }
 }

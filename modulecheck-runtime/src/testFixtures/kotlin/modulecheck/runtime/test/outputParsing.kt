@@ -17,7 +17,7 @@ package modulecheck.runtime.test
 
 import modulecheck.runtime.test.ProjectFindingReport.depth
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
-import modulecheck.runtime.test.ProjectFindingReport.disableKotlinAndroidExtensions
+import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
@@ -149,8 +149,8 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
             dependency = dependency,
             position = position
           )
+          "unusedKotlinAndroidExtensions" -> unusedKotlinAndroidExtensions(fixed = fixed, position = position)
           "disableAndroidResources" -> disableAndroidResources(fixed = fixed, position = position)
-          "disableKotlinAndroidExtensions" -> disableKotlinAndroidExtensions(fixed = fixed, position = position)
           else -> error("could not parse a finding result type for name of `$name`.")
         }
 

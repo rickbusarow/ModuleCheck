@@ -20,19 +20,19 @@ import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.test.AndroidMcProjectBuilderScope
-import modulecheck.runtime.test.ProjectFindingReport.disableKotlinAndroidExtensions
+import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeKotlin
 import org.junit.jupiter.api.Test
 
-class DisableKotlinAndroidExtensionsTest : RunnerTest() {
+class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   val ruleFactory by resets { ModuleCheckRuleFactory() }
 
   override val settings by resets {
     TestSettings(
       checks = TestChecksSettings(
-        disableKotlinAndroidExtensions = true
+        unusedKotlinAndroidExtensions = true
       )
     )
   }
@@ -45,7 +45,7 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions should pass if check is disabled`() {
-    settings.checks.disableKotlinAndroidExtensions = false
+    settings.checks.unusedKotlinAndroidExtensions = false
     val runner = runner(autoCorrect = false)
 
     androidProject(":lib1", "com.modulecheck.lib1") {
@@ -77,7 +77,7 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
     """
 
     logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableKotlinAndroidExtensions(fixed = false, position = "4, 3"))
+      ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = false, position = "4, 3"))
     )
   }
 
@@ -135,12 +135,12 @@ class DisableKotlinAndroidExtensionsTest : RunnerTest() {
       plugins {
         id("com.android.library")
         kotlin("android")
-        // kotlin("android-extensions")  // ModuleCheck finding [disableKotlinAndroidExtensions]
+        // kotlin("android-extensions")  // ModuleCheck finding [unusedKotlinAndroidExtensions]
       }
     """
 
     logger.parsedReport() shouldBe listOf(
-      ":lib1" to listOf(disableKotlinAndroidExtensions(fixed = true, position = "4, 3"))
+      ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "4, 3"))
     )
   }
 
