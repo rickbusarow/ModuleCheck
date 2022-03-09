@@ -17,8 +17,6 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.test.AndroidMcProjectBuilderScope
 import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.RunnerTest
@@ -27,8 +25,6 @@ import org.junit.jupiter.api.Test
 
 class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
-  val ruleFactory by resets { ModuleCheckRuleFactory() }
-
   override val settings by resets {
     TestSettings(
       checks = TestChecksSettings(
@@ -36,37 +32,28 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       )
     )
   }
-  val findingFactory by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
-  }
 
   @Test
   fun `unused KotlinAndroidExtensions should pass if check is disabled`() {
     settings.checks.unusedKotlinAndroidExtensions = false
-    val runner = runner(autoCorrect = false)
 
     androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = false).isSuccess shouldBe true
     logger.parsedReport() shouldBe listOf()
   }
 
   @Test
   fun `unused KotlinAndroidExtensions without auto-correct should fail`() {
-    val runner = runner(autoCorrect = false)
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
 
-    runner.run(allProjects()).isSuccess shouldBe false
+    run(autoCorrect = false).isSuccess shouldBe false
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -83,8 +70,6 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `used KotlinAndroidExtensions should pass and should not be corrected`() {
-    val runner = runner(autoCorrect = true)
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
@@ -108,7 +93,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       )
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = true).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -123,13 +108,11 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions should be fixed`() {
-    val runner = runner(autoCorrect = true)
-
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
     }
 
-    runner.run(allProjects()).isSuccess shouldBe true
+    run(autoCorrect = true).isSuccess shouldBe true
 
     lib1.buildFile.readText() shouldBe """
       plugins {
@@ -143,11 +126,6 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "4, 3"))
     )
   }
-
-  private fun runner(autoCorrect: Boolean) = runner(
-    autoCorrect = autoCorrect,
-    findingFactory = findingFactory
-  )
 
   private fun AndroidMcProjectBuilderScope.writeBuildFileWithPlugin() {
     buildFile.writeKotlin(
