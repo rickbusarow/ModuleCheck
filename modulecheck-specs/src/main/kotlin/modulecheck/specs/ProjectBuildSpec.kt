@@ -191,7 +191,7 @@ public class ProjectBuildSpecBuilder(
   }
 
   public fun addBlock(codeBlock: String): ProjectBuildSpecBuilder = apply {
-    blocks.add(codeBlock)
+    blocks.add(codeBlock.trimIndent())
   }
 
   public fun addPlugin(
