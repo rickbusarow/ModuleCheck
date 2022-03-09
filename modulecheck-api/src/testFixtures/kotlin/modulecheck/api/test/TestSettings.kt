@@ -42,19 +42,19 @@ data class TestSettings(
 
 @Suppress("LongParameterList")
 data class TestChecksSettings(
-    override var redundantDependency: Boolean = ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT,
-    override var unusedDependency: Boolean = ChecksSettings.UNUSED_DEPENDENCY_DEFAULT,
-    override var overShotDependency: Boolean = ChecksSettings.OVERSHOT_DEPENDENCY_DEFAULT,
-    override var mustBeApi: Boolean = ChecksSettings.MUST_BE_API_DEFAULT,
-    override var inheritedDependency: Boolean = ChecksSettings.INHERITED_DEPENDENCY_DEFAULT,
-    override var sortDependencies: Boolean = ChecksSettings.SORT_DEPENDENCIES_DEFAULT,
-    override var sortPlugins: Boolean = ChecksSettings.SORT_PLUGINS_DEFAULT,
-    override var unusedKapt: Boolean = ChecksSettings.UNUSED_KAPT_DEFAULT,
-    override var anvilFactoryGeneration: Boolean = ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT,
-    override var disableAndroidResources: Boolean = ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT,
-    override var disableViewBinding: Boolean = ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT,
-    override var unusedKotlinAndroidExtensions: Boolean = ChecksSettings.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT,
-    override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
+  override var redundantDependency: Boolean = ChecksSettings.REDUNDANT_DEPENDENCY_DEFAULT,
+  override var unusedDependency: Boolean = ChecksSettings.UNUSED_DEPENDENCY_DEFAULT,
+  override var overShotDependency: Boolean = ChecksSettings.OVERSHOT_DEPENDENCY_DEFAULT,
+  override var mustBeApi: Boolean = ChecksSettings.MUST_BE_API_DEFAULT,
+  override var inheritedDependency: Boolean = ChecksSettings.INHERITED_DEPENDENCY_DEFAULT,
+  override var sortDependencies: Boolean = ChecksSettings.SORT_DEPENDENCIES_DEFAULT,
+  override var sortPlugins: Boolean = ChecksSettings.SORT_PLUGINS_DEFAULT,
+  override var unusedKapt: Boolean = ChecksSettings.UNUSED_KAPT_DEFAULT,
+  override var anvilFactoryGeneration: Boolean = ChecksSettings.ANVIL_FACTORY_GENERATION_DEFAULT,
+  override var disableAndroidResources: Boolean = ChecksSettings.DISABLE_ANDROID_RESOURCES_DEFAULT,
+  override var disableViewBinding: Boolean = ChecksSettings.DISABLE_VIEW_BINDING_DEFAULT,
+  override var unusedKotlinAndroidExtensions: Boolean = ChecksSettings.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT,
+  override var depths: Boolean = ChecksSettings.DEPTHS_DEFAULT
 ) : ChecksSettings
 
 class TestSortSettings(
