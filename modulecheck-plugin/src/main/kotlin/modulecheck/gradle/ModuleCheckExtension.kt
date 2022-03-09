@@ -20,7 +20,6 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DEPTHS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_ANDROID_RESOURCES_DEFAULT
-import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.DISABLE_VIEW_BINDING_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.INHERITED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.MUST_BE_API_DEFAULT
@@ -30,6 +29,7 @@ import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.api.settings.PerModuleReportSettings
 import modulecheck.api.settings.ReportSettings
