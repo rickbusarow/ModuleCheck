@@ -17,6 +17,7 @@ package modulecheck.specs
 
 import com.squareup.kotlinpoet.FileSpec
 import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
+import org.intellij.lang.annotations.Language
 import java.io.File
 import java.nio.file.Path
 
@@ -72,7 +73,23 @@ public class ProjectSrcSpecBuilder(
   }
 
   public fun addRawFile(fileName: String, text: String) {
-    rawFiles.add(RawFile(fileName = fileName, text = text))
+    rawFiles.add(RawFile(fileName = fileName, text = text.trimIndent()))
+  }
+
+  public fun addXmlFile(
+    fileName: String,
+    @Language("xml")
+    text: String
+  ) {
+    rawFiles.add(RawFile(fileName = fileName, text = text.trimIndent()))
+  }
+
+  public fun addKotlinFile(
+    fileName: String,
+    @Language("kotlin")
+    text: String
+  ) {
+    rawFiles.add(RawFile(fileName = fileName, text = text.trimIndent()))
   }
 
   public fun addRawFile(rawFile: RawFile) {

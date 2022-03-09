@@ -23,6 +23,7 @@ import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.TestExtension
+import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
@@ -52,6 +53,7 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
+import modulecheck.utils.unsafeLazy
 import net.swiftzer.semver.SemVer
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.ExternalModuleDependency
@@ -62,7 +64,6 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import java.io.File
-import kotlin.LazyThreadSafetyMode.NONE
 
 class GradleProjectProvider @AssistedInject constructor(
   @Assisted
@@ -106,24 +107,20 @@ class GradleProjectProvider @AssistedInject constructor(
     val hasKapt = gradleProject
       .plugins
       .hasPlugin(KAPT_PLUGIN_ID)
+
+    val androidTestedExtension = gradleProject
+      .extensions
+      .findByType(TestedExtension::class.java)
+
+    val isAndroid = androidTestedExtension != null
+
+    val libraryExtension by unsafeLazy {
+      androidTestedExtension as? LibraryExtension
+    }
+
     val hasTestFixturesPlugin = gradleProject
       .pluginManager
-      .hasPlugin(TEST_FIXTURES_PLUGIN_ID)
-
-    val testedExtension = gradleProject
-      .extensions
-      .findByType(LibraryExtension::class.java)
-      ?: gradleProject
-        .extensions
-        .findByType(AppExtension::class.java)
-
-    val isAndroid = testedExtension != null
-
-    val libraryExtension by lazy(NONE) {
-      gradleProject
-        .extensions
-        .findByType(LibraryExtension::class.java)
-    }
+      .hasPlugin(TEST_FIXTURES_PLUGIN_ID) || androidTestedExtension?.testFixtures?.enable == true
 
     return if (isAndroid) {
       RealAndroidMcProject(
@@ -137,7 +134,7 @@ class GradleProjectProvider @AssistedInject constructor(
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
-        viewBindingEnabled = testedExtension?.buildFeatures?.viewBinding == true,
+        viewBindingEnabled = androidTestedExtension?.buildFeatures?.viewBinding == true,
         manifests = gradleProject.androidManifests().orEmpty(),
         logger = gradleLogger,
         jvmFileProviderFactory = jvmFileProviderFactory,
