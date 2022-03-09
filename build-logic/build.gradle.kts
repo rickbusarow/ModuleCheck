@@ -26,18 +26,23 @@ plugins {
   alias(libs.plugins.ktlint)
 }
 
-configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-  debug.set(false)
+allprojects {
+  afterEvaluate {
+    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+      debug.set(false)
 
-  outputToConsole.set(true)
-  disabledRules.set(
-    setOf(
-      "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-      "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-      "experimental:argument-list-wrapping" // doesn't work half the time
-    )
-  )
+      outputToConsole.set(true)
+      disabledRules.set(
+        setOf(
+          "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
+          "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
+          "experimental:argument-list-wrapping" // doesn't work half the time
+        )
+      )
+    }
+  }
 }
+
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
   workerMaxHeapSize.set("512m")
 }
