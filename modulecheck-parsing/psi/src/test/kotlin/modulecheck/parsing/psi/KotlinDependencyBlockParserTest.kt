@@ -189,6 +189,47 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
   }
 
   @Test
+  fun `blank line between dependencies`() {
+    val block = KotlinDependencyBlockParser()
+      .parse(
+        """
+       dependencies {
+          api(testFixtures(project(":lib1")))
+
+          api(testFixtures(project(":lib2")))
+          implementation(testFixtures(project(":lib3")))
+       }
+        """
+      ).single()
+
+    block.settings shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = StringRef(":lib1"),
+        moduleAccess = """project(":lib1")""",
+        configName = ConfigurationName.api,
+        declarationText = """api(testFixtures(project(":lib1")))""",
+        statementWithSurroundingText = """   api(testFixtures(project(":lib1")))"""
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = StringRef(":lib2"),
+        moduleAccess = """project(":lib2")""",
+        configName = ConfigurationName.api,
+        declarationText = """api(testFixtures(project(":lib2")))""",
+        statementWithSurroundingText = """|
+           |   api(testFixtures(project(":lib2")))
+        """.trimMargin()
+      ),
+      ModuleDependencyDeclaration(
+        moduleRef = StringRef(":lib3"),
+        moduleAccess = """project(":lib3")""",
+        configName = ConfigurationName.implementation,
+        declarationText = """implementation(testFixtures(project(":lib3")))""",
+        statementWithSurroundingText = """   implementation(testFixtures(project(":lib3")))"""
+      ),
+    )
+  }
+
+  @Test
   fun `string module dependency declaration with testFixtures should be parsed`() {
     val block = KotlinDependencyBlockParser()
       .parse(
