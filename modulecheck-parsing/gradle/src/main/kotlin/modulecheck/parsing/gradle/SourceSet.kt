@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.utils.capitalize
+import modulecheck.utils.decapitalize
 import modulecheck.utils.mapToSet
 import java.io.File
 
@@ -130,3 +131,27 @@ fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 class SourceSets(
   delegate: Map<SourceSetName, SourceSet>
 ) : Map<SourceSetName, SourceSet> by delegate
+
+fun SourceSetName.removePrefix(prefix: String) = value.removePrefix(prefix)
+  .decapitalize()
+  .asSourceSetName()
+
+fun SourceSetName.removePrefix(prefix: SourceSetName) = removePrefix(prefix.value)
+
+fun SourceSetName.hasPrefix(prefix: String) = value.startsWith(prefix)
+fun SourceSetName.hasPrefix(prefix: SourceSetName) = hasPrefix(prefix.value)
+
+fun SourceSetName.addPrefix(prefix: String) = prefix.plus(value.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.addPrefix(prefix: SourceSetName) = addPrefix(prefix.value)
+
+fun SourceSetName.removeSuffix(suffix: String) = value.removeSuffix(suffix.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.removeSuffix(suffix: SourceSetName) = removeSuffix(suffix.value.capitalize())
+
+fun SourceSetName.addSuffix(suffix: String) = value.plus(suffix.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.addSuffix(suffix: SourceSetName) = addSuffix(suffix.value)
