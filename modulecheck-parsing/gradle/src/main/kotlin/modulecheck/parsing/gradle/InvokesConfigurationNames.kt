@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.gradle.SourceSetName.Companion
 import java.io.File
 
 interface InvokesConfigurationNames :
@@ -96,17 +97,61 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
 suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
   where T : PluginAware,
         T : HasDependencyDeclarations {
-  return when (toSourceSetName()) {
-    SourceSetName.ANVIL -> project.hasAnvil
-    SourceSetName.MAIN -> true
-    SourceSetName.TEST -> true
-    SourceSetName.TEST_FIXTURES -> project.hasTestFixturesPlugin
-    SourceSetName.KAPT -> project.hasKapt
-    SourceSetName.DEBUG -> project.hasAGP
-    SourceSetName.RELEASE -> project.hasAGP
-    SourceSetName.ANDROID_TEST -> project.hasAGP
-    else -> return project.getConfigurationInvocations().contains(value)
+
+  return toSourceSetName().isDefinitelyPrecompiledForProject(project) ||
+    project.getConfigurationInvocations().contains(value)
+}
+
+@Suppress("ComplexMethod")
+private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project: T): Boolean
+  where T : PluginAware,
+        T : HasDependencyDeclarations {
+
+  // simple cases
+  when (this) {
+    SourceSetName.ANVIL -> return project.hasAnvil
+    SourceSetName.MAIN -> return true
+    SourceSetName.TEST -> return true
+    SourceSetName.TEST_FIXTURES -> return project.hasTestFixturesPlugin
+    SourceSetName.KAPT -> return project.hasKapt
+    SourceSetName.DEBUG -> return project.hasAGP
+    SourceSetName.RELEASE -> return project.hasAGP
+    SourceSetName.ANDROID_TEST -> return project.hasAGP
   }
+
+  if (project.hasAnvil && hasPrefix(SourceSetName.ANVIL)) {
+    // `anvilDebug` -> `debug`, then we'd recurse and check for `debug`.
+    return removePrefix(Companion.ANVIL).isDefinitelyPrecompiledForProject(project)
+  }
+  if (project.hasKapt && hasPrefix(SourceSetName.KAPT)) {
+    // `kaptAndroidTest` -> `androidTest`, then we'd recurse and check for `androidTest`.
+    return removePrefix(Companion.KAPT).isDefinitelyPrecompiledForProject(project)
+  }
+  // Note that the `testFixtures` check has to be above anything dealing with a "test-" prefix.
+  if (project.hasTestFixturesPlugin && hasPrefix(Companion.TEST_FIXTURES)) {
+    // `testFixturesDebug` -> `debug`, then we'd recurse and check for `debug`.
+    return removePrefix(Companion.TEST_FIXTURES).isDefinitelyPrecompiledForProject(project)
+  }
+  // `test` must come before Android stuff, because the source set is `testDebug` -- not `debugTest`
+  if (hasPrefix(Companion.TEST)) {
+    return removePrefix(Companion.TEST).isDefinitelyPrecompiledForProject(project)
+  }
+  if (project.hasAGP) {
+    when {
+      // `androidTest` MUST come before `debug` and `release`,
+      // because the source set is `androidTest____`
+      hasPrefix(SourceSetName.ANDROID_TEST) -> {
+        return removePrefix(Companion.ANDROID_TEST).isDefinitelyPrecompiledForProject(project)
+      }
+      hasPrefix(SourceSetName.DEBUG) -> {
+        return removePrefix(Companion.DEBUG).isDefinitelyPrecompiledForProject(project)
+      }
+      hasPrefix(SourceSetName.RELEASE) -> {
+        return removePrefix(Companion.RELEASE).isDefinitelyPrecompiledForProject(project)
+      }
+    }
+  }
+  return false
 }
 
 /**
