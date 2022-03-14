@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.utils.capitalize
+import modulecheck.utils.decapitalize
 import modulecheck.utils.mapToSet
 import java.io.File
 
@@ -42,16 +43,40 @@ data class SourceSet(
 @JvmInline
 value class SourceSetName(val value: String) {
 
+  fun isTestingOnly() = when {
+    this.value.startsWith(TEST_FIXTURES.value) -> false
+    this.value.startsWith(ANDROID_TEST.value) -> true
+    this.value.startsWith(TEST.value) -> true
+    else -> false
+  }
+
+  fun isTestOrAndroidTest() = when {
+    this.value.startsWith(ANDROID_TEST.value, ignoreCase = true) -> true
+    this.value.startsWith(TEST.value, ignoreCase = true) -> true
+    else -> false
+  }
+
+  fun isTestFixtures() = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
+
+  fun nonTestSourceSetNameOrNull() = when {
+    isTestingOnly() -> null
+    value.endsWith(ANDROID_TEST.value, ignoreCase = true) -> {
+      value.removePrefix(ANDROID_TEST.value).decapitalize().asSourceSetName()
+    }
+    value.endsWith(TEST.value, ignoreCase = true) -> {
+      value.removePrefix(TEST.value).decapitalize().asSourceSetName()
+    }
+    this == TEST_FIXTURES -> MAIN
+    else -> this
+  }
+
   fun javaConfigurationNames(): List<ConfigurationName> {
 
     return if (this == MAIN) {
       ConfigurationName.main()
     } else {
       ConfigurationName.mainConfigurations
-        .map {
-          "${this.value}${it.capitalize()}"
-            .asConfigurationName()
-        }
+        .map { "${this.value}${it.capitalize()}".asConfigurationName() }
     }
   }
 
@@ -130,3 +155,27 @@ fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 class SourceSets(
   delegate: Map<SourceSetName, SourceSet>
 ) : Map<SourceSetName, SourceSet> by delegate
+
+fun SourceSetName.removePrefix(prefix: String) = value.removePrefix(prefix)
+  .decapitalize()
+  .asSourceSetName()
+
+fun SourceSetName.removePrefix(prefix: SourceSetName) = removePrefix(prefix.value)
+
+fun SourceSetName.hasPrefix(prefix: String) = value.startsWith(prefix)
+fun SourceSetName.hasPrefix(prefix: SourceSetName) = hasPrefix(prefix.value)
+
+fun SourceSetName.addPrefix(prefix: String) = prefix.plus(value.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.addPrefix(prefix: SourceSetName) = addPrefix(prefix.value)
+
+fun SourceSetName.removeSuffix(suffix: String) = value.removeSuffix(suffix.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.removeSuffix(suffix: SourceSetName) = removeSuffix(suffix.value.capitalize())
+
+fun SourceSetName.addSuffix(suffix: String) = value.plus(suffix.capitalize())
+  .asSourceSetName()
+
+fun SourceSetName.addSuffix(suffix: SourceSetName) = addSuffix(suffix.value)

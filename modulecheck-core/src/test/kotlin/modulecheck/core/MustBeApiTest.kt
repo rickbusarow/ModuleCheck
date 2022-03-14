@@ -19,6 +19,8 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.testing.createSafely
+import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 
 class MustBeApiTest : RunnerTest() {
@@ -217,6 +219,268 @@ class MustBeApiTest : RunnerTest() {
           configuration = "implementation",
           dependency = ":lib1",
           position = "6, 3"
+        )
+      )
+    )
+  }
+
+  // https://github.com/RBusarow/ModuleCheck/issues/443
+  @Test
+  fun `switching to api dependency after a blank line should preserve all newlines -- kotlin`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """
+      )
+    }
+
+    val lib3 = project(":lib3") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        class Lib3Class
+        """
+      )
+    }
+
+    val lib4 = project(":lib4") {
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib2)
+      addDependency(ConfigurationName.implementation, lib3)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+
+          implementation(project(path = ":lib2"))
+          implementation(project(path = ":lib3"))
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib4/Lib4Class.kt",
+        """
+        package com.modulecheck.lib4
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+        import com.modulecheck.lib3.Lib3Class
+
+        val lib1Class = Lib1Class()
+        val lib2Class = Lib2Class()
+        val lib3Class = Lib3Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib4.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+
+          api(project(path = ":lib2"))
+          api(project(path = ":lib3"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib4" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib2",
+          position = "8, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib3",
+          position = "9, 3"
+        )
+      )
+    )
+  }
+
+  // https://github.com/RBusarow/ModuleCheck/issues/443
+  @Test
+  fun `switching to api dependency after a blank line should preserve all newlines -- groovy`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """
+      )
+    }
+
+    val lib3 = project(":lib3") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        class Lib3Class
+        """
+      )
+    }
+
+    val lib4 = project(":lib4") {
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib2)
+      addDependency(ConfigurationName.implementation, lib3)
+
+      buildFile.delete()
+      buildFile = projectDir.child("build.gradle")
+        .createSafely(
+          """
+          plugins {
+            id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+          }
+
+          dependencies {
+            implementation project(':lib1')
+
+            implementation project(':lib2')
+            implementation project(':lib3')
+          }
+          """.trimIndent()
+        )
+
+      addSource(
+        "com/modulecheck/lib4/Lib4Class.kt",
+        """
+        package com.modulecheck.lib4
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+        import com.modulecheck.lib3.Lib3Class
+
+        val lib1Class = Lib1Class()
+        val lib2Class = Lib2Class()
+        val lib3Class = Lib3Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib4.buildFile shouldHaveText """
+        plugins {
+          id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+        }
+
+        dependencies {
+          api project(':lib1')
+
+          api project(':lib2')
+          api project(':lib3')
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib4" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib2",
+          position = "8, 3"
+        ),
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib3",
+          position = "9, 3"
         )
       )
     )
