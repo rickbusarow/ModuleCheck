@@ -28,7 +28,6 @@ class ModuleCheckRuleFactory : RuleFactory {
       { DepthRule() },
       { DisableAndroidResourcesRule() },
       { DisableViewBindingRule() },
-      { UnusedKotlinAndroidExtensionsRule() },
       { InheritedDependencyRule() },
       { MustBeApiRule() },
       { OverShotDependencyRule(it) },
@@ -36,7 +35,8 @@ class ModuleCheckRuleFactory : RuleFactory {
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
       { UnusedDependencyRule(it) },
-      { UnusedKaptRule(it) }
+      { UnusedKaptRule(it) },
+      { UnusedKotlinAndroidExtensionsRule() }
     )
 
   override fun create(
