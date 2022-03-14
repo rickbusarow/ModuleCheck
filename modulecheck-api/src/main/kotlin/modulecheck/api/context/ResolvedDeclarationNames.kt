@@ -66,7 +66,7 @@ data class ResolvedDeclarationNames internal constructor(
     return project.takeIf {
 
       project.declarations()
-        .get(sourceSetName)
+        .get(sourceSetName, includeUpstream = false)
         .contains(declarationName)
     }
       ?.let { Found(McProjectWithSourceSetName(it, sourceSetName)) }

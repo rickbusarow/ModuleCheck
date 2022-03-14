@@ -152,7 +152,7 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = false,
-          configuration = "debugImplementation",
+          configuration = "debugApi",
           dependency = ":lib1",
           position = null
         ),
@@ -239,7 +239,7 @@ class OverShotDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `overshot in android project as implementation but used in debug with auto-correct should be fixed`() {
+  fun `overshot as implementation should be debugApi`() {
 
     val lib1 = project(":lib1") {
       addSource(
@@ -288,6 +288,78 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          debugApi(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "debugApi",
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `overshot as implementation should be debugImplementation`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val lib1Class = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
           debugImplementation(project(path = ":lib1"))
         }
     """
@@ -311,8 +383,7 @@ class OverShotDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `overshot in non-android as implementation but used in debug with auto-correct should be fixed with quotes`() {
-
+  fun `overshot in non-android as implementation should be debugApi with quotes`() {
     val lib1 = project(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
@@ -360,7 +431,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
-          "debugImplementation"(project(path = ":lib1"))
+          "debugApi"(project(path = ":lib1"))
         }
     """
 
@@ -368,7 +439,7 @@ class OverShotDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
-          configuration = "debugImplementation",
+          configuration = "debugApi",
           dependency = ":lib1",
           position = null
         ),
@@ -594,6 +665,18 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName("testFixturesApi"), lib1, asTestFixture = true)
 
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+        """
+      }
+
       addSource(
         "com/modulecheck/lib2/Lib2Class.kt",
         """
@@ -639,6 +722,16 @@ class OverShotDependenciesTest : RunnerTest() {
     }
 
     run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+    """
 
     lib3.buildFile shouldHaveText """
         plugins {

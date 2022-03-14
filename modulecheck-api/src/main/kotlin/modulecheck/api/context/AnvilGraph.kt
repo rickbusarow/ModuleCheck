@@ -169,7 +169,7 @@ data class AnvilGraph(
         .mapNotNull { cpd ->
           cpd.project
             .declarations()
-            .get(SourceSetName.MAIN)
+            .get(SourceSetName.MAIN, includeUpstream = true)
             .filter { maybeExtraReferences.value.contains(it) }
             .firstOrNull { it.fqName.endsWith(scopeNameEntry.name) }
         }
