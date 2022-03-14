@@ -15,13 +15,14 @@
 
 package modulecheck.core.rule
 
-import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
+import modulecheck.parsing.source.asExplicitReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
+import modulecheck.utils.any
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
 private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-extensions\")"
@@ -32,6 +33,9 @@ class UnusedKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
+  private val parcelizeImport = "kotlinx.android.parcel.Parcelize".asExplicitReference()
+  private val syntheticReferencePackage = "kotlinx.android.synthetic"
+
   override suspend fun check(project: McProject): List<UnusedPluginFinding> {
     val androidProject = project as? AndroidMcProject ?: return emptyList()
 
@@ -40,17 +44,16 @@ class UnusedKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
 
     val usedInProject = project.sourceSets.keys
       .any { sourceSetName ->
-        val syntheticReference = "kotlinx.android.synthetic"
         project.referencesForSourceSetName(sourceSetName)
-          .toSet().any {
-            it.startsWith(syntheticReference)
-          }
+          .any { it == parcelizeImport || it.startsWith(syntheticReferencePackage) }
       }
 
     return if (usedInProject) emptyList()
     else listOf(
       UnusedPluginFinding(
-        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile,
+        dependentProject = project,
+        dependentPath = project.path,
+        buildFile = project.buildFile,
         findingName = "unusedKotlinAndroidExtensions",
         pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
         kotlinPluginFunction = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN

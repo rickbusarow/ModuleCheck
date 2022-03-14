@@ -69,7 +69,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
-  fun `used KotlinAndroidExtensions should pass and should not be corrected`() {
+  fun `used KotlinAndroidExtensions synthetics should pass and should not be corrected`() {
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
@@ -107,6 +107,37 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   }
 
   @Test
+  fun `used KotlinAndroidExtensions parcelize should pass and should not be corrected`() {
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      writeBuildFileWithPlugin()
+      addSource(
+        "com/modulecheck/lib1/Source.kt",
+        """
+        package com.modulecheck.lib1
+
+        import android.os.Parcelable
+        import kotlinx.android.parcel.Parcelize
+
+        @Parcelize
+        class SomeClass : Parcelable
+        """
+      )
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        kotlin("android-extensions")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `unused KotlinAndroidExtensions should be fixed`() {
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
@@ -119,6 +150,35 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
         id("com.android.library")
         kotlin("android")
         // kotlin("android-extensions")  // ModuleCheck finding [unusedKotlinAndroidExtensions]
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "4, 3"))
+    )
+  }
+
+  @Test
+  fun `unused KotlinAndroidExtensions from id should be fixed`() {
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          id("org.jetbrains.kotlin.android.extensions")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        // id("org.jetbrains.kotlin.android.extensions")  // ModuleCheck finding [unusedKotlinAndroidExtensions]
       }
     """
 
