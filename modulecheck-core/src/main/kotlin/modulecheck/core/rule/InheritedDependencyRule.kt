@@ -20,7 +20,7 @@ import modulecheck.api.context.classpathDependencies
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
-import modulecheck.core.context.mustBeApiIn
+import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
@@ -115,19 +115,9 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
       .filterNot { transitive -> transitive.contributed.project == project }
       .mapAsync { (source, inherited) ->
 
-        val mustBeApi = source.configurationName
-          .toSourceSetName() == SourceSetName.MAIN && inherited.project
-          .mustBeApiIn(project, inherited.isTestFixture)
-
-        val newConfig = if (mustBeApi) {
-          inherited.configurationName.apiVariant()
-        } else {
-          inherited.configurationName.implementationVariant()
-        }
-
         InheritedDependencyFinding(
           dependentProject = project,
-          newDependency = inherited.copy(newConfig),
+          newDependency = inherited.asApiOrImplementation(project),
           source = source
         )
       }
