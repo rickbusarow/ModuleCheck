@@ -22,7 +22,6 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
-import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.names
 import modulecheck.project.ConfiguredProjectDependency
