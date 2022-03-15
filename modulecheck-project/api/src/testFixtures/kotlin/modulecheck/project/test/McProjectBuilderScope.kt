@@ -16,13 +16,14 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.gradle.Config
+import modulecheck.parsing.gradle.ConfigFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSetName.Companion
 import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.FileCache
@@ -37,6 +38,7 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.impl.RealMcProject
 import modulecheck.testing.createSafely
+import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import java.io.File
@@ -102,7 +104,7 @@ interface McProjectBuilderScope {
     // source sets.  Plugins like Kapt don't make their configs inherit from each other,
     // so just add an empty sequence for up/downstream.
     if (this !in sourceSetName.javaConfigurationNames()) {
-      configurations[this] = Config(this, emptySequence(), emptySequence())
+      configurations[this] = configFactory.create(value)
     }
   }
 
@@ -124,11 +126,11 @@ interface McProjectBuilderScope {
   @Suppress("LongParameterList")
   fun addSourceSet(
     name: SourceSetName,
-    classpathFiles: Set<File> = emptySet(),
-    outputFiles: Set<File> = emptySet(),
     jvmFiles: Set<File> = emptySet(),
     resourceFiles: Set<File> = emptySet(),
-    layoutFiles: Set<File> = emptySet()
+    layoutFiles: Set<File> = emptySet(),
+    upstreamNames: List<SourceSetName> = emptyList(),
+    downstreamNames: List<SourceSetName> = emptyList()
   ): SourceSet {
 
     val old = sourceSets[name]
@@ -138,37 +140,30 @@ interface McProjectBuilderScope {
         "You can probably just delete this line?"
     }
 
-    return maybeAddSourceSet(name, classpathFiles, outputFiles, jvmFiles, resourceFiles)
+    return maybeAddSourceSet(
+      name = name,
+      jvmFiles = jvmFiles,
+      resourceFiles = resourceFiles,
+      layoutFiles = layoutFiles,
+      upstreamNames = upstreamNames,
+      downstreamNames = downstreamNames
+    )
   }
 
   operator fun File.invoke(text: () -> String) {
     writeText(text().trimIndent())
   }
 
-  @Suppress("LongParameterList")
-  fun maybeAddSourceSet(
-    name: SourceSetName,
-    classpathFiles: Set<File> = emptySet(),
-    outputFiles: Set<File> = emptySet(),
-    jvmFiles: Set<File> = emptySet(),
-    resourceFiles: Set<File> = emptySet(),
-    layoutFiles: Set<File> = emptySet()
-  ): SourceSet {
+  fun requireSourceSetExists(name: SourceSetName) {
+    sourceSets[name]
+      .requireNotNullOrFail {
+        """
+        The source set named `${name.value}` doesn't exist in the `sourceSets` map.
 
-    if (name == SourceSetName.TEST_FIXTURES) {
-      hasTestFixturesPlugin = true
-    }
-
-    return sourceSets.getOrPut(name) {
-      SourceSet(
-        name = name,
-        classpathFiles = classpathFiles,
-        outputFiles = outputFiles,
-        jvmFiles = jvmFiles,
-        resourceFiles = resourceFiles,
-        layoutFiles = layoutFiles
-      )
-    }
+          missing source set name: ${name.value}
+          existing source sets: ${sourceSets.keys.map { it.value }}
+        """.trimIndent()
+      }
   }
 }
 
@@ -182,9 +177,7 @@ data class JvmMcProjectBuilderScope(
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
   override var hasTestFixturesPlugin: Boolean = false,
-  override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
-    SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
-  ),
+  override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
   override val projectCache: ProjectCache = ProjectCache(),
   override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
@@ -203,8 +196,18 @@ internal fun createProject(
   val buildFile = File(projectRoot, "build.gradle.kts")
     .createSafely()
 
-  val builder = JvmMcProjectBuilderScope(path, projectRoot, buildFile, projectCache = projectCache)
-    .also { it.config() }
+  val builder = JvmMcProjectBuilderScope(
+    path = path,
+    projectDir = projectRoot,
+    buildFile = buildFile,
+    projectCache = projectCache
+  )
+    .also {
+      it.maybeAddSourceSet(SourceSetName.MAIN)
+      it.maybeAddSourceSet(SourceSetName.TEST)
+
+      it.config()
+    }
 
   return builder.toProject()
 }
@@ -225,17 +228,20 @@ internal fun McProjectBuilderScope.populateConfigsFromSourceSets() {
           .asSequence()
       }
 
-      val downstream = if (configurationName.toSourceSetName() != SourceSetName.MAIN) {
+      val downstreamNames = if (configurationName.toSourceSetName() != SourceSetName.MAIN) {
         emptySequence()
+      } else if (configurationName.isImplementation()) {
+        sequenceOf(configurationName.apiVariant())
       } else if (!configurationName.isApi()) {
         emptySequence()
       } else {
         sourceSets.keys
-          .filterNot { it == Companion.MAIN }
           .asSequence()
+          .filter { it != SourceSetName.MAIN }
           .flatMap { it.javaConfigurationNames() }
-          .map { configurations.getValue(it) }
       }
+
+      val downstream = downstreamNames.map { configurations.getValue(it) }
 
       configurations.putIfAbsent(
         configurationName,
@@ -248,16 +254,16 @@ internal fun McProjectBuilderScope.populateConfigsFromSourceSets() {
     }
 }
 
-internal fun McProjectBuilderScope.populateSourceSets() {
-  configurations
-    .keys
-    .map { it.toSourceSetName() }
-    .distinct()
-    .filterNot { sourceSets.containsKey(it) }
-    .forEach { addSourceSet(it) }
-}
+internal val McProjectBuilderScope.configFactory
+  get() = ConfigFactory(
+    { this },
+    { configurations.values.asSequence().map { it.name.value } },
+    { configurations[asConfigurationName()]?.upstream?.map { it.name.value }.orEmpty() }
+  )
 
-fun McProjectBuilderScope.toProject(): RealMcProject {
+internal fun <T : McProjectBuilderScope, R : McProject> T.toProject(
+  projectFactory: T.(JvmFileProvider.Factory) -> R
+): R {
 
   populateSourceSets()
   populateConfigsFromSourceSets()
@@ -268,24 +274,28 @@ fun McProjectBuilderScope.toProject(): RealMcProject {
     )
   }
 
-  val delegate = RealMcProject(
-    path = path,
-    projectDir = projectDir,
-    buildFile = buildFile,
-    configurations = Configurations(configurations),
-    hasKapt = hasKapt,
-    hasTestFixturesPlugin = hasTestFixturesPlugin,
-    sourceSets = SourceSets(sourceSets),
-    projectCache = projectCache,
-    anvilGradlePlugin = anvilGradlePlugin,
-    logger = PrintLogger(),
-    jvmFileProviderFactory = jvmFileProviderFactory,
-    javaSourceVersion = javaSourceVersion,
-    projectDependencies = lazy { projectDependencies },
-    externalDependencies = lazy { externalDependencies },
-    buildFileParserFactory = buildFileParserFactory()
-  )
-
-  return delegate
+  return projectFactory(jvmFileProviderFactory)
     .also { projectCache[it.path] = it }
+}
+
+fun McProjectBuilderScope.toProject(): RealMcProject {
+  return toProject { jvmFileProviderFactory ->
+    RealMcProject(
+      path = path,
+      projectDir = projectDir,
+      buildFile = buildFile,
+      configurations = Configurations(configurations),
+      hasKapt = hasKapt,
+      hasTestFixturesPlugin = hasTestFixturesPlugin,
+      sourceSets = SourceSets(sourceSets),
+      projectCache = projectCache,
+      anvilGradlePlugin = anvilGradlePlugin,
+      logger = PrintLogger(),
+      jvmFileProviderFactory = jvmFileProviderFactory,
+      javaSourceVersion = javaSourceVersion,
+      projectDependencies = lazy { projectDependencies },
+      externalDependencies = lazy { externalDependencies },
+      buildFileParserFactory = buildFileParserFactory()
+    )
+  }
 }

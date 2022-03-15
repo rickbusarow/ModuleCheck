@@ -23,47 +23,15 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.contains
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.project.TransitiveProjectDependency
 import modulecheck.utils.any
-
-suspend fun McProject.uses(dependency: TransitiveProjectDependency): Boolean {
-
-  /*
-  In the case of a transitive dependency, we want to find out whether that inherited dependency
-  is used in the configuration of the dependency declaration which provides it.
-
-  Given this config:
-  ┌────────┐                      ┌────────┐          ┌────────┐
-  │ :lib3  │──testImplementation─▶│ :lib2  │────api──▶│ :lib1  │
-  └────────┘                      └────────┘          └────────┘
-
-  We'd want to check whether :lib3 uses :lib1, but with the `testImplementation` configuration.  We
-  don't want to check whether :lib3 uses :lib1 in `api`, because :lib2 only provides it to
-  `testImplementation`.
-
-  We want to see whether this configuration is valid:
-                                   ┌────────┐          ┌────────┐
-                       ┌──────────▶│ :lib2  │────api──▶│ :lib1  │
-              testImplementation   └────────┘          ▲────────┘
-  ┌────────┐───────────┘                               │
-  │ :lib3  │                                           │
-  └────────┘───────────────────testImplementation──────┘
-  */
-  val syntheticCpd = dependency.contributed
-    .copy(
-      configurationName = dependency.source.configurationName
-    )
-
-  return uses(syntheticCpd)
-}
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
 
-  val sourceSetName = dependency.configurationName.toSourceSetName()
-
   val dependencyDeclarations = dependency.declarations()
 
-  val refs = referencesForSourceSetName(sourceSetName)
+  val referencesSourceSetName = dependency.configurationName.toSourceSetName()
+
+  val refs = referencesForSourceSetName(referencesSourceSetName)
 
   // Check whether human-written code references the dependency first.
   val usedInStaticSource = refs

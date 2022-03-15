@@ -17,26 +17,96 @@ package modulecheck.parsing.gradle
 
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
-import modulecheck.utils.mapToSet
 import java.io.File
 
 data class SourceSet(
   val name: SourceSetName,
-  val classpathFiles: Set<File> = emptySet(),
-  val outputFiles: Set<File> = emptySet(),
-  val jvmFiles: Set<File> = emptySet(),
-  val resourceFiles: Set<File> = emptySet(),
-  val layoutFiles: Set<File> = emptySet()
-) {
-  fun hasExistingSourceFiles() = jvmFiles.hasExistingFiles() ||
-    resourceFiles.hasExistingFiles() ||
-    layoutFiles.hasExistingFiles()
+  val compileOnlyConfiguration: Config,
+  val apiConfiguration: Config?,
+  val implementationConfiguration: Config,
+  val runtimeOnlyConfiguration: Config,
+  val annotationProcessorConfiguration: Config?,
+  val jvmFiles: Set<File>,
+  val resourceFiles: Set<File>,
+  val layoutFiles: Set<File>,
+  private val upstreamLazy: Lazy<List<SourceSetName>>,
+  private val downstreamLazy: Lazy<List<SourceSetName>>
+) : Comparable<SourceSet> {
+
+  val upstream: List<SourceSetName> by lazy { upstreamLazy.value }
+  val downstream: List<SourceSetName> by lazy { downstreamLazy.value }
+
+  fun withUpstream() = listOf(name) + upstream
+  fun withDownstream() = listOf(name) + downstream
+
+  val hasExistingSourceFiles by lazy {
+    jvmFiles.hasExistingFiles() ||
+      resourceFiles.hasExistingFiles() ||
+      layoutFiles.hasExistingFiles()
+  }
 
   private fun Set<File>.hasExistingFiles(): Boolean {
     return any { dir ->
       dir.walkBottomUp()
         .any { file -> file.isFile && file.exists() }
     }
+  }
+
+  /**
+   * If one source set extends another, then the extended one should come before it in a collection.
+   * For instance, in [withUpstream] for `TestDebug`, the list would be `[main, debug, testDebug]`.
+   *
+   * If two source sets are siblings (neither extends the other, such as in build flavors from
+   * different dimensions), then they should be sorted alphabetically (by name). The alphabetical
+   * sort just ensures that all lists are stable.
+   */
+  override fun compareTo(other: SourceSet): Int {
+
+    if (this == other) return 0
+
+    return when {
+      upstream.contains(other.name) -> 1
+      other.upstream.contains(name) -> -1
+      else -> name.value.compareTo(other.name.value)
+    }
+  }
+
+  override fun toString(): String {
+    return """SourceSet(
+        |  name=$name,
+        |  compileOnlyConfiguration=$compileOnlyConfiguration,
+        |  apiConfiguration=$apiConfiguration,
+        |  implementationConfiguration=$implementationConfiguration,
+        |  runtimeOnlyConfiguration=$runtimeOnlyConfiguration,
+        |  kaptConfiguration=$annotationProcessorConfiguration,
+        |  jvmFiles=$jvmFiles,
+        |  resourceFiles=$resourceFiles,
+        |  layoutFiles=$layoutFiles,
+        |  upstreamLazy=${upstreamLazy.value.map { it.value }},
+        |  downstreamLazy=${downstreamLazy.value.map { it.value }}
+        |)
+    """.trimMargin()
+  }
+}
+
+fun Iterable<SourceSet>.names(): List<SourceSetName> = map { it.name }
+fun Sequence<SourceSet>.names(): Sequence<SourceSetName> = map { it.name }
+
+fun Collection<SourceSet>.sortedByInheritance(): Sequence<SourceSet> {
+
+  val pending = sortedBy { it.upstream.size }.toMutableList()
+  val history = mutableSetOf<SourceSetName>()
+
+  return generateSequence {
+
+    pending.firstOrNull { pendingSourceSet ->
+      // find the first SourceSet where everything upstream has already been yielded to the sequence
+      pendingSourceSet.upstream.isEmpty() || pendingSourceSet.upstream.all { history.contains(it) }
+    }
+      ?.also {
+        history.add(it.name)
+        pending.remove(it)
+      }
   }
 }
 
@@ -98,26 +168,18 @@ value class SourceSetName(val value: String) {
 
   fun withUpstream(
     hasConfigurations: HasConfigurations
-  ): Set<SourceSetName> {
-    val seed = mutableSetOf(this, MAIN)
-
-    return javaConfigurationNames()
-      .flatMapTo(seed) { configurationName ->
-        hasConfigurations.configurations[configurationName]
-          ?.upstream
-          ?.mapToSet { inherited -> inherited.name.toSourceSetName() }
-          .orEmpty()
-      }
+  ): List<SourceSetName> {
+    return hasConfigurations.sourceSets[this]
+      ?.withUpstream()
+      .orEmpty()
   }
 
   fun withDownStream(
     hasConfigurations: HasConfigurations
   ): List<SourceSetName> {
-    return hasConfigurations.sourceSets.keys
-      .filter { it.inheritsFrom(this, hasConfigurations) }
-      .let { inheriting ->
-        listOf(this) + inheriting
-      }
+    return hasConfigurations.sourceSets[this]
+      ?.withDownstream()
+      .orEmpty()
   }
 
   fun inheritsFrom(
@@ -125,18 +187,16 @@ value class SourceSetName(val value: String) {
     hasConfigurations: HasConfigurations
   ): Boolean {
 
-    val otherConfigNames = other.javaConfigurationNames()
+    // SourceSets can't inherit from themselves, so quit early and skip some lookups.
+    if (this == other) return false
 
-    return javaConfigurationNames()
-      .asSequence()
-      .mapNotNull { hasConfigurations.configurations[it] }
-      .map { config -> config.upstream.mapToSet { it.name } }
-      .any { inheritedNames ->
-        inheritedNames.any { inherited -> inherited in otherConfigNames }
-      }
+    return hasConfigurations.sourceSets[this]
+      ?.upstream
+      ?.contains(other)
+      ?: false
   }
 
-  override fun toString(): String = "SourceSetName('$value')"
+  override fun toString(): String = "(SourceSetName) `$value`"
 
   companion object {
     val ANDROID_TEST = SourceSetName("androidTest")

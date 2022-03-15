@@ -13,19 +13,10 @@
  * limitations under the License.
  */
 
-// AGP Variant API's are deprecated
-// Gradle's Convention API's are deprecated, but only available in 7.2+
-@file:Suppress("DEPRECATION")
-
 package modulecheck.gradle
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.TestExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.internal.api.TestedVariant
 import com.squareup.anvil.plugin.AnvilExtension
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -34,13 +25,13 @@ import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
 import modulecheck.gradle.internal.androidManifests
-import modulecheck.gradle.internal.existingFiles
+import modulecheck.gradle.internal.sourcesets.AndroidSourceSetsParser
+import modulecheck.gradle.internal.sourcesets.JvmSourceSetParser
 import modulecheck.gradle.task.GradleLogger
+import modulecheck.parsing.gradle.ConfigFactory
 import modulecheck.parsing.gradle.Configurations
-import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
-import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
@@ -56,15 +47,12 @@ import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
 import modulecheck.utils.unsafeLazy
 import net.swiftzer.semver.SemVer
-import org.gradle.api.DomainObjectSet
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.initialization.dsl.ScriptHandler
-import org.gradle.api.internal.HasConvention
-import org.gradle.api.plugins.JavaPluginConvention
+import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
-import java.io.File
 
 class GradleProjectProvider @AssistedInject constructor(
   @Assisted
@@ -78,6 +66,15 @@ class GradleProjectProvider @AssistedInject constructor(
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { it.path }
+
+  private val configFactory = ConfigFactory<Configuration>(
+    identifier = { name },
+    allFactory = { rootGradleProject.configurations.asSequence() },
+    extendsFrom = {
+      rootGradleProject.configurations.findByName(this)?.extendsFrom?.toList()
+        .orEmpty()
+    }
+  )
 
   override fun get(path: String): McProject {
     return projectCache.getOrPut(path) {
@@ -135,7 +132,7 @@ class GradleProjectProvider @AssistedInject constructor(
         configurations = configurations,
         hasKapt = hasKapt,
         hasTestFixturesPlugin = hasTestFixturesPlugin,
-        sourceSets = gradleProject.androidSourceSets(),
+        sourceSets = gradleProject.androidSourceSets(configurations, hasTestFixturesPlugin),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
@@ -157,7 +154,7 @@ class GradleProjectProvider @AssistedInject constructor(
         configurations = configurations,
         hasKapt = hasKapt,
         hasTestFixturesPlugin = hasTestFixturesPlugin,
-        sourceSets = gradleProject.jvmSourceSets(),
+        sourceSets = gradleProject.jvmSourceSets(configurations),
         projectCache = projectCache,
         anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
         logger = gradleLogger,
@@ -176,7 +173,7 @@ class GradleProjectProvider @AssistedInject constructor(
       .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
       .associate { configuration ->
 
-        val config = configuration.toConfig(configurations)
+        val config = configFactory.create(configuration)
 
         configuration.name.asConfigurationName() to config
       }
@@ -206,66 +203,34 @@ class GradleProjectProvider @AssistedInject constructor(
     ExternalDependencies(map)
   }
 
-  private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> =
-    lazy {
-      val map = configurations
-        .filterNot { it.name == "ktlintRuleset" }
-        .associate { config ->
-          config.name.asConfigurationName() to config.dependencies
-            .withType(ProjectDependency::class.java)
-            .map {
+  private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> = lazy {
+    val map = configurations
+      .filterNot { it.name == "ktlintRuleset" }
+      .associate { config ->
+        config.name.asConfigurationName() to config.dependencies
+          .withType(ProjectDependency::class.java)
+          .map {
 
-              val isTestFixture = it.requestedCapabilities
-                .filterIsInstance<ProjectDerivedCapability>()
-                .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
+            val isTestFixture = it.requestedCapabilities
+              .filterIsInstance<ProjectDerivedCapability>()
+              .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
 
-              ConfiguredProjectDependency(
-                configurationName = config.name.asConfigurationName(),
-                project = get(it.dependencyProject.path),
-                isTestFixture = isTestFixture
-              )
-            }
-        }
-        .toMutableMap()
-      ProjectDependencies(map)
-    }
+            ConfiguredProjectDependency(
+              configurationName = config.name.asConfigurationName(),
+              project = get(it.dependencyProject.path),
+              isTestFixture = isTestFixture
+            )
+          }
+      }
+      .toMutableMap()
+    ProjectDependencies(map)
+  }
 
   private fun GradleProject.javaVersion(): JavaVersion {
-    return convention
-      .findPlugin(JavaPluginConvention::class.java)
+    return extensions.findByType(JavaPluginExtension::class.java)
       ?.sourceCompatibility
       ?.toJavaVersion()
       ?: JavaVersion.VERSION_1_8
-  }
-
-  private fun GradleProject.jvmSourceSets(): SourceSets {
-    val map = convention
-      .findPlugin(JavaPluginConvention::class.java)
-      ?.sourceSets
-      ?.map { gradleSourceSet ->
-        val jvmFiles = (
-          (gradleSourceSet as? HasConvention)
-            ?.convention
-            ?.plugins
-            ?.get("kotlin") as? KotlinSourceSet
-          )
-          ?.kotlin
-          ?.sourceDirectories
-          ?.files
-          ?: gradleSourceSet.allJava.files
-
-        SourceSet(
-          name = gradleSourceSet.name.asSourceSetName(),
-          classpathFiles = gradleSourceSet.compileClasspath.existingFiles().files,
-          outputFiles = gradleSourceSet.output.classesDirs.existingFiles().files,
-          jvmFiles = jvmFiles,
-          resourceFiles = gradleSourceSet.resources.sourceDirectories.files
-        )
-      }
-      ?.associateBy { it.name }
-      .orEmpty()
-
-    return SourceSets(map)
   }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
@@ -292,71 +257,29 @@ class GradleProjectProvider @AssistedInject constructor(
     return AnvilGradlePlugin(version, enabled)
   }
 
-  private val BaseExtension.variants: DomainObjectSet<out BaseVariant>?
-    get() = when (this) {
-      is AppExtension -> applicationVariants
-      is LibraryExtension -> libraryVariants
-      is TestExtension -> applicationVariants
-      else -> null
-    }
+  @Suppress("UnstableApiUsage")
+  private fun GradleProject.androidSourceSets(
+    mcConfigurations: Configurations,
+    hasTestFixturesPlugin: Boolean
+  ): SourceSets {
 
-  private val BaseVariant.testVariants: List<BaseVariant>
-    get() = when (this) {
-      is TestedVariant -> listOfNotNull(testVariant, unitTestVariant)
-      else -> emptyList()
-    }
+    return extensions.getByType(TestedExtension::class.java)
+      .let { extension ->
 
-  private fun GradleProject.androidSourceSets(): SourceSets {
-    val map = extensions
-      .findByType(BaseExtension::class.java)
-      ?.variants
-      ?.flatMap { variant ->
-
-        val testSourceSets = variant
-          .testVariants
-          .flatMap { it.sourceSets }
-
-        val mainSourceSets = variant.sourceSets
-
-        (testSourceSets + mainSourceSets)
-          .distinctBy { it.name }
-          .map { sourceProvider ->
-
-            val jvmFiles = with(sourceProvider) {
-              javaDirectories + kotlinDirectories
-            }
-              .flatMap { it.listFiles().orEmpty().toList() }
-              .toSet()
-
-            val resourceFiles = sourceProvider
-              .resDirectories
-              .flatMap { it.listFiles().orEmpty().toList() }
-              .flatMap { it.listFiles().orEmpty().toList() }
-              .toSet()
-
-            val layoutFiles = resourceFiles
-              .filter {
-                it.isFile && it.path
-                  // replace `\` from Windows paths with `/`.
-                  .replace(File.separator, "/")
-                  .contains("""/res/layout.*/.*.xml""".toRegex())
-              }
-              .toSet()
-
-            SourceSet(
-              name = sourceProvider.name.asSourceSetName(),
-              classpathFiles = emptySet(),
-              outputFiles = setOf(), // TODO
-              jvmFiles = jvmFiles,
-              resourceFiles = resourceFiles,
-              layoutFiles = layoutFiles
-            )
-          }
+        AndroidSourceSetsParser.parse(
+          mcConfigurations, extension, hasTestFixturesPlugin
+        )
       }
-      ?.associateBy { it.name }
-      .orEmpty()
+  }
 
-    return SourceSets(map)
+  private fun GradleProject.jvmSourceSets(
+    mcConfigurations: Configurations
+  ): SourceSets {
+
+    return JvmSourceSetParser.parse(
+      parsedConfigurations = mcConfigurations,
+      gradleProject = this
+    )
   }
 
   companion object {

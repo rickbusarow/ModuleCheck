@@ -227,3 +227,11 @@ fun <K : Any, T : Any> Map<K, Collection<T>>.all(): List<T> {
 
 fun Iterable<Config>.names(): List<ConfigurationName> = map { it.name }
 fun Sequence<Config>.names(): Sequence<ConfigurationName> = map { it.name }
+
+fun Iterable<ConfigurationName>.distinctSourceSetNames(): List<SourceSetName> =
+  map { it.toSourceSetName() }
+    .distinct()
+
+fun Sequence<ConfigurationName>.distinctSourceSetNames(): Sequence<SourceSetName> =
+  map { it.toSourceSetName() }
+    .distinct()

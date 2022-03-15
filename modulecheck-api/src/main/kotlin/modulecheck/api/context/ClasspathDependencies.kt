@@ -21,6 +21,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.TransitiveProjectDependency
 import modulecheck.utils.SafeCache
+import modulecheck.utils.mapToSet
 
 data class ClasspathDependencies(
   private val delegate: SafeCache<SourceSetName, List<TransitiveProjectDependency>>,
@@ -48,14 +49,14 @@ data class ClasspathDependencies(
     ): Set<ConfigurationName> = setOfNotNull(
       sourceSetName.apiConfig(),
       ConfigurationName.api,
-      SourceSetName.TEST_FIXTURES.apiConfig().takeIf { isTestFixtures }
+      if (isTestFixtures) SourceSetName.TEST_FIXTURES.apiConfig() else null
     )
 
     val directDependencies = projectDependencies[sourceSetName]
       .filterNot { it.project == project }
       .toSet()
 
-    val directDependencyPaths = directDependencies.map { it.project.path }.toSet()
+    val directDependencyPaths = directDependencies.mapToSet { it.project.path }
 
     val inherited = directDependencies.flatMap { sourceCpd ->
       sourceApiConfigs(sourceSetName, sourceCpd.isTestFixture)
@@ -79,7 +80,7 @@ data class ClasspathDependencies(
     val mainFromTestFixtures = directDependencies.filter { it.isTestFixture }
       .map { TransitiveProjectDependency(it, it.copy(isTestFixture = false)) }
 
-    return directTransitive + inherited + mainFromTestFixtures
+    return directTransitive + mainFromTestFixtures + inherited
   }
 
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
