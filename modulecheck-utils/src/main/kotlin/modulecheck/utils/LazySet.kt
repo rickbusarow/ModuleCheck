@@ -15,7 +15,8 @@
 
 package modulecheck.utils
 
-import kotlinx.coroutines.FlowPreview
+
+
 import kotlinx.coroutines.flow.AbstractFlow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
@@ -187,7 +188,8 @@ internal fun <E> createLazySet(
   return LazySetImpl(cache, remaining)
 }
 
-@OptIn(FlowPreview::class)
+
+
 internal class LazySetImpl<E>(
   cache: Set<E>,
   sources: List<DataSource<E>>
