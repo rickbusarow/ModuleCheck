@@ -15,7 +15,8 @@
 
 package modulecheck.core.context
 
-import kotlinx.coroutines.FlowPreview
+
+
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flattenMerge
@@ -190,7 +191,8 @@ suspend fun McProject.mustBeApiIn(
   )
 }
 
-@OptIn(FlowPreview::class)
+
+
 private suspend fun McProject.mustBeApiIn(
   dependentProject: McProject,
   referencesFromDependencies: Set<String>,
