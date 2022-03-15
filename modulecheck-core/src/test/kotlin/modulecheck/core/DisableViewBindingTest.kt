@@ -19,6 +19,7 @@ import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.createSafely
@@ -30,7 +31,7 @@ class DisableViewBindingTest : RunnerTest() {
   override val settings by resets { TestSettings(checks = TestChecksSettings(disableViewBinding = true)) }
 
   @Test
-  fun `used ViewBinding in dependent module with no changes`() {
+  fun `used ViewBinding from main sourceset in dependent module with no changes`() {
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -71,6 +72,71 @@ class DisableViewBindingTest : RunnerTest() {
 
         val binding = FragmentLib1Binding()
         """
+      )
+    }
+
+    run(
+      autoCorrect = false,
+    ).isSuccess shouldBe true
+
+    lib1.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures.viewBinding = true
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `used ViewBinding from debug sourceset in dependent module with no changes`() {
+
+    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """
+      }
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    androidProject(":lib2", "com.modulecheck.lib2") {
+      addDependency("debugImplementation".asConfigurationName(), lib1)
+      viewBindingEnabled = false
+
+      addSource(
+        "com/modulecheck/lib2/Source.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        private val binding = FragmentLib1Binding()
+        """,
+        SourceSetName.DEBUG
       )
     }
 

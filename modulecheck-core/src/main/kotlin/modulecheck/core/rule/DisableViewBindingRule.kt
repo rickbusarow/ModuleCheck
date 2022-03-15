@@ -23,12 +23,12 @@ import modulecheck.api.context.layoutFilesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.asExplicitReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.existsOrNull
+import modulecheck.utils.lazyDeferred
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
 
@@ -44,7 +44,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     @Suppress("UnstableApiUsage")
     if (!androidProject.viewBindingEnabled) return emptyList()
 
-    val dependents = project.dependents()
+    val dependents = lazyDeferred { project.dependents() }
 
     project.sourceSets.keys
       .forEach { sourceSetName ->
@@ -75,15 +75,26 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
 
         if (usedInProject) return emptyList()
 
-        // TODO -- this needs to be changed to respect the source sets of the downstream project
         val usedInDependent = dependents
-          .any { dep ->
+          .await()
+          .any { downstream ->
+
+            // Get the source set which is exposed to the dependent project through its
+            // configuration.  This will typically be `main`, but it could be another build variant
+            // if the entire dependency chain is using another source set's configuration.
+            val exposedSourceSetName = downstream.configuredProjectDependency
+              .declaringSourceSetName()
+
+            val imports = downstream.dependentProject
+              .importsForSourceSetName(exposedSourceSetName)
+
+            val resourceReferences = lazyDeferred {
+              downstream.dependentProject
+                .androidResourceReferencesForSourceSetName(exposedSourceSetName)
+            }
 
             generatedBindings.any { generated ->
-              dep
-                .importsForSourceSetName(SourceSetName.MAIN)
-                .contains(generated) || dep
-                .androidResourceReferencesForSourceSetName(SourceSetName.MAIN)
+              imports.contains(generated) || resourceReferences.await()
                 .contains(generated)
             }
           }
