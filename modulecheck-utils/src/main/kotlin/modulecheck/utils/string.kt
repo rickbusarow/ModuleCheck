@@ -25,7 +25,7 @@ fun String.capitalize(
   locale: Locale = Locale.US
 ) = replaceFirstChar { it.uppercase(locale) }
 
-fun String.minimumIndent(
+fun String.findMinimumIndent(
   absoluteMinimum: String = "  "
 ): String {
 
