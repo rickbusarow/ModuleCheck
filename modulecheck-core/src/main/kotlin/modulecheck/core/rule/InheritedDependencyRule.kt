@@ -131,13 +131,6 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
       .flatten()
   }
 
-  private fun TransitiveProjectDependency.withContributedConfiguration(
-    configurationName: ConfigurationName
-  ): TransitiveProjectDependency {
-    val newContributed = contributed.copy(configurationName = configurationName)
-    return copy(contributed = newContributed)
-  }
-
   // Returns a sequence starting with the receiver's configuration, then all **downstream**
   // configurations.  This is useful because when we're checking to see if a transitive dependency
   // is used in `main` (for instance), we should also check whether it's used in the source sets
