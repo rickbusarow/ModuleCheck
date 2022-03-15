@@ -25,7 +25,7 @@ import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.indent
 import modulecheck.utils.lazyDeferred
-import modulecheck.utils.findMinimumIndent
+import modulecheck.utils.minimumIndent
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
@@ -89,7 +89,7 @@ data class UnusedResourcesGenerationFinding(
 
   private suspend fun newAndroidBlock(): String {
 
-    val indent = buildFile.findMinimumIndent()
+    val indent = buildFile.minimumIndent()
 
     val androidBlock = buildString {
       appendLine("android {")
@@ -129,7 +129,7 @@ data class UnusedResourcesGenerationFinding(
 
   private fun AgpBlock.withAddedStatement(newStatement: String): String {
 
-    val indent = lambdaContent.findMinimumIndent()
+    val indent = lambdaContent.minimumIndent()
 
     val newContent = lambdaContent.plus("\n$indent$newStatement")
 
