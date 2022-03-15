@@ -15,8 +15,6 @@
 
 package modulecheck.api.context
 
-
-
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flatMapConcat
@@ -38,7 +36,6 @@ data class JvmFiles(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): Flow<JvmFile> {
-
 
     return project
       .sourceSets[sourceSetName]

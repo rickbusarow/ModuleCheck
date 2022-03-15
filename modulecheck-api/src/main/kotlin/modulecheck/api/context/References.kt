@@ -15,8 +15,6 @@
 
 package modulecheck.api.context
 
-
-
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference
@@ -48,8 +46,6 @@ data class References(
   suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
     return delegate.getOrPut(sourceSetName) { fetchNewReferences(sourceSetName) }
   }
-
-
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
