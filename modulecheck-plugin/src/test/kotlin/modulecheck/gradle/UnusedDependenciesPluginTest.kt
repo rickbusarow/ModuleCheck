@@ -27,7 +27,6 @@ import modulecheck.specs.ProjectSettingsSpecBuilder
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
 import modulecheck.specs.applyEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
 import java.nio.file.Path
@@ -252,7 +251,6 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
     File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
   }
 
-  @Disabled("source set hierarchy doesn't work properly for test fixtures in Android")
   @Test
   fun `android test fixtures from android DSL should be treated as test fixtures`() {
 

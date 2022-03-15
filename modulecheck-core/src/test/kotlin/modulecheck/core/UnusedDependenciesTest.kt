@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.runtime.test.ProjectFindingReport.overshot
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest
 import net.swiftzer.semver.SemVer
@@ -952,6 +953,90 @@ class UnusedDependenciesTest : RunnerTest() {
 
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
+        unusedDependency(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `unused from testFixtures but used main source should be fixed`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """.trimIndent(),
+        SourceSetName.MAIN
+      )
+      addSource(
+        "com/modulecheck/lib1/TestLib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        class TestLib1Class
+        """.trimIndent(),
+        SourceSetName.TEST_FIXTURES
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testImplementation(testFixtures(project(path = ":lib1")))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2ClassTest.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          testImplementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          position = "6, 3",
+        ),
         unusedDependency(
           fixed = true,
           configuration = "testImplementation",

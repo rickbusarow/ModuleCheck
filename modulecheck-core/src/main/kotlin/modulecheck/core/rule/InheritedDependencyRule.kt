@@ -23,10 +23,11 @@ import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.names
+import modulecheck.parsing.gradle.sortedByInheritance
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.TransitiveProjectDependency
+import modulecheck.utils.flatMapToSet
 import modulecheck.utils.mapAsync
 
 class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
@@ -37,81 +38,132 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
   override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
 
-    // For each source set, the set of all module paths and whether they're test fixtures
-    val dependencyPathCache = mutableMapOf<SourceSetName, Set<Pair<String, Boolean>>>()
+    data class SourceSetDependency(
+      val sourceSetName: SourceSetName,
+      val path: String,
+      val isTestFixture: Boolean
+    )
 
-    // Returns true if the dependency is already declared in this exact configuration, **or** if
-    // it's declared in an upstream configuration.
+    fun ConfiguredProjectDependency.toSourceSetDependency(
+      sourceSetName: SourceSetName = configurationName.toSourceSetName(),
+      path: String = this@toSourceSetDependency.path,
+      isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
+    ) = SourceSetDependency(
+      sourceSetName = sourceSetName,
+      path = path,
+      isTestFixture = isTestFixture
+    )
+
+    // For each source set, the set of all module paths and whether they're test fixtures
+    val dependencyPathCache = mutableMapOf<SourceSetName, Set<SourceSetDependency>>()
+
+    // Returns true if the dependency is already declared in this exact source set,
+    // **or** if it's declared in an upstream source set.
     //
     // For example, this function will return true for a `testImplementation` configured dependency
     // which is already declared in the main source set (such as with `api` or `implementation`).
-    fun ConfiguredProjectDependency.alreadyInClasspath(): Boolean {
-      fun dependencyPathsForSourceSet(sourceSetName: SourceSetName): Set<Pair<String, Boolean>> {
+    fun alreadyInLocalClasspath(cpd: ConfiguredProjectDependency): Boolean {
+      fun dependencyPathsForSourceSet(
+        sourceSetName: SourceSetName
+      ): Set<SourceSetDependency> {
         return dependencyPathCache.getOrPut(sourceSetName) {
           project.projectDependencies[sourceSetName]
-            .map { it.project.path to it.isTestFixture }
+            .map { it.toSourceSetDependency() }
             .toSet()
         }
       }
 
-      return configurationName.toSourceSetName()
-        // Check the receiver's configuration first, but if the dependency isn't used there, also
-        // check the upstream configurations.
+      return cpd.configurationName.toSourceSetName()
+        // Check the cpd's source set first, but if the dependency isn't defined there,
+        // also check the upstream configurations.
         .withUpstream(project)
-        .any { sourceSet ->
-          dependencyPathsForSourceSet(sourceSet)
-            .contains(this.project.path to isTestFixture)
+        .any { sourceSetName ->
+
+          dependencyPathsForSourceSet(sourceSetName)
+            .contains(cpd.toSourceSetDependency(sourceSetName))
         }
     }
 
-    // Returns the list of all transitive dependencies where the contributed dependency is used,
-    // filtering out any configuration which would be redundant.  For instance, if a dependency is
-    // used in `main`, the function will stop there instead of returning a list of `main`, `debug`,
-    // `test`, etc.
-    suspend fun List<TransitiveProjectDependency>.allUsed(): List<TransitiveProjectDependency> {
-      return foldRight(listOf()) { transitiveProjectDependency, alreadyUsed ->
-
-        val contributedSourceSet = transitiveProjectDependency.contributed
-          .configurationName
-          .toSourceSetName()
-
-        val alreadyUsedUpstream = alreadyUsed.any {
-          val usedSourceSet = it.contributed.configurationName.toSourceSetName()
-          contributedSourceSet.inheritsFrom(usedSourceSet, project)
-        }
-
-        when {
-          alreadyUsedUpstream -> alreadyUsed
-          project.uses(transitiveProjectDependency.contributed) -> {
-            alreadyUsed + transitiveProjectDependency
-          }
-          else -> alreadyUsed
-        }
-      }
-    }
-
-    val used = project.classpathDependencies().all()
-      .distinctBy { it.contributed.project.path to it.contributed.isTestFixture }
-      .flatMap { transitive ->
-
-        // If a transitive dependency is used in the same configuration as its source, then that's
-        // the configuration which should be used and we're done.  However, that transitive
-        // dependency is also providing the dependency to other source sets which depend upon it.
-        // So, check the inheriting dependencies as well.
-        transitive.withContributedConfiguration(transitive.source.configurationName)
-          .withInheritingVariants(project)
-          .filterNot { it.contributed.alreadyInClasspath() }
-          .toList()
-          .sortedByInheritance(project)
-          .allUsed()
-      }
-
-    return used.asSequence()
-      .distinct()
+    val candidates = project.classpathDependencies()
+      .all()
+      .asSequence()
       // Projects shouldn't inherit themselves.  This false-positive can happen if a test
       // fixture/utilities module depends upon a module, and that module uses the test module in
       // testImplementation.
       .filterNot { transitive -> transitive.contributed.project == project }
+      .flatMap { transitive ->
+
+        /*
+        If a transitive dependency is used in the same configuration as its source, then that's
+        the configuration which should be used.
+
+        Given this config:
+        ┌────────┐                      ┌────────┐          ┌────────┐
+        │ :lib3  │──testImplementation─▶│ :lib2  │────api──▶│ :lib1  │
+        └────────┘                      └────────┘          └────────┘
+
+        We'd want to check whether :lib3 uses :lib1, but with the `testImplementation`
+        configuration.  We don't want to check whether :lib3 uses :lib1 in `api`, because :lib2
+        only provides it to `testImplementation`.
+
+        We want to see whether this configuration is valid:
+                                         ┌────────┐          ┌────────┐
+                             ┌──────────▶│ :lib2  │────api──▶│ :lib1  │
+                    testImplementation   └────────┘          ▲────────┘
+        ┌────────┐───────────┘                               │
+        │ :lib3  │                                           │
+        └────────┘───────────────────testImplementation──────┘
+        However, that transitive dependency is also providing the contributed dependency to other
+        source sets which depend upon it. So, check the downstream SourceSets as well.
+        */
+        transitive
+          .withContributedConfiguration(transitive.source.configurationName.implementationVariant())
+          // from `main` source set, get a sequence of [main, test, debug, release, testDebug, ...]
+          .withDownstreamVariants(project)
+          // if the transitive contributed dependency is testFixtures, check the main source as well
+          .withTestFixturesMainSource()
+          // Sorting by inheritance can be very expensive even for a single module's source sets,
+          // if the variant/flavor/build type matrix is complex.  So filter out duplicates first,
+          // even though more filtering may be done below after the flatMap.
+          .filterNot { alreadyInLocalClasspath(it.contributed) }
+          .distinctBy { it.contributed.toSourceSetDependency() }
+          // check main before debug, debug before androidTestDebug, etc.
+          .sortedByInheritance(project)
+      }
+      .distinctBy { it.contributed.toSourceSetDependency() }
+      .groupBy { it.contributed.configurationName.toSourceSetName() }
+
+    val visitedSourceSetMap = mutableMapOf<SourceSetName, List<TransitiveProjectDependency>>()
+
+    project.sourceSets.values
+      .sortedByInheritance()
+      .forEach { sourceSet ->
+
+        val allUpstreamTransitive = sourceSet.upstream
+          .flatMapToSet { visitedSourceSetMap.getValue(it) }
+
+        val forThisSourceSet = candidates[sourceSet.name].orEmpty()
+          .mapNotNull { candidateTransitive ->
+
+            val contributed = candidateTransitive.contributed
+
+            val alreadyUpstream = allUpstreamTransitive.any { (_, upstreamCpd) ->
+
+              if (contributed.isTestFixture && !upstreamCpd.isTestFixture) {
+                return@any false
+              }
+
+              upstreamCpd.project == contributed.project &&
+                contributed.isTestFixture == upstreamCpd.isTestFixture
+            }
+
+            candidateTransitive.takeIf { !alreadyUpstream && project.uses(it.contributed) }
+          }
+
+        visitedSourceSetMap[sourceSet.name] = forThisSourceSet
+      }
+
+    return visitedSourceSetMap.values.flatten()
       .mapAsync { (source, inherited) ->
 
         InheritedDependencyFinding(
@@ -123,46 +175,65 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
       .toList()
       .groupBy { it.configurationName }
       .mapValues { (_, findings) ->
-        findings.distinctBy { it.source.isTestFixture to it.newDependency.path }
+        findings
+          .distinctBy { it.newDependency }
           .sorted()
       }
       .values
       .flatten()
   }
 
-  // Returns a sequence starting with the receiver's configuration, then all **downstream**
-  // configurations.  This is useful because when we're checking to see if a transitive dependency
-  // is used in `main` (for instance), we should also check whether it's used in the source sets
-  // which inherit from `main` (like `debug`, `release`, `androidTest`, `test`, etc.).
-  private fun TransitiveProjectDependency.withInheritingVariants(
+  /**
+   * Returns a sequence starting with the receiver's configuration, then all **downstream**
+   * configurations.
+   *
+   * For example, if we're checking to see if a transitive dependency is used in `main`, we should
+   * also check whether it's used in the source sets which inherit from `main` (like `debug`,
+   * `release`, `androidTest`, `test`, etc.).
+   */
+  private fun TransitiveProjectDependency.withDownstreamVariants(
     project: McProject
   ): Sequence<TransitiveProjectDependency> {
-    return sequenceOf(this) + project.configurations
-      .getValue(source.configurationName)
-      .withDownstream()
+
+    return source.configurationName
+      .toSourceSetName()
+      .withDownStream(project)
       .asSequence()
-      .names()
-      .filter { name -> name.isImplementation() }
+      .map { it.implementationConfig() }
       .map { configName -> withContributedConfiguration(configName) }
   }
 
-  private fun List<TransitiveProjectDependency>.sortedByInheritance(
+  private fun Sequence<TransitiveProjectDependency>.sortedByInheritance(
     project: McProject
-  ): List<TransitiveProjectDependency> {
-    val sorted = toMutableList()
+  ): Sequence<TransitiveProjectDependency> {
 
-    sorted.sortWith { o1, o2 ->
-      val o1SourceSet = o1.contributed.configurationName.toSourceSetName()
-      val o2SourceSet = o2.contributed.configurationName.toSourceSetName()
+    return sortedWith { o1, o2 ->
+      val o1SourceSet = o1.contributed.declaringSourceSetName()
+      val o2SourceSet = o2.contributed.declaringSourceSetName()
 
-      val inherits = o1SourceSet.inheritsFrom(o2SourceSet, project)
-      when {
-        inherits -> -1
-        o1SourceSet == o2SourceSet -> 0
-        else -> 1
+      o2SourceSet.inheritsFrom(o1SourceSet, project).compareTo(true)
+    }
+  }
+
+  /**
+   * @return a sequence containing all original transitive dependencies, but adds `main` contributed
+   *   dependencies where the original transitive dependency was providing `main` via `testFixtures`.
+   */
+  private fun Sequence<TransitiveProjectDependency>.withTestFixturesMainSource():
+    Sequence<TransitiveProjectDependency> {
+
+    return flatMap { transitiveCpd ->
+      sequence {
+        yield(transitiveCpd)
+        if (transitiveCpd.contributed.isTestFixture) {
+          yield(
+            transitiveCpd.copy(
+              contributed = transitiveCpd.contributed.copy(isTestFixture = false)
+            )
+          )
+        }
       }
     }
-    return sorted
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

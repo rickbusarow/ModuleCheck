@@ -17,13 +17,16 @@ package modulecheck.core.rule
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.depths
+import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
+import modulecheck.api.finding.ModifiesDependency
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.rule.ReportOnlyRule
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
 import modulecheck.utils.mapAsync
 
@@ -34,6 +37,44 @@ class MultiRuleFindingFactory(
 
   override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> {
     return evaluate(projects) { it !is SortRule && it !is ReportOnlyRule }
+      .asSequence()
+      // Use a stable but arbitrary sort before filtering out duplicates.  This makes it so that
+      // if there are different finding types trying to modify the same dependency, the same one
+      // will be chosen each time.
+      .sortedBy { it.findingName }
+      .filterDuplicateAdds()
+      .toList()
+  }
+
+  private fun Sequence<Finding>.filterDuplicateAdds(): List<Finding> {
+
+    val adding = mutableSetOf<Pair<McProject, ConfiguredDependency>>()
+    val removing = mutableSetOf<Pair<McProject, ConfiguredDependency>>()
+
+    val output = mutableListOf<Finding>()
+
+    sortedByDescending { it is ModifiesDependency }
+      .forEach { finding ->
+        when (finding) {
+
+          is ModifiesDependency -> {
+            val newAdd = adding.add(finding.dependentProject to finding.newDependency)
+            val newRemove = removing.add(finding.dependentProject to finding.oldDependency)
+            if (newAdd || newRemove) {
+              output.add(finding)
+            }
+          }
+          is AddsDependency -> {
+            if (adding.add(finding.dependentProject to finding.newDependency)) {
+              output.add(finding)
+            }
+          }
+          else -> {
+            output.add(finding)
+          }
+        }
+      }
+    return output
   }
 
   override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> {
