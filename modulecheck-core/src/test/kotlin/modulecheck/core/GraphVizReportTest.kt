@@ -18,11 +18,10 @@ package modulecheck.core
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
+import modulecheck.project.test.maybeAddSourceSet
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -107,13 +106,7 @@ internal class GraphVizReportTest : RunnerTest() {
     settings.reports.graphs.enabled = true
 
     val lib1 = project(":lib1") {
-
-      val myFile = File(projectDir, "src/main/kotlin/MyFile.kt").createSafely()
-
-      sourceSets[SourceSetName.MAIN] = SourceSet(
-        name = SourceSetName.MAIN,
-        jvmFiles = setOf(myFile)
-      )
+      addSource("src/main/kotlin/MyFile.kt", "")
     }
 
     run(autoCorrect = false).isSuccess shouldBe true
@@ -135,9 +128,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1") {
-      sourceSets[SourceSetName.MAIN] = SourceSet(name = SourceSetName.MAIN)
-    }
+    val lib1 = project(":lib1")
 
     run(autoCorrect = false).isSuccess shouldBe true
 
@@ -150,7 +141,7 @@ internal class GraphVizReportTest : RunnerTest() {
     settings.reports.graphs.enabled = true
 
     val lib1 = project(":lib1") {
-      addSourceSet(SourceSetName.TEST)
+      maybeAddSourceSet(SourceSetName.TEST)
     }
 
     val lib2 = project(":lib2") {

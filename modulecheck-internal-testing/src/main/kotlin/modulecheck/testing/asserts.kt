@@ -13,6 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle
+package modulecheck.testing
 
-class sourceSets
+import org.junit.jupiter.api.fail
+
+fun <T : Any> T?.requireNotNullOrFail(lazyMessage: () -> String): T {
+
+  if (this != null) return this
+
+  fail(lazyMessage)
+}

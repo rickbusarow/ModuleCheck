@@ -29,14 +29,11 @@ import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
-import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
 import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
-import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
@@ -75,7 +72,8 @@ interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
     content: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ) {
-    val file = File(projectDir, "src/${sourceSetName.value}/res/layout/$name").createSafely(content)
+    val file = File(projectDir, "src/${sourceSetName.value}/res/layout/$name")
+      .createSafely(content)
 
     val old = maybeAddSourceSet(sourceSetName)
 
@@ -107,9 +105,7 @@ data class RealAndroidMcProjectBuilderScope(
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   override var hasKapt: Boolean = false,
   override var hasTestFixturesPlugin: Boolean = false,
-  override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(
-    SourceSetName.MAIN to SourceSet(SourceSetName.MAIN)
-  ),
+  override val sourceSets: MutableMap<SourceSetName, SourceSet> = mutableMapOf(),
   override var anvilGradlePlugin: AnvilGradlePlugin? = null,
   override val projectCache: ProjectCache = ProjectCache(),
   override val javaSourceVersion: JavaVersion = JavaVersion.VERSION_14
@@ -135,15 +131,20 @@ internal fun createAndroidProject(
     buildFile = buildFile,
     projectCache = projectCache
   )
-    .also { it.config() }
+    .also {
+      it.maybeAddSourceSet(SourceSetName.MAIN)
+      it.maybeAddSourceSet(SourceSetName.DEBUG)
+      it.maybeAddSourceSet(SourceSetName.RELEASE)
+      it.maybeAddSourceSet(SourceSetName.ANDROID_TEST)
+      it.maybeAddSourceSet(SourceSetName.TEST)
+
+      it.config()
+    }
 
   builder.manifests.getOrPut(SourceSetName.MAIN) {
     projectRoot.child("src/main/AndroidManifest.xml")
       .createSafely("<manifest package=\"$androidPackage\" />")
   }
-
-  builder.populateConfigsFromSourceSets()
-  builder.populateSourceSets()
 
   return builder.toProject()
 }
@@ -180,38 +181,27 @@ fun buildFileParserFactory(): BuildFileParser.Factory {
 }
 
 fun AndroidMcProjectBuilderScope.toProject(): RealAndroidMcProject {
-
-  populateConfigsFromSourceSets()
-  populateSourceSets()
-
-  val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
-    RealJvmFileProvider(
-      fileCache = FileCache(), project = project, sourceSetName = sourceSetName
+  return toProject { jvmFileProviderFactory ->
+    RealAndroidMcProject(
+      path = path,
+      projectDir = projectDir,
+      buildFile = buildFile,
+      configurations = Configurations(configurations),
+      hasKapt = hasKapt,
+      hasTestFixturesPlugin = hasTestFixturesPlugin,
+      sourceSets = SourceSets(sourceSets),
+      projectCache = projectCache,
+      anvilGradlePlugin = anvilGradlePlugin,
+      androidResourcesEnabled = androidResourcesEnabled,
+      viewBindingEnabled = viewBindingEnabled,
+      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+      manifests = manifests,
+      logger = PrintLogger(),
+      jvmFileProviderFactory = jvmFileProviderFactory,
+      javaSourceVersion = javaSourceVersion,
+      projectDependencies = lazy { projectDependencies },
+      externalDependencies = lazy { externalDependencies },
+      buildFileParserFactory = buildFileParserFactory()
     )
   }
-
-  val delegate = RealAndroidMcProject(
-    path = path,
-    projectDir = projectDir,
-    buildFile = buildFile,
-    configurations = Configurations(configurations),
-    hasKapt = hasKapt,
-    hasTestFixturesPlugin = hasTestFixturesPlugin,
-    sourceSets = SourceSets(sourceSets),
-    projectCache = projectCache,
-    anvilGradlePlugin = anvilGradlePlugin,
-    androidResourcesEnabled = androidResourcesEnabled,
-    viewBindingEnabled = viewBindingEnabled,
-    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-    manifests = manifests,
-    logger = PrintLogger(),
-    jvmFileProviderFactory = jvmFileProviderFactory,
-    javaSourceVersion = javaSourceVersion,
-    projectDependencies = lazy { projectDependencies },
-    externalDependencies = lazy { externalDependencies },
-    buildFileParserFactory = buildFileParserFactory()
-  )
-
-  return delegate
-    .also { projectCache[it.path] = it }
 }
