@@ -23,9 +23,9 @@ import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
+import modulecheck.utils.findMinimumIndent
 import modulecheck.utils.indent
 import modulecheck.utils.lazyDeferred
-import modulecheck.utils.findMinimumIndent
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
