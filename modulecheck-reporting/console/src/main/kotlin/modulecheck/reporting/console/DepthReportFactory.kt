@@ -77,7 +77,7 @@ class DepthReportFactory {
 
     // If the depth is 0 and there are no files, just omit the report.
     // If the depth is 0 and it has files, like a core module, report it.
-    return sourceSet.hasExistingSourceFiles()
+    return sourceSet.hasExistingSourceFiles
   }
 
   companion object {
