@@ -215,106 +215,6 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `an upstream config cannot inherit a dependency from a downstream config`() {
-
-    // A Kotlin build of this project would actually fail since :lib1 isn't in :lib3's classpath,
-    // but the test is still useful since it's just assuring that behavior is consistent
-
-    val lib1 = project(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
-        """
-        package com.modulecheck.lib1
-
-        open class Lib1Class
-        """.trimIndent()
-      )
-    }
-
-    val lib2 = project(":lib2") {
-      addDependency(ConfigurationName.api, lib1)
-
-      buildFile {
-        """
-        plugins {
-          kotlin("jvm")
-        }
-
-        dependencies {
-          implementation(project(path = ":lib1"))
-        }
-        """
-      }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
-        """
-        package com.modulecheck.lib2
-
-        import com.modulecheck.lib1.Lib1Class
-
-        private val clazz = Lib1Class()
-
-        open class Lib2Class
-        """.trimIndent()
-      )
-    }
-
-    val lib3 = project(":lib3") {
-      addDependency("debugImplementation".asConfigurationName(), lib2)
-
-      buildFile {
-        """
-        plugins {
-          kotlin("jvm")
-        }
-
-        dependencies {
-          debugImplementation(project(path = ":lib2"))
-        }
-        """
-      }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
-        """
-        package com.modulecheck.lib3
-
-        import com.modulecheck.lib1.Lib1Class
-
-        private val clazz = Lib1Class()
-        """.trimIndent()
-      )
-      addSource(
-        "com/modulecheck/lib3/Lib3ClassDebug.kt",
-        """
-        package com.modulecheck.lib3
-
-        import com.modulecheck.lib2.Lib2Class
-
-        private val clazz2 = Lib2Class()
-        """.trimIndent(),
-        "debug".asSourceSetName()
-      )
-    }
-
-    run(
-      autoCorrect = false,
-      strictResolution = false
-    ).isSuccess shouldBe true
-
-    logger.parsedReport() shouldBe listOf()
-
-    lib3.buildFile shouldHaveText """
-        plugins {
-          kotlin("jvm")
-        }
-
-        dependencies {
-          debugImplementation(project(path = ":lib2"))
-        }
-    """
-  }
-
-  @Test
   fun `not inherited when target and subject are the same`() {
 
     val lib1 = project(":lib1") {
@@ -835,7 +735,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
-      addSourceSet(SourceSetName("internal"))
+      addSourceSet(SourceSetName("internal"), upstreamNames = listOf(SourceSetName.MAIN))
 
       buildFile {
         """
@@ -908,6 +808,128 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `inherited into mid-level source set should not also be added to downstream source sets`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+      addSourceSet(SourceSetName("middle"), upstreamNames = listOf(SourceSetName.MAIN))
+      addSourceSet(
+        SourceSetName("leafOne"),
+        upstreamNames = listOf("middle".asSourceSetName())
+      )
+      addSourceSet(
+        SourceSetName("leafTwo"),
+        upstreamNames = listOf("middle".asSourceSetName())
+      )
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3ClassInternal.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName("middle")
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "middleImplementation"(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "middleImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `non-standard config name should be invoked as function if it's already used that way`() {
 
     val lib1 = project(":lib1") {
@@ -948,6 +970,9 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     val lib3 = project(":lib3") {
+
+      addSourceSet("internal".asSourceSetName(), upstreamNames = listOf(SourceSetName.MAIN))
+
       addDependency("internalImplementation".asConfigurationName(), lib2)
 
       buildFile {
@@ -1905,6 +1930,17 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testFixturesApi(project(path = ":lib1"))
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+    """
 
     lib3.buildFile shouldHaveText """
         plugins {

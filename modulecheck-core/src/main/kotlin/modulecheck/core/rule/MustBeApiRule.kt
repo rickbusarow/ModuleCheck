@@ -19,7 +19,6 @@ import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
-import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.McProject
 
 class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
@@ -31,11 +30,13 @@ class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
   override suspend fun check(project: McProject): List<MustBeApiFinding> {
     return project.get(MustBeApi)
       .map {
+        val oldConfig = it.configuredProjectDependency.configurationName
         MustBeApiFinding(
           dependentProject = project,
-          newDependency = it.configuredProjectDependency.copy(configurationName = ConfigurationName.api),
+          newDependency = it.configuredProjectDependency
+            .copy(configurationName = oldConfig.apiVariant()),
           oldDependency = it.configuredProjectDependency,
-          configurationName = it.configuredProjectDependency.configurationName,
+          configurationName = oldConfig,
           source = it.source
         )
       }

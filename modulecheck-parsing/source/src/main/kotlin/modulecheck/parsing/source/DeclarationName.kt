@@ -22,7 +22,9 @@ import modulecheck.utils.LazySet
 import org.jetbrains.kotlin.name.FqName
 
 @JvmInline
-value class DeclarationName(val fqName: String)
+value class DeclarationName(val fqName: String) {
+  override fun toString(): String = "(DeclarationName) `$fqName`"
+}
 
 fun String.asDeclarationName(): DeclarationName = DeclarationName(this)
 
