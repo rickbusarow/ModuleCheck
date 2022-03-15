@@ -22,7 +22,6 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
-import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.names
 import modulecheck.project.ConfiguredProjectDependency
@@ -129,13 +128,6 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
       }
       .values
       .flatten()
-  }
-
-  private fun TransitiveProjectDependency.withContributedConfiguration(
-    configurationName: ConfigurationName
-  ): TransitiveProjectDependency {
-    val newContributed = contributed.copy(configurationName = configurationName)
-    return copy(contributed = newContributed)
   }
 
   // Returns a sequence starting with the receiver's configuration, then all **downstream**
