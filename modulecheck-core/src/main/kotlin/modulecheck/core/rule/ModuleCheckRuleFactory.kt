@@ -35,7 +35,8 @@ class ModuleCheckRuleFactory : RuleFactory {
       { SortDependenciesRule(it) },
       { SortPluginsRule(it) },
       { UnusedDependencyRule(it) },
-      { UnusedKaptRule(it) }
+      { UnusedKaptRule(it) },
+      { UnusedKotlinAndroidExtensionsRule() }
     )
 
   override fun create(

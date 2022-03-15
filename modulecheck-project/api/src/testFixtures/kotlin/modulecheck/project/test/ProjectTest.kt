@@ -97,6 +97,7 @@ abstract class ProjectTest : BaseTest() {
       buildFile = buildFile,
       androidResourcesEnabled = androidResourcesEnabled,
       viewBindingEnabled = viewBindingEnabled,
+      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
       manifests = manifests.toMutableMap(),
       configurations = configurations.toMutableMap(),
       projectDependencies = projectDependencies,

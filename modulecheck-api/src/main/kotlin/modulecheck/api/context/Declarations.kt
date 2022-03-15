@@ -16,6 +16,9 @@
 package modulecheck.api.context
 
 import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.Declarations.DeclarationsKey.ALL
+import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
+import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
@@ -31,48 +34,70 @@ import modulecheck.utils.dataSource
 import modulecheck.utils.emptyDataSource
 import modulecheck.utils.lazySet
 
-data class Declarations(
-  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
+data class Declarations private constructor(
+  private val delegate: SafeCache<DeclarationsKey, LazySet<DeclarationName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
-  suspend fun all(): LazySet<DeclarationName> {
-    return project.sourceSets
-      .keys
-      .map { project.declarations().get(it) }
-      .let { lazySet(it, emptyDataSource()) }
+  // Allow for caching full hierarchies up declarations in a single `LazySet`.
+  // Without this, a full-hierarchy LazySet needs to be rebuilt from cached elements for every
+  // `mustBeApi` or `all` query, and that turns out ti be very expensive.
+  private sealed interface DeclarationsKey {
+    object ALL : DeclarationsKey
+    data class WithUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
+    data class WithoutUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
   }
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
-    return delegate.getOrPut(sourceSetName) {
+  suspend fun all(): LazySet<DeclarationName> {
+    return delegate.getOrPut(ALL) {
+      project.sourceSets
+        .keys
+        .map { project.declarations().get(it, false) }
+        .let { lazySet(it, emptyDataSource()) }
+    }
+  }
+
+  suspend fun get(
+    sourceSetName: SourceSetName,
+    includeUpstream: Boolean
+  ): LazySet<DeclarationName> {
+    val key = if (includeUpstream) {
+      WithUpstream(sourceSetName)
+    } else WithoutUpstream(sourceSetName)
+    return delegate.getOrPut(key) {
 
       val sets = mutableListOf<LazySet<DeclarationName>>()
       val sources = mutableListOf<DataSource<DeclarationName>>()
 
-      sourceSetName
-        .withUpstream(project)
-        .forEach { sourceSetOrUpstream ->
+      val seed = if (includeUpstream) {
+        sourceSetName.withUpstream(project)
+          .filterNot { it == SourceSetName.TEST_FIXTURES }
+      } else {
+        listOf(sourceSetName)
+      }
 
-          val rNameOrNull = project.androidRFqNameForSourceSetName(sourceSetOrUpstream)
+      seed.forEach { sourceSetOrUpstream ->
 
-          project.jvmFilesForSourceSetName(sourceSetOrUpstream)
-            .toList()
-            .map { dataSource(HIGH) { it.declarations } }
-            .let { sources.addAll(it) }
+        val rNameOrNull = project.androidRFqNameForSourceSetName(sourceSetOrUpstream)
 
-          if (rNameOrNull != null) {
-            sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
-          }
+        project.jvmFilesForSourceSetName(sourceSetOrUpstream)
+          .toList()
+          .map { dataSource(HIGH) { it.declarations } }
+          .let { sources.addAll(it) }
 
-          if (project.isAndroid()) {
-            sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream))
-
-            sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream))
-          }
+        if (rNameOrNull != null) {
+          sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
         }
+
+        if (project.isAndroid()) {
+          sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream))
+
+          sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream))
+        }
+      }
 
       lazySet(sets, sources)
     }
@@ -89,9 +114,24 @@ data class Declarations(
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
 suspend fun ConfiguredProjectDependency.declarations(): LazySet<DeclarationName> {
-  return if (isTestFixture) {
-    project.declarations().get(SourceSetName.TEST_FIXTURES)
-  } else {
-    project.declarations().get(SourceSetName.MAIN)
+  if (isTestFixture) {
+    return project.declarations().get(SourceSetName.TEST_FIXTURES, false)
   }
+
+  // If the dependency is something like `testImplementation(...)`, then the dependent project is
+  // getting the `main` source from the dependency.  If it's something like
+  // `debugImplementation(...)`, though, then the dependency is providing its `debug` source, which
+  // in turn provides its upstream `main` source.
+  val nonTestSourceSetName = configurationName.toSourceSetName()
+    .nonTestSourceSetNameOrNull()
+    ?: declaringSourceSetName()
+
+  // If we got something like `debug` as a source set, that just means that the dependent project
+  // has a `debug` source set.  If the dependency project has `debug`, that's what it'll provide.
+  // If it doesn't have `debug`, it'll just provide `main`.
+  val declarationsSourceSetName = nonTestSourceSetName
+    .takeIf { project.sourceSets.containsKey(nonTestSourceSetName) }
+    ?: SourceSetName.MAIN
+
+  return project.declarations().get(declarationsSourceSetName, true)
 }

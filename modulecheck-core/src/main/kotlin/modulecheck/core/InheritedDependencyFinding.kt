@@ -63,7 +63,7 @@ data class InheritedDependencyFinding(
     val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
 
     val newDeclaration = oldDeclaration.replace(
-      configName = newDependency.configurationName,
+      newConfigName = newDependency.configurationName,
       modulePath = newDependency.path,
       testFixtures = newDependency.isTestFixture
     )

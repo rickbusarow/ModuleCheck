@@ -38,37 +38,52 @@ data class OverShotDependencies(
         .get(configurationName)
         .flatMap { unused ->
 
-          val configSuffix = unused.configurationName
-            .nameWithoutSourceSet()
-            .takeIf { !it.equals(ConfigurationName.api.value, ignoreCase = true) }
-            ?: ConfigurationName.implementation.value
+          val unusedCpd = unused.cpd()
+          val unusedSourceSetName = unused.configurationName.toSourceSetName()
 
-          val allUsedByConfigName = project.sourceSets
-            .keys
-            .filterNot { it == unused.configurationName.toSourceSetName() }
+          val allUsedByConfigName = unusedSourceSetName
+            .withDownStream(project)
             .mapNotNull { sourceSetName ->
 
-              sourceSetName.javaConfigurationNames()
-                .filterNot { it == unused.configurationName }
-                // check the same config as the unused configuration first.
-                // for instance, if `api` is unused, check `debugApi`, `testApi`, etc.
-                .sortedByDescending {
-                  it.nameWithoutSourceSet().equals(configSuffix, ignoreCase = true)
-                }
-                .firstNotNullOfOrNull { configName ->
+              val configName = sourceSetName.implementationConfig()
+
+              val seed = when {
+
+                // If the SourceSet is the same as the original unused dependency, then the original
+                // must be testFixtures.  Only check the non-testFixtures version.
+                sourceSetName == unusedSourceSetName -> sequenceOf(configName to false)
+
+                // If the unused was testFixture, that testFixture source may be used downstream.
+                // So, check testFixture first, then the normal/main source.
+                unusedCpd.isTestFixture -> sequenceOf(configName to true, configName to false)
+                // If the unused wasn't a testFixture, then just check normal/main source.
+                else -> sequenceOf(configName to false)
+              }
+
+              seed
+                .map { (configName, isTestFixture) ->
                   ConfiguredProjectDependency(
                     configurationName = configName,
                     project = unused.dependencyProject,
-                    isTestFixture = unused.cpd().isTestFixture
+                    isTestFixture = isTestFixture
                   )
-                    .takeIf { project.uses(it) }
+                }
+                .filterNot {
+                  it.isTestFixture == unused.cpd().isTestFixture &&
+                    it.configurationName.toSourceSetName() == unused.cpd()
+                    .configurationName
+                    .toSourceSetName()
+                }
+                .firstNotNullOfOrNull { cpd ->
+
+                  cpd.takeIf { project.uses(it) }
                 }
             }
             .groupBy { it.configurationName }
 
-          val allConfigs = allUsedByConfigName.values
-            .flatMap { cpds ->
-              cpds.mapNotNull { project.configurations[it.configurationName] }
+          val allConfigs = allUsedByConfigName.keys
+            .mapNotNull { configurationName ->
+              project.configurations[configurationName]
             }
             .distinct()
 
@@ -76,7 +91,7 @@ data class OverShotDependencies(
           // For instance, don't add a `testImplementation` declaration if `implementation` is
           // already being added.
           val trimmedConfigs = allConfigs.filter { cfg ->
-            cfg.inherited.none { it in allConfigs }
+            cfg.upstream.none { it in allConfigs }
           }
 
           trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
@@ -84,13 +99,15 @@ data class OverShotDependencies(
             .map { it to unused.configurationName }
             .toSet()
         }
-        .map { (cpp, originalConfigurationName) ->
+        .map { (overshot, originalConfigurationName) ->
+
+          val newCpd = overshot.asApiOrImplementation(project)
 
           OverShotDependencyFinding(
             dependentProject = project,
-            newDependency = cpp,
-            oldDependency = cpp.copy(configurationName = originalConfigurationName),
-            configurationName = cpp.configurationName
+            newDependency = newCpd,
+            oldDependency = overshot.copy(configurationName = originalConfigurationName),
+            configurationName = newCpd.configurationName
           )
         }
         .sortedBy { it.dependencyProject }

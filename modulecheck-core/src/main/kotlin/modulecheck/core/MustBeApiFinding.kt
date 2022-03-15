@@ -67,7 +67,7 @@ data class MustBeApiFinding(
     val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
 
     val newDeclaration = oldDeclaration.replace(
-      configName = newDependency.configurationName,
+      newConfigName = newDependency.configurationName,
       testFixtures = newDependency.isTestFixture
     )
 

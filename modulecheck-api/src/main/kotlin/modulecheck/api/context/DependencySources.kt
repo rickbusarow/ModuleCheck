@@ -15,15 +15,15 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.context.ApiDependencySources.SourceResult.Found
-import modulecheck.api.context.ApiDependencySources.SourceResult.NOT_PRESENT
+import modulecheck.api.context.DependencySources.SourceResult.Found
+import modulecheck.api.context.DependencySources.SourceResult.NOT_PRESENT
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
 
-data class ApiDependencySources(
+data class DependencySources(
   private val delegate: SafeCache<SourceKey, SourceResult>,
   private val project: McProject
 ) : ProjectContext.Element {
@@ -39,8 +39,8 @@ data class ApiDependencySources(
     object NOT_PRESENT : SourceResult
   }
 
-  override val key: ProjectContext.Key<ApiDependencySources>
-    get() = ApiDependencySources
+  override val key: ProjectContext.Key<DependencySources>
+    get() = DependencySources
 
   suspend fun sourceOfOrNull(
     dependencyProjectPath: String,
@@ -77,21 +77,21 @@ data class ApiDependencySources(
     }
   }
 
-  companion object Key : ProjectContext.Key<ApiDependencySources> {
-    override suspend fun invoke(project: McProject): ApiDependencySources {
-      return ApiDependencySources(SafeCache(), project)
+  companion object Key : ProjectContext.Key<DependencySources> {
+    override suspend fun invoke(project: McProject): DependencySources {
+      return DependencySources(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.apiDependencySources(): ApiDependencySources = get(ApiDependencySources)
+suspend fun ProjectContext.dependencySources(): DependencySources = get(DependencySources)
 
 suspend fun McProject.requireSourceOf(
   dependencyProject: McProject,
   sourceSetName: SourceSetName,
   isTestFixture: Boolean
 ): ConfiguredProjectDependency {
-  return apiDependencySources().sourceOfOrNull(
+  return dependencySources().sourceOfOrNull(
     dependencyProjectPath = dependencyProject.path,
     sourceSetName = sourceSetName,
     isTestFixture = isTestFixture

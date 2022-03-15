@@ -26,7 +26,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.getByType
 import javax.inject.Inject
 
 open class ModuleCheckTask<T : Finding> @Inject constructor(
@@ -44,7 +43,8 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
   }
 
   @get:Input
-  val settings: ModuleCheckExtension = project.extensions.getByType()
+  val settings: ModuleCheckExtension = project.extensions
+    .getByType(ModuleCheckExtension::class.java)
 
   @TaskAction
   fun run() {

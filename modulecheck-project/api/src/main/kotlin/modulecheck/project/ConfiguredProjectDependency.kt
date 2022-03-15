@@ -16,6 +16,7 @@
 package modulecheck.project
 
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.SourceSetName
 
 data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
@@ -27,20 +28,16 @@ data class ConfiguredProjectDependency(
 
   override val name = project.path
 
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (other !is ConfiguredProjectDependency) return false
-
-    if (configurationName != other.configurationName) return false
-    if (project.path != other.project.path) return false
-
-    return true
-  }
-
-  override fun hashCode(): Int {
-    var result = configurationName.hashCode()
-    result = 31 * result + project.hashCode()
-    return result
+  fun declaringSourceSetName() = when {
+    isTestFixture -> {
+      SourceSetName.TEST_FIXTURES
+    }
+    configurationName.toSourceSetName().isTestingOnly() -> {
+      SourceSetName.MAIN
+    }
+    else -> {
+      configurationName.toSourceSetName()
+    }
   }
 
   override fun toString(): String {
@@ -59,6 +56,14 @@ data class TransitiveProjectDependency(
   val source: ConfiguredProjectDependency,
   val contributed: ConfiguredProjectDependency
 ) {
+
+  fun withContributedConfiguration(
+    configurationName: ConfigurationName = source.configurationName
+  ): TransitiveProjectDependency {
+    val newContributed = contributed.copy(configurationName = configurationName)
+    return copy(contributed = newContributed)
+  }
+
   override fun toString(): String {
     return """TransitiveProjectDependency(
       |       source=$source
@@ -67,3 +72,8 @@ data class TransitiveProjectDependency(
     """.trimMargin()
   }
 }
+
+data class DownstreamDependency(
+  val dependentProject: McProject,
+  val configuredProjectDependency: ConfiguredProjectDependency
+)

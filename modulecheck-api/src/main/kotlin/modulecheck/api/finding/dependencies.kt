@@ -31,6 +31,10 @@ fun McProject.addDependency(
   val oldStatement = markerDeclaration.statementWithSurroundingText
   val newStatement = newDeclaration.statementWithSurroundingText
 
+  // the `prefixIfNot("\n")` here is important.
+  // It needs to match what we're doing if we delete a dependency.  Otherwise, we wind up adding
+  // or removing newlines instead of just modifying the dependencies.
+  // See https://github.com/RBusarow/ModuleCheck/issues/443
   val combinedStatement = newStatement.plus(oldStatement.prefixIfNot("\n"))
 
   val buildFileText = buildFile.readText()
@@ -86,7 +90,11 @@ fun McProject.removeDependencyWithDelete(
   val text = buildFile.readText()
 
   buildFile.writeText(
-    text.replaceFirst(declaration.statementWithSurroundingText + '\n', "")
+    // the `prefixIfNot("\n")` here is important.
+    // It needs to match what we're doing if we add a new dependency.  Otherwise, we wind up adding
+    // or removing newlines instead of just modifying the dependencies.
+    // See https://github.com/RBusarow/ModuleCheck/issues/443
+    text.replaceFirst(declaration.statementWithSurroundingText.prefixIfNot("\n"), "")
   )
 
   if (configuredDependency is ConfiguredProjectDependency) {

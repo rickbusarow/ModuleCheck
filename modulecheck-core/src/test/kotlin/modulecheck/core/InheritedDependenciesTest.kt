@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.ProjectFindingReport.overshot
@@ -446,6 +447,16 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
     lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
@@ -576,6 +587,113 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `inherited as implementation in debug should be added to debug`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency("debugApi".asConfigurationName(), lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    val lib3 = androidProject(":lib3", "com.modulecheck.lib3") {
+      addDependency("debugImplementation".asConfigurationName(), lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugImplementation(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3ClassDebug.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val lib1Class = Lib1Class()
+        private val lib2Class = Lib2Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+        }
+    """
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+          debugImplementation(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "debugApi",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `inherited as internalImplementation from api dependency with auto-correct should be fixed`() {
 
     val lib1 = project(":lib1") {
@@ -617,7 +735,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib3 = project(":lib3") {
       addDependency(ConfigurationName.api, lib2)
-      addSourceSet(SourceSetName("internal"))
+      addSourceSet(SourceSetName("internal"), upstreamNames = listOf(SourceSetName.MAIN))
 
       buildFile {
         """
@@ -655,6 +773,16 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
     lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
@@ -671,6 +799,128 @@ class InheritedDependenciesTest : RunnerTest() {
         inheritedDependency(
           fixed = true,
           configuration = "internalImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited into mid-level source set should not also be added to downstream source sets`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+      addSourceSet(SourceSetName("middle"), upstreamNames = listOf(SourceSetName.MAIN))
+      addSourceSet(
+        SourceSetName("leafOne"),
+        upstreamNames = listOf("middle".asSourceSetName())
+      )
+      addSourceSet(
+        SourceSetName("leafTwo"),
+        upstreamNames = listOf("middle".asSourceSetName())
+      )
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3ClassInternal.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName("middle")
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "middleImplementation"(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "middleImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -720,6 +970,9 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     val lib3 = project(":lib3") {
+
+      addSourceSet("internal".asSourceSetName(), upstreamNames = listOf(SourceSetName.MAIN))
+
       addDependency("internalImplementation".asConfigurationName(), lib2)
 
       buildFile {
@@ -951,6 +1204,400 @@ class InheritedDependenciesTest : RunnerTest() {
         inheritedDependency(
           fixed = true,
           configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited implementation from implementation with string extension should be added with string invocation`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.implementation, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "implementation"(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "implementation"(project(path = ":lib1"))
+          "implementation"(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited implementation from api with string extension should be added with precompiled function`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          "api"(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        private val clazz = Lib1Class()
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+          "api"(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited novel debugImplementation in android project should use precompiled function`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = androidProject(":lib3", "com.modulecheck.lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Debug.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugImplementation(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "debugImplementation",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited novel androidTestDebugImplementation in android project should use precompiled function`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = androidProject(":lib3", "com.modulecheck.lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+      addSource(
+        "com/modulecheck/lib3/Lib3Debug.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        private val clazz = Lib1Class()
+        """.trimIndent(),
+        "androidTestDebug".asSourceSetName()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          androidTestDebugImplementation(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "androidTestDebugImplementation",
           dependency = ":lib1",
           source = ":lib2",
           position = "6, 3"
@@ -1223,6 +1870,7 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     val lib2 = project(":lib2") {
+      hasTestFixturesPlugin = true
       addDependency("testFixturesImplementation".asConfigurationName(), lib1)
       addDependency("testFixturesApi".asConfigurationName(), lib1, asTestFixture = true)
 
@@ -1283,6 +1931,17 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testFixturesApi(project(path = ":lib1"))
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+    """
+
     lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
@@ -1295,6 +1954,14 @@ class InheritedDependenciesTest : RunnerTest() {
     """
 
     logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "testFixturesImplementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      ),
       ":lib3" to listOf(
         inheritedDependency(
           fixed = true,
@@ -1380,6 +2047,16 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+    """
+
     lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
@@ -1408,6 +2085,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited testFixtures from api with auto-correct should be fixed as testFixtures via testImplementation`() {
 
     val lib1 = project(":lib1") {
+      hasTestFixturesPlugin = true
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1420,6 +2098,7 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
     val lib2 = project(":lib2") {
+      hasTestFixturesPlugin = true
       addDependency("api".asConfigurationName(), lib1, asTestFixture = true)
 
       buildFile {
@@ -1477,6 +2156,17 @@ class InheritedDependenciesTest : RunnerTest() {
 
     run().isSuccess shouldBe true
 
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // api(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          testFixturesApi(testFixtures(project(path = ":lib1")))
+        }
+    """
+
     lib3.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
@@ -1492,7 +2182,7 @@ class InheritedDependenciesTest : RunnerTest() {
       ":lib2" to listOf(
         overshot(
           fixed = true,
-          configuration = "testFixturesImplementation",
+          configuration = "testFixturesApi",
           dependency = ":lib1",
           position = null
         ),
@@ -1516,7 +2206,7 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `inherited main source from api with auto-correct should be fixed as normal testImplementation`() {
+  fun `inherited main source should be added as non-test-fixtures testImplementation`() {
 
     val lib1 = project(":lib1") {
       addSource(
@@ -1539,7 +2229,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          testFixturesApi(testFixtures(project(path = ":lib1")))
+          testFixturesApi(project(path = ":lib1"))
         }
         """
       }
@@ -1615,6 +2305,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal testImplementation`() {
 
     val lib1 = project(":lib1") {
+      hasTestFixturesPlugin = true
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1753,7 +2444,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          api(testFixtures(project(path = ":lib1")))
+          implementation(testFixtures(project(path = ":lib1")))
         }
     """
 
@@ -1764,12 +2455,6 @@ class InheritedDependenciesTest : RunnerTest() {
           configuration = "api",
           dependency = ":lib1",
           source = null,
-          position = "6, 3"
-        ),
-        mustBeApi(
-          fixed = true,
-          configuration = "implementation",
-          dependency = ":lib1",
           position = "6, 3"
         )
       )

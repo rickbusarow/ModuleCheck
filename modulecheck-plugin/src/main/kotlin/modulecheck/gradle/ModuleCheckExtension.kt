@@ -29,6 +29,7 @@ import modulecheck.api.settings.ChecksSettings.Companion.SORT_DEPENDENCIES_DEFAU
 import modulecheck.api.settings.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
+import modulecheck.api.settings.ChecksSettings.Companion.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.api.settings.PerModuleReportSettings
 import modulecheck.api.settings.ReportSettings
@@ -50,7 +51,6 @@ import modulecheck.gradle.internal.setProperty
 import org.gradle.api.Action
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
-import org.gradle.kotlin.dsl.provideDelegate
 import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
@@ -132,6 +132,9 @@ open class ChecksExtension @Inject constructor(
     DISABLE_ANDROID_RESOURCES_DEFAULT
   )
   override var disableViewBinding: Boolean by objects.property(DISABLE_VIEW_BINDING_DEFAULT)
+  override var unusedKotlinAndroidExtensions: Boolean by objects.property(
+    UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
+  )
   override var depths: Boolean by objects.property(DEPTHS_DEFAULT)
 }
 

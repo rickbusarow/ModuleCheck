@@ -26,7 +26,6 @@ import modulecheck.specs.ProjectBuildSpecBuilder
 import modulecheck.specs.ProjectSettingsSpecBuilder
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import modulecheck.specs.applyEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -67,7 +66,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/kotlin")) {
-          addRawFile(
+          addKotlinFile(
             "MyModule.kt",
             """
             package com.example.app
@@ -79,7 +78,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
             @Module
             @ContributesTo(AppScope::class)
             object MyModule
-            """.trimIndent()
+            """
           )
         }
       )
@@ -94,7 +93,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
         ProjectSpec("lib-1") {
           addSrcSpec(
             ProjectSrcSpec(Path.of("src/main/java")) {
-              addRawFile(
+              addKotlinFile(
                 "AppScope.kt",
                 """
                 package com.example.lib1
@@ -103,7 +102,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
                 import kotlin.reflect.KClass
 
                 abstract class AppScope private constructor()
-                """.trimIndent()
+                """
               )
             }
           )
@@ -161,12 +160,11 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
       )
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main")) {
-          addRawFile(
-            RawFile(
-              "AndroidManifest.xml",
-              """<manifest package="com.example.app" />
-              """.trimMargin()
-            )
+          addXmlFile(
+            "AndroidManifest.xml",
+            """
+              <manifest package="com.example.app" />
+            """
           )
         }
       )
@@ -179,14 +177,13 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
 
       addSrcSpec(
         ProjectSrcSpec(Path.of("src/main/res/values")) {
-          addRawFile(
-            RawFile(
-              "strings.xml",
-              """<resources>
-                |  <string name="app_name" translatable="false">MyApp</string>
-                |</resources>
-              """.trimMargin()
-            )
+          addXmlFile(
+            "strings.xml",
+            """
+              <resources>
+                <string name="app_name" translatable="false">MyApp</string>
+              </resources>
+            """
           )
         }
       )
@@ -203,38 +200,38 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
           // This does the same thing, but uses a different default directory.
           addBlock(
             """
-          |val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
-          |
-          |android {
-          |  sourceSets {
-          |    findByName("main")?.manifest {
-          |      srcFile(manifestFile.path)
-          |    }
-          |  }
-          |}
-          |
-          |val makeFile by tasks.registering {
-          |
-          |  doFirst {
-          |
-          |    manifestFile.parentFile.mkdirs()
-          |    manifestFile.writeText(
-          |      ""${'"'}<manifest package="com.example.lib1" /> ""${'"'}.trimMargin()
-          |    )
-          |  }
-          |}
-          |
-          |afterEvaluate {
-          |
-          |  tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java)
-          |    .configureEach { dependsOn(makeFile) }
-          |  tasks.withType(com.android.build.gradle.tasks.MergeResources::class.java)
-          |    .configureEach { dependsOn(makeFile) }
-          |  tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java)
-          |    .configureEach { dependsOn(makeFile)}
-          |
-          |}
-            """.trimMargin()
+          val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
+
+          android {
+            sourceSets {
+              findByName("main")?.manifest {
+                srcFile(manifestFile.path)
+              }
+            }
+          }
+
+          val makeFile by tasks.registering {
+
+            doFirst {
+
+              manifestFile.parentFile.mkdirs()
+              manifestFile.writeText(
+                ""${'"'}<manifest package="com.example.lib1" /> ""${'"'}.trimMargin()
+              )
+            }
+          }
+
+          afterEvaluate {
+
+            tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java)
+              .configureEach { dependsOn(makeFile) }
+            tasks.withType(com.android.build.gradle.tasks.MergeResources::class.java)
+              .configureEach { dependsOn(makeFile) }
+            tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java)
+              .configureEach { dependsOn(makeFile)}
+
+          }
+            """
           )
         }
       )
@@ -252,5 +249,76 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
 
     // one last check to make sure the manifest wasn't generated, since that would invalidate the test
     File(testProjectDir, "/lib1/src/main/AndroidManifest.xml").exists() shouldBe false
+  }
+
+  @Test
+  fun `android test fixtures from android DSL should be treated as test fixtures`() {
+
+    val androidSub1 = ProjectSpec("lib-1") {
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/testFixtures/java/com/modulecheck/lib1")) {
+          addKotlinFile(
+            "TestUtils.kt",
+            """
+            package com.modulecheck.lib1
+
+            class TestUtils
+            """.trimIndent()
+          )
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addBlock(
+            """
+            android {
+              testFixtures.enable = true
+            }
+            """.trimIndent()
+          )
+        }
+      )
+    }
+
+    val androidSub2 = ProjectSpec("lib-2") {
+      addSrcSpec(
+        ProjectSrcSpec(Path.of("src/test/java/com/modulecheck/lib2")) {
+          addKotlinFile(
+            "SomeTest.kt",
+            """
+            package com.modulecheck.lib2
+
+            import com.modulecheck.lib1.TestUtils
+
+            class SomeTest {
+
+              val utils = TestUtils()
+            }
+            """.trimIndent()
+          )
+        }
+      )
+      addBuildSpec(
+        ProjectBuildSpec {
+          addPlugin("""id("com.android.library")""")
+          addPlugin("kotlin(\"android\")")
+          android = true
+          addRawDependency("testImplementation(testFixtures(project(\":lib-1\")))")
+        }
+      )
+    }
+
+    ProjectSpec("project") {
+      addSubproject(androidSub1)
+      addSubproject(androidSub2)
+      addSettingsSpec(projectSettings.build())
+      addBuildSpec(projectBuild.build())
+    }
+      .writeIn(testProjectDir.toPath())
+
+    shouldSucceed("moduleCheck")
   }
 }

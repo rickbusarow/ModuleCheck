@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.kapt
+package modulecheck.core
 
 import modulecheck.api.finding.Deletable
 import modulecheck.api.finding.Finding
@@ -22,27 +22,26 @@ import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
 import modulecheck.api.finding.removeDependencyWithComment
 import modulecheck.api.finding.removeDependencyWithDelete
-import modulecheck.core.rule.KAPT_PLUGIN_FUN
-import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
-data class UnusedKaptPluginFinding(
+data class UnusedPluginFinding(
   override val dependentProject: McProject,
   override val dependentPath: String,
-  override val buildFile: File
+  override val buildFile: File,
+  override val findingName: String,
+  val pluginId: String,
+  val kotlinPluginFunction: String = ""
 ) : Finding, Problem, Fixable, Deletable {
 
   override val message: String
-    get() = "The `$KAPT_PLUGIN_ID` plugin dependency declared, " +
+    get() = "The `$pluginId` plugin dependency declared, " +
       "but no processor dependencies are declared."
 
-  override val dependencyIdentifier = KAPT_PLUGIN_ID
-
-  override val findingName = "unusedKaptPlugin"
+  override val dependencyIdentifier = pluginId
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     val text = buildFile
@@ -52,9 +51,9 @@ data class UnusedKaptPluginFinding(
 
     val row = lines
       .indexOfFirst { line ->
-        line.contains("id(\"$KAPT_PLUGIN_ID\")") ||
-          line.contains(KAPT_PLUGIN_FUN) ||
-          line.contains("plugin = \"$KAPT_PLUGIN_ID\")")
+        line.contains("id(\"$pluginId\")") ||
+          line.contains(kotlinPluginFunction) ||
+          line.contains("plugin = \"$pluginId\")")
       }
 
     if (row < 0) return@lazyDeferred null
@@ -68,10 +67,10 @@ data class UnusedKaptPluginFinding(
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
 
     sequenceOf(
-      "id(\"$KAPT_PLUGIN_ID\")",
-      "id \"$KAPT_PLUGIN_ID\"",
-      "id '$KAPT_PLUGIN_ID'",
-      KAPT_PLUGIN_FUN
+      "id(\"$pluginId\")",
+      "id \"$pluginId\"",
+      "id '$pluginId'",
+      kotlinPluginFunction
     ).firstNotNullOfOrNull { id ->
       dependentProject.buildFileParser.pluginsBlock()?.getById(id)
     }

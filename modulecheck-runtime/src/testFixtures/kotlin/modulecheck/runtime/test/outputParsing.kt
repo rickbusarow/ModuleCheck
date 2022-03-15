@@ -27,6 +27,7 @@ import modulecheck.runtime.test.ProjectFindingReport.unsortedPlugins
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptProcessor
+import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.ProjectFindingReport.useAnvilFactories
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
@@ -146,6 +147,10 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
+            position = position
+          )
+          "unusedKotlinAndroidExtensions" -> unusedKotlinAndroidExtensions(
+            fixed = fixed,
             position = position
           )
           "disableAndroidResources" -> disableAndroidResources(fixed = fixed, position = position)

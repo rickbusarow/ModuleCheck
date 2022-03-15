@@ -51,7 +51,8 @@ class ConfigValidationTest : BasePluginTest() {
       "sortDependencies",
       "sortPlugins",
       "unusedDependency",
-      "unusedKapt"
+      "unusedKapt",
+      "unusedKotlinAndroidExtensions",
     )
 
     SortExtension::class.memberProperties
@@ -86,6 +87,7 @@ class ConfigValidationTest : BasePluginTest() {
             anvilFactoryGeneration = true  // default is true
             disableAndroidResources = false  // default is false
             disableViewBinding = false  // default is false
+            unusedKotlinAndroidExtensions = false  // default is false
             depths = false  // default is false
           }
 
@@ -169,6 +171,7 @@ class ConfigValidationTest : BasePluginTest() {
             anvilFactoryGeneration = true  // default is true
             disableAndroidResources = false  // default is false
             disableViewBinding = false  // default is false
+            unusedKotlinAndroidExtensions = false  // default is false
             depths = false  // default is false
           }
 

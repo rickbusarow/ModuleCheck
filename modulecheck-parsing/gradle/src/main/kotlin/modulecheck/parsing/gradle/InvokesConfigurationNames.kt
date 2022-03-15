@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.gradle.SourceSetName.Companion
 import java.io.File
 
 interface InvokesConfigurationNames :
@@ -52,10 +53,10 @@ interface HasConfigurations {
 /**
  * Reverse lookup of all the configurations which inherit another configuration.
  *
- * For instance, every java/kotlin configuration (`implementation`, `testImplementation`, etc.)
- * within a project inherits from the common `api` configuration,
- * so `someProject.inheritingConfigurations(ConfigurationName.api)` would return all other
- * java/kotlin configurations within that project.
+ * For instance, every java/kotlin configuration (`implementation`, `testImplementation`,
+ * etc.) within a project inherits from the common `api` configuration, so
+ * `someProject.inheritingConfigurations(ConfigurationName.api)` would return all other java/kotlin
+ * configurations within that project.
  */
 fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationName): Set<Config> {
   return configurations.values
@@ -66,7 +67,7 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
         .mapNotNull { configName -> configurations[configName] }
     }
     .filter { inheritingConfig ->
-      inheritingConfig.inherited
+      inheritingConfig.upstream
         .any { inheritedConfig ->
           inheritedConfig.name == configurationName
         }
@@ -74,9 +75,9 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
 }
 
 /**
- * Precompiled configuration names are names which are added by a pre-compiled plugin.  These names
- * can be used as functions in Kotlin scripts.
- * examples:
+ * Precompiled configuration names are names which are added by a pre-compiled plugin. These names
+ * can be used as functions in Kotlin scripts. examples:
+ *
  * ```
  *   api("some-dependency")
  *   testImplementation(project(":my-lib"))
@@ -84,35 +85,81 @@ fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationN
  * ```
  *
  * If a configuration is added in a local build script, then it won't have a function associated
- * with it.  In this case, the Kotlin script supports using a String extension function:
+ * with it. In this case, the Kotlin script supports using a String extension function:
+ *
  * ```
  *   "internalReleaseApi"(libs.timber)
  * ```
+ *
  * @param project the project in which the configuration name is being used
- * @return `true` if we can know for sure that it's pre-compiled.  `false` if we aren't certain.
+ * @return `true` if we can know for sure that it's pre-compiled. `false` if we aren't certain.
  */
 suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
   where T : PluginAware,
         T : HasDependencyDeclarations {
-  return when (toSourceSetName()) {
-    SourceSetName.ANVIL -> project.hasAnvil
-    SourceSetName.MAIN -> true
-    SourceSetName.TEST -> true
-    SourceSetName.TEST_FIXTURES -> project.hasTestFixturesPlugin
-    SourceSetName.KAPT -> project.hasKapt
-    SourceSetName.DEBUG -> project.hasAGP
-    SourceSetName.RELEASE -> project.hasAGP
-    SourceSetName.ANDROID_TEST -> project.hasAGP
-    else -> return project.getConfigurationInvocations().contains(value)
+
+  return toSourceSetName().isDefinitelyPrecompiledForProject(project) ||
+    project.getConfigurationInvocations().contains(value)
+}
+
+@Suppress("ComplexMethod")
+private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project: T): Boolean
+  where T : PluginAware,
+        T : HasDependencyDeclarations {
+
+  // simple cases
+  when (this) {
+    SourceSetName.ANVIL -> return project.hasAnvil
+    SourceSetName.MAIN -> return true
+    SourceSetName.TEST -> return true
+    SourceSetName.TEST_FIXTURES -> return project.hasTestFixturesPlugin
+    SourceSetName.KAPT -> return project.hasKapt
+    SourceSetName.DEBUG -> return project.hasAGP
+    SourceSetName.RELEASE -> return project.hasAGP
+    SourceSetName.ANDROID_TEST -> return project.hasAGP
   }
+
+  if (project.hasAnvil && hasPrefix(SourceSetName.ANVIL)) {
+    // `anvilDebug` -> `debug`, then we'd recurse and check for `debug`.
+    return removePrefix(Companion.ANVIL).isDefinitelyPrecompiledForProject(project)
+  }
+  if (project.hasKapt && hasPrefix(SourceSetName.KAPT)) {
+    // `kaptAndroidTest` -> `androidTest`, then we'd recurse and check for `androidTest`.
+    return removePrefix(Companion.KAPT).isDefinitelyPrecompiledForProject(project)
+  }
+  // Note that the `testFixtures` check has to be above anything dealing with a "test-" prefix.
+  if (project.hasTestFixturesPlugin && hasPrefix(Companion.TEST_FIXTURES)) {
+    // `testFixturesDebug` -> `debug`, then we'd recurse and check for `debug`.
+    return removePrefix(Companion.TEST_FIXTURES).isDefinitelyPrecompiledForProject(project)
+  }
+  // `test` must come before Android stuff, because the source set is `testDebug` -- not `debugTest`
+  if (hasPrefix(Companion.TEST)) {
+    return removePrefix(Companion.TEST).isDefinitelyPrecompiledForProject(project)
+  }
+  if (project.hasAGP) {
+    when {
+      // `androidTest` MUST come before `debug` and `release`,
+      // because the source set is `androidTest____`
+      hasPrefix(SourceSetName.ANDROID_TEST) -> {
+        return removePrefix(Companion.ANDROID_TEST).isDefinitelyPrecompiledForProject(project)
+      }
+      hasPrefix(SourceSetName.DEBUG) -> {
+        return removePrefix(Companion.DEBUG).isDefinitelyPrecompiledForProject(project)
+      }
+      hasPrefix(SourceSetName.RELEASE) -> {
+        return removePrefix(Companion.RELEASE).isDefinitelyPrecompiledForProject(project)
+      }
+    }
+  }
+  return false
 }
 
 /**
  * Attempts to determine the most idiomatic way of invoking the receiver
- * [configuration name][ConfigurationName].  Typically, this will just be a function with a matching
- * name.  However, if a configuration is non-standard (e.g. `internalReleaseImplementation`) and the
- * build file is using the Kotlin Gradle DSL, then the configuration must be invoked as a String
- * extension function instead (e.g. `"internalReleaseImplementation"(libs.myDependency)`).
+ * [configuration name][ConfigurationName]. Typically, this will just be a function with a matching
+ * name. However, if a configuration is non-standard (e.g. `internalReleaseImplementation`) and
+ * the build file is using the Kotlin Gradle DSL, then the configuration must be invoked as a
+ * String extension function instead (e.g. `"internalReleaseImplementation"(libs.myDependency)`).
  *
  * @return The text used to add a dependency using this [ConfigurationName], in this project.
  * @see isDefinitelyPrecompiledForProject
@@ -121,9 +168,7 @@ suspend fun ConfigurationName.buildFileInvocationText(
   invokesConfigurationNames: InvokesConfigurationNames
 ): String {
 
-  val buildFileIsKotlin = invokesConfigurationNames.buildFile.extension == "kts"
-
-  return if (buildFileIsKotlin && !isDefinitelyPrecompiledForProject(invokesConfigurationNames)) {
+  return if (shouldUseQuotes(invokesConfigurationNames)) {
     wrapInQuotes()
   } else {
     value
@@ -133,3 +178,25 @@ suspend fun ConfigurationName.buildFileInvocationText(
 private fun ConfigurationName.wrapInQuotes(): String =
   value.let { if (it.endsWith('"')) it else "$it\"" }
     .let { if (it.startsWith('"')) it else "\"$it" }
+
+/**
+ * Returns true if the build file is Kotlin, and one of:
+ * - this exact configuration name is already used as a string extension
+ * - this configuration name is atypical (such as `internalDebugApi`) and not already used as a
+ *   non-string invocation, so there's no way to be sure that the function is precompiled.
+ */
+private suspend fun ConfigurationName.shouldUseQuotes(
+  invokesConfigurationNames: InvokesConfigurationNames
+): Boolean {
+
+  // This only applies to Kotlin DSL build files
+  if (invokesConfigurationNames.buildFile.extension != "kts") return false
+
+  // true if the build file *already* uses this exact same configuration as a String extension
+  if (invokesConfigurationNames.getConfigurationInvocations().contains("\"$value\""))
+    return true
+
+  // true if we can't find a plugin which creates this config, and we can't already find it being
+  // used as a normal function invocation
+  return !isDefinitelyPrecompiledForProject(invokesConfigurationNames)
+}

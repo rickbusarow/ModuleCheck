@@ -13,36 +13,13 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+package modulecheck.testing
 
-plugins {
-  kotlin("jvm")
-}
+import org.junit.jupiter.api.fail
 
-java {
-  // This is different from the Kotlin jvm target.
-  toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-}
+fun <T : Any> T?.requireNotNullOrFail(lazyMessage: () -> String): T {
 
-val lintMain by tasks.registering {
+  if (this != null) return this
 
-  doFirst {
-    tasks.withType<KotlinCompile>()
-      .configureEach {
-        kotlinOptions {
-          allWarningsAsErrors = true
-        }
-      }
-  }
-}
-lintMain {
-  finalizedBy("compileKotlin")
-}
-
-val testJvm by tasks.registering {
-  dependsOn("test")
-}
-
-val buildTests by tasks.registering {
-  dependsOn("testClasses")
+  fail(lazyMessage)
 }

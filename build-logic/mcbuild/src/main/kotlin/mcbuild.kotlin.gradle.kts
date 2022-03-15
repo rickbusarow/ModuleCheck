@@ -19,11 +19,19 @@ plugins {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
   .configureEach {
-
     kotlinOptions {
       allWarningsAsErrors = false
 
-      jvmTarget = "1.8"
+      val kotlinMajor = "1.5"
+
+      languageVersion = kotlinMajor
+      apiVersion = kotlinMajor
+
+      val javaMajor = "11"
+
+      jvmTarget = javaMajor
+      sourceCompatibility = javaMajor
+      targetCompatibility = javaMajor
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-Xinline-classes",

@@ -20,7 +20,12 @@ import modulecheck.utils.decapitalize
 
 class Configurations(
   delegate: Map<ConfigurationName, Config>
-) : Map<ConfigurationName, Config> by delegate
+) : Map<ConfigurationName, Config> by delegate {
+
+  override fun toString(): String {
+    return toList().joinToString("\n")
+  }
+}
 
 @JvmInline
 value class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
@@ -37,21 +42,21 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the base name of the Configuration without any source set prefix.
    *
-   * For "main" source sets, this function just returns the same string, e.g.:
-   *   ConfigurationName("api").nameWithoutSourceSet() == "api"
-   *   ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
+   * For "main" source sets, this function just returns the same string,
+   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
    *
    * For other source sets, it returns the base configuration names:
-   *   ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
-   *   ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
+   * ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
+   * ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
    */
   fun nameWithoutSourceSet() = value.removePrefix(toSourceSetName().value)
 
   /**
    * find the "base" configuration name and remove it
    *
-   * For instance, `debugCompileOnly` would find the "CompileOnly" and remove it,
-   * returning "debug" as the sourceSet name
+   * For instance, `debugCompileOnly` would find the "CompileOnly" and remove it, returning "debug"
+   * as the sourceSet name
    */
   private fun String.extractSourceSetName(): SourceSetName {
     // All kapt configurations start with `kapt`
@@ -93,13 +98,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the '-api' version of the current configuration.
    *
-   * In                           Returns
-   * | api                        | api
-   * | implementation             | api
-   * | compileOnly                | api
-   * | testImplementation         | testApi
-   * | debug                      | debugApi
-   * | androidTestImplementation  | androidTestApi
+   * In Returns | api | api | implementation | api | compileOnly | api | testImplementation |
+   * testApi | debug | debugApi | androidTestImplementation | androidTestApi
    *
    * @return for any main/common configuration, just returns `api`. For any other configuration, it
    *   returns the [SourceSetName] appended with `Api`.
@@ -109,16 +109,12 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the '-implementation' version of the current configuration.
    *
-   * In                           Returns
-   * | implementation             | implementation
-   * | implementation             | implementation
-   * | compileOnly                | implementation
-   * | testImplementation         | testImplementation
-   * | debug                      | debugImplementation
-   * | androidTestImplementation  | androidTestImplementation
+   * In Returns | implementation | implementation | implementation | implementation | compileOnly
+   * | implementation | testImplementation | testImplementation | debug | debugImplementation |
+   * androidTestImplementation | androidTestImplementation
    *
-   * @return for any main/common configuration, just returns `implementation`. For any other configuration, it
-   *   returns the [SourceSetName] appended with `Implementation`.
+   * @return for any main/common configuration, just returns `implementation`. For any other
+   *   configuration, it returns the [SourceSetName] appended with `Implementation`.
    */
   fun implementationVariant() = toSourceSetName().implementationConfig()
 
@@ -129,7 +125,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     return value.compareTo(other.value)
   }
 
-  override fun toString(): String = "`$value`"
+  override fun toString(): String = "(ConfigurationName) `$value`"
 
   companion object {
 
@@ -146,8 +142,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
     val testImplementation = ConfigurationName("testImplementation")
 
     /**
-     * The order of this list matters.
-     * CompileOnlyApi must be before `api` or `extractSourceSetName` below will match the wrong suffix.
+     * The order of this list matters. CompileOnlyApi must be before `api` or `extractSourceSetName`
+     * below will match the wrong suffix.
      */
     internal val mainConfigurations = listOf(
       compileOnlyApi.value,
@@ -158,6 +154,11 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       compile.value,
       runtimeOnly.value,
       runtime.value
+    )
+
+    internal val mainCommonConfigurations = listOf(
+      api.value,
+      implementation.value
     )
 
     private val mainConfigurationsCapitalized = mainConfigurations
@@ -193,8 +194,23 @@ fun String.asConfigurationName(): ConfigurationName = ConfigurationName(this)
 
 data class Config(
   val name: ConfigurationName,
-  val inherited: Set<Config>
-)
+  private val upstreamSequence: Sequence<Config>,
+  private val downstreamSequence: Sequence<Config>
+) {
+
+  val upstream: List<Config> by lazy { upstreamSequence.toList() }
+  val downstream: List<Config> by lazy { downstreamSequence.toList() }
+  fun withUpstream(): List<Config> = listOf(this) + upstream
+  fun withDownstream(): List<Config> = listOf(this) + downstream
+
+  override fun toString(): String {
+    return """Config   --  name=${name.value}
+    |  upstream=${upstream.map { it.name.value }}
+    |  downstream=${downstream.map { it.name.value }}
+    |)
+    """.trimMargin()
+  }
+}
 
 fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
   return listOfNotNull(
@@ -208,3 +224,14 @@ fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
 fun <K : Any, T : Any> Map<K, Collection<T>>.all(): List<T> {
   return values.flatten()
 }
+
+fun Iterable<Config>.names(): List<ConfigurationName> = map { it.name }
+fun Sequence<Config>.names(): Sequence<ConfigurationName> = map { it.name }
+
+fun Iterable<ConfigurationName>.distinctSourceSetNames(): List<SourceSetName> =
+  map { it.toSourceSetName() }
+    .distinct()
+
+fun Sequence<ConfigurationName>.distinctSourceSetNames(): Sequence<SourceSetName> =
+  map { it.toSourceSetName() }
+    .distinct()

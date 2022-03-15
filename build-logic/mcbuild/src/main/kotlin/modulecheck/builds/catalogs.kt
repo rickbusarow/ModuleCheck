@@ -19,6 +19,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
+import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 
@@ -32,5 +33,10 @@ val Project.libsCatalog: VersionCatalog
 
 @Suppress("UnstableApiUsage")
 fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDependency> {
-  return findDependency(alias).get()
+  return findLibrary(alias).get()
+}
+
+@Suppress("UnstableApiUsage")
+fun VersionCatalog.version(alias: String): VersionConstraint {
+  return findVersion(alias).get()
 }
