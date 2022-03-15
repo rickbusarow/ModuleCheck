@@ -15,8 +15,6 @@
 
 package modulecheck.core.context
 
-
-
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flattenMerge
@@ -190,8 +188,6 @@ suspend fun McProject.mustBeApiIn(
     directMainDependencies = directDependencies
   )
 }
-
-
 
 private suspend fun McProject.mustBeApiIn(
   dependentProject: McProject,
