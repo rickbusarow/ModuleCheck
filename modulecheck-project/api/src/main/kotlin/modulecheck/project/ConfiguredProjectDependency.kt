@@ -56,6 +56,14 @@ data class TransitiveProjectDependency(
   val source: ConfiguredProjectDependency,
   val contributed: ConfiguredProjectDependency
 ) {
+
+  fun withContributedConfiguration(
+    configurationName: ConfigurationName = source.configurationName
+  ): TransitiveProjectDependency {
+    val newContributed = contributed.copy(configurationName = configurationName)
+    return copy(contributed = newContributed)
+  }
+
   override fun toString(): String {
     return """TransitiveProjectDependency(
       |       source=$source
@@ -64,3 +72,8 @@ data class TransitiveProjectDependency(
     """.trimMargin()
   }
 }
+
+data class DownstreamDependency(
+  val dependentProject: McProject,
+  val configuredProjectDependency: ConfiguredProjectDependency
+)

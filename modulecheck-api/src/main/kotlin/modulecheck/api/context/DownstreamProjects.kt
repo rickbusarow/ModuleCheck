@@ -15,32 +15,38 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.flow.toSet
+import modulecheck.project.DownstreamDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.filterAsync
+import modulecheck.utils.flatMapToSet
 
-data class DependentProjects(
-  private val delegate: Set<McProject>
-) : Set<McProject> by delegate,
+data class DownstreamProjects(
+  private val delegate: Set<DownstreamDependency>
+) : Set<DownstreamDependency> by delegate,
   ProjectContext.Element {
 
-  override val key: ProjectContext.Key<DependentProjects>
+  override val key: ProjectContext.Key<DownstreamProjects>
     get() = Key
 
-  companion object Key : ProjectContext.Key<DependentProjects> {
-    override suspend operator fun invoke(project: McProject): DependentProjects {
+  companion object Key : ProjectContext.Key<DownstreamProjects> {
+    override suspend operator fun invoke(project: McProject): DownstreamProjects {
       val others = project.projectCache
         .values
-        .filterAsync { otherProject ->
-          project.path in otherProject
+        .flatMapToSet { otherProject ->
+
+          otherProject
             .classpathDependencies()
             .all()
-            .map { it.contributed.project.path }
+            .filter { it.contributed.project == project }
+            .map { transitive ->
+              DownstreamDependency(
+                dependentProject = otherProject,
+                configuredProjectDependency = transitive.withContributedConfiguration().contributed
+              )
+            }
         }
-        .toSet()
 
-      return DependentProjects(others)
+      return DownstreamProjects(others)
     }
   }
 }
@@ -49,4 +55,4 @@ data class DependentProjects(
  * All projects which are downstream of the receiver project, including those which only inherit via
  * another dependency's `api` configuration without declaring the dependency directly.
  */
-suspend fun ProjectContext.dependents(): DependentProjects = get(DependentProjects)
+suspend fun ProjectContext.dependents(): DownstreamProjects = get(DownstreamProjects)
