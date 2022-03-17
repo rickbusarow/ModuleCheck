@@ -23,6 +23,8 @@ import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.expr.FieldAccessExpr
+import com.github.javaparser.ast.expr.MethodCallExpr
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeParameters
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
@@ -153,9 +155,27 @@ class RealJavaFile(
 
     val importNames = importsLazy.value.map { it.fqName }
 
+    // fully qualified method references
+    val methodNames = compilationUnit
+      .getChildrenOfTypeRecursive<MethodCallExpr>()
+      .mapNotNull { method ->
+        method.getChildOfType<FieldAccessExpr>()
+          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
+      }
+
+    // fully qualified property references
+    val propertyNames = compilationUnit
+      .getChildrenOfTypeRecursive<FieldAccessExpr>()
+      .mapNotNull { method ->
+        method.getChildOfType<FieldAccessExpr>()
+          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
+      }
+
     val unresolved = typeReferenceNames
       .filter { name -> importNames.none { importName -> importName.endsWith(name) } }
       .filter { name -> name.javaLangFqNameOrNull() == null }
+      .plus(methodNames)
+      .plus(propertyNames)
 
     unresolved.mapToSet { reference ->
 

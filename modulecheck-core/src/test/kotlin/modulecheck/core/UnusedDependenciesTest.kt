@@ -540,6 +540,271 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `fully qualified reference from kotlin file should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        object Lib1Class {
+          fun foo() = Unit
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        fun someFunction() {
+          com.modulecheck.lib1.Lib1Class.foo()
+        }
+        """.trimIndent()
+      )
+    }
+
+    run(
+      autoCorrect = true
+    ).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `fully qualified method reference from java file should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        object Lib1Class {
+          @JvmStatic fun foo() = Unit
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.java",
+        //language=java
+        """
+        package com.modulecheck.lib2;
+
+        public class Lib2Class {
+          void someFunction() {
+            com.modulecheck.lib1.Lib1Class.foo();
+            foo2();
+          }
+        }
+        """.trimIndent()
+      )
+    }
+
+    run(
+      autoCorrect = true
+    ).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `fully qualified property reference from java file should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        object Lib1Class {
+          @JvmStatic val property = 1
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.java",
+        //language=java
+        """
+        package com.modulecheck.lib2;
+
+        public class Lib2Class {
+          void someFunction() {
+            com.modulecheck.lib1.Lib1Class.property;
+          }
+        }
+        """.trimIndent()
+      )
+    }
+
+    run(
+      autoCorrect = true
+    ).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
+  fun `static import from java file should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        object Lib1Class {
+          @JvmStatic fun foo() = Unit
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile.writeText(
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """.trimIndent()
+      )
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.java",
+        //language=java
+        """
+        package com.modulecheck.lib2;
+
+        import static com.modulecheck.lib1.Lib1Class.foo;
+
+        public class Lib2Class {
+        }
+        """.trimIndent()
+      )
+    }
+
+    run(
+      autoCorrect = true
+    ).isSuccess shouldBe true
+
+    lib2.buildFile.readText() shouldBe """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.collectReport()
+      .joinToString()
+      .clean() shouldBe """ModuleCheck found 0 issues"""
+  }
+
+  @Test
   fun `testImplementation used in test should not be unused`() {
 
     settings.deleteUnused = false
