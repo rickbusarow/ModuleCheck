@@ -15,42 +15,71 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
-import modulecheck.utils.LazySet
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import org.jetbrains.kotlin.name.FqName
 
-@JvmInline
-value class DeclarationName(val fqName: String) {
-  override fun toString(): String = "(DeclarationName) `$fqName`"
-}
+sealed class DeclarationName : NamedSymbol {
 
-fun String.asDeclarationName(): DeclarationName = DeclarationName(this)
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
 
-fun FqName.asDeclarationName(): DeclarationName = DeclarationName(asString())
+    if (other is String) return fqName == other
 
-operator fun Set<DeclarationName>.contains(reference: Reference): Boolean {
-  return when (reference) {
-    is InterpretedReference -> reference.possibleNames.any { it in this }
-    is ExplicitReference -> reference.fqName.asDeclarationName() in this
-    is UnqualifiedRReference -> reference.fqName.asDeclarationName() in this
+    if (other !is NamedSymbol) return false
+
+    return when (other) {
+      is UnqualifiedAndroidResourceReference -> {
+        val directMatch = fqName == other.fqName
+        if (directMatch) return true
+
+        fqName == "\\bR\\..*\$".toRegex()
+          .find(other.fqName)
+          ?.value
+      }
+      else -> fqName == other.fqName
+    }
+  }
+
+  fun asJavaFriendly() = this as? JavaFriendly
+  fun asKotlinFriendly() = this as? KotlinFriendly
+
+  override fun hashCode(): Int {
+    return fqName.hashCode()
+  }
+
+  override fun toString(): String {
+    return "DeclarationName(fqName='$fqName')"
+  }
+
+  companion object {
+    operator fun invoke(fqName: String) = AgnosticDeclarationName(fqName)
   }
 }
 
-suspend fun LazySet<DeclarationName>.contains(reference: Reference): Boolean {
-  return when (reference) {
-    is InterpretedReference -> reference.possibleNames.any { contains(it) }
-    is ExplicitReference -> contains(reference.fqName.asDeclarationName())
-    is UnqualifiedRReference -> contains(reference.fqName.asDeclarationName())
-  }
+interface JavaFriendly {
+  val fqName: String
 }
+
+interface KotlinFriendly {
+  val fqName: String
+}
+
+class KotlinSpecificDeclaration(override val fqName: String) : DeclarationName(), KotlinFriendly
+
+class JavaSpecificDeclaration(override val fqName: String) : DeclarationName(), JavaFriendly
+
+class AgnosticDeclarationName(override val fqName: String) :
+  DeclarationName(),
+  KotlinFriendly,
+  JavaFriendly
+
+fun String.asDeclarationName(): DeclarationName = AgnosticDeclarationName(this)
+fun String.asKotlinDeclarationName(): DeclarationName = KotlinSpecificDeclaration(this)
+fun String.asJavaDeclarationName(): DeclarationName = JavaSpecificDeclaration(this)
+
+fun FqName.asDeclarationName(): DeclarationName = AgnosticDeclarationName(asString())
 
 @JvmName("containsDeclarationName")
-operator fun Set<DeclarationName>.contains(nameAsString: String): Boolean {
-  return nameAsString.asDeclarationName() in this
-}
-
-suspend fun LazySet<DeclarationName>.contains(nameAsString: String): Boolean {
-  return contains(nameAsString.asDeclarationName())
+fun Set<DeclarationName>.containsAny(names: Set<String>): Boolean {
+  return names.any { it.asDeclarationName() in this }
 }

@@ -15,14 +15,16 @@
 
 package modulecheck.parsing.java
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.testing.trimmedShouldBe
+import modulecheck.utils.LazyDeferred
 import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapToSet
-import org.jetbrains.kotlin.name.FqName
 
 data class TestJavaFile(
   override val name: String,
@@ -33,7 +35,9 @@ data class TestJavaFile(
   val apiReferencesStrings: Set<String>
 ) : JavaFile {
 
-  override val apiReferences: Set<FqName> = apiReferencesStrings.mapToSet { FqName(it) }
+  override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
+    apiReferencesStrings.mapToSet { it.asExplicitJavaReference() }
+  }
 
   override val interpretedReferencesLazy: Lazy<Set<Reference>> = lazy { interpretedReferences }
 
@@ -79,19 +83,21 @@ class RealJavaFileTestUtils : JavaFileTestUtils {
   ): TestJavaFile = TestJavaFile(
     name = name,
     packageFqName = packageFqName,
-    imports = imports.mapToSet { it.asExplicitReference() },
+    imports = imports.mapToSet { it.asExplicitJavaReference() },
     declarations = declarations.map { DeclarationName(it) }.toSet(),
     interpretedReferences = interpretedReferences,
     apiReferencesStrings = apiReferences
   )
 
-  override fun JavaFile.toTestFile(): TestJavaFile = (this as? TestJavaFile)
-    ?: TestJavaFile(
-      name = name,
-      packageFqName = packageFqName,
-      imports = importsLazy.value,
-      declarations = declarations,
-      interpretedReferences = interpretedReferencesLazy.value,
-      apiReferencesStrings = apiReferences.mapToSet { it.asString() }
-    )
+  override fun JavaFile.toTestFile(): TestJavaFile = runBlocking {
+    (this@toTestFile as? TestJavaFile)
+      ?: TestJavaFile(
+        name = name,
+        packageFqName = packageFqName,
+        imports = importsLazy.value,
+        declarations = declarations,
+        interpretedReferences = interpretedReferencesLazy.value,
+        apiReferencesStrings = apiReferences.await().mapToSet { it.fqName }
+      )
+  }
 }

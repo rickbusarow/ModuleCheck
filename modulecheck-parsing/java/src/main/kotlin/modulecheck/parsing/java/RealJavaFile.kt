@@ -23,6 +23,8 @@ import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
+import com.github.javaparser.ast.expr.FieldAccessExpr
+import com.github.javaparser.ast.expr.MethodCallExpr
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeParameters
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
@@ -55,12 +57,17 @@ import modulecheck.parsing.source.JavaVersion.VERSION_1_8
 import modulecheck.parsing.source.JavaVersion.VERSION_1_9
 import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
-import modulecheck.parsing.source.Reference.InterpretedReference
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.asExplicitJavaReference
+import modulecheck.parsing.source.asInterpretedKotlinReference
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapToSet
 import modulecheck.utils.unsafeLazy
-import org.jetbrains.kotlin.name.FqName
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract
@@ -106,7 +113,7 @@ class RealJavaFile(
   override val importsLazy = lazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
-      .map { it.nameAsString.asExplicitReference() }
+      .map { it.nameAsString.asExplicitJavaReference() }
       .toSet()
   }
 
@@ -153,22 +160,40 @@ class RealJavaFile(
 
     val importNames = importsLazy.value.map { it.fqName }
 
+    // fully qualified method references
+    val methodNames = compilationUnit
+      .getChildrenOfTypeRecursive<MethodCallExpr>()
+      .mapNotNull { method ->
+        method.getChildOfType<FieldAccessExpr>()
+          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
+      }
+
+    // fully qualified property references
+    val propertyNames = compilationUnit
+      .getChildrenOfTypeRecursive<FieldAccessExpr>()
+      .mapNotNull { method ->
+        method.getChildOfType<FieldAccessExpr>()
+          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
+      }
+
     val unresolved = typeReferenceNames
       .filter { name -> importNames.none { importName -> importName.endsWith(name) } }
       .filter { name -> name.javaLangFqNameOrNull() == null }
+      .plus(methodNames)
+      .plus(propertyNames)
 
-    unresolved.mapToSet { reference ->
+    unresolved.flatMapToSet { reference ->
 
       val constructed = reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
         ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
 
       val all = (constructed + reference).toSet()
 
-      InterpretedReference(all)
+      all.map { InterpretedKotlinReference(it) }
     }
   }
 
-  override val apiReferences: Set<FqName> by lazy {
+  override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
 
     val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
 
@@ -190,29 +215,35 @@ class RealJavaFile(
       }
       .toList()
 
-    val resolved = mutableSetOf<String>()
+    val resolved = mutableSetOf<ExplicitJavaReference>()
     val unresolved = mutableSetOf<String>()
 
-    simpleRefs.forEach { reference ->
+    simpleRefs.forEach { referenceString ->
 
-      val resolvedOrNull = imports.firstOrNull { it.endsWith(reference) }
-        ?: reference.javaLangFqNameOrNull()?.asString()
+      val resolvedOrNull = imports.firstOrNull { it.endsWith(referenceString) }
+        ?: referenceString.javaLangFqNameOrNull()?.asString()
 
       if (resolvedOrNull != null) {
-        resolved.add(resolvedOrNull)
+        resolved.add(resolvedOrNull.asExplicitJavaReference())
         return@forEach
       }
 
-      unresolved.add(reference)
+      unresolved.add(referenceString)
     }
 
-    val guesses = unresolved + unresolved.flatMap { reference ->
-      reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
-        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
-    }
+    val guesses = unresolved.fold(unresolved.toMutableSet()) { acc, reference ->
 
-    (resolved + guesses)
-      .mapToSet { FqName(it) }
+      val new = reference.javaLangFqNameOrNull()
+        ?.let { listOf(it.asString()) }
+        ?: wildcardImports
+          .map { "$it.$reference" }
+          .plus("$packageFqName.$reference")
+
+      acc.also { it.addAll(new) }
+    }
+      .map { it.asInterpretedKotlinReference() }
+
+    resolved + guesses
   }
 }
 

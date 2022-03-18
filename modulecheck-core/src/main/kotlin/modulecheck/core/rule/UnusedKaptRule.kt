@@ -27,9 +27,6 @@ import modulecheck.core.UnusedPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
 import modulecheck.project.McProject
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
@@ -113,14 +110,7 @@ class UnusedKaptRule(
     .any { annotationRegex ->
 
       references.any { referenceName ->
-
-        when (referenceName) {
-          is ExplicitReference -> annotationRegex.matches(referenceName.fqName)
-          is InterpretedReference -> {
-            referenceName.possibleNames.any { annotationRegex.matches(it) }
-          }
-          is UnqualifiedRReference -> annotationRegex.matches(referenceName.fqName)
-        }
+        annotationRegex.matches(referenceName.fqName)
       }
     }
 }

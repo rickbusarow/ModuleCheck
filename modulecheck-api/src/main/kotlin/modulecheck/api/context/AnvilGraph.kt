@@ -27,12 +27,14 @@ import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.NamedSymbol
 import modulecheck.parsing.source.RawAnvilAnnotatedType
-import modulecheck.parsing.source.contains
+import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
+import modulecheck.utils.cast
 import org.jetbrains.kotlin.name.FqName
 import kotlin.LazyThreadSafetyMode.NONE
 
@@ -52,14 +54,14 @@ data class AnvilGraph(
     "com.squareup.anvil.annotations.ContributesBinding",
     "com.squareup.anvil.annotations.ContributesMultibinding",
     "com.squareup.anvil.annotations.ContributesSubcomponent"
-  )
+  ).map { it.asExplicitKotlinReference() }
 
   private val mergeAnnotations = setOf(
     "com.squareup.anvil.annotations.compat.MergeInterfaces",
     "com.squareup.anvil.annotations.compat.MergeModules",
     "com.squareup.anvil.annotations.MergeComponent",
     "com.squareup.anvil.annotations.MergeSubcomponent"
-  )
+  ).map { it.asExplicitKotlinReference() }
 
   val allAnnotations = mergeAnnotations + contributeAnnotations
 
@@ -118,6 +120,7 @@ data class AnvilGraph(
       .filter { kotlinFile ->
 
         allAnnotations.any { annotationName ->
+
           kotlinFile.importsLazy.value.contains(annotationName) ||
             kotlinFile.interpretedReferencesLazy.value.contains(annotationName)
         }
@@ -170,15 +173,15 @@ data class AnvilGraph(
           cpd.project
             .declarations()
             .get(SourceSetName.MAIN, includeUpstream = true)
-            .filter { maybeExtraReferences.value.contains(it) }
-            .firstOrNull { it.fqName.endsWith(scopeNameEntry.name) }
+            .filter { maybeExtraReferences.value.cast<Set<NamedSymbol>>().contains(it) }
+            .firstOrNull { it.fqName.endsWith(scopeNameEntry.name.fqName) }
         }
         .firstOrNull()
         ?.let { FqName(it.fqName) }
       // Scope must be defined in this same module
       ?: maybeExtraReferences.value
         .flatMap { it.startingWith(kotlinFile.packageFqName) }
-        .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name) }
+        .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name.fqName) }
         ?.let { FqName(it) }
       // Scope must be defined in this same package
       ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.name}")

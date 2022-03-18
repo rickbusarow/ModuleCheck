@@ -20,7 +20,6 @@ import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.hasAnnotation
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
-import modulecheck.parsing.source.KotlinFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtCallableReferenceExpression
@@ -43,9 +42,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.isFunctionalExpression
 
 @Suppress("TooManyFunctions")
-class ReferenceVisitor(
-  private val kotlinFile: KotlinFile
-) : KtTreeVisitorVoid() {
+class ReferenceVisitor : KtTreeVisitorVoid() {
 
   internal val qualifiedExpressions: MutableSet<PsiElement> = mutableSetOf()
   internal val callableReferences: MutableSet<PsiElement> = mutableSetOf()
@@ -92,7 +89,7 @@ class ReferenceVisitor(
 
       apiReferences += valueTypeRefs
 
-      if (constructor.hasAnnotation(kotlinFile, FqNames.inject)) {
+      if (constructor.hasAnnotation(FqNames.inject)) {
         constructorInjected += valueTypeRefs
       }
 
@@ -108,7 +105,7 @@ class ReferenceVisitor(
 
       apiReferences += valueTypeRefs
 
-      if (constructor.hasAnnotation(kotlinFile, FqNames.inject)) {
+      if (constructor.hasAnnotation(FqNames.inject)) {
         constructorInjected += valueTypeRefs
       }
 
