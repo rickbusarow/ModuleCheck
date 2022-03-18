@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import io.kotest.matchers.shouldBe
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
@@ -23,22 +22,24 @@ import modulecheck.parsing.gradle.ModuleRef
 import modulecheck.parsing.gradle.ModuleRef.StringRef
 import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
 import modulecheck.parsing.gradle.UnknownDependencyDeclaration
+import modulecheck.testing.BaseTest
+import modulecheck.testing.createSafely
+import modulecheck.utils.child
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class GroovyDependencyBlockParserTest {
+internal class GroovyDependencyBlockParserTest : BaseTest() {
 
   @Test
-  fun `external declaration`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api 'com.foo:bar:1.2.3.4'
-       }
-        """.trimIndent()
-      ).single()
+  fun `external declaration`() = parse(
+    """
+    dependencies {
+       api 'com.foo:bar:1.2.3.4'
+    }
+    """
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       ExternalDependencyDeclaration(
         configName = ConfigurationName.api,
         declarationText = "api 'com.foo:bar:1.2.3.4'",
@@ -51,18 +52,16 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `declaration's original string should include trailing comment`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api project(':core:jvm') // trailing comment
-          api project(':core:jvm')
-       }
-        """.trimIndent()
-      ).single()
+  fun `declaration's original string should include trailing comment`() = parse(
+    """
+    dependencies {
+       api project(':core:jvm') // trailing comment
+       api project(':core:jvm')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(ModuleRef.StringRef(":core:jvm"), ConfigurationName.api) shouldBe listOf(
+    getOrEmpty(ModuleRef.StringRef(":core:jvm"), ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -81,20 +80,18 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `declaration with noinspection should include suppressed with argument`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-         api project(':core:android')
-         //noinspection Unused, MustBeApi
-         api project(':core:jvm')
-         testImplementation project(':core:test')
-       }
-        """.trimIndent()
-      ).single()
+  fun `declaration with noinspection should include suppressed with argument`() = parse(
+    """
+    dependencies {
+      api project(':core:android')
+      //noinspection Unused, MustBeApi
+      api project(':core:jvm')
+      testImplementation project(':core:test')
+    }
+    """
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
@@ -123,53 +120,50 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `dependency block with noinspection comment should suppress those warnings in all declarations`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       //noinspection Unused, MustBeApi
-       dependencies {
-         api project(':core:android')
-         //noinspection InheritedDependency
-         api project(':core:jvm')
-       }
-        """.trimIndent()
-      ).single()
+  fun `dependency block with noinspection comment should suppress those warnings in all declarations`() =
+    parse(
+      """
+      //noinspection Unused, MustBeApi
+      dependencies {
+        api project(':core:android')
+        //noinspection InheritedDependency
+        api project(':core:jvm')
+      }
+      """
+    ) {
 
-    block.suppressAll shouldBe listOf("Unused", "MustBeApi")
+      suppressAll shouldBe listOf("Unused", "MustBeApi")
 
-    block.settings shouldBe listOf(
-      ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = "project(':core:android')",
-        configName = ConfigurationName.api,
-        declarationText = """api project(':core:android')""",
-        statementWithSurroundingText = "  api project(':core:android')",
-        suppressed = listOf("Unused", "MustBeApi")
-      ),
-      ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = "project(':core:jvm')",
-        configName = ConfigurationName.api,
-        declarationText = """api project(':core:jvm')""",
-        statementWithSurroundingText = "  //noinspection InheritedDependency\n  api project(':core:jvm')",
-        suppressed = listOf("InheritedDependency", "Unused", "MustBeApi")
+      settings shouldBe listOf(
+        ModuleDependencyDeclaration(
+          moduleRef = StringRef(":core:android"),
+          moduleAccess = "project(':core:android')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:android')""",
+          statementWithSurroundingText = "  api project(':core:android')",
+          suppressed = listOf("Unused", "MustBeApi")
+        ),
+        ModuleDependencyDeclaration(
+          moduleRef = StringRef(":core:jvm"),
+          moduleAccess = "project(':core:jvm')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:jvm')""",
+          statementWithSurroundingText = "  //noinspection InheritedDependency\n  api project(':core:jvm')",
+          suppressed = listOf("InheritedDependency", "Unused", "MustBeApi")
+        )
       )
-    )
-  }
+    }
 
   @Test
-  fun `string module dependency declaration with testFixtures should be parsed`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api testFixtures(project(':core:jvm'))
-       }
-        """.trimIndent()
-      ).single()
+  fun `string module dependency declaration with testFixtures should be parsed`() = parse(
+    """
+    dependencies {
+       api testFixtures(project(':core:jvm'))
+    }
+    """
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -181,43 +175,39 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `type-safe module dependency declaration with testFixtures should be parsed`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api testFixtures(projects.core.jvm)
-       }
-        """.trimIndent()
-      ).single()
+  fun `type-safe module dependency declaration with testFixtures should be parsed`() = parse(
+    """
+    dependencies {
+      api testFixtures(projects.core.jvm)
+    }
+    """
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = TypeSafeRef("core.jvm"),
         moduleAccess = "projects.core.jvm",
         configName = ConfigurationName.api,
         declarationText = """api testFixtures(projects.core.jvm)""",
-        statementWithSurroundingText = """   api testFixtures(projects.core.jvm)"""
+        statementWithSurroundingText = """  api testFixtures(projects.core.jvm)"""
       )
     )
   }
 
   @Test
-  fun `module dependency with config block should split declarations properly`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api project(':core:test') {
-            exclude group: 'androidx.appcompat'
-          }
+  fun `module dependency with config block should split declarations properly`() = parse(
+    """
+    dependencies {
+      api project(':core:test') {
+        exclude group: 'androidx.appcompat'
+      }
 
-          api project(':core:jvm')
-       }
-        """.trimIndent()
-      ).single()
+      api project(':core:jvm')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(
+    getOrEmpty(
       ModuleRef.StringRef(":core:test"),
       ConfigurationName.api
     ) shouldBe listOf(
@@ -226,17 +216,82 @@ internal class GroovyDependencyBlockParserTest {
         moduleAccess = "project(':core:test')",
         configName = ConfigurationName.api,
         declarationText = """api project(':core:test') {
-          |     exclude group: 'androidx.appcompat'
-          |   }
+        |    exclude group: 'androidx.appcompat'
+        |  }
         """.trimMargin(),
-        statementWithSurroundingText = """   api project(':core:test') {
-          |     exclude group: 'androidx.appcompat'
-          |   }
+        statementWithSurroundingText = """  api project(':core:test') {
+        |    exclude group: 'androidx.appcompat'
+        |  }
         """.trimMargin()
       )
     )
 
-    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
+    getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
+      ModuleDependencyDeclaration(
+        moduleRef = StringRef(":core:jvm"),
+        moduleAccess = "project(':core:jvm')",
+        configName = ConfigurationName.api,
+        declarationText = "api project(':core:jvm')",
+        statementWithSurroundingText = "\n  api project(':core:jvm')"
+      )
+    )
+  }
+
+  @Test
+  fun `module dependency with config block and preceding declaration should split declarations properly`() =
+    parse(
+      """
+      dependencies {
+        api project(':core:jvm')
+
+        api project(':core:test') {
+          exclude group: 'androidx.appcompat'
+        }
+      }
+      """
+    ) {
+
+      getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
+        ModuleDependencyDeclaration(
+          moduleRef = StringRef(":core:test"),
+          moduleAccess = "project(':core:test')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:test') {
+          |    exclude group: 'androidx.appcompat'
+          |  }
+          """.trimMargin(),
+          statementWithSurroundingText = """
+
+          |  api project(':core:test') {
+          |    exclude group: 'androidx.appcompat'
+          |  }
+          """.trimMargin()
+        )
+      )
+
+      getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
+        ModuleDependencyDeclaration(
+          moduleRef = StringRef(":core:jvm"),
+          moduleAccess = "project(':core:jvm')",
+          configName = ConfigurationName.api,
+          declarationText = "api project(':core:jvm')",
+          statementWithSurroundingText = "  api project(':core:jvm')"
+        )
+      )
+    }
+
+  @Test
+  fun `module dependency with preceding blank line should preserve the blank line`() = parse(
+    """
+    dependencies {
+       api project(':core:test')
+
+       api project(':core:jvm')
+    }
+    """
+  ) {
+
+    getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -248,86 +303,16 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `module dependency with config block and preceding declaration should split declarations properly`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api project(':core:jvm')
+  fun `module dependency with two different configs should be recorded twice`() = parse(
+    """
+    dependencies {
+       implementation project(':core:jvm')
+       api project(':core:jvm')
+    }
+    """
+  ) {
 
-          api project(':core:test') {
-            exclude group: 'androidx.appcompat'
-          }
-       }
-        """.trimIndent()
-      ).single()
-
-    block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
-      ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:test"),
-        moduleAccess = "project(':core:test')",
-        configName = ConfigurationName.api,
-        declarationText = """api project(':core:test') {
-          |     exclude group: 'androidx.appcompat'
-          |   }
-        """.trimMargin(),
-        statementWithSurroundingText = """
-          |
-          |   api project(':core:test') {
-          |     exclude group: 'androidx.appcompat'
-          |   }
-        """.trimMargin()
-      )
-    )
-
-    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
-      ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = "project(':core:jvm')",
-        configName = ConfigurationName.api,
-        declarationText = "api project(':core:jvm')",
-        statementWithSurroundingText = "   api project(':core:jvm')"
-      )
-    )
-  }
-
-  @Test
-  fun `module dependency with preceding blank line should preserve the blank line`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api project(':core:test')
-
-          api project(':core:jvm')
-       }
-        """.trimIndent()
-      ).single()
-
-    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
-      ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = "project(':core:jvm')",
-        configName = ConfigurationName.api,
-        declarationText = "api project(':core:jvm')",
-        statementWithSurroundingText = "\n   api project(':core:jvm')"
-      )
-    )
-  }
-
-  @Test
-  fun `module dependency with two different configs should be recorded twice`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          implementation project(':core:jvm')
-          api project(':core:jvm')
-       }
-        """.trimIndent()
-      ).single()
-
-    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
+    getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -337,7 +322,7 @@ internal class GroovyDependencyBlockParserTest {
       )
     )
 
-    block.getOrEmpty(":core:jvm", ConfigurationName.implementation) shouldBe listOf(
+    getOrEmpty(":core:jvm", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
@@ -349,80 +334,74 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `declaration's original string should include preceding single-line comment`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api("com.foo:bar:1.2.3.4") // inline comment
+  fun `declaration's original string should include preceding single-line comment`() = parse(
+    """
+    dependencies {
+      api("com.foo:bar:1.2.3.4") // inline comment
 
-          // single-line comment
-          implementation project(':core:android')
-       }
-        """.trimIndent()
-      ).single()
+      // single-line comment
+      implementation project(':core:android')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
+    getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
         configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
-          |
-          |   // single-line comment
-          |   implementation project(':core:android')
+
+        |  // single-line comment
+        |  implementation project(':core:android')
         """.trimMargin()
       )
     )
   }
 
   @Test
-  fun `declaration's original string should include preceding block comment`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api 'com.foo:bar:1.2.3.4' // inline comment
+  fun `declaration's original string should include preceding block comment`() = parse(
+    """
+    dependencies {
+      api 'com.foo:bar:1.2.3.4' // inline comment
 
-          /*
-          block comment
-          */
-          implementation project(':core:android')
-       }
-        """.trimIndent()
-      ).single()
+      /*
+      block comment
+      */
+      implementation project(':core:android')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
+    getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
         configName = ConfigurationName.implementation,
         declarationText = """implementation project(':core:android')""",
         statementWithSurroundingText = """
-          |
-          |   /*
-          |   block comment
-          |   */
-          |   implementation project(':core:android')
+
+        |  /*
+        |  block comment
+        |  */
+        |  implementation project(':core:android')
         """.trimMargin()
       )
     )
   }
 
   @Test
-  fun `declaration's original string should include preceding in-line block comment`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api 'com.foo:bar:1.2.3.4' // inline comment
-          /* single-line block comment */ implementation project(':core:android')
-       }
-        """.trimIndent()
-      ).single()
+  fun `declaration's original string should include preceding in-line block comment`() = parse(
+    """
+    dependencies {
+       api 'com.foo:bar:1.2.3.4' // inline comment
+       /* single-line block comment */ implementation project(':core:android')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
+    getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:android"),
         moduleAccess = "project(':core:android')",
@@ -434,97 +413,91 @@ internal class GroovyDependencyBlockParserTest {
   }
 
   @Test
-  fun `duplicate module dependency with same config should be recorded twice`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api project(':core:jvm')
-          api (   project(':core:jvm'))
-       }
-        """.trimIndent()
-      ).single()
+  fun `duplicate module dependency with same config should be recorded twice`() = parse(
+    """
+    dependencies {
+      api project(':core:jvm')
+      api project(':core:jvm')
+    }
+    """
+  ) {
 
-    block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
+    getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
         configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
-        statementWithSurroundingText = """   api project(':core:jvm')"""
+        statementWithSurroundingText = """  api project(':core:jvm')"""
       ),
       ModuleDependencyDeclaration(
         moduleRef = StringRef(":core:jvm"),
         moduleAccess = "project(':core:jvm')",
         configName = ConfigurationName.api,
-        declarationText = """api (   project(':core:jvm'))""",
-        statementWithSurroundingText = """   api (   project(':core:jvm'))"""
+        declarationText = """api project(':core:jvm')""",
+        statementWithSurroundingText = """  api project(':core:jvm')"""
       )
     )
   }
 
   @Test
-  fun `modules declared using type-safe accessors can be looked up using their path`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-       dependencies {
-          api projects.core.test
-          implementation projects.httpLogging
-       }
-        """.trimIndent()
-      ).single()
+  fun `modules declared using type-safe accessors can be looked up using their path`() = parse(
+    """
+    dependencies {
+      api projects.core.test
+      implementation projects.httpLogging
+    }
+    """
+  ) {
 
-    block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
+    getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = TypeSafeRef("core.test"),
         moduleAccess = "projects.core.test",
         configName = ConfigurationName.api,
         declarationText = """api projects.core.test""",
-        statementWithSurroundingText = """   api projects.core.test"""
+        statementWithSurroundingText = """  api projects.core.test"""
       )
     )
 
-    block.getOrEmpty(":http-logging", ConfigurationName.implementation) shouldBe listOf(
+    getOrEmpty(":http-logging", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
         moduleRef = TypeSafeRef("httpLogging"),
         moduleAccess = "projects.httpLogging",
         configName = ConfigurationName.implementation,
         declarationText = """implementation projects.httpLogging""",
-        statementWithSurroundingText = """   implementation projects.httpLogging"""
+        statementWithSurroundingText = """  implementation projects.httpLogging"""
       )
     )
   }
 
   @Test
-  fun `buildscript dependencies should not be parsed`() {
-    val block = GroovyDependencyBlockParser()
-      .parse(
-        """
-        |buildscript {
-        |  repositories {
-        |    mavenCentral()
-        |    google()
-        |    jcenter()
-        |    maven("https://plugins.gradle.org/m2/")
-        |    maven("https://oss.sonatype.org/content/repositories/snapshots")
-        |  }
-        |  dependencies {
-        |    classpath 'com.android.tools.build:gradle:7.0.2'
-        |    classpath 'com.squareup.anvil:gradle-plugin:2.3.4'
-        |    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
-        |  }
-        |}
-        |dependencies {
-        |  api libs.ktlint
-        |}
-        |
-        """.trimMargin()
-      ).single()
+  fun `buildscript dependencies should not be parsed`() = parse(
+    """
+    buildscript {
+      repositories {
+        mavenCentral()
+        google()
+        jcenter()
+        maven("https://plugins.gradle.org/m2/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots")
+      }
+      dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.squareup.anvil:gradle-plugin:2.3.4'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30'
+      }
+    }
+    dependencies {
+      api libs.ktlint
+    }
 
-    block.lambdaContent shouldBe "  api libs.ktlint\n"
+    """
+  ) {
 
-    block.settings shouldBe listOf(
+    lambdaContent shouldBe "  api libs.ktlint\n"
+
+    settings shouldBe listOf(
       UnknownDependencyDeclaration(
         argument = "libs.ktlint",
         configName = ConfigurationName.api,
@@ -532,5 +505,17 @@ internal class GroovyDependencyBlockParserTest {
         statementWithSurroundingText = "  api libs.ktlint"
       )
     )
+  }
+
+  inline fun parse(
+    @Language("groovy")
+    fileText: String,
+    assertions: GroovyDependenciesBlock.() -> Unit
+  ) {
+    testProjectDir.child("build.gradle")
+      .createSafely(fileText.trimIndent())
+      .let { file -> GroovyDependencyBlockParser().parse(file) }
+      .single()
+      .assertions()
   }
 }

@@ -15,26 +15,28 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import io.kotest.matchers.shouldBe
 import modulecheck.parsing.gradle.PluginDeclaration
+import modulecheck.testing.BaseTest
+import modulecheck.testing.createSafely
+import modulecheck.testing.requireNotNullOrFail
+import modulecheck.utils.child
+import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class GroovyPluginsBlockParserTest {
+internal class GroovyPluginsBlockParserTest : BaseTest() {
 
   @Test
-  fun `external declaration`() {
-    val block = GroovyPluginsBlockParser()
-      .parse(
-        """
-       plugins {
-         id 'org.jetbrains.kotlin.jvm' // trailing comment
-         // comment
-         id 'com.squareup.anvil' version '2.34.0'
-       }
-        """.trimIndent()
-      )!!
+  fun `external declaration`() = parse(
+    """
+    plugins {
+      id 'org.jetbrains.kotlin.jvm' // trailing comment
+      // comment
+      id 'com.squareup.anvil' version '2.34.0'
+    }
+    """.trimIndent()
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment"""
@@ -49,19 +51,17 @@ internal class GroovyPluginsBlockParserTest {
   }
 
   @Test
-  fun `single declarations should only be counted once`() {
-    val block = GroovyPluginsBlockParser()
-      .parse(
-        """
-        plugins {
-          id 'io.gitlab.arturbosch.detekt' version '1.15.0'
-          javaLibrary
-          id 'org.jetbrains.kotlin.jvm'
-        }
-        """.trimIndent()
-      )!!
+  fun `single declarations should only be counted once`() = parse(
+    """
+    plugins {
+      id 'io.gitlab.arturbosch.detekt' version '1.15.0'
+      javaLibrary
+      id 'org.jetbrains.kotlin.jvm'
+    }
+    """.trimIndent()
+  ) {
 
-    block.settings shouldBe listOf(
+    settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'"""
@@ -75,5 +75,17 @@ internal class GroovyPluginsBlockParserTest {
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'"""
       ),
     )
+  }
+
+  inline fun parse(
+    @Language("groovy")
+    fileText: String,
+    assertions: GroovyPluginsBlock.() -> Unit
+  ) {
+    testProjectDir.child("build.gradle")
+      .createSafely(fileText.trimIndent())
+      .let { file -> GroovyPluginsBlockParser().parse(file) }
+      .requireNotNullOrFail()
+      .assertions()
   }
 }
