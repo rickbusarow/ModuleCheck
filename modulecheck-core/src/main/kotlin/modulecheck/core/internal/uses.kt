@@ -20,7 +20,6 @@ import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.declarations
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.contains
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.any

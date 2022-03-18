@@ -21,8 +21,7 @@ import modulecheck.api.context.references
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.asExplicitReference
-import modulecheck.parsing.source.contains
+import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
 import modulecheck.utils.any
 import net.swiftzer.semver.SemVer
@@ -30,11 +29,11 @@ import net.swiftzer.semver.SemVer
 object AnvilFactoryParser {
 
   private val anvilMergeComponent =
-    "com.squareup.anvil.annotations.MergeComponent".asExplicitReference()
-  private val daggerComponent = "dagger.Component".asExplicitReference()
+    "com.squareup.anvil.annotations.MergeComponent".asExplicitKotlinReference()
+  private val daggerComponent = "dagger.Component".asExplicitKotlinReference()
 
-  private const val daggerInject = "dagger.Inject"
-  private const val daggerModule = "dagger.Module"
+  private val daggerInject = "dagger.Inject".asExplicitKotlinReference()
+  private val daggerModule = "dagger.Module".asExplicitKotlinReference()
 
   @Suppress("MagicNumber")
   private val minimumAnvilVersion = SemVer(2, 0, 11)

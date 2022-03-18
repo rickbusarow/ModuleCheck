@@ -15,26 +15,17 @@
 
 package modulecheck.utils
 
-import kotlinx.coroutines.flow.AbstractFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority
 import modulecheck.utils.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.LazySet.DataSource.Priority.MEDIUM
-import modulecheck.utils.LazySet.State
-import java.util.concurrent.atomic.AtomicReference
 
 sealed interface LazySet<E> : Flow<E> {
 
   val isFullyCached: Boolean
 
-  suspend fun contains(element: E): Boolean
+  suspend fun contains(element: Any?): Boolean
 
   fun snapshot(): State<E>
 
@@ -184,88 +175,4 @@ internal fun <E> createLazySet(
     .sortedByDescending { it.priority }
 
   return LazySetImpl(cache, remaining)
-}
-
-internal class LazySetImpl<E>(
-  cache: Set<E>,
-  sources: List<DataSource<E>>
-) : AbstractFlow<E>(), LazySet<E> {
-
-  internal val state = AtomicReference(
-    State(
-      cache = cache, remaining = sources
-    )
-  )
-
-  override val isFullyCached: Boolean
-    get() = state.get().remaining.isEmpty()
-
-  override fun snapshot(): State<E> = state.get()
-
-  override suspend fun contains(element: E): Boolean {
-
-    val snap = state.get()
-
-    if (snap.cache.contains(element)) return true
-
-    return snap.remainingFlow()
-      .any { it.contains(element) }
-  }
-
-  private fun updateCache(new: Set<E>, completed: List<DataSource<E>>) {
-
-    var fromAtomic: State<E>
-    var newPair: State<E>
-
-    do {
-      fromAtomic = state.get()
-      newPair = State(
-        cache = fromAtomic.cache + new,
-        remaining = fromAtomic.remaining.minus(completed.toSet())
-      )
-    } while (!state.compareAndSet(fromAtomic, newPair))
-  }
-
-  private fun State<E>.remainingFlow(): Flow<Set<E>> {
-
-    return nextSources().asFlow()
-      .map { nextSources ->
-
-        nextSources.mapAsync { it.get() }
-          .flatMapSetConcat { it }
-          .also { newData -> updateCache(newData, nextSources) }
-      }
-  }
-
-  override suspend fun collectSafely(collector: FlowCollector<E>) {
-
-    val snap = state.get()
-
-    val additionalCache = mutableSetOf<E>()
-    val completed: MutableList<DataSource<E>> = mutableListOf()
-
-    val distinctFlow = flow {
-
-      emitAll(snap.cache.asFlow())
-
-      @Suppress("MagicNumber")
-      snap.remaining.sorted()
-        .chunked(100)
-        .forEach { dataProviderChunk ->
-
-          val new = dataProviderChunk
-            .mapAsync { provider -> provider.get() }
-            .flatMapSetConcat { it }
-
-          additionalCache.addAll(new)
-          completed.addAll(dataProviderChunk)
-
-          emitAll(new.asFlow())
-        }
-    }
-      .distinct()
-      .onCompletion { updateCache(additionalCache, completed) }
-
-    collector.emitAll(distinctFlow)
-  }
 }

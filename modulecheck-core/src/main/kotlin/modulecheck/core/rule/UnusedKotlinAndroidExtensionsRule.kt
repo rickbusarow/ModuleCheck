@@ -19,7 +19,7 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
-import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.any
@@ -33,8 +33,8 @@ class UnusedKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
-  private val parcelizeImport = "kotlinx.android.parcel.Parcelize".asExplicitReference()
-  private val syntheticReferencePackage = "kotlinx.android.synthetic"
+  private val parcelizeImport = "kotlinx.android.parcel.Parcelize".asExplicitKotlinReference()
+  private val syntheticReferencePackage = "kotlinx.android.synthetic".asExplicitKotlinReference()
 
   override suspend fun check(project: McProject): List<UnusedPluginFinding> {
     val androidProject = project as? AndroidMcProject ?: return emptyList()

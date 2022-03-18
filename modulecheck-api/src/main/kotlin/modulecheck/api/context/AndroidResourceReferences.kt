@@ -19,12 +19,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.UnqualifiedJavaAndroidResourceReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.LazySet
+import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.SafeCache
 import modulecheck.utils.asDataSource
@@ -54,10 +55,10 @@ data class AndroidResourceReferences(
       ?.let { "$it." }
       ?: return emptyLazySet()
 
-    val jvm = project.jvmFilesForSourceSetName(sourceSetName)
+    val jvm: List<DataSource<Reference>> = project.jvmFilesForSourceSetName(sourceSetName)
       .map { jvmFile ->
 
-        lazy {
+        lazy<Set<Reference>> {
           jvmFile.interpretedReferencesLazy
             .value
             .asSequence()
@@ -66,8 +67,8 @@ data class AndroidResourceReferences(
             .flatMap { rReference ->
 
               listOf(
-                UnqualifiedRReference(rReference.removePrefix(packagePrefix)),
-                ExplicitReference(rReference)
+                UnqualifiedJavaAndroidResourceReference(rReference.removePrefix(packagePrefix)),
+                ExplicitJavaReference(rReference)
               )
             }
             .toSet()

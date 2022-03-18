@@ -18,7 +18,7 @@ package modulecheck.parsing.java
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
@@ -294,9 +294,9 @@ internal class JavaFileTest :
         wildcardImports = setOf("com.lib1"),
         declarations = setOf("com.test.ParsedClass"),
         interpretedReferences = setOf(
-          Reference.InterpretedReference(
-            setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class")
-          )
+          "Lib1Class".asInterpretedJavaReference(),
+          "com.lib1.Lib1Class".asInterpretedJavaReference(),
+          "com.test.Lib1Class".asInterpretedJavaReference()
         ),
         apiReferences = setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class")
       )
@@ -320,9 +320,8 @@ internal class JavaFileTest :
         declarations = setOf("com.test.ParsedClass"),
         apiReferences = setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class"),
         interpretedReferences = setOf(
-          Reference.InterpretedReference(
-            setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class")
-          )
+          "com.lib1.Lib1Class".asInterpretedJavaReference(),
+          "com.test.com.lib1.Lib1Class".asInterpretedJavaReference()
         )
       )
     }
@@ -471,13 +470,9 @@ internal class JavaFileTest :
             "com.test.Lib1Class"
           ),
           interpretedReferences = setOf(
-            Reference.InterpretedReference(
-              setOf(
-                "Lib1Class",
-                "com.lib1.Lib1Class",
-                "com.test.Lib1Class"
-              )
-            )
+            "Lib1Class".asInterpretedJavaReference(),
+            "com.lib1.Lib1Class".asInterpretedJavaReference(),
+            "com.test.Lib1Class".asInterpretedJavaReference()
           )
         )
       }
@@ -535,13 +530,9 @@ internal class JavaFileTest :
             "com.test.Lib1Class"
           ),
           interpretedReferences = setOf(
-            Reference.InterpretedReference(
-              setOf(
-                "Lib1Class",
-                "com.lib1.Lib1Class",
-                "com.test.Lib1Class"
-              )
-            )
+            "Lib1Class".asInterpretedJavaReference(),
+            "com.lib1.Lib1Class".asInterpretedJavaReference(),
+            "com.test.Lib1Class".asInterpretedJavaReference()
           )
         )
       }
