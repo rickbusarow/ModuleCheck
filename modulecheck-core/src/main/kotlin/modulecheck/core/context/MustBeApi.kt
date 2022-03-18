@@ -30,9 +30,9 @@ import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.JavaFile
-import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.contains
+import modulecheck.parsing.source.NamedSymbol
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -145,7 +145,7 @@ data class MustBeApi(
 
 private suspend fun McProject.referencesFromDependencies(
   sourceSetName: SourceSetName
-): Set<String> {
+): Set<Reference> {
 
   return sourceSetName.withUpstream(this)
     .flatMapToSet { sourceSetOrUpstream ->
@@ -156,10 +156,7 @@ private suspend fun McProject.referencesFromDependencies(
       jvmFilesForSourceSetName(sourceSetOrUpstream)
         .flatMapListConcat { jvmFile ->
 
-          when (jvmFile) {
-            is JavaFile -> jvmFile.apiReferences.map { it.asString() }
-            is KotlinFile -> jvmFile.apiReferences.await()
-          }
+          jvmFile.apiReferences.await()
             .filterNot { declarationsInProject.contains(it) }
         }
     }
@@ -191,7 +188,7 @@ suspend fun McProject.mustBeApiIn(
 
 private suspend fun McProject.mustBeApiIn(
   dependentProject: McProject,
-  referencesFromDependencies: Set<String>,
+  referencesFromDependencies: Set<Reference>,
   sourceSetName: SourceSetName,
   isTestFixtures: Boolean,
   directMainDependencies: List<McProject>
@@ -212,13 +209,15 @@ private suspend fun McProject.mustBeApiIn(
   val rTypeMatcher = "^R(?:\\.\\w+)?$".toRegex()
 
   val (rTypes, nonRTypeReferences) = referencesFromDependencies
-    .partition { rTypeMatcher.matches(it) }
+    .partition { it is UnqualifiedAndroidResourceReference }
 
   nonRTypeReferences
-    .firstOrNull { ref -> declarations.contains(ref) }
+    .firstOrNull { ref ->
+      declarations.contains(ref)
+    }
     ?.let { return true }
 
-  val rTypesFromExisting: LazyDeferred<Set<DeclarationName>> = lazyDeferred {
+  val rTypesFromExisting: LazyDeferred<Set<NamedSymbol>> = lazyDeferred {
     directMainDependencies
       .mapAsync { directProject ->
         directProject.declarations(isTestFixtures = false)

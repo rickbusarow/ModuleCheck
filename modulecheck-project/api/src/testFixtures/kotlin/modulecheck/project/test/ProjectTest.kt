@@ -28,7 +28,7 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -224,7 +224,7 @@ abstract class ProjectTest : BaseTest() {
             val referenceName = when (reference) {
               is ExplicitReference -> reference.fqName
               is InterpretedReference -> return@eachRef
-              is UnqualifiedRReference -> reference.fqName
+              is UnqualifiedAndroidResourceReference -> reference.fqName
             }
 
             // Only check for references which would be provided by internal projects. Using a

@@ -15,117 +15,98 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.Reference.InterpretedJavaReference
+import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.utils.LazySet.DataSource
-import modulecheck.utils.mapToSet
-import org.jetbrains.kotlin.name.FqName
 
-sealed interface Reference {
+sealed class Reference : NamedSymbol {
 
-  @JvmInline
-  value class ExplicitReference(val fqName: String) : Reference
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
 
-  @JvmInline
-  value class UnqualifiedRReference(val fqName: String) : Reference
+    if (other is String) return fqName == other
 
-  @JvmInline
-  value class InterpretedReference(val possibleNames: Set<String>) : Reference
+    if (other !is NamedSymbol) return false
 
-  fun logString(): String = when (this) {
-    is ExplicitReference -> fqName
-    is InterpretedReference -> possibleNames.joinToString()
-    is UnqualifiedRReference -> fqName
-  }
+    return when (other) {
+      is DeclarationName -> when (this) {
+        is ExplicitJavaReference -> other.asJavaFriendly()?.fqName == fqName
+        is ExplicitKotlinReference -> other.asKotlinFriendly()?.fqName == fqName
+        is ExplicitXmlReference -> other.asJavaFriendly()?.fqName == fqName
+        is InterpretedJavaReference -> other.asJavaFriendly()?.fqName == fqName
+        is InterpretedKotlinReference -> other.asKotlinFriendly()?.fqName == fqName
+        is UnqualifiedAndroidResourceReference -> {
+          val directMatch = other.fqName == fqName
+          if (directMatch) return true
 
-  fun startsWith(str: String): Boolean {
-    return when (this) {
-      is ExplicitReference -> fqName.startsWith(str)
-      is InterpretedReference ->
-        possibleNames
-          .any { it.startsWith(str) }
-      is UnqualifiedRReference -> fqName.startsWith(str)
+          fqName == "\\bR\\..*\$".toRegex()
+            .find(other.fqName)
+            ?.value
+        }
+      }
+      is Reference -> fqName == other.fqName
     }
   }
 
-  fun startingWith(str: String): List<String> {
-    return when (this) {
-      is ExplicitReference -> if (fqName.startsWith(str)) {
-        listOf(fqName)
-      } else {
-        listOf()
-      }
-      is InterpretedReference ->
-        possibleNames
-          .filter { it.startsWith(str) }
-      is UnqualifiedRReference -> if (fqName.startsWith(str)) {
-        listOf(fqName)
-      } else {
-        listOf()
-      }
-    }
+  override fun hashCode(): Int {
+    return fqName.hashCode()
   }
 
-  fun endsWith(str: String): Boolean {
-    return when (this) {
-      is ExplicitReference -> fqName.endsWith(str)
-      is InterpretedReference ->
-        possibleNames
-          .any { it.endsWith(str) }
-      is UnqualifiedRReference -> fqName.endsWith(str)
-    }
+  override fun toString(): String {
+    return "(${this::class.java.simpleName}) `$fqName`"
   }
 
-  fun endingWith(str: String): List<String> {
-    return when (this) {
-      is ExplicitReference -> if (fqName.endsWith(str)) {
-        listOf(fqName)
-      } else {
-        listOf()
-      }
-      is InterpretedReference ->
-        possibleNames
-          .filter { it.endsWith(str) }
-      is UnqualifiedRReference -> if (fqName.endsWith(str)) {
-        listOf(fqName)
-      } else {
-        listOf()
-      }
-    }
-  }
+  sealed interface JavaReference
+  sealed interface KotlinReference
+  sealed interface XmlReference
+
+  sealed class ExplicitReference : Reference()
+
+  sealed class UnqualifiedAndroidResourceReference : Reference()
+
+  sealed class InterpretedReference : Reference()
+
+  class ExplicitKotlinReference(override val fqName: String) :
+    ExplicitReference(),
+    KotlinReference
+
+  class UnqualifiedKotlinAndroidResourceReference(override val fqName: String) :
+    UnqualifiedAndroidResourceReference(),
+    KotlinReference
+
+  class InterpretedKotlinReference(override val fqName: String) :
+    InterpretedReference(),
+    KotlinReference
+
+  class ExplicitJavaReference(override val fqName: String) :
+    ExplicitReference(),
+    JavaReference
+
+  class ExplicitXmlReference(override val fqName: String) :
+    ExplicitReference(),
+    XmlReference
+
+  class UnqualifiedJavaAndroidResourceReference(override val fqName: String) :
+    UnqualifiedAndroidResourceReference(),
+    JavaReference
+
+  class UnqualifiedXmlAndroidResourceReference(override val fqName: String) :
+    UnqualifiedAndroidResourceReference(),
+    XmlReference
+
+  class InterpretedJavaReference(override val fqName: String) :
+    InterpretedReference(),
+    JavaReference
 }
 
-fun String.asExplicitReference(): ExplicitReference = ExplicitReference(this)
-fun String.asInterpretedReference(): InterpretedReference = InterpretedReference(setOf(this))
-fun FqName.asExplicitReference(): ExplicitReference = ExplicitReference(asString())
+fun String.asExplicitKotlinReference(): ExplicitKotlinReference = ExplicitKotlinReference(this)
+fun String.asInterpretedKotlinReference(): InterpretedKotlinReference =
+  InterpretedKotlinReference(this)
 
-operator fun Set<Reference>.contains(declarationName: DeclarationName): Boolean {
-  val simple = this.contains(declarationName.fqName.asExplicitReference())
-
-  if (simple) return true
-
-  filterIsInstance<InterpretedReference>()
-    .any { it.possibleNames.contains(declarationName.fqName) }
-    .let { if (it) return true }
-
-  val rRefs = filterIsInstance<UnqualifiedRReference>()
-    .mapToSet { it.fqName }
-
-  if (rRefs.isEmpty()) return false
-
-  val declarationAsR = "\\bR\\..*\$".toRegex()
-    .find(declarationName.fqName)
-    ?.value
-    ?: return false
-
-  return rRefs.contains(declarationAsR)
-}
-
-@JvmName("containsReferenceName")
-operator fun Set<Reference>.contains(nameAsString: String): Boolean {
-  return nameAsString.asExplicitReference() in this
-}
+fun String.asExplicitJavaReference(): ExplicitJavaReference = ExplicitJavaReference(this)
+fun String.asInterpretedJavaReference(): InterpretedJavaReference = InterpretedJavaReference(this)
 
 fun interface HasReferences {
 

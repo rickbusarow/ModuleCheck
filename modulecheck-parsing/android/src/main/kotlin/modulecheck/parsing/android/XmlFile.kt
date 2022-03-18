@@ -18,8 +18,8 @@ package modulecheck.parsing.android
 import modulecheck.parsing.source.AndroidResource
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
-import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.Reference.ExplicitXmlReference
+import modulecheck.parsing.source.Reference.UnqualifiedXmlAndroidResourceReference
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.asDataSource
 import modulecheck.utils.mapToSet
@@ -38,7 +38,7 @@ interface XmlFile : HasReferences {
     val name: String = file.nameWithoutExtension
 
     val customViews: Lazy<Set<Reference>> = lazy {
-      AndroidLayoutParser().parseViews(file).mapToSet { it.asExplicitReference() }
+      AndroidLayoutParser().parseViews(file).mapToSet { ExplicitXmlReference(it) }
     }
 
     private val rawResources: Set<String> by lazy {
@@ -59,7 +59,7 @@ interface XmlFile : HasReferences {
       return listOf(
         customViews.asDataSource(),
         lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedRReference(it) }
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedXmlAndroidResourceReference(it) }
         }.asDataSource()
       )
     }
@@ -90,7 +90,7 @@ interface XmlFile : HasReferences {
 
       return listOf(
         lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedRReference(it) }
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedXmlAndroidResourceReference(it) }
         }.asDataSource()
       )
     }

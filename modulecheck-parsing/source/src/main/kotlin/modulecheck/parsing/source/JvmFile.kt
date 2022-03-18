@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.source
 
+import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.asDataSource
-import org.jetbrains.kotlin.name.FqName
 
 sealed interface JvmFile : HasReferences {
   val name: String
@@ -28,6 +28,7 @@ sealed interface JvmFile : HasReferences {
   val declarations: Set<DeclarationName>
 
   val importsLazy: Lazy<Set<Reference>>
+  val apiReferences: LazyDeferred<Set<Reference>>
   val interpretedReferencesLazy: Lazy<Set<Reference>>
 
   override fun references(): List<DataSource<Reference>> {
@@ -41,11 +42,9 @@ sealed interface JvmFile : HasReferences {
 
 interface KotlinFile : JvmFile {
 
-  val apiReferences: LazyDeferred<Set<String>>
-
   fun getScopeArguments(
-    allAnnotations: Set<String>,
-    mergeAnnotations: Set<String>
+    allAnnotations: List<ExplicitReference>,
+    mergeAnnotations: List<ExplicitReference>
   ): ScopeArgumentParseResult
 
   data class ScopeArgumentParseResult(
@@ -54,9 +53,7 @@ interface KotlinFile : JvmFile {
   )
 }
 
-interface JavaFile : JvmFile {
-  val apiReferences: Set<FqName>
-}
+interface JavaFile : JvmFile
 
 enum class JavaVersion {
   VERSION_1_1,
