@@ -36,7 +36,7 @@ class RealPluginsBlockProvider(
   override fun get(): PluginsBlock? {
     return when {
       buildFile.isKotlinFile(listOf("kts")) -> kotlinParser.parse(buildFile.asKtFile())
-      buildFile.extension == "gradle" -> groovyParser.parse(buildFile.readText())
+      buildFile.extension == "gradle" -> groovyParser.parse(buildFile)
       else -> throw IllegalArgumentException(
         "The file argument must be either a `*.gradle.kts` file or `*.gradle`.  " +
           "The supplied argument was `${buildFile.name}`"

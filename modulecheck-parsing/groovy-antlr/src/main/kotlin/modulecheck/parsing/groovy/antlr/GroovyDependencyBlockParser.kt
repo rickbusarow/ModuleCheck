@@ -29,11 +29,12 @@ import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
 import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import java.io.File
 import javax.inject.Inject
 
 class GroovyDependencyBlockParser @Inject constructor() {
 
-  fun parse(file: String): List<GroovyDependenciesBlock> = parse(file) {
+  fun parse(file: File): List<GroovyDependenciesBlock> = parse(file) {
     val dependenciesBlocks = mutableListOf<GroovyDependenciesBlock>()
 
     val rawModuleNameVisitor = object : GroovyParserBaseVisitor<String?>() {

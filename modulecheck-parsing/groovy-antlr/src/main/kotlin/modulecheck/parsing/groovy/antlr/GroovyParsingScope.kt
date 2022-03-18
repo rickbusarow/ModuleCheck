@@ -37,10 +37,11 @@ internal data class GroovyParsingScope(val fullText: String) {
   }
 }
 
-internal inline fun <T> parse(file: File, parsingAction: GroovyParsingScope.() -> T): T {
-  return GroovyParsingScope(file.readText()).parsingAction()
-}
+private val groovyLangParserLock = Unit
 
-internal inline fun <T> parse(fullText: String, parsingAction: GroovyParsingScope.() -> T): T {
-  return GroovyParsingScope(fullText).parsingAction()
+internal inline fun <T> parse(file: File, parsingAction: GroovyParsingScope.() -> T): T {
+
+  // GroovyLangParser has frequent NPE's when parsing concurrently.
+  // https://github.com/RBusarow/ModuleCheck/issues/462
+  return synchronized(groovyLangParserLock) { GroovyParsingScope(file.readText()).parsingAction() }
 }
