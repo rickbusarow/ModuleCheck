@@ -30,7 +30,8 @@ import javax.inject.Inject
 
 open class ModuleCheckTask<T : Finding> @Inject constructor(
   private val findingFactory: FindingFactory<T>,
-  private val autoCorrect: Boolean
+  private val autoCorrect: Boolean,
+  disableConfigCache: Boolean
 ) : DefaultTask() {
 
   init {
@@ -39,6 +40,13 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
       findingFactory is SingleRuleFindingFactory<*> -> findingFactory.rule.description
       autoCorrect -> "runs all enabled ModuleCheck rules with auto-correct"
       else -> "runs all enabled ModuleCheck rules"
+    }
+
+    if (disableConfigCache) {
+      // If the runtime Gradle distro is 7.4+, disable configuration caching.
+      // This function was introduced in 7.4.
+      @Suppress("LeakingThis")
+      notCompatibleWithConfigurationCache("Not supported yet")
     }
   }
 

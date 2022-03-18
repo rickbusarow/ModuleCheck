@@ -15,8 +15,9 @@
 
 package modulecheck.gradle
 
+import io.kotest.inspectors.forAll
+import io.kotest.matchers.string.shouldContain
 import modulecheck.testing.createSafely
-import modulecheck.testing.writeKotlin
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 
@@ -25,7 +26,7 @@ class TasksValidationTest : BasePluginTest() {
   @Test
   fun `all tasks with descriptions`() {
     kotlinProject(":") {
-      buildFile.writeKotlin(
+      buildFile {
         """
         plugins {
           id("com.rickbusarow.module-check")
@@ -41,21 +42,69 @@ class TasksValidationTest : BasePluginTest() {
             println(message)
           }
         }
-        """.trimIndent()
-      )
+        """
+      }
 
       projectDir.child("settings.gradle.kts").createSafely()
     }
 
     shouldSucceed("mcTasks") withTrimmedMessage """
-        moduleCheck - runs all enabled ModuleCheck rules
-        moduleCheckAuto - runs all enabled ModuleCheck rules with auto-correct
-        moduleCheckDepths - The longest path between this module and its leaf nodes
-        moduleCheckGraphs - The longest path between this module and its leaf nodes
-        moduleCheckSortDependencies - Sorts all dependencies within a dependencies { ... } block
-        moduleCheckSortDependenciesAuto - Sorts all dependencies within a dependencies { ... } block
-        moduleCheckSortPlugins - Sorts Gradle plugins which are applied using the plugins { ... } block
-        moduleCheckSortPluginsAuto - Sorts Gradle plugins which are applied using the plugins { ... } block
+      moduleCheck - runs all enabled ModuleCheck rules
+      moduleCheckAuto - runs all enabled ModuleCheck rules with auto-correct
+      moduleCheckDepths - The longest path between this module and its leaf nodes
+      moduleCheckGraphs - The longest path between this module and its leaf nodes
+      moduleCheckSortDependencies - Sorts all dependencies within a dependencies { ... } block
+      moduleCheckSortDependenciesAuto - Sorts all dependencies within a dependencies { ... } block
+      moduleCheckSortPlugins - Sorts Gradle plugins which are applied using the plugins { ... } block
+      moduleCheckSortPluginsAuto - Sorts Gradle plugins which are applied using the plugins { ... } block
     """
+  }
+
+  @Test
+  fun `all tasks should ignore configuration caching`() {
+
+    // "ignore" this test for Gradle versions less than 7.4,
+    // since they can't disable caching programmatically
+    if (gradleVersion < "7.4") return
+
+    kotlinProject(":") {
+      buildFile {
+        """
+        plugins {
+          id("com.rickbusarow.module-check")
+        }
+        """
+      }
+
+      projectDir.child("settings.gradle.kts").createSafely()
+    }
+
+    listOf(
+      "moduleCheck",
+      "moduleCheckAuto",
+      "moduleCheckDepths",
+      "moduleCheckGraphs",
+      "moduleCheckSortDependencies",
+      "moduleCheckSortDependenciesAuto",
+      "moduleCheckSortPlugins",
+      "moduleCheckSortPluginsAuto"
+    ).forAll { taskName ->
+
+      val expected1 = "Configuration cache is an incubating feature."
+      val expected2 =
+        "Calculating task graph as no configuration cache is available for tasks: $taskName"
+
+      // The first invocation would always succeed, but will generate a cache if caching isn't ignored
+      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+        output shouldContain expected1
+        output shouldContain expected2
+      }
+
+      // The second invocation will fail if a cache exists and caching isn't ignored.
+      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+        output shouldContain expected1
+        output shouldContain expected2
+      }
+    }
   }
 }

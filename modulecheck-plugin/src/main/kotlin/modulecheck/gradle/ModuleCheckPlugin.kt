@@ -47,20 +47,34 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val rules = factory.create(settings)
 
+    val gradleVersion = target.gradle.gradleVersion.split('.')
+      .let { segments ->
+        // Gradle doesn't use semantic versioning, so for instance `7.4` is "7.4" and not "7.4.0".
+        // Fortunately `7.0` was "7.0" and not "7".
+        val major = segments[0]
+        val minor = segments.getOrElse(1) { "0" }
+        "$major.$minor"
+      }
+
+    val disableConfigCache = gradleVersion >= "7.4"
+
     target.registerTasks(
       name = "moduleCheckSortDependencies",
       findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings)),
-      includeAuto = true
+      includeAuto = true,
+      disableConfigCache = disableConfigCache
     )
     target.registerTasks(
       name = "moduleCheckSortPlugins",
       findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings)),
-      includeAuto = true
+      includeAuto = true,
+      disableConfigCache = disableConfigCache
     )
     target.registerTasks(
       name = "moduleCheckDepths",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
       includeAuto = false,
+      disableConfigCache = disableConfigCache,
       doFirstAction = {
         settings.checks.depths = true
         settings.reports.depths.enabled = true
@@ -70,6 +84,7 @@ class ModuleCheckPlugin : Plugin<Project> {
       name = "moduleCheckGraphs",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
       includeAuto = false,
+      disableConfigCache = disableConfigCache,
       doFirstAction = {
         settings.reports.graphs.enabled = true
       }
@@ -77,7 +92,8 @@ class ModuleCheckPlugin : Plugin<Project> {
     target.registerTasks(
       name = "moduleCheck",
       findingFactory = MultiRuleFindingFactory(settings, rules),
-      includeAuto = true
+      includeAuto = true,
+      disableConfigCache = disableConfigCache
     )
   }
 
@@ -85,6 +101,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     name: String,
     findingFactory: FindingFactory<*>,
     includeAuto: Boolean,
+    disableConfigCache: Boolean,
     doFirstAction: (() -> Unit)? = null
   ) {
 
@@ -102,11 +119,17 @@ class ModuleCheckPlugin : Plugin<Project> {
       }
     }
 
-    tasks.register(name, ModuleCheckTask::class.java, findingFactory, false)
+    tasks.register(name, ModuleCheckTask::class.java, findingFactory, false, disableConfigCache)
       .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
       .addDependencies()
     if (includeAuto) {
-      tasks.register("${name}Auto", ModuleCheckTask::class.java, findingFactory, true)
+      tasks.register(
+        "${name}Auto",
+        ModuleCheckTask::class.java,
+        findingFactory,
+        true,
+        disableConfigCache
+      )
         .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
         .addDependencies()
     }
