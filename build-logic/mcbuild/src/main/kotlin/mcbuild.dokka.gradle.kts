@@ -13,8 +13,15 @@
  * limitations under the License.
  */
 
+import org.jetbrains.dokka.gradle.DokkaTask
+
 plugins {
   id("org.jetbrains.dokka")
+}
+
+// Dokka doesn't support configuration caching
+tasks.withType(DokkaTask::class.java) {
+  notCompatibleWithConfigurationCache("")
 }
 
 subprojects {
@@ -34,7 +41,12 @@ subprojects {
       .withType<org.jetbrains.dokka.gradle.AbstractDokkaLeafTask>()
       .configureEach {
 
-        dependsOn(allprojects.mapNotNull { it.tasks.findByName("compileKotlin") })
+        listOf(
+          "jar",
+          "compileTestFixturesKotlin"
+        ).forEach { buildTask ->
+          mustRunAfter(allprojects.mapNotNull { it.tasks.findByName(buildTask) })
+        }
 
         dokkaSourceSets {
 
