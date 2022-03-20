@@ -46,7 +46,7 @@ data class MustBeApiFinding(
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
       "a declaration which is referenced in this module's public API."
 
-  override val dependencyIdentifier = dependencyProject.path + fromStringOrEmpty()
+  override val dependencyIdentifier = dependencyProject.path.value + fromStringOrEmpty()
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     super.declarationOrNull.await()
@@ -58,7 +58,7 @@ data class MustBeApiFinding(
     return if (dependencyProject.path == source?.project?.path) {
       ""
     } else {
-      "${source?.project?.path}"
+      "${source?.project?.path?.value}"
     }
   }
 

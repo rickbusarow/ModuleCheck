@@ -16,8 +16,6 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
-import modulecheck.parsing.gradle.ModuleRef.StringRef
-import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
 import modulecheck.utils.replaceDestructured
 
 sealed interface DependencyDeclaration : Declaration {
@@ -62,7 +60,7 @@ data class UnknownDependencyDeclaration(
 }
 
 data class ModuleDependencyDeclaration(
-  val moduleRef: ModuleRef,
+  val projectPath: ProjectPath,
   val projectAccessor: String,
   override val configName: ConfigurationName,
   override val declarationText: String,
@@ -72,8 +70,8 @@ data class ModuleDependencyDeclaration(
 ) : DependencyDeclaration {
 
   suspend fun replace(
-    newConfigName: ConfigurationName = this.configName,
-    modulePath: String = this.moduleRef.value,
+    newConfigName: ConfigurationName = configName,
+    newModulePath: ProjectPath = projectPath,
     testFixtures: Boolean
   ): ModuleDependencyDeclaration {
 
@@ -103,19 +101,13 @@ data class ModuleDependencyDeclaration(
 
     val newDeclaration = declarationText.addOrRemoveTestFixtures(testFixtures)
       .replaceFirst(configToReplace, newConfigText)
-      .replaceFirst(moduleRef.value, modulePath)
+      .replaceFirst(projectPath.value, newModulePath.value)
       .maybeFixExtraQuotes()
-
-    val newModuleRef = if (modulePath.startsWith(':')) {
-      StringRef(modulePath)
-    } else {
-      TypeSafeRef(modulePath)
-    }
 
     val newStatement = statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
 
     return copy(
-      moduleRef = newModuleRef,
+      projectPath = newModulePath,
       configName = newConfigName,
       declarationText = newDeclaration,
       statementWithSurroundingText = newStatement
@@ -149,7 +141,7 @@ data class ModuleDependencyDeclaration(
 
     other as ModuleDependencyDeclaration
 
-    if (moduleRef != other.moduleRef) return false
+    if (projectPath != other.projectPath) return false
     if (projectAccessor != other.projectAccessor) return false
     if (configName != other.configName) return false
     if (declarationText != other.declarationText) return false
@@ -160,7 +152,7 @@ data class ModuleDependencyDeclaration(
   }
 
   override fun hashCode(): Int {
-    var result = moduleRef.hashCode()
+    var result = projectPath.hashCode()
     result = 31 * result + projectAccessor.hashCode()
     result = 31 * result + configName.hashCode()
     result = 31 * result + declarationText.hashCode()

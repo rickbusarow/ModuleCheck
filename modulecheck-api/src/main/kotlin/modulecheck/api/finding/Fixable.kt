@@ -24,8 +24,6 @@ interface Problem :
   Finding,
   DependencyFinding {
 
-  val dependencyIdentifier: String
-
   suspend fun shouldSkip(): Boolean = declarationOrNull.await()?.suppressed
     ?.contains(findingName)
     ?: false
@@ -36,7 +34,7 @@ interface Problem :
       problemName = findingName,
       sourceOrNull = null,
       configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
-      dependencyPath = dependencyIdentifier,
+      dependencyIdentifier = dependencyIdentifier,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
       message = message,

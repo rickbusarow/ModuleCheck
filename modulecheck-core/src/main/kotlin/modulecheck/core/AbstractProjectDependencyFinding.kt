@@ -25,6 +25,7 @@ import modulecheck.api.finding.ProjectDependencyFinding
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
@@ -37,7 +38,7 @@ abstract class AbstractProjectDependencyFinding(
   DependencyFinding,
   ProjectDependencyFinding {
 
-  final override val dependentPath: String get() = dependentProject.path
+  final override val dependentPath: StringProjectPath get() = dependentProject.path
   final override val buildFile: File get() = dependentProject.buildFile
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
@@ -61,7 +62,7 @@ abstract class AbstractProjectDependencyFinding(
       problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
-      dependencyPath = dependencyProject.path,
+      dependencyIdentifier = dependencyProject.path.value,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
       message = message,

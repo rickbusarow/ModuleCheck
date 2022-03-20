@@ -23,6 +23,7 @@ import modulecheck.api.finding.Problem
 import modulecheck.api.finding.removeDependencyWithComment
 import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -30,7 +31,7 @@ import java.io.File
 
 data class UnusedPluginFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: StringProjectPath,
   override val buildFile: File,
   override val findingName: String,
   val pluginId: String,

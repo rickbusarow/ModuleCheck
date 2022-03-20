@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName.Companion
 import java.io.File
 
@@ -42,7 +43,7 @@ interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
 }
 
 interface HasPath {
-  val path: String
+  val path: StringProjectPath
 }
 
 interface HasConfigurations {

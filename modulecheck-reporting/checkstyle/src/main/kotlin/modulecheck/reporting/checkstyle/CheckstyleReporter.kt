@@ -44,7 +44,7 @@ class CheckstyleReporter @Inject constructor() {
           val line = "\t\t<error line=\"${row.xml()}\" " +
             "column=\"${column.xml()}\" " +
             "severity=\"${severity.xml()}\" " +
-            "dependency=\"${it.dependencyPath.xml()}\" " +
+            "dependency=\"${it.dependencyIdentifier.xml()}\" " +
             "message=\"${it.message.xml()}\" " +
             "source=\"${source.xml()}\" />"
 

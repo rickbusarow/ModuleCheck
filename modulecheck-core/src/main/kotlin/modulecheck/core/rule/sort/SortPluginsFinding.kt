@@ -21,6 +21,7 @@ import modulecheck.api.finding.Fixable
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.parsing.gradle.PluginsBlock
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -29,7 +30,7 @@ import java.io.File
 
 class SortPluginsFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
   val comparator: Comparator<PluginDeclaration>
 ) : Finding, Fixable {
