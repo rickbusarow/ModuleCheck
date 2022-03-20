@@ -56,7 +56,7 @@ dependencies {
 
   dependencySync("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.19.0")
   dependencySync("io.kotest:kotest-assertions-core-jvm:5.1.0")
-  dependencySync("io.kotest:kotest-property-jvm:5.1.0")
+  dependencySync("io.kotest:kotest-property-jvm:5.2.1")
   dependencySync("io.kotest:kotest-runner-junit5-jvm:5.1.0")
 
   dependencySync("javax.inject:javax.inject:1")
@@ -65,8 +65,8 @@ dependencies {
 
   dependencySync("org.antlr:antlr4-runtime:4.9.3")
   dependencySync("org.antlr:antlr4:4.9.3")
-  dependencySync("org.codehaus.groovy:groovy-xml:3.0.9")
-  dependencySync("org.codehaus.groovy:groovy:3.0.9")
+  dependencySync("org.codehaus.groovy:groovy-xml:3.0.10")
+  dependencySync("org.codehaus.groovy:groovy:3.0.10")
   dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
   dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.6.10")
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10")
