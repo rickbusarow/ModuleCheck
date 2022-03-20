@@ -63,7 +63,7 @@ data class UnknownDependencyDeclaration(
 
 data class ModuleDependencyDeclaration(
   val moduleRef: ModuleRef,
-  val moduleAccess: String,
+  val projectAccessor: String,
   override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String,
@@ -133,13 +133,13 @@ data class ModuleDependencyDeclaration(
     testFixtures: Boolean
   ): String {
 
-    val escapedModuleAccess = Regex.escape(moduleAccess)
-    val regex = "testFixtures\\s*\\(\\s*$escapedModuleAccess\\s*\\)".toRegex()
+    val escapedProjectAccessor = Regex.escape(projectAccessor)
+    val regex = "testFixtures\\s*\\(\\s*$escapedProjectAccessor\\s*\\)".toRegex()
 
     return when {
       testFixtures && regex.containsMatchIn(this) -> this
       testFixtures -> "testFixtures($this)"
-      else -> replace(regex, moduleAccess)
+      else -> replace(regex, projectAccessor)
     }
   }
 
@@ -150,7 +150,7 @@ data class ModuleDependencyDeclaration(
     other as ModuleDependencyDeclaration
 
     if (moduleRef != other.moduleRef) return false
-    if (moduleAccess != other.moduleAccess) return false
+    if (projectAccessor != other.projectAccessor) return false
     if (configName != other.configName) return false
     if (declarationText != other.declarationText) return false
     if (statementWithSurroundingText != other.statementWithSurroundingText) return false
@@ -161,7 +161,7 @@ data class ModuleDependencyDeclaration(
 
   override fun hashCode(): Int {
     var result = moduleRef.hashCode()
-    result = 31 * result + moduleAccess.hashCode()
+    result = 31 * result + projectAccessor.hashCode()
     result = 31 * result + configName.hashCode()
     result = 31 * result + declarationText.hashCode()
     result = 31 * result + statementWithSurroundingText.hashCode()

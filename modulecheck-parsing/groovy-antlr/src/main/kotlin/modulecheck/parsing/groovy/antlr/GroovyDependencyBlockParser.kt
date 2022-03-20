@@ -190,12 +190,12 @@ class GroovyDependencyBlockParser @Inject constructor() {
               val moduleNamePair = projectDepVisitor.visit(ctx)
 
               if (moduleNamePair != null) {
-                val (moduleAccess, moduleRef) = moduleNamePair
+                val (projectAccessor, moduleRef) = moduleNamePair
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(),
                   moduleRef = ModuleRef.from(moduleRef),
-                  moduleAccess = moduleAccess,
+                  projectAccessor = projectAccessor,
                   suppressed = suppressed
                 )
                 return
