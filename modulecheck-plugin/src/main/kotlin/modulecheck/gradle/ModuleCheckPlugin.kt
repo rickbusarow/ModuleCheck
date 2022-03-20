@@ -24,6 +24,7 @@ import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.core.rule.SortDependenciesRule
 import modulecheck.core.rule.SortPluginsRule
+import modulecheck.gradle.internal.generatesBuildConfig
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import org.gradle.api.Plugin
@@ -95,6 +96,7 @@ class ModuleCheckPlugin : Plugin<Project> {
           .forEach { mcTask.dependsOn(it) }
 
         allprojects
+          .filter { it.generatesBuildConfig() }
           .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
           .forEach { mcTask.dependsOn(it) }
       }
