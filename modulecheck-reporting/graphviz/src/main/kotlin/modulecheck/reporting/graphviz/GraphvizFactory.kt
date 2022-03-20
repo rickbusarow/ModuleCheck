@@ -155,7 +155,7 @@ class GraphvizFactory @Inject constructor() {
       .distinct()
   }
 
-  private fun McProject.pathString(): String = "\"${this.path}\""
+  private fun McProject.pathString(): String = "\"${this.path.value}\""
 
   enum class Color(val value: String) {
     ANDROID_GREEN("#A4C639"),

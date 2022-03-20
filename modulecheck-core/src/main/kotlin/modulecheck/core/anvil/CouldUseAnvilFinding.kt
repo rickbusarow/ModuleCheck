@@ -21,6 +21,7 @@ import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.existsOrNull
@@ -32,7 +33,7 @@ data class CouldUseAnvilFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val dependentPath = dependentProject.path
+  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.path
 
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."

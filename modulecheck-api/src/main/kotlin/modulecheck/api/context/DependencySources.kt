@@ -17,6 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.context.DependencySources.SourceResult.Found
 import modulecheck.api.context.DependencySources.SourceResult.NOT_PRESENT
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -30,7 +31,7 @@ data class DependencySources(
 
   data class SourceKey(
     val sourceSetName: SourceSetName,
-    val dependencyProjectPath: String,
+    val dependencyProjectPath: StringProjectPath,
     val isTestFixture: Boolean
   )
 
@@ -43,7 +44,7 @@ data class DependencySources(
     get() = DependencySources
 
   suspend fun sourceOfOrNull(
-    dependencyProjectPath: String,
+    dependencyProjectPath: StringProjectPath,
     sourceSetName: SourceSetName,
     isTestFixture: Boolean
   ): ConfiguredProjectDependency? {

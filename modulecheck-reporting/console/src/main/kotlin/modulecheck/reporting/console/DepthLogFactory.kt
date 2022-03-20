@@ -49,7 +49,7 @@ class DepthLogFactory {
             separator = ", ",
             prefix = "[",
             postfix = "]"
-          ) { it.dependentPath }
+          ) { it.dependentPath.value }
 
         info("    ${depth.toString().padEnd(depthHeaderLength)} $paths")
       }

@@ -15,9 +15,11 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+
 interface ProjectProvider : HasProjectCache {
 
-  fun get(path: String): McProject
+  fun get(path: StringProjectPath): McProject
 
   fun getAll(): List<McProject>
 

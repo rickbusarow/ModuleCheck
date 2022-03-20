@@ -18,12 +18,35 @@ package modulecheck.parsing.gradle
 import modulecheck.utils.capitalize
 import java.util.Locale
 
-sealed interface ModuleRef {
+sealed class ProjectPath : Comparable<ProjectPath> {
 
-  val value: String
+  abstract val value: String
 
-  @JvmInline
-  value class StringRef(override val value: String) : ModuleRef {
+  private val typeSafeValue: String by lazy {
+    when (this) {
+      is StringProjectPath -> value.typeSafeName()
+      is TypeSafeProjectPath -> value
+    }
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is ProjectPath) return false
+
+    if (value == other.value) return true
+
+    return typeSafeValue == other.typeSafeValue
+  }
+
+  override fun hashCode(): Int {
+    return typeSafeValue.hashCode()
+  }
+
+  override fun compareTo(other: ProjectPath): Int {
+    return typeSafeValue.compareTo(other.typeSafeValue)
+  }
+
+  class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
         "The StringRef `value` parameter should be the traditional Gradle path, " +
@@ -32,19 +55,18 @@ sealed interface ModuleRef {
       }
     }
 
-    fun toTypeSafe(): TypeSafeRef {
-      return TypeSafeRef(value.typeSafeName())
+    fun toTypeSafe(): TypeSafeProjectPath {
+      return TypeSafeProjectPath(value.typeSafeName())
     }
   }
 
-  @JvmInline
-  value class TypeSafeRef(override val value: String) : ModuleRef
+  class TypeSafeProjectPath(override val value: String) : ProjectPath()
 
   companion object {
-    fun from(rawString: String): ModuleRef = if (rawString.startsWith(':')) {
-      StringRef(rawString)
+    fun from(rawString: String): ProjectPath = if (rawString.startsWith(':')) {
+      StringProjectPath(rawString)
     } else {
-      TypeSafeRef(rawString)
+      TypeSafeProjectPath(rawString)
     }
   }
 }

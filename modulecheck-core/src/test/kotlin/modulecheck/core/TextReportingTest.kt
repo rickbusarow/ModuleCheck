@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.api.finding.Finding
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
@@ -51,11 +52,11 @@ internal class TextReportingTest : RunnerTest() {
       findingResultFactory = { _, _, _ ->
         listOf(
           Finding.FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
@@ -88,11 +89,11 @@ internal class TextReportingTest : RunnerTest() {
       findingResultFactory = { findings, _, _ ->
         findings.map {
           Finding.FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Finding.Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
@@ -105,9 +106,9 @@ internal class TextReportingTest : RunnerTest() {
     outputFile.readText()
       .clean()
       .remove("\u200B") shouldBe """
-      dependentPath
-             configuration        dependency        name           source          build file
-          ✔  configurationName    dependencyPath    problemName    sourceOrNull    buildFile: (1, 2):
+      :dependentPath
+             configuration        dependency              name           source          build file
+          ✔  configurationName    dependencyIdentifier    problemName    sourceOrNull    buildFile: (1, 2):
     """
   }
 }

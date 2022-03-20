@@ -18,11 +18,12 @@ package modulecheck.parsing.groovy.antlr
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import java.io.File
 import javax.inject.Inject
 
 class GroovyPluginsBlockParser @Inject constructor() {
 
-  fun parse(file: String): GroovyPluginsBlock? = parse(file) {
+  fun parse(file: File): GroovyPluginsBlock? = parse(file) {
 
     var block: GroovyPluginsBlock? = null
 
@@ -36,7 +37,7 @@ class GroovyPluginsBlockParser @Inject constructor() {
         if (statement?.start?.text == "plugins") {
           val blockBodyReg = """plugins\s*\{([\s\S]*)\}""".toRegex()
 
-          val blockBody = blockBodyReg.find(file)
+          val blockBody = blockBodyReg.find(file.readText())
             ?.groupValues
             ?.get(1)
             ?.removePrefix("\n")

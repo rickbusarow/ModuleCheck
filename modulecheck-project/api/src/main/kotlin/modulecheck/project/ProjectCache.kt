@@ -17,24 +17,25 @@ package modulecheck.project
 
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 @SingleIn(AppScope::class)
 class ProjectCache @Inject constructor() {
-  private val delegate = ConcurrentHashMap<String, McProject>()
+  private val delegate = ConcurrentHashMap<StringProjectPath, McProject>()
 
   val values: MutableCollection<McProject> get() = delegate.values
 
-  fun getOrPut(path: String, defaultValue: () -> McProject): McProject {
+  fun getOrPut(path: StringProjectPath, defaultValue: () -> McProject): McProject {
     return delegate.getOrPut(path, defaultValue)
   }
 
-  fun getValue(path: String): McProject {
+  fun getValue(path: StringProjectPath): McProject {
     return delegate.getValue(path)
   }
 
-  operator fun set(path: String, project: McProject): McProject? {
+  operator fun set(path: StringProjectPath, project: McProject): McProject? {
     return delegate.put(path, project)
   }
 
