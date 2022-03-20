@@ -40,7 +40,7 @@ fun ModuleDependencyDeclaration(
   suppressed: List<String> = emptyList()
 ): ModuleDependencyDeclaration = ModuleDependencyDeclaration(
   projectPath = projectPath,
-  projectAccessor = projectAccessor,
+  projectAccessor = ProjectAccessor.from(projectAccessor, projectPath),
   configName = configName,
   declarationText = declarationText,
   statementWithSurroundingText = statementWithSurroundingText,

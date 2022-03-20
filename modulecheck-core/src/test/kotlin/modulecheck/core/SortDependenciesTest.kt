@@ -40,18 +40,18 @@ class SortDependenciesTest : RunnerTest() {
       }
 
       dependencies {
-        runtimeOnly(project(path = "lib-1"))
-        api(project(path = "lib-3"))
-        implementation(project(path = "lib-7"))
-        compileOnly(project(path = "lib-4"))
-        api(project(path = "lib-0"))
-        testImplementation(project(path = "lib-5"))
+        runtimeOnly(project(path = ":lib-1"))
+        api(project(path = ":lib-3"))
+        implementation(project(path = ":lib-7"))
+        compileOnly(project(path = ":lib-4"))
+        api(project(path = ":lib-0"))
+        testImplementation(project(path = ":lib-5"))
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-        compileOnly(project(path = "lib-6"))
-        implementation(project(path = "lib-2"))
+        compileOnly(project(path = ":lib-6"))
+        implementation(project(path = ":lib-2"))
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-        testImplementation(project(path = "lib-8"))
-        implementation(project(path = "lib-9"))
+        testImplementation(project(path = ":lib-8"))
+        implementation(project(path = ":lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
         """
@@ -68,24 +68,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api("com.squareup:kotlinpoet:1.7.2")
 
-        api(project(path = "lib-0"))
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-0"))
+        api(project(path = ":lib-3"))
 
-        compileOnly(project(path = "lib-4"))
-        compileOnly(project(path = "lib-6"))
+        compileOnly(project(path = ":lib-4"))
+        compileOnly(project(path = ":lib-6"))
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
-        implementation(project(path = "lib-2"))
-        implementation(project(path = "lib-7"))
-        implementation(project(path = "lib-9"))
+        implementation(project(path = ":lib-2"))
+        implementation(project(path = ":lib-7"))
+        implementation(project(path = ":lib-9"))
 
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
 
-        testImplementation(project(path = "lib-5"))
-        testImplementation(project(path = "lib-8"))
+        testImplementation(project(path = ":lib-5"))
+        testImplementation(project(path = ":lib-8"))
       }
     """
 
@@ -109,8 +109,8 @@ class SortDependenciesTest : RunnerTest() {
         /*
         a multi-line comment
         */
-        runtimeOnly(project(path = "lib-1"))
-        api(project(path = "lib-3"))
+        runtimeOnly(project(path = ":lib-1"))
+        api(project(path = ":lib-3"))
       }
         """
       }
@@ -125,12 +125,12 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-3"))
 
         /*
         a multi-line comment
         */
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
       }
     """
 
@@ -154,8 +154,8 @@ class SortDependenciesTest : RunnerTest() {
         /**
          * a multi-line comment
          */
-        runtimeOnly(project(path = "lib-1"))
-        api(project(path = "lib-3"))
+        runtimeOnly(project(path = ":lib-1"))
+        api(project(path = ":lib-3"))
       }
         """
       }
@@ -170,12 +170,12 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-3"))
 
         /**
          * a multi-line comment
          */
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
       }
     """
 
@@ -197,8 +197,8 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
 
         // preceding comment
-        runtimeOnly(project(path = "lib-1"))
-        api(project(path = "lib-3"))
+        runtimeOnly(project(path = ":lib-1"))
+        api(project(path = ":lib-3"))
       }
         """
       }
@@ -213,10 +213,10 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-3"))
 
         // preceding comment
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
       }
     """
 
@@ -237,8 +237,8 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        runtimeOnly(project(path = "lib-1")) // trailing comment
-        api(project(path = "lib-3"))
+        runtimeOnly(project(path = ":lib-1")) // trailing comment
+        api(project(path = ":lib-3"))
       }
         """
       }
@@ -253,9 +253,9 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-3"))
 
-        runtimeOnly(project(path = "lib-1")) // trailing comment
+        runtimeOnly(project(path = ":lib-1")) // trailing comment
       }
     """
 
@@ -275,18 +275,18 @@ class SortDependenciesTest : RunnerTest() {
       }
 
       dependencies {
-        runtimeOnly(project(path = "lib-1"))
-        api(project(path = "lib-3"))
-        implementation(project(path = "lib-7"))
-        compileOnly(project(path = "lib-4"))
-        api(project(path = "lib-0"))
-        testImplementation(project(path = "lib-5"))
+        runtimeOnly(project(path = ":lib-1"))
+        api(project(path = ":lib-3"))
+        implementation(project(path = ":lib-7"))
+        compileOnly(project(path = ":lib-4"))
+        api(project(path = ":lib-0"))
+        testImplementation(project(path = ":lib-5"))
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-        compileOnly(project(path = "lib-6"))
-        implementation(project(path = "lib-2"))
+        compileOnly(project(path = ":lib-6"))
+        implementation(project(path = ":lib-2"))
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-        testImplementation(project(path = "lib-8"))
-        implementation(project(path = "lib-9"))
+        testImplementation(project(path = ":lib-8"))
+        implementation(project(path = ":lib-9"))
         api("com.squareup:kotlinpoet:1.7.2")
       }
         """
@@ -303,24 +303,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api("com.squareup:kotlinpoet:1.7.2")
 
-        api(project(path = "lib-0"))
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-0"))
+        api(project(path = ":lib-3"))
 
-        compileOnly(project(path = "lib-4"))
-        compileOnly(project(path = "lib-6"))
+        compileOnly(project(path = ":lib-4"))
+        compileOnly(project(path = ":lib-6"))
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
-        implementation(project(path = "lib-2"))
-        implementation(project(path = "lib-7"))
-        implementation(project(path = "lib-9"))
+        implementation(project(path = ":lib-2"))
+        implementation(project(path = ":lib-7"))
+        implementation(project(path = ":lib-9"))
 
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
 
-        testImplementation(project(path = "lib-5"))
-        testImplementation(project(path = "lib-8"))
+        testImplementation(project(path = ":lib-5"))
+        testImplementation(project(path = ":lib-8"))
       }
     """
 
@@ -340,24 +340,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api("com.squareup:kotlinpoet:1.7.2")
 
-        api(project(path = "lib-0"))
-        api(project(path = "lib-3"))
+        api(project(path = ":lib-0"))
+        api(project(path = ":lib-3"))
 
-        compileOnly(project(path = "lib-4"))
-        compileOnly(project(path = "lib-6"))
+        compileOnly(project(path = ":lib-4"))
+        compileOnly(project(path = ":lib-6"))
 
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
 
-        implementation(project(path = "lib-2"))
-        implementation(project(path = "lib-7"))
-        implementation(project(path = "lib-9"))
+        implementation(project(path = ":lib-2"))
+        implementation(project(path = ":lib-7"))
+        implementation(project(path = ":lib-9"))
 
-        runtimeOnly(project(path = "lib-1"))
+        runtimeOnly(project(path = ":lib-1"))
 
         testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
 
-        testImplementation(project(path = "lib-5"))
-        testImplementation(project(path = "lib-8"))
+        testImplementation(project(path = ":lib-5"))
+        testImplementation(project(path = ":lib-8"))
       }
     """
 
@@ -377,16 +377,16 @@ class SortDependenciesTest : RunnerTest() {
       }
 
       dependencies {
-        runtimeOnly project(path = "lib-1")
-        api project(path = "lib-3")
-        implementation project(path = "lib-7")
-        compileOnly project(path = "lib-4")
-        api project(path = "lib-0")
-        testImplementation project(path = "lib-5")
-        compileOnly project(path = "lib-6")
-        implementation project(path = "lib-2")
-        testImplementation project(path = "lib-8")
-        implementation project(path = "lib-9")
+        runtimeOnly project(path = ":lib-1")
+        api project(path = ":lib-3")
+        implementation project(path = ":lib-7")
+        compileOnly project(path = ":lib-4")
+        api project(path = ":lib-0")
+        testImplementation project(path = ":lib-5")
+        compileOnly project(path = ":lib-6")
+        implementation project(path = ":lib-2")
+        testImplementation project(path = ":lib-8")
+        implementation project(path = ":lib-9")
 
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
@@ -407,24 +407,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api 'com.squareup:kotlinpoet:1.7.2'
 
-        api project(path = "lib-0")
-        api project(path = "lib-3")
+        api project(path = ":lib-0")
+        api project(path = ":lib-3")
 
-        compileOnly project(path = "lib-4")
-        compileOnly project(path = "lib-6")
+        compileOnly project(path = ":lib-4")
+        compileOnly project(path = ":lib-6")
 
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 
-        implementation project(path = "lib-2")
-        implementation project(path = "lib-7")
-        implementation project(path = "lib-9")
+        implementation project(path = ":lib-2")
+        implementation project(path = ":lib-7")
+        implementation project(path = ":lib-9")
 
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
 
-        testImplementation project(path = "lib-5")
-        testImplementation project(path = "lib-8")
+        testImplementation project(path = ":lib-5")
+        testImplementation project(path = ":lib-8")
       }
     """
 
@@ -450,8 +450,8 @@ class SortDependenciesTest : RunnerTest() {
         /*
         a multi-line comment
         */
-        runtimeOnly project(path = "lib-1")
-        api project(path = "lib-3")
+        runtimeOnly project(path = ":lib-1")
+        api project(path = ":lib-3")
       }
         """
       )
@@ -466,12 +466,12 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api project(path = "lib-3")
+        api project(path = ":lib-3")
 
         /*
         a multi-line comment
         */
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
       }
     """
 
@@ -497,8 +497,8 @@ class SortDependenciesTest : RunnerTest() {
         /**
          * a multi-line comment
          */
-        runtimeOnly project(path = "lib-1")
-        api project(path = "lib-3")
+        runtimeOnly project(path = ":lib-1")
+        api project(path = ":lib-3")
       }
         """
       )
@@ -513,12 +513,12 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api project(path = "lib-3")
+        api project(path = ":lib-3")
 
         /**
          * a multi-line comment
          */
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
       }
     """
 
@@ -542,8 +542,8 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
 
         // preceding comment
-        runtimeOnly project(path = "lib-1")
-        api project(path = "lib-3")
+        runtimeOnly project(path = ":lib-1")
+        api project(path = ":lib-3")
       }
         """
       )
@@ -558,10 +558,10 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api project(path = "lib-3")
+        api project(path = ":lib-3")
 
         // preceding comment
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
       }
     """
 
@@ -584,8 +584,8 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        runtimeOnly project(path = "lib-1") // trailing comment
-        api project(path = "lib-3")
+        runtimeOnly project(path = ":lib-1") // trailing comment
+        api project(path = ":lib-3")
       }
         """
       )
@@ -600,9 +600,9 @@ class SortDependenciesTest : RunnerTest() {
 
       dependencies {
 
-        api project(path = "lib-3")
+        api project(path = ":lib-3")
 
-        runtimeOnly project(path = "lib-1") // trailing comment
+        runtimeOnly project(path = ":lib-1") // trailing comment
       }
     """
 
@@ -624,22 +624,22 @@ class SortDependenciesTest : RunnerTest() {
       }
 
       dependencies {
-        runtimeOnly project(path = "lib-1")
-        api project(path = "lib-3")
-        implementation project(path = "lib-9")
+        runtimeOnly project(path = ":lib-1")
+        api project(path = ":lib-3")
+        implementation project(path = ":lib-9")
 
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
         api 'com.squareup:kotlinpoet:1.7.2'
 
-        implementation project(path = "lib-7")
-        compileOnly project(path = "lib-4")
-        api project(path = "lib-0")
-        testImplementation project(path = "lib-5")
-        compileOnly project(path = "lib-6")
-        implementation project(path = "lib-2")
-        testImplementation project(path = "lib-8")
+        implementation project(path = ":lib-7")
+        compileOnly project(path = ":lib-4")
+        api project(path = ":lib-0")
+        testImplementation project(path = ":lib-5")
+        compileOnly project(path = ":lib-6")
+        implementation project(path = ":lib-2")
+        testImplementation project(path = ":lib-8")
       }
         """
       )
@@ -655,24 +655,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api 'com.squareup:kotlinpoet:1.7.2'
 
-        api project(path = "lib-0")
-        api project(path = "lib-3")
+        api project(path = ":lib-0")
+        api project(path = ":lib-3")
 
-        compileOnly project(path = "lib-4")
-        compileOnly project(path = "lib-6")
+        compileOnly project(path = ":lib-4")
+        compileOnly project(path = ":lib-6")
 
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 
-        implementation project(path = "lib-2")
-        implementation project(path = "lib-7")
-        implementation project(path = "lib-9")
+        implementation project(path = ":lib-2")
+        implementation project(path = ":lib-7")
+        implementation project(path = ":lib-9")
 
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
 
-        testImplementation project(path = "lib-5")
-        testImplementation project(path = "lib-8")
+        testImplementation project(path = ":lib-5")
+        testImplementation project(path = ":lib-8")
       }
     """
 
@@ -691,24 +691,24 @@ class SortDependenciesTest : RunnerTest() {
       dependencies {
         api 'com.squareup:kotlinpoet:1.7.2'
 
-        api project(path = "lib-0")
-        api project(path = "lib-3")
+        api project(path = ":lib-0")
+        api project(path = ":lib-3")
 
-        compileOnly project(path = "lib-4")
-        compileOnly project(path = "lib-6")
+        compileOnly project(path = ":lib-4")
+        compileOnly project(path = ":lib-6")
 
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
 
-        implementation project(path = "lib-2")
-        implementation project(path = "lib-7")
-        implementation project(path = "lib-9")
+        implementation project(path = ":lib-2")
+        implementation project(path = ":lib-7")
+        implementation project(path = ":lib-9")
 
-        runtimeOnly project(path = "lib-1")
+        runtimeOnly project(path = ":lib-1")
 
         testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
 
-        testImplementation project(path = "lib-5")
-        testImplementation project(path = "lib-8")
+        testImplementation project(path = ":lib-5")
+        testImplementation project(path = ":lib-8")
       }
     """
 

@@ -61,7 +61,7 @@ data class UnknownDependencyDeclaration(
 
 data class ModuleDependencyDeclaration(
   val projectPath: ProjectPath,
-  val projectAccessor: String,
+  val projectAccessor: ProjectAccessor,
   override val configName: ConfigurationName,
   override val declarationText: String,
   override val statementWithSurroundingText: String,
@@ -125,13 +125,13 @@ data class ModuleDependencyDeclaration(
     testFixtures: Boolean
   ): String {
 
-    val escapedProjectAccessor = Regex.escape(projectAccessor)
+    val escapedProjectAccessor = Regex.escape(projectAccessor.statementText)
     val regex = "testFixtures\\s*\\(\\s*$escapedProjectAccessor\\s*\\)".toRegex()
 
     return when {
       testFixtures && regex.containsMatchIn(this) -> this
       testFixtures -> "testFixtures($this)"
-      else -> replace(regex, projectAccessor)
+      else -> replace(regex, projectAccessor.statementText)
     }
   }
 
