@@ -15,8 +15,12 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.gradle.ProjectAccessor.TypeSafeProjectAccessor
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName.Companion
+import modulecheck.utils.findMinimumIndent
+import modulecheck.utils.letIf
+import modulecheck.utils.mapToSet
 import java.io.File
 
 interface InvokesConfigurationNames :
@@ -35,6 +39,8 @@ interface PluginAware {
 
 interface HasBuildFile {
   val buildFile: File
+
+  val buildFileParser: BuildFileParser
 }
 
 interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
@@ -49,30 +55,6 @@ interface HasPath {
 interface HasConfigurations {
   val sourceSets: SourceSets
   val configurations: Configurations
-}
-
-/**
- * Reverse lookup of all the configurations which inherit another configuration.
- *
- * For instance, every java/kotlin configuration (`implementation`, `testImplementation`,
- * etc.) within a project inherits from the common `api` configuration, so
- * `someProject.inheritingConfigurations(ConfigurationName.api)` would return all other java/kotlin
- * configurations within that project.
- */
-fun HasConfigurations.inheritingConfigurations(configurationName: ConfigurationName): Set<Config> {
-  return configurations.values
-    .asSequence()
-    .map { it.name.toSourceSetName() }
-    .flatMap { sourceSet ->
-      sourceSet.javaConfigurationNames()
-        .mapNotNull { configName -> configurations[configName] }
-    }
-    .filter { inheritingConfig ->
-      inheritingConfig.upstream
-        .any { inheritedConfig ->
-          inheritedConfig.name == configurationName
-        }
-    }.toSet()
 }
 
 /**
@@ -101,6 +83,62 @@ suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T):
 
   return toSourceSetName().isDefinitelyPrecompiledForProject(project) ||
     project.getConfigurationInvocations().contains(value)
+}
+
+suspend fun <T> T.createProjectDependencyDeclaration(
+  configurationName: ConfigurationName,
+  projectPath: StringProjectPath,
+  isTestFixtures: Boolean
+): ModuleDependencyDeclaration
+  where T : PluginAware,
+        T : HasDependencyDeclarations {
+
+  val isKotlin = buildFile.extension == "kts"
+
+  val configInvocation = when {
+    isKotlin && !configurationName.isDefinitelyPrecompiledForProject(this) -> {
+      configurationName.wrapInQuotes()
+    }
+    else -> configurationName.value
+  }
+
+  val projectAccessorText = projectAccessors()
+    .any { it is TypeSafeProjectAccessor }
+    .let { useTypeSafe ->
+      if (useTypeSafe) {
+        "projects.${projectPath.typeSafeValue}"
+      } else if (isKotlin) {
+        "project(\"${projectPath.value}\")"
+      } else {
+        "project('${projectPath.value}')"
+      }
+    }
+
+  val projectAccessor = ProjectAccessor.from(projectAccessorText, projectPath)
+
+  val projectWithTestFixtures = projectAccessorText
+    .letIf(isTestFixtures) { "testFixtures($it)" }
+
+  val declarationText = if (isKotlin) {
+    "$configInvocation($projectWithTestFixtures)"
+  } else "$configInvocation $projectWithTestFixtures"
+
+  val statementWithSurroundingText = buildFileParser.dependenciesBlocks()
+    .map { it.lambdaContent.findMinimumIndent() }
+    .minByOrNull { it.length }
+    .let { min ->
+      val indent = min ?: "  "
+      "$indent$declarationText\n"
+    }
+
+  return ModuleDependencyDeclaration(
+    projectPath,
+    projectAccessor,
+    configurationName,
+    declarationText,
+    statementWithSurroundingText,
+    emptyList()
+  ) { it.value }
 }
 
 @Suppress("ComplexMethod")
@@ -200,4 +238,11 @@ private suspend fun ConfigurationName.shouldUseQuotes(
   // true if we can't find a plugin which creates this config, and we can't already find it being
   // used as a normal function invocation
   return !isDefinitelyPrecompiledForProject(invokesConfigurationNames)
+}
+
+private suspend fun HasBuildFile.projectAccessors(): Set<ProjectAccessor> {
+  return buildFileParser.dependenciesBlocks()
+    .flatMap { it.settings }
+    .filterIsInstance<ModuleDependencyDeclaration>()
+    .mapToSet { declaration -> declaration.projectAccessor }
 }

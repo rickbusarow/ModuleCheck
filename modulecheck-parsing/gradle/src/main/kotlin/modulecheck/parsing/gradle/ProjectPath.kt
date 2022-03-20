@@ -22,7 +22,7 @@ sealed class ProjectPath : Comparable<ProjectPath> {
 
   abstract val value: String
 
-  private val typeSafeValue: String by lazy {
+  val typeSafeValue: String by lazy {
     when (this) {
       is StringProjectPath -> value.typeSafeName()
       is TypeSafeProjectPath -> value
@@ -63,7 +63,7 @@ sealed class ProjectPath : Comparable<ProjectPath> {
   class TypeSafeProjectPath(override val value: String) : ProjectPath()
 
   companion object {
-    fun from(rawString: String): ProjectPath = if (rawString.startsWith(':')) {
+    fun from(rawString: String): ProjectPath = if (rawString.trim().startsWith(':')) {
       StringProjectPath(rawString)
     } else {
       TypeSafeProjectPath(rawString)
@@ -75,11 +75,10 @@ internal val projectSplitRegex = "[.\\-_]".toRegex()
 
 /**
  * Takes a conventional Gradle project path (":core:jvm") and returns the type-safe accessor name.
- *
- * `:core` becomes `core`
- * `:core:jvm` becomes `core.jvm`
- * `:core-testing` becomes `coreTesting`
- * `:base:ui:navigation` becomes `base.ui.navigation`
+ * - `:core` becomes `core`
+ * - `:core:jvm` becomes `core.jvm`
+ * - `:core-testing` becomes `coreTesting`
+ * - `:base:ui:navigation` becomes `base.ui.navigation`
  */
 internal fun String.typeSafeName(): String = split(projectSplitRegex)
   .filterNot { it.isBlank() }

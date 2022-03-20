@@ -15,6 +15,7 @@
 
 package modulecheck.project.test
 
+import modulecheck.parsing.gradle.BuildFileParser
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Configurations
@@ -33,7 +34,6 @@ import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
-import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.PrintLogger

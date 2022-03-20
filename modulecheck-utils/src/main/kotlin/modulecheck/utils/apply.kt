@@ -13,9 +13,23 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.internal
+package modulecheck.utils
 
 inline fun <T : Any, E> T.applyEach(elements: Iterable<E>, block: T.(E) -> Unit): T {
   elements.forEach { element -> this.block(element) }
   return this
+}
+
+inline fun <T> T.applyIf(predicate: Boolean, body: T.() -> T): T = apply {
+  if (predicate) {
+    body()
+  }
+}
+
+inline fun <T> T.letIf(predicate: Boolean, body: (T) -> T): T = let {
+  if (predicate) {
+    body(it)
+  } else {
+    it
+  }
 }

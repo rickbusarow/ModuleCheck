@@ -19,11 +19,13 @@ import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.ModifiesDependency
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.api.finding.addDependency
+import modulecheck.api.finding.closestDeclarationOrNull
 import modulecheck.api.finding.removeDependencyWithDelete
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -64,15 +66,30 @@ data class MustBeApiFinding(
 
   override suspend fun fix(): Boolean {
 
-    val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
+    val token = dependentProject
+      .closestDeclarationOrNull(
+        newDependency,
+        matchPathFirst = true
+      ) as? ModuleDependencyDeclaration
 
-    val newDeclaration = oldDeclaration.replace(
+    val oldDeclaration = declarationOrNull.await()
+
+    val newDeclaration = token?.replace(
       newConfigName = newDependency.configurationName,
+      newModulePath = newDependency.path,
       testFixtures = newDependency.isTestFixture
     )
+      ?: dependentProject.createProjectDependencyDeclaration(
+        configurationName = newDependency.configurationName,
+        projectPath = newDependency.path,
+        isTestFixtures = newDependency.isTestFixture
+      )
 
-    dependentProject.addDependency(newDependency, newDeclaration, oldDeclaration)
-    dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
+    dependentProject.addDependency(newDependency, newDeclaration, token)
+
+    if (oldDeclaration != null) {
+      dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
+    }
 
     return true
   }

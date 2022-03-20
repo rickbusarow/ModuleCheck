@@ -32,6 +32,7 @@ fun String.findMinimumIndent(
   if (contains("\t")) return "\t"
 
   return lines()
+    .filter { it.isNotBlank() }
     .map { it.indentWidth() }
     .filter { it > 0 }
     .minOrNull()

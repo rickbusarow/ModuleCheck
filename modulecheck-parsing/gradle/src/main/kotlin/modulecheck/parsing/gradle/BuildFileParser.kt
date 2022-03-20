@@ -13,20 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle
 
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import modulecheck.parsing.gradle.AndroidGradleSettingsProvider
-import modulecheck.parsing.gradle.DependenciesBlock
-import modulecheck.parsing.gradle.DependenciesBlocksProvider
-import modulecheck.parsing.gradle.InvokesConfigurationNames
-import modulecheck.parsing.gradle.PluginsBlock
-import modulecheck.parsing.gradle.PluginsBlockProvider
 
 class BuildFileParser @AssistedInject constructor(
   dependenciesBlocksProviderFactory: DependenciesBlocksProvider.Factory,

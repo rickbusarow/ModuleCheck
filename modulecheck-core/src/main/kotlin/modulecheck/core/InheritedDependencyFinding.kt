@@ -18,10 +18,12 @@ package modulecheck.core
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.addDependency
+import modulecheck.api.finding.closestDeclarationOrNull
 import modulecheck.core.internal.positionIn
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -60,15 +62,24 @@ data class InheritedDependencyFinding(
 
   override suspend fun fix(): Boolean {
 
-    val oldDeclaration = declarationOrNull.await() as? ModuleDependencyDeclaration ?: return false
+    val token = dependentProject
+      .closestDeclarationOrNull(
+        newDependency,
+        matchPathFirst = false
+      ) as? ModuleDependencyDeclaration
 
-    val newDeclaration = oldDeclaration.replace(
+    val newDeclaration = token?.replace(
       newConfigName = newDependency.configurationName,
       newModulePath = newDependency.path,
       testFixtures = newDependency.isTestFixture
     )
+      ?: dependentProject.createProjectDependencyDeclaration(
+        configurationName = newDependency.configurationName,
+        projectPath = newDependency.path,
+        isTestFixtures = newDependency.isTestFixture
+      )
 
-    dependentProject.addDependency(newDependency, newDeclaration, oldDeclaration)
+    dependentProject.addDependency(newDependency, newDeclaration, token)
 
     return true
   }

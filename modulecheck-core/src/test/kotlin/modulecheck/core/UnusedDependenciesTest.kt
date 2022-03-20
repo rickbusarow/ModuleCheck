@@ -1289,8 +1289,8 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
           testImplementation(project(path = ":lib1"))
+          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
         }
     """
 

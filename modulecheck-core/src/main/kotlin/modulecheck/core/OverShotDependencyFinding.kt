@@ -18,12 +18,13 @@ package modulecheck.core
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.ModifiesDependency
 import modulecheck.api.finding.RemovesDependency
+import modulecheck.api.finding.addDependency
+import modulecheck.api.finding.closestDeclarationOrNull
 import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import org.jetbrains.kotlin.util.prefixIfNot
 
 data class OverShotDependencyFinding(
   override val dependentProject: McProject,
@@ -45,58 +46,27 @@ data class OverShotDependencyFinding(
 
   override suspend fun fix(): Boolean {
 
-    val blocks = dependentProject.buildFileParser
-      .dependenciesBlocks()
+    val token = dependentProject
+      .closestDeclarationOrNull(
+        newDependency,
+        matchPathFirst = false
+      ) as? ModuleDependencyDeclaration
 
-    val sourceDeclaration = blocks.firstNotNullOfOrNull { block ->
-
-      block.getOrEmpty(dependencyProject.path, oldDependency.configurationName)
-        .firstOrNull()
-    } ?: return false
-
-    val positionBlockDeclarationPair = blocks.firstNotNullOfOrNull { block ->
-
-      val match = matchingDeclaration(block) ?: return@firstNotNullOfOrNull null
-
-      block to match
-    } ?: return false
-
-    val (block, positionDeclaration) = positionBlockDeclarationPair
-
-    val newDeclaration = sourceDeclaration.replace(
-      configurationName, testFixtures = newDependency.isTestFixture
+    val newDeclaration = token?.replace(
+      newConfigName = newDependency.configurationName,
+      newModulePath = newDependency.path,
+      testFixtures = newDependency.isTestFixture
     )
+      ?: dependentProject.createProjectDependencyDeclaration(
+        configurationName = newDependency.configurationName,
+        projectPath = newDependency.path,
+        isTestFixtures = newDependency.isTestFixture
+      )
 
-    val oldStatement = positionDeclaration.statementWithSurroundingText
-    val newStatement = oldStatement.plus(
-      newDeclaration.statementWithSurroundingText
-        .prefixIfNot("\n")
-    )
-
-    val newBlock = block.lambdaContent.replaceFirst(
-      oldValue = oldStatement,
-      newValue = newStatement
-    )
-
-    val fileText = buildFile.readText()
-      .replace(block.lambdaContent, newBlock)
-
-    buildFile.writeText(fileText)
-
-    // dependencyProject.removeDependencyWithDelete(oldDependency)
-    // dependencyProject.addDependency(newDependency)
+    dependentProject.addDependency(newDependency, newDeclaration, token)
 
     return true
   }
-
-  private fun matchingDeclaration(block: DependenciesBlock) = block.settings
-    .filterIsInstance<ModuleDependencyDeclaration>()
-    .maxByOrNull { declaration -> declaration.configName == configurationName }
-    ?: block.settings
-      .filterNot { it is ModuleDependencyDeclaration }
-      .maxByOrNull { declaration -> declaration.configName == configurationName }
-    ?: block.settings
-      .lastOrNull()
 
   override fun fromStringOrEmpty(): String = ""
 

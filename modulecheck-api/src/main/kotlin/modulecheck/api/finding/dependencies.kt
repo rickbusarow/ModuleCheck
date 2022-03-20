@@ -15,20 +15,104 @@
 
 package modulecheck.api.finding
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.utils.isGreaterThan
+import modulecheck.utils.remove
+import modulecheck.utils.replaceDestructured
+import modulecheck.utils.sortedWith
 import org.jetbrains.kotlin.util.prefixIfNot
+import org.jetbrains.kotlin.util.suffixIfNot
 
 fun McProject.addDependency(
   cpd: ConfiguredProjectDependency,
   newDeclaration: DependencyDeclaration,
-  markerDeclaration: DependencyDeclaration
+  existingDeclaration: DependencyDeclaration? = null
+) {
+
+  if (existingDeclaration != null) {
+    prependStatement(newDeclaration = newDeclaration, existingDeclaration = existingDeclaration)
+  } else {
+    addStatement(newDeclaration = newDeclaration)
+  }
+
+  projectDependencies.add(cpd)
+}
+
+/**
+ * Finds the existing project dependency declaration (if there are any) which is the closest match
+ * to the desired new dependency.
+ *
+ * @param matchPathFirst If true, matching project paths will be prioritized over matching
+ *   configurations. If false, configuration matches will take priority over a matching project path.
+ * @return the closest matching declaration, or null if there are no declarations at all.
+ */
+suspend fun McProject.closestDeclarationOrNull(
+  newDependency: ConfiguredProjectDependency,
+  matchPathFirst: Boolean
+): DependencyDeclaration? {
+
+  return buildFileParser.dependenciesBlocks()
+    .firstNotNullOfOrNull { dependenciesBlock ->
+
+      val allModuleDeclarations = dependenciesBlock.settings
+
+      allModuleDeclarations
+        .sortedWith(
+          {
+            if (matchPathFirst) it.configName == newDependency.configurationName
+            else it.configName != newDependency.configurationName
+          },
+          { it !is ModuleDependencyDeclaration },
+          { (it as? ModuleDependencyDeclaration)?.projectPath?.value ?: "" }
+        )
+        .let { sorted ->
+
+          sorted.firstOrNull { it.projectPathOrNull() == newDependency.path }
+            ?: sorted.firstOrNull {
+              it.projectPathOrNull()?.isGreaterThan(newDependency.path) ?: false
+            }
+            ?: sorted.lastOrNull()
+        }
+        ?.let { declaration ->
+
+          val sameProject = declaration.projectPathOrNull() == newDependency.path
+
+          if (sameProject) {
+            declaration
+          } else {
+
+            val precedingWhitespace = "^\\s*".toRegex()
+              .find(declaration.statementWithSurroundingText)?.value ?: ""
+
+            (declaration as? ModuleDependencyDeclaration)?.copy(
+              statementWithSurroundingText = declaration.declarationText
+                .prefixIfNot(precedingWhitespace)
+                // strip out any config block
+                .remove(""" *\{[\s\S]*}""".toRegex()),
+              suppressed = emptyList()
+            )
+          }
+        }
+    }
+}
+
+private fun DependencyDeclaration.projectPathOrNull(): ProjectPath? {
+  return (this as? ModuleDependencyDeclaration)?.projectPath
+}
+
+private fun McProject.prependStatement(
+  newDeclaration: DependencyDeclaration,
+  existingDeclaration: DependencyDeclaration
 ) = synchronized(buildFile) {
 
-  val oldStatement = markerDeclaration.statementWithSurroundingText
+  val oldStatement = existingDeclaration.statementWithSurroundingText
   val newStatement = newDeclaration.statementWithSurroundingText
 
   // the `prefixIfNot("\n")` here is important.
@@ -40,8 +124,39 @@ fun McProject.addDependency(
   val buildFileText = buildFile.readText()
 
   buildFile.writeText(buildFileText.replace(oldStatement, combinedStatement))
+}
 
-  projectDependencies.add(cpd)
+private fun McProject.addStatement(
+  newDeclaration: DependencyDeclaration
+) = synchronized(buildFile) {
+
+  val newStatement = newDeclaration.statementWithSurroundingText
+
+  val buildFileText = buildFile.readText()
+
+  runBlocking {
+    val oldBlockOrNull = buildFileParser.dependenciesBlocks().lastOrNull()
+
+    if (oldBlockOrNull != null) {
+
+      val newBlock = oldBlockOrNull.fullText
+        .replaceDestructured("""([\s\S]*)}(\s*)""".toRegex()) { group1, group2 ->
+
+          val prefix = group1.trim(' ')
+            .suffixIfNot("\n")
+
+          "$prefix$newStatement}$group2"
+        }
+
+      buildFile.writeText(buildFileText.replace(oldBlockOrNull.fullText, newBlock))
+    } else {
+
+      val newBlock = "\n\ndependencies {\n${newStatement.suffixIfNot("\n")}}"
+      val newText = buildFileText + newBlock
+
+      buildFile.writeText(newText)
+    }
+  }
 }
 
 fun McProject.removeDependencyWithComment(

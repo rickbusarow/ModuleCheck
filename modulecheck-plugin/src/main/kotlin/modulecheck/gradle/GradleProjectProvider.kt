@@ -28,6 +28,7 @@ import modulecheck.gradle.internal.androidManifests
 import modulecheck.gradle.internal.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.internal.sourcesets.JvmSourceSetParser
 import modulecheck.gradle.task.GradleLogger
+import modulecheck.parsing.gradle.BuildFileParser
 import modulecheck.parsing.gradle.ConfigFactory
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
@@ -36,7 +37,6 @@ import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
-import modulecheck.project.BuildFileParser
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.ExternalDependency

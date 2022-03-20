@@ -837,6 +837,535 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
+  fun `must be api from invisible dependency with unrelated api dependency declaration`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2"))
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          api(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with unrelated implementation dependency declaration`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        class Lib2Class
+        """
+      )
+    }
+
+    val lib3 = project(":lib3") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib2"))
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          implementation(project(path = ":lib2"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with unrelated implementation external dependency`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+          api(project(":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with unrelated api external dependency`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+          api(project(":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with empty multi-line dependencies block`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with empty single-line dependencies block`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies { }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `must be api from invisible dependency with no dependencies block`() {
+
+    val lib1 = project(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = project(":lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3Class : Lib1Class()
+        private val lib2Class = Lib2Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
   fun `auto-correct should only replace the configuration invocation text`() {
 
     val lib1 = project(":implementation") {

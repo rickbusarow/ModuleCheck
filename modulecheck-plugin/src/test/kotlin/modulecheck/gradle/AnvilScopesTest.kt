@@ -24,7 +24,7 @@ import modulecheck.specs.ProjectBuildSpecBuilder
 import modulecheck.specs.ProjectSettingsSpecBuilder
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
-import modulecheck.specs.applyEach
+import modulecheck.utils.applyEach
 import org.junit.jupiter.api.Test
 import java.nio.file.Path
 
