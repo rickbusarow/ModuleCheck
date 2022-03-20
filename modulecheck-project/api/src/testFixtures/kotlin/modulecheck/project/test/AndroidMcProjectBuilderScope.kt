@@ -18,6 +18,7 @@ package modulecheck.project.test
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
@@ -93,7 +94,7 @@ interface AndroidMcProjectBuilderScope : McProjectBuilderScope {
 }
 
 data class RealAndroidMcProjectBuilderScope(
-  override var path: String,
+  override var path: StringProjectPath,
   override var projectDir: File,
   override var buildFile: File,
   override var androidResourcesEnabled: Boolean = true,
@@ -126,7 +127,7 @@ internal fun createAndroidProject(
     .also { it.createNewFile() }
 
   val builder = RealAndroidMcProjectBuilderScope(
-    path = path,
+    path = StringProjectPath(path),
     projectDir = projectRoot,
     buildFile = buildFile,
     projectCache = projectCache

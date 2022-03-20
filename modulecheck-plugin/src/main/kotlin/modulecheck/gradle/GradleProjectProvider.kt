@@ -30,6 +30,7 @@ import modulecheck.gradle.internal.sourcesets.JvmSourceSetParser
 import modulecheck.gradle.task.GradleLogger
 import modulecheck.parsing.gradle.ConfigFactory
 import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
@@ -65,7 +66,7 @@ class GradleProjectProvider @AssistedInject constructor(
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
-    .associateBy { it.path }
+    .associateBy { StringProjectPath(it.path) }
 
   private val configFactory = ConfigFactory<Configuration>(
     identifier = { name },
@@ -76,7 +77,7 @@ class GradleProjectProvider @AssistedInject constructor(
     }
   )
 
-  override fun get(path: String): McProject {
+  override fun get(path: StringProjectPath): McProject {
     return projectCache.getOrPut(path) {
       createProject(path)
     }
@@ -86,7 +87,7 @@ class GradleProjectProvider @AssistedInject constructor(
     return rootGradleProject.allprojects
       .filter { it.buildFile.exists() }
       .filterNot { it.path in settings.doNotCheck }
-      .map { get(it.path) }
+      .map { get(StringProjectPath(it.path)) }
   }
 
   override fun clearCaches() {
@@ -94,7 +95,7 @@ class GradleProjectProvider @AssistedInject constructor(
   }
 
   @Suppress("UnstableApiUsage")
-  private fun createProject(path: String): McProject {
+  private fun createProject(path: StringProjectPath): McProject {
     val gradleProject = gradleProjects.getValue(path)
 
     val configurations = gradleProject.configurations()
@@ -217,7 +218,7 @@ class GradleProjectProvider @AssistedInject constructor(
 
             ConfiguredProjectDependency(
               configurationName = config.name.asConfigurationName(),
-              project = get(it.dependencyProject.path),
+              project = get(StringProjectPath(it.dependencyProject.path)),
               isTestFixture = isTestFixture
             )
           }

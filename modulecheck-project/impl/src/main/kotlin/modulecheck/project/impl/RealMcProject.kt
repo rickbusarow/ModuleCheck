@@ -17,6 +17,7 @@ package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclarationNames
 import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
@@ -35,7 +36,7 @@ import java.io.File
 
 @Suppress("LongParameterList")
 class RealMcProject(
-  override val path: String,
+  override val path: StringProjectPath,
   override val projectDir: File,
   override val buildFile: File,
   override val configurations: Configurations,

@@ -36,7 +36,7 @@ data class OverShotDependencyFinding(
   RemovesDependency {
 
   override val dependencyProject get() = oldDependency.project
-  override val dependencyIdentifier: String get() = newDependency.path
+  override val dependencyIdentifier: String get() = newDependency.path.value
 
   override val message: String
     get() = "The dependency is not used in the source set for which it is configured, but it is " +

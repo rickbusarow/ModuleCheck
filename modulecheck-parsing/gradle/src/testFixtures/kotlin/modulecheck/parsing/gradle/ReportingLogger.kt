@@ -32,14 +32,14 @@ fun UnknownDependencyDeclaration(
 
 @Suppress("LongParameterList")
 fun ModuleDependencyDeclaration(
-  moduleRef: ModuleRef,
+  projectPath: ProjectPath,
   projectAccessor: String,
   configName: ConfigurationName,
   declarationText: String,
   statementWithSurroundingText: String,
   suppressed: List<String> = emptyList()
 ): ModuleDependencyDeclaration = ModuleDependencyDeclaration(
-  moduleRef = moduleRef,
+  projectPath = projectPath,
   projectAccessor = projectAccessor,
   configName = configName,
   declarationText = declarationText,

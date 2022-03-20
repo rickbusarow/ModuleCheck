@@ -30,7 +30,7 @@ class DepthReportFactory {
       .entries
       .forEach { (path, values) ->
 
-        header("\n$path")
+        header("\n${path.value}")
 
         val nameHeader = "source set"
         val depthHeader = "depth"
@@ -59,7 +59,7 @@ class DepthReportFactory {
                   separator = ", ",
                   prefix = "[",
                   postfix = "]"
-                ) { it.dependentPath }
+                ) { it.dependentPath.value }
             )
           }
       }

@@ -37,14 +37,14 @@ data class RedundantDependencyFinding(
       "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
       "file is desired."
 
-  override val dependencyIdentifier = oldDependency.project.path + fromStringOrEmpty()
+  override val dependencyIdentifier = oldDependency.project.path.value + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {
 
     return if (from.all { dependencyProject.path == it.project.path }) {
       ""
     } else {
-      from.joinToString { it.project.path }
+      from.joinToString { it.project.path.value }
     }
   }
 }

@@ -26,6 +26,7 @@ import modulecheck.core.internal.positionOfStatement
 import modulecheck.core.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
@@ -36,7 +37,7 @@ import java.io.File
 
 data class UnusedKaptProcessorFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
   override val oldDependency: ConfiguredDependency,
   override val configurationName: ConfigurationName
@@ -52,7 +53,7 @@ data class UnusedKaptProcessorFinding(
       "This can be a significant performance hit."
 
   override val dependencyIdentifier = when (oldDependency) {
-    is ConfiguredProjectDependency -> oldDependency.path
+    is ConfiguredProjectDependency -> oldDependency.path.value
     is ExternalDependency -> oldDependency.name
   }
 

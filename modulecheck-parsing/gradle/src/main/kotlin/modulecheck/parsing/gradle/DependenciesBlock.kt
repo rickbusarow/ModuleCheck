@@ -16,7 +16,7 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
-import modulecheck.parsing.gradle.ModuleRef.StringRef
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 
 abstract class DependenciesBlock(
   val suppressAll: List<String>,
@@ -80,22 +80,22 @@ abstract class DependenciesBlock(
   }
 
   /**
-   * @param moduleRef `:my:project:lib1` or `my.project.lib1`
+   * @param projectPath `:my:project:lib1` or `my.project.lib1`
    * @param projectAccessor `project(:my:project:lib1)` or `projects.my.project.lib1`
    */
   fun addModuleStatement(
     configName: ConfigurationName,
     parsedString: String,
-    moduleRef: ModuleRef,
+    projectPath: ProjectPath,
     projectAccessor: String,
     suppressed: List<String>
   ) {
-    val cm = ConfiguredModule(configName = configName, moduleRef = moduleRef)
+    val cm = ConfiguredModule(configName = configName, projectPath = projectPath)
 
     val originalString = getOriginalString(parsedString)
 
     val declaration = ModuleDependencyDeclaration(
-      moduleRef = moduleRef,
+      projectPath = projectPath,
       projectAccessor = projectAccessor,
       configName = configName,
       declarationText = parsedString,
@@ -114,11 +114,11 @@ abstract class DependenciesBlock(
     moduleRef: String,
     configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
-    return getOrEmpty(StringRef(moduleRef), configName)
+    return getOrEmpty(StringProjectPath(moduleRef), configName)
   }
 
   fun getOrEmpty(
-    moduleRef: StringRef,
+    moduleRef: StringProjectPath,
     configName: ConfigurationName
   ): List<ModuleDependencyDeclaration> {
 
@@ -207,7 +207,10 @@ abstract class DependenciesBlock(
     return originalStringLines.joinToString("\n")
   }
 
-  protected data class ConfiguredModule(val configName: ConfigurationName, val moduleRef: ModuleRef)
+  protected data class ConfiguredModule(
+    val configName: ConfigurationName,
+    val projectPath: ProjectPath
+  )
 }
 
 interface DependenciesBlocksProvider {

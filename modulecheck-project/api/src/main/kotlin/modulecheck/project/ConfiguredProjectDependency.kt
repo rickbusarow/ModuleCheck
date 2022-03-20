@@ -26,7 +26,7 @@ data class ConfiguredProjectDependency(
 
   val path = project.path
 
-  override val name = project.path
+  override val name = project.path.value
 
   fun declaringSourceSetName() = when {
     isTestFixture -> {
@@ -43,9 +43,9 @@ data class ConfiguredProjectDependency(
   override fun toString(): String {
 
     val declaration = if (isTestFixture) {
-      "${configurationName.value}(testFixtures(project(path = \"$path\")))"
+      "${configurationName.value}(testFixtures(project(path = \"${path.value}\")))"
     } else {
-      "${configurationName.value}(project(path = \"$path\"))"
+      "${configurationName.value}(project(path = \"${path.value}\"))"
     }
 
     return "ConfiguredProjectDependency( $declaration )"

@@ -19,7 +19,7 @@ package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ModuleRef
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
@@ -194,7 +194,7 @@ class GroovyDependencyBlockParser @Inject constructor() {
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(),
-                  moduleRef = ModuleRef.from(moduleRef),
+                  projectPath = ProjectPath.from(moduleRef),
                   projectAccessor = projectAccessor,
                   suppressed = suppressed
                 )

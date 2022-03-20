@@ -69,7 +69,7 @@ data class UnusedDependencies(
           UnusedDependency(
             dependentProject = project,
             oldDependency = cpd,
-            dependencyIdentifier = cpd.project.path,
+            dependencyIdentifier = cpd.project.path.value,
             configurationName = cpd.configurationName
           )
         }
