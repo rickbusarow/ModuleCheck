@@ -35,7 +35,6 @@ abstract class DependenciesBlock(
 
   private val allModuleDeclarations =
     mutableMapOf<ConfiguredModule, MutableList<ModuleDependencyDeclaration>>()
-  protected val allBlockStatements = mutableListOf<String>()
 
   fun addNonModuleStatement(
     configName: ConfigurationName,
@@ -87,7 +86,7 @@ abstract class DependenciesBlock(
     configName: ConfigurationName,
     parsedString: String,
     projectPath: ProjectPath,
-    projectAccessor: String,
+    projectAccessor: ProjectAccessor,
     suppressed: List<String>
   ) {
     val cm = ConfiguredModule(configName = configName, projectPath = projectPath)

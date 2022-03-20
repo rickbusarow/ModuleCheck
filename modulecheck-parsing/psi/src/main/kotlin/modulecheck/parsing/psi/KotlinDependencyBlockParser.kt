@@ -17,6 +17,7 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.MavenCoordinates
+import modulecheck.parsing.gradle.ProjectAccessor
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.buildFileInvocationText
@@ -107,11 +108,13 @@ private fun KtCallExpression.parseStatements(
   if (moduleNamePair != null) {
 
     val (projectAccessor, moduleRef) = moduleNamePair
+    val projectPath = ProjectPath.from(moduleRef)
+    val accessor = ProjectAccessor.from(projectAccessor, projectPath)
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      projectPath = ProjectPath.from(moduleRef),
-      projectAccessor = projectAccessor,
+      projectPath = projectPath,
+      projectAccessor = accessor,
       suppressed = suppressed
     )
     return
@@ -136,11 +139,14 @@ private fun KtCallExpression.parseStatements(
 
     val (projectAccessor, moduleRef) = testFixturesModuleNamePair
 
+    val projectPath = ProjectPath.from(moduleRef)
+    val accessor = ProjectAccessor.from(projectAccessor, projectPath)
+
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      projectPath = ProjectPath.from(moduleRef),
-      projectAccessor = projectAccessor,
+      projectPath = projectPath,
+      projectAccessor = accessor,
       suppressed = suppressed
     )
     return
