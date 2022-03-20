@@ -15,6 +15,9 @@
 
 package modulecheck.gradle.internal
 
+import com.android.build.api.dsl.DynamicFeatureExtension
+import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.TestExtension
 import com.android.build.gradle.TestedExtension
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
@@ -69,4 +72,19 @@ fun Project.isMissingManifestFile(): Boolean {
     // the file must be declared, but not exist in order for this to be triggered
     ?.let { !it.exists() }
     ?: false
+}
+
+/**
+ * @return true if the project is an Android library, dynamic feature, or test extensions module and
+ *   BuildConfig generation has NOT been explicitly disabled.
+ */
+fun Project.generatesBuildConfig(): Boolean {
+  @Suppress("UnstableApiUsage")
+  return extensions.findByType(LibraryExtension::class.java)
+    ?.let { it.buildFeatures.buildConfig != false }
+    ?: extensions.findByType(DynamicFeatureExtension::class.java)
+      ?.let { it.buildFeatures.buildConfig != false }
+    ?: extensions.findByType(TestExtension::class.java)
+      ?.let { it.buildFeatures.buildConfig != false }
+    ?: true
 }
