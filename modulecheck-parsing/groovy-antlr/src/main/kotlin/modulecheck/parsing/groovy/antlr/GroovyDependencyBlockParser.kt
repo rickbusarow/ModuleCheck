@@ -19,7 +19,7 @@ package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ModuleRef
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
@@ -29,11 +29,12 @@ import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
 import org.apache.groovy.parser.antlr4.GroovyParser.StringLiteralContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import java.io.File
 import javax.inject.Inject
 
 class GroovyDependencyBlockParser @Inject constructor() {
 
-  fun parse(file: String): List<GroovyDependenciesBlock> = parse(file) {
+  fun parse(file: File): List<GroovyDependenciesBlock> = parse(file) {
     val dependenciesBlocks = mutableListOf<GroovyDependenciesBlock>()
 
     val rawModuleNameVisitor = object : GroovyParserBaseVisitor<String?>() {
@@ -189,12 +190,12 @@ class GroovyDependencyBlockParser @Inject constructor() {
               val moduleNamePair = projectDepVisitor.visit(ctx)
 
               if (moduleNamePair != null) {
-                val (moduleAccess, moduleRef) = moduleNamePair
+                val (projectAccessor, moduleRef) = moduleNamePair
                 dependenciesBlock.addModuleStatement(
                   configName = config.asConfigurationName(),
                   parsedString = ctx.originalText(),
-                  moduleRef = ModuleRef.from(moduleRef),
-                  moduleAccess = moduleAccess,
+                  projectPath = ProjectPath.from(moduleRef),
+                  projectAccessor = projectAccessor,
                   suppressed = suppressed
                 )
                 return

@@ -19,8 +19,8 @@ import io.kotest.common.runBlocking
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.ModuleRef.StringRef
-import modulecheck.parsing.gradle.ModuleRef.TypeSafeRef
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.UnknownDependencyDeclaration
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -64,8 +64,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(path = ":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(path = ":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """"api"(project(path = ":core:jvm"))""",
         statementWithSurroundingText = """  "api"(project(path = ":core:jvm"))"""
@@ -87,15 +87,15 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = """   api(project(":core:jvm")) // trailing comment"""
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = """   api(project(":core:jvm"))"""
@@ -119,24 +119,24 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = """project(":core:android")""",
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
         statementWithSurroundingText = "   api(project(\":core:android\"))",
         suppressed = listOf()
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = "   @Suppress(\"Unused\")\n   api(project(\":core:jvm\"))",
         suppressed = listOf("Unused")
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:test"),
-        moduleAccess = """project(":core:test")""",
+        projectPath = StringProjectPath(":core:test"),
+        projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation(project(":core:test"))""",
         statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
@@ -162,24 +162,24 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = """project(":core:android")""",
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
         statementWithSurroundingText = "   api(project(\":core:android\"))",
         suppressed = listOf("Unused")
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = "   @Suppress(\"InheritedDependency\")\n   api(project(\":core:jvm\"))",
         suppressed = listOf("InheritedDependency", "Unused")
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:test"),
-        moduleAccess = """project(":core:test")""",
+        projectPath = StringProjectPath(":core:test"),
+        projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation(project(":core:test"))""",
         statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
@@ -204,15 +204,15 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":lib1"),
-        moduleAccess = """project(":lib1")""",
+        projectPath = StringProjectPath(":lib1"),
+        projectAccessor = """project(":lib1")""",
         configName = ConfigurationName.api,
         declarationText = """api(testFixtures(project(":lib1")))""",
         statementWithSurroundingText = """   api(testFixtures(project(":lib1")))"""
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":lib2"),
-        moduleAccess = """project(":lib2")""",
+        projectPath = StringProjectPath(":lib2"),
+        projectAccessor = """project(":lib2")""",
         configName = ConfigurationName.api,
         declarationText = """api(testFixtures(project(":lib2")))""",
         statementWithSurroundingText = """|
@@ -220,8 +220,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         """.trimMargin()
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":lib3"),
-        moduleAccess = """project(":lib3")""",
+        projectPath = StringProjectPath(":lib3"),
+        projectAccessor = """project(":lib3")""",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(testFixtures(project(":lib3")))""",
         statementWithSurroundingText = """   implementation(testFixtures(project(":lib3")))"""
@@ -242,8 +242,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(testFixtures(project(":core:jvm")))""",
         statementWithSurroundingText = """   api(testFixtures(project(":core:jvm")))"""
@@ -264,8 +264,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.settings shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = TypeSafeRef("core.jvm"),
-        moduleAccess = "projects.core.jvm",
+        projectPath = TypeSafeProjectPath("core.jvm"),
+        projectAccessor = "projects.core.jvm",
         configName = ConfigurationName.api,
         declarationText = """api(testFixtures(projects.core.jvm))""",
         statementWithSurroundingText = """   api(testFixtures(projects.core.jvm))"""
@@ -290,8 +290,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:test"),
-        moduleAccess = """project(":core:test")""",
+        projectPath = StringProjectPath(":core:test"),
+        projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
@@ -307,8 +307,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = "api(project(\":core:jvm\"))",
         statementWithSurroundingText = "\n   api(project(\":core:jvm\"))"
@@ -333,8 +333,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:test"),
-        moduleAccess = """project(":core:test")""",
+        projectPath = StringProjectPath(":core:test"),
+        projectAccessor = """project(":core:test")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:test")) {
           |     exclude(group = "androidx.appcompat")
@@ -351,8 +351,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = "api(project(\":core:jvm\"))",
         statementWithSurroundingText = "   api(project(\":core:jvm\"))"
@@ -375,8 +375,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = "api(project(\":core:jvm\"))",
         statementWithSurroundingText = "\n   api(project(\":core:jvm\"))"
@@ -398,8 +398,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = """   api(project(":core:jvm"))"""
@@ -408,8 +408,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:jvm"))""",
         statementWithSurroundingText = """   implementation(project(":core:jvm"))"""
@@ -433,8 +433,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = """project(":core:android")""",
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """
@@ -464,8 +464,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = """project(":core:android")""",
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """
@@ -493,8 +493,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:android", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:android"),
-        moduleAccess = """project(":core:android")""",
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(project(":core:android"))""",
         statementWithSurroundingText = """   /* single-line block comment */ implementation(project(":core:android"))"""
@@ -516,15 +516,15 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:jvm", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = """   api(project(":core:jvm"))"""
       ),
       ModuleDependencyDeclaration(
-        moduleRef = StringRef(":core:jvm"),
-        moduleAccess = """project(":core:jvm")""",
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api (   project(":core:jvm"))""",
         statementWithSurroundingText = """   api (   project(":core:jvm"))"""
@@ -546,8 +546,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":core:test", ConfigurationName.api) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = TypeSafeRef("core.test"),
-        moduleAccess = "projects.core.test",
+        projectPath = TypeSafeProjectPath("core.test"),
+        projectAccessor = "projects.core.test",
         configName = ConfigurationName.api,
         declarationText = """api(projects.core.test)""",
         statementWithSurroundingText = """   api(projects.core.test)"""
@@ -556,8 +556,8 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
     block.getOrEmpty(":http-logging", ConfigurationName.implementation) shouldBe listOf(
       ModuleDependencyDeclaration(
-        moduleRef = TypeSafeRef("httpLogging"),
-        moduleAccess = "projects.httpLogging",
+        projectPath = TypeSafeProjectPath("httpLogging"),
+        projectAccessor = "projects.httpLogging",
         configName = ConfigurationName.implementation,
         declarationText = """implementation(projects.httpLogging)""",
         statementWithSurroundingText = """   implementation(projects.httpLogging)"""

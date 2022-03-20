@@ -17,6 +17,7 @@ package modulecheck.reporting.checkstyle
 
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -43,11 +44,11 @@ internal class CheckstyleReporterTest : BaseTest() {
     val result = CheckstyleReporter().createXml(
       listOf(
         FindingResult(
-          dependentPath = "dependentPath",
+          dependentPath = StringProjectPath(":dependentPath"),
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
-          dependencyPath = "dependencyPath",
+          dependencyIdentifier = "dependencyIdentifier",
           positionOrNull = Position(1, 2),
           buildFile = File("buildFile"),
           message = "message",
@@ -62,7 +63,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="error" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="error" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
       	</file>
       </checkstyle>
     """
@@ -74,11 +75,11 @@ internal class CheckstyleReporterTest : BaseTest() {
     val result = CheckstyleReporter().createXml(
       listOf(
         FindingResult(
-          dependentPath = "dependentPath",
+          dependentPath = StringProjectPath(":dependentPath"),
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
-          dependencyPath = "dependencyPath",
+          dependencyIdentifier = "dependencyIdentifier",
           positionOrNull = Position(1, 2),
           buildFile = File("buildFile"),
           message = "message",
@@ -93,7 +94,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
       	</file>
       </checkstyle>
     """
@@ -105,33 +106,33 @@ internal class CheckstyleReporterTest : BaseTest() {
     val result = CheckstyleReporter().createXml(
       listOf(
         FindingResult(
-          dependentPath = "lib1/build.gradle.kts",
+          dependentPath = StringProjectPath(":lib1"),
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
-          dependencyPath = "path1",
+          dependencyIdentifier = ":path1",
           positionOrNull = Position(1, 2),
           buildFile = File("lib1/build.gradle.kts"),
           message = "message",
           fixed = true
         ),
         FindingResult(
-          dependentPath = "lib1/build.gradle.kts",
+          dependentPath = StringProjectPath(":lib1"),
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
-          dependencyPath = "path2",
+          dependencyIdentifier = ":path2",
           positionOrNull = Position(2, 2),
           buildFile = File("lib1/build.gradle.kts"),
           message = "message",
           fixed = true
         ),
         FindingResult(
-          dependentPath = "lib2/build.gradle.kts",
+          dependentPath = StringProjectPath(":lib2"),
           problemName = "problemName",
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
-          dependencyPath = "path1",
+          dependencyIdentifier = ":path1",
           positionOrNull = Position(1, 2),
           buildFile = File("lib2/build.gradle.kts"),
           message = "message",
@@ -146,11 +147,11 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="lib1/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
-      		<error line="2" column="2" severity="info" dependency="path2" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.problemName" />
+      		<error line="2" column="2" severity="info" dependency=":path2" message="message" source="modulecheck.problemName" />
       	</file>
       	<file name="lib2/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency="path1" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.problemName" />
       	</file>
       </checkstyle>
     """

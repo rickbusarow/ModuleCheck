@@ -25,10 +25,11 @@ import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.references
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.Reference.UnqualifiedRReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -51,7 +52,7 @@ abstract class ProjectTest : BaseTest() {
       override val projectCache: ProjectCache
         get() = this@ProjectTest.projectCache
 
-      override fun get(path: String): McProject {
+      override fun get(path: StringProjectPath): McProject {
         return projectCache.getValue(path)
       }
 
@@ -126,7 +127,7 @@ abstract class ProjectTest : BaseTest() {
     config: McProjectBuilderScope.() -> Unit = {}
   ): McProject {
 
-    val appendedPath = (this@childProject.path + path).replace(":{2,}".toRegex(), ":")
+    val appendedPath = (this@childProject.path.value + path).replace(":{2,}".toRegex(), ":")
 
     return createProject(projectCache, testProjectDir, appendedPath, config)
   }
@@ -152,7 +153,7 @@ abstract class ProjectTest : BaseTest() {
     config: AndroidMcProjectBuilderScope.() -> Unit = {}
   ): McProject {
 
-    val appendedPath = (this@androidChildProject.path + path).replace(":{2,}".toRegex(), ":")
+    val appendedPath = (this@androidChildProject.path.value + path).replace(":{2,}".toRegex(), ":")
 
     return createAndroidProject(
       projectCache = projectCache,
@@ -224,7 +225,7 @@ abstract class ProjectTest : BaseTest() {
             val referenceName = when (reference) {
               is ExplicitReference -> reference.fqName
               is InterpretedReference -> return@eachRef
-              is UnqualifiedRReference -> reference.fqName
+              is UnqualifiedAndroidResourceReference -> reference.fqName
             }
 
             // Only check for references which would be provided by internal projects. Using a

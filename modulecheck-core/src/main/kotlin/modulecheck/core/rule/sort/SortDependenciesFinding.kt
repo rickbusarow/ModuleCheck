@@ -21,6 +21,7 @@ import modulecheck.api.finding.Fixable
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -30,7 +31,7 @@ import java.util.Locale
 
 class SortDependenciesFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {

@@ -17,7 +17,7 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ModuleRef
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.buildFileInvocationText
 import modulecheck.parsing.psi.internal.asKtFile
@@ -106,12 +106,12 @@ private fun KtCallExpression.parseStatements(
 
   if (moduleNamePair != null) {
 
-    val (moduleAccess, moduleRef) = moduleNamePair
+    val (projectAccessor, moduleRef) = moduleNamePair
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      moduleRef = ModuleRef.from(moduleRef),
-      moduleAccess = moduleAccess,
+      projectPath = ProjectPath.from(moduleRef),
+      projectAccessor = projectAccessor,
       suppressed = suppressed
     )
     return
@@ -134,13 +134,13 @@ private fun KtCallExpression.parseStatements(
 
   if (testFixturesModuleNamePair != null) {
 
-    val (moduleAccess, moduleRef) = testFixturesModuleNamePair
+    val (projectAccessor, moduleRef) = testFixturesModuleNamePair
 
     block.addModuleStatement(
       configName = configName.asConfigurationName(),
       parsedString = text,
-      moduleRef = ModuleRef.from(moduleRef),
-      moduleAccess = moduleAccess,
+      projectPath = ProjectPath.from(moduleRef),
+      projectAccessor = projectAccessor,
       suppressed = suppressed
     )
     return
@@ -161,17 +161,17 @@ internal fun KtCallExpression.getStringModuleNameOrNull(): Pair<String, String>?
     .valueArguments                                       // [project(path = ":foo:bar")]
     .firstOrNull()                                        // project(path = ":foo:bar")
     ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
-    ?.let { moduleAccessCallExpression ->
+    ?.let { projectAccessorCallExpression ->
 
-      val moduleAccess = moduleAccessCallExpression.text
+      val projectAccessor = projectAccessorCallExpression.text
 
-      moduleAccessCallExpression
+      projectAccessorCallExpression
         .valueArguments                                   // [path = ":foo:bar"]
         .firstOrNull()                                    // path = ":foo:bar"
         ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
         ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
         ?.text
-        ?.let { moduleRef -> moduleAccess to moduleRef }
+        ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
@@ -180,14 +180,14 @@ internal fun KtCallExpression.getTypeSafeModuleNameOrNull(): Pair<String, String
     .valueArguments                                 // [projects.foo.bar]
     .firstOrNull()                                  // projects.foo.bar
     ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
-    ?.let { moduleAccessCallExpression ->
+    ?.let { projectAccessorCallExpression ->
 
-      val moduleAccess = moduleAccessCallExpression.text
+      val projectAccessor = projectAccessorCallExpression.text
 
-      moduleAccessCallExpression.text
+      projectAccessorCallExpression.text
         ?.takeIf { it.startsWith("projects.") }
         ?.removePrefix("projects.")
-        ?.let { moduleRef -> moduleAccess to moduleRef }
+        ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
@@ -199,17 +199,17 @@ internal fun KtCallExpression.getStringTestFixturesModuleNameOrNull(): Pair<Stri
     ?.valueArguments                                      // [project(path = ":foo:bar")]
     ?.firstOrNull()                                       // project(path = ":foo:bar")
     ?.getChildOfType<KtCallExpression>()                  // project(path = ":foo:bar")
-    ?.let { moduleAccessCallExpression ->
+    ?.let { projectAccessorCallExpression ->
 
-      val moduleAccess = moduleAccessCallExpression.text
+      val projectAccessor = projectAccessorCallExpression.text
 
-      moduleAccessCallExpression
+      projectAccessorCallExpression
         .valueArguments                                   // [path = ":foo:bar"]
         .firstOrNull()                                    // path = ":foo:bar"
         ?.getChildOfType<KtStringTemplateExpression>()    // ":foo:bar"
         ?.getChildOfType<KtLiteralStringTemplateEntry>()  // :foo:bar
         ?.text
-        ?.let { moduleRef -> moduleAccess to moduleRef }
+        ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 
@@ -221,15 +221,15 @@ internal fun KtCallExpression.getTypeSafeTestFixturesModuleNameOrNull(): Pair<St
     ?.valueArguments                                // [projects.foo.bar]
     ?.firstOrNull()                                 // projects.foo.bar
     ?.getChildOfType<KtDotQualifiedExpression>()    // projects.foo.bar
-    ?.let { moduleAccessCallExpression ->
+    ?.let { projectAccessorCallExpression ->
 
-      val moduleAccess = moduleAccessCallExpression.text
+      val projectAccessor = projectAccessorCallExpression.text
 
-      moduleAccessCallExpression
+      projectAccessorCallExpression
         .text
         ?.takeIf { it.startsWith("projects.") }
         ?.removePrefix("projects.")
-        ?.let { moduleRef -> moduleAccess to moduleRef }
+        ?.let { moduleRef -> projectAccessor to moduleRef }
     }
 }
 

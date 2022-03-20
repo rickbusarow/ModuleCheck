@@ -17,7 +17,9 @@ package modulecheck.testing
 
 import org.junit.jupiter.api.fail
 
-fun <T : Any> T?.requireNotNullOrFail(lazyMessage: () -> String): T {
+fun <T : Any> T?.requireNotNullOrFail(
+  lazyMessage: () -> String = { "The receiver cannot be null, but it was. ¯\\_(ツ)_/¯" }
+): T {
 
   if (this != null) return this
 

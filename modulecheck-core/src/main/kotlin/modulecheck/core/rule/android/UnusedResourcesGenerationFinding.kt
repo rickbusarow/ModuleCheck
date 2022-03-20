@@ -21,6 +21,7 @@ import modulecheck.api.finding.Fixable
 import modulecheck.core.internal.positionOfStatement
 import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.findMinimumIndent
@@ -31,7 +32,7 @@ import java.io.File
 
 data class UnusedResourcesGenerationFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File
 ) : Finding, Fixable {
 

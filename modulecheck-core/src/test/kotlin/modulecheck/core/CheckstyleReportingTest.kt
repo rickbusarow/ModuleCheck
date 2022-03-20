@@ -19,6 +19,7 @@ import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -51,11 +52,11 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
@@ -88,11 +89,11 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingResultFactory = { findings, _, _ ->
         findings.map {
           FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
@@ -106,7 +107,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyPath" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
       	</file>
       </checkstyle>
     """

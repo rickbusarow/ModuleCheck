@@ -17,9 +17,8 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNames
-import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.contains
 import modulecheck.project.McProject
+import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
@@ -28,17 +27,24 @@ import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
+import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
+import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtNullableType
+import org.jetbrains.kotlin.psi.KtObjectDeclaration
+import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.psi.KtScriptInitializer
 import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeArgumentList
 import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.psi.KtUserType
+import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
+import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import java.io.File
 
@@ -56,15 +62,27 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .toList()
 }
 
-fun KtAnnotated.hasAnnotation(file: KotlinFile, annotationFqName: FqName): Boolean {
+fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 
   if (annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }) {
     return true
   }
 
-  val samePackage = annotationFqName.parent().asString() == file.packageFqName
+  val file = containingKtFile
 
-  if (!samePackage && !file.importsLazy.value.contains(annotationFqName.asString())) {
+  val samePackage = annotationFqName.parent() == file.packageFqName
+
+  // The annotation doesn't need to be imported if it's defined in the same package,
+  // or if it's from the Kotlin stdlib.
+  val needsImport = !samePackage && !setOf("kotlin", "kotlin.jvm")
+    .contains(annotationFqName.parent().asString())
+
+  val isImported by unsafeLazy {
+    file.importDirectives.map { it.importPath?.pathStr }
+      .contains(annotationFqName.asString())
+  }
+
+  if (needsImport && !isImported) {
     return false
   }
 
@@ -241,6 +259,13 @@ suspend fun PsiElement.fqNameOrNull(
   return null
 }
 
+fun KtDeclaration.isInObject() = containingClassOrObject?.isObjectLiteral() ?: false
+
+fun KtDeclaration.isInCompanionObject() = containingClassOrObject?.isCompanionObject() ?: false
+fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
+
+fun KtClassOrObject.isCompanionObject(): Boolean = this is KtObjectDeclaration && isCompanion()
+
 fun KtCallExpression.nameSafe(): String? {
   return getChildOfType<KtNameReferenceExpression>()?.text
 }
@@ -272,3 +297,5 @@ fun KtBlockExpression.nameSafe(): String? {
     ?.getChildOfType<KtDotQualifiedExpression>()
     ?.text
 }
+
+internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() ?: false

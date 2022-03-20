@@ -20,6 +20,7 @@ import modulecheck.parsing.gradle.ConfigFactory
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.MavenCoordinates
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSet
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.SourceSets
@@ -44,7 +45,7 @@ import org.intellij.lang.annotations.Language
 import java.io.File
 
 interface McProjectBuilderScope {
-  var path: String
+  var path: StringProjectPath
   var projectDir: File
   var buildFile: File
   val configurations: MutableMap<ConfigurationName, Config>
@@ -169,7 +170,7 @@ interface McProjectBuilderScope {
 
 @Suppress("LongParameterList")
 data class JvmMcProjectBuilderScope(
-  override var path: String,
+  override var path: StringProjectPath,
   override var projectDir: File,
   override var buildFile: File,
   override val configurations: MutableMap<ConfigurationName, Config> = mutableMapOf(),
@@ -197,7 +198,7 @@ internal fun createProject(
     .createSafely()
 
   val builder = JvmMcProjectBuilderScope(
-    path = path,
+    path = StringProjectPath(path),
     projectDir = projectRoot,
     buildFile = buildFile,
     projectCache = projectCache

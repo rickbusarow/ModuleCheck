@@ -26,21 +26,21 @@ class ReportFactory @Inject constructor() {
 
     header("-- ModuleCheck results --")
 
-    results.groupBy { it.dependentPath.lowercase(Locale.getDefault()) }
+    results.groupBy { it.dependentPath.value.lowercase(Locale.getDefault()) }
       .entries
       .sortedBy { it.key }
       .forEach { (_, values) ->
 
         val path = values.first().dependentPath
 
-        header("\n${tab(1)}$path")
+        header("\n${tab(1)}${path.value}")
 
         val maxConfigurationName = maxOf(
           values.maxOf { it.configurationName.length },
           "configuration".length
         )
         val maxDependencyPath = maxOf(
-          values.maxOf { it.dependencyPath.length },
+          values.maxOf { it.dependencyIdentifier.length },
           "dependency".length
         )
         val maxProblemName = values.maxOf { it.problemName.length }
@@ -65,7 +65,7 @@ class ReportFactory @Inject constructor() {
         values.sortedWith(
           compareBy(
             { !it.fixed },
-            { it.dependencyPath },
+            { it.dependencyIdentifier },
             { it.positionOrNull },
             { it.problemName },
             { it.sourceOrNull }
@@ -74,7 +74,7 @@ class ReportFactory @Inject constructor() {
 
           val message = result.configurationName.padEnd(maxConfigurationName) +
             tab(1) +
-            result.dependencyPath.padEnd(maxDependencyPath) +
+            result.dependencyIdentifier.padEnd(maxDependencyPath) +
             tab(1) +
             result.problemName.padEnd(maxProblemName) +
             tab(1) +

@@ -54,7 +54,6 @@ data class ClasspathDependencies(
 
     val directDependencies = projectDependencies[sourceSetName]
       .filterNot { it.project == project }
-      .toSet()
 
     val directDependencyPaths = directDependencies.mapToSet { it.project.path }
 

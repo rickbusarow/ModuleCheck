@@ -23,7 +23,7 @@ import modulecheck.api.context.layoutFilesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.source.asExplicitReference
+import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.capitalize
@@ -60,7 +60,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
               .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
 
             // fully qualified
-            "$basePackage.databinding.$simpleBindingName".asExplicitReference()
+            "$basePackage.databinding.$simpleBindingName".asExplicitJavaReference()
           }
 
         val usedInProject = sourceSetName.withDownStream(project)

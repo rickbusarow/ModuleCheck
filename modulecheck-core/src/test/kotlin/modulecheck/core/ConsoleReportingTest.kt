@@ -19,6 +19,7 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
@@ -150,11 +151,11 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",
@@ -181,11 +182,11 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingResultFactory = { _, _, _ ->
         listOf(
           FindingResult(
-            dependentPath = "dependentPath",
+            dependentPath = StringProjectPath(":dependentPath"),
             problemName = "problemName",
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
-            dependencyPath = "dependencyPath",
+            dependencyIdentifier = "dependencyIdentifier",
             positionOrNull = Position(1, 2),
             buildFile = File("buildFile"),
             message = "message",

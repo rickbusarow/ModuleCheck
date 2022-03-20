@@ -22,6 +22,7 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.sortedByInheritance
 import modulecheck.project.ConfiguredProjectDependency
@@ -40,13 +41,13 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
 
     data class SourceSetDependency(
       val sourceSetName: SourceSetName,
-      val path: String,
+      val path: StringProjectPath,
       val isTestFixture: Boolean
     )
 
     fun ConfiguredProjectDependency.toSourceSetDependency(
       sourceSetName: SourceSetName = configurationName.toSourceSetName(),
-      path: String = this@toSourceSetDependency.path,
+      path: StringProjectPath = this@toSourceSetDependency.path,
       isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
     ) = SourceSetDependency(
       sourceSetName = sourceSetName,

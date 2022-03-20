@@ -17,7 +17,9 @@ package modulecheck.api
 
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.finding.Finding
+import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -27,7 +29,7 @@ import java.io.File
 
 data class DepthFinding(
   override val dependentProject: McProject,
-  override val dependentPath: String,
+  override val dependentPath: StringProjectPath,
   val depth: Int,
   val children: List<DepthFinding>,
   val sourceSetName: SourceSetName,
@@ -39,6 +41,8 @@ data class DepthFinding(
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
   override val findingName: String
     get() = "depth"
+
+  override val dependencyIdentifier: String = ""
 
   private val treeCache = SafeCache<SourceSetName, Set<DepthFinding>>()
 
@@ -52,6 +56,20 @@ data class DepthFinding(
         }
       children.toSet() + this
     }
+  }
+
+  override suspend fun toResult(fixed: Boolean): FindingResult {
+    return FindingResult(
+      dependentPath = dependentPath,
+      problemName = findingName,
+      sourceOrNull = null,
+      configurationName = "",
+      dependencyIdentifier = dependencyIdentifier,
+      positionOrNull = positionOrNull.await(),
+      buildFile = buildFile,
+      message = message,
+      fixed = fixed
+    )
   }
 
   override fun compareTo(other: DepthFinding): Int {

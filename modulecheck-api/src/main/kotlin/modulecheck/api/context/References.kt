@@ -15,7 +15,6 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference
@@ -48,7 +47,6 @@ data class References(
     return delegate.getOrPut(sourceSetName) { fetchNewReferences(sourceSetName) }
   }
 
-  @OptIn(FlowPreview::class)
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
     val allLazy = project.jvmFilesForSourceSetName(sourceSetName)
