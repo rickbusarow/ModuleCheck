@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.specs
+package modulecheck.utils
 
-public inline fun <T : Any, E> T.applyEach(elements: Iterable<E>, block: T.(E) -> Unit): T {
-  elements.forEach { element -> this.block(element) }
-  return this
+infix fun <T> Comparable<T>.isGreaterThan(other: T): Boolean {
+  return compareTo(other) > 0
 }

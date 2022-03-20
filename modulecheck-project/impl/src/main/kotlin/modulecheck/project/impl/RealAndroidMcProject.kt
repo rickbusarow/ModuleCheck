@@ -16,6 +16,7 @@
 package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclarationNames
+import modulecheck.parsing.gradle.BuildFileParser
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
@@ -24,7 +25,6 @@ import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.project.AndroidMcProject
-import modulecheck.project.BuildFileParser
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.Logger

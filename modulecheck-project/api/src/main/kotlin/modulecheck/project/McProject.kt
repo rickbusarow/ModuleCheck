@@ -53,8 +53,6 @@ interface McProject :
   override val hasAGP: Boolean
     get() = this is AndroidMcProject
 
-  val buildFileParser: BuildFileParser
-
   val logger: Logger
   val jvmFileProviderFactory: JvmFileProvider.Factory
 
