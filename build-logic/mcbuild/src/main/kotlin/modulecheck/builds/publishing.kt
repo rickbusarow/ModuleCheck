@@ -23,6 +23,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.apply
+import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
@@ -78,4 +79,8 @@ fun Project.configurePublishing(
         .filterIsInstance<MavenPublication>()
         .forEach { it.artifactId = artifactId }
     }
+
+  tasks.withType(Sign::class.java) {
+    notCompatibleWithConfigurationCache("Signing cannot be cached")
+  }
 }
