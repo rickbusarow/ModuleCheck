@@ -46,6 +46,8 @@ sealed class ProjectPath : Comparable<ProjectPath> {
     return typeSafeValue.compareTo(other.typeSafeValue)
   }
 
+  override fun toString(): String = value
+
   class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
