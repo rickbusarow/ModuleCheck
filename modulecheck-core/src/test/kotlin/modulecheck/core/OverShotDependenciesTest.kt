@@ -27,7 +27,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as api but used in test without auto-correct should fail`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -38,7 +38,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -98,7 +98,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as implementation but used in debug without auto-correct should fail`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -109,7 +109,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -169,7 +169,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as api but used in test with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -180,7 +180,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -241,7 +241,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as implementation should be debugApi`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -252,7 +252,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -313,7 +313,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as implementation should be debugImplementation`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -324,7 +324,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -384,7 +384,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
   @Test
   fun `overshot in non-android as implementation should be debugApi with quotes`() {
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -395,7 +395,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -456,7 +456,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as api but used in test with another testFixture with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -467,7 +467,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName("testFixturesApi"), lib1)
 
       addSource(
@@ -483,7 +483,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addDependency(ConfigurationName.api, lib1)
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
@@ -549,7 +549,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as api with config block and comment with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -560,7 +560,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       addSource(
@@ -575,7 +575,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addDependency(ConfigurationName.api, lib1)
       addDependency(ConfigurationName.testImplementation, lib2)
 
@@ -650,7 +650,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot testFixture as api but used in test with another testFixture with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -662,7 +662,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName("testFixturesApi"), lib1, asTestFixture = true)
 
       buildFile {
@@ -690,7 +690,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addDependency(ConfigurationName.api, lib1, asTestFixture = true)
       addDependency(ConfigurationName.testImplementation, lib2, asTestFixture = true)
 
@@ -766,7 +766,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with a visible unrelated api project dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -777,7 +777,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -841,7 +841,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with a visible unrelated implementation project dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -852,7 +852,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -916,7 +916,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with an empty multi-line dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -927,7 +927,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -989,7 +989,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with an empty single-line dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1000,7 +1000,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1061,7 +1061,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with no dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1072,7 +1072,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1131,7 +1131,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as testImplementation from invisible dependency with only external implementation dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1142,7 +1142,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1206,7 +1206,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot as implementation from invisible dependency with only external api dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1217,7 +1217,7 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file

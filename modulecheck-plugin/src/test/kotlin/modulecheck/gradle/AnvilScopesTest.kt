@@ -104,7 +104,7 @@ class AnvilScopesTest : BasePluginTest() {
         }
       )
     }
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }
@@ -170,7 +170,7 @@ class AnvilScopesTest : BasePluginTest() {
         }
       )
     }
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }
@@ -244,7 +244,7 @@ class AnvilScopesTest : BasePluginTest() {
         }
       )
     }
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }
@@ -317,7 +317,7 @@ class AnvilScopesTest : BasePluginTest() {
         }
       )
     }
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }
@@ -387,7 +387,7 @@ class AnvilScopesTest : BasePluginTest() {
         }
       )
     }
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }

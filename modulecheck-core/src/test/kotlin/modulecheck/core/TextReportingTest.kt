@@ -44,7 +44,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            dependentProject = project(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
         )
@@ -81,7 +81,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            dependentProject = project(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
         )

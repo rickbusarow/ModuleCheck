@@ -30,7 +30,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `unused from kapt configuration without autoCorrect should fail`() {
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       hasKapt = true
 
       addExternalDependency(ConfigurationName.kapt, dagger)
@@ -84,7 +84,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `unused from non-kapt configuration without autoCorrect should pass without changes`() {
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       hasKapt = true
 
       addExternalDependency(ConfigurationName.api, dagger)
@@ -124,7 +124,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `used in main with main kapt should pass without changes`() {
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       hasKapt = true
 
       addExternalDependency(ConfigurationName.kapt, dagger)
@@ -174,7 +174,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `used in test with test kapt should pass without changes`() {
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       hasKapt = true
 
       addExternalDependency("kaptTest".asConfigurationName(), dagger)
@@ -225,7 +225,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
   @Test
   fun `unused with main kapt with autoCorrect and no other processors should remove processor and plugin`() {
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       hasKapt = true
 
       addExternalDependency(ConfigurationName.kapt, dagger)

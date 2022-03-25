@@ -30,7 +30,7 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `kts out-of-order plugins should be sorted`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -60,7 +60,7 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -103,7 +103,7 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -135,7 +135,7 @@ class SortPluginsTest : RunnerTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(

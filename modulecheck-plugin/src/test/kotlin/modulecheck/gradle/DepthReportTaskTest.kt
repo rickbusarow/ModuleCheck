@@ -25,7 +25,7 @@ internal class DepthReportTaskTest : BasePluginTest() {
   @Test
   fun `depth report should be created if depth task is invoked with default settings`() {
 
-    val root = project(":") {
+    val root = kotlinProject(":") {
 
       buildFile {
         """
@@ -65,7 +65,7 @@ internal class DepthReportTaskTest : BasePluginTest() {
           """.trimIndent()
         )
 
-      project(":lib1") {
+      kotlinProject(":lib1") {
         buildFile {
           """
           plugins {
@@ -75,7 +75,7 @@ internal class DepthReportTaskTest : BasePluginTest() {
         }
       }
 
-      project(":lib2") {
+      kotlinProject(":lib2") {
         buildFile {
           """
           plugins {
@@ -88,7 +88,7 @@ internal class DepthReportTaskTest : BasePluginTest() {
         }
       }
 
-      project(":app") {
+      kotlinProject(":app") {
         buildFile {
           """
           plugins {

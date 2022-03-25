@@ -29,9 +29,9 @@ class UnusedDependenciesTest : RunnerTest() {
   @Test
   fun `unused without auto-correct should fail`() {
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -74,9 +74,9 @@ class UnusedDependenciesTest : RunnerTest() {
   @Test
   fun `unused with auto-correct should be commented out`() {
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -121,9 +121,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -167,9 +167,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -207,9 +207,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -247,9 +247,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -295,9 +295,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -341,9 +341,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -390,9 +390,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -440,9 +440,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -491,9 +491,9 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -544,7 +544,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -557,7 +557,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile.writeText(
@@ -608,7 +608,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -621,7 +621,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile.writeText(
@@ -676,7 +676,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -689,7 +689,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile.writeText(
@@ -743,7 +743,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -756,7 +756,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile.writeText(
@@ -809,7 +809,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -820,7 +820,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
       buildFile {
@@ -868,7 +868,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -879,7 +879,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.androidTestImplementation, lib1)
 
       buildFile {
@@ -929,7 +929,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1View.kt",
         """
@@ -940,7 +940,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -997,7 +997,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       platformPlugin.viewBindingEnabled = true
 
       addLayoutFile(
@@ -1008,7 +1008,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -1058,7 +1058,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1069,7 +1069,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -1116,7 +1116,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1128,7 +1128,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
       buildFile {
@@ -1176,7 +1176,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1188,7 +1188,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
       buildFile {
@@ -1233,7 +1233,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1254,7 +1254,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1, asTestFixture = true)
 
       buildFile {
@@ -1317,7 +1317,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1332,7 +1332,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -1379,7 +1379,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
       addResourceFile(
         "values/strings.xml",
@@ -1391,7 +1391,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -1438,7 +1438,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
 
       addResourceFile(
         "values/strings.xml",
@@ -1450,7 +1450,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = androidProject(":lib2", "com.modulecheck.lib2") {
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
 
       buildFile {
@@ -1508,7 +1508,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
     settings.deleteUnused = false
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1519,7 +1519,7 @@ class UnusedDependenciesTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
       anvilGradlePlugin = AnvilGradlePlugin(SemVer(2, 3, 8), true)
 

@@ -45,13 +45,13 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = false
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -66,13 +66,13 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -105,7 +105,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource("src/main/kotlin/MyFile.kt", "")
     }
 
@@ -128,7 +128,7 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
     run(autoCorrect = false).isSuccess shouldBe true
 
@@ -140,20 +140,20 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       maybeAddSourceSet(SourceSetName.TEST)
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    val test1 = project(":test1") {
+    val test1 = kotlinProject(":test1") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addDependency(ConfigurationName.testImplementation, test1)
@@ -230,20 +230,20 @@ internal class GraphVizReportTest : RunnerTest() {
 
     settings.reports.graphs.enabled = true
 
-    val lib1 = project(":lib1")
-    val debug1 = project(":debug1") {
+    val lib1 = kotlinProject(":lib1")
+    val debug1 = kotlinProject(":debug1") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
-    val debug2 = project(":debug2") {
+    val debug2 = kotlinProject(":debug2") {
       addDependency(ConfigurationName.implementation, debug1)
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    val app = project(":app") {
+    val app = kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addDependency(ConfigurationName("debugImplementation"), debug1)

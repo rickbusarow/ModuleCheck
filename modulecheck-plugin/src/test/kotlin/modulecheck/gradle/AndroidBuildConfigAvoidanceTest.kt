@@ -25,7 +25,7 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
 
   @Test
   fun `buildConfig task should be required when not configured in android library module`() {
-    androidProject(":", "com.modulecheck.lib1") {
+    androidLibrary(":", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -75,7 +75,7 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
 
   @Test
   fun `buildConfig task should not be required when disabled in android library module`() {
-    androidProject(":", "com.modulecheck.lib1") {
+    androidLibrary(":", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -114,7 +114,7 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
 
   @Test
   fun `buildConfig task should not be required when disabled in android dynamic-feature module`() {
-    androidProject(":", "com.modulecheck.lib1") {
+    androidLibrary(":", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -152,7 +152,7 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
 
   @Test
   fun `buildConfig task should not be required when disabled in android test module`() {
-    androidProject(":", "com.modulecheck.lib1") {
+    androidLibrary(":", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -194,7 +194,7 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
       )
     }
 
-    androidProject(":app", "com.modulecheck.app") {
+    androidLibrary(":app", "com.modulecheck.app") {
       buildFile {
         """
         plugins {

@@ -38,7 +38,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   fun `unused KotlinAndroidExtensions should pass if check is disabled`() {
     settings.checks.unusedKotlinAndroidExtensions = false
 
-    androidProject(":lib1", "com.modulecheck.lib1") {
+    androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
@@ -49,7 +49,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions without auto-correct should fail`() {
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
     }
@@ -71,7 +71,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `used KotlinAndroidExtensions synthetics should pass and should not be corrected`() {
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
       addSource(
@@ -109,7 +109,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `used KotlinAndroidExtensions parcelize should pass and should not be corrected`() {
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addSource(
         "com/modulecheck/lib1/Source.kt",
@@ -140,7 +140,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions should be fixed`() {
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
     }
 
@@ -161,7 +161,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
 
   @Test
   fun `unused KotlinAndroidExtensions from id should be fixed`() {
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {

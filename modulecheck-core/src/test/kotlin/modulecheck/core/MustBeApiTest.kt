@@ -28,7 +28,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public property from implementation without auto-correct should fail`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -39,7 +39,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -95,7 +95,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public generic property from implementation without auto-correct should fail`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -106,7 +106,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -162,7 +162,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public property from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -173,7 +173,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -228,7 +228,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `switching to api dependency after a blank line should preserve all newlines -- kotlin`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -239,7 +239,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
 
       buildFile {
         """
@@ -259,7 +259,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
 
       buildFile {
         """
@@ -279,7 +279,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib4 = project(":lib4") {
+    val lib4 = kotlinProject(":lib4") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addDependency(ConfigurationName.implementation, lib3)
@@ -358,7 +358,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `switching to api dependency after a blank line should preserve all newlines -- groovy`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -369,7 +369,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
 
       buildFile {
         """
@@ -389,7 +389,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
 
       buildFile {
         """
@@ -409,7 +409,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib4 = project(":lib4") {
+    val lib4 = kotlinProject(":lib4") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addDependency(ConfigurationName.implementation, lib3)
@@ -489,7 +489,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `private property from implementation with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -500,7 +500,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -545,7 +545,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `private property from implementation inside public class with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -556,7 +556,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -603,7 +603,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `internal property from implementation with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -614,7 +614,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -659,7 +659,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public property from dependency in test source should not require API`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -670,7 +670,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.testImplementation, lib1)
 
       buildFile {
@@ -716,7 +716,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `internal property in class from implementation with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -727,7 +727,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -774,7 +774,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `supertype from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -785,7 +785,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -839,7 +839,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with unrelated api dependency declaration`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -850,7 +850,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
 
       buildFile {
         """
@@ -870,7 +870,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -931,7 +931,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with unrelated implementation dependency declaration`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -942,7 +942,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
 
       buildFile {
         """
@@ -962,7 +962,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1023,7 +1023,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with unrelated implementation external dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1034,7 +1034,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1094,7 +1094,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with unrelated api external dependency`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1105,7 +1105,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1165,7 +1165,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with empty multi-line dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1176,7 +1176,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1234,7 +1234,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with empty single-line dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1245,7 +1245,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1302,7 +1302,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `must be api from invisible dependency with no dependencies block`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1313,7 +1313,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
@@ -1368,7 +1368,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `auto-correct should only replace the configuration invocation text`() {
 
-    val lib1 = project(":implementation") {
+    val lib1 = kotlinProject(":implementation") {
       addSource(
         "com/modulecheck/implementation/Lib1Class.kt",
         """
@@ -1379,7 +1379,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1437,7 +1437,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `supertype of internal class from implementation with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1448,7 +1448,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1493,7 +1493,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public return type from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1504,7 +1504,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1558,7 +1558,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `internal return type from implementation with auto-correct should not be changed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1569,7 +1569,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1614,7 +1614,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public argument type from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1625,7 +1625,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1679,7 +1679,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public type argument from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1690,7 +1690,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1744,7 +1744,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public generic bound type from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1755,7 +1755,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1809,7 +1809,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1820,7 +1820,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -1872,7 +1872,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public public properties from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1883,7 +1883,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1894,7 +1894,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
@@ -1959,7 +1959,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public supertypes from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -1970,7 +1970,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -1981,7 +1981,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
@@ -2045,7 +2045,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public return types from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -2056,7 +2056,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -2067,7 +2067,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
@@ -2132,7 +2132,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public argument types from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -2143,7 +2143,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -2154,7 +2154,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
@@ -2219,7 +2219,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public type arguments from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -2230,7 +2230,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -2241,7 +2241,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
@@ -2305,7 +2305,7 @@ class MustBeApiTest : RunnerTest() {
   @Test
   fun `two public generic bound types from implementation with auto-correct should be fixed`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
         """
@@ -2316,7 +2316,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib3 = project(":lib3") {
+    val lib3 = kotlinProject(":lib3") {
       addSource(
         "com/modulecheck/lib3/Lib3Class.kt",
         """
@@ -2327,7 +2327,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib3)
 
