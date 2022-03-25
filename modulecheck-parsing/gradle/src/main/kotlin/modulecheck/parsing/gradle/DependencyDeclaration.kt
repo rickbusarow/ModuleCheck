@@ -16,6 +16,9 @@
 package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
+import modulecheck.utils.letIf
+import modulecheck.utils.prefixIfNot
+import modulecheck.utils.remove
 import modulecheck.utils.replaceDestructured
 
 sealed interface DependencyDeclaration : Declaration {
@@ -99,12 +102,22 @@ data class ModuleDependencyDeclaration(
       configName.value
     }
 
-    val newDeclaration = declarationText.addOrRemoveTestFixtures(testFixtures)
+    val newModule = newModulePath != projectPath
+    val precedingWhitespace = "^\\s*".toRegex()
+      .find(statementWithSurroundingText)?.value ?: ""
+
+    val newDeclaration = declarationText
+      .letIf(newModule) {
+        // strip out any config block
+        it.remove(""" *\{[\s\S]*}""".toRegex())
+      }
+      .addOrRemoveTestFixtures(testFixtures)
       .replaceFirst(configToReplace, newConfigText)
       .replaceFirst(projectPath.value, newModulePath.value)
       .maybeFixExtraQuotes()
 
-    val newStatement = statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
+    val newStatement = if (newModule) newDeclaration.prefixIfNot(precedingWhitespace)
+    else statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
 
     return copy(
       projectPath = newModulePath,

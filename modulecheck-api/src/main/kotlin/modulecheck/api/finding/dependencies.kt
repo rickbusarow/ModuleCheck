@@ -24,11 +24,10 @@ import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan
-import modulecheck.utils.remove
+import modulecheck.utils.prefixIfNot
 import modulecheck.utils.replaceDestructured
 import modulecheck.utils.sortedWith
-import org.jetbrains.kotlin.util.prefixIfNot
-import org.jetbrains.kotlin.util.suffixIfNot
+import modulecheck.utils.suffixIfNot
 
 fun McProject.addDependency(
   cpd: ConfiguredProjectDependency,
@@ -92,10 +91,8 @@ suspend fun McProject.closestDeclarationOrNull(
               .find(declaration.statementWithSurroundingText)?.value ?: ""
 
             (declaration as? ModuleDependencyDeclaration)?.copy(
-              statementWithSurroundingText = declaration.declarationText
-                .prefixIfNot(precedingWhitespace)
-                // strip out any config block
-                .remove(""" *\{[\s\S]*}""".toRegex()),
+              statementWithSurroundingText = declaration.statementWithSurroundingText
+                .prefixIfNot(precedingWhitespace),
               suppressed = emptyList()
             )
           }

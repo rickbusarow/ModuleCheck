@@ -1443,6 +1443,220 @@ class InheritedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `inherited from dependency with config block should not duplicate config block`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib2")) {
+            exclude(group = "androidx.appcompat")
+          }
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val lib1Class = Lib1Class()
+        val lib2Class = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          api(project(path = ":lib2")) {
+            exclude(group = "androidx.appcompat")
+          }
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited from dependency with comments should not duplicate the comments`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addSource(
+        "com/modulecheck/lib1/Lib1Class.kt",
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib2/Lib2Class.kt",
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          // preceding comment
+          api(project(path = ":lib2")) // trailing comment
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/Lib3Class.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val lib1Class = Lib1Class()
+        val lib2Class = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          // preceding comment
+          api(project(path = ":lib2")) // trailing comment
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `inherited as in main but also used in debug should only be added to main`() {
 
     val lib1 = kotlinProject(":lib1") {
