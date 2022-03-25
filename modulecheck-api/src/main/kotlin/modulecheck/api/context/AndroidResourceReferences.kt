@@ -21,9 +21,9 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.UnqualifiedJavaAndroidResourceReference
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.LOW
@@ -46,12 +46,12 @@ data class AndroidResourceReferences(
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
-    val androidRFqNameOrNull = (project as? AndroidMcProject)
-      ?.androidRFqNameForSourceSetName(sourceSetName)
+    if (!project.isAndroid()) return emptyLazySet()
+
+    val androidRFqNameOrNull = project.androidRFqNameForSourceSetName(sourceSetName)
       ?: return emptyLazySet()
 
-    val packagePrefix = (project as? AndroidMcProject)
-      ?.androidBasePackagesForSourceSetName(sourceSetName)
+    val packagePrefix = project.androidBasePackagesForSourceSetName(sourceSetName)
       ?.let { "$it." }
       ?: return emptyLazySet()
 

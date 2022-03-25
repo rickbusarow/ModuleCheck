@@ -15,22 +15,21 @@
 
 package modulecheck.gradle.internal
 
-import com.android.build.api.dsl.DynamicFeatureExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.TestExtension
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.TestedExtension
+import modulecheck.gradle.GradleProject
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
-import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import java.io.File
 
-val Project.srcRoot get() = File("$projectDir/src")
-val Project.mainJavaRoot get() = File("$srcRoot/main/java")
-val Project.androidTestJavaRoot get() = File("$srcRoot/androidTest/java")
-val Project.testJavaRoot get() = File("$srcRoot/test/java")
-val Project.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
-val Project.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
-val Project.testKotlinRoot get() = File("$srcRoot/test/kotlin")
+val GradleProject.srcRoot get() = File("$projectDir/src")
+val GradleProject.mainJavaRoot get() = File("$srcRoot/main/java")
+val GradleProject.androidTestJavaRoot get() = File("$srcRoot/androidTest/java")
+val GradleProject.testJavaRoot get() = File("$srcRoot/test/java")
+val GradleProject.mainKotlinRoot get() = File("$srcRoot/main/kotlin")
+val GradleProject.androidTestKotlinRoot get() = File("$srcRoot/androidTest/kotlin")
+val GradleProject.testKotlinRoot get() = File("$srcRoot/test/kotlin")
 
 fun FileTreeWalk.dirs(): Sequence<File> = asSequence().filter { it.isDirectory }
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
@@ -42,12 +41,12 @@ fun createFile(
   File(path).writeText(text)
 }
 
-fun Project.isAndroid(): Boolean = extensions.findByType(TestedExtension::class.java) != null
+fun GradleProject.isAndroid(): Boolean = extensions.findByType(TestedExtension::class.java) != null
 
-fun Project.testedExtensionOrNull(): TestedExtension? = extensions
+fun GradleProject.testedExtensionOrNull(): TestedExtension? = extensions
   .findByType(TestedExtension::class.java)
 
-fun Project.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
+fun GradleProject.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
   ?.sourceSets
   ?.associate { it.name.asSourceSetName() to it.manifest.srcFile }
 
@@ -56,7 +55,7 @@ fun Project.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNul
  *   `$projectDir/src/main/AndroidManifest.xml`, but if the position has
  *   been changed in the Android extension, the new path will be used.
  */
-fun Project.mainAndroidManifest() = testedExtensionOrNull()
+fun GradleProject.mainAndroidManifest() = testedExtensionOrNull()
   ?.sourceSets
   ?.getByName("main")
   ?.manifest
@@ -66,7 +65,7 @@ fun Project.mainAndroidManifest() = testedExtensionOrNull()
  * @return true if the project is an Android project and no manifest file exists at the location
  *   defined in the Android extension
  */
-fun Project.isMissingManifestFile(): Boolean {
+fun GradleProject.isMissingManifestFile(): Boolean {
 
   return mainAndroidManifest()
     // the file must be declared, but not exist in order for this to be triggered
@@ -78,13 +77,25 @@ fun Project.isMissingManifestFile(): Boolean {
  * @return true if the project is an Android library, dynamic feature, or test extensions module and
  *   BuildConfig generation has NOT been explicitly disabled.
  */
-fun Project.generatesBuildConfig(): Boolean {
+fun GradleProject.generatesBuildConfig(): Boolean {
   @Suppress("UnstableApiUsage")
-  return extensions.findByType(LibraryExtension::class.java)
+  return extensions.findByType(CommonExtension::class.java)
     ?.let { it.buildFeatures.buildConfig != false }
-    ?: extensions.findByType(DynamicFeatureExtension::class.java)
-      ?.let { it.buildFeatures.buildConfig != false }
-    ?: extensions.findByType(TestExtension::class.java)
-      ?.let { it.buildFeatures.buildConfig != false }
-    ?: true
+    .orPropertyDefault(
+      gradleProject = this,
+      key = "android.defaults.buildfeatures.buildconfig",
+      defaultValue = true
+    )
+}
+
+fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
+  extensions.findByName("kotlin") as? KotlinProjectExtension
+
+fun Boolean?.orPropertyDefault(
+  gradleProject: GradleProject,
+  key: String,
+  defaultValue: Boolean
+): Boolean {
+  if (this != null) return this
+  return gradleProject.findProperty(key) as? Boolean ?: defaultValue
 }

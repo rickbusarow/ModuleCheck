@@ -17,10 +17,9 @@ package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclarationNames
 import modulecheck.parsing.gradle.BuildFileParser
-import modulecheck.parsing.gradle.Configurations
+import modulecheck.parsing.gradle.PlatformPlugin
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclarationName
@@ -39,10 +38,8 @@ class RealMcProject(
   override val path: StringProjectPath,
   override val projectDir: File,
   override val buildFile: File,
-  override val configurations: Configurations,
   override val hasKapt: Boolean,
   override val hasTestFixturesPlugin: Boolean,
-  override val sourceSets: SourceSets,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val logger: Logger,
@@ -50,7 +47,8 @@ class RealMcProject(
   override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>,
-  buildFileParserFactory: BuildFileParser.Factory
+  buildFileParserFactory: BuildFileParser.Factory,
+  override val platformPlugin: PlatformPlugin
 ) : McProject {
 
   override val projectDependencies: ProjectDependencies by projectDependencies
@@ -73,7 +71,7 @@ class RealMcProject(
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
-    if (other !is RealMcProject) return false
+    if (other !is McProject) return false
 
     if (path != other.path) return false
 
@@ -85,7 +83,7 @@ class RealMcProject(
   }
 
   override fun toString(): String {
-    return "McProject('$path')"
+    return "${this::class.java.simpleName}('$path')"
   }
 
   override suspend fun resolveFqNameOrNull(

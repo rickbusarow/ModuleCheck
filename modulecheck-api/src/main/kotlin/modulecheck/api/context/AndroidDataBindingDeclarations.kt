@@ -18,9 +18,9 @@ package modulecheck.api.context
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.capitalize
@@ -39,7 +39,7 @@ data class AndroidDataBindingDeclarations(
 
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
 
-    if (project !is AndroidMcProject) return emptyLazySet()
+    if (!project.isAndroid()) return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
 

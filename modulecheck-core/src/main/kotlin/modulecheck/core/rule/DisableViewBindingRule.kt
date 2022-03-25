@@ -24,7 +24,6 @@ import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.existsOrNull
@@ -38,15 +37,15 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
 
   @Suppress("ReturnCount")
   override suspend fun check(project: McProject): List<DisableViewBindingGenerationFinding> {
-    val androidProject = project as? AndroidMcProject ?: return emptyList()
+    val androidPlugin = project.platformPlugin.asAndroidOrNull() ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
     @Suppress("UnstableApiUsage")
-    if (!androidProject.viewBindingEnabled) return emptyList()
+    if (!androidPlugin.viewBindingEnabled) return emptyList()
 
     val dependents = lazyDeferred { project.dependents() }
 
-    project.sourceSets.keys
+    androidPlugin.sourceSets.keys
       .forEach { sourceSetName ->
 
         val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)

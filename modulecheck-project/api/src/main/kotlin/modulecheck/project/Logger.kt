@@ -98,7 +98,7 @@ data class Report(val entries: List<ReportEntry>) {
     }
   }
 
-  class ReportBuilderScope(
+  class ReportBuilder(
     private val entries: MutableList<ReportEntry> = mutableListOf()
   ) {
 
@@ -145,10 +145,10 @@ data class Report(val entries: List<ReportEntry>) {
 
   companion object {
 
-    fun build(buildAction: ReportBuilderScope.() -> Unit): Report {
+    fun build(buildAction: ReportBuilder.() -> Unit): Report {
       val entries = mutableListOf<ReportEntry>()
 
-      ReportBuilderScope(entries).buildAction()
+      ReportBuilder(entries).buildAction()
 
       return Report(entries)
     }

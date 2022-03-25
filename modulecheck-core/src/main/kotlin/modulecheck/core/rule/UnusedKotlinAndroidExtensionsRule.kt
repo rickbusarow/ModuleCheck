@@ -20,7 +20,6 @@ import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.utils.any
 
@@ -37,12 +36,12 @@ class UnusedKotlinAndroidExtensionsRule : ModuleCheckRule<UnusedPluginFinding> {
   private val syntheticReferencePackage = "kotlinx.android.synthetic".asExplicitKotlinReference()
 
   override suspend fun check(project: McProject): List<UnusedPluginFinding> {
-    val androidProject = project as? AndroidMcProject ?: return emptyList()
+    val androidPlugin = project.platformPlugin.asAndroidOrNull() ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
-    if (!androidProject.kotlinAndroidExtensionEnabled) return emptyList()
+    if (!androidPlugin.kotlinAndroidExtensionEnabled) return emptyList()
 
-    val usedInProject = project.sourceSets.keys
+    val usedInProject = androidPlugin.sourceSets.keys
       .any { sourceSetName ->
         project.referencesForSourceSetName(sourceSetName)
           .any { it == parcelizeImport || it.startsWith(syntheticReferencePackage) }

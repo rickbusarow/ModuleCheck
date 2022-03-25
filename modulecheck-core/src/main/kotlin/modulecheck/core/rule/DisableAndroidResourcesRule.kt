@@ -19,7 +19,7 @@ import modulecheck.api.context.resSourceFiles
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
-import modulecheck.project.AndroidMcProject
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
 
 class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
@@ -31,12 +31,13 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
 
   @Suppress("ReturnCount")
   override suspend fun check(project: McProject): List<UnusedResourcesGenerationFinding> {
-    val androidProject = project as? AndroidMcProject ?: return emptyList()
 
-    @Suppress("UnstableApiUsage")
-    if (!androidProject.androidResourcesEnabled) return emptyList()
+    val resourcesEnabled = (project.platformPlugin as? AndroidLibraryPlugin)
+      ?.androidResourcesEnabled == true
 
-    val noResources = androidProject.resSourceFiles().all().isEmpty()
+    if (!resourcesEnabled) return emptyList()
+
+    val noResources = project.resSourceFiles().all().isEmpty()
 
     return if (noResources) {
       listOf(

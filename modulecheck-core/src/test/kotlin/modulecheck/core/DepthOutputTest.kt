@@ -143,7 +143,7 @@ internal class DepthOutputTest : RunnerTest() {
   fun `debug source set depth should not be reported even if it's longer`() {
 
     val lib1 = project(":lib1")
-    val debug1 = project(":debug1") {}
+    val debug1 = project(":debug1")
 
     val lib2 = project(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)

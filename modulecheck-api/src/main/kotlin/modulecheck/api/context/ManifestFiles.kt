@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.parsing.android.XmlFile
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.AndroidMcProject
+import modulecheck.parsing.gradle.isAndroid
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
@@ -32,14 +32,17 @@ data class ManifestFiles(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): XmlFile.ManifestFile? {
-    if (project !is AndroidMcProject) return null
+
+    val platformPlugin = project.platformPlugin
+
+    if (!platformPlugin.isAndroid()) return null
 
     return delegate.getOrPut(sourceSetName) {
       sourceSetName
         .withUpstream(project)
         .firstNotNullOfOrNull { sourceSetOrUpstream ->
-          project.manifests[sourceSetOrUpstream]
-            ?.existsOrNull()
+
+          platformPlugin.manifests[sourceSetOrUpstream]?.existsOrNull()
         }
         ?.let { file -> XmlFile.ManifestFile(file) }
     }

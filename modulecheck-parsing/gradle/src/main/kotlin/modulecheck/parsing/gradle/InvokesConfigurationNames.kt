@@ -29,14 +29,6 @@ interface InvokesConfigurationNames :
   HasConfigurations,
   HasDependencyDeclarations
 
-interface PluginAware {
-
-  val hasKapt: Boolean
-  val hasTestFixturesPlugin: Boolean
-  val hasAnvil: Boolean
-  val hasAGP: Boolean
-}
-
 interface HasBuildFile {
   val buildFile: File
 

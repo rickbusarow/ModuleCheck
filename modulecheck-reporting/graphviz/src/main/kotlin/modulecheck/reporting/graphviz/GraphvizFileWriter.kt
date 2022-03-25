@@ -37,8 +37,9 @@ class GraphvizFileWriter @Inject constructor(
         // Don't generate a graph if the SourceSet doesn't exist at all.
         // For example, if it's an Android project there will be an `androidTest` SourceSet,
         // but if there are no `androidTestImplementation` dependencies and no files, then skip it.
-        it.depth != 0 ||
-          it.dependentProject.sourceSets[it.sourceSetName]?.hasExistingSourceFiles == true
+        it.depth != 0 || it.dependentProject
+          .sourceSets[it.sourceSetName]
+          ?.hasExistingSourceFiles == true
       }
       // Generate the low-depth graphs first, because their data is memoized and used to create the
       // graphs for high-depth projects.
