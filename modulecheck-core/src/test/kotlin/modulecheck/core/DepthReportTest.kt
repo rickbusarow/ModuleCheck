@@ -43,13 +43,13 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = false
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -64,13 +64,13 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -96,15 +96,15 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       addSource("src/main/kotlin/MyFile.kt", "")
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -134,13 +134,13 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -166,15 +166,15 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       maybeAddSourceSet(SourceSetName.TEST)
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -207,7 +207,7 @@ internal class DepthReportTest : RunnerTest() {
     settings.checks.depths = true
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
 
       addSource(
         "com/modulecheck/lib1/Lib1Class.kt",
@@ -219,7 +219,7 @@ internal class DepthReportTest : RunnerTest() {
       )
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       addSource(
@@ -244,7 +244,7 @@ internal class DepthReportTest : RunnerTest() {
       }
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
 
@@ -310,20 +310,20 @@ internal class DepthReportTest : RunnerTest() {
 
     settings.reports.depths.enabled = true
 
-    val lib1 = project(":lib1")
-    val debug1 = project(":debug1") {
+    val lib1 = kotlinProject(":lib1")
+    val debug1 = kotlinProject(":debug1") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
-    val debug2 = project(":debug2") {
+    val debug2 = kotlinProject(":debug2") {
       addDependency(ConfigurationName.implementation, debug1)
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addSourceSet(SourceSetName("debug"))

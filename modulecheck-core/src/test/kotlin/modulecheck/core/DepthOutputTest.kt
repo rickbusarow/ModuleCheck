@@ -30,13 +30,13 @@ internal class DepthOutputTest : RunnerTest() {
   @Test
   fun `main source set depths should be reported`() {
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -64,9 +64,9 @@ internal class DepthOutputTest : RunnerTest() {
 
     settings.checks.depths = true
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    project(":lib2") {
+    kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
       buildFile {
@@ -108,13 +108,13 @@ internal class DepthOutputTest : RunnerTest() {
   @Test
   fun `test source set depths should not be reported`() {
 
-    val lib1 = project(":lib1")
+    val lib1 = kotlinProject(":lib1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
     }
@@ -142,18 +142,18 @@ internal class DepthOutputTest : RunnerTest() {
   @Test
   fun `debug source set depth should not be reported even if it's longer`() {
 
-    val lib1 = project(":lib1")
-    val debug1 = project(":debug1")
+    val lib1 = kotlinProject(":lib1")
+    val debug1 = kotlinProject(":debug1")
 
-    val lib2 = project(":lib2") {
+    val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
     }
-    val debug2 = project(":debug2") {
+    val debug2 = kotlinProject(":debug2") {
       addDependency(ConfigurationName.implementation, debug1)
       addDependency(ConfigurationName.implementation, lib2)
     }
 
-    project(":app") {
+    kotlinProject(":app") {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
       addDependency(ConfigurationName("debugImplementation"), debug2)

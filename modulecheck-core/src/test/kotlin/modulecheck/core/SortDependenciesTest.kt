@@ -32,7 +32,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts out-of-order dependencies should be sorted`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -97,7 +97,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts multi-line comments should move with their declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -142,7 +142,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts multi-line kdoc comments should move with their declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -187,7 +187,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts preceding comments should move with their declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -228,7 +228,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts trailing comments should move with their declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -267,7 +267,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `kts sorting should be idempotent`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile {
         """
       plugins {
@@ -367,7 +367,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy out-of-order plugins should be sorted`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -436,7 +436,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy multi-line comments should move with declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -483,7 +483,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy multi-line javadoc comments should move with declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -530,7 +530,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy preceding comments should move with declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -573,7 +573,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy trailing comments should move with declarations`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(
@@ -614,7 +614,7 @@ class SortDependenciesTest : RunnerTest() {
   @Test
   fun `groovy sorting should be idempotent`() {
 
-    val lib1 = project(":lib1") {
+    val lib1 = kotlinProject(":lib1") {
       buildFile.delete()
       buildFile = File(projectDir, "build.gradle")
       buildFile.writeGroovy(

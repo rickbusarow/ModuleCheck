@@ -64,7 +64,7 @@ class ConfigValidationTest : BasePluginTest() {
 
   @Test
   fun `Kotlin configuration`() {
-    project(":") {
+    kotlinProject(":") {
       buildFile.writeKotlin(
         """
         plugins {
@@ -147,7 +147,7 @@ class ConfigValidationTest : BasePluginTest() {
 
   @Test
   fun `Groovy configuration`() {
-    project(":") {
+    kotlinProject(":") {
       buildFile.delete()
       buildFile = projectDir.child("build.gradle")
       buildFile.writeGroovy(

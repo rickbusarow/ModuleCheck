@@ -29,7 +29,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `resource generation is used in contributing module with no changes`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -70,7 +70,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `resource generation is used in dependent module with no changes`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -92,7 +92,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       )
     }
 
-    androidProject(":lib2", "com.modulecheck.lib2") {
+    androidLibrary(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
       platformPlugin.androidResourcesEnabled = false
 
@@ -125,7 +125,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without autocorrect should fail and be reported`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -155,7 +155,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when scoped and then qualified should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -191,7 +191,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without buildFeatures block should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -230,7 +230,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without android block should add android block under existing plugins block`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -266,7 +266,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation without android or plugins block should add android block above dependencies block`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         apply(plugin = "com.android.library")
@@ -304,7 +304,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when fully qualified should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -336,7 +336,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when qualified and then scoped should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -372,7 +372,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation when fully scoped should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -412,7 +412,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation with autocorrect and no explicit buildFeatures property should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
@@ -448,7 +448,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   @Test
   fun `unused resource generation with autocorrect and no android block should be fixed`() {
 
-    val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {

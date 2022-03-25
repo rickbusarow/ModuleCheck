@@ -25,7 +25,7 @@ internal class GraphReportTaskTest : BasePluginTest() {
   @Test
   fun `graphs report should be created if graph task is invoked with default settings`() {
 
-    val root = project(":") {
+    val root = kotlinProject(":") {
 
       buildFile {
         """
@@ -65,7 +65,7 @@ internal class GraphReportTaskTest : BasePluginTest() {
           """.trimIndent()
         )
 
-      project(":lib1") {
+      kotlinProject(":lib1") {
         buildFile {
           """
           plugins {
@@ -75,7 +75,7 @@ internal class GraphReportTaskTest : BasePluginTest() {
         }
       }
 
-      project(":lib2") {
+      kotlinProject(":lib2") {
         buildFile {
           """
           plugins {
@@ -88,7 +88,7 @@ internal class GraphReportTaskTest : BasePluginTest() {
         }
       }
 
-      project(":app") {
+      kotlinProject(":app") {
         buildFile {
           """
           plugins {

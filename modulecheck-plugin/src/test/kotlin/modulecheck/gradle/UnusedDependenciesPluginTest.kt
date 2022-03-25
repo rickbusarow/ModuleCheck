@@ -84,7 +84,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
       )
     }
 
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       applyEach(projects) { project ->
         addSubproject(project)
       }
@@ -196,7 +196,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
           // https://github.com/GradleUp/auto-manifest
           // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
           // registered, and the manifest location is never changed from the default.  When I open
-          // the generated project dir and execute the task from terminal, it works fine...
+          // the generated kotlinProject dir and execute the task from terminal, it works fine...
           // This does the same thing, but uses a different default directory.
           addBlock(
             """
@@ -237,7 +237,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
       )
     }
 
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       addSubproject(appProject)
       addSubproject(androidSub1)
       addSettingsSpec(projectSettings.build())
@@ -311,7 +311,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
       )
     }
 
-    ProjectSpec("project") {
+    ProjectSpec("kotlinProject") {
       addSubproject(androidSub1)
       addSubproject(androidSub2)
       addSettingsSpec(projectSettings.build())

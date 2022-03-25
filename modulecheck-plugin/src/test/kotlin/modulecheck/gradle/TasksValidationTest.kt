@@ -24,7 +24,7 @@ class TasksValidationTest : BasePluginTest() {
 
   @Test
   fun `all tasks with descriptions`() {
-    project(":") {
+    kotlinProject(":") {
       buildFile.writeKotlin(
         """
         plugins {

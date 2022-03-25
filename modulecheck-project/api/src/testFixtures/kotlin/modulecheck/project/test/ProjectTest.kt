@@ -143,15 +143,6 @@ abstract class ProjectTest : BaseTest() {
       .toRealMcProject()
   }
 
-  @Deprecated(
-    "use `kotlinProject`",
-    ReplaceWith("kotlinProject(path, config)")
-  )
-  fun project(
-    path: String,
-    config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
-  ): McProject = kotlinProject(path, config)
-
   fun kotlinProject(
     path: String,
     config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
@@ -184,16 +175,6 @@ abstract class ProjectTest : BaseTest() {
       config = config
     )
   }
-
-  @Deprecated(
-    "use `androidLibrary`",
-    ReplaceWith("androidLibrary(path, androidPackage, config)")
-  )
-  fun androidProject(
-    path: String,
-    androidPackage: String,
-    config: McProjectBuilder<AndroidLibraryPluginBuilder>.() -> Unit = {}
-  ): McProject = androidLibrary(path, androidPackage, config)
 
   fun androidLibrary(
     path: String,
@@ -259,7 +240,7 @@ abstract class ProjectTest : BaseTest() {
   fun simpleProject(
     buildFileText: String? = null,
     path: String = ":lib"
-  ) = project(path) {
+  ) = this.kotlinProject(path) {
 
     if (buildFileText != null) {
       buildFile.writeText(buildFileText)
@@ -268,9 +249,9 @@ abstract class ProjectTest : BaseTest() {
     addSource(
       "com/lib1/Lib1Class.kt",
       """
-        package com.lib1
+      package com.lib1
 
-        class Lib1Class
+      class Lib1Class
       """,
       SourceSetName.MAIN
     )
@@ -316,7 +297,7 @@ abstract class ProjectTest : BaseTest() {
             if (unresolved) {
               fail(
                 """
-                |Project ${project.path} has a reference which must be declared in a dependency project.
+                |Project ${project.path} has a reference which must be declared in a dependency kotlinProject.
                 |
                 |-- reference:
                 |   $referenceName
