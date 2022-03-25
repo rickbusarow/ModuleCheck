@@ -16,9 +16,9 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
 import modulecheck.utils.SafeCache
 
 data class AndroidBasePackages(
@@ -30,7 +30,7 @@ data class AndroidBasePackages(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): String? {
-    if (project !is AndroidMcProject) return null
+    if (!project.isAndroid()) return null
 
     return delegate.getOrPut(sourceSetName) {
 

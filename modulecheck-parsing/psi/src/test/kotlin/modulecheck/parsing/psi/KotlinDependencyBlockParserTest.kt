@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import io.kotest.common.runBlocking
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration

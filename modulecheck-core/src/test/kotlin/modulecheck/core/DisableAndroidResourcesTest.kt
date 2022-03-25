@@ -94,7 +94,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
 
     androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
-      androidResourcesEnabled = false
+      platformPlugin.androidResourcesEnabled = false
 
       addSource(
         "com/modulecheck/lib2/Source.kt",

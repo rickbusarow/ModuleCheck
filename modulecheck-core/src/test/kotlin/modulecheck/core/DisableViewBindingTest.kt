@@ -61,7 +61,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency(ConfigurationName.api, lib1)
-      viewBindingEnabled = false
+      platformPlugin.viewBindingEnabled = false
 
       addSource(
         "com/modulecheck/lib2/Source.kt",
@@ -125,7 +125,7 @@ class DisableViewBindingTest : RunnerTest() {
 
     androidProject(":lib2", "com.modulecheck.lib2") {
       addDependency("debugImplementation".asConfigurationName(), lib1)
-      viewBindingEnabled = false
+      platformPlugin.viewBindingEnabled = false
 
       addSource(
         "com/modulecheck/lib2/Source.kt",
@@ -247,7 +247,8 @@ class DisableViewBindingTest : RunnerTest() {
       // Setting a debug base package, but it's never used.  The inferred FqName for the generated
       // binding should still reflect the main source set even though it's evaluating a file in
       // debug.
-      manifests[SourceSetName.DEBUG] = projectDir.child("src/debug/AndroidManifest.xml")
+      platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
+        .child("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
       addSource(
@@ -310,7 +311,8 @@ class DisableViewBindingTest : RunnerTest() {
         SourceSetName.DEBUG
       )
 
-      manifests[SourceSetName.DEBUG] = projectDir.child("src/debug/AndroidManifest.xml")
+      platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
+        .child("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
       addSource(

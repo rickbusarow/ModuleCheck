@@ -17,7 +17,7 @@ package modulecheck.runtime.test
 
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
-import io.kotest.common.runBlocking
+import kotlinx.coroutines.runBlocking
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
 import modulecheck.api.finding.FindingResultFactory

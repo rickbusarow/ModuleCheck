@@ -15,6 +15,7 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.HasBuildFile
 import modulecheck.parsing.gradle.HasConfigurations
 import modulecheck.parsing.gradle.HasDependencyDeclarations
@@ -22,11 +23,12 @@ import modulecheck.parsing.gradle.HasPath
 import modulecheck.parsing.gradle.InvokesConfigurationNames
 import modulecheck.parsing.gradle.PluginAware
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.gradle.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
-import kotlin.contracts.contract
 
 @Suppress("TooManyFunctions")
 interface McProject :
@@ -40,6 +42,12 @@ interface McProject :
   InvokesConfigurationNames,
   PluginAware {
 
+  override val configurations: Configurations
+    get() = platformPlugin.configurations
+
+  override val sourceSets: SourceSets
+    get() = platformPlugin.sourceSets
+
   val projectDir: File
 
   val projectDependencies: ProjectDependencies
@@ -49,9 +57,6 @@ interface McProject :
 
   override val hasAnvil: Boolean
     get() = anvilGradlePlugin != null
-
-  override val hasAGP: Boolean
-    get() = this is AndroidMcProject
 
   val logger: Logger
   val jvmFileProviderFactory: JvmFileProvider.Factory
@@ -81,16 +86,4 @@ private suspend fun McProject.configurationInvocations(): Set<String> {
     .toSet()
 }
 
-fun McProject.isAndroid(): Boolean {
-  contract {
-    returns(true) implies (this@isAndroid is AndroidMcProject)
-  }
-  return this is AndroidMcProject
-}
-
-interface AndroidMcProject : McProject {
-  val androidResourcesEnabled: Boolean
-  val viewBindingEnabled: Boolean
-  val kotlinAndroidExtensionEnabled: Boolean
-  val manifests: Map<SourceSetName, File>
-}
+fun McProject.isAndroid(): Boolean = platformPlugin.isAndroid()

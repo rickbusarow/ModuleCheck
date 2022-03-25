@@ -16,21 +16,25 @@
 package modulecheck.project.test
 
 import io.kotest.assertions.fail
-import io.kotest.common.runBlocking
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
-import modulecheck.api.context.androidBasePackagesForSourceSetName
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.references
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidApplicationPlugin
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidTestPlugin
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.JvmPlatformPlugin.JavaLibraryPlugin
+import modulecheck.parsing.gradle.JvmPlatformPlugin.KotlinJvmPlugin
+import modulecheck.parsing.gradle.PlatformPlugin
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
@@ -38,7 +42,6 @@ import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
 import modulecheck.utils.emptyDataSource
 import modulecheck.utils.lazySet
-import modulecheck.utils.requireNotNull
 import java.io.File
 import java.nio.charset.Charset
 
@@ -64,102 +67,178 @@ abstract class ProjectTest : BaseTest() {
     }
   }
 
-  fun project(path: String, config: McProjectBuilderScope.() -> Unit = {}): McProject {
+  fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
 
-    return createProject(projectCache, testProjectDir, path, config)
+    return when (this) {
+      is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
+        viewBindingEnabled = viewBindingEnabled,
+        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+        manifests = manifests.toMutableMap(),
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+      is AndroidDynamicFeaturePlugin -> AndroidDynamicFeaturePluginBuilder(
+        viewBindingEnabled = viewBindingEnabled,
+        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+        buildConfigEnabled = buildConfigEnabled,
+        manifests = manifests.toMutableMap(),
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+      is AndroidLibraryPlugin -> AndroidLibraryPluginBuilder(
+        viewBindingEnabled = viewBindingEnabled,
+        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+        buildConfigEnabled = buildConfigEnabled,
+        androidResourcesEnabled = androidResourcesEnabled,
+        manifests = manifests.toMutableMap(),
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+      is AndroidTestPlugin -> AndroidTestPluginBuilder(
+        viewBindingEnabled = viewBindingEnabled,
+        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+        buildConfigEnabled = buildConfigEnabled,
+        manifests = manifests.toMutableMap(),
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+      is JavaLibraryPlugin -> JavaLibraryPluginBuilder(
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+      is KotlinJvmPlugin -> KotlinJvmPluginBuilder(
+        sourceSets = sourceSets.toBuilderMap(),
+        configurations = configurations.toBuilderMap()
+      )
+    }
   }
 
-  fun McProject.toBuilder(): McProjectBuilderScope {
+  inline fun <reified P : PlatformPluginBuilder<*>> McProject.toProjectBuilder():
+    McProjectBuilder<P> {
 
-    return JvmMcProjectBuilderScope(
+    return McProjectBuilder(
       path = path,
       projectDir = projectDir,
       buildFile = buildFile,
-      configurations = configurations.toMutableMap(),
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       hasKapt = hasKapt,
-      sourceSets = sourceSets.toMutableMap(),
       anvilGradlePlugin = anvilGradlePlugin,
-      projectCache = projectCache
+      projectCache = projectCache,
+      hasTestFixturesPlugin = hasTestFixturesPlugin,
+      javaSourceVersion = javaSourceVersion,
+      platformPlugin = platformPlugin.toBuilder() as P
     )
   }
 
-  fun AndroidMcProject.toBuilder(): AndroidMcProjectBuilderScope = runBlocking {
-
-    androidBasePackagesForSourceSetName(SourceSetName.MAIN)
-      .requireNotNull {
-        "The receiver Android project's base package property can't be null here."
-      }
-
-    RealAndroidMcProjectBuilderScope(
-      path = path,
-      projectDir = projectDir,
-      buildFile = buildFile,
-      androidResourcesEnabled = androidResourcesEnabled,
-      viewBindingEnabled = viewBindingEnabled,
-      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-      manifests = manifests.toMutableMap(),
-      configurations = configurations.toMutableMap(),
-      projectDependencies = projectDependencies,
-      externalDependencies = externalDependencies,
-      hasKapt = hasKapt,
-      sourceSets = sourceSets.toMutableMap(),
-      anvilGradlePlugin = anvilGradlePlugin,
-      projectCache = projectCache
-    )
-  }
-
-  fun McProject.edit(config: McProjectBuilderScope.() -> Unit = {}): McProject {
-    return toBuilder()
-      .also { it.config() }
-      .toProject()
-  }
-
-  fun AndroidMcProject.edit(config: AndroidMcProjectBuilderScope.() -> Unit = {}): McProject {
-    return toBuilder()
-      .also { it.config() }
-      .toProject()
-  }
-
-  fun McProjectBuilderScope.childProject(
-    path: String,
-    config: McProjectBuilderScope.() -> Unit = {}
+  inline fun <
+    reified T : McProjectBuilder<P>,
+    reified P : PlatformPluginBuilder<G>,
+    G : PlatformPlugin> McProject.edit(
+    config: McProjectBuilder<P>.() -> Unit = {}
   ): McProject {
 
-    val appendedPath = (this@childProject.path.value + path).replace(":{2,}".toRegex(), ":")
-
-    return createProject(projectCache, testProjectDir, appendedPath, config)
+    return toProjectBuilder<P>()
+      .also { it.config() }
+      .toRealMcProject()
   }
 
-  fun androidProject(
+  @Deprecated(
+    "use `kotlinProject`",
+    ReplaceWith("kotlinProject(path, config)")
+  )
+  fun project(
     path: String,
-    androidPackage: String,
-    config: AndroidMcProjectBuilderScope.() -> Unit = {}
+    config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
+  ): McProject = kotlinProject(path, config)
+
+  fun kotlinProject(
+    path: String,
+    config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
   ): McProject {
 
-    return createAndroidProject(
+    val platformPlugin = KotlinJvmPluginBuilder()
+
+    return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
       path = path,
-      androidPackage = androidPackage,
+      pluginBuilder = platformPlugin,
+      androidPackageOrNull = null,
       config = config
     )
   }
 
-  fun McProjectBuilderScope.androidChildProject(
+  fun androidApplication(
     path: String,
     androidPackage: String,
-    config: AndroidMcProjectBuilderScope.() -> Unit = {}
+    config: McProjectBuilder<AndroidApplicationPluginBuilder>.() -> Unit = {}
   ): McProject {
 
-    val appendedPath = (this@androidChildProject.path.value + path).replace(":{2,}".toRegex(), ":")
-
-    return createAndroidProject(
+    return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
-      path = appendedPath,
-      androidPackage = androidPackage,
+      path = path,
+      pluginBuilder = AndroidApplicationPluginBuilder(),
+      androidPackageOrNull = androidPackage,
+      config = config
+    )
+  }
+
+  @Deprecated(
+    "use `androidLibrary`",
+    ReplaceWith("androidLibrary(path, androidPackage, config)")
+  )
+  fun androidProject(
+    path: String,
+    androidPackage: String,
+    config: McProjectBuilder<AndroidLibraryPluginBuilder>.() -> Unit = {}
+  ): McProject = androidLibrary(path, androidPackage, config)
+
+  fun androidLibrary(
+    path: String,
+    androidPackage: String,
+    config: McProjectBuilder<AndroidLibraryPluginBuilder>.() -> Unit = {}
+  ): McProject {
+
+    return createProject(
+      projectCache = projectCache,
+      projectDir = testProjectDir,
+      path = path,
+      pluginBuilder = AndroidLibraryPluginBuilder(),
+      androidPackageOrNull = androidPackage,
+      config = config
+    )
+  }
+
+  fun androidDynamicFeature(
+    path: String,
+    androidPackage: String,
+    config: McProjectBuilder<AndroidDynamicFeaturePluginBuilder>.() -> Unit = {}
+  ): McProject {
+
+    return createProject(
+      projectCache = projectCache,
+      projectDir = testProjectDir,
+      path = path,
+      pluginBuilder = AndroidDynamicFeaturePluginBuilder(),
+      androidPackageOrNull = androidPackage,
+      config = config
+    )
+  }
+
+  fun androidTest(
+    path: String,
+    androidPackage: String,
+    config: McProjectBuilder<AndroidTestPluginBuilder>.() -> Unit = {}
+  ): McProject {
+
+    return createProject(
+      projectCache = projectCache,
+      projectDir = testProjectDir,
+      path = path,
+      pluginBuilder = AndroidTestPluginBuilder(),
+      androidPackageOrNull = androidPackage,
       config = config
     )
   }

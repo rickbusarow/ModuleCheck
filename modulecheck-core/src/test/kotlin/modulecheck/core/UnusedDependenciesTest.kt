@@ -998,7 +998,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = androidProject(":lib1", "com.modulecheck.lib1") {
-      viewBindingEnabled = true
+      platformPlugin.viewBindingEnabled = true
 
       addLayoutFile(
         "fragment_lib1.xml",
@@ -1023,7 +1023,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
         """
       }
-      viewBindingEnabled = false
+      platformPlugin.viewBindingEnabled = false
 
       addSource(
         "com/modulecheck/lib2/Source.kt",

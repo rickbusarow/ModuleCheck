@@ -16,12 +16,14 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.android.AndroidResourceParser
+import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.asDeclarationName
-import modulecheck.project.AndroidMcProject
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
@@ -36,14 +38,29 @@ data class AndroidResourceDeclarations(
   override val key: ProjectContext.Key<AndroidResourceDeclarations>
     get() = Key
 
+  suspend fun all(): LazySet<DeclarationName> {
+    return delegate.getOrPut("all_source_sets".asSourceSetName()) {
+      project.platformPlugin
+        .sourceSets
+        .keys
+        .map { get(it) }
+        .let { lazySet(it, emptyList()) }
+    }
+  }
+
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
+
+    if (!project.isAndroid()) return emptyLazySet()
+
+    val platformPlugin = project.platformPlugin
+
+    if (platformPlugin is AndroidLibraryPlugin && !platformPlugin.androidResourcesEnabled) {
+      return emptyLazySet()
+    }
 
     return delegate.getOrPut(sourceSetName) {
 
-      val android = project as? AndroidMcProject
-        ?: return@getOrPut emptyLazySet()
-
-      val rName = android.androidRFqNameForSourceSetName(sourceSetName)
+      val rName = project.androidRFqNameForSourceSetName(sourceSetName)
         ?: return@getOrPut emptyLazySet()
 
       val resourceParser = AndroidResourceParser()

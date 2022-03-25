@@ -17,7 +17,8 @@ package modulecheck.core
 
 import modulecheck.api.test.TestChecksSettings
 import modulecheck.api.test.TestSettings
-import modulecheck.project.test.AndroidMcProjectBuilderScope
+import modulecheck.project.test.AndroidPlatformPluginBuilder
+import modulecheck.project.test.McProjectBuilder
 import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeKotlin
@@ -187,7 +188,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     )
   }
 
-  private fun AndroidMcProjectBuilderScope.writeBuildFileWithPlugin() {
+  private fun McProjectBuilder<*>.writeBuildFileWithPlugin() {
     buildFile.writeKotlin(
       """
           plugins {
@@ -199,7 +200,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     )
   }
 
-  private fun AndroidMcProjectBuilderScope.addAnyLayoutFile() {
+  private fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addAnyLayoutFile() {
     addLayoutFile(
       "fragment_lib1.xml",
       """<?xml version="1.0" encoding="utf-8"?>

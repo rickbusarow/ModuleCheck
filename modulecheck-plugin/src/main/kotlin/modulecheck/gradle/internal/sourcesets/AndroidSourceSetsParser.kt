@@ -134,7 +134,7 @@ import java.io.File
  */
 internal class AndroidSourceSetsParser private constructor(
   private val parsedConfigurations: Configurations,
-  private val extension: TestedExtension,
+  private val extension: BaseExtension,
   private val hasTestFixturesPlugin: Boolean
 ) {
 
@@ -172,23 +172,26 @@ internal class AndroidSourceSetsParser private constructor(
         saveNameHierarchy(parsed)
       }
 
-    extension.testVariants
-      .map { VariantName(it.nameWithoutAndroidTestSuffix()) }
-      .forEach { variantName ->
+    if (extension is TestedExtension) {
 
-        val parsed = variantName.parseNames(AndroidTestName)
+      extension.testVariants
+        .map { VariantName(it.nameWithoutAndroidTestSuffix()) }
+        .forEach { variantName ->
 
-        saveNameHierarchy(parsed)
-      }
+          val parsed = variantName.parseNames(AndroidTestName)
 
-    extension.unitTestVariants
-      .map { VariantName(it.nameWithoutUnitTestSuffix()) }
-      .forEach { variantName ->
+          saveNameHierarchy(parsed)
+        }
 
-        val parsed = variantName.parseNames(UnitTestName)
+      extension.unitTestVariants
+        .map { VariantName(it.nameWithoutUnitTestSuffix()) }
+        .forEach { variantName ->
 
-        saveNameHierarchy(parsed)
-      }
+          val parsed = variantName.parseNames(UnitTestName)
+
+          saveNameHierarchy(parsed)
+        }
+    }
   }
 
   private val sourceSetCache = mutableMapOf<SourceSetName, SourceSet>()

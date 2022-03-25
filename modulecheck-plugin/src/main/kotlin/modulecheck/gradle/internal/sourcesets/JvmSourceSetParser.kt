@@ -16,6 +16,7 @@
 package modulecheck.gradle.internal.sourcesets
 
 import modulecheck.gradle.GradleProject
+import modulecheck.gradle.internal.getKotlinExtensionOrNull
 import modulecheck.parsing.gradle.Config
 import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.SourceSet
@@ -25,7 +26,6 @@ import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.utils.flatMapToSet
 import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 internal class JvmSourceSetParser private constructor(
@@ -33,94 +33,94 @@ internal class JvmSourceSetParser private constructor(
   private val gradleProject: GradleProject
 ) {
 
-  private fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
-    extensions.findByName(KOTLIN_PROJECT_EXTENSION_NAME) as? KotlinProjectExtension
-
   fun parse(): SourceSets {
 
     val map = buildMap<SourceSetName, SourceSet> {
 
-      gradleProject.getKotlinExtensionOrNull()
-        ?.sourceSets
-        .orEmpty()
-        .forEach { kotlinSourceSet: KotlinSourceSet ->
+      val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
 
-          val sourceSetName = kotlinSourceSet.name.asSourceSetName()
+      if (kotlinExtensionOrNull != null) {
 
-          val configs = listOf(
-            kotlinSourceSet.compileOnlyConfigurationName,
-            kotlinSourceSet.apiConfigurationName,
-            kotlinSourceSet.implementationConfigurationName,
-            kotlinSourceSet.runtimeOnlyConfigurationName
-          ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
+        kotlinExtensionOrNull.sourceSets
+          .forEach { kotlinSourceSet: KotlinSourceSet ->
 
-          val (
-            upstreamLazy,
-            downstreamLazy
-          ) = parseHierarchy(sourceSetName, configs)
+            val sourceSetName = kotlinSourceSet.name.asSourceSetName()
 
-          put(
-            kotlinSourceSet.name.asSourceSetName(),
-            SourceSet(
-              name = sourceSetName,
-              compileOnlyConfiguration = parsedConfigurations
-                .getValue(kotlinSourceSet.compileOnlyConfigurationName.asConfigurationName()),
-              apiConfiguration = parsedConfigurations
-                .get(kotlinSourceSet.apiConfigurationName.asConfigurationName()),
-              implementationConfiguration = parsedConfigurations
-                .getValue(kotlinSourceSet.implementationConfigurationName.asConfigurationName()),
-              runtimeOnlyConfiguration = parsedConfigurations
-                .getValue(kotlinSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
-              annotationProcessorConfiguration = null,
-              jvmFiles = kotlinSourceSet.kotlin.srcDirs,
-              resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
-              layoutFiles = emptySet(),
-              upstreamLazy = upstreamLazy,
-              downstreamLazy = downstreamLazy
+            val configs = listOf(
+              kotlinSourceSet.compileOnlyConfigurationName,
+              kotlinSourceSet.apiConfigurationName,
+              kotlinSourceSet.implementationConfigurationName,
+              kotlinSourceSet.runtimeOnlyConfigurationName
+            ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
+
+            val (
+              upstreamLazy,
+              downstreamLazy
+            ) = parseHierarchy(sourceSetName, configs)
+
+            put(
+              kotlinSourceSet.name.asSourceSetName(),
+              SourceSet(
+                name = sourceSetName,
+                compileOnlyConfiguration = parsedConfigurations
+                  .getValue(kotlinSourceSet.compileOnlyConfigurationName.asConfigurationName()),
+                apiConfiguration = parsedConfigurations
+                  .get(kotlinSourceSet.apiConfigurationName.asConfigurationName()),
+                implementationConfiguration = parsedConfigurations
+                  .getValue(kotlinSourceSet.implementationConfigurationName.asConfigurationName()),
+                runtimeOnlyConfiguration = parsedConfigurations
+                  .getValue(kotlinSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
+                annotationProcessorConfiguration = null,
+                jvmFiles = kotlinSourceSet.kotlin.srcDirs,
+                resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
+                layoutFiles = emptySet(),
+                upstreamLazy = upstreamLazy,
+                downstreamLazy = downstreamLazy
+              )
             )
-          )
-        }
+          }
+      } else {
+        gradleProject.extensions
+          .findByType(JavaPluginExtension::class.java)
+          ?.sourceSets
+          ?.forEach { gradleSourceSet ->
 
-      gradleProject.extensions
-        .findByType(JavaPluginExtension::class.java)
-        ?.sourceSets
-        ?.forEach { gradleSourceSet ->
+            val sourceSetName = gradleSourceSet.name.asSourceSetName()
 
-          val sourceSetName = gradleSourceSet.name.asSourceSetName()
+            val configs = listOf(
+              gradleSourceSet.compileOnlyConfigurationName,
+              gradleSourceSet.apiConfigurationName,
+              gradleSourceSet.implementationConfigurationName,
+              gradleSourceSet.runtimeOnlyConfigurationName
+            ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
 
-          val configs = listOf(
-            gradleSourceSet.compileOnlyConfigurationName,
-            gradleSourceSet.apiConfigurationName,
-            gradleSourceSet.implementationConfigurationName,
-            gradleSourceSet.runtimeOnlyConfigurationName
-          ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
+            val (
+              upstreamLazy,
+              downstreamLazy
+            ) = parseHierarchy(sourceSetName, configs)
 
-          val (
-            upstreamLazy,
-            downstreamLazy
-          ) = parseHierarchy(sourceSetName, configs)
-
-          put(
-            gradleSourceSet.name.asSourceSetName(),
-            SourceSet(
-              name = sourceSetName,
-              compileOnlyConfiguration = parsedConfigurations
-                .getValue(gradleSourceSet.compileOnlyConfigurationName.asConfigurationName()),
-              apiConfiguration = parsedConfigurations
-                .get(gradleSourceSet.apiConfigurationName.asConfigurationName()),
-              implementationConfiguration = parsedConfigurations
-                .getValue(gradleSourceSet.implementationConfigurationName.asConfigurationName()),
-              runtimeOnlyConfiguration = parsedConfigurations
-                .getValue(gradleSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
-              annotationProcessorConfiguration = null,
-              jvmFiles = gradleSourceSet.allJava.srcDirs,
-              resourceFiles = gradleSourceSet.resources.sourceDirectories.files,
-              layoutFiles = emptySet(),
-              upstreamLazy = upstreamLazy,
-              downstreamLazy = downstreamLazy
+            put(
+              gradleSourceSet.name.asSourceSetName(),
+              SourceSet(
+                name = sourceSetName,
+                compileOnlyConfiguration = parsedConfigurations
+                  .getValue(gradleSourceSet.compileOnlyConfigurationName.asConfigurationName()),
+                apiConfiguration = parsedConfigurations
+                  .get(gradleSourceSet.apiConfigurationName.asConfigurationName()),
+                implementationConfiguration = parsedConfigurations
+                  .getValue(gradleSourceSet.implementationConfigurationName.asConfigurationName()),
+                runtimeOnlyConfiguration = parsedConfigurations
+                  .getValue(gradleSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
+                annotationProcessorConfiguration = null,
+                jvmFiles = gradleSourceSet.allJava.srcDirs,
+                resourceFiles = gradleSourceSet.resources.sourceDirectories.files,
+                layoutFiles = emptySet(),
+                upstreamLazy = upstreamLazy,
+                downstreamLazy = downstreamLazy
+              )
             )
-          )
-        }
+          }
+      }
     }
 
     return SourceSets(map)
@@ -130,6 +130,10 @@ internal class JvmSourceSetParser private constructor(
     sourceSetName: SourceSetName,
     configs: List<Config>
   ): Pair<Lazy<List<SourceSetName>>, Lazy<List<SourceSetName>>> {
+
+    // Get the up/downstream configurations for this source set.  Parse the SourceSetName out of the
+    // ConfigurationName, and **if that name is in this map**, that SourceSetName must be
+    // up/downstream of this particular source set.
 
     val upstreamLazy = lazy {
       configs
@@ -151,7 +155,6 @@ internal class JvmSourceSetParser private constructor(
   }
 
   companion object {
-    private const val KOTLIN_PROJECT_EXTENSION_NAME = "kotlin"
 
     fun parse(
       parsedConfigurations: Configurations,

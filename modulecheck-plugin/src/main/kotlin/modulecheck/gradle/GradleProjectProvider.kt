@@ -15,7 +15,7 @@
 
 package modulecheck.gradle
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.TestedExtension
 import com.squareup.anvil.plugin.AnvilExtension
 import dagger.assisted.Assisted
@@ -23,16 +23,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
-import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
-import modulecheck.gradle.internal.androidManifests
-import modulecheck.gradle.internal.sourcesets.AndroidSourceSetsParser
-import modulecheck.gradle.internal.sourcesets.JvmSourceSetParser
 import modulecheck.gradle.task.GradleLogger
 import modulecheck.parsing.gradle.BuildFileParser
-import modulecheck.parsing.gradle.ConfigFactory
-import modulecheck.parsing.gradle.Configurations
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
@@ -44,17 +37,14 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
-import modulecheck.project.impl.RealAndroidMcProject
 import modulecheck.project.impl.RealMcProject
-import modulecheck.utils.unsafeLazy
 import net.swiftzer.semver.SemVer
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
-import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 
+@Suppress("LongParameterList")
 class GradleProjectProvider @AssistedInject constructor(
   @Assisted
   private val rootGradleProject: GradleProject,
@@ -62,20 +52,13 @@ class GradleProjectProvider @AssistedInject constructor(
   override val projectCache: ProjectCache,
   private val gradleLogger: GradleLogger,
   private val buildFileParserFactory: BuildFileParser.Factory,
-  private val jvmFileProviderFactory: RealJvmFileProvider.Factory
+  private val jvmFileProviderFactory: RealJvmFileProvider.Factory,
+  private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
+  private val jvmPlatformPluginFactory: JvmPlatformPluginFactory
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { StringProjectPath(it.path) }
-
-  private val configFactory = ConfigFactory<Configuration>(
-    identifier = { name },
-    allFactory = { rootGradleProject.configurations.asSequence() },
-    extendsFrom = {
-      rootGradleProject.configurations.findByName(this)?.extendsFrom?.toList()
-        .orEmpty()
-    }
-  )
 
   override fun get(path: StringProjectPath): McProject {
     return projectCache.getOrPut(path) {
@@ -98,8 +81,6 @@ class GradleProjectProvider @AssistedInject constructor(
   private fun createProject(path: StringProjectPath): McProject {
     val gradleProject = gradleProjects.getValue(path)
 
-    val configurations = gradleProject.configurations()
-
     val projectDependencies = gradleProject.projectDependencies()
     val externalDependencies = gradleProject.externalDependencies()
 
@@ -107,78 +88,45 @@ class GradleProjectProvider @AssistedInject constructor(
       .pluginManager
       .hasPlugin(KAPT_PLUGIN_ID)
 
-    val androidTestedExtension = gradleProject
+    val androidCommonExtensionOrNull = gradleProject
       .extensions
-      .findByType(TestedExtension::class.java)
-
-    val isAndroid = androidTestedExtension != null
-
-    val libraryExtension by unsafeLazy {
-      androidTestedExtension as? LibraryExtension
-    }
+      .findByType(CommonExtension::class.java)
 
     val hasTestFixturesPlugin = gradleProject
       .pluginManager
-      .hasPlugin(TEST_FIXTURES_PLUGIN_ID) || androidTestedExtension?.testFixtures?.enable == true
+      .hasPlugin(TEST_FIXTURES_PLUGIN_ID) || (androidCommonExtensionOrNull as? TestedExtension)
+      ?.testFixtures?.enable == true
 
-    val hasKotlinAndroidExtensions = gradleProject
-      .pluginManager
-      .hasPlugin(KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID)
+    val platformPlugin = if (androidCommonExtensionOrNull != null) {
 
-    return if (isAndroid) {
-      RealAndroidMcProject(
-        path = path,
-        projectDir = gradleProject.projectDir,
-        buildFile = gradleProject.buildFile,
-        configurations = configurations,
-        hasKapt = hasKapt,
-        hasTestFixturesPlugin = hasTestFixturesPlugin,
-        sourceSets = gradleProject.androidSourceSets(configurations, hasTestFixturesPlugin),
-        projectCache = projectCache,
-        anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
-        androidResourcesEnabled = libraryExtension?.buildFeatures?.androidResources != false,
-        viewBindingEnabled = androidTestedExtension?.buildFeatures?.viewBinding == true,
-        kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
-        manifests = gradleProject.androidManifests().orEmpty(),
-        logger = gradleLogger,
-        jvmFileProviderFactory = jvmFileProviderFactory,
-        javaSourceVersion = gradleProject.javaVersion(),
-        projectDependencies = projectDependencies,
-        externalDependencies = externalDependencies,
-        buildFileParserFactory = buildFileParserFactory
+      androidPlatformPluginFactory.create(
+        gradleProject = gradleProject,
+        androidCommonExtension = androidCommonExtensionOrNull,
+        hasTestFixturesPlugin = hasTestFixturesPlugin
       )
     } else {
-      RealMcProject(
-        path = path,
-        projectDir = gradleProject.projectDir,
-        buildFile = gradleProject.buildFile,
-        configurations = configurations,
-        hasKapt = hasKapt,
-        hasTestFixturesPlugin = hasTestFixturesPlugin,
-        sourceSets = gradleProject.jvmSourceSets(configurations),
-        projectCache = projectCache,
-        anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
-        logger = gradleLogger,
-        jvmFileProviderFactory = jvmFileProviderFactory,
-        javaSourceVersion = gradleProject.javaVersion(),
-        projectDependencies = projectDependencies,
-        externalDependencies = externalDependencies,
-        buildFileParserFactory = buildFileParserFactory
+      jvmPlatformPluginFactory.create(
+        gradleProject = gradleProject,
+        hasTestFixturesPlugin = hasTestFixturesPlugin
       )
     }
-  }
 
-  private fun GradleProject.configurations(): Configurations {
-
-    val map = configurations
-      .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
-      .associate { configuration ->
-
-        val config = configFactory.create(configuration)
-
-        configuration.name.asConfigurationName() to config
-      }
-    return Configurations(map)
+    return RealMcProject(
+      path = path,
+      projectDir = gradleProject.projectDir,
+      buildFile = gradleProject.buildFile,
+      hasKapt = hasKapt,
+      hasTestFixturesPlugin = hasTestFixturesPlugin,
+      projectCache = projectCache,
+      anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
+      logger = gradleLogger,
+      jvmFileProviderFactory = jvmFileProviderFactory,
+      javaSourceVersion = gradleProject.javaVersion(),
+      projectDependencies = projectDependencies,
+      externalDependencies = externalDependencies,
+      buildFileParserFactory = buildFileParserFactory,
+      platformPlugin = platformPlugin
+    )
   }
 
   private fun GradleProject.externalDependencies(): Lazy<ExternalDependencies> = lazy {
@@ -258,38 +206,13 @@ class GradleProjectProvider @AssistedInject constructor(
     return AnvilGradlePlugin(version, enabled)
   }
 
-  @Suppress("UnstableApiUsage")
-  private fun GradleProject.androidSourceSets(
-    mcConfigurations: Configurations,
-    hasTestFixturesPlugin: Boolean
-  ): SourceSets {
-
-    return extensions.getByType(TestedExtension::class.java)
-      .let { extension ->
-
-        AndroidSourceSetsParser.parse(
-          mcConfigurations, extension, hasTestFixturesPlugin
-        )
-      }
-  }
-
-  private fun GradleProject.jvmSourceSets(
-    mcConfigurations: Configurations
-  ): SourceSets {
-
-    return JvmSourceSetParser.parse(
-      parsedConfigurations = mcConfigurations,
-      gradleProject = this
-    )
+  @AssistedFactory
+  interface Factory {
+    fun create(rootGradleProject: GradleProject): GradleProjectProvider
   }
 
   companion object {
     private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
     private const val TEST_FIXTURES_PLUGIN_ID = "java-test-fixtures"
-  }
-
-  @AssistedFactory
-  interface Factory {
-    fun create(rootGradleProject: GradleProject): GradleProjectProvider
   }
 }

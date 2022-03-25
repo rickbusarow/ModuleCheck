@@ -18,6 +18,7 @@ package modulecheck.api.context
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
 import modulecheck.utils.SafeCache
 
 data class AndroidRFqNames(
@@ -29,6 +30,8 @@ data class AndroidRFqNames(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): String? {
+
+    if (!project.isAndroid()) return null
 
     return delegate.getOrPut(sourceSetName) {
 
