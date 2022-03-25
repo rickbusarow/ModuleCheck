@@ -376,6 +376,100 @@ internal class KotlinFileTest : ProjectTest() {
   }
 
   @Test
+  fun `val property with is- prefix should not have get-prefix for java method`() = test {
+
+    val file = createFile(
+      """
+      package com.test
+
+      val isAProperty = true
+      """
+    )
+
+    file.declarations shouldBe listOf(
+      kotlin("com.test.isAProperty"),
+      java("com.test.SourceKt.isAProperty")
+    )
+  }
+
+  @Test
+  fun `var property with is- prefix should have set- prefix and no is- for java method`() = test {
+
+    val file = createFile(
+      """
+      package com.test
+
+      var isAProperty = true
+      """
+    )
+
+    file.declarations shouldBe listOf(
+      kotlin("com.test.isAProperty"),
+      java("com.test.SourceKt.isAProperty"),
+      java("com.test.SourceKt.setAProperty")
+    )
+  }
+
+  @Test
+  fun `var property with explicit accessors and is- prefix should have set- prefix and no is- for java method`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      var isAProperty = true
+        public get
+        public set
+        """
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.isAProperty"),
+        java("com.test.SourceKt.isAProperty"),
+        java("com.test.SourceKt.setAProperty")
+      )
+    }
+
+  @Test
+  fun `is- prefix should not be removed if the following character is a lowercase letter`() =
+    test {
+
+      val file = createFile(
+        """
+        package com.test
+
+        var isaProperty = true
+        """
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.isaProperty"),
+        java("com.test.SourceKt.getIsaProperty"),
+        java("com.test.SourceKt.setIsaProperty")
+      )
+    }
+
+  @Test
+  fun `is- should not be removed if it's not at the start of the name`() =
+    test {
+
+      val file = createFile(
+        """
+        package com.test
+
+        var _isAProperty = true
+        """
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test._isAProperty"),
+        java("com.test.SourceKt.get_isAProperty"),
+        java("com.test.SourceKt.set_isAProperty")
+      )
+    }
+
+  @Test
   fun `file without JvmName should not have alternate names for type declarations`() = test {
 
     val file = createFile(

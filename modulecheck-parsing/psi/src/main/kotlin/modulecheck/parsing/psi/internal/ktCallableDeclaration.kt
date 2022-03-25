@@ -49,38 +49,51 @@ private fun KtAnnotated.annotatedJvmNameOrNull(): String? {
     ?.text
 }
 
-internal fun KtPropertyAccessor.jvmSimpleName(): String {
-  jvmNameOrNull()?.let { return it }
-
-  val prefix = if (isGetter) "get" else "set"
-
-  val suffix = property.nameAsSafeName.identifier.capitalize()
-
-  return prefix + suffix
-}
-
 /**
  * Returns any custom names defined by `@JvmName(...)`, the default setter/getter names if it's a
  * property, or the same names as used by Kotlin for anything else.
  */
 internal fun KtNamedDeclaration.jvmSimpleNames(): Set<String> {
+
+  val identifier = nameAsSafeName.identifier
+
+  val isPrefixMatchOrNull by unsafeLazy {
+    // matches a name which starts with `is`, followed by something other than a lowercase letter.
+    """^is([^a-z].*)""".toRegex().find(identifier)
+  }
+
   return when (this) {
     is KtFunction -> {
-      setOf(jvmNameOrNull() ?: nameAsSafeName.asString())
+      setOf(jvmNameOrNull() ?: isPrefixMatchOrNull?.value ?: nameAsSafeName.asString())
     }
     is KtProperty -> {
 
       // const properties can't have JvmName annotations
       if (isConst()) return emptySet()
 
+      // a Kotlin property `isAProperty` has a java setter of `setAProperty(...)`
+      fun isPrefixSetterOrNull() = isPrefixMatchOrNull?.let {
+        "set${it.destructured.component1()}"
+      }
+
       val suffix by unsafeLazy { nameAsSafeName.identifier.capitalize() }
 
-      setOfNotNull(
-        getter?.jvmNameOrNull() ?: "get$suffix",
+      buildSet {
+
+        val get = getter?.jvmNameOrNull()
+          ?: isPrefixMatchOrNull?.value
+          ?: "get$suffix"
+
+        add(get)
+
         if (isVar) {
-          setter?.jvmNameOrNull() ?: "set$suffix"
-        } else null
-      )
+          val set = setter?.jvmNameOrNull()
+            ?: isPrefixSetterOrNull()
+            ?: "set$suffix"
+
+          add(set)
+        }
+      }
     }
     else -> {
       setOf(nameAsSafeName.asString())
