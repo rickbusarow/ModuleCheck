@@ -25,6 +25,8 @@ import modulecheck.parsing.source.AgnosticDeclarationName
 import modulecheck.parsing.source.DeclarationName
 import modulecheck.parsing.source.JavaSpecificDeclaration
 import modulecheck.parsing.source.KotlinSpecificDeclaration
+import modulecheck.parsing.source.asExplicitKotlinReference
+import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
@@ -536,6 +538,35 @@ internal class KotlinFileTest : ProjectTest() {
     file.declarations shouldBe listOf(
       kotlin("com.test.someFunction"),
       java("com.test.SourceKt.alternate")
+    )
+  }
+
+  @Test
+  fun `import alias reference should be inlined to the normal fully qualified reference`() = test {
+
+    val file = createFile(
+      """
+      package com.test
+
+      import com.modulecheck.lib1.R as Lib1R
+
+      val appName = Lib1R.string.app_name
+      """
+    )
+
+    file.importsLazy.value shouldBe setOf(
+      "com.modulecheck.lib1.R".asExplicitKotlinReference()
+    )
+
+    file.interpretedReferencesLazy.value shouldBe setOf(
+      "com.test.Lib1R".asInterpretedKotlinReference(),
+      "Lib1R".asInterpretedKotlinReference(),
+      "com.test.string".asInterpretedKotlinReference(),
+      "string".asInterpretedKotlinReference(),
+      "com.test.app_name".asInterpretedKotlinReference(),
+      "app_name".asInterpretedKotlinReference(),
+      "com.modulecheck.lib1.R.string".asExplicitKotlinReference(),
+      "com.modulecheck.lib1.R.string.app_name".asExplicitKotlinReference(),
     )
   }
 
