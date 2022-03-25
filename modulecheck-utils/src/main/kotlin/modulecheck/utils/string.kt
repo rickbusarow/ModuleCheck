@@ -17,6 +17,12 @@ package modulecheck.utils
 
 import java.util.Locale
 
+fun String.prefixIfNot(prefix: String) =
+  if (this.startsWith(prefix)) this else "$prefix$this"
+
+fun String.suffixIfNot(suffix: String) =
+  if (this.endsWith(suffix)) this else "$this$suffix"
+
 fun String.decapitalize(
   locale: Locale = Locale.US
 ) = replaceFirstChar { it.lowercase(locale) }
