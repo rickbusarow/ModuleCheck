@@ -30,6 +30,7 @@ import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.parsing.source.asDeclarationName
@@ -70,6 +71,9 @@ class RealKotlinFile(
 
   override val packageFqName by lazy { ktFile.packageFqName.asString() }
 
+  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
+  private val _aliasMap = mutableMapOf<String, ExplicitKotlinReference>()
+
   override val importsLazy: Lazy<Set<Reference>> = lazy {
 
     ktFile.importDirectives.asSequence()
@@ -80,6 +84,18 @@ class RealKotlinFile(
       .filter { !componentNRegex.matches(it.identifier()!!) }
       .mapNotNull { importDirective ->
         importDirective.importPath?.pathStr?.asExplicitKotlinReference()
+          ?.also { realName ->
+
+            // Map aliases to their actual names, so that they can be looked up while resolving
+            importDirective.alias
+              // The KtImportAlias is `as Foo`.  It has three children:
+              // [LeafPsiElement, PsiWhiteSpace, LeafPsiElement], which are [`as`, ` `, `Foo`]
+              // respectively.
+              ?.lastChild
+              ?.text?.let { alias ->
+                _aliasMap[alias] = realName
+              }
+          }
       }
       .toSet()
   }
@@ -257,25 +273,49 @@ class RealKotlinFile(
       .toSet()
   }
 
-  override val interpretedReferencesLazy = lazy {
+  override val interpretedReferencesLazy: Lazy<Set<Reference>> = lazy {
 
     val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
 
-    val unresolved = listOf(
+    val notImportedDirectly = listOf(
       typeReferences, callableReferences, qualifiedExpressions
-    ).flatten().filter { reference -> imports.none { it.endsWith(reference) } }
+    ).flatten()
+      .filter { reference -> imports.none { it.endsWith(reference) } }
 
     val trimmedWildcards = wildcardImports.map { it.removeSuffix(".*") }
 
-    unresolved.flatMapToSet { reference ->
+    // Sort aliases by length so that we try to resolve `Barr` before `Bar`.
+    // This is redundant, since we're also matching `$alias.` instead of just the alias.
+    val aliasesByLength = _aliasMap.keys.sortedByDescending { it.length }
+    val resolvedByAlias = mutableSetOf<String>()
 
-      val constructed = reference.kotlinStdLibNameOrNull()?.let { listOf(it.asString()) }
-        ?: (trimmedWildcards.map { "$it.$reference" } + "$packageFqName.$reference")
+    // Find any "not imported" references which use an import alias, then substitute the alias with
+    // the import to get the resolved, fully qualified, "explicit" name.
+    val replacedAliases = notImportedDirectly.mapNotNull { toResolve ->
+      aliasesByLength.firstNotNullOfOrNull { alias ->
 
-      val all = (constructed + reference).toSet()
-
-      all.map { InterpretedKotlinReference(it) }
+        toResolve.takeIf { it.startsWith("$alias.") }
+          ?.let {
+            resolvedByAlias.add(toResolve)
+            val newPrefix = _aliasMap.getValue(alias).fqName
+            val newSuffix = toResolve.removePrefix(alias)
+            "$newPrefix$newSuffix".asExplicitKotlinReference()
+          }
+      }
     }
+
+    notImportedDirectly
+      .filterNot { it in resolvedByAlias }
+      .flatMapToSet { reference ->
+
+        val constructed = reference.kotlinStdLibNameOrNull()?.let { listOf(it.asString()) }
+          ?: (trimmedWildcards.map { "$it.$reference" } + "$packageFqName.$reference")
+
+        val all = (constructed + reference).toSet()
+
+        all.map { InterpretedKotlinReference(it) }
+      }
+      .plus(replacedAliases)
   }
 
   override fun getScopeArguments(
