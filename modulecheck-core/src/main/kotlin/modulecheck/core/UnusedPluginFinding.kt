@@ -54,7 +54,7 @@ data class UnusedPluginFinding(
     val row = lines
       .indexOfFirst { line ->
         line.contains("id(\"$pluginId\")") ||
-        line.contains("id(\"$alternatePluginId\")") ||
+          line.contains("id(\"$alternatePluginId\")") ||
           line.contains(kotlinPluginFunction) ||
           line.contains("plugin = \"$pluginId\")") ||
           line.contains("plugin = \"$alternatePluginId\")")
