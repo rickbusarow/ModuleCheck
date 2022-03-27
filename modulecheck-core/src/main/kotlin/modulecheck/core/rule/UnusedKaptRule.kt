@@ -32,6 +32,7 @@ import modulecheck.utils.LazySet
 import modulecheck.utils.any
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
+const val KAPT_ALTERNATE_PLUGIN_ID = "kotlin-kapt"
 private const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
 
 class UnusedKaptRule(
@@ -90,6 +91,7 @@ class UnusedKaptRule(
             buildFile = project.buildFile,
             findingName = "unusedKaptPlugin",
             pluginId = KAPT_PLUGIN_ID,
+            alternatePluginId = KAPT_ALTERNATE_PLUGIN_ID,
             kotlinPluginFunction = KAPT_PLUGIN_FUN
           )
         } else {
