@@ -35,6 +35,7 @@ data class UnusedPluginFinding(
   override val buildFile: File,
   override val findingName: String,
   val pluginId: String,
+  val alternatePluginId: String = "",
   val kotlinPluginFunction: String = ""
 ) : Finding, Problem, Fixable, Deletable {
 
@@ -53,8 +54,10 @@ data class UnusedPluginFinding(
     val row = lines
       .indexOfFirst { line ->
         line.contains("id(\"$pluginId\")") ||
+        line.contains("id(\"$alternatePluginId\")") ||
           line.contains(kotlinPluginFunction) ||
-          line.contains("plugin = \"$pluginId\")")
+          line.contains("plugin = \"$pluginId\")") ||
+          line.contains("plugin = \"$alternatePluginId\")")
       }
 
     if (row < 0) return@lazyDeferred null
@@ -71,6 +74,9 @@ data class UnusedPluginFinding(
       "id(\"$pluginId\")",
       "id \"$pluginId\"",
       "id '$pluginId'",
+      "id(\"$alternatePluginId\")",
+      "id \"$alternatePluginId\"",
+      "id '$alternatePluginId'",
       kotlinPluginFunction
     ).firstNotNullOfOrNull { id ->
       dependentProject.buildFileParser.pluginsBlock()?.getById(id)

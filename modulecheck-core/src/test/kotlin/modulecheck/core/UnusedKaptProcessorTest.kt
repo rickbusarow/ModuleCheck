@@ -82,6 +82,60 @@ class UnusedKaptProcessorTest : RunnerTest() {
   }
 
   @Test
+  fun `unused from kapt configuration with alternate plugin id without autoCorrect should fail`() {
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, dagger)
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          kapt("$dagger")
+        }
+        """
+      }
+    }
+
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe false
+
+    app.buildFile shouldHaveText """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          kapt("$dagger")
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":app" to listOf(
+        unusedKaptProcessor(
+          fixed = false,
+          configuration = "kapt",
+          dependency = "com.google.dagger:dagger-compiler",
+          position = "7, 3"
+        ),
+        unusedKaptPlugin(
+          fixed = false,
+          dependency = "org.jetbrains.kotlin.kapt",
+          position = "3, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `unused from non-kapt configuration without autoCorrect should pass without changes`() {
 
     val app = kotlinProject(":app") {
@@ -250,6 +304,58 @@ class UnusedKaptProcessorTest : RunnerTest() {
       plugins {
         kotlin("jvm")
         // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]
+      }
+
+      dependencies {
+        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor]
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":app" to listOf(
+        unusedKaptProcessor(
+          fixed = true,
+          configuration = "kapt",
+          dependency = "com.google.dagger:dagger-compiler",
+          position = "7, 3"
+        ),
+        unusedKaptPlugin(
+          fixed = true,
+          dependency = "org.jetbrains.kotlin.kapt",
+          position = "3, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `unused with main kapt with alternate plugin id with autoCorrect and no other processors should remove processor and plugin`() {
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, dagger)
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          kapt("$dagger")
+        }
+        """
+      }
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        // id("kotlin-kapt")  // ModuleCheck finding [unusedKaptPlugin]
       }
 
       dependencies {
