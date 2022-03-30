@@ -31,7 +31,6 @@ import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
-import modulecheck.utils.emptyDataSource
 import modulecheck.utils.lazySet
 
 data class Declarations private constructor(
@@ -56,7 +55,7 @@ data class Declarations private constructor(
       project.sourceSets
         .keys
         .map { project.declarations().get(it, false) }
-        .let { lazySet(it, emptyDataSource()) }
+        .let { lazySet(it) }
     }
   }
 
@@ -99,7 +98,7 @@ data class Declarations private constructor(
         }
       }
 
-      lazySet(sets, sources)
+      lazySet(sets + sources)
     }
   }
 

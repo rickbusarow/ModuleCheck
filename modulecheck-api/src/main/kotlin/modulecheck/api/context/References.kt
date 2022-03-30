@@ -40,7 +40,7 @@ data class References(
       .keys
       .mapAsync { get(it) }
       .toList()
-      .let { lazySet(children = it, listOf()) }
+      .let { lazySet(it) }
   }
 
   suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
@@ -55,7 +55,7 @@ data class References(
       .plus(listOfNotNull(project.manifestFileForSourceSetName(sourceSetName)))
       .flatMap { it.references() }
 
-    return lazySet(emptyList(), allLazy)
+    return lazySet(allLazy)
   }
 
   companion object Key : ProjectContext.Key<References> {

@@ -88,7 +88,7 @@ data class AndroidResourceReferences(
       jvm + layout
     }
 
-    return lazySet(listOf(), all)
+    return lazySet(all)
   }
 
   companion object Key : ProjectContext.Key<AndroidResourceReferences> {
