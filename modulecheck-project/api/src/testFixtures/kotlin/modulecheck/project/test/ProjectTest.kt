@@ -40,7 +40,6 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
-import modulecheck.utils.emptyDataSource
 import modulecheck.utils.lazySet
 import java.io.File
 import java.nio.charset.Charset
@@ -274,7 +273,7 @@ abstract class ProjectTest : BaseTest() {
           .plus(project.projectDependencies.values.flatten())
           .map { dependency -> dependency.declarations() }
           .plus(thisProjectDeclarations)
-          .let { lazySet(it, emptyDataSource()) }
+          .let { lazySet(it) }
           .map { it.fqName }
           .toSet()
 

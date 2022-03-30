@@ -39,7 +39,6 @@ import modulecheck.project.ProjectContext
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
-import modulecheck.utils.emptyDataSource
 import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat
 import modulecheck.utils.flatMapToSet
@@ -200,7 +199,7 @@ private suspend fun McProject.mustBeApiIn(
     } else {
       sourceSetName.withUpstream(dependentProject)
         .map { declarations().get(it, false) }
-        .let { lazySet(it, emptyDataSource()) }
+        .let { lazySet(it) }
     }
   }
 

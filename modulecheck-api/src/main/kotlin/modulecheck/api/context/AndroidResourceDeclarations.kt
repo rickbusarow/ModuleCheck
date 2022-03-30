@@ -44,7 +44,7 @@ data class AndroidResourceDeclarations(
         .sourceSets
         .keys
         .map { get(it) }
-        .let { lazySet(it, emptyList()) }
+        .let { lazySet(it) }
     }
   }
 
@@ -69,7 +69,7 @@ data class AndroidResourceDeclarations(
         .map { dataSource { resourceParser.parseFile(it) } }
         .plus(dataSource { setOf(rName.asDeclarationName()) })
 
-      lazySet(sources = dataProviders)
+      lazySet(dataProviders)
     }
   }
 

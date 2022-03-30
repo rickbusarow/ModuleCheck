@@ -20,16 +20,21 @@ import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority
 import modulecheck.utils.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.LazySet.DataSource.Priority.MEDIUM
+import modulecheck.utils.internal.DataSourceImpl
+import modulecheck.utils.internal.LazySetImpl
 
-sealed interface LazySet<E> : Flow<E> {
+interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   val isFullyCached: Boolean
 
   suspend fun contains(element: Any?): Boolean
 
+  suspend fun isEmpty(): Boolean
+  suspend fun isNotEmpty(): Boolean
+
   fun snapshot(): State<E>
 
-  interface DataSource<E> : Comparable<DataSource<E>> {
+  interface DataSource<out E> : Comparable<DataSource<*>>, LazySetComponent<E> {
 
     val priority: Priority
 
@@ -41,12 +46,12 @@ sealed interface LazySet<E> : Flow<E> {
       LOW
     }
 
-    override fun compareTo(other: DataSource<E>): Int {
+    override fun compareTo(other: DataSource<*>): Int {
       return priority.compareTo(other.priority)
     }
   }
 
-  class State<E>(
+  class State<out E>(
     val cache: Set<E>,
     val remaining: List<DataSource<E>>
   ) {
@@ -72,6 +77,16 @@ sealed interface LazySet<E> : Flow<E> {
   }
 }
 
+sealed interface LazySetComponent<out E>
+
+suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: Collection<E>): Boolean {
+  return elements.any { contains(it) }
+}
+
+suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: LazySet<E>): Boolean {
+  return elements.any { contains(it) }
+}
+
 fun <E> LazyDeferred<Set<E>>.asDataSource(
   priority: Priority = MEDIUM
 ): DataSource<E> = dataSource(priority) { await() }
@@ -86,6 +101,11 @@ fun <E> emptyDataSource(): DataSource<E> = object : DataSource<E> {
 
   override suspend fun get(): Set<E> = emptySet()
 }
+
+fun <E> dataSourceOf(
+  vararg elements: E,
+  priority: Priority = MEDIUM
+): DataSource<E> = DataSourceImpl(priority) { elements.toSet() }
 
 fun <E> dataSource(
   priority: Priority = MEDIUM,
@@ -102,59 +122,21 @@ fun <E> lazyDataSource(
   return DataSourceImpl(priority) { lazyFactory.await() }
 }
 
-@PublishedApi
-internal class DataSourceImpl<E>(
-  override val priority: Priority,
-  private val factory: suspend () -> Set<E>
-) : DataSource<E> {
-
-  override suspend fun get(): Set<E> = factory()
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-
-    other as DataSourceImpl<*>
-
-    if (factory != other.factory) return false
-
-    return true
-  }
-
-  override fun hashCode(): Int = factory.hashCode()
+fun <E> lazySet(
+  vararg children: LazySetComponent<E>
+): LazySet<E> {
+  return lazySet(children.asList())
 }
 
 fun <E> lazySet(
-  vararg children: LazySet<E>,
-  source: DataSource<E>
+  children: Collection<LazySetComponent<E>>
 ): LazySet<E> {
-  return createLazySet(children.toList(), listOf(source))
-}
-
-fun <E> lazySet(
-  children: Collection<LazySet<E>>,
-  source: DataSource<E>
-): LazySet<E> {
-  return createLazySet(children, listOf(source))
-}
-
-fun <E> lazySet(
-  vararg children: LazySet<E>
-): LazySet<E> {
-  return createLazySet(children.toList(), listOf())
-}
-
-fun <E> lazySet(
-  vararg source: DataSource<E>
-): LazySet<E> {
-  return createLazySet(listOf(), source.toList())
-}
-
-fun <E> lazySet(
-  children: Collection<LazySet<E>> = emptyList(),
-  sources: Collection<DataSource<E>>
-): LazySet<E> {
-  return createLazySet(children.toList(), sources)
+  val (sets, dataSources) = children.partition { it is LazySet<*> }
+  @Suppress("UNCHECKED_CAST")
+  return createLazySet(
+    sets as List<LazySet<E>>,
+    dataSources as List<DataSource<E>>
+  )
 }
 
 fun <E> emptyLazySet(): LazySet<E> {

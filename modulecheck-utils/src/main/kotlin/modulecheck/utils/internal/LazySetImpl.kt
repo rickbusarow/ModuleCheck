@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.utils
+package modulecheck.utils.internal
 
 import kotlinx.coroutines.flow.AbstractFlow
 import kotlinx.coroutines.flow.Flow
@@ -23,15 +23,23 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.take
+import modulecheck.utils.LazySet
+import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.LazySet.State
+import modulecheck.utils.any
+import modulecheck.utils.distinct
+import modulecheck.utils.flatMapSetConcat
+import modulecheck.utils.mapAsync
 import java.util.concurrent.atomic.AtomicReference
 
 internal class LazySetImpl<E>(
   cache: Set<E>,
-  sources: List<LazySet.DataSource<E>>
+  sources: List<DataSource<E>>
 ) : AbstractFlow<E>(), LazySet<E> {
 
   internal val state = AtomicReference(
-    LazySet.State(
+    State(
       cache = cache, remaining = sources
     )
   )
@@ -39,7 +47,30 @@ internal class LazySetImpl<E>(
   override val isFullyCached: Boolean
     get() = state.get().remaining.isEmpty()
 
-  override fun snapshot(): LazySet.State<E> = state.get()
+  override fun snapshot(): State<E> = state.get()
+
+  override suspend fun isEmpty(): Boolean {
+    val snap = snapshot()
+
+    if (snap.remaining.isEmpty()) {
+      return snap.cache.isEmpty()
+    }
+
+    if (snap.cache.isNotEmpty()) {
+      return false
+    }
+
+    // There can be a queue of DataSources lined up, but they may all be empty.
+    // In order to determine whether the set has any more elements, we have to iterate over that
+    // queue, unwrapping all those DataSources.  As soon as we reach any element, we know the set
+    // isn't empty and we can return.
+    var reachedElement = false
+    take(1)
+      .collect { reachedElement = true }
+    return !reachedElement
+  }
+
+  override suspend fun isNotEmpty(): Boolean = !isEmpty()
 
   override suspend fun contains(element: Any?): Boolean {
 
@@ -51,21 +82,21 @@ internal class LazySetImpl<E>(
       )
   }
 
-  private fun updateCache(new: Set<E>, completed: List<LazySet.DataSource<E>>) {
+  private fun updateCache(new: Set<E>, completed: List<DataSource<E>>) {
 
-    var fromAtomic: LazySet.State<E>
-    var newPair: LazySet.State<E>
+    var fromAtomic: State<E>
+    var newPair: State<E>
 
     do {
       fromAtomic = state.get()
-      newPair = LazySet.State(
+      newPair = State(
         cache = fromAtomic.cache + new,
         remaining = fromAtomic.remaining.minus(completed.toSet())
       )
     } while (!state.compareAndSet(fromAtomic, newPair))
   }
 
-  private fun LazySet.State<E>.remainingFlow(): Flow<Set<E>> {
+  private fun State<E>.remainingFlow(): Flow<Set<E>> {
 
     return nextSources().asFlow()
       .map { nextSources ->
@@ -81,7 +112,7 @@ internal class LazySetImpl<E>(
     val snap = state.get()
 
     val additionalCache = mutableSetOf<E>()
-    val completed: MutableList<LazySet.DataSource<E>> = mutableListOf()
+    val completed: MutableList<DataSource<E>> = mutableListOf()
 
     val distinctFlow = flow {
 
