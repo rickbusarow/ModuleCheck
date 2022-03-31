@@ -42,7 +42,7 @@ dependencies {
   dependencySync("com.rickbusarow.hermit:hermit-junit4:0.9.5")
   dependencySync("com.rickbusarow.hermit:hermit-junit5:0.9.5")
   dependencySync("com.rickbusarow.hermit:hermit-mockk:0.9.5")
-  dependencySync("com.squareup.anvil:annotations:2.3.11-1-6-10")
+  dependencySync("com.squareup.anvil:annotations:2.4.0")
   dependencySync("com.squareup.anvil:compiler-api:2.3.11-1-6-10")
   dependencySync("com.squareup.anvil:compiler-utils:2.3.11-1-6-10")
   dependencySync("com.squareup.anvil:compiler:2.3.11-1-6-10")
