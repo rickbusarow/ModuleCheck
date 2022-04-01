@@ -16,7 +16,7 @@
 package modulecheck.parsing.java
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.asExplicitJavaReference
@@ -30,7 +30,7 @@ data class TestJavaFile(
   override val name: String,
   override val packageFqName: String,
   val imports: Set<Reference>,
-  override val declarations: Set<DeclarationName>,
+  override val declarations: Set<DeclaredName>,
   val interpretedReferences: Set<Reference>,
   val apiReferencesStrings: Set<String>
 ) : JavaFile {
@@ -68,7 +68,6 @@ interface JavaFileTestUtils {
 class RealJavaFileTestUtils : JavaFileTestUtils {
 
   override infix fun JavaFile.shouldBe(other: JavaFile) {
-
     this.toTestFile().trimmedShouldBe(other.toTestFile())
   }
 
@@ -84,7 +83,7 @@ class RealJavaFileTestUtils : JavaFileTestUtils {
     name = name,
     packageFqName = packageFqName,
     imports = imports.mapToSet { it.asExplicitJavaReference() },
-    declarations = declarations.map { DeclarationName(it) }.toSet(),
+    declarations = declarations.map { DeclaredName(it) }.toSet(),
     interpretedReferences = interpretedReferences,
     apiReferencesStrings = apiReferences
   )
@@ -97,7 +96,7 @@ class RealJavaFileTestUtils : JavaFileTestUtils {
         imports = importsLazy.value,
         declarations = declarations,
         interpretedReferences = interpretedReferencesLazy.value,
-        apiReferencesStrings = apiReferences.await().mapToSet { it.fqName }
+        apiReferencesStrings = apiReferences.await().mapToSet { it.name }
       )
   }
 }

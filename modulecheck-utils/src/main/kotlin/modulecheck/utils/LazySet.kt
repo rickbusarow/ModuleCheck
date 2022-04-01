@@ -60,9 +60,7 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
     }
 
     fun nextSources(): Sequence<List<DataSource<E>>> {
-
       return sequence {
-
         Priority.values()
           .forEach { priority ->
 
@@ -110,13 +108,7 @@ fun <E> dataSourceOf(
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: suspend () -> Set<E>
-): DataSource<E> = DataSourceImpl(priority, factory)
-
-fun <E> lazyDataSource(
-  priority: Priority = MEDIUM,
-  factory: suspend () -> Set<E>
 ): DataSource<E> {
-
   val lazyFactory = lazyDeferred { factory() }
 
   return DataSourceImpl(priority) { lazyFactory.await() }
@@ -147,7 +139,6 @@ internal fun <E> createLazySet(
   children: Collection<LazySet<E>>,
   sources: Collection<DataSource<E>>
 ): LazySet<E> {
-
   val childCaches = children
     .map { child -> child.snapshot() }
 

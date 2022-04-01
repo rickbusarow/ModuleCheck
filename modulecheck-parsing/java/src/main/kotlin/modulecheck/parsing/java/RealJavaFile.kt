@@ -59,10 +59,10 @@ import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asInterpretedKotlinReference
+import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazyDeferred
@@ -158,7 +158,7 @@ class RealJavaFile(
 
   override val interpretedReferencesLazy = lazy {
 
-    val importNames = importsLazy.value.map { it.fqName }
+    val importNames = importsLazy.value.map { it.name }
 
     // fully qualified method references
     val methodNames = compilationUnit
@@ -189,13 +189,13 @@ class RealJavaFile(
 
       val all = (constructed + reference).toSet()
 
-      all.map { InterpretedKotlinReference(it) }
+      all.map { InterpretedJavaReference(it) }
     }
   }
 
   override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
 
-    val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
+    val imports by unsafeLazy { importsLazy.value.mapToSet { it.name } }
 
     val members = compilationUnit.childrenRecursive()
       // Only look at references which are inside public classes.  This includes nested classes
@@ -241,7 +241,7 @@ class RealJavaFile(
 
       acc.also { it.addAll(new) }
     }
-      .map { it.asInterpretedKotlinReference() }
+      .map { it.asInterpretedJavaReference() }
 
     resolved + guesses
   }
@@ -262,7 +262,6 @@ class RealJavaFile(
  * @return A Sequence of all [Type]s referenced by the receiver class type.
  */
 fun ClassOrInterfaceType.typeReferencesRecursive(): Sequence<ClassOrInterfaceType> {
-
   return generateSequence(sequenceOf(this)) { types ->
     types.map { type ->
       type.typeArguments
@@ -285,7 +284,6 @@ fun FieldDeclaration.apiReferences(): List<String> {
 }
 
 fun MethodDeclaration.apiReferences(): List<String> {
-
   if (!isProtected && !isPublic) return emptyList()
 
   val typeParameterBounds = typeParameters.flatMap { it.typeBound }
@@ -328,7 +326,6 @@ internal fun Node.getTypeParameterNamesInScope(): Sequence<String> {
 
 fun <T> T.canBeImported(): Boolean
   where T : NodeWithStaticModifier<T>, T : NodeWithPrivateModifier<T> {
-
   contract {
     returns(true) implies (this@canBeImported is Resolvable<*>)
   }

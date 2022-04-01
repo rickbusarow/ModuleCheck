@@ -25,7 +25,7 @@ import modulecheck.parsing.psi.internal.isPrivateOrInternal
 import modulecheck.parsing.psi.internal.jvmNameOrNull
 import modulecheck.parsing.psi.internal.jvmSimpleNames
 import modulecheck.parsing.source.AnvilScopeNameEntry
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.RawAnvilAnnotatedType
@@ -33,6 +33,8 @@ import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.asDeclarationName
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
@@ -107,42 +109,40 @@ class RealKotlinFile(
   private val fileJavaFacadeName by lazy { ktFile.javaFileFacadeFqName.asString() }
 
   @Suppress("ComplexMethod")
-  private fun KtNamedDeclaration.declarationNames(): List<DeclarationName> {
-
+  private fun KtNamedDeclaration.declarationNames(): List<DeclaredName> {
     val fq = fqName ?: return emptyList()
 
     val nameAsString = fq.asString()
 
     return buildList {
-
       fun both(name: String) {
         add(name.asDeclarationName())
       }
 
       fun kotlin(name: String) {
-        add(name.asKotlinDeclarationName())
+        if (!contains(name.asDeclarationName())) {
+          add(name.asKotlinDeclarationName())
+        }
       }
 
       fun java(name: String) {
-        add(name.asJavaDeclarationName())
+        if (!contains(name.asDeclarationName())) {
+          add(name.asJavaDeclarationName())
+        }
       }
 
       when {
         nameAsString.contains(".Companion") -> {
-
           both(nameAsString)
 
           if (isStatic()) {
-
             both(nameAsString.remove(".Companion"))
           } else if (this@declarationNames is KtCallableDeclaration) {
-
             kotlin(nameAsString.remove(".Companion"))
           }
         }
 
         isTopLevelKtOrJavaMember() && this@declarationNames !is KtClassOrObject && !isStatic() -> {
-
           kotlin(nameAsString)
 
           jvmSimpleNames().forEach {
@@ -152,15 +152,12 @@ class RealKotlinFile(
 
         // object non-static properties or functions
         isPartOf<KtObjectDeclaration>() && !isStatic() -> {
-
           val parentObjectOrNull = containingClassOrObject
 
           if (parentObjectOrNull == null) {
-
             both(nameAsString)
             java("$nameAsString.INSTANCE")
           } else {
-
             kotlin(nameAsString)
 
             val parentFqName = parentObjectOrNull.fqName.requireNotNull().asString()
@@ -172,7 +169,6 @@ class RealKotlinFile(
 
         // object static properties
         isPartOf<KtObjectDeclaration>() && isStatic() -> {
-
           val parentFqName = containingClassOrObject?.fqName
             .requireNotNull()
             .asString()
@@ -194,7 +190,6 @@ class RealKotlinFile(
         }
 
         else -> {
-
           both(nameAsString)
         }
       }
@@ -229,7 +224,7 @@ class RealKotlinFile(
       }
     }
 
-    val importsNames = importsLazy.value.mapToSet { it.fqName }
+    val importsNames = importsLazy.value.mapToSet { it.name }
 
     val (resolved, unresolved) = apiRefsAsStrings.map { reference ->
       importsNames.firstOrNull { it.endsWith(reference) } ?: reference
@@ -275,10 +270,12 @@ class RealKotlinFile(
 
   override val interpretedReferencesLazy: Lazy<Set<Reference>> = lazy {
 
-    val imports by unsafeLazy { importsLazy.value.mapToSet { it.fqName } }
+    val imports by unsafeLazy { importsLazy.value.mapToSet { it.name } }
 
     val notImportedDirectly = listOf(
-      typeReferences, callableReferences, qualifiedExpressions
+      typeReferences,
+      callableReferences,
+      qualifiedExpressions
     ).flatten()
       .filter { reference -> imports.none { it.endsWith(reference) } }
 
@@ -297,7 +294,7 @@ class RealKotlinFile(
         toResolve.takeIf { it.startsWith("$alias.") }
           ?.let {
             resolvedByAlias.add(toResolve)
-            val newPrefix = _aliasMap.getValue(alias).fqName
+            val newPrefix = _aliasMap.getValue(alias).name
             val newSuffix = toResolve.removePrefix(alias)
             "$newPrefix$newSuffix".asExplicitKotlinReference()
           }
@@ -313,7 +310,10 @@ class RealKotlinFile(
 
         val all = (constructed + reference).toSet()
 
-        all.map { InterpretedKotlinReference(it) }
+        all.map {
+          it.asUnqualifiedAndroidReferenceOrNull()
+            ?: InterpretedKotlinReference(it)
+        }
       }
       .plus(replacedAliases)
   }
@@ -350,7 +350,8 @@ class RealKotlinFile(
     ktFile.accept(visitor)
 
     return ScopeArgumentParseResult(
-      mergeArguments = mergeArguments, contributeArguments = contributeArguments
+      mergeArguments = mergeArguments,
+      contributeArguments = contributeArguments
     )
   }
 
@@ -368,9 +369,14 @@ class RealKotlinFile(
       .asExplicitKotlinReference()
 
     return RawAnvilAnnotatedType(
-      declarationName = typeFqName.asDeclarationName(),
+      declaredName = typeFqName.asDeclarationName(),
       anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
     )
+  }
+
+  private fun String.asUnqualifiedAndroidReferenceOrNull(): UnqualifiedAndroidResourceReference? {
+    return takeIf { it.matches(unqualifiedRReferenceRegex) }
+      ?.let { UnqualifiedAndroidResourceReference(it) }
   }
 
   private companion object {
@@ -403,5 +409,11 @@ class RealKotlinFile(
       "unaryPlus"
     )
     val componentNRegex = Regex("component\\d+")
+
+    val prefixes by unsafeLazy { UnqualifiedAndroidResourceDeclaredName.prefixes() }
+
+    val unqualifiedRReferenceRegex = Regex(
+      "^R\\.(?:${prefixes.joinToString("|")})\\.[^.]+$"
+    )
   }
 }

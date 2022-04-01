@@ -15,11 +15,11 @@
 
 package modulecheck.parsing.android
 
-import modulecheck.parsing.source.AndroidResource
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.UnqualifiedXmlAndroidResourceReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.asDataSource
 import modulecheck.utils.mapToSet
@@ -49,17 +49,16 @@ interface XmlFile : HasReferences {
 
     override val resourceReferencesAsRReferences: Set<String> by lazy {
       rawResources
-        .mapNotNull { AndroidResource.fromString(it) }
-        .map { "R.${it.prefix}.${it.name}" }
+        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .map { it.name }
         .toSet()
     }
 
     override fun references(): List<DataSource<Reference>> {
-
       return listOf(
         customViews.asDataSource(),
         lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedXmlAndroidResourceReference(it) }
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
         }.asDataSource()
       )
     }
@@ -81,16 +80,15 @@ interface XmlFile : HasReferences {
 
     override val resourceReferencesAsRReferences: Set<String> by lazy {
       rawResources
-        .mapNotNull { AndroidResource.fromString(it) }
-        .map { "R.${it.prefix}.${it.name}" }
+        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .map { it.name }
         .toSet()
     }
 
     override fun references(): List<DataSource<Reference>> {
-
       return listOf(
         lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedXmlAndroidResourceReference(it) }
+          resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
         }.asDataSource()
       )
     }

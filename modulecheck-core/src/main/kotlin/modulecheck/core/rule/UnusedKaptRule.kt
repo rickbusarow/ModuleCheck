@@ -64,7 +64,6 @@ class UnusedKaptRule(
         // unused means that none of the processor's annotations are used in any import
         val unusedProcessors = processors
           .filterNot {
-
             val matcher = matchers[it.name] ?: return@filterNot true
 
             matcher.matchedIn(references)
@@ -110,7 +109,7 @@ class UnusedKaptRule(
     .any { annotationRegex ->
 
       references.any { referenceName ->
-        annotationRegex.matches(referenceName.fqName)
+        annotationRegex.matches(referenceName.name)
       }
     }
 }

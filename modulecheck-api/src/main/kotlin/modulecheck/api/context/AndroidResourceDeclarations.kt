@@ -19,8 +19,7 @@ import modulecheck.parsing.android.AndroidResourceParser
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -31,14 +30,14 @@ import modulecheck.utils.emptyLazySet
 import modulecheck.utils.lazySet
 
 data class AndroidResourceDeclarations(
-  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<AndroidResourceDeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidResourceDeclarations>
     get() = Key
 
-  suspend fun all(): LazySet<DeclarationName> {
+  suspend fun all(): LazySet<AndroidResourceDeclaredName> {
     return delegate.getOrPut("all_source_sets".asSourceSetName()) {
       project.platformPlugin
         .sourceSets
@@ -48,8 +47,7 @@ data class AndroidResourceDeclarations(
     }
   }
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
-
+  suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidResourceDeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
 
     val platformPlugin = project.platformPlugin
@@ -58,24 +56,27 @@ data class AndroidResourceDeclarations(
       return emptyLazySet()
     }
 
+    val rName = project.androidRDeclarationForSourceSetName(sourceSetName)
+      ?: return emptyLazySet()
+
     return delegate.getOrPut(sourceSetName) {
-
-      val rName = project.androidRFqNameForSourceSetName(sourceSetName)
-        ?: return@getOrPut emptyLazySet()
-
       val resourceParser = AndroidResourceParser()
 
-      val dataProviders = project.resourcesForSourceSetName(sourceSetName)
-        .map { dataSource { resourceParser.parseFile(it) } }
-        .plus(dataSource { setOf(rName.asDeclarationName()) })
+      val declarations = project.resourceFilesForSourceSetName(sourceSetName)
+        .map { file ->
+          dataSource {
+            val simpleNames = resourceParser.parseFile(file)
 
-      lazySet(dataProviders)
+            simpleNames + simpleNames.map { it.toNamespacedDeclarationName(rName) }
+          }
+        }
+
+      lazySet(declarations)
     }
   }
 
   companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
     override suspend operator fun invoke(project: McProject): AndroidResourceDeclarations {
-
       return AndroidResourceDeclarations(SafeCache(), project)
     }
   }
@@ -86,6 +87,6 @@ suspend fun ProjectContext.androidResourceDeclarations(): AndroidResourceDeclara
 
 suspend fun ProjectContext.androidResourceDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<DeclarationName> {
+): LazySet<AndroidResourceDeclaredName> {
   return androidResourceDeclarations().get(sourceSetName)
 }

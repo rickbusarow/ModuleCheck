@@ -24,7 +24,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.NamedSymbol
@@ -40,8 +40,8 @@ import kotlin.LazyThreadSafetyMode.NONE
 
 data class AnvilScopedDeclarations(
   val scopeName: AnvilScopeName,
-  val contributions: MutableSet<DeclarationName>,
-  val merges: MutableSet<DeclarationName>
+  val contributions: MutableSet<DeclaredName>,
+  val merges: MutableSet<DeclaredName>
 )
 
 data class AnvilGraph(
@@ -92,7 +92,6 @@ data class AnvilGraph(
   private suspend fun McProject.declarationsForScopeName(
     sourceSetName: SourceSetName
   ): MutableMap<AnvilScopeName, AnvilScopedDeclarations> {
-
     val map = mutableMapOf<AnvilScopeName, AnvilScopedDeclarations>()
     suspend fun RawAnvilAnnotatedType.declarations(
       sourceSetName: SourceSetName,
@@ -135,14 +134,14 @@ data class AnvilGraph(
 
             val declarations = rawAnvilAnnotatedType.declarations(sourceSetName, kotlinFile)
 
-            declarations.merges.add(rawAnvilAnnotatedType.declarationName)
+            declarations.merges.add(rawAnvilAnnotatedType.declaredName)
           }
         contributed
           .forEach { rawAnvilAnnotatedType ->
 
             val declarations = rawAnvilAnnotatedType.declarations(sourceSetName, kotlinFile)
 
-            declarations.contributions.add(rawAnvilAnnotatedType.declarationName)
+            declarations.contributions.add(rawAnvilAnnotatedType.declaredName)
           }
       }
 
@@ -163,7 +162,9 @@ data class AnvilGraph(
     // if scope is directly imported (most likely),
     // then use that fully qualified import
     val rawScopeName = kotlinFile.importsLazy.value
-      .firstNotNullOfOrNull { it.endingWith(scopeNameEntry.name).firstOrNull() }
+      .firstNotNullOfOrNull { reference ->
+        reference.name.takeIf { it.endsWith(scopeNameEntry.name.name) }
+      }
       ?.let { FqName(it) }
       // if the scope is wildcard-imported
       ?: dependenciesBySourceSetName[sourceSetName]
@@ -174,14 +175,16 @@ data class AnvilGraph(
             .declarations()
             .get(SourceSetName.MAIN, includeUpstream = true)
             .filter { maybeExtraReferences.value.cast<Set<NamedSymbol>>().contains(it) }
-            .firstOrNull { it.fqName.endsWith(scopeNameEntry.name.fqName) }
+            .firstOrNull { it.name.endsWith(scopeNameEntry.name.name) }
         }
         .firstOrNull()
-        ?.let { FqName(it.fqName) }
+        ?.let { FqName(it.name) }
       // Scope must be defined in this same module
       ?: maybeExtraReferences.value
-        .flatMap { it.startingWith(kotlinFile.packageFqName) }
-        .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name.fqName) }
+        .mapNotNull { reference ->
+          reference.name.takeIf { it.startsWith(kotlinFile.packageFqName) }
+        }
+        .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name.name) }
         ?.let { FqName(it) }
       // Scope must be defined in this same package
       ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.name}")
@@ -202,7 +205,6 @@ data class AnvilGraph(
   companion object Key : ProjectContext.Key<AnvilGraph> {
 
     override suspend operator fun invoke(project: McProject): AnvilGraph {
-
       return AnvilGraph(
         project = project,
         delegate = SafeCache()

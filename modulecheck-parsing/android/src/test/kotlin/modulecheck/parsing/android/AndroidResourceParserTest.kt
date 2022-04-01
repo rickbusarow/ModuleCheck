@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.android
 
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.testing.BaseTest
 import modulecheck.testing.createSafely
 import modulecheck.utils.child
@@ -25,7 +25,6 @@ internal class AndroidResourceParserTest : BaseTest() {
 
   @Test
   fun `a node without attributes should not be parsed`() {
-
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -44,7 +43,6 @@ internal class AndroidResourceParserTest : BaseTest() {
 
   @Test
   fun `a node without a name attribute should not be parsed`() {
-
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -63,7 +61,6 @@ internal class AndroidResourceParserTest : BaseTest() {
 
   @Test
   fun `a node with a name as the second attribute should be parsed`() {
-
     val text = """
       <?xml version="1.0" encoding="utf-8"?>
       <resources>
@@ -78,8 +75,7 @@ internal class AndroidResourceParserTest : BaseTest() {
     val declarations = AndroidResourceParser().parseFile(xml)
 
     declarations shouldBe setOf(
-      "R.string".asDeclarationName(),
-      "R.string.app_name".asDeclarationName(),
+      AndroidString("app_name")
     )
   }
 }

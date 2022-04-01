@@ -20,85 +20,129 @@ import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.safeAs
 
-sealed class Reference : NamedSymbol {
+sealed interface Reference : NamedSymbol {
 
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
+  sealed interface JavaReference : Reference
+  sealed interface KotlinReference : Reference
 
-    if (other is String) return fqName == other
+  /**
+   * Marker for any reference made from an XML file.
+   *
+   * Note that aside from references to android resources, xml follows the same reference names as
+   * Java.
+   */
+  sealed interface XmlReference : Reference, JavaReference
 
-    if (other !is NamedSymbol) return false
+  sealed interface ExplicitReference : Reference
 
-    return when (other) {
-      is DeclarationName -> when (this) {
-        is ExplicitJavaReference -> other.asJavaFriendly()?.fqName == fqName
-        is ExplicitKotlinReference -> other.asKotlinFriendly()?.fqName == fqName
-        is ExplicitXmlReference -> other.asJavaFriendly()?.fqName == fqName
-        is InterpretedJavaReference -> other.asJavaFriendly()?.fqName == fqName
-        is InterpretedKotlinReference -> other.asKotlinFriendly()?.fqName == fqName
-        is UnqualifiedAndroidResourceReference -> {
-          val directMatch = other.fqName == fqName
-          if (directMatch) return true
+  class UnqualifiedAndroidResourceReference(override val name: String) : Reference {
 
-          fqName == "\\bR\\..*\$".toRegex()
-            .find(other.fqName)
-            ?.value
-        }
-      }
-      is Reference -> fqName == other.fqName
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReference>()?.name },
+        ifDeclaration = { name == it.safeAs<AndroidResourceDeclaredName>()?.name }
+      )
     }
+
+    override fun hashCode(): Int = name.hashCode()
+
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  override fun hashCode(): Int {
-    return fqName.hashCode()
+  sealed interface InterpretedReference : Reference
+
+  class ExplicitKotlinReference(override val name: String) :
+    Reference,
+    ExplicitReference,
+    KotlinReference {
+
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<KotlinReference>()?.name },
+        ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
+      )
+    }
+
+    override fun hashCode(): Int = name.hashCode()
+
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  override fun toString(): String {
-    return "(${this::class.java.simpleName}) `$fqName`"
+  class InterpretedKotlinReference(override val name: String) :
+    Reference,
+    InterpretedReference,
+    KotlinReference {
+
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<KotlinReference>()?.name },
+        ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
+      )
+    }
+
+    override fun hashCode(): Int = name.hashCode()
+
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  sealed interface JavaReference
-  sealed interface KotlinReference
-  sealed interface XmlReference
+  class ExplicitJavaReference(override val name: String) :
+    Reference,
+    ExplicitReference,
+    JavaReference {
 
-  sealed class ExplicitReference : Reference()
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<JavaReference>()?.name },
+        ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
+      )
+    }
 
-  sealed class UnqualifiedAndroidResourceReference : Reference()
+    override fun hashCode(): Int = name.hashCode()
 
-  sealed class InterpretedReference : Reference()
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  }
 
-  class ExplicitKotlinReference(override val fqName: String) :
-    ExplicitReference(),
-    KotlinReference
+  class ExplicitXmlReference(override val name: String) :
+    Reference,
+    ExplicitReference,
+    XmlReference {
 
-  class UnqualifiedKotlinAndroidResourceReference(override val fqName: String) :
-    UnqualifiedAndroidResourceReference(),
-    KotlinReference
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<XmlReference>()?.name },
+        ifDeclaration = { name == it.safeAs<XmlCompatibleDeclaredName>()?.name }
+      )
+    }
 
-  class InterpretedKotlinReference(override val fqName: String) :
-    InterpretedReference(),
-    KotlinReference
+    override fun hashCode(): Int = name.hashCode()
 
-  class ExplicitJavaReference(override val fqName: String) :
-    ExplicitReference(),
-    JavaReference
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  }
 
-  class ExplicitXmlReference(override val fqName: String) :
-    ExplicitReference(),
-    XmlReference
+  class InterpretedJavaReference(override val name: String) :
+    Reference,
+    InterpretedReference,
+    JavaReference {
 
-  class UnqualifiedJavaAndroidResourceReference(override val fqName: String) :
-    UnqualifiedAndroidResourceReference(),
-    JavaReference
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = { name == it.safeAs<JavaReference>()?.name },
+        ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
+      )
+    }
 
-  class UnqualifiedXmlAndroidResourceReference(override val fqName: String) :
-    UnqualifiedAndroidResourceReference(),
-    XmlReference
+    override fun hashCode(): Int = name.hashCode()
 
-  class InterpretedJavaReference(override val fqName: String) :
-    InterpretedReference(),
-    JavaReference
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  }
 }
 
 fun String.asExplicitKotlinReference(): ExplicitKotlinReference = ExplicitKotlinReference(this)

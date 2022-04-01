@@ -25,12 +25,12 @@ data class AnvilGradlePlugin(
 )
 
 data class AnvilAnnotatedType(
-  val contributedTypeDeclaration: DeclarationName,
+  val contributedTypeDeclaration: DeclaredName,
   val contributedScope: AnvilScopeName
 )
 
 data class RawAnvilAnnotatedType(
-  val declarationName: DeclarationName,
+  val declaredName: DeclaredName,
   val anvilScopeNameEntry: AnvilScopeNameEntry
 )
 

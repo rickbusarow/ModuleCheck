@@ -16,25 +16,22 @@
 package modulecheck.parsing.android
 
 import groovy.util.Node
-import modulecheck.parsing.source.AndroidResource
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.utils.flatMapToSet
 import java.io.File
 
 class AndroidResourceParser {
 
-  fun parseFile(resDir: File): Set<DeclarationName> {
-
+  fun parseFile(resDir: File): Set<UnqualifiedAndroidResourceDeclaredName> {
     val xmlParser = SafeXmlParser()
 
     return resDir
       .walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "xml" }
-      .flatMap { file ->
+      .flatMapToSet { file ->
 
-        val fromFile = listOfNotNull(AndroidResource.fromFile(file))
+        val fromFile = listOfNotNull(UnqualifiedAndroidResourceDeclaredName.fromFile(file))
 
         val fromContents = xmlParser.parse(file)
           ?.takeIf { it.name() == "resources" }
@@ -44,7 +41,7 @@ class AndroidResourceParser {
 
             val name = node.attributes()["name"]?.toString() ?: return@mapNotNull null
 
-            AndroidResource.fromValuePair(
+            UnqualifiedAndroidResourceDeclaredName.fromValuePair(
               type = node.name().toString(),
               name = name
             )
@@ -52,12 +49,6 @@ class AndroidResourceParser {
           .orEmpty()
 
         fromFile + fromContents
-      }
-      .flatMapToSet {
-        listOf(
-          "R.${it.prefix}".asDeclarationName(),
-          "R.${it.prefix}.${it.name}".asDeclarationName()
-        )
       }
   }
 }

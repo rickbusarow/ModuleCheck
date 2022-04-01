@@ -67,7 +67,6 @@ abstract class ProjectTest : BaseTest() {
   }
 
   fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
-
     return when (this) {
       is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
@@ -114,7 +113,6 @@ abstract class ProjectTest : BaseTest() {
 
   inline fun <reified P : PlatformPluginBuilder<*>> McProject.toProjectBuilder():
     McProjectBuilder<P> {
-
     return McProjectBuilder(
       path = path,
       projectDir = projectDir,
@@ -130,13 +128,11 @@ abstract class ProjectTest : BaseTest() {
     )
   }
 
-  inline fun <
-    reified T : McProjectBuilder<P>,
+  inline fun <reified T : McProjectBuilder<P>,
     reified P : PlatformPluginBuilder<G>,
     G : PlatformPlugin> McProject.edit(
     config: McProjectBuilder<P>.() -> Unit = {}
   ): McProject {
-
     return toProjectBuilder<P>()
       .also { it.config() }
       .toRealMcProject()
@@ -146,7 +142,6 @@ abstract class ProjectTest : BaseTest() {
     path: String,
     config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
   ): McProject {
-
     val platformPlugin = KotlinJvmPluginBuilder()
 
     return createProject(
@@ -164,7 +159,6 @@ abstract class ProjectTest : BaseTest() {
     androidPackage: String,
     config: McProjectBuilder<AndroidApplicationPluginBuilder>.() -> Unit = {}
   ): McProject {
-
     return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
@@ -180,7 +174,6 @@ abstract class ProjectTest : BaseTest() {
     androidPackage: String,
     config: McProjectBuilder<AndroidLibraryPluginBuilder>.() -> Unit = {}
   ): McProject {
-
     return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
@@ -196,7 +189,6 @@ abstract class ProjectTest : BaseTest() {
     androidPackage: String,
     config: McProjectBuilder<AndroidDynamicFeaturePluginBuilder>.() -> Unit = {}
   ): McProject {
-
     return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
@@ -212,7 +204,6 @@ abstract class ProjectTest : BaseTest() {
     androidPackage: String,
     config: McProjectBuilder<AndroidTestPluginBuilder>.() -> Unit = {}
   ): McProject {
-
     return createProject(
       projectCache = projectCache,
       projectDir = testProjectDir,
@@ -228,7 +219,6 @@ abstract class ProjectTest : BaseTest() {
     project: McProject,
     asTestFixture: Boolean = false
   ) {
-
     val old = projectDependencies[configurationName].orEmpty()
 
     val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
@@ -240,7 +230,6 @@ abstract class ProjectTest : BaseTest() {
     buildFileText: String? = null,
     path: String = ":lib"
   ) = this.kotlinProject(path) {
-
     if (buildFileText != null) {
       buildFile.writeText(buildFileText)
     }
@@ -263,7 +252,6 @@ abstract class ProjectTest : BaseTest() {
   }
 
   suspend fun resolveReferences() {
-
     projectCache.values
       .forEach { project ->
 
@@ -274,7 +262,7 @@ abstract class ProjectTest : BaseTest() {
           .map { dependency -> dependency.declarations() }
           .plus(thisProjectDeclarations)
           .let { lazySet(it) }
-          .map { it.fqName }
+          .map { it.name }
           .toSet()
 
         project.references().all()
@@ -282,9 +270,9 @@ abstract class ProjectTest : BaseTest() {
           .forEach eachRef@{ reference ->
 
             val referenceName = when (reference) {
-              is ExplicitReference -> reference.fqName
+              is ExplicitReference -> reference.name
               is InterpretedReference -> return@eachRef
-              is UnqualifiedAndroidResourceReference -> reference.fqName
+              is UnqualifiedAndroidResourceReference -> reference.name
             }
 
             // Only check for references which would be provided by internal projects. Using a
