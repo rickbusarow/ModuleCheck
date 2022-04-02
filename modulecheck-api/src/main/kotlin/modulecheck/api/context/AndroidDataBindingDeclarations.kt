@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -58,7 +58,7 @@ data class AndroidDataBindingDeclarations(
                 }
                 .plus("Binding")
                 .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclarationName()
+                .asDeclaredName()
             }
             .toSet()
         }

@@ -15,14 +15,14 @@
 
 package modulecheck.project.impl
 
-import modulecheck.api.context.resolvedDeclarationNames
+import modulecheck.api.context.resolvedDeclaredNames
 import modulecheck.parsing.gradle.BuildFileParser
 import modulecheck.parsing.gradle.PlatformPlugin
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.Logger
@@ -90,8 +90,8 @@ class RealMcProject(
     declarationName: FqName,
     sourceSetName: SourceSetName
   ): FqName? {
-    return resolvedDeclarationNames().getSource(
-      declarationName.asDeclarationName(),
+    return resolvedDeclaredNames().getSource(
+      declarationName.asDeclaredName(),
       sourceSetName
     )
       ?.run { declarationName }

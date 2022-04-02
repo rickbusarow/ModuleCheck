@@ -67,7 +67,7 @@ data class AndroidResourceDeclarations(
           dataSource {
             val simpleNames = resourceParser.parseFile(file)
 
-            simpleNames + simpleNames.map { it.toNamespacedDeclarationName(rName) }
+            simpleNames + simpleNames.map { it.toNamespacedDeclaredName(rName) }
           }
         }
 

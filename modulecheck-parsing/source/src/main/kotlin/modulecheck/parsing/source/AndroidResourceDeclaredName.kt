@@ -79,7 +79,7 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
   class Raw(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("raw")
   class Style(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("style")
 
-  fun toNamespacedDeclarationName(
+  fun toNamespacedDeclaredName(
     androidRDeclaration: AndroidRDeclaredName
   ): GeneratedAndroidResourceDeclaredName {
     return GeneratedAndroidResourceDeclaredName(

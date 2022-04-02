@@ -35,11 +35,11 @@ import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
-import modulecheck.parsing.source.asJavaDeclarationName
-import modulecheck.parsing.source.asKotlinDeclarationName
+import modulecheck.parsing.source.asJavaDeclaredName
+import modulecheck.parsing.source.asKotlinDeclaredName
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazyDeferred
@@ -109,25 +109,25 @@ class RealKotlinFile(
   private val fileJavaFacadeName by lazy { ktFile.javaFileFacadeFqName.asString() }
 
   @Suppress("ComplexMethod")
-  private fun KtNamedDeclaration.declarationNames(): List<DeclaredName> {
+  private fun KtNamedDeclaration.DeclaredNames(): List<DeclaredName> {
     val fq = fqName ?: return emptyList()
 
     val nameAsString = fq.asString()
 
     return buildList {
       fun both(name: String) {
-        add(name.asDeclarationName())
+        add(name.asDeclaredName())
       }
 
       fun kotlin(name: String) {
-        if (!contains(name.asDeclarationName())) {
-          add(name.asKotlinDeclarationName())
+        if (!contains(name.asDeclaredName())) {
+          add(name.asKotlinDeclaredName())
         }
       }
 
       fun java(name: String) {
-        if (!contains(name.asDeclarationName())) {
-          add(name.asJavaDeclarationName())
+        if (!contains(name.asDeclaredName())) {
+          add(name.asJavaDeclaredName())
         }
       }
 
@@ -137,12 +137,12 @@ class RealKotlinFile(
 
           if (isStatic()) {
             both(nameAsString.remove(".Companion"))
-          } else if (this@declarationNames is KtCallableDeclaration) {
+          } else if (this@DeclaredNames is KtCallableDeclaration) {
             kotlin(nameAsString.remove(".Companion"))
           }
         }
 
-        isTopLevelKtOrJavaMember() && this@declarationNames !is KtClassOrObject && !isStatic() -> {
+        isTopLevelKtOrJavaMember() && this@DeclaredNames !is KtClassOrObject && !isStatic() -> {
           kotlin(nameAsString)
 
           jvmSimpleNames().forEach {
@@ -175,7 +175,7 @@ class RealKotlinFile(
 
           val jvmNames = jvmSimpleNames()
 
-          if (this@declarationNames is KtFunction && jvmNameOrNull() == null) {
+          if (this@DeclaredNames is KtFunction && jvmNameOrNull() == null) {
             both(nameAsString)
           } else {
             kotlin(nameAsString)
@@ -201,7 +201,7 @@ class RealKotlinFile(
     ktFile.getChildrenOfTypeRecursive<KtNamedDeclaration>()
       .asSequence()
       .filterNot { it.isPrivateOrInternal() }
-      .flatMap { it.declarationNames() }
+      .flatMap { it.DeclaredNames() }
       .toSet()
   }
 
@@ -369,7 +369,7 @@ class RealKotlinFile(
       .asExplicitKotlinReference()
 
     return RawAnvilAnnotatedType(
-      declaredName = typeFqName.asDeclarationName(),
+      declaredName = typeFqName.asDeclaredName(),
       anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
     )
   }

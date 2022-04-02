@@ -164,15 +164,15 @@ class AgnosticDeclaredName(override val name: String) :
 
 fun String.asAndroidRDeclaration(): AndroidRDeclaredName = AndroidRDeclaredName(this)
 
-fun String.asKotlinDeclarationName(): DeclaredName = KotlinSpecificDeclaredName(this)
+fun String.asKotlinDeclaredName(): DeclaredName = KotlinSpecificDeclaredName(this)
 
-fun String.asJavaDeclarationName(): DeclaredName = JavaSpecificDeclaredName(this)
+fun String.asJavaDeclaredName(): DeclaredName = JavaSpecificDeclaredName(this)
 
-fun String.asDeclarationName(): DeclaredName = AgnosticDeclaredName(this)
+fun String.asDeclaredName(): DeclaredName = AgnosticDeclaredName(this)
 
-fun FqName.asDeclarationName(): DeclaredName = AgnosticDeclaredName(asString())
+fun FqName.asDeclaredName(): DeclaredName = AgnosticDeclaredName(asString())
 
 @JvmName("containsDeclarationName")
 fun Set<DeclaredName>.containsAny(names: Set<String>): Boolean {
-  return names.any { it.asDeclarationName() in this }
+  return names.any { it.asDeclaredName() in this }
 }
