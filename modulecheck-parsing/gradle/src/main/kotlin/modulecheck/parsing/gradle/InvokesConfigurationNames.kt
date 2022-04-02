@@ -224,8 +224,9 @@ private suspend fun ConfigurationName.shouldUseQuotes(
   if (invokesConfigurationNames.buildFile.extension != "kts") return false
 
   // true if the build file *already* uses this exact same configuration as a String extension
-  if (invokesConfigurationNames.getConfigurationInvocations().contains("\"$value\""))
+  if (invokesConfigurationNames.getConfigurationInvocations().contains("\"$value\"")) {
     return true
+  }
 
   // true if we can't find a plugin which creates this config, and we can't already find it being
   // used as a normal function invocation

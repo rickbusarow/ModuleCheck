@@ -116,7 +116,7 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
         └────────┘───────────────────testImplementation──────┘
         However, that transitive dependency is also providing the contributed dependency to other
         source sets which depend upon it. So, check the downstream SourceSets as well.
-        */
+         */
         transitive
           .withContributedConfiguration(transitive.source.configurationName.implementationVariant())
           // from `main` source set, get a sequence of [main, test, debug, release, testDebug, ...]

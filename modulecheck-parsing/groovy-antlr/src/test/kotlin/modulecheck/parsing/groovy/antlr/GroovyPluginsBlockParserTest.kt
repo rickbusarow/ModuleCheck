@@ -46,7 +46,7 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
         statementWithSurroundingText = """  // comment
           |  id 'com.squareup.anvil' version '2.34.0'
         """.trimMargin()
-      ),
+      )
     )
   }
 
@@ -73,7 +73,7 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
       PluginDeclaration(
         declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'"""
-      ),
+      )
     )
   }
 

@@ -96,11 +96,9 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
 }
 
 @PublishedApi
-internal inline fun <
-  reified T : McProjectBuilder<P>,
+internal inline fun <reified T : McProjectBuilder<P>,
   reified P : PlatformPluginBuilder<G>,
-  G : PlatformPlugin
-  > T.buildProject(
+  G : PlatformPlugin> T.buildProject(
   projectFactory: T.(JvmFileProvider.Factory) -> McProject
 ): McProject {
 
@@ -120,11 +118,9 @@ internal inline fun <
     }
 }
 
-inline fun <
-  reified T : McProjectBuilder<P>,
+inline fun <reified T : McProjectBuilder<P>,
   reified P : PlatformPluginBuilder<G>,
-  G : PlatformPlugin
-  > T.toRealMcProject(): McProject {
+  G : PlatformPlugin> T.toRealMcProject(): McProject {
   return buildProject { jvmFileProviderFactory ->
 
     RealMcProject(

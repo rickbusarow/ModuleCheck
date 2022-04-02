@@ -95,7 +95,7 @@ data class ModuleDependencyDeclaration(
     somewhere -- perhaps automatically added by the IDE's intention.  This might be the only string
     extension in the whole project, but without this check, autocorrect would use string extensions
     whenever that `"api"(...)` dependency is the source.
-    */
+     */
     val configToReplace = if (configIsInQuotes) {
       quotedOldConfig
     } else {

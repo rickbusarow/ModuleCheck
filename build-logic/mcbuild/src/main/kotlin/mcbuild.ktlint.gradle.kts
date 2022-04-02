@@ -21,13 +21,15 @@ plugins {
 
 extensions.configure(KtlintExtension::class.java) {
   debug.set(false)
-  version.set("0.44.0")
+  version.set("0.45.1")
   outputToConsole.set(true)
+  enableExperimentalRules.set(true)
   disabledRules.set(
     setOf(
       "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
       "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-      "experimental:argument-list-wrapping" // doesn't work half the time
+      "experimental:argument-list-wrapping", // doesn't work half the time
+      "experimental:no-empty-first-line-in-method-block" // code golf...
     )
   )
 }

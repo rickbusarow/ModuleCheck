@@ -225,7 +225,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
         configName = ConfigurationName.implementation,
         declarationText = """implementation(testFixtures(project(":lib3")))""",
         statementWithSurroundingText = """   implementation(testFixtures(project(":lib3")))"""
-      ),
+      )
     )
   }
 

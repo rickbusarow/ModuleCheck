@@ -44,7 +44,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
   fun create(
     gradleProject: GradleProject,
     androidCommonExtension: AndroidCommonExtension,
-    hasTestFixturesPlugin: Boolean,
+    hasTestFixturesPlugin: Boolean
   ): AndroidPlatformPlugin {
 
     val type = Type.from(androidCommonExtension)

@@ -48,7 +48,7 @@ class RealDependenciesBlocksProvider(
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val groovyParserProvider: Provider<GroovyDependencyBlockParser>,
-    private val kotlinParserProvider: Provider<KotlinDependencyBlockParser>,
+    private val kotlinParserProvider: Provider<KotlinDependencyBlockParser>
   ) : DependenciesBlocksProvider.Factory {
     override fun create(
       invokesConfigurationNames: InvokesConfigurationNames
