@@ -26,15 +26,16 @@ import modulecheck.utils.SafeCache
 import modulecheck.utils.capitalize
 import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
+import modulecheck.utils.existsOrNull
 import modulecheck.utils.lazySet
-import java.util.Locale
+import modulecheck.utils.mapToSet
 
-data class AndroidDataBindingDeclarations(
+data class AndroidViewBindingDeclarations(
   private val delegate: SafeCache<SourceSetName, LazySet<DeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<AndroidDataBindingDeclarations>
+  override val key: ProjectContext.Key<AndroidViewBindingDeclarations>
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): LazySet<DeclaredName> {
@@ -46,39 +47,31 @@ data class AndroidDataBindingDeclarations(
 
       lazySet(
         dataSource {
-          project.layoutFiles()
-            .get(sourceSetName)
-            .map { layoutFile ->
-              layoutFile.name
-                .capitalize(Locale.US)
-                .replace(snake_reg) { matchResult ->
-                  matchResult.destructured
-                    .component1()
-                    .uppercase()
-                }
-                .plus("Binding")
-                .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclarationName()
+          project.layoutFilesForSourceSetName(sourceSetName)
+            .mapNotNull { it.file.existsOrNull() }
+            .mapToSet { layoutFile ->
+              val simpleBindingName = layoutFile.nameWithoutExtension
+                .split("_")
+                .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+
+              // fully qualified
+              "$basePackage.databinding.$simpleBindingName".asDeclarationName()
             }
-            .toSet()
         }
       )
     }
   }
 
-  companion object Key : ProjectContext.Key<AndroidDataBindingDeclarations> {
-
-    private val snake_reg = "_([a-zA-Z])".toRegex()
-
-    override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
-      return AndroidDataBindingDeclarations(SafeCache(), project)
+  companion object Key : ProjectContext.Key<AndroidViewBindingDeclarations> {
+    override suspend operator fun invoke(project: McProject): AndroidViewBindingDeclarations {
+      return AndroidViewBindingDeclarations(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingDeclarations =
-  get(AndroidDataBindingDeclarations)
+suspend fun ProjectContext.androidViewBindingDeclarations(): AndroidViewBindingDeclarations =
+  get(AndroidViewBindingDeclarations)
 
-suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
+suspend fun ProjectContext.androidViewBindingDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<DeclaredName> = androidDataBindingDeclarations().get(sourceSetName)
+): LazySet<DeclaredName> = androidViewBindingDeclarations().get(sourceSetName)

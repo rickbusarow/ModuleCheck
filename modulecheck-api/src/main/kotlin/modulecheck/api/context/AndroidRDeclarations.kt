@@ -16,40 +16,45 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.AndroidRDeclaredName
+import modulecheck.parsing.source.asAndroidRDeclaration
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.SafeCache
 
-data class AndroidRFqNames(
-  private val delegate: SafeCache<SourceSetName, String?>,
+data class AndroidRDeclarations(
+  private val delegate: SafeCache<SourceSetName, AndroidRDeclaredName?>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<AndroidRFqNames>
+  override val key: ProjectContext.Key<AndroidRDeclarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): String? {
+  suspend fun all(): Set<AndroidRDeclaredName> {
+    return project.sourceSets.keys
+      .mapNotNull { get(it) }
+      .toSet()
+  }
 
+  suspend fun get(sourceSetName: SourceSetName): AndroidRDeclaredName? {
     if (!project.isAndroid()) return null
 
     return delegate.getOrPut(sourceSetName) {
-
-      project.androidBasePackagesForSourceSetName(sourceSetName)?.let { "$it.R" }
+      project.androidBasePackagesForSourceSetName(sourceSetName)
+        ?.let { "$it.R".asAndroidRDeclaration() }
     }
   }
 
-  companion object Key : ProjectContext.Key<AndroidRFqNames> {
-    override suspend operator fun invoke(project: McProject): AndroidRFqNames {
-
-      return AndroidRFqNames(SafeCache(), project)
+  companion object Key : ProjectContext.Key<AndroidRDeclarations> {
+    override suspend operator fun invoke(project: McProject): AndroidRDeclarations {
+      return AndroidRDeclarations(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.androidRFqNames(): AndroidRFqNames =
-  get(AndroidRFqNames)
+suspend fun ProjectContext.androidRDeclarations(): AndroidRDeclarations = get(AndroidRDeclarations)
 
-suspend fun ProjectContext.androidRFqNameForSourceSetName(
+suspend fun ProjectContext.androidRDeclarationForSourceSetName(
   sourceSetName: SourceSetName
-): String? = androidRFqNames().get(sourceSetName)
+): AndroidRDeclaredName? = androidRDeclarations().get(sourceSetName)

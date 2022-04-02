@@ -20,21 +20,21 @@ import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
 import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
-import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
+import modulecheck.utils.LazySetComponent
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
+import modulecheck.utils.dataSourceOf
 import modulecheck.utils.lazySet
 
 data class Declarations private constructor(
-  private val delegate: SafeCache<DeclarationsKey, LazySet<DeclarationName>>,
+  private val delegate: SafeCache<DeclarationsKey, LazySet<DeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
@@ -50,7 +50,7 @@ data class Declarations private constructor(
     data class WithoutUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
   }
 
-  suspend fun all(): LazySet<DeclarationName> {
+  suspend fun all(): LazySet<DeclaredName> {
     return delegate.getOrPut(ALL) {
       project.sourceSets
         .keys
@@ -62,14 +62,12 @@ data class Declarations private constructor(
   suspend fun get(
     sourceSetName: SourceSetName,
     includeUpstream: Boolean
-  ): LazySet<DeclarationName> {
+  ): LazySet<DeclaredName> {
     val key = if (includeUpstream) {
       WithUpstream(sourceSetName)
     } else WithoutUpstream(sourceSetName)
     return delegate.getOrPut(key) {
-
-      val sets = mutableListOf<LazySet<DeclarationName>>()
-      val sources = mutableListOf<DataSource<DeclarationName>>()
+      val components = mutableListOf<LazySetComponent<DeclaredName>>()
 
       val seed = if (includeUpstream) {
         sourceSetName.withUpstream(project)
@@ -80,31 +78,34 @@ data class Declarations private constructor(
 
       seed.forEach { sourceSetOrUpstream ->
 
-        val rNameOrNull = project.androidRFqNameForSourceSetName(sourceSetOrUpstream)
+        val rNameOrNull = project.androidRDeclarationForSourceSetName(sourceSetOrUpstream)
 
         project.jvmFilesForSourceSetName(sourceSetOrUpstream)
           .toList()
           .map { dataSource(HIGH) { it.declarations } }
-          .let { sources.addAll(it) }
+          .let { components.addAll(it) }
 
         if (rNameOrNull != null) {
-          sources.add(dataSource { setOf(rNameOrNull.asDeclarationName()) })
-        }
+          check(project.isAndroid())
 
-        if (project.isAndroid()) {
-          sets.add(project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream))
+          val resources = project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream)
 
-          sets.add(project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream))
+          components.add(resources)
+
+          components.add(dataSourceOf(rNameOrNull))
+
+          components.add(
+            project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream)
+          )
         }
       }
 
-      lazySet(sets + sources)
+      lazySet(components)
     }
   }
 
   companion object Key : ProjectContext.Key<Declarations> {
     override suspend operator fun invoke(project: McProject): Declarations {
-
       return Declarations(SafeCache(), project)
     }
   }
@@ -112,7 +113,7 @@ data class Declarations private constructor(
 
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
-suspend fun ConfiguredProjectDependency.declarations(): LazySet<DeclarationName> {
+suspend fun ConfiguredProjectDependency.declarations(): LazySet<DeclaredName> {
   if (isTestFixture) {
     return project.declarations().get(SourceSetName.TEST_FIXTURES, false)
   }

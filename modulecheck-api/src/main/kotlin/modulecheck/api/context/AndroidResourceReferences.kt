@@ -18,19 +18,23 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.JavaFile
+import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.UnqualifiedJavaAndroidResourceReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.asExplicitJavaReference
+import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.LazySet.DataSource
-import modulecheck.utils.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.SafeCache
-import modulecheck.utils.asDataSource
+import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
+import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazySet
+import modulecheck.utils.remove
 
 data class AndroidResourceReferences(
   private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
@@ -45,34 +49,38 @@ data class AndroidResourceReferences(
   }
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
-
     if (!project.isAndroid()) return emptyLazySet()
 
-    val androidRFqNameOrNull = project.androidRFqNameForSourceSetName(sourceSetName)
-      ?: return emptyLazySet()
-
-    val packagePrefix = project.androidBasePackagesForSourceSetName(sourceSetName)
-      ?.let { "$it." }
+    val rName = project.androidRDeclarationForSourceSetName(sourceSetName)
       ?: return emptyLazySet()
 
     val jvm: List<DataSource<Reference>> = project.jvmFilesForSourceSetName(sourceSetName)
       .map { jvmFile ->
 
-        lazy<Set<Reference>> {
-          jvmFile.interpretedReferencesLazy
-            .value
-            .asSequence()
-            .flatMap { reference -> reference.startingWith(androidRFqNameOrNull) }
-            .plus(jvmFile.importsLazy.value.flatMap { it.startingWith(androidRFqNameOrNull) })
-            .flatMap { rReference ->
+        dataSource {
+          jvmFile.interpretedReferencesLazy.value
+            .plus(jvmFile.importsLazy.value)
+            .flatMapToSet { reference ->
 
-              listOf(
-                UnqualifiedJavaAndroidResourceReference(rReference.removePrefix(packagePrefix)),
-                ExplicitJavaReference(rReference)
-              )
+              if (reference.startsWith(rName)) {
+                val withoutR = reference.name.remove(rName.name)
+
+                val explicitR = when (jvmFile) {
+                  is JavaFile -> rName.name.asExplicitJavaReference()
+                  is KotlinFile -> rName.name.asExplicitKotlinReference()
+                }
+
+                listOfNotNull(
+                  explicitR,
+                  if (withoutR.isNotEmpty()) {
+                    UnqualifiedAndroidResourceReference("R$withoutR")
+                  } else {
+                    null
+                  }
+                )
+              } else emptyList()
             }
-            .toSet()
-        }.asDataSource(LOW)
+        }
       }
       .toList()
 
@@ -93,7 +101,6 @@ data class AndroidResourceReferences(
 
   companion object Key : ProjectContext.Key<AndroidResourceReferences> {
     override suspend operator fun invoke(project: McProject): AndroidResourceReferences {
-
       return AndroidResourceReferences(SafeCache(), project)
     }
   }

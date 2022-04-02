@@ -16,14 +16,14 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.asDeclarationName
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
 
 class DeclarationVisitor : KtTreeVisitorVoid() {
 
-  val declarations: MutableSet<DeclarationName> = mutableSetOf()
+  val declarations: MutableSet<DeclaredName> = mutableSetOf()
 
   override fun visitNamedDeclaration(declaration: KtNamedDeclaration) {
     if (!declaration.isPrivateOrInternal()) {

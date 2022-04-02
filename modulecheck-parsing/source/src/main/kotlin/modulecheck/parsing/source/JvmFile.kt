@@ -25,14 +25,13 @@ import modulecheck.utils.asDataSource
 sealed interface JvmFile : HasReferences {
   val name: String
   val packageFqName: String
-  val declarations: Set<DeclarationName>
+  val declarations: Set<DeclaredName>
 
   val importsLazy: Lazy<Set<Reference>>
   val apiReferences: LazyDeferred<Set<Reference>>
   val interpretedReferencesLazy: Lazy<Set<Reference>>
 
   override fun references(): List<DataSource<Reference>> {
-
     return listOf(
       importsLazy.asDataSource(HIGH),
       interpretedReferencesLazy.asDataSource(LOW)

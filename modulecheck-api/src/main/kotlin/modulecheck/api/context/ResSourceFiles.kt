@@ -45,12 +45,11 @@ data class ResSourceFiles(
 
   companion object Key : ProjectContext.Key<ResSourceFiles> {
     override suspend operator fun invoke(project: McProject): ResSourceFiles {
-
       return ResSourceFiles(SafeCache(), project)
     }
   }
 }
 
 suspend fun ProjectContext.resSourceFiles(): ResSourceFiles = get(ResSourceFiles)
-suspend fun ProjectContext.resourcesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
+suspend fun ProjectContext.resourceFilesForSourceSetName(sourceSetName: SourceSetName): Set<File> =
   resSourceFiles().get(sourceSetName)
