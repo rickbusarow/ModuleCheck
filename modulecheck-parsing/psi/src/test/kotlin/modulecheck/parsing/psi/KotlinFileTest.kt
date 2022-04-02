@@ -46,9 +46,9 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import modulecheck.parsing.source.asDeclarationName as neutralExtension
-import modulecheck.parsing.source.asJavaDeclarationName as javaExtension
-import modulecheck.parsing.source.asKotlinDeclarationName as kotlinExtension
+import modulecheck.parsing.source.asDeclaredName as neutralExtension
+import modulecheck.parsing.source.asJavaDeclaredName as javaExtension
+import modulecheck.parsing.source.asKotlinDeclaredName as kotlinExtension
 
 internal class KotlinFileTest : ProjectTest() {
 

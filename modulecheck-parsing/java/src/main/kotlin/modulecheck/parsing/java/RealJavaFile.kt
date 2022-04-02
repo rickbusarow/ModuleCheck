@@ -60,7 +60,7 @@ import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.utils.LazyDeferred
@@ -124,7 +124,7 @@ class RealJavaFile(
       .mapNotNull { declaration ->
         declaration.fullyQualifiedName
           .getOrNull()
-          ?.asDeclarationName()
+          ?.asDeclaredName()
       }
       .toSet()
       .plus(parsed.fieldDeclarations)

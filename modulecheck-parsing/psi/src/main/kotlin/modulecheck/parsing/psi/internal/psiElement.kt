@@ -92,10 +92,10 @@ fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 }
 
 suspend fun McProject.canResolveFqName(
-  declarationName: FqName,
+  declaredName: FqName,
   sourceSetName: SourceSetName
 ): Boolean {
-  return resolveFqNameOrNull(declarationName, sourceSetName) != null
+  return resolveFqNameOrNull(declaredName, sourceSetName) != null
 }
 
 fun PsiElement.file(): File {
