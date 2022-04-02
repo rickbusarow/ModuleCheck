@@ -33,16 +33,16 @@ Thumbs.db
 */.gradle/*
 
 # IDEA/Android Studio Ignore exceptions
-!/.idea/vcs.xml
-!/.idea/fileTemplates/
-!/.idea/inspectionProfiles/
-!/.idea/scopes/
 !/.idea/codeStyleSettings.xml
+!/.idea/compiler.xml
+!/.idea/copyright/
 !/.idea/dictionaries/*
 !/.idea/encodings.xml
-!/.idea/copyright/
-!/.idea/compiler.xml
+!/.idea/fileTemplates/
 !/.idea/icon.png
+!/.idea/inspectionProfiles/
+!/.idea/ktlint.xml
+!/.idea/scopes/
 
 /gradle/profiler/gradle-user-home/
 !/gradle/profiler/bin/

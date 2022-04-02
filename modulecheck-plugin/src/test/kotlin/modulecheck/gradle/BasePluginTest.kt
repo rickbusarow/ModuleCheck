@@ -82,7 +82,7 @@ abstract class BasePluginTest : ProjectTest() {
         "> Run with --info or --debug option to get more log output.",
         "> Run with --scan to get full insights.",
         "* Get more help at https://help.gradle.org",
-        "Daemon will be stopped at the end of the build after running out of JVM memory",
+        "Daemon will be stopped at the end of the build after running out of JVM memory"
       )
       // remove standard Gradle output noise
       .remove(

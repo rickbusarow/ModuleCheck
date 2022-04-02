@@ -76,7 +76,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -141,7 +141,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -199,7 +199,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -265,7 +265,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -329,7 +329,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -441,7 +441,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe true
 
     lib1.buildFile shouldHaveText """
@@ -488,7 +488,7 @@ class DisableViewBindingTest : RunnerTest() {
     }
 
     run(
-      autoCorrect = false,
+      autoCorrect = false
     ).isSuccess shouldBe false
 
     lib1.buildFile shouldHaveText """

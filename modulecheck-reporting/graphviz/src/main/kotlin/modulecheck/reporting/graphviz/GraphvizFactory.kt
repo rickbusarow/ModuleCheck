@@ -147,10 +147,11 @@ class GraphvizFactory @Inject constructor() {
       .distinct()
       .map { it.contributed.project }
       .let { deps ->
-        if (includeSelf)
+        if (includeSelf) {
           deps + this
-        else
+        } else {
           deps
+        }
       }
       .distinct()
   }
