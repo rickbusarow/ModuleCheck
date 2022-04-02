@@ -27,13 +27,12 @@ import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.11.4-LOCAL"
+const val VERSION_NAME = "0.11.4-SNAPSHOT"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(
   artifactId: String
 ) {
-
   apply(plugin = "com.vanniktech.maven.publish.base")
   apply(plugin = "mcbuild.dokka")
 
@@ -42,7 +41,6 @@ fun Project.configurePublishing(
 
   extensions
     .configure(MavenPublishBaseExtension::class.java) {
-
       publishToMavenCentral(DEFAULT)
       signAllPublications()
       pom {
@@ -74,7 +72,6 @@ fun Project.configurePublishing(
 
   extensions
     .configure(PublishingExtension::class.java) {
-
       publications
         .filterIsInstance<MavenPublication>()
         .forEach { it.artifactId = artifactId }
