@@ -1,6 +1,6 @@
 {
   "name": "modulecheck",
-  "version": "0.11.4-LOCAL",
+  "version": "0.11.4-SNAPSHOT",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
