@@ -48,7 +48,7 @@ data class Imports(
         .get(sourceSetName)
         .map { it.customViews.asDataSource() }
 
-      lazySet(sources = layout + jvm)
+      lazySet(layout + jvm)
     }
   }
 

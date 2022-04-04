@@ -33,7 +33,6 @@ const val VERSION_NAME = "0.11.4-SNAPSHOT"
 fun Project.configurePublishing(
   artifactId: String
 ) {
-
   apply(plugin = "com.vanniktech.maven.publish.base")
   apply(plugin = "mcbuild.dokka")
 
@@ -42,7 +41,6 @@ fun Project.configurePublishing(
 
   extensions
     .configure(MavenPublishBaseExtension::class.java) {
-
       publishToMavenCentral(DEFAULT)
       signAllPublications()
       pom {
@@ -74,7 +72,6 @@ fun Project.configurePublishing(
 
   extensions
     .configure(PublishingExtension::class.java) {
-
       publications
         .filterIsInstance<MavenPublication>()
         .forEach { it.artifactId = artifactId }

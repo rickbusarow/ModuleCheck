@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KtlintProjectConfiguration">
+    <androidMode>true</androidMode>
+    <useExperimental>true</useExperimental>
+    <treatAsErrors>false</treatAsErrors>
+    <disabledRules>
+      <list>
+        <option value="max-line-length" />
+        <option value="filename" />
+        <option value="experimental:argument-list-wrapping" />
+        <option value="experimental:no-empty-first-line-in-method-block" />
+      </list>
+    </disabledRules>
+  </component>
+</project>

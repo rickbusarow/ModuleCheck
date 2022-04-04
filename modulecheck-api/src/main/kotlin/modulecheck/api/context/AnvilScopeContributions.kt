@@ -17,20 +17,20 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
 
 data class AnvilScopeContributions(
-  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclarationName>>>,
+  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclaredName>>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclarationName>> {
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclaredName>> {
     return delegate.getOrPut(sourceSetName) {
       project.anvilGraph().get(sourceSetName)
         .mapValues { (_, declarations) ->
@@ -53,4 +53,4 @@ suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
 
 suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclarationName>> = anvilScopeContributions().get(sourceSetName)
+): Map<AnvilScopeName, Set<DeclaredName>> = anvilScopeContributions().get(sourceSetName)

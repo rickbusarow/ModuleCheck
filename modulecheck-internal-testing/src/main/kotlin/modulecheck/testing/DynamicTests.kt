@@ -32,16 +32,19 @@ interface DynamicTests {
       }
   }
 
-  fun <T : Any> Iterable<() -> T>.dynamic(
+  fun <T : Any> Sequence<T>.dynamic(
+    testName: (T) -> String,
+    test: (T) -> Unit
+  ): List<DynamicTest> = toList().dynamic(testName, test)
+
+  fun <T : Any> Iterable<T>.dynamic(
     testName: (T) -> String,
     test: (T) -> Unit
   ): List<DynamicTest> {
-    return map { factory -> factory.invoke() }
-      .map { subject ->
-
-        DynamicTest.dynamicTest("$testName -- $subject") {
-          test.invoke(subject)
-        }
+    return map { subject ->
+      DynamicTest.dynamicTest("${testName(subject)} -- $subject") {
+        test.invoke(subject)
       }
+    }
   }
 }

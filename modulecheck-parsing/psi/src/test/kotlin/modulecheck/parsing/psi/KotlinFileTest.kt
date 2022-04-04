@@ -17,34 +17,43 @@ package modulecheck.parsing.psi
 
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.psiFileFactory
-import modulecheck.parsing.source.AgnosticDeclarationName
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.JavaSpecificDeclaration
-import modulecheck.parsing.source.KotlinSpecificDeclaration
+import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.AndroidRDeclaredName
+import modulecheck.parsing.source.AndroidResourceDeclaredName
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.JavaSpecificDeclaredName
+import modulecheck.parsing.source.KotlinSpecificDeclaredName
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.Reference.ExplicitXmlReference
+import modulecheck.parsing.source.Reference.InterpretedJavaReference
+import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.utils.LazySet
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
-import modulecheck.parsing.source.asDeclarationName as neutralExtension
-import modulecheck.parsing.source.asJavaDeclarationName as javaExtension
-import modulecheck.parsing.source.asKotlinDeclarationName as kotlinExtension
+import modulecheck.parsing.source.asDeclaredName as neutralExtension
+import modulecheck.parsing.source.asJavaDeclaredName as javaExtension
+import modulecheck.parsing.source.asKotlinDeclaredName as kotlinExtension
 
 internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `fully qualified annotated primary constructor arguments should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -64,7 +73,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `fully qualified annotated secondary constructor arguments should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -89,7 +97,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `imported annotated primary constructor arguments should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -110,7 +117,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `wildcard-imported annotated primary constructor arguments should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -131,7 +137,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `fully qualified arguments in annotated primary constructor should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -151,7 +156,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `imported annotated secondary constructor arguments should be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -177,7 +181,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `arguments from overloaded constructor without annotation should not be injected`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -203,7 +206,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `api references should not include concatenated matches if the reference is already imported`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -219,13 +221,14 @@ internal class KotlinFileTest : ProjectTest() {
         """
       )
 
-      file.apiReferences.await() shouldBe listOf("androidx.lifecycle.ViewModel")
+      file.apiReferences.await() shouldBe listOf(
+        explicit("androidx.lifecycle.ViewModel")
+      )
     }
 
   @Test
   fun `explicit type of public property in public class should be api reference`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -241,13 +244,12 @@ internal class KotlinFileTest : ProjectTest() {
         """
       )
 
-      file.apiReferences.await() shouldBe listOf("com.lib.Config")
+      file.apiReferences.await() shouldBe listOf(explicit("com.lib.Config"))
     }
 
   @Test
   fun `explicit fully qualified type of public property in public class should be api reference`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -261,13 +263,15 @@ internal class KotlinFileTest : ProjectTest() {
         """
       )
 
-      file.apiReferences.await() shouldBe listOf("com.lib.Config", "com.test.com.lib.Config")
+      file.apiReferences.await() shouldBe listOf(
+        interpreted("com.lib.Config"),
+        interpreted("com.test.com.lib.Config")
+      )
     }
 
   @Test
   fun `explicit type of public property in internal class should not be api reference`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -289,7 +293,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `implicit type of public property in public class should be api reference`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -305,12 +308,13 @@ internal class KotlinFileTest : ProjectTest() {
         """
       )
 
-      file.apiReferences.await() shouldBe listOf("com.lib.Config")
+      file.apiReferences.await() shouldBe listOf(
+        explicit("com.lib.Config")
+      )
     }
 
   @Test
   fun `file with JvmName annotation should count as declaration`() = test {
-
     val file = createFile(
       """
       @file:JvmName("TheFile")
@@ -341,7 +345,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `file with JvmName annotation should not have alternate names for type declarations`() =
     test {
-
       val file = createFile(
         """
       @file:JvmName("TheFile")
@@ -352,13 +355,12 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        AgnosticDeclarationName(fqName = "com.test.TheClass")
+        AgnosticDeclaredName(name = "com.test.TheClass")
       )
     }
 
   @Test
   fun `file without JvmName should have alternate names for top-level functions`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -379,7 +381,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `val property with is- prefix should not have get-prefix for java method`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -396,7 +397,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `var property with is- prefix should have set- prefix and no is- for java method`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -415,7 +415,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `var property with explicit accessors and is- prefix should have set- prefix and no is- for java method`() =
     test {
-
       val file = createFile(
         """
       package com.test
@@ -436,7 +435,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `is- prefix should not be removed if the following character is a lowercase letter`() =
     test {
-
       val file = createFile(
         """
         package com.test
@@ -455,7 +453,6 @@ internal class KotlinFileTest : ProjectTest() {
   @Test
   fun `is- should not be removed if it's not at the start of the name`() =
     test {
-
       val file = createFile(
         """
         package com.test
@@ -473,7 +470,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `file without JvmName should not have alternate names for type declarations`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -483,13 +479,12 @@ internal class KotlinFileTest : ProjectTest() {
     )
 
     file.declarations shouldBe listOf(
-      both("com.test.TheClass")
+      agnostic("com.test.TheClass")
     )
   }
 
   @Test
   fun `object should have alternate name with INSTANCE`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -499,14 +494,13 @@ internal class KotlinFileTest : ProjectTest() {
     )
 
     file.declarations shouldBe listOf(
-      both("com.test.Utils"),
+      agnostic("com.test.Utils"),
       java("com.test.Utils.INSTANCE")
     )
   }
 
   @Test
   fun `companion object should have alternate name for both with Companion`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -518,14 +512,13 @@ internal class KotlinFileTest : ProjectTest() {
     )
 
     file.declarations shouldBe listOf(
-      both("com.test.SomeClass"),
-      both("com.test.SomeClass.Companion")
+      agnostic("com.test.SomeClass"),
+      agnostic("com.test.SomeClass.Companion")
     )
   }
 
   @Test
   fun `top-level function with JvmName annotation should have alternate name`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -543,7 +536,6 @@ internal class KotlinFileTest : ProjectTest() {
 
   @Test
   fun `import alias reference should be inlined to the normal fully qualified reference`() = test {
-
     val file = createFile(
       """
       package com.test
@@ -566,7 +558,7 @@ internal class KotlinFileTest : ProjectTest() {
       "com.test.app_name".asInterpretedKotlinReference(),
       "app_name".asInterpretedKotlinReference(),
       "com.modulecheck.lib1.R.string".asExplicitKotlinReference(),
-      "com.modulecheck.lib1.R.string.app_name".asExplicitKotlinReference(),
+      "com.modulecheck.lib1.R.string.app_name".asExplicitKotlinReference()
     )
   }
 
@@ -575,7 +567,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `companion object function`() = test {
-
       val file = createFile(
         """
         package com.test
@@ -589,16 +580,15 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.SomeClass"),
-        both("com.test.SomeClass.Companion"),
-        both("com.test.SomeClass.Companion.someFunction"),
+        agnostic("com.test.SomeClass"),
+        agnostic("com.test.SomeClass.Companion"),
+        agnostic("com.test.SomeClass.Companion.someFunction"),
         kotlin("com.test.SomeClass.someFunction")
       )
     }
 
     @Test
     fun `companion object with JvmStatic should have alternate name`() = test {
-
       val file = createFile(
         """
         package com.test
@@ -613,10 +603,10 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.SomeClass"),
-        both("com.test.SomeClass.Companion"),
-        both("com.test.SomeClass.Companion.someFunction"),
-        both("com.test.SomeClass.someFunction")
+        agnostic("com.test.SomeClass"),
+        agnostic("com.test.SomeClass.Companion"),
+        agnostic("com.test.SomeClass.Companion.someFunction"),
+        agnostic("com.test.SomeClass.someFunction")
       )
     }
   }
@@ -626,7 +616,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object property with default setter and getter`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -639,7 +628,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.property"),
         java("com.test.Utils.INSTANCE.getProperty"),
@@ -649,7 +638,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object property with JvmName setter and getter`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -664,7 +652,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.property"),
         java("com.test.Utils.INSTANCE.alternateGetter"),
@@ -674,7 +662,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object JvmStatic property with default setter and getter`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -688,7 +675,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.property"),
         java("com.test.Utils.getProperty"),
@@ -700,7 +687,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object JvmStatic property with JvmName setter and getter`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -716,7 +702,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.property"),
         java("com.test.Utils.alternateGetter"),
@@ -732,7 +718,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object function`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -745,7 +730,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.someFunction"),
         java("com.test.Utils.INSTANCE.someFunction")
@@ -754,7 +739,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object JvmStatic function`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -767,8 +751,8 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
-        both("com.test.Utils.someFunction"),
+        agnostic("com.test.Utils"),
+        agnostic("com.test.Utils.someFunction"),
         java("com.test.Utils.INSTANCE"),
         java("com.test.Utils.INSTANCE.someFunction")
       )
@@ -776,7 +760,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object JvmStatic function with JvmName`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -790,7 +773,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         java("com.test.Utils.alternate"),
         java("com.test.Utils.INSTANCE.alternate"),
@@ -800,7 +783,6 @@ internal class KotlinFileTest : ProjectTest() {
 
     @Test
     fun `object function with JvmName`() = test {
-
       val file = createFile(
         """
           package com.test
@@ -813,7 +795,7 @@ internal class KotlinFileTest : ProjectTest() {
       )
 
       file.declarations shouldBe listOf(
-        both("com.test.Utils"),
+        agnostic("com.test.Utils"),
         java("com.test.Utils.INSTANCE"),
         kotlin("com.test.Utils.someFunction"),
         java("com.test.Utils.INSTANCE.alternate")
@@ -825,7 +807,11 @@ internal class KotlinFileTest : ProjectTest() {
 
   fun java(name: String) = name.javaExtension()
 
-  fun both(name: String) = name.neutralExtension()
+  fun agnostic(name: String) = name.neutralExtension()
+
+  fun explicit(name: String) = name.asExplicitKotlinReference()
+  fun interpreted(name: String) = name.asInterpretedKotlinReference()
+  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 
   fun createFile(
     @Language("kotlin")
@@ -833,31 +819,56 @@ internal class KotlinFileTest : ProjectTest() {
     project: McProject = simpleProject(),
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ): RealKotlinFile {
+    val ktFile = KtFile(content)
 
-    val kt = KtFile(content)
-
-    return RealKotlinFile(kt, PsiElementResolver(project, sourceSetName))
+    return RealKotlinFile(ktFile, PsiElementResolver(project, sourceSetName))
   }
 
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
 
-  fun Collection<DeclarationName>.prettyPrint() = groupBy { it::class }
+  infix fun LazySet<Reference>.shouldBe(other: Collection<Reference>) {
+    runBlocking {
+      toList()
+        .distinct()
+        .prettyPrint() shouldBe other.prettyPrint()
+    }
+  }
+
+  @JvmName("prettyPrintReferences")
+  fun Collection<Reference>.prettyPrint() = groupBy { it::class }
     .toList()
     .sortedBy { it.first.qualifiedName }
-    .joinToString("\n") { (type, names) ->
-      val name = when (type) {
-        AgnosticDeclarationName::class -> "both"
-        JavaSpecificDeclaration::class -> "java"
-        KotlinSpecificDeclaration::class -> "kotlin"
-        else -> fail { "unrecognized declaration type -- ${type::qualifiedName}" }
+    .joinToString("\n") { (_, names) ->
+      val name = when (names.first()) {
+        is ExplicitJavaReference -> "explicitJava"
+        is ExplicitKotlinReference -> "explicit"
+        is ExplicitXmlReference -> "explicitXml"
+        is InterpretedJavaReference -> "interpretedJava"
+        is InterpretedKotlinReference -> "interpreted"
+        is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
       }
       names
-        .sortedBy { it.fqName }
-        .joinToString("\n", "$name {\n", "\n}") { "\t${it.fqName}" }
+        .sortedBy { it.name }
+        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
     }
 
-  infix fun Collection<DeclarationName>.shouldBe(other: Collection<DeclarationName>) {
+  fun Collection<DeclaredName>.prettyPrint() = groupBy { it::class }
+    .toList()
+    .sortedBy { it.first.qualifiedName }
+    .joinToString("\n") { (_, names) ->
+      val name = when (val declaration = names.first()) {
+        is AgnosticDeclaredName -> "agnostic"
+        is AndroidRDeclaredName -> "androidR"
+        is JavaSpecificDeclaredName -> "java"
+        is KotlinSpecificDeclaredName -> "kotlin"
+        is AndroidResourceDeclaredName -> declaration.prefix
+      }
+      names
+        .sortedBy { it.name }
+        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
+    }
 
+  infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
     prettyPrint() shouldBe other.prettyPrint()
   }
 

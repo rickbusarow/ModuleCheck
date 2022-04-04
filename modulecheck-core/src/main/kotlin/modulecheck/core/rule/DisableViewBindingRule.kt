@@ -15,18 +15,15 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.context.androidBasePackagesForSourceSetName
 import modulecheck.api.context.androidResourceReferencesForSourceSetName
+import modulecheck.api.context.androidViewBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.importsForSourceSetName
-import modulecheck.api.context.layoutFilesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.project.McProject
-import modulecheck.utils.capitalize
-import modulecheck.utils.existsOrNull
+import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 
 class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFinding> {
@@ -48,19 +45,10 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
     androidPlugin.sourceSets.keys
       .forEach { sourceSetName ->
 
-        val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
+        val generatedBindings = project
+          .androidViewBindingDeclarationsForSourceSetName(sourceSetName)
+          .takeIf { it.isNotEmpty() }
           ?: return@forEach
-
-        val generatedBindings = project.layoutFilesForSourceSetName(sourceSetName)
-          .mapNotNull { it.file.existsOrNull() }
-          .map { layoutFile ->
-            val simpleBindingName = layoutFile.nameWithoutExtension
-              .split("_")
-              .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
-
-            // fully qualified
-            "$basePackage.databinding.$simpleBindingName".asExplicitJavaReference()
-          }
 
         val usedInProject = sourceSetName.withDownStream(project)
           .any { sourceSetNameOrDownstream ->
@@ -103,7 +91,9 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
 
     return listOf(
       DisableViewBindingGenerationFinding(
-        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
+        dependentProject = project,
+        dependentPath = project.path,
+        buildFile = project.buildFile
       )
     )
   }

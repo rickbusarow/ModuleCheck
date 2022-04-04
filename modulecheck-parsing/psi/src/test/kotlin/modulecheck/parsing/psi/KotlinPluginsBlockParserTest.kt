@@ -53,7 +53,7 @@ internal class KotlinPluginsBlockParserTest {
       PluginDeclaration(
         declarationText = """id("io.gitlab.arturbosch.detekt") version "1.15.0"""",
         statementWithSurroundingText = """  id("io.gitlab.arturbosch.detekt") version "1.15.0""""
-      ),
+      )
     )
   }
 

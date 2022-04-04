@@ -182,7 +182,7 @@ val defaultKaptMatchers: List<KaptMatcher> = listOf(
       "com\\.airbnb\\.epoxy\\.OnVisibilityStateChanged",
       "com\\.airbnb\\.epoxy\\.PackageEpoxyConfig",
       "com\\.airbnb\\.epoxy\\.PackageModelViewConfig",
-      "com\\.airbnb\\.epoxy\\.TextProp",
+      "com\\.airbnb\\.epoxy\\.TextProp"
     )
   )
 )

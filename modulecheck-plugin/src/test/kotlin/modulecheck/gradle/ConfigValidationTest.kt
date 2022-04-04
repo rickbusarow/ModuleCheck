@@ -52,7 +52,7 @@ class ConfigValidationTest : BasePluginTest() {
       "sortPlugins",
       "unusedDependency",
       "unusedKapt",
-      "unusedKotlinAndroidExtensions",
+      "unusedKotlinAndroidExtensions"
     )
 
     SortExtension::class.memberProperties

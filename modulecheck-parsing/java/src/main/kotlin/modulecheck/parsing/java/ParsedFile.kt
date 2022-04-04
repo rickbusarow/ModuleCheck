@@ -22,8 +22,8 @@ import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.type.ClassOrInterfaceType
-import modulecheck.parsing.source.AgnosticDeclarationName
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.utils.mapToSet
 import org.jetbrains.kotlin.name.FqName
 
@@ -32,8 +32,8 @@ internal data class ParsedFile(
   val imports: List<ImportDeclaration>,
   val classOrInterfaceTypes: Set<FqName>,
   val typeDeclarations: List<TypeDeclaration<*>>,
-  val fieldDeclarations: Set<DeclarationName>,
-  val enumDeclarations: Set<DeclarationName>
+  val fieldDeclarations: Set<DeclaredName>,
+  val enumDeclarations: Set<DeclaredName>
 ) {
   companion object {
     fun fromCompilationUnitLazy(compilationUnit: CompilationUnit): Lazy<ParsedFile> {
@@ -43,8 +43,8 @@ internal data class ParsedFile(
 
         val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
         val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
-        val memberDeclarations = mutableSetOf<DeclarationName>()
-        val enumDeclarations = mutableSetOf<DeclarationName>()
+        val memberDeclarations = mutableSetOf<DeclaredName>()
+        val enumDeclarations = mutableSetOf<DeclaredName>()
 
         compilationUnit.childrenRecursive()
           .forEach { node ->
@@ -53,18 +53,17 @@ internal data class ParsedFile(
               is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
               is TypeDeclaration<*> -> typeDeclarations.add(node)
               is MethodDeclaration -> {
-
                 if (node.canBeImported()) {
-                  memberDeclarations.add(AgnosticDeclarationName(node.fqName(typeDeclarations)))
+                  memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
                 }
               }
               is FieldDeclaration -> {
                 if (node.canBeImported()) {
-                  memberDeclarations.add(AgnosticDeclarationName(node.fqName(typeDeclarations)))
+                  memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
                 }
               }
               is EnumConstantDeclaration -> {
-                enumDeclarations.add(AgnosticDeclarationName(node.fqName(typeDeclarations)))
+                enumDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
               }
             }
           }

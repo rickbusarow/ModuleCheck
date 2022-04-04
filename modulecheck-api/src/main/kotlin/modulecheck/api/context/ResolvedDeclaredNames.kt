@@ -15,24 +15,24 @@
 
 package modulecheck.api.context
 
-import modulecheck.api.context.ResolvedDeclarationNames.SourceResult.Found
-import modulecheck.api.context.ResolvedDeclarationNames.SourceResult.NOT_PRESENT
+import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.Found
+import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.NOT_PRESENT
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
 
-data class ResolvedDeclarationNames internal constructor(
+data class ResolvedDeclaredNames internal constructor(
   private val delegate: SafeCache<DeclarationInSourceSet, SourceResult>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<ResolvedDeclarationNames>
+  override val key: ProjectContext.Key<ResolvedDeclaredNames>
     get() = Key
 
   internal data class DeclarationInSourceSet(
-    val declarationName: DeclarationName,
+    val declaredName: DeclaredName,
     val sourceSetName: SourceSetName
   )
 
@@ -47,27 +47,25 @@ data class ResolvedDeclarationNames internal constructor(
   )
 
   suspend fun getSource(
-    declarationName: DeclarationName,
+    declaredName: DeclaredName,
     sourceSetName: SourceSetName
   ): McProjectWithSourceSetName? {
-
-    val declarationInSourceSet = DeclarationInSourceSet(declarationName, sourceSetName)
+    val declarationInSourceSet = DeclarationInSourceSet(declaredName, sourceSetName)
 
     val existing = delegate
-      .getOrPut(declarationInSourceSet) { fetchNewSource(declarationName, sourceSetName) }
+      .getOrPut(declarationInSourceSet) { fetchNewSource(declaredName, sourceSetName) }
 
     return (existing as? Found)?.sourceProject
   }
 
   private suspend fun fetchNewSource(
-    declarationName: DeclarationName,
+    declaredName: DeclaredName,
     sourceSetName: SourceSetName
   ): SourceResult {
     return project.takeIf {
-
       project.declarations()
         .get(sourceSetName, includeUpstream = false)
-        .contains(declarationName)
+        .contains(declaredName)
     }
       ?.let { Found(McProjectWithSourceSetName(it, sourceSetName)) }
       ?: project.classpathDependencies()
@@ -82,21 +80,20 @@ data class ResolvedDeclarationNames internal constructor(
             SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
           )
             .firstNotNullOfOrNull { dependencySourceSetName ->
-              sourceCpd.project.resolvedDeclarationNames()
-                .getSource(declarationName, dependencySourceSetName)
+              sourceCpd.project.resolvedDeclaredNames()
+                .getSource(declaredName, dependencySourceSetName)
             }
         }
         ?.let { Found(it) }
       ?: NOT_PRESENT
   }
 
-  companion object Key : ProjectContext.Key<ResolvedDeclarationNames> {
-    override suspend operator fun invoke(project: McProject): ResolvedDeclarationNames {
-
-      return ResolvedDeclarationNames(SafeCache(), project)
+  companion object Key : ProjectContext.Key<ResolvedDeclaredNames> {
+    override suspend operator fun invoke(project: McProject): ResolvedDeclaredNames {
+      return ResolvedDeclaredNames(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.resolvedDeclarationNames(): ResolvedDeclarationNames =
-  get(ResolvedDeclarationNames)
+suspend fun ProjectContext.resolvedDeclaredNames(): ResolvedDeclaredNames =
+  get(ResolvedDeclaredNames)

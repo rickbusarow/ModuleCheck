@@ -29,7 +29,7 @@ import modulecheck.api.context.dependencySources
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclarationName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.NamedSymbol
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
@@ -39,7 +39,6 @@ import modulecheck.project.ProjectContext
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
-import modulecheck.utils.emptyDataSource
 import modulecheck.utils.filterAsync
 import modulecheck.utils.flatMapListConcat
 import modulecheck.utils.flatMapToSet
@@ -57,7 +56,6 @@ data class MustBeApi(
 
   companion object Key : ProjectContext.Key<MustBeApi> {
     override suspend operator fun invoke(project: McProject): MustBeApi {
-
       val apiSet = project.sourceSets
         .keys
         .flatMapToSet { sourceSetName ->
@@ -103,7 +101,6 @@ data class MustBeApi(
               cpd in directApiProjects
             }
             .filterAsync {
-
               !sourceSetName.isTestingOnly() && it.project.mustBeApiIn(
                 dependentProject = project,
                 referencesFromDependencies = importsFromDependencies,
@@ -146,7 +143,6 @@ data class MustBeApi(
 private suspend fun McProject.referencesFromDependencies(
   sourceSetName: SourceSetName
 ): Set<Reference> {
-
   return sourceSetName.withUpstream(this)
     .flatMapToSet { sourceSetOrUpstream ->
 
@@ -167,7 +163,6 @@ suspend fun McProject.mustBeApiIn(
   sourceSetName: SourceSetName,
   isTestFixtures: Boolean
 ): Boolean {
-
   // `testApi` and `androidTestApi` are not valid configurations
   if (sourceSetName.isTestingOnly()) return false
 
@@ -193,14 +188,13 @@ private suspend fun McProject.mustBeApiIn(
   isTestFixtures: Boolean,
   directMainDependencies: List<McProject>
 ): Boolean {
-
-  suspend fun McProject.declarations(isTestFixtures: Boolean): LazySet<DeclarationName> {
+  suspend fun McProject.declarations(isTestFixtures: Boolean): LazySet<DeclaredName> {
     return if (isTestFixtures) {
       declarations().get(SourceSetName.TEST_FIXTURES, includeUpstream = false)
     } else {
       sourceSetName.withUpstream(dependentProject)
         .map { declarations().get(it, false) }
-        .let { lazySet(it, emptyDataSource()) }
+        .let { lazySet(it) }
     }
   }
 
@@ -221,7 +215,7 @@ private suspend fun McProject.mustBeApiIn(
     directMainDependencies
       .mapAsync { directProject ->
         directProject.declarations(isTestFixtures = false)
-          .filter { rType -> rTypeMatcher.matches(rType.fqName) }
+          .filter { rType -> rTypeMatcher.matches(rType.name) }
       }
       .flattenMerge()
       .toSet()
@@ -239,7 +233,6 @@ private suspend fun McProject.mustBeApiIn(
 suspend fun ConfiguredProjectDependency.asApiOrImplementation(
   dependentProject: McProject
 ): ConfiguredProjectDependency {
-
   val mustBeApi = project.mustBeApiIn(
     dependentProject = dependentProject,
     sourceSetName = configurationName.toSourceSetName(),

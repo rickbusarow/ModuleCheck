@@ -17,54 +17,54 @@ package modulecheck.parsing.source
 
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 
-sealed interface NamedSymbol {
-  val fqName: String
+/**
+ * Fundamentally, this is a version of `FqName` (such as Kotlin's
+ * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
+ * requirements.
+ *
+ * @see DeclaredName
+ * @see Reference
+ */
+sealed interface NamedSymbol : Comparable<NamedSymbol> {
+  val name: String
 
   fun startsWith(symbol: NamedSymbol): Boolean {
-    return fqName.startsWith(symbol.fqName)
-  }
-
-  fun startingWith(str: String): List<String> {
-    return if (fqName.startsWith(str)) {
-      listOf(fqName)
-    } else {
-      listOf()
-    }
-  }
-
-  fun startingWith(symbol: NamedSymbol): List<String> {
-    return if (fqName.startsWith(symbol.fqName)) {
-      listOf(fqName)
-    } else {
-      listOf()
-    }
+    return name.startsWith(symbol.name)
   }
 
   fun endsWith(str: String): Boolean {
-    return fqName.endsWith(str)
+    return name.endsWith(str)
   }
 
   fun endsWith(symbol: NamedSymbol): Boolean {
-    return fqName.endsWith(symbol.fqName)
+    return name.endsWith(symbol.name)
   }
 
   fun endsWith(str: ExplicitKotlinReference): Boolean {
-    return fqName.endsWith(str.fqName)
+    return name.endsWith(str.name)
   }
 
-  fun endingWith(symbol: NamedSymbol): List<String> {
-    return if (fqName.endsWith(symbol.fqName)) {
-      listOf(fqName)
-    } else {
-      listOf()
-    }
+  override fun compareTo(other: NamedSymbol): Int {
+    // sort by name first, then by type.
+    return compareValuesBy(
+      this,
+      other,
+      { it.name },
+      { it::class.java.simpleName }
+    )
   }
+}
 
-  fun endingWith(str: ExplicitKotlinReference): List<String> {
-    return if (fqName.endsWith(str.fqName)) {
-      listOf(fqName)
-    } else {
-      listOf()
-    }
+internal inline fun NamedSymbol.matches(
+  other: Any?,
+  ifReference: (Reference) -> Boolean,
+  ifDeclaration: (DeclaredName) -> Boolean
+): Boolean {
+  if (this === other) return true
+
+  return when (other) {
+    is Reference -> ifReference(other)
+    is DeclaredName -> ifDeclaration(other)
+    else -> false
   }
 }

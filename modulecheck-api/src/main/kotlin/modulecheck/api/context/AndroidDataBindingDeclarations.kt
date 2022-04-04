@@ -16,38 +16,36 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclarationName
-import modulecheck.parsing.source.asDeclarationName
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.capitalize
+import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
-import modulecheck.utils.lazyDataSource
 import modulecheck.utils.lazySet
 import java.util.Locale
 
 data class AndroidDataBindingDeclarations(
-  private val delegate: SafeCache<SourceSetName, LazySet<DeclarationName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<DeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidDataBindingDeclarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclarationName> {
-
+  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
-
       val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
         ?: return@getOrPut emptyLazySet()
 
       lazySet(
-        lazyDataSource {
+        dataSource {
           project.layoutFiles()
             .get(sourceSetName)
             .map { layoutFile ->
@@ -60,7 +58,7 @@ data class AndroidDataBindingDeclarations(
                 }
                 .plus("Binding")
                 .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclarationName()
+                .asDeclaredName()
             }
             .toSet()
         }
@@ -73,7 +71,6 @@ data class AndroidDataBindingDeclarations(
     private val snake_reg = "_([a-zA-Z])".toRegex()
 
     override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
-
       return AndroidDataBindingDeclarations(SafeCache(), project)
     }
   }
@@ -84,4 +81,4 @@ suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingD
 
 suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<DeclarationName> = androidDataBindingDeclarations().get(sourceSetName)
+): LazySet<DeclaredName> = androidDataBindingDeclarations().get(sourceSetName)

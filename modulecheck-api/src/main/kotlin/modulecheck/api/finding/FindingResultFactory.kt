@@ -61,7 +61,7 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
           Adds- and Removes- interfaces.  Do all the add-only work, then modify, then remove.
 
           Remember that Boolean Comparables are sorted so that true values are at the end.
-          */
+           */
           .sortedWith(
             // only Adds-, without Modifies-
             { !(it is AddsDependency && it !is ModifiesDependency) },
