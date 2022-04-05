@@ -28,7 +28,7 @@ public val DEFAULT_GRADLE_VERSION: String = System
     if (prop.contains('.')) prop else "$prop.0"
   }
 public val DEFAULT_KOTLIN_VERSION: String =
-  System.getProperty("modulecheck.kotlinVersion", "1.6.10")
+  System.getProperty("modulecheck.kotlinVersion", "1.6.20")
 public val DEFAULT_AGP_VERSION: String =
   System.getProperty("modulecheck.agpVersion", "7.1.1")
 public val DEFAULT_ANVIL_VERSION: String =
