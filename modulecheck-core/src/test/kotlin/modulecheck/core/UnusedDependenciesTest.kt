@@ -545,8 +545,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -572,8 +571,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """.trimIndent()
       )
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -609,8 +607,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -636,9 +633,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """.trimIndent()
       )
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.java",
-        //language=java
+      addJavaSource(
         """
         package com.modulecheck.lib2;
 
@@ -677,8 +672,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -704,9 +698,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """.trimIndent()
       )
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.java",
-        //language=java
+      addJavaSource(
         """
         package com.modulecheck.lib2;
 
@@ -744,8 +736,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -771,9 +762,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """.trimIndent()
       )
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.java",
-        //language=java
+      addJavaSource(
         """
         package com.modulecheck.lib2;
 
@@ -810,8 +799,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -835,8 +823,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Test.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -869,8 +856,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -895,8 +881,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Test.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -930,8 +915,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1View.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1025,8 +1009,7 @@ class UnusedDependenciesTest : RunnerTest() {
       }
       platformPlugin.viewBindingEnabled = false
 
-      addSource(
-        "com/modulecheck/lib2/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1059,8 +1042,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1084,8 +1066,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1117,8 +1098,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1143,8 +1123,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1177,8 +1156,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1234,8 +1212,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1243,8 +1220,8 @@ class UnusedDependenciesTest : RunnerTest() {
         """.trimIndent(),
         SourceSetName.MAIN
       )
-      addSource(
-        "com/modulecheck/lib1/TestLib1Class.kt",
+
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1268,8 +1245,8 @@ class UnusedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2ClassTest.kt",
+
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1318,8 +1295,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1347,8 +1323,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1407,8 +1382,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1509,8 +1483,7 @@ class UnusedDependenciesTest : RunnerTest() {
     settings.deleteUnused = false
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1536,8 +1509,7 @@ class UnusedDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
