@@ -66,7 +66,7 @@ interface McProject :
   override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 
   suspend fun resolveFqNameOrNull(
-    declarationName: FqName,
+    declaredName: FqName,
     sourceSetName: SourceSetName
   ): FqName?
 }

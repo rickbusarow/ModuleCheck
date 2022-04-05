@@ -51,7 +51,7 @@ data class AndroidResourceReferences(
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
     if (!project.isAndroid()) return emptyLazySet()
 
-    val rName = project.androidRDeclarationForSourceSetName(sourceSetName)
+    val rName = project.androidRDeclaredNamesForSourceSetName(sourceSetName)
       ?: return emptyLazySet()
 
     val jvm: List<DataSource<Reference>> = project.jvmFilesForSourceSetName(sourceSetName)

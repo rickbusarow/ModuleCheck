@@ -29,12 +29,12 @@ import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
 import modulecheck.utils.lazySet
 
-data class AndroidResourceDeclarations(
+data class AndroidResourceDeclaredNames(
   private val delegate: SafeCache<SourceSetName, LazySet<AndroidResourceDeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<AndroidResourceDeclarations>
+  override val key: ProjectContext.Key<AndroidResourceDeclaredNames>
     get() = Key
 
   suspend fun all(): LazySet<AndroidResourceDeclaredName> {
@@ -56,7 +56,7 @@ data class AndroidResourceDeclarations(
       return emptyLazySet()
     }
 
-    val rName = project.androidRDeclarationForSourceSetName(sourceSetName)
+    val rName = project.androidRDeclaredNamesForSourceSetName(sourceSetName)
       ?: return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
@@ -75,18 +75,18 @@ data class AndroidResourceDeclarations(
     }
   }
 
-  companion object Key : ProjectContext.Key<AndroidResourceDeclarations> {
-    override suspend operator fun invoke(project: McProject): AndroidResourceDeclarations {
-      return AndroidResourceDeclarations(SafeCache(), project)
+  companion object Key : ProjectContext.Key<AndroidResourceDeclaredNames> {
+    override suspend operator fun invoke(project: McProject): AndroidResourceDeclaredNames {
+      return AndroidResourceDeclaredNames(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.androidResourceDeclarations(): AndroidResourceDeclarations =
-  get(AndroidResourceDeclarations)
+suspend fun ProjectContext.androidResourceDeclaredNames(): AndroidResourceDeclaredNames =
+  get(AndroidResourceDeclaredNames)
 
-suspend fun ProjectContext.androidResourceDeclarationsForSourceSetName(
+suspend fun ProjectContext.androidResourceDeclaredNamesForSourceSetName(
   sourceSetName: SourceSetName
 ): LazySet<AndroidResourceDeclaredName> {
-  return androidResourceDeclarations().get(sourceSetName)
+  return androidResourceDeclaredNames().get(sourceSetName)
 }

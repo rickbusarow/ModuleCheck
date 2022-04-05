@@ -78,7 +78,7 @@ data class Declarations private constructor(
 
       seed.forEach { sourceSetOrUpstream ->
 
-        val rNameOrNull = project.androidRDeclarationForSourceSetName(sourceSetOrUpstream)
+        val rNameOrNull = project.androidRDeclaredNamesForSourceSetName(sourceSetOrUpstream)
 
         project.jvmFilesForSourceSetName(sourceSetOrUpstream)
           .toList()
@@ -88,7 +88,7 @@ data class Declarations private constructor(
         if (rNameOrNull != null) {
           check(project.isAndroid())
 
-          val resources = project.androidResourceDeclarationsForSourceSetName(sourceSetOrUpstream)
+          val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetOrUpstream)
 
           components.add(resources)
 

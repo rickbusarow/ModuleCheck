@@ -172,7 +172,7 @@ fun String.asDeclaredName(): DeclaredName = AgnosticDeclaredName(this)
 
 fun FqName.asDeclaredName(): DeclaredName = AgnosticDeclaredName(asString())
 
-@JvmName("containsDeclarationName")
+@JvmName("containsDeclaredName")
 fun Set<DeclaredName>.containsAny(names: Set<String>): Boolean {
   return names.any { it.asDeclaredName() in this }
 }
