@@ -29,8 +29,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public property from implementation without auto-correct should fail`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -54,8 +53,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -96,8 +94,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public generic property from implementation without auto-correct should fail`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -121,8 +118,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -163,8 +159,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public property from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -188,8 +183,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -229,8 +223,7 @@ class MustBeApiTest : RunnerTest() {
   fun `switching to api dependency after a blank line should preserve all newlines -- kotlin`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -249,8 +242,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -269,8 +261,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -299,8 +290,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -359,8 +349,7 @@ class MustBeApiTest : RunnerTest() {
   fun `switching to api dependency after a blank line should preserve all newlines -- groovy`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -379,8 +368,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -399,8 +387,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -431,8 +418,7 @@ class MustBeApiTest : RunnerTest() {
           """.trimIndent()
         )
 
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -490,8 +476,7 @@ class MustBeApiTest : RunnerTest() {
   fun `private property from implementation with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -515,8 +500,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -546,8 +530,7 @@ class MustBeApiTest : RunnerTest() {
   fun `private property from implementation inside public class with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -571,8 +554,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -604,8 +586,7 @@ class MustBeApiTest : RunnerTest() {
   fun `internal property from implementation with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -629,8 +610,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -660,8 +640,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public property from dependency in test source should not require API`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -685,8 +664,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -717,8 +695,7 @@ class MustBeApiTest : RunnerTest() {
   fun `internal property in class from implementation with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -742,8 +719,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -775,8 +751,7 @@ class MustBeApiTest : RunnerTest() {
   fun `supertype from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -800,8 +775,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -840,8 +814,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with unrelated api dependency declaration`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -860,8 +833,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -889,8 +861,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -932,8 +903,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with unrelated implementation dependency declaration`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -952,8 +922,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -981,8 +950,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1024,8 +992,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with unrelated implementation external dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1052,8 +1019,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1095,8 +1061,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with unrelated api external dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1123,8 +1088,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1166,8 +1130,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with empty multi-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1193,8 +1156,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1235,8 +1197,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with empty single-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1261,8 +1222,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1303,8 +1263,7 @@ class MustBeApiTest : RunnerTest() {
   fun `must be api from invisible dependency with no dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1327,8 +1286,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1369,8 +1327,7 @@ class MustBeApiTest : RunnerTest() {
   fun `auto-correct should only replace the configuration invocation text`() {
 
     val lib1 = kotlinProject(":implementation") {
-      addSource(
-        "com/modulecheck/implementation/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.implementation
 
@@ -1396,8 +1353,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1438,8 +1394,7 @@ class MustBeApiTest : RunnerTest() {
   fun `supertype of internal class from implementation with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1463,8 +1418,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1494,8 +1448,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public return type from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1519,8 +1472,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1559,8 +1511,7 @@ class MustBeApiTest : RunnerTest() {
   fun `internal return type from implementation with auto-correct should not be changed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1584,8 +1535,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1615,8 +1565,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public argument type from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1640,8 +1589,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1680,8 +1628,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public type argument from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1705,8 +1652,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1745,8 +1691,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public generic bound type from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1770,8 +1715,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1810,8 +1754,7 @@ class MustBeApiTest : RunnerTest() {
   fun `public generic fully qualified bound type from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1835,8 +1778,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1873,8 +1815,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public public properties from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1884,8 +1825,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1911,8 +1851,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1960,8 +1899,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public supertypes from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1971,8 +1909,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1998,8 +1935,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2046,8 +1982,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public return types from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2057,8 +1992,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2084,8 +2018,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2133,8 +2066,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public argument types from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2144,8 +2076,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2171,8 +2102,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2220,8 +2150,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public type arguments from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2231,8 +2160,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2258,8 +2186,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2306,8 +2233,7 @@ class MustBeApiTest : RunnerTest() {
   fun `two public generic bound types from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2317,8 +2243,7 @@ class MustBeApiTest : RunnerTest() {
     }
 
     val lib3 = kotlinProject(":lib3") {
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2344,8 +2269,7 @@ class MustBeApiTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 

@@ -97,7 +97,7 @@ internal class DepthReportTest : RunnerTest() {
     settings.reports.depths.enabled = true
 
     val lib1 = kotlinProject(":lib1") {
-      addSource("src/main/kotlin/MyFile.kt", "")
+      addKotlinSource("", directory = "com/test", fileName = "MyFile.kt")
     }
 
     val lib2 = kotlinProject(":lib2") {
@@ -209,8 +209,7 @@ internal class DepthReportTest : RunnerTest() {
 
     val lib1 = kotlinProject(":lib1") {
 
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -222,8 +221,7 @@ internal class DepthReportTest : RunnerTest() {
     val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.implementation, lib1)
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -248,8 +246,7 @@ internal class DepthReportTest : RunnerTest() {
       addDependency(ConfigurationName.implementation, lib1)
       addDependency(ConfigurationName.implementation, lib2)
 
-      addSource(
-        "com/modulecheck/app/App.kt",
+      addKotlinSource(
         """
         package com.modulecheck.app
 

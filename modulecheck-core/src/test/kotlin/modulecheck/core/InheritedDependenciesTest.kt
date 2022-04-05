@@ -32,8 +32,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from api dependency without auto-correct should fail`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -56,8 +55,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -82,8 +80,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -130,8 +127,7 @@ class InheritedDependenciesTest : RunnerTest() {
     // but the test is still useful since it's just assuring that behavior is consistent
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -154,8 +150,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -182,8 +177,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -219,8 +213,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib1 = kotlinProject(":lib1") {
 
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -245,16 +238,14 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
         abstract class Lib2Class
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib2/Lib2ClassTest.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -286,8 +277,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from api dependency with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -310,8 +300,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -336,8 +325,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -380,8 +368,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as api from invisible dependency with a visible unrelated api project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -404,8 +391,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -425,8 +411,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -453,8 +438,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -499,8 +483,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as api from invisible dependency with a visible unrelated implementation project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -523,8 +506,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -544,8 +526,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -572,8 +553,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -618,8 +598,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with a visible unrelated api project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -642,8 +621,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -663,8 +641,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -691,8 +668,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -737,8 +713,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with a visible unrelated implementation project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -761,8 +736,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -782,8 +756,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -810,8 +783,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -856,8 +828,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with an empty multi-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -880,8 +851,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -908,8 +878,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -953,8 +922,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with an empty single-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -977,8 +945,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1004,8 +971,7 @@ class InheritedDependenciesTest : RunnerTest() {
         dependencies { }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -1049,8 +1015,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with no dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1073,8 +1038,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1098,8 +1062,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -1143,8 +1106,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with only external implementation dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1167,8 +1129,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1196,8 +1157,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -1242,8 +1202,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation from invisible dependency with only external api dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1266,8 +1225,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1295,8 +1253,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -1341,8 +1298,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as internalImplementation from internalApi dependency with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1365,8 +1321,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1391,8 +1346,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1446,8 +1400,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from dependency with config block should not duplicate config block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1470,8 +1423,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1498,8 +1450,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1554,8 +1505,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from dependency with comments should not duplicate the comments`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1578,8 +1528,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1605,8 +1554,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1660,8 +1608,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as in main but also used in debug should only be added to main`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1684,8 +1631,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1710,8 +1656,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1722,8 +1667,7 @@ class InheritedDependenciesTest : RunnerTest() {
         val clazz2 = Lib2Class()
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib3/Lib3ClassDebug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1765,8 +1709,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as implementation in debug should be added to debug`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1790,8 +1733,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1817,8 +1759,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3ClassDebug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1872,8 +1813,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited as internalImplementation from api dependency with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1896,8 +1836,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1923,8 +1862,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1933,8 +1871,7 @@ class InheritedDependenciesTest : RunnerTest() {
         val clazz2 = Lib2Class()
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib3/Lib3ClassInternal.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -1986,8 +1923,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited into mid-level source set should not also be added to downstream source sets`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2010,8 +1946,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2045,8 +1980,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2055,8 +1989,7 @@ class InheritedDependenciesTest : RunnerTest() {
         val clazz2 = Lib2Class()
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib3/Lib3ClassInternal.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2108,8 +2041,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `non-standard config name should be invoked as function if it's already used that way`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2132,8 +2064,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2161,8 +2092,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2218,8 +2148,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2245,16 +2174,14 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
         class Lib2Class
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib2/Lib1ClassTest.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2297,8 +2224,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from implementation dependency with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2321,8 +2247,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2347,8 +2272,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2391,8 +2315,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited implementation from implementation with string extension should be added with string invocation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2415,8 +2338,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2441,8 +2363,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2485,8 +2406,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited implementation from api with string extension should be added with precompiled function`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2509,8 +2429,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2535,8 +2454,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2579,8 +2497,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited novel debugImplementation in android project should use precompiled function`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2603,8 +2520,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2629,8 +2545,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2639,8 +2554,7 @@ class InheritedDependenciesTest : RunnerTest() {
         val clazz2 = Lib2Class()
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib3/Lib3Debug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2682,8 +2596,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited novel androidTestDebugImplementation in android project should use precompiled function`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2706,8 +2619,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2732,8 +2644,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2742,8 +2653,7 @@ class InheritedDependenciesTest : RunnerTest() {
         val clazz2 = Lib2Class()
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib3/Lib3Debug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2785,8 +2695,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited from implementation dependency and part of API with auto-correct should be fixed as api config`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2809,8 +2718,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2835,8 +2743,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2879,8 +2786,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `deeply inherited from testImplementation dependency with auto-correct should be fixed as testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -2903,8 +2809,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -2929,8 +2834,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -2955,8 +2859,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib4/Lib4Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib4
 
@@ -3025,16 +2928,14 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited testFixtures and implementation from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Interface.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
         interface Lib1Interface
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3061,8 +2962,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3089,8 +2989,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -3153,8 +3052,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited testFixtures from testFixtures with auto-correct should be fixed as testFixtures via testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3178,8 +3076,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3205,8 +3102,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -3261,8 +3157,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib1 = kotlinProject(":lib1") {
       hasTestFixturesPlugin = true
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3287,8 +3182,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3314,8 +3208,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -3384,8 +3277,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited main source should be added as non-test-fixtures testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3408,8 +3300,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3435,8 +3326,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -3481,16 +3371,14 @@ class InheritedDependenciesTest : RunnerTest() {
 
     val lib1 = kotlinProject(":lib1") {
       hasTestFixturesPlugin = true
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
         open class Lib1Class
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib1/test/FakeLib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1.test
 
@@ -3516,8 +3404,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3561,16 +3448,14 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `inherited main source testFixture in same module with auto-correct should be fixed as normal api`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
         open class Lib1Class
         """.trimIndent()
       )
-      addSource(
-        "com/modulecheck/lib1/test/FakeLib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1.test
 
@@ -3596,8 +3481,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3640,8 +3524,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `not inherited when only used in tests and already declared as testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3664,8 +3547,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3696,8 +3578,7 @@ class InheritedDependenciesTest : RunnerTest() {
   fun `not inherited when exposed as api but used in tests and already declared as testImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -3720,8 +3601,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -3748,8 +3628,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 

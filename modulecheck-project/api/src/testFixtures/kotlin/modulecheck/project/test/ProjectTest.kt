@@ -138,6 +138,14 @@ abstract class ProjectTest : BaseTest() {
       .toRealMcProject()
   }
 
+  inline fun McProject.editSimple(
+    config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
+  ): McProject {
+    return toProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>()
+      .also { it.config() }
+      .toRealMcProject()
+  }
+
   fun kotlinProject(
     path: String,
     config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
@@ -234,8 +242,7 @@ abstract class ProjectTest : BaseTest() {
       buildFile.writeText(buildFileText)
     }
 
-    addSource(
-      "com/lib1/Lib1Class.kt",
+    addKotlinSource(
       """
       package com.lib1
 

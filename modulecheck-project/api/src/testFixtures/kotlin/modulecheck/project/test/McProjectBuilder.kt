@@ -19,6 +19,7 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
@@ -29,7 +30,9 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.testing.createSafely
+import modulecheck.utils.child
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.unsafeLazy
 import org.intellij.lang.annotations.Language
 import java.io.File
 
@@ -112,10 +115,79 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     val file = File(projectDir, "src/${sourceSetName.value}/$name")
       .createSafely(kotlin.trimIndent())
 
-    val old = maybeAddSourceSet(sourceSetName)
+    val oldSourceSet = maybeAddSourceSet(sourceSetName)
 
-    platformPlugin.sourceSets[sourceSetName] = old.copy(jvmFiles = old.jvmFiles + file)
+    val newJvmFiles = oldSourceSet.jvmFiles + file
+
+    val newSourceSet = oldSourceSet.copy(jvmFiles = newJvmFiles)
+
+    platformPlugin.sourceSets[sourceSetName] = newSourceSet
   }
+
+  fun addJavaSource(
+    @Language("java")
+    java: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN,
+    directory: String? = null,
+    fileName: String? = null
+  ): File {
+
+    val name = fileName ?: "Source.java"
+
+    val packageName by unsafeLazy {
+      "package (.*);".toRegex()
+        .find(java)
+        .requireNotNull()
+        .destructured
+        .component1()
+    }
+
+    return addJvmSource(directory, packageName, sourceSetName, name, java)
+  }
+
+  fun addKotlinSource(
+    @Language("kotlin")
+    kotlin: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN,
+    directory: String? = null,
+    fileName: String? = null
+  ): File {
+
+    val name = fileName ?: "Source.kt"
+
+    val ktFile = KtFile(kotlin)
+    val packageName = ktFile.packageFqName.asString()
+
+    return addJvmSource(directory, packageName, sourceSetName, name, kotlin)
+  }
+
+  private fun addJvmSource(
+    directory: String?,
+    packageName: String,
+    sourceSetName: SourceSetName,
+    fileSimpleName: String,
+    content: String
+  ): File {
+    val dir = (directory ?: packageName.replace('.', '/'))
+      .fixFileSeparators()
+
+    val file = projectDir
+      .child("src", sourceSetName.value, "java", dir, fileSimpleName)
+      .createSafely(content.trimIndent())
+
+    val oldSourceSet = maybeAddSourceSet(sourceSetName)
+
+    val newJvmFiles = oldSourceSet.jvmFiles + file
+
+    val newSourceSet = oldSourceSet.copy(jvmFiles = newJvmFiles)
+
+    platformPlugin.sourceSets[sourceSetName] = newSourceSet
+
+    return file
+  }
+
+  /** Replace Windows file separators with Unix ones, just for string comparison in tests */
+  private fun String.fixFileSeparators(): String = replace("/", File.separator)
 
   fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addResourceFile(
     name: String,
@@ -126,7 +198,8 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     require(!name.startsWith("layout/")) { "use `addLayoutFile` for layout files." }
 
-    val file = File(projectDir, "src/${sourceSetName.value}/res/$name").createSafely(content)
+    val file = File(projectDir, "src/${sourceSetName.value}/res/$name")
+      .createSafely(content.trimIndent())
 
     val old = maybeAddSourceSet(sourceSetName)
 

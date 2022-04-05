@@ -106,7 +106,7 @@ internal class GraphVizReportTest : RunnerTest() {
     settings.reports.graphs.enabled = true
 
     val lib1 = kotlinProject(":lib1") {
-      addSource("src/main/kotlin/MyFile.kt", "")
+      addKotlinSource("", directory = "com/test", fileName = "MyFile.kt")
     }
 
     run(autoCorrect = false).isSuccess shouldBe true

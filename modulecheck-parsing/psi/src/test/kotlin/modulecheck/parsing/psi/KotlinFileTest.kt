@@ -17,10 +17,12 @@ package modulecheck.parsing.psi
 
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.psiFileFactory
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.AndroidRDeclaredName
@@ -818,10 +820,13 @@ internal class KotlinFileTest : ProjectTest() {
     content: String,
     project: McProject = simpleProject(),
     sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): RealKotlinFile {
-    val ktFile = KtFile(content)
-
-    return RealKotlinFile(ktFile, PsiElementResolver(project, sourceSetName))
+  ): RealKotlinFile = runBlocking {
+    project.editSimple {
+      addKotlinSource(content, sourceSetName)
+    }.jvmFiles()
+      .get(sourceSetName)
+      .filterIsInstance<RealKotlinFile>()
+      .first { it.ktFile.text == content.trimIndent() }
   }
 
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
