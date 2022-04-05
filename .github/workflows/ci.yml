@@ -148,15 +148,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        kotlin-version: [ 1.5.32, 1.6.10 ]
+        kotlin-version: [ 1.5.32, 1.6.20 ]
         gradle-version: [ 7.2, 7.4.2 ]
         agp-version: [ 7.0.3, 7.1.1 ]
         anvil-version: [ 2.3.11, 2.4.0 ]
-        # use kotlin 1.5.32 with Anvil 2.3.11, and kotlin 1.6.10 with anvil 2.4.0
+        # use kotlin 1.5.32 with Anvil 2.3.11, and kotlin 1.6.20 with anvil 2.4.0
         exclude:
           - kotlin-version: 1.5.32
             anvil-version: 2.4.0
-          - kotlin-version: 1.6.10
+          - kotlin-version: 1.6.20
             anvil-version: 2.3.11
 
     steps:
