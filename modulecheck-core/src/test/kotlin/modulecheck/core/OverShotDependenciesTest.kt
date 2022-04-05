@@ -28,8 +28,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as api but used in test without auto-correct should fail`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -52,8 +51,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -99,8 +97,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as implementation but used in debug without auto-correct should fail`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -123,8 +120,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -170,8 +166,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as api but used in test with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -194,8 +189,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -242,8 +236,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as implementation should be debugApi`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -266,8 +259,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -314,8 +306,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as implementation should be debugImplementation`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -338,8 +329,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -385,8 +375,7 @@ class OverShotDependenciesTest : RunnerTest() {
   @Test
   fun `overshot in non-android as implementation should be debugApi with quotes`() {
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -409,8 +398,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -457,8 +445,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as api but used in test with another testFixture with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -470,8 +457,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName("testFixturesApi"), lib1)
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -499,8 +485,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -550,8 +535,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as api with config block and comment with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -563,8 +547,7 @@ class OverShotDependenciesTest : RunnerTest() {
     val lib2 = kotlinProject(":lib2") {
       addDependency(ConfigurationName.api, lib1)
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -594,8 +577,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -651,8 +633,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot testFixture as api but used in test with another testFixture with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -677,8 +658,7 @@ class OverShotDependenciesTest : RunnerTest() {
         """
       }
 
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -706,8 +686,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib3/Lib3Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib3
 
@@ -767,8 +746,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with a visible unrelated api project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -794,8 +772,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -842,8 +819,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with a visible unrelated implementation project dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -869,8 +845,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -917,8 +892,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with an empty multi-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -943,8 +917,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -990,8 +963,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with an empty single-line dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1015,8 +987,7 @@ class OverShotDependenciesTest : RunnerTest() {
         dependencies { }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1062,8 +1033,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with no dependencies block`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1085,8 +1055,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1132,8 +1101,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as testImplementation from invisible dependency with only external implementation dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1159,8 +1127,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -1207,8 +1174,7 @@ class OverShotDependenciesTest : RunnerTest() {
   fun `overshot as implementation from invisible dependency with only external api dependency`() {
 
     val lib1 = kotlinProject(":lib1") {
-      addSource(
-        "com/modulecheck/lib1/Lib1Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -1234,8 +1200,7 @@ class OverShotDependenciesTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/lib2/Lib2Class.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 

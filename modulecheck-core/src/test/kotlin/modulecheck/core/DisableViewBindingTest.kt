@@ -63,8 +63,7 @@ class DisableViewBindingTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1)
       platformPlugin.viewBindingEnabled = false
 
-      addSource(
-        "com/modulecheck/lib2/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -127,8 +126,7 @@ class DisableViewBindingTest : RunnerTest() {
       addDependency("debugImplementation".asConfigurationName(), lib1)
       platformPlugin.viewBindingEnabled = false
 
-      addSource(
-        "com/modulecheck/lib2/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 
@@ -186,8 +184,7 @@ class DisableViewBindingTest : RunnerTest() {
         """
       )
 
-      addSource(
-        "com/modulecheck/lib1/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -251,8 +248,7 @@ class DisableViewBindingTest : RunnerTest() {
         .child("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
-      addSource(
-        "com/modulecheck/lib1/SourceDebug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -315,8 +311,7 @@ class DisableViewBindingTest : RunnerTest() {
         .child("src/debug/AndroidManifest.xml")
         .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
 
-      addSource(
-        "com/modulecheck/lib1/SourceDebug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1.debug
 
@@ -378,8 +373,7 @@ class DisableViewBindingTest : RunnerTest() {
       // The layout file is in debug, so it's generated in debug.  But it doesn't have a custom
       // package for debug, so it should be generated using the base package from main.
 
-      addSource(
-        "com/modulecheck/lib1/SourceDebug.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1.debug
 

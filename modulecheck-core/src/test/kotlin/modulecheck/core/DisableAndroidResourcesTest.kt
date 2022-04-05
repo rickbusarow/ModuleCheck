@@ -45,8 +45,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
             |</resources>
         """.trimMargin()
       )
-      addSource(
-        "com/modulecheck/lib1/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -96,8 +95,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
       addDependency(ConfigurationName.api, lib1)
       platformPlugin.androidResourcesEnabled = false
 
-      addSource(
-        "com/modulecheck/lib2/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib2
 

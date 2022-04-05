@@ -74,8 +74,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
       addAnyLayoutFile()
-      addSource(
-        "com/modulecheck/lib1/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 
@@ -111,8 +110,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
   fun `used KotlinAndroidExtensions parcelize should pass and should not be corrected`() {
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       writeBuildFileWithPlugin()
-      addSource(
-        "com/modulecheck/lib1/Source.kt",
+      addKotlinSource(
         """
         package com.modulecheck.lib1
 

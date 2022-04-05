@@ -195,8 +195,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/app/App.kt",
+      addKotlinSource(
         """
         package com.modulecheck.app
 
@@ -245,8 +244,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         }
         """
       }
-      addSource(
-        "com/modulecheck/app/App.kt",
+      addKotlinSource(
         """
         package com.modulecheck.app
 

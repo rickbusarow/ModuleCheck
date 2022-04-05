@@ -15,15 +15,42 @@
 
 package modulecheck.parsing.java
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import modulecheck.api.context.jvmFiles
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.AndroidRDeclaredName
+import modulecheck.parsing.source.AndroidResourceDeclaredName
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
+import modulecheck.parsing.source.KotlinSpecificDeclaredName
+import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.Reference.ExplicitXmlReference
+import modulecheck.parsing.source.Reference.InterpretedJavaReference
+import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asInterpretedJavaReference
+import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.LazySet
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.io.File
+import io.kotest.matchers.shouldBe as kotestShouldBe
+import modulecheck.parsing.source.asDeclaredName as neutralExtension
+import modulecheck.parsing.source.asJavaDeclaredName as javaExtension
+import modulecheck.parsing.source.asKotlinDeclaredName as kotlinExtension
 
 internal class JavaFileTest :
   ProjectTest(),
@@ -35,113 +62,113 @@ internal class JavaFileTest :
     @Test
     fun `enum constants should count as declarations`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public enum Color { RED, BLUE }
+        public enum Color { RED, BLUE }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf(
-          "com.test.Color",
-          "com.test.Color.RED",
-          "com.test.Color.BLUE"
-        )
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.Color"),
+        agnostic("com.test.Color.RED"),
+        agnostic("com.test.Color.BLUE")
       )
     }
 
     @Test
     fun `nested enum constants should count as declarations`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public class Constants {
-      public enum Color { RED, BLUE }
-    }
+        public class Constants {
+          public enum Color { RED, BLUE }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf(
-          "com.test.Constants",
-          "com.test.Constants.Color",
-          "com.test.Constants.Color.RED",
-          "com.test.Constants.Color.BLUE"
-        )
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.Constants"),
+        agnostic("com.test.Constants.Color"),
+        agnostic("com.test.Constants.Color.RED"),
+        agnostic("com.test.Constants.Color.BLUE")
       )
     }
 
     @Test
     fun `declared constants should count as declarations`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public class Constants {
+        public class Constants {
 
-      public static final int MY_VALUE = 250;
-    }
+          public static final int MY_VALUE = 250;
+        }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf(
-          "com.test.Constants",
-          "com.test.Constants",
-          "com.test.Constants.MY_VALUE"
-        )
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.Constants"),
+        agnostic("com.test.Constants.MY_VALUE")
       )
     }
 
     @Test
     fun `declared nested constants should count as declarations`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public class Constants {
+        public class Constants {
 
-      public static class Values {
+          public static class Values {
 
-        public static final int MY_VALUE = 250;
-      }
-    }
+            public static final int MY_VALUE = 250;
+          }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf(
-          "com.test.Constants",
-          "com.test.Constants.Values",
-          "com.test.Constants.Values.MY_VALUE"
-        )
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.Constants"),
+        agnostic("com.test.Constants.Values"),
+        agnostic("com.test.Constants.Values.MY_VALUE")
       )
     }
 
     @Test
     fun `public static methods should count as declarations`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public static void foo() {}
-    }
+          public static void foo() {}
+        }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf(
-          "com.test.ParsedClass", "com.test.ParsedClass.foo"
-        )
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -149,19 +176,23 @@ internal class JavaFileTest :
     fun `a record should count as a declaration`() {
 
       val file = file(
+        //language=text
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
+        import com.lib1.Lib1Class;
 
-    public static record MyRecord(Lib1Class lib1Class) {}
+        public static record MyRecord(Lib1Class lib1Class) {}
         """,
         javaVersion = JavaVersion.VERSION_16
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class"),
-        declarations = setOf("com.test.MyRecord")
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.MyRecord")
       )
     }
 
@@ -170,19 +201,21 @@ internal class JavaFileTest :
     fun `file without package should put declarations at the root`() {
 
       val file = file(
+        //language=text
         """
+        import com.lib1.Lib1Class;
 
-    import com.lib1.Lib1Class;
-
-    public static record MyRecord(Lib1Class lib1Class) {}
+        public static record MyRecord(Lib1Class lib1Class) {}
         """,
         javaVersion = JavaVersion.VERSION_16
       )
 
-      file shouldBe javaFile(
-        packageFqName = "",
-        imports = setOf("com.lib1.Lib1Class"),
-        declarations = setOf("MyRecord")
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("MyRecord")
       )
     }
 
@@ -191,15 +224,17 @@ internal class JavaFileTest :
 
       val file = file(
         """
-    package com.test;
+        package com.test;
 
-    public class MyClass {}
+        public class MyClass {}
         """,
         javaVersion = JavaVersion.VERSION_16
       )
 
-      file shouldBe javaFile(
-        declarations = setOf("com.test.MyClass")
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf()
+      file.declarations shouldBe setOf(
+        agnostic("com.test.MyClass")
       )
     }
   }
@@ -210,332 +245,448 @@ internal class JavaFileTest :
     @Test
     fun `public method return type should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
+        import com.lib1.Lib1Class;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public Lib1Class foo() { return Lib1Class(); }
-    }
+          public Lib1Class foo() { return Lib1Class(); }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("com.lib1.Lib1Class")
+      file.apiReferences shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `private method return type should not count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
+        import com.lib1.Lib1Class;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      private Lib1Class foo() { return Lib1Class(); }
-    }
+          private Lib1Class foo() { return Lib1Class(); }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class"),
-        declarations = setOf("com.test.ParsedClass")
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `package-private method return type should not count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
+        import com.lib1.Lib1Class;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      Lib1Class foo() { return Lib1Class(); }
-    }
+          Lib1Class foo() { return Lib1Class(); }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class"),
-        declarations = setOf("com.test.ParsedClass")
+      file.apiReferences shouldBe listOf()
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method with wildcard-imported return type should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.*;
+        import com.lib1.*;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public Lib1Class foo() { return Lib1Class(); }
-    }
+          public Lib1Class foo() { return Lib1Class(); }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        wildcardImports = setOf("com.lib1"),
-        declarations = setOf("com.test.ParsedClass"),
-        interpretedReferences = setOf(
-          "Lib1Class".asInterpretedJavaReference(),
-          "com.lib1.Lib1Class".asInterpretedJavaReference(),
-          "com.test.Lib1Class".asInterpretedJavaReference()
-        ),
-        apiReferences = setOf("Lib1Class", "com.lib1.Lib1Class", "com.test.Lib1Class")
+      file.apiReferences shouldBe listOf(
+        interpreted("com.test.Lib1Class"),
+        interpreted("com.lib1.Lib1Class"),
+        interpreted("Lib1Class")
+      )
+      file.references() shouldBe listOf(
+        interpreted("com.test.Lib1Class"),
+        interpreted("com.lib1.Lib1Class"),
+        interpreted("Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method with fully qualified return type should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public com.lib1.Lib1Class foo() { return Lib1Class(); }
-    }
+          public com.lib1.Lib1Class foo() { return Lib1Class(); }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("com.lib1.Lib1Class", "com.test.com.lib1.Lib1Class"),
-        interpretedReferences = setOf(
-          "com.lib1.Lib1Class".asInterpretedJavaReference(),
-          "com.test.com.lib1.Lib1Class".asInterpretedJavaReference()
-        )
+      file.apiReferences shouldBe listOf(
+        interpreted("com.lib1.Lib1Class"),
+        interpreted("com.test.com.lib1.Lib1Class")
+      )
+      file.references() shouldBe listOf(
+        interpreted("com.lib1.Lib1Class"),
+        interpreted("com.test.com.lib1.Lib1Class")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method parameterized return type should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
-    import java.util.List;
+        import com.lib1.Lib1Class;
+        import java.util.List;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public List<Lib1Class> foo() { return null; }
-    }
+          public List<Lib1Class> foo() { return null; }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class", "java.util.List"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("com.lib1.Lib1Class", "java.util.List")
+      file.apiReferences shouldBe listOf(
+        explicit("com.lib1.Lib1Class"),
+        explicit("java.util.List")
+      )
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class"),
+        explicit("java.util.List")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method generic return type parameter should not count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import java.util.List;
+        import java.util.List;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public <E> List<E> foo() { return null; }
-    }
+          public <E> List<E> foo() { return null; }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("java.util.List"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("java.util.List")
+      file.apiReferences shouldBe listOf(
+        explicit("java.util.List")
+      )
+      file.references() shouldBe listOf(
+        explicit("java.util.List")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `import should not be an api reference if it isn't actually part of an api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import com.lib1.Lib1Class;
-    import java.util.List;
+        import com.lib1.Lib1Class;
+        import java.util.List;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public <E> List<E> foo() { return null; }
-    }
+          public <E> List<E> foo() { return null; }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("com.lib1.Lib1Class", "java.util.List"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("java.util.List")
+      file.apiReferences shouldBe listOf(
+        explicit("java.util.List")
+      )
+      file.references() shouldBe listOf(
+        explicit("com.lib1.Lib1Class"),
+        explicit("java.util.List")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method generic return type parameter bound should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import java.util.List;
+        import java.util.List;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public <E extends CharSequence> List<E> foo() { return null; }
-    }
+          public <E extends CharSequence> List<E> foo() { return null; }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("java.util.List"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("java.lang.CharSequence", "java.util.List"),
-        interpretedReferences = setOf()
+      file.apiReferences shouldBe listOf(
+        explicit("java.util.List"),
+        explicit("java.lang.CharSequence")
+      )
+      file.references() shouldBe listOf(
+        explicit("java.util.List")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public method argument should count as api reference`() {
 
-      val file = file(
+      val file = createFile(
         """
-    package com.test;
+        package com.test;
 
-    import java.util.List;
+        import java.util.List;
 
-    public class ParsedClass {
+        public class ParsedClass {
 
-      public <E> List<E> foo(String name) { return null; }
-    }
+          public <E> List<E> foo(String name) { return null; }
+        }
         """
       )
 
-      file shouldBe javaFile(
-        imports = setOf("java.util.List"),
-        declarations = setOf("com.test.ParsedClass"),
-        apiReferences = setOf("java.util.List", "java.lang.String")
+      file.apiReferences shouldBe listOf(
+        explicit("java.util.List"),
+        explicit("java.lang.String")
+      )
+      file.references() shouldBe listOf(
+        explicit("java.util.List")
+      )
+      file.declarations shouldBe setOf(
+        agnostic("com.test.ParsedClass")
       )
     }
 
     @Test
     fun `public member property type with wildcard import should count as api reference`() =
-      runBlocking {
+      test {
 
-        val file = file(
+        val file = createFile(
           """
-    package com.test;
+          package com.test;
 
-    import com.lib1.*;
+          import com.lib1.*;
 
-    public class ParsedClass {
+          public class ParsedClass {
 
-      public Lib1Class lib1Class;
-    }
+            public Lib1Class lib1Class;
+          }
           """
         )
 
-        file shouldBe javaFile(
-          declarations = setOf("com.test.ParsedClass"),
-          wildcardImports = setOf("com.lib1"),
-          apiReferences = setOf(
-            "Lib1Class",
-            "com.lib1.Lib1Class",
-            "com.test.Lib1Class"
-          ),
-          interpretedReferences = setOf(
-            "Lib1Class".asInterpretedJavaReference(),
-            "com.lib1.Lib1Class".asInterpretedJavaReference(),
-            "com.test.Lib1Class".asInterpretedJavaReference()
-          )
+        file.apiReferences shouldBe listOf(
+          interpreted("Lib1Class"),
+          interpreted("com.lib1.Lib1Class"),
+          interpreted("com.test.Lib1Class")
+        )
+        file.references() shouldBe listOf(
+          interpreted("Lib1Class"),
+          interpreted("com.lib1.Lib1Class"),
+          interpreted("com.test.Lib1Class")
+        )
+        file.declarations shouldBe setOf(
+          agnostic("com.test.ParsedClass")
         )
       }
 
     @Test
     fun `public member property type with import should count as api reference`() =
-      runBlocking {
+      test {
 
-        val file = file(
+        val file = createFile(
           """
-    package com.test;
+          package com.test;
 
-    import com.lib1.Lib1Class;
+          import com.lib1.Lib1Class;
 
-    public class ParsedClass {
+          public class ParsedClass {
 
-      public Lib1Class lib1Class;
-    }
+            public Lib1Class lib1Class;
+          }
           """
         )
 
-        file shouldBe javaFile(
-          imports = setOf("com.lib1.Lib1Class"),
-          declarations = setOf("com.test.ParsedClass"),
-          apiReferences = setOf("com.lib1.Lib1Class")
+        file.apiReferences shouldBe listOf(
+          explicit("com.lib1.Lib1Class")
+        )
+        file.references() shouldBe listOf(
+          explicit("com.lib1.Lib1Class")
+        )
+        file.declarations shouldBe setOf(
+          agnostic("com.test.ParsedClass")
         )
       }
 
     @Test
     fun `a public member property with generic type with wildcard import should count as api reference`() =
-      runBlocking {
+      test {
 
-        val file = file(
+        val file = createFile(
           """
-    package com.test;
+          package com.test;
 
-    import com.lib1.*;
-    import java.util.List;
+          import com.lib1.*;
+          import java.util.List;
 
-    public class ParsedClass {
+          public class ParsedClass {
 
-      public List<Lib1Class> lib1Classes;
-    }
+            public List<Lib1Class> lib1Classes;
+          }
           """
         )
 
-        file shouldBe javaFile(
-          imports = setOf("java.util.List"),
-          declarations = setOf("com.test.ParsedClass"),
-          wildcardImports = setOf("com.lib1"),
-          apiReferences = setOf(
-            "java.util.List",
-            "com.lib1.Lib1Class",
-            "Lib1Class",
-            "com.test.Lib1Class"
-          ),
-          interpretedReferences = setOf(
-            "Lib1Class".asInterpretedJavaReference(),
-            "com.lib1.Lib1Class".asInterpretedJavaReference(),
-            "com.test.Lib1Class".asInterpretedJavaReference()
-          )
+        file.apiReferences shouldBe listOf(
+          interpreted("Lib1Class"),
+          explicit("java.util.List"),
+          interpreted("com.lib1.Lib1Class"),
+          interpreted("com.test.Lib1Class")
+        )
+        file.references() shouldBe listOf(
+          interpreted("Lib1Class"),
+          explicit("java.util.List"),
+          interpreted("com.lib1.Lib1Class"),
+          interpreted("com.test.Lib1Class")
+        )
+        file.declarations shouldBe setOf(
+          agnostic("com.test.ParsedClass")
         )
       }
+  }
+
+  fun kotlin(name: String) = name.kotlinExtension()
+
+  fun java(name: String) = name.javaExtension()
+
+  fun agnostic(name: String) = name.neutralExtension()
+
+  fun explicit(name: String) = name.asExplicitJavaReference()
+  fun interpreted(name: String) = name.asInterpretedJavaReference()
+  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
+
+  fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
+
+  infix fun LazyDeferred<Set<Reference>>.shouldBe(other: Collection<Reference>) {
+    runBlocking {
+      await()
+        .distinct()
+        .prettyPrint() kotestShouldBe other.prettyPrint()
+    }
+  }
+
+  infix fun List<LazySet.DataSource<Reference>>.shouldBe(other: Collection<Reference>) {
+    runBlocking {
+      flatMap { it.get() }
+        .distinct()
+        .prettyPrint() kotestShouldBe other.prettyPrint()
+    }
+  }
+
+  infix fun LazySet<Reference>.shouldBe(other: Collection<Reference>) {
+    runBlocking {
+      toList()
+        .distinct()
+        .prettyPrint() shouldBe other.prettyPrint()
+    }
+  }
+
+  @JvmName("prettyPrintReferences")
+  fun Collection<Reference>.prettyPrint() = groupBy { it::class }
+    .toList()
+    .sortedBy { it.first.qualifiedName }
+    .joinToString("\n") { (_, names) ->
+      val name = when (names.first()) {
+        is ExplicitJavaReference -> "explicitJava"
+        is ExplicitKotlinReference -> "explicit"
+        is ExplicitXmlReference -> "explicitXml"
+        is InterpretedJavaReference -> "interpretedJava"
+        is InterpretedKotlinReference -> "interpreted"
+        is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
+      }
+      names
+        .sortedBy { it.name }
+        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
+    }
+
+  fun Collection<DeclaredName>.prettyPrint() = groupBy { it::class }
+    .toList()
+    .sortedBy { it.first.qualifiedName }
+    .joinToString("\n") { (_, names) ->
+      val name = when (val declaration = names.first()) {
+        is AgnosticDeclaredName -> "agnostic"
+        is AndroidRDeclaredName -> "androidR"
+        is JavaSpecificDeclaredName -> "java"
+        is KotlinSpecificDeclaredName -> "kotlin"
+        is AndroidResourceDeclaredName -> declaration.prefix
+      }
+      names
+        .sortedBy { it.name }
+        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
+    }
+
+  infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
+    prettyPrint() kotestShouldBe other.prettyPrint()
   }
 
   fun file(
@@ -551,5 +702,19 @@ internal class JavaFileTest :
     return RealJavaFile(
       file = file, javaVersion = javaVersion
     )
+  }
+
+  fun createFile(
+    @Language("java")
+    content: String,
+    project: McProject = simpleProject(),
+    sourceSetName: SourceSetName = SourceSetName.MAIN
+  ): RealJavaFile = runBlocking {
+    project.editSimple {
+      addJavaSource(content, sourceSetName)
+    }.jvmFiles()
+      .get(sourceSetName)
+      .filterIsInstance<RealJavaFile>()
+      .first { it.file.readText() == content.trimIndent() }
   }
 }
