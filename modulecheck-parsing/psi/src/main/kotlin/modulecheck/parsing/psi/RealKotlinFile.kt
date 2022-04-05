@@ -109,7 +109,7 @@ class RealKotlinFile(
   private val fileJavaFacadeName by lazy { ktFile.javaFileFacadeFqName.asString() }
 
   @Suppress("ComplexMethod")
-  private fun KtNamedDeclaration.DeclaredNames(): List<DeclaredName> {
+  private fun KtNamedDeclaration.declaredNames(): List<DeclaredName> {
     val fq = fqName ?: return emptyList()
 
     val nameAsString = fq.asString()
@@ -137,12 +137,12 @@ class RealKotlinFile(
 
           if (isStatic()) {
             both(nameAsString.remove(".Companion"))
-          } else if (this@DeclaredNames is KtCallableDeclaration) {
+          } else if (this@declaredNames is KtCallableDeclaration) {
             kotlin(nameAsString.remove(".Companion"))
           }
         }
 
-        isTopLevelKtOrJavaMember() && this@DeclaredNames !is KtClassOrObject && !isStatic() -> {
+        isTopLevelKtOrJavaMember() && this@declaredNames !is KtClassOrObject && !isStatic() -> {
           kotlin(nameAsString)
 
           jvmSimpleNames().forEach {
@@ -175,7 +175,7 @@ class RealKotlinFile(
 
           val jvmNames = jvmSimpleNames()
 
-          if (this@DeclaredNames is KtFunction && jvmNameOrNull() == null) {
+          if (this@declaredNames is KtFunction && jvmNameOrNull() == null) {
             both(nameAsString)
           } else {
             kotlin(nameAsString)
@@ -201,7 +201,7 @@ class RealKotlinFile(
     ktFile.getChildrenOfTypeRecursive<KtNamedDeclaration>()
       .asSequence()
       .filterNot { it.isPrivateOrInternal() }
-      .flatMap { it.DeclaredNames() }
+      .flatMap { it.declaredNames() }
       .toSet()
   }
 

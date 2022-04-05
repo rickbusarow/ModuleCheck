@@ -23,12 +23,12 @@ import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.SafeCache
 
-data class AndroidRDeclarations(
+data class AndroidRDeclaredNames(
   private val delegate: SafeCache<SourceSetName, AndroidRDeclaredName?>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<AndroidRDeclarations>
+  override val key: ProjectContext.Key<AndroidRDeclaredNames>
     get() = Key
 
   suspend fun all(): Set<AndroidRDeclaredName> {
@@ -46,15 +46,15 @@ data class AndroidRDeclarations(
     }
   }
 
-  companion object Key : ProjectContext.Key<AndroidRDeclarations> {
-    override suspend operator fun invoke(project: McProject): AndroidRDeclarations {
-      return AndroidRDeclarations(SafeCache(), project)
+  companion object Key : ProjectContext.Key<AndroidRDeclaredNames> {
+    override suspend operator fun invoke(project: McProject): AndroidRDeclaredNames {
+      return AndroidRDeclaredNames(SafeCache(), project)
     }
   }
 }
 
-suspend fun ProjectContext.androidRDeclarations(): AndroidRDeclarations = get(AndroidRDeclarations)
+suspend fun ProjectContext.androidRDeclaredNames() = get(AndroidRDeclaredNames)
 
-suspend fun ProjectContext.androidRDeclarationForSourceSetName(
+suspend fun ProjectContext.androidRDeclaredNamesForSourceSetName(
   sourceSetName: SourceSetName
-): AndroidRDeclaredName? = androidRDeclarations().get(sourceSetName)
+): AndroidRDeclaredName? = androidRDeclaredNames().get(sourceSetName)

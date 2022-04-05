@@ -19,7 +19,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 
-internal class UnqualifiedAndroidResourceDeclarationTest : BaseNamedSymbolTest() {
+internal class UnqualifiedAndroidResourceDeclaredNameTest : BaseNamedSymbolTest() {
 
   @Test
   fun `all possible prefixes should be returned by the prefixes function`() {
