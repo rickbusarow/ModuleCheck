@@ -15,12 +15,17 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.context.resSourceFiles
+import modulecheck.api.context.androidRDeclaredNameForSourceSetName
+import modulecheck.api.context.androidResourceDeclaredNamesForSourceSetName
+import modulecheck.api.context.androidResourceReferencesForSourceSetName
+import modulecheck.api.context.androidViewBindingDeclarationsForSourceSetName
+import modulecheck.api.context.dependents
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
+import modulecheck.utils.containsAny
 
 class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFinding> {
 
@@ -37,17 +42,52 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
 
     if (!resourcesEnabled) return emptyList()
 
-    val noResources = project.resSourceFiles().all().isEmpty()
-
-    return if (noResources) {
-      listOf(
-        UnusedResourcesGenerationFinding(
-          dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
-        )
+    fun findingList() = listOf(
+      UnusedResourcesGenerationFinding(
+        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
       )
-    } else {
-      emptyList()
-    }
+    )
+
+    val usedLocally = project.sourceSets
+      .keys
+      .any { sourceSetName ->
+
+        val rName = project.androidRDeclaredNameForSourceSetName(sourceSetName)
+          ?: return@any false
+
+        val references = project.androidResourceReferencesForSourceSetName(sourceSetName)
+
+        references.contains(rName) ||
+          references
+            .containsAny(project.androidResourceDeclaredNamesForSourceSetName(sourceSetName)) ||
+          references
+            .containsAny(project.androidViewBindingDeclarationsForSourceSetName(sourceSetName))
+      }
+
+    if (usedLocally) return emptyList()
+
+    val usedInDownstreamProject = project.dependents()
+      .any { downstream ->
+        downstream.dependentProject.sourceSets.keys
+          .any any2@{ sourceSetName ->
+
+            val rName = project.androidRDeclaredNameForSourceSetName(sourceSetName)
+              ?: return@any2 false
+
+            val refsForSourceSet = downstream.dependentProject
+              .androidResourceReferencesForSourceSetName(sourceSetName)
+
+            val resourceDeclarations = project
+              .androidResourceDeclaredNamesForSourceSetName(sourceSetName)
+
+            refsForSourceSet.contains(rName) ||
+              refsForSourceSet.containsAny(resourceDeclarations)
+          }
+      }
+
+    if (usedInDownstreamProject) return emptyList()
+
+    return findingList()
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {
