@@ -51,7 +51,6 @@ interface XmlFile : HasReferences {
       attributes.filter { attribute ->
         attribute.startsWith("@+id/")
       }
-        .onEach { println(it) }
         .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
         .toSet()
     }
