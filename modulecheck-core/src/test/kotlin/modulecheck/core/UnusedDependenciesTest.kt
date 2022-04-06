@@ -1037,6 +1037,258 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `module contributing a used layout with non-transitive R should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      platformPlugin.viewBindingEnabled = true
+
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      platformPlugin.viewBindingEnabled = false
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.R
+
+        val layout = R.layout.fragment_lib1
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `module contributing a used layout with local R should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      platformPlugin.viewBindingEnabled = true
+
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      platformPlugin.viewBindingEnabled = false
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        val layout = R.layout.fragment_lib1
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `module contributing a used id from a layout with non-transitive R should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      platformPlugin.viewBindingEnabled = true
+
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """
+        <LinearLayout
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          tools:ignore="UnusedResources"
+          />
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      platformPlugin.viewBindingEnabled = false
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.R
+
+        val id = R.id.fragment_container
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `module contributing a used id from a layout with local R should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      platformPlugin.viewBindingEnabled = true
+
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """
+        <LinearLayout
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          tools:ignore="UnusedResources"
+          />
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      platformPlugin.viewBindingEnabled = false
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        val id = R.id.fragment_container
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `declaration used via a wildcard import should not be unused`() {
 
     settings.deleteUnused = false

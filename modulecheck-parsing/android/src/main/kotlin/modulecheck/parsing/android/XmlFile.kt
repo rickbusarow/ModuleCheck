@@ -41,9 +41,25 @@ interface XmlFile : HasReferences {
       AndroidLayoutParser().parseViews(file).mapToSet { ExplicitXmlReference(it) }
     }
 
-    private val rawResources: Set<String> by lazy {
+    private val attributes by lazy {
       AndroidLayoutParser().parseResources(file)
-        .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
+    }
+
+    val idDeclarations: Set<UnqualifiedAndroidResourceDeclaredName> by lazy {
+      attributes.filter { attribute ->
+        attribute.startsWith("@+id/")
+      }
+        .onEach { println(it) }
+        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .toSet()
+    }
+
+    private val rawResources: Set<String> by lazy {
+      attributes
+        .filter { attribute ->
+          REFERENCE_PREFIXES
+            .any { attribute.startsWith(it) }
+        }
         .toSet()
     }
 
@@ -74,7 +90,7 @@ interface XmlFile : HasReferences {
 
     private val rawResources: Set<String> by lazy {
       AndroidManifestParser().parseResources(file)
-        .filter { attribute -> PREFIXES.any { attribute.startsWith(it) } }
+        .filter { attribute -> REFERENCE_PREFIXES.any { attribute.startsWith(it) } }
         .toSet()
     }
 
@@ -95,7 +111,7 @@ interface XmlFile : HasReferences {
   }
 
   companion object {
-    val PREFIXES = listOf(
+    val REFERENCE_PREFIXES = listOf(
       "@anim/",
       "@animator/",
       "@arrays/",

@@ -20,6 +20,7 @@ import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -70,6 +71,18 @@ data class AndroidResourceDeclaredNames(
             simpleNames + simpleNames.map { it.toNamespacedDeclaredName(rName) }
           }
         }
+        .plus(
+          project.layoutFilesForSourceSetName(sourceSetName)
+            .map { layoutFile ->
+
+              dataSource {
+                layoutFile.idDeclarations
+                  .plus(UnqualifiedAndroidResourceDeclaredName.fromFile(layoutFile.file))
+                  .filterNotNull()
+                  .toSet()
+              }
+            }
+        )
 
       lazySet(declarations)
     }
