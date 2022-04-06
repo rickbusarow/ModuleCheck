@@ -127,7 +127,7 @@ kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 
-kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.7"
+kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.8"
 
 kotlinPoet = "com.squareup:kotlinpoet:1.11.0"
 
