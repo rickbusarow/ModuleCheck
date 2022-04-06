@@ -102,7 +102,7 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
 
   companion object {
 
-    private val REGEX = """"?@(.*)/(.*)"?""".toRegex()
+    private val REGEX = """"?@\+?(.*)\/(.*)"?""".toRegex()
 
     fun prefixes() = listOf(
       "anim",

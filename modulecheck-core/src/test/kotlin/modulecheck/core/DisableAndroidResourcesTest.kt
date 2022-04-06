@@ -84,10 +84,11 @@ class DisableAndroidResourcesTest : RunnerTest() {
       }
       addResourceFile(
         "values/strings.xml",
-        """<resources>
-            |  <string name="app_name" translatable="false">MyApp</string>
-            |</resources>
-        """.trimMargin()
+        """
+        <resources>
+          <string name="app_name" translatable="false">MyApp</string>
+        </resources>
+        """
       )
     }
 
