@@ -10,6 +10,7 @@
         <option value="filename" />
         <option value="experimental:argument-list-wrapping" />
         <option value="experimental:no-empty-first-line-in-method-block" />
+        <option value="experimental:type-parameter-list-spacing" />
       </list>
     </disabledRules>
   </component>

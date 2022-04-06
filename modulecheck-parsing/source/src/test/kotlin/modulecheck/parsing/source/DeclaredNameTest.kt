@@ -57,6 +57,7 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   fun `android r declaration should match self and any Reference type`() {
     AndroidRDeclaredName("com.modulecheck.R").matchedClasses() shouldBe listOf(
       AndroidRDeclaredName::class,
+      Reference.AndroidRReference::class,
       Reference.ExplicitJavaReference::class,
       Reference.ExplicitKotlinReference::class,
       Reference.ExplicitXmlReference::class,

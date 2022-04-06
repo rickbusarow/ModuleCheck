@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.utils.safeAs
 import modulecheck.utils.unsafeLazy
@@ -27,8 +28,8 @@ sealed interface AndroidResourceDeclaredName : DeclaredName {
 }
 
 class GeneratedAndroidResourceDeclaredName(
-  val sourceR: AndroidRDeclaredName,
-  val sourceResource: UnqualifiedAndroidResourceDeclaredName
+  val sourceR: AndroidRReference,
+  val sourceResource: UnqualifiedAndroidResourceReference
 ) : AndroidResourceDeclaredName,
   JavaCompatibleDeclaredName,
   KotlinCompatibleDeclaredName,
@@ -40,7 +41,7 @@ class GeneratedAndroidResourceDeclaredName(
     get() = sourceResource.prefix
 
   override val name: String by unsafeLazy {
-    "${sourceR.name}.$prefix.${sourceResource.identifier}"
+    "${sourceR.name}.$prefix.$identifier"
   }
 }
 
@@ -83,8 +84,8 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
     androidRDeclaration: AndroidRDeclaredName
   ): GeneratedAndroidResourceDeclaredName {
     return GeneratedAndroidResourceDeclaredName(
-      sourceR = androidRDeclaration,
-      sourceResource = this
+      sourceR = AndroidRReference(androidRDeclaration.name),
+      sourceResource = UnqualifiedAndroidResourceReference(this.name)
     )
   }
 

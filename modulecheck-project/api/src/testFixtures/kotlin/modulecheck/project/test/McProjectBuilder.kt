@@ -47,7 +47,7 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
   val projectCache: ProjectCache = ProjectCache(),
-  val javaSourceVersion: JavaVersion = VERSION_14
+  var javaSourceVersion: JavaVersion = VERSION_14
 ) {
 
   fun addDependency(
@@ -137,9 +137,9 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     val packageName by unsafeLazy {
       "package (.*);".toRegex()
         .find(java)
-        .requireNotNull()
-        .destructured
-        .component1()
+        ?.destructured
+        ?.component1()
+        ?: ""
     }
 
     return addJvmSource(directory, packageName, sourceSetName, name, java)

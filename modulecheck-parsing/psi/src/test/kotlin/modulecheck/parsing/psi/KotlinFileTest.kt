@@ -31,11 +31,13 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
 import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
@@ -811,8 +813,10 @@ internal class KotlinFileTest : ProjectTest() {
 
   fun agnostic(name: String) = name.neutralExtension()
 
+  fun androidR(name: String) = AndroidRReference(name)
   fun explicit(name: String) = name.asExplicitKotlinReference()
   fun interpreted(name: String) = name.asInterpretedKotlinReference()
+  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 
   fun createFile(
@@ -851,6 +855,8 @@ internal class KotlinFileTest : ProjectTest() {
         is InterpretedJavaReference -> "interpretedJava"
         is InterpretedKotlinReference -> "interpreted"
         is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
+        is AndroidRReference -> "androidR"
+        is QualifiedAndroidResourceReference -> "qualifiedAndroidResource"
       }
       names
         .sortedBy { it.name }
