@@ -25,7 +25,7 @@ dependencies {
   dependencySync("com.android.tools.build:gradle:7.1.1")
   dependencySync("com.github.ben-manes:gradle-versions-plugin:0.42.0")
   dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.24.2")
-  dependencySync("com.github.tschuchortdev:kotlin-compile-testing:1.4.7")
+  dependencySync("com.github.tschuchortdev:kotlin-compile-testing:1.4.8")
   dependencySync("com.google.dagger:dagger-compiler:2.41")
   dependencySync("com.google.dagger:dagger:2.41")
   dependencySync("com.rickbusarow.dispatch:dispatch-android-espresso:1.0.0-beta10")
