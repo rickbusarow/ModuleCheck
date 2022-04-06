@@ -21,6 +21,7 @@ import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.utils.LazySet.DataSource
 import modulecheck.utils.safeAs
+import modulecheck.utils.unsafeLazy
 
 sealed interface Reference : NamedSymbol {
 
@@ -37,13 +38,72 @@ sealed interface Reference : NamedSymbol {
 
   sealed interface ExplicitReference : Reference
 
-  class UnqualifiedAndroidResourceReference(override val name: String) : Reference {
+  sealed interface AndroidResourceReference : Reference
+
+  class AndroidRReference(override val name: String) :
+    AndroidResourceReference,
+    ExplicitReference,
+    KotlinReference,
+    JavaReference {
+
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = {
+          name == (it.safeAs<AndroidRReference>()?.name ?: it.safeAs<ExplicitReference>()?.name)
+        },
+        ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
+      )
+    }
+
+    override fun hashCode(): Int = name.hashCode()
+
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  }
+
+  class UnqualifiedAndroidResourceReference(override val name: String) :
+    AndroidResourceReference,
+    ExplicitReference {
+
+    private val split by unsafeLazy {
+      name.split('.').also {
+        @Suppress("MagicNumber")
+        require(it.size == 3) {
+          "The name `$name` must follow the format `R.<prefix>.<identifier>`, " +
+            "such as `R.string.app_name`."
+        }
+      }
+    }
+
+    val prefix by unsafeLazy { split[1] }
+    val identifier by unsafeLazy { split[2] }
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReference>()?.name },
         ifDeclaration = { name == it.safeAs<AndroidResourceDeclaredName>()?.name }
+      )
+    }
+
+    override fun hashCode(): Int = name.hashCode()
+
+    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  }
+
+  class QualifiedAndroidResourceReference(override val name: String) :
+    AndroidResourceReference,
+    ExplicitReference,
+    KotlinReference,
+    JavaReference {
+
+    override fun equals(other: Any?): Boolean {
+      return matches(
+        other = other,
+        ifReference = {
+          name == (it.safeAs<AndroidRReference>()?.name ?: it.safeAs<ExplicitReference>()?.name)
+        },
+        ifDeclaration = { name == it.safeAs<GeneratedAndroidResourceDeclaredName>()?.name }
       )
     }
 

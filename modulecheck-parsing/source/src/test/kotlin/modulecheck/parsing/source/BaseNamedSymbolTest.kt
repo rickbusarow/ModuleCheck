@@ -17,11 +17,13 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
+import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
@@ -92,10 +94,8 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
       Raw(identifier),
       Style(identifier),
 
-      GeneratedAndroidResourceDeclaredName(
-        AndroidRDeclaredName("com.modulecheck.R"),
-        AndroidString(identifier)
-      ),
+      AndroidString(identifier)
+        .toNamespacedDeclaredName(AndroidRDeclaredName("com.modulecheck.R")),
 
       AgnosticDeclaredName(name),
       JavaSpecificDeclaredName(name),
@@ -106,7 +106,9 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
       ExplicitXmlReference(name),
       InterpretedJavaReference(name),
       InterpretedKotlinReference(name),
-      UnqualifiedAndroidResourceReference(name)
+      AndroidRReference(name),
+      UnqualifiedAndroidResourceReference(name),
+      QualifiedAndroidResourceReference(name)
     ).requireIsExhaustive()
       .sortedBy { it::class.qualifiedName }
   }

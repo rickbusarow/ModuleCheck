@@ -31,11 +31,13 @@ import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
 import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asInterpretedJavaReference
@@ -46,15 +48,12 @@ import modulecheck.utils.LazySet
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import java.io.File
 import io.kotest.matchers.shouldBe as kotestShouldBe
 import modulecheck.parsing.source.asDeclaredName as neutralExtension
 import modulecheck.parsing.source.asJavaDeclaredName as javaExtension
 import modulecheck.parsing.source.asKotlinDeclaredName as kotlinExtension
 
-internal class JavaFileTest :
-  ProjectTest(),
-  JavaFileTestUtils by RealJavaFileTestUtils() {
+internal class JavaFileTest : ProjectTest() {
 
   @Nested
   inner class `resolvable declarations` {
@@ -175,7 +174,7 @@ internal class JavaFileTest :
     @Test
     fun `a record should count as a declaration`() {
 
-      val file = file(
+      val file = createFile(
         //language=text
         """
         package com.test;
@@ -200,7 +199,7 @@ internal class JavaFileTest :
     @Test
     fun `file without package should put declarations at the root`() {
 
-      val file = file(
+      val file = createFile(
         //language=text
         """
         import com.lib1.Lib1Class;
@@ -222,7 +221,7 @@ internal class JavaFileTest :
     @Test
     fun `file without imports should still parse`() {
 
-      val file = file(
+      val file = createFile(
         """
         package com.test;
 
@@ -657,12 +656,14 @@ internal class JavaFileTest :
     .sortedBy { it.first.qualifiedName }
     .joinToString("\n") { (_, names) ->
       val name = when (names.first()) {
-        is ExplicitJavaReference -> "explicitJava"
-        is ExplicitKotlinReference -> "explicit"
+        is ExplicitJavaReference -> "explicit"
+        is ExplicitKotlinReference -> "explicitKotlin"
         is ExplicitXmlReference -> "explicitXml"
-        is InterpretedJavaReference -> "interpretedJava"
-        is InterpretedKotlinReference -> "interpreted"
+        is InterpretedJavaReference -> "interpreted"
+        is InterpretedKotlinReference -> "interpretedKotlin"
         is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
+        is AndroidRReference -> "androidR"
+        is QualifiedAndroidResourceReference -> "qualifiedAndroidResource"
       }
       names
         .sortedBy { it.name }
@@ -689,29 +690,16 @@ internal class JavaFileTest :
     prettyPrint() kotestShouldBe other.prettyPrint()
   }
 
-  fun file(
-    @Language("java")
-    content: String,
-    javaVersion: JavaVersion = VERSION_14
-  ): RealJavaFile {
-    testProjectDir.mkdirs()
-
-    val file = File(testProjectDir, "JavaFile.java")
-      .also { it.writeText(content.trimIndent()) }
-
-    return RealJavaFile(
-      file = file, javaVersion = javaVersion
-    )
-  }
-
   fun createFile(
     @Language("java")
     content: String,
     project: McProject = simpleProject(),
-    sourceSetName: SourceSetName = SourceSetName.MAIN
+    sourceSetName: SourceSetName = SourceSetName.MAIN,
+    javaVersion: JavaVersion = VERSION_14
   ): RealJavaFile = runBlocking {
     project.editSimple {
       addJavaSource(content, sourceSetName)
+      javaSourceVersion = javaVersion
     }.jvmFiles()
       .get(sourceSetName)
       .filterIsInstance<RealJavaFile>()
