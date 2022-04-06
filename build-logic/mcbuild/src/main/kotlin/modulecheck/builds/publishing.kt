@@ -80,4 +80,14 @@ fun Project.configurePublishing(
   tasks.withType(Sign::class.java) {
     notCompatibleWithConfigurationCache("Signing cannot be cached")
   }
+
+  tasks.register("checkVersionIsSnapshot") {
+    doLast {
+      val expected = "-SNAPSHOT"
+      require(VERSION_NAME.endsWith(expected)) {
+        "The project's version name must be suffixed with `$expected` when checked in" +
+          " to the main branch, but instead it's `$VERSION_NAME`."
+      }
+    }
+  }
 }
