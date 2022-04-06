@@ -33,7 +33,7 @@ import modulecheck.utils.LazySet
 import modulecheck.utils.mapToSet
 
 class AndroidResourceReferenceParsingInterceptor(
-  private val androidRNameProvider: AndroidRNameProvider,
+  private val androidRNameProvider: AndroidRNameProvider
 ) : ParsingInterceptor {
 
   override suspend fun intercept(chain: ParsingInterceptor.Chain): NameParser.NameParserPacket {

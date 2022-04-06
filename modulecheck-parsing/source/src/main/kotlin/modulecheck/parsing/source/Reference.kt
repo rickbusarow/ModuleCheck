@@ -67,6 +67,7 @@ sealed interface Reference : NamedSymbol {
 
     private val split by unsafeLazy {
       name.split('.').also {
+        @Suppress("MagicNumber")
         require(it.size == 3) {
           "The name `$name` must follow the format `R.<prefix>.<identifier>`, " +
             "such as `R.string.app_name`."
