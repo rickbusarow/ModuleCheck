@@ -42,6 +42,7 @@ data class AndroidViewBindingDeclarations(
     if (!project.isAndroid()) return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
+
       val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
         ?: return@getOrPut emptyLazySet()
 
@@ -64,6 +65,7 @@ data class AndroidViewBindingDeclarations(
 
   companion object Key : ProjectContext.Key<AndroidViewBindingDeclarations> {
     override suspend operator fun invoke(project: McProject): AndroidViewBindingDeclarations {
+
       return AndroidViewBindingDeclarations(SafeCache(), project)
     }
   }

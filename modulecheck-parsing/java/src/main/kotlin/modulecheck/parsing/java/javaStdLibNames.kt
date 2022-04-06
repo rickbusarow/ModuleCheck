@@ -15,6 +15,20 @@
 
 package modulecheck.parsing.java
 
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.asExplicitJavaReference
+
+internal fun String.javaLangFqNameOrNull(): ExplicitJavaReference? {
+
+  val maybeJavaLang = "java.lang.$this"
+
+  return if (maybeJavaLang in javaStdLibNames) {
+    maybeJavaLang.asExplicitJavaReference()
+  } else {
+    null
+  }
+}
+
 internal val javaStdLibNames = setOf(
 
   "java.lang.Appendable",

@@ -41,7 +41,7 @@ class JavaParserNodeResolver(
     directImports.singleOrNull { it.endsWith(nameWithScope) }
       ?.let { return FqName(it) }
 
-    nameWithScope.javaLangFqNameOrNull()?.let { return it }
+    nameWithScope.javaLangFqNameOrNull()?.let { return FqName(it.name) }
 
     wildcardImports.fold(
       sequenceOf(nameWithScope, "$packageName.$nameWithScope")
@@ -54,17 +54,6 @@ class JavaParserNodeResolver(
       ?.let { return it }
 
     return node.fqNameOrNull()
-  }
-}
-
-internal fun String.javaLangFqNameOrNull(): FqName? {
-
-  val maybeJavaLang = "java.lang.$this"
-
-  return if (maybeJavaLang in javaStdLibNames) {
-    FqName(maybeJavaLang)
-  } else {
-    null
   }
 }
 

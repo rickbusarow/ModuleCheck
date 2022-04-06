@@ -29,6 +29,7 @@ import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
+import modulecheck.parsing.wiring.RealAndroidRNameProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
@@ -108,7 +109,10 @@ internal inline fun <reified T : McProjectBuilder<P>,
 
   val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
     RealJvmFileProvider(
-      fileCache = FileCache(), project = project, sourceSetName = sourceSetName
+      fileCache = FileCache(),
+      project = project,
+      sourceSetName = sourceSetName,
+      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName)
     )
   }
 

@@ -19,9 +19,11 @@ import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.psiFileFactory
 import modulecheck.parsing.source.AgnosticDeclaredName
@@ -539,32 +541,42 @@ internal class KotlinFileTest : ProjectTest() {
   }
 
   @Test
-  fun `import alias reference should be inlined to the normal fully qualified reference`() = test {
-    val file = createFile(
-      """
+  fun `import alias reference which is continued should be inlined to the normal fully qualified reference`() =
+    test {
+      val file = createFile(
+        """
       package com.test
 
       import com.modulecheck.lib1.R as Lib1R
 
       val appName = Lib1R.string.app_name
-      """
-    )
+        """
+      )
 
-    file.importsLazy.value shouldBe setOf(
-      "com.modulecheck.lib1.R".asExplicitKotlinReference()
-    )
+      file.references shouldBe listOf(
+        explicit("com.modulecheck.lib1.R"),
+        explicit("com.modulecheck.lib1.R.string.app_name")
+      )
+    }
 
-    file.interpretedReferencesLazy.value shouldBe setOf(
-      "com.test.Lib1R".asInterpretedKotlinReference(),
-      "Lib1R".asInterpretedKotlinReference(),
-      "com.test.string".asInterpretedKotlinReference(),
-      "string".asInterpretedKotlinReference(),
-      "com.test.app_name".asInterpretedKotlinReference(),
-      "app_name".asInterpretedKotlinReference(),
-      "com.modulecheck.lib1.R.string".asExplicitKotlinReference(),
-      "com.modulecheck.lib1.R.string.app_name".asExplicitKotlinReference()
-    )
-  }
+  @Test
+  fun `import alias reference without further selectors should be inlined to the normal fully qualified reference`() =
+    test {
+
+      val file = createFile(
+        """
+      package com.test
+
+      import com.modulecheck.lib1.foo as lib1Foo
+
+      val property = lib1Foo()
+        """
+      )
+
+      file.references shouldBe listOf(
+        explicit("com.modulecheck.lib1.foo")
+      )
+    }
 
   @Nested
   inner class `inside companion object -- function` {
@@ -807,6 +819,236 @@ internal class KotlinFileTest : ProjectTest() {
     }
   }
 
+  @Nested
+  inner class `Android resource references` {
+
+    @Test
+    fun `unqualified android resource reference in base package`() = test {
+
+      val project = androidLibrary(":lib1", "com.test")
+
+      val file = createFile(
+        """
+        package com.test
+
+        val someString = R.string.app_name
+        """,
+        project = project
+      )
+
+      file.references shouldBe listOf(
+        unqualifiedAndroidResource("R.string.app_name"),
+        androidR("com.test.R"),
+        qualifiedAndroidResource("com.test.R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.someString"),
+        java("com.test.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `unqualified android resource reference with R import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addSource(
+          "com/test/Source.kt",
+          """
+          package com.test
+
+          import com.modulecheck.other.R
+
+          val someString = R.string.app_name
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.someString"),
+        java("com.test.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with R string import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addSource(
+          "com/modulecheck/lib1/Source.kt",
+          """
+          package com.test
+
+          import com.modulecheck.other.R.string
+
+          val someString = string.app_name
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        explicit("com.modulecheck.other.R.string"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.someString"),
+        java("com.test.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R import in base package`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addSource(
+          "com/modulecheck/lib1/Source.kt",
+          """
+          package com.test
+
+          import com.modulecheck.other.*
+
+          val someString = R.string.app_name
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.test.R"),
+        qualifiedAndroidResource("com.test.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.someString"),
+        java("com.test.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R import not in base package`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addSource(
+          "com/modulecheck/lib1/Source.kt",
+          """
+          package com.test.internal
+
+          import com.modulecheck.other.*
+
+          val someString = R.string.app_name
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.internal.someString"),
+        java("com.test.internal.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R member import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+          package com.test.internal
+
+          import com.modulecheck.other.R.*
+
+          val someString = string.app_name
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.internal.someString"),
+        java("com.test.internal.SourceKt.getSomeString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with explicit R string import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+          package com.test
+
+          import com.modulecheck.other.R.string
+
+          val someString = string.app_name
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        explicit("com.modulecheck.other.R.string"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        kotlin("com.test.someString"),
+        java("com.test.SourceKt.getSomeString")
+      )
+    }
+  }
+
   fun kotlin(name: String) = name.kotlinExtension()
 
   fun java(name: String) = name.javaExtension()
@@ -818,6 +1060,18 @@ internal class KotlinFileTest : ProjectTest() {
   fun interpreted(name: String) = name.asInterpretedKotlinReference()
   fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
+
+  fun McProject.createFile(
+    @Language("kotlin")
+    content: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN
+  ): RealKotlinFile = runBlocking {
+    createFile(
+      content = content,
+      project = this@createFile,
+      sourceSetName = sourceSetName
+    )
+  }
 
   fun createFile(
     @Language("kotlin")

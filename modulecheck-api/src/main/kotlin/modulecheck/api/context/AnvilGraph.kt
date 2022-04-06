@@ -20,23 +20,19 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.NamedSymbol
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
-import modulecheck.utils.cast
 import org.jetbrains.kotlin.name.FqName
-import kotlin.LazyThreadSafetyMode.NONE
 
 data class AnvilScopedDeclarations(
   val scopeName: AnvilScopeName,
@@ -119,9 +115,7 @@ data class AnvilGraph(
       .filter { kotlinFile ->
 
         allAnnotations.any { annotationName ->
-
-          kotlinFile.importsLazy.value.contains(annotationName) ||
-            kotlinFile.interpretedReferencesLazy.value.contains(annotationName)
+          kotlinFile.references.contains(annotationName)
         }
       }
       .collect { kotlinFile ->
@@ -155,9 +149,7 @@ data class AnvilGraph(
   ): AnvilScopeName {
     val dependenciesBySourceSetName = dependenciesBySourceSetName()
 
-    val maybeExtraReferences by lazy(NONE) {
-      runBlocking { kotlinFile.interpretedReferencesLazy }
-    }
+    val maybeExtraReferences = kotlinFile.references
 
     // if scope is directly imported (most likely),
     // then use that fully qualified import
@@ -174,13 +166,13 @@ data class AnvilGraph(
           cpd.project
             .declarations()
             .get(SourceSetName.MAIN, includeUpstream = true)
-            .filter { maybeExtraReferences.value.cast<Set<NamedSymbol>>().contains(it) }
+            .filter { maybeExtraReferences.contains(it) }
             .firstOrNull { it.name.endsWith(scopeNameEntry.name.name) }
         }
         .firstOrNull()
         ?.let { FqName(it.name) }
       // Scope must be defined in this same module
-      ?: maybeExtraReferences.value
+      ?: maybeExtraReferences
         .mapNotNull { reference ->
           reference.name.takeIf { it.startsWith(kotlinFile.packageFqName) }
         }

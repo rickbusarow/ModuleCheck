@@ -26,6 +26,9 @@ import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.isKotlinFile
 import modulecheck.parsing.psi.internal.isKtFile
 import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.internal.AndroidRNameProvider
+import modulecheck.parsing.source.internal.InterpretingInterceptor
+import modulecheck.parsing.source.internal.ParsingChain
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.utils.SafeCache
@@ -40,7 +43,8 @@ class FileCache @Inject constructor() : SafeCache<File, JvmFile> by SafeCache()
 class RealJvmFileProvider(
   private val fileCache: FileCache,
   private val project: McProject,
-  private val sourceSetName: SourceSetName
+  private val sourceSetName: SourceSetName,
+  private val androidRNameProvider: AndroidRNameProvider
 ) : JvmFileProvider {
 
   override suspend fun getOrNull(
@@ -57,11 +61,29 @@ class RealJvmFileProvider(
           psiResolver = PsiElementResolver(
             project = project,
             sourceSetName = sourceSetName
+          ),
+          nameParser = ParsingChain.Factory(
+            listOf(
+              ConcatenatingParsingInterceptor(),
+              AndroidResourceReferenceParsingInterceptor(
+                androidRNameProvider = androidRNameProvider
+              ),
+              InterpretingInterceptor()
+            )
           )
         )
         else -> RealJavaFile(
           file = file,
-          javaVersion = project.javaSourceVersion
+          javaVersion = project.javaSourceVersion,
+          nameParser = ParsingChain.Factory(
+            listOf(
+              ConcatenatingParsingInterceptor(),
+              AndroidResourceReferenceParsingInterceptor(
+                androidRNameProvider = androidRNameProvider
+              ),
+              InterpretingInterceptor()
+            )
+          )
         )
       }
     }
@@ -78,7 +100,8 @@ class RealJvmFileProvider(
     ): RealJvmFileProvider = RealJvmFileProvider(
       fileCache = fileCacheProvider.get(),
       project = project,
-      sourceSetName = sourceSetName
+      sourceSetName = sourceSetName,
+      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName)
     )
   }
 }

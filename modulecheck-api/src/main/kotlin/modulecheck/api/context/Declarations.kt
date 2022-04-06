@@ -78,7 +78,7 @@ data class Declarations private constructor(
 
       seed.forEach { sourceSetOrUpstream ->
 
-        val rNameOrNull = project.androidRDeclaredNamesForSourceSetName(sourceSetOrUpstream)
+        val rNameOrNull = project.androidRDeclaredNameForSourceSetName(sourceSetOrUpstream)
 
         project.jvmFilesForSourceSetName(sourceSetOrUpstream)
           .toList()

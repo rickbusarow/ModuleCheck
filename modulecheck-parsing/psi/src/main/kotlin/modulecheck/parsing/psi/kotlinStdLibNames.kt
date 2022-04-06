@@ -15,16 +15,17 @@
 
 package modulecheck.parsing.psi
 
-import org.jetbrains.kotlin.name.FqName
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.asExplicitKotlinReference
 
-internal fun String.kotlinStdLibNameOrNull(): FqName? {
+internal fun String.kotlinStdLibNameOrNull(): ExplicitKotlinReference? {
 
   return sequenceOf(
     "kotlin.$this",
     "kotlin.collections.$this"
   )
     .firstOrNull { it in kotlinStdLibNames }
-    ?.let { FqName(it) }
+    ?.asExplicitKotlinReference()
 }
 
 internal val kotlinStdLibNames = setOf(

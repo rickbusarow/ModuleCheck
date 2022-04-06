@@ -25,6 +25,7 @@ import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.expr.FieldAccessExpr
 import com.github.javaparser.ast.expr.MethodCallExpr
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeParameters
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
@@ -62,19 +63,22 @@ import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asInterpretedJavaReference
+import modulecheck.parsing.source.internal.NameParser
+import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.flatMapToSet
+import modulecheck.utils.LazySet
+import modulecheck.utils.dataSource
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapToSet
-import modulecheck.utils.unsafeLazy
+import modulecheck.utils.toLazySet
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract
 
 class RealJavaFile(
   val file: File,
-  private val javaVersion: JavaVersion
+  private val javaVersion: JavaVersion,
+  private val nameParser: NameParser
 ) : JavaFile {
 
   override val name = file.name
@@ -156,56 +160,25 @@ class RealJavaFile(
       .toSet()
   }
 
-  override val interpretedReferencesLazy = lazy {
-
-    val importNames = importsLazy.value.map { it.name }
-
-    // fully qualified method references
-    val methodNames = compilationUnit
-      .getChildrenOfTypeRecursive<MethodCallExpr>()
-      .mapNotNull { method ->
-        method.getChildOfType<FieldAccessExpr>()
-          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
-      }
-
-    // fully qualified property references
-    val propertyNames = compilationUnit
-      .getChildrenOfTypeRecursive<FieldAccessExpr>()
-      .mapNotNull { method ->
-        method.getChildOfType<FieldAccessExpr>()
-          ?.let { qualifier -> "$qualifier.${method.nameAsString}" }
-      }
-
-    val unresolved = typeReferenceNames
-      .filter { name -> importNames.none { importName -> importName.endsWith(name) } }
-      .filter { name -> name.javaLangFqNameOrNull() == null }
-      .plus(methodNames)
-      .plus(propertyNames)
-
-    unresolved.flatMapToSet { reference ->
-
-      val constructed = reference.javaLangFqNameOrNull()?.let { listOf(it.asString()) }
-        ?: (wildcardImports.map { "$it.$reference" } + "$packageFqName.$reference")
-
-      val all = (constructed + reference).toSet()
-
-      all.map { InterpretedJavaReference(it) }
-    }
+  private fun <T> T.qualifiedNameOrNull(): String? where T : NodeWithSimpleName<*>, T : Node {
+    return getChildOfType<FieldAccessExpr>()
+      ?.let { qualifier -> "$qualifier.$nameAsString" }
   }
 
   override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
 
-    val imports by unsafeLazy { importsLazy.value.mapToSet { it.name } }
+    refs.await().apiReferences
+  }
 
-    val members = compilationUnit.childrenRecursive()
+  private val apiStrings by lazy {
+
+    compilationUnit.childrenRecursive()
       // Only look at references which are inside public classes.  This includes nested classes
       // which may be (incorrectly) inside private or package-private classes.
       .filter { node ->
         node.getParentsOfTypeRecursive<ClassOrInterfaceDeclaration>()
           .all { parentClass -> parentClass.isPublic || parentClass.isProtected }
       }
-
-    val simpleRefs = members
       .flatMap {
         when (it) {
           is MethodDeclaration -> it.apiReferences()
@@ -214,37 +187,42 @@ class RealJavaFile(
         }
       }
       .toList()
+  }
 
-    val resolved = mutableSetOf<ExplicitJavaReference>()
-    val unresolved = mutableSetOf<String>()
-
-    simpleRefs.forEach { referenceString ->
-
-      val resolvedOrNull = imports.firstOrNull { it.endsWith(referenceString) }
-        ?: referenceString.javaLangFqNameOrNull()?.asString()
-
-      if (resolvedOrNull != null) {
-        resolved.add(resolvedOrNull.asExplicitJavaReference())
-        return@forEach
+  private val refs = lazyDeferred {
+    val methodNames = compilationUnit
+      .getChildrenOfTypeRecursive<MethodCallExpr>()
+      .mapNotNull { method ->
+        method.qualifiedNameOrNull()
       }
 
-      unresolved.add(referenceString)
-    }
+    // fully qualified property references
+    val propertyNames = compilationUnit
+      .getChildrenOfTypeRecursive<FieldAccessExpr>()
+      .mapNotNull { method ->
+        method.qualifiedNameOrNull()
+      }
 
-    val guesses = unresolved.fold(unresolved.toMutableSet()) { acc, reference ->
+    val packet = NameParserPacket(
+      packageName = packageFqName,
+      imports = importsLazy.value.mapToSet { it.name },
+      wildcardImports = wildcardImports,
+      aliasedImports = emptyMap(),
+      resolved = emptySet(),
+      unresolved = typeReferenceNames + methodNames + propertyNames,
+      mustBeApi = apiStrings.toSet(),
+      apiReferences = emptySet(),
+      toExplicitReference = ::ExplicitJavaReference,
+      toInterpretedReference = ::InterpretedJavaReference,
+      stdLibNameOrNull = String::javaLangFqNameOrNull
+    )
 
-      val new = reference.javaLangFqNameOrNull()
-        ?.let { listOf(it.asString()) }
-        ?: wildcardImports
-          .map { "$it.$reference" }
-          .plus("$packageFqName.$reference")
-
-      acc.also { it.addAll(new) }
-    }
-      .map { it.asInterpretedJavaReference() }
-
-    resolved + guesses
+    nameParser.parse(packet)
   }
+
+  override val references: LazySet<Reference> = listOf(
+    dataSource { refs.await().resolved }
+  ).toLazySet()
 }
 
 /**

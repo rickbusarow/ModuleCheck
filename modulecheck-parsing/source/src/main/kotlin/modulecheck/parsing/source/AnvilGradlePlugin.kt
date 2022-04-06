@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.Reference.KotlinReference
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 
@@ -38,4 +38,4 @@ data class AnvilScopeName(val fqName: FqName) {
   override fun toString(): String = fqName.asString()
 }
 
-data class AnvilScopeNameEntry(val name: ExplicitKotlinReference)
+data class AnvilScopeNameEntry(val name: KotlinReference)

@@ -16,6 +16,7 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.psi.internal.PsiElementResolver
+import modulecheck.parsing.psi.internal.callSiteName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
@@ -32,20 +33,21 @@ import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
 import modulecheck.parsing.source.asKotlinDeclaredName
+import modulecheck.parsing.source.internal.NameParser
+import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.flatMapToSet
+import modulecheck.utils.LazySet
+import modulecheck.utils.dataSource
 import modulecheck.utils.lazyDeferred
 import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.toLazySet
 import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.fileClasses.javaFileFacadeFqName
 import org.jetbrains.kotlin.name.FqName
@@ -59,6 +61,7 @@ import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtPackageDirective
+import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
@@ -66,7 +69,8 @@ import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class RealKotlinFile(
   val ktFile: KtFile,
-  private val psiResolver: PsiElementResolver
+  private val psiResolver: PsiElementResolver,
+  private val nameParser: NameParser
 ) : KotlinFile {
 
   override val name = ktFile.name
@@ -76,7 +80,7 @@ class RealKotlinFile(
   // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
   private val _aliasMap = mutableMapOf<String, ExplicitKotlinReference>()
 
-  override val importsLazy: Lazy<Set<Reference>> = lazy {
+  private val importsStrings: Lazy<Set<String>> = lazy {
 
     ktFile.importDirectives.asSequence()
       .filter { it.isValidImport }
@@ -85,8 +89,8 @@ class RealKotlinFile(
       .filter { !operatorSet.contains(it.identifier()) }
       .filter { !componentNRegex.matches(it.identifier()!!) }
       .mapNotNull { importDirective ->
-        importDirective.importPath?.pathStr?.asExplicitKotlinReference()
-          ?.also { realName ->
+        importDirective.importPath?.pathStr
+          ?.also { nameString ->
 
             // Map aliases to their actual names, so that they can be looked up while resolving
             importDirective.alias
@@ -95,11 +99,15 @@ class RealKotlinFile(
               // respectively.
               ?.lastChild
               ?.text?.let { alias ->
-                _aliasMap[alias] = realName
+                _aliasMap[alias] = nameString.asExplicitKotlinReference()
               }
           }
       }
       .toSet()
+  }
+  override val importsLazy: Lazy<Set<Reference>> = lazy {
+    importsStrings.value
+      .mapToSet { it.asExplicitKotlinReference() }
   }
 
   val constructorInjectedParams = lazyDeferred {
@@ -213,110 +221,50 @@ class RealKotlinFile(
   }
 
   override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
-
-    val apiRefsAsStrings = referenceVisitor.apiReferences.map { it.text }
-
-    val replacedWildcards = wildcardImports.flatMap { wildcardImport ->
-
-      apiRefsAsStrings.map { apiReference ->
-        wildcardImport.replace("*", apiReference)
-          .asInterpretedKotlinReference()
-      }
-    }
-
-    val importsNames = importsLazy.value.mapToSet { it.name }
-
-    val (resolved, unresolved) = apiRefsAsStrings.map { reference ->
-      importsNames.firstOrNull { it.endsWith(reference) } ?: reference
-    }.partition { it in importsNames }
-      .let { (resolved, unresolved) ->
-        resolved.map { it.asExplicitKotlinReference() } to unresolved
-      }
-
-    val simple = unresolved
-      .plus(unresolved.map { "$packageFqName.$it" })
-      .map { InterpretedKotlinReference(it) }
-
-    (resolved + simple + replacedWildcards).toSet()
+    return@lazyDeferred refs.await().apiReferences
   }
 
   private val referenceVisitor by lazy {
     ReferenceVisitor().also { ktFile.accept(it) }
   }
 
-  private val typeReferences by lazy {
-    referenceVisitor.typeReferences.filterNot { it.isPartOf<KtImportDirective>() }
+  private val typeReferences = lazyDeferred {
+    referenceVisitor.typeReferences
+      .asSequence()
+      .plus(referenceVisitor.callableReferences)
+      .plus(referenceVisitor.qualifiedExpressions)
+      .filterNot { it.isPartOf<KtImportDirective>() }
       .filterNot { it.isPartOf<KtPackageDirective>() }
-      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
-      .map { it.text }
+      .filterNot { it.parent is KtQualifiedExpression }
       .toSet()
   }
 
-  private val callableReferences by lazy {
-    referenceVisitor.callableReferences.filterNot { it.isPartOf<KtImportDirective>() }
-      .filterNot { it.isPartOf<KtPackageDirective>() }
-      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
-      .map { it.text }
-      .toSet()
+  private val refs = lazyDeferred {
+
+    val mustBeApi = referenceVisitor.apiReferences.mapToSet { it.callSiteName() }
+
+    val unresolved = typeReferences.await().mapToSet { it.callSiteName() }
+
+    nameParser.parse(
+      NameParserPacket(
+        packageName = packageFqName,
+        imports = importsStrings.value,
+        wildcardImports = wildcardImports,
+        aliasedImports = _aliasMap,
+        resolved = emptySet(),
+        unresolved = unresolved,
+        mustBeApi = mustBeApi,
+        apiReferences = emptySet(),
+        toExplicitReference = Reference::ExplicitKotlinReference,
+        toInterpretedReference = Reference::InterpretedKotlinReference,
+        stdLibNameOrNull = String::kotlinStdLibNameOrNull
+      )
+    )
   }
 
-  private val qualifiedExpressions by lazy {
-    referenceVisitor.qualifiedExpressions.filterNot { it.isPartOf<KtImportDirective>() }
-      .filterNot { it.isPartOf<KtPackageDirective>() }
-      // .mapNotNull { it.fqNameOrNull(project, sourceSetName)?.asString() }
-      .map { it.text }
-      .toSet()
-  }
-
-  override val interpretedReferencesLazy: Lazy<Set<Reference>> = lazy {
-
-    val imports by unsafeLazy { importsLazy.value.mapToSet { it.name } }
-
-    val notImportedDirectly = listOf(
-      typeReferences,
-      callableReferences,
-      qualifiedExpressions
-    ).flatten()
-      .filter { reference -> imports.none { it.endsWith(reference) } }
-
-    val trimmedWildcards = wildcardImports.map { it.removeSuffix(".*") }
-
-    // Sort aliases by length so that we try to resolve `Barr` before `Bar`.
-    // This is redundant, since we're also matching `$alias.` instead of just the alias.
-    val aliasesByLength = _aliasMap.keys.sortedByDescending { it.length }
-    val resolvedByAlias = mutableSetOf<String>()
-
-    // Find any "not imported" references which use an import alias, then substitute the alias with
-    // the import to get the resolved, fully qualified, "explicit" name.
-    val replacedAliases = notImportedDirectly.mapNotNull { toResolve ->
-      aliasesByLength.firstNotNullOfOrNull { alias ->
-
-        toResolve.takeIf { it.startsWith("$alias.") }
-          ?.let {
-            resolvedByAlias.add(toResolve)
-            val newPrefix = _aliasMap.getValue(alias).name
-            val newSuffix = toResolve.removePrefix(alias)
-            "$newPrefix$newSuffix".asExplicitKotlinReference()
-          }
-      }
-    }
-
-    notImportedDirectly
-      .filterNot { it in resolvedByAlias }
-      .flatMapToSet { reference ->
-
-        val constructed = reference.kotlinStdLibNameOrNull()?.let { listOf(it.asString()) }
-          ?: (trimmedWildcards.map { "$it.$reference" } + "$packageFqName.$reference")
-
-        val all = (constructed + reference).toSet()
-
-        all.map {
-          it.asUnqualifiedAndroidReferenceOrNull()
-            ?: InterpretedKotlinReference(it)
-        }
-      }
-      .plus(replacedAliases)
-  }
+  override val references: LazySet<Reference> = listOf(
+    dataSource { refs.await().resolved }
+  ).toLazySet()
 
   override fun getScopeArguments(
     allAnnotations: List<ExplicitReference>,
@@ -374,11 +322,6 @@ class RealKotlinFile(
     )
   }
 
-  private fun String.asUnqualifiedAndroidReferenceOrNull(): UnqualifiedAndroidResourceReference? {
-    return takeIf { it.matches(unqualifiedRReferenceRegex) }
-      ?.let { UnqualifiedAndroidResourceReference(it) }
-  }
-
   private companion object {
     val operatorSet = setOf(
       "compareTo",
@@ -411,9 +354,5 @@ class RealKotlinFile(
     val componentNRegex = Regex("component\\d+")
 
     val prefixes by unsafeLazy { UnqualifiedAndroidResourceDeclaredName.prefixes() }
-
-    val unqualifiedRReferenceRegex = Regex(
-      "^R\\.(?:${prefixes.joinToString("|")})\\.[^.]+$"
-    )
   }
 }

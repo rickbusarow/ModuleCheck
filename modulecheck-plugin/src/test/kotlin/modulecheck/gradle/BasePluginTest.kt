@@ -19,6 +19,7 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.utils.letIf
 import modulecheck.utils.remove
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
@@ -46,15 +47,18 @@ abstract class BasePluginTest : ProjectTest() {
     testProjectDir.deleteRecursively()
   }
 
-  fun build(vararg tasks: String): BuildResult {
-    return gradleRunner.withArguments(tasks.toList()).build()
+  fun build(vararg tasks: String, stacktrace: Boolean = false): BuildResult {
+    return gradleRunner.withArguments(
+      tasks.toList().letIf(stacktrace) { it + "--stacktrace" }
+    )
+      .build()
   }
 
   fun BuildResult.shouldSucceed() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun shouldSucceed(vararg tasks: String): BuildResult {
+  fun shouldSucceed(vararg tasks: String, stacktrace: Boolean = false): BuildResult {
     val result = build(*tasks)
 
     result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
@@ -71,7 +75,6 @@ abstract class BasePluginTest : ProjectTest() {
   }
 
   infix fun BuildResult.withTrimmedMessage(message: String) {
-
     val trimmed = output
       .clean()
       .remove(

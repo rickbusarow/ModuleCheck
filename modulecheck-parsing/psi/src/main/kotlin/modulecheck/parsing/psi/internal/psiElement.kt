@@ -18,6 +18,7 @@ package modulecheck.parsing.psi.internal
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNames
 import modulecheck.project.McProject
+import modulecheck.utils.cast
 import modulecheck.utils.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
@@ -46,6 +47,7 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
+import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
@@ -268,6 +270,31 @@ fun KtClassOrObject.isCompanionObject(): Boolean = this is KtObjectDeclaration &
 
 fun KtCallExpression.nameSafe(): String? {
   return getChildOfType<KtNameReferenceExpression>()?.text
+}
+
+/**
+ * This poorly-named function will return the most-qualified name available for a given [PsiElement]
+ * from the snippet of code where it's being called, without looking at imports.
+ */
+fun PsiElement.callSiteName(): String {
+  // If a qualified expression is a function call, then the selector expression is the full
+  // function call (`KtCallExpression`).
+  // For example, `com.example.foo(...)` has a selector of `foo(...)`.
+  // In order to get just the qualified name, we have to get the `calleeExpression` of the
+  // function, then append that to the parent qualified expression's receiver expression.
+  return safeAs<KtDotQualifiedExpression>()
+    ?.selectorExpression
+    ?.safeAs<KtCallExpression>()
+    ?.calleeExpression
+    ?.let {
+      val receiver = this.cast<KtDotQualifiedExpression>()
+        .receiverExpression
+        .text
+      val selectorCallText = it.text
+
+      "$receiver.$selectorCallText"
+    }
+    ?: text
 }
 
 fun KtBlockExpression.nameSafe(): String? {
