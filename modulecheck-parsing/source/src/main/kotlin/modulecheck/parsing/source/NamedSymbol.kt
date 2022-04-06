@@ -15,8 +15,6 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
@@ -38,10 +36,6 @@ sealed interface NamedSymbol : Comparable<NamedSymbol> {
 
   fun endsWith(symbol: NamedSymbol): Boolean {
     return name.endsWith(symbol.name)
-  }
-
-  fun endsWith(str: ExplicitKotlinReference): Boolean {
-    return name.endsWith(str.name)
   }
 
   override fun compareTo(other: NamedSymbol): Int {

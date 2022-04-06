@@ -17,10 +17,6 @@ package modulecheck.parsing.source
 
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.LazySet.DataSource
-import modulecheck.utils.LazySet.DataSource.Priority.HIGH
-import modulecheck.utils.LazySet.DataSource.Priority.LOW
-import modulecheck.utils.asDataSource
 
 sealed interface JvmFile : HasReferences {
   val name: String
@@ -29,14 +25,6 @@ sealed interface JvmFile : HasReferences {
 
   val importsLazy: Lazy<Set<Reference>>
   val apiReferences: LazyDeferred<Set<Reference>>
-  val interpretedReferencesLazy: Lazy<Set<Reference>>
-
-  override fun references(): List<DataSource<Reference>> {
-    return listOf(
-      importsLazy.asDataSource(HIGH),
-      interpretedReferencesLazy.asDataSource(LOW)
-    )
-  }
 }
 
 interface KotlinFile : JvmFile {

@@ -19,7 +19,7 @@ import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.LazySet
 import modulecheck.utils.safeAs
 import modulecheck.utils.unsafeLazy
 
@@ -67,7 +67,6 @@ sealed interface Reference : NamedSymbol {
 
     private val split by unsafeLazy {
       name.split('.').also {
-        @Suppress("MagicNumber")
         require(it.size == 3) {
           "The name `$name` must follow the format `R.<prefix>.<identifier>`, " +
             "such as `R.string.app_name`."
@@ -212,7 +211,7 @@ fun String.asInterpretedKotlinReference(): InterpretedKotlinReference =
 fun String.asExplicitJavaReference(): ExplicitJavaReference = ExplicitJavaReference(this)
 fun String.asInterpretedJavaReference(): InterpretedJavaReference = InterpretedJavaReference(this)
 
-fun interface HasReferences {
+interface HasReferences {
 
-  fun references(): List<DataSource<Reference>>
+  val references: LazySet<Reference>
 }

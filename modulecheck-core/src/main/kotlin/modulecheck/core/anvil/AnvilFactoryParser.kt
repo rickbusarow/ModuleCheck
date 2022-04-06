@@ -24,6 +24,7 @@ import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
 import modulecheck.utils.any
+import modulecheck.utils.containsAny
 import net.swiftzer.semver.SemVer
 
 object AnvilFactoryParser {
@@ -52,32 +53,25 @@ object AnvilFactoryParser {
 
     val allRefs = project.references().all()
 
-    val createsComponent = allRefs.contains(daggerComponent) ||
-      allRefs.contains(anvilMergeComponent)
+    val componentOrMergeComponent = listOf(daggerComponent, anvilMergeComponent)
+
+    val createsComponent = allRefs.containsAny(componentOrMergeComponent)
 
     if (createsComponent) return emptyList()
+
+    val moduleOrInjectConstructor = listOf(daggerInject, daggerModule)
 
     val usesDaggerInJava = project
       .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<JavaFile>()
-      .any { file ->
-        file.importsLazy.value.contains(daggerInject) ||
-          file.importsLazy.value.contains(daggerModule) ||
-          file.interpretedReferencesLazy.value.contains(daggerInject) ||
-          file.interpretedReferencesLazy.value.contains(daggerModule)
-      }
+      .any { file -> file.references.containsAny(moduleOrInjectConstructor) }
 
     if (usesDaggerInJava) return emptyList()
 
     val usesDaggerInKotlin = project
       .jvmFilesForSourceSetName(SourceSetName.MAIN)
       .filterIsInstance<KotlinFile>()
-      .any { file ->
-        file.importsLazy.value.contains(daggerInject) ||
-          file.importsLazy.value.contains(daggerModule) ||
-          file.interpretedReferencesLazy.value.contains(daggerInject) ||
-          file.interpretedReferencesLazy.value.contains(daggerModule)
-      }
+      .any { file -> file.references.containsAny(moduleOrInjectConstructor) }
 
     if (!usesDaggerInKotlin) return emptyList()
 

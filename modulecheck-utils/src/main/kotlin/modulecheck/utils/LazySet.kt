@@ -114,6 +114,8 @@ fun <E> dataSource(
   return DataSourceImpl(priority) { lazyFactory.await() }
 }
 
+fun <E> Collection<LazySetComponent<E>>.toLazySet(): LazySet<E> = lazySet(this)
+
 fun <E> lazySet(
   vararg children: LazySetComponent<E>
 ): LazySet<E> {

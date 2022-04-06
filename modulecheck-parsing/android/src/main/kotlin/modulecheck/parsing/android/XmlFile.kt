@@ -20,9 +20,11 @@ import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.utils.LazySet.DataSource
+import modulecheck.utils.LazySet
 import modulecheck.utils.asDataSource
+import modulecheck.utils.dataSource
 import modulecheck.utils.mapToSet
+import modulecheck.utils.toLazySet
 import java.io.File
 
 interface XmlFile : HasReferences {
@@ -70,14 +72,12 @@ interface XmlFile : HasReferences {
         .toSet()
     }
 
-    override fun references(): List<DataSource<Reference>> {
-      return listOf(
-        customViews.asDataSource(),
-        lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
-        }.asDataSource()
-      )
-    }
+    override val references: LazySet<Reference> = listOf(
+      customViews.asDataSource(),
+      dataSource {
+        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
+      }
+    ).toLazySet()
   }
 
   data class ManifestFile(
@@ -94,20 +94,20 @@ interface XmlFile : HasReferences {
         .toSet()
     }
 
-    override val resourceReferencesAsRReferences: Set<String> by lazy {
+    private val declarations by lazy {
       rawResources
         .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
-        .map { it.name }
-        .toSet()
     }
 
-    override fun references(): List<DataSource<Reference>> {
-      return listOf(
-        lazy {
-          resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
-        }.asDataSource()
-      )
+    override val resourceReferencesAsRReferences: Set<String> by lazy {
+      declarations.mapToSet { it.name }
     }
+
+    override val references: LazySet<Reference> = listOf(
+      dataSource {
+        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
+      }
+    ).toLazySet()
   }
 
   companion object {

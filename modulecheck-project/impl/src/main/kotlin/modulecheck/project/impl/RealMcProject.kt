@@ -87,13 +87,13 @@ class RealMcProject(
   }
 
   override suspend fun resolveFqNameOrNull(
-    declarationName: FqName,
+    declaredName: FqName,
     sourceSetName: SourceSetName
   ): FqName? {
     return resolvedDeclaredNames().getSource(
-      declarationName.asDeclaredName(),
+      declaredName.asDeclaredName(),
       sourceSetName
     )
-      ?.run { declarationName }
+      ?.run { declaredName }
   }
 }

@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
@@ -44,11 +43,6 @@ fun <T> Flow<T>.distinct(): Flow<T> = flow {
 
 suspend fun <T> Flow<T>.contains(element: T): Boolean {
   return any { it == element }
-}
-
-suspend fun <T> Flow<T>.containsAny(elements: Collection<T>): Boolean {
-  val elementsSet = elements as? Set<T> ?: toSet()
-  return any { it in elementsSet }
 }
 
 suspend fun <T, R> Flow<T>.flatMapListConcat(

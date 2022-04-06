@@ -25,6 +25,7 @@ import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.lazySet
 import modulecheck.utils.mapAsync
+import modulecheck.utils.toLazySet
 
 data class References(
   private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
@@ -49,13 +50,12 @@ data class References(
 
   private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
 
-    val allLazy = project.jvmFilesForSourceSetName(sourceSetName)
+    return project.jvmFilesForSourceSetName(sourceSetName)
       .toList()
       .plus(project.layoutFilesForSourceSetName(sourceSetName))
       .plus(listOfNotNull(project.manifestFileForSourceSetName(sourceSetName)))
-      .flatMap { it.references() }
-
-    return lazySet(allLazy)
+      .map { it.references }
+      .toLazySet()
   }
 
   companion object Key : ProjectContext.Key<References> {

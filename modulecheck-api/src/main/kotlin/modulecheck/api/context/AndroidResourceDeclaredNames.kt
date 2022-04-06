@@ -57,16 +57,15 @@ data class AndroidResourceDeclaredNames(
       return emptyLazySet()
     }
 
-    val rName = project.androidRDeclaredNamesForSourceSetName(sourceSetName)
+    val rName = project.androidRDeclaredNameForSourceSetName(sourceSetName)
       ?: return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
-      val resourceParser = AndroidResourceParser()
 
       val declarations = project.resourceFilesForSourceSetName(sourceSetName)
         .map { file ->
           dataSource {
-            val simpleNames = resourceParser.parseFile(file)
+            val simpleNames = AndroidResourceParser().parseFile(file)
 
             simpleNames + simpleNames.map { it.toNamespacedDeclaredName(rName) }
           }
