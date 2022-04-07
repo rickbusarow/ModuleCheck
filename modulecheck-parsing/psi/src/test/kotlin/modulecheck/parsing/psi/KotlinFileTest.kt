@@ -27,11 +27,12 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.psiFileFactory
 import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingReference
 import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.AndroidRReference
-import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
 import modulecheck.parsing.source.QualifiedAndroidResourceReference
@@ -41,6 +42,7 @@ import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
@@ -1258,7 +1260,9 @@ internal class KotlinFileTest : ProjectTest() {
         is AndroidRDeclaredName -> "androidR"
         is JavaSpecificDeclaredName -> "java"
         is KotlinSpecificDeclaredName -> "kotlin"
-        is AndroidResourceDeclaredName -> declaration.prefix
+        is UnqualifiedAndroidResourceDeclaredName -> declaration.prefix
+        is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
+        is AndroidDataBindingDeclaredName -> "androidDataBinding"
       }
       names
         .sortedBy { it.name }

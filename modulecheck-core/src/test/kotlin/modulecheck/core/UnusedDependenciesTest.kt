@@ -1542,6 +1542,90 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `string resource declaration should not be unused if's used with a different R namespace`() {
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+        """
+      }
+      addResourceFile(
+        "values/strings.xml",
+        """<resources>
+            |  <string name="string_from_lib1">lib1</string>
+            |</resources>
+        """.trimMargin()
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(":lib1"))
+        }
+        """
+      }
+    }
+
+    androidLibrary(":lib3", "com.modulecheck.lib3") {
+      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib2)
+      platformPlugin.androidResourcesEnabled = false
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          implementation(project(":lib1"))
+          implementation(project(":lib2"))
+        }
+        """
+      }
+      addSource(
+        "com/modulecheck/lib3/internal/Source.kt",
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib2.R
+
+        val r = R.string.string_from_lib1
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      dependencies {
+        api(project(":lib1"))
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `static member declaration used via wildcard import should not be unused`() {
 
     settings.deleteUnused = false
