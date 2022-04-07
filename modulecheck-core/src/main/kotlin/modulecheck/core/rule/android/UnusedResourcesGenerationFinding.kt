@@ -113,6 +113,7 @@ data class UnusedResourcesGenerationFinding(
       ?.let { oldPlugins ->
 
         val new = "$oldPlugins\n\n$androidBlock"
+          .removeSuffix("\n")
 
         oldText.replace(oldPlugins, new)
       }

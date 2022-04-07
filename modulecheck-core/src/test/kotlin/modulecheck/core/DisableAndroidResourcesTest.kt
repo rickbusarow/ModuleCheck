@@ -20,6 +20,8 @@ import modulecheck.api.test.TestSettings
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.RunnerTest
+import modulecheck.testing.createSafely
+import modulecheck.utils.child
 import org.junit.jupiter.api.Test
 
 class DisableAndroidResourcesTest : RunnerTest() {
@@ -305,7 +307,7 @@ class DisableAndroidResourcesTest : RunnerTest() {
   }
 
   @Test
-  fun `unused resource generation without android block should add android block under existing plugins block`() {
+  fun `unused resource generation without android block should add android block under existing plugins block -- kotlin`() {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
@@ -313,6 +315,9 @@ class DisableAndroidResourcesTest : RunnerTest() {
         plugins {
           id("com.android.library")
           kotlin("android")
+        }
+
+        dependencies {
         }
         """
       }
@@ -330,6 +335,54 @@ class DisableAndroidResourcesTest : RunnerTest() {
         buildFeatures {
           androidResources = false
         }
+      }
+
+      dependencies {
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        disableAndroidResources(true, null)
+      )
+    )
+  }
+
+  @Test
+  fun `unused resource generation without android block should add android block under existing plugins block -- groovy`() {
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      buildFile.delete()
+      buildFile = projectDir.child("build.gradle")
+        .createSafely(
+          """
+          plugins {
+            id 'com.android.library'
+            id 'kotlin-android'
+          }
+
+          dependencies {
+          }
+          """.trimIndent()
+        )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib1.buildFile shouldHaveText """
+      plugins {
+        id 'com.android.library'
+        id 'kotlin-android'
+      }
+
+      android {
+        buildFeatures {
+          androidResources = false
+        }
+      }
+
+      dependencies {
       }
     """
 
