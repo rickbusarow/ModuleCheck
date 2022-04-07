@@ -189,31 +189,31 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
         dir.startsWith("menu") -> Menu(name)
         dir.startsWith("mipmap") -> Mipmap(name)
         dir.startsWith("raw") -> Raw(name)
-        dir.startsWith("xml") -> Style(name)
         else -> null
       }
     }
 
     @Suppress("ComplexMethod")
     fun fromValuePair(type: String, name: String): UnqualifiedAndroidResourceDeclaredName? {
+      val fixedName = name.replace('.', '_')
       return when (type) {
-        "anim" -> Anim(name)
-        "animator" -> Animator(name)
-        "array" -> Arrays(name)
-        "bool" -> Bool(name)
-        "color" -> Color(name)
-        "dimen" -> Dimen(name)
-        "drawable" -> Drawable(name)
-        "font" -> Font(name)
-        "id" -> ID(name)
-        "integer" -> AndroidInteger(name)
-        "integer-array" -> Arrays(name)
-        "layout" -> Layout(name)
-        "menu" -> Menu(name)
-        "mipmap" -> Mipmap(name)
-        "raw" -> Raw(name)
-        "string" -> AndroidString(name)
-        "style" -> Style(name)
+        "anim" -> Anim(fixedName)
+        "animator" -> Animator(fixedName)
+        "array" -> Arrays(fixedName)
+        "bool" -> Bool(fixedName)
+        "color" -> Color(fixedName)
+        "dimen" -> Dimen(fixedName)
+        "drawable" -> Drawable(fixedName)
+        "font" -> Font(fixedName)
+        "id" -> ID(fixedName)
+        "integer" -> AndroidInteger(fixedName)
+        "integer-array" -> Arrays(fixedName)
+        "layout" -> Layout(fixedName)
+        "menu" -> Menu(fixedName)
+        "mipmap" -> Mipmap(fixedName)
+        "raw" -> Raw(fixedName)
+        "string" -> AndroidString(fixedName)
+        "style" -> Style(fixedName)
         else -> null
       }
     }
