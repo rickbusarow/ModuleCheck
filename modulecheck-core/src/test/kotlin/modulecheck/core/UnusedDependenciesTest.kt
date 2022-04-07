@@ -704,7 +704,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
         public class Lib2Class {
           void someFunction() {
-            com.modulecheck.lib1.Lib1Class.property;
+            int i = com.modulecheck.lib1.Lib1Class.getProperty();
           }
         }
         """.trimIndent()
