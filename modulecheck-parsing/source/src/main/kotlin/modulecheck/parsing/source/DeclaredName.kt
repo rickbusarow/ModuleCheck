@@ -37,32 +37,6 @@ sealed interface JavaCompatibleDeclaredName : DeclaredName
 sealed interface KotlinCompatibleDeclaredName : DeclaredName
 sealed interface XmlCompatibleDeclaredName : JavaCompatibleDeclaredName, DeclaredName
 
-/** example: `com.example.app.R` */
-class AndroidRDeclaredName(override val name: String) :
-  DeclaredName,
-  KotlinCompatibleDeclaredName,
-  JavaCompatibleDeclaredName,
-  XmlCompatibleDeclaredName {
-  init {
-    check(name.endsWith(".R")) {
-      "An ${this::class.java.simpleName} fqName must be the base package, appended with `.R`, " +
-        "such as `com.example.app.R`.  This instance's fqName is: `$name`."
-    }
-  }
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-}
-
 /**
  * Represents names which can only be referenced from Kotlin.
  *

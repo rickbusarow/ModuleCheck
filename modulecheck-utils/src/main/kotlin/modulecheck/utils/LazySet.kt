@@ -123,6 +123,21 @@ fun <E> lazySet(
 }
 
 fun <E> lazySet(
+  priority: Priority = MEDIUM,
+  dataSource: suspend () -> Set<E>
+): LazySet<E> {
+  return lazySet(dataSource(priority, dataSource))
+}
+
+@JvmName("lazySetSingle")
+fun <E> lazySet(
+  priority: Priority = MEDIUM,
+  dataSource: suspend () -> E
+): LazySet<E> {
+  return lazySet(dataSource(priority) { setOf(dataSource()) })
+}
+
+fun <E> lazySet(
   children: Collection<LazySetComponent<E>>
 ): LazySet<E> {
   val (sets, dataSources) = children.partition { it is LazySet<*> }

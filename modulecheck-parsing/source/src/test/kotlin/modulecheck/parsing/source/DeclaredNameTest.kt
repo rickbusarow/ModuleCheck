@@ -15,6 +15,11 @@
 
 package modulecheck.parsing.source
 
+import modulecheck.parsing.source.Reference.ExplicitJavaReference
+import modulecheck.parsing.source.Reference.ExplicitKotlinReference
+import modulecheck.parsing.source.Reference.ExplicitXmlReference
+import modulecheck.parsing.source.Reference.InterpretedJavaReference
+import modulecheck.parsing.source.Reference.InterpretedKotlinReference
 import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -25,19 +30,19 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   fun `agnostic declaration should match self and any reference type`() {
     AgnosticDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
-      Reference.ExplicitJavaReference::class,
-      Reference.ExplicitKotlinReference::class,
-      Reference.ExplicitXmlReference::class,
-      Reference.InterpretedJavaReference::class,
-      Reference.InterpretedKotlinReference::class
+      ExplicitJavaReference::class,
+      ExplicitKotlinReference::class,
+      ExplicitXmlReference::class,
+      InterpretedJavaReference::class,
+      InterpretedKotlinReference::class
     )
   }
 
   @Test
   fun `kotlin specific declaration should match self and any KotlinReference type`() {
     KotlinSpecificDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      Reference.ExplicitKotlinReference::class,
-      Reference.InterpretedKotlinReference::class,
+      ExplicitKotlinReference::class,
+      InterpretedKotlinReference::class,
       KotlinSpecificDeclaredName::class
     )
   }
@@ -45,9 +50,9 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   @Test
   fun `java specific declaration should match self and any JavaReference or XmlReference type`() {
     JavaSpecificDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      Reference.ExplicitJavaReference::class,
-      Reference.ExplicitXmlReference::class,
-      Reference.InterpretedJavaReference::class,
+      ExplicitJavaReference::class,
+      ExplicitXmlReference::class,
+      InterpretedJavaReference::class,
       JavaSpecificDeclaredName::class
     )
   }
@@ -55,13 +60,15 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   @Test
   fun `android r declaration should match self and any Reference type`() {
     AndroidRDeclaredName("com.modulecheck.R").matchedClasses() shouldBe listOf(
+      AndroidDataBindingReference::class,
       AndroidRDeclaredName::class,
       AndroidRReference::class,
-      Reference.ExplicitJavaReference::class,
-      Reference.ExplicitKotlinReference::class,
-      Reference.ExplicitXmlReference::class,
-      Reference.InterpretedJavaReference::class,
-      Reference.InterpretedKotlinReference::class
+      ExplicitJavaReference::class,
+      ExplicitKotlinReference::class,
+      ExplicitXmlReference::class,
+      InterpretedJavaReference::class,
+      InterpretedKotlinReference::class,
+      UnqualifiedAndroidResourceReference::class
     )
   }
 
