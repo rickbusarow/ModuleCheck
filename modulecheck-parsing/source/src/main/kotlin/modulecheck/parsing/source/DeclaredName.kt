@@ -20,6 +20,11 @@ import modulecheck.parsing.source.Reference.KotlinReference
 import modulecheck.utils.safeAs
 import org.jetbrains.kotlin.name.FqName
 
+sealed interface Generated : DeclaredName {
+
+  val sources: Set<Reference>
+}
+
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
 sealed interface DeclaredName : NamedSymbol {
 

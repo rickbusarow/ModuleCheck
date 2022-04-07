@@ -15,10 +15,9 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.context.androidResourceReferencesForSourceSetName
-import modulecheck.api.context.androidViewBindingDeclarationsForSourceSetName
+import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
-import modulecheck.api.context.importsForSourceSetName
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
@@ -46,7 +45,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
       .forEach { sourceSetName ->
 
         val generatedBindings = project
-          .androidViewBindingDeclarationsForSourceSetName(sourceSetName)
+          .androidDataBindingDeclarationsForSourceSetName(sourceSetName)
           .takeIf { it.isNotEmpty() }
           ?: return@forEach
 
@@ -55,7 +54,7 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
 
             generatedBindings.any { generated ->
 
-              project.importsForSourceSetName(sourceSetNameOrDownstream)
+              project.referencesForSourceSetName(sourceSetNameOrDownstream)
                 .contains(generated)
             }
           }
@@ -72,17 +71,11 @@ class DisableViewBindingRule : ModuleCheckRule<DisableViewBindingGenerationFindi
             val exposedSourceSetName = downstream.configuredProjectDependency
               .declaringSourceSetName()
 
-            val imports = downstream.dependentProject
-              .importsForSourceSetName(exposedSourceSetName)
-
-            val resourceReferences = lazyDeferred {
-              downstream.dependentProject
-                .androidResourceReferencesForSourceSetName(exposedSourceSetName)
-            }
+            val references = downstream.dependentProject
+              .referencesForSourceSetName(exposedSourceSetName)
 
             generatedBindings.any { generated ->
-              imports.contains(generated) || resourceReferences.await()
-                .contains(generated)
+              references.contains(generated)
             }
           }
 

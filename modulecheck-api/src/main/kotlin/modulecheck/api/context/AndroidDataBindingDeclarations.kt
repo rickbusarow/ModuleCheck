@@ -16,8 +16,8 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.asDeclaredName
+import modulecheck.parsing.source.AndroidDataBindingDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -26,51 +26,56 @@ import modulecheck.utils.SafeCache
 import modulecheck.utils.capitalize
 import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
-import modulecheck.utils.lazySet
-import java.util.Locale
+import modulecheck.utils.existsOrNull
+import modulecheck.utils.mapToSet
+import modulecheck.utils.toLazySet
 
 data class AndroidDataBindingDeclarations(
-  private val delegate: SafeCache<SourceSetName, LazySet<DeclaredName>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<AndroidDataBindingDeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidDataBindingDeclarations>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<DeclaredName> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidDataBindingDeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
+
       val basePackage = project.androidBasePackagesForSourceSetName(sourceSetName)
         ?: return@getOrPut emptyLazySet()
 
-      lazySet(
-        dataSource {
-          project.layoutFiles()
-            .get(sourceSetName)
-            .map { layoutFile ->
-              layoutFile.name
-                .capitalize(Locale.US)
-                .replace(snake_reg) { matchResult ->
-                  matchResult.destructured
-                    .component1()
-                    .uppercase()
-                }
-                .plus("Binding")
-                .let { viewBindingName -> "$basePackage.databinding.$viewBindingName" }
-                .asDeclaredName()
-            }
-            .toSet()
-        }
-      )
+      sourceSetName
+        .withUpstream(project)
+        .map { sourceSetOrUpstream ->
+
+          dataSource {
+            project.layoutFilesForSourceSetName(sourceSetOrUpstream)
+              .mapNotNull { it.file.existsOrNull() }
+              .mapToSet { layoutFile ->
+
+                val layoutDeclaration = UnqualifiedAndroidResourceDeclaredName
+                  .Layout(layoutFile.nameWithoutExtension)
+
+                val simpleBindingName = layoutFile.nameWithoutExtension
+                  .split("_")
+                  .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+
+                // fully qualified
+                AndroidDataBindingDeclaredName(
+                  name = "$basePackage.databinding.$simpleBindingName",
+                  sourceLayout = layoutDeclaration
+                )
+              }
+          }
+        }.toLazySet()
     }
   }
 
   companion object Key : ProjectContext.Key<AndroidDataBindingDeclarations> {
-
-    private val snake_reg = "_([a-zA-Z])".toRegex()
-
     override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
+
       return AndroidDataBindingDeclarations(SafeCache(), project)
     }
   }
@@ -81,4 +86,4 @@ suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingD
 
 suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<DeclaredName> = androidDataBindingDeclarations().get(sourceSetName)
+): LazySet<AndroidDataBindingDeclaredName> = androidDataBindingDeclarations().get(sourceSetName)

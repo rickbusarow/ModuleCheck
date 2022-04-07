@@ -17,14 +17,11 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
-import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Anim
@@ -44,6 +41,7 @@ import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Style
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
 import modulecheck.testing.sealedSubclassesRecursive
+import modulecheck.utils.capitalize
 import modulecheck.utils.suffixIfNot
 import kotlin.reflect.full.isSubclassOf
 
@@ -76,6 +74,10 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
 
     return listOf(
       AndroidRDeclaredName(name.suffixIfNot(".R")),
+      AndroidDataBindingDeclaredName(
+        "com.modulecheck.databinding.${identifier.capitalize()}Binding",
+        sourceLayout = Layout(identifier)
+      ),
 
       AndroidInteger(identifier),
       AndroidString(identifier),
@@ -108,7 +110,8 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
       InterpretedKotlinReference(name),
       AndroidRReference(name),
       UnqualifiedAndroidResourceReference(name),
-      QualifiedAndroidResourceReference(name)
+      QualifiedAndroidResourceReference(name),
+      AndroidDataBindingReference(name)
     ).requireIsExhaustive()
       .sortedBy { it::class.qualifiedName }
   }

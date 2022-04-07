@@ -25,22 +25,23 @@ import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.AndroidDataBindingReference
 import modulecheck.parsing.source.AndroidRDeclaredName
+import modulecheck.parsing.source.AndroidRReference
 import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
+import modulecheck.parsing.source.QualifiedAndroidResourceReference
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.project.McProject
@@ -875,6 +876,124 @@ internal class JavaFileTest : ProjectTest() {
         agnostic("com.test.ParsedClass.someString")
       )
     }
+
+    @Test
+    fun `android data-binding reference from dependency with explicit import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other") {
+        addLayoutFile(
+          "fragment_other.xml",
+          """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+          """
+        )
+      }
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        import com.modulecheck.other.databinding.FragmentOtherBinding;
+
+        public class ParsedClass {
+
+          FragmentOtherBinding binding = FragmentOtherBinding.inflate();
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.binding")
+      )
+    }
+
+    @Test
+    fun `android data-binding reference from dependency with fully qualified reference`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other") {
+        addLayoutFile(
+          "fragment_other.xml",
+          """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+          """
+        )
+      }
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        public class ParsedClass {
+
+          com.modulecheck.other.databinding.FragmentOtherBinding binding = com.modulecheck.other.databinding.FragmentOtherBinding.inflate();
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.binding")
+      )
+    }
+
+    @Test
+    fun `android data-binding reference from dependency with wildcard import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other") {
+        addLayoutFile(
+          "fragment_other.xml",
+          """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+          """
+        )
+      }
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        import com.modulecheck.other.databinding.*;
+
+        public class ParsedClass {
+
+          FragmentOtherBinding binding = FragmentOtherBinding.inflate();
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding"),
+        androidDataBinding("com.modulecheck.other.databinding.FragmentOtherBinding.inflate")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.binding")
+      )
+    }
   }
 
   fun kotlin(name: String) = name.kotlinExtension()
@@ -884,6 +1003,7 @@ internal class JavaFileTest : ProjectTest() {
   fun agnostic(name: String) = name.neutralExtension()
 
   fun androidR(name: String) = AndroidRReference(name)
+  fun androidDataBinding(name: String) = AndroidDataBindingReference(name)
   fun explicit(name: String) = name.asExplicitJavaReference()
   fun interpreted(name: String) = name.asInterpretedJavaReference()
   fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
@@ -929,6 +1049,7 @@ internal class JavaFileTest : ProjectTest() {
         is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
         is AndroidRReference -> "androidR"
         is QualifiedAndroidResourceReference -> "qualifiedAndroidResource"
+        is AndroidDataBindingReference -> "androidDataBinding"
       }
       names
         .sortedBy { it.name }

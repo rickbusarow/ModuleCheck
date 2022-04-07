@@ -62,6 +62,17 @@ data class AndroidResourceDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
 
+      val layoutsAndIds = project.layoutFilesForSourceSetName(sourceSetName)
+        .map { layoutFile ->
+
+          dataSource {
+            layoutFile.idDeclarations
+              .plus(UnqualifiedAndroidResourceDeclaredName.fromFile(layoutFile.file))
+              .filterNotNull()
+              .toSet()
+          }
+        }
+
       val declarations = project.resourceFilesForSourceSetName(sourceSetName)
         .map { file ->
           dataSource {
@@ -70,18 +81,8 @@ data class AndroidResourceDeclaredNames(
             simpleNames + simpleNames.map { it.toNamespacedDeclaredName(rName) }
           }
         }
-        .plus(
-          project.layoutFilesForSourceSetName(sourceSetName)
-            .map { layoutFile ->
-
-              dataSource {
-                layoutFile.idDeclarations
-                  .plus(UnqualifiedAndroidResourceDeclaredName.fromFile(layoutFile.file))
-                  .filterNotNull()
-                  .toSet()
-              }
-            }
-        )
+        .plus(layoutsAndIds)
+        .plus(project.androidDataBindingDeclarationsForSourceSetName(sourceSetName))
 
       lazySet(declarations)
     }

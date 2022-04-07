@@ -37,6 +37,7 @@ import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPureElement
+import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtScriptInitializer
 import org.jetbrains.kotlin.psi.KtSuperTypeListEntry
 import org.jetbrains.kotlin.psi.KtTypeArgumentList
@@ -267,6 +268,16 @@ fun KtDeclaration.isInCompanionObject() = containingClassOrObject?.isCompanionOb
 fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
 
 fun KtClassOrObject.isCompanionObject(): Boolean = this is KtObjectDeclaration && isCompanion()
+
+fun PsiElement.isQualifiedPropertyOrCallExpression(): Boolean {
+  // properties which are qualified have a direct parent of `KtQualifiedExpression`
+  if (parent is KtQualifiedExpression) return true
+
+  // A qualified function is actually a NamedReferencedExpression (`foo`)
+  // with a KtCallExpression (`foo()`) for a parent,
+  // and a qualified grandparent (`com.foo()`).
+  return parent is KtCallExpression && parent.parent is KtQualifiedExpression
+}
 
 fun KtCallExpression.nameSafe(): String? {
   return getChildOfType<KtNameReferenceExpression>()?.text

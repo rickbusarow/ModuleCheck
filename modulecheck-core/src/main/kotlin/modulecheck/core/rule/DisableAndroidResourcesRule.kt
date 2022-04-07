@@ -15,11 +15,12 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.androidRDeclaredNameForSourceSetName
 import modulecheck.api.context.androidResourceDeclaredNamesForSourceSetName
 import modulecheck.api.context.androidResourceReferencesForSourceSetName
-import modulecheck.api.context.androidViewBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
+import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
@@ -54,14 +55,13 @@ class DisableAndroidResourcesRule : ModuleCheckRule<UnusedResourcesGenerationFin
 
         val rName = project.androidRDeclaredNameForSourceSetName(sourceSetName)
           ?: return@any false
-
-        val references = project.androidResourceReferencesForSourceSetName(sourceSetName)
+        val references = project.referencesForSourceSetName(sourceSetName)
 
         references.contains(rName) ||
           references
             .containsAny(project.androidResourceDeclaredNamesForSourceSetName(sourceSetName)) ||
           references
-            .containsAny(project.androidViewBindingDeclarationsForSourceSetName(sourceSetName))
+            .containsAny(project.androidDataBindingDeclarationsForSourceSetName(sourceSetName))
       }
 
     if (usedLocally) return emptyList()

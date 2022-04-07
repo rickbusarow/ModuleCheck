@@ -15,8 +15,8 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.AndroidRReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
 import modulecheck.utils.safeAs
 import modulecheck.utils.unsafeLazy
 import java.io.File
@@ -33,7 +33,8 @@ class GeneratedAndroidResourceDeclaredName(
 ) : AndroidResourceDeclaredName,
   JavaCompatibleDeclaredName,
   KotlinCompatibleDeclaredName,
-  XmlCompatibleDeclaredName {
+  XmlCompatibleDeclaredName,
+  Generated {
 
   override val identifier: String
     get() = sourceResource.identifier
@@ -43,6 +44,54 @@ class GeneratedAndroidResourceDeclaredName(
   override val name: String by unsafeLazy {
     "${sourceR.name}.$prefix.$identifier"
   }
+
+  override val sources: Set<Reference> = setOf(sourceR, sourceResource)
+
+  override fun equals(other: Any?): Boolean {
+    return matches(
+      other,
+      ifReference = { name == it.safeAs<ExplicitReference>()?.name },
+      ifDeclaration = { it::class == this::class && name == it.name }
+    )
+  }
+
+  override fun hashCode(): Int = name.hashCode()
+
+  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+}
+
+class AndroidDataBindingDeclaredName(
+  override val name: String,
+  val sourceLayout: UnqualifiedAndroidResourceReference
+) : AndroidResourceDeclaredName,
+  JavaCompatibleDeclaredName,
+  KotlinCompatibleDeclaredName,
+  XmlCompatibleDeclaredName,
+  Generated {
+
+  constructor(name: String, sourceLayout: Layout) : this(
+    name = name,
+    sourceLayout = UnqualifiedAndroidResourceReference(sourceLayout.name)
+  )
+
+  override val identifier: String
+    get() = sourceLayout.identifier
+  override val prefix: String
+    get() = sourceLayout.prefix
+
+  override val sources: Set<Reference> = setOf(sourceLayout)
+
+  override fun equals(other: Any?): Boolean {
+    return matches(
+      other,
+      ifReference = { name == it.safeAs<ExplicitReference>()?.name },
+      ifDeclaration = { it::class == this::class && name == it.name }
+    )
+  }
+
+  override fun hashCode(): Int = name.hashCode()
+
+  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
 sealed class UnqualifiedAndroidResourceDeclaredName(

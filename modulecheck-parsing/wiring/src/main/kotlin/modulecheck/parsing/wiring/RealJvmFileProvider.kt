@@ -26,6 +26,7 @@ import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.isKotlinFile
 import modulecheck.parsing.psi.internal.isKtFile
 import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.InterpretingInterceptor
 import modulecheck.parsing.source.internal.ParsingChain
@@ -44,7 +45,8 @@ class RealJvmFileProvider(
   private val fileCache: FileCache,
   private val project: McProject,
   private val sourceSetName: SourceSetName,
-  private val androidRNameProvider: AndroidRNameProvider
+  private val androidRNameProvider: AndroidRNameProvider,
+  private val androidDataBindingNameProvider: AndroidDataBindingNameProvider
 ) : JvmFileProvider {
 
   override suspend fun getOrNull(
@@ -68,6 +70,9 @@ class RealJvmFileProvider(
               AndroidResourceReferenceParsingInterceptor(
                 androidRNameProvider = androidRNameProvider
               ),
+              AndroidDataBindingReferenceParsingInterceptor(
+                androidDataBindingNameProvider = androidDataBindingNameProvider
+              ),
               InterpretingInterceptor()
             )
           )
@@ -80,6 +85,9 @@ class RealJvmFileProvider(
               ConcatenatingParsingInterceptor(),
               AndroidResourceReferenceParsingInterceptor(
                 androidRNameProvider = androidRNameProvider
+              ),
+              AndroidDataBindingReferenceParsingInterceptor(
+                androidDataBindingNameProvider = androidDataBindingNameProvider
               ),
               InterpretingInterceptor()
             )
@@ -101,7 +109,8 @@ class RealJvmFileProvider(
       fileCache = fileCacheProvider.get(),
       project = project,
       sourceSetName = sourceSetName,
-      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName)
+      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
+      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
     )
   }
 }

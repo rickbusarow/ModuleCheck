@@ -15,14 +15,11 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.AndroidRReference
 import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import org.junit.jupiter.api.Test
 
@@ -32,6 +29,7 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `explicit java reference`() {
     ExplicitJavaReference("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       AndroidRReference::class,
       ExplicitJavaReference::class,
       InterpretedJavaReference::class,
@@ -44,6 +42,7 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `explicit kotlin reference`() {
     ExplicitKotlinReference("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       AndroidRReference::class,
       ExplicitKotlinReference::class,
       InterpretedKotlinReference::class,
@@ -56,6 +55,7 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `explicit xml reference`() {
     ExplicitXmlReference("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       AndroidRReference::class,
       ExplicitJavaReference::class,
       ExplicitXmlReference::class,
@@ -69,6 +69,7 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `interpreted java reference`() {
     InterpretedJavaReference("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       ExplicitJavaReference::class,
       InterpretedJavaReference::class,
       JavaSpecificDeclaredName::class
@@ -79,6 +80,7 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `interpreted kotlin reference`() {
     InterpretedKotlinReference("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       ExplicitKotlinReference::class,
       InterpretedKotlinReference::class,
       KotlinSpecificDeclaredName::class
@@ -89,8 +91,14 @@ class ReferenceTest : BaseNamedSymbolTest() {
   fun `unqualified android resource reference`() {
     UnqualifiedAndroidResourceReference("R.string.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
+      AndroidDataBindingReference::class,
       AndroidRReference::class,
       AndroidString::class,
+      ExplicitJavaReference::class,
+      ExplicitKotlinReference::class,
+      ExplicitXmlReference::class,
+      InterpretedJavaReference::class,
+      InterpretedKotlinReference::class,
       QualifiedAndroidResourceReference::class,
       UnqualifiedAndroidResourceReference::class
     )
