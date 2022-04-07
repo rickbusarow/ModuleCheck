@@ -16,6 +16,7 @@
 package modulecheck.parsing.android
 
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Style
 import modulecheck.testing.BaseTest
 import modulecheck.testing.createSafely
 import modulecheck.utils.child
@@ -76,6 +77,26 @@ internal class AndroidResourceParserTest : BaseTest() {
 
     declarations shouldBe setOf(
       AndroidString("app_name")
+    )
+  }
+
+  @Test
+  fun `a node with dots in its name should be parsed using underscores`() {
+    val text = """
+      <?xml version="1.0" encoding="utf-8"?>
+      <resources>
+        <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar"/>
+      </resources>
+    """.trimIndent()
+
+    val xml = testProjectDir
+      .child("styles.xml")
+      .createSafely(text)
+
+    val declarations = AndroidResourceParser().parseFile(xml)
+
+    declarations shouldBe setOf(
+      Style("AppTheme_ClearActionBar")
     )
   }
 }

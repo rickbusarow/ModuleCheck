@@ -1814,6 +1814,134 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `style resource with dot-qualified name used in kotlin source should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addResourceFile(
+        "values/strings.xml",
+        """
+        <resources>
+          <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar"/>
+        </resources>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        val style = R.style.AppTheme_ClearActionBar
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `style resource with dot-qualified name used in manifest should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addResourceFile(
+        "values/strings.xml",
+        """
+        <resources>
+          <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar"/>
+        </resources>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addManifest(
+        """
+          <manifest
+            xmlns:android="https://schemas.android.com/apk/res/android"
+            package="com.example.app"
+            >
+
+            <application
+              android:name=".App"
+              android:allowBackup="true"
+              android:icon="@mipmap/ic_launcher"
+              android:label="@string/app_name"
+              android:roundIcon="@mipmap/ic_launcher_round"
+              android:supportsRtl="true"
+              android:theme="@style/AppTheme.ClearActionBar"
+              />
+          </manifest>
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `declaration used via class reference wtih wildcard import should not be unused`() {
 
     settings.deleteUnused = false
