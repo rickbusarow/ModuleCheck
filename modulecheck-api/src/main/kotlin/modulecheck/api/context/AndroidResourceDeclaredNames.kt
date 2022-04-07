@@ -15,20 +15,24 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.android.AndroidResourceParser
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
+import modulecheck.utils.dataSourceOf
 import modulecheck.utils.emptyLazySet
+import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazySet
+import modulecheck.utils.mapAsyncNotNull
 
 data class AndroidResourceDeclaredNames(
   private val delegate: SafeCache<SourceSetName, LazySet<AndroidResourceDeclaredName>>,
@@ -62,29 +66,46 @@ data class AndroidResourceDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
 
-      val layoutsAndIds = project.layoutFilesForSourceSetName(sourceSetName)
-        .map { layoutFile ->
+      val allTransitiveUnqualified = project
+        .classpathDependencies()
+        .get(sourceSetName)
+        .mapAsyncNotNull { tpd ->
 
-          dataSource {
-            layoutFile.idDeclarations
-              .plus(UnqualifiedAndroidResourceDeclaredName.fromFile(layoutFile.file))
-              .filterNotNull()
+          val transitiveSourceSetName = tpd.source.declaringSourceSetName()
+
+          tpd.contributed.project
+            .androidUnqualifiedDeclarationNamesForSourceSetName(transitiveSourceSetName)
+        }
+
+      val localUnqualified = project
+        .androidUnqualifiedDeclarationNamesForSourceSetName(sourceSetName)
+
+      val qualified = dataSource {
+
+        val built = allTransitiveUnqualified
+          .toList(mutableListOf(localUnqualified))
+          .flatMapToSet { unqualifiedLazySet ->
+
+            unqualifiedLazySet
+              .map { unqualified ->
+                unqualified.toNamespacedDeclaredName(rName)
+              }
               .toSet()
           }
-        }
+        built
+      }
 
-      val declarations = project.resourceFilesForSourceSetName(sourceSetName)
-        .map { file ->
-          dataSource {
-            val simpleNames = AndroidResourceParser().parseFile(file)
+      val dataBinding = project
+        .androidDataBindingDeclarationsForSourceSetName(sourceSetName)
 
-            simpleNames + simpleNames.map { it.toNamespacedDeclaredName(rName) }
-          }
-        }
-        .plus(layoutsAndIds)
-        .plus(project.androidDataBindingDeclarationsForSourceSetName(sourceSetName))
+      val components = listOf(
+        localUnqualified,
+        dataSourceOf(rName),
+        dataBinding,
+        qualified
+      )
 
-      lazySet(declarations)
+      lazySet(components)
     }
   }
 

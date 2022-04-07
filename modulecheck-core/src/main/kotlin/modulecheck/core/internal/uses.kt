@@ -15,14 +15,22 @@
 
 package modulecheck.core.internal
 
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilGraph
 import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.declarations
+import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.Generated
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.any
+import modulecheck.utils.containsAny
+import modulecheck.utils.dataSource
+import modulecheck.utils.lazySet
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
 
@@ -37,6 +45,33 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
     .any { reference -> dependencyDeclarations.contains(reference) }
 
   if (usedInStaticSource) return true
+
+  // Any generated code from the receiver project which requires a declaration from the dependency
+  val generatedFromThisDependency = lazySet(
+    dataSource {
+
+      // TODO - probably make "all generated declarations" its own ProjectContext.Element,
+      //  specifically targeting generated declarations.  It shouldn't be needed in this specific
+      //  case, since `dependencyDeclarations` should already be fully cached by the time we get
+      //  here, and we have to iterate over the flow anyway in order to filter again.
+      declarations()
+        .get(dependency.declaringSourceSetName(), includeUpstream = true)
+        .filterIsInstance<Generated>()
+        .filter { dependencyDeclarations.containsAny(it.sources) }
+        .toSet()
+    }
+  )
+
+  val usedUpstream = dependents().any { downstreamDependency ->
+    val downstreamSourceSet = downstreamDependency.configuredProjectDependency
+      .declaringSourceSetName()
+
+    downstreamDependency.dependentProject
+      .referencesForSourceSetName(downstreamSourceSet)
+      .containsAny(generatedFromThisDependency)
+  }
+
+  if (usedUpstream) return true
 
   // If there are no references is manually/human written static code, then parse the Anvil graph.
   val anvilContributions = dependency.project

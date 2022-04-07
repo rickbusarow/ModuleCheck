@@ -22,9 +22,32 @@ import modulecheck.utils.unsafeLazy
 import java.io.File
 import kotlin.io.path.name
 
-sealed interface AndroidResourceDeclaredName : DeclaredName {
-  val prefix: String
-  val identifier: String
+sealed interface AndroidResourceDeclaredName : DeclaredName
+
+/** example: `com.example.app.R` */
+class AndroidRDeclaredName(override val name: String) :
+  AndroidResourceDeclaredName,
+  KotlinCompatibleDeclaredName,
+  JavaCompatibleDeclaredName,
+  XmlCompatibleDeclaredName {
+  init {
+    check(name.endsWith(".R")) {
+      "An ${this::class.java.simpleName} fqName must be the base package, appended with `.R`, " +
+        "such as `com.example.app.R`.  This instance's fqName is: `$name`."
+    }
+  }
+
+  override fun equals(other: Any?): Boolean {
+    return matches(
+      other,
+      ifReference = { name == it.name },
+      ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
+    )
+  }
+
+  override fun hashCode(): Int = name.hashCode()
+
+  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
 class GeneratedAndroidResourceDeclaredName(
@@ -36,13 +59,8 @@ class GeneratedAndroidResourceDeclaredName(
   XmlCompatibleDeclaredName,
   Generated {
 
-  override val identifier: String
-    get() = sourceResource.identifier
-  override val prefix: String
-    get() = sourceResource.prefix
-
   override val name: String by unsafeLazy {
-    "${sourceR.name}.$prefix.$identifier"
+    "${sourceR.name}.${sourceResource.prefix}.${sourceResource.identifier}"
   }
 
   override val sources: Set<Reference> = setOf(sourceR, sourceResource)
@@ -74,11 +92,6 @@ class AndroidDataBindingDeclaredName(
     sourceLayout = UnqualifiedAndroidResourceReference(sourceLayout.name)
   )
 
-  override val identifier: String
-    get() = sourceLayout.identifier
-  override val prefix: String
-    get() = sourceLayout.prefix
-
   override val sources: Set<Reference> = setOf(sourceLayout)
 
   override fun equals(other: Any?): Boolean {
@@ -95,8 +108,10 @@ class AndroidDataBindingDeclaredName(
 }
 
 sealed class UnqualifiedAndroidResourceDeclaredName(
-  override val prefix: String
+  val prefix: String
 ) : AndroidResourceDeclaredName {
+
+  abstract val identifier: String
 
   override val name: String by unsafeLazy { "R.$prefix.${this.identifier}" }
 
