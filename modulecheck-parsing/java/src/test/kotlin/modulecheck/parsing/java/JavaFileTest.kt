@@ -18,9 +18,11 @@ package modulecheck.parsing.java
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
+import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.AndroidRDeclaredName
@@ -265,7 +267,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -315,7 +318,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -346,7 +350,8 @@ internal class JavaFileTest : ProjectTest() {
         interpreted("Lib1Class")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -359,7 +364,7 @@ internal class JavaFileTest : ProjectTest() {
 
         public class ParsedClass {
 
-          public com.lib1.Lib1Class foo() { return Lib1Class(); }
+          public com.lib1.Lib1Class foo() { return com.lib1.Lib1Class(); }
         }
         """
       )
@@ -373,7 +378,8 @@ internal class JavaFileTest : ProjectTest() {
         interpreted("com.test.com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -403,7 +409,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("java.util.List")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -430,7 +437,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("java.util.List")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -459,7 +467,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("java.util.List")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -488,7 +497,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("java.lang.CharSequence")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -517,7 +527,8 @@ internal class JavaFileTest : ProjectTest() {
         explicit("java.lang.String")
       )
       file.declarations shouldBe setOf(
-        agnostic("com.test.ParsedClass")
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.foo")
       )
     }
 
@@ -549,7 +560,8 @@ internal class JavaFileTest : ProjectTest() {
           interpreted("com.test.Lib1Class")
         )
         file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass")
+          agnostic("com.test.ParsedClass"),
+          agnostic("com.test.ParsedClass.lib1Class")
         )
       }
 
@@ -577,7 +589,8 @@ internal class JavaFileTest : ProjectTest() {
           explicit("com.lib1.Lib1Class")
         )
         file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass")
+          agnostic("com.test.ParsedClass"),
+          agnostic("com.test.ParsedClass.lib1Class")
         )
       }
 
@@ -612,9 +625,256 @@ internal class JavaFileTest : ProjectTest() {
           interpreted("com.test.Lib1Class")
         )
         file.declarations shouldBe setOf(
-          agnostic("com.test.ParsedClass")
+          agnostic("com.test.ParsedClass"),
+          agnostic("com.test.ParsedClass.lib1Classes")
         )
       }
+  }
+
+  @Nested
+  inner class `Android resource references` {
+
+    @Test
+    fun `unqualified android resource reference in base package`() = test {
+
+      val project = androidLibrary(":lib1", "com.test")
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        public class ParsedClass {
+
+          int someString = R.string.app_name;
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        unqualifiedAndroidResource("R.string.app_name"),
+        androidR("com.test.R"),
+        qualifiedAndroidResource("com.test.R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `unqualified android resource reference with R import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addJavaSource(
+          """
+          package com.test;
+
+          import com.modulecheck.other.R;
+
+          public class ParsedClass {
+
+            int someString = R.string.app_name;
+          }
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with R string import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addJavaSource(
+          """
+          package com.test;
+
+          import com.modulecheck.other.R.string;
+
+          public class ParsedClass {
+
+            int someString = string.app_name;
+          }
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        explicit("com.modulecheck.other.R.string"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R import in base package`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addJavaSource(
+          """
+          package com.test;
+
+          import com.modulecheck.other.*;
+
+          public class ParsedClass {
+
+            int someString = R.string.app_name;
+          }
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.test.R"),
+        qualifiedAndroidResource("com.test.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R import not in base package`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+
+        addJavaSource(
+          """
+          package com.test.internal;
+
+          import com.modulecheck.other.*;
+
+          public class ParsedClass {
+
+            int someString = R.string.app_name;
+          }
+          """
+        )
+      }
+
+      val file = project.jvmFiles().get(SourceSetName.MAIN).single()
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.internal.ParsedClass"),
+        agnostic("com.test.internal.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with wildcard R member import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test.internal;
+
+        import com.modulecheck.other.R.*;
+
+        public class ParsedClass {
+
+          int someString = string.app_name;
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.internal.ParsedClass"),
+        agnostic("com.test.internal.ParsedClass.someString")
+      )
+    }
+
+    @Test
+    fun `android resource reference with explicit R string import`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other")
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        import com.modulecheck.other.R.string;
+
+        public class ParsedClass {
+
+          int someString = string.app_name;
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        androidR("com.modulecheck.other.R"),
+        explicit("com.modulecheck.other.R.string"),
+        qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
+        unqualifiedAndroidResource("R.string.app_name")
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.someString")
+      )
+    }
   }
 
   fun kotlin(name: String) = name.kotlinExtension()
@@ -623,8 +883,10 @@ internal class JavaFileTest : ProjectTest() {
 
   fun agnostic(name: String) = name.neutralExtension()
 
+  fun androidR(name: String) = AndroidRReference(name)
   fun explicit(name: String) = name.asExplicitJavaReference()
   fun interpreted(name: String) = name.asInterpretedJavaReference()
+  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 
   fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
@@ -649,7 +911,7 @@ internal class JavaFileTest : ProjectTest() {
     runBlocking {
       toList()
         .distinct()
-        .prettyPrint() shouldBe other.prettyPrint()
+        .prettyPrint() kotestShouldBe other.prettyPrint()
     }
   }
 
@@ -691,6 +953,18 @@ internal class JavaFileTest : ProjectTest() {
 
   infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
     prettyPrint() kotestShouldBe other.prettyPrint()
+  }
+
+  fun McProject.createFile(
+    @Language("java")
+    content: String,
+    sourceSetName: SourceSetName = SourceSetName.MAIN
+  ): RealJavaFile = runBlocking {
+    createFile(
+      content = content,
+      project = this@createFile,
+      sourceSetName = sourceSetName
+    )
   }
 
   fun createFile(

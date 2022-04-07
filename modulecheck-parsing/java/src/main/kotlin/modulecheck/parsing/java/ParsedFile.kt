@@ -53,12 +53,12 @@ internal data class ParsedFile(
               is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
               is TypeDeclaration<*> -> typeDeclarations.add(node)
               is MethodDeclaration -> {
-                if (node.canBeImported()) {
+                if (node.canBeResolved()) {
                   memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
                 }
               }
               is FieldDeclaration -> {
-                if (node.canBeImported()) {
+                if (node.canBeResolved()) {
                   memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
                 }
               }

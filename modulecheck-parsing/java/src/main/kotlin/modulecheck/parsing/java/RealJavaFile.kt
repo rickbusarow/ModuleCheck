@@ -25,7 +25,7 @@ import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.expr.FieldAccessExpr
 import com.github.javaparser.ast.expr.MethodCallExpr
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName
+import com.github.javaparser.ast.expr.NameExpr
 import com.github.javaparser.ast.nodeTypes.NodeWithTypeParameters
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithPrivateModifier
 import com.github.javaparser.ast.nodeTypes.modifiers.NodeWithStaticModifier
@@ -138,7 +138,7 @@ class RealJavaFile(
   private val wildcardImports: Set<String> by lazy {
     compilationUnit.imports
       .filter { it.isAsterisk }
-      .map { it.nameAsString }
+      .map { "${it.nameAsString}.*" }
       .toSet()
   }
 
@@ -160,9 +160,20 @@ class RealJavaFile(
       .toSet()
   }
 
-  private fun <T> T.qualifiedNameOrNull(): String? where T : NodeWithSimpleName<*>, T : Node {
+  private fun FieldAccessExpr.qualifiedNameOrSimple(): String {
     return getChildOfType<FieldAccessExpr>()
       ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: getChildOfType<NameExpr>()
+        ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: nameAsString
+  }
+
+  private fun MethodCallExpr.qualifiedNameOrSimple(): String {
+    return getChildOfType<FieldAccessExpr>()
+      ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: getChildOfType<NameExpr>()
+        ?.let { qualifier -> "$qualifier.$nameAsString" }
+      ?: nameAsString
   }
 
   override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
@@ -192,16 +203,21 @@ class RealJavaFile(
   private val refs = lazyDeferred {
     val methodNames = compilationUnit
       .getChildrenOfTypeRecursive<MethodCallExpr>()
-      .mapNotNull { method ->
-        method.qualifiedNameOrNull()
+      .map { method ->
+        method.qualifiedNameOrSimple()
       }
+      .toSet()
 
     // fully qualified property references
     val propertyNames = compilationUnit
       .getChildrenOfTypeRecursive<FieldAccessExpr>()
-      .mapNotNull { method ->
-        method.qualifiedNameOrNull()
+      // filter out the segments of larger qualified names, like `com.foo` from `com.foo.Bar`
+      .filterNot { it.parentNode.getOrNull() is FieldAccessExpr }
+      .filterNot { it.parentNode.getOrNull() is MethodCallExpr }
+      .map { field ->
+        field.qualifiedNameOrSimple()
       }
+      .toSet()
 
     val packet = NameParserPacket(
       packageName = packageFqName,
@@ -300,6 +316,15 @@ internal fun Node.getTypeParameterNamesInScope(): Sequence<String> {
   }
     .filterIsInstance<NodeWithTypeParameters<*>>()
     .flatMap { node -> node.typeParameters.map { it.nameAsString } }
+}
+
+fun <T> T.canBeResolved(): Boolean
+  where T : NodeWithStaticModifier<T>, T : NodeWithPrivateModifier<T> {
+  contract {
+    returns(true) implies (this@canBeResolved is Resolvable<*>)
+  }
+
+  return !isPrivate() && this is Resolvable<*>
 }
 
 fun <T> T.canBeImported(): Boolean
