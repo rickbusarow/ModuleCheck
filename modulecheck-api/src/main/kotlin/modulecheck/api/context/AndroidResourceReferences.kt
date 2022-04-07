@@ -63,13 +63,16 @@ data class AndroidResourceReferences(
     val layout = project.layoutFilesForSourceSetName(sourceSetName)
       .map { it.references }
 
+    val styles = project.androidStylesFilesForSourceSetName(sourceSetName)
+      .map { it.references }
+
     val manifest = project.manifestFileForSourceSetName(sourceSetName)
       ?.references
 
     val all = if (manifest != null) {
-      layout + manifest + jvm
+      layout + styles + manifest + jvm
     } else {
-      layout + jvm
+      layout + styles + jvm
     }
 
     return lazySet(all)
