@@ -44,7 +44,7 @@ class RealAndroidRNameProvider constructor(
 
     val localR = getLocalOrNull()
 
-    val t = project.classpathDependencies()
+    return project.classpathDependencies()
       .get(sourceSetName)
       .map { transitiveDependency ->
 
@@ -62,7 +62,5 @@ class RealAndroidRNameProvider constructor(
         it.plus(dataSourceOf(localR.requireNotNull()))
       }
       .toLazySet()
-
-    return t
   }
 }

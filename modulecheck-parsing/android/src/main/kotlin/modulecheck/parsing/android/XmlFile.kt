@@ -18,8 +18,8 @@ package modulecheck.parsing.android
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.utils.LazySet
 import modulecheck.utils.asDataSource
 import modulecheck.utils.dataSource

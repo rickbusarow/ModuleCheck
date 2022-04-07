@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.source.AndroidRDeclaredName
+import modulecheck.parsing.source.AndroidRReference
+import modulecheck.parsing.source.AndroidResourceReference
+import modulecheck.parsing.source.QualifiedAndroidResourceReference
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.AndroidRReference
-import modulecheck.parsing.source.Reference.AndroidResourceReference
-import modulecheck.parsing.source.Reference.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
@@ -139,9 +139,17 @@ class AndroidResourceReferenceParsingInterceptor(
         unqualifiedRRef
       }
 
+    val newResolved = resolvedRs
+      .plus(newFullyQualified)
+      .plus(unqualifiedFromResolved)
+      .plus(unqualifiedFromUnresolved)
+      .plus(packet.resolved)
+
+    val newResolvedNames = newResolved.mapToSet { it.name }
+
     val new = packet.copy(
-      resolved = resolvedRs + newFullyQualified + unqualifiedFromResolved + unqualifiedFromUnresolved + packet.resolved,
-      unresolved = stillUnresolved
+      resolved = newResolved,
+      unresolved = stillUnresolved.filterNot { it in newResolvedNames }.toSet()
     )
 
     return chain.proceed(new)

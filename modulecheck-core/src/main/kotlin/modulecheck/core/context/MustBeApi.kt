@@ -32,7 +32,7 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.NamedSymbol
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

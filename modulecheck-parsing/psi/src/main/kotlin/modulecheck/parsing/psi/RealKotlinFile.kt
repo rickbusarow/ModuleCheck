@@ -23,6 +23,7 @@ import modulecheck.parsing.psi.internal.identifier
 import modulecheck.parsing.psi.internal.isJvmStatic
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
+import modulecheck.parsing.psi.internal.isQualifiedPropertyOrCallExpression
 import modulecheck.parsing.psi.internal.jvmNameOrNull
 import modulecheck.parsing.psi.internal.jvmSimpleNames
 import modulecheck.parsing.source.AnvilScopeNameEntry
@@ -61,7 +62,6 @@ import org.jetbrains.kotlin.psi.KtImportDirective
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtPackageDirective
-import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
@@ -235,7 +235,7 @@ class RealKotlinFile(
       .plus(referenceVisitor.qualifiedExpressions)
       .filterNot { it.isPartOf<KtImportDirective>() }
       .filterNot { it.isPartOf<KtPackageDirective>() }
-      .filterNot { it.parent is KtQualifiedExpression }
+      .filterNot { it.isQualifiedPropertyOrCallExpression() }
       .toSet()
   }
 

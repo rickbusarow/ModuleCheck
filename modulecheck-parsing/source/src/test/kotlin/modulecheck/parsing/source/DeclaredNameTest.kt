@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.UnqualifiedAndroidResourceReference
 import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -57,7 +56,7 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   fun `android r declaration should match self and any Reference type`() {
     AndroidRDeclaredName("com.modulecheck.R").matchedClasses() shouldBe listOf(
       AndroidRDeclaredName::class,
-      Reference.AndroidRReference::class,
+      AndroidRReference::class,
       Reference.ExplicitJavaReference::class,
       Reference.ExplicitKotlinReference::class,
       Reference.ExplicitXmlReference::class,
@@ -80,7 +79,7 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
           .map { it::class }
           .sortedBy { it.java.simpleName } shouldBe listOf(
           subject::class,
-          Reference.UnqualifiedAndroidResourceReference::class
+          UnqualifiedAndroidResourceReference::class
         ).sortedBy { it.simpleName }
       }
 

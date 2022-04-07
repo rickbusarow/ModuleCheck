@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.source.AndroidResourceReference
 import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.AndroidResourceReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid

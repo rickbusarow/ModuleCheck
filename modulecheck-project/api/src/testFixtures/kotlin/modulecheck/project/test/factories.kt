@@ -28,6 +28,7 @@ import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.wiring.FileCache
+import modulecheck.parsing.wiring.RealAndroidDataBindingNameProvider
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
 import modulecheck.parsing.wiring.RealAndroidRNameProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
@@ -112,7 +113,8 @@ internal inline fun <reified T : McProjectBuilder<P>,
       fileCache = FileCache(),
       project = project,
       sourceSetName = sourceSetName,
-      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName)
+      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
+      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
     )
   }
 
