@@ -1942,6 +1942,126 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `style resource with dot-qualified name used in downstream style should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addResourceFile(
+        "values/styles.xml",
+        """
+        <resources>
+          <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar"/>
+        </resources>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addResourceFile(
+        "values/styles.xml",
+        """
+        <resources>
+          <style name="AppTheme.ClearActionBar2" parent="AppTheme.ClearActionBar"/>
+        </resources>
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `color resource with dot-qualified name used in downstream style should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addResourceFile(
+        "values/styles.xml",
+        """
+        <resources>
+          <color name="medium_darkish_light_blue">#00000F</color>
+        </resources>
+        """
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addResourceFile(
+        "values/styles.xml",
+        """
+        <resources>
+          <style name="AppTheme.ClearActionBar2">
+            <item name="colorPrimary">@color/medium_darkish_light_blue</item>
+          </style>
+        </resources>
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `declaration used via class reference wtih wildcard import should not be unused`() {
 
     settings.deleteUnused = false

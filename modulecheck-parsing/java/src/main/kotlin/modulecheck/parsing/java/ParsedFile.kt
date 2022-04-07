@@ -55,6 +55,7 @@ internal data class ParsedFile(
               is ClassOrInterfaceType -> classOrInterfaceTypes.add(node)
               is TypeDeclaration<*> -> typeDeclarations.add(node)
               is MethodDeclaration -> {
+
                 if (node.canBeResolved()) {
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
                     memberDeclarations.add(AgnosticDeclaredName(fqName))

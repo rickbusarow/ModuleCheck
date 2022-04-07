@@ -53,6 +53,7 @@ data class References(
     return project.jvmFilesForSourceSetName(sourceSetName)
       .toList()
       .plus(project.layoutFilesForSourceSetName(sourceSetName))
+      .plus(project.androidStylesFilesForSourceSetName(sourceSetName))
       .plus(listOfNotNull(project.manifestFileForSourceSetName(sourceSetName)))
       .map { it.references }
       .toLazySet()
