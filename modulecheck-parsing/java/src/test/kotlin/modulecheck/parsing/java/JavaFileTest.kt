@@ -1000,18 +1000,7 @@ internal class JavaFileTest : ProjectTest() {
     @Test
     fun `local classes should not count as declarations`() = test {
 
-      val otherLib = androidLibrary(":other", "com.modulecheck.other") {
-        addLayoutFile(
-          "fragment_other.xml",
-          """<?xml version="1.0" encoding="utf-8"?>
-          <layout/>
-          """
-        )
-      }
-
-      val project = androidLibrary(":lib1", "com.test") {
-        addDependency(ConfigurationName.implementation, otherLib)
-      }
+      val project = androidLibrary(":lib1", "com.test")
 
       val file = project.createFile(
         """
@@ -1043,6 +1032,32 @@ internal class JavaFileTest : ProjectTest() {
       file.declarations shouldBe listOf(
         agnostic("com.test.ATest"),
         agnostic("com.test.ATest.anonymous_things_can_be_parsed")
+      )
+    }
+
+    @Test
+    fun `multiple variables in a single line should all be declared`() = test {
+
+      val project = androidLibrary(":lib1", "com.test")
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        public class ParsedClass {
+
+          public int i, j, k;
+        }
+        """
+      )
+
+      file.references shouldBe listOf()
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ParsedClass"),
+        agnostic("com.test.ParsedClass.i"),
+        agnostic("com.test.ParsedClass.j"),
+        agnostic("com.test.ParsedClass.k")
       )
     }
   }
