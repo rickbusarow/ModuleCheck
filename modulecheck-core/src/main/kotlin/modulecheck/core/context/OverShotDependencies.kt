@@ -21,7 +21,10 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.toSourceSetDependency
 import modulecheck.utils.SafeCache
+import modulecheck.utils.mapToSet
+import modulecheck.utils.unsafeLazy
 
 data class OverShotDependencies(
   private val delegate: SafeCache<ConfigurationName, List<OverShotDependencyFinding>>,
@@ -39,11 +42,18 @@ data class OverShotDependencies(
         .flatMap { unused ->
 
           val unusedCpd = unused.cpd()
+          val unusedSsd =
+            unusedCpd.toSourceSetDependency(unused.configurationName.toSourceSetName())
           val unusedSourceSetName = unused.configurationName.toSourceSetName()
 
           val allUsedByConfigName = unusedSourceSetName
             .withDownStream(project)
             .mapNotNull { sourceSetName ->
+
+              val existingDependencies by unsafeLazy {
+                project.projectDependencies[sourceSetName]
+                  .mapToSet { it.toSourceSetDependency(sourceSetName) }
+              }
 
               val configName = sourceSetName.implementationConfig()
 
@@ -69,10 +79,10 @@ data class OverShotDependencies(
                   )
                 }
                 .filterNot {
-                  it.isTestFixture == unused.cpd().isTestFixture &&
-                    it.configurationName.toSourceSetName() == unused.cpd()
-                    .configurationName
-                    .toSourceSetName()
+
+                  val asSsd = it.toSourceSetDependency(sourceSetName)
+
+                  asSsd == unusedSsd || existingDependencies.contains(asSsd)
                 }
                 .firstNotNullOfOrNull { cpd ->
 

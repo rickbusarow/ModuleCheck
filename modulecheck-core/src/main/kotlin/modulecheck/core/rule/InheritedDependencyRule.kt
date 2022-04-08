@@ -22,12 +22,13 @@ import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.sortedByInheritance
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.project.SourceSetDependency
 import modulecheck.project.TransitiveProjectDependency
+import modulecheck.project.toSourceSetDependency
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.mapAsync
 
@@ -38,22 +39,6 @@ class InheritedDependencyRule : ModuleCheckRule<InheritedDependencyFinding> {
     "but are not actually directly declared as dependencies in the current module"
 
   override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
-
-    data class SourceSetDependency(
-      val sourceSetName: SourceSetName,
-      val path: StringProjectPath,
-      val isTestFixture: Boolean
-    )
-
-    fun ConfiguredProjectDependency.toSourceSetDependency(
-      sourceSetName: SourceSetName = configurationName.toSourceSetName(),
-      path: StringProjectPath = this@toSourceSetDependency.path,
-      isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
-    ) = SourceSetDependency(
-      sourceSetName = sourceSetName,
-      path = path,
-      isTestFixture = isTestFixture
-    )
 
     // For each source set, the set of all module paths and whether they're test fixtures
     val dependencyPathCache = mutableMapOf<SourceSetName, Set<SourceSetDependency>>()

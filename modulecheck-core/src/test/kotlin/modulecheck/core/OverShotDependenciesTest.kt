@@ -815,6 +815,107 @@ class OverShotDependenciesTest : RunnerTest() {
     )
   }
 
+  // https://github.com/RBusarow/ModuleCheck/issues/520
+  @Test
+  fun `overshot as debugApi from invisible dependency with a visible unrelated debugApi project dependency`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      // lib1 is added as a dependency, but it's not in the build file.
+      // This is intentional, because it mimics the behavior of a convention plugin
+      // which adds a dependency without any visible declaration in the build file
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib4"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val clazz = Lib1Class()
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+    }
+
+    run().isSuccess shouldBe false
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+          debugApi(project(path = ":lib4"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "debugApi",
+          dependency = ":lib1",
+          position = null
+        ),
+        unusedDependency(
+          fixed = false,
+          configuration = "api",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+
+    logger.clear()
+
+    // this second run should not have an overshot finding, and shouldn't modify the build file
+    run().isSuccess shouldBe false
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+          debugApi(project(path = ":lib4"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        unusedDependency(
+          fixed = false,
+          configuration = "api",
+          dependency = ":lib1",
+          position = null
+        )
+      )
+    )
+  }
+
   @Test
   fun `overshot as testImplementation from invisible dependency with a visible unrelated implementation project dependency`() {
 

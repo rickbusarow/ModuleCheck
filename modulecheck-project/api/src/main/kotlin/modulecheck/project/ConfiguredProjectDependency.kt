@@ -16,6 +16,7 @@
 package modulecheck.project
 
 import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 
 data class ConfiguredProjectDependency(
@@ -76,4 +77,20 @@ data class TransitiveProjectDependency(
 data class DownstreamDependency(
   val dependentProject: McProject,
   val configuredProjectDependency: ConfiguredProjectDependency
+)
+
+data class SourceSetDependency(
+  val sourceSetName: SourceSetName,
+  val path: StringProjectPath,
+  val isTestFixture: Boolean
+)
+
+fun ConfiguredProjectDependency.toSourceSetDependency(
+  sourceSetName: SourceSetName = configurationName.toSourceSetName(),
+  path: StringProjectPath = this@toSourceSetDependency.path,
+  isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
+) = SourceSetDependency(
+  sourceSetName = sourceSetName,
+  path = path,
+  isTestFixture = isTestFixture
 )
