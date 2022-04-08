@@ -59,12 +59,14 @@ data class KotlinJvmPluginBuilder(
 
 interface AndroidPlatformPluginBuilder<T : AndroidPlatformPlugin> : PlatformPluginBuilder<T> {
   var viewBindingEnabled: Boolean
+  var nonTransientRClass: Boolean
   var kotlinAndroidExtensionEnabled: Boolean
   val manifests: MutableMap<SourceSetName, File>
 }
 
 data class AndroidApplicationPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
+  override var nonTransientRClass: Boolean = false,
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
@@ -73,6 +75,7 @@ data class AndroidApplicationPluginBuilder(
   override fun toPlugin(): AndroidApplicationPlugin = AndroidApplicationPlugin(
     sourceSets = SourceSets(sourceSets.mapValues { it.value.toSourceSet() }),
     configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests
@@ -81,6 +84,7 @@ data class AndroidApplicationPluginBuilder(
 
 data class AndroidLibraryPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
+  override var nonTransientRClass: Boolean = false,
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   var buildConfigEnabled: Boolean = true,
   var androidResourcesEnabled: Boolean = true,
@@ -91,6 +95,7 @@ data class AndroidLibraryPluginBuilder(
   override fun toPlugin(): AndroidLibraryPlugin = AndroidLibraryPlugin(
     sourceSets = SourceSets(sourceSets.mapValues { it.value.toSourceSet() }),
     configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
@@ -101,6 +106,7 @@ data class AndroidLibraryPluginBuilder(
 
 data class AndroidDynamicFeaturePluginBuilder(
   override var viewBindingEnabled: Boolean = true,
+  override var nonTransientRClass: Boolean = false,
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   var buildConfigEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
@@ -110,6 +116,7 @@ data class AndroidDynamicFeaturePluginBuilder(
   override fun toPlugin(): AndroidDynamicFeaturePlugin = AndroidDynamicFeaturePlugin(
     sourceSets = SourceSets(sourceSets.mapValues { it.value.toSourceSet() }),
     configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
@@ -119,6 +126,7 @@ data class AndroidDynamicFeaturePluginBuilder(
 
 data class AndroidTestPluginBuilder(
   override var viewBindingEnabled: Boolean = true,
+  override var nonTransientRClass: Boolean = false,
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   var buildConfigEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
@@ -128,6 +136,7 @@ data class AndroidTestPluginBuilder(
   override fun toPlugin(): AndroidTestPlugin = AndroidTestPlugin(
     sourceSets = SourceSets(sourceSets.mapValues { it.value.toSourceSet() }),
     configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,

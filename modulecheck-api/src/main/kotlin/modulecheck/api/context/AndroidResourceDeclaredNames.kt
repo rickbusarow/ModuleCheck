@@ -15,9 +15,11 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
+import modulecheck.parsing.gradle.AndroidPlatformPlugin
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asSourceSetName
@@ -55,7 +57,7 @@ data class AndroidResourceDeclaredNames(
   suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidResourceDeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
 
-    val platformPlugin = project.platformPlugin
+    val platformPlugin = project.platformPlugin as? AndroidPlatformPlugin ?: return emptyLazySet()
 
     if (platformPlugin is AndroidLibraryPlugin && !platformPlugin.androidResourcesEnabled) {
       return emptyLazySet()
@@ -66,7 +68,7 @@ data class AndroidResourceDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
 
-      val allTransitiveUnqualified = project
+      val allTransitiveUnqualified = if (!platformPlugin.nonTransientRClass) project
         .classpathDependencies()
         .get(sourceSetName)
         .mapAsyncNotNull { tpd ->
@@ -75,7 +77,7 @@ data class AndroidResourceDeclaredNames(
 
           tpd.contributed.project
             .androidUnqualifiedDeclarationNamesForSourceSetName(transitiveSourceSetName)
-        }
+        } else flowOf()
 
       val localUnqualified = project
         .androidUnqualifiedDeclarationNamesForSourceSetName(sourceSetName)

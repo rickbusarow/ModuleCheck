@@ -57,6 +57,7 @@ sealed interface JvmPlatformPlugin : PlatformPlugin {
 
 sealed interface AndroidPlatformPlugin : PlatformPlugin {
 
+  val nonTransientRClass: Boolean
   val viewBindingEnabled: Boolean
   val kotlinAndroidExtensionEnabled: Boolean
   val manifests: Map<SourceSetName, File>
@@ -72,6 +73,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   data class AndroidApplicationPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
+    override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>
@@ -80,6 +82,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   data class AndroidLibraryPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
+    override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
@@ -93,6 +96,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   data class AndroidDynamicFeaturePlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
+    override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
@@ -104,6 +108,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   data class AndroidTestPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
+    override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
