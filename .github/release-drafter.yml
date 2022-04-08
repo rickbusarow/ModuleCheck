@@ -52,6 +52,12 @@ template: |
   ## Contributors
 
   $CONTRIBUTORS
+  
+exclude-contributors:
+  - 'dependabot'
+  - 'dependabot[bot]'
+  - 'kodiakhq'
+  - 'kodiakhq[bot]'
 
 autolabeler:
   - label: 'documentation'
