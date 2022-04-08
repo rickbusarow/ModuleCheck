@@ -17,7 +17,6 @@ package modulecheck.parsing.java
 
 import com.github.javaparser.ast.Node
 import com.github.javaparser.ast.body.EnumConstantDeclaration
-import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.body.VariableDeclarator
@@ -90,7 +89,7 @@ fun <T, R : ResolvedDeclaration> T.fqNameOrNull(
   where T : Node, T : Resolvable<R> {
   val simpleName = when (this) {
     is MethodDeclaration -> name.asString()
-    is FieldDeclaration -> requireChildOfType<VariableDeclarator>().nameAsString
+    is VariableDeclarator -> nameAsString
     is EnumConstantDeclaration -> nameAsString
     else -> {
 

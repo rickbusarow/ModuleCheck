@@ -21,6 +21,7 @@ import com.github.javaparser.ast.body.EnumConstantDeclaration
 import com.github.javaparser.ast.body.FieldDeclaration
 import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
+import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.DeclaredName
@@ -36,6 +37,7 @@ internal data class ParsedFile(
   val enumDeclarations: Set<DeclaredName>
 ) {
   companion object {
+    @Suppress("ComplexMethod")
     fun fromCompilationUnitLazy(compilationUnit: CompilationUnit): Lazy<ParsedFile> {
       return lazy {
         val packageFqName = compilationUnit.packageDeclaration.getOrNull()?.nameAsString ?: ""
@@ -57,6 +59,11 @@ internal data class ParsedFile(
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
                     memberDeclarations.add(AgnosticDeclaredName(fqName))
                   }
+                }
+              }
+              is VariableDeclarator -> {
+                node.fqNameOrNull(typeDeclarations)?.let { fqName ->
+                  memberDeclarations.add(AgnosticDeclaredName(fqName))
                 }
               }
               is FieldDeclaration -> {
