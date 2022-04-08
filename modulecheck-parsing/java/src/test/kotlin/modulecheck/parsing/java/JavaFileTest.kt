@@ -996,6 +996,55 @@ internal class JavaFileTest : ProjectTest() {
         agnostic("com.test.ParsedClass.binding")
       )
     }
+
+    @Test
+    fun `local classes should not count as declarations`() = test {
+
+      val otherLib = androidLibrary(":other", "com.modulecheck.other") {
+        addLayoutFile(
+          "fragment_other.xml",
+          """<?xml version="1.0" encoding="utf-8"?>
+          <layout/>
+          """
+        )
+      }
+
+      val project = androidLibrary(":lib1", "com.test") {
+        addDependency(ConfigurationName.implementation, otherLib)
+      }
+
+      val file = project.createFile(
+        """
+        package com.test;
+
+        import com.test.AnInterface;
+        import org.junit.Test;
+
+        public class ATest {
+
+          @Test
+          public void anonymous_things_can_be_parsed() {
+            class AnAnonymousClass implements AnInterface {
+
+              @Override
+              public void aMethod() {
+              }
+            }
+          }
+        }
+        """
+      )
+
+      file.references shouldBe listOf(
+        explicit("com.test.AnInterface"),
+        explicit("org.junit.Test"),
+      )
+
+      file.declarations shouldBe listOf(
+        agnostic("com.test.ATest"),
+        agnostic("com.test.ATest.anonymous_things_can_be_parsed")
+      )
+    }
   }
 
   fun kotlin(name: String) = name.kotlinExtension()

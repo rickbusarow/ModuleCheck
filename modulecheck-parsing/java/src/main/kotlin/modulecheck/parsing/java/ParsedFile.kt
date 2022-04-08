@@ -54,16 +54,22 @@ internal data class ParsedFile(
               is TypeDeclaration<*> -> typeDeclarations.add(node)
               is MethodDeclaration -> {
                 if (node.canBeResolved()) {
-                  memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
+                  node.fqNameOrNull(typeDeclarations)?.let { fqName ->
+                    memberDeclarations.add(AgnosticDeclaredName(fqName))
+                  }
                 }
               }
               is FieldDeclaration -> {
                 if (node.canBeResolved()) {
-                  memberDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
+                  node.fqNameOrNull(typeDeclarations)?.let { fqName ->
+                    memberDeclarations.add(AgnosticDeclaredName(fqName))
+                  }
                 }
               }
               is EnumConstantDeclaration -> {
-                enumDeclarations.add(AgnosticDeclaredName(node.fqName(typeDeclarations)))
+                node.fqNameOrNull(typeDeclarations)?.let { fqName ->
+                  enumDeclarations.add(AgnosticDeclaredName(fqName))
+                }
               }
             }
           }
