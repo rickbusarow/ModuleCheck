@@ -49,6 +49,10 @@ template: |
 
   $CHANGES
 
+  ## Contributors
+
+  $CONTRIBUTORS
+
 autolabeler:
   - label: 'documentation'
     files:
