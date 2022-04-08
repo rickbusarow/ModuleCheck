@@ -62,14 +62,15 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
     }
   )
 
-  val usedUpstream = dependents().any { downstreamDependency ->
-    val downstreamSourceSet = downstreamDependency.configuredProjectDependency
-      .declaringSourceSetName()
+  val usedUpstream = generatedFromThisDependency.isNotEmpty() && dependents()
+    .any { downstreamDependency ->
+      val downstreamSourceSet = downstreamDependency.configuredProjectDependency
+        .declaringSourceSetName()
 
-    downstreamDependency.dependentProject
-      .referencesForSourceSetName(downstreamSourceSet)
-      .containsAny(generatedFromThisDependency)
-  }
+      downstreamDependency.dependentProject
+        .referencesForSourceSetName(downstreamSourceSet)
+        .containsAny(generatedFromThisDependency)
+    }
 
   if (usedUpstream) return true
 

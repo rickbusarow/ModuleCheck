@@ -63,6 +63,9 @@ class AndroidPlatformPluginFactory @Inject constructor(
       .pluginManager
       .hasPlugin(KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID)
 
+    val nonTransientRClass = gradleProject
+      .findProperty("android.nonTransitiveRClass") as? Boolean ?: false
+
     @Suppress("UnstableApiUsage")
     val buildConfigEnabled = type.extension.buildFeatures.buildConfig
       .orPropertyDefault(gradleProject, "android.defaults.buildfeatures.buildconfig", true)
@@ -84,6 +87,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
       is Application -> AndroidApplicationPlugin(
         sourceSets = sourceSets,
         configurations = configurations,
+        nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests
@@ -91,6 +95,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
       is DynamicFeature -> AndroidDynamicFeaturePlugin(
         sourceSets = sourceSets,
         configurations = configurations,
+        nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
@@ -99,6 +104,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
       is Library -> AndroidLibraryPlugin(
         sourceSets = sourceSets,
         configurations = configurations,
+        nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
@@ -108,6 +114,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
       is Test -> AndroidTestPlugin(
         sourceSets = sourceSets,
         configurations = configurations,
+        nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
