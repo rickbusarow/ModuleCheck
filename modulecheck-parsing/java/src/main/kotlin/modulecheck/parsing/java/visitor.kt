@@ -84,9 +84,9 @@ inline fun <reified T : Node> Node.getChildrenOfTypeRecursive(): Sequence<T> {
     .filterIsInstance<T>()
 }
 
-fun <T, R : ResolvedDeclaration> T.fqName(
+fun <T, R : ResolvedDeclaration> T.fqNameOrNull(
   typeDeclarations: List<TypeDeclaration<*>>
-): String
+): String?
   where T : Node, T : Resolvable<R> {
   val simpleName = when (this) {
     is MethodDeclaration -> name.asString()
@@ -102,7 +102,7 @@ fun <T, R : ResolvedDeclaration> T.fqName(
 
   val parentTypeFqName = typeDeclarations
     .last { isDescendantOf(it) }
-    .fullyQualifiedName.get()
+    .fullyQualifiedName.getOrNull() ?: return null
   return "$parentTypeFqName.$simpleName"
 }
 
