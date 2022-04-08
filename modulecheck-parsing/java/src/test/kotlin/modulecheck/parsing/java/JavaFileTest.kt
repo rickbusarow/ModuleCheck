@@ -1037,7 +1037,7 @@ internal class JavaFileTest : ProjectTest() {
 
       file.references shouldBe listOf(
         explicit("com.test.AnInterface"),
-        explicit("org.junit.Test"),
+        explicit("org.junit.Test")
       )
 
       file.declarations shouldBe listOf(
