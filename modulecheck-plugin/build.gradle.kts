@@ -27,6 +27,11 @@ mcbuild {
   dagger = true
 }
 
+tasks.withType<Test> {
+  // Gradle TestKit somewhat regularly runs out of memory on the freebie GitHub runners
+  maxParallelForks = 1
+}
+
 dependencies {
 
   api(libs.javax.inject)
