@@ -26,7 +26,13 @@ class SafeXmlParser {
   private val delegate = GroovyXmlParser()
 
   fun parse(file: File): Node? {
-    return kotlin.runCatching { parse(file.readText()) }
+
+    return kotlin.runCatching {
+      file
+        .takeIf { it.extension == "xml" }
+        ?.readText()
+        ?.let { parse(it) }
+    }
       .getOrNull()
   }
 
@@ -38,6 +44,7 @@ class SafeXmlParser {
 // https://www.w3.org/TR/xml/#charsets
 // https://github.com/RBusarow/ModuleCheck/issues/375
 private fun String.sanitizeXml(): String {
-  val xml10Pattern = "[^\u0009\r\n\u0020-\uD7FF\uE000-\uFFFD\ud800\udc00-\udbff\udfff]"
-  return replace(xml10Pattern.toRegex(), " ") // .remove("\ud83d").remove("\ud83e")
+  val xml10Pattern = "[^\u0009\r\n\u0020-\uD7FF\uE000-\uFFFD\ud800\udc00-\udbff\udfff\uFEFF]"
+  return replaceFirst("^\uFEFF", "")
+    .replace(xml10Pattern.toRegex(), " ")
 }
