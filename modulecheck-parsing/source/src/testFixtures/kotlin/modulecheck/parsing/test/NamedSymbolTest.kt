@@ -86,11 +86,13 @@ interface NamedSymbolTest : FancyShould {
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 }
 
+@Suppress("ComplexMethod")
 fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
   .toList()
   .sortedBy { it.first.qualifiedName }
   .joinToString("\n") { (_, names) ->
     val name = when (val symbol = names.first()) {
+      // declarations
       is ExplicitJavaReference -> "explicitJava"
       is ExplicitKotlinReference -> "explicitKotlin"
       is ExplicitXmlReference -> "explicitXml"

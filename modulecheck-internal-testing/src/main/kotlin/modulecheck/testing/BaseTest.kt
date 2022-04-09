@@ -22,12 +22,9 @@ import modulecheck.utils.remove
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
-import java.util.UUID
 import kotlin.properties.Delegates
 
 abstract class BaseTest : HermitJUnit5(), FancyShould {
-
-  private val id = UUID.randomUUID().toString()
 
   val testProjectDir: File by resets {
     val className = testInfo.testClass.get()
