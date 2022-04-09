@@ -155,12 +155,21 @@ jobs:
         gradle-version: [ 7.2, 7.4.2 ]
         agp-version: [ 7.0.3, 7.1.1 ]
         anvil-version: [ 2.3.11, 2.4.0 ]
-        # use kotlin 1.5.32 with Anvil 2.3.11, and kotlin 1.6.20 with anvil 2.4.0
         exclude:
+          # Anvil 2.4.0 doesn't support kotlin 1.5.x
           - kotlin-version: 1.5.32
             anvil-version: 2.4.0
           - kotlin-version: 1.6.20
             anvil-version: 2.3.11
+          # These exclusions just save time/computing.  The matrix exists so that tests can execute
+          # against older versions and bleeding edge, but this doesn't need to be done by mutating
+          # a single version at a time.
+          - kotlin-version: 1.5.32
+            agp-version: 7.1.1
+          - kotlin-version: 1.6.20
+            agp-version: 7.0.3
+          - gradle-version: 7.4.2
+            agp-version: 7.0.3
 
     steps:
       - name: check out with token (used by forks)
