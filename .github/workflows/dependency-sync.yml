@@ -39,14 +39,14 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
 
       - name: Set up JDK
-        uses : actions/setup-java@v2
-        with :
-          distribution : 'adopt'
-          java-version : '11'
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
           cache: 'gradle'
 
-      - uses: burrunan/gradle-cache-action@v1
-        name: run dependencySync
+      - name: run dependencySync
+        uses: burrunan/gradle-cache-action@v1
         with:
           gradle-dependencies-cache-key: |
             gradle/libs.versions.toml
