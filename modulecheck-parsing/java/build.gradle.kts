@@ -42,5 +42,6 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-parsing:java"))
 
+  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }

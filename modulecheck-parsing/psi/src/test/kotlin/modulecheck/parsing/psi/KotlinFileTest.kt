@@ -16,50 +16,28 @@
 package modulecheck.parsing.psi
 
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.psi.internal.psiFileFactory
 import modulecheck.parsing.source.AgnosticDeclaredName
-import modulecheck.parsing.source.AndroidDataBindingDeclaredName
-import modulecheck.parsing.source.AndroidDataBindingReference
-import modulecheck.parsing.source.AndroidRDeclaredName
-import modulecheck.parsing.source.AndroidRReference
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
-import modulecheck.parsing.source.JavaSpecificDeclaredName
-import modulecheck.parsing.source.KotlinSpecificDeclaredName
-import modulecheck.parsing.source.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
+import modulecheck.parsing.test.NamedSymbolTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.LazySet
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtFile
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import modulecheck.parsing.source.asDeclaredName as neutralExtension
-import modulecheck.parsing.source.asJavaDeclaredName as javaExtension
-import modulecheck.parsing.source.asKotlinDeclaredName as kotlinExtension
 
-internal class KotlinFileTest : ProjectTest() {
+internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
 
   @Test
   fun `fully qualified annotated primary constructor arguments should be injected`() = test {
@@ -523,6 +501,38 @@ internal class KotlinFileTest : ProjectTest() {
     file.declarations shouldBe listOf(
       agnostic("com.test.SomeClass"),
       agnostic("com.test.SomeClass.Companion")
+    )
+  }
+
+  @Test
+  fun `top-level extension property`() = test {
+    val file = createFile(
+      """
+      package com.test
+
+      val String.vowels get() = replace("[^aeiou]".toRegex(),"")
+      """
+    )
+
+    file.declarations shouldBe listOf(
+      kotlin("com.test.vowels"),
+      java("com.test.SourceKt.getVowels")
+    )
+  }
+
+  @Test
+  fun `top-level extension function`() = test {
+    val file = createFile(
+      """
+      package com.test
+
+      fun String.vowels() = replace("[^aeiou]".toRegex(),"")
+      """
+    )
+
+    file.declarations shouldBe listOf(
+      kotlin("com.test.vowels"),
+      java("com.test.SourceKt.vowels")
     )
   }
 
@@ -1181,18 +1191,8 @@ internal class KotlinFileTest : ProjectTest() {
     }
   }
 
-  fun kotlin(name: String) = name.kotlinExtension()
-
-  fun java(name: String) = name.javaExtension()
-
-  fun agnostic(name: String) = name.neutralExtension()
-
-  fun androidR(name: String) = AndroidRReference(name)
-  fun androidDataBinding(name: String) = AndroidDataBindingReference(name)
   fun explicit(name: String) = name.asExplicitKotlinReference()
   fun interpreted(name: String) = name.asInterpretedKotlinReference()
-  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
-  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 
   fun McProject.createFile(
     @Language("kotlin")
@@ -1219,64 +1219,6 @@ internal class KotlinFileTest : ProjectTest() {
       .filterIsInstance<RealKotlinFile>()
       .first { it.ktFile.text == content.trimIndent() }
   }
-
-  fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
-
-  infix fun LazySet<Reference>.shouldBe(other: Collection<Reference>) {
-    runBlocking {
-      toList()
-        .distinct()
-        .prettyPrint() shouldBe other.prettyPrint()
-    }
-  }
-
-  @JvmName("prettyPrintReferences")
-  fun Collection<Reference>.prettyPrint() = groupBy { it::class }
-    .toList()
-    .sortedBy { it.first.qualifiedName }
-    .joinToString("\n") { (_, names) ->
-      val name = when (names.first()) {
-        is ExplicitJavaReference -> "explicitJava"
-        is ExplicitKotlinReference -> "explicit"
-        is ExplicitXmlReference -> "explicitXml"
-        is InterpretedJavaReference -> "interpretedJava"
-        is InterpretedKotlinReference -> "interpreted"
-        is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
-        is AndroidRReference -> "androidR"
-        is QualifiedAndroidResourceReference -> "qualifiedAndroidResource"
-        is AndroidDataBindingReference -> "androidDataBinding"
-      }
-      names
-        .sortedBy { it.name }
-        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
-    }
-
-  fun Collection<DeclaredName>.prettyPrint() = groupBy { it::class }
-    .toList()
-    .sortedBy { it.first.qualifiedName }
-    .joinToString("\n") { (_, names) ->
-      val name = when (val declaration = names.first()) {
-        is AgnosticDeclaredName -> "agnostic"
-        is AndroidRDeclaredName -> "androidR"
-        is JavaSpecificDeclaredName -> "java"
-        is KotlinSpecificDeclaredName -> "kotlin"
-        is UnqualifiedAndroidResourceDeclaredName -> declaration.prefix
-        is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
-        is AndroidDataBindingDeclaredName -> "androidDataBinding"
-      }
-      names
-        .sortedBy { it.name }
-        .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
-    }
-
-  infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
-    prettyPrint() shouldBe other.prettyPrint()
-  }
-
-  fun KtFile(
-    @Language("kotlin")
-    content: String
-  ): KtFile = KtFile(name = "Source.kt", content = content)
 
   fun KtFile(
     name: String,

@@ -15,12 +15,15 @@
 
 plugins {
   id("mcbuild")
+  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-parsing-jvm"
   anvil = true
 }
+
+val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -37,6 +40,15 @@ dependencies {
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  testFixturesApi(libs.bundles.hermit)
+  testFixturesApi(project(path = ":modulecheck-internal-testing"))
+
+  if (isIdeSync) {
+    testCompileOnly(libs.bundles.hermit)
+    testCompileOnly(libs.bundles.jUnit)
+    testCompileOnly(libs.bundles.kotest)
+  }
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

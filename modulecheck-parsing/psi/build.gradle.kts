@@ -39,10 +39,12 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotest.runner)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
 
+  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
   testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }
