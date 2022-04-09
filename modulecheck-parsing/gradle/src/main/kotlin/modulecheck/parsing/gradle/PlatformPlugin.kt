@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.gradle
 
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import java.io.File
 import kotlin.contracts.contract
 
@@ -61,6 +62,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   val viewBindingEnabled: Boolean
   val kotlinAndroidExtensionEnabled: Boolean
   val manifests: Map<SourceSetName, File>
+  val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
 
   interface CanDisableAndroidResources {
     val androidResourcesEnabled: Boolean
@@ -76,7 +78,8 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
-    override val manifests: Map<SourceSetName, File>
+    override val manifests: Map<SourceSetName, File>,
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
   ) : PlatformPlugin, AndroidPlatformPlugin
 
   data class AndroidLibraryPlugin(
@@ -87,7 +90,8 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
     override val androidResourcesEnabled: Boolean,
-    override val buildConfigEnabled: Boolean
+    override val buildConfigEnabled: Boolean,
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidResources,
@@ -100,7 +104,8 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
-    override val buildConfigEnabled: Boolean
+    override val buildConfigEnabled: Boolean,
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidBuildConfig
@@ -112,7 +117,8 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
-    override val buildConfigEnabled: Boolean
+    override val buildConfigEnabled: Boolean,
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidBuildConfig

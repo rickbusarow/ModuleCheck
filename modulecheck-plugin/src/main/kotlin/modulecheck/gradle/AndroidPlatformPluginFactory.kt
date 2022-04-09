@@ -19,7 +19,11 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DynamicFeatureExtension
 import com.android.build.api.dsl.TestExtension
+import com.android.build.gradle.AppExtension
 import com.android.build.gradle.LibraryExtension
+import com.android.build.gradle.internal.api.ApplicationVariantImpl
+import com.android.build.gradle.internal.api.LibraryVariantImpl
+import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
 import modulecheck.gradle.AndroidPlatformPluginFactory.Type.Application
 import modulecheck.gradle.AndroidPlatformPluginFactory.Type.DynamicFeature
@@ -32,6 +36,10 @@ import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidApplicationPlugin
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.asSourceSetName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.utils.cast
 import javax.inject.Inject
 
 typealias AndroidCommonExtension = CommonExtension<*, *, *, *>
@@ -58,6 +66,8 @@ class AndroidPlatformPluginFactory @Inject constructor(
     )
 
     val manifests = gradleProject.androidManifests().orEmpty()
+
+    val resValues = parseResValues(type)
 
     val hasKotlinAndroidExtensions = gradleProject
       .pluginManager
@@ -90,7 +100,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
         nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
-        manifests = manifests
+        manifests = manifests, resValues = resValues
       )
       is DynamicFeature -> AndroidDynamicFeaturePlugin(
         sourceSets = sourceSets,
@@ -99,7 +109,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
-        buildConfigEnabled = buildConfigEnabled
+        buildConfigEnabled = buildConfigEnabled, resValues = resValues
       )
       is Library -> AndroidLibraryPlugin(
         sourceSets = sourceSets,
@@ -109,7 +119,7 @@ class AndroidPlatformPluginFactory @Inject constructor(
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
         androidResourcesEnabled = androidResourcesEnabled,
-        buildConfigEnabled = buildConfigEnabled
+        buildConfigEnabled = buildConfigEnabled, resValues = resValues
       )
       is Test -> AndroidTestPlugin(
         sourceSets = sourceSets,
@@ -118,9 +128,51 @@ class AndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
-        buildConfigEnabled = buildConfigEnabled
+        buildConfigEnabled = buildConfigEnabled, resValues = resValues
       )
     }
+  }
+
+  private fun parseResValues(
+    type: Type<*>
+  ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>> {
+    fun AndroidCommonExtension.mergedFlavors(): List<MergedFlavor> {
+      return when (this) {
+        is AppExtension -> applicationVariants.map { it.cast<ApplicationVariantImpl>().mergedFlavor }
+        is LibraryExtension -> libraryVariants.map { it.cast<LibraryVariantImpl>().mergedFlavor }
+        else -> emptyList()
+      }
+    }
+
+    fun AndroidCommonExtension.buildTypes(): List<com.android.builder.model.BuildType> {
+      return when (this) {
+        is AppExtension -> applicationVariants.mapNotNull { it.buildType }
+        is LibraryExtension -> libraryVariants.mapNotNull { it.buildType }
+        else -> emptyList()
+      }
+    }
+
+    val mfs = type.extension.mergedFlavors()
+      .associate { mf ->
+        val sourceSetName = mf.name.asSourceSetName()
+
+        sourceSetName to mf.resValues.values
+          .mapNotNull { classField ->
+            UnqualifiedAndroidResourceDeclaredName.fromValuePair(classField.type, classField.name)
+          }.toSet()
+      }.toMutableMap()
+
+    type.extension.buildTypes()
+      .forEach { buildType ->
+        val sourceSetName = buildType.name.asSourceSetName()
+
+        mfs[sourceSetName] = buildType.resValues.values
+          .mapNotNull { classField ->
+            UnqualifiedAndroidResourceDeclaredName.fromValuePair(classField.type, classField.name)
+          }.toSet()
+      }
+
+    return mfs
   }
 
   sealed interface Type<T : AndroidCommonExtension> {

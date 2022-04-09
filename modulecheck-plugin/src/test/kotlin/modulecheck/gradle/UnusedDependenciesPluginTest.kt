@@ -26,6 +26,7 @@ import modulecheck.specs.ProjectBuildSpecBuilder
 import modulecheck.specs.ProjectSettingsSpecBuilder
 import modulecheck.specs.ProjectSpec
 import modulecheck.specs.ProjectSrcSpec
+import modulecheck.specs.ProjectSrcSpecBuilder.RawFile
 import modulecheck.utils.applyEach
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -327,7 +328,7 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
             RawFile(
               "AndroidManifest.xml",
               """<manifest package="com.example.app" />
-                """.trimMargin()
+              """.trimMargin()
             )
           )
         }
@@ -343,12 +344,17 @@ class UnusedDependenciesPluginTest : BasePluginTest() {
           android = true
           addBlock(
             """
-          |android {
-          |  defaultConfig {
-          |    resValue("string", "app_name", "AppName")
-          |  }
-          |}
-          """.trimMargin()
+            android {
+              defaultConfig {
+                resValue("string", "app_name", "AppName")
+              }
+              buildTypes {
+                getByName("debug") {
+                  resValue("string", "debug_thing", "debug!")
+                }
+              }
+            }
+            """
           )
         }
       )
