@@ -270,9 +270,11 @@ val versionDocs by tasks.registering(Exec::class) {
       .flatMap { it.destructured.toList() }
   }
 
+  val devVersions = ".*(?:-SNAPSHOT|-LOCAL)".toRegex()
+
   val version = VERSION_NAME
 
-  enabled = version !in existingVersions
+  enabled = version !in existingVersions && !version.matches(devVersions)
 
   workingDir("$rootDir/website")
   commandLine("yarn", "run", "docusaurus", "docs:version", version)
