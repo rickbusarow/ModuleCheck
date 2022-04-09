@@ -16,15 +16,16 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.android.AndroidResourceParser
+import modulecheck.parsing.gradle.AndroidPlatformPlugin
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.isAndroid
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
 import modulecheck.utils.emptyLazySet
+import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazySet
 import modulecheck.utils.toLazySet
 
@@ -37,7 +38,8 @@ data class AndroidUnqualifiedDeclarationNames(
     get() = Key
 
   suspend fun get(sourceSetName: SourceSetName): LazySet<UnqualifiedAndroidResourceDeclaredName> {
-    if (!project.isAndroid()) return emptyLazySet()
+    val platformPlugin = project.platformPlugin as? AndroidPlatformPlugin
+      ?: return emptyLazySet()
 
     return delegate.getOrPut(sourceSetName) {
 
@@ -57,6 +59,13 @@ data class AndroidUnqualifiedDeclarationNames(
               }
             }
 
+          val resValues = dataSource {
+            sourceSetName.withUpstream(project)
+              .flatMapToSet { sourceSetOrUpstream ->
+                platformPlugin.resValues[sourceSetOrUpstream].orEmpty()
+              }
+          }
+
           val declarations = project
             .resourceFilesForSourceSetName(sourceSetOrUpstream)
             .map { file ->
@@ -66,6 +75,7 @@ data class AndroidUnqualifiedDeclarationNames(
               }
             }
             .plus(layoutsAndIds)
+            .plus(resValues)
 
           lazySet(declarations)
         }.toLazySet()
