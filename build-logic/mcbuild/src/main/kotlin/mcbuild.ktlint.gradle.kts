@@ -21,7 +21,7 @@ plugins {
 
 extensions.configure(KtlintExtension::class.java) {
   debug.set(false)
-  version.set("0.45.1")
+  version.set("0.45.2")
   outputToConsole.set(true)
   enableExperimentalRules.set(true)
   disabledRules.set(
