@@ -16,16 +16,11 @@
 package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
-import modulecheck.api.finding.ModifiesDependency
+import modulecheck.api.finding.ModifiesProjectDependency
 import modulecheck.api.finding.RemovesDependency
-import modulecheck.api.finding.addDependency
-import modulecheck.api.finding.closestDeclarationOrNull
-import modulecheck.api.finding.removeDependencyWithDelete
-import modulecheck.core.internal.statementOrNullIn
+import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -38,67 +33,36 @@ data class MustBeApiFinding(
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
 ) : AbstractProjectDependencyFinding("mustBeApi"),
-  ModifiesDependency,
+  ModifiesProjectDependency,
   AddsDependency,
   RemovesDependency {
 
-  override val dependencyProject get() = oldDependency.project
+  override val dependency get() = oldDependency
 
   override val message: String
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
       "a declaration which is referenced in this module's public API."
 
-  override val dependencyIdentifier = dependencyProject.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier = dependency.path.value + fromStringOrEmpty()
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     super.declarationOrNull.await()
-      ?: source?.project
-        ?.statementOrNullIn(dependentProject, configurationName)
+      ?: source?.statementOrNullIn(dependentProject)
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependencyProject.path == source?.project?.path) {
+    return if (dependency.path == source?.project?.path) {
       ""
     } else {
       "${source?.project?.path?.value}"
     }
   }
 
-  override suspend fun fix(): Boolean {
-
-    val token = dependentProject
-      .closestDeclarationOrNull(
-        newDependency,
-        matchPathFirst = true
-      ) as? ModuleDependencyDeclaration
-
-    val oldDeclaration = declarationOrNull.await()
-
-    val newDeclaration = token?.replace(
-      newConfigName = newDependency.configurationName,
-      newModulePath = newDependency.path,
-      testFixtures = newDependency.isTestFixture
-    )
-      ?: dependentProject.createProjectDependencyDeclaration(
-        configurationName = newDependency.configurationName,
-        projectPath = newDependency.path,
-        isTestFixtures = newDependency.isTestFixture
-      )
-
-    dependentProject.addDependency(newDependency, newDeclaration, token)
-
-    if (oldDeclaration != null) {
-      dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
-    }
-
-    return true
-  }
-
   override fun toString(): String {
     return """MustBeApiFinding(
       |   dependentPath='$dependentPath',
       |   buildFile=$buildFile,
-      |   dependencyProject=$dependencyProject,
+      |   dependency=$dependency,
       |   configurationName=$configurationName,
       |   source=$source,
       |   dependencyIdentifier='$dependencyIdentifier'

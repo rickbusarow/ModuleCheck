@@ -30,7 +30,7 @@ data class RedundantDependencyFinding(
   RemovesDependency,
   Deletable {
 
-  override val dependencyProject = oldDependency.project
+  override val dependency get() = oldDependency
 
   override val message: String
     get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
@@ -41,7 +41,7 @@ data class RedundantDependencyFinding(
 
   override fun fromStringOrEmpty(): String {
 
-    return if (from.all { dependencyProject.path == it.project.path }) {
+    return if (from.all { dependency.path == it.project.path }) {
       ""
     } else {
       from.joinToString { it.project.path.value }

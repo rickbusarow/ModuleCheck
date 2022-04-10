@@ -55,6 +55,15 @@ public fun <T> Iterable<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): L
  *
  * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
  */
+public fun <T> Sequence<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): Sequence<T> {
+  return sortedWith(compareBy(*selectors))
+}
+
+/**
+ * Returns a list of all elements sorted according to the specified [selectors].
+ *
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ */
 public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Comparable<*>): List<T> {
   return sortedWith(*selectors).reversed()
 }

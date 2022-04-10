@@ -20,8 +20,9 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
-import modulecheck.api.finding.removeDependencyWithComment
-import modulecheck.api.finding.removeDependencyWithDelete
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy
+import modulecheck.api.finding.internal.removeDependencyWithComment
+import modulecheck.api.finding.internal.removeDependencyWithDelete
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
@@ -86,7 +87,7 @@ data class UnusedPluginFinding(
     declarationOrNull.await()?.statementWithSurroundingText
   }
 
-  override suspend fun fix(): Boolean {
+  override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
     val declaration = declarationOrNull.await() ?: return false
 

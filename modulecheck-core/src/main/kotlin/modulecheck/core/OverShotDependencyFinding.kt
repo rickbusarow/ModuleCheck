@@ -16,27 +16,41 @@
 package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
-import modulecheck.api.finding.ModifiesDependency
-import modulecheck.api.finding.RemovesDependency
-import modulecheck.api.finding.addDependency
-import modulecheck.api.finding.closestDeclarationOrNull
+import modulecheck.api.finding.Finding.Position
+import modulecheck.api.finding.internal.positionOfStatement
+import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.createProjectDependencyDeclaration
+import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 
 data class OverShotDependencyFinding(
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
-  override val oldDependency: ConfiguredProjectDependency,
+  val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName
 ) : AbstractProjectDependencyFinding("overshot"),
-  ModifiesDependency,
-  AddsDependency,
-  RemovesDependency {
+  AddsDependency {
 
-  override val dependencyProject get() = oldDependency.project
+  override val declarationOrNull: LazyDeferred<Declaration?>
+    // intentionally look this up every time, since the declaration doesn't exist at first
+    get() = lazyDeferred {
+      dependency.statementOrNullIn(dependentProject)
+    }
+
+  override val positionOrNull: LazyDeferred<Position?>
+    get() = lazyDeferred {
+      val statement = declarationOrNull.await()?.declarationText
+        ?: oldDependency.statementOrNullIn(dependentProject)?.declarationText
+        ?: return@lazyDeferred null
+
+      buildFile.readText()
+        .positionOfStatement(statement)
+    }
+
+  override val dependency get() = newDependency
   override val dependencyIdentifier: String get() = newDependency.path.value
 
   override val message: String
@@ -44,37 +58,13 @@ data class OverShotDependencyFinding(
       "used in another source set which inherits from the first.  For example, a test-only " +
       "dependency which is declared via `implementation` instead of `testImplementation`."
 
-  override suspend fun fix(): Boolean {
-
-    val token = dependentProject
-      .closestDeclarationOrNull(
-        newDependency,
-        matchPathFirst = false
-      ) as? ModuleDependencyDeclaration
-
-    val newDeclaration = token?.replace(
-      newConfigName = newDependency.configurationName,
-      newModulePath = newDependency.path,
-      testFixtures = newDependency.isTestFixture
-    )
-      ?: dependentProject.createProjectDependencyDeclaration(
-        configurationName = newDependency.configurationName,
-        projectPath = newDependency.path,
-        isTestFixtures = newDependency.isTestFixture
-      )
-
-    dependentProject.addDependency(newDependency, newDeclaration, token)
-
-    return true
-  }
-
   override fun fromStringOrEmpty(): String = ""
 
   override fun toString(): String {
     return "OverShotDependency(\n" +
       "\tdependentPath='$dependentPath', \n" +
       "\tbuildFile=$buildFile, \n" +
-      "\tdependencyProject=$dependencyProject, \n" +
+      "\tdependency=$dependency, \n" +
       "\tdependencyIdentifier='$dependencyIdentifier', \n" +
       "\tconfigurationName=$configurationName\n" +
       ")"

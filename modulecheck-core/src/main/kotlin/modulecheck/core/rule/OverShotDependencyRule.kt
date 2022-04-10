@@ -33,7 +33,7 @@ class OverShotDependencyRule(
   override suspend fun check(project: McProject): List<OverShotDependencyFinding> {
     return project.overshotDependencies()
       .all()
-      .filterNot { it.dependencyProject.path.value in settings.ignoreUnusedFinding }
+      .filterNot { it.dependency.path.value in settings.ignoreUnusedFinding }
       .sortedByDescending { it.configurationName }
   }
 

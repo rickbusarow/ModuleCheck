@@ -74,7 +74,7 @@ data class OverShotDependencies(
                 .map { (configName, isTestFixture) ->
                   ConfiguredProjectDependency(
                     configurationName = configName,
-                    project = unused.dependencyProject,
+                    project = unused.dependency.project,
                     isTestFixture = isTestFixture
                   )
                 }
@@ -106,22 +106,22 @@ data class OverShotDependencies(
 
           trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
             .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
-            .map { it to unused.configurationName }
+            .map { it to unused.oldDependency }
             .toSet()
         }
-        .map { (overshot, originalConfigurationName) ->
+        .map { (overshot, original) ->
 
           val newCpd = overshot.asApiOrImplementation(project)
 
           OverShotDependencyFinding(
             dependentProject = project,
             newDependency = newCpd,
-            oldDependency = overshot.copy(configurationName = originalConfigurationName),
+            oldDependency = original,
             configurationName = newCpd.configurationName
           )
         }
-        .sortedBy { it.dependencyProject }
-        .distinctBy { it.dependencyProject }
+        .sortedBy { it.dependency.project }
+        .distinctBy { it.dependency.project }
     }
   }
 

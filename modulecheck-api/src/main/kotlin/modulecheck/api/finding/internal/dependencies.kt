@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.api.finding.internal
 
 import kotlinx.coroutines.runBlocking
+import modulecheck.api.finding.Fixable.Companion
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
@@ -164,11 +165,11 @@ fun McProject.removeDependencyWithComment(
 
   val text = buildFile.readText()
 
-  val statementText = declaration.statementWithSurroundingText
+  val declarationText = declaration.declarationText
 
-  val lines = statementText.lines()
+  val lines = declarationText.lines()
   val lastIndex = lines.lastIndex
-  val newText = lines
+  val newDeclarationText = lines
     .mapIndexed { index: Int, str: String ->
 
       // don't comment out a blank line
@@ -176,7 +177,7 @@ fun McProject.removeDependencyWithComment(
 
       val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
         val (whitespace, code) = mr.destructured
-        "$whitespace${Fixable.INLINE_COMMENT}$code"
+        "$whitespace${Companion.INLINE_COMMENT}$code"
       }
 
       if (index == lastIndex) {
@@ -187,7 +188,9 @@ fun McProject.removeDependencyWithComment(
     }
     .joinToString("\n")
 
-  buildFile.writeText(text.replaceFirst(statementText, newText))
+  val newText = text.replace(declarationText, newDeclarationText)
+
+  buildFile.writeText(newText)
 
   if (configuredDependency is ConfiguredProjectDependency) {
 

@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.api.finding.internal
 
 import modulecheck.api.finding.Finding.Position
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 
-suspend fun McProject.statementOrNullIn(
-  dependentProject: McProject,
-  configuration: ConfigurationName
+suspend fun ConfiguredProjectDependency.statementOrNullIn(
+  dependentProject: McProject
 ): ModuleDependencyDeclaration? {
   return dependentProject.buildFileParser
     .dependenciesBlocks()
     .firstNotNullOfOrNull { block ->
-      block.getOrEmpty(path, configuration)
+      block.getOrEmpty(path, configurationName, isTestFixture)
         .takeIf { it.isNotEmpty() }
     }
     ?.firstOrNull()
@@ -48,14 +48,12 @@ suspend fun ExternalDependency.statementOrNullIn(
     ?.firstOrNull()
 }
 
-suspend fun McProject.positionIn(
-  dependentProject: McProject,
-  configuration: ConfigurationName
+suspend fun ConfiguredProjectDependency.positionIn(
+  dependentProject: McProject
 ): Position? {
 
   val statement = statementOrNullIn(
-    dependentProject = dependentProject,
-    configuration = configuration
+    dependentProject = dependentProject
   ) ?: return null
 
   return dependentProject.buildFile.readText()

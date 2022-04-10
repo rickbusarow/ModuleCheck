@@ -18,6 +18,7 @@ package modulecheck.api.finding
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy
 import modulecheck.dagger.AppScope
 import modulecheck.utils.mapAsync
 import modulecheck.utils.onEachAsync
@@ -64,20 +65,23 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
            */
           .sortedWith(
             // only Adds-, without Modifies-
-            { !(it is AddsDependency && it !is ModifiesDependency) },
+            { !(it is AddsDependency && it !is ModifiesProjectDependency) },
             // ModifiesDependency is second
-            { it !is ModifiesDependency },
-            // Sort by type, ish.  Classes aren't Comparable
-            { it::class.java.simpleName },
+            { it !is ModifiesProjectDependency },
+            // Sort by type, ish.
+            { it::class.java.canonicalName },
             // Amongst findings of the same type, sort by path (if it exists)
-            { (it as? ProjectDependencyFinding)?.dependencyProject?.path ?: "" }
+            { (it as? ProjectDependencyFinding)?.dependency?.path ?: "" }
           )
           .map { finding ->
+
+            val removalStrategy = if (deleteUnused) RemovalStrategy.DELETE
+            else RemovalStrategy.COMMENT
 
             val fixed = when {
               !autoCorrect -> false
               deleteUnused && finding is Deletable -> finding.delete()
-              finding is Fixable -> finding.fix()
+              finding is Fixable -> finding.fix(removalStrategy)
               else -> false
             }
 
