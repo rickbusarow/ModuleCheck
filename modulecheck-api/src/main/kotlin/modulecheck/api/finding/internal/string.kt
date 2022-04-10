@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.api.finding.internal
 
 import modulecheck.api.finding.Finding.Position
 

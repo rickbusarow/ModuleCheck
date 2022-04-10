@@ -32,7 +32,7 @@ class UnusedDependencyRule(
   override suspend fun check(project: McProject): List<UnusedDependency> {
     return project.get(UnusedDependencies)
       .all()
-      .filterNot { it.dependencyProject.path.value in settings.ignoreUnusedFinding }
+      .filterNot { it.dependency.path.value in settings.ignoreUnusedFinding }
       .distinctBy { it.statementTextOrNull }
   }
 

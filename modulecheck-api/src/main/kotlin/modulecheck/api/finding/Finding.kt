@@ -18,6 +18,7 @@ package modulecheck.api.finding
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import java.io.File
@@ -75,7 +76,7 @@ interface ConfigurationFinding {
 }
 
 interface ProjectDependencyFinding : ConfigurationFinding {
-  val dependencyProject: McProject
+  val dependency: ConfiguredProjectDependency
 
   override val configurationName: ConfigurationName
 }

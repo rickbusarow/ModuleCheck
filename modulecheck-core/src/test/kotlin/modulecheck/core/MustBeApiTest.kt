@@ -203,6 +203,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -314,9 +315,12 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
 
           api(project(path = ":lib2"))
+          // implementation(project(path = ":lib2"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -442,9 +446,12 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api project(':lib1')
+          // implementation project(':lib1')  // ModuleCheck finding [mustBeApi]
 
           api project(':lib2')
+          // implementation project(':lib2')  // ModuleCheck finding [mustBeApi]
           api project(':lib3')
+          // implementation project(':lib3')  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -795,6 +802,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -874,7 +882,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -890,7 +898,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib3" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -963,7 +971,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib3.buildFile shouldHaveText """
         plugins {
@@ -979,7 +987,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib3" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1032,7 +1040,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1048,7 +1056,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1101,7 +1109,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1117,7 +1125,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1169,7 +1177,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1184,7 +1192,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1235,7 +1243,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1250,7 +1258,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1299,7 +1307,7 @@ class MustBeApiTest : RunnerTest() {
       )
     }
 
-    run().isSuccess shouldBe true
+    run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
         plugins {
@@ -1314,7 +1322,7 @@ class MustBeApiTest : RunnerTest() {
     logger.parsedReport() shouldBe listOf(
       ":lib2" to listOf(
         mustBeApi(
-          fixed = true,
+          fixed = false,
           configuration = "implementation",
           dependency = ":lib1",
           position = null
@@ -1325,6 +1333,8 @@ class MustBeApiTest : RunnerTest() {
 
   @Test
   fun `auto-correct should only replace the configuration invocation text`() {
+
+    settings.deleteUnused = true
 
     val lib1 = kotlinProject(":implementation") {
       addKotlinSource(
@@ -1492,6 +1502,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1609,6 +1620,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1672,6 +1684,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1735,6 +1748,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1796,6 +1810,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1873,7 +1888,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -1956,7 +1973,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -2040,7 +2059,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -2124,7 +2145,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -2207,7 +2230,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 
@@ -2290,7 +2315,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           api(project(path = ":lib3"))
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
         }
     """
 

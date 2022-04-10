@@ -17,13 +17,9 @@ package modulecheck.core
 
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.addDependency
-import modulecheck.api.finding.closestDeclarationOrNull
-import modulecheck.core.internal.positionIn
-import modulecheck.core.internal.statementOrNullIn
+import modulecheck.api.finding.internal.positionIn
+import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -41,47 +37,23 @@ data class InheritedDependencyFinding(
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
   override val dependencyIdentifier get() = newDependency.path.value + fromStringOrEmpty()
-  override val dependencyProject get() = newDependency.project
+  override val dependency get() = newDependency
+
   override val configurationName get() = newDependency.configurationName
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
-    source.project
-      .statementOrNullIn(dependentProject, source.configurationName)
+    source.statementOrNullIn(dependentProject)
   }
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
-    source.project.positionIn(dependentProject, source.configurationName)
+    source.positionIn(dependentProject)
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependencyProject.path == source.project.path) {
+    return if (dependency.path == source.project.path) {
       ""
     } else {
       source.project.path.value
     }
-  }
-
-  override suspend fun fix(): Boolean {
-
-    val token = dependentProject
-      .closestDeclarationOrNull(
-        newDependency,
-        matchPathFirst = false
-      ) as? ModuleDependencyDeclaration
-
-    val newDeclaration = token?.replace(
-      newConfigName = newDependency.configurationName,
-      newModulePath = newDependency.path,
-      testFixtures = newDependency.isTestFixture
-    )
-      ?: dependentProject.createProjectDependencyDeclaration(
-        configurationName = newDependency.configurationName,
-        projectPath = newDependency.path,
-        isTestFixtures = newDependency.isTestFixture
-      )
-
-    dependentProject.addDependency(newDependency, newDeclaration, token)
-
-    return true
   }
 
   override fun compareTo(other: InheritedDependencyFinding): Int {

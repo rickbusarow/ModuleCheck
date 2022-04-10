@@ -22,8 +22,8 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.Problem
 import modulecheck.api.finding.ProjectDependencyFinding
-import modulecheck.core.internal.positionOfStatement
-import modulecheck.core.internal.statementOrNullIn
+import modulecheck.api.finding.internal.positionOfStatement
+import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.utils.LazyDeferred
@@ -49,8 +49,7 @@ abstract class AbstractProjectDependencyFinding(
   }
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
-    dependencyProject
-      .statementOrNullIn(dependentProject, configurationName)
+    dependency.statementOrNullIn(dependentProject)
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
     declarationOrNull.await()?.statementWithSurroundingText
@@ -62,7 +61,7 @@ abstract class AbstractProjectDependencyFinding(
       problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
-      dependencyIdentifier = dependencyProject.path.value,
+      dependencyIdentifier = dependency.path.value,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
       message = message,
@@ -77,7 +76,7 @@ abstract class AbstractProjectDependencyFinding(
     if (other !is AbstractProjectDependencyFinding) return false
 
     if (findingName != other.findingName) return false
-    if (dependencyProject != other.dependencyProject) return false
+    if (dependency != other.dependency) return false
     if (configurationName != other.configurationName) return false
 
     return true
@@ -85,7 +84,7 @@ abstract class AbstractProjectDependencyFinding(
 
   override fun hashCode(): Int {
     var result = findingName.hashCode()
-    result = 31 * result + dependencyProject.hashCode()
+    result = 31 * result + dependency.hashCode()
     result = 31 * result + configurationName.hashCode()
     return result
   }

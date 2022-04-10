@@ -81,7 +81,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = false,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -150,7 +150,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = false,
           configuration = "debugApi",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -220,7 +220,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -290,7 +290,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "debugApi",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -360,7 +360,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "debugImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -429,7 +429,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "debugApi",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -519,7 +519,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -603,7 +603,7 @@ class OverShotDependenciesTest : RunnerTest() {
           testImplementation(project(path = ":lib1")) {
             because("this is a test")
           }
-          // // a comment
+          // a comment
           // api(project(path = ":lib1")) {
             // because("this is a test")
           // }  // ModuleCheck finding [unusedDependency]
@@ -617,7 +617,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "7, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -730,7 +730,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
@@ -803,7 +803,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -877,7 +877,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "debugApi",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -977,7 +977,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1048,7 +1048,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1118,7 +1118,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1186,7 +1186,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1259,7 +1259,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "7, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1332,7 +1332,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = null
+          position = "7, 3"
         ),
         unusedDependency(
           fixed = false,

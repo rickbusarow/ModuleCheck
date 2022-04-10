@@ -16,6 +16,16 @@
 package modulecheck.api.finding
 
 import modulecheck.api.finding.Finding.FindingResult
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy.COMMENT
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy.DELETE
+import modulecheck.api.finding.internal.addDependency
+import modulecheck.api.finding.internal.closestDeclarationOrNull
+import modulecheck.api.finding.internal.removeDependencyWithComment
+import modulecheck.api.finding.internal.removeDependencyWithDelete
+import modulecheck.api.finding.internal.statementOrNullIn
+import modulecheck.parsing.gradle.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.utils.safeAs
@@ -46,14 +56,60 @@ interface Problem :
 interface RemovesDependency : Fixable {
 
   val oldDependency: ConfiguredDependency
+
+  suspend fun removeDependency(removalStrategy: RemovalStrategy): Boolean {
+
+    val oldDeclaration = (oldDependency as? ConfiguredProjectDependency)
+      ?.statementOrNullIn(dependentProject)
+      ?: declarationOrNull.await()
+      ?: return false
+
+    when (removalStrategy) {
+      DELETE -> dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
+      COMMENT -> dependentProject.removeDependencyWithComment(
+        declaration = oldDeclaration,
+        fixLabel = fixLabel(),
+        configuredDependency = oldDependency
+      )
+    }
+    return true
+  }
+
+  enum class RemovalStrategy {
+    DELETE,
+    COMMENT
+  }
 }
 
 interface AddsDependency : Fixable {
 
   val newDependency: ConfiguredProjectDependency
+
+  suspend fun addDependency(): Boolean {
+    val token = dependentProject
+      .closestDeclarationOrNull(
+        newDependency,
+        matchPathFirst = false
+      ) as? ModuleDependencyDeclaration
+
+    val newDeclaration = token?.copy(
+      newConfigName = newDependency.configurationName,
+      newModulePath = newDependency.path,
+      testFixtures = newDependency.isTestFixture
+    )
+      ?: dependentProject.createProjectDependencyDeclaration(
+        configurationName = newDependency.configurationName,
+        projectPath = newDependency.path,
+        isTestFixtures = newDependency.isTestFixture
+      )
+
+    dependentProject.addDependency(newDependency, newDeclaration, token)
+
+    return true
+  }
 }
 
-interface ModifiesDependency : RemovesDependency, AddsDependency
+interface ModifiesProjectDependency : RemovesDependency, AddsDependency
 
 interface HasSource : Finding {
 
@@ -62,15 +118,21 @@ interface HasSource : Finding {
 
 interface Fixable : Finding, Problem {
 
-  suspend fun fix(): Boolean {
+  suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
-    val declaration = declarationOrNull.await() ?: return false
+    var addSuccessful = true
+    var removeSuccessful = true
 
-    require(this is RemovesDependency)
+    if (this is AddsDependency) {
+      addSuccessful = addDependency()
+    }
 
-    dependentProject.removeDependencyWithComment(declaration, fixLabel(), oldDependency)
+    if (this is RemovesDependency) {
 
-    return true
+      removeSuccessful = removeDependency(removalStrategy)
+    }
+
+    return addSuccessful && removeSuccessful
   }
 
   fun fixLabel() = "  $FIX_LABEL [$findingName]"

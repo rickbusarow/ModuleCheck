@@ -17,6 +17,7 @@ package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.utils.remove
 
 abstract class DependenciesBlock(
   val suppressAll: List<String>,
@@ -89,7 +90,14 @@ abstract class DependenciesBlock(
     projectAccessor: ProjectAccessor,
     suppressed: List<String>
   ) {
-    val cm = ConfiguredModule(configName = configName, projectPath = projectPath)
+
+    val isTestFixtures = parsedString.contains(testFixturesRegex)
+
+    val cm = ConfiguredModule(
+      configName = configName,
+      projectPath = projectPath,
+      testFixtures = isTestFixtures
+    )
 
     val originalString = getOriginalString(parsedString)
 
@@ -111,18 +119,20 @@ abstract class DependenciesBlock(
 
   fun getOrEmpty(
     moduleRef: String,
-    configName: ConfigurationName
+    configName: ConfigurationName,
+    testFixtures: Boolean
   ): List<ModuleDependencyDeclaration> {
-    return getOrEmpty(StringProjectPath(moduleRef), configName)
+    return getOrEmpty(StringProjectPath(moduleRef), configName, testFixtures)
   }
 
   fun getOrEmpty(
     moduleRef: StringProjectPath,
-    configName: ConfigurationName
+    configName: ConfigurationName,
+    testFixtures: Boolean
   ): List<ModuleDependencyDeclaration> {
 
-    return allModuleDeclarations[ConfiguredModule(configName, moduleRef)]
-      ?: allModuleDeclarations[ConfiguredModule(configName, moduleRef.toTypeSafe())]
+    return allModuleDeclarations[ConfiguredModule(configName, moduleRef, testFixtures)]
+      ?: allModuleDeclarations[ConfiguredModule(configName, moduleRef.toTypeSafe(), testFixtures)]
       ?: emptyList()
   }
 
@@ -204,12 +214,18 @@ abstract class DependenciesBlock(
     }
 
     return originalStringLines.joinToString("\n")
+      .remove("""[\s\S]*\/\/ ModuleCheck finding.*(?:\r\n|\r|\n)""".toRegex())
   }
 
   protected data class ConfiguredModule(
     val configName: ConfigurationName,
-    val projectPath: ProjectPath
+    val projectPath: ProjectPath,
+    val testFixtures: Boolean
   )
+
+  companion object {
+    val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()
+  }
 }
 
 interface DependenciesBlocksProvider {

@@ -72,7 +72,7 @@ data class ModuleDependencyDeclaration(
   val configurationNameTransform: ConfigurationNameTransform
 ) : DependencyDeclaration {
 
-  suspend fun replace(
+  suspend fun copy(
     newConfigName: ConfigurationName = configName,
     newModulePath: ProjectPath = projectPath,
     testFixtures: Boolean
@@ -116,8 +116,10 @@ data class ModuleDependencyDeclaration(
       .replaceFirst(projectPath.value, newModulePath.value)
       .maybeFixExtraQuotes()
 
-    val newStatement = if (newModule) newDeclaration.prefixIfNot(precedingWhitespace)
-    else statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
+    val newStatement = when {
+      newModule -> newDeclaration.prefixIfNot(precedingWhitespace)
+      else -> statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
+    }
 
     return copy(
       projectPath = newModulePath,
@@ -173,6 +175,18 @@ data class ModuleDependencyDeclaration(
     result = 31 * result + suppressed.hashCode()
     return result
   }
+
+  override fun toString(): String {
+    return """ModuleDependencyDeclaration(
+      |  projectPath=$projectPath,
+      |  projectAccessor=$projectAccessor,
+      |  configName=$configName,
+      |  declarationText='$declarationText',
+      |  statementWithSurroundingText='$statementWithSurroundingText',
+      |  suppressed=$suppressed
+      |)
+    """.trimMargin()
+  }
 }
 
 data class ExternalDependencyDeclaration(
@@ -211,5 +225,18 @@ data class ExternalDependencyDeclaration(
     result = 31 * result + (moduleName?.hashCode() ?: 0)
     result = 31 * result + (version?.hashCode() ?: 0)
     return result
+  }
+
+  override fun toString(): String {
+    return """ExternalDependencyDeclaration(
+      |  configName=$configName,
+      |  declarationText='$declarationText',
+      |  statementWithSurroundingText='$statementWithSurroundingText',
+      |  suppressed=$suppressed,
+      |  group=$group,
+      |  moduleName=$moduleName,
+      |  version=$version
+      |)
+    """.trimMargin()
   }
 }

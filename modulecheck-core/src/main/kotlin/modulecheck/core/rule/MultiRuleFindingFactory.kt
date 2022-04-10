@@ -20,15 +20,17 @@ import modulecheck.api.context.depths
 import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.FindingFactory
-import modulecheck.api.finding.ModifiesDependency
+import modulecheck.api.finding.ModifiesProjectDependency
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.rule.ReportOnlyRule
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.core.OverShotDependencyFinding
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
 import modulecheck.utils.mapAsync
+import modulecheck.utils.sortedWith
 
 class MultiRuleFindingFactory(
   private val settings: ModuleCheckSettings,
@@ -53,11 +55,14 @@ class MultiRuleFindingFactory(
 
     val output = mutableListOf<Finding>()
 
-    sortedByDescending { it is ModifiesDependency }
+    sortedWith(
+      { it !is ModifiesProjectDependency },
+      { it !is OverShotDependencyFinding }
+    )
       .forEach { finding ->
         when (finding) {
 
-          is ModifiesDependency -> {
+          is ModifiesProjectDependency -> {
             val newAdd = adding.add(finding.dependentProject to finding.newDependency)
             val newRemove = removing.add(finding.dependentProject to finding.oldDependency)
             if (newAdd || newRemove) {

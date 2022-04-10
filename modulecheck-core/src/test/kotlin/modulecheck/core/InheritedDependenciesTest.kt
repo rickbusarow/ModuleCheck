@@ -3011,6 +3011,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
+          // testFixturesImplementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
           testFixturesApi(project(path = ":lib1"))
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
@@ -3252,7 +3253,7 @@ class InheritedDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testFixturesApi",
           dependency = ":lib1",
-          position = null
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,

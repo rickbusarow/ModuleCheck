@@ -18,6 +18,7 @@ package modulecheck.core.rule.sort
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration
@@ -50,7 +51,7 @@ class SortDependenciesFinding(
 
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred { null }
 
-  override suspend fun fix(): Boolean {
+  override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
     var fileText = buildFile.readText()
 
     dependentProject.buildFileParser

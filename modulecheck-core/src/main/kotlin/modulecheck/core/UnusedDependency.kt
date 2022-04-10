@@ -30,7 +30,7 @@ data class UnusedDependency(
   RemovesDependency,
   Deletable {
 
-  override val dependencyProject = oldDependency.project
+  override val dependency get() = oldDependency
 
   override val message: String
     get() = "The declared dependency is not used in this module."
@@ -45,7 +45,7 @@ data class UnusedDependency(
     return "UnusedDependency(\n" +
       "\tdependentPath='$dependentPath', \n" +
       "\tbuildFile=$buildFile, \n" +
-      "\tdependencyProject=$dependencyProject, \n" +
+      "\tdependency=$dependency, \n" +
       "\tdependencyIdentifier='$dependencyIdentifier', \n" +
       "\tconfigurationName=$configurationName\n" +
       ")"

@@ -18,7 +18,8 @@ package modulecheck.core.rule.android
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
-import modulecheck.core.internal.positionOfStatement
+import modulecheck.api.finding.RemovesDependency.RemovalStrategy
+import modulecheck.api.finding.internal.positionOfStatement
 import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
@@ -61,7 +62,7 @@ data class DisableViewBindingGenerationFinding(
     fileText.positionOfStatement(statement)
   }
 
-  override suspend fun fix(): Boolean {
+  override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
     val settings = dependentProject.buildFileParser.androidSettings()
 

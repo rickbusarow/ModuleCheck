@@ -15,6 +15,8 @@
 
 package modulecheck.api.finding
 
+import modulecheck.api.finding.internal.removeDependencyWithDelete
+
 interface Deletable :
   Finding,
   DependencyFinding {
