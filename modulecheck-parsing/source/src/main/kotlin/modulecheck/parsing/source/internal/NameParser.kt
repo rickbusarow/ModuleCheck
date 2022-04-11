@@ -35,7 +35,29 @@ fun interface NameParser {
     val toExplicitReference: String.() -> Reference.ExplicitReference,
     val toInterpretedReference: String.() -> Reference.InterpretedReference,
     val stdLibNameOrNull: String.() -> ExplicitReference?
-  )
+  ) {
+    override fun toString(): String {
+      return """NameParserPacket(
+        |packageName='$packageName',
+        |
+        |imports=$imports,
+        |
+        |wildcardImports=$wildcardImports,
+        |
+        |aliasedImports=$aliasedImports,
+        |
+        |resolved=$resolved,
+        |
+        |unresolved=$unresolved,
+        |
+        |mustBeApi=$mustBeApi,
+        |
+        |apiReferences=$apiReferences
+        |
+        |)
+      """.trimMargin()
+    }
+  }
 }
 
 class ParsingChain private constructor(

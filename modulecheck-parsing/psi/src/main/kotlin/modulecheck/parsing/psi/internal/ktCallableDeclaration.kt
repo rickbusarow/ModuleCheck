@@ -23,6 +23,7 @@ import org.jetbrains.kotlin.psi.KtCallableDeclaration
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
+import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPropertyAccessor
 import org.jetbrains.kotlin.psi.KtValueArgumentList
@@ -53,6 +54,7 @@ private fun KtAnnotated.annotatedJvmNameOrNull(): String? {
  * Returns any custom names defined by `@JvmName(...)`, the default setter/getter names if it's a
  * property, or the same names as used by Kotlin for anything else.
  */
+@Suppress("ComplexMethod")
 internal fun KtNamedDeclaration.jvmSimpleNames(): Set<String> {
 
   val identifier = nameAsSafeName.identifier
@@ -66,7 +68,9 @@ internal fun KtNamedDeclaration.jvmSimpleNames(): Set<String> {
     is KtFunction -> {
       setOf(jvmNameOrNull() ?: isPrefixMatchOrNull?.value ?: nameAsSafeName.asString())
     }
-    is KtProperty -> {
+
+    is KtProperty,
+    is KtParameter -> {
 
       // const properties can't have JvmName annotations
       if (isConst()) return emptySet()
@@ -80,14 +84,17 @@ internal fun KtNamedDeclaration.jvmSimpleNames(): Set<String> {
 
       buildSet {
 
-        val get = getter?.jvmNameOrNull()
+        val get = (this@jvmSimpleNames as? KtProperty)?.getter?.jvmNameOrNull()
           ?: isPrefixMatchOrNull?.value
           ?: "get$suffix"
 
         add(get)
 
-        if (isVar) {
-          val set = setter?.jvmNameOrNull()
+        val mutable = (this@jvmSimpleNames as? KtProperty)?.isVar
+          ?: (this@jvmSimpleNames as KtParameter).isMutable
+
+        if (mutable) {
+          val set = (this@jvmSimpleNames as? KtProperty)?.setter?.jvmNameOrNull()
             ?: isPrefixSetterOrNull()
             ?: "set$suffix"
 
