@@ -16,7 +16,7 @@
 package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.psi.kotlinStdLibNames
+import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.unsafeLazy
@@ -250,14 +250,7 @@ suspend fun PsiElement.fqNameOrNull(
     ?.let { return it }
 
   // If this doesn't work, then maybe a class from the Kotlin package is used.
-  sequenceOf(
-    "kotlin.jvm.$classReference",
-    "java.lang.$classReference",
-    "kotlin.$classReference",
-    "kotlin.collections.$classReference"
-  )
-    .firstOrNull { it in kotlinStdLibNames }
-    ?.let { return FqName(it) }
+  classReference.kotlinStdLibNameOrNull()?.let { return FqName(it.name) }
 
   return null
 }

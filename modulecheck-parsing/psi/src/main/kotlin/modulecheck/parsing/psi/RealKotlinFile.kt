@@ -59,12 +59,16 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtImportDirective
+import org.jetbrains.kotlin.psi.KtModifierListOwner
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtPackageDirective
+import org.jetbrains.kotlin.psi.KtParameter
+import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
+import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class RealKotlinFile(
@@ -197,6 +201,20 @@ class RealKotlinFile(
           }
         }
 
+        this@declaredNames is KtParameter ||
+          (this@declaredNames is KtProperty && !isTopLevelKtOrJavaMember()) -> {
+
+          kotlin(nameAsString)
+
+          val parentFqName = containingClassOrObject.requireNotNull()
+            .fqName.requireNotNull()
+            .asString()
+
+          jvmSimpleNames().forEach {
+            java("$parentFqName.$it")
+          }
+        }
+
         else -> {
           both(nameAsString)
         }
@@ -209,6 +227,10 @@ class RealKotlinFile(
     ktFile.getChildrenOfTypeRecursive<KtNamedDeclaration>()
       .asSequence()
       .filterNot { it.isPrivateOrInternal() }
+      .filterNot {
+        it.parents.filterIsInstance<KtModifierListOwner>()
+          .any { upstream -> upstream.isPrivateOrInternal() }
+      }
       .flatMap { it.declaredNames() }
       .toSet()
   }
