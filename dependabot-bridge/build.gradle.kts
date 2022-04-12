@@ -63,8 +63,8 @@ dependencies {
 
   dependencySync("net.swiftzer.semver:semver:1.2.0")
 
-  dependencySync("org.antlr:antlr4-runtime:4.9.3")
-  dependencySync("org.antlr:antlr4:4.9.3")
+  dependencySync("org.antlr:antlr4-runtime:4.10")
+  dependencySync("org.antlr:antlr4:4.10")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.10")
   dependencySync("org.codehaus.groovy:groovy:3.0.10")
   dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
@@ -81,7 +81,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.1")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
-  dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.3.0")
+  dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.4.0")
   dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.2.1")
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.2")
   dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.2")
