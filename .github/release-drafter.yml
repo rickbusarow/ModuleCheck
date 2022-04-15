@@ -6,6 +6,9 @@ categories:
     labels:
       - 'feature'
       - 'enhancement'
+  - title: '📐 New Rules'
+    labels:
+      - 'New Rule'
   - title: '💥 Breaking Changes'
     labels:
       - 'api-breaking change'
