@@ -67,7 +67,7 @@ dependencies {
   dependencySync("org.antlr:antlr4:4.10.1")
   dependencySync("org.codehaus.groovy:groovy-xml:3.0.10")
   dependencySync("org.codehaus.groovy:groovy:3.0.10")
-  dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.10")
+  dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.6.20")
