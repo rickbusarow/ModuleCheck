@@ -20,7 +20,7 @@ changeTracker = "0.7.4"
 coil = "1.3.2"
 compileSdk = "30"
 dependencyAnalysis = "0.78.0"
-detekt = "1.19.0"
+detekt = "1.20.0"
 dokka = "1.6.10"
 exhaustive = "0.2.0"
 
