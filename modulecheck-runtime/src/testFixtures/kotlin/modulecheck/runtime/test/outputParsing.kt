@@ -35,7 +35,7 @@ import kotlin.properties.Delegates
 
 private typealias ProjectPath = String
 
-@Suppress("LocalVariableName", "ComplexMethod")
+@Suppress("LocalVariableName", "VariableNaming", "ComplexMethod")
 internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFindingReport>>> {
 
   val DELIM = "\u200B"
