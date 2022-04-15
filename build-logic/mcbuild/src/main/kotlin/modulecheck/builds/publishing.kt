@@ -27,7 +27,7 @@ import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.11.4-SNAPSHOT"
+const val VERSION_NAME = "0.12.1-SNAPSHOT"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(
