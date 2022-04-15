@@ -37,7 +37,7 @@ pluginManagement {
 // top-level build.gradle.kts
 
 plugins {
-  id("com.rickbusarow.module-check") version "0.11.3"
+  id("com.rickbusarow.module-check") version "0.12.0"
 }
 ```
 
