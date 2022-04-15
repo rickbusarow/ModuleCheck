@@ -23,6 +23,7 @@ detekt {
 
   parallel = true
   config = files("$rootDir/detekt/detekt-config.yml")
+  buildUponDefaultConfig = true
 }
 
 tasks.withType<Detekt> {
