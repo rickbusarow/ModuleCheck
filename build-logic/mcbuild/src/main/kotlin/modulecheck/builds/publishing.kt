@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
@@ -67,7 +68,11 @@ fun Project.configurePublishing(
         }
       }
 
-      configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      if (pluginManager.hasPlugin("java-gradle-plugin")) {
+        configure(GradlePlugin(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      } else {
+        configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      }
     }
 
   extensions
