@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "daily"
 
-    open-pull-requests-limit: 1
+    open-pull-requests-limit: 3
     labels:
       - "dependencies"
       # Add default Kodiak `merge.automerge_label`
@@ -23,3 +23,14 @@ updates:
       # possibly multiple bugs, but there's no sense in updating and leaking the version anyway
       - dependency-name: "org.jetbrains.kotlin:*"
         versions: [ "1.6.0" ]
+
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/website" # Location of package manifests
+    schedule:
+      interval: "daily"
+
+    open-pull-requests-limit: 4
+    labels:
+      - "dependencies"
+      # Add default Kodiak `merge.automerge_label`
+      - "automerge"
