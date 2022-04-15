@@ -22,8 +22,7 @@ categories:
     labels:
       - 'documentation'
 
-#change-template: '- $TITLE [@$AUTHOR](https://github.com/$AUTHOR) ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
-change-template: '- $TITLE ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
+change-template: '- $TITLE [@$AUTHOR](https://github.com/$AUTHOR) ([#$NUMBER](https://github.com/rbusarow/ModuleCheck/pull/$NUMBER))'
 
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 
@@ -52,7 +51,7 @@ template: |
   ## Contributors
 
   $CONTRIBUTORS
-  
+
 exclude-contributors:
   - 'dependabot'
   - 'dependabot[bot]'
