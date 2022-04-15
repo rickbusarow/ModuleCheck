@@ -19,11 +19,11 @@ plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish") version "0.21.0"
   id("java-gradle-plugin")
+  `maven-publish`
 }
 
 mcbuild {
-  // this is just used for `publishToMavenLocal`
-  artifactId = "com.rickbusarow.module-check"
+  // artifactId = "com.rickbusarow.module-check"
   dagger = true
 }
 
@@ -83,6 +83,11 @@ gradlePlugin {
   }
 }
 
+java {
+  withSourcesJar()
+  withJavadocJar()
+}
+
 // Configuration Block for the Plugin Marker artifact on Plugin Central
 pluginBundle {
   website = "https://github.com/RBusarow/ModuleCheck"
@@ -90,7 +95,7 @@ pluginBundle {
   description = "Fast dependency graph validation for gradle"
   tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
 
-  plugins {
+  (plugins) {
     getByName("moduleCheck") {
       displayName = "Fast dependency graph validation for gradle"
     }
