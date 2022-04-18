@@ -15,6 +15,7 @@
 
 package modulecheck.builds
 
+import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
@@ -27,7 +28,7 @@ import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.11.4-SNAPSHOT"
+const val VERSION_NAME = "0.12.1-SNAPSHOT"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(
@@ -67,7 +68,11 @@ fun Project.configurePublishing(
         }
       }
 
-      configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      if (pluginManager.hasPlugin("java-gradle-plugin")) {
+        configure(GradlePlugin(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      } else {
+        configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      }
     }
 
   extensions

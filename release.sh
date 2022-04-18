@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #
 # Copyright (C) 2021-2022 Rick Busarow
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +15,21 @@
 # limitations under the License.
 #
 
+# exit when any command fails
+set -e
+
+# keep track of the last executed command
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+# echo an error message before exiting
+trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
+
+./gradlew clean
+
 # Publish Maven release
-./gradlew publish --no-daemon --no-parallel
+./gradlew publish --no-daemon --no-parallel --no-configuration-cache
 
 # Close Maven release
-./gradlew closeAndReleaseRepository --no-daemon --no-parallel
+./gradlew closeAndReleaseRepository --no-daemon --no-parallel --no-configuration-cache
 
 # Publish to Gradle Plugin Portal
 ./gradlew publishPlugins
