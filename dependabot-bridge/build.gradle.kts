@@ -69,7 +69,7 @@ dependencies {
   dependencySync("org.codehaus.groovy:groovy:3.0.10")
   dependencySync("org.jetbrains.dokka:dokka-gradle-plugin:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.6.20")
-  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.20")
+  dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.21")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
