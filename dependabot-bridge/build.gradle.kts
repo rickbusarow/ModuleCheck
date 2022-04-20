@@ -72,7 +72,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.6.20")
   dependencySync("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.20")
-  dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.6.20")
+  dependencySync("org.jetbrains.kotlin:kotlin-reflect:1.6.21")
   dependencySync("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.20")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.6.1")
