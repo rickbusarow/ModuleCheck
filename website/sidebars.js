@@ -27,10 +27,12 @@ module.exports = {
         "rules/unused",
         "rules/must_be_api",
         "rules/inherited_dependency",
+        "rules/redundant_dependency",
+        "rules/overshot_dependency",
         "rules/depths",
         {
           type: "category",
-          label: "compiler",
+          label: "Compiler",
           collapsed: false,
           items: [
             "rules/compiler/could_use_anvil_factory",
@@ -59,6 +61,7 @@ module.exports = {
           items: [
             "rules/android/disable_resources",
             "rules/android/disable_viewbinding",
+            "rules/android/unused_kotlin_android_extensions",
           ],
         }
       ],

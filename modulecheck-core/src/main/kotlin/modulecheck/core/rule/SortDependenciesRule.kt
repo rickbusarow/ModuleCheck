@@ -25,10 +25,12 @@ import java.util.Locale
 
 class SortDependenciesRule(
   settings: ModuleCheckSettings
-) : SortRule<SortDependenciesFinding> {
+) : DocumentedRule<SortDependenciesFinding>(), SortRule<SortDependenciesFinding> {
 
   override val id = "SortDependencies"
   override val description = "Sorts all dependencies within a dependencies { ... } block"
+
+  override val documentationPath: String = "sorting/sort_dependencies"
 
   private val elementComparables: Array<(String) -> Comparable<*>> =
     settings

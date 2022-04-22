@@ -25,11 +25,13 @@ import modulecheck.project.McProject
 
 class SortPluginsRule(
   settings: ModuleCheckSettings
-) : SortRule<SortPluginsFinding> {
+) : DocumentedRule<SortPluginsFinding>(), SortRule<SortPluginsFinding> {
 
   override val id = "SortPlugins"
   override val description =
     "Sorts Gradle plugins which are applied using the plugins { ... } block"
+
+  override val documentationPath: String = "sorting/sort_plugins"
 
   private val comparables: Array<(PluginDeclaration) -> Comparable<*>> =
     settings

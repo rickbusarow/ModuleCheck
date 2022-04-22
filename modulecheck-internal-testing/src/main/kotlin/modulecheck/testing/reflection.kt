@@ -17,7 +17,9 @@ package modulecheck.testing
 
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.jvm.isAccessible
 
 /**
  * Returns the full tree of classes which implement a base sealed class/interface, including
@@ -48,4 +50,16 @@ inline fun <reified T : Any> KClass<T>.sealedSubclassInstances(vararg args: Any?
     .mapNotNull {
       kotlin.runCatching { it.call(*args) }.getOrNull()
     }
+}
+
+inline fun <reified T : Any, reified R : Any> T.getPrivateFieldByName(name: String): R {
+  val kClass = T::class
+
+  val property = kClass.memberProperties.find { it.name == name }
+
+  require(property != null) { "Cannot find a property named `$name` in ${kClass.qualifiedName}." }
+
+  property.isAccessible = true
+
+  return property.get(this) as R
 }

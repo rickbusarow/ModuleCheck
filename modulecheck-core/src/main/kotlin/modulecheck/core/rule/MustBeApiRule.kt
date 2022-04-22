@@ -15,17 +15,18 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
 import modulecheck.project.McProject
 
-class MustBeApiRule : ModuleCheckRule<MustBeApiFinding> {
+class MustBeApiRule : DocumentedRule<MustBeApiFinding>() {
 
   override val id = "MustBeApi"
   override val description = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
+
+  override val documentationPath: String = "must_be_api"
 
   override suspend fun check(project: McProject): List<MustBeApiFinding> {
     return project.get(MustBeApi)

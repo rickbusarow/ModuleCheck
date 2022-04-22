@@ -15,18 +15,19 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.project.McProject
 
-class RedundantRule : ModuleCheckRule<RedundantDependencyFinding> {
+class RedundantRule : DocumentedRule<RedundantDependencyFinding>() {
 
   override val id = "RedundantDependency"
   override val description =
     "Finds project dependencies which are declared as `api` in dependent " +
       "projects, but also declared in the current project unnecessarily"
+
+  override val documentationPath: String = "redundant_dependency"
 
   override suspend fun check(project: McProject): List<RedundantDependencyFinding> {
     return project.get(RedundantDependencies)

@@ -24,6 +24,7 @@ interface ModuleCheckRule<T : Finding> {
 
   val id: String
   val description: String
+  val documentationUrl: String
 
   suspend fun check(project: McProject): List<T>
   fun shouldApply(checksSettings: ChecksSettings): Boolean

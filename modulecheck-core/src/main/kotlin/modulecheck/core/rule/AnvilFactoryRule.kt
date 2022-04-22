@@ -15,17 +15,18 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.anvil.AnvilFactoryParser
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.project.McProject
 
-class AnvilFactoryRule : ModuleCheckRule<CouldUseAnvilFinding> {
+class AnvilFactoryRule : DocumentedRule<CouldUseAnvilFinding>() {
 
   override val id = "AnvilFactoryGeneration"
   override val description = "Finds modules which could use Anvil's factory generation " +
     "instead of Dagger's"
+
+  override val documentationPath: String = "compiler/could_use_anvil_factory"
 
   override suspend fun check(project: McProject): List<CouldUseAnvilFinding> {
     return AnvilFactoryParser.parse(project)
