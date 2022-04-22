@@ -6,8 +6,7 @@ sidebar_label: Could Use Anvil Factory
 
 Anvil's [factory generation](https://github.com/square/anvil#dagger-factory-generation) is faster
 than Dagger's generation using Kapt. However, it doesn't support generating Components or
-Subcomponents,
-and it doesn't work in Java code.
+Subcomponents, and it doesn't work in Java code.
 
 This rule detects whether a module could switch from Dagger's kapt to Anvil factory generation.
 

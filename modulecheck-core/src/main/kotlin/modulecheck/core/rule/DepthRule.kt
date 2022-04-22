@@ -21,10 +21,12 @@ import modulecheck.api.rule.ReportOnlyRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.project.McProject
 
-class DepthRule : ReportOnlyRule<DepthFinding> {
+class DepthRule : DocumentedRule<DepthFinding>(), ReportOnlyRule<DepthFinding> {
 
   override val id = "Depth"
   override val description = "The longest path between this module and its leaf nodes"
+
+  override val documentationPath: String = "depths"
 
   override suspend fun check(project: McProject): List<DepthFinding> {
     return project.sourceSets.keys

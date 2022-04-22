@@ -12,4 +12,4 @@ beginning to build the dependent one.
 
 ModuleCheck determines whether a dependency is unused by looking for all fully qualified names
 declared in its API, then searching the dependent module's code for references to any of those
-names.  If there are no references, the dependency module is considered to be unused.
+names. If there are no references, the dependency module is considered to be unused.
