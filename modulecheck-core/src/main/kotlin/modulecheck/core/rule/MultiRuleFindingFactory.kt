@@ -63,14 +63,14 @@ class MultiRuleFindingFactory(
         when (finding) {
 
           is ModifiesProjectDependency -> {
-            val newAdd = adding.add(finding.dependentProject to finding.newDependency)
-            val newRemove = removing.add(finding.dependentProject to finding.oldDependency)
+            val newAdd = adding.add(finding.subjectProject to finding.newDependency)
+            val newRemove = removing.add(finding.subjectProject to finding.oldDependency)
             if (newAdd || newRemove) {
               output.add(finding)
             }
           }
           is AddsDependency -> {
-            if (adding.add(finding.dependentProject to finding.newDependency)) {
+            if (adding.add(finding.subjectProject to finding.newDependency)) {
               output.add(finding)
             }
           }

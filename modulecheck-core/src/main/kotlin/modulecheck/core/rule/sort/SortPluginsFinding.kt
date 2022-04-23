@@ -30,10 +30,10 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 class SortPluginsFinding(
-  override val dependentProject: McProject,
-  override val dependentPath: ProjectPath.StringProjectPath,
-  override val buildFile: File,
-  val comparator: Comparator<PluginDeclaration>
+	override val subjectProject: McProject,
+	override val subjectPath: ProjectPath.StringProjectPath,
+	override val buildFile: File,
+	val comparator: Comparator<PluginDeclaration>
 ) : Finding, Fixable {
 
   override val message: String
@@ -50,7 +50,7 @@ class SortPluginsFinding(
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred { null }
 
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
-    val block = dependentProject.buildFileParser
+    val block = subjectProject.buildFileParser
       .pluginsBlock() ?: return false
 
     var fileText = buildFile.readText()

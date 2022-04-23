@@ -33,7 +33,7 @@ class MustBeApiRule : DocumentedRule<MustBeApiFinding>() {
       .map {
         val oldConfig = it.configuredProjectDependency.configurationName
         MustBeApiFinding(
-          dependentProject = project,
+          subjectProject = project,
           newDependency = it.configuredProjectDependency
             .copy(configurationName = oldConfig.apiVariant()),
           oldDependency = it.configuredProjectDependency,

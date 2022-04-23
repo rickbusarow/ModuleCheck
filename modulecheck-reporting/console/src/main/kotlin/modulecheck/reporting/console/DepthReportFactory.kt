@@ -25,7 +25,7 @@ class DepthReportFactory {
     header("-- ModuleCheck Depth results --")
 
     results.filter { it.shouldReport() }
-      .groupBy { it.dependentPath }
+      .groupBy { it.subjectPath }
       .toSortedMap()
       .entries
       .forEach { (path, values) ->
@@ -59,7 +59,7 @@ class DepthReportFactory {
                   separator = ", ",
                   prefix = "[",
                   postfix = "]"
-                ) { it.dependentPath.value }
+                ) { it.subjectPath.value }
             )
           }
       }
@@ -73,7 +73,7 @@ class DepthReportFactory {
     if (depth > 0) return true
 
     // This really shouldn't be possible, but just skip reporting if the source set doesn't exist
-    val sourceSet = dependentProject.sourceSets[sourceSetName] ?: return false
+    val sourceSet = subjectProject.sourceSets[sourceSetName] ?: return false
 
     // If the depth is 0 and there are no files, just omit the report.
     // If the depth is 0 and it has files, like a core module, report it.

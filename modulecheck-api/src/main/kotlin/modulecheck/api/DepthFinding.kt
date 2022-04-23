@@ -28,8 +28,8 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class DepthFinding(
-  override val dependentProject: McProject,
-  override val dependentPath: StringProjectPath,
+  override val subjectProject: McProject,
+  override val subjectPath: StringProjectPath,
   val depth: Int,
   val children: List<DepthFinding>,
   val sourceSetName: SourceSetName,
@@ -48,7 +48,7 @@ data class DepthFinding(
 
   suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<DepthFinding> {
     return treeCache.getOrPut(sourceSetName) {
-      val children = dependentProject
+      val children = subjectProject
         .projectDependencies[sourceSetName]
         .flatMap {
           it.project.depthForSourceSetName(SourceSetName.MAIN)
@@ -60,7 +60,7 @@ data class DepthFinding(
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
-      dependentPath = dependentPath,
+      dependentPath = subjectPath,
       problemName = findingName,
       sourceOrNull = null,
       configurationName = "",
@@ -78,7 +78,7 @@ data class DepthFinding(
 
   override fun toString(): String {
     return "DepthFinding(" +
-      "dependentPath='$dependentPath', " +
+      "dependentPath='$subjectPath', " +
       "depth=$depth, " +
       "children=$children, " +
       "sourceSetName=$sourceSetName" +

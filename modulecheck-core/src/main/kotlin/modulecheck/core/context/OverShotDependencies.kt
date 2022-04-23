@@ -114,7 +114,7 @@ data class OverShotDependencies(
           val newCpd = overshot.asApiOrImplementation(project)
 
           OverShotDependencyFinding(
-            dependentProject = project,
+            subjectProject = project,
             newDependency = newCpd,
             oldDependency = original,
             configurationName = newCpd.configurationName

@@ -64,7 +64,7 @@ class GraphvizFactory @Inject constructor() {
   }
 
   private suspend fun StringBuilder.defineModuleBoxes(root: DepthFinding) {
-    root.dependentProject
+    root.subjectProject
       .allProjectDependencies(root.sourceSetName, includeSelf = true)
       .sortedBy { it.path }
       .distinctBy { it.path }
@@ -90,8 +90,8 @@ class GraphvizFactory @Inject constructor() {
   }
 
   private fun DepthFinding.edgesSection(): Pair<McProject, String> {
-    return dependentProject to buildString {
-      dependentProject
+    return subjectProject to buildString {
+      subjectProject
         .projectDependencies[sourceSetName]
         .forEach { cpd ->
 
@@ -108,7 +108,7 @@ class GraphvizFactory @Inject constructor() {
           }
 
           appendLine(
-            "${dependentProject.pathString()} " +
+            "${subjectProject.pathString()} " +
               "-> " +
               "${cpd.project.pathString()} " +
               "[style = bold; color = \"${lineColor.value}\"];"
@@ -118,12 +118,12 @@ class GraphvizFactory @Inject constructor() {
   }
 
   private suspend fun StringBuilder.defineRanks(root: DepthFinding) {
-    root.dependentProject.allProjectDependencies(root.sourceSetName, includeSelf = false)
+    root.subjectProject.allProjectDependencies(root.sourceSetName, includeSelf = false)
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
       // If the root is a non-main source set, one of its dependencies may depend upon its main
       // sources.  For instance, if :lib-1 depends upon :lib-2 with `testImplementation`, but :lib-2
       // depends upon :lib-1 with `implementation`.
-      .filterNot { it.dependentPath == root.dependentPath }
+      .filterNot { it.subjectPath == root.subjectPath }
       .plus(root)
       .groupBy { it.depth }
       .toSortedMap()
@@ -131,8 +131,8 @@ class GraphvizFactory @Inject constructor() {
       .forEach { (_, allSame) ->
 
         val paths = allSame
-          .sortedBy { it.dependentPath }
-          .joinToString("; ", postfix = ";") { it.dependentProject.pathString() }
+          .sortedBy { it.subjectPath }
+          .joinToString("; ", postfix = ";") { it.subjectProject.pathString() }
 
         appendLine("{rank = same; $paths}")
       }

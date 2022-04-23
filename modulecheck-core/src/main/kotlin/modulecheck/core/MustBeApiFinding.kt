@@ -27,7 +27,7 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class MustBeApiFinding(
-  override val dependentProject: McProject,
+  override val subjectProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
@@ -47,7 +47,7 @@ data class MustBeApiFinding(
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     super.declarationOrNull.await()
-      ?: source?.statementOrNullIn(dependentProject)
+      ?: source?.statementOrNullIn(subjectProject)
   }
 
   override fun fromStringOrEmpty(): String {
@@ -60,7 +60,7 @@ data class MustBeApiFinding(
 
   override fun toString(): String {
     return """MustBeApiFinding(
-      |   dependentPath='$dependentPath',
+      |   dependentPath='$subjectPath',
       |   buildFile=$buildFile,
       |   dependency=$dependency,
       |   configurationName=$configurationName,

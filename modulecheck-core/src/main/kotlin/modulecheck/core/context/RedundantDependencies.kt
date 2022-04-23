@@ -61,7 +61,7 @@ data class RedundantDependencies(
             ?: return@mapNotNull null
 
           RedundantDependencyFinding(
-            dependentProject = project,
+            subjectProject = project,
             oldDependency = direct,
             configurationName = direct.configurationName,
             from = fromCpd

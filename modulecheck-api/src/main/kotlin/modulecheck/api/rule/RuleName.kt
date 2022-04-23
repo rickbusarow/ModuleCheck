@@ -13,22 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.api.rule
 
-import modulecheck.api.finding.internal.removeDependencyWithDelete
-
-interface Deletable :
-  Finding,
-  DependencyFinding {
-
-  suspend fun delete(): Boolean {
-
-    val declaration = declarationOrNull.await() ?: return false
-
-    require(this is RemovesDependency)
-
-    subjectProject.removeDependencyWithDelete(declaration, oldDependency)
-
-    return true
+class RuleName(
+  /** my-rule-name */
+  val kebabCase: String
+) {
+  init {
   }
+
+  /** MyRuleName */
+  val titleCase: String
+
+  /** some_rule_name */
+  val snakeCase: String
+
+  /** someRuleName */
+  val pascalCase: String
+
+  /** 'Some Rule Name' */
+  val words: String
+
 }
