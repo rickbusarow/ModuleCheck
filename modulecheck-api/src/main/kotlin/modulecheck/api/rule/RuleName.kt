@@ -15,23 +15,26 @@
 
 package modulecheck.api.rule
 
+import modulecheck.utils.CaseMatcher
+import modulecheck.utils.capitalize
+
 class RuleName(
-  /** my-rule-name */
+  /** some-rule-name */
   val kebabCase: String
 ) {
   init {
+    check(CaseMatcher.KebabCaseMatcher().matches(kebabCase))
   }
 
-  /** MyRuleName */
-  val titleCase: String
+  /** SomeRuleName */
+  val titleCase: String get() = kebabCase.split('-').joinToString { it.capitalize() }
 
   /** some_rule_name */
-  val snakeCase: String
+  val snakeCase: String get() = kebabCase.replace('-', '_')
 
   /** someRuleName */
   val pascalCase: String
 
   /** 'Some Rule Name' */
   val words: String
-
 }
