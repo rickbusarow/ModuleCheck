@@ -37,7 +37,7 @@ class GraphvizFileWriter @Inject constructor(
         // Don't generate a graph if the SourceSet doesn't exist at all.
         // For example, if it's an Android project there will be an `androidTest` SourceSet,
         // but if there are no `androidTestImplementation` dependencies and no files, then skip it.
-        it.depth != 0 || it.dependentProject
+        it.depth != 0 || it.subjectProject
           .sourceSets[it.sourceSetName]
           ?.hasExistingSourceFiles == true
       }
@@ -48,7 +48,7 @@ class GraphvizFileWriter @Inject constructor(
 
         launchIO {
 
-          val root = rootOrNull ?: depth.dependentProject.projectDir
+          val root = rootOrNull ?: depth.subjectProject.projectDir
 
           val graphFile = root.child(
             "build",

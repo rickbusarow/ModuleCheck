@@ -31,8 +31,8 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedPluginFinding(
-  override val dependentProject: McProject,
-  override val dependentPath: StringProjectPath,
+  override val subjectProject: McProject,
+  override val subjectPath: StringProjectPath,
   override val buildFile: File,
   override val findingName: String,
   val pluginId: String,
@@ -80,7 +80,7 @@ data class UnusedPluginFinding(
       "id '$alternatePluginId'",
       kotlinPluginFunction
     ).firstNotNullOfOrNull { id ->
-      dependentProject.buildFileParser.pluginsBlock()?.getById(id)
+      subjectProject.buildFileParser.pluginsBlock()?.getById(id)
     }
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
@@ -91,7 +91,7 @@ data class UnusedPluginFinding(
 
     val declaration = declarationOrNull.await() ?: return false
 
-    dependentProject.removeDependencyWithComment(declaration, fixLabel())
+    subjectProject.removeDependencyWithComment(declaration, fixLabel())
 
     return true
   }
@@ -100,7 +100,7 @@ data class UnusedPluginFinding(
 
     val declaration = declarationOrNull.await() ?: return false
 
-    dependentProject.removeDependencyWithDelete(declaration)
+    subjectProject.removeDependencyWithDelete(declaration)
 
     return true
   }

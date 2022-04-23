@@ -32,9 +32,9 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(
-  override val dependentProject: McProject,
-  override val dependentPath: ProjectPath.StringProjectPath,
-  override val buildFile: File
+	override val subjectProject: McProject,
+	override val subjectPath: ProjectPath.StringProjectPath,
+	override val buildFile: File
 ) : Finding, Fixable {
 
   override val message: String
@@ -48,7 +48,7 @@ data class DisableViewBindingGenerationFinding(
 
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
 
-    dependentProject.buildFileParser.androidSettings()
+    subjectProject.buildFileParser.androidSettings()
       .assignments
       .firstOrNull { it.propertyFullName == "viewBinding" }
       ?.declarationText
@@ -64,7 +64,7 @@ data class DisableViewBindingGenerationFinding(
 
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
-    val settings = dependentProject.buildFileParser.androidSettings()
+    val settings = subjectProject.buildFileParser.androidSettings()
 
     val newText = settings.assignments
       .filter { it.propertyFullName == "viewBinding" && it.value == "true" }
@@ -108,7 +108,7 @@ data class DisableViewBindingGenerationFinding(
 
     val oldText = buildFile.readText()
 
-    return dependentProject.buildFileParser
+    return subjectProject.buildFileParser
       .pluginsBlock()
       ?.fullText
       ?.let { oldPlugins ->
@@ -117,7 +117,7 @@ data class DisableViewBindingGenerationFinding(
 
         oldText.replace(oldPlugins, new)
       }
-      ?: dependentProject.buildFileParser
+      ?: subjectProject.buildFileParser
         .dependenciesBlocks()
         .firstOrNull()
         ?.fullText

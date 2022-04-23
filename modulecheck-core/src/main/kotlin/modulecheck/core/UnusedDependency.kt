@@ -22,7 +22,7 @@ import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class UnusedDependency(
-  override val dependentProject: McProject,
+  override val subjectProject: McProject,
   override val oldDependency: ConfiguredProjectDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
@@ -43,7 +43,7 @@ data class UnusedDependency(
 
   override fun toString(): String {
     return "UnusedDependency(\n" +
-      "\tdependentPath='$dependentPath', \n" +
+      "\tdependentPath='$subjectPath', \n" +
       "\tbuildFile=$buildFile, \n" +
       "\tdependency=$dependency, \n" +
       "\tdependencyIdentifier='$dependencyIdentifier', \n" +

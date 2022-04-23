@@ -85,8 +85,8 @@ class DisableViewBindingRule : DocumentedRule<DisableViewBindingGenerationFindin
 
     return listOf(
       DisableViewBindingGenerationFinding(
-        dependentProject = project,
-        dependentPath = project.path,
+        subjectProject = project,
+        subjectPath = project.path,
         buildFile = project.buildFile
       )
     )

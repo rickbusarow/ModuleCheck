@@ -43,13 +43,13 @@ class DepthLogFactory {
       .entries
       .forEach { (depth, values) ->
 
-        val paths = values.distinctBy { it.dependentPath }
-          .sortedBy { it.dependentPath }
+        val paths = values.distinctBy { it.subjectPath }
+          .sortedBy { it.subjectPath }
           .joinToString(
             separator = ", ",
             prefix = "[",
             postfix = "]"
-          ) { it.dependentPath.value }
+          ) { it.subjectPath.value }
 
         info("    ${depth.toString().padEnd(depthHeaderLength)} $paths")
       }

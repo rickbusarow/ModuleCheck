@@ -38,8 +38,8 @@ abstract class AbstractProjectDependencyFinding(
   DependencyFinding,
   ProjectDependencyFinding {
 
-  final override val dependentPath: StringProjectPath get() = dependentProject.path
-  final override val buildFile: File get() = dependentProject.buildFile
+  final override val subjectPath: StringProjectPath get() = subjectProject.path
+  final override val buildFile: File get() = subjectProject.buildFile
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     val statement = declarationOrNull.await()?.declarationText ?: return@lazyDeferred null
@@ -49,7 +49,7 @@ abstract class AbstractProjectDependencyFinding(
   }
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
-    dependency.statementOrNullIn(dependentProject)
+    dependency.statementOrNullIn(subjectProject)
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
     declarationOrNull.await()?.statementWithSurroundingText
@@ -57,7 +57,7 @@ abstract class AbstractProjectDependencyFinding(
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
-      dependentPath = dependentPath,
+      dependentPath = subjectPath,
       problemName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
