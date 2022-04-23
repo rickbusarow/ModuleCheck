@@ -79,10 +79,6 @@ sealed class CaseMatcher(private val regex: Regex) {
   /** Represents matching for custom regular expressions */
   class CustomMatcher(regex: Regex) : CaseMatcher(regex)
 
-  open fun notMatches(source: String?): Boolean {
-    return !matches(source)
-  }
-
   open fun matches(source: String?): Boolean {
     return source?.matches(regex) ?: false
   }
