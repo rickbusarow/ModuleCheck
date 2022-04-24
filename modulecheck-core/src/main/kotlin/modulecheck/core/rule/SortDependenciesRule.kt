@@ -15,6 +15,7 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.rule.RuleName
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
@@ -27,11 +28,10 @@ class SortDependenciesRule(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortDependenciesFinding>(), SortRule<SortDependenciesFinding> {
 
-  override val id = "SortDependencies"
+  override val name = RuleName("sort-dependencies")
   override val description = "Sorts all dependencies within a dependencies { ... } block"
 
-  override val documentationPath: String = "sorting/sort_dependencies"
-
+  override val documentationPath: String = "sorting/${name.snakeCase}"
   private val elementComparables: Array<(String) -> Comparable<*>> =
     settings
       .sort
@@ -64,8 +64,8 @@ class SortDependenciesRule(
     } else {
       listOf(
         SortDependenciesFinding(
-          dependentProject = project,
-          dependentPath = project.path,
+          subjectProject = project,
+          subjectPath = project.path,
           buildFile = project.buildFile,
           comparator = comparator
         )

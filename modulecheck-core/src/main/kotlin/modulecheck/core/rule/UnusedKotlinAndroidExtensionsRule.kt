@@ -16,6 +16,7 @@
 package modulecheck.core.rule
 
 import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.api.rule.RuleName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.parsing.source.asExplicitKotlinReference
@@ -27,12 +28,11 @@ private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-exten
 
 class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() {
 
-  override val id = "UnusedKotlinAndroidExtensions"
+  override val name = RuleName("unused-kotlin-android-extensions")
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
-  override val documentationPath: String = "android/unused_kotlin_android_extensions"
-
+  override val documentationPath: String = "android/${name.snakeCase}"
   private val parcelizeImport = "kotlinx.android.parcel.Parcelize".asExplicitKotlinReference()
   private val syntheticReferencePackage = "kotlinx.android.synthetic".asExplicitKotlinReference()
 
@@ -51,8 +51,8 @@ class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() 
     return if (usedInProject) emptyList()
     else listOf(
       UnusedPluginFinding(
-        dependentProject = project,
-        dependentPath = project.path,
+        subjectProject = project,
+        subjectPath = project.path,
         buildFile = project.buildFile,
         findingName = "unusedKotlinAndroidExtensions",
         pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,

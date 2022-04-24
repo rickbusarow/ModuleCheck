@@ -28,7 +28,8 @@ sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
    * For example, given a file `/website/docs/rules/compiler/ksp/foo.md` with an id of `id: bar`,
    * the documentation path is `compiler/ksp/bar`.
    */
-  protected abstract val documentationPath: String
+  protected open val documentationPath: String
+    get() = name.snakeCase
 
   final override val documentationUrl: String
     get() = "${RULES_BASE_URL}$documentationPath"
