@@ -39,6 +39,7 @@ dependencies {
   implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plug)
+  implementation(libs.kotlinx.knit)
   implementation(libs.ktlint.gradle)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)

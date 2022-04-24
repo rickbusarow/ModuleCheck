@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.ModuleCheckBuildExtension
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
@@ -40,6 +41,14 @@ subprojects {
     proj.tasks
       .withType<org.jetbrains.dokka.gradle.AbstractDokkaLeafTask>()
       .configureEach {
+
+        proj.extensions.configure<ModuleCheckBuildExtension> {
+
+          // The default moduleName for each module in the module list is its unqualified "name",
+          // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
+          // artifact ID, if it has one, or default to its full Gradle path for internal modules.
+          moduleName.set(artifactId ?: proj.path.removePrefix(":"))
+        }
 
         listOf(
           "jar",
