@@ -154,7 +154,7 @@ class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
       .mapAsync { (source, inherited) ->
 
         InheritedDependencyFinding(
-          subjectProject = project,
+          dependentProject = project,
           newDependency = inherited.asApiOrImplementation(project),
           source = source
         )

@@ -50,7 +50,7 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
         finding.positionOrNull.await()
       }
       .toList()
-      .groupBy { it.subjectPath }
+      .groupBy { it.dependentPath }
       .toList()
       .mapAsync { (_, findings) ->
         findings

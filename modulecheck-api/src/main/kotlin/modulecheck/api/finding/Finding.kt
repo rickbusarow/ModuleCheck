@@ -15,7 +15,6 @@
 
 package modulecheck.api.finding
 
-import modulecheck.api.finding.Finding.Position
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
@@ -24,42 +23,19 @@ import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import java.io.File
 
-sealed interface FindingResult {
-
-  val subjectPath: StringProjectPath
-  val buildFile: File
-
-  val problemName: String
-  val sourceOrNull: String?
-  val configurationName: String
-  val dependencyIdentifier: String
-  val positionOrNull: Position?
-  val message: String
-  val fixed: Boolean
-
-  val filePathString: String
-    get() = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
-}
-
-interface HasOldPosition {
-  val oldPositionOrNull: LazyDeferred<Position?>
-}
-
-interface HasNewPosition {
-  val newPositionOrNull: LazyDeferred<Position?>
-}
-
 interface Finding {
 
-  val subjectProject: McProject
-  val subjectPath: StringProjectPath
+  val dependentProject: McProject
 
   val findingName: String
 
+  val dependentPath: StringProjectPath
   val message: String
   val buildFile: File
 
   val dependencyIdentifier: String
+
+  val positionOrNull: LazyDeferred<Position?>
 
   suspend fun toResult(fixed: Boolean): FindingResult
 
@@ -87,15 +63,6 @@ interface Finding {
     val filePathString: String = "${buildFile.path}: ${positionOrNull?.logString().orEmpty()}"
   }
 }
-
-interface FindingWithSource : Finding {
-  val source: FindingSource
-}
-
-data class FindingSource(
-  val buildFile: File,
-  val oldPositionOrNull: LazyDeferred<Position?>
-)
 
 interface DependencyFinding {
 

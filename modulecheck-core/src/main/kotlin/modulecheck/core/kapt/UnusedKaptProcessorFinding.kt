@@ -36,11 +36,11 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
-	override val subjectProject: McProject,
-	override val subjectPath: ProjectPath.StringProjectPath,
-	override val buildFile: File,
-	override val oldDependency: ConfiguredDependency,
-	override val configurationName: ConfigurationName
+  override val dependentProject: McProject,
+  override val dependentPath: ProjectPath.StringProjectPath,
+  override val buildFile: File,
+  override val oldDependency: ConfiguredDependency,
+  override val configurationName: ConfigurationName
 ) : Finding,
   Problem,
   Fixable,
@@ -62,10 +62,10 @@ data class UnusedKaptProcessorFinding(
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     when (oldDependency) {
       is ConfiguredProjectDependency ->
-        oldDependency.statementOrNullIn(subjectProject)
+        oldDependency.statementOrNullIn(dependentProject)
       is ExternalDependency ->
         oldDependency
-          .statementOrNullIn(subjectProject, oldDependency.configurationName)
+          .statementOrNullIn(dependentProject, oldDependency.configurationName)
     }
   }
 

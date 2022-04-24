@@ -29,11 +29,11 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class CouldUseAnvilFinding(
-	override val subjectProject: McProject,
-	override val buildFile: File
+  override val dependentProject: McProject,
+  override val buildFile: File
 ) : Finding, Fixable {
 
-  override val subjectPath: ProjectPath.StringProjectPath = subjectProject.path
+  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.path
 
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."

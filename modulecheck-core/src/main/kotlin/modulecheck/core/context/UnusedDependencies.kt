@@ -67,7 +67,7 @@ data class UnusedDependencies(
         }
         .map { cpd ->
           UnusedDependency(
-            subjectProject = project,
+            dependentProject = project,
             oldDependency = cpd,
             dependencyIdentifier = cpd.project.path.value,
             configurationName = cpd.configurationName

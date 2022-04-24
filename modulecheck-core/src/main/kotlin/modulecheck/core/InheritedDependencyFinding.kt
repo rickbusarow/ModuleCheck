@@ -26,7 +26,7 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class InheritedDependencyFinding(
-  override val subjectProject: McProject,
+  override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val source: ConfiguredProjectDependency
 ) : AbstractProjectDependencyFinding("inheritedDependency"),
@@ -42,10 +42,10 @@ data class InheritedDependencyFinding(
   override val configurationName get() = newDependency.configurationName
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
-    source.statementOrNullIn(subjectProject)
+    source.statementOrNullIn(dependentProject)
   }
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
-    source.positionIn(subjectProject)
+    source.positionIn(dependentProject)
   }
 
   override fun fromStringOrEmpty(): String {

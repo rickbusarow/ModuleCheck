@@ -74,8 +74,8 @@ class UnusedKaptRule(
         val unusedProcessorFindings = unusedProcessors
           .map { processor ->
             UnusedKaptProcessorFinding(
-              subjectProject = project,
-              subjectPath = project.path,
+              dependentProject = project,
+              dependentPath = project.path,
               buildFile = project.buildFile,
               oldDependency = processor,
               configurationName = configName
@@ -87,8 +87,8 @@ class UnusedKaptRule(
 
         if (pluginIsUnused) {
           unusedProcessorFindings + UnusedPluginFinding(
-            subjectProject = project,
-            subjectPath = project.path,
+            dependentProject = project,
+            dependentPath = project.path,
             buildFile = project.buildFile,
             findingName = "unusedKaptPlugin",
             pluginId = KAPT_PLUGIN_ID,

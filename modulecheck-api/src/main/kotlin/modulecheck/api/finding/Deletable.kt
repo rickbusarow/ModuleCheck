@@ -27,7 +27,7 @@ interface Deletable :
 
     require(this is RemovesDependency)
 
-    subjectProject.removeDependencyWithDelete(declaration, oldDependency)
+    dependentProject.removeDependencyWithDelete(declaration, oldDependency)
 
     return true
   }

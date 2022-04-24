@@ -68,7 +68,7 @@ class ConfigValidationTest : BasePluginTest() {
       buildFile.writeKotlin(
         """
         plugins {
-          id("com.rickbusarow.module-check")
+          id("com.rickbusarow.module-check") version "0.11.3"
         }
 
         moduleCheck {
@@ -153,7 +153,7 @@ class ConfigValidationTest : BasePluginTest() {
       buildFile.writeGroovy(
         """
         plugins {
-          id 'com.rickbusarow.module-check'
+          id 'com.rickbusarow.module-check' version '0.11.3'
         }
 
         moduleCheck {

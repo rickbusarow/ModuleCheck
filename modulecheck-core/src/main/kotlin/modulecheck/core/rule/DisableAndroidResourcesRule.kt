@@ -46,7 +46,7 @@ class DisableAndroidResourcesRule : DocumentedRule<UnusedResourcesGenerationFind
 
     fun findingList() = listOf(
       UnusedResourcesGenerationFinding(
-        subjectProject = project, subjectPath = project.path, buildFile = project.buildFile
+        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
       )
     )
 

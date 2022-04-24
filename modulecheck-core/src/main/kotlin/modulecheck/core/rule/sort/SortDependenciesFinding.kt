@@ -31,10 +31,10 @@ import java.io.File
 import java.util.Locale
 
 class SortDependenciesFinding(
-	override val subjectProject: McProject,
-	override val subjectPath: ProjectPath.StringProjectPath,
-	override val buildFile: File,
-	private val comparator: Comparator<String>
+  override val dependentProject: McProject,
+  override val dependentPath: ProjectPath.StringProjectPath,
+  override val buildFile: File,
+  private val comparator: Comparator<String>
 ) : Finding, Fixable {
 
   override val message: String
@@ -54,7 +54,7 @@ class SortDependenciesFinding(
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
     var fileText = buildFile.readText()
 
-    subjectProject.buildFileParser
+    dependentProject.buildFileParser
       .dependenciesBlocks()
       .forEach { block ->
 

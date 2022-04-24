@@ -51,8 +51,8 @@ data class Depths(
       }
 
     return DepthFinding(
-      subjectProject = project,
-      subjectPath = project.path,
+      dependentProject = project,
+      dependentPath = project.path,
       depth = childDepth + 1,
       children = children,
       sourceSetName = sourceSetName,

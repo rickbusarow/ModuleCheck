@@ -51,8 +51,8 @@ class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() 
     return if (usedInProject) emptyList()
     else listOf(
       UnusedPluginFinding(
-        subjectProject = project,
-        subjectPath = project.path,
+        dependentProject = project,
+        dependentPath = project.path,
         buildFile = project.buildFile,
         findingName = "unusedKotlinAndroidExtensions",
         pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,

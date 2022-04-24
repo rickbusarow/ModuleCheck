@@ -40,7 +40,7 @@ interface Problem :
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
-      dependentPath = subjectPath,
+      dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = null,
       configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
@@ -60,13 +60,13 @@ interface RemovesDependency : Fixable {
   suspend fun removeDependency(removalStrategy: RemovalStrategy): Boolean {
 
     val oldDeclaration = (oldDependency as? ConfiguredProjectDependency)
-      ?.statementOrNullIn(subjectProject)
+      ?.statementOrNullIn(dependentProject)
       ?: declarationOrNull.await()
       ?: return false
 
     when (removalStrategy) {
-      DELETE -> subjectProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
-      COMMENT -> subjectProject.removeDependencyWithComment(
+      DELETE -> dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
+      COMMENT -> dependentProject.removeDependencyWithComment(
         declaration = oldDeclaration,
         fixLabel = fixLabel(),
         configuredDependency = oldDependency
@@ -86,7 +86,7 @@ interface AddsDependency : Fixable {
   val newDependency: ConfiguredProjectDependency
 
   suspend fun addDependency(): Boolean {
-    val token = subjectProject
+    val token = dependentProject
       .closestDeclarationOrNull(
         newDependency,
         matchPathFirst = false
@@ -97,13 +97,13 @@ interface AddsDependency : Fixable {
       newModulePath = newDependency.path,
       testFixtures = newDependency.isTestFixture
     )
-      ?: subjectProject.createProjectDependencyDeclaration(
+      ?: dependentProject.createProjectDependencyDeclaration(
         configurationName = newDependency.configurationName,
         projectPath = newDependency.path,
         isTestFixtures = newDependency.isTestFixture
       )
 
-    subjectProject.addDependency(newDependency, newDeclaration, token)
+    dependentProject.addDependency(newDependency, newDeclaration, token)
 
     return true
   }

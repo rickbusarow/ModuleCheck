@@ -22,7 +22,7 @@ import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class RedundantDependencyFinding(
-  override val subjectProject: McProject,
+  override val dependentProject: McProject,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val from: List<ConfiguredProjectDependency>

@@ -48,7 +48,7 @@ data class DepthFinding(
 
   suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<DepthFinding> {
     return treeCache.getOrPut(sourceSetName) {
-      val children = subjectProject
+      val children = dependentProject
         .projectDependencies[sourceSetName]
         .flatMap {
           it.project.depthForSourceSetName(SourceSetName.MAIN)
@@ -60,7 +60,7 @@ data class DepthFinding(
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
-      dependentPath = subjectPath,
+      dependentPath = dependentPath,
       problemName = findingName,
       sourceOrNull = null,
       configurationName = "",
@@ -78,7 +78,7 @@ data class DepthFinding(
 
   override fun toString(): String {
     return "DepthFinding(" +
-      "dependentPath='$subjectPath', " +
+      "dependentPath='$dependentPath', " +
       "depth=$depth, " +
       "children=$children, " +
       "sourceSetName=$sourceSetName" +

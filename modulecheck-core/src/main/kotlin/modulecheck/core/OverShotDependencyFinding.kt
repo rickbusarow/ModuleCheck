@@ -27,7 +27,7 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class OverShotDependencyFinding(
-  override val subjectProject: McProject,
+  override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName
@@ -37,13 +37,13 @@ data class OverShotDependencyFinding(
   override val declarationOrNull: LazyDeferred<Declaration?>
     // intentionally look this up every time, since the declaration doesn't exist at first
     get() = lazyDeferred {
-      dependency.statementOrNullIn(subjectProject)
+      dependency.statementOrNullIn(dependentProject)
     }
 
   override val positionOrNull: LazyDeferred<Position?>
     get() = lazyDeferred {
       val statement = declarationOrNull.await()?.declarationText
-        ?: oldDependency.statementOrNullIn(subjectProject)?.declarationText
+        ?: oldDependency.statementOrNullIn(dependentProject)?.declarationText
         ?: return@lazyDeferred null
 
       buildFile.readText()
@@ -62,7 +62,7 @@ data class OverShotDependencyFinding(
 
   override fun toString(): String {
     return "OverShotDependency(\n" +
-      "\tdependentPath='$subjectPath', \n" +
+      "\tdependentPath='$dependentPath', \n" +
       "\tbuildFile=$buildFile, \n" +
       "\tdependency=$dependency, \n" +
       "\tdependencyIdentifier='$dependencyIdentifier', \n" +

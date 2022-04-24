@@ -49,7 +49,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
@@ -76,11 +76,11 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           ),
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib2"),
+            dependentProject = kotlinProject(":lib2"),
             buildFile = File(testProjectDir, "lib2/build.gradle.kts")
           )
         )
@@ -111,7 +111,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
@@ -143,7 +143,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
@@ -174,7 +174,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            subjectProject = kotlinProject(":lib1"),
+            dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
         )
