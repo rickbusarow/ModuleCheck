@@ -1,10 +1,8 @@
 ---
-id: depths
-
-title: Depths
-
-sidebar_label: Depths
-
+id: project_depth
+slug: /rules/project_depth
+title: Project Depth
+sidebar_label: Project Depth
 ---
 
 TL;DR - Low depth values mean faster builds and better all-around scalability.

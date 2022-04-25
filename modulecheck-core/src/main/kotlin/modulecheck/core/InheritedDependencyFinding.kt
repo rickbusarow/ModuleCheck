@@ -19,6 +19,7 @@ import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.internal.positionIn
 import modulecheck.api.finding.internal.statementOrNullIn
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -26,10 +27,11 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class InheritedDependencyFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val source: ConfiguredProjectDependency
-) : AbstractProjectDependencyFinding("inheritedDependency"),
+) : AbstractProjectDependencyFinding(),
   AddsDependency,
   Comparable<InheritedDependencyFinding> {
 

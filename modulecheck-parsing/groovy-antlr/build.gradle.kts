@@ -41,6 +41,7 @@ dependencies {
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-reporting:logging"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle")))
 }

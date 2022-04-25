@@ -1,5 +1,6 @@
 ---
 id: redundant_dependency
+slug: /rules/redundant_dependency
 title: Redundant Dependency
 sidebar_label: Redundant Dependency
 ---

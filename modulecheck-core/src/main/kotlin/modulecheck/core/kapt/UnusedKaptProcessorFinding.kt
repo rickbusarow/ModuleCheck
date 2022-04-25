@@ -24,6 +24,7 @@ import modulecheck.api.finding.Problem
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.api.finding.internal.positionOfStatement
 import modulecheck.api.finding.internal.statementOrNullIn
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
@@ -36,6 +37,7 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
@@ -56,8 +58,6 @@ data class UnusedKaptProcessorFinding(
     is ConfiguredProjectDependency -> oldDependency.path.value
     is ExternalDependency -> oldDependency.name
   }
-
-  override val findingName = "unusedKaptProcessor"
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
     when (oldDependency) {

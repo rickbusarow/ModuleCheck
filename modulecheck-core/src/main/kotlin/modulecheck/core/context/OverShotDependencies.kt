@@ -15,7 +15,7 @@
 
 package modulecheck.core.context
 
-import modulecheck.core.OverShotDependencyFinding
+import modulecheck.core.OverShotDependency
 import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
@@ -27,21 +27,21 @@ import modulecheck.utils.mapToSet
 import modulecheck.utils.unsafeLazy
 
 data class OverShotDependencies(
-  private val delegate: SafeCache<ConfigurationName, List<OverShotDependencyFinding>>,
+  private val delegate: SafeCache<ConfigurationName, List<OverShotDependency>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<OverShotDependencies>
     get() = Key
 
-  suspend fun get(configurationName: ConfigurationName): List<OverShotDependencyFinding> {
+  suspend fun get(configurationName: ConfigurationName): List<OverShotDependency> {
     return delegate.getOrPut(configurationName) {
 
       project.unusedDependencies()
         .get(configurationName)
         .flatMap { unused ->
 
-          val unusedCpd = unused.cpd()
+          val unusedCpd = unused.dependency
           val unusedSsd =
             unusedCpd.toSourceSetDependency(unused.configurationName.toSourceSetName())
           val unusedSourceSetName = unused.configurationName.toSourceSetName()
@@ -106,26 +106,26 @@ data class OverShotDependencies(
 
           trimmedConfigs.flatMap { allUsedByConfigName.getValue(it.name) }
             .filter { project.projectDependencies[it.configurationName]?.contains(it) != true }
-            .map { it to unused.oldDependency }
+            .map { it to unused.dependency }
             .toSet()
         }
         .map { (overshot, original) ->
 
           val newCpd = overshot.asApiOrImplementation(project)
 
-          OverShotDependencyFinding(
+          OverShotDependency(
             dependentProject = project,
             newDependency = newCpd,
             oldDependency = original,
             configurationName = newCpd.configurationName
           )
         }
-        .sortedBy { it.dependency.project }
-        .distinctBy { it.dependency.project }
+        .sortedBy { it.newDependency.project }
+        .distinctBy { it.newDependency.project }
     }
   }
 
-  suspend fun all(): List<OverShotDependencyFinding> {
+  suspend fun all(): List<OverShotDependency> {
     return project.configurations.keys.flatMap { get(it) }
   }
 

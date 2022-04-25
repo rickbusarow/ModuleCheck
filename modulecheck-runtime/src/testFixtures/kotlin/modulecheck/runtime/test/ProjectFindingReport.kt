@@ -71,8 +71,7 @@ sealed interface ProjectFindingReport {
     override val fixed: Boolean,
     override val dependency: String?,
     override val position: String?
-  ) :
-    ProjectFindingReport
+  ) : ProjectFindingReport
 
   data class unusedKaptProcessor(
     override val fixed: Boolean,

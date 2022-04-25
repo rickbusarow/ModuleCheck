@@ -101,59 +101,59 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
         }
 
         val t = when (name) {
-          "inheritedDependency" -> inheritedDependency(
+          "inherited-dependency" -> inheritedDependency(
             fixed,
             configuration,
             dependency,
             source,
             position
           )
-          "mustBeApi" -> mustBeApi(
+          "must-be-api" -> mustBeApi(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
-          "overshot" -> overshot(
+          "overshot-dependency" -> overshot(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
-          "redundant" -> redundant(
+          "redundant-dependency" -> redundant(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             source = source,
             position = position
           )
-          "unusedDependency" -> unusedDependency(
+          "unused-dependency" -> unusedDependency(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
-          "depth" -> depth(fixed)
-          "useAnvilFactories" -> useAnvilFactories(fixed)
-          "disableViewBinding" -> disableViewBinding(fixed = fixed, position = position)
-          "unsortedDependencies" -> unsortedDependencies(fixed)
-          "unsortedPlugins" -> unsortedPlugins(fixed)
-          "unusedKaptPlugin" -> unusedKaptPlugin(
+          "project-depth" -> depth(fixed)
+          "use-anvil-factory-generation" -> useAnvilFactories(fixed)
+          "disable-view-binding" -> disableViewBinding(fixed = fixed, position = position)
+          "sort-dependencies" -> unsortedDependencies(fixed)
+          "sort-plugins" -> unsortedPlugins(fixed)
+          "unused-kapt-plugin" -> unusedKaptPlugin(
             fixed = fixed,
             dependency = dependency,
             position = position
           )
-          "unusedKaptProcessor" -> unusedKaptProcessor(
+          "unused-kapt-processor" -> unusedKaptProcessor(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
-          "unusedKotlinAndroidExtensions" -> unusedKotlinAndroidExtensions(
+          "unused-kotlin-android-extensions" -> unusedKotlinAndroidExtensions(
             fixed = fixed,
             position = position
           )
-          "disableAndroidResources" -> disableAndroidResources(fixed = fixed, position = position)
+          "disable-android-resources" -> disableAndroidResources(fixed = fixed, position = position)
           else -> error("could not parse a finding result type for name of `$name`.")
         }
 

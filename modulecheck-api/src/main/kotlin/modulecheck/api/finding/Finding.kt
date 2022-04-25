@@ -15,6 +15,7 @@
 
 package modulecheck.api.finding
 
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
@@ -27,7 +28,7 @@ interface Finding {
 
   val dependentProject: McProject
 
-  val findingName: String
+  val ruleName: RuleName
 
   val dependentPath: StringProjectPath
   val message: String
@@ -51,7 +52,7 @@ interface Finding {
 
   data class FindingResult(
     val dependentPath: StringProjectPath,
-    val problemName: String,
+    val ruleName: RuleName,
     val sourceOrNull: String?,
     val configurationName: String,
     val dependencyIdentifier: String,

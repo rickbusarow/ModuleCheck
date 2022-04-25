@@ -17,7 +17,7 @@ package modulecheck.core.context
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
-import modulecheck.core.RedundantDependencyFinding
+import modulecheck.core.RedundantDependency
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -25,14 +25,14 @@ import modulecheck.utils.SafeCache
 import modulecheck.utils.mapAsync
 
 data class RedundantDependencies(
-  private val delegate: SafeCache<SourceSetName, List<RedundantDependencyFinding>>,
+  private val delegate: SafeCache<SourceSetName, List<RedundantDependency>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<RedundantDependencies>
     get() = Key
 
-  suspend fun all(): List<RedundantDependencyFinding> {
+  suspend fun all(): List<RedundantDependency> {
     return project.sourceSets
       .keys
       .mapAsync { get(it) }
@@ -40,7 +40,7 @@ data class RedundantDependencies(
       .flatten()
   }
 
-  suspend fun get(sourceSetName: SourceSetName): List<RedundantDependencyFinding> {
+  suspend fun get(sourceSetName: SourceSetName): List<RedundantDependency> {
 
     return delegate.getOrPut(sourceSetName) {
 
@@ -60,9 +60,9 @@ data class RedundantDependencies(
             ?.map { it.source }
             ?: return@mapNotNull null
 
-          RedundantDependencyFinding(
+          RedundantDependency(
             dependentProject = project,
-            oldDependency = direct,
+            dependency = direct,
             configurationName = direct.configurationName,
             from = fromCpd
           )

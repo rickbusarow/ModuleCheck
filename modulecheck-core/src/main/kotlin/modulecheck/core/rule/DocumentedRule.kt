@@ -21,17 +21,11 @@ import modulecheck.api.rule.ModuleCheckRule
 sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
 
   /**
-   * This is the part of the URL after `/rules/`. This should correspond to the relative path of
-   * the file inside the `/website/docs/rules/` directory, except instead of the file name with
-   * extension, use the `id` field from the header of the doc.
-   *
-   * For example, given a file `/website/docs/rules/compiler/ksp/foo.md` with an id of `id: bar`,
-   * the documentation path is `compiler/ksp/bar`.
+   * This should correspond to the rule name in `snake_case`. So a rule with an "id' of
+   * `unused-dependency` would have a documentation url of `<docs root>/rules/unused_dependency`.
    */
-  protected abstract val documentationPath: String
-
   final override val documentationUrl: String
-    get() = "${RULES_BASE_URL}$documentationPath"
+    get() = "${RULES_BASE_URL}${name.snakeCase}"
 
   companion object {
     const val RULES_BASE_URL = "https://rbusarow.github.io/ModuleCheck/docs/rules/"

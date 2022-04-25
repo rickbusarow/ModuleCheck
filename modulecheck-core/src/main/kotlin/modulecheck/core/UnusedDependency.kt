@@ -17,16 +17,34 @@ package modulecheck.core
 
 import modulecheck.api.finding.Deletable
 import modulecheck.api.finding.RemovesDependency
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class UnusedDependency(
+  val dependentProject: McProject,
+  val dependency: ConfiguredProjectDependency,
+  val dependencyIdentifier: String,
+  val configurationName: ConfigurationName
+) {
+
+  fun toFinding(ruleName: RuleName): UnusedDependencyFinding = UnusedDependencyFinding(
+    ruleName = ruleName,
+    dependentProject = dependentProject,
+    oldDependency = dependency,
+    dependencyIdentifier = dependencyIdentifier,
+    configurationName = configurationName
+  )
+}
+
+data class UnusedDependencyFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val oldDependency: ConfiguredProjectDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
-) : AbstractProjectDependencyFinding("unusedDependency"),
+) : AbstractProjectDependencyFinding(),
   RemovesDependency,
   Deletable {
 
@@ -34,12 +52,6 @@ data class UnusedDependency(
 
   override val message: String
     get() = "The declared dependency is not used in this module."
-
-  fun cpd() = ConfiguredProjectDependency(
-    configurationName = oldDependency.configurationName,
-    project = oldDependency.project,
-    isTestFixture = oldDependency.isTestFixture
-  )
 
   override fun toString(): String {
     return "UnusedDependency(\n" +

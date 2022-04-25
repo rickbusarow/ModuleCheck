@@ -1,5 +1,6 @@
 ---
-id: disable_resources
+id: disable_android_resources
+slug: /rules/disable_android_resources
 title: Disable Android Resources
 sidebar_label: Disable Android Resources
 ---

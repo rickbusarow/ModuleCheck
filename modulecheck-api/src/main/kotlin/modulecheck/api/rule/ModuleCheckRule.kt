@@ -22,7 +22,7 @@ import modulecheck.project.McProject
 
 interface ModuleCheckRule<T : Finding> {
 
-  val id: String
+  val name: RuleName
   val description: String
   val documentationUrl: String
 

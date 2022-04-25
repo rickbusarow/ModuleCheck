@@ -17,13 +17,16 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
+import modulecheck.reporting.logging.Logger
 
 class KotlinDependenciesBlock(
+  logger: Logger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>,
   configurationNameTransform: ConfigurationNameTransform
 ) : DependenciesBlock(
+  logger = logger,
   suppressAll = suppressAll,
   configurationNameTransform = configurationNameTransform
 ) {

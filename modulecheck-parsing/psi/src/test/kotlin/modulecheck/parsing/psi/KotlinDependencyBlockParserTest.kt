@@ -24,13 +24,16 @@ import modulecheck.parsing.gradle.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.UnknownDependencyDeclaration
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.reporting.logging.PrintLogger
 import org.junit.jupiter.api.Test
 
 internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
+  val parser by resets { KotlinDependencyBlockParser(PrintLogger()) }
+
   @Test
   fun `external declaration`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -53,7 +56,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `string extension configuration functions declaration`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -75,7 +78,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `declaration's original string should include trailing comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -105,7 +108,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `declaration with annotation should include annotation with argument`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -147,7 +150,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `dependency block with Suppress annotation should include annotation with argument`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        @Suppress("Unused")
@@ -190,7 +193,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `blank line between dependencies`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -231,7 +234,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `string module dependency declaration with testFixtures should be parsed`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -253,7 +256,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with commented out dependency above it`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -276,11 +279,11 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with commented out dependency from previous finding above it`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
-          // api(project(":core:dagger")) // ModuleCheck finding [unusedDependency]
+          // api(project(":core:dagger")) // ModuleCheck finding [unused-dependency]
           api(testFixtures(project(":core:jvm")))
        }
         """
@@ -299,7 +302,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `type-safe module dependency declaration with testFixtures should be parsed`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -321,7 +324,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with config block should split declarations properly`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -361,7 +364,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with config block and preceding declaration should split declarations properly`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -402,7 +405,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with preceding blank line should preserve the blank line`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -433,7 +436,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `module dependency with two different configs should be recorded twice`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -463,7 +466,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `declaration's original string should include preceding single-line comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -500,7 +503,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `declaration's original string should include preceding block comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -541,7 +544,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `declaration's original string should include preceding in-line block comment`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -572,7 +575,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `duplicate module dependency with same config should be recorded twice`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -602,7 +605,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `modules declared using type-safe accessors can be looked up using their path`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
        dependencies {
@@ -632,7 +635,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
 
   @Test
   fun `buildscript dependencies should not be parsed`() {
-    val block = KotlinDependencyBlockParser()
+    val block = parser
       .parse(
         """
         buildscript {

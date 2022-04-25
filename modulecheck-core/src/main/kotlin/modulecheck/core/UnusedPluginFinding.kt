@@ -23,6 +23,7 @@ import modulecheck.api.finding.Problem
 import modulecheck.api.finding.RemovesDependency.RemovalStrategy
 import modulecheck.api.finding.internal.removeDependencyWithComment
 import modulecheck.api.finding.internal.removeDependencyWithDelete
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
@@ -34,7 +35,7 @@ data class UnusedPluginFinding(
   override val dependentProject: McProject,
   override val dependentPath: StringProjectPath,
   override val buildFile: File,
-  override val findingName: String,
+  override val ruleName: RuleName,
   val pluginId: String,
   val alternatePluginId: String = "",
   val kotlinPluginFunction: String = ""

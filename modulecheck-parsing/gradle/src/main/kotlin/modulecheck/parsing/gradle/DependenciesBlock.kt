@@ -17,12 +17,16 @@ package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.reporting.logging.Logger
 import modulecheck.utils.remove
 
 abstract class DependenciesBlock(
-  val suppressAll: List<String>,
+  private val logger: Logger,
+  suppressAll: List<String>,
   private val configurationNameTransform: ConfigurationNameTransform
 ) : Block<DependencyDeclaration> {
+
+  val suppressAll = suppressAll.updateOldSuppresses()
 
   private val originalLines by lazy { lambdaContent.lines().toMutableList() }
 
@@ -52,7 +56,7 @@ abstract class DependenciesBlock(
       group = coordinates.group,
       moduleName = coordinates.moduleName,
       version = coordinates.version,
-      suppressed = suppressed + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressAll,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -73,7 +77,7 @@ abstract class DependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressAll,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -107,7 +111,7 @@ abstract class DependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressAll,
       configurationNameTransform = configurationNameTransform
     )
 
@@ -115,6 +119,11 @@ abstract class DependenciesBlock(
       .add(declaration)
 
     _allDeclarations.add(declaration)
+  }
+
+  private fun List<String>.updateOldSuppresses(): List<String> {
+    @Suppress("DEPRECATION")
+    return map { migrateLegacyIdOrNull(it, logger) ?: it }
   }
 
   fun getOrEmpty(
@@ -150,12 +159,15 @@ abstract class DependenciesBlock(
    * and returns the index of **the last row** which matches the parsed string.
    *
    * So, given the target:
+   *
    * ```
    * api(projects.foo.bar) {
    *   exclude(group = "androidx.appcompat")
    * }
    * ```
+   *
    * And given the dependencies lines:
+   *
    * ```
    * <blank line>
    * // Remove leaking AppCompat dependency
@@ -167,8 +179,8 @@ abstract class DependenciesBlock(
    *
    * This function would return index `4`, because rows 2-4 match the target parsed string.
    *
-   * From this value, [getOriginalString] will return a multi-line string which includes
-   * the blank line and the comment.
+   * From this value, [getOriginalString] will return a multi-line string which includes the blank
+   * line and the comment.
    */
   private fun findLastMatchingRowIndex(parsedString: String): Int {
     val targetLines = parsedString.lines()
@@ -225,6 +237,37 @@ abstract class DependenciesBlock(
 
   companion object {
     val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()
+
+    @Suppress("ComplexMethod", "DeprecatedCallableAddReplaceWith")
+    @Deprecated("This will be removed soon.")
+    private fun migrateLegacyIdOrNull(legacyID: String, logger: Logger): String? {
+
+      val migrated = when (legacyID) {
+        "useAnvilFactories" -> "use-anvil-factory-generation"
+        "depth" -> "project-depth"
+        "disableAndroidResources" -> "disable-android-resources"
+        "disableViewBinding" -> "disable-view-binding"
+        "inheritedDependency" -> "inherited-dependency"
+        "mustBeApi" -> "must-be-api"
+        "overshot" -> "overshot-dependency"
+        "redundant" -> "redundant-dependency"
+        "unsortedDependencies" -> "sort-dependencies"
+        "unsortedPlugins" -> "sort-plugins"
+        "unused" -> "unused-dependency"
+        "unusedKaptProcessor" -> "unused-kapt-processor"
+        "unusedKotlinAndroidExtensions" -> "unused-kotlin-android-extensions"
+        else -> null
+      }
+
+      if (migrated != null) {
+        logger.printWarningLine(
+          "The suppressed issue `$legacyID` is using a deprecated ID.  " +
+            "The new name for this issue is `$migrated`."
+        )
+      }
+
+      return migrated
+    }
   }
 }
 

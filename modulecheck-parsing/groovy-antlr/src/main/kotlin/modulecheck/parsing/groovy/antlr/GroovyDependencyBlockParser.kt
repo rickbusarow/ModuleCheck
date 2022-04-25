@@ -22,6 +22,7 @@ import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ProjectAccessor
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.reporting.logging.Logger
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
@@ -33,7 +34,9 @@ import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 import java.io.File
 import javax.inject.Inject
 
-class GroovyDependencyBlockParser @Inject constructor() {
+class GroovyDependencyBlockParser @Inject constructor(
+  private val logger: Logger
+) {
 
   fun parse(file: File): List<GroovyDependenciesBlock> = parse(file) {
     val dependenciesBlocks = mutableListOf<GroovyDependenciesBlock>()
@@ -160,6 +163,7 @@ class GroovyDependencyBlockParser @Inject constructor() {
           pendingBlockNoInspectionComment = null
 
           val dependenciesBlock = GroovyDependenciesBlock(
+            logger = logger,
             fullText = statement.originalText(),
             lambdaContent = blockBody,
             suppressAll = blockSuppressed

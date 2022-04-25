@@ -1,5 +1,6 @@
 ---
 id: overshot_dependency
+slug: /rules/overshot_dependency
 title: Overshot Dependency
 sidebar_label: Overshot Dependency
 ---

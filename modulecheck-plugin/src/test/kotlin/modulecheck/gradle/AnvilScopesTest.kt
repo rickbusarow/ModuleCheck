@@ -400,8 +400,8 @@ class AnvilScopesTest : BasePluginTest() {
 
     shouldFail("moduleCheck") withTrimmedMessage """
     :app
-               configuration    dependency    name                source    build file
-            X  api              :lib-2        unusedDependency              /app/build.gradle.kts: (8, 3):
+               configuration    dependency    name                 source    build file
+            X  api              :lib-2        unused-dependency              /app/build.gradle.kts: (8, 3):
 
     ModuleCheck found 1 issue
     """

@@ -1,3 +1,34 @@
+# 0.12.1-SNAPSHOT (unreleased)
+
+### 🗑 Deprecations
+
+- The names of all findings have been updated/standardized. Any declarations which were suppressing
+  a finding with the old ID (via `@Suppress("someFinding")` or `//suppress=someFinding`) will still
+  work, but they should be updated to use the new names.
+
+  | old name                      | new name                         |
+  |:------------------------------|:---------------------------------|
+  | depth                         | project-depth                    |
+  | disableAndroidResources       | disable-android-resources        |
+  | disableViewBinding            | disable-view-binding             |
+  | inheritedDependency           | inherited-dependency             |
+  | mustBeApi                     | must-be-api                      |
+  | overshot                      | overshot-dependency              |
+  | redundant                     | redundant-dependency             |
+  | unsortedDependencies          | sort-dependencies                |
+  | unsortedPlugins               | sort-plugins                     |
+  | useAnvilFactories             | use-anvil-factory-generation     |
+  | unused                        | unused-dependency                |
+  | unusedKaptProcessor           | unused-kapt-processor            |
+  | unusedKotlinAndroidExtensions | unused-kotlin-android-extensions |
+
+### ℹ️ Website
+
+- add `google()` repository to config
+  docs [@RBusarow](https://github.com/RBusarow) ([#559](https://github.com/rbusarow/ModuleCheck/pull/559))
+- add missing docs for
+  rules [@RBusarow](https://github.com/RBusarow) ([#555](https://github.com/rbusarow/ModuleCheck/pull/555))
+
 # 0.12.0
 
 ### 💥 Breaking Changes

@@ -16,6 +16,7 @@
 package modulecheck.core
 
 import modulecheck.api.finding.Finding
+import modulecheck.api.rule.RuleName
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
@@ -44,6 +45,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -53,7 +55,7 @@ internal class TextReportingTest : RunnerTest() {
         listOf(
           Finding.FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -81,6 +83,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -90,7 +93,7 @@ internal class TextReportingTest : RunnerTest() {
         findings.map {
           Finding.FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -107,8 +110,8 @@ internal class TextReportingTest : RunnerTest() {
       .clean()
       .remove("\u200B") shouldBe """
       :dependentPath
-             configuration        dependency              name           source          build file
-          ✔  configurationName    dependencyIdentifier    problemName    sourceOrNull    buildFile: (1, 2):
+             configuration        dependency              name                            source          build file
+          ✔  configurationName    dependencyIdentifier    use-anvil-factory-generation    sourceOrNull    buildFile: (1, 2):
     """
   }
 }

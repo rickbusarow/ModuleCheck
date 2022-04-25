@@ -19,6 +19,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.RemovesDependency.RemovalStrategy
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.parsing.gradle.PluginsBlock
@@ -30,6 +31,7 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 class SortPluginsFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
@@ -38,8 +40,6 @@ class SortPluginsFinding(
 
   override val message: String
     get() = "Plugin declarations are not sorted according to the defined pattern."
-
-  override val findingName = "unsortedPlugins"
 
   override val dependencyIdentifier = ""
 

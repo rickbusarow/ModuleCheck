@@ -100,7 +100,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -179,7 +179,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          @Suppress("unusedDependency")
+          @Suppress("unused-dependency")
           implementation(project(path = ":lib1"))
         }
         """
@@ -194,7 +194,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          @Suppress("unusedDependency")
+          @Suppress("unused-dependency")
           implementation(project(path = ":lib1"))
         }
     """
@@ -218,7 +218,7 @@ class UnusedDependenciesTest : RunnerTest() {
           kotlin("jvm")
         }
 
-        @Suppress("unusedDependency")
+        @Suppress("unused-dependency")
         dependencies {
           implementation(project(path = ":lib1"))
         }
@@ -233,7 +233,47 @@ class UnusedDependenciesTest : RunnerTest() {
           kotlin("jvm")
         }
 
-        @Suppress("unusedDependency")
+        @Suppress("unused-dependency")
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused and suppressed with legacy name should not be changed`() {
+
+    settings.deleteUnused = true
+
+    val lib1 = kotlinProject(":lib1")
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        @Suppress("unused")
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        @Suppress("unused")
         dependencies {
           implementation(project(path = ":lib1"))
         }
@@ -470,7 +510,7 @@ class UnusedDependenciesTest : RunnerTest() {
         dependencies {
           api(libs.javax.inject) {
           }
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -523,7 +563,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
         dependencies {
           fakeConfig(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -1442,7 +1482,7 @@ class UnusedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -1519,7 +1559,7 @@ class UnusedDependenciesTest : RunnerTest() {
 
         dependencies {
           testImplementation(project(path = ":lib1"))
-          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          // testImplementation(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unused-dependency]
         }
     """
 

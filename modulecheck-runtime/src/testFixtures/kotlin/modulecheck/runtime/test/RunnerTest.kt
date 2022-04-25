@@ -28,7 +28,7 @@ import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.Logger
+import modulecheck.reporting.logging.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
@@ -53,17 +53,17 @@ abstract class RunnerTest : ProjectTest() {
 
   @Suppress("LongParameterList")
   fun run(
-    autoCorrect: Boolean = true,
-    strictResolution: Boolean = false,
-    findingFactory: FindingFactory<out Finding> = this.findingFactory,
-    settings: ModuleCheckSettings = this.settings,
-    logger: Logger = this.logger,
-    projectProvider: ProjectProvider = this.projectProvider,
-    findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
-    reportFactory: ReportFactory = ReportFactory(),
-    checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
-    graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings, GraphvizFactory()),
-    dispatcherProvider: DispatcherProvider = DispatcherProvider()
+		autoCorrect: Boolean = true,
+		strictResolution: Boolean = false,
+		findingFactory: FindingFactory<out Finding> = this.findingFactory,
+		settings: ModuleCheckSettings = this.settings,
+		logger: Logger = this.logger,
+		projectProvider: ProjectProvider = this.projectProvider,
+		findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
+		reportFactory: ReportFactory = ReportFactory(),
+		checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
+		graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings, GraphvizFactory()),
+		dispatcherProvider: DispatcherProvider = DispatcherProvider()
   ): Result<Unit> = runBlocking {
 
     "Resolving all references BEFORE running ModuleCheck".asClue {

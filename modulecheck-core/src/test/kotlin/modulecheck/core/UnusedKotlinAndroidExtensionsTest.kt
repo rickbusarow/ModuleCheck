@@ -148,7 +148,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       plugins {
         id("com.android.library")
         kotlin("android")
-        // kotlin("android-extensions")  // ModuleCheck finding [unusedKotlinAndroidExtensions]
+        // kotlin("android-extensions")  // ModuleCheck finding [unused-kotlin-android-extensions]
       }
     """
 
@@ -177,7 +177,7 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
       plugins {
         id("com.android.library")
         kotlin("android")
-        // id("org.jetbrains.kotlin.android.extensions")  // ModuleCheck finding [unusedKotlinAndroidExtensions]
+        // id("org.jetbrains.kotlin.android.extensions")  // ModuleCheck finding [unused-kotlin-android-extensions]
       }
     """
 

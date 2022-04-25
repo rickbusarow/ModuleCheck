@@ -16,12 +16,18 @@
 package modulecheck.parsing.groovy.antlr
 
 import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.reporting.logging.Logger
 
 class GroovyDependenciesBlock(
+  logger: Logger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>
-) : DependenciesBlock(suppressAll = suppressAll, configurationNameTransform = { it.value }) {
+) : DependenciesBlock(
+  logger = logger,
+  suppressAll = suppressAll,
+  configurationNameTransform = { it.value }
+) {
 
   override fun originalLineMatchesParsed(
     originalLine: String,

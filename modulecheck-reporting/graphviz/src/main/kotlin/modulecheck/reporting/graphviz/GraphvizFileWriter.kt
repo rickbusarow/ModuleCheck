@@ -17,7 +17,7 @@ package modulecheck.reporting.graphviz
 
 import dispatch.core.launchIO
 import kotlinx.coroutines.coroutineScope
-import modulecheck.api.DepthFinding
+import modulecheck.api.context.ProjectDepth
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.utils.child
 import java.io.File
@@ -28,7 +28,7 @@ class GraphvizFileWriter @Inject constructor(
   private val graphvizFactory: GraphvizFactory
 ) {
 
-  suspend fun write(depths: List<DepthFinding>) = coroutineScope {
+  suspend fun write(depths: List<ProjectDepth>) = coroutineScope {
 
     val rootOrNull = settings.reports.graphs.outputDir?.let { File(it) }
 

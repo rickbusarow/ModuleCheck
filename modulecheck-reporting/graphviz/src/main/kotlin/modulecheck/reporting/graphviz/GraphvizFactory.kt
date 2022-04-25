@@ -18,7 +18,7 @@ package modulecheck.reporting.graphviz
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import modulecheck.api.DepthFinding
+import modulecheck.api.context.ProjectDepth
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.context.sourceSetDependencies
 import modulecheck.parsing.gradle.ConfigurationName
@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 class GraphvizFactory @Inject constructor() {
 
-  suspend fun create(root: DepthFinding): String = buildString {
+  suspend fun create(root: ProjectDepth): String = buildString {
 
     val allDepths = root.fullTree()
 
@@ -63,7 +63,7 @@ class GraphvizFactory @Inject constructor() {
     appendLine("}")
   }
 
-  private suspend fun StringBuilder.defineModuleBoxes(root: DepthFinding) {
+  private suspend fun StringBuilder.defineModuleBoxes(root: ProjectDepth) {
     root.dependentProject
       .allProjectDependencies(root.sourceSetName, includeSelf = true)
       .sortedBy { it.path }
@@ -77,7 +77,7 @@ class GraphvizFactory @Inject constructor() {
       }
   }
 
-  private suspend fun StringBuilder.defineEdges(allDepths: Set<DepthFinding>) {
+  private suspend fun StringBuilder.defineEdges(allDepths: Set<ProjectDepth>) {
     coroutineScope {
       allDepths.map { depthFinding ->
         async { depthFinding.edgesSection() }
@@ -89,7 +89,7 @@ class GraphvizFactory @Inject constructor() {
     }
   }
 
-  private fun DepthFinding.edgesSection(): Pair<McProject, String> {
+  private fun ProjectDepth.edgesSection(): Pair<McProject, String> {
     return dependentProject to buildString {
       dependentProject
         .projectDependencies[sourceSetName]
@@ -117,7 +117,7 @@ class GraphvizFactory @Inject constructor() {
     }
   }
 
-  private suspend fun StringBuilder.defineRanks(root: DepthFinding) {
+  private suspend fun StringBuilder.defineRanks(root: ProjectDepth) {
     root.dependentProject.allProjectDependencies(root.sourceSetName, includeSelf = false)
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
       // If the root is a non-main source set, one of its dependencies may depend upon its main

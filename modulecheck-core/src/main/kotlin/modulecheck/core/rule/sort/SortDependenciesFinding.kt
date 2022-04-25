@@ -19,6 +19,7 @@ import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.RemovesDependency.RemovalStrategy
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration
@@ -31,6 +32,7 @@ import java.io.File
 import java.util.Locale
 
 class SortDependenciesFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,
@@ -40,8 +42,6 @@ class SortDependenciesFinding(
   override val message: String
     get() = "Project/external dependency declarations are not sorted " +
       "according to the defined pattern."
-
-  override val findingName = "unsortedDependencies"
 
   override val dependencyIdentifier = ""
 

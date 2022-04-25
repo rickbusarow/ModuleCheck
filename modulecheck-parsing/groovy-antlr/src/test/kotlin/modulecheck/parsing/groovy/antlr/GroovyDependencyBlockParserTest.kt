@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.UnknownDependencyDeclaration
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
 import modulecheck.testing.createSafely
 import modulecheck.utils.child
@@ -255,7 +256,7 @@ internal class GroovyDependencyBlockParserTest : BaseTest() {
   fun `module dependency with commented out dependency from previous finding above it`() = parse(
     """
     dependencies {
-      // api project(':core:test') // ModuleCheck finding [unusedDependency]
+      // api project(':core:test') // ModuleCheck finding [unused-dependency]
       api project(':core:jvm')
     }
     """
@@ -571,7 +572,7 @@ internal class GroovyDependencyBlockParserTest : BaseTest() {
   ) {
     testProjectDir.child("build.gradle")
       .createSafely(fileText.trimIndent())
-      .let { file -> GroovyDependencyBlockParser().parse(file) }
+      .let { file -> GroovyDependencyBlockParser(PrintLogger()).parse(file) }
       .single()
       .assertions()
   }

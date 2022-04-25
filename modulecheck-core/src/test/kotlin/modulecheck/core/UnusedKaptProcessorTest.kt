@@ -301,11 +301,11 @@ class UnusedKaptProcessorTest : RunnerTest() {
     app.buildFile shouldHaveText """
       plugins {
         kotlin("jvm")
-        // kotlin("kapt")  // ModuleCheck finding [unusedKaptPlugin]
+        // kotlin("kapt")  // ModuleCheck finding [unused-kapt-plugin]
       }
 
       dependencies {
-        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor]
+        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unused-kapt-processor]
       }
     """
 
@@ -353,11 +353,11 @@ class UnusedKaptProcessorTest : RunnerTest() {
     app.buildFile shouldHaveText """
       plugins {
         id("kotlin-jvm")
-        // id("kotlin-kapt")  // ModuleCheck finding [unusedKaptPlugin]
+        // id("kotlin-kapt")  // ModuleCheck finding [unused-kapt-plugin]
       }
 
       dependencies {
-        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unusedKaptProcessor]
+        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unused-kapt-processor]
       }
     """
 

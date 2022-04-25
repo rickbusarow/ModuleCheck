@@ -18,6 +18,7 @@ package modulecheck.core.anvil
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
+import modulecheck.api.rule.RuleName
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
@@ -29,6 +30,7 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class CouldUseAnvilFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val buildFile: File
 ) : Finding, Fixable {
@@ -39,7 +41,6 @@ data class CouldUseAnvilFinding(
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."
 
   override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
-  override val findingName = "useAnvilFactories"
 
   override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred { null }
 
