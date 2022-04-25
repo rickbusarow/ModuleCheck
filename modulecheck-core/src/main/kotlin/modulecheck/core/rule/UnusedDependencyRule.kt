@@ -15,6 +15,7 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.rule.RuleName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.core.UnusedDependency
@@ -25,10 +26,8 @@ class UnusedDependencyRule(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<UnusedDependency>() {
 
-  override val id = "UnusedDependency"
+  override val name = RuleName("unused-dependency")
   override val description = "Finds project dependencies which aren't used in the declaring module"
-
-  override val documentationPath: String = "unused"
 
   override suspend fun check(project: McProject): List<UnusedDependency> {
     return project.get(UnusedDependencies)

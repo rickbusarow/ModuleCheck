@@ -15,6 +15,7 @@
 
 package modulecheck.core.rule
 
+import modulecheck.api.rule.RuleName
 import modulecheck.api.rule.SortRule
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.api.settings.ModuleCheckSettings
@@ -27,12 +28,11 @@ class SortPluginsRule(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortPluginsFinding>(), SortRule<SortPluginsFinding> {
 
-  override val id = "SortPlugins"
+  override val name = RuleName("sort-plugins")
   override val description =
     "Sorts Gradle plugins which are applied using the plugins { ... } block"
 
-  override val documentationPath: String = "sorting/sort_plugins"
-
+  override val documentationPath: String = "sorting/${name.snakeCase}"
   private val comparables: Array<(PluginDeclaration) -> Comparable<*>> =
     settings
       .sort

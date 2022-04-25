@@ -17,6 +17,7 @@ package modulecheck.core.rule
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
+import modulecheck.api.rule.RuleName
 import modulecheck.api.settings.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
@@ -33,11 +34,10 @@ import modulecheck.utils.mapAsync
 
 class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
 
-  override val id = "InheritedDependency"
+  override val name = RuleName("inherited-dependency")
   override val description = "Finds project dependencies which are used in the current module, " +
     "but are not actually directly declared as dependencies in the current module"
 
-  override val documentationPath: String = "inherited_dependency"
 
   override suspend fun check(project: McProject): List<InheritedDependencyFinding> {
 
