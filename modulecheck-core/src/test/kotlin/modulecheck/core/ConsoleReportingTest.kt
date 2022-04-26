@@ -18,6 +18,7 @@ package modulecheck.core
 import io.kotest.matchers.string.shouldContain
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.api.rule.RuleName
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
@@ -49,6 +50,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -61,8 +63,8 @@ internal class ConsoleReportingTest : RunnerTest() {
       .clean()
       .remove("\u200B") shouldBe """
           :lib1
-                 configuration    dependency                           name                 source    build file
-              X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+                 configuration    dependency                           name                            source    build file
+              X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
 
       ModuleCheck found 1 issue
     """
@@ -76,10 +78,12 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           ),
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib2"),
             buildFile = File(testProjectDir, "lib2/build.gradle.kts")
           )
@@ -92,12 +96,12 @@ internal class ConsoleReportingTest : RunnerTest() {
       .clean()
       .remove("\u200B") shouldBe """
         :lib1
-               configuration    dependency                           name                 source    build file
-            X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib1/build.gradle.kts:
+               configuration    dependency                           name                            source    build file
+            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib1/build.gradle.kts:
 
         :lib2
-               configuration    dependency                           name                 source    build file
-            X                   com.google.dagger:dagger-compiler    useAnvilFactories              /lib2/build.gradle.kts:
+               configuration    dependency                           name                            source    build file
+            X                   com.google.dagger:dagger-compiler    use-anvil-factory-generation              /lib2/build.gradle.kts:
 
     ModuleCheck found 2 issues
     """
@@ -111,6 +115,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -143,6 +148,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -152,7 +158,7 @@ internal class ConsoleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -174,6 +180,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -183,7 +190,7 @@ internal class ConsoleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",

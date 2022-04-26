@@ -1,5 +1,6 @@
 ---
 id: inherited_dependency
+slug: /rules/inherited_dependency
 title: Inherited Dependency
 sidebar_label: Inherited Dependency
 ---

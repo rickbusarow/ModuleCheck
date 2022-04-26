@@ -36,6 +36,7 @@ dependencies {
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-reporting:logging"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())

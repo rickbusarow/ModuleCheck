@@ -28,7 +28,6 @@ import modulecheck.api.test.ReportingLogger
 import modulecheck.api.test.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
@@ -36,6 +35,7 @@ import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
+import modulecheck.reporting.logging.Logger
 import modulecheck.runtime.ModuleCheckRunner
 
 abstract class RunnerTest : ProjectTest() {

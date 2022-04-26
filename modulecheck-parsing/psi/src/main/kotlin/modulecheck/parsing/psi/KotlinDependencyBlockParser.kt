@@ -24,6 +24,7 @@ import modulecheck.parsing.gradle.buildFileInvocationText
 import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe
+import modulecheck.reporting.logging.Logger
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
@@ -36,7 +37,9 @@ import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import javax.inject.Inject
 
-class KotlinDependencyBlockParser @Inject constructor() {
+class KotlinDependencyBlockParser @Inject constructor(
+  private val logger: Logger
+) {
 
   @Suppress("ReturnCount")
   suspend fun parse(
@@ -66,6 +69,7 @@ class KotlinDependencyBlockParser @Inject constructor() {
           ?: ""
 
         val block = KotlinDependenciesBlock(
+          logger = logger,
           fullText = fullText,
           lambdaContent = blockWhiteSpace + contentString,
           suppressAll = blockSuppressed,

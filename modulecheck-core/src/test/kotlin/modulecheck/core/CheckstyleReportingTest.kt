@@ -17,6 +17,7 @@ package modulecheck.core
 
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.api.rule.RuleName
 import modulecheck.api.test.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
@@ -44,6 +45,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("some-name"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -53,7 +55,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("some-name"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -81,6 +83,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
+            ruleName = RuleName("some-name"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -90,7 +93,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
         findings.map {
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            problemName = "problemName",
+            ruleName = RuleName("some-name"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -107,7 +110,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-name" />
       	</file>
       </checkstyle>
     """

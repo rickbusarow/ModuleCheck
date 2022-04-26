@@ -1,5 +1,6 @@
 ---
 id: unused_kotlin_android_extensions
+slug: /rules/unused_kotlin_android_extensions
 title: Unused Kotlin Android Extensions
 sidebar_label: Unused Kotlin Android Extensions
 ---

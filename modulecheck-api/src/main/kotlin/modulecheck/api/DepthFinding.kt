@@ -15,19 +15,20 @@
 
 package modulecheck.api
 
-import modulecheck.api.context.depthForSourceSetName
+import modulecheck.api.context.ProjectDepth
 import modulecheck.api.finding.Finding
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
-import modulecheck.utils.SafeCache
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class DepthFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val dependentPath: StringProjectPath,
   val depth: Int,
@@ -39,29 +40,13 @@ data class DepthFinding(
   override val message: String
     get() = "The longest path between this module and its leaf nodes"
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
-  override val findingName: String
-    get() = "depth"
 
   override val dependencyIdentifier: String = ""
-
-  private val treeCache = SafeCache<SourceSetName, Set<DepthFinding>>()
-
-  suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<DepthFinding> {
-    return treeCache.getOrPut(sourceSetName) {
-      val children = dependentProject
-        .projectDependencies[sourceSetName]
-        .flatMap {
-          it.project.depthForSourceSetName(SourceSetName.MAIN)
-            .fullTree(SourceSetName.MAIN)
-        }
-      children.toSet() + this
-    }
-  }
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = findingName,
+      ruleName = ruleName,
       sourceOrNull = null,
       configurationName = "",
       dependencyIdentifier = dependencyIdentifier,
@@ -75,6 +60,14 @@ data class DepthFinding(
   override fun compareTo(other: DepthFinding): Int {
     return depth.compareTo(other.depth)
   }
+
+  fun toProjectDepth(): ProjectDepth = ProjectDepth(
+    dependentProject = dependentProject,
+    dependentPath = dependentPath,
+    depth = depth,
+    children = children.map(DepthFinding::toProjectDepth),
+    sourceSetName = sourceSetName
+  )
 
   override fun toString(): String {
     return "DepthFinding(" +

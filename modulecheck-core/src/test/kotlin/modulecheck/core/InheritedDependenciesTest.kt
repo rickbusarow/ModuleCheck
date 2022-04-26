@@ -3011,7 +3011,7 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          // testFixturesImplementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // testFixturesImplementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           testFixturesApi(project(path = ":lib1"))
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
@@ -3232,7 +3232,7 @@ class InheritedDependenciesTest : RunnerTest() {
 
         dependencies {
           testFixturesApi(testFixtures(project(path = ":lib1")))
-          // api(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          // api(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unused-dependency]
         }
     """
 

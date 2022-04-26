@@ -30,9 +30,8 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
-abstract class AbstractProjectDependencyFinding(
-  override val findingName: String
-) : Problem,
+abstract class AbstractProjectDependencyFinding :
+  Problem,
   Fixable,
   Finding,
   DependencyFinding,
@@ -58,7 +57,7 @@ abstract class AbstractProjectDependencyFinding(
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = findingName,
+      ruleName = ruleName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
       dependencyIdentifier = dependency.path.value,
@@ -75,7 +74,7 @@ abstract class AbstractProjectDependencyFinding(
     if (this === other) return true
     if (other !is AbstractProjectDependencyFinding) return false
 
-    if (findingName != other.findingName) return false
+    if (ruleName != other.ruleName) return false
     if (dependency != other.dependency) return false
     if (configurationName != other.configurationName) return false
 
@@ -83,7 +82,7 @@ abstract class AbstractProjectDependencyFinding(
   }
 
   override fun hashCode(): Int {
-    var result = findingName.hashCode()
+    var result = ruleName.hashCode()
     result = 31 * result + dependency.hashCode()
     result = 31 * result + configurationName.hashCode()
     return result

@@ -16,13 +16,15 @@
 package modulecheck.api.context
 
 import modulecheck.api.DepthFinding
+import modulecheck.api.rule.RuleName
+import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache
 
 data class Depths(
-  private val delegate: SafeCache<SourceSetName, DepthFinding>,
+  private val delegate: SafeCache<SourceSetName, ProjectDepth>,
   private val project: McProject
 ) : ProjectContext.Element {
 
@@ -35,11 +37,11 @@ data class Depths(
       .forEach { fetchForSourceSet(it) }
   }
 
-  suspend fun get(key: SourceSetName): DepthFinding {
+  suspend fun get(key: SourceSetName): ProjectDepth {
     return delegate.getOrPut(key) { fetchForSourceSet(key) }
   }
 
-  private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): DepthFinding {
+  private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): ProjectDepth {
     val (childDepth, children) = project.projectDependencies[sourceSetName]
       .map { it.project }
       .distinct()
@@ -50,13 +52,12 @@ data class Depths(
         max to it[max].orEmpty()
       }
 
-    return DepthFinding(
+    return ProjectDepth(
       dependentProject = project,
       dependentPath = project.path,
       depth = childDepth + 1,
       children = children,
-      sourceSetName = sourceSetName,
-      buildFile = project.buildFile
+      sourceSetName = sourceSetName
     )
   }
 
@@ -70,6 +71,42 @@ data class Depths(
 
 suspend fun McProject.depths(): Depths = get(Depths).also { it.populateAll() }
 
-suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): DepthFinding {
+suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): ProjectDepth {
   return get(Depths).get(sourceSetName)
+}
+
+data class ProjectDepth(
+  val dependentProject: McProject,
+  val dependentPath: StringProjectPath,
+  val depth: Int,
+  val children: List<ProjectDepth>,
+  val sourceSetName: SourceSetName
+) : Comparable<ProjectDepth> {
+  private val treeCache = SafeCache<SourceSetName, Set<ProjectDepth>>()
+
+  fun toFinding(name: RuleName): DepthFinding = DepthFinding(
+    ruleName = name,
+    dependentProject = dependentProject,
+    dependentPath = dependentPath,
+    depth = depth,
+    children = children.map { it.toFinding(name) },
+    sourceSetName = sourceSetName,
+    buildFile = dependentProject.buildFile
+  )
+
+  suspend fun fullTree(sourceSetName: SourceSetName = this.sourceSetName): Set<ProjectDepth> {
+    return treeCache.getOrPut(sourceSetName) {
+      val children = dependentProject
+        .projectDependencies[sourceSetName]
+        .flatMap {
+          it.project.depthForSourceSetName(SourceSetName.MAIN)
+            .fullTree(SourceSetName.MAIN)
+        }
+      children.toSet() + this
+    }
+  }
+
+  override fun compareTo(other: ProjectDepth): Int {
+    return depth.compareTo(other.depth)
+  }
 }

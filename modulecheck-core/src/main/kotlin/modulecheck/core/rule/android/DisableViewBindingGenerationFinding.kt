@@ -20,6 +20,7 @@ import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.Fixable
 import modulecheck.api.finding.RemovesDependency.RemovalStrategy
 import modulecheck.api.finding.internal.positionOfStatement
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File
@@ -39,8 +41,6 @@ data class DisableViewBindingGenerationFinding(
 
   override val message: String
     get() = "Android viewBinding generation is enabled, but no generated code is being used."
-
-  override val findingName = "disableViewBinding"
 
   override val dependencyIdentifier = ""
 

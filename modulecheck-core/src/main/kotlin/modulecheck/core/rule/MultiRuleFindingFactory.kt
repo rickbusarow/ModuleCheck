@@ -43,7 +43,7 @@ class MultiRuleFindingFactory(
       // Use a stable but arbitrary sort before filtering out duplicates.  This makes it so that
       // if there are different finding types trying to modify the same dependency, the same one
       // will be chosen each time.
-      .sortedBy { it.findingName }
+      .sortedBy { it.ruleName.id }
       .filterDuplicateAdds()
       .toList()
   }

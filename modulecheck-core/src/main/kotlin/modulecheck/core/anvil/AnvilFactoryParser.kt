@@ -18,6 +18,7 @@ package modulecheck.core.anvil
 import kotlinx.coroutines.flow.filterIsInstance
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.references
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
@@ -40,7 +41,7 @@ object AnvilFactoryParser {
   private val minimumAnvilVersion = SemVer(2, 0, 11)
 
   @Suppress("ComplexMethod")
-  suspend fun parse(project: McProject): List<CouldUseAnvilFinding> {
+  suspend fun parse(ruleName: RuleName, project: McProject): List<CouldUseAnvilFinding> {
     val anvil = project.anvilGradlePlugin ?: return emptyList()
 
     if (anvil.generateDaggerFactories) return emptyList()
@@ -75,6 +76,12 @@ object AnvilFactoryParser {
 
     if (!usesDaggerInKotlin) return emptyList()
 
-    return listOf(CouldUseAnvilFinding(project, project.buildFile))
+    return listOf(
+      CouldUseAnvilFinding(
+        ruleName = ruleName,
+        dependentProject = project,
+        buildFile = project.buildFile
+      )
+    )
   }
 }

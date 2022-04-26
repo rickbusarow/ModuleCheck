@@ -39,7 +39,7 @@ class CheckstyleReporter @Inject constructor() {
           val column = it.positionOrNull?.column ?: -1
 
           val severity = if (it.fixed) "info" else "error"
-          val source = "modulecheck." + it.problemName
+          val source = "modulecheck." + it.ruleName.id
 
           val line = "\t\t<error line=\"${row.xml()}\" " +
             "column=\"${column.xml()}\" " +

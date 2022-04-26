@@ -210,7 +210,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           testImplementation(project(path = ":lib1"))
-          // api(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // api(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -280,7 +280,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           debugApi(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -350,7 +350,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           debugImplementation(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -419,7 +419,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           "debugApi"(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
         }
     """
 
@@ -508,7 +508,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           testImplementation(project(path = ":lib1"))
-          // api(project(path = ":lib1"))  // ModuleCheck finding [unusedDependency]
+          // api(project(path = ":lib1"))  // ModuleCheck finding [unused-dependency]
           testImplementation(testFixtures(project(path = ":lib2")))
         }
     """
@@ -606,7 +606,7 @@ class OverShotDependenciesTest : RunnerTest() {
           // a comment
           // api(project(path = ":lib1")) {
             // because("this is a test")
-          // }  // ModuleCheck finding [unusedDependency]
+          // }  // ModuleCheck finding [unused-dependency]
           testImplementation(project(path = ":lib2"))
         }
     """
@@ -719,7 +719,7 @@ class OverShotDependenciesTest : RunnerTest() {
 
         dependencies {
           testImplementation(testFixtures(project(path = ":lib1")))
-          // api(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unusedDependency]
+          // api(testFixtures(project(path = ":lib1")))  // ModuleCheck finding [unused-dependency]
           testImplementation(testFixtures(project(path = ":lib2")))
         }
     """

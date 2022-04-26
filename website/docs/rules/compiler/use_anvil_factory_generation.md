@@ -1,7 +1,8 @@
 ---
-id: could_use_anvil_factory
-title: Could Use Anvil Factory
-sidebar_label: Could Use Anvil Factory
+id: use_anvil_factory_generation
+slug: /rules/use_anvil_factory_generation
+title: Could Use Anvil Factory Generation
+sidebar_label: Could Use Anvil Factory Generation
 ---
 
 Anvil's [factory generation](https://github.com/square/anvil#dagger-factory-generation) is faster

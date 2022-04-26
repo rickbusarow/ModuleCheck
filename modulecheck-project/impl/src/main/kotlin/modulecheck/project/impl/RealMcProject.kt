@@ -25,11 +25,11 @@ import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
-import modulecheck.project.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
+import modulecheck.reporting.logging.Logger
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 

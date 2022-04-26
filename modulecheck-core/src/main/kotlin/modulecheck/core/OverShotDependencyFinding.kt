@@ -19,6 +19,7 @@ import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.Finding.Position
 import modulecheck.api.finding.internal.positionOfStatement
 import modulecheck.api.finding.internal.statementOrNullIn
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
@@ -26,12 +27,28 @@ import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
+data class OverShotDependency(
+  val dependentProject: McProject,
+  val newDependency: ConfiguredProjectDependency,
+  val oldDependency: ConfiguredProjectDependency,
+  val configurationName: ConfigurationName
+) {
+  fun toFinding(ruleName: RuleName): OverShotDependencyFinding = OverShotDependencyFinding(
+    ruleName = ruleName,
+    dependentProject = dependentProject,
+    newDependency = newDependency,
+    oldDependency = oldDependency,
+    configurationName = configurationName
+  )
+}
+
 data class OverShotDependencyFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName
-) : AbstractProjectDependencyFinding("overshot"),
+) : AbstractProjectDependencyFinding(),
   AddsDependency {
 
   override val declarationOrNull: LazyDeferred<Declaration?>

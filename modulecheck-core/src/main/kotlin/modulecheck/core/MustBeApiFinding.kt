@@ -19,6 +19,7 @@ import modulecheck.api.finding.AddsDependency
 import modulecheck.api.finding.ModifiesProjectDependency
 import modulecheck.api.finding.RemovesDependency
 import modulecheck.api.finding.internal.statementOrNullIn
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
@@ -27,12 +28,13 @@ import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class MustBeApiFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val source: ConfiguredProjectDependency?
-) : AbstractProjectDependencyFinding("mustBeApi"),
+) : AbstractProjectDependencyFinding(),
   ModifiesProjectDependency,
   AddsDependency,
   RemovesDependency {

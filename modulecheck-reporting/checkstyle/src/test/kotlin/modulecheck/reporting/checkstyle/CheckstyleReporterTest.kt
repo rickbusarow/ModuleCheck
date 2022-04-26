@@ -17,6 +17,7 @@ package modulecheck.reporting.checkstyle
 
 import modulecheck.api.finding.Finding.FindingResult
 import modulecheck.api.finding.Finding.Position
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
@@ -45,7 +46,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":dependentPath"),
-          problemName = "problemName",
+          ruleName = RuleName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = "dependencyIdentifier",
@@ -63,7 +64,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="error" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="error" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
       	</file>
       </checkstyle>
     """
@@ -76,7 +77,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":dependentPath"),
-          problemName = "problemName",
+          ruleName = RuleName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = "dependencyIdentifier",
@@ -94,7 +95,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="buildFile">
-      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency="dependencyIdentifier" message="message" source="modulecheck.some-rule" />
       	</file>
       </checkstyle>
     """
@@ -107,7 +108,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":lib1"),
-          problemName = "problemName",
+          ruleName = RuleName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path1",
@@ -118,7 +119,7 @@ internal class CheckstyleReporterTest : BaseTest() {
         ),
         FindingResult(
           dependentPath = StringProjectPath(":lib1"),
-          problemName = "problemName",
+          ruleName = RuleName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path2",
@@ -129,7 +130,7 @@ internal class CheckstyleReporterTest : BaseTest() {
         ),
         FindingResult(
           dependentPath = StringProjectPath(":lib2"),
-          problemName = "problemName",
+          ruleName = RuleName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path1",
@@ -147,11 +148,11 @@ internal class CheckstyleReporterTest : BaseTest() {
       <?xml version="1.0" encoding="UTF-8"?>
       <checkstyle version="4.3">
       	<file name="lib1/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.problemName" />
-      		<error line="2" column="2" severity="info" dependency=":path2" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
+      		<error line="2" column="2" severity="info" dependency=":path2" message="message" source="modulecheck.some-rule" />
       	</file>
       	<file name="lib2/build.gradle.kts">
-      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.problemName" />
+      		<error line="1" column="2" severity="info" dependency=":path1" message="message" source="modulecheck.some-rule" />
       	</file>
       </checkstyle>
     """

@@ -17,16 +17,33 @@ package modulecheck.core
 
 import modulecheck.api.finding.Deletable
 import modulecheck.api.finding.RemovesDependency
+import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
+data class RedundantDependency(
+  val dependentProject: McProject,
+  val dependency: ConfiguredProjectDependency,
+  val configurationName: ConfigurationName,
+  val from: List<ConfiguredProjectDependency>
+) {
+  fun toFinding(ruleName: RuleName): RedundantDependencyFinding = RedundantDependencyFinding(
+    ruleName = ruleName,
+    dependentProject = dependentProject,
+    oldDependency = dependency,
+    configurationName = configurationName,
+    from = from
+  )
+}
+
 data class RedundantDependencyFinding(
+  override val ruleName: RuleName,
   override val dependentProject: McProject,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,
   val from: List<ConfiguredProjectDependency>
-) : AbstractProjectDependencyFinding("redundant"),
+) : AbstractProjectDependencyFinding(),
   RemovesDependency,
   Deletable {
 

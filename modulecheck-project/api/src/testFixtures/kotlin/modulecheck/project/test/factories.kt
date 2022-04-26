@@ -36,9 +36,9 @@ import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
-import modulecheck.project.PrintLogger
 import modulecheck.project.ProjectCache
 import modulecheck.project.impl.RealMcProject
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.createSafely
 import modulecheck.utils.child
 import java.io.File
@@ -165,8 +165,8 @@ fun buildFileParserFactory(): BuildFileParser.Factory {
     BuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependencyBlockParser(),
-          kotlinParser = KotlinDependencyBlockParser(),
+          groovyParser = GroovyDependencyBlockParser(PrintLogger()),
+          kotlinParser = KotlinDependencyBlockParser(PrintLogger()),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },

@@ -17,9 +17,10 @@ package modulecheck.core
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
-import io.kotest.matchers.collections.shouldBeIn
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.file.shouldExist
 import io.kotest.matchers.file.shouldNotBeEmpty
+import io.kotest.matchers.nulls.shouldNotBeNull
 import modulecheck.api.finding.Finding
 import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.api.settings.ModuleCheckSettings
@@ -38,7 +39,7 @@ import kotlin.io.path.absolute
 class RuleUrlValidationTest : BaseTest() {
 
   @Test
-  fun `url`() {
+  fun `each rule documentation url must correspond to a docs file and sidebar entry`() {
 
     val websiteDir = Path(".").absolute()
       .parent
@@ -74,14 +75,15 @@ class RuleUrlValidationTest : BaseTest() {
 
     val rulesDocsDir = websiteDir.child("docs", "rules")
 
-    // Find all markdown docs within the /website/docs/rules directory, and their IDs as used by the
-    // sidebar.
+    // Find all markdown docs within the /website/docs/rules directory,
+    // then parse their defined IDs and slugs.
+    //
     // The ID looks like a relative path, but it's not.  It's the relative path in terms of the
     // *directory*, but it doesn't use the file name for the last element -- it uses the "id" in the
     // file's header.
     // Given a file `/website/docs/rules/compiler/ksp/foo.md`  with an id of `id: bar`,
     // the full sidebar id is `rules/compiler/ksp/bar`.
-    val rulesDocsSidebarsIds = rulesDocsDir.walkTopDown()
+    val ruleSlugsToDocIds = rulesDocsDir.walkTopDown()
       .filter { it.isFile }
       .filter { it.extension == "md" || it.extension == "mdx" }
       .map { file ->
@@ -92,6 +94,7 @@ class RuleUrlValidationTest : BaseTest() {
           .groupValues[1]
           .trim()
 
+        // the value in the line `id: some_value`
         val simpleId = header.lines()
           .firstNotNullOf { line ->
             """id\s?:\s?(\S+).*""".toRegex()
@@ -100,32 +103,64 @@ class RuleUrlValidationTest : BaseTest() {
               .groupValues[1]
           }
 
-        when {
+        // If the file is in the root of `/rules/`, then just return the id.
+        // Otherwise, include the relative path.
+        val id = when {
           relativeDir.isEmpty() -> simpleId
           else -> "$relativeDir/$simpleId"
         }
+
+        // the value in the line `slug: some_value`
+        val slug = header.lines()
+          .firstNotNullOf { line ->
+            """slug\s?:\s?(\S+).*""".toRegex()
+              .find(line)
+              ?.groupValues
+              ?.get(1)
+          }
+          .requireNotNull { "Could not find a slug in the header of file ($file)" }
+
+        slug to id
       }
-      .sorted()
-      .toSet()
+      .toMap()
 
     val ruleFactories: List<(ModuleCheckSettings) -> ModuleCheckRule<out Finding>> =
       ModuleCheckRuleFactory().getPrivateFieldByName("rules")
 
-    ruleFactories
+    val rulesToSlugs = ruleFactories
       .asSequence()
       .map { it(TestSettings()) }
       .map { rule ->
-        rule.id to rule.documentationUrl.remove(RULES_BASE_URL)
+        rule.name.id to "/rules/${rule.documentationUrl.remove(RULES_BASE_URL)}"
       }
-      .sortedBy { it.second }
-      .forAll { (_, urlString) ->
+      .sortedBy { it.first }
 
-        "rule should be declared in the sidebar".asClue {
-          urlString shouldBeIn sidebarsRules
+    /* This seems bad, but it's simple:
+    Each rule must have a `url`.
+    Each `url` has a slug.
+    Each slug must correspond to a rule document which defines that slug.
+    For each rule document, there must be a corresponding entry in the sidebars.js file.
+     */
+    rulesToSlugs
+      .forAll { (ruleId, ruleSlug) ->
+
+        var docId: String? = null
+
+        "a rule doc with a slug of `$ruleSlug` should exist for rule with id `$ruleId`".asClue {
+
+          docId = ruleSlugsToDocIds[ruleSlug]
+
+          docId.shouldNotBeNull()
         }
-        "rule should have a file in the rule docs with a corresponding ID".asClue {
-          urlString shouldBeIn rulesDocsSidebarsIds
+
+        "a rule doc with an id of `$docId` should be defined in the sidebar".asClue {
+
+          sidebarsRules shouldContain docId
         }
+      }
+      .toList()
+      .map { it.second }
+      .let { urlStrings ->
       }
   }
 }

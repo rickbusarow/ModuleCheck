@@ -1,8 +1,7 @@
 ---
-id: unused
-
+id: unused_dependency
+slug: /rules/unused_dependency
 title: Unused Dependency
-
 sidebar_label: Unused Dependency
 ---
 

@@ -1,5 +1,6 @@
 ---
-id: disable_viewbinding
+id: disable_view_binding
+slug: /rules/disable_view_binding
 title: Disable ViewBinding
 sidebar_label: Disable ViewBinding
 ---

@@ -33,6 +33,7 @@ dependencies {
   api(libs.semVer)
 
   api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-reporting:logging"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())

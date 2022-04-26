@@ -203,7 +203,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -315,12 +315,12 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
 
           api(project(path = ":lib2"))
-          // implementation(project(path = ":lib2"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib2"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -446,12 +446,12 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api project(':lib1')
-          // implementation project(':lib1')  // ModuleCheck finding [mustBeApi]
+          // implementation project(':lib1')  // ModuleCheck finding [must-be-api]
 
           api project(':lib2')
-          // implementation project(':lib2')  // ModuleCheck finding [mustBeApi]
+          // implementation project(':lib2')  // ModuleCheck finding [must-be-api]
           api project(':lib3')
-          // implementation project(':lib3')  // ModuleCheck finding [mustBeApi]
+          // implementation project(':lib3')  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -802,7 +802,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1502,7 +1502,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1620,7 +1620,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1684,7 +1684,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1748,7 +1748,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1810,7 +1810,7 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1888,9 +1888,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -1973,9 +1973,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -2059,9 +2059,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -2145,9 +2145,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -2230,9 +2230,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 
@@ -2315,9 +2315,9 @@ class MustBeApiTest : RunnerTest() {
 
         dependencies {
           api(project(path = ":lib1"))
-          // implementation(project(path = ":lib1"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           api(project(path = ":lib3"))
-          // implementation(project(path = ":lib3"))  // ModuleCheck finding [mustBeApi]
+          // implementation(project(path = ":lib3"))  // ModuleCheck finding [must-be-api]
         }
     """
 

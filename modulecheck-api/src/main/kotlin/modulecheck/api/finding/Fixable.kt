@@ -35,13 +35,13 @@ interface Problem :
   DependencyFinding {
 
   suspend fun shouldSkip(): Boolean = declarationOrNull.await()?.suppressed
-    ?.contains(findingName)
+    ?.contains(ruleName.id)
     ?: false
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      problemName = findingName,
+      ruleName = ruleName,
       sourceOrNull = null,
       configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
       dependencyIdentifier = dependencyIdentifier,
@@ -135,7 +135,7 @@ interface Fixable : Finding, Problem {
     return addSuccessful && removeSuccessful
   }
 
-  fun fixLabel() = "  $FIX_LABEL [$findingName]"
+  fun fixLabel() = "  $FIX_LABEL [${ruleName.id}]"
 
   companion object {
 
