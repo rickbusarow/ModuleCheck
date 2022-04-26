@@ -25,30 +25,30 @@ import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
-import modulecheck.reporting.logging.Logger
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
+import modulecheck.reporting.logging.Logger
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
 @Suppress("LongParameterList")
 class RealMcProject(
-	override val path: StringProjectPath,
-	override val projectDir: File,
-	override val buildFile: File,
-	override val hasKapt: Boolean,
-	override val hasTestFixturesPlugin: Boolean,
-	override val projectCache: ProjectCache,
-	override val anvilGradlePlugin: AnvilGradlePlugin?,
-	override val logger: Logger,
-	override val jvmFileProviderFactory: JvmFileProvider.Factory,
-	override val javaSourceVersion: JavaVersion,
-	projectDependencies: Lazy<ProjectDependencies>,
-	externalDependencies: Lazy<ExternalDependencies>,
-	buildFileParserFactory: BuildFileParser.Factory,
-	override val platformPlugin: PlatformPlugin
+  override val path: StringProjectPath,
+  override val projectDir: File,
+  override val buildFile: File,
+  override val hasKapt: Boolean,
+  override val hasTestFixturesPlugin: Boolean,
+  override val projectCache: ProjectCache,
+  override val anvilGradlePlugin: AnvilGradlePlugin?,
+  override val logger: Logger,
+  override val jvmFileProviderFactory: JvmFileProvider.Factory,
+  override val javaSourceVersion: JavaVersion,
+  projectDependencies: Lazy<ProjectDependencies>,
+  externalDependencies: Lazy<ExternalDependencies>,
+  buildFileParserFactory: BuildFileParser.Factory,
+  override val platformPlugin: PlatformPlugin
 ) : McProject {
 
   override val projectDependencies: ProjectDependencies by projectDependencies
