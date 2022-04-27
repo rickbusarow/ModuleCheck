@@ -36,6 +36,7 @@ import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
+import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -172,16 +173,14 @@ data class ModuleCheckRunner @AssistedInject constructor(
       val path = settings.reports.text.outputPath
 
       File(path)
-        .also { it.parentFile.mkdirs() }
-        .writeText(textReport.joinToString())
+        .createSafely(textReport.joinToString())
     }
 
     if (settings.reports.checkstyle.enabled) {
       val path = settings.reports.checkstyle.outputPath
 
       File(path)
-        .also { it.parentFile.mkdirs() }
-        .writeText(checkstyleReporter.createXml(results))
+        .createSafely(checkstyleReporter.createXml(results))
     }
   }
 
@@ -200,8 +199,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
       val depthReport = DepthReportFactory().create(depths)
 
       File(path)
-        .also { it.parentFile.mkdirs() }
-        .writeText(depthReport.joinToString())
+        .createSafely(depthReport.joinToString())
     }
   }
 

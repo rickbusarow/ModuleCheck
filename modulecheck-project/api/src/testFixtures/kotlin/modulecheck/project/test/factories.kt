@@ -39,8 +39,8 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.impl.RealMcProject
 import modulecheck.reporting.logging.PrintLogger
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import java.io.File
 
 @PublishedApi

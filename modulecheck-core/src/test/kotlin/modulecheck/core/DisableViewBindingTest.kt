@@ -22,8 +22,8 @@ import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.asConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 class DisableViewBindingTest : RunnerTest() {

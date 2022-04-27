@@ -29,8 +29,8 @@ import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import modulecheck.utils.requireNotNull
 import modulecheck.utils.unsafeLazy
 import org.intellij.lang.annotations.Language

@@ -31,3 +31,12 @@ fun Path.child(vararg childPath: String): File {
 fun File.findMinimumIndent(): String {
   return readText().findMinimumIndent()
 }
+
+fun File.createSafely(content: String? = null) = apply {
+  toPath().parent.toFile().mkdirs()
+  if (content != null) {
+    writeText(content)
+  } else {
+    createNewFile()
+  }
+}

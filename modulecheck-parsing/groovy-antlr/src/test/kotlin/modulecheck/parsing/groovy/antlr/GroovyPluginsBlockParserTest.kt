@@ -17,9 +17,9 @@ package modulecheck.parsing.groovy.antlr
 
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.testing.BaseTest
-import modulecheck.testing.createSafely
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 

@@ -15,10 +15,10 @@
 
 package modulecheck.gradle
 
-import modulecheck.testing.createSafely
 import modulecheck.testing.writeGroovy
 import modulecheck.testing.writeKotlin
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.memberProperties
 
