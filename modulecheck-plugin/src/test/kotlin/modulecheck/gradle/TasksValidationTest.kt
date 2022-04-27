@@ -17,8 +17,8 @@ package modulecheck.gradle
 
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContain
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 class TasksValidationTest : BasePluginTest() {

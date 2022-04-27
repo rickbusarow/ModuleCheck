@@ -16,8 +16,8 @@
 package modulecheck.gradle
 
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 internal class GraphReportTaskTest : BasePluginTest() {

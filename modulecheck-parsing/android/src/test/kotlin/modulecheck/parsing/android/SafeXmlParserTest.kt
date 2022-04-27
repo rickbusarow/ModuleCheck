@@ -16,8 +16,8 @@
 package modulecheck.parsing.android
 
 import modulecheck.testing.BaseTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import modulecheck.utils.requireNotNull
 import org.junit.jupiter.api.Test
 

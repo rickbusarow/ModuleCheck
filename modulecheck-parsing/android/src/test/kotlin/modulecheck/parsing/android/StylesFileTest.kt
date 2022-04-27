@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.testing.BaseTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 

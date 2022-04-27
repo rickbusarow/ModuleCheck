@@ -20,8 +20,8 @@ import modulecheck.api.test.TestSettings
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 class DisableAndroidResourcesTest : RunnerTest() {

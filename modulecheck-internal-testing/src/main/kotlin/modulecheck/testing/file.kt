@@ -15,17 +15,9 @@
 
 package modulecheck.testing
 
+import modulecheck.utils.createSafely
 import org.intellij.lang.annotations.Language
 import java.io.File
-
-fun File.createSafely(content: String? = null) = apply {
-  toPath().parent.toFile().mkdirs()
-  if (content != null) {
-    writeText(content)
-  } else {
-    createNewFile()
-  }
-}
 
 fun File.writeKotlin(
   @Language("kotlin")

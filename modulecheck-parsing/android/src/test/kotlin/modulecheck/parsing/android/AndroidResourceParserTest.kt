@@ -18,8 +18,8 @@ package modulecheck.parsing.android
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Style
 import modulecheck.testing.BaseTest
-import modulecheck.testing.createSafely
 import modulecheck.utils.child
+import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 internal class AndroidResourceParserTest : BaseTest() {
