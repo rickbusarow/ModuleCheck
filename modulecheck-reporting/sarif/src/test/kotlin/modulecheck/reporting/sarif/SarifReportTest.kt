@@ -29,7 +29,9 @@ import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.getPrivateFieldByName
+import modulecheck.utils.suffixIfNot
 import org.junit.jupiter.api.Test
+import java.io.File
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class SarifReportTest : RunnerTest() {
@@ -66,7 +68,7 @@ class SarifReportTest : RunnerTest() {
       configurationName = ConfigurationName.api
     ).toResult(true)
 
-    val report = factory.create(
+    val reportString = factory.create(
       findingResults = listOf(finding),
       rules = rules
     )
@@ -85,8 +87,27 @@ class SarifReportTest : RunnerTest() {
           }
       }
       .replace("\$TEST_DIR", testProjectDir.path)
-      .useRelativePaths()
 
-    report.useRelativePaths() shouldBe expected
+    val normalizedReport = reportString
+      .replace(
+        p2.buildFile.relativePath()
+          .removePrefix(File.separator)
+          .replace(File.separator, "${Regex.escape(File.separator)}+")
+          .toRegex(),
+        p2.buildFile.relativePath()
+          .removePrefix(File.separator)
+          .alwaysUnixFileSeparators()
+      )
+      .replace(
+        testProjectDir.absolutePath
+          .suffixIfNot(File.separator)
+          .replace(File.separator, "${Regex.escape(File.separator)}+")
+          .toRegex(),
+        testProjectDir.absolutePath
+          .suffixIfNot(File.separator)
+          .alwaysUnixFileSeparators()
+      ).useRelativePaths()
+
+    normalizedReport shouldBe expected.useRelativePaths()
   }
 }

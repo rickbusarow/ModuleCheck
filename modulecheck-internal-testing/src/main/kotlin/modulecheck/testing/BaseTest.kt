@@ -51,12 +51,12 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
 
   /** Replace Windows file separators with Unix ones, just for string comparison in tests */
-  fun String.fixFileSeparators(): String = replace(File.separator, "/")
+  fun String.alwaysUnixFileSeparators(): String = replace(File.separator, "/")
 
   fun String.clean(): String {
     return normaliseLineSeparators()
-      .fixFileSeparators()
       .useRelativePaths()
+      .alwaysUnixFileSeparators()
       .remove(
         "Type-safe dependency accessors is an incubating feature.",
         "Type-safe project accessors is an incubating feature.",
@@ -82,11 +82,11 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
 
   /** replace absolute paths with relative ones */
   fun String.useRelativePaths(): String {
-    return fixFileSeparators()
+    return alwaysUnixFileSeparators()
       .remove(
         // order matters here!!  absolute must go first
-        testProjectDir.absolutePath.fixFileSeparators(),
-        testProjectDir.path.fixFileSeparators()
+        testProjectDir.absolutePath.alwaysUnixFileSeparators(),
+        testProjectDir.path.alwaysUnixFileSeparators()
       )
   }
 
