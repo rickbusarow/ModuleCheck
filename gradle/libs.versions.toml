@@ -30,7 +30,6 @@ google-material = "1.4.0"
 
 gradleDoctor = "0.8.0"
 groovy = "3.0.10"
-hermit = "0.9.5"
 jUnit = "5.8.2"
 javaParser = "3.24.2"
 knit = "0.4.0"
@@ -47,6 +46,7 @@ mavenPublish = "0.13.0"
 
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
+rickBusarow-hermit = "0.9.5"
 rickBusarow-moduleCheck = "0.11.3"
 rickBusarow-tangle = "0.13.2"
 
@@ -101,12 +101,6 @@ google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
 
-hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "hermit" }
-hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "hermit" }
-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "hermit" }
-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "hermit" }
-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "hermit" }
-
 javaParser-core = { module = "com.github.javaparser:javaparser-core", version.ref = "javaParser" }
 javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
 
@@ -152,6 +146,12 @@ rickBusarow-dispatch-test-jUnit4 = { module = "com.rickbusarow.dispatch:dispatch
 rickBusarow-dispatch-test-jUnit5 = { module = "com.rickbusarow.dispatch:dispatch-test-junit5", version.ref = "rickBusarow-dispatch" }
 rickBusarow-dispatch-viewModel = { module = "com.rickbusarow.dispatch:dispatch-android-viewmodel", version.ref = "rickBusarow-dispatch" }
 
+rickBusarow-hermit-core = { module = "com.rickbusarow.hermit:hermit-core", version.ref = "rickBusarow-hermit" }
+rickBusarow-hermit-coroutines = { module = "com.rickbusarow.hermit:hermit-coroutines", version.ref = "rickBusarow-hermit" }
+rickBusarow-hermit-jUnit4 = { module = "com.rickbusarow.hermit:hermit-junit4", version.ref = "rickBusarow-hermit" }
+rickBusarow-hermit-jUnit5 = { module = "com.rickbusarow.hermit:hermit-junit5", version.ref = "rickBusarow-hermit" }
+rickBusarow-hermit-mockk = { module = "com.rickbusarow.hermit:hermit-mockk", version.ref = "rickBusarow-hermit" }
+
 scabbard = "gradle.plugin.dev.arunkumar:scabbard-gradle-plugin:0.5.0"
 
 semVer = "net.swiftzer.semver:semver:1.2.0"
@@ -172,4 +172,4 @@ vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", ve
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]
 kotest = ["kotest-assertions", "kotest-properties"]
-hermit = ["hermit-core", "hermit-jUnit5"]
+hermit = ["rickBusarow-hermit-core", "rickBusarow-hermit-coroutines", "rickBusarow-hermit-jUnit5"]
