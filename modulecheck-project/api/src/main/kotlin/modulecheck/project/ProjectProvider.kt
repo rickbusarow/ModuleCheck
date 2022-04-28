@@ -16,6 +16,7 @@
 package modulecheck.project
 
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import java.io.File
 
 interface ProjectProvider : HasProjectCache {
 
@@ -24,4 +25,8 @@ interface ProjectProvider : HasProjectCache {
   fun getAll(): List<McProject>
 
   fun clearCaches()
+}
+
+fun interface ProjectRoot {
+  fun get(): File
 }

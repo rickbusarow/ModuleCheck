@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import modulecheck.builds.VERSION_NAME
-
 plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish") version "0.21.0"
@@ -78,7 +76,7 @@ gradlePlugin {
       id = "com.rickbusarow.module-check"
       group = "com.rickbusarow.modulecheck"
       implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
-      version = VERSION_NAME
+      version = modulecheck.builds.VERSION_NAME
     }
   }
 }
@@ -117,3 +115,46 @@ tasks.create("setupPluginUploadFromEnvironment") {
     System.setProperty("gradle.publish.secret", secret)
   }
 }
+
+val generatedDirPath = "$buildDir/generated/sources/build-properties/kotlin/main"
+sourceSets {
+  main.configure {
+    java.srcDir(project.file(generatedDirPath))
+  }
+}
+
+val generateBuildProperties by tasks.registering {
+
+  val version = modulecheck.builds.VERSION_NAME
+  val sourceWebsite = modulecheck.builds.SOURCE_WEBSITE
+  val docsWebsite = modulecheck.builds.DOCS_WEBSITE
+
+  val buildPropertiesDir = File(generatedDirPath)
+  val buildPropertiesFile = File(buildPropertiesDir, "BuildProperties.kt")
+
+  inputs.file(rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"))
+  outputs.file(buildPropertiesFile)
+
+  doLast {
+
+    buildPropertiesDir.mkdirs()
+
+    buildPropertiesFile.writeText(
+      """package modulecheck.gradle
+      |
+      |internal object BuildProperties {
+      |  const val VERSION = "$version"
+      |  const val SOURCE_WEBSITE = "$sourceWebsite"
+      |  const val DOCS_WEBSITE = "$docsWebsite"
+      |}
+      |
+      """.trimMargin()
+    )
+  }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
+  .configureEach {
+
+    dependsOn(generateBuildProperties)
+  }

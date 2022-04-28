@@ -31,6 +31,7 @@ dependencies {
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
   implementation(libs.google.dagger.api)
+  implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plug)
   implementation(libs.ktlint.gradle)

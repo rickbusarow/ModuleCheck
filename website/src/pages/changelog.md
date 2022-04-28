@@ -1,6 +1,6 @@
-## 0.12.1-SNAPSHOT (unreleased)
+# 0.12.1-SNAPSHOT (unreleased)
 
-#### Deprecations
+### 🗑 Deprecations
 
 - The names of all findings have been updated/standardized. Any declarations which were suppressing
   a finding with the old ID (via `@Suppress("someFinding")` or `//suppress=someFinding`) will still
@@ -22,20 +22,23 @@
   | unusedKaptProcessor           | unused-kapt-processor            |
   | unusedKotlinAndroidExtensions | unused-kotlin-android-extensions |
 
-#### ℹ️ Website
+### 🚀 Features
+
+- Added support
+  for [Static Analysis Results Interchange Format (SARIF)](https://sarifweb.azurewebsites.net)
+  report
+  output [@RBusarow](https://github.com/RBusarow) ([#566](https://github.com/rbusarow/ModuleCheck/pull/566))
+
+### ℹ️ Website
 
 - add `google()` repository to config
   docs [@RBusarow](https://github.com/RBusarow) ([#559](https://github.com/rbusarow/ModuleCheck/pull/559))
 - add missing docs for
   rules [@RBusarow](https://github.com/RBusarow) ([#555](https://github.com/rbusarow/ModuleCheck/pull/555))
-- fix
-  publishing [@RBusarow](https://github.com/RBusarow) ([#548](https://github.com/rbusarow/ModuleCheck/pull/548))
-- release
-  0.12.0 [@RBusarow](https://github.com/RBusarow) ([#547](https://github.com/rbusarow/ModuleCheck/pull/547))
 
-## 0.12.0
+# 0.12.0
 
-#### 💥 Breaking Changes
+### 💥 Breaking Changes
 
 - The `autoCorrect` property in the Gradle settings DSL has been removed. Instead, to perform a
   check with auto-correct, add the `Auto` suffix to the task name.
@@ -50,19 +53,19 @@
   the [Gradle DSL](http://localhost:3000/ModuleCheck/docs/next/configuration) and can be invoked
   through `./gradlew modulecheck` or `./gradlew moduleCheckAuto`.
 
-#### 📐 New Rules
+### 📐 New Rules
 
 - Add the [Depths](https://rbusarow.github.io/ModuleCheck/docs/0.12.0/rules/depths)
   rule [@RBusarow](https://github.com/RBusarow)  ([#278](https://github.com/rbusarow/ModuleCheck/pull/278))
 - New
   rule: [Unused Android Extensions](https://rbusarow.github.io/ModuleCheck/docs/0.12.0/rules/unused_kotlin_android_extensions) [@tasomaniac](https://github.com/tasomaniac) ([#440](https://github.com/rbusarow/ModuleCheck/pull/440))
 
-#### 🚀 Features
+### 🚀 Features
 
 - Add support for depths, dotviz dependency graph, checkstyle, and plaintext result
   reporting [@RBusarow](https://github.com/RBusarow) ([#243](https://github.com/rbusarow/ModuleCheck/pull/243))
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - Add a test case for false
   positive [@tasomaniac](https://github.com/tasomaniac) ([#419](https://github.com/rbusarow/ModuleCheck/pull/419))
@@ -118,7 +121,7 @@
 - correctly apply the `testFixtures(...)` wrapper for replaced/added
   dependencies [@RBusarow](https://github.com/RBusarow) ([#287](https://github.com/rbusarow/ModuleCheck/pull/287))
 
-#### ℹ️ Website
+### ℹ️ Website
 
 - Add documentation for new
   rule [@tasomaniac](https://github.com/tasomaniac) ([#454](https://github.com/rbusarow/ModuleCheck/pull/454))
@@ -137,41 +140,41 @@
 - replace `autoCorrect` with `-Auto`
   suffixes [@RBusarow](https://github.com/RBusarow) ([#249](https://github.com/rbusarow/ModuleCheck/pull/249))
 
-#### Contributors
+### Contributors
 
 @RBusarow, @diego-gomez-olvera and @tasomaniac
 
-## 0.11.3
+# 0.11.3
 
-#### 🚀 Features
+### 🚀 Features
 
 - support suppressing findings ([#235](https://github.com/rbusarow/ModuleCheck/pull/235))
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - support testFixtures ([#232](https://github.com/rbusarow/ModuleCheck/pull/232))
 
-#### 🧰 Maintenance
+### 🧰 Maintenance
 
 - Bump kotlinpoet from 1.10.1 to 1.10.2 ([#233](https://github.com/rbusarow/ModuleCheck/pull/233))
 - Bump gradle-plugin from 2.3.6 to 2.3.7 ([#229](https://github.com/rbusarow/ModuleCheck/pull/229))
 
-#### ℹ️ Website
+### ℹ️ Website
 
 - use titles in docs code snippets ([#237](https://github.com/rbusarow/ModuleCheck/pull/237))
 - clarify CI workflow docs ([#221](https://github.com/rbusarow/ModuleCheck/pull/221))
 - add example CI workflow to docs ([#220](https://github.com/rbusarow/ModuleCheck/pull/220))
 
-## 0.11.2
+# 0.11.2
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - support overshot dependencies ([#217](https://github.com/rbusarow/ModuleCheck/pull/217))
 - sorting fixes ([#215](https://github.com/rbusarow/ModuleCheck/pull/215))
 
-## 0.11.1
+# 0.11.1
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - support constant or enum declarations in Java
   classes ([#209](https://github.com/rbusarow/ModuleCheck/pull/209))
@@ -182,9 +185,9 @@
 - count resources as R references when used in
   AndroidManifest.xml ([#203](https://github.com/rbusarow/ModuleCheck/pull/203))
 
-## 0.11.0 - Groovy auto-correct support
+# 0.11.0 - Groovy auto-correct support
 
-#### 🐛 Bug Fixes
+### 🐛 Bug Fixes
 
 - Support generated manifests ([#197](https://github.com/rbusarow/ModuleCheck/pull/197))
 - fix redundant "from: " output ([#193](https://github.com/rbusarow/ModuleCheck/pull/193))
@@ -195,6 +198,6 @@
   references ([#177](https://github.com/rbusarow/ModuleCheck/pull/177))
 - check for Android kotlin sources ([#173](https://github.com/rbusarow/ModuleCheck/pull/173))
 
-## 0.10.0
+# 0.10.0
 
 Initial release

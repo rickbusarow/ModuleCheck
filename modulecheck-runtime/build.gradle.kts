@@ -35,6 +35,7 @@ dependencies {
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
+  api(project(path = ":modulecheck-reporting:sarif"))
 
   testFixturesApi(libs.bundles.hermit)
 

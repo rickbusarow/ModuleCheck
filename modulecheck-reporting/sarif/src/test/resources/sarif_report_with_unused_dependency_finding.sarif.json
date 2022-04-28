@@ -1,0 +1,242 @@
+{
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "results": [
+        {
+          "level": "warning",
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "lib2/build.gradle.kts",
+                  "uriBaseId": "$TEST_DIR/"
+                },
+                "contextRegion": {
+                  "endLine": 3,
+                  "startLine": 1
+                },
+                "region": {
+                  "startColumn": 3,
+                  "startLine": 2
+                }
+              }
+            }
+          ],
+          "message": {
+            "text": "The declared dependency `api(\":lib1\")` is not used in this module."
+          },
+          "ruleId": "modulecheck.unused-dependency"
+        }
+      ],
+      "tool": {
+        "driver": {
+          "fullName": "ModuleCheck",
+          "informationUri": "https://rbusarow.github.io/ModuleCheck/",
+          "name": "ModuleCheck",
+          "semanticVersion": "0.12.1-SNAPSHOT",
+          "version": "0.12.1-SNAPSHOT",
+          "rules": [
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/use_anvil_factory_generation",
+              "id": "modulecheck.use-anvil-factory-generation",
+              "name": "UseAnvilFactoryGeneration",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
+              },
+              "fullDescription": {
+                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/project_depth",
+              "id": "modulecheck.project-depth",
+              "name": "ProjectDepth",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "The longest path between this module and its leaf nodes"
+              },
+              "fullDescription": {
+                "text": "The longest path between this module and its leaf nodes"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/disable_android_resources",
+              "id": "modulecheck.disable-android-resources",
+              "name": "DisableAndroidResources",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds modules which have android resources R file generation enabled, but don't actually use any resources from the module"
+              },
+              "fullDescription": {
+                "text": "Finds modules which have android resources R file generation enabled, but don't actually use any resources from the module"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/disable_view_binding",
+              "id": "modulecheck.disable-view-binding",
+              "name": "DisableViewBinding",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds modules which have ViewBinding enabled, but don't actually use any generated ViewBinding objects from that module"
+              },
+              "fullDescription": {
+                "text": "Finds modules which have ViewBinding enabled, but don't actually use any generated ViewBinding objects from that module"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/inherited_dependency",
+              "id": "modulecheck.inherited-dependency",
+              "name": "InheritedDependency",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds project dependencies which are used in the current module, but are not actually directly declared as dependencies in the current module"
+              },
+              "fullDescription": {
+                "text": "Finds project dependencies which are used in the current module, but are not actually directly declared as dependencies in the current module"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/must_be_api",
+              "id": "modulecheck.must-be-api",
+              "name": "MustBeApi",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds project dependencies which are exposed by the module as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
+              },
+              "fullDescription": {
+                "text": "Finds project dependencies which are exposed by the module as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/overshot_dependency",
+              "id": "modulecheck.overshot-dependency",
+              "name": "OvershotDependency",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds project dependencies which aren't used by the declaring configuration, but are used by a dependent configuration."
+              },
+              "fullDescription": {
+                "text": "Finds project dependencies which aren't used by the declaring configuration, but are used by a dependent configuration."
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/redundant_dependency",
+              "id": "modulecheck.redundant-dependency",
+              "name": "RedundantDependency",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds project dependencies which are declared as `api` in dependent projects, but also declared in the current project unnecessarily"
+              },
+              "fullDescription": {
+                "text": "Finds project dependencies which are declared as `api` in dependent projects, but also declared in the current project unnecessarily"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/sort_dependencies",
+              "id": "modulecheck.sort-dependencies",
+              "name": "SortDependencies",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Sorts all dependencies within a dependencies { ... } block"
+              },
+              "fullDescription": {
+                "text": "Sorts all dependencies within a dependencies { ... } block"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/sort_plugins",
+              "id": "modulecheck.sort-plugins",
+              "name": "SortPlugins",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Sorts Gradle plugins which are applied using the plugins { ... } block"
+              },
+              "fullDescription": {
+                "text": "Sorts Gradle plugins which are applied using the plugins { ... } block"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/unused_dependency",
+              "id": "modulecheck.unused-dependency",
+              "name": "UnusedDependency",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds project dependencies which aren't used in the declaring module"
+              },
+              "fullDescription": {
+                "text": "Finds project dependencies which aren't used in the declaring module"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/unused_kapt_plugin",
+              "id": "modulecheck.unused-kapt-plugin",
+              "name": "UnusedKaptPlugin",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Warns if the kapt plugin is applied, but unused"
+              },
+              "fullDescription": {
+                "text": "Warns if the kapt plugin is applied, but unused"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/unused_kapt_processor",
+              "id": "modulecheck.unused-kapt-processor",
+              "name": "UnusedKaptProcessor",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds unused kapt processor dependencies and warns if the kapt plugin is applied but unused"
+              },
+              "fullDescription": {
+                "text": "Finds unused kapt processor dependencies and warns if the kapt plugin is applied but unused"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/unused_kotlin_android_extensions",
+              "id": "modulecheck.unused-kotlin-android-extensions",
+              "name": "UnusedKotlinAndroidExtensions",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds modules which have Kotlin AndroidExtensions enabled, but don't actually use any synthetic imports"
+              },
+              "fullDescription": {
+                "text": "Finds modules which have Kotlin AndroidExtensions enabled, but don't actually use any synthetic imports"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -158,9 +158,5 @@ class RuleUrlValidationTest : BaseTest() {
           sidebarsRules shouldContain docId
         }
       }
-      .toList()
-      .map { it.second }
-      .let { urlStrings ->
-      }
   }
 }

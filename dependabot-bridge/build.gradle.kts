@@ -49,6 +49,10 @@ dependencies {
   dependencySync("com.squareup.anvil:gradle-plugin:2.4.0")
   dependencySync("com.squareup:kotlinpoet:1.11.0")
   dependencySync("com.github.javaparser:javaparser-core:3.24.2")
+  dependencySync("com.google.devtools.ksp:symbol-processing-gradle-plugin:1.6.21-1.0.5")
+  dependencySync("com.squareup.moshi:moshi-kotlin-codegen:1.13.0")
+  dependencySync("com.squareup.moshi:moshi:1.13.0")
+  dependencySync("com.squareup.okio:okio:3.1.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin-base:0.19.0")
   dependencySync("com.vanniktech:gradle-maven-publish-plugin:0.19.0")
 

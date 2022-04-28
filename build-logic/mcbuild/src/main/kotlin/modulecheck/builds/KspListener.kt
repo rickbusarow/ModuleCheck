@@ -13,24 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.dagger
+package modulecheck.builds
 
-import javax.inject.Qualifier
-import javax.inject.Scope
-import kotlin.reflect.KClass
-
-@Suppress("UnnecessaryAbstractClass")
-abstract class AppScope private constructor()
-
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-annotation class SingleIn(val clazz: KClass<*>)
-
-@Qualifier
-annotation class DocsWebsiteUrl
-
-@Qualifier
-annotation class SourceWebsiteUrl
-
-@Qualifier
-annotation class ModuleCheckVersion
+fun interface KspListener {
+  fun onChanged(useKsp: Boolean)
+}

@@ -65,6 +65,10 @@ moduleCheck {
       enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
     }
+    sarif {
+      enabled = true  // default is false
+      outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
+    }
     depths {
       enabled = true  // default is false
       outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
@@ -139,6 +143,10 @@ moduleCheck {
     checkstyle {
       it.enabled = true  // default is false
       it.outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
+    }
+    sarif {
+      it.enabled = true  // default is false
+      it.outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
     }
     depths {
       it.enabled = true  // default is false

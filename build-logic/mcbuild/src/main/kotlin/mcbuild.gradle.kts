@@ -17,9 +17,11 @@
 
 import modulecheck.builds.ArtifactIdListener
 import modulecheck.builds.DIListener
+import modulecheck.builds.KspListener
 import modulecheck.builds.ModuleCheckBuildExtension
 import modulecheck.builds.applyAnvil
 import modulecheck.builds.applyDagger
+import modulecheck.builds.applyKsp
 import modulecheck.builds.configurePublishing
 import modulecheck.builds.libsCatalog
 
@@ -38,11 +40,16 @@ val settings = extensions.create<ModuleCheckBuildExtension>(
   DIListener { anvil, dagger ->
     applyAnvil(anvil = anvil, dagger = dagger)
     applyDagger(anvil = anvil, dagger = dagger)
-  }
+  },
+  KspListener { onKspToggled(it) }
 )
 
 fun onNewArtifactId(artifactId: String) {
   project.configurePublishing(artifactId)
+}
+
+fun onKspToggled(useKsp: Boolean) {
+  project.applyKsp(useKsp)
 }
 
 @Suppress("UnstableApiUsage")

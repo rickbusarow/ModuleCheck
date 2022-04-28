@@ -35,10 +35,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-Xinline-classes",
-        "-Xopt-in=kotlin.RequiresOptIn",
-        "-Xopt-in=kotlin.ExperimentalStdlibApi",
-        "-Xopt-in=kotlin.contracts.ExperimentalContracts",
-        "-Xopt-in=kotlinx.coroutines.FlowPreview"
+        "-opt-in=kotlin.RequiresOptIn",
+        "-opt-in=kotlin.ExperimentalStdlibApi",
+        "-opt-in=kotlin.contracts.ExperimentalContracts",
+        "-opt-in=kotlinx.coroutines.FlowPreview"
       )
     }
   }

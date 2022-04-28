@@ -13,24 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.dagger
+package modulecheck.builds
 
-import javax.inject.Qualifier
-import javax.inject.Scope
-import kotlin.reflect.KClass
+import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 
-@Suppress("UnnecessaryAbstractClass")
-abstract class AppScope private constructor()
+fun Project.applyKsp(useKsp: Boolean) {
 
-@Scope
-@Retention(AnnotationRetention.RUNTIME)
-annotation class SingleIn(val clazz: KClass<*>)
+  if (!useKsp) return
 
-@Qualifier
-annotation class DocsWebsiteUrl
-
-@Qualifier
-annotation class SourceWebsiteUrl
-
-@Qualifier
-annotation class ModuleCheckVersion
+  apply(plugin = "com.google.devtools.ksp")
+}

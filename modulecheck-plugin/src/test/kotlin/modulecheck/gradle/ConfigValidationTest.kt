@@ -59,7 +59,7 @@ class ConfigValidationTest : BasePluginTest() {
       .map { it.name } shouldBe listOf("dependencyComparators", "pluginComparators")
 
     ReportsExtension::class.memberProperties
-      .map { it.name } shouldBe listOf("checkstyle", "depths", "graphs", "text")
+      .map { it.name } shouldBe listOf("checkstyle", "depths", "graphs", "sarif", "text")
   }
 
   @Test
@@ -118,6 +118,10 @@ class ConfigValidationTest : BasePluginTest() {
               enabled = true  // default is false
               outputPath = "${'$'}{project.buildDir}/reports/modulecheck/checkstyle.xml"
             }
+            sarif {
+              enabled = true  // default is false
+              outputPath = "${'$'}{project.buildDir}/reports/modulecheck/modulecheck.sarif"
+            }
             depths {
               enabled = true  // default is false
               outputPath = "${'$'}{project.buildDir}/reports/modulecheck/depths.txt"
@@ -139,7 +143,7 @@ class ConfigValidationTest : BasePluginTest() {
         """.trimIndent()
       )
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      projectDir.child("settings.gradle.kts").createSafely(null)
     }
 
     shouldSucceed("moduleCheck")
@@ -201,6 +205,10 @@ class ConfigValidationTest : BasePluginTest() {
             checkstyle {
               it.enabled = true  // default is false
               it.outputPath = "${'$'}{project.buildDir}/reports/modulecheck/checkstyle.xml"
+            }
+            sarif {
+              it.enabled = true  // default is false
+              it.outputPath = "${'$'}{project.buildDir}/reports/modulecheck/modulecheck.sarif"
             }
             depths {
               it.enabled = true  // default is false

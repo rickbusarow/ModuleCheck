@@ -29,6 +29,8 @@ import org.gradle.plugins.signing.Sign
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
 const val VERSION_NAME = "0.12.1-SNAPSHOT"
+const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
+const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(
@@ -47,7 +49,7 @@ fun Project.configurePublishing(
       pom {
         description.set("Fast dependency graph linting for Gradle projects")
         name.set(artifactId)
-        url.set("https://github.com/rbusarow/ModuleCheck")
+        url.set(SOURCE_WEBSITE)
         licenses {
           license {
             name.set("The Apache Software License, Version 2.0")
@@ -56,7 +58,7 @@ fun Project.configurePublishing(
           }
         }
         scm {
-          url.set("https://github.com/rbusarow/ModuleCheck/")
+          url.set("$SOURCE_WEBSITE/")
           connection.set("scm:git:git://github.com/rbusarow/ModuleCheck.git")
           developerConnection.set("scm:git:ssh://git@github.com/rbusarow/ModuleCheck.git")
         }

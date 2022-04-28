@@ -40,6 +40,7 @@ kotlin = "1.6.21"
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.1"
 kotlinx-knit = "0.4.0"
+google-ksp = "1.6.21-1.0.5"
 
 ktlint = "10.2.1"
 
@@ -51,8 +52,8 @@ rickBusarow-moduleCheck = "0.11.3"
 rickBusarow-tangle = "0.13.2"
 
 square-anvil = "2.4.0"
-square-moshi = "1.12.0"
-square-okhttp = "4.9.1"
+square-moshi = "1.13.0"
+square-okio = "3.1.0"
 square-retrofit = "2.9.0"
 square-workflow = "1.0.0"
 
@@ -60,8 +61,6 @@ targetSdk = "30"
 taskTree = "2.1.0"
 
 vanniktech-publish = "0.19.0"
-
-zacSweers-moshix = "0.14.1"
 
 [plugins]
 
@@ -75,6 +74,8 @@ gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 taskTree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
+
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 
 dependencySync = { id = "com.rickbusarow.dependency-sync", version.ref = "rickBusarow-dependencySync" }
 moduleCheck = { id = "com.rickbusarow.module-check", version.ref = "rickBusarow-moduleCheck" }
@@ -97,6 +98,8 @@ dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref
 
 google-dagger-api = { module = "com.google.dagger:dagger", version.ref = "google-dagger" }
 google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
+
+google-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "google-ksp" }
 
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
@@ -161,6 +164,11 @@ square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", versio
 square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "square-anvil" }
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "square-anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "square-anvil" }
+
+square-moshi = { module = "com.squareup.moshi:moshi", version.ref = "square-moshi" }
+square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "square-moshi" }
+
+square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
 square-turbine = "app.cash.turbine:turbine:0.7.0"
 

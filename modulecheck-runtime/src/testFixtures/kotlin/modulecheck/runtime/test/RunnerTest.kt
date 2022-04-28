@@ -36,6 +36,7 @@ import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.runtime.ModuleCheckRunner
 
 abstract class RunnerTest : ProjectTest() {
@@ -82,7 +83,11 @@ abstract class RunnerTest : ProjectTest() {
       checkstyleReporter = checkstyleReporter,
       graphvizFileWriter = graphvizFileWriter,
       dispatcherProvider = dispatcherProvider,
-      projectProvider = projectProvider
+      projectProvider = projectProvider,
+      sarifReportFactory = SarifReportFactory(
+        websiteUrl = "https://rbusarow.github.io/ModuleCheck",
+        moduleCheckVersion = "0.12.1-SNAPSHOT"
+      ) { testProjectDir }
     ).run(allProjects())
 
     if (autoCorrect) {
@@ -105,6 +110,9 @@ abstract class RunnerTest : ProjectTest() {
     sorts: List<Finding> = emptyList(),
     reports: List<Finding> = emptyList()
   ): FindingFactory<*> = object : FindingFactory<Finding> {
+
+    override val rules = ruleFactory.create(settings)
+
     override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> = fixable
     override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts
     override suspend fun evaluateReports(projects: List<McProject>): List<Finding> = reports

@@ -24,6 +24,7 @@ import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.gradle.GradleProjectProvider
+import modulecheck.project.ProjectRoot
 import modulecheck.runtime.ModuleCheckRunner
 import org.gradle.api.Project
 
@@ -42,7 +43,9 @@ interface TaskComponent {
       @BindsInstance
       moduleCheckSettings: ModuleCheckSettings,
       @BindsInstance
-      findingFactory: FindingFactory<out Finding>
+      findingFactory: FindingFactory<out Finding>,
+      @BindsInstance
+      projectRoot: ProjectRoot
     ): TaskComponent
   }
 }

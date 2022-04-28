@@ -51,16 +51,27 @@ data class UnusedDependencyFinding(
   override val dependency get() = oldDependency
 
   override val message: String
-    get() = "The declared dependency is not used in this module."
+    get() = when {
+      dependency.isTestFixture -> {
+        "The declared dependency " +
+          "`${configurationName.value}(testFixtures(\"${dependency.path}\"))` " +
+          "is not used in this module."
+      }
+      else -> {
+        "The declared dependency `${configurationName.value}(\"${dependency.path}\")` " +
+          "is not used in this module."
+      }
+    }
 
   override fun toString(): String {
-    return "UnusedDependency(\n" +
-      "\tdependentPath='$dependentPath', \n" +
-      "\tbuildFile=$buildFile, \n" +
-      "\tdependency=$dependency, \n" +
-      "\tdependencyIdentifier='$dependencyIdentifier', \n" +
-      "\tconfigurationName=$configurationName\n" +
-      ")"
+    return """UnusedDependency(
+    	dependentPath='$dependentPath',
+    	buildFile=$buildFile,
+    	dependency=$dependency,
+    	dependencyIdentifier='$dependencyIdentifier',
+    	configurationName=$configurationName
+    )
+    """.trimIndent()
   }
 
   override fun fromStringOrEmpty(): String = ""

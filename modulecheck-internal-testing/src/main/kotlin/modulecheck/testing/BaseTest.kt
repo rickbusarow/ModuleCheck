@@ -47,7 +47,7 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  /** Replace CRLF and CR line endings with Unix LF endings.*/
+  /** Replace CRLF and CR line endings with Unix LF endings. */
   fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
 
   /** Replace Windows file separators with Unix ones, just for string comparison in tests */
