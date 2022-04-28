@@ -14,9 +14,14 @@
  */
 
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
+}
+
+val reportMerge by tasks.registering(ReportMergeTask::class) {
+  output.set(rootProject.buildDir.resolve("reports/detekt/merged.sarif"))
 }
 
 detekt {
@@ -26,12 +31,19 @@ detekt {
   buildUponDefaultConfig = true
 }
 
-tasks.withType<Detekt> {
+tasks.withType<Detekt> detekt@{
+
+  finalizedBy(reportMerge)
+
+  reportMerge.configure {
+    input.from(this@detekt.sarifReportFile)
+  }
 
   reports {
     xml.required.set(true)
     html.required.set(true)
     txt.required.set(false)
+    sarif.required.set(true)
   }
 
   setSource(files(projectDir))
