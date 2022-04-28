@@ -85,7 +85,8 @@ class SarifReportTest : RunnerTest() {
           }
       }
       .replace("\$TEST_DIR", testProjectDir.path)
+      .useRelativePaths()
 
-    report shouldBe expected
+    report.useRelativePaths() shouldBe expected
   }
 }

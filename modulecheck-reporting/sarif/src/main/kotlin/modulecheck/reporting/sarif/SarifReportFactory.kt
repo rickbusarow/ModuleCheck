@@ -23,6 +23,7 @@ import modulecheck.dagger.DocsWebsiteUrl
 import modulecheck.dagger.ModuleCheckVersion
 import modulecheck.project.ProjectRoot
 import modulecheck.utils.suffixIfNot
+import java.io.File
 import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
@@ -59,31 +60,35 @@ class SarifReportFactory @Inject constructor(
       rules = sarifRules
     )
 
-    val results = findingResults.map { f ->
+    val results = findingResults.map { findingResult ->
       SarifResult(
-        ruleID = "modulecheck.${f.ruleName.id}",
+        ruleID = "modulecheck.${findingResult.ruleName.id}",
         level = Level.Warning,
-        message = Message(text = f.message),
+        message = Message(text = findingResult.message),
         locations = listOf(
           Location(
             physicalLocation = PhysicalLocation(
               artifactLocation = ArtifactLocation(
-                uri = f.buildFile.relativeTo(projectRoot.get()).path,
-                uriBaseID = projectRoot.get().absolutePath.suffixIfNot("/")
+                uri = findingResult.buildFile.relativeTo(projectRoot.get()).path,
+                uriBaseID = projectRoot.get().absolutePath.suffixIfNot(File.separator)
               ),
               // Extra area to be included in a code snippet, to show context.
-              contextRegion = f.positionOrNull?.let { position ->
-                @Suppress("MagicNumber")
-                Region(
-                  // these values are 1-indexed, instead of zero-indexed
-                  // Add up to 3 lines of context on either side where possible
-                  startLine = max(position.row - 3, 1),
-                  endLine = min(position.row + 3, f.buildFile.readText().lines().size)
-                )
-              },
+              contextRegion = findingResult.positionOrNull
+                ?.let { position ->
+                  @Suppress("MagicNumber")
+                  Region(
+                    // these values are 1-indexed, instead of zero-indexed
+                    // Add up to 3 lines of context on either side where possible
+                    startLine = max(position.row - 3, 1),
+                    endLine = min(
+                      position.row + 3,
+                      findingResult.buildFile.readText().lines().size
+                    )
+                  )
+                },
               region = Region(
-                startLine = f.positionOrNull?.row,
-                startColumn = f.positionOrNull?.column
+                startLine = findingResult.positionOrNull?.row,
+                startColumn = findingResult.positionOrNull?.column
               )
             )
           )
