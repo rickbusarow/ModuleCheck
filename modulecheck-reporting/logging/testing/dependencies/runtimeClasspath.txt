@@ -1,0 +1,8 @@
+com.google.dagger:dagger:2.42
+com.squareup.anvil:annotations:2.4.0
+javax.inject:javax.inject:1
+org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
+org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
+org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21
+org.jetbrains.kotlin:kotlin-stdlib:1.6.21
+org.jetbrains:annotations:13.0

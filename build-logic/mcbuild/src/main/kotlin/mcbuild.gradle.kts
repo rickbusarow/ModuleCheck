@@ -28,6 +28,7 @@ import modulecheck.builds.libsCatalog
 plugins {
   id("mcbuild.clean")
   id("mcbuild.detekt")
+  id("mcbuild.dependency-guard")
   id("mcbuild.java-library")
   id("mcbuild.kotlin")
   id("mcbuild.ktlint")

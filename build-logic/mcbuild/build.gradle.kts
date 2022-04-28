@@ -33,6 +33,7 @@ dependencies {
 
   implementation(libs.benManes.gradle)
   implementation(libs.detekt.gradle)
+  implementation(libs.dropbox.dependencyGuard)
   implementation(libs.dokka.gradle)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
