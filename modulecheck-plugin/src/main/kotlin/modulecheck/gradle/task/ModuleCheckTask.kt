@@ -58,7 +58,12 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
   fun run() {
 
     val component = DaggerTaskComponent.factory()
-      .create(project, settings, findingFactory)
+      .create(
+        project = project,
+        moduleCheckSettings = settings,
+        findingFactory = findingFactory,
+        projectRoot = { project.rootDir }
+      )
 
     try {
 

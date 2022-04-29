@@ -32,7 +32,7 @@ data class RuleName(
 
   /** SomeRuleName */
   val titleCase: String
-    get() = id.split('-').joinToString { it.capitalize() }
+    get() = id.split('-').joinToString("") { it.capitalize() }
 
   /** some_rule_name */
   val snakeCase: String get() = id.replace('-', '_')
@@ -40,7 +40,7 @@ data class RuleName(
   /** someRuleName */
   val pascalCase: String
     get() = id.split('-')
-      .joinToString { it.capitalize() }
+      .joinToString("") { it.capitalize() }
       .decapitalize()
 
   /** 'Some Rule Name' */

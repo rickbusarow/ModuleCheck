@@ -120,24 +120,19 @@ interface ChecksSettings {
 
 interface ReportsSettings {
 
-  /**
-   * checkstyle-formatted xml report
-   */
+  /** checkstyle-formatted xml report */
   val checkstyle: ReportSettings
 
-  /**
-   * plain-text report file matching the console output
-   */
+  /** SARIF-formatted report */
+  val sarif: ReportSettings
+
+  /** plain-text report file matching the console output */
   val text: ReportSettings
 
-  /**
-   * report of the depth for each source set for each module
-   */
+  /** report of the depth for each source set for each module */
   val depths: ReportSettings
 
-  /**
-   * create dependency graphs for each source set for each module
-   */
+  /** create dependency graphs for each source set for each module */
   val graphs: PerModuleReportSettings
 
   companion object {
@@ -149,6 +144,9 @@ interface ReportsSettings {
 
     const val DEPTHS_ENABLED_DEFAULT = false
     const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depths.txt"
+
+    const val SARIF_ENABLED_DEFAULT = false
+    const val SARIF_PATH_DEFAULT = "build/reports/modulecheck/modulecheck.sarif"
 
     const val GRAPH_ENABLED_DEFAULT = false
   }

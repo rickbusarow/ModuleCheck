@@ -39,6 +39,8 @@ import modulecheck.api.settings.ReportsSettings.Companion.CHECKSTYLE_PATH_DEFAUL
 import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.DEPTHS_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.GRAPH_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.SARIF_ENABLED_DEFAULT
+import modulecheck.api.settings.ReportsSettings.Companion.SARIF_PATH_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_ENABLED_DEFAULT
 import modulecheck.api.settings.ReportsSettings.Companion.TEXT_PATH_DEFAULT
 import modulecheck.api.settings.SortSettings
@@ -72,24 +74,23 @@ open class ModuleCheckExtension @Inject constructor(
    * Set of modules which are allowed to be unused.
    *
    * For instance, given:
+   *
    * ```
    * ignoreUnusedFinding = setOf(":core")
    * ```
+   *
    * If a module declares `:core` as a dependency but does not use it, no finding will be reported.
    */
   override var ignoreUnusedFinding: Set<String> by objects.setProperty()
 
   /**
-   * Set of modules which will not be excluded from error reporting.
-   * The most common use-case would be if the module is the root of a dependency graph,
-   * like an Android application module, and it needs everything in its classpath
-   * for dependency injection purposes.
+   * Set of modules which will not be excluded from error reporting. The most common use-case would
+   * be if the module is the root of a dependency graph, like an Android application module, and it
+   * needs everything in its classpath for dependency injection purposes.
    */
   override var doNotCheck: Set<String> by objects.setProperty()
 
-  /**
-   * List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck.
-   */
+  /** List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck. */
   override var additionalKaptMatchers: List<KaptMatcher> by objects.listProperty()
 
   override val checks: ChecksSettings = ChecksExtension(objects)
@@ -102,14 +103,10 @@ open class ModuleCheckExtension @Inject constructor(
     action.execute(sort)
   }
 
-  /**
-   * Configures reporting options
-   */
+  /** Configures reporting options */
   override val reports = ReportsExtension(objects, projectLayout)
 
-  /**
-   * Configures reporting options
-   */
+  /** Configures reporting options */
   fun reports(action: Action<ReportsExtension>) {
     action.execute(reports)
   }
@@ -155,66 +152,62 @@ open class ReportsExtension @Inject constructor(
   projectLayout: ProjectLayout
 ) : ReportsSettings {
 
-  /**
-   * checkstyle-formatted xml report
-   */
+  /** checkstyle-formatted xml report */
   override val checkstyle = ReportExtension(
     objects = objects,
     enabledDefault = CHECKSTYLE_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(CHECKSTYLE_PATH_DEFAULT).toString()
   )
 
-  /**
-   * checkstyle-formatted xml report
-   */
+  /** checkstyle-formatted xml report */
   fun checkstyle(action: Action<ReportExtension>) {
     action.execute(checkstyle)
   }
 
-  /**
-   * plain-text report file matching the console output
-   */
+  /** SARIF-formatted report */
+  override val sarif = ReportExtension(
+    objects = objects,
+    enabledDefault = SARIF_ENABLED_DEFAULT,
+    outputPath = projectLayout.projectDirectory.dir(SARIF_PATH_DEFAULT).toString()
+  )
+
+  /** SARIF-formatted report */
+  fun sarif(action: Action<ReportExtension>) {
+    action.execute(sarif)
+  }
+
+  /** plain-text report file matching the console output */
   override val text = ReportExtension(
     objects = objects,
     enabledDefault = TEXT_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(TEXT_PATH_DEFAULT).toString()
   )
 
-  /**
-   * plain-text report file matching the console output
-   */
+  /** plain-text report file matching the console output */
   fun text(action: Action<ReportExtension>) {
     action.execute(text)
   }
 
-  /**
-   * report of the depth for each source set for each module
-   */
+  /** report of the depth for each source set for each module */
   override val depths = ReportExtension(
     objects = objects,
     enabledDefault = DEPTHS_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(DEPTHS_PATH_DEFAULT).toString()
   )
 
-  /**
-   * report of the depth for each source set for each module
-   */
+  /** report of the depth for each source set for each module */
   fun depths(action: Action<ReportExtension>) {
     action.execute(depths)
   }
 
-  /**
-   * create dependency graphs for each source set for each module
-   */
+  /** create dependency graphs for each source set for each module */
   override val graphs = PerModuleReportExtension(
     objects = objects,
     enabledDefault = GRAPH_ENABLED_DEFAULT,
     outputDir = null
   )
 
-  /**
-   * create dependency graphs for each source set for each module
-   */
+  /** create dependency graphs for each source set for each module */
   fun graphs(action: Action<PerModuleReportExtension>) {
     action.execute(graphs)
   }
@@ -229,9 +222,7 @@ open class ReportExtension(
 
   override var enabled: Boolean by objects.property(enabledDefault)
 
-  /**
-   * Path for the generated file, relative to the project root.
-   */
+  /** Path for the generated file, relative to the project root. */
   override var outputPath: String by objects.property(outputPath)
 }
 
@@ -247,7 +238,8 @@ open class PerModuleReportExtension(
   /**
    * Path to the root directory of the generated files, relative to the project root.
    *
-   * If this is null, then reports will be created in `$projectDir/build/reports/modulecheck/graphs/`.
+   * If this is null, then reports will be created in
+   * `$projectDir/build/reports/modulecheck/graphs/`.
    */
   override var outputDir: String? by objects.nullableProperty(outputDir)
 }

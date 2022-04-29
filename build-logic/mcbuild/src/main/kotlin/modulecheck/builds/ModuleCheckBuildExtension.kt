@@ -24,7 +24,8 @@ import kotlin.reflect.KProperty
 abstract class ModuleCheckBuildExtension @Inject constructor(
   objects: ObjectFactory,
   private val artifactIdListener: ArtifactIdListener,
-  private val diListener: DIListener
+  private val diListener: DIListener,
+  private val kspListener: KspListener
 ) {
 
   var artifactId: String? by objects.nullableProperty<String> {
@@ -35,6 +36,9 @@ abstract class ModuleCheckBuildExtension @Inject constructor(
   }
   var dagger: Boolean by objects.property(false) {
     diListener.onChanged(anvil, it)
+  }
+  var ksp: Boolean by objects.property(false) {
+    kspListener.onChanged(it)
   }
 }
 

@@ -36,6 +36,7 @@ import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis
@@ -59,6 +60,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val checkstyleReporter: CheckstyleReporter,
   val graphvizFileWriter: GraphvizFileWriter,
   val dispatcherProvider: DispatcherProvider,
+  val sarifReportFactory: SarifReportFactory,
   @Assisted
   val projectProvider: ProjectProvider,
   @Assisted
@@ -147,9 +149,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
     }
   }
 
-  /**
-   * Tries to fix all findings one project at a time, then reports the results.
-   */
+  /** Tries to fix all findings one project at a time, then reports the results. */
   private suspend fun processFindings(findings: List<Finding>): List<FindingResult> {
     return findingResultFactory.create(
       findings = findings,
@@ -158,10 +158,10 @@ data class ModuleCheckRunner @AssistedInject constructor(
     )
   }
 
-  /**
-   * Creates any applicable reports.
-   */
+  /** Creates any applicable reports. */
   private fun reportResults(results: List<Finding.FindingResult>) {
+
+    val rules = findingFactory.rules
 
     val textReport = reportFactory.create(results)
 
@@ -174,6 +174,15 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
       File(path)
         .createSafely(textReport.joinToString())
+    }
+
+    if (settings.reports.sarif.enabled) {
+      val path = settings.reports.sarif.outputPath
+
+      val sarif = sarifReportFactory.create(results, rules)
+
+      File(path)
+        .createSafely(sarif)
     }
 
     if (settings.reports.checkstyle.enabled) {

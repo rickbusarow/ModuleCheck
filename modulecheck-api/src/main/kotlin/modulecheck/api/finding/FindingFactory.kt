@@ -15,9 +15,12 @@
 
 package modulecheck.api.finding
 
+import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.project.McProject
 
 interface FindingFactory<T : Finding> {
+
+  val rules: List<ModuleCheckRule<out Finding>>
 
   suspend fun evaluateFixable(projects: List<McProject>): List<T>
   suspend fun evaluateSorts(projects: List<McProject>): List<T>

@@ -97,6 +97,7 @@ include(
   ":modulecheck-reporting:console",
   ":modulecheck-reporting:graphviz",
   ":modulecheck-reporting:logging",
+  ":modulecheck-reporting:sarif",
   ":modulecheck-runtime",
   ":modulecheck-specs",
   ":modulecheck-utils"

@@ -22,6 +22,13 @@
   | unusedKaptProcessor           | unused-kapt-processor            |
   | unusedKotlinAndroidExtensions | unused-kotlin-android-extensions |
 
+### 🚀 Features
+
+- Added support
+  for [Static Analysis Results Interchange Format (SARIF)](https://sarifweb.azurewebsites.net)
+  report
+  output [@RBusarow](https://github.com/RBusarow) ([#566](https://github.com/rbusarow/ModuleCheck/pull/566))
+
 ### ℹ️ Website
 
 - add `google()` repository to config

@@ -34,7 +34,7 @@ import modulecheck.utils.sortedWith
 
 class MultiRuleFindingFactory(
   private val settings: ModuleCheckSettings,
-  private val rules: List<ModuleCheckRule<out Finding>>
+  override val rules: List<ModuleCheckRule<out Finding>>
 ) : FindingFactory<Finding> {
 
   override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> {

@@ -29,6 +29,9 @@ class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>
 ) : FindingFactory<Finding> {
 
+  override val rules: List<ModuleCheckRule<out Finding>>
+    get() = listOf(rule)
+
   override suspend fun evaluateFixable(projects: List<McProject>): List<T> {
     return if (rule !is SortRule && rule !is ReportOnlyRule) {
       evaluateRule(projects)

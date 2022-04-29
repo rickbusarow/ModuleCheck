@@ -67,6 +67,10 @@ class TestReportsSettings(
     ReportsSettings.CHECKSTYLE_ENABLED_DEFAULT,
     ReportsSettings.CHECKSTYLE_PATH_DEFAULT
   ),
+  override val sarif: ReportSettings = TestReportSettings(
+    ReportsSettings.SARIF_ENABLED_DEFAULT,
+    ReportsSettings.SARIF_PATH_DEFAULT
+  ),
   override val text: ReportSettings = TestReportSettings(
     ReportsSettings.TEXT_ENABLED_DEFAULT,
     ReportsSettings.TEXT_PATH_DEFAULT
