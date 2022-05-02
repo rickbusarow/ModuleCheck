@@ -47,7 +47,7 @@ abstract class BasePluginTest : ProjectTest() {
     testProjectDir.deleteRecursively()
   }
 
-  fun build(vararg tasks: String, stacktrace: Boolean = false): BuildResult {
+  fun build(vararg tasks: String, stacktrace: Boolean): BuildResult {
     return gradleRunner.withArguments(
       tasks.toList().letIf(stacktrace) { it + "--stacktrace" }
     )
@@ -58,8 +58,8 @@ abstract class BasePluginTest : ProjectTest() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun shouldSucceed(vararg tasks: String, stacktrace: Boolean = false): BuildResult {
-    val result = build(*tasks)
+  fun shouldSucceed(vararg tasks: String, stacktrace: Boolean = true): BuildResult {
+    val result = build(*tasks, stacktrace = stacktrace)
 
     result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
 
