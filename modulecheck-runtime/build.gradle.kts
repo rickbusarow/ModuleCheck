@@ -20,7 +20,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-runtime"
-  dagger = true
+  anvil = true
 }
 
 val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()

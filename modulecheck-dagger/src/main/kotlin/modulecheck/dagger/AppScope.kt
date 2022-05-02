@@ -15,7 +15,6 @@
 
 package modulecheck.dagger
 
-import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.reflect.KClass
 
@@ -26,11 +25,14 @@ abstract class AppScope private constructor()
 @Retention(AnnotationRetention.RUNTIME)
 annotation class SingleIn(val clazz: KClass<*>)
 
-@Qualifier
-annotation class DocsWebsiteUrl
+fun interface SourceWebsiteUrlProvider {
+  fun get(): String
+}
 
-@Qualifier
-annotation class SourceWebsiteUrl
+fun interface ModuleCheckVersionProvider {
+  fun get(): String
+}
 
-@Qualifier
-annotation class ModuleCheckVersion
+fun interface DocsWebsiteUrlProvider {
+  fun get(): String
+}
