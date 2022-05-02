@@ -23,6 +23,4 @@ mcbuild {
 }
 
 dependencies {
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

@@ -29,16 +29,18 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-reporting:logging"))
 
   compileOnly(gradleApi())
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

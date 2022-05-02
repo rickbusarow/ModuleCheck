@@ -29,11 +29,8 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
-  api(project(path = ":modulecheck-parsing:java"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
@@ -44,6 +41,10 @@ dependencies {
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-parsing:java"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

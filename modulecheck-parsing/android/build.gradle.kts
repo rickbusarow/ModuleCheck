@@ -30,7 +30,6 @@ dependencies {
   api(libs.semVer)
 
   api(project(path = ":modulecheck-parsing:source"))
-  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
@@ -38,10 +37,13 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(gradleApi())
+
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+
+  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

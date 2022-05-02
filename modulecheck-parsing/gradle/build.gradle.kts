@@ -34,13 +34,14 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-reporting:logging"))
-  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-utils"))
 
   if (isIdeSync) {
     compileOnly(libs.bundles.hermit)
