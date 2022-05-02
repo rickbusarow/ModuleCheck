@@ -20,7 +20,11 @@ buildscript {
   }
 }
 
-@Suppress("UnstableApiUsage")
+// `alias(libs.______)` inside the plugins block throws a false positive warning
+// https://youtrack.jetbrains.com/issue/KTIJ-19369
+// There's also an IntelliJ plugin to disable this warning globally:
+// https://plugins.jetbrains.com/plugin/18949-gradle-libs-error-suppressor
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   alias(libs.plugins.ktlint)
