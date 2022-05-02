@@ -33,7 +33,7 @@ groovy = "3.0.10"
 jUnit = "5.8.2"
 javaParser = "3.24.2"
 knit = "0.4.0"
-kotest = "5.2.3"
+kotest = "5.3.0"
 kotlin = "1.6.21"
 
 kotlinx-atomicfu = "0.16.3"
@@ -170,7 +170,7 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
-square-turbine = "app.cash.turbine:turbine:0.7.0"
+square-turbine = "app.cash.turbine:turbine:0.8.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
