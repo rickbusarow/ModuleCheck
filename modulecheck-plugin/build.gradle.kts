@@ -116,7 +116,7 @@ tasks.create("setupPluginUploadFromEnvironment") {
   }
 }
 
-val generatedDirPath = "$buildDir/generated/sources/build-properties/kotlin/main"
+val generatedDirPath = "$buildDir/generated/sources/buildProperties/kotlin/main"
 sourceSets {
   main.configure {
     java.srcDir(project.file(generatedDirPath))
@@ -130,7 +130,7 @@ val generateBuildProperties by tasks.registering {
   val docsWebsite = modulecheck.builds.DOCS_WEBSITE
 
   val buildPropertiesDir = File(generatedDirPath)
-  val buildPropertiesFile = File(buildPropertiesDir, "BuildProperties.kt")
+  val buildPropertiesFile = File(buildPropertiesDir, "modulecheck/gradle/task/BuildProperties.kt")
 
   inputs.file(rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"))
   outputs.file(buildPropertiesFile)
@@ -140,7 +140,7 @@ val generateBuildProperties by tasks.registering {
     buildPropertiesDir.mkdirs()
 
     buildPropertiesFile.writeText(
-      """package modulecheck.gradle
+      """package modulecheck.gradle.task
       |
       |internal object BuildProperties {
       |  const val VERSION = "$version"

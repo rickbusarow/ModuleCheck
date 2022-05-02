@@ -19,8 +19,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import modulecheck.api.finding.Finding
 import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.dagger.DocsWebsiteUrl
-import modulecheck.dagger.ModuleCheckVersion
+import modulecheck.dagger.ModuleCheckVersionProvider
+import modulecheck.dagger.SourceWebsiteUrlProvider
 import modulecheck.project.ProjectRoot
 import modulecheck.utils.suffixIfNot
 import java.io.File
@@ -29,10 +29,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 class SarifReportFactory @Inject constructor(
-  @DocsWebsiteUrl
-  private val websiteUrl: String,
-  @ModuleCheckVersion
-  private val moduleCheckVersion: String,
+  private val websiteUrl: SourceWebsiteUrlProvider,
+  private val moduleCheckVersion: ModuleCheckVersionProvider,
   private val projectRoot: ProjectRoot
 ) {
 
@@ -54,9 +52,9 @@ class SarifReportFactory @Inject constructor(
     val driver = SarifDriver(
       name = "ModuleCheck",
       fullName = "ModuleCheck",
-      version = moduleCheckVersion,
-      semanticVersion = moduleCheckVersion,
-      informationURI = websiteUrl.suffixIfNot("/"),
+      version = moduleCheckVersion.get(),
+      semanticVersion = moduleCheckVersion.get(),
+      informationURI = websiteUrl.get().suffixIfNot("/"),
       rules = sarifRules
     )
 

@@ -45,8 +45,8 @@ class SarifReportTest : RunnerTest() {
       .map { it(TestSettings()) }
 
     val factory = SarifReportFactory(
-      websiteUrl = "https://rbusarow.github.io/ModuleCheck",
-      moduleCheckVersion = "0.12.1-SNAPSHOT"
+      websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
+      moduleCheckVersion = { "0.12.1-SNAPSHOT" }
     ) { testProjectDir }
 
     val p1 = kotlinProject(":lib1")

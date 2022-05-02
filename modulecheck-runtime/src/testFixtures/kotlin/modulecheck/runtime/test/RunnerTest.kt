@@ -85,8 +85,8 @@ abstract class RunnerTest : ProjectTest() {
       dispatcherProvider = dispatcherProvider,
       projectProvider = projectProvider,
       sarifReportFactory = SarifReportFactory(
-        websiteUrl = "https://rbusarow.github.io/ModuleCheck",
-        moduleCheckVersion = "0.12.1-SNAPSHOT"
+        websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
+        moduleCheckVersion = { "0.12.1-SNAPSHOT" }
       ) { testProjectDir }
     ).run(allProjects())
 
