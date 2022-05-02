@@ -33,11 +33,9 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-reporting:logging"))
-  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
@@ -45,13 +43,22 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-utils"))
+
   testFixturesApi(libs.bundles.hermit)
 
   testFixturesApi(project(path = ":modulecheck-internal-testing"))
-  testFixturesApi(project(path = ":modulecheck-parsing:groovy-antlr"))
+  testFixturesApi(project(path = ":modulecheck-parsing:gradle"))
   testFixturesApi(project(path = ":modulecheck-parsing:psi"))
-  testFixturesApi(project(path = ":modulecheck-parsing:wiring"))
-  testFixturesApi(project(path = ":modulecheck-project:impl"))
+  testFixturesApi(project(path = ":modulecheck-parsing:source"))
+  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
+
+  testFixturesImplementation(project(path = ":modulecheck-api"))
+  testFixturesImplementation(project(path = ":modulecheck-parsing:groovy-antlr"))
+  testFixturesImplementation(project(path = ":modulecheck-parsing:wiring"))
+  testFixturesImplementation(project(path = ":modulecheck-project:impl"))
+  testFixturesImplementation(project(path = ":modulecheck-utils"))
 
   if (isIdeSync) {
     compileOnly(project(path = ":modulecheck-internal-testing"))

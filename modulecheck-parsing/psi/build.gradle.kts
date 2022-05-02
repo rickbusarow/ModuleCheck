@@ -28,6 +28,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-reporting:logging"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
@@ -41,10 +42,11 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner)
 
+  testImplementation(project(path = ":modulecheck-api"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
 
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
   testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle")))
+  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }

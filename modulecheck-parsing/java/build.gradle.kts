@@ -28,18 +28,20 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
-  implementation(libs.javaParser.symbols)
   implementation(libs.javaParser.core)
+  implementation(libs.javaParser.symbols)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
 
+  testImplementation(project(path = ":modulecheck-api"))
   testImplementation(project(path = ":modulecheck-parsing:java"))
 
   testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))

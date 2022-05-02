@@ -24,13 +24,15 @@ mcbuild {
 }
 
 dependencies {
-  "ksp"(libs.square.moshi.codegen)
-
   api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-project:api"))
 
   implementation(libs.square.moshi)
+
+  implementation(project(":modulecheck-utils"))
+
+  "ksp"(libs.square.moshi.codegen)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
@@ -40,6 +42,8 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-core"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-parsing:gradle"))
+
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
 }

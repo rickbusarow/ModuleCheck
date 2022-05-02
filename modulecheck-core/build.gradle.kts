@@ -49,6 +49,13 @@ dependencies {
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
+  testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-parsing:gradle"))
+  testImplementation(project(path = ":modulecheck-parsing:source"))
+  testImplementation(project(path = ":modulecheck-project:api"))
+  testImplementation(project(path = ":modulecheck-utils"))
+
   testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
   testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
