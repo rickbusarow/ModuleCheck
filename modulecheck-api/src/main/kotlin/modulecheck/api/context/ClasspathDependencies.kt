@@ -36,6 +36,10 @@ data class ClasspathDependencies(
   }
 
   suspend fun get(key: SourceSetName): List<TransitiveProjectDependency> {
+    if (!project.sourceSets.containsKey(key)) {
+      return emptyList()
+    }
+
     return delegate.getOrPut(key) { project.fullTree(key) }
   }
 

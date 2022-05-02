@@ -33,7 +33,6 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
@@ -45,7 +44,11 @@ dependencies {
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-dagger"))
+
   testFixturesApi(libs.bundles.hermit)
+
+  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
 
   if (isIdeSync) {
     testCompileOnly(project(path = ":modulecheck-internal-testing"))

@@ -40,12 +40,11 @@ dependencies {
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-project:impl"))
+  api(project(path = ":modulecheck-reporting:logging"))
   api(project(path = ":modulecheck-runtime"))
 
   compileOnly(gradleApi())
@@ -57,11 +56,15 @@ dependencies {
   implementation(libs.semVer)
   implementation(libs.square.anvil.gradle)
 
+  implementation(project(path = ":modulecheck-project:impl"))
+  implementation(project(path = ":modulecheck-utils"))
+
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinPoet)
 
+  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-specs"))
   testImplementation(project(path = ":modulecheck-utils"))
 

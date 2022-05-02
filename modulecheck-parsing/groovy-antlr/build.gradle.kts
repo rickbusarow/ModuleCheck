@@ -25,7 +25,7 @@ mcbuild {
 dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle"))
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-reporting:logging"))
 
   compileOnly(gradleApi())
 
@@ -35,6 +35,8 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

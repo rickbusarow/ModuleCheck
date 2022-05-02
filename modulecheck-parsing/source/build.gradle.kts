@@ -42,7 +42,9 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   testFixturesApi(libs.bundles.hermit)
+
   testFixturesApi(project(path = ":modulecheck-internal-testing"))
+  testFixturesApi(project(path = ":modulecheck-utils"))
 
   if (isIdeSync) {
     testCompileOnly(libs.bundles.hermit)

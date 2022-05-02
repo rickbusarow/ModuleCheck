@@ -25,9 +25,10 @@ mcbuild {
 dependencies {
 
   api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-parsing:gradle"))
-  api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils"))
+
+  implementation(project(path = ":modulecheck-parsing:gradle"))
+  implementation(project(path = ":modulecheck-project:api"))
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

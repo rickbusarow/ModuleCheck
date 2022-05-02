@@ -23,8 +23,6 @@ dependencies {
   api(libs.bundles.jUnit)
   api(libs.bundles.kotest)
 
-  api(project(path = ":modulecheck-utils"))
-
   compileOnly(gradleApi())
 
   compileOnly(libs.groovyXml)
@@ -33,4 +31,6 @@ dependencies {
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)
+
+  implementation(project(path = ":modulecheck-utils"))
 }

@@ -35,18 +35,24 @@ dependencies {
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
+  api(project(path = ":modulecheck-reporting:logging"))
   api(project(path = ":modulecheck-reporting:sarif"))
+
+  implementation(project(path = ":modulecheck-utils"))
 
   testFixturesApi(libs.bundles.hermit)
 
-  testFixturesApi(project(path = ":modulecheck-core"))
+  testFixturesApi(project(path = ":modulecheck-api"))
+  testFixturesApi(project(path = ":modulecheck-project:api"))
+  testFixturesApi(project(path = ":modulecheck-reporting:checkstyle"))
+  testFixturesApi(project(path = ":modulecheck-reporting:console"))
+  testFixturesApi(project(path = ":modulecheck-reporting:graphviz"))
+  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
+  testFixturesApi(project(path = ":modulecheck-reporting:sarif"))
 
   testFixturesApi(testFixtures(project(path = ":modulecheck-api")))
   testFixturesApi(testFixtures(project(path = ":modulecheck-project:api")))
 
-  if (isIdeSync) {
-    compileOnly(libs.bundles.hermit)
-    compileOnly(libs.bundles.jUnit)
-    compileOnly(libs.bundles.kotest)
-  }
+  testFixturesImplementation(project(path = ":modulecheck-core"))
+  testFixturesImplementation(project(path = ":modulecheck-utils"))
 }
