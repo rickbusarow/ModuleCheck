@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
 
-  dependencySync("app.cash.turbine:turbine:0.7.0")
+  dependencySync("app.cash.turbine:turbine:0.8.0")
 
   dependencySync("com.android.tools.build:gradle:7.1.3")
   dependencySync("com.github.ben-manes:gradle-versions-plugin:0.42.0")
@@ -60,7 +60,7 @@ dependencies {
 
   dependencySync("io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.20.0")
   dependencySync("io.kotest:kotest-assertions-core-jvm:5.2.3")
-  dependencySync("io.kotest:kotest-property-jvm:5.2.3")
+  dependencySync("io.kotest:kotest-property-jvm:5.3.0")
   dependencySync("io.kotest:kotest-runner-junit5-jvm:5.2.3")
 
   dependencySync("javax.inject:javax.inject:1")
