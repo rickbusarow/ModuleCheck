@@ -24,6 +24,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
@@ -39,50 +40,50 @@ fun Project.configurePublishing(
   apply(plugin = "com.vanniktech.maven.publish.base")
   apply(plugin = "mcbuild.dokka")
 
-  group = GROUP
   version = VERSION_NAME
 
-  extensions
-    .configure(MavenPublishBaseExtension::class.java) {
-      publishToMavenCentral(DEFAULT)
-      signAllPublications()
-      pom {
-        description.set("Fast dependency graph linting for Gradle projects")
-        name.set(artifactId)
-        url.set(SOURCE_WEBSITE)
-        licenses {
-          license {
-            name.set("The Apache Software License, Version 2.0")
-            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-            distribution.set("repo")
-          }
-        }
-        scm {
-          url.set("$SOURCE_WEBSITE/")
-          connection.set("scm:git:git://github.com/rbusarow/ModuleCheck.git")
-          developerConnection.set("scm:git:ssh://git@github.com/rbusarow/ModuleCheck.git")
-        }
-        developers {
-          developer {
-            id.set("rbusarow")
-            name.set("Rick Busarow")
-          }
+  configure<MavenPublishBaseExtension> {
+    publishToMavenCentral(DEFAULT)
+    signAllPublications()
+    pom {
+      description.set("Fast dependency graph linting for Gradle projects")
+      name.set(artifactId)
+      url.set(SOURCE_WEBSITE)
+      licenses {
+        license {
+          name.set("The Apache Software License, Version 2.0")
+          url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+          distribution.set("repo")
         }
       }
-
-      if (pluginManager.hasPlugin("java-gradle-plugin")) {
-        configure(GradlePlugin(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
-      } else {
-        configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+      scm {
+        url.set("$SOURCE_WEBSITE/")
+        connection.set("scm:git:git://github.com/rbusarow/ModuleCheck.git")
+        developerConnection.set("scm:git:ssh://git@github.com/rbusarow/ModuleCheck.git")
+      }
+      developers {
+        developer {
+          id.set("rbusarow")
+          name.set("Rick Busarow")
+        }
       }
     }
 
-  extensions
-    .configure(PublishingExtension::class.java) {
-      publications
-        .filterIsInstance<MavenPublication>()
-        .forEach { it.artifactId = artifactId }
+    if (pluginManager.hasPlugin("java-gradle-plugin")) {
+      configure(GradlePlugin(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
+    } else {
+      configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
     }
+  }
+
+  configure<PublishingExtension> {
+    publications
+      .filterIsInstance<MavenPublication>()
+      .forEach {
+        it.groupId = GROUP
+        it.artifactId = artifactId
+      }
+  }
 
   tasks.withType(Sign::class.java) {
     notCompatibleWithConfigurationCache("Signing cannot be cached")

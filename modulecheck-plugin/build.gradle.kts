@@ -17,11 +17,10 @@ plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish") version "0.21.0"
   id("java-gradle-plugin")
-  `maven-publish`
 }
 
 mcbuild {
-  // artifactId = "com.rickbusarow.module-check"
+  artifactId = "com.rickbusarow.module-check"
   dagger = true
 }
 
@@ -75,44 +74,24 @@ gradlePlugin {
     create("moduleCheck") {
       id = "com.rickbusarow.module-check"
       group = "com.rickbusarow.modulecheck"
+      displayName = "ModuleCheck"
       implementationClass = "modulecheck.gradle.ModuleCheckPlugin"
       version = modulecheck.builds.VERSION_NAME
+      description = "Fast dependency graph validation for gradle"
     }
   }
 }
 
-java {
-  withSourcesJar()
-  withJavadocJar()
-}
-
-// Configuration Block for the Plugin Marker artifact on Plugin Central
 pluginBundle {
   website = "https://github.com/RBusarow/ModuleCheck"
   vcsUrl = "https://github.com/RBusarow/ModuleCheck"
   description = "Fast dependency graph validation for gradle"
-  tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
 
   (plugins) {
-    getByName("moduleCheck") {
-      displayName = "Fast dependency graph validation for gradle"
+    "moduleCheck" {
+      displayName = "ModuleCheck"
+      tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
     }
-  }
-}
-
-tasks.create("setupPluginUploadFromEnvironment") {
-  doLast {
-    val key = System.getenv("GRADLE_PUBLISH_KEY")
-    val secret = System.getenv("GRADLE_PUBLISH_SECRET")
-
-    if (key == null || secret == null) {
-      throw GradleException(
-        "gradlePublishKey and/or gradlePublishSecret are not defined environment variables"
-      )
-    }
-
-    System.setProperty("gradle.publish.key", key)
-    System.setProperty("gradle.publish.secret", secret)
   }
 }
 
