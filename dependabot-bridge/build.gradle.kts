@@ -22,7 +22,7 @@ dependencies {
 
   dependencySync("app.cash.turbine:turbine:0.7.0")
 
-  dependencySync("com.android.tools.build:gradle:7.1.1")
+  dependencySync("com.android.tools.build:gradle:7.1.3")
   dependencySync("com.github.ben-manes:gradle-versions-plugin:0.42.0")
   dependencySync("com.github.javaparser:javaparser-symbol-solver-core:3.24.2")
   dependencySync("com.github.tschuchortdev:kotlin-compile-testing:1.4.8")
