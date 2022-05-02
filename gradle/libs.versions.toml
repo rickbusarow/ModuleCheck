@@ -170,7 +170,7 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
-square-turbine = "app.cash.turbine:turbine:0.7.0"
+square-turbine = "app.cash.turbine:turbine:0.8.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
