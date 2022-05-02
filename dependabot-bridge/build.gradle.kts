@@ -20,7 +20,7 @@ plugins {
 
 dependencies {
 
-  dependencySync("app.cash.turbine:turbine:0.7.0")
+  dependencySync("app.cash.turbine:turbine:0.8.0")
 
   dependencySync("com.android.tools.build:gradle:7.1.3")
   dependencySync("com.github.ben-manes:gradle-versions-plugin:0.42.0")
