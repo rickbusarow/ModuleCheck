@@ -238,7 +238,6 @@ abstract class DependenciesBlock(
   companion object {
     val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()
 
-    @Suppress("ComplexMethod", "DeprecatedCallableAddReplaceWith")
     @Deprecated("This will be removed soon.")
     private fun migrateLegacyIdOrNull(legacyID: String, logger: Logger): String? {
 

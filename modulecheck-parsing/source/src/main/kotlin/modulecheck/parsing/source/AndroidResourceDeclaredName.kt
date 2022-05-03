@@ -188,7 +188,6 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
       "style"
     )
 
-    @Suppress("ComplexMethod")
     fun fromFile(file: File): UnqualifiedAndroidResourceDeclaredName? {
       val dir = file.toPath().parent?.name ?: return null
       val name = file.nameWithoutExtension
@@ -208,7 +207,6 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
       }
     }
 
-    @Suppress("ComplexMethod")
     fun fromValuePair(type: String, name: String): UnqualifiedAndroidResourceDeclaredName? {
       val fixedName = name.replace('.', '_')
       return when (type) {

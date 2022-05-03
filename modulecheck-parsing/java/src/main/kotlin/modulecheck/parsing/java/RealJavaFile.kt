@@ -336,7 +336,6 @@ fun <T> T.canBeImported(): Boolean
   return isStatic() && !isPrivate() && this is Resolvable<*>
 }
 
-@Suppress("ComplexMethod")
 internal fun JavaVersion.toLanguageLevel(): LanguageLevel {
   return when (this) {
     VERSION_1_1 -> LanguageLevel.JAVA_1_1

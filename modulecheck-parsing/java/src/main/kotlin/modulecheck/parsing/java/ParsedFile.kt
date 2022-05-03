@@ -37,7 +37,7 @@ internal data class ParsedFile(
   val enumDeclarations: Set<DeclaredName>
 ) {
   companion object {
-    @Suppress("ComplexMethod")
+
     fun fromCompilationUnitLazy(compilationUnit: CompilationUnit): Lazy<ParsedFile> {
       return lazy {
         val packageFqName = compilationUnit.packageDeclaration.getOrNull()?.nameAsString ?: ""
