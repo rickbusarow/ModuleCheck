@@ -133,7 +133,6 @@ suspend fun <T> T.createProjectDependencyDeclaration(
   ) { it.value }
 }
 
-@Suppress("ComplexMethod")
 private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project: T): Boolean
   where T : PluginAware,
         T : HasDependencyDeclarations {

@@ -162,7 +162,6 @@ interface NamedSymbolTest : FancyShould {
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
 }
 
-@Suppress("ComplexMethod")
 fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
   .toList()
   .sortedBy { it.first.qualifiedName }
