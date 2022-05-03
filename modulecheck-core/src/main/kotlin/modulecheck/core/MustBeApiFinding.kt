@@ -15,15 +15,15 @@
 
 package modulecheck.core
 
-import modulecheck.api.finding.AddsDependency
-import modulecheck.api.finding.ModifiesProjectDependency
-import modulecheck.api.finding.RemovesDependency
-import modulecheck.api.finding.internal.statementOrNullIn
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.AddsDependency
+import modulecheck.rule.finding.ModifiesProjectDependency
+import modulecheck.rule.finding.RemovesDependency
+import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 

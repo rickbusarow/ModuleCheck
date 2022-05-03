@@ -37,7 +37,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle"))
@@ -45,6 +45,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-runtime"))
 
   compileOnly(gradleApi())
@@ -58,6 +59,7 @@ dependencies {
 
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-rule:impl"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
@@ -68,7 +70,6 @@ dependencies {
   testImplementation(project(path = ":modulecheck-specs"))
   testImplementation(project(path = ":modulecheck-utils"))
 
-  testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }
 

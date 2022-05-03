@@ -13,14 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.rule.finding
 
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 import modulecheck.utils.LazyDeferred
 import java.io.File
 

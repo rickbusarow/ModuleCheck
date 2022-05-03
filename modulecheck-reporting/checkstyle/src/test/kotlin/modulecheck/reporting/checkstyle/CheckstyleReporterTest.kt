@@ -15,10 +15,10 @@
 
 package modulecheck.reporting.checkstyle
 
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.rule.finding.Finding.Position
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File

@@ -13,12 +13,12 @@
  * limitations under the License.
  */
 
-package modulecheck.api.rule
+package modulecheck.rule
 
-import modulecheck.api.finding.Finding
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.project.McProject
+import modulecheck.rule.finding.Finding
 
 interface ModuleCheckRule<T : Finding> {
 

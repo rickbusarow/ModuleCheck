@@ -16,11 +16,11 @@
 package modulecheck.api.context
 
 import modulecheck.api.DepthFinding
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.rule.RuleName
 import modulecheck.utils.SafeCache
 
 data class Depths(

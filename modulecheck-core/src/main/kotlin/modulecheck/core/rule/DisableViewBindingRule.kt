@@ -18,10 +18,10 @@ package modulecheck.core.rule
 import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 

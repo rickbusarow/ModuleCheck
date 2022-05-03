@@ -15,10 +15,10 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.finding.Finding
-import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.api.rule.RuleFactory
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.RuleFactory
+import modulecheck.rule.finding.Finding
 
 class ModuleCheckRuleFactory : RuleFactory {
 

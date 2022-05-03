@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.TestChecksSettings
-import modulecheck.api.test.TestSettings
+import modulecheck.config.fake.TestChecksSettings
+import modulecheck.config.fake.TestSettings
 import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeGroovy

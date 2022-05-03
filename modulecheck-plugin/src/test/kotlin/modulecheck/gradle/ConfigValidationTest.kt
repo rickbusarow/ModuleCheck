@@ -100,7 +100,7 @@ class ConfigValidationTest : BasePluginTest() {
           doNotCheck = setOf(":app")
 
           additionalKaptMatchers = listOf(
-            modulecheck.api.KaptMatcher(
+            modulecheck.config.KaptMatcher(
               name = "MyProcessor",
               processor = "my-project.codegen:processor",
               annotationImports = listOf(
@@ -188,7 +188,7 @@ class ConfigValidationTest : BasePluginTest() {
           doNotCheck = [':app']
 
           additionalKaptMatchers = [
-            new modulecheck.api.KaptMatcher(
+            new modulecheck.config.KaptMatcher(
               'MyProcessor',
               'my-project.codegen:processor',
                [

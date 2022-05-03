@@ -17,18 +17,18 @@ package modulecheck.core.rule
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.depths
-import modulecheck.api.finding.AddsDependency
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.FindingFactory
-import modulecheck.api.finding.ModifiesProjectDependency
-import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.api.rule.ReportOnlyRule
-import modulecheck.api.rule.SortRule
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.ReportOnlyRule
+import modulecheck.rule.SortRule
+import modulecheck.rule.finding.AddsDependency
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.finding.ModifiesProjectDependency
 import modulecheck.utils.mapAsync
 import modulecheck.utils.sortedWith
 

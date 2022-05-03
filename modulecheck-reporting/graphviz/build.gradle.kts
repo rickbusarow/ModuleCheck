@@ -25,6 +25,7 @@ mcbuild {
 dependencies {
 
   api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-config:api"))
 
   implementation(project(path = ":modulecheck-parsing:gradle"))
   implementation(project(path = ":modulecheck-project:api"))

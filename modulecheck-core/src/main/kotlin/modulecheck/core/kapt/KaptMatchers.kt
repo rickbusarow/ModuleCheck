@@ -17,7 +17,7 @@
 
 package modulecheck.core.kapt
 
-import modulecheck.api.KaptMatcher
+import modulecheck.config.KaptMatcher
 
 val defaultKaptMatchers: List<KaptMatcher> = listOf(
   KaptMatcher(

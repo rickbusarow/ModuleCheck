@@ -15,13 +15,13 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.RuleName
-import modulecheck.api.rule.SortRule
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.SortRule
 import java.util.Locale
 
 class SortDependenciesRule(

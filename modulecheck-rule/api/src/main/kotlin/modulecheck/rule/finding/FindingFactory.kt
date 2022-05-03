@@ -13,22 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.rule.finding
 
-import modulecheck.api.finding.internal.removeDependencyWithDelete
+import modulecheck.project.McProject
+import modulecheck.rule.ModuleCheckRule
 
-interface Deletable :
-  Finding,
-  DependencyFinding {
+interface FindingFactory<T : Finding> {
 
-  suspend fun delete(): Boolean {
+  val rules: List<ModuleCheckRule<out Finding>>
 
-    val declaration = declarationOrNull.await() ?: return false
-
-    require(this is RemovesDependency)
-
-    dependentProject.removeDependencyWithDelete(declaration, oldDependency)
-
-    return true
-  }
+  suspend fun evaluateFixable(projects: List<McProject>): List<T>
+  suspend fun evaluateSorts(projects: List<McProject>): List<T>
+  suspend fun evaluateReports(projects: List<McProject>): List<T>
 }

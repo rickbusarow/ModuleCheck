@@ -15,17 +15,17 @@
 
 package modulecheck.core
 
-import modulecheck.api.finding.DependencyFinding
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.Fixable
-import modulecheck.api.finding.Problem
-import modulecheck.api.finding.ProjectDependencyFinding
-import modulecheck.api.finding.internal.positionOfStatement
-import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.rule.finding.DependencyFinding
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.rule.finding.Finding.Position
+import modulecheck.rule.finding.Fixable
+import modulecheck.rule.finding.Problem
+import modulecheck.rule.finding.ProjectDependencyFinding
+import modulecheck.rule.finding.internal.positionOfStatement
+import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File

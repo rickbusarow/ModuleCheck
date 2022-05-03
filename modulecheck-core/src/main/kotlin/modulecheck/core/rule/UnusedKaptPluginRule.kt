@@ -15,19 +15,19 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.KaptMatcher
-import modulecheck.api.asMap
 import modulecheck.api.context.kaptDependencies
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.api.finding.Finding
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.KaptMatcher
+import modulecheck.config.ModuleCheckSettings
+import modulecheck.config.asMap
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Finding
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
 

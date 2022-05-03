@@ -15,11 +15,11 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 
 class RedundantRule : DocumentedRule<RedundantDependencyFinding>() {
 

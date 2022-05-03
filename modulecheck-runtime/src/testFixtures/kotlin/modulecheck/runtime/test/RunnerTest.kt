@@ -18,14 +18,9 @@ package modulecheck.runtime.test
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.FindingFactory
-import modulecheck.api.finding.FindingResultFactory
-import modulecheck.api.finding.RealFindingResultFactory
-import modulecheck.api.rule.RuleFactory
-import modulecheck.api.settings.ModuleCheckSettings
 import modulecheck.api.test.ReportingLogger
-import modulecheck.api.test.TestSettings
+import modulecheck.config.ModuleCheckSettings
+import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.project.McProject
@@ -37,6 +32,11 @@ import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
 import modulecheck.reporting.sarif.SarifReportFactory
+import modulecheck.rule.RuleFactory
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.finding.FindingResultFactory
+import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.runtime.ModuleCheckRunner
 
 abstract class RunnerTest : ProjectTest() {

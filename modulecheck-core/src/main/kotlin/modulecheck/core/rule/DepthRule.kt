@@ -17,10 +17,10 @@ package modulecheck.core.rule
 
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
-import modulecheck.api.rule.ReportOnlyRule
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.project.McProject
+import modulecheck.rule.ReportOnlyRule
+import modulecheck.rule.RuleName
 
 class DepthRule : DocumentedRule<DepthFinding>(), ReportOnlyRule<DepthFinding> {
 

@@ -13,9 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.settings
-
-import modulecheck.api.KaptMatcher
+package modulecheck.config
 
 interface ModuleCheckSettings {
 

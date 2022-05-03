@@ -18,12 +18,12 @@ package modulecheck.core.rule
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.FindingFactory
-import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.api.rule.ReportOnlyRule
-import modulecheck.api.rule.SortRule
 import modulecheck.project.McProject
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.ReportOnlyRule
+import modulecheck.rule.SortRule
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.FindingFactory
 
 class SingleRuleFindingFactory<T : Finding>(
   val rule: ModuleCheckRule<T>

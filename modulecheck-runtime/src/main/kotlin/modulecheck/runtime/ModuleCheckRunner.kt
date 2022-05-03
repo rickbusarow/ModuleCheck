@@ -22,12 +22,7 @@ import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.FindingFactory
-import modulecheck.api.finding.FindingResultFactory
-import modulecheck.api.finding.Problem
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.reporting.checkstyle.CheckstyleReporter
@@ -37,6 +32,11 @@ import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
 import modulecheck.reporting.sarif.SarifReportFactory
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.finding.FindingResultFactory
+import modulecheck.rule.finding.Problem
 import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis

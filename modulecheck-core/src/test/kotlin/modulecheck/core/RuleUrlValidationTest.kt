@@ -21,12 +21,12 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.file.shouldExist
 import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
-import modulecheck.api.finding.Finding
-import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.api.test.TestSettings
+import modulecheck.config.ModuleCheckSettings
+import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.DocumentedRule.Companion.RULES_BASE_URL
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.finding.Finding
 import modulecheck.testing.BaseTest
 import modulecheck.testing.getPrivateFieldByName
 import modulecheck.utils.child

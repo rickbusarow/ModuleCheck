@@ -33,9 +33,11 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
@@ -49,14 +51,13 @@ dependencies {
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
-  testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:gradle"))
   testImplementation(project(path = ":modulecheck-parsing:source"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-utils"))
 
-  testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
   testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
 }

@@ -13,16 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.rule.finding
 
-import modulecheck.api.rule.ModuleCheckRule
-import modulecheck.project.McProject
+import modulecheck.rule.finding.Finding.FindingResult
 
-interface FindingFactory<T : Finding> {
+fun interface FindingResultFactory {
 
-  val rules: List<ModuleCheckRule<out Finding>>
-
-  suspend fun evaluateFixable(projects: List<McProject>): List<T>
-  suspend fun evaluateSorts(projects: List<McProject>): List<T>
-  suspend fun evaluateReports(projects: List<McProject>): List<T>
+  suspend fun create(
+    findings: List<Finding>,
+    autoCorrect: Boolean,
+    deleteUnused: Boolean
+  ): List<FindingResult>
 }

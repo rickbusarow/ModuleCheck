@@ -18,7 +18,7 @@ package modulecheck.reporting.graphviz
 import dispatch.core.launchIO
 import kotlinx.coroutines.coroutineScope
 import modulecheck.api.context.ProjectDepth
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.utils.child
 import java.io.File
 import javax.inject.Inject

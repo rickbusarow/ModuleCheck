@@ -37,14 +37,13 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
-
-  implementation(project(path = ":modulecheck-dagger"))
 
   testFixturesApi(libs.bundles.hermit)
 

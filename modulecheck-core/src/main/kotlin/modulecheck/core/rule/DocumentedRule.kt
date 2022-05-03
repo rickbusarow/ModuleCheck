@@ -15,8 +15,8 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.finding.Finding
-import modulecheck.api.rule.ModuleCheckRule
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.finding.Finding
 
 sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
 

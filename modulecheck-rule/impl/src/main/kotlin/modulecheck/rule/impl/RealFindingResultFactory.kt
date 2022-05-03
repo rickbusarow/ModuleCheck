@@ -13,26 +13,23 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.rule.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy
 import modulecheck.dagger.AppScope
+import modulecheck.rule.finding.AddsDependency
+import modulecheck.rule.finding.Deletable
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.FindingResultFactory
+import modulecheck.rule.finding.Fixable
+import modulecheck.rule.finding.ModifiesProjectDependency
+import modulecheck.rule.finding.ProjectDependencyFinding
+import modulecheck.rule.finding.RemovesDependency
 import modulecheck.utils.mapAsync
 import modulecheck.utils.onEachAsync
 import modulecheck.utils.sortedWith
 import javax.inject.Inject
-
-fun interface FindingResultFactory {
-
-  suspend fun create(
-    findings: List<Finding>,
-    autoCorrect: Boolean,
-    deleteUnused: Boolean
-  ): List<FindingResult>
-}
 
 @ContributesBinding(AppScope::class)
 class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
@@ -41,7 +38,7 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
     findings: List<Finding>,
     autoCorrect: Boolean,
     deleteUnused: Boolean
-  ): List<FindingResult> {
+  ): List<Finding.FindingResult> {
 
     return findings
       .onEachAsync { finding ->
@@ -75,8 +72,8 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
           )
           .map { finding ->
 
-            val removalStrategy = if (deleteUnused) RemovalStrategy.DELETE
-            else RemovalStrategy.COMMENT
+            val removalStrategy = if (deleteUnused) RemovesDependency.RemovalStrategy.DELETE
+            else RemovesDependency.RemovalStrategy.COMMENT
 
             val fixed = when {
               !autoCorrect -> false

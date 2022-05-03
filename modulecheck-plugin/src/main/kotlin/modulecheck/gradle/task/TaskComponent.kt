@@ -18,13 +18,13 @@ package modulecheck.gradle.task
 import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.FindingFactory
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.project.ProjectRoot
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.FindingFactory
 import modulecheck.runtime.ModuleCheckRunner
 import org.gradle.api.Project
 
