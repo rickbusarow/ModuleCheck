@@ -15,18 +15,18 @@
 
 package modulecheck.core
 
-import modulecheck.api.finding.Deletable
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.Fixable
-import modulecheck.api.finding.Problem
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy
-import modulecheck.api.finding.internal.removeDependencyWithComment
-import modulecheck.api.finding.internal.removeDependencyWithDelete
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Deletable
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.Position
+import modulecheck.rule.finding.Fixable
+import modulecheck.rule.finding.Problem
+import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
+import modulecheck.rule.finding.internal.removeDependencyWithComment
+import modulecheck.rule.finding.internal.removeDependencyWithDelete
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File

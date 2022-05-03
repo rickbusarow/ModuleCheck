@@ -15,7 +15,7 @@
 
 @file:Suppress("MatchingDeclarationName")
 
-package modulecheck.api
+package modulecheck.config
 
 data class KaptMatcher(
   val name: String,

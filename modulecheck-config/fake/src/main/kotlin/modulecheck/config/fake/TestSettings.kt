@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.api.test
+package modulecheck.config.fake
 
-import modulecheck.api.KaptMatcher
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
-import modulecheck.api.settings.PerModuleReportSettings
-import modulecheck.api.settings.ReportSettings
-import modulecheck.api.settings.ReportsSettings
-import modulecheck.api.settings.SortSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.KaptMatcher
+import modulecheck.config.ModuleCheckSettings
+import modulecheck.config.PerModuleReportSettings
+import modulecheck.config.ReportSettings
+import modulecheck.config.ReportsSettings
+import modulecheck.config.SortSettings
 
 @Suppress("UNUSED_PARAMETER")
 data class TestSettings(

@@ -15,12 +15,12 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.UnusedDependencyFinding
 import modulecheck.core.context.UnusedDependencies
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 
 class UnusedDependencyRule(
   private val settings: ModuleCheckSettings

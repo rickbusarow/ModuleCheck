@@ -15,14 +15,14 @@
 
 package modulecheck.core
 
-import modulecheck.api.finding.AddsDependency
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.internal.positionIn
-import modulecheck.api.finding.internal.statementOrNullIn
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.AddsDependency
+import modulecheck.rule.finding.Finding.Position
+import modulecheck.rule.finding.internal.positionIn
+import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 

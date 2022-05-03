@@ -21,7 +21,7 @@ import com.squareup.anvil.plugin.AnvilExtension
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.gradle.task.GradleLogger
 import modulecheck.parsing.gradle.BuildFileParser

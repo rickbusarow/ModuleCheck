@@ -24,7 +24,7 @@ mcbuild {
 
 dependencies {
 
-  api(project(path = ":modulecheck-api"))
+  api(project(":modulecheck-rule:api"))
 
   implementation(libs.unbescape)
 
@@ -32,6 +32,6 @@ dependencies {
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
 
-  testImplementation(project(path = ":modulecheck-parsing:gradle"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-parsing:gradle"))
 }

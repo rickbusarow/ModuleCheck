@@ -17,11 +17,11 @@ package modulecheck.reporting.sarif
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
-import modulecheck.api.finding.Finding
-import modulecheck.api.rule.ModuleCheckRule
 import modulecheck.dagger.ModuleCheckVersionProvider
 import modulecheck.dagger.SourceWebsiteUrlProvider
 import modulecheck.project.ProjectRoot
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.finding.Finding
 import modulecheck.utils.suffixIfNot
 import java.io.File
 import javax.inject.Inject

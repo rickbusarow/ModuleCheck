@@ -15,12 +15,12 @@
 
 package modulecheck.core
 
-import modulecheck.api.finding.Deletable
-import modulecheck.api.finding.RemovesDependency
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Deletable
+import modulecheck.rule.finding.RemovesDependency
 
 data class RedundantDependency(
   val dependentProject: McProject,

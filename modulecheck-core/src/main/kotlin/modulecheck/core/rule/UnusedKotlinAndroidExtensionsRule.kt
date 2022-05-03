@@ -16,11 +16,11 @@
 package modulecheck.core.rule
 
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 import modulecheck.utils.any
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"

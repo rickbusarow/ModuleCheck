@@ -80,6 +80,8 @@ enableFeaturePreview("VERSION_CATALOGS")
 include(
   ":dependabot-bridge",
   ":modulecheck-api",
+  ":modulecheck-config:api",
+  ":modulecheck-config:fake",
   ":modulecheck-core",
   ":modulecheck-dagger",
   ":modulecheck-internal-testing",
@@ -98,6 +100,8 @@ include(
   ":modulecheck-reporting:graphviz",
   ":modulecheck-reporting:logging",
   ":modulecheck-reporting:sarif",
+  ":modulecheck-rule:api",
+  ":modulecheck-rule:impl",
   ":modulecheck-runtime",
   ":modulecheck-specs",
   ":modulecheck-utils"

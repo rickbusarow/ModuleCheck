@@ -15,14 +15,14 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.RuleName
-import modulecheck.api.rule.SortRule
-import modulecheck.api.settings.ChecksSettings
-import modulecheck.api.settings.ModuleCheckSettings
+import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortPluginsFinding
 import modulecheck.core.rule.sort.sortedPlugins
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.SortRule
 
 class SortPluginsRule(
   settings: ModuleCheckSettings

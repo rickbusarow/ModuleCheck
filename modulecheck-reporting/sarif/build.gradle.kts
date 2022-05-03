@@ -24,9 +24,9 @@ mcbuild {
 }
 
 dependencies {
-  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-rule:api"))
 
   implementation(libs.square.moshi)
 
@@ -40,10 +40,11 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.okio)
 
+  testImplementation(project(path = ":modulecheck-config:api"))
+  testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-core"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:gradle"))
 
-  testImplementation(testFixtures(project(path = ":modulecheck-api")))
   testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
 }

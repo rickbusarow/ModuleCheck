@@ -15,15 +15,15 @@
 
 package modulecheck.core.anvil
 
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.Fixable
-import modulecheck.api.rule.RuleName
 import modulecheck.core.internal.positionOf
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.Position
+import modulecheck.rule.finding.Fixable
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.lazyDeferred

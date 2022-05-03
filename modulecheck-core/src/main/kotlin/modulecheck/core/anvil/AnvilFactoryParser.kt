@@ -18,12 +18,12 @@ package modulecheck.core.anvil
 import kotlinx.coroutines.flow.filterIsInstance
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.references
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 import modulecheck.utils.any
 import modulecheck.utils.containsAny
 import net.swiftzer.semver.SemVer

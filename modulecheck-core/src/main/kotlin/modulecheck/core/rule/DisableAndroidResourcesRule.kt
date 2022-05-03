@@ -21,11 +21,11 @@ import modulecheck.api.context.androidResourceDeclaredNamesForSourceSetName
 import modulecheck.api.context.androidResourceReferencesForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 import modulecheck.utils.containsAny
 
 class DisableAndroidResourcesRule : DocumentedRule<UnusedResourcesGenerationFinding>() {

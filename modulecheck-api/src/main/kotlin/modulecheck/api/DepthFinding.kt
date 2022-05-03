@@ -16,13 +16,13 @@
 package modulecheck.api
 
 import modulecheck.api.context.ProjectDepth
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.rule.finding.Finding.Position
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File

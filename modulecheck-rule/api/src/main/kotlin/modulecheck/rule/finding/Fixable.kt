@@ -13,21 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.api.finding
+package modulecheck.rule.finding
 
-import modulecheck.api.finding.Finding.FindingResult
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy.COMMENT
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy.DELETE
-import modulecheck.api.finding.internal.addDependency
-import modulecheck.api.finding.internal.closestDeclarationOrNull
-import modulecheck.api.finding.internal.removeDependencyWithComment
-import modulecheck.api.finding.internal.removeDependencyWithDelete
-import modulecheck.api.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
+import modulecheck.rule.finding.RemovesDependency.RemovalStrategy.COMMENT
+import modulecheck.rule.finding.RemovesDependency.RemovalStrategy.DELETE
+import modulecheck.rule.finding.internal.addDependency
+import modulecheck.rule.finding.internal.closestDeclarationOrNull
+import modulecheck.rule.finding.internal.removeDependencyWithComment
+import modulecheck.rule.finding.internal.removeDependencyWithDelete
+import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.safeAs
 
 interface Problem :

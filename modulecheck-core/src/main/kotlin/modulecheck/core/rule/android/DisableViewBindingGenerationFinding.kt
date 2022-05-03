@@ -15,16 +15,16 @@
 
 package modulecheck.core.rule.android
 
-import modulecheck.api.finding.Finding
-import modulecheck.api.finding.Finding.Position
-import modulecheck.api.finding.Fixable
-import modulecheck.api.finding.RemovesDependency.RemovalStrategy
-import modulecheck.api.finding.internal.positionOfStatement
-import modulecheck.api.rule.RuleName
 import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
+import modulecheck.rule.finding.Finding
+import modulecheck.rule.finding.Finding.Position
+import modulecheck.rule.finding.Fixable
+import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
+import modulecheck.rule.finding.internal.positionOfStatement
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.findMinimumIndent
 import modulecheck.utils.indent

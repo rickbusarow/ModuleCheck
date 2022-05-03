@@ -15,11 +15,11 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.rule.RuleName
-import modulecheck.api.settings.ChecksSettings
+import modulecheck.config.ChecksSettings
 import modulecheck.core.anvil.AnvilFactoryParser
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.project.McProject
+import modulecheck.rule.RuleName
 
 class AnvilFactoryRule : DocumentedRule<CouldUseAnvilFinding>() {
 

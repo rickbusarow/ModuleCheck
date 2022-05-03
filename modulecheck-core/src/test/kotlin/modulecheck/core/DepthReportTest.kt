@@ -15,7 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.api.test.TestSettings
+import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SingleRuleFindingFactory

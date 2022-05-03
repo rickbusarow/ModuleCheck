@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.rule
+package modulecheck.rule
 
 import modulecheck.utils.CaseMatcher
 import modulecheck.utils.capitalize
