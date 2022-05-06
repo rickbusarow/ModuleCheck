@@ -18,13 +18,13 @@ package modulecheck.core.rule
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.config.ChecksSettings
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
 import modulecheck.rule.ReportOnlyRule
-import modulecheck.rule.RuleName
 
 class DepthRule : DocumentedRule<DepthFinding>(), ReportOnlyRule<DepthFinding> {
 
-  override val name = RuleName("project-depth")
+  override val name = FindingName("project-depth")
   override val description = "The longest path between this module and its leaf nodes"
 
   override suspend fun check(project: McProject): List<DepthFinding> {
@@ -33,7 +33,7 @@ class DepthRule : DocumentedRule<DepthFinding>(), ReportOnlyRule<DepthFinding> {
         val intermediate = project.depthForSourceSetName(sourceSetName)
 
         DepthFinding(
-          ruleName = name,
+          findingName = name,
           dependentProject = project, dependentPath = project.path,
           depth = intermediate.depth,
           children = intermediate.children.map { it.toFinding(name) },

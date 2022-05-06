@@ -15,18 +15,18 @@
 
 package modulecheck.core
 
+import modulecheck.finding.Deletable
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.Fixable
+import modulecheck.finding.Problem
+import modulecheck.finding.RemovesDependency.RemovalStrategy
+import modulecheck.finding.internal.removeDependencyWithComment
+import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Deletable
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
-import modulecheck.rule.finding.Problem
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
-import modulecheck.rule.finding.internal.removeDependencyWithComment
-import modulecheck.rule.finding.internal.removeDependencyWithDelete
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
@@ -35,7 +35,7 @@ data class UnusedPluginFinding(
   override val dependentProject: McProject,
   override val dependentPath: StringProjectPath,
   override val buildFile: File,
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   val pluginId: String,
   val alternatePluginId: String = "",
   val kotlinPluginFunction: String = ""

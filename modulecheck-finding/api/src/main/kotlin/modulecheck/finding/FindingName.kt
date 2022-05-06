@@ -13,37 +13,37 @@
  * limitations under the License.
  */
 
-package modulecheck.rule
+package modulecheck.finding
 
 import modulecheck.utils.CaseMatcher
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 
-data class RuleName(
-  /** some-rule-name */
+data class FindingName(
+  /** some-finding-name */
   val id: String
 ) {
   init {
     check(CaseMatcher.KebabCaseMatcher().matches(id)) {
-      "The base name of a rule must be 'kebab-case', such as 'some-rule-name'." +
+      "The base name of a finding must be 'kebab-case', such as 'some-finding-name'." +
         "  This provided name was '$id'."
     }
   }
 
-  /** SomeRuleName */
+  /** SomeFindingName */
   val titleCase: String
     get() = id.split('-').joinToString("") { it.capitalize() }
 
-  /** some_rule_name */
+  /** some_finding_name */
   val snakeCase: String get() = id.replace('-', '_')
 
-  /** someRuleName */
+  /** someFindingName */
   val pascalCase: String
     get() = id.split('-')
       .joinToString("") { it.capitalize() }
       .decapitalize()
 
-  /** 'Some Rule Name' */
+  /** 'Some finding Name' */
   val words: String
     get() = id.split('-')
       .joinToString(" ") { it.capitalize() }

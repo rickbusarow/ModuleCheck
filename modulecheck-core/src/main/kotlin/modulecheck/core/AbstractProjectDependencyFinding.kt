@@ -15,17 +15,17 @@
 
 package modulecheck.core
 
+import modulecheck.finding.DependencyFinding
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.Fixable
+import modulecheck.finding.Problem
+import modulecheck.finding.ProjectDependencyFinding
+import modulecheck.finding.internal.positionOfStatement
+import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.rule.finding.DependencyFinding
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
-import modulecheck.rule.finding.Problem
-import modulecheck.rule.finding.ProjectDependencyFinding
-import modulecheck.rule.finding.internal.positionOfStatement
-import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
@@ -57,7 +57,7 @@ abstract class AbstractProjectDependencyFinding :
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      ruleName = ruleName,
+      findingName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
       dependencyIdentifier = dependency.path.value,
@@ -74,7 +74,7 @@ abstract class AbstractProjectDependencyFinding :
     if (this === other) return true
     if (other !is AbstractProjectDependencyFinding) return false
 
-    if (ruleName != other.ruleName) return false
+    if (findingName != other.findingName) return false
     if (dependency != other.dependency) return false
     if (configurationName != other.configurationName) return false
 
@@ -82,7 +82,7 @@ abstract class AbstractProjectDependencyFinding :
   }
 
   override fun hashCode(): Int {
-    var result = ruleName.hashCode()
+    var result = findingName.hashCode()
     result = 31 * result + dependency.hashCode()
     result = 31 * result + configurationName.hashCode()
     return result

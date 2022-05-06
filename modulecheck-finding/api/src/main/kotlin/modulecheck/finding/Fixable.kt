@@ -13,35 +13,40 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding
+package modulecheck.finding
 
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.RemovesDependency.RemovalStrategy
+import modulecheck.finding.RemovesDependency.RemovalStrategy.COMMENT
+import modulecheck.finding.RemovesDependency.RemovalStrategy.DELETE
+import modulecheck.finding.internal.addDependency
+import modulecheck.finding.internal.closestDeclarationOrNull
+import modulecheck.finding.internal.removeDependencyWithComment
+import modulecheck.finding.internal.removeDependencyWithDelete
+import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy.COMMENT
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy.DELETE
-import modulecheck.rule.finding.internal.addDependency
-import modulecheck.rule.finding.internal.closestDeclarationOrNull
-import modulecheck.rule.finding.internal.removeDependencyWithComment
-import modulecheck.rule.finding.internal.removeDependencyWithDelete
-import modulecheck.rule.finding.internal.statementOrNullIn
+import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazyDeferred
 import modulecheck.utils.safeAs
 
 interface Problem :
   Finding,
   DependencyFinding {
 
-  suspend fun shouldSkip(): Boolean = declarationOrNull.await()?.suppressed
-    ?.contains(ruleName.id)
-    ?: false
+  val isSuppressed: LazyDeferred<Boolean>
+    get() = lazyDeferred {
+      declarationOrNull.await()?.suppressed
+        ?.contains(findingName.id)
+        ?: false
+    }
 
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      ruleName = ruleName,
+      findingName = findingName,
       sourceOrNull = null,
       configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
       dependencyIdentifier = dependencyIdentifier,
@@ -135,7 +140,7 @@ interface Fixable : Finding, Problem {
     return addSuccessful && removeSuccessful
   }
 
-  fun fixLabel() = "  $FIX_LABEL [${ruleName.id}]"
+  fun fixLabel() = "  $FIX_LABEL [${findingName.id}]"
 
   companion object {
 

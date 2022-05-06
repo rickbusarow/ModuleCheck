@@ -17,12 +17,13 @@ package modulecheck.rule
 
 import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.Finding
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.finding.Finding
 
 interface ModuleCheckRule<T : Finding> {
 
-  val name: RuleName
+  val name: FindingName
   val description: String
   val documentationUrl: String
 

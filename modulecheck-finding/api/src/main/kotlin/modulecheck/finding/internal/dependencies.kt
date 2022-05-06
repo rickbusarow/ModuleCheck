@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding.internal
+package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
+import modulecheck.finding.Fixable.Companion
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
@@ -23,7 +24,6 @@ import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.rule.finding.Fixable.Companion
 import modulecheck.utils.isGreaterThan
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.replaceDestructured

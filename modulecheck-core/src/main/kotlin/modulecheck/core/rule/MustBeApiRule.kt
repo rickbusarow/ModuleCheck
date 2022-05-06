@@ -18,12 +18,12 @@ package modulecheck.core.rule
 import modulecheck.config.ChecksSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 
 class MustBeApiRule : DocumentedRule<MustBeApiFinding>() {
 
-  override val name = RuleName("must-be-api")
+  override val name = FindingName("must-be-api")
   override val description = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
@@ -32,7 +32,7 @@ class MustBeApiRule : DocumentedRule<MustBeApiFinding>() {
       .map {
         val oldConfig = it.configuredProjectDependency.configurationName
         MustBeApiFinding(
-          ruleName = name,
+          findingName = name,
           dependentProject = project,
           newDependency = it.configuredProjectDependency
             .copy(configurationName = oldConfig.apiVariant()),

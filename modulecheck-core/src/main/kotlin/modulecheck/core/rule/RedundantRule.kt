@@ -18,12 +18,12 @@ package modulecheck.core.rule
 import modulecheck.config.ChecksSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.context.RedundantDependencies
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 
 class RedundantRule : DocumentedRule<RedundantDependencyFinding>() {
 
-  override val name = RuleName("redundant-dependency")
+  override val name = FindingName("redundant-dependency")
   override val description =
     "Finds project dependencies which are declared as `api` in dependent " +
       "projects, but also declared in the current project unnecessarily"
@@ -32,7 +32,7 @@ class RedundantRule : DocumentedRule<RedundantDependencyFinding>() {
     return project.get(RedundantDependencies)
       .all()
       .distinctBy { it.dependency }
-      .map { it.toFinding(ruleName = name) }
+      .map { it.toFinding(findingName = name) }
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

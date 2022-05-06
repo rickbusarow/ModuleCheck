@@ -23,6 +23,8 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.finding.Finding
+import modulecheck.finding.FindingResultFactory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
@@ -32,10 +34,8 @@ import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
 import modulecheck.reporting.sarif.SarifReportFactory
+import modulecheck.rule.FindingFactory
 import modulecheck.rule.RuleFactory
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.FindingFactory
-import modulecheck.rule.finding.FindingResultFactory
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.runtime.ModuleCheckRunner
 

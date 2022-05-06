@@ -29,7 +29,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-rule:api"))
+  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())

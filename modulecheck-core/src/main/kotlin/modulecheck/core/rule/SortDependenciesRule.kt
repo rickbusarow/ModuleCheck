@@ -19,8 +19,8 @@ import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 import modulecheck.rule.SortRule
 import java.util.Locale
 
@@ -28,7 +28,7 @@ class SortDependenciesRule(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortDependenciesFinding>(), SortRule<SortDependenciesFinding> {
 
-  override val name = RuleName("sort-dependencies")
+  override val name = FindingName("sort-dependencies")
   override val description = "Sorts all dependencies within a dependencies { ... } block"
 
   private val elementComparables: Array<(String) -> Comparable<*>> =
@@ -63,7 +63,7 @@ class SortDependenciesRule(
     } else {
       listOf(
         SortDependenciesFinding(
-          ruleName = name,
+          findingName = name,
           dependentProject = project,
           dependentPath = project.path,
           buildFile = project.buildFile,

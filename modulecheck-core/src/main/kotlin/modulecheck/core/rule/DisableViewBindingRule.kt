@@ -20,14 +20,14 @@ import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 
 class DisableViewBindingRule : DocumentedRule<DisableViewBindingGenerationFinding>() {
 
-  override val name = RuleName("disable-view-binding")
+  override val name = FindingName("disable-view-binding")
   override val description = "Finds modules which have ViewBinding enabled, " +
     "but don't actually use any generated ViewBinding objects from that module"
 
@@ -84,7 +84,7 @@ class DisableViewBindingRule : DocumentedRule<DisableViewBindingGenerationFindin
 
     return listOf(
       DisableViewBindingGenerationFinding(
-        ruleName = name,
+        findingName = name,
         dependentProject = project,
         dependentPath = project.path,
         buildFile = project.buildFile

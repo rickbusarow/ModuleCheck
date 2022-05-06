@@ -25,6 +25,7 @@ mcbuild {
 
 dependencies {
   api(project(path = ":modulecheck-dagger"))
+  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
 

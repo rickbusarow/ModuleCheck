@@ -15,16 +15,16 @@
 
 package modulecheck.core.rule.android
 
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.Fixable
+import modulecheck.finding.RemovesDependency.RemovalStrategy
+import modulecheck.finding.internal.positionOfStatement
 import modulecheck.parsing.gradle.AgpBlock
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
-import modulecheck.rule.finding.internal.positionOfStatement
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.findMinimumIndent
 import modulecheck.utils.indent
@@ -33,7 +33,7 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File

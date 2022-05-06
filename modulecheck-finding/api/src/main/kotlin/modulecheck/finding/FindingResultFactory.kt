@@ -13,24 +13,15 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.finding
 
-mcbuild {
-  artifactId = "modulecheck-reporting-console"
-  anvil = true
-}
+import modulecheck.finding.Finding.FindingResult
 
-dependencies {
+fun interface FindingResultFactory {
 
-  api(project(path = ":modulecheck-api"))
-  api(project(path = ":modulecheck-finding:api"))
-  api(project(path = ":modulecheck-reporting:logging"))
-
-  implementation(project(path = ":modulecheck-parsing:gradle"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
+  suspend fun create(
+    findings: List<Finding>,
+    autoCorrect: Boolean,
+    deleteUnused: Boolean
+  ): List<FindingResult>
 }

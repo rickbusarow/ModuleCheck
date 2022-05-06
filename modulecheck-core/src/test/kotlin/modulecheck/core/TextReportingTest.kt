@@ -17,9 +17,9 @@ package modulecheck.core
 
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.finding.Finding
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
@@ -45,7 +45,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -55,7 +55,7 @@ internal class TextReportingTest : RunnerTest() {
         listOf(
           Finding.FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -83,7 +83,7 @@ internal class TextReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -93,7 +93,7 @@ internal class TextReportingTest : RunnerTest() {
         findings.map {
           Finding.FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",

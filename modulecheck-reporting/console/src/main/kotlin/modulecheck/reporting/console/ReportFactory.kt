@@ -15,8 +15,8 @@
 
 package modulecheck.reporting.console
 
+import modulecheck.finding.Finding
 import modulecheck.reporting.logging.Report
-import modulecheck.rule.finding.Finding
 import java.util.Locale
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class ReportFactory @Inject constructor() {
           values.maxOf { it.dependencyIdentifier.length },
           "dependency".length
         )
-        val maxProblemName = values.maxOf { it.ruleName.id.length }
+        val maxProblemName = values.maxOf { it.findingName.id.length }
         val maxSource = maxOf(values.maxOf { it.sourceOrNull.orEmpty().length }, "source".length)
 
         val fixPrefix = "   ​"
@@ -67,7 +67,7 @@ class ReportFactory @Inject constructor() {
             { !it.fixed },
             { it.dependencyIdentifier },
             { it.positionOrNull },
-            { it.ruleName.id },
+            { it.findingName.id },
             { it.sourceOrNull }
           )
         ).forEach { result ->
@@ -76,7 +76,7 @@ class ReportFactory @Inject constructor() {
             tab(1) +
             result.dependencyIdentifier.padEnd(maxDependencyPath) +
             tab(1) +
-            result.ruleName.id.padEnd(maxProblemName) +
+            result.findingName.id.padEnd(maxProblemName) +
             tab(1) +
             result.sourceOrNull.orEmpty().padEnd(maxSource) +
             tab(1) +

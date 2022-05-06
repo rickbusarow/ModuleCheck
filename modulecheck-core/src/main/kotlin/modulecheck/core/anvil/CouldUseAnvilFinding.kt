@@ -16,21 +16,21 @@
 package modulecheck.core.anvil
 
 import modulecheck.core.internal.positionOf
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.Fixable
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class CouldUseAnvilFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val buildFile: File
 ) : Finding, Fixable {
