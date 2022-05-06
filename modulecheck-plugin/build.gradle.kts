@@ -106,7 +106,7 @@ sourceSets {
   }
 }
 
-val generateBuildProperties by tasks.registering {
+val generateBuildProperties by tasks.registering generator@{
 
   val version = modulecheck.builds.VERSION_NAME
   val sourceWebsite = modulecheck.builds.SOURCE_WEBSITE
@@ -136,8 +136,12 @@ val generateBuildProperties by tasks.registering {
   }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
-  .configureEach {
-
-    dependsOn(generateBuildProperties)
-  }
+tasks.named("runKtlintCheckOverMainSourceSet").configure {
+  dependsOn(generateBuildProperties)
+}
+tasks.named("runKtlintFormatOverMainSourceSet").configure {
+  dependsOn(generateBuildProperties)
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+  dependsOn(generateBuildProperties)
+}
