@@ -40,6 +40,7 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
+  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-parsing:wiring"))

@@ -16,9 +16,9 @@
 package modulecheck.core.rule
 
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.Finding
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.RuleFactory
-import modulecheck.rule.finding.Finding
 
 class ModuleCheckRuleFactory : RuleFactory {
 

@@ -33,11 +33,11 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
   implementation(libs.agp)

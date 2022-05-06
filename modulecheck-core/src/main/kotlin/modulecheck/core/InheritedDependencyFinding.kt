@@ -15,19 +15,19 @@
 
 package modulecheck.core
 
+import modulecheck.finding.AddsDependency
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.internal.positionIn
+import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.AddsDependency
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.internal.positionIn
-import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class InheritedDependencyFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   val source: ConfiguredProjectDependency

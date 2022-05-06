@@ -19,14 +19,14 @@ import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.context.overshotDependencies
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 
 class OverShotDependencyRule(
   val settings: ModuleCheckSettings
 ) : DocumentedRule<OverShotDependencyFinding>() {
 
-  override val name = RuleName("overshot-dependency")
+  override val name = FindingName("overshot-dependency")
   override val description = "Finds project dependencies which aren't used by the declaring" +
     " configuration, but are used by a dependent configuration."
 

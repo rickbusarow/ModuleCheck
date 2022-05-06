@@ -24,10 +24,10 @@ import modulecheck.config.asMap
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.finding.Finding
+import modulecheck.finding.FindingName
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
 
@@ -38,7 +38,7 @@ class UnusedKaptPluginRule(
   private val kaptMatchers: List<KaptMatcher>
     get() = settings.additionalKaptMatchers + defaultKaptMatchers
 
-  override val name = RuleName("unused-kapt-plugin")
+  override val name = FindingName("unused-kapt-plugin")
   override val description = "Warns if the kapt plugin is applied, but unused"
 
   override suspend fun check(project: McProject): List<Finding> {
@@ -68,7 +68,7 @@ class UnusedKaptPluginRule(
         val unusedProcessorFindings = unusedProcessors
           .map { processor ->
             UnusedKaptProcessorFinding(
-              ruleName = name,
+              findingName = name,
               dependentProject = project,
               dependentPath = project.path,
               buildFile = project.buildFile,
@@ -86,7 +86,7 @@ class UnusedKaptPluginRule(
               dependentProject = project,
               dependentPath = project.path,
               buildFile = project.buildFile,
-              ruleName = name,
+              findingName = name,
               pluginId = KAPT_PLUGIN_ID,
               alternatePluginId = KAPT_ALTERNATE_PLUGIN_ID,
               kotlinPluginFunction = KAPT_PLUGIN_FUN

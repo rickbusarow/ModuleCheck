@@ -18,9 +18,9 @@ package modulecheck.gradle.task
 import kotlinx.coroutines.cancel
 import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.dagger.DispatcherProviderComponent
+import modulecheck.finding.Finding
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.FindingFactory
 import modulecheck.utils.cast
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException

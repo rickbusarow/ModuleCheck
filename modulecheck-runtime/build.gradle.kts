@@ -32,6 +32,7 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))

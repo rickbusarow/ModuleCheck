@@ -23,6 +23,10 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.FindingResultFactory
+import modulecheck.finding.Problem
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.reporting.checkstyle.CheckstyleReporter
@@ -32,11 +36,7 @@ import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.Logger
 import modulecheck.reporting.sarif.SarifReportFactory
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.FindingFactory
-import modulecheck.rule.finding.FindingResultFactory
-import modulecheck.rule.finding.Problem
+import modulecheck.rule.FindingFactory
 import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis
@@ -80,7 +80,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
       val fixableFindings = findingFactory.evaluateFixable(projects).distinct()
 
       val fixableResults = fixableFindings.filterIsInstance<Problem>()
-        .filterNot { it.shouldSkip() }
+        .filterNot { it.isSuppressed.await() }
         .also { totalFindings += it.size }
         .let { processFindings(it) }
 
@@ -90,7 +90,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
         .distinct()
 
       val sortsResults = sortFindings.filterIsInstance<Problem>()
-        .filterNot { it.shouldSkip() }
+        .filterNot { it.isSuppressed.await() }
         .also { totalFindings += it.size }
         .let { processFindings(it) }
 

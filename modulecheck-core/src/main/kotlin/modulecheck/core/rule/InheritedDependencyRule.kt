@@ -21,6 +21,7 @@ import modulecheck.config.ChecksSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.parsing.gradle.sortedByInheritance
 import modulecheck.project.ConfiguredProjectDependency
@@ -28,13 +29,12 @@ import modulecheck.project.McProject
 import modulecheck.project.SourceSetDependency
 import modulecheck.project.TransitiveProjectDependency
 import modulecheck.project.toSourceSetDependency
-import modulecheck.rule.RuleName
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.mapAsync
 
 class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
 
-  override val name = RuleName("inherited-dependency")
+  override val name = FindingName("inherited-dependency")
   override val description = "Finds project dependencies which are used in the current module, " +
     "but are not actually directly declared as dependencies in the current module"
 
@@ -153,7 +153,7 @@ class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
       .mapAsync { (source, inherited) ->
 
         InheritedDependencyFinding(
-          ruleName = name,
+          findingName = name,
           dependentProject = project,
           newDependency = inherited.asApiOrImplementation(project),
           source = source

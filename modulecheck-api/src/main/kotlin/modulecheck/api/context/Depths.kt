@@ -16,11 +16,11 @@
 package modulecheck.api.context
 
 import modulecheck.api.DepthFinding
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.rule.RuleName
 import modulecheck.utils.SafeCache
 
 data class Depths(
@@ -84,8 +84,8 @@ data class ProjectDepth(
 ) : Comparable<ProjectDepth> {
   private val treeCache = SafeCache<SourceSetName, Set<ProjectDepth>>()
 
-  fun toFinding(name: RuleName): DepthFinding = DepthFinding(
-    ruleName = name,
+  fun toFinding(name: FindingName): DepthFinding = DepthFinding(
+    findingName = name,
     dependentProject = dependentProject,
     dependentPath = dependentPath,
     depth = depth,

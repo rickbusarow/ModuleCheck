@@ -17,10 +17,10 @@ package modulecheck.core
 
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.Finding.Position
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -45,7 +45,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("some-name"),
+            findingName = FindingName("some-name"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -55,7 +55,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("some-name"),
+            findingName = FindingName("some-name"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -83,7 +83,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("some-name"),
+            findingName = FindingName("some-name"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = testProjectDir
           )
@@ -93,7 +93,7 @@ internal class CheckstyleReportingTest : RunnerTest() {
         findings.map {
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("some-name"),
+            findingName = FindingName("some-name"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",

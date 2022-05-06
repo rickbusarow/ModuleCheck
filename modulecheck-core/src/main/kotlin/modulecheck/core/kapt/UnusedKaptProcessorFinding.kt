@@ -15,6 +15,16 @@
 
 package modulecheck.core.kapt
 
+import modulecheck.finding.ConfigurationFinding
+import modulecheck.finding.DependencyFinding
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.Fixable
+import modulecheck.finding.Problem
+import modulecheck.finding.RemovesDependency
+import modulecheck.finding.internal.positionOfStatement
+import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath
@@ -22,22 +32,12 @@ import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.ConfigurationFinding
-import modulecheck.rule.finding.DependencyFinding
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
-import modulecheck.rule.finding.Problem
-import modulecheck.rule.finding.RemovesDependency
-import modulecheck.rule.finding.internal.positionOfStatement
-import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class UnusedKaptProcessorFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,

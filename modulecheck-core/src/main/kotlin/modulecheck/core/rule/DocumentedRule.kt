@@ -15,14 +15,14 @@
 
 package modulecheck.core.rule
 
+import modulecheck.finding.Finding
 import modulecheck.rule.ModuleCheckRule
-import modulecheck.rule.finding.Finding
 
 sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
 
   /**
-   * This should correspond to the rule name in `snake_case`. So a rule with an "id' of
-   * `unused-dependency` would have a documentation url of `<docs root>/rules/unused_dependency`.
+   * This should correspond to the finding name in `snake_case`. So a rule with a `findingName.id`
+   * of 'unused-dependency' would have a documentation url of `<docs root>/rules/unused_dependency`.
    */
   final override val documentationUrl: String
     get() = "${RULES_BASE_URL}${name.snakeCase}"

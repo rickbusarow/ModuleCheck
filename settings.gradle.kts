@@ -91,6 +91,7 @@ include(
   ":modulecheck-config:fake",
   ":modulecheck-core",
   ":modulecheck-dagger",
+  ":modulecheck-finding:api",
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:android",
   ":modulecheck-parsing:gradle",

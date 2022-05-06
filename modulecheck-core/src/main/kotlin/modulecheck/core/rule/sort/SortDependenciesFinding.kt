@@ -15,16 +15,16 @@
 
 package modulecheck.core.rule.sort
 
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
+import modulecheck.finding.Fixable
+import modulecheck.finding.RemovesDependency.RemovalStrategy
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.Position
-import modulecheck.rule.finding.Fixable
-import modulecheck.rule.finding.RemovesDependency.RemovalStrategy
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import org.jetbrains.kotlin.util.suffixIfNot
@@ -32,7 +32,7 @@ import java.io.File
 import java.util.Locale
 
 class SortDependenciesFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File,

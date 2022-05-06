@@ -15,20 +15,20 @@
 
 package modulecheck.core
 
+import modulecheck.finding.AddsDependency
+import modulecheck.finding.FindingName
+import modulecheck.finding.ModifiesProjectDependency
+import modulecheck.finding.RemovesDependency
+import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.AddsDependency
-import modulecheck.rule.finding.ModifiesProjectDependency
-import modulecheck.rule.finding.RemovesDependency
-import modulecheck.rule.finding.internal.statementOrNullIn
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 
 data class MustBeApiFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val newDependency: ConfiguredProjectDependency,
   override val oldDependency: ConfiguredProjectDependency,
