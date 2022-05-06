@@ -32,13 +32,13 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
-  implementation(project(path = ":modulecheck-dagger"))
-
   compileOnly(gradleApi())
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-dagger"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

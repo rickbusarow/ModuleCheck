@@ -39,6 +39,14 @@ plugins {
   id("mcbuild.ktlint")
   id("mcbuild.test")
   id("mcbuild.website")
+  id("com.rickbusarow.module-check") version "0.12.0"
+}
+
+moduleCheck {
+  deleteUnused = true
+  checks {
+    sortDependencies = true
+  }
 }
 
 tasks.named("ktlintFormat") {

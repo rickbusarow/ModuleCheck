@@ -58,8 +58,8 @@ dependencies {
   implementation(libs.square.anvil.gradle)
 
   implementation(project(path = ":modulecheck-project:impl"))
-  implementation(project(path = ":modulecheck-utils"))
   implementation(project(path = ":modulecheck-rule:impl"))
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
