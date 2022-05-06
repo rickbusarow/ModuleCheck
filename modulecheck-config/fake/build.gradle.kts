@@ -21,14 +21,15 @@ mcbuild {
   artifactId = "modulecheck-config-fake"
   anvil = true
 }
-dependencies {
-  api(project(path = ":modulecheck-config:api"))
 
+dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
+
+  api(project(path = ":modulecheck-config:api"))
 
   compileOnly(gradleApi())
 
