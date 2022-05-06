@@ -16,7 +16,6 @@
 import React from "react";
 import clsx from "clsx";
 import Layout from "@theme/Layout";
-import CodeBlock from '@theme/CodeBlock';
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import useBaseUrl from "@docusaurus/useBaseUrl";
@@ -44,7 +43,7 @@ const features = [
 function Feature({imageUrl, title, description}) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx("col col--4", styles.feature)}>
+    <div>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title}/>
@@ -68,7 +67,8 @@ function Home() {
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <p className={clsx(styles.heroSlogan)}>
-            <strong>ModuleCheck</strong> removes unused module dependencies from your gradle project.
+            <strong>ModuleCheck</strong> removes unused module dependencies from your gradle
+            project.
           </p>
           <div className={styles.buttons}>
             <Link
@@ -82,9 +82,13 @@ function Home() {
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            {/*            <iframe
-              src="https://ghbtns.com/github-btn.html?user=rbusarow&repo=ModuleCheck&type=star&count=true&size=large"
-              frameBorder="0" scrolling="0" width="170" height="30" title="GitHub"/>*/}
+            {
+              // <iframe
+              //   src="https://ghbtns.com/github-btn.html?user=rbusarow&repo=ModuleCheck&type=star&count=true&size=large"
+              //   width="170"
+              //   height="30"
+              //   title="GitHub"/>
+            }
 
           </div>
         </div>
@@ -103,7 +107,7 @@ function Home() {
             <a href="https://plugins.gradle.org/plugin/com.rickbusarow.module-check">
               <img
                 src="https://img.shields.io/gradle-plugin-portal/v/com.rickbusarow.module-check?style=for-the-badge"
-                alt="Gradle Plugin Portal" />
+                alt="Gradle Plugin Portal"/>
             </a>
 
             &nbsp;
@@ -111,7 +115,7 @@ function Home() {
             <a href="https://oss.sonatype.org/#nexus-search;quick~com.rickbusarow.modulecheck">
               <img
                 src="https://img.shields.io/nexus/s/com.rickbusarow.modulecheck/modulecheck-api?label=snapshots&server=https%3A%2F%2Foss.sonatype.org&style=for-the-badge"
-                alt="Snapshots" />
+                alt="Snapshot"/>
             </a>
 
             &nbsp;
@@ -128,9 +132,9 @@ function Home() {
         <section className={styles.features}>
           <div className="container">
             {/*<div className="row">*/}
-              {features.map((props, idx) => (
-                <Feature key={idx} {...props} />
-              ))}
+            {features.map((props, idx) => (
+              <Feature key={idx} {...props} />
+            ))}
             {/*</div>*/}
           </div>
         </section>

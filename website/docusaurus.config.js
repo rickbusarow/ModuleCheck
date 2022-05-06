@@ -24,7 +24,11 @@ module.exports = {
   organizationName: "rbusarow", // Usually your GitHub org/user name.
   projectName: "ModuleCheck", // Usually your repo name.
   themeConfig: {
-    hideableSidebar: true,
+    docs: {
+      sidebar: {
+        hideable: true,
+      }
+    },
     colorMode: {
       defaultMode: "light",
       disableSwitch: false,
@@ -37,10 +41,10 @@ module.exports = {
     },
     navbar: {
       title: "ModuleCheck",
-        logo: {
-          alt: 'ModuleCheck Logo',
-          src: 'img/logo.png',
-        },
+      logo: {
+        alt: 'ModuleCheck Logo',
+        src: 'img/logo.png',
+      },
       items: [
         {
           type: "doc",
