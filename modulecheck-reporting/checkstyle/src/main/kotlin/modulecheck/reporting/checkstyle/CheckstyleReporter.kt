@@ -15,7 +15,7 @@
 
 package modulecheck.reporting.checkstyle
 
-import modulecheck.rule.finding.Finding.FindingResult
+import modulecheck.finding.Finding.FindingResult
 import org.unbescape.xml.XmlEscape
 import java.io.File
 import javax.inject.Inject
@@ -39,7 +39,7 @@ class CheckstyleReporter @Inject constructor() {
           val column = it.positionOrNull?.column ?: -1
 
           val severity = if (it.fixed) "info" else "error"
-          val source = "modulecheck." + it.ruleName.id
+          val source = "modulecheck." + it.findingName.id
 
           val line = "\t\t<error line=\"${row.xml()}\" " +
             "column=\"${column.xml()}\" " +

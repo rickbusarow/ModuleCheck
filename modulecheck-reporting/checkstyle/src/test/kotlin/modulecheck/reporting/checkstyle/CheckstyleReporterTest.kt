@@ -15,10 +15,10 @@
 
 package modulecheck.reporting.checkstyle
 
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.Finding.Position
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -46,7 +46,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":dependentPath"),
-          ruleName = RuleName("some-rule"),
+          findingName = FindingName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = "dependencyIdentifier",
@@ -77,7 +77,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":dependentPath"),
-          ruleName = RuleName("some-rule"),
+          findingName = FindingName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = "dependencyIdentifier",
@@ -108,7 +108,7 @@ internal class CheckstyleReporterTest : BaseTest() {
       listOf(
         FindingResult(
           dependentPath = StringProjectPath(":lib1"),
-          ruleName = RuleName("some-rule"),
+          findingName = FindingName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path1",
@@ -119,7 +119,7 @@ internal class CheckstyleReporterTest : BaseTest() {
         ),
         FindingResult(
           dependentPath = StringProjectPath(":lib1"),
-          ruleName = RuleName("some-rule"),
+          findingName = FindingName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path2",
@@ -130,7 +130,7 @@ internal class CheckstyleReporterTest : BaseTest() {
         ),
         FindingResult(
           dependentPath = StringProjectPath(":lib2"),
-          ruleName = RuleName("some-rule"),
+          findingName = FindingName("some-rule"),
           sourceOrNull = "sourceOrNull",
           configurationName = "configurationName",
           dependencyIdentifier = ":path1",

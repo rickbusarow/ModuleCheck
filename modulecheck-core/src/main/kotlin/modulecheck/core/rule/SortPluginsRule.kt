@@ -19,16 +19,16 @@ import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortPluginsFinding
 import modulecheck.core.rule.sort.sortedPlugins
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.PluginDeclaration
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 import modulecheck.rule.SortRule
 
 class SortPluginsRule(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortPluginsFinding>(), SortRule<SortPluginsFinding> {
 
-  override val name = RuleName("sort-plugins")
+  override val name = FindingName("sort-plugins")
   override val description =
     "Sorts Gradle plugins which are applied using the plugins { ... } block"
 
@@ -64,7 +64,7 @@ class SortPluginsRule(
     } else {
       listOf(
         SortPluginsFinding(
-          ruleName = name,
+          findingName = name,
           dependentProject = project,
           dependentPath = project.path,
           buildFile = project.buildFile,

@@ -13,22 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.core.internal
+package modulecheck.finding
 
-import modulecheck.finding.Finding.Position
-import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.finding.Finding.FindingResult
 
-fun List<String>.positionOf(
-  path: String,
-  configuration: ConfigurationName
-): Position? {
-  val reg = """.*"?${configuration.value}"?\(project[(]?(?:path =\s*)"$path".*""".toRegex()
+fun interface FindingResultFactory {
 
-  val row = indexOfFirst { it.trim().matches(reg) }
-
-  if (row < 0) return null
-
-  val col = get(row).indexOfFirst { it != ' ' }
-
-  return Position(row + 1, col + 1)
+  suspend fun create(
+    findings: List<Finding>,
+    autoCorrect: Boolean,
+    deleteUnused: Boolean
+  ): List<FindingResult>
 }

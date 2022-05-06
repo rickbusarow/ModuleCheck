@@ -19,9 +19,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
 import modulecheck.dagger.ModuleCheckVersionProvider
 import modulecheck.dagger.SourceWebsiteUrlProvider
+import modulecheck.finding.Finding
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.ModuleCheckRule
-import modulecheck.rule.finding.Finding
 import modulecheck.utils.suffixIfNot
 import java.io.File
 import javax.inject.Inject
@@ -60,7 +60,7 @@ class SarifReportFactory @Inject constructor(
 
     val results = findingResults.map { findingResult ->
       SarifResult(
-        ruleID = "modulecheck.${findingResult.ruleName.id}",
+        ruleID = "modulecheck.${findingResult.findingName.id}",
         level = Level.Warning,
         message = Message(text = findingResult.message),
         locations = listOf(

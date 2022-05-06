@@ -21,10 +21,10 @@ import dagger.Component
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.finding.Finding
 import modulecheck.gradle.GradleProjectProvider
 import modulecheck.project.ProjectRoot
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.FindingFactory
 import modulecheck.runtime.ModuleCheckRunner
 import org.gradle.api.Project
 

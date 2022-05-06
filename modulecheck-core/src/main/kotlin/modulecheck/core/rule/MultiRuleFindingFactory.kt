@@ -19,16 +19,16 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.depths
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
+import modulecheck.finding.AddsDependency
+import modulecheck.finding.Finding
+import modulecheck.finding.ModifiesProjectDependency
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
+import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.ReportOnlyRule
 import modulecheck.rule.SortRule
-import modulecheck.rule.finding.AddsDependency
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.FindingFactory
-import modulecheck.rule.finding.ModifiesProjectDependency
 import modulecheck.utils.mapAsync
 import modulecheck.utils.sortedWith
 
@@ -43,7 +43,7 @@ class MultiRuleFindingFactory(
       // Use a stable but arbitrary sort before filtering out duplicates.  This makes it so that
       // if there are different finding types trying to modify the same dependency, the same one
       // will be chosen each time.
-      .sortedBy { it.ruleName.id }
+      .sortedBy { it.findingName.id }
       .filterDuplicateAdds()
       .toList()
   }

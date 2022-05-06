@@ -26,7 +26,7 @@ import modulecheck.core.rule.SortPluginsRule
 import modulecheck.gradle.internal.generatesBuildConfig
 import modulecheck.gradle.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
-import modulecheck.rule.finding.FindingFactory
+import modulecheck.rule.FindingFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider

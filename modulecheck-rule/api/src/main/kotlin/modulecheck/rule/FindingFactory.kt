@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding
+package modulecheck.rule
 
+import modulecheck.finding.Finding
 import modulecheck.project.McProject
-import modulecheck.rule.ModuleCheckRule
 
 interface FindingFactory<T : Finding> {
 

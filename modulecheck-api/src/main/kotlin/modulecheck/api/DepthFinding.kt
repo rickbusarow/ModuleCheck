@@ -16,19 +16,19 @@
 package modulecheck.api
 
 import modulecheck.api.context.ProjectDepth
+import modulecheck.finding.Finding
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.Finding.Position
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class DepthFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: StringProjectPath,
   val depth: Int,
@@ -46,7 +46,7 @@ data class DepthFinding(
   override suspend fun toResult(fixed: Boolean): FindingResult {
     return FindingResult(
       dependentPath = dependentPath,
-      ruleName = ruleName,
+      findingName = findingName,
       sourceOrNull = null,
       configurationName = "",
       dependencyIdentifier = dependencyIdentifier,

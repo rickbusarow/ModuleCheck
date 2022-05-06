@@ -19,14 +19,14 @@ import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.UnusedDependencyFinding
 import modulecheck.core.context.UnusedDependencies
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 
 class UnusedDependencyRule(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<UnusedDependencyFinding>() {
 
-  override val name = RuleName("unused-dependency")
+  override val name = FindingName("unused-dependency")
   override val description = "Finds project dependencies which aren't used in the declaring module"
 
   override suspend fun check(project: McProject): List<UnusedDependencyFinding> {

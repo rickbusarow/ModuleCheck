@@ -13,22 +13,24 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding
+package modulecheck.finding.internal
 
-import modulecheck.rule.finding.internal.removeDependencyWithDelete
+import modulecheck.finding.Finding.Position
 
-interface Deletable :
-  Finding,
-  DependencyFinding {
+fun String.positionOfStatement(statement: String): Position {
 
-  suspend fun delete(): Boolean {
+  val lines = lines()
 
-    val declaration = declarationOrNull.await() ?: return false
+  var index = indexOf(statement.trimStart())
 
-    require(this is RemovesDependency)
+  var row = 0
 
-    dependentProject.removeDependencyWithDelete(declaration, oldDependency)
-
-    return true
+  while (lines[row].length < index) {
+    // if the current row's string isn't long enough, subtract its length from the total index
+    // and move on to the next row.  Subtract an additional 1 because the newline character
+    // in the full string isn't included in the line's string.
+    index -= (lines[row].length + 1)
+    row++
   }
+  return Position(row + 1, index + 1)
 }

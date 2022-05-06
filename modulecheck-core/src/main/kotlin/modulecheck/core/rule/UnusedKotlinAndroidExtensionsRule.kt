@@ -18,9 +18,9 @@ package modulecheck.core.rule
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
+import modulecheck.finding.FindingName
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 import modulecheck.utils.any
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
@@ -28,7 +28,7 @@ private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-exten
 
 class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() {
 
-  override val name = RuleName("unused-kotlin-android-extensions")
+  override val name = FindingName("unused-kotlin-android-extensions")
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
@@ -53,7 +53,7 @@ class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() 
         dependentProject = project,
         dependentPath = project.path,
         buildFile = project.buildFile,
-        ruleName = name,
+        findingName = name,
         pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
         kotlinPluginFunction = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
       )

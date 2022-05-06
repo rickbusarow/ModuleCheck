@@ -25,8 +25,8 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.DocumentedRule.Companion.RULES_BASE_URL
 import modulecheck.core.rule.ModuleCheckRuleFactory
+import modulecheck.finding.Finding
 import modulecheck.rule.ModuleCheckRule
-import modulecheck.rule.finding.Finding
 import modulecheck.testing.BaseTest
 import modulecheck.testing.getPrivateFieldByName
 import modulecheck.utils.child

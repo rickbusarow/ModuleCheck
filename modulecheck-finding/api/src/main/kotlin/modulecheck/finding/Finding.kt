@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding
+package modulecheck.finding
 
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.Declaration
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
 import modulecheck.utils.LazyDeferred
 import java.io.File
 
@@ -28,7 +27,7 @@ interface Finding {
 
   val dependentProject: McProject
 
-  val ruleName: RuleName
+  val findingName: FindingName
 
   val dependentPath: StringProjectPath
   val message: String
@@ -52,7 +51,7 @@ interface Finding {
 
   data class FindingResult(
     val dependentPath: StringProjectPath,
-    val ruleName: RuleName,
+    val findingName: FindingName,
     val sourceOrNull: String?,
     val configurationName: String,
     val dependencyIdentifier: String,

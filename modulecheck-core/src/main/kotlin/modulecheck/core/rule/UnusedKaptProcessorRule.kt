@@ -23,10 +23,10 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.finding.Finding
+import modulecheck.finding.FindingName
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding
 import modulecheck.utils.LazySet
 import modulecheck.utils.any
 
@@ -41,7 +41,7 @@ class UnusedKaptProcessorRule(
   private val kaptMatchers: List<KaptMatcher>
     get() = settings.additionalKaptMatchers + defaultKaptMatchers
 
-  override val name = RuleName("unused-kapt-processor")
+  override val name = FindingName("unused-kapt-processor")
   override val description = "Finds unused kapt processor dependencies " +
     "and warns if the kapt plugin is applied but unused"
 
@@ -71,7 +71,7 @@ class UnusedKaptProcessorRule(
         val unusedProcessorFindings = unusedProcessors
           .map { processor ->
             UnusedKaptProcessorFinding(
-              ruleName = name,
+              findingName = name,
               dependentProject = project,
               dependentPath = project.path,
               buildFile = project.buildFile,

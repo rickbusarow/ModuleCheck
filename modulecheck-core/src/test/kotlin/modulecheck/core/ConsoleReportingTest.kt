@@ -17,10 +17,10 @@ package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
 import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.finding.Finding.FindingResult
+import modulecheck.finding.Finding.Position
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Finding.FindingResult
-import modulecheck.rule.finding.Finding.Position
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
@@ -50,7 +50,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -78,12 +78,12 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           ),
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib2"),
             buildFile = File(testProjectDir, "lib2/build.gradle.kts")
           )
@@ -115,7 +115,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -148,7 +148,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -158,7 +158,7 @@ internal class ConsoleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",
@@ -180,7 +180,7 @@ internal class ConsoleReportingTest : RunnerTest() {
       findingFactory = findingFactory(
         listOf(
           CouldUseAnvilFinding(
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             dependentProject = kotlinProject(":lib1"),
             buildFile = File(testProjectDir, "lib1/build.gradle.kts")
           )
@@ -190,7 +190,7 @@ internal class ConsoleReportingTest : RunnerTest() {
         listOf(
           FindingResult(
             dependentPath = StringProjectPath(":dependentPath"),
-            ruleName = RuleName("use-anvil-factory-generation"),
+            findingName = FindingName("use-anvil-factory-generation"),
             sourceOrNull = "sourceOrNull",
             configurationName = "configurationName",
             dependencyIdentifier = "dependencyIdentifier",

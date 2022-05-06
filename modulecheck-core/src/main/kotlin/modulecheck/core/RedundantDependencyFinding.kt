@@ -15,12 +15,12 @@
 
 package modulecheck.core
 
+import modulecheck.finding.Deletable
+import modulecheck.finding.FindingName
+import modulecheck.finding.RemovesDependency
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.rule.RuleName
-import modulecheck.rule.finding.Deletable
-import modulecheck.rule.finding.RemovesDependency
 
 data class RedundantDependency(
   val dependentProject: McProject,
@@ -28,8 +28,8 @@ data class RedundantDependency(
   val configurationName: ConfigurationName,
   val from: List<ConfiguredProjectDependency>
 ) {
-  fun toFinding(ruleName: RuleName): RedundantDependencyFinding = RedundantDependencyFinding(
-    ruleName = ruleName,
+  fun toFinding(findingName: FindingName): RedundantDependencyFinding = RedundantDependencyFinding(
+    findingName = findingName,
     dependentProject = dependentProject,
     oldDependency = dependency,
     configurationName = configurationName,
@@ -38,7 +38,7 @@ data class RedundantDependency(
 }
 
 data class RedundantDependencyFinding(
-  override val ruleName: RuleName,
+  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val oldDependency: ConfiguredProjectDependency,
   override val configurationName: ConfigurationName,

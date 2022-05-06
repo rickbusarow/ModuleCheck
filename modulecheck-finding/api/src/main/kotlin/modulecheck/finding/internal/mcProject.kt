@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.rule.finding.internal
+package modulecheck.finding.internal
 
+import modulecheck.finding.Finding.Position
 import modulecheck.parsing.gradle.ConfigurationName
 import modulecheck.parsing.gradle.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.ModuleDependencyDeclaration
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
-import modulecheck.rule.finding.Finding.Position
 
 suspend fun ConfiguredProjectDependency.statementOrNullIn(
   dependentProject: McProject
