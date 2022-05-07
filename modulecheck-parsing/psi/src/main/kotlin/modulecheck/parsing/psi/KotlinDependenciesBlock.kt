@@ -17,10 +17,10 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.DependenciesBlock
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 
 class KotlinDependenciesBlock(
-  logger: Logger,
+  logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>,

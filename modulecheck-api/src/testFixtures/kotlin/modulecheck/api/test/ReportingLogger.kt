@@ -15,7 +15,7 @@
 
 package modulecheck.api.test
 
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry
 import modulecheck.reporting.logging.Report.ReportEntry.AppendNewLine
@@ -32,7 +32,7 @@ import modulecheck.reporting.logging.Report.ReportEntry.WarningLine
 
 class ReportingLogger(
   private val mirrorToStandardOut: Boolean = true
-) : Logger {
+) : McLogger {
 
   private val entries = mutableListOf<ReportEntry>()
 

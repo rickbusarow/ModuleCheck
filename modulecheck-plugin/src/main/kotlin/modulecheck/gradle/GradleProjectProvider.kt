@@ -23,7 +23,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
-import modulecheck.gradle.task.GradleLogger
+import modulecheck.gradle.task.GradleMcLogger
 import modulecheck.parsing.gradle.BuildFileParser
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
@@ -50,7 +50,7 @@ class GradleProjectProvider @AssistedInject constructor(
   private val rootGradleProject: GradleProject,
   private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
-  private val gradleLogger: GradleLogger,
+  private val gradleLogger: GradleMcLogger,
   private val buildFileParserFactory: BuildFileParser.Factory,
   private val jvmFileProviderFactory: RealJvmFileProvider.Factory,
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,

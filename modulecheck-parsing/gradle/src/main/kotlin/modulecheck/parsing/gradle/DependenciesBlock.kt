@@ -17,11 +17,11 @@ package modulecheck.parsing.gradle
 
 import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.remove
 
 abstract class DependenciesBlock(
-  private val logger: Logger,
+  private val logger: McLogger,
   suppressAll: List<String>,
   private val configurationNameTransform: ConfigurationNameTransform
 ) : Block<DependencyDeclaration> {
@@ -239,7 +239,7 @@ abstract class DependenciesBlock(
     val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()
 
     @Deprecated("This will be removed soon.")
-    private fun migrateLegacyIdOrNull(legacyID: String, logger: Logger): String? {
+    private fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String? {
 
       val migrated = when (legacyID) {
         "useAnvilFactories" -> "use-anvil-factory-generation"

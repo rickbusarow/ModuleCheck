@@ -29,7 +29,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
@@ -42,7 +42,7 @@ class RealMcProject(
   override val hasTestFixturesPlugin: Boolean,
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
-  override val logger: Logger,
+  override val logger: McLogger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
   override val javaSourceVersion: JavaVersion,
   projectDependencies: Lazy<ProjectDependencies>,

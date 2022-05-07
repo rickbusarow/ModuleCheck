@@ -18,7 +18,7 @@ package modulecheck.gradle.task
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.GradleProject
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry.Failure
 import modulecheck.reporting.logging.Report.ReportEntry.FailureHeader
@@ -36,9 +36,9 @@ import org.gradle.internal.logging.text.StyledTextOutputFactory
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
-class GradleLogger @Inject constructor(
+class GradleMcLogger @Inject constructor(
   project: GradleProject
-) : Logger {
+) : McLogger {
 
   private val output: StyledTextOutput = project
     .serviceOf<StyledTextOutputFactory>()
