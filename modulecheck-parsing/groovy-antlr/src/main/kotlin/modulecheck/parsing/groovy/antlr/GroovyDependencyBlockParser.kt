@@ -22,7 +22,7 @@ import modulecheck.parsing.gradle.MavenCoordinates
 import modulecheck.parsing.gradle.ProjectAccessor
 import modulecheck.parsing.gradle.ProjectPath
 import modulecheck.parsing.gradle.asConfigurationName
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ExpressionListElementContext
@@ -35,7 +35,7 @@ import java.io.File
 import javax.inject.Inject
 
 class GroovyDependencyBlockParser @Inject constructor(
-  private val logger: Logger
+  private val logger: McLogger
 ) {
 
   fun parse(file: File): List<GroovyDependenciesBlock> = parse(file) {

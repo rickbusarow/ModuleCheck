@@ -15,7 +15,7 @@
 
 package modulecheck.reporting.logging
 
-class PrintLogger : Logger {
+class PrintLogger : McLogger {
   override fun printReport(report: Report) {
     println(report.joinToString())
   }

@@ -16,10 +16,10 @@
 package modulecheck.parsing.groovy.antlr
 
 import modulecheck.parsing.gradle.DependenciesBlock
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 
 class GroovyDependenciesBlock(
-  logger: Logger,
+  logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>

@@ -34,7 +34,7 @@ import modulecheck.reporting.console.DepthLogFactory
 import modulecheck.reporting.console.DepthReportFactory
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.utils.createSafely
@@ -54,7 +54,7 @@ import kotlin.system.measureTimeMillis
 data class ModuleCheckRunner @AssistedInject constructor(
   val settings: ModuleCheckSettings,
   val findingFactory: FindingFactory<out Finding>,
-  val logger: Logger,
+  val logger: McLogger,
   val findingResultFactory: FindingResultFactory,
   val reportFactory: ReportFactory,
   val checkstyleReporter: CheckstyleReporter,

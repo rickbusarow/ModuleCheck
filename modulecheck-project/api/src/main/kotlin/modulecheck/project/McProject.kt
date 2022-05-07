@@ -27,7 +27,7 @@ import modulecheck.parsing.gradle.SourceSets
 import modulecheck.parsing.gradle.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
@@ -59,7 +59,7 @@ interface McProject :
   override val hasAnvil: Boolean
     get() = anvilGradlePlugin != null
 
-  val logger: Logger
+  val logger: McLogger
   val jvmFileProviderFactory: JvmFileProvider.Factory
 
   val javaSourceVersion: JavaVersion

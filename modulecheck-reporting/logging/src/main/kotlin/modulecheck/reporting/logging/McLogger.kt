@@ -27,7 +27,7 @@ import modulecheck.reporting.logging.Report.ReportEntry.SuccessLine
 import modulecheck.reporting.logging.Report.ReportEntry.Warning
 import modulecheck.reporting.logging.Report.ReportEntry.WarningLine
 
-interface Logger {
+interface McLogger {
 
   fun printReport(report: Report)
 

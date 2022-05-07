@@ -32,7 +32,7 @@ import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
-import modulecheck.reporting.logging.Logger
+import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.RuleFactory
@@ -58,7 +58,7 @@ abstract class RunnerTest : ProjectTest() {
     strictResolution: Boolean = false,
     findingFactory: FindingFactory<out Finding> = this.findingFactory,
     settings: ModuleCheckSettings = this.settings,
-    logger: Logger = this.logger,
+    logger: McLogger = this.logger,
     projectProvider: ProjectProvider = this.projectProvider,
     findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
     reportFactory: ReportFactory = ReportFactory(),
