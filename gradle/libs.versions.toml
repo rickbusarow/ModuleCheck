@@ -25,7 +25,7 @@ dokka = "1.6.21"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
-google-dagger = "2.41"
+google-dagger = "2.42"
 google-material = "1.4.0"
 
 gradleDoctor = "0.8.0"
