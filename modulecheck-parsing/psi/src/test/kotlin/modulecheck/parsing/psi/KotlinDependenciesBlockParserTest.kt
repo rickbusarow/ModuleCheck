@@ -27,9 +27,9 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.reporting.logging.PrintLogger
 import org.junit.jupiter.api.Test
 
-internal class KotlinDependencyBlockParserTest : ProjectTest() {
+internal class KotlinDependenciesBlockParserTest : ProjectTest() {
 
-  val parser by resets { KotlinDependencyBlockParser(PrintLogger()) }
+  val parser by resets { KotlinDependenciesBlockParser(PrintLogger()) }
 
   @Test
   fun `external declaration`() {
@@ -669,7 +669,7 @@ internal class KotlinDependencyBlockParserTest : ProjectTest() {
     )
   }
 
-  fun KotlinDependencyBlockParser.parse(
+  fun KotlinDependenciesBlockParser.parse(
     string: String,
     project: McProject = simpleProject(buildFileText = string.trimIndent())
   ): List<KotlinDependenciesBlock> = runBlocking { parse(project) }
