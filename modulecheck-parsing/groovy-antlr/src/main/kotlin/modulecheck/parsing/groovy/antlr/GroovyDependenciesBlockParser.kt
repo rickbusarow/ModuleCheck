@@ -34,7 +34,7 @@ import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 import java.io.File
 import javax.inject.Inject
 
-class GroovyDependencyBlockParser @Inject constructor(
+class GroovyDependenciesBlockParser @Inject constructor(
   private val logger: McLogger
 ) {
 

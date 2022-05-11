@@ -20,15 +20,15 @@ import modulecheck.dagger.AppScope
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependenciesBlocksProvider
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
-import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
-import modulecheck.parsing.psi.KotlinDependencyBlockParser
+import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
+import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.internal.isKotlinScriptFile
 import javax.inject.Inject
 import javax.inject.Provider
 
 class RealDependenciesBlocksProvider(
-  private val groovyParser: GroovyDependencyBlockParser,
-  private val kotlinParser: KotlinDependencyBlockParser,
+  private val groovyParser: GroovyDependenciesBlockParser,
+  private val kotlinParser: KotlinDependenciesBlockParser,
   private val invokesConfigurationNames: InvokesConfigurationNames
 ) : DependenciesBlocksProvider {
 
@@ -47,8 +47,8 @@ class RealDependenciesBlocksProvider(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val groovyParserProvider: Provider<GroovyDependencyBlockParser>,
-    private val kotlinParserProvider: Provider<KotlinDependencyBlockParser>
+    private val groovyParserProvider: Provider<GroovyDependenciesBlockParser>,
+    private val kotlinParserProvider: Provider<KotlinDependenciesBlockParser>
   ) : DependenciesBlocksProvider.Factory {
     override fun create(
       invokesConfigurationNames: InvokesConfigurationNames

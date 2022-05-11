@@ -28,7 +28,7 @@ import modulecheck.utils.createSafely
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
-internal class GroovyDependencyBlockParserTest : BaseTest() {
+internal class GroovyDependenciesBlockParserTest : BaseTest() {
 
   @Test
   fun `external declaration`() = parse(
@@ -572,7 +572,7 @@ internal class GroovyDependencyBlockParserTest : BaseTest() {
   ) {
     testProjectDir.child("build.gradle")
       .createSafely(fileText.trimIndent())
-      .let { file -> GroovyDependencyBlockParser(PrintLogger()).parse(file) }
+      .let { file -> GroovyDependenciesBlockParser(PrintLogger()).parse(file) }
       .single()
       .assertions()
   }

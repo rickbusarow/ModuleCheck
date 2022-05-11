@@ -37,7 +37,7 @@ import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import javax.inject.Inject
 
-class KotlinDependencyBlockParser @Inject constructor(
+class KotlinDependenciesBlockParser @Inject constructor(
   private val logger: McLogger
 ) {
 

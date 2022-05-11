@@ -23,10 +23,10 @@ import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
-import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
+import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
-import modulecheck.parsing.psi.KotlinDependencyBlockParser
+import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
 import modulecheck.parsing.wiring.FileCache
 import modulecheck.parsing.wiring.RealAndroidDataBindingNameProvider
@@ -166,8 +166,8 @@ fun buildFileParserFactory(logger: McLogger = PrintLogger()): BuildFileParser.Fa
     RealBuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependencyBlockParser(logger),
-          kotlinParser = KotlinDependencyBlockParser(logger),
+          groovyParser = GroovyDependenciesBlockParser(logger),
+          kotlinParser = KotlinDependenciesBlockParser(logger),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },
