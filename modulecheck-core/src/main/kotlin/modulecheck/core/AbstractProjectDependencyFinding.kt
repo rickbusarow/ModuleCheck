@@ -24,8 +24,8 @@ import modulecheck.finding.Problem
 import modulecheck.finding.ProjectDependencyFinding
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
@@ -41,17 +41,17 @@ abstract class AbstractProjectDependencyFinding :
   final override val buildFile: File get() = dependentProject.buildFile
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
-    val statement = declarationOrNull.await()?.declarationText ?: return@lazyDeferred null
+    val statement = statementOrNull.await()?.declarationText ?: return@lazyDeferred null
 
     buildFile.readText()
       .positionOfStatement(statement)
   }
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     dependency.statementOrNullIn(dependentProject)
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
-    declarationOrNull.await()?.statementWithSurroundingText
+    statementOrNull.await()?.statementWithSurroundingText
   }
 
   override suspend fun toResult(fixed: Boolean): FindingResult {

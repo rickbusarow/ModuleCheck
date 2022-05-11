@@ -18,10 +18,10 @@
 package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
-import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ProjectAccessor
-import modulecheck.parsing.gradle.ProjectPath
-import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.dsl.ProjectAccessor
+import modulecheck.parsing.gradle.model.MavenCoordinates
+import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.reporting.logging.McLogger
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureContext

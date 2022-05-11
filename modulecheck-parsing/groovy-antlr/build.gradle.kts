@@ -24,7 +24,9 @@ mcbuild {
 
 dependencies {
 
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-reporting:logging"))
 
   compileOnly(gradleApi())
@@ -45,5 +47,5 @@ dependencies {
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-reporting:logging"))
 
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle")))
+  testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle:dsl:api")))
 }

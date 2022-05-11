@@ -17,10 +17,10 @@ package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable.Companion
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.DependencyDeclaration
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.ProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.dsl.DependencyDeclaration
+import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
@@ -158,14 +158,14 @@ private fun McProject.addStatement(
 }
 
 fun McProject.removeDependencyWithComment(
-  declaration: Declaration,
+  statement: BuildFileStatement,
   fixLabel: String,
   configuredDependency: ConfiguredDependency? = null
 ) = synchronized(buildFile) {
 
   val text = buildFile.readText()
 
-  val declarationText = declaration.declarationText
+  val declarationText = statement.declarationText
 
   val lines = declarationText.lines()
   val lastIndex = lines.lastIndex
@@ -199,7 +199,7 @@ fun McProject.removeDependencyWithComment(
 }
 
 fun McProject.removeDependencyWithDelete(
-  declaration: Declaration,
+  statement: BuildFileStatement,
   configuredDependency: ConfiguredDependency? = null
 ) = synchronized(buildFile) {
   val text = buildFile.readText()
@@ -209,7 +209,7 @@ fun McProject.removeDependencyWithDelete(
     // It needs to match what we're doing if we add a new dependency.  Otherwise, we wind up adding
     // or removing newlines instead of just modifying the dependencies.
     // See https://github.com/RBusarow/ModuleCheck/issues/443
-    text.replaceFirst(declaration.statementWithSurroundingText.prefixIfNot("\n"), "")
+    text.replaceFirst(statement.statementWithSurroundingText.prefixIfNot("\n"), "")
   )
 
   if (configuredDependency is ConfiguredProjectDependency) {

@@ -17,7 +17,7 @@ package modulecheck.core.context
 
 import modulecheck.core.OverShotDependency
 import modulecheck.core.internal.uses
-import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

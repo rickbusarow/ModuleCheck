@@ -24,7 +24,7 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
 import modulecheck.utils.containsAny
 

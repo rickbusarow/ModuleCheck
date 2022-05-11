@@ -15,9 +15,9 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptProcessor
 import modulecheck.runtime.test.RunnerTest

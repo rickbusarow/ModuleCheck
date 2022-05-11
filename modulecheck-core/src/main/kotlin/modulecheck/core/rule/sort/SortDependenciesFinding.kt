@@ -20,10 +20,10 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.finding.Fixable
 import modulecheck.finding.RemovesDependency.RemovalStrategy
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.DependenciesBlock
-import modulecheck.parsing.gradle.DependencyDeclaration
-import modulecheck.parsing.gradle.ProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.dsl.DependenciesBlock
+import modulecheck.parsing.gradle.dsl.DependencyDeclaration
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -47,7 +47,7 @@ class SortDependenciesFinding(
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred { null }
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred { null }
 
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred { null }
 

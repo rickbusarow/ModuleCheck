@@ -38,6 +38,7 @@ dependencyResolutionManagement {
     mavenCentral()
     mavenLocal()
     maven("https://plugins.gradle.org/m2/")
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 
@@ -92,15 +93,23 @@ include(
   ":modulecheck-core",
   ":modulecheck-dagger",
   ":modulecheck-finding:api",
+  ":modulecheck-finding:name",
+  ":modulecheck-gradle:platforms:api",
+  ":modulecheck-gradle:platforms:impl",
+  ":modulecheck-gradle:platforms:internal-android",
+  ":modulecheck-gradle:platforms:internal-jvm",
+  ":modulecheck-gradle:plugin",
   ":modulecheck-internal-testing",
   ":modulecheck-parsing:android",
-  ":modulecheck-parsing:gradle",
+  ":modulecheck-parsing:gradle:dsl:precompiled",
+  ":modulecheck-parsing:gradle:dsl:internal",
+  ":modulecheck-parsing:gradle:dsl:api",
+  ":modulecheck-parsing:gradle:model:api",
   ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",
   ":modulecheck-parsing:source",
   ":modulecheck-parsing:wiring",
-  ":modulecheck-plugin",
   ":modulecheck-project:api",
   ":modulecheck-project:impl",
   ":modulecheck-reporting:checkstyle",

@@ -15,8 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.TransitiveProjectDependency

@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.gradle.PluginsBlock
+import modulecheck.parsing.gradle.dsl.internal.AbstractPluginsBlock
 
 class KotlinPluginsBlock(
   override val fullText: String,
   override val lambdaContent: String
-) : PluginsBlock() {
+) : AbstractPluginsBlock() {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

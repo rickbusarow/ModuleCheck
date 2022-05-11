@@ -15,9 +15,9 @@
 
 package modulecheck.finding
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -66,7 +66,7 @@ interface Finding {
 
 interface DependencyFinding {
 
-  val declarationOrNull: LazyDeferred<Declaration?>
+  val statementOrNull: LazyDeferred<BuildFileStatement?>
   val statementTextOrNull: LazyDeferred<String?>
 }
 

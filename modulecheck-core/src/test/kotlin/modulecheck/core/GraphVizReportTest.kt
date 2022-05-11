@@ -17,8 +17,8 @@ package modulecheck.core
 
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.SingleRuleFindingFactory
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.test.maybeAddSourceSet
 import modulecheck.runtime.test.RunnerTest

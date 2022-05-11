@@ -24,8 +24,8 @@ import modulecheck.finding.internal.closestDeclarationOrNull
 import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.createProjectDependencyDeclaration
+import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.dsl.createProjectDependencyDeclaration
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.utils.LazyDeferred
@@ -38,7 +38,7 @@ interface Problem :
 
   val isSuppressed: LazyDeferred<Boolean>
     get() = lazyDeferred {
-      declarationOrNull.await()?.suppressed
+      statementOrNull.await()?.suppressed
         ?.contains(findingName.id)
         ?: false
     }
@@ -66,13 +66,13 @@ interface RemovesDependency : Fixable {
 
     val oldDeclaration = (oldDependency as? ConfiguredProjectDependency)
       ?.statementOrNullIn(dependentProject)
-      ?: declarationOrNull.await()
+      ?: statementOrNull.await()
       ?: return false
 
     when (removalStrategy) {
       DELETE -> dependentProject.removeDependencyWithDelete(oldDeclaration, oldDependency)
       COMMENT -> dependentProject.removeDependencyWithComment(
-        declaration = oldDeclaration,
+        statement = oldDeclaration,
         fixLabel = fixLabel(),
         configuredDependency = oldDependency
       )

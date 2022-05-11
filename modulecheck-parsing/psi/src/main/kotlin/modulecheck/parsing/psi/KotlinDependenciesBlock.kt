@@ -15,17 +15,17 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.gradle.DependenciesBlock
-import modulecheck.parsing.gradle.DependencyDeclaration.ConfigurationNameTransform
+import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
+import modulecheck.parsing.gradle.dsl.internal.AbstractDependenciesBlock
 import modulecheck.reporting.logging.McLogger
 
-class KotlinDependenciesBlock(
+class KotlinDependenciesBlock internal constructor(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>,
   configurationNameTransform: ConfigurationNameTransform
-) : DependenciesBlock(
+) : AbstractDependenciesBlock(
   logger = logger,
   suppressAll = suppressAll,
   configurationNameTransform = configurationNameTransform

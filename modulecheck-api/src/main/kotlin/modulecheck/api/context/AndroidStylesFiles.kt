@@ -16,7 +16,7 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.android.AndroidStylesFile
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.SafeCache

@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
-import modulecheck.parsing.gradle.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.asSourceSetName
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

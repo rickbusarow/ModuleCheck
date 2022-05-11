@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import modulecheck.api.context.jvmFilesForSourceSetName
 import modulecheck.api.context.references
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.asExplicitKotlinReference

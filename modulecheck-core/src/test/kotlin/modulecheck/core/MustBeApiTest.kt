@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child

@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.parsing.gradle.PluginsBlock
+import modulecheck.parsing.gradle.dsl.internal.AbstractPluginsBlock
 
 class GroovyPluginsBlock(
   override val fullText: String,
   override val lambdaContent: String
-) : PluginsBlock() {
+) : AbstractPluginsBlock() {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

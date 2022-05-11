@@ -23,7 +23,7 @@ import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.declarations
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Generated
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject

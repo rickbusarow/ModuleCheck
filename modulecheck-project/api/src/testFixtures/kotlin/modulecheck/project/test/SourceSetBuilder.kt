@@ -15,11 +15,11 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.Config
-import modulecheck.parsing.gradle.SourceSet
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.removePrefix
-import modulecheck.parsing.gradle.removeSuffix
+import modulecheck.parsing.gradle.model.Config
+import modulecheck.parsing.gradle.model.SourceSet
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.removePrefix
+import modulecheck.parsing.gradle.model.removeSuffix
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
 import java.io.File

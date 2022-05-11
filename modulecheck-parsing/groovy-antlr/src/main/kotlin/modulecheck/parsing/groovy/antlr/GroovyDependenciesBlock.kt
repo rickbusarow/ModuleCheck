@@ -15,15 +15,15 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.parsing.gradle.DependenciesBlock
+import modulecheck.parsing.gradle.dsl.internal.AbstractDependenciesBlock
 import modulecheck.reporting.logging.McLogger
 
-class GroovyDependenciesBlock(
+class GroovyDependenciesBlock internal constructor(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>
-) : DependenciesBlock(
+) : AbstractDependenciesBlock(
   logger = logger,
   suppressAll = suppressAll,
   configurationNameTransform = { it.value }

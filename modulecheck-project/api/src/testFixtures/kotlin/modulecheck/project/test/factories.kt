@@ -15,12 +15,13 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.BuildFileParser
-import modulecheck.parsing.gradle.Configurations
-import modulecheck.parsing.gradle.PlatformPlugin
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.dsl.internal.RealBuildFileParser
+import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.PlatformPlugin
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
@@ -38,6 +39,7 @@ import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.impl.RealMcProject
+import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -158,15 +160,14 @@ internal fun Configurations.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, c
   ConfigBuilder.fromConfig(config)
 }
 
-fun buildFileParserFactory(): BuildFileParser.Factory {
-
+fun buildFileParserFactory(logger: McLogger = PrintLogger()): BuildFileParser.Factory {
   return BuildFileParser.Factory { invokesConfigurationNames ->
 
-    BuildFileParser(
+    RealBuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependencyBlockParser(PrintLogger()),
-          kotlinParser = KotlinDependencyBlockParser(PrintLogger()),
+          groovyParser = GroovyDependencyBlockParser(logger),
+          kotlinParser = KotlinDependencyBlockParser(logger),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },

@@ -27,8 +27,8 @@ import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.dependencySources
 import modulecheck.api.context.jvmFilesForSourceSetName
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.NamedSymbol
 import modulecheck.parsing.source.Reference

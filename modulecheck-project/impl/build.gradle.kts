@@ -29,7 +29,8 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging"))

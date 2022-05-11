@@ -15,11 +15,11 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
-import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
-import modulecheck.parsing.gradle.AndroidGradleParser
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import modulecheck.parsing.gradle.Assignment
+import modulecheck.parsing.gradle.dsl.AndroidGradleParser
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
+import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement

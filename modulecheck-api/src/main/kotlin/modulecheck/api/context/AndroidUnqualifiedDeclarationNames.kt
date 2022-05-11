@@ -16,8 +16,8 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.android.AndroidResourceParser
-import modulecheck.parsing.gradle.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

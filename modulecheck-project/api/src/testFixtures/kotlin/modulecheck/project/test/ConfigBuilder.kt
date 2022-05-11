@@ -15,11 +15,11 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.Config
-import modulecheck.parsing.gradle.ConfigFactory
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.model.Config
+import modulecheck.parsing.gradle.model.ConfigFactory
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
 
 data class ConfigBuilder(
   val name: ConfigurationName,

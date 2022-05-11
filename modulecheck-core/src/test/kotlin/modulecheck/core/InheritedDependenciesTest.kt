@@ -15,10 +15,10 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.asConfigurationName
-import modulecheck.parsing.gradle.asSourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
+import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.ProjectFindingReport.overshot

@@ -25,9 +25,9 @@ import modulecheck.finding.Problem
 import modulecheck.finding.RemovesDependency
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependency
@@ -59,7 +59,7 @@ data class UnusedKaptProcessorFinding(
     is ExternalDependency -> oldDependency.name
   }
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     when (oldDependency) {
       is ConfiguredProjectDependency ->
         oldDependency.statementOrNullIn(dependentProject)
@@ -70,11 +70,11 @@ data class UnusedKaptProcessorFinding(
   }
 
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
-    declarationOrNull.await()?.statementWithSurroundingText
+    statementOrNull.await()?.statementWithSurroundingText
   }
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
-    val statement = declarationOrNull.await()?.declarationText ?: return@lazyDeferred null
+    val statement = statementOrNull.await()?.declarationText ?: return@lazyDeferred null
 
     buildFile.readText()
       .positionOfStatement(statement)

@@ -23,7 +23,7 @@ interface Deletable :
 
   suspend fun delete(): Boolean {
 
-    val declaration = declarationOrNull.await() ?: return false
+    val declaration = statementOrNull.await() ?: return false
 
     require(this is RemovesDependency)
 

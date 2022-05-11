@@ -15,29 +15,28 @@
 
 package modulecheck.parsing.psi
 
-import io.kotest.matchers.shouldBe
-import modulecheck.parsing.gradle.PluginDeclaration
+import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.psi.internal.psiFileFactory
+import modulecheck.testing.BaseTest
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.utils.addToStdlib.cast
 import org.junit.jupiter.api.Test
 
-internal class KotlinPluginsBlockParserTest {
+internal class KotlinPluginsBlockParserTest : BaseTest() {
 
   @Test
   fun `external declaration`() {
-    val block = KotlinPluginsBlockParser()
-      .parse(
-        """
+    val block = parse(
+      """
        plugins {
          kotlin("jvm") // trailing comment
          // comment
          javaLibrary
          id("io.gitlab.arturbosch.detekt") version "1.15.0"
        }
-        """.trimIndent()
-      )
+      """.trimIndent()
+    )
 
     block.settings shouldBe listOf(
       PluginDeclaration(
@@ -57,11 +56,13 @@ internal class KotlinPluginsBlockParserTest {
     )
   }
 
-  fun KotlinPluginsBlockParser.parse(string: String): KotlinPluginsBlock {
+  fun parse(
+    string: String
+  ): KotlinPluginsBlock {
     val file = psiFileFactory
       .createFileFromText("build.gradle.kts", KotlinLanguage.INSTANCE, string)
       .cast<KtFile>()
 
-    return parse(file)!!
+    return KotlinPluginsBlockParser().parse(file)!!
   }
 }

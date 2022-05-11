@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.test.NamedSymbolTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest

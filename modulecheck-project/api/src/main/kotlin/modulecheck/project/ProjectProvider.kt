@@ -15,7 +15,7 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import java.io.File
 
 interface ProjectProvider : HasProjectCache {
