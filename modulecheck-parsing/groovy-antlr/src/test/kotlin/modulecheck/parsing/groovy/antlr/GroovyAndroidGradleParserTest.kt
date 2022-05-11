@@ -17,10 +17,10 @@ package modulecheck.parsing.groovy.antlr
 
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
-import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
-import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import modulecheck.parsing.gradle.Assignment
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
+import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
@@ -60,19 +60,37 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
     testFile.writeText(block)
 
     val viewBindingAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+      fullText = "android {\n" +
+        "  buildFeatures {\n" +
+        "    viewBinding = $enabled\n" +
+        "  }\n" +
+        "  buildFeatures {\n" +
+        "    buildConfig = $enabled\n" +
+        "  }\n" +
+        "}",
       propertyFullName = "viewBinding",
       value = "$enabled",
       declarationText = "viewBinding = $enabled"
     )
     val buildConfigAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+      fullText = "android {\n" +
+        "  buildFeatures {\n" +
+        "    viewBinding = $enabled\n" +
+        "  }\n" +
+        "  buildFeatures {\n" +
+        "    buildConfig = $enabled\n" +
+        "  }\n" +
+        "}",
       propertyFullName = "buildConfig",
       value = "$enabled",
       declarationText = "buildConfig = $enabled"
     )
     val androidResourcesAssignment = Assignment(
-      fullText = "android {\n  buildFeatures {\n    androidResources = $enabled\n  }\n}",
+      fullText = "android {\n" +
+        "  buildFeatures {\n" +
+        "    androidResources = $enabled\n" +
+        "  }\n" +
+        "}",
       propertyFullName = "androidResources",
       value = "$enabled",
       declarationText = "androidResources = $enabled"
@@ -85,16 +103,34 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       ),
       androidBlocks = listOf(
         AndroidBlock(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
-          lambdaContent = "buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "  }\n" +
+            "  buildFeatures {\n" +
+            "    buildConfig = $enabled\n" +
+            "  }\n" +
+            "}",
+          lambdaContent = "buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "  }\n" +
+            "  buildFeatures {\n" +
+            "    buildConfig = $enabled\n" +
+            "  }\n",
           settings = listOf(
             viewBindingAssignment,
             buildConfigAssignment
           )
         ),
         AndroidBlock(
-          fullText = "android {\n  buildFeatures {\n    androidResources = $enabled\n  }\n}",
-          lambdaContent = "buildFeatures {\n    androidResources = $enabled\n  }\n",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    androidResources = $enabled\n" +
+            "  }\n" +
+            "}",
+          lambdaContent = "buildFeatures {\n" +
+            "    androidResources = $enabled\n" +
+            "  }\n",
           settings = listOf(
             androidResourcesAssignment
           )
@@ -102,17 +138,35 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       ),
       buildFeaturesBlocks = listOf(
         BuildFeaturesBlock(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "  }\n" +
+            "  buildFeatures {\n" +
+            "    buildConfig = $enabled\n" +
+            "  }\n" +
+            "}",
           lambdaContent = "viewBinding = $enabled\n",
           settings = listOf(viewBindingAssignment)
         ),
         BuildFeaturesBlock(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n  }\n  buildFeatures {\n    buildConfig = $enabled\n  }\n}",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "  }\n" +
+            "  buildFeatures {\n" +
+            "    buildConfig = $enabled\n" +
+            "  }\n" +
+            "}",
           lambdaContent = "buildConfig = $enabled\n",
           settings = listOf(buildConfigAssignment)
         ),
         BuildFeaturesBlock(
-          fullText = "android {\n  buildFeatures {\n    androidResources = $enabled\n  }\n}",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    androidResources = $enabled\n" +
+            "  }\n" +
+            "}",
           lambdaContent = "androidResources = $enabled\n",
           settings = listOf(androidResourcesAssignment)
         )
@@ -137,13 +191,23 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
     GroovyAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
       assignments = listOf(
         Assignment(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n" +
+            "  }\n" +
+            "}",
           propertyFullName = "viewBinding",
           value = "$enabled",
           declarationText = "viewBinding = $enabled"
         ),
         Assignment(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n" +
+            "  }\n" +
+            "}",
           propertyFullName = "androidResources",
           value = "${!enabled}",
           declarationText = "androidResources = ${!enabled}"
@@ -151,17 +215,35 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       ),
       androidBlocks = listOf(
         AndroidBlock(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
-          lambdaContent = "buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n" +
+            "  }\n" +
+            "}",
+          lambdaContent = "buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n" +
+            "  }\n",
           settings = listOf(
             Assignment(
-              fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+              fullText = "android {\n" +
+                "  buildFeatures {\n" +
+                "    viewBinding = $enabled\n" +
+                "    androidResources = ${!enabled}\n" +
+                "  }\n" +
+                "}",
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled"
             ),
             Assignment(
-              fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+              fullText = "android {\n" +
+                "  buildFeatures {\n" +
+                "    viewBinding = $enabled\n" +
+                "    androidResources = ${!enabled}\n" +
+                "  }\n" +
+                "}",
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}"
@@ -171,17 +253,33 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       ),
       buildFeaturesBlocks = listOf(
         BuildFeaturesBlock(
-          fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
-          lambdaContent = "viewBinding = $enabled\n    androidResources = ${!enabled}\n",
+          fullText = "android {\n" +
+            "  buildFeatures {\n" +
+            "    viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n" +
+            "  }\n" +
+            "}",
+          lambdaContent = "viewBinding = $enabled\n" +
+            "    androidResources = ${!enabled}\n",
           settings = listOf(
             Assignment(
-              fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+              fullText = "android {\n" +
+                "  buildFeatures {\n" +
+                "    viewBinding = $enabled\n" +
+                "    androidResources = ${!enabled}\n" +
+                "  }\n" +
+                "}",
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled"
             ),
             Assignment(
-              fullText = "android {\n  buildFeatures {\n    viewBinding = $enabled\n    androidResources = ${!enabled}\n  }\n}",
+              fullText = "android {\n" +
+                "  buildFeatures {\n" +
+                "    viewBinding = $enabled\n" +
+                "    androidResources = ${!enabled}\n" +
+                "  }\n" +
+                "}",
               propertyFullName = "androidResources",
               value = "${!enabled}",
               declarationText = "androidResources = ${!enabled}"
@@ -229,7 +327,9 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
     GroovyAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
       assignments = listOf(
         Assignment(
-          fullText = "android.buildFeatures {\n  viewBinding = $enabled\n}",
+          fullText = "android.buildFeatures {\n" +
+            "  viewBinding = $enabled\n" +
+            "}",
           propertyFullName = "viewBinding",
           value = "$enabled",
           declarationText = "viewBinding = $enabled"
@@ -238,11 +338,15 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       androidBlocks = listOf(),
       buildFeaturesBlocks = listOf(
         BuildFeaturesBlock(
-          fullText = "android.buildFeatures {\n  viewBinding = $enabled\n}",
+          fullText = "android.buildFeatures {\n" +
+            "  viewBinding = $enabled\n" +
+            "}",
           lambdaContent = "viewBinding = $enabled\n",
           settings = listOf(
             Assignment(
-              fullText = "android.buildFeatures {\n  viewBinding = $enabled\n}",
+              fullText = "android.buildFeatures {\n" +
+                "  viewBinding = $enabled\n" +
+                "}",
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "viewBinding = $enabled"
@@ -267,7 +371,9 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
     GroovyAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
       assignments = listOf(
         Assignment(
-          fullText = "android {\n  buildFeatures.viewBinding = $enabled\n}",
+          fullText = "android {\n" +
+            "  buildFeatures.viewBinding = $enabled\n" +
+            "}",
           propertyFullName = "viewBinding",
           value = "$enabled",
           declarationText = "buildFeatures.viewBinding = $enabled"
@@ -275,11 +381,15 @@ internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
       ),
       androidBlocks = listOf(
         AndroidBlock(
-          fullText = "android {\n  buildFeatures.viewBinding = $enabled\n}",
+          fullText = "android {\n" +
+            "  buildFeatures.viewBinding = $enabled\n" +
+            "}",
           lambdaContent = "buildFeatures.viewBinding = $enabled\n",
           settings = listOf(
             Assignment(
-              fullText = "android {\n  buildFeatures.viewBinding = $enabled\n}",
+              fullText = "android {\n" +
+                "  buildFeatures.viewBinding = $enabled\n" +
+                "}",
               propertyFullName = "viewBinding",
               value = "$enabled",
               declarationText = "buildFeatures.viewBinding = $enabled"

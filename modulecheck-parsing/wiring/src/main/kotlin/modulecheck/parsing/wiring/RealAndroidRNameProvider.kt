@@ -17,7 +17,7 @@ package modulecheck.parsing.wiring
 
 import modulecheck.api.context.androidRDeclaredNameForSourceSetName
 import modulecheck.api.context.classpathDependencies
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.project.McProject

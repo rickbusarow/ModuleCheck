@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.project.McProject
 import modulecheck.utils.cast

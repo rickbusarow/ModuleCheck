@@ -15,16 +15,16 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.Configurations
-import modulecheck.parsing.gradle.HasBuildFile
-import modulecheck.parsing.gradle.HasConfigurations
-import modulecheck.parsing.gradle.HasDependencyDeclarations
-import modulecheck.parsing.gradle.HasPath
-import modulecheck.parsing.gradle.InvokesConfigurationNames
-import modulecheck.parsing.gradle.PluginAware
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
-import modulecheck.parsing.gradle.isAndroid
+import modulecheck.parsing.gradle.dsl.HasBuildFile
+import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
+import modulecheck.parsing.gradle.dsl.HasPath
+import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
+import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.HasConfigurations
+import modulecheck.parsing.gradle.model.PluginAware
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSets
+import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.reporting.logging.McLogger

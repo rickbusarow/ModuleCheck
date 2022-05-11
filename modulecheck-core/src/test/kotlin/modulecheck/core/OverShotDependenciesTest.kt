@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.overshot
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest
@@ -784,6 +784,8 @@ class OverShotDependenciesTest : RunnerTest() {
       )
     }
 
+    kotlinProject(":lib4")
+
     run().isSuccess shouldBe false
 
     lib2.buildFile shouldHaveText """
@@ -857,6 +859,8 @@ class OverShotDependenciesTest : RunnerTest() {
         SourceSetName.DEBUG
       )
     }
+
+    kotlinProject(":lib4")
 
     run().isSuccess shouldBe false
 
@@ -957,6 +961,8 @@ class OverShotDependenciesTest : RunnerTest() {
         SourceSetName.TEST
       )
     }
+
+    kotlinProject(":lib4")
 
     run().isSuccess shouldBe false
 

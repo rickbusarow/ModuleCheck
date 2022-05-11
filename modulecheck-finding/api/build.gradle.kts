@@ -29,7 +29,9 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-finding:name"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())
@@ -38,6 +40,7 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
   implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)

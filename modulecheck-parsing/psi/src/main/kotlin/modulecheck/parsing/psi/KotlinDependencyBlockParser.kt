@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.gradle.InvokesConfigurationNames
-import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ProjectAccessor
-import modulecheck.parsing.gradle.ProjectPath
-import modulecheck.parsing.gradle.asConfigurationName
-import modulecheck.parsing.gradle.buildFileInvocationText
+import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
+import modulecheck.parsing.gradle.dsl.ProjectAccessor
+import modulecheck.parsing.gradle.dsl.buildFileInvocationText
+import modulecheck.parsing.gradle.model.MavenCoordinates
+import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe

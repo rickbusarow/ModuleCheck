@@ -15,8 +15,8 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.MavenCoordinates
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
 
 data class ExternalDependency(
   override val configurationName: ConfigurationName,

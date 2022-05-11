@@ -16,11 +16,11 @@
 package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.ParserRuleContext
-import modulecheck.parsing.gradle.AgpBlock.AndroidBlock
-import modulecheck.parsing.gradle.AgpBlock.BuildFeaturesBlock
-import modulecheck.parsing.gradle.AndroidGradleParser
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import modulecheck.parsing.gradle.Assignment
+import modulecheck.parsing.gradle.dsl.AndroidGradleParser
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
+import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.utils.requireNotNull
 import org.apache.groovy.parser.antlr4.GroovyParser.AssignmentExprAltContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureOrLambdaExpressionContext

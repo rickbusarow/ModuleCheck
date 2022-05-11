@@ -17,7 +17,8 @@ package modulecheck.project
 
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
-import modulecheck.parsing.gradle.ProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.utils.requireNotNull
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
@@ -32,7 +33,10 @@ class ProjectCache @Inject constructor() {
   }
 
   fun getValue(path: ProjectPath): McProject {
-    return delegate.getValue(path)
+    return delegate[path].requireNotNull {
+      "Expected to find a project with a path of '${path.value}`, but no such project exists.\n\n" +
+        "The existing paths are: ${delegate.keys.map { it.value }}"
+    }
   }
 
   operator fun set(path: ProjectPath, project: McProject): McProject? {

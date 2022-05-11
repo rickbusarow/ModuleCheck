@@ -33,7 +33,8 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-reporting:logging"))
 
@@ -49,7 +50,7 @@ dependencies {
   testFixturesApi(libs.bundles.hermit)
 
   testFixturesApi(project(path = ":modulecheck-internal-testing"))
-  testFixturesApi(project(path = ":modulecheck-parsing:gradle"))
+  testFixturesApi(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   testFixturesApi(project(path = ":modulecheck-parsing:psi"))
   testFixturesApi(project(path = ":modulecheck-parsing:source"))
   testFixturesApi(project(path = ":modulecheck-reporting:logging"))

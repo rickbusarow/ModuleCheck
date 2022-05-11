@@ -34,8 +34,9 @@ dependencies {
   api(libs.semVer)
 
   api(project(path = ":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-parsing:android"))
-  api(project(path = ":modulecheck-parsing:gradle"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))

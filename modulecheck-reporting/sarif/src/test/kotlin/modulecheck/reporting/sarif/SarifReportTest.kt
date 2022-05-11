@@ -24,7 +24,7 @@ import modulecheck.core.UnusedDependencyFinding
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.runtime.test.RunnerTest

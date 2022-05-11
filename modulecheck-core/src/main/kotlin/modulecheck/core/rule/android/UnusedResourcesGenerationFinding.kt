@@ -21,9 +21,9 @@ import modulecheck.finding.FindingName
 import modulecheck.finding.Fixable
 import modulecheck.finding.RemovesDependency.RemovalStrategy
 import modulecheck.finding.internal.positionOfStatement
-import modulecheck.parsing.gradle.AgpBlock
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ProjectPath
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.findMinimumIndent
@@ -44,7 +44,7 @@ data class UnusedResourcesGenerationFinding(
 
   override val dependencyIdentifier = ""
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred { null }
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred { null }
 
   override val statementTextOrNull = lazyDeferred {
 

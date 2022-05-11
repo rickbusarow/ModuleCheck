@@ -15,18 +15,18 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidApplicationPlugin
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.AndroidPlatformPlugin.AndroidTestPlugin
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Configurations
-import modulecheck.parsing.gradle.JvmPlatformPlugin.JavaLibraryPlugin
-import modulecheck.parsing.gradle.JvmPlatformPlugin.KotlinJvmPlugin
-import modulecheck.parsing.gradle.PlatformPlugin
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.SourceSets
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
+import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
+import modulecheck.parsing.gradle.model.PlatformPlugin
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import java.io.File
 

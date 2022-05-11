@@ -17,9 +17,9 @@ package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
-import modulecheck.parsing.gradle.DependenciesBlock
-import modulecheck.parsing.gradle.DependenciesBlocksProvider
-import modulecheck.parsing.gradle.InvokesConfigurationNames
+import modulecheck.parsing.gradle.dsl.DependenciesBlock
+import modulecheck.parsing.gradle.dsl.DependenciesBlocksProvider
+import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.groovy.antlr.GroovyDependencyBlockParser
 import modulecheck.parsing.psi.KotlinDependencyBlockParser
 import modulecheck.parsing.psi.internal.isKotlinScriptFile

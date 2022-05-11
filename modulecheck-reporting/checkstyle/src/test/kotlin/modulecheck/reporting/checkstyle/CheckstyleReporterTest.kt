@@ -18,7 +18,7 @@ package modulecheck.reporting.checkstyle
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.testing.BaseTest
 import org.junit.jupiter.api.Test
 import java.io.File

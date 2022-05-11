@@ -15,10 +15,10 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.MavenCoordinates
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion

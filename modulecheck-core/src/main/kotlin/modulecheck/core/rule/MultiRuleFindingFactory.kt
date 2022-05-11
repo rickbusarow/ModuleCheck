@@ -22,7 +22,7 @@ import modulecheck.core.OverShotDependencyFinding
 import modulecheck.finding.AddsDependency
 import modulecheck.finding.Finding
 import modulecheck.finding.ModifiesProjectDependency
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.ConfiguredDependency
 import modulecheck.project.McProject
 import modulecheck.rule.FindingFactory

@@ -28,7 +28,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-reporting:logging"))
 
-  implementation(project(path = ":modulecheck-parsing:gradle"))
+  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

@@ -18,7 +18,7 @@ package modulecheck.core
 import modulecheck.finding.Deletable
 import modulecheck.finding.FindingName
 import modulecheck.finding.RemovesDependency
-import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 

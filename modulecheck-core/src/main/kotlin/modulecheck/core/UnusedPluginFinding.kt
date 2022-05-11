@@ -24,8 +24,8 @@ import modulecheck.finding.Problem
 import modulecheck.finding.RemovesDependency.RemovalStrategy
 import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
-import modulecheck.parsing.gradle.Declaration
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -70,7 +70,7 @@ data class UnusedPluginFinding(
     Position(row + 1, col + 1)
   }
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
 
     sequenceOf(
       "id(\"$pluginId\")",
@@ -85,12 +85,12 @@ data class UnusedPluginFinding(
     }
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
-    declarationOrNull.await()?.statementWithSurroundingText
+    statementOrNull.await()?.statementWithSurroundingText
   }
 
   override suspend fun fix(removalStrategy: RemovalStrategy): Boolean {
 
-    val declaration = declarationOrNull.await() ?: return false
+    val declaration = statementOrNull.await() ?: return false
 
     dependentProject.removeDependencyWithComment(declaration, fixLabel())
 
@@ -99,7 +99,7 @@ data class UnusedPluginFinding(
 
   override suspend fun delete(): Boolean {
 
-    val declaration = declarationOrNull.await() ?: return false
+    val declaration = statementOrNull.await() ?: return false
 
     dependentProject.removeDependencyWithDelete(declaration)
 

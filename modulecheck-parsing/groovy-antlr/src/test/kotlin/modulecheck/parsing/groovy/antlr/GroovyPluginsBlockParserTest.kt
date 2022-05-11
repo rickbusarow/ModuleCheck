@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.parsing.gradle.PluginDeclaration
+import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.testing.BaseTest
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.child

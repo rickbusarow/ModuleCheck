@@ -20,7 +20,7 @@ import com.github.javaparser.resolution.UnsolvedSymbolException
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.utils.remove
 import org.jetbrains.kotlin.name.FqName

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclaredName

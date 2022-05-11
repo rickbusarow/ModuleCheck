@@ -20,7 +20,7 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -43,7 +43,7 @@ data class InheritedDependencyFinding(
 
   override val configurationName get() = newDependency.configurationName
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     source.statementOrNullIn(dependentProject)
   }
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {

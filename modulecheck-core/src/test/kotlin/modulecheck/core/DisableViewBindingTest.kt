@@ -17,9 +17,9 @@ package modulecheck.core
 
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.asConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableViewBinding
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child

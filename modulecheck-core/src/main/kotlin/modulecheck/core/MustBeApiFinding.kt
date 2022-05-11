@@ -20,8 +20,8 @@ import modulecheck.finding.FindingName
 import modulecheck.finding.ModifiesProjectDependency
 import modulecheck.finding.RemovesDependency
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -47,8 +47,8 @@ data class MustBeApiFinding(
 
   override val dependencyIdentifier = dependency.path.value + fromStringOrEmpty()
 
-  override val declarationOrNull: LazyDeferred<Declaration?> = lazyDeferred {
-    super.declarationOrNull.await()
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
+    super.statementOrNull.await()
       ?: source?.statementOrNullIn(dependentProject)
   }
 

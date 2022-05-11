@@ -16,7 +16,7 @@
 package modulecheck.core.internal
 
 import modulecheck.finding.Finding.Position
-import modulecheck.parsing.gradle.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfigurationName
 
 fun List<String>.positionOf(
   path: String,

@@ -22,8 +22,8 @@ import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.SourceSetName
-import modulecheck.parsing.gradle.sortedByInheritance
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.sortedByInheritance
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.SourceSetDependency

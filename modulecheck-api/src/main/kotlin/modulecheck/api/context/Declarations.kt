@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
 import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject

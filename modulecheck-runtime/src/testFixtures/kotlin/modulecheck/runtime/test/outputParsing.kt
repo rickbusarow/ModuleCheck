@@ -39,9 +39,9 @@ private typealias ProjectPath = String
 internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFindingReport>>> {
 
   val DELIM = "\u200B"
-
   val FIXED = "✔"
   val ERROR = "X"
+
   val resultLineStarters = listOf(FIXED, ERROR)
 
   // use a LinkedHashMap so that the order of paths is preserved

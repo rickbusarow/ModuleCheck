@@ -20,8 +20,8 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.ConfigurationName
-import modulecheck.parsing.gradle.Declaration
+import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
@@ -51,7 +51,7 @@ data class OverShotDependencyFinding(
 ) : AbstractProjectDependencyFinding(),
   AddsDependency {
 
-  override val declarationOrNull: LazyDeferred<Declaration?>
+  override val statementOrNull: LazyDeferred<BuildFileStatement?>
     // intentionally look this up every time, since the declaration doesn't exist at first
     get() = lazyDeferred {
       dependency.statementOrNullIn(dependentProject)
@@ -59,7 +59,7 @@ data class OverShotDependencyFinding(
 
   override val positionOrNull: LazyDeferred<Position?>
     get() = lazyDeferred {
-      val statement = declarationOrNull.await()?.declarationText
+      val statement = statementOrNull.await()?.declarationText
         ?: oldDependency.statementOrNullIn(dependentProject)?.declarationText
         ?: return@lazyDeferred null
 

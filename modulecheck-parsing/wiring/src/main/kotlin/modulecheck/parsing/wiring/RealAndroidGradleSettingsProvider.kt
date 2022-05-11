@@ -17,8 +17,8 @@ package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
-import modulecheck.parsing.gradle.AndroidGradleSettings
-import modulecheck.parsing.gradle.AndroidGradleSettingsProvider
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
+import modulecheck.parsing.gradle.dsl.AndroidGradleSettingsProvider
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import org.jetbrains.kotlin.incremental.isKotlinFile

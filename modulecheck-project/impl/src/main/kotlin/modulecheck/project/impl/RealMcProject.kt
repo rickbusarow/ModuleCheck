@@ -16,10 +16,10 @@
 package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclaredNames
-import modulecheck.parsing.gradle.BuildFileParser
-import modulecheck.parsing.gradle.PlatformPlugin
-import modulecheck.parsing.gradle.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.SourceSetName
+import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.model.PlatformPlugin
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.asDeclaredName
