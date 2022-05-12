@@ -10,6 +10,11 @@
   with the `additionalCodeGenerators` property and `CodeGeneratorBinding`.
   See [the migrations guide](/migrations#code-generator-binding)
 
+#### 💥 Breaking Changes
+
+- The base `:moduleCheck` task will now automatically hook into the root project's `:check` task, if
+  one exists. [@RBusarow](https://github.com/RBusarow) ([#611](https://github.com/rbusarow/ModuleCheck/pull/611))
+
 #### 🚀 Features
 
 - Added support
@@ -38,7 +43,8 @@
   ./gradlew moduleCheckAuto
   ```
 - Tasks are no longer generated for most individual rules. Instead, rules should be toggled via
-  the [Gradle DSL](/docs/next/configuration) and can be invoked
+  the [Gradle DSL](/docs/next/configuration) and can be
+  invoked
   through `./gradlew modulecheck` or `./gradlew moduleCheckAuto`.
 
 #### 📐 New Rules

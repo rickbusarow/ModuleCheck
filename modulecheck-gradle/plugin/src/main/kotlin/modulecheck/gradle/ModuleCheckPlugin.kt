@@ -30,6 +30,7 @@ import modulecheck.rule.FindingFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
+import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 class ModuleCheckPlugin : Plugin<Project> {
 
@@ -89,6 +90,12 @@ class ModuleCheckPlugin : Plugin<Project> {
       includeAuto = true,
       disableConfigCache = disableConfigCache
     )
+
+    target.tasks
+      .matching { it.name == LifecycleBasePlugin.CHECK_TASK_NAME }
+      .configureEach {
+        it.dependsOn("moduleCheck")
+      }
   }
 
   private fun Project.registerTasks(

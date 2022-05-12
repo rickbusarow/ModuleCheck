@@ -19,12 +19,14 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.utils.child
 import modulecheck.utils.letIf
 import modulecheck.utils.remove
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
+import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
 abstract class BasePluginTest : ProjectTest() {
@@ -58,10 +60,16 @@ abstract class BasePluginTest : ProjectTest() {
     tasks.last().outcome shouldBe TaskOutcome.SUCCESS
   }
 
-  fun shouldSucceed(vararg tasks: String, stacktrace: Boolean = true): BuildResult {
+  fun shouldSucceed(
+    vararg tasks: String,
+    stacktrace: Boolean = true,
+    assertions: BuildResult.() -> Unit = {}
+  ): BuildResult {
     val result = build(*tasks, stacktrace = stacktrace)
 
     result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
+
+    result.assertions()
 
     return result
   }
