@@ -35,6 +35,7 @@ sealed class ProjectPath : Comparable<ProjectPath> {
 
     if (value == other.value) return true
 
+    // All comparisons are done using the type-safe value, because it's deterministic.
     return typeSafeValue == other.typeSafeValue
   }
 

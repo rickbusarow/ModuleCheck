@@ -67,8 +67,8 @@ open class ModuleCheckTask<T : Finding> @Inject constructor(
 
     try {
 
-      val projectProvider = component.projectProvider.create(project)
-      val runner = component.runnerFactory.create(projectProvider, autoCorrect)
+      val projectProvider = component.projectProvider
+      val runner = component.runnerFactory.create(autoCorrect)
 
       val projects = projectProvider.getAll()
 

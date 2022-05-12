@@ -30,7 +30,7 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
@@ -54,7 +54,7 @@ abstract class ProjectTest : BaseTest() {
       override val projectCache: ProjectCache
         get() = this@ProjectTest.projectCache
 
-      override fun get(path: StringProjectPath): McProject {
+      override fun get(path: ProjectPath): McProject {
         return projectCache.getValue(path)
       }
 

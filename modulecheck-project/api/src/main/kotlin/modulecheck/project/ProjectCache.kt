@@ -18,6 +18,8 @@ package modulecheck.project
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.requireNotNull
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
@@ -28,6 +30,12 @@ class ProjectCache @Inject constructor() {
 
   val values: MutableCollection<McProject> get() = delegate.values
 
+  /**
+   * N.B. This [path] argument can be the base [ProjectPath] instead of one of the concrete types
+   * ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared using the
+   * derived type-safe variant. So, there are no cache misses when a project is already stored using
+   * the String variant, but then we attempt to look it up via the type-safe one.
+   */
   fun getOrPut(path: ProjectPath, defaultValue: () -> McProject): McProject {
     return delegate.getOrPut(path, defaultValue)
   }
