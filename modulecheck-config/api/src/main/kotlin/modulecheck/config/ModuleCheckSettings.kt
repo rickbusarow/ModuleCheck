@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package modulecheck.config
 
 interface ModuleCheckSettings {
@@ -30,33 +32,55 @@ interface ModuleCheckSettings {
    * Set of modules which are allowed to be unused.
    *
    * For instance, given:
+   *
    * ```
    * ignoreUnusedFinding = setOf(":core")
    * ```
+   *
    * If a module declares `:core` as a dependency but does not use it, no finding will be reported.
    */
   var ignoreUnusedFinding: Set<String>
 
   /**
-   * Set of modules which will not be excluded from error reporting.
-   * The most common use-case would be if the module is the root of a dependency graph,
-   * like an Android application module, and it needs everything in its classpath
-   * for dependency injection purposes.
+   * Set of modules which will not be excluded from error reporting. The most common use-case would
+   * be if the module is the root of a dependency graph, like an Android application module, and it
+   * needs everything in its classpath for dependency injection purposes.
    */
   var doNotCheck: Set<String>
 
-  /**
-   * List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck.
-   */
+  /** List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck. */
+  @Suppress("DEPRECATION")
+  @Deprecated("use additionalCodeGenerators instead")
   var additionalKaptMatchers: List<KaptMatcher>
+
+  /**
+   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with
+   * ModuleCheck.
+   *
+   * ```
+   * moduleCheck {
+   *   additionalCompilerExtensions = listOf(
+   *     modulecheck.config.CompilerExtension.AnnotationProcessor(
+   *       name = "My Processor",
+   *       generatorMavenCoordinates = "my-project.codegen:processor",
+   *       annotationNames = listOf(
+   *         "myproject.MyInject",
+   *         "myproject.MyInject.Factory",
+   *         "myproject.MyInjectParam",
+   *         "myproject.MyInjectModule"
+   *       )
+   *     )
+   *   )
+   * }
+   * ```
+   */
+  var additionalCodeGenerators: List<CodeGeneratorBinding>
 
   val checks: ChecksSettings
 
   val sort: SortSettings
 
-  /**
-   * Configures reporting options
-   */
+  /** Configures reporting options */
   val reports: ReportsSettings
 }
 

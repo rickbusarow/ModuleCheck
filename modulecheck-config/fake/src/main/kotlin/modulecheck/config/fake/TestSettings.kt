@@ -13,9 +13,12 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package modulecheck.config.fake
 
 import modulecheck.config.ChecksSettings
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.PerModuleReportSettings
@@ -28,7 +31,9 @@ data class TestSettings(
   override var deleteUnused: Boolean = false,
   override var ignoreUnusedFinding: Set<String> = emptySet(),
   override var doNotCheck: Set<String> = emptySet(),
+  @Deprecated("use additionalCodeGenerators instead")
   override var additionalKaptMatchers: List<KaptMatcher> = emptyList(),
+  override var additionalCodeGenerators: List<CodeGeneratorBinding> = emptyList(),
   override val checks: ChecksSettings = TestChecksSettings(),
   override val sort: SortSettings = TestSortSettings(),
   override val reports: ReportsSettings = TestReportsSettings()

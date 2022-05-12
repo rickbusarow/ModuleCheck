@@ -18,19 +18,19 @@ package modulecheck.core.context
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.kaptDependencies
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.config.KaptMatcher
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
 import modulecheck.core.kapt.UnusedKaptProcessorFinding
-import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.core.kapt.defaultCodeGeneratorBindings
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
-import modulecheck.utils.any
 import modulecheck.utils.mapAsync
 import modulecheck.utils.mapToSet
 
@@ -60,9 +60,9 @@ data class UnusedKaptProcessors(
 
     return delegate.getOrPut(configurationName) {
 
-      val kaptMatchers = settings.additionalKaptMatchers + defaultKaptMatchers
+      val generatorBindings = settings.additionalCodeGenerators + defaultCodeGeneratorBindings()
 
-      val matchers = kaptMatchers.asMap()
+      val matchers = generatorBindings.asMap()
 
       val kaptDependencies = project.kaptDependencies()
 
@@ -89,15 +89,11 @@ data class UnusedKaptProcessors(
     }
   }
 
-  private suspend fun KaptMatcher.matchedIn(
+  private suspend fun CodeGeneratorBinding.matchedIn(
     references: LazySet<Reference>
-  ): Boolean = annotationImports
-    .map { it.toRegex() }
-    .any { annotationRegex ->
-
-      references.any { referenceName ->
-        annotationRegex.matches(referenceName.name)
-      }
+  ): Boolean = annotationNames
+    .any { annotationName ->
+      references.contains(AgnosticDeclaredName(annotationName))
     }
 
   companion object Key : ProjectContext.Key<UnusedKaptProcessors> {

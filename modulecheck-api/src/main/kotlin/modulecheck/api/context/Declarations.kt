@@ -26,6 +26,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.LazySet
 import modulecheck.utils.LazySet.DataSource.Priority.HIGH
 import modulecheck.utils.LazySetComponent

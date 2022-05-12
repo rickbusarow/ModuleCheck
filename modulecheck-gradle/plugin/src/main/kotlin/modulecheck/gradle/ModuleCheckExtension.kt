@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("DEPRECATION")
+
 package modulecheck.gradle
 
 import modulecheck.config.ChecksSettings
@@ -29,6 +31,7 @@ import modulecheck.config.ChecksSettings.Companion.SORT_PLUGINS_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.PerModuleReportSettings
@@ -91,7 +94,14 @@ open class ModuleCheckExtension @Inject constructor(
   override var doNotCheck: Set<String> by objects.setProperty()
 
   /** List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck. */
+  @Suppress("DEPRECATION")
+  @Deprecated("use additionalCodeGenerators instead")
   override var additionalKaptMatchers: List<KaptMatcher> by objects.listProperty()
+
+  /**
+   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with ModuleCheck.
+   */
+  override var additionalCodeGenerators: List<CodeGeneratorBinding> by objects.listProperty()
 
   override val checks: ChecksSettings = ChecksExtension(objects)
   fun checks(action: Action<ChecksSettings>) {

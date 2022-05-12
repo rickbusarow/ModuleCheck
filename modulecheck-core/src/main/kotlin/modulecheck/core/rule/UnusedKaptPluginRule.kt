@@ -17,12 +17,12 @@ package modulecheck.core.rule
 
 import modulecheck.api.context.kaptDependencies
 import modulecheck.config.ChecksSettings
-import modulecheck.config.KaptMatcher
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.core.context.unusedKaptProcessors
-import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.core.kapt.defaultCodeGeneratorBindings
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.PluginDefinition
@@ -32,8 +32,8 @@ class UnusedKaptPluginRule(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<Finding>() {
 
-  private val kaptMatchers: List<KaptMatcher>
-    get() = settings.additionalKaptMatchers + defaultKaptMatchers
+  private val generatorBindings: List<CodeGeneratorBinding>
+    get() = settings.additionalCodeGenerators + defaultCodeGeneratorBindings()
 
   override val name = FindingName("unused-kapt-plugin")
   override val description = "Warns if the kapt plugin is applied, but unused"
@@ -41,7 +41,7 @@ class UnusedKaptPluginRule(
   override suspend fun check(project: McProject): List<Finding> {
     if (!project.hasKapt) return emptyList()
 
-    val matchers = kaptMatchers.asMap()
+    val matchers = generatorBindings.asMap()
 
     val kaptDependencies = project.kaptDependencies()
 

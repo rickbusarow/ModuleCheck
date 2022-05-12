@@ -18,8 +18,8 @@ import modulecheck.builds.PLUGIN_ID
 import modulecheck.builds.VERSION_NAME
 
 /**
- * Looks for all references to ModuleCheck artifacts in the md/mdx files
- * in the un-versioned /website/docs. Updates all versions to the pre-release version.
+ * Looks for all references to ModuleCheck artifacts in the md/mdx files in the un-versioned
+ * /website/docs. Updates all versions to the pre-release version.
  */
 val checkWebsiteNextDocsVersionRefs by tasks.registering {
 
@@ -38,8 +38,8 @@ val checkWebsiteNextDocsVersionRefs by tasks.registering {
 }
 
 /**
- * Looks for all references to ModuleCheck artifacts in the md/mdx files
- * in the un-versioned /website/docs. Updates all versions to the pre-release version.
+ * Looks for all references to ModuleCheck artifacts in the md/mdx files in the un-versioned
+ * /website/docs. Updates all versions to the pre-release version.
  */
 val updateWebsiteNextDocsVersionRefs by tasks.registering {
 
@@ -57,9 +57,7 @@ val updateWebsiteNextDocsVersionRefs by tasks.registering {
   }
 }
 
-/**
- * Updates the "moduleCheck" version in package.json
- */
+/** Updates the "moduleCheck" version in package.json */
 val updateWebsitePackageJsonVersion by tasks.registering {
 
   description = "Updates the \"ModuleCheck\" version in package.json"
@@ -95,9 +93,7 @@ val updateWebsitePackageJsonVersion by tasks.registering {
   }
 }
 
-/**
- * Updates the "moduleCheck" version in package.json
- */
+/** Updates the "moduleCheck" version in package.json */
 val checkWebsitePackageJsonVersion by tasks.registering {
 
   description = "Checks the \"ModuleCheck\" version in package.json"
@@ -138,8 +134,8 @@ val checkWebsitePackageJsonVersion by tasks.registering {
 }
 
 /**
- * Looks for all references to ModuleCheck artifacts in the project README.md
- * to the current released version.
+ * Looks for all references to ModuleCheck artifacts in the project README.md to the current
+ * released version.
  */
 val checkProjectReadmeVersionRefs by tasks.registering {
 
@@ -159,8 +155,8 @@ val checkProjectReadmeVersionRefs by tasks.registering {
 }
 
 /**
- * Looks for all references to ModuleCheck artifacts in the project README.md
- * to the current released version.
+ * Looks for all references to ModuleCheck artifacts in the project README.md to the current
+ * released version.
  */
 val updateProjectReadmeVersionRefs by tasks.registering {
 
@@ -301,7 +297,15 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
 
           "$hashes# $text"
         }
+          // relativize all links?
+          .replace("https://rbusarow.github.io/ModuleCheck", "")
       }
+
+    require(!newText.contains("http://localhost:3000")) {
+      "Don't forget to remove the hard-coded local development site root " +
+        "(`http://localhost:3000`) from the ChangeLog."
+    }
+
     changelog.writeText(newText)
   }
 }

@@ -130,31 +130,39 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   companion object {
 
     val androidTestImplementation = ConfigurationName("androidTestImplementation")
+    val annotationProcessor = ConfigurationName("annotationProcessor")
+    val anvil = ConfigurationName("anvil")
     val api = ConfigurationName("api")
     val compile = ConfigurationName("compile")
     val compileOnly = ConfigurationName("compileOnly")
     val compileOnlyApi = ConfigurationName("compileOnlyApi")
     val implementation = ConfigurationName("implementation")
     val kapt = ConfigurationName("kapt")
+    val kotlinCompileClasspath = ConfigurationName("kotlinCompilerPluginClasspathMain")
+    val ksp = ConfigurationName("ksp")
     val runtime = ConfigurationName("runtime")
     val runtimeOnly = ConfigurationName("runtimeOnly")
     val testApi = ConfigurationName("testApi")
     val testImplementation = ConfigurationName("testImplementation")
 
-    /**
-     * The order of this list matters. CompileOnlyApi must be before `api` or `extractSourceSetName`
-     * below will match the wrong suffix.
-     */
     internal val mainConfigurations = listOf(
-      compileOnlyApi.value,
       api.value,
-      kapt.value,
-      implementation.value,
-      compileOnly.value,
       compile.value,
-      runtimeOnly.value,
-      runtime.value
+      compileOnly.value,
+      compileOnlyApi.value,
+      implementation.value,
+      kapt.value,
+      // kotlinCompilerPluginClasspath is a special case,
+      // since the main config is suffixed with "Main"
+      kotlinCompileClasspath.value,
+      runtime.value,
+      runtimeOnly.value
     )
+      /**
+       * The order of this list matters. CompileOnlyApi must be before `api` or
+       * `extractSourceSetName` below will match the wrong suffix.
+       */
+      .sortedByDescending { it.length }
 
     internal val mainCommonConfigurations = listOf(
       api.value,

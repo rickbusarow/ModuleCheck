@@ -29,6 +29,7 @@ class ConfigValidationTest : BasePluginTest() {
 
     ModuleCheckExtension::class.memberProperties
       .map { it.name } shouldBe listOf(
+      "additionalCodeGenerators",
       "additionalKaptMatchers",
       "checks",
       "deleteUnused",
@@ -99,16 +100,15 @@ class ConfigValidationTest : BasePluginTest() {
           // in this case, :app could declare any module it wants without issue
           doNotCheck = setOf(":app")
 
-          additionalKaptMatchers = listOf(
-            modulecheck.config.KaptMatcher(
-              name = "MyProcessor",
-              processor = "my-project.codegen:processor",
-              annotationImports = listOf(
-                "myproject\\.\\*",
-                "myproject\\.MyInject",
-                "myproject\\.MyInject\\.Factory",
-                "myproject\\.MyInjectParam",
-                "myproject\\.MyInjectModule"
+          additionalCodeGenerators = listOf(
+            modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
+              name = "My Processor",
+              generatorMavenCoordinates = "my-project.codegen:processor",
+              annotationNames = listOf(
+                "myproject.MyInject",
+                "myproject.MyInject.Factory",
+                "myproject.MyInjectParam",
+                "myproject.MyInjectModule"
               )
             )
           )
@@ -187,16 +187,15 @@ class ConfigValidationTest : BasePluginTest() {
           // in this case, :app could declare any module it wants without issue
           doNotCheck = [':app']
 
-          additionalKaptMatchers = [
-            new modulecheck.config.KaptMatcher(
-              'MyProcessor',
+          additionalCodeGenerators = [
+            new modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
+              'My Processor',
               'my-project.codegen:processor',
                [
-                "myproject\\.\\*",
-                "myproject\\.MyInject",
-                "myproject\\.MyInject\\.Factory",
-                "myproject\\.MyInjectParam",
-                "myproject\\.MyInjectModule"
+                "myproject.MyInject",
+                "myproject.MyInject.Factory",
+                "myproject.MyInjectParam",
+                "myproject.MyInjectModule"
               ]
             )
           ]
