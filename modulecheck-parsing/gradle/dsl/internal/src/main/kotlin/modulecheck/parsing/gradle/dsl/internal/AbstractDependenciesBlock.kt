@@ -18,7 +18,6 @@ package modulecheck.parsing.gradle.dsl.internal
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
-import modulecheck.parsing.gradle.dsl.DependenciesBlock.ConfiguredModule
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
@@ -27,6 +26,7 @@ import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -46,8 +46,8 @@ abstract class AbstractDependenciesBlock(
 
   val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
 
-  override val allSuppressions: Map<ConfiguredModule, Set<FindingName>> by resetManager.lazyResets {
-    buildMap<ConfiguredModule, MutableSet<FindingName>> {
+  override val allSuppressions: Map<ConfiguredProjectDependency, Set<FindingName>> by resetManager.lazyResets {
+    buildMap<ConfiguredProjectDependency, MutableSet<FindingName>> {
 
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
@@ -76,7 +76,7 @@ abstract class AbstractDependenciesBlock(
     mutableMapOf<MavenCoordinates, MutableList<ExternalDependencyDeclaration>>()
 
   private val allModuleDeclarations =
-    mutableMapOf<ConfiguredModule, MutableList<ModuleDependencyDeclaration>>()
+    mutableMapOf<ConfiguredProjectDependency, MutableList<ModuleDependencyDeclaration>>()
 
   fun addNonModuleStatement(
     configName: ConfigurationName,
@@ -134,10 +134,10 @@ abstract class AbstractDependenciesBlock(
 
     val isTestFixtures = parsedString.contains(testFixturesRegex)
 
-    val cm = ConfiguredModule(
-      configName = configName,
-      projectPath = projectPath,
-      testFixtures = isTestFixtures
+    val cpd = ConfiguredProjectDependency(
+      configurationName = configName,
+      path = projectPath,
+      isTestFixture = isTestFixtures
     )
 
     val originalString = getOriginalString(parsedString)
@@ -152,7 +152,7 @@ abstract class AbstractDependenciesBlock(
       configurationNameTransform = configurationNameTransform
     )
 
-    allModuleDeclarations.getOrPut(cm) { mutableListOf() }
+    allModuleDeclarations.getOrPut(cpd) { mutableListOf() }
       .add(declaration)
 
     _allDeclarations.add(declaration)
@@ -185,9 +185,13 @@ abstract class AbstractDependenciesBlock(
     testFixtures: Boolean
   ): List<ModuleDependencyDeclaration> {
 
-    return allModuleDeclarations[ConfiguredModule(configName, moduleRef, testFixtures)]
-      ?: allModuleDeclarations[ConfiguredModule(configName, moduleRef.toTypeSafe(), testFixtures)]
-      ?: emptyList()
+    return allModuleDeclarations[
+      ConfiguredProjectDependency(
+        configurationName = configName,
+        path = moduleRef,
+        isTestFixture = testFixtures
+      )
+    ].orEmpty()
   }
 
   override fun getOrEmpty(
