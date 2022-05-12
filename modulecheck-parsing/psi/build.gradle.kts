@@ -29,9 +29,9 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
@@ -47,9 +47,8 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-api"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:testing"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle:dsl:api")))
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
-  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
+  testImplementation(project(path = ":modulecheck-parsing:source:testing"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
 }

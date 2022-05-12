@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.api.test
+package modulecheck.reporting.logging.test
 
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report

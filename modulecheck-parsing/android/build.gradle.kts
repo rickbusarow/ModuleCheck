@@ -29,7 +29,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
 
   compileOnly(gradleApi())
 

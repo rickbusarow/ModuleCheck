@@ -50,9 +50,9 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-runtime"))
+  api(project(path = ":modulecheck-runtime:api"))
 
   compileOnly(gradleApi())
 
@@ -63,7 +63,7 @@ dependencies {
   implementation(libs.semVer)
   implementation(libs.square.anvil.gradle)
 
-  implementation(project(path = ":modulecheck-parsing:source"))
+  implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
   implementation(project(path = ":modulecheck-utils"))
@@ -74,10 +74,9 @@ dependencies {
   testImplementation(libs.kotlinPoet)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
   testImplementation(project(path = ":modulecheck-specs"))
   testImplementation(project(path = ":modulecheck-utils"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
 }
 
 gradlePlugin {

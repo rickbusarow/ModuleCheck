@@ -15,48 +15,34 @@
 
 plugins {
   id("mcbuild")
-  id("java-test-fixtures")
 }
 
 mcbuild {
-  artifactId = "modulecheck-runtime"
+  artifactId = "modulecheck-runtime-testing"
   anvil = true
 }
 
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
-
 dependencies {
 
+  api(libs.bundles.hermit)
   api(libs.kotlinx.coroutines.core)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-project:testing"))
   api(project(path = ":modulecheck-reporting:checkstyle"))
   api(project(path = ":modulecheck-reporting:console"))
   api(project(path = ":modulecheck-reporting:graphviz"))
-  api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
+  api(project(path = ":modulecheck-reporting:logging:testing"))
   api(project(path = ":modulecheck-reporting:sarif"))
   api(project(path = ":modulecheck-rule:api"))
+  api(project(path = ":modulecheck-rule:impl"))
+  api(project(path = ":modulecheck-runtime:api"))
 
+  implementation(project(path = ":modulecheck-config:fake"))
+  implementation(project(path = ":modulecheck-core"))
   implementation(project(path = ":modulecheck-utils"))
-
-  testFixturesApi(libs.bundles.hermit)
-
-  testFixturesApi(project(path = ":modulecheck-project:api"))
-  testFixturesApi(project(path = ":modulecheck-reporting:checkstyle"))
-  testFixturesApi(project(path = ":modulecheck-reporting:console"))
-  testFixturesApi(project(path = ":modulecheck-reporting:graphviz"))
-  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
-  testFixturesApi(project(path = ":modulecheck-reporting:sarif"))
-  testFixturesApi(project(path = ":modulecheck-rule:impl"))
-
-  testFixturesApi(testFixtures(project(path = ":modulecheck-api")))
-  testFixturesApi(testFixtures(project(path = ":modulecheck-project:api")))
-
-  testFixturesImplementation(project(path = ":modulecheck-config:fake"))
-  testFixturesImplementation(project(path = ":modulecheck-core"))
-  testFixturesImplementation(project(path = ":modulecheck-utils"))
 }

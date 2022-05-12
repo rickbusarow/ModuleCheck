@@ -15,15 +15,12 @@
 
 plugins {
   id("mcbuild")
-  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-api"
   anvil = true
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -37,7 +34,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 
@@ -45,17 +42,6 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
-
-  testFixturesApi(libs.bundles.hermit)
-
-  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
-
-  if (isIdeSync) {
-    testCompileOnly(project(path = ":modulecheck-internal-testing"))
-    testCompileOnly(libs.bundles.hermit)
-    testCompileOnly(libs.bundles.jUnit)
-    testCompileOnly(libs.bundles.kotest)
-  }
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

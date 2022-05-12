@@ -18,9 +18,28 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-reporting-logging"
+  artifactId = "modulecheck-parsing-gradle-dsl-testing"
   anvil = true
 }
 
 dependencies {
+
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
+  api(libs.semVer)
+
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+
+  compileOnly(gradleApi())
+
+  implementation(libs.agp)
+  implementation(libs.groovy)
+  implementation(libs.kotlin.reflect)
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 }

@@ -15,15 +15,12 @@
 
 plugins {
   id("mcbuild")
-  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-parsing-gradle-dsl-api"
   anvil = true
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -42,8 +39,6 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-utils"))
-
-  testFixturesApi(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
