@@ -16,7 +16,6 @@
 package modulecheck.finding
 
 import modulecheck.parsing.gradle.dsl.HasBuildFile
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.Dependency
 import modulecheck.parsing.gradle.model.PluginDependency
 import modulecheck.project.HasProjectCache
@@ -54,13 +53,7 @@ suspend fun <T> T.getSuppressions(): Suppressions
     .map { it.allSuppressions }
     .fold(mutableMapOf<Dependency, MutableSet<FindingName>>()) { acc, block ->
 
-      block.forEach { (configuredModule, newNames) ->
-
-        val cpd = ConfiguredProjectDependency(
-          configuredModule.configName,
-          configuredModule.projectPath,
-          configuredModule.testFixtures
-        )
+      block.forEach { (cpd, newNames) ->
 
         val cachedNames = acc.getOrPut(cpd) { mutableSetOf() }
 

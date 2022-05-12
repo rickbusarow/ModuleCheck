@@ -16,14 +16,14 @@
 package modulecheck.parsing.gradle.dsl
 
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.dsl.DependenciesBlock.ConfiguredModule
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 
 interface DependenciesBlock :
   Block<DependencyDeclaration>,
-  HasSuppressedChildren<ConfiguredModule, FindingName> {
+  HasSuppressedChildren<ConfiguredProjectDependency, FindingName> {
 
   fun getOrEmpty(
     moduleRef: String,
@@ -41,12 +41,6 @@ interface DependenciesBlock :
     mavenCoordinates: MavenCoordinates,
     configName: ConfigurationName
   ): List<ExternalDependencyDeclaration>
-
-  data class ConfiguredModule(
-    val configName: ConfigurationName,
-    val projectPath: ProjectPath,
-    val testFixtures: Boolean
-  )
 }
 
 interface DependenciesBlocksProvider {
