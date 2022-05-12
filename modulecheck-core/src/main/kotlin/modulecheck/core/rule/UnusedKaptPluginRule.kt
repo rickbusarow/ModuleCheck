@@ -22,7 +22,6 @@ import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
 import modulecheck.core.UnusedPluginFinding
-import modulecheck.core.kapt.UnusedKaptProcessorFinding
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
@@ -42,60 +41,43 @@ class UnusedKaptPluginRule(
   override val description = "Warns if the kapt plugin is applied, but unused"
 
   override suspend fun check(project: McProject): List<Finding> {
+    if (!project.hasKapt) return emptyList()
+
     val matchers = kaptMatchers.asMap()
 
     val kaptDependencies = project.kaptDependencies()
-    val allKaptDependencies = kaptDependencies.all()
 
-    return project
+    val usedProcessors = project
       .configurations
       .keys
       .filter { it.value.startsWith("kapt") }
       .flatMap { configName ->
 
-        val processors = kaptDependencies.get(configName)
-
         val references = project.referencesForSourceSetName(configName.toSourceSetName())
 
-        // unused means that none of the processor's annotations are used in any import
-        val unusedProcessors = processors
-          .filterNot {
-            val matcher = matchers[it.name] ?: return@filterNot true
+        kaptDependencies.get(configName)
+          .filter {
+            val matcher = matchers[it.name] ?: return@filter false
 
             matcher.matchedIn(references)
           }
-
-        val unusedProcessorFindings = unusedProcessors
-          .map { processor ->
-            UnusedKaptProcessorFinding(
-              findingName = name,
-              dependentProject = project,
-              dependentPath = project.path,
-              buildFile = project.buildFile,
-              oldDependency = processor,
-              configurationName = configName
-            )
-          }
-
-        val pluginIsUnused = allKaptDependencies.size == unusedProcessorFindings.size &&
-          project.hasKapt && unusedProcessorFindings.isNotEmpty()
-
-        if (pluginIsUnused) {
-          listOf(
-            UnusedPluginFinding(
-              dependentProject = project,
-              dependentPath = project.path,
-              buildFile = project.buildFile,
-              findingName = name,
-              pluginId = KAPT_PLUGIN_ID,
-              alternatePluginId = KAPT_ALTERNATE_PLUGIN_ID,
-              kotlinPluginFunction = KAPT_PLUGIN_FUN
-            )
-          )
-        } else {
-          emptyList()
-        }
       }
+
+    return if (usedProcessors.isEmpty()) {
+      listOf(
+        UnusedPluginFinding(
+          dependentProject = project,
+          dependentPath = project.path,
+          buildFile = project.buildFile,
+          findingName = name,
+          pluginId = KAPT_PLUGIN_ID,
+          alternatePluginId = KAPT_ALTERNATE_PLUGIN_ID,
+          kotlinPluginFunction = KAPT_PLUGIN_FUN
+        )
+      )
+    } else {
+      emptyList()
+    }
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {

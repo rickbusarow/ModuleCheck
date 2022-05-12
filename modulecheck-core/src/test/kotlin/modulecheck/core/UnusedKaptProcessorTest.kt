@@ -136,10 +136,9 @@ class UnusedKaptProcessorTest : RunnerTest() {
   }
 
   @Test
-  fun `unused from non-kapt configuration without autoCorrect should pass without changes`() {
+  fun `processor in non-kapt configuration without autoCorrect should pass without changes`() {
 
     val app = kotlinProject(":app") {
-      hasKapt = true
 
       addExternalDependency(ConfigurationName.api, dagger)
 
@@ -147,7 +146,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
         """
         plugins {
           kotlin("jvm")
-          kotlin("kapt")
         }
 
         dependencies {
@@ -164,7 +162,6 @@ class UnusedKaptProcessorTest : RunnerTest() {
     app.buildFile shouldHaveText """
         plugins {
           kotlin("jvm")
-          kotlin("kapt")
         }
 
         dependencies {
