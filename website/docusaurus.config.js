@@ -58,6 +58,11 @@ module.exports = {
           position: 'left'
         },
         {
+          to: 'migrations',
+          label: 'Migrations',
+          position: 'left'
+        },
+        {
           type: "docsVersionDropdown",
           position: "left",
           dropdownActiveClassDisabled: true,

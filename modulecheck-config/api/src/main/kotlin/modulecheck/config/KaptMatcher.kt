@@ -17,12 +17,26 @@
 
 package modulecheck.config
 
+import modulecheck.utils.remove
+
+@Deprecated("Use `modulecheck.config.CodeGeneratorBinding` instead.")
 data class KaptMatcher(
   val name: String,
   val processor: String,
   val annotationImports: List<String>
 ) {
 
+  fun toCodeGeneratorBinding() = CodeGeneratorBinding.AnnotationProcessor(
+    name = name,
+    generatorMavenCoordinates = processor,
+    annotationNames = annotationImports
+      .filterNot { it.contains("*") }
+      .map { importRegex ->
+        importRegex.remove("\\")
+      }
+  )
+
+  @Suppress("DEPRECATION")
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is KaptMatcher) return false
@@ -43,5 +57,3 @@ data class KaptMatcher(
     """.trimMargin()
   }
 }
-
-fun List<KaptMatcher>.asMap(): Map<String, KaptMatcher> = associateBy { it.processor }

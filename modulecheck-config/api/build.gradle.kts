@@ -29,11 +29,15 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+
   compileOnly(gradleApi())
 
   implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
+
+  implementation(project(path = ":modulecheck-utils"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

@@ -27,6 +27,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.ANDROID_GREEN
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.API_RED
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.BLACK
