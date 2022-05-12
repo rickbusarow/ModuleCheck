@@ -18,6 +18,7 @@ package modulecheck.testing
 import hermit.test.junit.HermitJUnit5
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
+import modulecheck.utils.child
 import modulecheck.utils.remove
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
@@ -32,18 +33,20 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
       // so use the FqName and trim the package name to get qualified nested names
       .let { it.canonicalName.removePrefix(it.packageName + ".") }
       .split(".")
-      .joinToString("/")
+      .joinToString(File.separator)
       .replace("[^a-zA-Z\\d/]".toRegex(), "_")
 
     val testName = testInfo.testMethod.get().name
-      .replace("[^a-zA-Z0-9]".toRegex(), "_")
+      .replace("[^a-zA-Z\\d]".toRegex(), "_")
       .replace("_{2,}".toRegex(), "_")
       .removeSuffix("_")
 
-    File("build/tests/$className/$testName").absoluteFile
+    File("build")
+      .child("tests", className, testName)
+      .absoluteFile
   }
 
-  private var testInfo: TestInfo by Delegates.notNull()
+  var testInfo: TestInfo by Delegates.notNull()
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
