@@ -17,18 +17,21 @@ package modulecheck.gradle.internal
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.gradle.TestedExtension
+import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.plugin.AnvilExtension
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.KAPT_PLUGIN_ID
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.RootGradleProject
 import modulecheck.gradle.GradleMcLogger
 import modulecheck.gradle.platforms.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
 import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
@@ -46,11 +49,13 @@ import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
+import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 
 @Suppress("LongParameterList")
-class GradleProjectProvider @AssistedInject constructor(
-  @Assisted
+@ContributesBinding(AppScope::class)
+class GradleProjectProvider @Inject constructor(
+  @RootGradleProject
   private val rootGradleProject: GradleProject,
   private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
@@ -58,15 +63,22 @@ class GradleProjectProvider @AssistedInject constructor(
   private val buildFileParserFactory: BuildFileParser.Factory,
   private val jvmFileProviderFactory: RealJvmFileProvider.Factory,
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
-  private val jvmPlatformPluginFactory: JvmPlatformPluginFactory
+  private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
+  private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver
 ) : ProjectProvider {
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { StringProjectPath(it.path) }
 
-  override fun get(path: StringProjectPath): McProject {
+  override fun get(path: ProjectPath): McProject {
     return projectCache.getOrPut(path) {
-      createProject(path)
+
+      when (path) {
+        is StringProjectPath -> createProject(path)
+        is TypeSafeProjectPath -> createProject(
+          typeSafeProjectPathResolver.resolveStringProjectPath(path)
+        )
+      }
     }
   }
 
@@ -208,11 +220,6 @@ class GradleProjectProvider @AssistedInject constructor(
       ?.get() == true
 
     return AnvilGradlePlugin(version, enabled)
-  }
-
-  @AssistedFactory
-  fun interface Factory {
-    fun create(rootGradleProject: GradleProject): GradleProjectProvider
   }
 
   companion object {

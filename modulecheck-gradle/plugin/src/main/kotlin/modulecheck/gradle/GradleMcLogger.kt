@@ -17,6 +17,7 @@ package modulecheck.gradle
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
+import modulecheck.dagger.RootGradleProject
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.Report
 import modulecheck.reporting.logging.Report.ReportEntry.Failure
@@ -37,6 +38,7 @@ import org.gradle.api.Project as GradleProject
 
 @ContributesBinding(AppScope::class)
 class GradleMcLogger @Inject constructor(
+  @RootGradleProject
   project: GradleProject
 ) : McLogger {
 

@@ -13,23 +13,23 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle.model.impl
 
+import com.squareup.anvil.annotations.ContributesBinding
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.RootGradleProject
+import modulecheck.parsing.gradle.model.AllProjectPathsProvider
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import java.io.File
+import org.gradle.api.Project
+import javax.inject.Inject
 
-interface ProjectProvider : HasProjectCache {
-
-  fun get(path: ProjectPath): McProject
-
-  fun getAll(): List<McProject>
-
-  fun getAllPaths(): List<StringProjectPath> = getAll().map { it.path }
-
-  fun clearCaches()
-}
-
-fun interface ProjectRoot {
-  fun get(): File
+@ContributesBinding(AppScope::class)
+class RealAllProjectPathsProvider @Inject constructor(
+  @RootGradleProject
+  private val rootGradleProject: Project
+) : AllProjectPathsProvider {
+  override fun get(): List<ProjectPath.StringProjectPath> {
+    return rootGradleProject.allprojects
+      .map { ProjectPath.StringProjectPath(it.path) }
+  }
 }

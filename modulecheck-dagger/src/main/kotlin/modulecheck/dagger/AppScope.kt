@@ -15,11 +15,15 @@
 
 package modulecheck.dagger
 
+import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.reflect.KClass
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppScope private constructor()
+
+@Qualifier
+annotation class RootGradleProject
 
 @Scope
 @Retention(AnnotationRetention.RUNTIME)

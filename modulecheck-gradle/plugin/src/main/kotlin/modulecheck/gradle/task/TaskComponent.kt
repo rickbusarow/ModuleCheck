@@ -20,6 +20,7 @@ import dagger.BindsInstance
 import dagger.Component
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
+import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
 import modulecheck.finding.Finding
 import modulecheck.gradle.internal.GradleProjectProvider
@@ -32,11 +33,12 @@ import org.gradle.api.Project
 @MergeComponent(AppScope::class)
 interface TaskComponent : RunnerComponent {
 
-  val projectProvider: GradleProjectProvider.Factory
+  val projectProvider: GradleProjectProvider
 
   @Component.Factory
   interface Factory {
     fun create(
+      @RootGradleProject
       @BindsInstance
       project: Project,
       @BindsInstance
