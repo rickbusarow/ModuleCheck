@@ -16,14 +16,32 @@
 package modulecheck.project
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.utils.mapToSet
 
 sealed interface ConfiguredDependency : Dependency {
   val configurationName: ConfigurationName
-}
-
-sealed interface Dependency {
   val name: String
 }
+
+sealed interface Dependency
+
+/**
+ * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
+ *
+ * @param accessor Could be any of:
+ *    - standard `id` invocations
+ *       - `id 'org.jetbrains.kotlin.kapt'` (groovy) or `id("org.jetbrains.kotlin.kapt")` (kotlin)
+ *       - `id 'kotlin-kapt'` (groovy) or `id("kotlin-kapt")` (kotlin)
+ *    - precompiled accessor for Gradle plugins or `buildSrc`
+ *       - `java`, `maven-publish`, `my-convention-plugin`
+ *    - function invocations for Kotlin libraries in the Kotlin DSL only
+ *       - `kotlin("kapt")`
+ *    - alias invocations for Gradle's type-safe catalogs
+ *       - `alias(libs.plugins.anvil)`
+ */
+data class PluginDependency(
+  val accessor: String
+) : Dependency
 
 /**
  * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
@@ -33,13 +51,40 @@ sealed interface Dependency {
  * @param legacyIdOrNull An older, "legacy" ID for the plugin like `kotlin-kapt`
  * @param precompiledAccessorOrNull A special accessor invoked like a property, with or without
  *   backticks, like `base`.
- * @param kotlinFunctionOrNull The `kotlin(...)` function used for official libraries in Kotlin DSL
+ * @param kotlinFunctionArgumentOrNull The `kotlin(...)` function used for official libraries in Kotlin DSL
  *   files, like `kotlin("kapt")`.
  */
-data class PluginDependency(
-  override val name: String,
+data class PluginDefinition(
+  val name: String,
   val qualifiedId: String,
   val legacyIdOrNull: String?,
   val precompiledAccessorOrNull: String?,
-  val kotlinFunctionOrNull: String?
-) : Dependency
+  val kotlinFunctionArgumentOrNull: String?
+) {
+  val accessors by lazy {
+
+    buildList {
+      add("id(\"$qualifiedId\")")
+      add("id \"$qualifiedId\"")
+      add("id '$qualifiedId'")
+
+      if (legacyIdOrNull != null) {
+        add("id(\"$legacyIdOrNull\")")
+        add("id \"$legacyIdOrNull\"")
+        add("id '$legacyIdOrNull'")
+      }
+
+      if (precompiledAccessorOrNull != null) {
+        if (precompiledAccessorOrNull.contains("-")) {
+          add("`$precompiledAccessorOrNull`")
+        } else {
+          add(precompiledAccessorOrNull)
+        }
+      }
+      if (kotlinFunctionArgumentOrNull != null) {
+        add("kotlin(\"$kotlinFunctionArgumentOrNull\")")
+      }
+    }
+      .mapToSet { PluginDependency(it) }
+  }
+}

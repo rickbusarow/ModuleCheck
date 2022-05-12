@@ -15,11 +15,21 @@
 
 package modulecheck.parsing.gradle.dsl.internal
 
+import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.gradle.dsl.PluginsBlock
+import modulecheck.reporting.logging.McLogger
+import modulecheck.utils.ResetManager
+import modulecheck.utils.lazyResets
+import modulecheck.utils.mapToSet
 import java.io.File
 
-abstract class AbstractPluginsBlock : PluginsBlock {
+abstract class AbstractPluginsBlock(
+  private val logger: McLogger,
+  suppressedForEntireBlock: List<String>
+) : PluginsBlock {
+
+  private val resetManager = ResetManager()
 
   protected val originalLines by lazy { lambdaContent.lines().toMutableList() }
 
@@ -30,14 +40,37 @@ abstract class AbstractPluginsBlock : PluginsBlock {
 
   protected val allBlockStatements = mutableListOf<String>()
 
-  fun addStatement(parsedString: String) {
+  private val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
+
+  override val allSuppressions: Map<PluginDeclaration, Set<FindingName>> by resetManager.lazyResets {
+    buildMap<PluginDeclaration, MutableSet<FindingName>> {
+
+      _allDeclarations.forEach { pluginDeclaration ->
+
+        val cached = getOrPut(pluginDeclaration) {
+          suppressedForEntireBlock.mapTo(mutableSetOf()) { FindingName(it) }
+        }
+
+        cached += pluginDeclaration.suppressed.updateOldSuppresses()
+          .plus(suppressedForEntireBlock)
+          .asFindingNames()
+      }
+    }
+  }
+
+  fun addStatement(
+    parsedString: String,
+    suppressed: List<String>
+  ) {
     val originalString = getOriginalString(parsedString)
 
     val declaration = PluginDeclaration(
       declarationText = parsedString,
-      statementWithSurroundingText = originalString
+      statementWithSurroundingText = originalString,
+      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock
     )
     _allDeclarations.add(declaration)
+    resetManager.resetAll()
   }
 
   protected abstract fun findOriginalStringIndex(parsedString: String): Int
@@ -58,6 +91,17 @@ abstract class AbstractPluginsBlock : PluginsBlock {
     }
 
     return originalStringLines.joinToString("\n")
+  }
+
+  private fun List<String>.updateOldSuppresses(): List<String> {
+    @Suppress("DEPRECATION")
+    return map { originalName ->
+      FindingName.migrateLegacyIdOrNull(originalName, logger) ?: originalName
+    }
+  }
+
+  private fun Collection<String>.asFindingNames(): Set<FindingName> {
+    return mapToSet { FindingName(it) }
   }
 }
 

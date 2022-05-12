@@ -17,6 +17,7 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.psi.internal.psiFileFactory
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.kotlin.psi.KtFile
@@ -24,6 +25,8 @@ import org.jetbrains.kotlin.utils.addToStdlib.cast
 import org.junit.jupiter.api.Test
 
 internal class KotlinPluginsBlockParserTest : BaseTest() {
+
+  val logger by resets { PrintLogger() }
 
   @Test
   fun `external declaration`() {
@@ -41,17 +44,104 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     block.settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """kotlin("jvm")""",
-        statementWithSurroundingText = """  kotlin("jvm") // trailing comment"""
+        statementWithSurroundingText = """  kotlin("jvm") // trailing comment""",
+        suppressed = listOf()
       ),
       PluginDeclaration(
         declarationText = """javaLibrary""",
         statementWithSurroundingText = """  // comment
           |  javaLibrary
-        """.trimMargin()
+        """.trimMargin(),
+        suppressed = listOf()
       ),
       PluginDeclaration(
         declarationText = """id("io.gitlab.arturbosch.detekt") version "1.15.0"""",
-        statementWithSurroundingText = """  id("io.gitlab.arturbosch.detekt") version "1.15.0""""
+        statementWithSurroundingText = """  id("io.gitlab.arturbosch.detekt") version "1.15.0"""",
+        suppressed = listOf()
+      )
+    )
+  }
+
+  @Test
+  fun `suppressed kotlin function`() {
+    val block = parse(
+      """
+       plugins {
+         @Suppress("unused-plugin")
+         kotlin("jvm")
+       }
+      """.trimIndent()
+    )
+
+    block.settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """kotlin("jvm")""",
+        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
+          "  kotlin(\"jvm\")",
+        suppressed = listOf("unused-plugin")
+      )
+    )
+  }
+
+  @Test
+  fun `suppressed back-ticked ID`() {
+    val block = parse(
+      """
+       plugins {
+         @Suppress("unused-plugin")
+         `kotlin-jvm`
+       }
+      """.trimIndent()
+    )
+
+    block.settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """`kotlin-jvm`""",
+        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
+          "  `kotlin-jvm`",
+        suppressed = listOf("unused-plugin")
+      )
+    )
+  }
+
+  @Test
+  fun `suppressed id function`() {
+    val block = parse(
+      """
+       plugins {
+         @Suppress("unused-plugin")
+         id("com.squareup.anvil")
+       }
+      """.trimIndent()
+    )
+
+    block.settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """id("com.squareup.anvil")""",
+        statementWithSurroundingText = "  @Suppress(\"unused-plugin\")\n" +
+          "  id(\"com.squareup.anvil\")",
+        suppressed = listOf("unused-plugin")
+      )
+    )
+  }
+
+  @Test
+  fun `suppressed with old finding name`() {
+    val block = parse(
+      """
+       plugins {
+         @Suppress("UnusedKaptProcessor")
+         id("com.squareup.anvil")
+       }
+      """.trimIndent()
+    )
+
+    block.settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """id("com.squareup.anvil")""",
+        statementWithSurroundingText = "  @Suppress(\"UnusedKaptProcessor\")\n" +
+          "  id(\"com.squareup.anvil\")",
+        suppressed = listOf("unused-kapt-processor")
       )
     )
   }
@@ -63,6 +153,6 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
       .createFileFromText("build.gradle.kts", KotlinLanguage.INSTANCE, string)
       .cast<KtFile>()
 
-    return KotlinPluginsBlockParser().parse(file)!!
+    return KotlinPluginsBlockParser(logger).parse(file)!!
   }
 }

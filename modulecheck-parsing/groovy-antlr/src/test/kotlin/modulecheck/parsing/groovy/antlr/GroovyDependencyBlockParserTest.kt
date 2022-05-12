@@ -80,11 +80,56 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
   }
 
   @Test
+  fun `declaration with noinspection with old IDs should include suppressed with argument`() =
+    parse(
+      """
+    dependencies {
+      api project(':core:android')
+      //noinspection Unused
+      //noinspection MustBeApi
+      api project(':core:jvm')
+      testImplementation project(':core:test')
+    }
+    """
+    ) {
+
+      settings shouldBe listOf(
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:android"),
+          projectAccessor = "project(':core:android')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:android')""",
+          statementWithSurroundingText = "  api project(':core:android')",
+          suppressed = listOf()
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:jvm"),
+          projectAccessor = "project(':core:jvm')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:jvm')""",
+          statementWithSurroundingText = "  //noinspection Unused\n" +
+            "  //noinspection MustBeApi\n" +
+            "  api project(':core:jvm')",
+          suppressed = listOf("unused-dependency", "must-be-api")
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:test"),
+          projectAccessor = "project(':core:test')",
+          configName = ConfigurationName.testImplementation,
+          declarationText = """testImplementation project(':core:test')""",
+          statementWithSurroundingText = "  testImplementation project(':core:test')",
+          suppressed = listOf()
+        )
+      )
+    }
+
+  @Test
   fun `declaration with noinspection should include suppressed with argument`() = parse(
     """
     dependencies {
       api project(':core:android')
-      //noinspection Unused, MustBeApi
+      //noinspection unused-dependency
+      //noinspection must-be-api
       api project(':core:jvm')
       testImplementation project(':core:test')
     }
@@ -105,8 +150,10 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         projectAccessor = "project(':core:jvm')",
         configName = ConfigurationName.api,
         declarationText = """api project(':core:jvm')""",
-        statementWithSurroundingText = "  //noinspection Unused, MustBeApi\n  api project(':core:jvm')",
-        suppressed = listOf("Unused", "MustBeApi")
+        statementWithSurroundingText = "  //noinspection unused-dependency\n" +
+          "  //noinspection must-be-api\n" +
+          "  api project(':core:jvm')",
+        suppressed = listOf("unused-dependency", "must-be-api")
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:test"),
@@ -120,10 +167,11 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `dependency block with noinspection comment should suppress those warnings in all declarations`() =
+  fun `dependency block with noinspection comment with old IDs should suppress those warnings in all declarations`() =
     parse(
       """
-      //noinspection Unused, MustBeApi
+      //noinspection MustBeApi
+      //noinspection Unused
       dependencies {
         api project(':core:android')
         //noinspection InheritedDependency
@@ -132,7 +180,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
       """
     ) {
 
-      suppressAll shouldBe listOf("Unused", "MustBeApi")
+      suppressedForEntireBlock shouldBe listOf("must-be-api", "unused-dependency")
 
       settings shouldBe listOf(
         ModuleDependencyDeclaration(
@@ -141,7 +189,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.api,
           declarationText = """api project(':core:android')""",
           statementWithSurroundingText = "  api project(':core:android')",
-          suppressed = listOf("Unused", "MustBeApi")
+          suppressed = listOf("must-be-api", "unused-dependency")
         ),
         ModuleDependencyDeclaration(
           projectPath = StringProjectPath(":core:jvm"),
@@ -149,7 +197,43 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
           configName = ConfigurationName.api,
           declarationText = """api project(':core:jvm')""",
           statementWithSurroundingText = "  //noinspection InheritedDependency\n  api project(':core:jvm')",
-          suppressed = listOf("InheritedDependency", "Unused", "MustBeApi")
+          suppressed = listOf("inherited-dependency", "must-be-api", "unused-dependency")
+        )
+      )
+    }
+
+  @Test
+  fun `dependency block with noinspection comment should suppress those warnings in all declarations`() =
+    parse(
+      """
+      //noinspection must-be-api
+      //noinspection unused-dependency
+      dependencies {
+        api project(':core:android')
+        //noinspection inherited-dependency
+        api project(':core:jvm')
+      }
+      """
+    ) {
+
+      suppressedForEntireBlock shouldBe listOf("must-be-api", "unused-dependency")
+
+      settings shouldBe listOf(
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:android"),
+          projectAccessor = "project(':core:android')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:android')""",
+          statementWithSurroundingText = "  api project(':core:android')",
+          suppressed = listOf("must-be-api", "unused-dependency")
+        ),
+        ModuleDependencyDeclaration(
+          projectPath = StringProjectPath(":core:jvm"),
+          projectAccessor = "project(':core:jvm')",
+          configName = ConfigurationName.api,
+          declarationText = """api project(':core:jvm')""",
+          statementWithSurroundingText = "  //noinspection inherited-dependency\n  api project(':core:jvm')",
+          suppressed = listOf("inherited-dependency", "must-be-api", "unused-dependency")
         )
       )
     }

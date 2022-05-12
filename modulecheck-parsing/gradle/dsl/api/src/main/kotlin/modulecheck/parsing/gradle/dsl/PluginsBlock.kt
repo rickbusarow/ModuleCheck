@@ -15,10 +15,12 @@
 
 package modulecheck.parsing.gradle.dsl
 
+import modulecheck.finding.FindingName
 import java.io.File
 
 interface PluginsBlock :
-  Block<PluginDeclaration> {
+  Block<PluginDeclaration>,
+  HasSuppressedChildren<PluginDeclaration, FindingName> {
   fun getById(pluginId: String): PluginDeclaration?
 }
 

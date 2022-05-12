@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.gradle.dsl.internal
 
+import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependenciesBlock.ConfiguredModule
@@ -30,15 +31,39 @@ import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
+import modulecheck.utils.ResetManager
+import modulecheck.utils.lazyResets
+import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 
 abstract class AbstractDependenciesBlock(
   private val logger: McLogger,
-  suppressAll: List<String>,
+  suppressedForEntireBlock: List<String>,
   private val configurationNameTransform: ConfigurationNameTransform
 ) : DependenciesBlock {
 
-  val suppressAll = suppressAll.updateOldSuppresses()
+  private val resetManager = ResetManager()
+
+  val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
+
+  override val allSuppressions: Map<ConfiguredModule, Set<FindingName>> by resetManager.lazyResets {
+    buildMap<ConfiguredModule, MutableSet<FindingName>> {
+
+      allModuleDeclarations.forEach { (configuredModule, declarations) ->
+
+        val cached = getOrPut(configuredModule) {
+          suppressedForEntireBlock.mapTo(mutableSetOf()) { FindingName(it) }
+        }
+
+        declarations.forEach { moduleDependencyDeclaration ->
+
+          cached += moduleDependencyDeclaration.suppressed.updateOldSuppresses()
+            .plus(suppressedForEntireBlock)
+            .asFindingNames()
+        }
+      }
+    }
+  }
 
   private val originalLines by lazy { lambdaContent.lines().toMutableList() }
 
@@ -68,7 +93,7 @@ abstract class AbstractDependenciesBlock(
       group = coordinates.group,
       moduleName = coordinates.moduleName,
       version = coordinates.version,
-      suppressed = suppressed.updateOldSuppresses() + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -89,7 +114,7 @@ abstract class AbstractDependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed.updateOldSuppresses() + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -123,7 +148,7 @@ abstract class AbstractDependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed.updateOldSuppresses() + suppressAll,
+      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
       configurationNameTransform = configurationNameTransform
     )
 
@@ -131,11 +156,19 @@ abstract class AbstractDependenciesBlock(
       .add(declaration)
 
     _allDeclarations.add(declaration)
+
+    resetManager.resetAll()
   }
 
   private fun List<String>.updateOldSuppresses(): List<String> {
     @Suppress("DEPRECATION")
-    return map { migrateLegacyIdOrNull(it, logger) ?: it }
+    return map { originalName ->
+      migrateLegacyIdOrNull(originalName, logger) ?: originalName
+    }
+  }
+
+  private fun Collection<String>.asFindingNames(): Set<FindingName> {
+    return mapToSet { FindingName(it) }
   }
 
   override fun getOrEmpty(

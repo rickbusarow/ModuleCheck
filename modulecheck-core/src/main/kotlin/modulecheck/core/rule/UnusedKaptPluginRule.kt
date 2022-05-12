@@ -16,19 +16,17 @@
 package modulecheck.core.rule
 
 import modulecheck.api.context.kaptDependencies
-import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
 import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
 import modulecheck.core.UnusedPluginFinding
+import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
-import modulecheck.utils.LazySet
-import modulecheck.utils.any
+import modulecheck.project.PluginDefinition
 
 class UnusedKaptPluginRule(
   private val settings: ModuleCheckSettings
@@ -47,51 +45,46 @@ class UnusedKaptPluginRule(
 
     val kaptDependencies = project.kaptDependencies()
 
-    val usedProcessors = project
+    val processorIsUsed = project
       .configurations
       .keys
       .filter { it.value.startsWith("kapt") }
-      .flatMap { configName ->
+      .any { configName ->
 
-        val references = project.referencesForSourceSetName(configName.toSourceSetName())
+        val processors = kaptDependencies.get(configName)
+          .filter { matchers.containsKey(it.name) }
 
-        kaptDependencies.get(configName)
-          .filter {
-            val matcher = matchers[it.name] ?: return@filter false
+        if (processors.isEmpty()) return@any false
 
-            matcher.matchedIn(references)
-          }
+        val unusedAndNotSuppressed = project.unusedKaptProcessors()
+          .get(configName, settings)
+          .filterNot { it.isSuppressed.await() }
+
+        unusedAndNotSuppressed.size != processors.size
       }
 
-    return if (usedProcessors.isEmpty()) {
+    return if (processorIsUsed) {
+      emptyList()
+    } else {
       listOf(
         UnusedPluginFinding(
           dependentProject = project,
           dependentPath = project.path,
           buildFile = project.buildFile,
           findingName = name,
-          pluginId = KAPT_PLUGIN_ID,
-          alternatePluginId = KAPT_ALTERNATE_PLUGIN_ID,
-          kotlinPluginFunction = KAPT_PLUGIN_FUN
+          pluginDefinition = PluginDefinition(
+            name = "kapt",
+            qualifiedId = KAPT_PLUGIN_ID,
+            legacyIdOrNull = KAPT_ALTERNATE_PLUGIN_ID,
+            precompiledAccessorOrNull = null,
+            kotlinFunctionArgumentOrNull = KAPT_PLUGIN_FUN
+          )
         )
       )
-    } else {
-      emptyList()
     }
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {
     return checksSettings.unusedKapt
   }
-
-  private suspend fun KaptMatcher.matchedIn(
-    references: LazySet<Reference>
-  ): Boolean = annotationImports
-    .map { it.toRegex() }
-    .any { annotationRegex ->
-
-      references.any { referenceName ->
-        annotationRegex.matches(referenceName.name)
-      }
-    }
 }

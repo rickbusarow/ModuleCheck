@@ -105,4 +105,173 @@ class UnusedKaptPluginTest : RunnerTest() {
       )
     )
   }
+
+  @Test
+  fun `unused kapt should be ignored if suppressed at the statement`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      hasKapt = true
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("unused-kapt-plugin")
+          id("org.jetbrains.kotlin.kapt")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("unused-kapt-plugin")
+        id("org.jetbrains.kotlin.kapt")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused kapt should be ignored if suppressed with old finding name`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      hasKapt = true
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("unusedkaptplugin")
+          id("org.jetbrains.kotlin.kapt")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("unusedkaptplugin")
+        id("org.jetbrains.kotlin.kapt")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused kapt should be fixed if suppressed with some other finding name`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      hasKapt = true
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("some-other-name")
+          id("org.jetbrains.kotlin.kapt")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("some-other-name")
+        // id("org.jetbrains.kotlin.kapt")  // ModuleCheck finding [unused-kapt-plugin]
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(
+        unusedKaptPlugin(
+          fixed = true,
+          dependency = "org.jetbrains.kotlin.kapt",
+          position = "5, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `unused kapt should be ignored if suppressed at the block`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      hasKapt = true
+      buildFile {
+        """
+        @Suppress("unused-kapt-plugin")
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          id("org.jetbrains.kotlin.kapt")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      @Suppress("unused-kapt-plugin")
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        id("org.jetbrains.kotlin.kapt")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused processor should not make the plugin unused if the processor is suppressed`() {
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, dagger)
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          @Suppress("unused-kapt-processor")
+          kapt("$dagger")
+        }
+        """
+      }
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        id("kotlin-kapt")
+      }
+
+      dependencies {
+        @Suppress("unused-kapt-processor")
+        kapt("$dagger")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
 }

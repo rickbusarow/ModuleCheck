@@ -173,8 +173,8 @@ fun buildFileParserFactory(logger: McLogger = PrintLogger()): BuildFileParser.Fa
       },
       {
         RealPluginsBlockProvider(
-          groovyParser = GroovyPluginsBlockParser(),
-          kotlinParser = KotlinPluginsBlockParser(),
+          groovyParser = GroovyPluginsBlockParser(logger),
+          kotlinParser = KotlinPluginsBlockParser(logger),
           buildFile = invokesConfigurationNames.buildFile
         )
       },

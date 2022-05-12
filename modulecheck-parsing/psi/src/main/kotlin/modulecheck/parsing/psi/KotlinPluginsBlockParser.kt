@@ -17,15 +17,21 @@ package modulecheck.parsing.psi
 
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe
-import org.jetbrains.kotlin.com.intellij.psi.PsiComment
+import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
+import org.jetbrains.kotlin.psi.KtAnnotatedExpression
+import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
+import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import javax.inject.Inject
 
-class KotlinPluginsBlockParser @Inject constructor() {
+class KotlinPluginsBlockParser @Inject constructor(
+  private val logger: McLogger
+) {
 
   @Suppress("ReturnCount")
   fun parse(file: KtFile): KotlinPluginsBlock? {
@@ -35,6 +41,10 @@ class KotlinPluginsBlockParser @Inject constructor() {
     file.getChildrenOfTypeRecursive<KtCallExpression>()
       .firstOrNull { it.nameSafe() == "plugins" }
       ?.let { fullBlock ->
+
+        val blockSuppressed = (fullBlock.parent as? KtAnnotatedExpression)
+          ?.suppressedNames()
+          .orEmpty()
 
         val fullText = fullBlock.text
 
@@ -48,17 +58,39 @@ class KotlinPluginsBlockParser @Inject constructor() {
           ?: ""
 
         val pluginsBlock = KotlinPluginsBlock(
+          logger = logger,
           fullText = fullText,
-          lambdaContent = blockWhiteSpace + contentString
+          lambdaContent = blockWhiteSpace + contentString,
+          suppressedForEntireBlock = blockSuppressed
         )
 
         contentBlock.children
-          .filterNot { it is PsiComment || it is PsiWhiteSpace }
-          .forEach { statement ->
+          .forEach { element ->
 
-            pluginsBlock.addStatement(
-              parsedString = statement.text
-            )
+            when (element) {
+              is KtAnnotatedExpression -> {
+                val suppressed = element.suppressedNames()
+
+                val parsedString = element.getChildOfType<KtCallExpression>()
+                  ?.text
+                  ?: element.getChildOfType<KtNameReferenceExpression>()?.text
+                  ?: element.text
+
+                pluginsBlock.addStatement(
+                  parsedString = parsedString,
+                  suppressed = suppressed + blockSuppressed
+                )
+              }
+              is KtBinaryExpression,
+              is KtCallExpression,
+              is KtNameReferenceExpression -> {
+
+                pluginsBlock.addStatement(
+                  parsedString = element.text,
+                  suppressed = blockSuppressed
+                )
+              }
+            }
           }
 
         block = pluginsBlock

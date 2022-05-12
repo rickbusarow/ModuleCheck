@@ -55,20 +55,22 @@ data class FindingName(
     @Deprecated("This will be removed soon.")
     fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String? {
 
-      val migrated = when (legacyID) {
-        "useAnvilFactories" -> "use-anvil-factory-generation"
+      @Suppress("SpellCheckingInspection")
+      val migrated = when (legacyID.lowercase()) {
+        "useanvilfactories" -> "use-anvil-factory-generation"
         "depth" -> "project-depth"
-        "disableAndroidResources" -> "disable-android-resources"
-        "disableViewBinding" -> "disable-view-binding"
-        "inheritedDependency" -> "inherited-dependency"
-        "mustBeApi" -> "must-be-api"
+        "disableandroidresources" -> "disable-android-resources"
+        "disableviewbinding" -> "disable-view-binding"
+        "inheriteddependency" -> "inherited-dependency"
+        "mustbeapi" -> "must-be-api"
         "overshot" -> "overshot-dependency"
         "redundant" -> "redundant-dependency"
-        "unsortedDependencies" -> "sort-dependencies"
-        "unsortedPlugins" -> "sort-plugins"
+        "unsorteddependencies" -> "sort-dependencies"
+        "unsortedplugins" -> "sort-plugins"
         "unused" -> "unused-dependency"
-        "unusedKaptProcessor" -> "unused-kapt-processor"
-        "unusedKotlinAndroidExtensions" -> "unused-kotlin-android-extensions"
+        "unusedkaptplugin" -> "unused-kapt-plugin"
+        "unusedkaptprocessor" -> "unused-kapt-processor"
+        "unusedkotlinandroidextensions" -> "unused-kotlin-android-extensions"
         else -> null
       }
 

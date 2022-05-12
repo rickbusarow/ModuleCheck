@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.tempFile
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
@@ -28,6 +29,8 @@ import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.TestInfo
 
 internal class GroovyAndroidGradleParserTest : HermitJUnit5() {
+
+  val logger by resets { PrintLogger() }
 
   val testFile by tempFile()
 
