@@ -38,7 +38,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
@@ -56,10 +56,9 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-parsing:source"))
+  testImplementation(project(path = ":modulecheck-parsing:source:api"))
   testImplementation(project(path = ":modulecheck-project:api"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-runtime:testing"))
   testImplementation(project(path = ":modulecheck-utils"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
-  testImplementation(testFixtures(project(path = ":modulecheck-runtime")))
 }

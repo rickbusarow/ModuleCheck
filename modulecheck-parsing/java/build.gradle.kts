@@ -26,7 +26,7 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())
@@ -43,7 +43,6 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-api"))
   testImplementation(project(path = ":modulecheck-parsing:java"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:source")))
-  testImplementation(testFixtures(project(path = ":modulecheck-project:api")))
+  testImplementation(project(path = ":modulecheck-parsing:source:testing"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
 }

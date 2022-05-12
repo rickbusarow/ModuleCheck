@@ -18,28 +18,25 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-name"
+  artifactId = "modulecheck-runtime-api"
   anvil = true
 }
+
 dependencies {
 
-  api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
 
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-reporting:checkstyle"))
+  api(project(path = ":modulecheck-reporting:console"))
+  api(project(path = ":modulecheck-reporting:graphviz"))
   api(project(path = ":modulecheck-reporting:logging:api"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
+  api(project(path = ":modulecheck-reporting:sarif"))
+  api(project(path = ":modulecheck-rule:api"))
 
   implementation(project(path = ":modulecheck-utils"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
 }

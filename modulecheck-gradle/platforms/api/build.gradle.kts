@@ -31,7 +31,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
 
   compileOnly(gradleApi())
 

@@ -15,15 +15,12 @@
 
 plugins {
   id("mcbuild")
-  id("java-test-fixtures")
 }
 
 mcbuild {
   artifactId = "modulecheck-project-api"
   anvil = true
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -35,8 +32,8 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source"))
-  api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-parsing:source:api"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
 
   compileOnly(gradleApi())
 
@@ -46,28 +43,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils"))
-
-  testFixturesApi(libs.bundles.hermit)
-
-  testFixturesApi(project(path = ":modulecheck-internal-testing"))
-  testFixturesApi(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  testFixturesApi(project(path = ":modulecheck-parsing:psi"))
-  testFixturesApi(project(path = ":modulecheck-parsing:source"))
-  testFixturesApi(project(path = ":modulecheck-reporting:logging"))
-
-  testFixturesImplementation(project(path = ":modulecheck-api"))
-  testFixturesImplementation(project(path = ":modulecheck-parsing:groovy-antlr"))
-  testFixturesImplementation(project(path = ":modulecheck-parsing:wiring"))
-  testFixturesImplementation(project(path = ":modulecheck-project:impl"))
-  testFixturesImplementation(project(path = ":modulecheck-utils"))
-
-  if (isIdeSync) {
-    compileOnly(project(path = ":modulecheck-internal-testing"))
-    compileOnly(project(path = ":modulecheck-project:impl"))
-    compileOnly(libs.bundles.hermit)
-    compileOnly(libs.bundles.jUnit)
-    compileOnly(libs.bundles.kotest)
-  }
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

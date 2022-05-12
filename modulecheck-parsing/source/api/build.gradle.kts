@@ -18,9 +18,10 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-name"
+  artifactId = "modulecheck-parsing-source-api"
   anvil = true
 }
+
 dependencies {
 
   api(libs.kotlin.compiler)
@@ -29,7 +30,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-reporting:logging:api"))
+  api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
 
@@ -37,9 +38,9 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-utils"))
-
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+
+  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

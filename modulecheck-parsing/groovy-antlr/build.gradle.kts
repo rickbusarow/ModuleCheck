@@ -27,7 +27,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-reporting:logging"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
 
   compileOnly(gradleApi())
 
@@ -45,7 +45,6 @@ dependencies {
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-reporting:logging"))
-
-  testImplementation(testFixtures(project(path = ":modulecheck-parsing:gradle:dsl:api")))
+  testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:testing"))
+  testImplementation(project(path = ":modulecheck-reporting:logging:api"))
 }

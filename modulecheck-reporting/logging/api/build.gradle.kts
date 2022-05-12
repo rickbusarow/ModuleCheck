@@ -18,28 +18,9 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-name"
+  artifactId = "modulecheck-reporting-logging-api"
   anvil = true
 }
+
 dependencies {
-
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
-
-  api(project(path = ":modulecheck-reporting:logging:api"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.agp)
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
-
-  implementation(project(path = ":modulecheck-utils"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
 }

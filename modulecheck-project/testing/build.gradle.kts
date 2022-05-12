@@ -18,28 +18,42 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-finding-name"
+  artifactId = "modulecheck-project-testing"
   anvil = true
 }
+
 dependencies {
 
+  api(libs.bundles.hermit)
   api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-internal-testing"))
+  api(project(path = ":modulecheck-internal-testing"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:source:api"))
+  api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
 
   compileOnly(gradleApi())
 
   implementation(libs.agp)
+  implementation(libs.bundles.hermit)
+  implementation(libs.bundles.jUnit)
+  implementation(libs.bundles.kotest)
+  implementation(libs.bundles.kotest)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-parsing:groovy-antlr"))
+  implementation(project(path = ":modulecheck-parsing:wiring"))
+  implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-utils"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
 }

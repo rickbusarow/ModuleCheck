@@ -33,7 +33,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
   api(project(path = ":modulecheck-parsing:psi"))
-  api(project(path = ":modulecheck-parsing:source"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 

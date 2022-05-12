@@ -15,24 +15,24 @@
 
 plugins {
   id("mcbuild")
-  id("java-test-fixtures")
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-jvm"
+  artifactId = "modulecheck-parsing-source-testing"
   anvil = true
 }
 
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
-
 dependencies {
 
+  api(libs.bundles.hermit)
   api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-internal-testing"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils"))
 
   compileOnly(gradleApi())
@@ -41,20 +41,7 @@ dependencies {
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
-  testFixturesApi(libs.bundles.hermit)
-
-  testFixturesApi(project(path = ":modulecheck-internal-testing"))
-  testFixturesApi(project(path = ":modulecheck-utils"))
-
-  if (isIdeSync) {
-    testCompileOnly(libs.bundles.hermit)
-    testCompileOnly(libs.bundles.jUnit)
-    testCompileOnly(libs.bundles.kotest)
-  }
-
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
 }

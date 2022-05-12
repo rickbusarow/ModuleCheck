@@ -18,7 +18,6 @@ package modulecheck.runtime.test
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
-import modulecheck.api.test.ReportingLogger
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.ModuleCheckRuleFactory
@@ -33,6 +32,7 @@ import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
 import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.McLogger
+import modulecheck.reporting.logging.test.ReportingLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.RuleFactory
