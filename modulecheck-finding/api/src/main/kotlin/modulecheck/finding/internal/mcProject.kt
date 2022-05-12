@@ -19,8 +19,8 @@ import modulecheck.finding.Finding.Position
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.project.ConfiguredProjectDependency
-import modulecheck.project.ExternalDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.project.McProject
 
 suspend fun ConfiguredProjectDependency.statementOrNullIn(

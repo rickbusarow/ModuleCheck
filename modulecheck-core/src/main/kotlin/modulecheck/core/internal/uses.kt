@@ -23,9 +23,9 @@ import modulecheck.api.context.anvilScopeContributionsForSourceSetName
 import modulecheck.api.context.declarations
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Generated
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.any
 import modulecheck.utils.containsAny
@@ -34,7 +34,7 @@ import modulecheck.utils.lazySet
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
 
-  val dependencyDeclarations = dependency.declarations()
+  val dependencyDeclarations = dependency.declarations(projectCache)
 
   val referencesSourceSetName = dependency.configurationName.toSourceSetName()
 
@@ -67,7 +67,7 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
       val downstreamSourceSet = downstreamDependency.configuredProjectDependency
         .declaringSourceSetName()
 
-      downstreamDependency.dependentProject
+      projectCache.getValue(downstreamDependency.dependentProjectPath)
         .referencesForSourceSetName(downstreamSourceSet)
         .containsAny(generatedFromThisDependency)
     }
@@ -75,7 +75,7 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   if (usedUpstream) return true
 
   // If there are no references is manually/human written static code, then parse the Anvil graph.
-  val anvilContributions = dependency.project
+  val anvilContributions = dependency.project()
     .anvilScopeContributionsForSourceSetName(SourceSetName.MAIN)
 
   return anvilGraph()

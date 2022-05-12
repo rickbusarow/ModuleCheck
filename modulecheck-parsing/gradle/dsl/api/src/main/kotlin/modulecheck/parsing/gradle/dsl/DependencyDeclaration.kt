@@ -18,6 +18,8 @@ package modulecheck.parsing.gradle.dsl
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.letIf
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.remove
@@ -108,6 +110,11 @@ data class ModuleDependencyDeclaration(
     val precedingWhitespace = "^\\s*".toRegex()
       .find(statementWithSurroundingText)?.value ?: ""
 
+    val newProjectPathRef = when (projectPath) {
+      is StringProjectPath -> newModulePath.value
+      is TypeSafeProjectPath -> newModulePath.typeSafeValue
+    }
+
     val newDeclaration = declarationText
       .letIf(newModule) {
         // strip out any config block
@@ -115,7 +122,7 @@ data class ModuleDependencyDeclaration(
       }
       .addOrRemoveTestFixtures(testFixtures)
       .replaceFirst(configToReplace, newConfigText)
-      .replaceFirst(projectPath.value, newModulePath.value)
+      .replaceFirst(projectPath.value, newProjectPathRef)
       .maybeFixExtraQuotes()
 
     val newStatement = when {

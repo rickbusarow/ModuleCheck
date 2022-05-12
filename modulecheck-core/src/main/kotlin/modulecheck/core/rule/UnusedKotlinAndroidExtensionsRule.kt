@@ -19,9 +19,9 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.finding.FindingName
+import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
-import modulecheck.project.PluginDefinition
 import modulecheck.utils.any
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"

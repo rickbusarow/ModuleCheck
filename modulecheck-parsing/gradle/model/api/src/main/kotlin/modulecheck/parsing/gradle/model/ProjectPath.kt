@@ -49,6 +49,8 @@ sealed class ProjectPath : Comparable<ProjectPath> {
 
   override fun toString(): String = value
 
+  abstract fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String
+
   class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
@@ -58,12 +60,25 @@ sealed class ProjectPath : Comparable<ProjectPath> {
       }
     }
 
-    fun toTypeSafe(): TypeSafeProjectPath {
+    override fun toTypeSafe(): TypeSafeProjectPath {
       return TypeSafeProjectPath(value.typeSafeName())
     }
+
+    override fun pathValue(
+      typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+    ): String = value
   }
 
-  class TypeSafeProjectPath(override val value: String) : ProjectPath()
+  class TypeSafeProjectPath(override val value: String) : ProjectPath() {
+
+    override fun toTypeSafe(): TypeSafeProjectPath = this
+
+    override fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String {
+      return typeSafeProjectPathResolver
+        .resolveStringProjectPath(this)
+        .pathValue(typeSafeProjectPathResolver)
+    }
+  }
 
   companion object {
     fun from(rawString: String): ProjectPath = if (rawString.trim().startsWith(':')) {
@@ -72,6 +87,8 @@ sealed class ProjectPath : Comparable<ProjectPath> {
       TypeSafeProjectPath(rawString)
     }
   }
+
+  abstract fun toTypeSafe(): TypeSafeProjectPath
 }
 
 internal val projectSplitRegex = "[.\\-_]".toRegex()

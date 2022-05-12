@@ -17,7 +17,6 @@ package modulecheck.parsing.gradle.dsl
 
 import modulecheck.parsing.gradle.model.HasConfigurations
 import modulecheck.parsing.gradle.model.PluginAware
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import java.io.File
 
 interface InvokesConfigurationNames :
@@ -35,8 +34,4 @@ interface HasBuildFile {
 interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
 
   suspend fun getConfigurationInvocations(): Set<String>
-}
-
-interface HasPath {
-  val path: StringProjectPath
 }

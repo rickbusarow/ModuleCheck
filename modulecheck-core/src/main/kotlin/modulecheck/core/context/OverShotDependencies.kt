@@ -18,10 +18,10 @@ package modulecheck.core.context
 import modulecheck.core.OverShotDependency
 import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.toSourceSetDependency
 import modulecheck.utils.SafeCache
 import modulecheck.utils.mapToSet
 import modulecheck.utils.unsafeLazy
@@ -74,7 +74,7 @@ data class OverShotDependencies(
                 .map { (configName, isTestFixture) ->
                   ConfiguredProjectDependency(
                     configurationName = configName,
-                    project = unused.dependency.project,
+                    path = unused.dependency.path,
                     isTestFixture = isTestFixture
                   )
                 }
@@ -120,8 +120,8 @@ data class OverShotDependencies(
             configurationName = newCpd.configurationName
           )
         }
-        .sortedBy { it.newDependency.project }
-        .distinctBy { it.newDependency.project }
+        .sortedBy { it.newDependency.path }
+        .distinctBy { it.newDependency.path }
     }
   }
 

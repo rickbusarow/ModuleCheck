@@ -364,6 +364,432 @@ class InheritedDependenciesTest : RunnerTest() {
     )
   }
 
+  // https://github.com/RBusarow/ModuleCheck/issues/569
+  @Test
+  fun `inherited with same-config token with type-safe accessor should also use type-safe accessor`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.api, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(projects.lib2)
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz = Lib1Class()
+        val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(projects.lib1)
+          api(projects.lib2)
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  // https://github.com/RBusarow/ModuleCheck/issues/569
+  @Test
+  fun `inherited with different-config token with type-safe accessor should also use type-safe accessor`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.implementation, lib2)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(projects.lib2)
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(projects.lib1)
+          implementation(projects.lib2)
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited with different-config tokens with mixed accessor types but type-safe source should use type-safe`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib3Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib4 = kotlinProject(":lib4") {
+      addDependency(ConfigurationName.implementation, lib2)
+      addDependency(ConfigurationName.implementation, lib3)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(projects.lib2)
+          implementation(project(path = ":lib3"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib4
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+        import com.modulecheck.lib3.Lib3Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        private val clazz3 = Lib3Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib4.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(projects.lib1)
+          implementation(projects.lib2)
+          implementation(project(path = ":lib3"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib4" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
+  fun `inherited with different-config tokens with mixed accessor types but path source should use path`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        open class Lib1Class
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib2Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = kotlinProject(":lib3") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3
+
+        import com.modulecheck.lib1.Lib1Class
+
+        open class Lib3Class : Lib1Class()
+        """.trimIndent()
+      )
+    }
+
+    val lib4 = kotlinProject(":lib4") {
+      addDependency(ConfigurationName.implementation, lib2)
+      addDependency(ConfigurationName.implementation, lib3)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib2"))
+          implementation(projects.lib3)
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib4
+
+        import com.modulecheck.lib1.Lib1Class
+        import com.modulecheck.lib2.Lib2Class
+        import com.modulecheck.lib3.Lib3Class
+
+        val clazz = Lib1Class()
+        private val clazz2 = Lib2Class()
+        private val clazz3 = Lib3Class()
+        """.trimIndent()
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib4.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          implementation(project(path = ":lib2"))
+          implementation(projects.lib3)
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib4" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
   @Test
   fun `inherited as api from invisible dependency with a visible unrelated api project dependency`() {
 

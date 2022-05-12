@@ -22,6 +22,7 @@ import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.LazySet
 import modulecheck.utils.emptyLazySet
 import modulecheck.utils.toLazySet
@@ -39,7 +40,7 @@ class RealAndroidDataBindingNameProvider constructor(
     val transitive = project.classpathDependencies()
       .get(sourceSetName)
       .map { tpd ->
-        tpd.contributed.project
+        tpd.contributed.project(project.projectCache)
           .androidDataBindingDeclarationsForSourceSetName(tpd.source.declaringSourceSetName())
       }
 

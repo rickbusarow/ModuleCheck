@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 
 data class Depths(
@@ -43,7 +44,7 @@ data class Depths(
 
   private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): ProjectDepth {
     val (childDepth, children) = project.projectDependencies[sourceSetName]
-      .map { it.project }
+      .map { it.project(project.projectCache) }
       .distinct()
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
       .groupBy { it.depth }
@@ -99,7 +100,8 @@ data class ProjectDepth(
       val children = dependentProject
         .projectDependencies[sourceSetName]
         .flatMap {
-          it.project.depthForSourceSetName(SourceSetName.MAIN)
+          it.project(dependentProject.projectCache)
+            .depthForSourceSetName(SourceSetName.MAIN)
             .fullTree(SourceSetName.MAIN)
         }
       children.toSet() + this

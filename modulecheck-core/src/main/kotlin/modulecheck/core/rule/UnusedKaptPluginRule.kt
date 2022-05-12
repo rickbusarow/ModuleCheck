@@ -25,8 +25,8 @@ import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.core.kapt.defaultKaptMatchers
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
+import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.project.McProject
-import modulecheck.project.PluginDefinition
 
 class UnusedKaptPluginRule(
   private val settings: ModuleCheckSettings

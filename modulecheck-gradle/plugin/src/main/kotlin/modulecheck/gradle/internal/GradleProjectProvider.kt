@@ -28,6 +28,9 @@ import modulecheck.gradle.platforms.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
 import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.model.AllProjectPathsProvider
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
@@ -36,9 +39,7 @@ import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
-import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
@@ -53,7 +54,7 @@ import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 
 @Suppress("LongParameterList")
-@ContributesBinding(AppScope::class)
+@ContributesBinding(AppScope::class, ProjectProvider::class)
 class GradleProjectProvider @Inject constructor(
   @RootGradleProject
   private val rootGradleProject: GradleProject,
@@ -64,8 +65,9 @@ class GradleProjectProvider @Inject constructor(
   private val jvmFileProviderFactory: RealJvmFileProvider.Factory,
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
-  private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver
-) : ProjectProvider {
+  private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
+  private val allProjectPathsProviderDelegate: AllProjectPathsProvider
+) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { StringProjectPath(it.path) }
@@ -87,6 +89,10 @@ class GradleProjectProvider @Inject constructor(
       .filter { it.buildFile.exists() }
       .filterNot { it.path in settings.doNotCheck }
       .map { get(StringProjectPath(it.path)) }
+  }
+
+  override fun getAllPaths(): List<StringProjectPath> {
+    return allProjectPathsProviderDelegate.getAllPaths()
   }
 
   override fun clearCaches() {
@@ -182,7 +188,7 @@ class GradleProjectProvider @Inject constructor(
 
             ConfiguredProjectDependency(
               configurationName = config.name.asConfigurationName(),
-              project = get(StringProjectPath(it.dependencyProject.path)),
+              path = StringProjectPath(it.dependencyProject.path),
               isTestFixture = isTestFixture
             )
           }

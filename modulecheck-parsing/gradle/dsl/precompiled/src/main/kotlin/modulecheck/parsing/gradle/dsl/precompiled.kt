@@ -18,7 +18,7 @@ package modulecheck.parsing.gradle.dsl
 import modulecheck.parsing.gradle.dsl.ProjectAccessor.TypeSafeProjectAccessor
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.PluginAware
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSetName.Companion
 import modulecheck.parsing.gradle.model.hasPrefix
@@ -57,7 +57,7 @@ suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T):
 
 suspend fun <T> T.createProjectDependencyDeclaration(
   configurationName: ConfigurationName,
-  projectPath: StringProjectPath,
+  projectPath: ProjectPath,
   isTestFixtures: Boolean
 ): ModuleDependencyDeclaration
   where T : PluginAware,
@@ -75,6 +75,7 @@ suspend fun <T> T.createProjectDependencyDeclaration(
   val projectAccessorText = projectAccessors()
     .any { it is TypeSafeProjectAccessor }
     .let { useTypeSafe ->
+
       if (useTypeSafe) {
         "projects.${projectPath.typeSafeValue}"
       } else if (isKotlin) {

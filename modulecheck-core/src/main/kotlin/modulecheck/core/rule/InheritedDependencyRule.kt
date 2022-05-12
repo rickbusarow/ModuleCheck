@@ -22,13 +22,13 @@ import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
 import modulecheck.finding.FindingName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.SourceSetDependency
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.parsing.gradle.model.sortedByInheritance
-import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
-import modulecheck.project.SourceSetDependency
-import modulecheck.project.TransitiveProjectDependency
-import modulecheck.project.toSourceSetDependency
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.mapAsync
 
@@ -76,7 +76,7 @@ class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
       // Projects shouldn't inherit themselves.  This false-positive can happen if a test
       // fixture/utilities module depends upon a module, and that module uses the test module in
       // testImplementation.
-      .filterNot { transitive -> transitive.contributed.project == project }
+      .filterNot { transitive -> transitive.contributed.path == project.path }
       .flatMap { transitive ->
 
         /*
@@ -139,7 +139,7 @@ class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
                 return@any false
               }
 
-              upstreamCpd.project == contributed.project &&
+              upstreamCpd.path == contributed.path &&
                 contributed.isTestFixture == upstreamCpd.isTestFixture
             }
 

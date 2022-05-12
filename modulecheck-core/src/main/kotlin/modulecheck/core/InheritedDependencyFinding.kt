@@ -21,7 +21,7 @@ import modulecheck.finding.FindingName
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
@@ -51,10 +51,10 @@ data class InheritedDependencyFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.path == source.project.path) {
+    return if (dependency.path == source.path) {
       ""
     } else {
-      source.project.path.value
+      source.path.value
     }
   }
 

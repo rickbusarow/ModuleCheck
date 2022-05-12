@@ -180,7 +180,7 @@ abstract class AbstractDependenciesBlock(
   }
 
   override fun getOrEmpty(
-    moduleRef: StringProjectPath,
+    moduleRef: ProjectPath,
     configName: ConfigurationName,
     testFixtures: Boolean
   ): List<ModuleDependencyDeclaration> {

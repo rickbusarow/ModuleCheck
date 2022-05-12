@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
-import modulecheck.project.DownstreamDependency
+import modulecheck.parsing.gradle.model.DownstreamDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.flatMapToSet
 
 data class DownstreamProjects(
@@ -37,10 +38,10 @@ data class DownstreamProjects(
           otherProject
             .classpathDependencies()
             .all()
-            .filter { it.contributed.project == project }
+            .filter { it.contributed.project(project.projectCache) == project }
             .map { transitive ->
               DownstreamDependency(
-                dependentProject = otherProject,
+                dependentProjectPath = otherProject.path,
                 configuredProjectDependency = transitive.withContributedConfiguration().contributed
               )
             }

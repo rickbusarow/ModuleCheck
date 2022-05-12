@@ -27,6 +27,7 @@ import modulecheck.finding.FindingResultFactory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectProvider
 import modulecheck.project.test.ProjectTest
+import modulecheck.project.toTypeSafeProjectPathResolver
 import modulecheck.reporting.checkstyle.CheckstyleReporter
 import modulecheck.reporting.console.ReportFactory
 import modulecheck.reporting.graphviz.GraphvizFactory
@@ -63,7 +64,10 @@ abstract class RunnerTest : ProjectTest() {
     findingResultFactory: FindingResultFactory = RealFindingResultFactory(),
     reportFactory: ReportFactory = ReportFactory(),
     checkstyleReporter: CheckstyleReporter = CheckstyleReporter(),
-    graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(settings, GraphvizFactory()),
+    graphvizFileWriter: GraphvizFileWriter = GraphvizFileWriter(
+      settings = settings,
+      graphvizFactory = GraphvizFactory(projectProvider.toTypeSafeProjectPathResolver())
+    ),
     dispatcherProvider: DispatcherProvider = DispatcherProvider()
   ): Result<Unit> = runBlocking {
 

@@ -15,19 +15,25 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.model.AllProjectPathsProvider
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import java.io.File
 
-interface ProjectProvider : HasProjectCache {
+interface ProjectProvider : HasProjectCache, AllProjectPathsProvider {
 
   fun get(path: ProjectPath): McProject
 
   fun getAll(): List<McProject>
 
-  fun getAllPaths(): List<StringProjectPath> = getAll().map { it.path }
+  override fun getAllPaths(): List<StringProjectPath> = getAll().map { it.path }
 
   fun clearCaches()
+}
+
+fun ProjectProvider.toTypeSafeProjectPathResolver(): TypeSafeProjectPathResolver {
+  return TypeSafeProjectPathResolver { getAllPaths() }
 }
 
 fun interface ProjectRoot {

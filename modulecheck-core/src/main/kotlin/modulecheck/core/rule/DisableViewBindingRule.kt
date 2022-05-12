@@ -22,6 +22,7 @@ import modulecheck.config.ChecksSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.finding.FindingName
 import modulecheck.project.McProject
+import modulecheck.project.project
 import modulecheck.utils.any
 import modulecheck.utils.lazyDeferred
 
@@ -71,7 +72,7 @@ class DisableViewBindingRule : DocumentedRule<DisableViewBindingGenerationFindin
             val exposedSourceSetName = downstream.configuredProjectDependency
               .declaringSourceSetName()
 
-            val references = downstream.dependentProject
+            val references = downstream.project(project.projectCache)
               .referencesForSourceSetName(exposedSourceSetName)
 
             generatedBindings.any { generated ->

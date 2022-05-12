@@ -16,6 +16,7 @@
 package modulecheck.project
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 
 class ProjectDependencies(
