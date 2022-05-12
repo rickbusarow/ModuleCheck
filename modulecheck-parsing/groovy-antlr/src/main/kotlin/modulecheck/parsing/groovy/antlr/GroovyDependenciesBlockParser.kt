@@ -131,14 +131,16 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
 
-      var pendingBlockNoInspectionComment: String? = null
+      var pendingBlockNoInspectionComments = mutableListOf<String>()
 
       override fun visitNls(ctx: NlsContext) {
         super.visitNls(ctx)
 
-        pendingBlockNoInspectionComment = NO_INSPECTION_REGEX.find(ctx.text)
-          ?.destructured
-          ?.component1()
+        pendingBlockNoInspectionComments.addAll(
+          NO_INSPECTION_REGEX
+            .findAll(ctx.text)
+            .map { it.destructured.component1() }
+        )
       }
 
       override fun visitScriptStatement(ctx: ScriptStatementContext?) {
@@ -157,10 +159,11 @@ class GroovyDependenciesBlockParser @Inject constructor(
             ?.removePrefix("\n")
             ?: return
 
-          val blockSuppressed = pendingBlockNoInspectionComment?.split(",")
-            ?.map { it.trim() }
-            .orEmpty()
-          pendingBlockNoInspectionComment = null
+          val blockSuppressed = pendingBlockNoInspectionComments.joinToString(",")
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+          pendingBlockNoInspectionComments.clear()
 
           val dependenciesBlock = GroovyDependenciesBlock(
             logger = logger,
@@ -173,24 +176,27 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
-            var pendingNoInspectionComment: String? = null
+            var pendingNoInspectionComments = mutableListOf<String>()
 
             override fun visitSep(ctx: SepContext) {
               super.visitSep(ctx)
 
-              pendingNoInspectionComment = NO_INSPECTION_REGEX.find(ctx.text)
-                ?.destructured
-                ?.component1()
+              pendingNoInspectionComments.addAll(
+                NO_INSPECTION_REGEX
+                  .findAll(ctx.text)
+                  .map { it.destructured.component1() }
+              )
             }
 
             override fun visitBlockStatement(ctx: BlockStatementContext) {
 
               val config = ctx.start.text
 
-              val suppressed = pendingNoInspectionComment?.split(",")
-                ?.map { it.trim() }
-                .orEmpty()
-              pendingNoInspectionComment = null
+              val suppressed = pendingNoInspectionComments.joinToString(",")
+                .split(",")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+              pendingNoInspectionComments.clear()
 
               val moduleNamePair = projectDepVisitor.visit(ctx)
 
@@ -247,6 +253,6 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
   companion object {
     val BLOCK_BODY_REGEX = """dependencies\s*\{([\s\S]*)\}""".toRegex()
-    val NO_INSPECTION_REGEX = """//noinspection \s*([\s\S]*)$""".toRegex()
+    val NO_INSPECTION_REGEX = """//noinspection\s+(.*)\n""".toRegex()
   }
 }

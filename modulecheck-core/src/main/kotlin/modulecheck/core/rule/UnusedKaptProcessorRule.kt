@@ -15,87 +15,31 @@
 
 package modulecheck.core.rule
 
-import modulecheck.api.context.kaptDependencies
-import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ChecksSettings
-import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.config.asMap
-import modulecheck.core.kapt.UnusedKaptProcessorFinding
-import modulecheck.core.kapt.defaultKaptMatchers
+import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
-import modulecheck.utils.LazySet
-import modulecheck.utils.any
 
 const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
 const val KAPT_ALTERNATE_PLUGIN_ID = "kotlin-kapt"
-internal const val KAPT_PLUGIN_FUN = "kotlin(\"kapt\")"
+internal const val KAPT_PLUGIN_FUN = "kapt"
 
 class UnusedKaptProcessorRule(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<Finding>() {
-
-  private val kaptMatchers: List<KaptMatcher>
-    get() = settings.additionalKaptMatchers + defaultKaptMatchers
 
   override val name = FindingName("unused-kapt-processor")
   override val description = "Finds unused kapt processor dependencies " +
     "and warns if the kapt plugin is applied but unused"
 
   override suspend fun check(project: McProject): List<Finding> {
-    val matchers = kaptMatchers.asMap()
 
-    val kaptDependencies = project.kaptDependencies()
-
-    return project
-      .configurations
-      .keys
-      .filter { it.value.startsWith("kapt") }
-      .flatMap { configName ->
-
-        val processors = kaptDependencies.get(configName)
-
-        val references = project.referencesForSourceSetName(configName.toSourceSetName())
-
-        // unused means that none of the processor's annotations are used in any import
-        val unusedProcessors = processors
-          .filterNot {
-            val matcher = matchers[it.name] ?: return@filterNot true
-
-            matcher.matchedIn(references)
-          }
-
-        val unusedProcessorFindings = unusedProcessors
-          .map { processor ->
-            UnusedKaptProcessorFinding(
-              findingName = name,
-              dependentProject = project,
-              dependentPath = project.path,
-              buildFile = project.buildFile,
-              oldDependency = processor,
-              configurationName = configName
-            )
-          }
-
-        unusedProcessorFindings
-      }
+    return project.unusedKaptProcessors().all(settings)
   }
 
   override fun shouldApply(checksSettings: ChecksSettings): Boolean {
     return checksSettings.unusedKapt
   }
-
-  private suspend fun KaptMatcher.matchedIn(
-    references: LazySet<Reference>
-  ): Boolean = annotationImports
-    .map { it.toRegex() }
-    .any { annotationRegex ->
-
-      references.any { referenceName ->
-        annotationRegex.matches(referenceName.name)
-      }
-    }
 }

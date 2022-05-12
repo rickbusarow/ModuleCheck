@@ -302,7 +302,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       }
 
       dependencies {
-        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unused-kapt-processor]
+        // kapt("$dagger")  // ModuleCheck finding [unused-kapt-processor]
       }
     """
 
@@ -354,7 +354,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
       }
 
       dependencies {
-        // kapt("com.google.dagger:dagger-compiler:2.40.5")  // ModuleCheck finding [unused-kapt-processor]
+        // kapt("$dagger")  // ModuleCheck finding [unused-kapt-processor]
       }
     """
 
@@ -373,5 +373,45 @@ class UnusedKaptProcessorTest : RunnerTest() {
         )
       )
     )
+  }
+
+  @Test
+  fun `unused processor should not be unused if suppressed`() {
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, dagger)
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          @Suppress("unused-kapt-processor")
+          kapt("$dagger")
+        }
+        """
+      }
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        id("kotlin-kapt")
+      }
+
+      dependencies {
+        @Suppress("unused-kapt-processor")
+        kapt("$dagger")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
   }
 }

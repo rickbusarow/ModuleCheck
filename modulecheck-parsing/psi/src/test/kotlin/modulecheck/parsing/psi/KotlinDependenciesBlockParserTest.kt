@@ -113,7 +113,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         """
        dependencies {
           api(project(":core:android"))
-          @Suppress("Unused")
+          @Suppress("unused-dependency")
           api(project(":core:jvm"))
           testImplementation(project(":core:test"))
        }
@@ -134,8 +134,8 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
-        statementWithSurroundingText = "   @Suppress(\"Unused\")\n   api(project(\":core:jvm\"))",
-        suppressed = listOf("Unused")
+        statementWithSurroundingText = "   @Suppress(\"unused-dependency\")\n   api(project(\":core:jvm\"))",
+        suppressed = listOf("unused-dependency")
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:test"),
@@ -149,7 +149,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
-  fun `dependency block with Suppress annotation should include annotation with argument`() {
+  fun `dependency block with Suppress annotation with old IDs should include annotation with argument`() {
     val block = parser
       .parse(
         """
@@ -170,7 +170,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:android"))""",
         statementWithSurroundingText = "   api(project(\":core:android\"))",
-        suppressed = listOf("Unused")
+        suppressed = listOf("unused-dependency")
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:jvm"),
@@ -178,7 +178,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         configName = ConfigurationName.api,
         declarationText = """api(project(":core:jvm"))""",
         statementWithSurroundingText = "   @Suppress(\"InheritedDependency\")\n   api(project(\":core:jvm\"))",
-        suppressed = listOf("InheritedDependency", "Unused")
+        suppressed = listOf("inherited-dependency", "unused-dependency")
       ),
       ModuleDependencyDeclaration(
         projectPath = StringProjectPath(":core:test"),
@@ -186,7 +186,50 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         configName = ConfigurationName.testImplementation,
         declarationText = """testImplementation(project(":core:test"))""",
         statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
-        suppressed = listOf("Unused")
+        suppressed = listOf("unused-dependency")
+      )
+    )
+  }
+
+  @Test
+  fun `dependency block with Suppress annotation should include annotation with argument`() {
+    val block = parser
+      .parse(
+        """
+       @Suppress("unused-dependency")
+       dependencies {
+          api(project(":core:android"))
+          @Suppress("inherited-dependency")
+          api(project(":core:jvm"))
+          testImplementation(project(":core:test"))
+       }
+        """
+      ).single()
+
+    block.settings shouldBe listOf(
+      ModuleDependencyDeclaration(
+        projectPath = StringProjectPath(":core:android"),
+        projectAccessor = """project(":core:android")""",
+        configName = ConfigurationName.api,
+        declarationText = """api(project(":core:android"))""",
+        statementWithSurroundingText = "   api(project(\":core:android\"))",
+        suppressed = listOf("unused-dependency")
+      ),
+      ModuleDependencyDeclaration(
+        projectPath = StringProjectPath(":core:jvm"),
+        projectAccessor = """project(":core:jvm")""",
+        configName = ConfigurationName.api,
+        declarationText = """api(project(":core:jvm"))""",
+        statementWithSurroundingText = "   @Suppress(\"inherited-dependency\")\n   api(project(\":core:jvm\"))",
+        suppressed = listOf("inherited-dependency", "unused-dependency")
+      ),
+      ModuleDependencyDeclaration(
+        projectPath = StringProjectPath(":core:test"),
+        projectAccessor = """project(":core:test")""",
+        configName = ConfigurationName.testImplementation,
+        declarationText = """testImplementation(project(":core:test"))""",
+        statementWithSurroundingText = "   testImplementation(project(\":core:test\"))",
+        suppressed = listOf("unused-dependency")
       )
     )
   }
@@ -272,7 +315,8 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         projectAccessor = """project(":core:jvm")""",
         configName = ConfigurationName.api,
         declarationText = """api(testFixtures(project(":core:jvm")))""",
-        statementWithSurroundingText = "   // api(project(\":core:dagger\"))\n   api(testFixtures(project(\":core:jvm\")))"
+        statementWithSurroundingText = "   // api(project(\":core:dagger\"))\n" +
+          "   api(testFixtures(project(\":core:jvm\")))"
       )
     )
   }

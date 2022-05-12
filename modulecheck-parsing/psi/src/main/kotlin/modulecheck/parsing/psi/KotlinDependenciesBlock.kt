@@ -27,7 +27,7 @@ class KotlinDependenciesBlock internal constructor(
   configurationNameTransform: ConfigurationNameTransform
 ) : AbstractDependenciesBlock(
   logger = logger,
-  suppressAll = suppressAll,
+  suppressedForEntireBlock = suppressAll,
   configurationNameTransform = configurationNameTransform
 ) {
 

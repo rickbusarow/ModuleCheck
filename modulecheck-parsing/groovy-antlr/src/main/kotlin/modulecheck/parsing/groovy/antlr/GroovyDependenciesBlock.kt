@@ -25,7 +25,7 @@ class GroovyDependenciesBlock internal constructor(
   suppressAll: List<String>
 ) : AbstractDependenciesBlock(
   logger = logger,
-  suppressAll = suppressAll,
+  suppressedForEntireBlock = suppressAll,
   configurationNameTransform = { it.value }
 ) {
 

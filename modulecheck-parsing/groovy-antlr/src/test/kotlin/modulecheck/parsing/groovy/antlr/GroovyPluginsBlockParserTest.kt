@@ -16,6 +16,7 @@
 package modulecheck.parsing.groovy.antlr
 
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.child
@@ -24,6 +25,8 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Test
 
 internal class GroovyPluginsBlockParserTest : BaseTest() {
+
+  val logger by resets { PrintLogger() }
 
   @Test
   fun `external declaration`() = parse(
@@ -39,13 +42,15 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
     settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'org.jetbrains.kotlin.jvm'""",
-        statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment"""
+        statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment""",
+        suppressed = emptyList()
       ),
       PluginDeclaration(
         declarationText = """id 'com.squareup.anvil' version '2.34.0'""",
         statementWithSurroundingText = """  // comment
           |  id 'com.squareup.anvil' version '2.34.0'
-        """.trimMargin()
+        """.trimMargin(),
+        suppressed = emptyList()
       )
     )
   }
@@ -64,15 +69,72 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
     settings shouldBe listOf(
       PluginDeclaration(
         declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
-        statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'"""
+        statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
+        suppressed = emptyList()
       ),
       PluginDeclaration(
         declarationText = """javaLibrary""",
-        statementWithSurroundingText = """  javaLibrary"""
+        statementWithSurroundingText = """  javaLibrary""",
+        suppressed = emptyList()
       ),
       PluginDeclaration(
         declarationText = """id 'org.jetbrains.kotlin.jvm'""",
-        statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'"""
+        statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'""",
+        suppressed = emptyList()
+      )
+    )
+  }
+
+  @Test
+  fun `single suppress at declaration`() = parse(
+    """
+    plugins {
+      //noinspection finding-1
+      id 'io.gitlab.arturbosch.detekt' version '1.15.0'
+      //noinspection finding-2
+      javaLibrary
+      //noinspection finding-3
+      id 'org.jetbrains.kotlin.jvm'
+    }
+    """.trimIndent()
+  ) {
+
+    settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
+        statementWithSurroundingText = "  //noinspection finding-1\n" +
+          "  id 'io.gitlab.arturbosch.detekt' version '1.15.0'",
+        suppressed = listOf("finding-1")
+      ),
+      PluginDeclaration(
+        declarationText = """javaLibrary""",
+        statementWithSurroundingText = "  //noinspection finding-2\n  javaLibrary",
+        suppressed = listOf("finding-2")
+      ),
+      PluginDeclaration(
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
+        statementWithSurroundingText = "  //noinspection finding-3\n  id 'org.jetbrains.kotlin.jvm'",
+        suppressed = listOf("finding-3")
+      )
+    )
+  }
+
+  @Test
+  fun `suppress with old ID should be updated`() = parse(
+    """
+    plugins {
+      //noinspection UnusedKaptProcessor
+      id 'io.gitlab.arturbosch.detekt' version '1.15.0'
+    }
+    """.trimIndent()
+  ) {
+
+    settings shouldBe listOf(
+      PluginDeclaration(
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
+        statementWithSurroundingText = "  //noinspection UnusedKaptProcessor\n" +
+          "  id 'io.gitlab.arturbosch.detekt' version '1.15.0'",
+        suppressed = listOf("unused-kapt-processor")
       )
     )
   }
@@ -84,7 +146,7 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
   ) {
     testProjectDir.child("build.gradle")
       .createSafely(fileText.trimIndent())
-      .let { file -> GroovyPluginsBlockParser().parse(file) }
+      .let { file -> GroovyPluginsBlockParser(logger).parse(file) }
       .requireNotNullOrFail()
       .assertions()
   }

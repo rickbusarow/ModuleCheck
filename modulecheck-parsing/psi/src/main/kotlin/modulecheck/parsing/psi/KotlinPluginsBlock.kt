@@ -16,11 +16,14 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.dsl.internal.AbstractPluginsBlock
+import modulecheck.reporting.logging.McLogger
 
 class KotlinPluginsBlock(
+  logger: McLogger,
   override val fullText: String,
-  override val lambdaContent: String
-) : AbstractPluginsBlock() {
+  override val lambdaContent: String,
+  suppressedForEntireBlock: List<String>
+) : AbstractPluginsBlock(logger = logger, suppressedForEntireBlock = suppressedForEntireBlock) {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

@@ -22,11 +22,14 @@ import modulecheck.finding.FindingName
 import modulecheck.finding.Fixable
 import modulecheck.finding.Problem
 import modulecheck.finding.RemovesDependency.RemovalStrategy
+import modulecheck.finding.getSuppressions
 import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
+import modulecheck.project.PluginDefinition
+import modulecheck.project.PluginDependency
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File
@@ -36,16 +39,20 @@ data class UnusedPluginFinding(
   override val dependentPath: StringProjectPath,
   override val buildFile: File,
   override val findingName: FindingName,
-  val pluginId: String,
-  val alternatePluginId: String = "",
-  val kotlinPluginFunction: String = ""
+  val pluginDefinition: PluginDefinition
 ) : Finding, Problem, Fixable, Deletable {
 
   override val message: String
-    get() = "The `$pluginId` plugin dependency declared, " +
+    get() = "The `${pluginDefinition.qualifiedId}` plugin dependency declared, " +
       "but no processor dependencies are declared."
 
-  override val dependencyIdentifier = pluginId
+  override val dependencyIdentifier = pluginDefinition.qualifiedId
+
+  override val isSuppressed: LazyDeferred<Boolean> = lazyDeferred {
+    dependentProject.getSuppressions()
+      .get(findingName)
+      .any { it in pluginDefinition.accessors }
+  }
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     val text = buildFile
@@ -55,11 +62,13 @@ data class UnusedPluginFinding(
 
     val row = lines
       .indexOfFirst { line ->
-        line.contains("id(\"$pluginId\")") ||
-          line.contains("id(\"$alternatePluginId\")") ||
-          line.contains(kotlinPluginFunction) ||
-          line.contains("plugin = \"$pluginId\")") ||
-          line.contains("plugin = \"$alternatePluginId\")")
+
+        pluginDefinition.accessors.contains(PluginDependency(line.trim())) ||
+          line.contains("plugin = \"${pluginDefinition.qualifiedId}\")") ||
+          (
+            pluginDefinition.legacyIdOrNull != null &&
+              line.contains("plugin = \"${pluginDefinition.legacyIdOrNull}\")")
+            )
       }
 
     if (row < 0) return@lazyDeferred null
@@ -72,17 +81,12 @@ data class UnusedPluginFinding(
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
 
-    sequenceOf(
-      "id(\"$pluginId\")",
-      "id \"$pluginId\"",
-      "id '$pluginId'",
-      "id(\"$alternatePluginId\")",
-      "id \"$alternatePluginId\"",
-      "id '$alternatePluginId'",
-      kotlinPluginFunction
-    ).firstNotNullOfOrNull { id ->
-      dependentProject.buildFileParser.pluginsBlock()?.getById(id)
-    }
+    pluginDefinition.accessors
+      .asSequence()
+      .map { it.accessor }
+      .firstNotNullOfOrNull { id ->
+        dependentProject.buildFileParser.pluginsBlock()?.getById(id)
+      }
   }
   override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
     statementOrNull.await()?.statementWithSurroundingText

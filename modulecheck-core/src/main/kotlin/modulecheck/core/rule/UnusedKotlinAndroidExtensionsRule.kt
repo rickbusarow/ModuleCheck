@@ -21,10 +21,11 @@ import modulecheck.core.UnusedPluginFinding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
+import modulecheck.project.PluginDefinition
 import modulecheck.utils.any
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
-private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "kotlin(\"android-extensions\")"
+private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "android-extensions"
 
 class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() {
 
@@ -54,8 +55,13 @@ class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() 
         dependentPath = project.path,
         buildFile = project.buildFile,
         findingName = name,
-        pluginId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
-        kotlinPluginFunction = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
+        pluginDefinition = PluginDefinition(
+          name = "Kotlin Android Extensions",
+          qualifiedId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
+          legacyIdOrNull = null,
+          precompiledAccessorOrNull = null,
+          kotlinFunctionArgumentOrNull = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
+        )
       )
     )
   }

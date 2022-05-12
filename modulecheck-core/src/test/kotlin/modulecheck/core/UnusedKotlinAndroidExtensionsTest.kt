@@ -186,6 +186,124 @@ class UnusedKotlinAndroidExtensionsTest : RunnerTest() {
     )
   }
 
+  @Test
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the statement`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("unused-kotlin-android-extensions")
+          id("org.jetbrains.kotlin.android.extensions")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("unused-kotlin-android-extensions")
+        id("org.jetbrains.kotlin.android.extensions")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed with old finding name`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("unusedkotlinandroidextensions")
+          id("org.jetbrains.kotlin.android.extensions")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("unusedkotlinandroidextensions")
+        id("org.jetbrains.kotlin.android.extensions")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `unused KotlinAndroidExtensions from id should be fixed if suppressed with some other finding name`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          @Suppress("some-other-name")
+          id("org.jetbrains.kotlin.android.extensions")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        @Suppress("some-other-name")
+        // id("org.jetbrains.kotlin.android.extensions")  // ModuleCheck finding [unused-kotlin-android-extensions]
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib1" to listOf(unusedKotlinAndroidExtensions(fixed = true, position = "5, 3"))
+    )
+  }
+
+  @Test
+  fun `unused KotlinAndroidExtensions from id should be ignored if suppressed at the block`() {
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        @Suppress("unused-kotlin-android-extensions")
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+          id("org.jetbrains.kotlin.android.extensions")
+        }
+        """
+      }
+    }
+
+    run(autoCorrect = true).isSuccess shouldBe true
+
+    lib1.buildFile.readText() shouldBe """
+      @Suppress("unused-kotlin-android-extensions")
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+        id("org.jetbrains.kotlin.android.extensions")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
   private fun McProjectBuilder<*>.writeBuildFileWithPlugin() {
     buildFile.writeKotlin(
       """

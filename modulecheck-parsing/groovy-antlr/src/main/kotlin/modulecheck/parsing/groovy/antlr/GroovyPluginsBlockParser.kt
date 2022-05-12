@@ -15,19 +15,36 @@
 
 package modulecheck.parsing.groovy.antlr
 
+import modulecheck.reporting.logging.McLogger
 import org.apache.groovy.parser.antlr4.GroovyParser.BlockStatementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.NlsContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ScriptStatementContext
+import org.apache.groovy.parser.antlr4.GroovyParser.SepContext
 import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 import java.io.File
 import javax.inject.Inject
 
-class GroovyPluginsBlockParser @Inject constructor() {
+class GroovyPluginsBlockParser @Inject constructor(
+  private val logger: McLogger
+) {
 
   fun parse(file: File): GroovyPluginsBlock? = parse(file) {
 
     var block: GroovyPluginsBlock? = null
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
+
+      var pendingBlockNoInspectionComments = mutableListOf<String>()
+
+      override fun visitNls(ctx: NlsContext) {
+        super.visitNls(ctx)
+
+        pendingBlockNoInspectionComments.addAll(
+          GroovyDependenciesBlockParser.NO_INSPECTION_REGEX
+            .findAll(ctx.text)
+            .map { it.destructured.component1() }
+        )
+      }
 
       override fun visitScriptStatement(ctx: ScriptStatementContext?) {
         super.visitScriptStatement(ctx)
@@ -43,18 +60,45 @@ class GroovyPluginsBlockParser @Inject constructor() {
             ?.removePrefix("\n")
             ?: return
 
+          val blockSuppressed = pendingBlockNoInspectionComments.joinToString(",")
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() }
+          pendingBlockNoInspectionComments.clear()
+
           val pluginsBlock = GroovyPluginsBlock(
+            logger = logger,
             fullText = statement.originalText(),
-            lambdaContent = blockBody
+            lambdaContent = blockBody,
+            suppressedForEntireBlock = blockSuppressed
           )
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
+            var pendingNoInspectionComments = mutableListOf<String>()
+
+            override fun visitSep(ctx: SepContext) {
+              super.visitSep(ctx)
+
+              pendingNoInspectionComments.addAll(
+                GroovyDependenciesBlockParser.NO_INSPECTION_REGEX
+                  .findAll(ctx.text)
+                  .map { it.destructured.component1() }
+              )
+            }
+
             override fun visitBlockStatement(ctx: BlockStatementContext) {
               super.visitBlockStatement(ctx)
 
+              val suppressed = pendingNoInspectionComments.joinToString(",")
+                .split(",")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+              pendingNoInspectionComments.clear()
+
               pluginsBlock.addStatement(
-                parsedString = ctx.originalText()
+                parsedString = ctx.originalText(),
+                suppressed = suppressed
               )
             }
           }

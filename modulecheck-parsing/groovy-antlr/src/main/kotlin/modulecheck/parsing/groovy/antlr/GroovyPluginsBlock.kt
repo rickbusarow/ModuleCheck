@@ -16,11 +16,17 @@
 package modulecheck.parsing.groovy.antlr
 
 import modulecheck.parsing.gradle.dsl.internal.AbstractPluginsBlock
+import modulecheck.reporting.logging.McLogger
 
 class GroovyPluginsBlock(
+  logger: McLogger,
   override val fullText: String,
-  override val lambdaContent: String
-) : AbstractPluginsBlock() {
+  override val lambdaContent: String,
+  suppressedForEntireBlock: List<String>
+) : AbstractPluginsBlock(
+  logger = logger,
+  suppressedForEntireBlock = suppressedForEntireBlock
+) {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

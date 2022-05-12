@@ -22,6 +22,7 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.Fixable
 import modulecheck.finding.Problem
 import modulecheck.finding.ProjectDependencyFinding
+import modulecheck.finding.getSuppressions
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
@@ -39,6 +40,12 @@ abstract class AbstractProjectDependencyFinding :
 
   final override val dependentPath: StringProjectPath get() = dependentProject.path
   final override val buildFile: File get() = dependentProject.buildFile
+
+  override val isSuppressed: LazyDeferred<Boolean> = lazyDeferred {
+    dependentProject.getSuppressions()
+      .get(findingName)
+      .contains(dependency)
+  }
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
     val statement = statementOrNull.await()?.declarationText ?: return@lazyDeferred null

@@ -18,5 +18,5 @@ package modulecheck.parsing.gradle.dsl
 data class PluginDeclaration(
   override val declarationText: String,
   override val statementWithSurroundingText: String,
-  override val suppressed: List<String> = emptyList()
+  override val suppressed: List<String>
 ) : BuildFileStatement
