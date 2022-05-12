@@ -27,6 +27,7 @@ import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.LazySet
 import modulecheck.utils.SafeCache
 import modulecheck.utils.dataSource
@@ -75,7 +76,7 @@ data class AndroidResourceDeclaredNames(
 
           val transitiveSourceSetName = tpd.source.declaringSourceSetName()
 
-          tpd.contributed.project
+          tpd.contributed.project(project.projectCache)
             .androidUnqualifiedDeclarationNamesForSourceSetName(transitiveSourceSetName)
         } else flowOf()
 

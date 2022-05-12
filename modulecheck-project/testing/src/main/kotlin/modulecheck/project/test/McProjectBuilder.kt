@@ -16,6 +16,8 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -23,9 +25,7 @@ import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.ExternalDependencies
-import modulecheck.project.ExternalDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
@@ -60,7 +60,7 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = projectDependencies[configurationName].orEmpty()
 
-    val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
+    val cpd = ConfiguredProjectDependency(configurationName, project.path, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
   }

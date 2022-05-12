@@ -19,7 +19,7 @@ import modulecheck.finding.Deletable
 import modulecheck.finding.FindingName
 import modulecheck.finding.RemovesDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class UnusedDependency(

@@ -26,6 +26,7 @@ import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
+import modulecheck.project.project
 import modulecheck.utils.containsAny
 
 class DisableAndroidResourcesRule : DocumentedRule<UnusedResourcesGenerationFinding>() {
@@ -69,13 +70,16 @@ class DisableAndroidResourcesRule : DocumentedRule<UnusedResourcesGenerationFind
 
     val usedInDownstreamProject = project.dependents()
       .any { downstream ->
-        downstream.dependentProject.sourceSets.keys
+        downstream.project(project.projectCache)
+          .sourceSets
+          .keys
           .any any2@{ sourceSetName ->
 
             val rName = project.androidRDeclaredNameForSourceSetName(sourceSetName)
               ?: return@any2 false
 
-            val refsForSourceSet = downstream.dependentProject
+            val refsForSourceSet = project.projectCache
+              .getValue(downstream.dependentProjectPath)
               .androidResourceReferencesForSourceSetName(sourceSetName)
 
             val resourceDeclarations = project

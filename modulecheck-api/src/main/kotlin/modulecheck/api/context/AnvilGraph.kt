@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
@@ -28,9 +29,9 @@ import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 import org.jetbrains.kotlin.name.FqName
 
@@ -163,7 +164,7 @@ data class AnvilGraph(
         .orEmpty()
         .asFlow()
         .mapNotNull { cpd ->
-          cpd.project
+          cpd.project(project.projectCache)
             .declarations()
             .get(SourceSetName.MAIN, includeUpstream = true)
             .filter { maybeExtraReferences.contains(it) }

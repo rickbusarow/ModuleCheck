@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 
 data class ResolvedDeclaredNames internal constructor(
@@ -72,7 +73,7 @@ data class ResolvedDeclaredNames internal constructor(
         .get(sourceSetName)
         .asSequence()
         .map { it.contributed }
-        .distinctBy { it.project to it.isTestFixture }
+        .distinctBy { it.project(project.projectCache) to it.isTestFixture }
         .firstNotNullOfOrNull { sourceCpd ->
 
           listOfNotNull(
@@ -80,7 +81,8 @@ data class ResolvedDeclaredNames internal constructor(
             SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
           )
             .firstNotNullOfOrNull { dependencySourceSetName ->
-              sourceCpd.project.resolvedDeclaredNames()
+              sourceCpd.project(project.projectCache)
+                .resolvedDeclaredNames()
                 .getSource(declaredName, dependencySourceSetName)
             }
         }

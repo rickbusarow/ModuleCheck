@@ -22,7 +22,9 @@ import modulecheck.api.context.ProjectDepth
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.api.context.sourceSetDependencies
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.ANDROID_GREEN
@@ -32,7 +34,9 @@ import modulecheck.reporting.graphviz.GraphvizFactory.Color.IMPLEMENTATION_GREEN
 import modulecheck.reporting.graphviz.GraphvizFactory.Color.JAVA_ORANGE
 import javax.inject.Inject
 
-class GraphvizFactory @Inject constructor() {
+class GraphvizFactory @Inject constructor(
+  private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+) {
 
   suspend fun create(root: ProjectDepth): String = buildString {
 
@@ -110,7 +114,7 @@ class GraphvizFactory @Inject constructor() {
           appendLine(
             "${dependentProject.pathString()} " +
               "-> " +
-              "${cpd.project.pathString()} " +
+              "${cpd.path.pathString(typeSafeProjectPathResolver)} " +
               "[style = bold; color = \"${lineColor.value}\"];"
           )
         }
@@ -145,7 +149,7 @@ class GraphvizFactory @Inject constructor() {
     return sourceSetDependencies()
       .get(sourceSetName)
       .distinct()
-      .map { it.contributed.project }
+      .map { it.contributed.project() }
       .let { deps ->
         if (includeSelf) {
           deps + this
@@ -155,6 +159,10 @@ class GraphvizFactory @Inject constructor() {
       }
       .distinct()
   }
+
+  private fun ProjectPath.pathString(
+    typeSafeProjectPathResolver: TypeSafeProjectPathResolver
+  ): String = "\"${pathValue(typeSafeProjectPathResolver)}\""
 
   private fun McProject.pathString(): String = "\"${this.path.value}\""
 

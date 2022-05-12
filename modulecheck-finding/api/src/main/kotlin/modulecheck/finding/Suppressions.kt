@@ -16,10 +16,10 @@
 package modulecheck.finding
 
 import modulecheck.parsing.gradle.dsl.HasBuildFile
-import modulecheck.project.ConfiguredProjectDependency
-import modulecheck.project.Dependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.Dependency
+import modulecheck.parsing.gradle.model.PluginDependency
 import modulecheck.project.HasProjectCache
-import modulecheck.project.PluginDependency
 
 class Suppressions(
   private val delegate: Map<Dependency, Set<FindingName>>
@@ -56,10 +56,9 @@ suspend fun <T> T.getSuppressions(): Suppressions
 
       block.forEach { (configuredModule, newNames) ->
 
-        val dependencyProject = projectCache.getValue(configuredModule.projectPath)
         val cpd = ConfiguredProjectDependency(
           configuredModule.configName,
-          dependencyProject,
+          configuredModule.projectPath,
           configuredModule.testFixtures
         )
 

@@ -16,9 +16,9 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.TransitiveProjectDependency
 import modulecheck.utils.SafeCache
 
 data class SourceSetDependencies(
@@ -45,19 +45,19 @@ data class SourceSetDependencies(
     )
 
     val directDependencies = projectDependencies[sourceSetName]
-      .filterNot { it.project == project }
+      .filterNot { it.path == project.path }
       .toSet()
 
-    val directDependencyPaths = directDependencies.map { it.project.path }.toSet()
+    val directDependencyPaths = directDependencies.map { it.path }.toSet()
 
     val inherited = directDependencies.flatMap { sourceCpd ->
       sourceConfigs(sourceCpd.isTestFixture)
         .flatMap { dependencySourceSetName ->
 
-          sourceCpd.project
+          sourceCpd.project()
             .sourceSetDependencies()
             .get(dependencySourceSetName)
-            .filterNot { it.contributed.project.path in directDependencyPaths }
+            .filterNot { it.contributed.path in directDependencyPaths }
             .map { transitiveCpd ->
               TransitiveProjectDependency(sourceCpd, transitiveCpd.contributed)
             }

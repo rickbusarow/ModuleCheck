@@ -16,6 +16,8 @@
 package modulecheck.parsing.gradle.model
 
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import javax.inject.Inject
 
 /**
  * A type-safe name can't always be resolved to a String path, because dashes and pascalCase in a
@@ -31,13 +33,20 @@ import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
  * So, in order to convert a type-safe name into its original String path, we need the list of
  * actual paths to compare against.
  */
-fun interface TypeSafeProjectPathResolver {
+class TypeSafeProjectPathResolver @Inject constructor(
+  private val allProjectPathsProvider: AllProjectPathsProvider
+) {
 
-  fun resolveStringProjectPath(
-    typeSafe: ProjectPath.TypeSafeProjectPath
-  ): ProjectPath.StringProjectPath
+  private val allPaths: Map<TypeSafeProjectPath, StringProjectPath> by lazy {
+    allProjectPathsProvider.getAllPaths()
+      .associateBy { it.toTypeSafe() }
+  }
+
+  fun resolveStringProjectPath(typeSafe: TypeSafeProjectPath): StringProjectPath {
+    return allPaths.getValue(typeSafe)
+  }
 }
 
 fun interface AllProjectPathsProvider {
-  fun get(): List<StringProjectPath>
+  fun getAllPaths(): List<StringProjectPath>
 }

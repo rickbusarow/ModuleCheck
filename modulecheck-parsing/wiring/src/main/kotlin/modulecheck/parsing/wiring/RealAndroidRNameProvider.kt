@@ -22,6 +22,7 @@ import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.LazySet
 import modulecheck.utils.dataSource
 import modulecheck.utils.dataSourceOf
@@ -53,7 +54,8 @@ class RealAndroidRNameProvider constructor(
 
         dataSource {
           setOfNotNull(
-            transitiveDependency.contributed.project
+            transitiveDependency.contributed
+              .project(project.projectCache)
               .androidRDeclaredNameForSourceSetName(transitiveSourceSetName)
           )
         }

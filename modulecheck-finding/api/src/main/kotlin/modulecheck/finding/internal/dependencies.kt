@@ -16,13 +16,13 @@
 package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.finding.Fixable.Companion
+import modulecheck.finding.Fixable
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
+import modulecheck.parsing.gradle.model.ConfiguredDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.project.ConfiguredDependency
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan
 import modulecheck.utils.prefixIfNot
@@ -70,7 +70,17 @@ suspend fun McProject.closestDeclarationOrNull(
             else it.configName != newDependency.configurationName
           },
           { it !is ModuleDependencyDeclaration },
-          { (it as? ModuleDependencyDeclaration)?.projectPath?.value ?: "" }
+          {
+            // sort by module paths, but normalize between String paths and type-safe accessors.
+            // String paths will start with ":", so remove that prefix.
+            // Type-safe accessors will have "." separators, so replace those with ":".
+            // After that, everything should read like `foo:bar:baz`.
+            (it as? ModuleDependencyDeclaration)
+              ?.projectPath
+              ?.value
+              ?.removePrefix(":")
+              ?.replace(".", ":") ?: ""
+          }
         )
         .let { sorted ->
 
@@ -177,7 +187,7 @@ fun McProject.removeDependencyWithComment(
 
       val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
         val (whitespace, code) = mr.destructured
-        "$whitespace${Companion.INLINE_COMMENT}$code"
+        "$whitespace${Fixable.INLINE_COMMENT}$code"
       }
 
       if (index == lastIndex) {

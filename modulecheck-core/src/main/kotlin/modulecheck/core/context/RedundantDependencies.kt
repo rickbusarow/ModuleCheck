@@ -21,6 +21,7 @@ import modulecheck.core.RedundantDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 import modulecheck.utils.mapAsync
 
@@ -51,12 +52,12 @@ data class RedundantDependencies(
       val inheritedDependencyProjects = project
         .classpathDependencies()
         .get(sourceSetName)
-        .groupBy { it.contributed.project }
+        .groupBy { it.contributed.path }
 
       allDirect
         .mapNotNull { direct ->
 
-          val fromCpd = inheritedDependencyProjects[direct.project]
+          val fromCpd = inheritedDependencyProjects[direct.path]
             ?.map { it.source }
             ?: return@mapNotNull null
 

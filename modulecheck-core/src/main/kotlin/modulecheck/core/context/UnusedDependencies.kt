@@ -24,6 +24,7 @@ import modulecheck.core.internal.uses
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 import modulecheck.utils.filterAsync
 import modulecheck.utils.lazyDeferred
@@ -54,22 +55,22 @@ data class UnusedDependencies(
 
       val neededForScopes = lazyDeferred {
         project.anvilScopeDependenciesForSourceSetName(configurationName.toSourceSetName())
-          .map { it.project }
+          .map { it.project(project.projectCache) }
           .toSet()
       }
 
       dependencies
         // test configurations have the main source project as a dependency.
         // without this, every project will report itself as unused.
-        .filterNot { cpd -> cpd.project.path == project.path }
+        .filterNot { cpd -> cpd.path == project.path }
         .filterAsync { cpd ->
-          !project.uses(cpd) && !neededForScopes.await().contains(cpd.project)
+          !project.uses(cpd) && !neededForScopes.await().contains(cpd.project(project.projectCache))
         }
         .map { cpd ->
           UnusedDependency(
             dependentProject = project,
             dependency = cpd,
-            dependencyIdentifier = cpd.project.path.value,
+            dependencyIdentifier = cpd.path.value,
             configurationName = cpd.configurationName
           )
         }

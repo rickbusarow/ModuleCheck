@@ -15,10 +15,11 @@
 
 package modulecheck.api.context
 
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.project
 import modulecheck.utils.SafeCache
 
 data class AnvilScopeDependencies(
@@ -43,7 +44,7 @@ data class AnvilScopeDependencies(
         .filter { cpd ->
 
           val contributed = cpd
-            .project
+            .project(project.projectCache)
             .anvilScopeContributionsForSourceSetName(cpd.configurationName.toSourceSetName())
 
           contributed.any { (scopeName, _) ->

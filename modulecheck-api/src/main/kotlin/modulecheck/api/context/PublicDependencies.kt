@@ -16,8 +16,8 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.all
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 
@@ -51,7 +51,7 @@ data class PublicDependencies(
       val inherited = combined
         .flatMap { cpd ->
           cpd
-            .project
+            .project()
             .allPublicClassPathDependencyDeclarations(false)
         }
 

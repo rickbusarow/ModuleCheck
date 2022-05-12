@@ -26,8 +26,8 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils"))
 

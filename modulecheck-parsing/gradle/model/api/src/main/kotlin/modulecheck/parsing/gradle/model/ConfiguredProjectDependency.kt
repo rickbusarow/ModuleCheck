@@ -13,21 +13,17 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle.model
 
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
 
 data class ConfiguredProjectDependency(
   override val configurationName: ConfigurationName,
-  val project: McProject,
+  override val path: ProjectPath,
   val isTestFixture: Boolean
-) : ConfiguredDependency {
+) : ConfiguredDependency, HasPath {
 
-  val path = project.path
-
-  override val name = project.path.value
+  override val name = path.value
 
   fun declaringSourceSetName() = when {
     isTestFixture -> {
@@ -75,19 +71,19 @@ data class TransitiveProjectDependency(
 }
 
 data class DownstreamDependency(
-  val dependentProject: McProject,
+  val dependentProjectPath: StringProjectPath,
   val configuredProjectDependency: ConfiguredProjectDependency
 )
 
 data class SourceSetDependency(
   val sourceSetName: SourceSetName,
-  val path: StringProjectPath,
+  override val path: ProjectPath,
   val isTestFixture: Boolean
-)
+) : HasPath
 
 fun ConfiguredProjectDependency.toSourceSetDependency(
   sourceSetName: SourceSetName = configurationName.toSourceSetName(),
-  path: StringProjectPath = this@toSourceSetDependency.path,
+  path: ProjectPath = this@toSourceSetDependency.path,
   isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
 ) = SourceSetDependency(
   sourceSetName = sourceSetName,

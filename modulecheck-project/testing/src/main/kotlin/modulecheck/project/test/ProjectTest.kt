@@ -27,6 +27,7 @@ import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeat
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
@@ -35,7 +36,6 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
-import modulecheck.project.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -229,7 +229,7 @@ abstract class ProjectTest : BaseTest() {
   ) {
     val old = projectDependencies[configurationName].orEmpty()
 
-    val cpd = ConfiguredProjectDependency(configurationName, project, asTestFixture)
+    val cpd = ConfiguredProjectDependency(configurationName, project.path, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
   }
@@ -266,7 +266,7 @@ abstract class ProjectTest : BaseTest() {
 
         val allDependencies = project.classpathDependencies().all().map { it.contributed }
           .plus(project.projectDependencies.values.flatten())
-          .map { dependency -> dependency.declarations() }
+          .map { dependency -> dependency.declarations(projectCache) }
           .plus(thisProjectDeclarations)
           .let { lazySet(it) }
           .map { it.name }

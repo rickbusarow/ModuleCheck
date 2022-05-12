@@ -19,7 +19,7 @@ import modulecheck.finding.Deletable
 import modulecheck.finding.FindingName
 import modulecheck.finding.RemovesDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.project.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class RedundantDependency(
@@ -54,14 +54,14 @@ data class RedundantDependencyFinding(
       "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
       "file is desired."
 
-  override val dependencyIdentifier = oldDependency.project.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier = oldDependency.path.value + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {
 
-    return if (from.all { dependency.path == it.project.path }) {
+    return if (from.all { dependency.path == it.path }) {
       ""
     } else {
-      from.joinToString { it.project.path.value }
+      from.joinToString { it.path.value }
     }
   }
 }

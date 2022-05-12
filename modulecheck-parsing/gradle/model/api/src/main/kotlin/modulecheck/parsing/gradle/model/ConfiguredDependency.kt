@@ -13,10 +13,20 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle.model
 
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.utils.mapToSet
+
+data class ExternalDependency(
+  override val configurationName: ConfigurationName,
+  val group: String?,
+  val moduleName: String,
+  val version: String?
+) : ConfiguredDependency {
+  val coords = MavenCoordinates(group, moduleName, version)
+  override val name = "${group ?: ""}:$moduleName"
+  val nameWithVersion = "${group ?: ""}:$moduleName:${version ?: ""}"
+}
 
 sealed interface ConfiguredDependency : Dependency {
   val configurationName: ConfigurationName
@@ -51,8 +61,8 @@ data class PluginDependency(
  * @param legacyIdOrNull An older, "legacy" ID for the plugin like `kotlin-kapt`
  * @param precompiledAccessorOrNull A special accessor invoked like a property, with or without
  *   backticks, like `base`.
- * @param kotlinFunctionArgumentOrNull The `kotlin(...)` function used for official libraries in Kotlin DSL
- *   files, like `kotlin("kapt")`.
+ * @param kotlinFunctionArgumentOrNull The `kotlin(...)` function used for official libraries in
+ *   Kotlin DSL files, like `kotlin("kapt")`.
  */
 data class PluginDefinition(
   val name: String,

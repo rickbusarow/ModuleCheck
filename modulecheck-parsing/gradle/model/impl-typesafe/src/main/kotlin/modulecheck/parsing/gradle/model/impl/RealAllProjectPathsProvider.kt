@@ -28,8 +28,13 @@ class RealAllProjectPathsProvider @Inject constructor(
   @RootGradleProject
   private val rootGradleProject: Project
 ) : AllProjectPathsProvider {
-  override fun get(): List<ProjectPath.StringProjectPath> {
-    return rootGradleProject.allprojects
+
+  private val _allPaths by lazy {
+    rootGradleProject.allprojects
       .map { ProjectPath.StringProjectPath(it.path) }
+  }
+
+  override fun getAllPaths(): List<ProjectPath.StringProjectPath> {
+    return _allPaths
   }
 }

@@ -26,10 +26,10 @@ import modulecheck.finding.getSuppressions
 import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.model.PluginDefinition
+import modulecheck.parsing.gradle.model.PluginDependency
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
-import modulecheck.project.PluginDefinition
-import modulecheck.project.PluginDependency
 import modulecheck.utils.LazyDeferred
 import modulecheck.utils.lazyDeferred
 import java.io.File

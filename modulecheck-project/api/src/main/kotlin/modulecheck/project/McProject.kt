@@ -17,11 +17,12 @@ package modulecheck.project
 
 import modulecheck.parsing.gradle.dsl.HasBuildFile
 import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
-import modulecheck.parsing.gradle.dsl.HasPath
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.HasConfigurations
+import modulecheck.parsing.gradle.model.HasPath
 import modulecheck.parsing.gradle.model.PluginAware
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.isAndroid
@@ -42,6 +43,8 @@ interface McProject :
   HasDependencyDeclarations,
   InvokesConfigurationNames,
   PluginAware {
+
+  override val path: StringProjectPath
 
   override val configurations: Configurations
     get() = platformPlugin.configurations

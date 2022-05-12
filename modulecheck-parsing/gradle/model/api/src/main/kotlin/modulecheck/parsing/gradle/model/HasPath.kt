@@ -13,18 +13,8 @@
  * limitations under the License.
  */
 
-package modulecheck.project
+package modulecheck.parsing.gradle.model
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-
-data class ExternalDependency(
-  override val configurationName: ConfigurationName,
-  val group: String?,
-  val moduleName: String,
-  val version: String?
-) : ConfiguredDependency {
-  val coords = MavenCoordinates(group, moduleName, version)
-  override val name = "${group ?: ""}:$moduleName"
-  val nameWithVersion = "${group ?: ""}:$moduleName:${version ?: ""}"
+interface HasPath {
+  val path: ProjectPath
 }

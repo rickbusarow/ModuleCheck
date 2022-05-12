@@ -15,6 +15,16 @@
 
 package modulecheck.project
 
+import modulecheck.parsing.gradle.model.DownstreamDependency
+import modulecheck.parsing.gradle.model.HasPath
+
 interface HasProjectCache {
   val projectCache: ProjectCache
+
+  fun HasPath.project(): McProject = projectCache.getValue(path)
 }
+
+fun HasPath.project(projectCache: ProjectCache): McProject = projectCache.getValue(path)
+fun DownstreamDependency.project(
+  projectCache: ProjectCache
+): McProject = projectCache.getValue(dependentProjectPath)

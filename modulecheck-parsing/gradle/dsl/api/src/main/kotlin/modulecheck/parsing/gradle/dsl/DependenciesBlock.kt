@@ -20,7 +20,6 @@ import modulecheck.parsing.gradle.dsl.DependenciesBlock.ConfiguredModule
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 
 interface DependenciesBlock :
   Block<DependencyDeclaration>,
@@ -33,7 +32,7 @@ interface DependenciesBlock :
   ): List<ModuleDependencyDeclaration>
 
   fun getOrEmpty(
-    moduleRef: StringProjectPath,
+    moduleRef: ProjectPath,
     configName: ConfigurationName,
     testFixtures: Boolean
   ): List<ModuleDependencyDeclaration>
