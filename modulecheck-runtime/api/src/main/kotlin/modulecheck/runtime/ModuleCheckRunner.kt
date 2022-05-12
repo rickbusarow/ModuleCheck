@@ -47,7 +47,7 @@ import kotlin.system.measureTimeMillis
  *
  * @param findingFactory handles parsing of the projects in order to generate the findings
  * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
- *   [FindingResult][modulecheck.api.finding.Finding.FindingResult]
+ *   [FindingResult][modulecheck.finding.Finding.FindingResult]
  * @param reportFactory handles console output of the results
  */
 @Suppress("LongParameterList")
@@ -61,7 +61,6 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val graphvizFileWriter: GraphvizFileWriter,
   val dispatcherProvider: DispatcherProvider,
   val sarifReportFactory: SarifReportFactory,
-  @Assisted
   val projectProvider: ProjectProvider,
   @Assisted
   val autoCorrect: Boolean
@@ -232,7 +231,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
   @AssistedFactory
   interface Factory {
-    fun create(projectProvider: ProjectProvider, autoCorrect: Boolean): ModuleCheckRunner
+    fun create(autoCorrect: Boolean): ModuleCheckRunner
   }
 }
 
