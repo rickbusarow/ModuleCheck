@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import modulecheck.gradle.moduleCheck
-
 buildscript {
   dependencies {
     classpath(libs.agp)
