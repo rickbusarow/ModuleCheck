@@ -33,7 +33,7 @@ dependencies {
   dependencySync("com.rickbusarow.dispatch:dispatch-android-espresso:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-android-lifecycle-extensions:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-android-lifecycle:1.0.0-beta10")
-  dependencySync("com.rickbusarow.dispatch:dispatch-android-viewmodel:1.0.0-SNAPSHOT")
+  dependencySync("com.rickbusarow.dispatch:dispatch-android-viewmodel:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-detekt:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-test-junit4:1.0.0-beta10")
