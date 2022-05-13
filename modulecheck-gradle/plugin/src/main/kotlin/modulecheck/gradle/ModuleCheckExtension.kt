@@ -17,6 +17,7 @@
 
 package modulecheck.gradle
 
+import modulecheck.api.KaptMatcher
 import modulecheck.config.ChecksSettings
 import modulecheck.config.ChecksSettings.Companion.ANVIL_FACTORY_GENERATION_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.DEPTHS_DEFAULT
@@ -32,7 +33,6 @@ import modulecheck.config.ChecksSettings.Companion.UNUSED_DEPENDENCY_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.UNUSED_KAPT_DEFAULT
 import modulecheck.config.ChecksSettings.Companion.UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.PerModuleReportSettings
 import modulecheck.config.ReportSettings

@@ -15,8 +15,9 @@
 
 @file:Suppress("MatchingDeclarationName")
 
-package modulecheck.config
+package modulecheck.api
 
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.utils.remove
 
 @Deprecated("Use `modulecheck.config.CodeGeneratorBinding` instead.")
