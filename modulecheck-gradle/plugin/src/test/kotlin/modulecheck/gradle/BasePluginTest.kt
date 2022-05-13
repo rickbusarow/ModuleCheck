@@ -19,14 +19,12 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
-import modulecheck.utils.child
 import modulecheck.utils.letIf
 import modulecheck.utils.remove
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.BeforeEach
-import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
 abstract class BasePluginTest : ProjectTest() {
