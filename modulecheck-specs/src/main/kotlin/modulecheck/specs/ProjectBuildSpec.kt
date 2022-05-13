@@ -30,7 +30,7 @@ public val DEFAULT_GRADLE_VERSION: String = System
 public val DEFAULT_KOTLIN_VERSION: String =
   System.getProperty("modulecheck.kotlinVersion", "1.6.20")
 public val DEFAULT_AGP_VERSION: String =
-  System.getProperty("modulecheck.agpVersion", "7.1.3")
+  System.getProperty("modulecheck.agpVersion", "7.2.0")
 public val DEFAULT_ANVIL_VERSION: String =
   System.getProperty("modulecheck.anvilVersion", "2.4.0")
 

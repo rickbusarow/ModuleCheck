@@ -31,7 +31,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp)
   implementation(libs.benManes.gradle)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)

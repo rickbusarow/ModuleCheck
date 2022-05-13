@@ -31,7 +31,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp)
   implementation(libs.antlr.core)
   implementation(libs.antlr.runtime)
   implementation(libs.groovy)

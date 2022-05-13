@@ -59,6 +59,7 @@ java_pid1690.hprof
 !/gradle/wrapper/gradle-wrapper.properties
 true/
 
+.cache-proxy/*
 libs/
 /buildSrc/.gradle/
 

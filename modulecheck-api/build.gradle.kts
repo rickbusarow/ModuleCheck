@@ -38,7 +38,6 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils"))
 
-  implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.kotlin.reflect)
