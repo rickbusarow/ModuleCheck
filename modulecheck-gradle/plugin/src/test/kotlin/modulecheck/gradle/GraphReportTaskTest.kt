@@ -109,8 +109,11 @@ internal class GraphReportTaskTest : BasePluginTest() {
       "app", "build", "reports", "modulecheck", "graphs", "main.dot"
     ) shouldHaveText """
       strict digraph DependencyGraph {
-        ratio=0.5;
-        node [style="rounded,filled" shape=box];
+        ratio = 0.5625;
+        node [style = "rounded,filled" shape = box];
+
+        labelloc = "t"
+        label = ":app -- main";
 
         ":app" [fillcolor = "#F89820"];
         ":lib1" [fillcolor = "#F89820"];
@@ -121,9 +124,9 @@ internal class GraphReportTaskTest : BasePluginTest() {
 
         ":lib2" -> ":lib1" [style = bold; color = "#007744"];
 
-        {rank = same; ":lib1";}
-        {rank = same; ":lib2";}
-        {rank = same; ":app";}
+        { rank = same; ":lib1"; }
+        { rank = same; ":lib2"; }
+        { rank = same; ":app"; }
       }
     """
   }
