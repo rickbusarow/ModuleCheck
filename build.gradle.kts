@@ -32,6 +32,7 @@ plugins {
   alias(libs.plugins.detekt)
   alias(libs.plugins.gradleDoctor)
   alias(libs.plugins.taskTree)
+  id("mcbuild.artifacts-check")
   id("mcbuild.ben-manes")
   id("mcbuild.clean")
   id("mcbuild.dokka")
@@ -40,6 +41,7 @@ plugins {
   id("mcbuild.test")
   id("mcbuild.website")
   id("com.rickbusarow.module-check") version "0.12.0"
+  base
 }
 
 moduleCheck {
