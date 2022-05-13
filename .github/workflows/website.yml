@@ -15,7 +15,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Node is required for npm
       - name: Set up Node

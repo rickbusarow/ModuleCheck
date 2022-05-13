@@ -24,7 +24,7 @@ jobs:
     steps:
 
       - name: Check out repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Node is required for npm
       - name: Set up Node
@@ -65,11 +65,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -93,11 +93,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -127,11 +127,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -168,11 +168,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -209,11 +209,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -288,11 +288,11 @@ jobs:
 
     steps:
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
@@ -342,11 +342,11 @@ jobs:
     steps:
 
       - name: check out with token (used by forks)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name != github.repository
 
       - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         if: github.event.pull_request.head.repo.full_name == github.repository
         with:
           ref: ${{ github.event.pull_request.head.ref }}
