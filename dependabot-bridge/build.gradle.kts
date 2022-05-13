@@ -86,7 +86,7 @@ dependencies {
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.1")
   dependencySync("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
   dependencySync("org.jetbrains.kotlinx:kotlinx-knit:0.4.0")
-  dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.2.1")
+  dependencySync("org.jlleitschuh.gradle:ktlint-gradle:10.3.0")
   dependencySync("org.junit.jupiter:junit-jupiter-api:5.8.2")
   dependencySync("org.junit.jupiter:junit-jupiter-engine:5.8.2")
   dependencySync("org.junit.jupiter:junit-jupiter-params:5.8.2")
