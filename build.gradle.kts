@@ -49,6 +49,12 @@ moduleCheck {
   checks {
     sortDependencies = true
   }
+  reports {
+    graphs {
+      enabled = true
+      outputDir = File(buildDir, "depths").path
+    }
+  }
 }
 
 tasks.named("ktlintFormat") {
