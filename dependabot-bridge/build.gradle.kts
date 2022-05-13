@@ -38,7 +38,7 @@ dependencies {
   dependencySync("com.rickbusarow.dispatch:dispatch-detekt:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-test-junit4:1.0.0-beta10")
   dependencySync("com.rickbusarow.dispatch:dispatch-test-junit5:1.0.0-beta10")
-  dependencySync("com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10")
+  dependencySync("com.rickbusarow.dispatch:dispatch-test:1.0.0-SNAPSHOT")
   dependencySync("com.rickbusarow.hermit:hermit-core:0.9.5")
   dependencySync("com.rickbusarow.hermit:hermit-coroutines:0.9.5")
   dependencySync("com.rickbusarow.hermit:hermit-junit4:0.9.5")
