@@ -43,7 +43,6 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
-  implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.groovyXml)
   implementation(libs.semVer)

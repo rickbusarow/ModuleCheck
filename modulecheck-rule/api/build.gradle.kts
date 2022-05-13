@@ -36,7 +36,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp)
   implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 

@@ -86,6 +86,8 @@ kotlinx-knit = { id = "kotlinx-knit", version.ref = "kotlinx-knit" }
 
 [libraries]
 agp = { module = "com.android.tools.build:gradle", version.ref = "androidTools" }
+agp-api = { module = "com.android.tools.build:gradle-api", version.ref = "androidTools" }
+agp-builder-model = { module = "com.android.tools.build:builder-model", version.ref = "androidTools" }
 
 antlr-core = { module = "org.antlr:antlr4", version.ref = "antlr" }
 antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }

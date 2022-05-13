@@ -43,7 +43,6 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp)
   implementation(libs.bundles.hermit)
   implementation(libs.bundles.jUnit)
   implementation(libs.bundles.kotest)
