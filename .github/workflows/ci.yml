@@ -58,6 +58,34 @@ jobs:
           concurrent: true
           gradle-build-scan-report: false
 
+  artifacts-check:
+
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]' && github.actor != 'dependabot-preview[bot]'
+
+    steps:
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v2
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: artifacts check
+        run: ./gradlew artifactsCheck --no-daemon
+
   detekt:
 
     runs-on: ubuntu-latest

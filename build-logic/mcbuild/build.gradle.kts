@@ -22,6 +22,7 @@ plugins {
   `kotlin-dsl`
   base
   alias(libs.plugins.ktlint)
+  alias(libs.plugins.google.ksp)
 }
 
 val kotlinVersion = libs.versions.kotlin.get()
@@ -42,6 +43,9 @@ dependencies {
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
   implementation(libs.vanniktech.publish)
+  implementation(libs.square.moshi)
+
+  ksp(libs.square.moshi.codegen)
 }
 
 java {
@@ -56,5 +60,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     apiVersion = "1.5"
 
     jvmTarget = "11"
+
+    freeCompilerArgs = freeCompilerArgs + listOf(
+      "-opt-in=kotlin.RequiresOptIn"
+    )
   }
 }
