@@ -1348,7 +1348,7 @@
     "@docsearch/css" "3.0.0"
     algoliasearch "^4.0.0"
 
-"@docusaurus/core@2.0.0-beta.20", "@docusaurus/core@^2.0.0-beta.20":
+"@docusaurus/core@2.0.0-beta.20":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@docusaurus/core/-/core-2.0.0-beta.20.tgz#cf4aeeccecacb547a6fb42340c83bed0cccb57c0"
   integrity sha512-a3UgZ4lIcIOoZd4j9INqVkWSXEDxR7EicJXt8eq2whg4N5hKGqLHoDSnWfrVSPQn4NoG5T7jhPypphSoysImfQ==
@@ -1497,7 +1497,7 @@
     utility-types "^3.10.0"
     webpack "^5.72.0"
 
-"@docusaurus/plugin-content-docs@2.0.0-beta.20", "@docusaurus/plugin-content-docs@^2.0.0-beta.20":
+"@docusaurus/plugin-content-docs@2.0.0-beta.20":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-docs/-/plugin-content-docs-2.0.0-beta.20.tgz#2a53b9fc355f45bf7c6917f19be7bfa0698b8b9e"
   integrity sha512-XOgwUqXtr/DStpB3azdN6wgkKtQkOXOx1XetORzhHnjihrSMn6daxg+spmcJh1ki/mpT3n7yBbKJxVNo+VB38Q==
@@ -1517,7 +1517,7 @@
     utility-types "^3.10.0"
     webpack "^5.72.0"
 
-"@docusaurus/plugin-content-pages@2.0.0-beta.20", "@docusaurus/plugin-content-pages@^2.0.0-beta.20":
+"@docusaurus/plugin-content-pages@2.0.0-beta.20":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@docusaurus/plugin-content-pages/-/plugin-content-pages-2.0.0-beta.20.tgz#6a76c7fa049983d2d94d8c4d738802acf01611fe"
   integrity sha512-ubY6DG4F0skFKjfNGCbfO34Qf+MZy6C05OtpIYsoA2YU8ADx0nRH7qPgdEkwR3ma860DbY612rleRT13ogSlhg==
@@ -1573,7 +1573,7 @@
     sitemap "^7.1.1"
     tslib "^2.4.0"
 
-"@docusaurus/preset-classic@^2.0.0-beta.20":
+"@docusaurus/preset-classic@2.0.0-beta.20":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@docusaurus/preset-classic/-/preset-classic-2.0.0-beta.20.tgz#19566be713ce0297834cd999392ea3605bc6f574"
   integrity sha512-artUDjiYFIlGd2fxk0iqqcJ5xSCrgormOAoind1c0pn8TRXY1WSCQWYI6p4X24jjhSCzLv0s6Z9PMDyxZdivhg==
@@ -1598,7 +1598,7 @@
     "@types/react" "*"
     prop-types "^15.6.2"
 
-"@docusaurus/theme-classic@2.0.0-beta.20", "@docusaurus/theme-classic@^2.0.0-beta.20":
+"@docusaurus/theme-classic@2.0.0-beta.20":
   version "2.0.0-beta.20"
   resolved "https://registry.yarnpkg.com/@docusaurus/theme-classic/-/theme-classic-2.0.0-beta.20.tgz#c4c7712c2b35c5654433228729f92ec73e6c598e"
   integrity sha512-rs4U68x8Xk6rPsZC/7eaPxCKqzXX1S45FICKmq/IZuaDaQyQIijCvv2ssxYnUyVZUNayZfJK7ZtNu+A0kzYgSQ==
@@ -1794,7 +1794,7 @@
     unist-builder "2.0.3"
     unist-util-visit "2.0.3"
 
-"@mdx-js/react@^1.6.22":
+"@mdx-js/react@1.6.22", "@mdx-js/react@^1.6.22":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/react/-/react-1.6.22.tgz#ae09b4744fddc74714ee9f9d6f17a66e77c43573"
   integrity sha512-TDoPum4SHdfPiGSAaRBw7ECyI8VaHpK8GJugbJIJuqyh6kzw9ZLJZW3HGL3NNrJGxcAixUvqROm+YuQOo5eXtg==
@@ -2987,7 +2987,7 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
-clsx@^1.1.1:
+clsx@1.1.1, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -5732,7 +5732,7 @@ mdurl@^1.0.0:
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
 
-mdx-mermaid@^1.1.0:
+mdx-mermaid@1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/mdx-mermaid/-/mdx-mermaid-1.2.2.tgz#3be9870c3bbf944d47dba805acf3cf877499e58f"
   integrity sha512-izl9Vaus0fJHJb6IGgcGZ79LpfFACfn28ExPXKL815RTMT9bgDRIAubufZUCgoCAAv/2S1VTxJLWTwbck4TpLA==
@@ -5764,7 +5764,7 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@^9.1.1:
+mermaid@9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-9.1.1.tgz#5d3d330ca4adf7f3c8ca51095f8bb2f0fb1a93bb"
   integrity sha512-2RVD+WkzZ4VDyO9gQvQAuQ/ux2gLigJtKDTlbwjYqOR/NwsVzTSfGm/kx648/qWJsg6Sv04tE9BWCO8s6a+pFA==
@@ -6600,7 +6600,7 @@ pretty-time@^1.1.0:
   resolved "https://registry.yarnpkg.com/pretty-time/-/pretty-time-1.1.0.tgz#ffb7429afabb8535c346a34e41873adf3d74dd0e"
   integrity sha512-28iF6xPQrP8Oa6uxE6a1biz+lWeTOAPKggvjB8HAs6nVMKZwf5bG++632Dx614hIWgUPkgivRfG+a8uAXGTIbA==
 
-prism-react-renderer@^1.3.1:
+prism-react-renderer@1.3.1, prism-react-renderer@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.3.1.tgz#88fc9d0df6bed06ca2b9097421349f8c2f24e30d"
   integrity sha512-xUeDMEz074d0zc5y6rxiMp/dlC7C+5IDDlaEUlcBOFE2wddz7hz5PNupb087mPwTt7T9BrFmewObfCBuf/LKwQ==
@@ -6778,7 +6778,7 @@ react-dev-utils@^12.0.1:
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
 
-react-dom@^16.8.4:
+react-dom@16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
   integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
@@ -6809,7 +6809,7 @@ react-helmet-async@*, react-helmet-async@^1.3.0:
     react-fast-compare "^3.2.0"
     shallowequal "^1.1.0"
 
-react-infima@^0.0.1-alpha.4:
+react-infima@0.0.1-alpha.4:
   version "0.0.1-alpha.4"
   resolved "https://registry.yarnpkg.com/react-infima/-/react-infima-0.0.1-alpha.4.tgz#3fbcaab78e7afd9e2eb5f0000fefa8281b1f7450"
   integrity sha512-4RpQeiHxiocPXO3tdd54wCbZx747OvBvbB1PVdE6Pu3bA2tvFyOJl+93b0lZRxM2qjN8Z/pssmD7JzcuXmCQ4w==
@@ -6889,7 +6889,7 @@ react-textarea-autosize@^8.3.2:
     use-composed-ref "^1.0.0"
     use-latest "^1.0.0"
 
-react@^16.8.4:
+react@16.14.0:
   version "16.14.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
   integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
