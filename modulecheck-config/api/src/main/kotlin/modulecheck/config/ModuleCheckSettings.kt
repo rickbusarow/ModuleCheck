@@ -17,6 +17,8 @@
 
 package modulecheck.config
 
+import modulecheck.api.KaptMatcher
+
 interface ModuleCheckSettings {
 
   /**

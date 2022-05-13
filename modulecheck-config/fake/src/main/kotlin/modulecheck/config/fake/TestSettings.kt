@@ -17,9 +17,9 @@
 
 package modulecheck.config.fake
 
+import modulecheck.api.KaptMatcher
 import modulecheck.config.ChecksSettings
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.KaptMatcher
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.PerModuleReportSettings
 import modulecheck.config.ReportSettings
