@@ -34,14 +34,6 @@ class GraphvizFileWriter @Inject constructor(
       val rootOrNull = settings.reports.graphs.outputDir?.let { File(it) }
 
       depths
-        .filter {
-          // Don't generate a graph if the SourceSet doesn't exist at all.
-          // For example, if it's an Android project there will be an `androidTest` SourceSet,
-          // but if there are no `androidTestImplementation` dependencies and no files, then skip it.
-          it.depth != 0 || it.dependentProject
-            .sourceSets[it.sourceSetName]
-            ?.hasExistingSourceFiles == true
-        }
         // Generate the low-depth graphs first, because their data is memoized and used to create the
         // graphs for high-depth projects.
         .sorted()
@@ -49,15 +41,17 @@ class GraphvizFileWriter @Inject constructor(
 
           launchIO {
 
-            val root = rootOrNull ?: depth.dependentProject.projectDir
-
-            val graphFile = root.child(
-              "build",
-              "reports",
-              "modulecheck",
-              "graphs",
+            val graphFile = rootOrNull?.child(
+              depth.dependentPath.value.replace(":", File.separator),
               "${depth.sourceSetName.value}.dot"
             )
+              ?: depth.dependentProject.projectDir.child(
+                "build",
+                "reports",
+                "modulecheck",
+                "graphs",
+                "${depth.sourceSetName.value}.dot"
+              )
 
             val depthReport = graphvizFactory.create(depth)
 

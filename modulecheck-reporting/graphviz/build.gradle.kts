@@ -34,4 +34,11 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlin.reflect)
+  testImplementation(libs.rickBusarow.dispatch.test.core)
+
+  testImplementation(project(path = ":modulecheck-core"))
+  testImplementation(project(path = ":modulecheck-project:api"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

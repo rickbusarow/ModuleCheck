@@ -49,8 +49,11 @@ class GraphvizFactory @Inject constructor(
 
       appendLine(
         """
-        |ratio=0.5;
-        |node [style="rounded,filled" shape=box];
+        |ratio = 0.5625;
+        |node [style = "rounded,filled" shape = box];
+        |
+        |labelloc = "t"
+        |label = "${root.dependentPath.value} -- ${root.sourceSetName.value}";
         |
         """.trimMargin()
       )
@@ -139,7 +142,7 @@ class GraphvizFactory @Inject constructor(
           .sortedBy { it.dependentPath }
           .joinToString("; ", postfix = ";") { it.dependentProject.pathString() }
 
-        appendLine("{rank = same; $paths}")
+        appendLine("{ rank = same; $paths }")
       }
   }
 
