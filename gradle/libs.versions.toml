@@ -49,7 +49,7 @@ rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-hermit = "0.9.5"
 rickBusarow-moduleCheck = "0.11.3"
-rickBusarow-tangle = "0.13.2"
+rickBusarow-tangle = "0.14.1"
 
 square-anvil = "2.4.0"
 square-moshi = "1.13.0"
