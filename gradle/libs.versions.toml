@@ -46,7 +46,7 @@ ktlint = "10.3.0"
 mavenPublish = "0.13.0"
 
 rickBusarow-dependencySync = "0.11.2"
-rickBusarow-dispatch = "1.0.0-beta10"
+rickBusarow-dispatch = "1.0.0-SNAPSHOT"
 rickBusarow-hermit = "0.9.5"
 rickBusarow-moduleCheck = "0.11.3"
 rickBusarow-tangle = "0.14.1"
