@@ -41,7 +41,7 @@ kotlinx-coroutines = "1.6.1"
 kotlinx-knit = "0.4.0"
 google-ksp = "1.6.21-1.0.5"
 
-ktlint = "10.2.1"
+ktlint = "10.3.0"
 
 mavenPublish = "0.13.0"
 
