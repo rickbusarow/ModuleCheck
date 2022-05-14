@@ -49,14 +49,7 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
 
       - name: build website
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            buildSite
-          concurrent: true
-          gradle-build-scan-report: false
+        run: ./gradlew buildSite --no-daemon
 
   artifacts-check:
 
@@ -136,10 +129,10 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses : actions/setup-java@v2
-        with :
-          distribution : 'adopt'
-          java-version : '11'
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
           cache: 'gradle'
 
       - name: KtLint format (used by main repo)
@@ -176,15 +169,15 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses : actions/setup-java@v2
-        with :
-          distribution : 'adopt'
-          java-version : '11'
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
           cache: 'gradle'
 
       - name: ModuleCheck with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew moduleCheckAuto
+        run: ./gradlew moduleCheckAuto --no-daemon
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes (used by main repo)
@@ -196,7 +189,7 @@ jobs:
 
       - name: ModuleCheck check (used by forks)
         if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew moduleCheck
+        run: ./gradlew moduleCheck --no-daemon
 
   versioning:
 
@@ -302,18 +295,7 @@ jobs:
           cache: 'gradle'
 
       - name: all tests
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            testJvm
-          properties: |
-            modulecheck.kotlinVersion=${{ matrix.kotlin-version }}
-            modulecheck.gradleVersion=${{ matrix.gradle-version }}
-            modulecheck.agpVersion=${{ matrix.agp-version }}
-          concurrent: true
-          gradle-build-scan-report: false
+        run: ./gradlew testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v2
@@ -349,20 +331,14 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK
-        uses : actions/setup-java@v2
-        with :
-          distribution : 'adopt'
-          java-version : '11'
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
           cache: 'gradle'
 
       - name: all tests
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: testJvm
-          concurrent: true
-          gradle-build-scan-report: false
+        run: ./gradlew testJvm --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v2

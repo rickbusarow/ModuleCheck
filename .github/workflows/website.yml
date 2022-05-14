@@ -40,14 +40,7 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
 
       - name: build website
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-dependencies-cache-key: |
-            gradle/libs.versions.toml
-          arguments: |
-            buildSite
-          concurrent: true
-          gradle-build-scan-report: false
+        run: ./gradlew buildSite --no-daemon
 
       - name: Deploy to GitHub Pages
         if: success()
