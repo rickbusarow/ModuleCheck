@@ -20,13 +20,13 @@ import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.core.rule.SortDependenciesRule
 import modulecheck.core.rule.SortPluginsRule
 import modulecheck.gradle.platforms.internal.generatesBuildConfig
 import modulecheck.gradle.platforms.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import modulecheck.rule.FindingFactory
+import modulecheck.rule.SingleRuleFindingFactory
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider

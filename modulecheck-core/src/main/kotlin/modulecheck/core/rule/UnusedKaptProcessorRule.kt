@@ -15,7 +15,6 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.finding.Finding
@@ -39,7 +38,7 @@ class UnusedKaptProcessorRule(
     return project.unusedKaptProcessors().all(settings)
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.unusedKapt
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.unusedKapt
   }
 }

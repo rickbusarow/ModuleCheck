@@ -40,5 +40,6 @@ dependencies {
   testImplementation(project(path = ":modulecheck-core"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-rule:api"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

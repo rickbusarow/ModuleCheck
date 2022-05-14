@@ -15,7 +15,6 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortDependenciesFinding
 import modulecheck.core.rule.sort.sortedDependenciesFileText
@@ -73,7 +72,7 @@ class SortDependenciesRule(
     }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.sortDependencies
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.sortDependencies
   }
 }

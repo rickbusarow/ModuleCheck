@@ -17,7 +17,7 @@ package modulecheck.core.rule
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.InheritedDependencyFinding
 import modulecheck.core.context.asApiOrImplementation
 import modulecheck.core.internal.uses
@@ -223,7 +223,7 @@ class InheritedDependencyRule : DocumentedRule<InheritedDependencyFinding>() {
     }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.inheritedDependency
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.inheritedDependency
   }
 }

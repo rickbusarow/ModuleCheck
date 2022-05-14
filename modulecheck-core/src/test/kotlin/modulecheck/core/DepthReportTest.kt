@@ -18,10 +18,10 @@ package modulecheck.core
 import modulecheck.config.fake.TestSettings
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.test.maybeAddSourceSet
+import modulecheck.rule.SingleRuleFindingFactory
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test

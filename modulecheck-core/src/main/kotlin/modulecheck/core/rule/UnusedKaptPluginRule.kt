@@ -16,7 +16,6 @@
 package modulecheck.core.rule
 
 import modulecheck.api.context.kaptDependencies
-import modulecheck.config.ChecksSettings
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
@@ -84,7 +83,7 @@ class UnusedKaptPluginRule(
     }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.unusedKapt
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.unusedKapt
   }
 }

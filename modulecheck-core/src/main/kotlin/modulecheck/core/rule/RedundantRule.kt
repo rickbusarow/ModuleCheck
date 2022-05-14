@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.RedundantDependencyFinding
 import modulecheck.core.context.RedundantDependencies
 import modulecheck.finding.FindingName
@@ -35,7 +35,7 @@ class RedundantRule : DocumentedRule<RedundantDependencyFinding>() {
       .map { it.toFinding(findingName = name) }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.redundantDependency
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.redundantDependency
   }
 }

@@ -39,6 +39,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
         "-opt-in=kotlin.ExperimentalStdlibApi",
         "-opt-in=kotlin.RequiresOptIn",
         "-opt-in=kotlin.contracts.ExperimentalContracts",
+        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
         "-opt-in=kotlinx.coroutines.FlowPreview"
       )
     }
