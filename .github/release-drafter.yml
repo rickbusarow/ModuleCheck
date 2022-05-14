@@ -58,6 +58,8 @@ template: |
 exclude-contributors:
   - 'dependabot'
   - 'dependabot[bot]'
+  - 'renovate'
+  - 'renovate[bot]'
   - 'kodiakhq'
   - 'kodiakhq[bot]'
 
@@ -68,6 +70,7 @@ autolabeler:
   - label: 'dependencies'
     branch:
       - '/dependabot\/.+/'
+      - '/renovate\/.+/'
 
 include-labels:
   - 'api-breaking change'
