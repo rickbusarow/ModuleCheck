@@ -37,6 +37,7 @@ import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
+import modulecheck.rule.SingleRuleFindingFactory
 import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis
@@ -193,7 +194,16 @@ data class ModuleCheckRunner @AssistedInject constructor(
   }
 
   private fun maybeLogDepths(depths: List<DepthFinding>) {
-    if (depths.isNotEmpty()) {
+
+    if (depths.isEmpty()) return
+
+    // TODO - this should probably be replaced with an explicit runtime argument, or the depths
+    //  report should be folded into something like a "module metrics" finding/rule, so that
+    //  `DepthFinding` can just be treated like a primitive.
+    // If the depths check is enabled, then just always log them.  If the check is disabled but
+    // this is a single-rule "task", that means the user is explicitly running 'moduleCheckDepths'
+    // (or whatever that has been renamed to in the future) and the results should always be logged.
+    if (settings.checks.depths || findingFactory is SingleRuleFindingFactory<*>) {
       val depthLog = DepthLogFactory().create(depths)
 
       logger.printReport(depthLog)

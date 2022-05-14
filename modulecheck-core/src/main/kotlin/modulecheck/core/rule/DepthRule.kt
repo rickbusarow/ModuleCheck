@@ -17,7 +17,7 @@ package modulecheck.core.rule
 
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.project.McProject
 import modulecheck.rule.ReportOnlyRule
@@ -43,7 +43,9 @@ class DepthRule : DocumentedRule<DepthFinding>(), ReportOnlyRule<DepthFinding> {
       }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.depths
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.depths ||
+      settings.reports.depths.enabled ||
+      settings.reports.graphs.enabled
   }
 }

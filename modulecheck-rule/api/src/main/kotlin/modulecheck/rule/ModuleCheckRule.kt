@@ -15,7 +15,6 @@
 
 package modulecheck.rule
 
-import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
@@ -28,7 +27,7 @@ interface ModuleCheckRule<T : Finding> {
   val documentationUrl: String
 
   suspend fun check(project: McProject): List<T>
-  fun shouldApply(checksSettings: ChecksSettings): Boolean
+  fun shouldApply(settings: ModuleCheckSettings): Boolean
 }
 
 interface ReportOnlyRule<T : Finding> : ModuleCheckRule<T>
