@@ -19,12 +19,15 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.specs.DEFAULT_AGP_VERSION
 import modulecheck.specs.DEFAULT_GRADLE_VERSION
 import modulecheck.specs.DEFAULT_KOTLIN_VERSION
+import modulecheck.utils.child
 import modulecheck.utils.letIf
 import modulecheck.utils.remove
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
+import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
 abstract class BasePluginTest : ProjectTest() {
@@ -32,6 +35,23 @@ abstract class BasePluginTest : ProjectTest() {
   val kotlinVersion = DEFAULT_KOTLIN_VERSION
   val agpVersion = DEFAULT_AGP_VERSION
   val gradleVersion = DEFAULT_GRADLE_VERSION
+
+  // Use a single directory as a cache for the `.gradle` directory used in tests.
+  // This saves a significant amount of time by not having to download the distribution each time,
+  // and it's also faster than copying all of GRADLE_USER_HOME -- since that directory is massive.
+  // To do this, before the test, we copy whatever's in this directory into each test's project
+  // directory.  After the test, we copy from the test project directory back to the cache.
+  val localGradleCache: File by resets {
+    File("build")
+      .child("test-gradle-cache")
+      .also { it.mkdirs() }
+      .absoluteFile
+  }
+
+  val testProjectGradleDir: File by resets {
+    testProjectDir.child(".gradle")
+      .also { it.mkdirs() }
+  }
 
   val gradleRunner by resets {
     GradleRunner.create()
@@ -45,6 +65,19 @@ abstract class BasePluginTest : ProjectTest() {
   @BeforeEach
   fun beforeEach() {
     testProjectDir.deleteRecursively()
+
+    localGradleCache.copyRecursively(
+      testProjectGradleDir,
+      overwrite = true
+    )
+  }
+
+  @AfterEach
+  fun afterEach() {
+    testProjectGradleDir.copyRecursively(
+      localGradleCache,
+      overwrite = true
+    )
   }
 
   fun build(vararg tasks: String, stacktrace: Boolean): BuildResult {
