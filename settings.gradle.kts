@@ -86,7 +86,6 @@ rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-  ":dependabot-bridge",
   ":modulecheck-api",
   ":modulecheck-config:api",
   ":modulecheck-config:fake",

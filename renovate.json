@@ -1,5 +1,10 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":dependencyDashboard",
+    ":prConcurrentLimit1",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all"
   ]
 }
