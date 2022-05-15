@@ -1,10 +1,6 @@
 {
+  "labels": ["dependencies"],
   "extends": [
-    "config:base",
-    ":dependencyDashboard",
-    ":prConcurrentLimit1",
-    "group:monorepos",
-    "group:recommended",
-    "workarounds:all"
+    "config:base"
   ]
 }
