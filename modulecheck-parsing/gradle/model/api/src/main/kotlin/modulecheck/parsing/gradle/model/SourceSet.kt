@@ -166,6 +166,17 @@ value class SourceSetName(val value: String) {
     }
   }
 
+  /**
+   * @return the 'kapt' name for this source set, such as `kapt`, `kaptTest`, or `kaptAndroidTest`
+   */
+  fun kaptVariant(): ConfigurationName {
+    return if (this == MAIN) {
+      ConfigurationName.kapt
+    } else {
+      "${ConfigurationName.kapt.value}${value.capitalize()}".asConfigurationName()
+    }
+  }
+
   fun withUpstream(
     hasConfigurations: HasConfigurations
   ): List<SourceSetName> {

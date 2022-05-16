@@ -26,13 +26,20 @@ import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.project.McProject
+import modulecheck.utils.mapToSet
 
 class UnusedKaptPluginRule(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<Finding>() {
 
   private val generatorBindings: List<CodeGeneratorBinding>
-    get() = settings.additionalCodeGenerators + defaultCodeGeneratorBindings()
+    get() = settings.additionalCodeGenerators
+      .plus(
+        @Suppress("DEPRECATION")
+        settings.additionalKaptMatchers
+          .mapToSet { it.toCodeGeneratorBinding() }
+      )
+      .plus(defaultCodeGeneratorBindings())
 
   override val name = FindingName("unused-kapt-plugin")
   override val description = "Warns if the kapt plugin is applied, but unused"
@@ -47,7 +54,7 @@ class UnusedKaptPluginRule(
     val processorIsUsed = project
       .configurations
       .keys
-      .filter { it.value.startsWith("kapt") }
+      .filter { it.isKapt() }
       .any { configName ->
 
         val processors = kaptDependencies.get(configName)

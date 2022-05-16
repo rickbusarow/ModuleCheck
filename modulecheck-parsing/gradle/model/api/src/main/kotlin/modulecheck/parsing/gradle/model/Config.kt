@@ -118,8 +118,22 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    */
   fun implementationVariant() = toSourceSetName().implementationConfig()
 
+  /**
+   * Returns the 'kapt-' version of the current configuration.
+   *
+   * @return for any main/common configuration, just returns `kapt`. For any other configuration, it
+   *   returns `kapt` appended with the [SourceSetName].
+   */
+  fun kaptVariant() = toSourceSetName().kaptVariant()
+
+  /** @return true if the configuration is an `api` variant */
   fun isApi(): Boolean = this == apiVariant()
+
+  /** @return true if the configuration is an `implementation` variant */
   fun isImplementation(): Boolean = this == implementationVariant()
+
+  /** @return true if the configuration is a `kapt` variant */
+  fun isKapt(): Boolean = this == kaptVariant()
 
   override fun compareTo(other: ConfigurationName): Int {
     return value.compareTo(other.value)

@@ -12,9 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("DEPRECATION")
 
 package modulecheck.core
 
+import modulecheck.api.KaptMatcher
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.RunnerTest
@@ -269,6 +272,131 @@ class UnusedKaptPluginTest : RunnerTest() {
       dependencies {
         @Suppress("unused-kapt-processor")
         kapt("$dagger")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `used custom processor using KaptMatcher should not make the plugin unused`() {
+
+    @Suppress("DEPRECATION")
+    settings.additionalKaptMatchers = listOf(
+      KaptMatcher(
+        name = "Processor",
+        processor = "com.modulecheck:processor",
+        annotationImports = listOf(
+          "com\\.modulecheck\\.annotations\\.\\*",
+          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+        )
+      )
+    )
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, "com.modulecheck:processor:0.0.1")
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          @Suppress("unused-kapt-processor")
+          kapt("com.modulecheck:processor:0.0.1")
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.annotations.TheAnnotation
+
+        @TheAnnotation
+        class Lib1Class
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        id("kotlin-kapt")
+      }
+
+      dependencies {
+        @Suppress("unused-kapt-processor")
+        kapt("com.modulecheck:processor:0.0.1")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `used custom annotation processor using CodeGeneratorBinding should not make the plugin unused`() {
+
+    settings.additionalCodeGenerators = listOf(
+      CodeGeneratorBinding.AnnotationProcessor(
+        "Processor",
+        "com.modulecheck:processor",
+        listOf(
+          "com\\.modulecheck\\.annotations\\.\\*",
+          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+        )
+      )
+    )
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency(ConfigurationName.kapt, "com.modulecheck:processor:0.0.1")
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          @Suppress("unused-kapt-processor")
+          kapt("com.modulecheck:processor:0.0.1")
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.annotations.TheAnnotation
+
+        @TheAnnotation
+        class Lib1Class
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        id("kotlin-kapt")
+      }
+
+      dependencies {
+        @Suppress("unused-kapt-processor")
+        kapt("com.modulecheck:processor:0.0.1")
       }
     """
 
