@@ -18,7 +18,7 @@ package modulecheck.core.rule
 import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.android.DisableViewBindingGenerationFinding
 import modulecheck.finding.FindingName
 import modulecheck.project.McProject
@@ -93,7 +93,7 @@ class DisableViewBindingRule : DocumentedRule<DisableViewBindingGenerationFindin
     )
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.disableViewBinding
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.disableViewBinding
   }
 }

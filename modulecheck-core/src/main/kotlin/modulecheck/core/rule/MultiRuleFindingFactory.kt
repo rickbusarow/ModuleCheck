@@ -103,7 +103,7 @@ class MultiRuleFindingFactory(
       .sortedBy { it.first }
       .map { it.second }
 
-    return rules.filter { predicate(it) && it.shouldApply(settings.checks) }
+    return rules.filter { predicate(it) && it.shouldApply(settings) }
       .flatMap { rule ->
         sortedProjects.mapAsync { project ->
           rule.check(project)

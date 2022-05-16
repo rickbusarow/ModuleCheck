@@ -15,7 +15,6 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.OverShotDependencyFinding
 import modulecheck.core.context.overshotDependencies
@@ -38,7 +37,7 @@ class OverShotDependencyRule(
       .map { it.toFinding(name) }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.overShotDependency
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.overShotDependency
   }
 }

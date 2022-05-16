@@ -17,11 +17,11 @@ package modulecheck.reporting.graphviz
 
 import io.kotest.inspectors.forAll
 import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.SingleRuleFindingFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.test.maybeAddSourceSet
+import modulecheck.rule.SingleRuleFindingFactory
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test

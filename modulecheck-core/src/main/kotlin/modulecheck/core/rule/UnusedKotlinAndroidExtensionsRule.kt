@@ -16,7 +16,7 @@
 package modulecheck.core.rule
 
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.UnusedPluginFinding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.PluginDefinition
@@ -66,7 +66,7 @@ class UnusedKotlinAndroidExtensionsRule : DocumentedRule<UnusedPluginFinding>() 
     )
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.unusedKotlinAndroidExtensions
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.unusedKotlinAndroidExtensions
   }
 }

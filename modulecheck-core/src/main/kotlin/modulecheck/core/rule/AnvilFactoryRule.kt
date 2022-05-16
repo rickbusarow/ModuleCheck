@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.anvil.AnvilFactoryParser
 import modulecheck.core.anvil.CouldUseAnvilFinding
 import modulecheck.finding.FindingName
@@ -31,7 +31,7 @@ class AnvilFactoryRule : DocumentedRule<CouldUseAnvilFinding>() {
     return AnvilFactoryParser.parse(name, project)
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.anvilFactoryGeneration
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.anvilFactoryGeneration
   }
 }

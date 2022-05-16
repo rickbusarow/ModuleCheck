@@ -46,7 +46,7 @@ abstract class RunnerTest : ProjectTest() {
   open val logger: ReportingLogger by resets { ReportingLogger() }
 
   open val ruleFactory: RuleFactory by resets { ModuleCheckRuleFactory() }
-  open val findingFactory: FindingFactory<Finding> by resets {
+  open val findingFactory: FindingFactory<out Finding> by resets {
     MultiRuleFindingFactory(
       settings,
       ruleFactory.create(settings)

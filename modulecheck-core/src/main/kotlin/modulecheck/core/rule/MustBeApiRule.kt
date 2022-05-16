@@ -15,7 +15,7 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.MustBeApiFinding
 import modulecheck.core.context.MustBeApi
 import modulecheck.finding.FindingName
@@ -43,7 +43,7 @@ class MustBeApiRule : DocumentedRule<MustBeApiFinding>() {
       }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.mustBeApi
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.mustBeApi
   }
 }

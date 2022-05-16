@@ -15,7 +15,6 @@
 
 package modulecheck.core.rule
 
-import modulecheck.config.ChecksSettings
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.sort.SortPluginsFinding
 import modulecheck.core.rule.sort.sortedPlugins
@@ -74,7 +73,7 @@ class SortPluginsRule(
     }
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.sortPlugins
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.sortPlugins
   }
 }

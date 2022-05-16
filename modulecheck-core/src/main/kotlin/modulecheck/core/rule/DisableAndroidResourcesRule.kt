@@ -21,7 +21,7 @@ import modulecheck.api.context.androidResourceDeclaredNamesForSourceSetName
 import modulecheck.api.context.androidResourceReferencesForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.config.ChecksSettings
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.rule.android.UnusedResourcesGenerationFinding
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
@@ -95,7 +95,7 @@ class DisableAndroidResourcesRule : DocumentedRule<UnusedResourcesGenerationFind
     return findingList()
   }
 
-  override fun shouldApply(checksSettings: ChecksSettings): Boolean {
-    return checksSettings.disableAndroidResources
+  override fun shouldApply(settings: ModuleCheckSettings): Boolean {
+    return settings.checks.disableAndroidResources
   }
 }
