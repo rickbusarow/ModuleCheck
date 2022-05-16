@@ -57,10 +57,10 @@ moduleCheck {
   }
 }
 
-tasks.named("ktlintFormat") {
+tasks.matching { it.name == "ktlintFormat" }.configureEach {
   dependsOn(gradle.includedBuild("build-logic").task(":ktlintFormat"))
 }
-tasks.named("ktlintCheck") {
+tasks.matching { it.name == "ktlintCheck" }.configureEach {
   dependsOn(gradle.includedBuild("build-logic").task(":ktlintCheck"))
 }
 tasks.withType<Delete> {
@@ -68,4 +68,17 @@ tasks.withType<Delete> {
 }
 doctor {
   disallowCleanTaskDependencies.set(false)
+}
+
+val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.DetektCreateBaselineTask::class) {
+  description = "Overrides current baseline."
+  buildUponDefaultConfig.set(true)
+  ignoreFailures.set(true)
+  parallel.set(true)
+  setSource(files(rootDir))
+  config.setFrom(files("$rootDir/detekt/detekt-config.yml"))
+  baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
+
+  include("**/*.kt", "**/*.kts")
+  exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
 }
