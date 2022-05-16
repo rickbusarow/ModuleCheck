@@ -27,6 +27,7 @@ val reportMerge by tasks.registering(ReportMergeTask::class) {
 detekt {
 
   parallel = true
+  baseline = file("$rootDir/detekt/detekt-baseline.xml")
   config = files("$rootDir/detekt/detekt-config.yml")
   buildUponDefaultConfig = true
 }
