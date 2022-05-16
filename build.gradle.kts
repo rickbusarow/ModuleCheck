@@ -37,6 +37,7 @@ plugins {
   id("mcbuild.dependency-guard")
   id("mcbuild.dokka")
   id("mcbuild.kotlin")
+  id("mcbuild.knit")
   id("mcbuild.ktlint")
   id("mcbuild.test")
   id("mcbuild.website")

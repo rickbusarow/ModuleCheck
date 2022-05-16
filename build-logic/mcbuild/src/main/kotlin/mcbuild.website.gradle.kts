@@ -228,6 +228,7 @@ val startSite by tasks.registering(Exec::class) {
 
   dependsOn(
     yarnInstall,
+    updateWebsiteApiDocs,
     updateWebsiteChangelog,
     updateWebsiteNextDocsVersionRefs,
     updateWebsitePackageJsonVersion
@@ -245,6 +246,7 @@ val buildSite by tasks.registering(Exec::class) {
   dependsOn(
     yarnInstall,
     versionDocs,
+    updateWebsiteApiDocs,
     updateWebsiteChangelog,
     updateWebsiteNextDocsVersionRefs,
     updateWebsitePackageJsonVersion
@@ -276,6 +278,30 @@ val versionDocs by tasks.registering(Exec::class) {
   commandLine("yarn", "run", "docusaurus", "docs:version", version)
 }
 
+val updateWebsiteApiDocs by tasks.registering(Copy::class) {
+
+  description = "creates new Dokka api docs and copies them to the website's static dir"
+  group = "website"
+
+  doFirst {
+    delete(
+      fileTree("./website/static/api") {
+        exclude("**/styles/*")
+      }
+    )
+  }
+
+  dependsOn(tasks.findByName("knit"))
+
+  from(
+    fileTree("$buildDir/dokka/htmlMultiModule") {
+      exclude("**/styles/*")
+    }
+  )
+
+  into("./website/static/api")
+}
+
 val updateWebsiteChangelog by tasks.registering(Copy::class) {
 
   description = "copies the root project's CHANGELOG to the website and updates its formatting"
@@ -286,7 +312,7 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
 
   doLast {
 
-// add one hashmark to each header, because GitHub and Docusaurus render them differently
+    // add one hashmark to each header, because GitHub and Docusaurus render them differently
     val changelog = File("$rootDir/website/src/pages/changelog.md")
 
     val newText = changelog.readText()
