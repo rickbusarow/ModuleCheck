@@ -14,14 +14,17 @@
  */
 
 import modulecheck.builds.ModuleCheckBuildExtension
-import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
+import org.jlleitschuh.gradle.ktlint.tasks.KtLintFormatTask
 
 plugins {
   id("org.jetbrains.dokka")
 }
 
 // Dokka doesn't support configuration caching
-tasks.withType(DokkaTask::class.java) {
+tasks.withType(AbstractDokkaLeafTask::class.java) {
   notCompatibleWithConfigurationCache("")
 }
 
@@ -39,8 +42,16 @@ subprojects {
     apply(plugin = "org.jetbrains.dokka")
 
     proj.tasks
-      .withType<org.jetbrains.dokka.gradle.AbstractDokkaLeafTask>()
+      .withType<AbstractDokkaLeafTask>()
       .configureEach {
+
+        // Dokka doesn't support configuration caching
+        notCompatibleWithConfigurationCache("")
+
+        // Dokka uses their outputs but doesn't explicitly depend upon them.
+        mustRunAfter(allprojects.map { it.tasks.withType(KotlinCompile::class.java) })
+        mustRunAfter(allprojects.map { it.tasks.withType(KtLintCheckTask::class.java) })
+        mustRunAfter(allprojects.map { it.tasks.withType(KtLintFormatTask::class.java) })
 
         proj.extensions.configure<ModuleCheckBuildExtension> {
 
@@ -50,20 +61,13 @@ subprojects {
           moduleName.set(artifactId ?: proj.path.removePrefix(":"))
         }
 
-        listOf(
-          "jar",
-          "compileTestFixturesKotlin"
-        ).forEach { buildTask ->
-          mustRunAfter(allprojects.mapNotNull { it.tasks.findByName(buildTask) })
-        }
-
         dokkaSourceSets {
 
           getByName("main") {
 
             samples.setFrom(
               fileTree(proj.projectDir) {
-                include("**/samples/**")
+                include("samples/**")
               }
             )
 
