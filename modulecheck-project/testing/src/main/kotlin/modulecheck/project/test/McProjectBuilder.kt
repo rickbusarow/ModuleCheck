@@ -129,7 +129,8 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     java: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN,
     directory: String? = null,
-    fileName: String? = null
+    fileName: String? = null,
+    sourceDirName: String = "java"
   ): File {
 
     val name = fileName ?: "Source.java"
@@ -142,7 +143,14 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
         ?: ""
     }
 
-    return addJvmSource(directory, packageName, sourceSetName, name, java)
+    return addJvmSource(
+      directory = directory,
+      packageName = packageName,
+      sourceSetName = sourceSetName,
+      fileSimpleName = name,
+      content = java,
+      sourceDirName = sourceDirName
+    )
   }
 
   fun addKotlinSource(
@@ -150,7 +158,8 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     kotlin: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN,
     directory: String? = null,
-    fileName: String? = null
+    fileName: String? = null,
+    sourceDirName: String = "java"
   ): File {
 
     val name = fileName ?: "Source.kt"
@@ -158,21 +167,30 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     val ktFile = KtFile(kotlin)
     val packageName = ktFile.packageFqName.asString()
 
-    return addJvmSource(directory, packageName, sourceSetName, name, kotlin)
+    return addJvmSource(
+      directory = directory,
+      packageName = packageName,
+      sourceSetName = sourceSetName,
+      fileSimpleName = name,
+      content = kotlin,
+      sourceDirName = sourceDirName
+    )
   }
 
+  @Suppress("LongParameterList")
   private fun addJvmSource(
     directory: String?,
     packageName: String,
     sourceSetName: SourceSetName,
     fileSimpleName: String,
-    content: String
+    content: String,
+    sourceDirName: String
   ): File {
     val dir = (directory ?: packageName.replace('.', '/'))
       .fixFileSeparators()
 
     val file = projectDir
-      .child("src", sourceSetName.value, "java", dir, fileSimpleName)
+      .child("src", sourceSetName.value, sourceDirName, dir, fileSimpleName)
       .createSafely(content.trimIndent())
 
     val oldSourceSet = maybeAddSourceSet(sourceSetName)

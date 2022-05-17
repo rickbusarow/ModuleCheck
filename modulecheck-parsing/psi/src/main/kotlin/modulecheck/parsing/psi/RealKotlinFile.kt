@@ -15,6 +15,8 @@
 
 package modulecheck.parsing.psi
 
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.callSiteName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
@@ -34,6 +36,7 @@ import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.Reference.KotlinReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitKotlinReference
@@ -288,7 +291,7 @@ class RealKotlinFile(
     dataSource { refs.await().resolved }
   ).toLazySet()
 
-  override fun getScopeArguments(
+  override suspend fun getAnvilScopeArguments(
     allAnnotations: List<ExplicitReference>,
     mergeAnnotations: List<ExplicitReference>
   ): ScopeArgumentParseResult {
@@ -307,12 +310,15 @@ class RealKotlinFile(
       }.forEach { annotationEntry ->
         val typeRef = annotationEntry.typeReference!!.text
 
-        val raw = annotationEntry.toRawAnvilAnnotatedType(typeFqName) ?: return@forEach
+        runBlocking {
+          val raw = annotationEntry.toRawAnvilAnnotatedType(typeFqName)
+            ?: return@runBlocking
 
-        if (mergeAnnotations.any { it.endsWith(typeRef) }) {
-          mergeArguments.add(raw)
-        } else {
-          contributeArguments.add(raw)
+          if (mergeAnnotations.any { it.endsWith(typeRef) }) {
+            mergeArguments.add(raw)
+          } else {
+            contributeArguments.add(raw)
+          }
         }
       }
     }
@@ -329,18 +335,25 @@ class RealKotlinFile(
     return (this as? KtCallableDeclaration)?.isJvmStatic() == true
   }
 
-  private fun KtAnnotationEntry.toRawAnvilAnnotatedType(
+  private suspend fun KtAnnotationEntry.toRawAnvilAnnotatedType(
     typeFqName: FqName
   ): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList?.getByNameOrIndex(0, "scope") ?: return null
 
-    val entryText = valueArgument.text.replace(".+[=]+".toRegex(), "") // remove named arguments
+    val entryText = valueArgument.text
+      .remove(".+=+".toRegex()) // remove the names for arguments
       .replace("::class", "").trim()
       .asExplicitKotlinReference()
 
+    val resolvedScope = this@RealKotlinFile.references
+      .firstOrNull { ref ->
+        ref.endsWith(entryText)
+      } as? KotlinReference
+      ?: entryText
+
     return RawAnvilAnnotatedType(
       declaredName = typeFqName.asDeclaredName(),
-      anvilScopeNameEntry = AnvilScopeNameEntry(entryText)
+      anvilScopeNameEntry = AnvilScopeNameEntry(resolvedScope)
     )
   }
 

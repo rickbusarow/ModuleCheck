@@ -18,12 +18,12 @@ package modulecheck.gradle
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import org.gradle.testkit.runner.TaskOutcome.SUCCESS
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
-class TaskLifecycleTest : BasePluginTest() {
+class TaskLifecycleTest : BaseGradleTest() {
 
-  @Test
-  fun `the modulecheck task should be invoked for the base plugin check task`() {
+  @TestFactory
+  fun `the modulecheck task should be invoked for the base plugin check task`() = gradle {
 
     kotlinProject(":") {
       buildFile {
@@ -49,8 +49,8 @@ class TaskLifecycleTest : BasePluginTest() {
     }
   }
 
-  @Test
-  fun `the modulecheck task should be invoked for a late, manually created check task`() {
+  @TestFactory
+  fun `the modulecheck task should be invoked for a late, manually created check task`() = gradle {
 
     kotlinProject(":") {
       buildFile {

@@ -15,9 +15,11 @@
 
 package modulecheck.testing
 
+import hermit.test.ResetManager
 import org.junit.jupiter.api.DynamicTest
 
-interface DynamicTests {
+/** Different functions for creating dynamic tests. */
+interface DynamicTests : ResetManager {
 
   fun <T : Any> Iterable<() -> T>.dynamic(
     testName: String,

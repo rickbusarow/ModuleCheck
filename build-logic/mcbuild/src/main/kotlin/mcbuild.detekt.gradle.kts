@@ -34,10 +34,13 @@ detekt {
 
 tasks.withType<Detekt> detekt@{
 
-  finalizedBy(reportMerge)
-
-  reportMerge.configure {
-    input.from(this@detekt.sarifReportFile)
+  // If in CI, merge sarif reports.  Skip this locally because it's not worth looking at
+  // and the task is unnecessarily chatty.
+  if (!System.getenv("CI").isNullOrBlank()) {
+    finalizedBy(reportMerge)
+    reportMerge.configure {
+      input.from(this@detekt.sarifReportFile)
+    }
   }
 
   reports {

@@ -27,6 +27,8 @@ mcbuild {
 tasks.withType<Test> {
   // Gradle TestKit somewhat regularly runs out of memory on the freebie GitHub runners
   maxParallelForks = 1
+
+  dependsOn(tasks.matching { it.name == "publishToMavenLocal" })
 }
 
 dependencies {

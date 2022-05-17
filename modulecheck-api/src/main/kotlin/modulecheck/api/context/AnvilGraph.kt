@@ -122,7 +122,7 @@ data class AnvilGraph(
       .collect { kotlinFile ->
 
         val (merged, contributed) = kotlinFile
-          .getScopeArguments(allAnnotations, mergeAnnotations)
+          .getAnvilScopeArguments(allAnnotations, mergeAnnotations)
 
         merged
           .forEach { rawAnvilAnnotatedType ->
@@ -152,13 +152,11 @@ data class AnvilGraph(
 
     val maybeExtraReferences = kotlinFile.references
 
-    // if scope is directly imported (most likely),
-    // then use that fully qualified import
-    val rawScopeName = kotlinFile.importsLazy.value
-      .firstNotNullOfOrNull { reference ->
-        reference.name.takeIf { it.endsWith(scopeNameEntry.name.name) }
-      }
-      ?.let { FqName(it) }
+    // if scope is directly resolved (most likely),
+    // then use that fully qualified name
+    val rawScopeName = kotlinFile.references
+      .firstOrNull { reference -> reference.name.endsWith(scopeNameEntry.name.name) }
+      ?.let { FqName(it.name) }
       // if the scope is wildcard-imported
       ?: dependenciesBySourceSetName[sourceSetName]
         .orEmpty()

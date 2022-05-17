@@ -15,30 +15,19 @@
 
 package modulecheck.gradle
 
-import modulecheck.specs.DEFAULT_AGP_VERSION
-import modulecheck.specs.DEFAULT_KOTLIN_VERSION
-import modulecheck.utils.child
-import modulecheck.utils.createSafely
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
-class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
+class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
-  @Test
-  fun `buildConfig task should be required when not configured in android library module`() {
-    androidLibrary(":", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  @TestFactory
+  fun `buildConfig task should be required when not configured in android library module`() =
+    dynamic {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
-          id("com.android.library") version "$DEFAULT_AGP_VERSION"
-          kotlin("android") version "$DEFAULT_KOTLIN_VERSION"
-          id("com.rickbusarow.module-check")
-        }
-        repositories {
-          mavenCentral()
-          google()
-          jcenter()
-          maven("https://plugins.gradle.org/m2/")
-          maven("https://oss.sonatype.org/content/repositories/snapshots")
+          id("com.android.library")
+          kotlin("android")
         }
 
         android {
@@ -49,46 +38,37 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
           }
         }
         """
+        }
       }
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path }.sorted() shouldBe listOf(
+          ":lib:extractDeepLinksDebug",
+          ":lib:generateDebugAndroidTestBuildConfig",
+          ":lib:generateDebugBuildConfig",
+          ":lib:generateReleaseBuildConfig",
+          ":lib:preBuild",
+          ":lib:preDebugAndroidTestBuild",
+          ":lib:preDebugBuild",
+          ":lib:preReleaseBuild",
+          ":lib:processDebugAndroidTestManifest",
+          ":lib:processDebugManifest",
+          ":moduleCheck"
+        )
+      }
     }
 
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path } shouldBe listOf(
-        ":preBuild",
-        ":preDebugAndroidTestBuild",
-        ":preDebugBuild",
-        ":extractDeepLinksDebug",
-        ":processDebugManifest",
-        ":generateDebugBuildConfig",
-        ":preReleaseBuild",
-        ":generateReleaseBuildConfig",
-        ":processDebugAndroidTestManifest",
-        ":generateDebugAndroidTestBuildConfig",
-        ":moduleCheck"
-      )
-    }
-  }
-
-  @Test
-  fun `buildConfig task should not be required when disabled in android library module`() {
-    androidLibrary(":", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  @TestFactory
+  fun `buildConfig task should not be required when disabled in android library module`() =
+    dynamic {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
-          id("com.android.library") version "$DEFAULT_AGP_VERSION"
-          kotlin("android") version "$DEFAULT_KOTLIN_VERSION"
-          id("com.rickbusarow.module-check")
-        }
-        repositories {
-          mavenCentral()
-          google()
-          jcenter()
-          maven("https://plugins.gradle.org/m2/")
-          maven("https://oss.sonatype.org/content/repositories/snapshots")
+          id("com.android.library")
+          kotlin("android")
         }
 
         android {
@@ -100,34 +80,25 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
           buildFeatures.buildConfig = false
         }
         """
+        }
       }
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path } shouldBe listOf(":moduleCheck")
+      }
     }
 
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path } shouldBe listOf(":moduleCheck")
-    }
-  }
-
-  @Test
-  fun `buildConfig task should not be required when disabled in android dynamic-feature module`() {
-    androidLibrary(":", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  @TestFactory
+  fun `buildConfig task should not be required when disabled in android dynamic-feature module`() =
+    dynamic {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
-          id("com.android.dynamic-feature") version "$DEFAULT_AGP_VERSION"
-          kotlin("android") version "$DEFAULT_KOTLIN_VERSION"
-          id("com.rickbusarow.module-check")
-        }
-        repositories {
-          mavenCentral()
-          google()
-          jcenter()
-          maven("https://plugins.gradle.org/m2/")
-          maven("https://oss.sonatype.org/content/repositories/snapshots")
+          id("com.android.dynamic-feature")
+          kotlin("android")
         }
 
         android {
@@ -138,36 +109,24 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
           buildFeatures.buildConfig = false
         }
         """
+        }
       }
 
-      projectDir.child("settings.gradle.kts").createSafely()
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path } shouldBe listOf(":moduleCheck")
+      }
     }
 
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path } shouldBe listOf(":moduleCheck")
-    }
-  }
-
-  @Test
-  fun `buildConfig task should not be required when disabled in android test module`() {
-    androidLibrary(":", "com.modulecheck.lib1") {
+  @TestFactory
+  fun `buildConfig task should not be required when disabled in android test module`() = dynamic {
+    androidLibrary(":lib", "com.modulecheck.lib1") {
       buildFile {
         """
         plugins {
-          id("com.android.test") version "$DEFAULT_AGP_VERSION"
-          kotlin("android") version "$DEFAULT_KOTLIN_VERSION"
-          id("com.rickbusarow.module-check")
-        }
-        allprojects {
-          repositories {
-            mavenCentral()
-            google()
-            jcenter()
-            maven("https://plugins.gradle.org/m2/")
-            maven("https://oss.sonatype.org/content/repositories/snapshots")
-          }
+          id("com.android.test")
+          kotlin("android")
         }
 
         android {
@@ -180,18 +139,12 @@ class AndroidBuildConfigAvoidanceTest : BasePluginTest() {
           buildFeatures.buildConfig = false
         }
 
-        moduleCheck {
-          // this is a compileOnly dependency for test modules
-          ignoreUnusedFinding = setOf(":app")
+        dependencies {
+          @Suppress("unused-dependency")
+          compileOnly(project(path = ":app"))
         }
         """
       }
-
-      projectDir.child("settings.gradle.kts").createSafely(
-        """
-        include(":app")
-        """.trimIndent()
-      )
     }
 
     androidLibrary(":app", "com.modulecheck.app") {
