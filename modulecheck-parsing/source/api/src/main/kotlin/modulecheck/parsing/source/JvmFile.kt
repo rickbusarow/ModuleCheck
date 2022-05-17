@@ -29,7 +29,8 @@ sealed interface JvmFile : HasReferences {
 
 interface KotlinFile : JvmFile {
 
-  fun getScopeArguments(
+  /** A weird, dated function for getting Anvil scope arguments */
+  suspend fun getAnvilScopeArguments(
     allAnnotations: List<ExplicitReference>,
     mergeAnnotations: List<ExplicitReference>
   ): ScopeArgumentParseResult

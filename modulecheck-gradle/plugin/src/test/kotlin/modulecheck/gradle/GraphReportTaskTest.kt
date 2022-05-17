@@ -20,7 +20,7 @@ import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
-internal class GraphReportTaskTest : BasePluginTest() {
+internal class GraphReportTaskTest : BaseGradleTest() {
 
   @Test
   fun `graphs report should be created if graph task is invoked with default settings`() {

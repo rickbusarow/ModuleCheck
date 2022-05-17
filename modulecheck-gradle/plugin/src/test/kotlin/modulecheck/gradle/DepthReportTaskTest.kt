@@ -20,7 +20,7 @@ import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
-internal class DepthReportTaskTest : BasePluginTest() {
+internal class DepthReportTaskTest : BaseGradleTest() {
 
   @Test
   fun `depth report should be created if depth task is invoked with default settings`() {

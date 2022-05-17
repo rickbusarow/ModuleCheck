@@ -27,26 +27,35 @@ import kotlin.properties.Delegates
 
 abstract class BaseTest : HermitJUnit5(), FancyShould {
 
+  /**
+   * The unique directory for an individual test, recreated each time.
+   *
+   * For a standard `@Test`-annotated test, this directory will be:
+   * `$projectDir/build/tests/$className/$functionName`
+   *
+   * For a `TestFactory` test, this will be:
+   * `$projectDir/build/tests/$className/$functionName/$displayName`
+   *
+   * This directory is deleted at the **start** of test execution, so it's always fresh, but the
+   * source is still there after the test completes.
+   */
   val testProjectDir: File by resets {
-    val className = testInfo.testClass.get()
-      // "simpleName" for a nested class is just the nested class name,
-      // so use the FqName and trim the package name to get qualified nested names
-      .let { it.canonicalName.removePrefix(it.packageName + ".") }
-      .split(".")
-      .joinToString(File.separator)
-      .replace("[^a-zA-Z\\d/]".toRegex(), "_")
-
-    val testName = testInfo.testMethod.get().name
-      .replace("[^a-zA-Z\\d]".toRegex(), "_")
-      .replace("_{2,}".toRegex(), "_")
-      .removeSuffix("_")
-
     File("build")
-      .child("tests", className, testName)
+      .child("tests", testClassName, testDisplayName)
       .absoluteFile
   }
 
-  var testInfo: TestInfo by Delegates.notNull()
+  /** Test class name */
+  protected var testClassName: String by Delegates.notNull()
+
+  /** Test function name */
+  protected var testFunctionName: String by Delegates.notNull()
+
+  /**
+   * This is typically the same as the function name, but for dynamic tests, the name for each
+   * permutation is appended.
+   */
+  protected var testDisplayName: String by Delegates.notNull()
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
@@ -98,7 +107,22 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   // This is automatically injected by JUnit5
   @BeforeEach
   internal fun injectTestInfo(testInfo: TestInfo) {
-    this.testInfo = testInfo
+
+    testClassName = testInfo.testClass.get()
+      // "simpleName" for a nested class is just the nested class name,
+      // so use the FqName and trim the package name to get qualified nested names
+      .let { it.canonicalName.removePrefix(it.packageName + ".") }
+      .split(".")
+      .joinToString(File.separator)
+      .replace("[^a-zA-Z\\d/]".toRegex(), "_")
+
+    testFunctionName = testInfo.testMethod.get().name
+      .replace("[^a-zA-Z\\d]".toRegex(), "_")
+      .replace("_{2,}".toRegex(), "_")
+      .removeSuffix("_")
+
+    testDisplayName = testFunctionName
+
     testProjectDir.deleteRecursively()
   }
 

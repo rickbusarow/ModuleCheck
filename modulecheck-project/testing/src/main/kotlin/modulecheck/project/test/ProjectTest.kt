@@ -15,38 +15,20 @@
 
 package modulecheck.project.test
 
-import io.kotest.assertions.fail
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.flow.toSet
-import modulecheck.api.context.classpathDependencies
-import modulecheck.api.context.declarations
-import modulecheck.api.context.references
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
-import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
-import modulecheck.utils.lazySet
 import java.io.File
 import java.nio.charset.Charset
 
-abstract class ProjectTest : BaseTest() {
+abstract class ProjectTest : BaseTest(), ProjectCollector {
 
-  val projectCache: ProjectCache by resets { ProjectCache() }
+  override val projectCache: ProjectCache by resets { ProjectCache() }
+
+  override val root: File
+    get() = testProjectDir
 
   val projectProvider: ProjectProvider by resets {
     object : ProjectProvider {
@@ -66,248 +48,9 @@ abstract class ProjectTest : BaseTest() {
     }
   }
 
-  fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
-    return when (this) {
-      is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
-        viewBindingEnabled = viewBindingEnabled,
-        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-        manifests = manifests.toMutableMap(),
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-      is AndroidDynamicFeaturePlugin -> AndroidDynamicFeaturePluginBuilder(
-        viewBindingEnabled = viewBindingEnabled,
-        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-        buildConfigEnabled = buildConfigEnabled,
-        manifests = manifests.toMutableMap(),
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-      is AndroidLibraryPlugin -> AndroidLibraryPluginBuilder(
-        viewBindingEnabled = viewBindingEnabled,
-        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-        buildConfigEnabled = buildConfigEnabled,
-        androidResourcesEnabled = androidResourcesEnabled,
-        manifests = manifests.toMutableMap(),
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-      is AndroidTestPlugin -> AndroidTestPluginBuilder(
-        viewBindingEnabled = viewBindingEnabled,
-        kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-        buildConfigEnabled = buildConfigEnabled,
-        manifests = manifests.toMutableMap(),
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-      is JavaLibraryPlugin -> JavaLibraryPluginBuilder(
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-      is KotlinJvmPlugin -> KotlinJvmPluginBuilder(
-        sourceSets = sourceSets.toBuilderMap(),
-        configurations = configurations.toBuilderMap()
-      )
-    }
-  }
-
-  inline fun <reified P : PlatformPluginBuilder<*>> McProject.toProjectBuilder():
-    McProjectBuilder<P> {
-    return McProjectBuilder(
-      path = path,
-      projectDir = projectDir,
-      buildFile = buildFile,
-      projectDependencies = projectDependencies,
-      externalDependencies = externalDependencies,
-      hasKapt = hasKapt,
-      anvilGradlePlugin = anvilGradlePlugin,
-      projectCache = projectCache,
-      hasTestFixturesPlugin = hasTestFixturesPlugin,
-      javaSourceVersion = javaSourceVersion,
-      platformPlugin = platformPlugin.toBuilder() as P
-    )
-  }
-
-  inline fun <reified T : McProjectBuilder<P>,
-    reified P : PlatformPluginBuilder<G>,
-    G : PlatformPlugin> McProject.edit(
-    config: McProjectBuilder<P>.() -> Unit = {}
-  ): McProject {
-    return toProjectBuilder<P>()
-      .also { it.config() }
-      .toRealMcProject()
-  }
-
-  inline fun McProject.editSimple(
-    config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
-  ): McProject {
-    return toProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>()
-      .also { it.config() }
-      .toRealMcProject()
-  }
-
-  fun kotlinProject(
-    path: String,
-    config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}
-  ): McProject {
-    val platformPlugin = KotlinJvmPluginBuilder()
-
-    return createProject(
-      projectCache = projectCache,
-      projectDir = testProjectDir,
-      path = path,
-      pluginBuilder = platformPlugin,
-      androidPackageOrNull = null,
-      config = config
-    )
-  }
-
-  fun androidApplication(
-    path: String,
-    androidPackage: String,
-    config: McProjectBuilder<AndroidApplicationPluginBuilder>.() -> Unit = {}
-  ): McProject {
-    return createProject(
-      projectCache = projectCache,
-      projectDir = testProjectDir,
-      path = path,
-      pluginBuilder = AndroidApplicationPluginBuilder(),
-      androidPackageOrNull = androidPackage,
-      config = config
-    )
-  }
-
-  fun androidLibrary(
-    path: String,
-    androidPackage: String,
-    config: McProjectBuilder<AndroidLibraryPluginBuilder>.() -> Unit = {}
-  ): McProject {
-    return createProject(
-      projectCache = projectCache,
-      projectDir = testProjectDir,
-      path = path,
-      pluginBuilder = AndroidLibraryPluginBuilder(),
-      androidPackageOrNull = androidPackage,
-      config = config
-    )
-  }
-
-  fun androidDynamicFeature(
-    path: String,
-    androidPackage: String,
-    config: McProjectBuilder<AndroidDynamicFeaturePluginBuilder>.() -> Unit = {}
-  ): McProject {
-    return createProject(
-      projectCache = projectCache,
-      projectDir = testProjectDir,
-      path = path,
-      pluginBuilder = AndroidDynamicFeaturePluginBuilder(),
-      androidPackageOrNull = androidPackage,
-      config = config
-    )
-  }
-
-  fun androidTest(
-    path: String,
-    androidPackage: String,
-    config: McProjectBuilder<AndroidTestPluginBuilder>.() -> Unit = {}
-  ): McProject {
-    return createProject(
-      projectCache = projectCache,
-      projectDir = testProjectDir,
-      path = path,
-      pluginBuilder = AndroidTestPluginBuilder(),
-      androidPackageOrNull = androidPackage,
-      config = config
-    )
-  }
-
-  fun McProject.addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val cpd = ConfiguredProjectDependency(configurationName, project.path, asTestFixture)
-
-    projectDependencies[configurationName] = old + cpd
-  }
-
-  fun simpleProject(
-    buildFileText: String? = null,
-    path: String = ":lib"
-  ) = this.kotlinProject(path) {
-    if (buildFileText != null) {
-      buildFile.writeText(buildFileText)
-    }
-
-    addKotlinSource(
-      """
-      package com.lib1
-
-      class Lib1Class
-      """,
-      SourceSetName.MAIN
-    )
-  }
-
   fun allProjects(): List<McProject> = projectCache.values.toList()
 
   fun File.writeText(content: String) {
     writeText(content.trimIndent(), Charset.defaultCharset())
-  }
-
-  suspend fun resolveReferences() {
-    projectCache.values
-      .forEach { project ->
-
-        val thisProjectDeclarations = project.declarations().all()
-
-        val allDependencies = project.classpathDependencies().all().map { it.contributed }
-          .plus(project.projectDependencies.values.flatten())
-          .map { dependency -> dependency.declarations(projectCache) }
-          .plus(thisProjectDeclarations)
-          .let { lazySet(it) }
-          .map { it.name }
-          .toSet()
-
-        project.references().all()
-          .toList()
-          .forEach eachRef@{ reference ->
-
-            val referenceName = when (reference) {
-              is ExplicitReference -> reference.name
-              is InterpretedReference -> return@eachRef
-              is UnqualifiedAndroidResourceReference -> reference.name
-            }
-
-            // Only check for references which would be provided by internal projects. Using a
-            // block-list is a bit of a hack, but it's safer to have to add than remove.
-            if (referenceName.startsWith("androidx")) return@eachRef
-
-            val unresolved = !allDependencies.contains(referenceName)
-
-            if (unresolved) {
-              fail(
-                """
-                |Project ${project.path} has a reference which must be declared in a dependency kotlinProject.
-                |
-                |-- reference:
-                |   $referenceName
-                |
-                |-- all declarations:
-                |${allDependencies.joinToString("\n") { "   $it" }}
-                |
-                |-- all dependencies:
-                |${project.projectDependencies.values.flatten().joinToString("\n") { "   $it" }}
-                |
-                |_________
-                """.trimMargin()
-
-              )
-            }
-          }
-      }
   }
 }

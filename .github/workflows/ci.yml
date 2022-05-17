@@ -230,31 +230,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        kotlin-version: [ 1.5.32, 1.6.20 ]
-        gradle-version: [ 7.3.3, 7.4.2 ]
-        agp-version: [ 7.0.3, 7.1.3, 7.2.0 ]
-        anvil-version: [ 2.3.11, 2.4.0 ]
-        exclude:
-          # Anvil 2.4.0 doesn't support kotlin 1.5.x
-          - kotlin-version: 1.5.32
-            anvil-version: 2.4.0
-          - kotlin-version: 1.6.20
-            anvil-version: 2.3.11
-          # These exclusions just save time/computing.  The matrix exists so that tests can execute
-          # against older versions and bleeding edge, but this doesn't need to be done by mutating
-          # a single version at a time.
-          - kotlin-version: 1.5.32
-            agp-version: 7.1.3
-          - kotlin-version: 1.5.32
-            agp-version: 7.2.0
-          - kotlin-version: 1.6.20
-            agp-version: 7.0.3
-          - gradle-version: 7.4.2
-            agp-version: 7.0.3
-
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
@@ -276,7 +251,12 @@ jobs:
           cache: 'gradle'
 
       - name: all tests
-        run: ./gradlew testJvm -Pmodulecheck.kotlinVersion=${{ matrix.kotlin-version }} -Pmodulecheck.gradleVersion=${{ matrix.gradle-version }} -Pmodulecheck.agpVersion=${{ matrix.agp-version }} --no-daemon
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          gradle-dependencies-cache-key: gradle/libs.versions.toml
+          arguments: testJvm
+          concurrent: true
+          gradle-build-scan-report: false
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
@@ -319,7 +299,12 @@ jobs:
           cache: 'gradle'
 
       - name: all tests
-        run: ./gradlew testJvm --no-daemon
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          gradle-dependencies-cache-key: gradle/libs.versions.toml
+          arguments: testJvm
+          concurrent: true
+          gradle-build-scan-report: false
 
       - name: Archive test results
         uses: actions/upload-artifact@v3

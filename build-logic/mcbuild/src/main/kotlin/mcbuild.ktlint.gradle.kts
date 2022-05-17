@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.libsCatalog
+import modulecheck.builds.version
 import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
@@ -21,7 +23,7 @@ plugins {
 
 extensions.configure(KtlintExtension::class.java) {
   debug.set(false)
-  version.set("0.45.2")
+  version.set(libsCatalog.version("ktlint-lib").requiredVersion)
   outputToConsole.set(true)
   enableExperimentalRules.set(true)
   disabledRules.set(

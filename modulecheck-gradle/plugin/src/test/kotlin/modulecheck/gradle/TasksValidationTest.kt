@@ -20,33 +20,27 @@ import io.kotest.matchers.string.shouldContain
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
-class TasksValidationTest : BasePluginTest() {
+class TasksValidationTest : BaseGradleTest() {
 
   @Test
   fun `all tasks with descriptions`() {
-    kotlinProject(":") {
-      buildFile {
-        """
-        plugins {
-          id("com.rickbusarow.module-check")
-        }
 
-        val mcTasks by tasks.registering {
-          doLast {
-            val message = tasks
-              .filter { it.group == "moduleCheck" }
-              .sortedBy { it.name }
-              .joinToString("\n") { it.name + " - " + it.description }
+    rootBuild.appendText(
+      """
+      val mcTasks by tasks.registering {
+        doLast {
+          val message = tasks
+            .matching { it.group == "moduleCheck" }
+            .sortedBy { it.name }
+            .joinToString("\n") { it.name + " - " + it.description }
 
-            println(message)
-          }
+          println(message)
         }
-        """
       }
-
-      projectDir.child("settings.gradle.kts").createSafely()
-    }
+      """.trimIndent()
+    )
 
     shouldSucceed("mcTasks") withTrimmedMessage """
       moduleCheck - runs all enabled ModuleCheck rules
@@ -60,12 +54,12 @@ class TasksValidationTest : BasePluginTest() {
     """
   }
 
-  @Test
-  fun `all tasks should ignore configuration caching`() {
+  @TestFactory
+  fun `all tasks should ignore configuration caching`() = gradle {
 
     // "ignore" this test for Gradle versions less than 7.4,
     // since they can't disable caching programmatically
-    if (gradleVersion < "7.4") return
+    if (gradleVersion < "7.4") return@gradle
 
     kotlinProject(":") {
       buildFile {
