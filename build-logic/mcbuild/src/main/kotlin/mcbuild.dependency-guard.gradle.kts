@@ -34,3 +34,10 @@ val dependencyGuardDeleteBaselines by tasks.registering(Delete::class) {
 }
 tasks.matching { it.name == "dependencyGuardBaseline" }
   .configureEach { dependsOn(dependencyGuardDeleteBaselines) }
+
+// Automatically run `artifactsCheck` when running `check`
+tasks
+  .matching { it.name == LifecycleBasePlugin.CHECK_TASK_NAME }
+  .configureEach {
+    dependsOn("dependencyGuard")
+  }
