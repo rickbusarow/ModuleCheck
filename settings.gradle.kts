@@ -18,7 +18,6 @@ pluginManagement {
     gradlePluginPortal()
     mavenCentral()
     google()
-    mavenLocal()
     maven {
       url = uri("https://oss.sonatype.org/content/repositories/snapshots/")
       content {
@@ -26,6 +25,7 @@ pluginManagement {
         includeGroup("com.rickbusarow.modulecheck")
       }
     }
+    mavenLocal()
   }
   @Suppress("UnstableApiUsage")
   includeBuild("build-logic")
