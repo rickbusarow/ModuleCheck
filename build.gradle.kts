@@ -30,30 +30,32 @@ plugins {
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
   alias(libs.plugins.gradleDoctor)
+  alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
+  base
   id("mcbuild.artifacts-check")
   id("mcbuild.ben-manes")
   id("mcbuild.clean")
   id("mcbuild.dependency-guard")
   id("mcbuild.dokka")
-  id("mcbuild.kotlin")
   id("mcbuild.knit")
+  id("mcbuild.kotlin")
   id("mcbuild.ktlint")
   id("mcbuild.test")
   id("mcbuild.website")
-  id("com.rickbusarow.module-check") version "0.12.0"
-  base
 }
 
 moduleCheck {
   deleteUnused = true
   checks {
+    depths = true
     sortDependencies = true
   }
   reports {
+    depths.enabled = true
     graphs {
       enabled = true
-      outputDir = File(buildDir, "depths").path
+      outputDir = File(buildDir, "reports/modulecheck/graphs").path
     }
   }
 }
