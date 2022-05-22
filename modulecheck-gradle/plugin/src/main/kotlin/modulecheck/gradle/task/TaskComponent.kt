@@ -22,17 +22,19 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
-import modulecheck.finding.Finding
 import modulecheck.gradle.internal.GradleProjectProvider
 import modulecheck.project.ProjectRoot
-import modulecheck.rule.FindingFactory
+import modulecheck.rule.RuleFilter
+import modulecheck.rule.RulesComponent
+import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.RunnerComponent
 import org.gradle.api.Project
 
 @SingleIn(AppScope::class)
 @MergeComponent(AppScope::class)
-interface TaskComponent : RunnerComponent {
+interface TaskComponent : RunnerComponent, RulesComponent {
 
+  val multiRuleFindingFactory: MultiRuleFindingFactory
   val projectProvider: GradleProjectProvider
 
   @Component.Factory
@@ -44,7 +46,7 @@ interface TaskComponent : RunnerComponent {
       @BindsInstance
       moduleCheckSettings: ModuleCheckSettings,
       @BindsInstance
-      findingFactory: FindingFactory<out Finding>,
+      ruleFilter: RuleFilter,
       @BindsInstance
       projectRoot: ProjectRoot
     ): TaskComponent

@@ -40,9 +40,8 @@ dependencies {
   api(libs.javax.inject)
 
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-gradle:platforms:impl"))
   api(project(path = ":modulecheck-gradle:platforms:internal-android"))
@@ -55,6 +54,7 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-rule:api"))
+  api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
 
   compileOnly(gradleApi())

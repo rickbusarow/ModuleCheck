@@ -22,8 +22,8 @@ import io.kotest.property.exhaustive.boolean
 import kotlinx.coroutines.test.runTest
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import modulecheck.utils.remove
@@ -114,10 +114,7 @@ internal class DepthOutputTest : RunnerTest() {
     }
 
     run(
-      findingFactory = MultiRuleFindingFactory(
-        settings,
-        ruleFactory.create(settings)
-      )
+      findingFactory = MultiRuleFindingFactory(settings, rules)
     ).isSuccess shouldBe true
 
     logger.collectReport()
@@ -218,6 +215,8 @@ internal class DepthOutputTest : RunnerTest() {
         Exhaustive.boolean()
       ) { depthsConsole, depthsReport, graphsReport ->
 
+        resetAll()
+
         testProjectDir.deleteRecursively()
         logger.clear()
 
@@ -247,35 +246,35 @@ internal class DepthOutputTest : RunnerTest() {
           .clean()
           .remove("\u200B")
 
-        if (depthsConsole) {
+        if (depthsConsole || depthsReport || graphsReport) {
           consoleOutput shouldBe """
-      -- ModuleCheck main source set depth results --
-          depth    modules
-          0        [:lib1]
-          1        [:lib2]
-          2        [:app]
+          -- ModuleCheck main source set depth results --
+              depth    modules
+              0        [:lib1]
+              1        [:lib2]
+              2        [:app]
 
-      ModuleCheck found 0 issues
-      """
+          ModuleCheck found 0 issues
+          """
         } else {
           consoleOutput shouldBe """
-      ModuleCheck found 0 issues
-      """
+          ModuleCheck found 0 issues
+          """
         }
 
         if (depthsReport) {
           depthsOutput shouldHaveText """
-      -- ModuleCheck Depth results --
+          -- ModuleCheck Depth results --
 
-      :app
-          source set      depth    most expensive dependencies
-          main            2        [:lib2]
+          :app
+              source set      depth    most expensive dependencies
+              main            2        [:lib2]
 
-      :lib2
-          source set      depth    most expensive dependencies
-          main            1        [:lib1]
+          :lib2
+              source set      depth    most expensive dependencies
+              main            1        [:lib1]
 
-      """
+          """
         } else {
           depthsOutput.shouldNotExist()
         }

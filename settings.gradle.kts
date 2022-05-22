@@ -92,6 +92,9 @@ include(
   ":modulecheck-core",
   ":modulecheck-dagger",
   ":modulecheck-finding:api",
+  ":modulecheck-finding:impl",
+  ":modulecheck-finding:impl-android",
+  ":modulecheck-finding:impl-sort",
   ":modulecheck-finding:name",
   ":modulecheck-gradle:platforms:api",
   ":modulecheck-gradle:platforms:impl",
@@ -123,6 +126,8 @@ include(
   ":modulecheck-reporting:sarif",
   ":modulecheck-rule:api",
   ":modulecheck-rule:impl",
+  ":modulecheck-rule:impl-factory",
+  ":modulecheck-rule:testing",
   ":modulecheck-runtime:api",
   ":modulecheck-runtime:testing",
   ":modulecheck-utils"

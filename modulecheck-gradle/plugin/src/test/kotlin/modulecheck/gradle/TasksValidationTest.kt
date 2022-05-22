@@ -45,12 +45,12 @@ class TasksValidationTest : BaseGradleTest() {
     ) withTrimmedMessage """
       moduleCheck - runs all enabled ModuleCheck rules
       moduleCheckAuto - runs all enabled ModuleCheck rules with auto-correct
-      moduleCheckDepths - The longest path between this module and its leaf nodes
-      moduleCheckGraphs - The longest path between this module and its leaf nodes
-      moduleCheckSortDependencies - Sorts all dependencies within a dependencies { ... } block
-      moduleCheckSortDependenciesAuto - Sorts all dependencies within a dependencies { ... } block
-      moduleCheckSortPlugins - Sorts Gradle plugins which are applied using the plugins { ... } block
-      moduleCheckSortPluginsAuto - Sorts Gradle plugins which are applied using the plugins { ... } block
+      moduleCheckDepths - runs the project-depth ModuleCheck rule
+      moduleCheckGraphs - runs the project-depth ModuleCheck rule
+      moduleCheckSortDependencies - runs the sort-dependencies ModuleCheck rule
+      moduleCheckSortDependenciesAuto - runs the sort-dependencies ModuleCheck rule with auto-correct
+      moduleCheckSortPlugins - runs the sort-plugins ModuleCheck rule
+      moduleCheckSortPluginsAuto - runs the sort-plugins ModuleCheck rule with auto-correct
     """
   }
 

@@ -39,34 +39,6 @@
           "version": "0.12.1-SNAPSHOT",
           "rules": [
             {
-              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/use_anvil_factory_generation",
-              "id": "modulecheck.use-anvil-factory-generation",
-              "name": "UseAnvilFactoryGeneration",
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "shortDescription": {
-                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
-              },
-              "fullDescription": {
-                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
-              }
-            },
-            {
-              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/project_depth",
-              "id": "modulecheck.project-depth",
-              "name": "ProjectDepth",
-              "defaultConfiguration": {
-                "level": "warning"
-              },
-              "shortDescription": {
-                "text": "The longest path between this module and its leaf nodes"
-              },
-              "fullDescription": {
-                "text": "The longest path between this module and its leaf nodes"
-              }
-            },
-            {
               "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/disable_android_resources",
               "id": "modulecheck.disable-android-resources",
               "name": "DisableAndroidResources",
@@ -134,6 +106,20 @@
               },
               "fullDescription": {
                 "text": "Finds project dependencies which aren't used by the declaring configuration, but are used by a dependent configuration."
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/project_depth",
+              "id": "modulecheck.project-depth",
+              "name": "ProjectDepth",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "The longest path between this module and its leaf nodes"
+              },
+              "fullDescription": {
+                "text": "The longest path between this module and its leaf nodes"
               }
             },
             {
@@ -232,6 +218,20 @@
               },
               "fullDescription": {
                 "text": "Finds modules which have Kotlin AndroidExtensions enabled, but don't actually use any synthetic imports"
+              }
+            },
+            {
+              "helpUri": "https://rbusarow.github.io/ModuleCheck/docs/rules/use_anvil_factory_generation",
+              "id": "modulecheck.use-anvil-factory-generation",
+              "name": "UseAnvilFactoryGeneration",
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "shortDescription": {
+                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
+              },
+              "fullDescription": {
+                "text": "Finds modules which could use Anvil's factory generation instead of Dagger's"
               }
             }
           ]

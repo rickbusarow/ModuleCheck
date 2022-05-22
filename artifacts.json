@@ -56,6 +56,30 @@
     "javaVersion": "11"
   },
   {
+    "gradlePath": ":modulecheck-finding:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-finding:impl-android",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl-android",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-finding:impl-sort",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl-sort",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
     "gradlePath": ":modulecheck-finding:name",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-finding-name",
@@ -171,6 +195,22 @@
     "gradlePath": ":modulecheck-rule:impl",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-rule-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-rule:impl-factory",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-impl-factory",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-rule:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-testing",
     "description": "Fast dependency graph linting for Gradle projects",
     "packaging": "jar",
     "javaVersion": "11"

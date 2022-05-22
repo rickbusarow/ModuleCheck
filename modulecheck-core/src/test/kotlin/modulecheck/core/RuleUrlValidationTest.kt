@@ -21,14 +21,8 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.file.shouldExist
 import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
-import modulecheck.config.ModuleCheckSettings
-import modulecheck.config.fake.TestSettings
-import modulecheck.core.rule.DocumentedRule.Companion.RULES_BASE_URL
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.finding.Finding
-import modulecheck.rule.ModuleCheckRule
-import modulecheck.testing.BaseTest
-import modulecheck.testing.getPrivateFieldByName
+import modulecheck.rule.impl.DocumentedRule.Companion.RULES_BASE_URL
+import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
@@ -36,7 +30,7 @@ import org.junit.jupiter.api.Test
 import kotlin.io.path.Path
 import kotlin.io.path.absolute
 
-class RuleUrlValidationTest : BaseTest() {
+class RuleUrlValidationTest : RunnerTest() {
 
   @Test
   fun `each rule documentation url must correspond to a docs file and sidebar entry`() {
@@ -124,15 +118,9 @@ class RuleUrlValidationTest : BaseTest() {
       }
       .toMap()
 
-    val ruleFactories: List<(ModuleCheckSettings) -> ModuleCheckRule<out Finding>> =
-      ModuleCheckRuleFactory().getPrivateFieldByName("rules")
-
-    val rulesToSlugs = ruleFactories
-      .asSequence()
-      .map { it(TestSettings()) }
-      .map { rule ->
-        rule.name.id to "/rules/${rule.documentationUrl.remove(RULES_BASE_URL)}"
-      }
+    val rulesToSlugs = rules.map { rule ->
+      rule.name.id to "/rules/${rule.documentationUrl.remove(RULES_BASE_URL)}"
+    }
       .sortedBy { it.first }
 
     /* This seems bad, but it's simple:

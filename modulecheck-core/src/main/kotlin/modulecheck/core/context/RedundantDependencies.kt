@@ -17,11 +17,10 @@ package modulecheck.core.context
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
-import modulecheck.core.RedundantDependency
+import modulecheck.finding.RedundantDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.project
 import modulecheck.utils.SafeCache
 import modulecheck.utils.mapAsync
 
