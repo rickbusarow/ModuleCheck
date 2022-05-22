@@ -644,6 +644,63 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
+  fun `api and implementation of the same dependency with auto-correct should not be changed`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `public property from dependency in test source should not require API`() {
 
     val lib1 = kotlinProject(":lib1") {

@@ -100,7 +100,7 @@ data class MustBeApi(
             .distinctBy { it.path }
             .filterNot { cpd ->
               // exclude anything which is inherited but already included in local `api` deps
-              cpd in directApiProjects
+              cpd.copy(configurationName = cpd.configurationName.apiVariant()) in directApiProjects
             }
             .filterAsync {
               !sourceSetName.isTestingOnly() && it.project(project.projectCache)
