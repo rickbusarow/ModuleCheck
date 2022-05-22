@@ -16,7 +16,7 @@
 package modulecheck.core
 
 import io.kotest.matchers.string.shouldContain
-import modulecheck.core.anvil.CouldUseAnvilFinding
+import modulecheck.finding.CouldUseAnvilFinding
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName

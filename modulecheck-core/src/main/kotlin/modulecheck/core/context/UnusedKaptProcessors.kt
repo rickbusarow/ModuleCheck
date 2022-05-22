@@ -21,9 +21,9 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.asMap
-import modulecheck.core.kapt.UnusedKaptProcessorFinding
-import modulecheck.core.kapt.defaultCodeGeneratorBindings
+import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.finding.FindingName
+import modulecheck.finding.UnusedKaptProcessorFinding
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.Reference

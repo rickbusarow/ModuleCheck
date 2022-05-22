@@ -25,9 +25,17 @@ abstract class AppScope private constructor()
 @Qualifier
 annotation class RootGradleProject
 
+/**
+ * Indicates that the annotated dependency will be a singleton within this scope.
+ *
+ * @param scope the scope in which this will be a singleton.
+ */
 @Scope
 @Retention(AnnotationRetention.RUNTIME)
-annotation class SingleIn(val clazz: KClass<*>)
+annotation class SingleIn(
+  @Suppress("UNUSED")
+  val scope: KClass<*>
+)
 
 fun interface SourceWebsiteUrlProvider {
   fun get(): String

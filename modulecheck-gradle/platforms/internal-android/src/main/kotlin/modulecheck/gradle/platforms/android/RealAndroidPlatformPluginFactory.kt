@@ -26,7 +26,6 @@ import com.android.build.gradle.internal.api.ApplicationVariantImpl
 import com.android.build.gradle.internal.api.LibraryVariantImpl
 import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.platforms.ConfigurationsFactory
 import modulecheck.gradle.platforms.SourceSetsFactory
@@ -78,7 +77,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
     val hasKotlinAndroidExtensions = gradleProject
       .pluginManager
-      .hasPlugin(KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID)
+      .hasPlugin("android-extensions")
 
     val nonTransientRClass = gradleProject
       .findProperty("android.nonTransitiveRClass") as? Boolean ?: false
@@ -109,6 +108,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests, resValues = resValues
       )
+
       is DynamicFeature -> AndroidDynamicFeaturePlugin(
         sourceSets = sourceSets,
         configurations = configurations,
@@ -118,6 +118,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         manifests = manifests,
         buildConfigEnabled = buildConfigEnabled, resValues = resValues
       )
+
       is Library -> AndroidLibraryPlugin(
         sourceSets = sourceSets,
         configurations = configurations,
@@ -128,6 +129,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         androidResourcesEnabled = androidResourcesEnabled,
         buildConfigEnabled = buildConfigEnabled, resValues = resValues
       )
+
       is Test -> AndroidTestPlugin(
         sourceSets = sourceSets,
         configurations = configurations,

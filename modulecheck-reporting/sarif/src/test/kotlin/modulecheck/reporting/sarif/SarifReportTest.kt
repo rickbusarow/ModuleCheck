@@ -19,16 +19,13 @@ import io.kotest.assertions.asClue
 import io.kotest.matchers.string.shouldContain
 import kotlinx.coroutines.runBlocking
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.core.UnusedDependencyFinding
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
+import modulecheck.finding.UnusedDependencyFinding
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.rule.ModuleCheckRule
 import modulecheck.runtime.test.RunnerTest
-import modulecheck.testing.getPrivateFieldByName
 import modulecheck.utils.suffixIfNot
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -36,13 +33,28 @@ import java.io.File
 @Suppress("BlockingMethodInNonBlockingContext")
 class SarifReportTest : RunnerTest() {
 
+  override val settings: ModuleCheckSettings by resets {
+    TestSettings(
+      checks = TestChecksSettings(
+        redundantDependency = true,
+        unusedDependency = true,
+        overShotDependency = true,
+        mustBeApi = true,
+        inheritedDependency = true,
+        sortDependencies = true,
+        sortPlugins = true,
+        unusedKapt = true,
+        anvilFactoryGeneration = true,
+        disableAndroidResources = true,
+        disableViewBinding = true,
+        unusedKotlinAndroidExtensions = true,
+        depths = true
+      )
+    )
+  }
+
   @Test
   fun `report with unused dependency`() = runBlocking {
-
-    val rules = ModuleCheckRuleFactory()
-      .getPrivateFieldByName<ModuleCheckRuleFactory,
-        List<(ModuleCheckSettings) -> ModuleCheckRule<out Finding>>>("rules")
-      .map { it(TestSettings()) }
 
     val factory = SarifReportFactory(
       websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },

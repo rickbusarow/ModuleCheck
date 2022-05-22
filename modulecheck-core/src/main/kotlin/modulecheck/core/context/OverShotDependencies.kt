@@ -15,8 +15,9 @@
 
 package modulecheck.core.context
 
-import modulecheck.core.OverShotDependency
-import modulecheck.core.internal.uses
+import modulecheck.api.context.asApiOrImplementation
+import modulecheck.api.context.uses
+import modulecheck.finding.OverShotDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.toSourceSetDependency

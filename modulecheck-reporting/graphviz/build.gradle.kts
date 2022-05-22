@@ -39,9 +39,8 @@ dependencies {
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
-  testImplementation(project(path = ":modulecheck-core"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-rule:api"))
+  testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

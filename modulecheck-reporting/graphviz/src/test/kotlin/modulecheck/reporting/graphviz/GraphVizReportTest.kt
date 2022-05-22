@@ -16,12 +16,11 @@
 package modulecheck.reporting.graphviz
 
 import io.kotest.inspectors.forAll
-import modulecheck.core.rule.DepthRule
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.test.maybeAddSourceSet
-import modulecheck.rule.SingleRuleFindingFactory
+import modulecheck.rule.impl.DepthRule
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import org.junit.jupiter.api.Test
@@ -29,7 +28,7 @@ import java.io.File
 
 internal class GraphVizReportTest : RunnerTest() {
 
-  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+  override val rules = listOf(DepthRule())
 
   fun McProject.graphFile(sourceSet: String = "main"): File {
     return projectDir.child(

@@ -28,6 +28,7 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
 
   api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-project:testing"))
@@ -38,10 +39,10 @@ dependencies {
   api(project(path = ":modulecheck-reporting:logging:testing"))
   api(project(path = ":modulecheck-reporting:sarif"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-rule:impl"))
+  api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
 
   implementation(project(path = ":modulecheck-config:fake"))
-  implementation(project(path = ":modulecheck-core"))
+  implementation(project(path = ":modulecheck-rule:testing"))
   implementation(project(path = ":modulecheck-utils"))
 }

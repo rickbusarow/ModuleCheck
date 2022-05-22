@@ -54,7 +54,7 @@ moduleCheck {
     depths.enabled = true
     graphs {
       enabled = true
-      outputDir = File(buildDir, "reports/modulecheck/graphs").path
+      // outputDir = File(buildDir, "reports/modulecheck/graphs").path
     }
   }
 }

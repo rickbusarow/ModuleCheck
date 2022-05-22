@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.anvilScopeDependenciesForSourceSetName
-import modulecheck.core.UnusedDependency
-import modulecheck.core.internal.uses
+import modulecheck.api.context.uses
+import modulecheck.finding.UnusedDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

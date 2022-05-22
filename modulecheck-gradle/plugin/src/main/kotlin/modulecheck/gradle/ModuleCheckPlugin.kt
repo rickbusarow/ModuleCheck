@@ -15,17 +15,12 @@
 
 package modulecheck.gradle
 
-import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
-import modulecheck.core.rule.SortDependenciesRule
-import modulecheck.core.rule.SortPluginsRule
+import modulecheck.finding.FindingName
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.internal.generatesBuildConfig
 import modulecheck.gradle.platforms.android.internal.isMissingManifestFile
-import modulecheck.gradle.task.ModuleCheckTask
-import modulecheck.rule.FindingFactory
-import modulecheck.rule.SingleRuleFindingFactory
+import modulecheck.gradle.task.MultiRuleModuleCheckTask
+import modulecheck.gradle.task.SingleRuleModuleCheckTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
@@ -36,10 +31,6 @@ class ModuleCheckPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     val settings = target.extensions
       .create("moduleCheck", ModuleCheckExtension::class.java)
-
-    val factory = ModuleCheckRuleFactory()
-
-    val rules = factory.create(settings)
 
     val gradleVersion = target.gradle.gradleVersion.split('.')
       .let { segments ->
@@ -54,23 +45,30 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val agpApiAccess = AgpApiAccess()
 
+    // target.registerTasks(
+    //   name = "moduleCheckSortDependencies",
+    //   findingName = SortDependenciesFinding.NAME,
+    //   includeAuto = true,
+    //   disableConfigCache = disableConfigCache,
+    //   agpApiAccess = agpApiAccess
+    // )
     target.registerTasks(
       name = "moduleCheckSortDependencies",
-      findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings)),
+      findingName = FindingName("sort-dependencies"),
       includeAuto = true,
       disableConfigCache = disableConfigCache,
       agpApiAccess = agpApiAccess
     )
     target.registerTasks(
       name = "moduleCheckSortPlugins",
-      findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings)),
+      findingName = FindingName("sort-plugins"),
       includeAuto = true,
       disableConfigCache = disableConfigCache,
       agpApiAccess = agpApiAccess
     )
     target.registerTasks(
       name = "moduleCheckDepths",
-      findingFactory = SingleRuleFindingFactory(DepthRule()),
+      findingName = FindingName("project-depth"),
       includeAuto = false,
       disableConfigCache = disableConfigCache,
       agpApiAccess = agpApiAccess,
@@ -81,7 +79,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     )
     target.registerTasks(
       name = "moduleCheckGraphs",
-      findingFactory = SingleRuleFindingFactory(DepthRule()),
+      findingName = FindingName("project-depth"),
       includeAuto = false,
       disableConfigCache = disableConfigCache,
       agpApiAccess = agpApiAccess,
@@ -91,7 +89,7 @@ class ModuleCheckPlugin : Plugin<Project> {
     )
     target.registerTasks(
       name = "moduleCheck",
-      findingFactory = MultiRuleFindingFactory(settings, rules),
+      findingName = null,
       includeAuto = true,
       disableConfigCache = disableConfigCache,
       agpApiAccess = agpApiAccess
@@ -107,7 +105,7 @@ class ModuleCheckPlugin : Plugin<Project> {
   @Suppress("LongParameterList")
   private fun Project.registerTasks(
     name: String,
-    findingFactory: FindingFactory<*>,
+    findingName: FindingName?,
     includeAuto: Boolean,
     disableConfigCache: Boolean,
     agpApiAccess: AgpApiAccess,
@@ -128,17 +126,41 @@ class ModuleCheckPlugin : Plugin<Project> {
       }
     }
 
-    tasks.register(name, ModuleCheckTask::class.java, findingFactory, false, disableConfigCache)
-      .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
-      .maybeAddDependencies()
-    if (includeAuto) {
-      tasks.register(
-        "${name}Auto",
-        ModuleCheckTask::class.java,
-        findingFactory,
-        true,
-        disableConfigCache
+    val tasks = if (findingName != null) {
+      listOfNotNull(
+        tasks.register(
+          name,
+          SingleRuleModuleCheckTask::class.java,
+          findingName,
+          false,
+          disableConfigCache
+        ),
+        if (includeAuto) {
+          tasks.register(
+            "${name}Auto",
+            SingleRuleModuleCheckTask::class.java,
+            findingName,
+            true,
+            disableConfigCache
+          )
+        } else null
       )
+    } else {
+      listOfNotNull(
+        tasks.register(name, MultiRuleModuleCheckTask::class.java, false, disableConfigCache),
+        if (includeAuto) {
+          tasks.register(
+            "${name}Auto",
+            MultiRuleModuleCheckTask::class.java,
+            true,
+            disableConfigCache
+          )
+        } else null
+      )
+    }
+
+    tasks.forEach { taskProvider ->
+      taskProvider
         .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
         .maybeAddDependencies()
     }

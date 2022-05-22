@@ -34,7 +34,6 @@ dependencies {
 
   api(libs.javax.inject)
 
-  api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
