@@ -13,14 +13,11 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "ForbiddenImport")
 
-package modulecheck.gradle.platforms.sourcesets
+package modulecheck.gradle.platforms.android.sourcesets
 
-import com.android.build.gradle.AppExtension
 import com.android.build.gradle.BaseExtension
-import com.android.build.gradle.LibraryExtension
-import com.android.build.gradle.TestExtension
 import com.android.build.gradle.TestedExtension
 import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.TestVariant
@@ -28,10 +25,14 @@ import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.BuildTypeName
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
-import modulecheck.gradle.platforms.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.android.AndroidAppExtension
+import modulecheck.gradle.platforms.android.AndroidLibraryExtension
+import modulecheck.gradle.platforms.android.AndroidTestExtension
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
+import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -408,15 +409,16 @@ class RealAndroidSourceSetsParser private constructor(
     return upstreamNames.distinct()
   }
 
-  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> = when (this) {
-    is AppExtension -> applicationVariants
-    is LibraryExtension -> libraryVariants
-    is TestExtension -> applicationVariants
-    else -> error(
-      "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
-        "but it was `${this::class.qualifiedName}`."
-    )
-  }
+  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> =
+    when (this) {
+      is AndroidAppExtension -> applicationVariants
+      is AndroidLibraryExtension -> libraryVariants
+      is AndroidTestExtension -> applicationVariants
+      else -> error(
+        "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
+          "but it was `${this::class.qualifiedName}`."
+      )
+    }
 
   private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType():
     Pair<ConcatenatedFlavorsName, BuildTypeName> {
@@ -573,7 +575,7 @@ class RealAndroidSourceSetsParser private constructor(
   class Factory @Inject constructor() : AndroidSourceSetsParser.Factory {
     override fun create(
       parsedConfigurations: Configurations,
-      extension: TestedExtension,
+      extension: BaseExtension,
       hasTestFixturesPlugin: Boolean
     ): RealAndroidSourceSetsParser {
       return RealAndroidSourceSetsParser(parsedConfigurations, extension, hasTestFixturesPlugin)

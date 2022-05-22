@@ -15,13 +15,13 @@
 
 package modulecheck.gradle
 
+import modulecheck.gradle.TestVersions.Companion.DEFAULT_AGP_VERSION
+import modulecheck.gradle.TestVersions.Companion.DEFAULT_ANVIL_VERSION
+import modulecheck.gradle.TestVersions.Companion.DEFAULT_GRADLE_VERSION
+import modulecheck.gradle.TestVersions.Companion.DEFAULT_KOTLIN_VERSION
 import modulecheck.gradle.internal.BuildProperties
 import modulecheck.project.ProjectCache
 import modulecheck.project.test.ProjectCollector
-import modulecheck.specs.DEFAULT_AGP_VERSION
-import modulecheck.specs.DEFAULT_ANVIL_VERSION
-import modulecheck.specs.DEFAULT_GRADLE_VERSION
-import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
 import modulecheck.utils.child
@@ -36,17 +36,16 @@ import org.junit.jupiter.api.DynamicTest
 import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
-abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
+abstract class BaseGradleTest :
+  BaseTest(),
+  ProjectCollector,
+  DynamicTests,
+  VersionsMatrixTest {
 
-  var kotlinVersion = DEFAULT_KOTLIN_VERSION
-  var agpVersion = DEFAULT_AGP_VERSION
-  var gradleVersion = DEFAULT_GRADLE_VERSION
-  var anvilVersion = DEFAULT_ANVIL_VERSION
-
-  val kotlinVersions = sequenceOf("1.5.32", "1.6.21", "1.7.0-Beta")
-  val gradleVersions = listOf("7.3.3", "7.4.2", "7.5-rc-1")
-  val agpVersions = listOf("7.0.3", "7.1.3", "7.2.0")
-  val anvilVersions = listOf("2.3.11", "2.4.0")
+  override var kotlinVersion = DEFAULT_KOTLIN_VERSION
+  override var agpVersion = DEFAULT_AGP_VERSION
+  override var gradleVersion = DEFAULT_GRADLE_VERSION
+  override var anvilVersion = DEFAULT_ANVIL_VERSION
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
 
@@ -57,6 +56,13 @@ abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
     root.child("build.gradle.kts")
       .createSafely(
         """
+        buildscript {
+          dependencies {
+            classpath("com.android.tools.build:gradle:$agpVersion")
+            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+          }
+        }
+
         plugins {
           id("com.rickbusarow.module-check")
         }
@@ -115,8 +121,9 @@ abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)
-      .withPluginClasspath()
-      // .withDebug(true)
+      // .withTestKitDir(testKitDir)
+      // .withPluginClasspath()
+      .withDebug(true)
       .withProjectDir(testProjectDir)
   }
 
@@ -132,23 +139,29 @@ abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
     rootSettings.appendText(includes)
   }
 
-  fun build(vararg tasks: String, stacktrace: Boolean): BuildResult {
+  fun build(
+    vararg tasks: String,
+    withPluginClasspath: Boolean,
+    stacktrace: Boolean
+  ): BuildResult {
+    rootProject
     addIncludes()
     return gradleRunner
+      .letIf(withPluginClasspath) { it.withPluginClasspath() }
       .withArguments(tasks.toList().letIf(stacktrace) { it + "--stacktrace" })
       .build()
   }
 
-  fun BuildResult.shouldSucceed() {
-    tasks.last().outcome shouldBe TaskOutcome.SUCCESS
-  }
-
   fun shouldSucceed(
     vararg tasks: String,
+    withPluginClasspath: Boolean = false,
     stacktrace: Boolean = true,
     assertions: BuildResult.() -> Unit = {}
   ): BuildResult {
-    val result = build(*tasks, stacktrace = stacktrace)
+    val result = build(
+      *tasks, withPluginClasspath = withPluginClasspath,
+      stacktrace = stacktrace
+    )
 
     result.tasks.last().outcome shouldBe TaskOutcome.SUCCESS
 
@@ -158,6 +171,7 @@ abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
   }
 
   fun shouldFail(vararg tasks: String): BuildResult {
+    rootProject
     addIncludes()
     val result = gradleRunner.withArguments(*tasks)
       .buildAndFail()
@@ -197,73 +211,30 @@ abstract class BaseGradleTest : BaseTest(), ProjectCollector, DynamicTests {
     trimmed shouldBe message
   }
 
-  fun gradle(action: () -> Unit): List<DynamicTest> {
-
-    return gradleVersions.dynamic({ "gradle $it" }, { gradleVersion = it }, action)
-  }
-
-  fun dynamic(action: () -> Unit): List<DynamicTest> {
-
-    val combinations =
-      gradleVersions.flatMap { gradleVersion ->
-        agpVersions.flatMap { agpVersion ->
-          kotlinVersions.map { kotlinVersion ->
-            TestVersions(gradleVersion, agpVersion, kotlinVersion)
-          }
-        }
-      }
-
-    return combinations.toList().dynamic(
-      testName = { it.toString() },
-      setup = { subject ->
-        agpVersion = subject.agpVersion
-        gradleVersion = subject.gradleVersion
-        kotlinVersion = subject.kotlinVersion
-      },
-      action = action
-    )
-  }
-
-  private fun <T> List<T>.dynamic(
-    testName: (T) -> String,
+  override fun <T> dynamicTest(
+    subject: T,
+    testName: String,
     setup: (T) -> Unit,
-    action: () -> Unit
-  ): List<DynamicTest> {
+    action: (T) -> Unit
+  ): DynamicTest = DynamicTest.dynamicTest(testName) {
+    try {
 
-    val baseName = testFunctionName
-
-    return map { subject ->
-
-      DynamicTest.dynamicTest(testName(subject)) {
-        try {
-
-          testDisplayName = buildString {
-            append("$baseName${File.separator}")
-            append(testName(subject).replace(" ", "_").remove(":"))
-          }
-
-          setup(subject)
-
-          beforeEach()
-
-          // make sure that the root project is initialized
-          rootProject
-
-          action()
-        } finally {
-          resetAll()
-        }
+      testDisplayName = buildString {
+        append("$testFunctionName${File.separator}")
+        append(testName.replace(" ", "_").remove(":"))
       }
-    }
-  }
 
-  data class TestVersions(
-    val gradleVersion: String,
-    val agpVersion: String,
-    val kotlinVersion: String
-  ) {
-    override fun toString(): String {
-      return "[gradle $gradleVersion, agp $agpVersion, kotlin $kotlinVersion]"
+      setup(subject)
+
+      resetAll()
+      beforeEach()
+
+      // make sure that the root project is initialized
+      rootProject
+
+      action(subject)
+    } finally {
+      resetAll()
     }
   }
 }

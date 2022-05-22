@@ -15,8 +15,6 @@
 
 package modulecheck.gradle.internal
 
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.TestedExtension
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.config.ModuleCheckSettings
@@ -24,8 +22,9 @@ import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.gradle.GradleMcLogger
-import modulecheck.gradle.platforms.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
+import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
@@ -61,6 +60,7 @@ class GradleProjectProvider @Inject constructor(
   private val settings: ModuleCheckSettings,
   override val projectCache: ProjectCache,
   private val gradleLogger: GradleMcLogger,
+  private val agpApiAccess: AgpApiAccess,
   private val buildFileParserFactory: BuildFileParser.Factory,
   private val jvmFileProviderFactory: RealJvmFileProvider.Factory,
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
@@ -110,28 +110,19 @@ class GradleProjectProvider @Inject constructor(
       .pluginManager
       .hasPlugin(KAPT_PLUGIN_ID)
 
-    val androidCommonExtensionOrNull = gradleProject
-      .extensions
-      .findByType(CommonExtension::class.java)
-
     val hasTestFixturesPlugin = gradleProject
       .pluginManager
-      .hasPlugin(TEST_FIXTURES_PLUGIN_ID) || (androidCommonExtensionOrNull as? TestedExtension)
-      ?.testFixtures?.enable == true
+      .hasPlugin(TEST_FIXTURES_PLUGIN_ID)
 
-    val platformPlugin = if (androidCommonExtensionOrNull != null) {
+    val platformPlugin = agpApiAccess.ifSafeOrNull(gradleProject) {
 
       androidPlatformPluginFactory.create(
-        gradleProject = gradleProject,
-        androidCommonExtension = androidCommonExtensionOrNull,
         hasTestFixturesPlugin = hasTestFixturesPlugin
       )
-    } else {
-      jvmPlatformPluginFactory.create(
-        gradleProject = gradleProject,
-        hasTestFixturesPlugin = hasTestFixturesPlugin
-      )
-    }
+    } ?: jvmPlatformPluginFactory.create(
+      gradleProject = gradleProject,
+      hasTestFixturesPlugin = hasTestFixturesPlugin
+    )
 
     return RealMcProject(
       path = path,

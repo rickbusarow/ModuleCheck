@@ -141,7 +141,7 @@ class ConfigValidationTest : BaseGradleTest() {
       """.trimIndent()
     )
 
-    shouldSucceed("moduleCheck")
+    shouldSucceed("moduleCheck", withPluginClasspath = true)
   }
 
   @Test
@@ -226,6 +226,6 @@ class ConfigValidationTest : BaseGradleTest() {
       """.trimIndent()
     )
 
-    shouldSucceed("moduleCheck")
+    shouldSucceed("moduleCheck", withPluginClasspath = true)
   }
 }

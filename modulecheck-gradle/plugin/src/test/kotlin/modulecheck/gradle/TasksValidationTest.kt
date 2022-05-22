@@ -15,10 +15,7 @@
 
 package modulecheck.gradle
 
-import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContain
-import modulecheck.utils.child
-import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
@@ -42,7 +39,10 @@ class TasksValidationTest : BaseGradleTest() {
       """.trimIndent()
     )
 
-    shouldSucceed("mcTasks") withTrimmedMessage """
+    shouldSucceed(
+      "mcTasks",
+      withPluginClasspath = true
+    ) withTrimmedMessage """
       moduleCheck - runs all enabled ModuleCheck rules
       moduleCheckAuto - runs all enabled ModuleCheck rules with auto-correct
       moduleCheckDepths - The longest path between this module and its leaf nodes
@@ -55,24 +55,7 @@ class TasksValidationTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `all tasks should ignore configuration caching`() = gradle {
-
-    // "ignore" this test for Gradle versions less than 7.4,
-    // since they can't disable caching programmatically
-    if (gradleVersion < "7.4") return@gradle
-
-    kotlinProject(":") {
-      buildFile {
-        """
-        plugins {
-          id("com.rickbusarow.module-check")
-        }
-        """
-      }
-
-      projectDir.child("settings.gradle.kts").createSafely()
-    }
-
+  fun `all tasks should ignore configuration caching`() = gradleVersions.flatMap { gradleVersion ->
     listOf(
       "moduleCheck",
       "moduleCheckAuto",
@@ -82,23 +65,43 @@ class TasksValidationTest : BaseGradleTest() {
       "moduleCheckSortDependenciesAuto",
       "moduleCheckSortPlugins",
       "moduleCheckSortPluginsAuto"
-    ).forAll { taskName ->
-
-      val expected1 = "Configuration cache is an incubating feature."
-      val expected2 =
-        "Calculating task graph as no configuration cache is available for tasks: $taskName"
-
-      // The first invocation would always succeed, but will generate a cache if caching isn't ignored
-      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
-        output shouldContain expected1
-        output shouldContain expected2
+    ).map { taskName ->
+      gradleVersion to taskName
+    }
+  }.dynamic(
+    filter = {
+      // ignore this test for Gradle versions less than 7.4, since they can't disable caching
+      // programmatically
+      first >= "7.4"
+    },
+    testName = { (gradleVersion, taskName) -> "gradle $gradleVersion $taskName" },
+    setup = { (gradleVersion, _) -> this.gradleVersion = gradleVersion }
+  ) { (_, taskName) ->
+    rootBuild.writeText(
+      """
+      plugins {
+        id("com.rickbusarow.module-check")
       }
+      """
+    )
 
-      // The second invocation will fail if a cache exists and caching isn't ignored.
-      shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
-        output shouldContain expected1
-        output shouldContain expected2
-      }
+    val expected1 = "Configuration cache is an incubating feature."
+    val expected2 =
+      "Calculating task graph as no configuration cache is available for tasks: $taskName"
+
+    // The first invocation would always succeed, but will generate a cache if caching isn't ignored
+    shouldSucceed(
+      taskName, "--configuration-cache",
+      withPluginClasspath = true
+    ).output.clean().let { output ->
+      output shouldContain expected1
+      output shouldContain expected2
+    }
+
+    // The second invocation will fail if a cache exists and caching isn't ignored.
+    shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+      output shouldContain expected1
+      output shouldContain expected2
     }
   }
 }

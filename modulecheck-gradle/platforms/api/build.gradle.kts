@@ -24,24 +24,21 @@ mcbuild {
 
 dependencies {
 
-  api(libs.agp)
-  api(libs.agp.api)
   api(libs.javax.inject)
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
 
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
 
   compileOnly(gradleApi())
 
-  implementation(libs.kotlin.gradle.plug)
-  implementation(libs.kotlin.gradle.plugin.api)
+  compileOnly(libs.agp)
+  compileOnly(libs.agp.api)
+  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin.api)
+
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
-  implementation(libs.square.anvil.gradle)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

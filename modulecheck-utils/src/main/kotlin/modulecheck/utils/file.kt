@@ -40,3 +40,10 @@ fun File.createSafely(content: String? = null) = apply {
     createNewFile()
   }
 }
+
+/**
+ * Creates the directories if they don't already exist
+ *
+ * @see File.mkdirs
+ */
+fun File.mkdirsInline() = apply { mkdirs() }

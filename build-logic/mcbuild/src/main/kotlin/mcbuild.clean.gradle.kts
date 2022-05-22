@@ -20,6 +20,8 @@ plugins {
 // delete any empty directories
 tasks.withType<Delete> {
 
+  notCompatibleWithConfigurationCache("Delete does not support configuration cache")
+
   doLast {
 
     val subprojectDirs = subprojects

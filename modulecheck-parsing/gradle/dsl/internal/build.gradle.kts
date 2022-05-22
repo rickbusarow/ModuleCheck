@@ -28,18 +28,11 @@ dependencies {
 
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
 
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils"))

@@ -24,21 +24,20 @@ mcbuild {
   dagger = true
 }
 
-tasks.withType<Test> {
-  // Gradle TestKit somewhat regularly runs out of memory on the freebie GitHub runners
-  maxParallelForks = 1
+tasks.withType(Test::class.java)
+  .configureEach {
 
-  dependsOn(tasks.matching { it.name == "publishToMavenLocal" })
-}
+    if (!System.getenv("CI").isNullOrBlank()) {
+      // Gradle TestKit somewhat regularly runs out of memory on the freebie GitHub runners
+      maxParallelForks = 1
+    }
+
+    dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
+  }
 
 dependencies {
 
-  api(libs.agp)
   api(libs.javax.inject)
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-core"))
@@ -60,12 +59,15 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp.api)
-  implementation(libs.kotlin.gradle.plug)
-  implementation(libs.kotlin.gradle.plugin.api)
-  implementation(libs.kotlin.reflect)
+  compileOnly(libs.agp)
+  compileOnly(libs.agp.api)
+  compileOnly(libs.agp.builder.model)
+  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin.api)
+  compileOnly(libs.square.anvil.gradle)
+
+  implementation(libs.google.dagger.api)
   implementation(libs.semVer)
-  implementation(libs.square.anvil.gradle)
 
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
@@ -79,7 +81,6 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-specs"))
   testImplementation(project(path = ":modulecheck-utils"))
 }
 
@@ -146,12 +147,17 @@ val generateBuildProperties by tasks.registering generator@{
   }
 }
 
-tasks.named("runKtlintCheckOverMainSourceSet").configure {
-  dependsOn(generateBuildProperties)
+tasks.matching {
+  it.name in setOf(
+    "javaSourcesJar",
+    "runKtlintCheckOverMainSourceSet",
+    "runKtlintFormatOverMainSourceSet"
+  )
 }
-tasks.named("runKtlintFormatOverMainSourceSet").configure {
-  dependsOn(generateBuildProperties)
-}
+  .configureEach {
+    dependsOn(generateBuildProperties)
+  }
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
   dependsOn(generateBuildProperties)
 }

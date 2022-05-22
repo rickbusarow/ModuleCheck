@@ -26,7 +26,6 @@ dependencies {
 
   api(libs.bundles.hermit)
   api(libs.kotlinx.coroutines.core)
-  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-finding:api"))

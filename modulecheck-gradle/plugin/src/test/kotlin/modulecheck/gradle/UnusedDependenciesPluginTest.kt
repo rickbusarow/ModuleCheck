@@ -24,7 +24,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
   @TestFactory
   fun `module with a declaration used in an android module with kotlin source directory should not be unused`() =
-    dynamic {
+    agp {
 
       androidLibrary(":lib1", "com.modulecheck.lib1") {
         buildFile {
@@ -92,7 +92,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
   @TestFactory
   fun `module with an auto-generated manifest used in subject module should not be unused`() =
-    dynamic {
+    agp {
 
       // This module is declaring a base package in an auto-generated manifest which isn't present
       // until the manifest processor task is invoked.  That base package needs to be read from the
@@ -194,8 +194,9 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
     }
 
   @TestFactory
-  fun `android test fixtures from android DSL should be treated as test fixtures`() = dynamic {
-
+  fun `android test fixtures from android DSL should be treated as test fixtures`() = agp(
+    filter = { it >= "7.1.0" }
+  ) {
     androidLibrary(":lib1", "com.modulecheck.lib1") {
       buildFile {
         """
@@ -263,7 +264,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
   @TestFactory
   fun `module with generated string resource used in subject module should not be unused`() =
-    dynamic {
+    agp {
 
       androidLibrary(":lib1", "com.modulecheck.lib1") {
         buildFile {

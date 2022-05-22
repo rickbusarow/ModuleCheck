@@ -15,7 +15,7 @@
 
 package modulecheck.gradle.platforms
 
-import com.android.build.gradle.TestedExtension
+import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.JvmSourceSetsParser
 import modulecheck.parsing.gradle.model.Configurations
@@ -24,6 +24,7 @@ import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 
 class SourceSetsFactory @Inject constructor(
+  private val agpApiAccess: AgpApiAccess,
   private val jvmSourceSetsParser: JvmSourceSetsParser,
   private val androidSourceSetsParserFactory: AndroidSourceSetsParser.Factory
 ) {
@@ -34,37 +35,14 @@ class SourceSetsFactory @Inject constructor(
     hasTestFixturesPlugin: Boolean
   ): SourceSets {
 
-    return if (gradleProject.isAndroid()) {
-      gradleProject.androidSourceSets(configurations, hasTestFixturesPlugin)
-    } else {
-      gradleProject.jvmSourceSets(configurations)
-    }
-  }
-
-  @Suppress("UnstableApiUsage")
-  private fun GradleProject.androidSourceSets(
-    mcConfigurations: Configurations,
-    hasTestFixturesPlugin: Boolean
-  ): SourceSets {
-
-    return extensions.getByType(TestedExtension::class.java)
-      .let { extension ->
-
-        androidSourceSetsParserFactory.create(
-          mcConfigurations, extension, hasTestFixturesPlugin
-        ).parse()
-      }
-  }
-
-  private fun GradleProject.jvmSourceSets(
-    mcConfigurations: Configurations
-  ): SourceSets {
-
-    return jvmSourceSetsParser.parse(
-      parsedConfigurations = mcConfigurations,
-      gradleProject = this
+    return agpApiAccess.ifSafeOrNull(gradleProject) {
+      androidSourceSetsParserFactory.create(
+        mcConfigurations = configurations,
+        hasTestFixturesPlugin = hasTestFixturesPlugin
+      ).parse()
+    } ?: jvmSourceSetsParser.parse(
+      parsedConfigurations = configurations,
+      gradleProject = gradleProject
     )
   }
 }
-
-fun GradleProject.isAndroid(): Boolean = extensions.findByType(TestedExtension::class.java) != null

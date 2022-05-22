@@ -15,9 +15,7 @@
 
 package modulecheck.gradle
 
-import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import modulecheck.utils.child
-import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 internal class GraphReportTaskTest : BaseGradleTest() {
@@ -25,59 +23,19 @@ internal class GraphReportTaskTest : BaseGradleTest() {
   @Test
   fun `graphs report should be created if graph task is invoked with default settings`() {
 
-    val root = kotlinProject(":") {
-
+    kotlinProject(":lib1") {
       buildFile {
         """
-        plugins {
-          id("com.rickbusarow.module-check")
-        }
-        """
-      }
-
-      projectDir.child("settings.gradle.kts")
-        .createSafely(
-          """
-          pluginManagement {
-            repositories {
-              gradlePluginPortal()
-              mavenCentral()
-              google()
-            }
-            resolutionStrategy {
-              eachPlugin {
-                if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                  useVersion("$DEFAULT_KOTLIN_VERSION")
-                }
-              }
-            }
-          }
-          dependencyResolutionManagement {
-            @Suppress("UnstableApiUsage")
-            repositories {
-              google()
-              mavenCentral()
-            }
-          }
-          include(":lib1")
-          include(":lib2")
-          include(":app")
-          """.trimIndent()
-        )
-
-      kotlinProject(":lib1") {
-        buildFile {
-          """
           plugins {
             kotlin("jvm")
           }
           """
-        }
       }
+    }
 
-      kotlinProject(":lib2") {
-        buildFile {
-          """
+    kotlinProject(":lib2") {
+      buildFile {
+        """
           plugins {
             kotlin("jvm")
           }
@@ -85,12 +43,12 @@ internal class GraphReportTaskTest : BaseGradleTest() {
             implementation(project(":lib1"))
           }
           """
-        }
       }
+    }
 
-      kotlinProject(":app") {
-        buildFile {
-          """
+    val app = kotlinProject(":app") {
+      buildFile {
+        """
           plugins {
             kotlin("jvm")
           }
@@ -99,14 +57,13 @@ internal class GraphReportTaskTest : BaseGradleTest() {
             implementation(project(":lib2"))
           }
           """
-        }
       }
     }
 
     shouldSucceed("moduleCheckGraphs")
 
-    root.projectDir.child(
-      "app", "build", "reports", "modulecheck", "graphs", "main.dot"
+    app.projectDir.child(
+      "build", "reports", "modulecheck", "graphs", "main.dot"
     ) shouldHaveText """
       strict digraph DependencyGraph {
         ratio = 0.5625;

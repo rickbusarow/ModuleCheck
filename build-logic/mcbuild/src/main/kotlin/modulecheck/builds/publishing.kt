@@ -20,9 +20,13 @@ import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
 import com.vanniktech.maven.publish.SonatypeHost.DEFAULT
+import com.vanniktech.maven.publish.tasks.JavadocJar
+import com.vanniktech.maven.publish.tasks.SourcesJar
 import org.gradle.api.Project
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.Sign
@@ -85,10 +89,6 @@ fun Project.configurePublishing(
       }
   }
 
-  tasks.withType(Sign::class.java) {
-    notCompatibleWithConfigurationCache("Signing cannot be cached")
-  }
-
   tasks.register("checkVersionIsSnapshot") {
     doLast {
       val expected = "-SNAPSHOT"
@@ -97,5 +97,22 @@ fun Project.configurePublishing(
           " to the main branch, but instead it's `$VERSION_NAME`."
       }
     }
+  }
+
+  tasks.withType(PublishToMavenRepository::class.java).configureEach {
+    notCompatibleWithConfigurationCache("See https://github.com/gradle/gradle/issues/13468")
+  }
+
+  tasks.withType(Jar::class.java).configureEach {
+    notCompatibleWithConfigurationCache("")
+  }
+  tasks.withType(SourcesJar::class.java).configureEach {
+    notCompatibleWithConfigurationCache("")
+  }
+  tasks.withType(JavadocJar::class.java).configureEach {
+    notCompatibleWithConfigurationCache("")
+  }
+  tasks.withType(Sign::class.java).configureEach {
+    notCompatibleWithConfigurationCache("")
   }
 }

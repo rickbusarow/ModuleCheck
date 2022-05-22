@@ -507,7 +507,7 @@ style:
     customMessage: ''
   ForbiddenImport:
     active: true
-    imports: [ 'groovy.xml.XmlParser' ]
+    imports: [ 'groovy.xml.XmlParser', 'com.android.build.*' ]
     forbiddenPatterns: ''
   ForbiddenMethodCall:
     active: false

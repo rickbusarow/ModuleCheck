@@ -26,15 +26,8 @@ dependencies {
 
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
 
   api(project(path = ":modulecheck-parsing:source:api"))
-
-  compileOnly(gradleApi())
-
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-utils"))
 

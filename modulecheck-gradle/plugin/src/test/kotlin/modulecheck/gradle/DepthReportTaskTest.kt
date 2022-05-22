@@ -15,9 +15,7 @@
 
 package modulecheck.gradle
 
-import modulecheck.specs.DEFAULT_KOTLIN_VERSION
 import modulecheck.utils.child
-import modulecheck.utils.createSafely
 import org.junit.jupiter.api.Test
 
 internal class DepthReportTaskTest : BaseGradleTest() {
@@ -25,87 +23,46 @@ internal class DepthReportTaskTest : BaseGradleTest() {
   @Test
   fun `depth report should be created if depth task is invoked with default settings`() {
 
-    val root = kotlinProject(":") {
-
+    kotlinProject(":lib1") {
       buildFile {
         """
         plugins {
-          id("com.rickbusarow.module-check")
+          kotlin("jvm")
         }
         """
       }
+    }
 
-      projectDir.child("settings.gradle.kts")
-        .createSafely(
-          """
-          pluginManagement {
-            repositories {
-              gradlePluginPortal()
-              mavenCentral()
-              google()
-            }
-            resolutionStrategy {
-              eachPlugin {
-                if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                  useVersion("$DEFAULT_KOTLIN_VERSION")
-                }
-              }
-            }
-          }
-          dependencyResolutionManagement {
-            @Suppress("UnstableApiUsage")
-            repositories {
-              google()
-              mavenCentral()
-            }
-          }
-          include(":lib1")
-          include(":lib2")
-          include(":app")
-          """.trimIndent()
-        )
-
-      kotlinProject(":lib1") {
-        buildFile {
-          """
-          plugins {
-            kotlin("jvm")
-          }
-          """
+    kotlinProject(":lib2") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
         }
+        dependencies {
+          implementation(project(":lib1"))
+        }
+        """
       }
+    }
 
-      kotlinProject(":lib2") {
-        buildFile {
-          """
-          plugins {
-            kotlin("jvm")
-          }
-          dependencies {
-            implementation(project(":lib1"))
-          }
-          """
+    kotlinProject(":app") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
         }
-      }
-
-      kotlinProject(":app") {
-        buildFile {
-          """
-          plugins {
-            kotlin("jvm")
-          }
-          dependencies {
-            implementation(project(":lib1"))
-            implementation(project(":lib2"))
-          }
-          """
+        dependencies {
+          implementation(project(":lib1"))
+          implementation(project(":lib2"))
         }
+        """
       }
     }
 
     shouldSucceed("moduleCheckDepths")
 
-    root.projectDir.child(
+    root.child(
       "build", "reports", "modulecheck", "depths.txt"
     ) shouldHaveText """
       -- ModuleCheck Depth results --

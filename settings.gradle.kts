@@ -125,6 +125,5 @@ include(
   ":modulecheck-rule:impl",
   ":modulecheck-runtime:api",
   ":modulecheck-runtime:testing",
-  ":modulecheck-specs",
   ":modulecheck-utils"
 )

@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms.sourcesets.internal
+package modulecheck.gradle.platforms.android.sourcesets.internal
 
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.BuildTypeName
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.FlavorName
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.TestType
-import modulecheck.gradle.platforms.sourcesets.internal.GradleSourceSetName.VariantName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.FlavorName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.TestType
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.VariantName
 import modulecheck.utils.capitalize
 
 internal data class ParsedNames(

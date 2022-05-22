@@ -30,21 +30,21 @@ val kotlinVersion = libs.versions.kotlin.get()
 dependencies {
 
   compileOnly(gradleApi())
+  compileOnly(libs.kotlin.gradle.plug)
 
   implementation(libs.benManes.gradle)
   implementation(libs.detekt.gradle)
-  implementation(libs.dropbox.dependencyGuard)
   implementation(libs.dokka.gradle)
+  implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlinx.knit)
   implementation(libs.ktlint.gradle)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
-  implementation(libs.vanniktech.publish)
   implementation(libs.square.moshi)
+  implementation(libs.vanniktech.publish)
 
   ksp(libs.square.moshi.codegen)
 }

@@ -25,11 +25,6 @@ mcbuild {
 dependencies {
 
   api(libs.bundles.hermit)
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
-  api(libs.semVer)
 
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-internal-testing"))

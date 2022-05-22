@@ -60,6 +60,14 @@ moduleCheck {
   }
 }
 
+// Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,
+// all subprojects are published.  This is used in plugin tests.
+val publishToMavenLocal by tasks.registering {
+  subprojects.forEach { sub ->
+    dependsOn(sub.tasks.matching { it.name == "publishToMavenLocal" })
+  }
+}
+
 tasks.matching { it.name == "ktlintFormat" }.configureEach {
   dependsOn(gradle.includedBuild("build-logic").task(":ktlintFormat"))
 }

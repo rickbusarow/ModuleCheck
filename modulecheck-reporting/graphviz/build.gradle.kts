@@ -28,6 +28,8 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
+  implementation(libs.rickBusarow.dispatch.core)
+
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils"))
 

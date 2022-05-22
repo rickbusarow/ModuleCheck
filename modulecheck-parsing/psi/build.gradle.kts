@@ -23,6 +23,7 @@ mcbuild {
 
 dependencies {
 
+  api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
@@ -34,10 +35,7 @@ dependencies {
   api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-utils"))
 
-  compileOnly(gradleApi())
-
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
+  compileOnly(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

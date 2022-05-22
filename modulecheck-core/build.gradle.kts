@@ -24,12 +24,7 @@ mcbuild {
 
 dependencies {
 
-  api(libs.kotlin.compiler)
   api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-api"))
@@ -43,8 +38,8 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
-  implementation(libs.groovy)
-  implementation(libs.groovyXml)
+  implementation(libs.kotlin.compiler)
+  implementation(libs.kotlinx.coroutines.jvm)
   implementation(libs.semVer)
 
   testImplementation(libs.bundles.hermit)

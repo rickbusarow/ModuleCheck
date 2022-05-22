@@ -23,23 +23,15 @@ mcbuild {
 }
 
 dependencies {
-
   api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
   api(libs.semVer)
 
   api(project(path = ":modulecheck-utils"))
 
-  compileOnly(gradleApi())
-
-  implementation(libs.groovy)
-  implementation(libs.kotlin.reflect)
-
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlin.reflect)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
 }

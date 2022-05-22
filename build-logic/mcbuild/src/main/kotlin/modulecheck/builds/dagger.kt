@@ -33,7 +33,7 @@ fun Project.applyDagger(anvil: Boolean, dagger: Boolean) {
 
   dependencies {
     "compileOnly"(project.libsCatalog.dependency("javax-inject"))
-    "implementation"(project.libsCatalog.dependency("google-dagger-api"))
+    "compileOnly"(project.libsCatalog.dependency("google-dagger-api"))
     "kapt"(project.libsCatalog.dependency("google-dagger-compiler"))
   }
 }

@@ -41,8 +41,19 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
    */
   val testProjectDir: File by resets {
     File("build")
-      .child("tests", testClassName, testDisplayName)
+      .child("tests", testRelativePath)
       .absoluteFile
+  }
+
+  /**
+   * For a standard `@Test`-annotated test, this directory will be:
+   * `$className/$functionName`
+   *
+   * For a `TestFactory` test, this will be:
+   * `$className/$functionName/$displayName`
+   */
+  val testRelativePath by resets {
+    "$testClassName${File.separator}$testDisplayName"
   }
 
   /** Test class name */

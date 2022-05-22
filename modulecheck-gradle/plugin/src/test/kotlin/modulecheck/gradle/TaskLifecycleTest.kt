@@ -38,7 +38,10 @@ class TaskLifecycleTest : BaseGradleTest() {
       projectDir.child("settings.gradle.kts").createSafely()
     }
 
-    shouldSucceed("check") {
+    shouldSucceed(
+      "check",
+      withPluginClasspath = true
+    ) {
 
       task(":moduleCheck")!!.outcome shouldBe SUCCESS
 
@@ -68,7 +71,10 @@ class TaskLifecycleTest : BaseGradleTest() {
       projectDir.child("settings.gradle.kts").createSafely()
     }
 
-    shouldSucceed("check") {
+    shouldSucceed(
+      "check",
+      withPluginClasspath = true
+    ) {
 
       task(":moduleCheck")!!.outcome shouldBe SUCCESS
 

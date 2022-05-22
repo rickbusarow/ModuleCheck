@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   id("mcbuild")
 }
@@ -22,15 +24,15 @@ mcbuild {
   anvil = true
 }
 
+tasks.withType<KotlinCompile> {
+  kotlinOptions {
+    freeCompilerArgs += "-opt-in=modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference"
+  }
+}
+
 dependencies {
 
-  api(libs.agp)
-  api(libs.agp.api)
   api(libs.javax.inject)
-  api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
@@ -40,12 +42,14 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.agp.builder.model)
-  implementation(libs.kotlin.gradle.plug)
-  implementation(libs.kotlin.gradle.plugin.api)
+  compileOnly(libs.agp)
+  compileOnly(libs.agp.api)
+  compileOnly(libs.agp.builder.model)
+  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin.api)
+
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
-  implementation(libs.square.anvil.gradle)
 
   implementation(project(path = ":modulecheck-utils"))
 

@@ -15,10 +15,10 @@
 
 @file:JvmMultifileClass
 
-package modulecheck.gradle.platforms.internal
+package modulecheck.gradle.platforms.android.internal
 
-import com.android.build.api.dsl.CommonExtension
-import com.android.build.gradle.TestedExtension
+import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asSourceSetName
 import java.io.File
@@ -26,49 +26,71 @@ import org.gradle.api.Project as GradleProject
 
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
 
-fun GradleProject.testedExtensionOrNull(): TestedExtension? = extensions
-  .findByType(TestedExtension::class.java)
-
-fun GradleProject.androidManifests(): Map<SourceSetName, File>? = testedExtensionOrNull()
-  ?.sourceSets
-  ?.associate { it.name.asSourceSetName() to it.manifest.srcFile }
+/**
+ * @param agpApiAccess the [AgpApiAccess] to use for safe access
+ * @return A map of the [SourceSetName] to manifest [File] if the AGP plugin is applied, or null if
+ *   AGP isn't applied
+ */
+@Suppress("UnstableApiUsage")
+@UnsafeDirectAgpApiReference
+fun GradleProject.androidManifests(
+  agpApiAccess: AgpApiAccess
+): Map<SourceSetName, File>? =
+  agpApiAccess.ifSafeOrNull(this) {
+    requireBaseExtension()
+      .sourceSets
+      .associate { it.name.asSourceSetName() to it.manifest.srcFile }
+  }
 
 /**
+ * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @return the main src `AndroidManifest.xml` file if it exists. This will typically be
  *   `$projectDir/src/main/AndroidManifest.xml`, but if the position has
  *   been changed in the Android extension, the new path will be used.
  */
-fun GradleProject.mainAndroidManifest() = testedExtensionOrNull()
-  ?.sourceSets
-  ?.getByName("main")
-  ?.manifest
-  ?.srcFile
+fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
+
+  return agpApiAccess.ifSafeOrNull(this) {
+    @Suppress("UnstableApiUsage")
+    requireCommonExtension().sourceSets
+      .findByName("main")
+      ?.manifest
+      ?.let { it as? com.android.build.gradle.internal.api.DefaultAndroidSourceFile }
+      ?.srcFile
+  }
+}
 
 /**
+ * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @return true if the project is an Android project and no manifest file exists at the location
  *   defined in the Android extension
  */
-fun GradleProject.isMissingManifestFile(): Boolean {
+fun GradleProject.isMissingManifestFile(agpApiAccess: AgpApiAccess): Boolean {
 
-  return mainAndroidManifest()
+  return mainAndroidManifest(agpApiAccess)
     // the file must be declared, but not exist in order for this to be triggered
     ?.let { !it.exists() }
     ?: false
 }
 
 /**
+ * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @return true if the project is an Android library, dynamic feature, or test extensions module and
  *   BuildConfig generation has NOT been explicitly disabled.
  */
-fun GradleProject.generatesBuildConfig(): Boolean {
-  @Suppress("UnstableApiUsage")
-  return extensions.findByType(CommonExtension::class.java)
-    ?.let { it.buildFeatures.buildConfig != false }
-    .orPropertyDefault(
+fun GradleProject.generatesBuildConfig(agpApiAccess: AgpApiAccess): Boolean {
+
+  return agpApiAccess.ifSafeOrNull(this) {
+
+    @Suppress("UnstableApiUsage")
+    requireCommonExtension().buildFeatures.buildConfig != false
+  }
+    ?.orPropertyDefault(
       gradleProject = this,
       key = "android.defaults.buildfeatures.buildconfig",
       defaultValue = true
     )
+    ?: false
 }
 
 fun Boolean?.orPropertyDefault(

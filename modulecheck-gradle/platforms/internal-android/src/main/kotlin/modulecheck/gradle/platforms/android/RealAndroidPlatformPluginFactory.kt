@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms
+@file:Suppress("ForbiddenImport")
+
+package modulecheck.gradle.platforms.android
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.DynamicFeatureExtension
@@ -26,12 +28,14 @@ import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.core.rule.KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID
 import modulecheck.dagger.AppScope
-import modulecheck.gradle.platforms.RealAndroidPlatformPluginFactory.Type.Application
-import modulecheck.gradle.platforms.RealAndroidPlatformPluginFactory.Type.DynamicFeature
-import modulecheck.gradle.platforms.RealAndroidPlatformPluginFactory.Type.Library
-import modulecheck.gradle.platforms.RealAndroidPlatformPluginFactory.Type.Test
-import modulecheck.gradle.platforms.internal.androidManifests
-import modulecheck.gradle.platforms.internal.orPropertyDefault
+import modulecheck.gradle.platforms.ConfigurationsFactory
+import modulecheck.gradle.platforms.SourceSetsFactory
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Application
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.DynamicFeature
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Library
+import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Test
+import modulecheck.gradle.platforms.android.internal.androidManifests
+import modulecheck.gradle.platforms.android.internal.orPropertyDefault
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
@@ -46,10 +50,12 @@ import org.gradle.api.Project as GradleProject
 
 @ContributesBinding(AppScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
+  private val agpApiAccess: AgpApiAccess,
   private val configurationsFactory: ConfigurationsFactory,
   private val sourceSetsFactory: SourceSetsFactory
 ) : AndroidPlatformPluginFactory {
 
+  @UnsafeDirectAgpApiReference
   override fun create(
     gradleProject: GradleProject,
     androidCommonExtension: AndroidCommonExtension,
@@ -66,7 +72,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       hasTestFixturesPlugin = hasTestFixturesPlugin
     )
 
-    val manifests = gradleProject.androidManifests().orEmpty()
+    val manifests = gradleProject.androidManifests(agpApiAccess).orEmpty()
 
     val resValues = parseResValues(type)
 
@@ -134,6 +140,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
     }
   }
 
+  @UnsafeDirectAgpApiReference
   private fun parseResValues(
     type: Type<*>
   ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>> {

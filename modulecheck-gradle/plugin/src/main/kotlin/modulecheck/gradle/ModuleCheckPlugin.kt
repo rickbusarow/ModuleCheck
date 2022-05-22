@@ -15,15 +15,14 @@
 
 package modulecheck.gradle
 
-import com.android.build.gradle.tasks.GenerateBuildConfig
-import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.core.rule.DepthRule
 import modulecheck.core.rule.ModuleCheckRuleFactory
 import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.core.rule.SortDependenciesRule
 import modulecheck.core.rule.SortPluginsRule
-import modulecheck.gradle.platforms.internal.generatesBuildConfig
-import modulecheck.gradle.platforms.internal.isMissingManifestFile
+import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.android.internal.generatesBuildConfig
+import modulecheck.gradle.platforms.android.internal.isMissingManifestFile
 import modulecheck.gradle.task.ModuleCheckTask
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.SingleRuleFindingFactory
@@ -53,23 +52,28 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val disableConfigCache = gradleVersion >= "7.4"
 
+    val agpApiAccess = AgpApiAccess()
+
     target.registerTasks(
       name = "moduleCheckSortDependencies",
       findingFactory = SingleRuleFindingFactory(SortDependenciesRule(settings)),
       includeAuto = true,
-      disableConfigCache = disableConfigCache
+      disableConfigCache = disableConfigCache,
+      agpApiAccess = agpApiAccess
     )
     target.registerTasks(
       name = "moduleCheckSortPlugins",
       findingFactory = SingleRuleFindingFactory(SortPluginsRule(settings)),
       includeAuto = true,
-      disableConfigCache = disableConfigCache
+      disableConfigCache = disableConfigCache,
+      agpApiAccess = agpApiAccess
     )
     target.registerTasks(
       name = "moduleCheckDepths",
       findingFactory = SingleRuleFindingFactory(DepthRule()),
       includeAuto = false,
       disableConfigCache = disableConfigCache,
+      agpApiAccess = agpApiAccess,
       doFirstAction = {
         settings.checks.depths = true
         settings.reports.depths.enabled = true
@@ -80,6 +84,7 @@ class ModuleCheckPlugin : Plugin<Project> {
       findingFactory = SingleRuleFindingFactory(DepthRule()),
       includeAuto = false,
       disableConfigCache = disableConfigCache,
+      agpApiAccess = agpApiAccess,
       doFirstAction = {
         settings.reports.graphs.enabled = true
       }
@@ -88,7 +93,8 @@ class ModuleCheckPlugin : Plugin<Project> {
       name = "moduleCheck",
       findingFactory = MultiRuleFindingFactory(settings, rules),
       includeAuto = true,
-      disableConfigCache = disableConfigCache
+      disableConfigCache = disableConfigCache,
+      agpApiAccess = agpApiAccess
     )
 
     target.tasks
@@ -98,31 +104,33 @@ class ModuleCheckPlugin : Plugin<Project> {
       }
   }
 
+  @Suppress("LongParameterList")
   private fun Project.registerTasks(
     name: String,
     findingFactory: FindingFactory<*>,
     includeAuto: Boolean,
     disableConfigCache: Boolean,
+    agpApiAccess: AgpApiAccess,
     doFirstAction: (() -> Unit)? = null
   ) {
 
-    fun TaskProvider<*>.addDependencies() {
+    fun TaskProvider<*>.maybeAddDependencies() {
       configure { mcTask ->
         allprojects
-          .filter { it.isMissingManifestFile() }
-          .flatMap { it.tasks.withType(ManifestProcessorTask::class.java) }
+          .filter { it.isMissingManifestFile(agpApiAccess) }
+          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java) }
           .forEach { mcTask.dependsOn(it) }
 
         allprojects
-          .filter { it.generatesBuildConfig() }
-          .flatMap { it.tasks.withType(GenerateBuildConfig::class.java) }
+          .filter { it.generatesBuildConfig(agpApiAccess) }
+          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java) }
           .forEach { mcTask.dependsOn(it) }
       }
     }
 
     tasks.register(name, ModuleCheckTask::class.java, findingFactory, false, disableConfigCache)
       .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
-      .addDependencies()
+      .maybeAddDependencies()
     if (includeAuto) {
       tasks.register(
         "${name}Auto",
@@ -132,7 +140,7 @@ class ModuleCheckPlugin : Plugin<Project> {
         disableConfigCache
       )
         .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
-        .addDependencies()
+        .maybeAddDependencies()
     }
   }
 }
