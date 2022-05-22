@@ -75,11 +75,11 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
+      - name: dependency-guard
+        run: ./gradlew dependencyGuard --no-daemon --refresh-dependencies
+
       - name: artifacts check
         run: ./gradlew artifactsCheck --no-daemon
-
-      - name: dependency-guard
-        run: ./gradlew dependencyGuard --no-daemon
 
       - name: detekt
         run: ./gradlew detekt --no-daemon
