@@ -20,8 +20,7 @@ import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.core.rule.ModuleCheckRuleFactory
-import modulecheck.core.rule.MultiRuleFindingFactory
+import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingResultFactory
 import modulecheck.project.McProject
@@ -36,8 +35,11 @@ import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.test.ReportingLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
-import modulecheck.rule.RuleFactory
+import modulecheck.rule.ModuleCheckRule
+import modulecheck.rule.RuleFilter
+import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.rule.impl.RealFindingResultFactory
+import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
 
 abstract class RunnerTest : ProjectTest() {
@@ -45,12 +47,13 @@ abstract class RunnerTest : ProjectTest() {
   open val settings: ModuleCheckSettings by resets { TestSettings() }
   open val logger: ReportingLogger by resets { ReportingLogger() }
 
-  open val ruleFactory: RuleFactory by resets { ModuleCheckRuleFactory() }
+  open val ruleFilter: RuleFilter = RuleFilter.DEFAULT
+
+  open val rules by resets {
+    AllRulesComponent.create(settings, ruleFilter).allRules
+  }
   open val findingFactory: FindingFactory<out Finding> by resets {
-    MultiRuleFindingFactory(
-      settings,
-      ruleFactory.create(settings)
-    )
+    MultiRuleFindingFactory(settings, rules)
   }
 
   @Suppress("LongParameterList")
@@ -68,7 +71,8 @@ abstract class RunnerTest : ProjectTest() {
       settings = settings,
       graphvizFactory = GraphvizFactory(projectProvider.toTypeSafeProjectPathResolver())
     ),
-    dispatcherProvider: DispatcherProvider = DispatcherProvider()
+    dispatcherProvider: DispatcherProvider = DispatcherProvider(),
+    rules: DaggerList<ModuleCheckRule<*>> = this.rules
   ): Result<Unit> = runBlocking {
 
     "Resolving all references BEFORE running ModuleCheck".asClue {
@@ -91,7 +95,8 @@ abstract class RunnerTest : ProjectTest() {
       sarifReportFactory = SarifReportFactory(
         websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
         moduleCheckVersion = { "0.12.1-SNAPSHOT" }
-      ) { testProjectDir }
+      ) { testProjectDir },
+      rules = rules
     ).run(allProjects())
 
     if (autoCorrect) {
@@ -114,8 +119,6 @@ abstract class RunnerTest : ProjectTest() {
     sorts: List<Finding> = emptyList(),
     reports: List<Finding> = emptyList()
   ): FindingFactory<*> = object : FindingFactory<Finding> {
-
-    override val rules = ruleFactory.create(settings)
 
     override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> = fixable
     override suspend fun evaluateSorts(projects: List<McProject>): List<Finding> = sorts

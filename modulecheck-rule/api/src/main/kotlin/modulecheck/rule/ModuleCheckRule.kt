@@ -19,6 +19,7 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.project.McProject
+import javax.inject.Qualifier
 
 interface ModuleCheckRule<T : Finding> {
 
@@ -33,7 +34,5 @@ interface ModuleCheckRule<T : Finding> {
 interface ReportOnlyRule<T : Finding> : ModuleCheckRule<T>
 interface SortRule<T : Finding> : ModuleCheckRule<T>
 
-fun interface RuleFactory {
-
-  fun create(settings: ModuleCheckSettings): List<ModuleCheckRule<out Finding>>
-}
+@Qualifier
+annotation class AllRules

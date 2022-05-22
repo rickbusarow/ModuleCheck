@@ -16,12 +16,12 @@
 package modulecheck.core
 
 import modulecheck.config.fake.TestSettings
-import modulecheck.core.rule.DepthRule
-import modulecheck.core.rule.MultiRuleFindingFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.test.maybeAddSourceSet
-import modulecheck.rule.SingleRuleFindingFactory
+import modulecheck.rule.impl.DepthRule
+import modulecheck.rule.impl.MultiRuleFindingFactory
+import modulecheck.rule.impl.UnusedDependencyRule
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test
@@ -34,7 +34,8 @@ internal class DepthReportTest : RunnerTest() {
       reports.depths.outputPath = File(testProjectDir, reports.depths.outputPath).path
     }
   }
-  override val findingFactory by resets { SingleRuleFindingFactory(DepthRule()) }
+
+  override val rules = listOf(DepthRule())
 
   val outputFile by resets { File(settings.reports.depths.outputPath) }
 
@@ -264,8 +265,9 @@ internal class DepthReportTest : RunnerTest() {
     run(
       findingFactory = MultiRuleFindingFactory(
         settings,
-        ruleFactory.create(settings)
-      )
+        listOf(DepthRule(), UnusedDependencyRule(settings))
+      ),
+      rules = listOf(DepthRule(), UnusedDependencyRule(settings))
     ).isSuccess shouldBe true
 
     logger.collectReport()

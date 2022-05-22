@@ -15,52 +15,23 @@
 
 package modulecheck.rule
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.Finding
 import modulecheck.project.McProject
 
 interface FindingFactory<T : Finding> {
-
-  val rules: List<ModuleCheckRule<out Finding>>
 
   suspend fun evaluateFixable(projects: List<McProject>): List<T>
   suspend fun evaluateSorts(projects: List<McProject>): List<T>
   suspend fun evaluateReports(projects: List<McProject>): List<T>
 }
 
-class SingleRuleFindingFactory<T : Finding>(
-  val rule: ModuleCheckRule<T>
-) : FindingFactory<T> {
+fun interface RuleFilter {
+  fun shouldEvaluate(rule: ModuleCheckRule<*>, settings: ModuleCheckSettings): Boolean
 
-  override val rules: List<ModuleCheckRule<out Finding>>
-    get() = listOf(rule)
-
-  override suspend fun evaluateFixable(projects: List<McProject>): List<T> {
-    return if (rule !is SortRule && rule !is ReportOnlyRule) {
-      evaluateRule(projects)
-    } else emptyList()
-  }
-
-  override suspend fun evaluateSorts(projects: List<McProject>): List<T> {
-    return if (rule is SortRule) {
-      evaluateRule(projects)
-    } else emptyList()
-  }
-
-  override suspend fun evaluateReports(projects: List<McProject>): List<T> {
-    return if (rule is ReportOnlyRule) {
-      evaluateRule(projects)
-    } else emptyList()
-  }
-
-  private suspend fun evaluateRule(projects: List<McProject>): List<T> {
-    return coroutineScope {
-      projects
-        .map { project -> async { rule.check(project) } }
-        .awaitAll()
-        .flatten()
+  companion object {
+    val DEFAULT = RuleFilter { rule, settings ->
+      rule.shouldApply(settings)
     }
   }
 }

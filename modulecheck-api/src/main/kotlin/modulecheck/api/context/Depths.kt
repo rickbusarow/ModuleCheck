@@ -86,7 +86,6 @@ data class ProjectDepth(
   private val treeCache = SafeCache<SourceSetName, Set<ProjectDepth>>()
 
   fun toFinding(name: FindingName): DepthFinding = DepthFinding(
-    findingName = name,
     dependentProject = dependentProject,
     dependentPath = dependentPath,
     depth = depth,

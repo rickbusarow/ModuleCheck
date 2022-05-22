@@ -27,10 +27,22 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
+  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-core"))
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-finding:impl"))
+  api(project(path = ":modulecheck-finding:impl-android"))
+  api(project(path = ":modulecheck-finding:impl-sort"))
+  api(project(path = ":modulecheck-finding:name"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils"))
 
-  implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  implementation(project(path = ":modulecheck-parsing:source:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

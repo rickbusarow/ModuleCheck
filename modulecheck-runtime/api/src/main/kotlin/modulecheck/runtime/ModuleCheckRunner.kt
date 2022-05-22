@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.FindingResultFactory
@@ -37,7 +38,7 @@ import modulecheck.reporting.graphviz.GraphvizFileWriter
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
-import modulecheck.rule.SingleRuleFindingFactory
+import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.createSafely
 import java.io.File
 import kotlin.system.measureTimeMillis
@@ -63,6 +64,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val dispatcherProvider: DispatcherProvider,
   val sarifReportFactory: SarifReportFactory,
   val projectProvider: ProjectProvider,
+  val rules: DaggerList<ModuleCheckRule<*>>,
   @Assisted
   val autoCorrect: Boolean
 ) {
@@ -161,8 +163,6 @@ data class ModuleCheckRunner @AssistedInject constructor(
   /** Creates any applicable reports. */
   private fun reportResults(results: List<Finding.FindingResult>) {
 
-    val rules = findingFactory.rules
-
     val textReport = reportFactory.create(results)
 
     if (results.isNotEmpty()) {
@@ -203,7 +203,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
     // If the depths check is enabled, then just always log them.  If the check is disabled but
     // this is a single-rule "task", that means the user is explicitly running 'moduleCheckDepths'
     // (or whatever that has been renamed to in the future) and the results should always be logged.
-    if (settings.checks.depths || findingFactory is SingleRuleFindingFactory<*>) {
+    if (settings.checks.depths || rules.size == 1) {
       val depthLog = DepthLogFactory().create(depths)
 
       logger.printReport(depthLog)

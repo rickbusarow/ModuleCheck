@@ -28,7 +28,6 @@ import modulecheck.utils.lazyDeferred
 import java.io.File
 
 data class DepthFinding(
-  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: StringProjectPath,
   val depth: Int,
@@ -36,6 +35,8 @@ data class DepthFinding(
   val sourceSetName: SourceSetName,
   override val buildFile: File
 ) : Finding, Comparable<DepthFinding> {
+
+  override val findingName = NAME
 
   override val message: String
     get() = "The longest path between this module and its leaf nodes"
@@ -76,5 +77,9 @@ data class DepthFinding(
       "children=$children, " +
       "sourceSetName=$sourceSetName" +
       ")"
+  }
+
+  companion object {
+    val NAME = FindingName("project-depth")
   }
 }

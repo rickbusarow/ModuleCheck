@@ -21,6 +21,7 @@ import modulecheck.dagger.ModuleCheckVersionProvider
 import modulecheck.dagger.SourceWebsiteUrlProvider
 import modulecheck.finding.Finding
 import modulecheck.project.ProjectRoot
+import modulecheck.reporting.sarif.Level.Warning
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.suffixIfNot
 import java.io.File
@@ -40,15 +41,10 @@ class SarifReportFactory @Inject constructor(
   ): String {
 
     val sarifRules = rules.map { rule ->
-      SarifRule(
-        id = "modulecheck.${rule.name.id}",
-        name = rule.name.titleCase,
-        shortDescription = MultiformatMessageString(text = rule.description),
-        fullDescription = MultiformatMessageString(text = rule.description),
-        defaultConfiguration = ReportingConfiguration(level = Level.Warning),
-        helpURI = rule.documentationUrl
-      )
+      rule.toSarifRule()
     }
+      .sortedBy { it.name }
+
     val driver = SarifDriver(
       name = "ModuleCheck",
       fullName = "ModuleCheck",
@@ -110,4 +106,13 @@ class SarifReportFactory @Inject constructor(
 
     return moshi.adapter<SarifReport>().indent("  ").toJson(sarifReport)
   }
+
+  private fun ModuleCheckRule<*>.toSarifRule() = SarifRule(
+    id = "modulecheck.${name.id}",
+    name = name.titleCase,
+    shortDescription = MultiformatMessageString(text = description),
+    fullDescription = MultiformatMessageString(text = description),
+    defaultConfiguration = ReportingConfiguration(level = Warning),
+    helpURI = documentationUrl
+  )
 }

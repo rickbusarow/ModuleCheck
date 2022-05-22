@@ -18,7 +18,6 @@ package modulecheck.gradle.internal
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.core.rule.KAPT_PLUGIN_ID
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.gradle.GradleMcLogger
@@ -44,6 +43,7 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealMcProject
+import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ProjectDependency
