@@ -36,7 +36,6 @@ plugins {
   id("mcbuild.artifacts-check")
   id("mcbuild.ben-manes")
   id("mcbuild.clean")
-  id("mcbuild.dependency-guard")
   id("mcbuild.dokka")
   id("mcbuild.knit")
   id("mcbuild.kotlin")

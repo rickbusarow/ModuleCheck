@@ -36,6 +36,7 @@ import org.junit.jupiter.api.DynamicTest
 import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
+@Suppress("PropertyName")
 abstract class BaseGradleTest :
   BaseTest(),
   ProjectCollector,
@@ -52,62 +53,69 @@ abstract class BaseGradleTest :
   override val root: File
     get() = testProjectDir
 
+  val DEFAULT_BUILD_FILE by resets {
+    """
+    buildscript {
+      dependencies {
+        classpath("com.android.tools.build:gradle:$agpVersion")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      }
+    }
+
+    plugins {
+      id("com.rickbusarow.module-check")
+    }
+    """.trimIndent()
+  }
+
   val rootBuild by resets {
     root.child("build.gradle.kts")
-      .createSafely(
-        """
-        buildscript {
-          dependencies {
-            classpath("com.android.tools.build:gradle:$agpVersion")
-            classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+      .createSafely(DEFAULT_BUILD_FILE)
+  }
+
+  val DEFAULT_SETTINGS_FILE by resets {
+    """
+    rootProject.name = "root"
+
+    pluginManagement {
+      repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        mavenLocal()
+        google()
+      }
+      resolutionStrategy {
+        eachPlugin {
+          if (requested.id.id.startsWith("com.android")) {
+            useVersion("$agpVersion")
+          }
+          if (requested.id.id == "com.rickbusarow.module-check") {
+            useVersion("${BuildProperties.VERSION}")
+          }
+          if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+            useVersion("$kotlinVersion")
+          }
+          if (requested.id.id == "com.squareup.anvil") {
+            useVersion("$anvilVersion")
           }
         }
-
-        plugins {
-          id("com.rickbusarow.module-check")
-        }
-        """.trimIndent()
-      )
+      }
+    }
+    dependencyResolutionManagement {
+      @Suppress("UnstableApiUsage")
+      repositories {
+        mavenCentral()
+        mavenLocal()
+        google()
+      }
+    }
+    """.trimIndent()
   }
+
   val rootSettings by resets {
     root.child("settings.gradle.kts")
       .createSafely(
-        """
-        rootProject.name = "root"
-
-        pluginManagement {
-          repositories {
-            gradlePluginPortal()
-            mavenCentral()
-            mavenLocal()
-            google()
-          }
-          resolutionStrategy {
-            eachPlugin {
-              if (requested.id.id.startsWith("com.android")) {
-                useVersion("$agpVersion")
-              }
-              if (requested.id.id == "com.rickbusarow.module-check") {
-                useVersion("${BuildProperties.VERSION}")
-              }
-              if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                useVersion("$kotlinVersion")
-              }
-              if (requested.id.id == "com.squareup.anvil") {
-                useVersion("$anvilVersion")
-              }
-            }
-          }
-        }
-        dependencyResolutionManagement {
-          @Suppress("UnstableApiUsage")
-          repositories {
-            mavenCentral()
-            mavenLocal()
-            google()
-          }
-        }
-        """.trimIndent()
+        DEFAULT_SETTINGS_FILE
       )
   }
 
