@@ -60,6 +60,7 @@ exclude-contributors:
   - 'dependabot[bot]'
   - 'renovate'
   - 'renovate[bot]'
+  - 'renovate-bot'
   - 'kodiakhq'
   - 'kodiakhq[bot]'
 
