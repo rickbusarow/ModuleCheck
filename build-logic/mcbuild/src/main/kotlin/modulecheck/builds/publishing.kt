@@ -33,7 +33,7 @@ import org.gradle.plugins.signing.Sign
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.12.1-SNAPSHOT"
+const val VERSION_NAME = "0.13.0-SNAPSHOT"
 const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
 const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
