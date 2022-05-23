@@ -32,13 +32,13 @@ trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 ./gradlew closeAndReleaseRepository --no-daemon --no-parallel --no-configuration-cache
 
 # Publish to Gradle Plugin Portal
-./gradlew publishPlugins
+./gradlew publishPlugins --no-configuration-cache
 
 # Create new website docs version
 ./gradlew versionDocs
 
 # Set all versions in the root README to the new version
-./gradlew updateProjectReadmeVersionRefs
+./gradlew updateProjectReadmeVersionRefs --no-configuration-cache
 
 # Copy the CHANGELOG from project root to the website dir and update its formatting
 ./gradlew updateWebsiteChangelog
