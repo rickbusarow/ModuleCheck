@@ -16,6 +16,8 @@
 package modulecheck.gradle
 
 import io.kotest.matchers.string.shouldContain
+import modulecheck.gradle.internal.BuildProperties
+import modulecheck.utils.remove
 import org.junit.jupiter.api.TestFactory
 
 class RuntimeClasspathValidationTest : BaseGradleTest() {
@@ -52,6 +54,48 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           }
           """
         )
+        // This is the same settings as the default used in other tests,
+        // except no `google()` repository.  `google()` shouldn't be necessary since there should be
+        // no dependency upon AGP.
+        rootSettings.writeText(
+          """
+          rootProject.name = "root"
+
+          pluginManagement {
+            repositories {
+              gradlePluginPortal()
+              mavenCentral()
+              mavenLocal()
+            }
+            resolutionStrategy {
+              eachPlugin {
+                if (requested.id.id.startsWith("com.android")) {
+                  useVersion("$agpVersion")
+                }
+                if (requested.id.id == "com.rickbusarow.module-check") {
+                  useVersion("${BuildProperties.VERSION}")
+                }
+                if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+                  useVersion("$kotlinVersion")
+                }
+                if (requested.id.id == "com.squareup.anvil") {
+                  useVersion("$anvilVersion")
+                }
+              }
+            }
+          }
+          dependencyResolutionManagement {
+            @Suppress("UnstableApiUsage")
+            repositories {
+              mavenCentral()
+              mavenLocal()
+            }
+          }
+          """.trimIndent()
+        )
+
+        // just double-check that this settings file is in sync with the default
+        rootSettings shouldHaveText DEFAULT_SETTINGS_FILE.remove("\\s*google\\(\\)".toRegex())
 
         shouldSucceed(taskName)
       }
