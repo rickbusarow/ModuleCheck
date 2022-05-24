@@ -193,6 +193,17 @@ jobs:
           commit_message: update website versions
           commit_options: '--no-verify --signoff'
 
+      - name: Update website changelog from root CHANGELOG (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: ./gradlew updateWebsiteChangelog --no-daemon
+
+      - name: commit changes (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update website changelog
+          commit_options: '--no-verify --signoff'
+
   publish-maven-local:
 
     runs-on: ubuntu-latest
