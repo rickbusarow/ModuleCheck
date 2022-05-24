@@ -23,7 +23,7 @@
   report
   output [@RBusarow](https://github.com/RBusarow) ([#566](https://github.com/rbusarow/ModuleCheck/pull/566))
 
-### 🐛 Bug Fixes
+#### 🐛 Bug Fixes
 
 - don't find `must-be-api` if the project is already an api dependency
   also [@RBusarow](https://github.com/RBusarow) ([#666](https://github.com/rbusarow/ModuleCheck/pull/666))
@@ -44,7 +44,7 @@
 - fix Dagger NoSuchMethodError for `dagger.internal.Preconditions.checkNotNullFromProvides` in
   SNAPSHOT [@RBusarow](https://github.com/RBusarow) ([#570](https://github.com/rbusarow/ModuleCheck/pull/570))
 
-### 🧰 Maintenance
+#### 🧰 Maintenance
 
 - add a discrete job in CI for publishing to mavenLocal, then cache
   it [@RBusarow](https://github.com/RBusarow) ([#668](https://github.com/rbusarow/ModuleCheck/pull/668))
@@ -143,7 +143,7 @@ delete `ConfiguredModule` [@RBusarow](https://github.com/RBusarow) ([#609](https
 - Bump antlr4 from 4.10 to
   4.10.1 [@dependabot](https://github.com/dependabot) ([#550](https://github.com/rbusarow/ModuleCheck/pull/550))
 
-### ℹ️ Website
+#### ℹ️ Website
 
 - remove the `google()` repository requirement from
   docs [@RBusarow](https://github.com/RBusarow) ([#667](https://github.com/rbusarow/ModuleCheck/pull/667))
@@ -166,7 +166,7 @@ delete `ConfiguredModule` [@RBusarow](https://github.com/RBusarow) ([#609](https
 - release
   0.12.0 [@RBusarow](https://github.com/RBusarow) ([#547](https://github.com/rbusarow/ModuleCheck/pull/547))
 
-### Contributors
+#### Contributors
 
 @RBusarow
 
