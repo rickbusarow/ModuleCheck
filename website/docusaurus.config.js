@@ -106,7 +106,7 @@ module.exports = {
         docs: {
           remarkPlugins: [require('mdx-mermaid')],
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/rbusarow/ModuleCheck",
+          editUrl: "https://github.com/rbusarow/ModuleCheck/blob/main/website",
         },
         blog: {
           showReadingTime: true,
