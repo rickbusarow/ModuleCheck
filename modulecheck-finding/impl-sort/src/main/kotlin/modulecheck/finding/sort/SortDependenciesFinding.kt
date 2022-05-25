@@ -25,8 +25,8 @@ import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 import java.util.Locale

@@ -19,7 +19,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class AndroidBasePackages(
   private val delegate: SafeCache<SourceSetName, String?>,

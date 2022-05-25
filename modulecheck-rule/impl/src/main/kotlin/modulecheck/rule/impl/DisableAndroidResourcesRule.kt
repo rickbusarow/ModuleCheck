@@ -27,7 +27,7 @@ import modulecheck.finding.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
 import modulecheck.project.project
-import modulecheck.utils.containsAny
+import modulecheck.utils.lazy.containsAny
 import javax.inject.Inject
 
 class DisableAndroidResourcesRule @Inject constructor() :

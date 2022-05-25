@@ -46,8 +46,8 @@ import modulecheck.parsing.source.asJavaDeclaredName
 import modulecheck.parsing.source.asKotlinDeclaredName
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.LazySet
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.LazySet
 
 interface NamedSymbolTest : FancyShould {
 

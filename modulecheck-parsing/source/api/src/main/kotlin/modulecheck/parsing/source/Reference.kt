@@ -19,7 +19,7 @@ import modulecheck.parsing.source.Reference.ExplicitJavaReference
 import modulecheck.parsing.source.Reference.ExplicitKotlinReference
 import modulecheck.parsing.source.Reference.InterpretedJavaReference
 import modulecheck.parsing.source.Reference.InterpretedKotlinReference
-import modulecheck.utils.LazySet
+import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.safeAs
 
 sealed interface Reference : NamedSymbol {

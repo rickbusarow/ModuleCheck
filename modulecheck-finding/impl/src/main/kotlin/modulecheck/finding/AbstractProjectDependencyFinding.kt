@@ -21,8 +21,8 @@ import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 import java.io.File
 
 abstract class AbstractProjectDependencyFinding :

@@ -28,7 +28,7 @@ dependencies {
 
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

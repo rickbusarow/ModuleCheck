@@ -22,7 +22,7 @@ import modulecheck.finding.UnusedPluginFinding
 import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
-import modulecheck.utils.any
+import modulecheck.utils.coroutines.any
 import javax.inject.Inject
 
 const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"

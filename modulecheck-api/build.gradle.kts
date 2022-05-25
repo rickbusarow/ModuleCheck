@@ -33,7 +33,10 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-utils:cache"))
+  api(project(path = ":modulecheck-utils:coroutines"))
+  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(libs.kotlin.compiler)
 

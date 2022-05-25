@@ -31,7 +31,7 @@ dependencies {
 
   implementation(libs.square.moshi)
 
-  implementation(project(":modulecheck-utils"))
+  implementation(project(":modulecheck-utils:stdlib"))
 
   "ksp"(libs.square.moshi.codegen)
 

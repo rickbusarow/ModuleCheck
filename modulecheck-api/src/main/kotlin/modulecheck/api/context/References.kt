@@ -21,11 +21,11 @@ import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
-import modulecheck.utils.LazySet
-import modulecheck.utils.SafeCache
-import modulecheck.utils.lazySet
-import modulecheck.utils.mapAsync
-import modulecheck.utils.toLazySet
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.mapAsync
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.lazySet
+import modulecheck.utils.lazy.toLazySet
 
 data class References(
   private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,

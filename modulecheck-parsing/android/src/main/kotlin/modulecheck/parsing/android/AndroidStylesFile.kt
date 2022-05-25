@@ -16,8 +16,8 @@
 package modulecheck.parsing.android
 
 import modulecheck.parsing.source.Reference
-import modulecheck.utils.LazySet
-import modulecheck.utils.lazySet
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.mapToSet
 import java.io.File
 

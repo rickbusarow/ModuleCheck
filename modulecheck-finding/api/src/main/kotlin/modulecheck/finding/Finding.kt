@@ -20,7 +20,7 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
-import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
 import java.io.File
 
 interface Finding {

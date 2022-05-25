@@ -23,13 +23,13 @@ import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
-import modulecheck.utils.LazySet
-import modulecheck.utils.dataSource
-import modulecheck.utils.dataSourceOf
-import modulecheck.utils.emptyLazySet
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.dataSourceOf
+import modulecheck.utils.lazy.emptyLazySet
+import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.letIf
 import modulecheck.utils.requireNotNull
-import modulecheck.utils.toLazySet
 
 class RealAndroidRNameProvider constructor(
   private val project: McProject,

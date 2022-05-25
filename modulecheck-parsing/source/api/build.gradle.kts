@@ -26,7 +26,8 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.semVer)
 
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

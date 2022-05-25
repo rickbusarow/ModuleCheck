@@ -19,8 +19,8 @@ import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.gradle.dsl.PluginsBlock
 import modulecheck.reporting.logging.McLogger
-import modulecheck.utils.ResetManager
-import modulecheck.utils.lazyResets
+import modulecheck.utils.lazy.ResetManager
+import modulecheck.utils.lazy.lazyResets
 import modulecheck.utils.mapToSet
 import java.io.File
 

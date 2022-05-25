@@ -24,14 +24,6 @@
     "javaVersion": "11"
   },
   {
-    "gradlePath": ":modulecheck-utils",
-    "group": "com.rickbusarow.modulecheck",
-    "artifactId": "modulecheck-utils",
-    "description": "Fast dependency graph linting for Gradle projects",
-    "packaging": "jar",
-    "javaVersion": "11"
-  },
-  {
     "gradlePath": ":modulecheck-config:api",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-config-api",
@@ -227,6 +219,38 @@
     "gradlePath": ":modulecheck-runtime:testing",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-runtime-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-utils:cache",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-cache",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-utils:coroutines",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-coroutines",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-utils:lazy",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-lazy",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
+    "gradlePath": ":modulecheck-utils:stdlib",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-stdlib",
     "description": "Fast dependency graph linting for Gradle projects",
     "packaging": "jar",
     "javaVersion": "11"

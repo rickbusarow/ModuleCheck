@@ -25,10 +25,10 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
-import modulecheck.utils.SafeCache
-import modulecheck.utils.filterAsync
-import modulecheck.utils.lazyDeferred
-import modulecheck.utils.mapAsync
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.filterAsync
+import modulecheck.utils.coroutines.mapAsync
+import modulecheck.utils.lazy.lazyDeferred
 
 data class UnusedDependencies(
   private val delegate: SafeCache<ConfigurationName, Set<UnusedDependency>>,

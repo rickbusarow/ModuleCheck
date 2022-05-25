@@ -33,7 +33,8 @@ dependencies {
   api(project(path = ":modulecheck-finding:impl"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-utils:coroutines"))
+  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-parsing:gradle:model:api"))

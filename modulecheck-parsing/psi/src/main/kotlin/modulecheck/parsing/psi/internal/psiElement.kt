@@ -19,7 +19,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.project.McProject
 import modulecheck.utils.cast
-import modulecheck.utils.unsafeLazy
+import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name

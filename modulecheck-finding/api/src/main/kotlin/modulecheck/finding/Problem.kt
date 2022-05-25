@@ -16,8 +16,8 @@
 package modulecheck.finding
 
 import modulecheck.finding.Finding.FindingResult
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.safeAs
 
 interface Problem :

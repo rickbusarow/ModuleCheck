@@ -65,12 +65,12 @@ import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.LazySet
-import modulecheck.utils.dataSource
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.lazyDeferred
+import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.mapToSet
-import modulecheck.utils.toLazySet
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract

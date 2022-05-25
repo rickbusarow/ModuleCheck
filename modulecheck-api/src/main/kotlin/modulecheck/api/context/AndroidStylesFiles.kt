@@ -19,7 +19,7 @@ import modulecheck.parsing.android.AndroidStylesFile
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class AndroidStylesFiles(
   private val delegate: SafeCache<SourceSetName, Set<AndroidStylesFile>>,

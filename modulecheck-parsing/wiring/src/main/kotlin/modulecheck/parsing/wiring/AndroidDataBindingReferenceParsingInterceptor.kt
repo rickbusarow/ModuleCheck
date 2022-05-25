@@ -21,7 +21,7 @@ import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
-import modulecheck.utils.any
+import modulecheck.utils.coroutines.any
 import modulecheck.utils.mapToSet
 
 class AndroidDataBindingReferenceParsingInterceptor(

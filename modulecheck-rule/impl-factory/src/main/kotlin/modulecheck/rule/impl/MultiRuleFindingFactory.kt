@@ -34,7 +34,7 @@ import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.ReportOnlyRule
 import modulecheck.rule.SortRule
-import modulecheck.utils.mapAsync
+import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.sortedWith
 import javax.inject.Inject
 

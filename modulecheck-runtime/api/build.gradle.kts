@@ -38,5 +38,5 @@ dependencies {
   api(project(path = ":modulecheck-reporting:sarif"))
   api(project(path = ":modulecheck-rule:api"))
 
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 }

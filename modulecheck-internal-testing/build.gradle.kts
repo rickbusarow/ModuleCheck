@@ -31,5 +31,5 @@ dependencies {
   implementation(libs.kotlin.reflect)
   implementation(libs.kotlinPoet)
 
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 }

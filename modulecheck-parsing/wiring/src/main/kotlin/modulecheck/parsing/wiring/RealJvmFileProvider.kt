@@ -32,7 +32,7 @@ import modulecheck.parsing.source.internal.InterpretingInterceptor
 import modulecheck.parsing.source.internal.ParsingChain
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 import org.jetbrains.kotlin.incremental.isJavaFile
 import java.io.File
 import javax.inject.Inject

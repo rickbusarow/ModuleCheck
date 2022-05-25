@@ -31,15 +31,15 @@ import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.LazySet
-import modulecheck.utils.any
-import modulecheck.utils.filterAsync
-import modulecheck.utils.flatMapListConcat
+import modulecheck.utils.coroutines.any
+import modulecheck.utils.coroutines.filterAsync
+import modulecheck.utils.coroutines.flatMapListConcat
+import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.flatMapToSet
-import modulecheck.utils.lazyDeferred
-import modulecheck.utils.lazySet
-import modulecheck.utils.mapAsync
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.lazyDeferred
+import modulecheck.utils.lazy.lazySet
 
 data class MustBeApi(
   private val delegate: Set<InheritedDependencyWithSource>

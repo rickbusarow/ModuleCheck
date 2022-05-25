@@ -22,10 +22,10 @@ import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Generated
 import modulecheck.project.McProject
-import modulecheck.utils.any
-import modulecheck.utils.containsAny
-import modulecheck.utils.dataSource
-import modulecheck.utils.lazySet
+import modulecheck.utils.coroutines.any
+import modulecheck.utils.lazy.containsAny
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.lazySet
 
 suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
 

@@ -22,7 +22,7 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class ResolvedDeclaredNames internal constructor(
   private val delegate: SafeCache<DeclarationInSourceSet, SourceResult>,

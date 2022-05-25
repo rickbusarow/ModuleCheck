@@ -21,8 +21,8 @@ import modulecheck.finding.RedundantDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
-import modulecheck.utils.mapAsync
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.mapAsync
 
 data class RedundantDependencies(
   private val delegate: SafeCache<SourceSetName, List<RedundantDependency>>,

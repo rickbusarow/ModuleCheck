@@ -35,7 +35,8 @@ dependencies {
   implementation(libs.javaParser.symbols)
   implementation(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

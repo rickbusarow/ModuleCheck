@@ -20,7 +20,7 @@ import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class AnvilScopeContributions(
   private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclaredName>>>,

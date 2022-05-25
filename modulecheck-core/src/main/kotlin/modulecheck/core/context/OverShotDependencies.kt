@@ -23,9 +23,9 @@ import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
-import modulecheck.utils.unsafeLazy
 
 data class OverShotDependencies(
   private val delegate: SafeCache<ConfigurationName, List<OverShotDependency>>,

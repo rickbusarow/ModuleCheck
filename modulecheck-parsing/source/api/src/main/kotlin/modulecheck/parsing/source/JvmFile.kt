@@ -16,7 +16,7 @@
 package modulecheck.parsing.source
 
 import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.utils.LazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
 
 sealed interface JvmFile : HasReferences {
   val name: String

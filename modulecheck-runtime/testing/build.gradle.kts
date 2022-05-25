@@ -44,5 +44,5 @@ dependencies {
 
   implementation(project(path = ":modulecheck-config:fake"))
   implementation(project(path = ":modulecheck-rule:testing"))
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 }

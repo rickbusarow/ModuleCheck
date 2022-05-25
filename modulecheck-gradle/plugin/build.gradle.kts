@@ -72,7 +72,7 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
@@ -81,7 +81,7 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils"))
+  testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 
 gradlePlugin {

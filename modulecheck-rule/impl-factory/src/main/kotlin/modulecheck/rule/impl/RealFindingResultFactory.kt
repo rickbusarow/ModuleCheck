@@ -26,8 +26,8 @@ import modulecheck.finding.Fixable
 import modulecheck.finding.ModifiesProjectDependency
 import modulecheck.finding.ProjectDependencyFinding
 import modulecheck.finding.RemovesDependency
-import modulecheck.utils.mapAsync
-import modulecheck.utils.onEachAsync
+import modulecheck.utils.coroutines.mapAsync
+import modulecheck.utils.coroutines.onEachAsync
 import modulecheck.utils.sortedWith
 import javax.inject.Inject
 
