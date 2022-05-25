@@ -26,14 +26,13 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
-import modulecheck.project.project
-import modulecheck.utils.LazySet
-import modulecheck.utils.LazySet.DataSource.Priority.HIGH
-import modulecheck.utils.LazySetComponent
-import modulecheck.utils.SafeCache
-import modulecheck.utils.dataSource
-import modulecheck.utils.dataSourceOf
-import modulecheck.utils.lazySet
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.LazySet.DataSource
+import modulecheck.utils.lazy.LazySetComponent
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.dataSourceOf
+import modulecheck.utils.lazy.lazySet
 
 data class Declarations private constructor(
   private val delegate: SafeCache<DeclarationsKey, LazySet<DeclaredName>>,
@@ -84,7 +83,7 @@ data class Declarations private constructor(
 
         project.jvmFilesForSourceSetName(sourceSetOrUpstream)
           .toList()
-          .map { dataSource(HIGH) { it.declarations } }
+          .map { dataSource(DataSource.Priority.HIGH) { it.declarations } }
           .let { components.addAll(it) }
 
         if (rNameOrNull != null) {

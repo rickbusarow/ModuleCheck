@@ -24,8 +24,8 @@ import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.parsing.gradle.model.PluginDependency
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 import java.io.File
 
 data class UnusedPluginFinding(

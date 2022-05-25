@@ -28,14 +28,14 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.project.project
-import modulecheck.utils.LazySet
-import modulecheck.utils.SafeCache
-import modulecheck.utils.dataSource
-import modulecheck.utils.dataSourceOf
-import modulecheck.utils.emptyLazySet
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.mapAsyncNotNull
 import modulecheck.utils.flatMapToSet
-import modulecheck.utils.lazySet
-import modulecheck.utils.mapAsyncNotNull
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.dataSourceOf
+import modulecheck.utils.lazy.emptyLazySet
+import modulecheck.utils.lazy.lazySet
 
 data class AndroidResourceDeclaredNames(
   private val delegate: SafeCache<SourceSetName, LazySet<AndroidResourceDeclaredName>>,

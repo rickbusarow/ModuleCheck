@@ -19,5 +19,6 @@ org.jetbrains.kotlin:kotlin-stdlib:1.6.21
 org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.1
 org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1
 org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1
+org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.1
 org.jetbrains:annotations:13.0
 org.unbescape:unbescape:1.1.6.RELEASE

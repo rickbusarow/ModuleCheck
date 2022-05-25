@@ -49,5 +49,6 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:groovy-antlr"))
   implementation(project(path = ":modulecheck-parsing:wiring"))
   implementation(project(path = ":modulecheck-project:impl"))
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 }

@@ -17,7 +17,7 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.psi.FqNames
 import modulecheck.utils.capitalize
-import modulecheck.utils.unsafeLazy
+import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtCallableDeclaration
 import org.jetbrains.kotlin.psi.KtFunction

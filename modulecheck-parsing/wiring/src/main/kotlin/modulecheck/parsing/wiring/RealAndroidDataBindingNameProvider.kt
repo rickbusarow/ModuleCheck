@@ -23,9 +23,9 @@ import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
-import modulecheck.utils.LazySet
-import modulecheck.utils.emptyLazySet
-import modulecheck.utils.toLazySet
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.emptyLazySet
+import modulecheck.utils.lazy.toLazySet
 
 class RealAndroidDataBindingNameProvider constructor(
   private val project: McProject,

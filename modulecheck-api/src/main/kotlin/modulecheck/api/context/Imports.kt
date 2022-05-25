@@ -21,12 +21,11 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.LazySet
-import modulecheck.utils.LazySet.DataSource
-import modulecheck.utils.LazySet.DataSource.Priority.HIGH
-import modulecheck.utils.SafeCache
-import modulecheck.utils.asDataSource
-import modulecheck.utils.lazySet
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.LazySet.DataSource
+import modulecheck.utils.lazy.asDataSource
+import modulecheck.utils.lazy.lazySet
 
 data class Imports(
   private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
@@ -41,7 +40,7 @@ data class Imports(
 
       val jvm: List<DataSource<Reference>> = project.get(JvmFiles)
         .get(sourceSetName)
-        .map { it.importsLazy.asDataSource(HIGH) }
+        .map { it.importsLazy.asDataSource(DataSource.Priority.HIGH) }
         .toList()
 
       val layout = project.get(LayoutFiles)

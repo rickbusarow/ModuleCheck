@@ -29,7 +29,7 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:source:api"))
 
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

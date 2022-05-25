@@ -29,7 +29,7 @@ import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.parsing.source.internal.ParsingInterceptor
-import modulecheck.utils.LazySet
+import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.mapToSet
 
 class AndroidResourceReferenceParsingInterceptor(

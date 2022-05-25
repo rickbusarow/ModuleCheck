@@ -20,11 +20,11 @@ import modulecheck.parsing.source.Reference
 import modulecheck.parsing.source.Reference.ExplicitXmlReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
-import modulecheck.utils.LazySet
-import modulecheck.utils.asDataSource
-import modulecheck.utils.dataSource
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.asDataSource
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.mapToSet
-import modulecheck.utils.toLazySet
 import java.io.File
 
 interface XmlFile : HasReferences {

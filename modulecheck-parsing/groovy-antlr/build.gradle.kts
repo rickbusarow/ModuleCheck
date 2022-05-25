@@ -37,7 +37,7 @@ dependencies {
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-utils"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

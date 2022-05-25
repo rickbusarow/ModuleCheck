@@ -21,14 +21,14 @@ import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
-import modulecheck.utils.LazySet
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.capitalize
-import modulecheck.utils.dataSource
-import modulecheck.utils.emptyLazySet
 import modulecheck.utils.existsOrNull
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.emptyLazySet
+import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.mapToSet
-import modulecheck.utils.toLazySet
 
 data class AndroidDataBindingDeclarations(
   private val delegate: SafeCache<SourceSetName, LazySet<AndroidDataBindingDeclaredName>>,

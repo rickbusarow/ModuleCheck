@@ -24,7 +24,7 @@ import modulecheck.parsing.source.JvmFile
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 import java.io.File
 
 data class JvmFiles(

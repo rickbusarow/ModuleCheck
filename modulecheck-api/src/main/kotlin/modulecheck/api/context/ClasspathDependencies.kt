@@ -20,7 +20,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.mapToSet
 
 data class ClasspathDependencies(

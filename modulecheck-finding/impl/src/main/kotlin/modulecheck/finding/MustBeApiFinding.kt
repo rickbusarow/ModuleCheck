@@ -20,8 +20,8 @@ import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
-import modulecheck.utils.LazyDeferred
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 
 data class MustBeApiFinding(
   override val findingName: FindingName,

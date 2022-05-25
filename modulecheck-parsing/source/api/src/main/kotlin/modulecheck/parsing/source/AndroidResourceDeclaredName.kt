@@ -17,8 +17,8 @@ package modulecheck.parsing.source
 
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.safeAs
-import modulecheck.utils.unsafeLazy
 import java.io.File
 import kotlin.io.path.name
 

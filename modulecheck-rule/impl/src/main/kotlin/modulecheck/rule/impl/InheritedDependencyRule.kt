@@ -29,8 +29,8 @@ import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.parsing.gradle.model.sortedByInheritance
 import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
+import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.flatMapToSet
-import modulecheck.utils.mapAsync
 import javax.inject.Inject
 
 class InheritedDependencyRule @Inject constructor() :

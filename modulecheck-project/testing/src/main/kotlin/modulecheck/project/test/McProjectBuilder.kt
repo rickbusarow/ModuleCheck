@@ -31,8 +31,8 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.requireNotNull
-import modulecheck.utils.unsafeLazy
 import org.intellij.lang.annotations.Language
 import java.io.File
 

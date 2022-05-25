@@ -37,7 +37,7 @@ import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.utils.lazySet
+import modulecheck.utils.lazy.lazySet
 import java.io.File
 
 interface ProjectCollector {

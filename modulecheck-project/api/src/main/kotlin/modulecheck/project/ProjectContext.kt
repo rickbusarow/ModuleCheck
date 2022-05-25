@@ -17,7 +17,7 @@ package modulecheck.project
 
 import modulecheck.project.ProjectContext.Element
 import modulecheck.project.ProjectContext.Key
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 interface ProjectContext {
   suspend fun <E : Element> get(key: Key<E>): E

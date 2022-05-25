@@ -21,7 +21,7 @@ import modulecheck.parsing.source.asAndroidRDeclaration
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class AndroidRDeclaredNames(
   private val delegate: SafeCache<SourceSetName, AndroidRDeclaredName?>,

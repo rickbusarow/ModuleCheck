@@ -16,7 +16,7 @@
 package modulecheck.dagger
 
 /** shorthand for `Set<@JvmSuppressWildcards T>` */
-typealias DaggerSet <T> = Set<@JvmSuppressWildcards T>
+typealias DaggerSet<T> = Set<@JvmSuppressWildcards T>
 
 /** shorthand for `List<@JvmSuppressWildcards T>` */
-typealias DaggerList <T> = List<@JvmSuppressWildcards T>
+typealias DaggerList<T> = List<@JvmSuppressWildcards T>

@@ -26,8 +26,8 @@ import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.project.McProject
-import modulecheck.utils.any
-import modulecheck.utils.containsAny
+import modulecheck.utils.coroutines.any
+import modulecheck.utils.lazy.containsAny
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 

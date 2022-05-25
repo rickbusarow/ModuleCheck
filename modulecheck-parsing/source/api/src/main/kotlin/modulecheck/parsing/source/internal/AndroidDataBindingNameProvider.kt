@@ -16,7 +16,7 @@
 package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
-import modulecheck.utils.LazySet
+import modulecheck.utils.lazy.LazySet
 
 fun interface AndroidDataBindingNameProvider {
 

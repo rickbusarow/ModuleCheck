@@ -21,13 +21,13 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.LazySet
-import modulecheck.utils.SafeCache
-import modulecheck.utils.dataSource
-import modulecheck.utils.emptyLazySet
+import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.flatMapToSet
-import modulecheck.utils.lazySet
-import modulecheck.utils.toLazySet
+import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.lazy.dataSource
+import modulecheck.utils.lazy.emptyLazySet
+import modulecheck.utils.lazy.lazySet
+import modulecheck.utils.lazy.toLazySet
 
 data class AndroidUnqualifiedDeclarationNames(
   private val delegate: SafeCache<SourceSetName, LazySet<UnqualifiedAndroidResourceDeclaredName>>,

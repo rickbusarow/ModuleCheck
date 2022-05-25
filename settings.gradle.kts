@@ -130,5 +130,8 @@ include(
   ":modulecheck-rule:testing",
   ":modulecheck-runtime:api",
   ":modulecheck-runtime:testing",
-  ":modulecheck-utils"
+  ":modulecheck-utils:cache",
+  ":modulecheck-utils:coroutines",
+  ":modulecheck-utils:stdlib",
+  ":modulecheck-utils:lazy"
 )

@@ -19,8 +19,8 @@ import modulecheck.parsing.source.Reference.AgnosticReference
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.JavaReference
 import modulecheck.parsing.source.Reference.KotlinReference
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.safeAs
-import modulecheck.utils.unsafeLazy
 
 sealed interface AndroidResourceReference : Reference, AgnosticReference
 

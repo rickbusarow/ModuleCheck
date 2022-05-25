@@ -39,7 +39,9 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-utils"))
+  api(project(path = ":modulecheck-utils:coroutines"))
+  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   implementation(project(path = ":modulecheck-parsing:source:api"))

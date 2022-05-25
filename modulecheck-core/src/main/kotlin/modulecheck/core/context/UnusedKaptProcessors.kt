@@ -29,9 +29,9 @@ import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.utils.LazySet
-import modulecheck.utils.SafeCache
-import modulecheck.utils.mapAsync
+import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.mapAsync
+import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.mapToSet
 
 data class UnusedKaptProcessors(

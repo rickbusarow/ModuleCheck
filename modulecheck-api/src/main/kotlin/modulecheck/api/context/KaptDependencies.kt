@@ -21,7 +21,7 @@ import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
-import modulecheck.utils.SafeCache
+import modulecheck.utils.cache.SafeCache
 
 data class KaptDependencies(
   private val delegate: SafeCache<ConfigurationName, Set<ConfiguredDependency>>,

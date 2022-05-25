@@ -31,8 +31,8 @@ import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
-import modulecheck.utils.ResetManager
-import modulecheck.utils.lazyResets
+import modulecheck.utils.lazy.ResetManager
+import modulecheck.utils.lazy.lazyResets
 import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 

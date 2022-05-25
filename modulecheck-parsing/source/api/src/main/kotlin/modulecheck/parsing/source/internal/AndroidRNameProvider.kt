@@ -16,7 +16,7 @@
 package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.AndroidRDeclaredName
-import modulecheck.utils.LazySet
+import modulecheck.utils.lazy.LazySet
 
 interface AndroidRNameProvider {
 

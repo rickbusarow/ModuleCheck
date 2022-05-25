@@ -23,8 +23,8 @@ import modulecheck.finding.FindingName
 import modulecheck.finding.android.DisableViewBindingGenerationFinding
 import modulecheck.project.McProject
 import modulecheck.project.project
-import modulecheck.utils.any
-import modulecheck.utils.lazyDeferred
+import modulecheck.utils.coroutines.any
+import modulecheck.utils.lazy.lazyDeferred
 import javax.inject.Inject
 
 class DisableViewBindingRule @Inject constructor() : DocumentedRule<DisableViewBindingGenerationFinding>() {
