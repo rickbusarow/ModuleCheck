@@ -1,3 +1,10 @@
+## 0.12.2
+
+#### 🐛 Bug Fixes
+
+- false positives for unused kapt processors which are defined in
+  additionalKaptMatchers ([8c55fd1](https://github.com/RBusarow/ModuleCheck/commit/8c55fd188f15c826ba4b6b28d293f68f49bafcb9))
+
 ## 0.12.1
 
 #### 🗑 Deprecations
@@ -91,9 +98,7 @@
 - revert KaptMatcher name
   to `modulecheck.api.KaptMatcher` [@RBusarow](https://github.com/RBusarow) ([#613](https://github.com/rbusarow/ModuleCheck/pull/613))
 -
-
 delete `ConfiguredModule` [@RBusarow](https://github.com/RBusarow) ([#609](https://github.com/rbusarow/ModuleCheck/pull/609))
-
 - disable the "use tab character" option in IDE
   codestyle [@RBusarow](https://github.com/RBusarow) ([#607](https://github.com/rbusarow/ModuleCheck/pull/607))
 - replace `java-test-fixtures` usages with `-testing`
