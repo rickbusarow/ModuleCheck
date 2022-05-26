@@ -19,6 +19,8 @@ package modulecheck.core
 import modulecheck.api.KaptMatcher
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
@@ -306,7 +308,6 @@ class UnusedKaptPluginTest : RunnerTest() {
         }
 
         dependencies {
-          @Suppress("unused-kapt-processor")
           kapt("com.modulecheck:processor:0.0.1")
         }
         """
@@ -333,8 +334,66 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
 
       dependencies {
-        @Suppress("unused-kapt-processor")
         kapt("com.modulecheck:processor:0.0.1")
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `used custom processor in test source using KaptMatcher should not make the plugin unused`() {
+
+    @Suppress("DEPRECATION")
+    settings.additionalKaptMatchers = listOf(
+      KaptMatcher(
+        name = "Processor",
+        processor = "com.modulecheck:processor",
+        annotationImports = listOf(
+          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+        )
+      )
+    )
+
+    val app = kotlinProject(":app") {
+      hasKapt = true
+
+      addExternalDependency("kaptTest".asConfigurationName(), "com.modulecheck:processor:0.0.1")
+
+      buildFile {
+        """
+        plugins {
+          id("kotlin-jvm")
+          id("kotlin-kapt")
+        }
+
+        dependencies {
+          kaptTest("com.modulecheck:processor:0.0.1")
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.annotations
+
+        @TheAnnotation
+        class Lib1Class
+        """,
+        SourceSetName.TEST
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+      plugins {
+        id("kotlin-jvm")
+        id("kotlin-kapt")
+      }
+
+      dependencies {
+        kaptTest("com.modulecheck:processor:0.0.1")
       }
     """
 
@@ -349,8 +408,7 @@ class UnusedKaptPluginTest : RunnerTest() {
         "Processor",
         "com.modulecheck:processor",
         listOf(
-          "com\\.modulecheck\\.annotations\\.\\*",
-          "com\\.modulecheck\\.annotations\\.TheAnnotation"
+          "com.modulecheck.annotations.TheAnnotation"
         )
       )
     )
@@ -368,7 +426,6 @@ class UnusedKaptPluginTest : RunnerTest() {
         }
 
         dependencies {
-          @Suppress("unused-kapt-processor")
           kapt("com.modulecheck:processor:0.0.1")
         }
         """
@@ -395,7 +452,6 @@ class UnusedKaptPluginTest : RunnerTest() {
       }
 
       dependencies {
-        @Suppress("unused-kapt-processor")
         kapt("com.modulecheck:processor:0.0.1")
       }
     """

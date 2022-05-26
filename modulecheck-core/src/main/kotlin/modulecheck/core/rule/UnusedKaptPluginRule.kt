@@ -66,7 +66,7 @@ class UnusedKaptPluginRule(
           .get(configName, settings)
           .filterNot { it.isSuppressed.await() }
 
-        unusedAndNotSuppressed.size != processors.size
+        processors.size - unusedAndNotSuppressed.size != 0
       }
 
     return if (processorIsUsed) {

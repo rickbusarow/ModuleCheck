@@ -60,7 +60,10 @@ data class UnusedKaptProcessors(
 
     return delegate.getOrPut(configurationName) {
 
-      val generatorBindings = settings.additionalCodeGenerators + defaultCodeGeneratorBindings()
+      @Suppress("DEPRECATION")
+      val generatorBindings = settings.additionalCodeGenerators
+        .plus(defaultCodeGeneratorBindings())
+        .plus(settings.additionalKaptMatchers.map { it.toCodeGeneratorBinding() })
 
       val matchers = generatorBindings.asMap()
 
