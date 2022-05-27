@@ -30,6 +30,7 @@ import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.Sign
+import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
@@ -114,5 +115,16 @@ fun Project.configurePublishing(
   }
   tasks.withType(Sign::class.java).configureEach {
     notCompatibleWithConfigurationCache("")
+    // skip signing for -LOCAL and -SNAPSHOT publishing
+    onlyIf {
+
+      !VERSION_NAME.endsWith("SNAPSHOT") && !VERSION_NAME.endsWith("LOCAL")
+    }
+  }
+  tasks.withType(AbstractDokkaLeafTask::class.java) {
+    // skip signing for -LOCAL publishing
+    onlyIf {
+      !VERSION_NAME.endsWith("LOCAL")
+    }
   }
 }
