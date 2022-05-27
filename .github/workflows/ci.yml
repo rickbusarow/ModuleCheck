@@ -283,7 +283,6 @@ jobs:
   tests-windows:
 
     runs-on: windows-latest
-    needs: publish-maven-local
 
     steps:
 
