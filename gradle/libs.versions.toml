@@ -35,7 +35,7 @@ jUnit = "5.8.2"
 javaParser = "3.24.2"
 knit = "0.4.0"
 kotest = "5.3.0"
-kotlin = "1.6.10"
+kotlin = "1.6.21"
 
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.1"
