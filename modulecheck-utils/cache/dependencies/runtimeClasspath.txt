@@ -1,3 +1,6 @@
+com.github.ben-manes.caffeine:caffeine:3.1.0
+com.google.errorprone:error_prone_annotations:2.13.1
+org.checkerframework:checker-qual:3.21.4
 org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10
