@@ -22,6 +22,7 @@ import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Generated
 import modulecheck.project.McProject
+import modulecheck.project.isAndroid
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.lazy.containsAny
 import modulecheck.utils.lazy.dataSource
@@ -49,8 +50,10 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
       //  specifically targeting generated declarations.  It shouldn't be needed in this specific
       //  case, since `dependencyDeclarations` should already be fully cached by the time we get
       //  here, and we have to iterate over the flow anyway in order to filter again.
-      declarations()
-        .get(dependency.declaringSourceSetName(), includeUpstream = true)
+      declarations().get(
+        dependency.declaringSourceSetName(dependency.project().isAndroid()),
+        includeUpstream = true
+      )
         .filterIsInstance<Generated>()
         .filter { dependencyDeclarations.containsAny(it.sources) }
         .toSet()
@@ -59,8 +62,11 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
 
   val usedUpstream = generatedFromThisDependency.isNotEmpty() && dependents()
     .any { downstreamDependency ->
+
+      val downstreamProject = downstreamDependency.configuredProjectDependency.project()
+
       val downstreamSourceSet = downstreamDependency.configuredProjectDependency
-        .declaringSourceSetName()
+        .declaringSourceSetName(downstreamProject.isAndroid())
 
       projectCache.getValue(downstreamDependency.dependentProjectPath)
         .referencesForSourceSetName(downstreamSourceSet)

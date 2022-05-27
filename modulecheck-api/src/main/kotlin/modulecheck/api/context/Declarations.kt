@@ -122,13 +122,15 @@ suspend fun ConfiguredProjectDependency.declarations(
     return project.declarations().get(SourceSetName.TEST_FIXTURES, false)
   }
 
-  // If the dependency is something like `testImplementation(...)`, then the dependent project is
-  // getting the `main` source from the dependency.  If it's something like
-  // `debugImplementation(...)`, though, then the dependency is providing its `debug` source, which
-  // in turn provides its upstream `main` source.
+  // If the dependency config is `testImplementation(...)` or `androidTestImplementation(...)`:
+  //   If the dependency is an Android module, then it automatically targets the `debug` source.
+  //   If the dependency is a Kotlin/Java module, then it automatically targets 'main'.
+  //
+  // If the dependency is something like `debugImplementation(...)`, the dependency is providing its
+  // `debug` source, which in turn provides its upstream `main` source.
   val nonTestSourceSetName = configurationName.toSourceSetName()
     .nonTestSourceSetNameOrNull()
-    ?: declaringSourceSetName()
+    ?: declaringSourceSetName(isAndroid = project.isAndroid())
 
   // If we got something like `debug` as a source set, that just means that the dependent project
   // has a `debug` source set.  If the dependency project has `debug`, that's what it'll provide.

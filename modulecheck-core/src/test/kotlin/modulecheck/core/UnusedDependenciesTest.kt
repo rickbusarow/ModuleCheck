@@ -17,6 +17,7 @@ package modulecheck.core
 
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.runtime.test.ProjectFindingReport.overshot
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
@@ -2041,6 +2042,189 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `debug dependency using the dependency's debug source should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency("debugApi".asConfigurationName(), lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      dependencies {
+        debugApi(project(path = ":lib1"))
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `testImplementation dependency using the dependency's debug source should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.testImplementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          testImplementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """,
+        SourceSetName.TEST
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      dependencies {
+        testImplementation(project(path = ":lib1"))
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `androidTestImplementation dependency using the dependency's debug source should not be unused`() {
+
+    settings.deleteUnused = false
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+      addDependency(ConfigurationName.androidTestImplementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          androidTestImplementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1Class = Lib1Class()
+        """,
+        SourceSetName.ANDROID_TEST
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      dependencies {
+        androidTestImplementation(project(path = ":lib1"))
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `color resource with dot-qualified name used in downstream style should not be unused`() {
 
     settings.deleteUnused = false
@@ -2102,7 +2286,7 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
-  fun `declaration used via class reference wtih wildcard import should not be unused`() {
+  fun `declaration used via class reference with wildcard import should not be unused`() {
 
     settings.deleteUnused = false
 

@@ -40,8 +40,13 @@ class RealAndroidDataBindingNameProvider constructor(
     val transitive = project.classpathDependencies()
       .get(sourceSetName)
       .map { tpd ->
+
+        val sourceProject = tpd.source.project(project.projectCache)
+
         tpd.contributed.project(project.projectCache)
-          .androidDataBindingDeclarationsForSourceSetName(tpd.source.declaringSourceSetName())
+          .androidDataBindingDeclarationsForSourceSetName(
+            tpd.source.declaringSourceSetName(sourceProject.isAndroid())
+          )
       }
 
     return listOf(local)
