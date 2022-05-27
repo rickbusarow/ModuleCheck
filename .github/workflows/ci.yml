@@ -97,46 +97,6 @@ jobs:
         if: github.event.pull_request.head.repo.full_name != github.repository
         run: ./gradlew ktlintCheck -q --no-daemon
 
-  modulecheck:
-
-    runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-          cache: 'gradle'
-
-      - name: ModuleCheck with auto-correct (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew moduleCheckAuto --no-daemon
-
-      # If KtLint generated changes, commit and push those changes.
-      - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Apply ModuleCheck fixes
-          commit_options: '--no-verify --signoff'
-
-      - name: ModuleCheck check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew moduleCheck --no-daemon
-
   versioning:
 
     runs-on: ubuntu-latest
