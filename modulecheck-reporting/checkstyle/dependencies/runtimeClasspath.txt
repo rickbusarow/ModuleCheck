@@ -1,11 +1,11 @@
-com.github.ben-manes.caffeine:caffeine:3.1.0
-com.google.errorprone:error_prone_annotations:2.13.1
+com.github.ben-manes.caffeine:caffeine:3.1.1
+com.google.errorprone:error_prone_annotations:2.14.0
 com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 com.squareup.anvil:annotations:2.4.0
 javax.inject:javax.inject:1
 net.java.dev.jna:jna:5.6.0
 net.swiftzer.semver:semver:1.2.0
-org.checkerframework:checker-qual:3.21.4
+org.checkerframework:checker-qual:3.22.0
 org.jetbrains.intellij.deps:trove4j:1.0.20181211
 org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.10
 org.jetbrains.kotlin:kotlin-daemon-embeddable:1.6.10
