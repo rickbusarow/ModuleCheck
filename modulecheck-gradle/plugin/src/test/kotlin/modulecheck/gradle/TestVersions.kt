@@ -21,12 +21,12 @@ import org.junit.jupiter.api.DynamicTest
 
 interface VersionsMatrixTest : DynamicTests, ResetManager {
 
-  // val kotlinVersions get() = listOf("1.5.32", "1.6.21", "1.7.0-Beta")
+  val kotlinVersions get() = listOf("1.5.32", "1.6.10", "1.6.21", "1.7.0-RC")
   // val gradleVersions get() = listOf("7.2", "7.3.3", "7.4.2", "7.5-rc-1")
   // val agpVersions get() = listOf("7.0.1", "7.1.3", "7.2.0")
   // val anvilVersions get() = listOf("2.3.11", "2.4.0")
 
-  val kotlinVersions get() = listOf("1.6.21")
+  // val kotlinVersions get() = listOf("1.6.10")
   val gradleVersions get() = listOf("7.4.2")
   val agpVersions get() = listOf("7.0.1")
   val anvilVersions get() = listOf("2.4.0")
