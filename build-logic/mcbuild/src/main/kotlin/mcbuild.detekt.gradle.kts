@@ -15,6 +15,8 @@
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import modulecheck.builds.libsCatalog
+import modulecheck.builds.version
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -55,6 +57,9 @@ tasks.withType<Detekt> detekt@{
   include("**/*.kt", "**/*.kts")
   exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
 
-  // Target version of the generated JVM bytecode. It is used for type resolution.
-  this.jvmTarget = "1.8"
+  doFirst {
+    require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {
+      "Update Detekt to `1.20.0` (or later) when Kotlin is updated to `1.6.21` or later."
+    }
+  }
 }

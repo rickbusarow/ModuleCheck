@@ -148,4 +148,27 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlinVersion"
         }
       }
+
+  @TestFactory
+  fun `test project should build with any kotlin version`() = kotlin {
+    kotlinProject(":lib1") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class
+        """
+      )
+    }
+
+    shouldSucceed("compileKotlin")
+  }
 }

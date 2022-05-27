@@ -30,7 +30,7 @@ plugins {
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
   alias(libs.plugins.gradleDoctor)
-  alias(libs.plugins.moduleCheck)
+  // alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
   base
   id("mcbuild.artifacts-check")
@@ -44,20 +44,20 @@ plugins {
   id("mcbuild.website")
 }
 
-moduleCheck {
-  deleteUnused = true
-  checks {
-    depths = true
-    sortDependencies = true
-  }
-  reports {
-    depths.enabled = true
-    graphs {
-      enabled = true
-      outputDir = "$buildDir/reports/modulecheck/graphs"
-    }
-  }
-}
+// moduleCheck {
+//   deleteUnused = true
+//   checks {
+//     depths = true
+//     sortDependencies = true
+//   }
+//   reports {
+//     depths.enabled = true
+//     graphs {
+//       enabled = true
+//       outputDir = "$buildDir/reports/modulecheck/graphs"
+//     }
+//   }
+// }
 
 // Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,
 // all subprojects are published.  This is used in plugin tests.
