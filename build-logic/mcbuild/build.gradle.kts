@@ -32,7 +32,7 @@ dependencies {
   compileOnly(gradleApi())
   compileOnly(libs.kotlin.gradle.plug)
 
-  implementation(libs.benManes.gradle)
+  implementation(libs.benManes.versions)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
   implementation(libs.dropbox.dependencyGuard)
