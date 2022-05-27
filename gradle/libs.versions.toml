@@ -22,7 +22,7 @@ compileSdk = "30"
 dependencyAnalysis = "1.2.1"
 detekt = "1.20.0-RC2"
 dokka = "1.6.21"
-dropbox-dependencyGuard = "0.2.0"
+dropbox-dependencyGuard = "0.3.0"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
