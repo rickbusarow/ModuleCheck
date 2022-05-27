@@ -29,6 +29,8 @@ import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.parsing.gradle.model.sortedByInheritance
 import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
+import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.flatMapToSet
 import javax.inject.Inject
@@ -197,8 +199,11 @@ class InheritedDependencyRule @Inject constructor() :
   ): Sequence<TransitiveProjectDependency> {
 
     return sortedWith { o1, o2 ->
-      val o1SourceSet = o1.contributed.declaringSourceSetName()
-      val o2SourceSet = o2.contributed.declaringSourceSetName()
+      val o1IsAndroid = o1.contributed.project(project.projectCache).isAndroid()
+      val o1SourceSet = o1.contributed.declaringSourceSetName(o1IsAndroid)
+
+      val o2IsAndroid = o2.contributed.project(project.projectCache).isAndroid()
+      val o2SourceSet = o2.contributed.declaringSourceSetName(o2IsAndroid)
 
       o2SourceSet.inheritsFrom(o1SourceSet, project).compareTo(true)
     }

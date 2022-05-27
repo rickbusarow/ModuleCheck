@@ -25,12 +25,19 @@ data class ConfiguredProjectDependency(
 
   override val name = path.value
 
-  fun declaringSourceSetName() = when {
+  /**
+   * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
+   * configuration.
+   *   For a simple `implementation` configuration, this returns `main`.
+   *   For a `debugImplementation`, it would return `debug`.
+   */
+  fun declaringSourceSetName(isAndroid: Boolean) = when {
     isTestFixture -> {
       SourceSetName.TEST_FIXTURES
     }
     configurationName.toSourceSetName().isTestingOnly() -> {
-      SourceSetName.MAIN
+      if (isAndroid) SourceSetName.DEBUG
+      else SourceSetName.MAIN
     }
     else -> {
       configurationName.toSourceSetName()

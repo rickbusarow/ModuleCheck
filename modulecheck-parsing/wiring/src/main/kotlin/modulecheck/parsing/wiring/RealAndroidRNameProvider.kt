@@ -50,7 +50,9 @@ class RealAndroidRNameProvider constructor(
       .map { transitiveDependency ->
 
         val transitiveSourceSetName = transitiveDependency.source
-          .declaringSourceSetName()
+          .declaringSourceSetName(
+            transitiveDependency.source.project(project.projectCache).isAndroid()
+          )
 
         dataSource {
           setOfNotNull(

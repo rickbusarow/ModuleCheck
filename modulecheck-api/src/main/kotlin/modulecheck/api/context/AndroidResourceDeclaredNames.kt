@@ -74,7 +74,9 @@ data class AndroidResourceDeclaredNames(
         .get(sourceSetName)
         .mapAsyncNotNull { tpd ->
 
-          val transitiveSourceSetName = tpd.source.declaringSourceSetName()
+          val transitiveSourceSetName = tpd.source.declaringSourceSetName(
+            isAndroid = tpd.source.project(project.projectCache).isAndroid()
+          )
 
           tpd.contributed.project(project.projectCache)
             .androidUnqualifiedDeclarationNamesForSourceSetName(transitiveSourceSetName)

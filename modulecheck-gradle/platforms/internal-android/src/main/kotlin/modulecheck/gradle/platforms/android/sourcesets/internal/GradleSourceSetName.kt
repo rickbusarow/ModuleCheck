@@ -39,7 +39,12 @@ internal sealed interface GradleSourceSetName : Comparable<GradleSourceSetName> 
   value class VariantName(override val value: String) : GradleSourceSetName
 
   @JvmInline
-  value class BuildTypeName(override val value: String) : GradleSourceSetName
+  value class BuildTypeName(override val value: String) : GradleSourceSetName {
+    companion object {
+      val DEBUG = BuildTypeName("debug")
+      val RELEASE = BuildTypeName("release")
+    }
+  }
 
   @JvmInline
   value class FlavorName(override val value: String) : GradleSourceSetName
