@@ -23,13 +23,16 @@ mcbuild {
 
 dependencies {
 
+  api(libs.benManes.caffeine)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
   implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.turbine)
 }
