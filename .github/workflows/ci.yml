@@ -21,7 +21,6 @@ jobs:
   static-analysis:
 
     runs-on: ubuntu-latest
-    if: github.actor != 'renovate[bot]'
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
