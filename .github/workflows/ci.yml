@@ -4,6 +4,8 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  MAIN_REPO: github.event.pull_request.head.repo.full_name == github.repository
 
 jobs:
 
@@ -24,11 +26,11 @@ jobs:
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -63,11 +65,11 @@ jobs:
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -81,19 +83,19 @@ jobs:
           cache: 'gradle'
 
       - name: KtLint format (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         run: ./gradlew ktlintformat -q --no-daemon
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Apply KtLint format
           commit_options: '--no-verify --signoff'
 
       - name: KtLint check (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
         run: ./gradlew ktlintCheck -q --no-daemon
 
   versioning:
@@ -103,11 +105,11 @@ jobs:
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -124,11 +126,11 @@ jobs:
         run: ./gradlew checkVersionIsSnapshot --no-daemon
 
       - name: Sync versions in website docs (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         run: ./gradlew updateWebsiteNextDocsVersionRefs --no-daemon
 
       - name: Check versions in website docs (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
         run: ./gradlew checkWebsiteNextDocsVersionRefs --no-daemon
 
       - name: commit changes
@@ -138,26 +140,26 @@ jobs:
           commit_options: '--no-verify --signoff'
 
       - name: Update version in website package.json (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         run: ./gradlew updateWebsitePackageJsonVersion --no-daemon
 
       - name: Check version in website package.json (used by forks)
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
         run: ./gradlew checkWebsitePackageJsonVersion --no-daemon
 
       - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update website versions
           commit_options: '--no-verify --signoff'
 
       - name: Update website changelog from root CHANGELOG (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         run: ./gradlew updateWebsiteChangelog --no-daemon
 
       - name: commit changes (used by main repo)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: update website changelog
@@ -170,11 +172,11 @@ jobs:
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -239,11 +241,11 @@ jobs:
     steps:
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -279,19 +281,58 @@ jobs:
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - Ubuntu
 
+  maybe-start-windows-runner:
+    name: Maybe start self-hosted EC2 runner
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.start-ec2-windows-runner.outputs.label }}
+      ec2-instance-id: ${{ steps.start-ec2-windows-runner.outputs.ec2-instance-id }}
+    steps:
+
+      - name: Configure AWS credentials (used by main repo)
+        uses: aws-actions/configure-aws-credentials@v1
+        if: $MAIN_REPO == true
+        with:
+          aws-access-key-id: ${{ secrets.EC2_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.EC2_ACCESS_KEY }}
+
+      - name: Start EC2 Windows runner (used by main repo)
+        uses: crunchy234/ec2-github-runner@v2
+        id: start-ec2-windows-runner
+        if: $MAIN_REPO == true
+        with:
+          mode: start
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-033594f8862b03bb2
+          ec2-instance-type: t3.2xlarge
+          ec2-os: windows
+          subnet-id: ${{ secrets.EC2_SUBNET_ID }}
+          security-group-id: ${{ secrets.EC2_SECURITY_GROUP_ID }}
+
+      - name: Set EC2 Windows runner label (used by main repo)
+        if: $MAIN_REPO == true
+        env:
+          WINDOWS_RUNNER_LABEL: ${{ needs.start-ec2-windows-runner.outputs.label }}
+
+      - name: Set free Windows runner label (used by forks)
+        if: $MAIN_REPO == false
+        env:
+          WINDOWS_RUNNER_LABEL: windows-latest
+
   tests-windows:
 
-    runs-on: windows-latest
+    needs: maybe-start-windows-runner
+    runs-on: ${{ env.WINDOWS_RUNNER_LABEL }}
 
     steps:
 
       - name: check out with token (used by forks)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
+        if: $MAIN_REPO == false
 
       - name: check out with PAT (used by main repo)
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: $MAIN_REPO == true
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -326,3 +367,27 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - Windows
+
+  maybe-stop-windows-runner:
+    name: Maybe stop self-hosted EC2 runner
+    runs-on: ubuntu-latest
+    needs:
+      - maybe-start-windows-runner
+      - tests-windows
+    if: ${{ always() }}
+    steps:
+      - name: Configure AWS credentials (used by main repo)
+        uses: aws-actions/configure-aws-credentials@v1
+        if: $MAIN_REPO == true
+        with:
+          aws-access-key-id: ${{ secrets.EC2_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.EC2_ACCESS_KEY }}
+      #          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Stop EC2 runner (used by main repo)
+        uses: crunchy234/ec2-github-runner@v2
+        if: $MAIN_REPO == true
+        with:
+          mode: stop
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          label: ${{ needs.maybe-start-windows-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.maybe-start-windows-runner.outputs.ec2-instance-id }}
