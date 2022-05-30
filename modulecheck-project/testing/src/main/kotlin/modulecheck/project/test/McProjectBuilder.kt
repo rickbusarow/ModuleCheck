@@ -16,8 +16,8 @@
 package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
+import modulecheck.model.dependency.impl.RealExternalDependencyFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -63,6 +63,10 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     )
   }
 
+  val externalDependency by lazy {
+    RealExternalDependencyFactory(generatorBindings = codeGeneratorBindings)
+  }
+
   fun addDependency(
     configurationName: ConfigurationName,
     project: McProject,
@@ -93,7 +97,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = externalDependencies[configurationName].orEmpty()
 
-    val external = ExternalDependency(
+    val external = externalDependency.create(
       configurationName = configurationName,
       group = maven.group,
       moduleName = maven.moduleName,

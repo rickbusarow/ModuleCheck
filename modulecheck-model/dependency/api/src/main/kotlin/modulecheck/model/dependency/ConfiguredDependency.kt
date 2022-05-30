@@ -16,19 +16,7 @@
 package modulecheck.model.dependency
 
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.PluginAccessor
-
-data class ExternalDependency(
-  override val configurationName: ConfigurationName,
-  val group: String?,
-  val moduleName: String,
-  val version: String?
-) : ConfiguredDependency {
-  val coords = MavenCoordinates(group, moduleName, version)
-  override val name = "${group ?: ""}:$moduleName"
-  val nameWithVersion = "${group ?: ""}:$moduleName:${version ?: ""}"
-}
 
 sealed interface ConfiguredDependency : Dependency {
 

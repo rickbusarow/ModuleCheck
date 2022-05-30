@@ -57,7 +57,9 @@ class RealConfiguredProjectDependencyFactory @Inject constructor(
 
     return when {
       configurationName.isKapt() -> ConfiguredCodeGeneratorProjectDependency(
-        configurationName = configurationName, path = path, isTestFixture = isTestFixture,
+        configurationName = configurationName,
+        path = path,
+        isTestFixture = isTestFixture,
         codeGeneratorBindingOrNull = generatorBindings.filterIsInstance<AnnotationProcessor>()
           .firstOrNull { it.generatorMavenCoordinates == stringPath.value }
       )

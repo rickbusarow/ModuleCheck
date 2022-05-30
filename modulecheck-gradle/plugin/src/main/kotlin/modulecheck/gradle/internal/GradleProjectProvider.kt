@@ -67,7 +67,8 @@ class GradleProjectProvider @Inject constructor(
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
   private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
-  private val configuredProjectDependency: ConfiguredProjectDependency.Factory
+  private val configuredProjectDependency: ConfiguredProjectDependency.Factory,
+  private val externalDependency: ExternalDependency.Factory
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -151,7 +152,7 @@ class GradleProjectProvider @Inject constructor(
           .filterIsInstance<ExternalModuleDependency>()
           .map { dep ->
 
-            ExternalDependency(
+            externalDependency.create(
               configurationName = configuration.name.asConfigurationName(),
               group = dep.group,
               moduleName = dep.name,
