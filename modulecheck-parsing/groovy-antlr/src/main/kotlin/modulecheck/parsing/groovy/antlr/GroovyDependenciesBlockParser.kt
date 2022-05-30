@@ -19,7 +19,6 @@ package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
-import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.reporting.logging.McLogger

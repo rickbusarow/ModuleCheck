@@ -26,6 +26,7 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
 

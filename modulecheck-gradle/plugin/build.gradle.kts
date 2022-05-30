@@ -49,6 +49,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
   api(project(path = ":modulecheck-parsing:wiring"))
   api(project(path = ":modulecheck-project:api"))

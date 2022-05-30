@@ -15,30 +15,30 @@
 
 package modulecheck.parsing.gradle.model
 
+import modulecheck.config.CodeGeneratorBinding
+import modulecheck.config.HasCodeGeneratorBinding
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 
-data class ConfiguredProjectDependency(
-  override val configurationName: ConfigurationName,
-  override val path: ProjectPath,
-  val isTestFixture: Boolean
-) : ConfiguredDependency, HasPath {
+sealed class ConfiguredProjectDependency : ConfiguredDependency, HasPath {
 
+  abstract val isTestFixture: Boolean
   override val name = path.value
 
   /**
    * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
-   * configuration.
-   *   For a simple `implementation` configuration, this returns `main`.
-   *   For a `debugImplementation`, it would return `debug`.
+   *   configuration. For a simple `implementation` configuration, this
+   *   returns `main`. For a `debugImplementation`, it would return `debug`.
    */
   fun declaringSourceSetName(isAndroid: Boolean) = when {
     isTestFixture -> {
       SourceSetName.TEST_FIXTURES
     }
+
     configurationName.toSourceSetName().isTestingOnly() -> {
       if (isAndroid) SourceSetName.DEBUG
       else SourceSetName.MAIN
     }
+
     else -> {
       configurationName.toSourceSetName()
     }
@@ -52,8 +52,54 @@ data class ConfiguredProjectDependency(
       "${configurationName.value}(project(path = \"${path.value}\"))"
     }
 
-    return "ConfiguredProjectDependency( $declaration )"
+    return "${this::class.simpleName}( $declaration )"
   }
+
+  fun copy(
+    configurationName: ConfigurationName = this.configurationName,
+    path: ProjectPath = this.path,
+    isTestFixture: Boolean = this.isTestFixture
+  ): ConfiguredProjectDependency {
+    return when (this) {
+      is ConfiguredJvmProjectDependency -> copy(
+        configurationName = configurationName,
+        path = path,
+        isTestFixture = isTestFixture
+      )
+
+      is ConfiguredAndroidProjectDependency -> copy(
+        configurationName = configurationName,
+        path = path,
+        isTestFixture = isTestFixture
+      )
+
+      is ConfiguredCodeGeneratorProjectDependency -> copy(
+        configurationName = configurationName,
+        path = path,
+        isTestFixture = isTestFixture,
+        codeGeneratorBinding = codeGeneratorBinding
+      )
+    }
+  }
+
+  data class ConfiguredJvmProjectDependency(
+    override val configurationName: ConfigurationName,
+    override val path: ProjectPath,
+    override val isTestFixture: Boolean
+  ) : ConfiguredProjectDependency()
+
+  data class ConfiguredAndroidProjectDependency(
+    override val configurationName: ConfigurationName,
+    override val path: ProjectPath,
+    override val isTestFixture: Boolean
+  ) : ConfiguredProjectDependency()
+
+  data class ConfiguredCodeGeneratorProjectDependency(
+    override val configurationName: ConfigurationName,
+    override val path: ProjectPath,
+    override val isTestFixture: Boolean,
+    override val codeGeneratorBinding: CodeGeneratorBinding
+  ) : ConfiguredProjectDependency(), HasCodeGeneratorBinding
 }
 
 data class TransitiveProjectDependency(

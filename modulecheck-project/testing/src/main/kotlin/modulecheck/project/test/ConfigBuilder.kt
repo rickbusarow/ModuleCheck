@@ -16,7 +16,6 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.gradle.model.Config
-import modulecheck.parsing.gradle.model.ConfigFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asConfigurationName

@@ -108,6 +108,7 @@ include(
   ":modulecheck-parsing:gradle:dsl:precompiled",
   ":modulecheck-parsing:gradle:dsl:testing",
   ":modulecheck-parsing:gradle:model:api",
+  ":modulecheck-parsing:gradle:model:api-dependency",
   ":modulecheck-parsing:gradle:model:impl-typesafe",
   ":modulecheck-parsing:groovy-antlr",
   ":modulecheck-parsing:java",

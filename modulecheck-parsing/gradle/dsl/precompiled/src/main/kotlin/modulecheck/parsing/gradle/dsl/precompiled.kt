@@ -17,7 +17,6 @@ package modulecheck.parsing.gradle.dsl
 
 import modulecheck.parsing.gradle.dsl.ProjectAccessor.TypeSafeProjectAccessor
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSetName.Companion

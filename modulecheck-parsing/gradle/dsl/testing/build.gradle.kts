@@ -29,7 +29,9 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

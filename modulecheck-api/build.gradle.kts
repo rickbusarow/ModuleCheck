@@ -31,6 +31,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))

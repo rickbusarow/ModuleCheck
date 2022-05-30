@@ -18,7 +18,6 @@ package modulecheck.parsing.gradle.dsl
 import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 
 interface DependenciesBlock :

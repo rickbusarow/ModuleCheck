@@ -28,6 +28,7 @@ dependencies {
 
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:source:api"))
 
   compileOnly(gradleApi())

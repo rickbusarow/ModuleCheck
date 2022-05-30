@@ -18,25 +18,19 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-gradle-dsl-internal"
+  artifactId = "modulecheck-parsing-gradle-model-api-dependency"
   anvil = true
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-finding:name"))
-  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
-  api(project(path = ":modulecheck-reporting:logging:api"))
+  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-parsing:source:api"))
+  implementation(project(path = ":modulecheck-config:api"))
 
-  implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
