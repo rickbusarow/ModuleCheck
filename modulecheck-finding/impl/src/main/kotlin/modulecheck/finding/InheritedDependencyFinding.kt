@@ -18,8 +18,8 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

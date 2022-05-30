@@ -28,8 +28,10 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
 
   api(project(path = ":modulecheck-finding:name"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

@@ -15,7 +15,7 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.model.DownstreamDependency
+import modulecheck.model.dependency.DownstreamDependency
 import modulecheck.parsing.gradle.model.HasPath
 
 interface HasProjectCache {

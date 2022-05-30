@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.internal.AbstractDependenciesBlock
 import modulecheck.reporting.logging.McLogger
 
@@ -22,11 +23,13 @@ class GroovyDependenciesBlock internal constructor(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
-  suppressAll: List<String>
+  suppressAll: List<String>,
+  configuredProjectDependency: ConfiguredProjectDependency.Factory
 ) : AbstractDependenciesBlock(
   logger = logger,
   suppressedForEntireBlock = suppressAll,
-  configurationNameTransform = { it.value }
+  configurationNameTransform = { it.value },
+  configuredProjectDependency = configuredProjectDependency
 ) {
 
   override fun originalLineMatchesParsed(

@@ -15,8 +15,8 @@
 
 package modulecheck.project
 
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 
 class ExternalDependencies(

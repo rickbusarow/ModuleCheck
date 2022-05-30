@@ -16,6 +16,7 @@
 package modulecheck.parsing.psi
 
 import kotlinx.coroutines.runBlocking
+import modulecheck.model.dependency.ConfiguredProjectDependency.ConfiguredRuntimeProjectDependency
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
@@ -29,7 +30,11 @@ import org.junit.jupiter.api.Test
 
 internal class KotlinDependenciesBlockParserTest : ProjectTest() {
 
-  val parser by resets { KotlinDependenciesBlockParser(PrintLogger()) }
+  val parser by resets {
+    KotlinDependenciesBlockParser(PrintLogger()) { configurationName, projectPath, isTestFixture ->
+      ConfiguredRuntimeProjectDependency(configurationName, projectPath, isTestFixture)
+    }
+  }
 
   @Test
   fun `external declaration`() {

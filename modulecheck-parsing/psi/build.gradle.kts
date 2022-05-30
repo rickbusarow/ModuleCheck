@@ -26,6 +26,7 @@ dependencies {
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))

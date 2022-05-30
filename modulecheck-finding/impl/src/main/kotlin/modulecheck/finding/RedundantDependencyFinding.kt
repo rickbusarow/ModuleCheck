@@ -15,8 +15,8 @@
 
 package modulecheck.finding
 
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.project.McProject
 
 data class RedundantDependency(

@@ -22,12 +22,12 @@ import modulecheck.api.context.uses
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.InheritedDependencyFinding
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetDependency
+import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.SourceSetDependency
+import modulecheck.model.dependency.TransitiveProjectDependency
+import modulecheck.model.dependency.toSourceSetDependency
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.parsing.gradle.model.sortedByInheritance
-import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project

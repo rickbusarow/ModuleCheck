@@ -149,3 +149,13 @@ sealed class CodeGeneratorBinding(
 
 fun List<CodeGeneratorBinding>.asMap(): Map<String, CodeGeneratorBinding> =
   associateBy { it.generatorMavenCoordinates }
+
+/**
+ * Indicates that some type (probably a
+ * [ConfiguredDependency][modulecheck.parsing.gradle.model.ConfiguredDependency]) is associated with
+ * an established [CodeGeneratorBinding].
+ */
+interface MightHaveCodeGeneratorBinding {
+  /** The [CodeGeneratorBinding] if it is defined, or null. */
+  val codeGeneratorBindingOrNull: CodeGeneratorBinding?
+}

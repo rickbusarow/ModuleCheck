@@ -41,15 +41,15 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
 
     settings shouldBe listOf(
       PluginDeclaration(
-        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm' // trailing comment""",
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         suppressed = emptyList()
       ),
       PluginDeclaration(
-        declarationText = """id 'com.squareup.anvil' version '2.34.0'""",
         statementWithSurroundingText = """  // comment
           |  id 'com.squareup.anvil' version '2.34.0'
         """.trimMargin(),
+        declarationText = """id 'com.squareup.anvil' version '2.34.0'""",
         suppressed = emptyList()
       )
     )
@@ -68,18 +68,18 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
 
     settings shouldBe listOf(
       PluginDeclaration(
-        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         statementWithSurroundingText = """  id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         suppressed = emptyList()
       ),
       PluginDeclaration(
-        declarationText = """javaLibrary""",
         statementWithSurroundingText = """  javaLibrary""",
+        declarationText = """javaLibrary""",
         suppressed = emptyList()
       ),
       PluginDeclaration(
-        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = """  id 'org.jetbrains.kotlin.jvm'""",
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         suppressed = emptyList()
       )
     )
@@ -101,19 +101,19 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
 
     settings shouldBe listOf(
       PluginDeclaration(
-        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         statementWithSurroundingText = "  //noinspection finding-1\n" +
           "  id 'io.gitlab.arturbosch.detekt' version '1.15.0'",
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         suppressed = listOf("finding-1")
       ),
       PluginDeclaration(
-        declarationText = """javaLibrary""",
         statementWithSurroundingText = "  //noinspection finding-2\n  javaLibrary",
+        declarationText = """javaLibrary""",
         suppressed = listOf("finding-2")
       ),
       PluginDeclaration(
-        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         statementWithSurroundingText = "  //noinspection finding-3\n  id 'org.jetbrains.kotlin.jvm'",
+        declarationText = """id 'org.jetbrains.kotlin.jvm'""",
         suppressed = listOf("finding-3")
       )
     )
@@ -131,9 +131,9 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
 
     settings shouldBe listOf(
       PluginDeclaration(
-        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         statementWithSurroundingText = "  //noinspection UnusedKaptProcessor\n" +
           "  id 'io.gitlab.arturbosch.detekt' version '1.15.0'",
+        declarationText = """id 'io.gitlab.arturbosch.detekt' version '1.15.0'""",
         suppressed = listOf("unused-kapt-processor")
       )
     )

@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.context.DependencySources.SourceResult.Found
 import modulecheck.api.context.DependencySources.SourceResult.NOT_PRESENT
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject

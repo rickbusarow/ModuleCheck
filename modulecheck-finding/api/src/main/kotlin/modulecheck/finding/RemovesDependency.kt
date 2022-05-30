@@ -20,8 +20,8 @@ import modulecheck.finding.RemovesDependency.RemovalStrategy.DELETE
 import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.parsing.gradle.model.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ConfiguredProjectDependency
 
 interface RemovesDependency : Fixable {
 

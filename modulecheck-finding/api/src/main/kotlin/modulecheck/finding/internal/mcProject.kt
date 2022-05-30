@@ -16,11 +16,11 @@
 package modulecheck.finding.internal
 
 import modulecheck.finding.Finding.Position
+import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.project.McProject
 
 suspend fun ConfiguredProjectDependency.statementOrNullIn(

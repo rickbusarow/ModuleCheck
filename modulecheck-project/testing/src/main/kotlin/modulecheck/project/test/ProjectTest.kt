@@ -15,10 +15,14 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.config.CodeGeneratorBinding
+import modulecheck.config.internal.defaultCodeGeneratorBindings
+import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.ProjectProvider
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
@@ -30,25 +34,27 @@ abstract class ProjectTest : BaseTest(), ProjectCollector {
   override val root: File
     get() = testProjectDir
 
-  val projectProvider: ProjectProvider by resets {
-    object : ProjectProvider {
+  override val codeGeneratorBindings: List<CodeGeneratorBinding>
+    get() = defaultCodeGeneratorBindings()
 
-      override val projectCache: ProjectCache
-        get() = this@ProjectTest.projectCache
+  val configuredProjectDependencyFactory: ConfiguredProjectDependency.Factory
+    get() = RealConfiguredProjectDependencyFactory(
+      pathResolver = TypeSafeProjectPathResolver(projectProvider),
+      generatorBindings = codeGeneratorBindings
+    )
 
-      override fun get(path: ProjectPath): McProject {
-        return projectCache.getValue(path)
-      }
+  fun McProject.addDependency(
+    configurationName: ConfigurationName,
+    project: McProject,
+    asTestFixture: Boolean = false
+  ) {
+    val old = projectDependencies[configurationName].orEmpty()
 
-      override fun getAll(): List<McProject> = allProjects()
+    val cpd =
+      configuredProjectDependencyFactory.create(configurationName, project.path, asTestFixture)
 
-      override fun clearCaches() {
-        allProjects().forEach { it.clearContext() }
-      }
-    }
+    projectDependencies[configurationName] = old + cpd
   }
-
-  fun allProjects(): List<McProject> = projectCache.values.toList()
 
   fun File.writeText(content: String) {
     writeText(content.trimIndent(), Charset.defaultCharset())

@@ -15,12 +15,14 @@
 
 package modulecheck.project.test
 
+import modulecheck.config.CodeGeneratorBinding
+import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.JavaVersion
@@ -29,6 +31,7 @@ import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectDependencies
+import modulecheck.project.ProjectProvider
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import modulecheck.utils.lazy.unsafeLazy
@@ -36,19 +39,29 @@ import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import java.io.File
 
-data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
+@Suppress("LongParameterList")
+class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var path: StringProjectPath,
   var projectDir: File,
   var buildFile: File,
   val platformPlugin: P,
+  val codeGeneratorBindings: List<CodeGeneratorBinding>,
+  val projectProvider: ProjectProvider,
+  val projectCache: ProjectCache,
   val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
   val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   var hasKapt: Boolean = false,
   var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  val projectCache: ProjectCache = ProjectCache(),
   var javaSourceVersion: JavaVersion = VERSION_14
 ) {
+
+  val configuredProjectDependency by lazy {
+    RealConfiguredProjectDependencyFactory(
+      pathResolver = TypeSafeProjectPathResolver(projectProvider),
+      generatorBindings = codeGeneratorBindings
+    )
+  }
 
   fun addDependency(
     configurationName: ConfigurationName,
@@ -60,7 +73,8 @@ data class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = projectDependencies[configurationName].orEmpty()
 
-    val cpd = ConfiguredProjectDependency(configurationName, project.path, asTestFixture)
+    val cpd = configuredProjectDependency
+      .create(configurationName, project.path, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
   }

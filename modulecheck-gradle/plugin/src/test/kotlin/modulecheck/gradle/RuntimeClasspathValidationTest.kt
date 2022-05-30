@@ -25,8 +25,6 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
   @TestFactory
   fun `all tasks should succeed without any other libraries in the build classpath`() =
     testProjectVersions()
-      // These tests aren't affected by Gradle
-      .filter { it.gradleVersion == gradleVersion }
       .flatMap { versions ->
         listOf(
           "moduleCheckAuto",

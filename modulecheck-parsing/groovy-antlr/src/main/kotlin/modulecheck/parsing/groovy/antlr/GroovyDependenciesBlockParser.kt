@@ -18,6 +18,7 @@
 package modulecheck.parsing.groovy.antlr
 
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
@@ -35,7 +36,8 @@ import java.io.File
 import javax.inject.Inject
 
 class GroovyDependenciesBlockParser @Inject constructor(
-  private val logger: McLogger
+  private val logger: McLogger,
+  private val configuredProjectDependency: ConfiguredProjectDependency.Factory
 ) {
 
   fun parse(file: File): List<GroovyDependenciesBlock> = parse(file) {
@@ -169,7 +171,8 @@ class GroovyDependenciesBlockParser @Inject constructor(
             logger = logger,
             fullText = statement.originalText(),
             lambdaContent = blockBody,
-            suppressAll = blockSuppressed
+            suppressAll = blockSuppressed,
+            configuredProjectDependency = configuredProjectDependency
           )
 
           super.visitScriptStatement(ctx)

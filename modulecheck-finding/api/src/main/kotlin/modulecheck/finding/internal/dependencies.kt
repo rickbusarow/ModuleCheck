@@ -17,11 +17,11 @@ package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan

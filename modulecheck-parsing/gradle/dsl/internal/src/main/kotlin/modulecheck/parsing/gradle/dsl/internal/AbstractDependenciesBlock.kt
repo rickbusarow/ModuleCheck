@@ -17,6 +17,7 @@ package modulecheck.parsing.gradle.dsl.internal
 
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
@@ -26,7 +27,6 @@ import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -39,7 +39,8 @@ import modulecheck.utils.remove
 abstract class AbstractDependenciesBlock(
   private val logger: McLogger,
   suppressedForEntireBlock: List<String>,
-  private val configurationNameTransform: ConfigurationNameTransform
+  private val configurationNameTransform: ConfigurationNameTransform,
+  private val configuredProjectDependency: ConfiguredProjectDependency.Factory
 ) : DependenciesBlock {
 
   private val resetManager = ResetManager()
@@ -134,7 +135,7 @@ abstract class AbstractDependenciesBlock(
 
     val isTestFixtures = parsedString.contains(testFixturesRegex)
 
-    val cpd = ConfiguredProjectDependency(
+    val cpd = configuredProjectDependency.create(
       configurationName = configName,
       path = projectPath,
       isTestFixture = isTestFixtures
@@ -186,7 +187,7 @@ abstract class AbstractDependenciesBlock(
   ): List<ModuleDependencyDeclaration> {
 
     return allModuleDeclarations[
-      ConfiguredProjectDependency(
+      configuredProjectDependency.create(
         configurationName = configName,
         path = moduleRef,
         isTestFixture = testFixtures

@@ -15,6 +15,8 @@
 
 package modulecheck.project.test
 
+import modulecheck.config.CodeGeneratorBinding
+import modulecheck.model.dependency.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.dsl.internal.RealBuildFileParser
 import modulecheck.parsing.gradle.model.Configurations
@@ -38,6 +40,7 @@ import modulecheck.parsing.wiring.RealPluginsBlockProvider
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealMcProject
 import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.logging.PrintLogger
@@ -53,6 +56,8 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
   path: String,
   pluginBuilder: T,
   androidPackageOrNull: String?,
+  codeGeneratorBindings: List<CodeGeneratorBinding>,
+  projectProvider: ProjectProvider,
   config: McProjectBuilder<T>.() -> Unit
 ): McProject {
 
@@ -67,7 +72,9 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
     projectDir = projectRoot,
     buildFile = buildFile,
     platformPlugin = pluginBuilder,
-    projectCache = projectCache
+    projectCache = projectCache,
+    codeGeneratorBindings = codeGeneratorBindings,
+    projectProvider = projectProvider
   )
     .also {
       it.maybeAddSourceSet(SourceSetName.MAIN)
@@ -144,7 +151,7 @@ inline fun <reified T : McProjectBuilder<P>,
       javaSourceVersion = javaSourceVersion,
       projectDependencies = lazy { projectDependencies },
       externalDependencies = lazy { externalDependencies },
-      buildFileParserFactory = buildFileParserFactory(),
+      buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
       platformPlugin = platformPlugin.toPlugin()
     )
   }
@@ -160,14 +167,17 @@ internal fun Configurations.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, c
   ConfigBuilder.fromConfig(config)
 }
 
-fun buildFileParserFactory(logger: McLogger = PrintLogger()): BuildFileParser.Factory {
+fun buildFileParserFactory(
+  configuredProjectDependency: ConfiguredProjectDependency.Factory,
+  logger: McLogger = PrintLogger()
+): BuildFileParser.Factory {
   return BuildFileParser.Factory { invokesConfigurationNames ->
 
     RealBuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependenciesBlockParser(logger),
-          kotlinParser = KotlinDependenciesBlockParser(logger),
+          groovyParser = GroovyDependenciesBlockParser(logger, configuredProjectDependency),
+          kotlinParser = KotlinDependenciesBlockParser(logger, configuredProjectDependency),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },

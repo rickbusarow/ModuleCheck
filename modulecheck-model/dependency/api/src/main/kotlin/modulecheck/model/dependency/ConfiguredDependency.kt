@@ -13,9 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
-import modulecheck.utils.mapToSet
+import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
+import modulecheck.parsing.gradle.model.PluginAccessor
 
 data class ExternalDependency(
   override val configurationName: ConfigurationName,
@@ -29,6 +31,7 @@ data class ExternalDependency(
 }
 
 sealed interface ConfiguredDependency : Dependency {
+
   val configurationName: ConfigurationName
   val name: String
 }
@@ -50,51 +53,10 @@ sealed interface Dependency
  *       - `alias(libs.plugins.anvil)`
  */
 data class PluginDependency(
-  val accessor: String
-) : Dependency
-
-/**
- * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
- *
- * @param name A descriptive name for this plugin, such as 'Kotlin kapt' or 'Android Gradle Plugin'
- * @param qualifiedId The canonical ID for the plugin, like `org.jetbrains.kotlin.kapt`
- * @param legacyIdOrNull An older, "legacy" ID for the plugin like `kotlin-kapt`
- * @param precompiledAccessorOrNull A special accessor invoked like a property, with or without
- *   backticks, like `base`.
- * @param kotlinFunctionArgumentOrNull The `kotlin(...)` function used for official libraries in
- *   Kotlin DSL files, like `kotlin("kapt")`.
- */
-data class PluginDefinition(
-  val name: String,
-  val qualifiedId: String,
-  val legacyIdOrNull: String?,
-  val precompiledAccessorOrNull: String?,
-  val kotlinFunctionArgumentOrNull: String?
-) {
-  val accessors by lazy {
-
-    buildList {
-      add("id(\"$qualifiedId\")")
-      add("id \"$qualifiedId\"")
-      add("id '$qualifiedId'")
-
-      if (legacyIdOrNull != null) {
-        add("id(\"$legacyIdOrNull\")")
-        add("id \"$legacyIdOrNull\"")
-        add("id '$legacyIdOrNull'")
-      }
-
-      if (precompiledAccessorOrNull != null) {
-        if (precompiledAccessorOrNull.contains("-")) {
-          add("`$precompiledAccessorOrNull`")
-        } else {
-          add(precompiledAccessorOrNull)
-        }
-      }
-      if (kotlinFunctionArgumentOrNull != null) {
-        add("kotlin(\"$kotlinFunctionArgumentOrNull\")")
-      }
-    }
-      .mapToSet { PluginDependency(it) }
+  val accessor: PluginAccessor
+) : Dependency {
+  companion object {
+    /** @return a [PluginDependency] wrapping the [PluginAccessor] receiver */
+    fun PluginAccessor.toPluginDependency(): PluginDependency = PluginDependency(this)
   }
 }
