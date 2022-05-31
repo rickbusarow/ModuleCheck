@@ -16,14 +16,14 @@
 package modulecheck.finding
 
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.Identifier
 import modulecheck.project.McProject
 
 data class UnusedDependency(
   val dependentProject: McProject,
   val dependency: ConfiguredDependency,
-  val dependencyIdentifier: String,
+  val dependencyIdentifier: Identifier,
   val configurationName: ConfigurationName
 ) {
 
@@ -31,7 +31,7 @@ data class UnusedDependency(
     findingName = findingName,
     dependentProject = dependentProject,
     oldDependency = dependency,
-    dependencyIdentifier = dependencyIdentifier,
+    dependencyIdentifier = dependencyIdentifier.name,
     configurationName = configurationName
   )
 }
@@ -39,7 +39,7 @@ data class UnusedDependency(
 data class UnusedDependencyFinding(
   override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val oldDependency: ProjectDependency,
+  override val oldDependency: ConfiguredDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : AbstractProjectDependencyFinding(),

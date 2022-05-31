@@ -85,7 +85,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
   fun addExternalDependency(
     configurationName: ConfigurationName,
-    coordinates: String
+    coordinates: String,
+    isTestFixture: Boolean = false
   ) {
 
     val maven = MavenCoordinates.parseOrNull(coordinates)
@@ -101,7 +102,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       configurationName = configurationName,
       group = maven.group,
       moduleName = maven.moduleName,
-      version = maven.version
+      version = maven.version,
+      isTestFixture = isTestFixture
     )
 
     externalDependencies[configurationName] = old + external

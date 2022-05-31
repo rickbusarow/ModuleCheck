@@ -16,22 +16,13 @@
 package modulecheck.core.context
 
 import kotlinx.coroutines.flow.toList
-import modulecheck.api.context.kaptDependencies
-import modulecheck.api.context.referencesForSourceSetName
-import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.ModuleCheckSettings
-import modulecheck.config.asMap
-import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedKaptProcessorFinding
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.source.AgnosticDeclaredName
-import modulecheck.parsing.source.Reference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.coroutines.mapAsync
-import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.mapToSet
 
 data class UnusedKaptProcessors(
@@ -42,62 +33,37 @@ data class UnusedKaptProcessors(
   override val key: ProjectContext.Key<UnusedKaptProcessors>
     get() = Key
 
-  suspend fun all(settings: ModuleCheckSettings): List<UnusedKaptProcessorFinding> {
+  suspend fun all(): List<UnusedKaptProcessorFinding> {
     return project
       .configurations
       .keys
-      .filter { it.value.startsWith("kapt") }
-      .mapAsync { configurationName -> get(configurationName, settings) }
+      .filter { it.isKapt() }
+      .mapAsync { configurationName -> get(configurationName) }
       .toList()
       .flatten()
       .distinct()
   }
 
   suspend fun get(
-    configurationName: ConfigurationName,
-    settings: ModuleCheckSettings
+    configurationName: ConfigurationName
   ): Set<UnusedKaptProcessorFinding> {
 
     return delegate.getOrPut(configurationName) {
 
-      @Suppress("DEPRECATION")
-      val generatorBindings = settings.additionalCodeGenerators
-        .plus(defaultCodeGeneratorBindings())
-        .plus(settings.additionalKaptMatchers.map { it.toCodeGeneratorBinding() })
-
-      val matchers = generatorBindings.asMap()
-
-      val kaptDependencies = project.kaptDependencies()
-
-      val processors = kaptDependencies.get(configurationName)
-
-      val references = project.referencesForSourceSetName(configurationName.toSourceSetName())
-
-      processors
-        .filterNot {
-          val matcher = matchers[it.identifier] ?: return@filterNot true
-
-          matcher.matchedIn(references)
-        }
-        .mapToSet { processor ->
+      project.unusedDependencies()
+        .get(configurationName)
+        .mapToSet { unusedDependency ->
           UnusedKaptProcessorFinding(
             findingName = FindingName("unused-kapt-processor"),
             dependentProject = project,
             dependentPath = project.path,
             buildFile = project.buildFile,
-            oldDependency = processor,
-            configurationName = configurationName
+            oldDependency = unusedDependency.dependency,
+            configurationName = unusedDependency.configurationName
           )
         }
     }
   }
-
-  private suspend fun CodeGeneratorBinding.matchedIn(
-    references: LazySet<Reference>
-  ): Boolean = annotationNames
-    .any { annotationName ->
-      references.contains(AgnosticDeclaredName(annotationName))
-    }
 
   companion object Key : ProjectContext.Key<UnusedKaptProcessors> {
     override suspend operator fun invoke(project: McProject): UnusedKaptProcessors {

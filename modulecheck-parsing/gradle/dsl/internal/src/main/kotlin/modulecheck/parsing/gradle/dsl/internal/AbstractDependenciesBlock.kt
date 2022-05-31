@@ -94,6 +94,7 @@ abstract class AbstractDependenciesBlock(
       group = coordinates.group,
       moduleName = coordinates.moduleName,
       version = coordinates.version,
+      coordinates = coordinates,
       suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
       configurationNameTransform = configurationNameTransform
     )

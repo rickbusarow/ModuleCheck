@@ -16,45 +16,35 @@
 package modulecheck.finding.internal
 
 import modulecheck.finding.Finding.Position
-import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
-import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
-import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ProjectDependency
+import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.project.McProject
 
-suspend fun ProjectDependency.statementOrNullIn(
+suspend fun ConfiguredDependency.statementOrNullIn(
   dependentProject: McProject
-): ModuleDependencyDeclaration? {
+): DependencyDeclaration? {
   return dependentProject.buildFileParser
     .dependenciesBlocks()
     .firstNotNullOfOrNull { block ->
-      block.getOrEmpty(path, configurationName, isTestFixture)
-        .takeIf { it.isNotEmpty() }
+
+      when (this) {
+        is ExternalDependency -> block.getOrEmpty(mavenCoordinates, configurationName)
+          .takeIf { it.isNotEmpty() }
+
+        is ProjectDependency -> block.getOrEmpty(path, configurationName, isTestFixture)
+          .takeIf { it.isNotEmpty() }
+      }
     }
     ?.firstOrNull()
 }
 
-suspend fun ExternalDependency.statementOrNullIn(
-  dependentProject: McProject,
-  configuration: ConfigurationName
-): ExternalDependencyDeclaration? {
-  return dependentProject.buildFileParser
-    .dependenciesBlocks()
-    .firstNotNullOfOrNull { block ->
-      block.getOrEmpty(coords, configuration)
-        .takeIf { it.isNotEmpty() }
-    }
-    ?.firstOrNull()
-}
-
-suspend fun ProjectDependency.positionIn(
+suspend fun ConfiguredDependency.positionIn(
   dependentProject: McProject
 ): Position? {
 
-  val statement = statementOrNullIn(
-    dependentProject = dependentProject
-  ) ?: return null
+  val statement = statementOrNullIn(dependentProject) ?: return null
 
   return dependentProject.buildFile.readText()
     .positionOfStatement(statement.statementWithSurroundingText)

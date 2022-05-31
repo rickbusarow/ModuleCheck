@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ConfiguredDependency.Companion.copy
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -225,26 +228,32 @@ private suspend fun McProject.mustBeApiIn(
 }
 
 /**
- * @return Returns a [ProjectDependency] with an `-api` variant configuration if the dependency
+ * @return Returns a [ConfiguredDependency] with an `-api` variant configuration if the dependency
  *   should be `api`, or `-implementation` otherwise.
  */
-suspend fun ProjectDependency.asApiOrImplementation(
+suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
   dependentProject: McProject
-): ProjectDependency {
-  val mustBeApi = project(dependentProject.projectCache)
-    .mustBeApiIn(
-      dependentProject = dependentProject,
-      sourceSetName = configurationName.toSourceSetName(),
-      isTestFixtures = isTestFixture
-    )
-
-  val newConfig = if (mustBeApi) {
-    configurationName.apiVariant()
-  } else {
-    configurationName.implementationVariant()
+): T {
+  val mustBeApi = when (this as ConfiguredDependency) {
+    is ExternalDependency -> false
+    is ProjectDependency -> when {
+      configurationName.isKapt() -> false
+      else -> (this as ProjectDependency).project(dependentProject.projectCache)
+        .mustBeApiIn(
+          dependentProject = dependentProject,
+          sourceSetName = configurationName.toSourceSetName(),
+          isTestFixtures = isTestFixture
+        )
+    }
   }
 
-  return copy(configurationName = newConfig)
+  val newConfig = when {
+    mustBeApi -> configurationName.apiVariant()
+    configurationName.isKapt() -> configurationName.kaptVariant()
+    else -> configurationName.implementationVariant()
+  }
+
+  return copy(configurationName = newConfig) as T
 }
 
 data class InheritedDependencyWithSource(

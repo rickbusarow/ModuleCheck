@@ -18,6 +18,7 @@ package modulecheck.core
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asConfigurationName
+import modulecheck.runtime.test.ProjectFindingReport.overshot
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptPlugin
 import modulecheck.runtime.test.ProjectFindingReport.unusedKaptProcessor
 import modulecheck.runtime.test.RunnerTest
@@ -69,7 +70,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         unusedKaptProcessor(
           fixed = false,
           configuration = "kapt",
-          dependency = "com.google.dagger:dagger-compiler",
+          dependency = dagger,
           position = "7, 3"
         ),
         unusedKaptPlugin(
@@ -123,7 +124,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         unusedKaptProcessor(
           fixed = false,
           configuration = "kapt",
-          dependency = "com.google.dagger:dagger-compiler",
+          dependency = dagger,
           position = "7, 3"
         ),
         unusedKaptPlugin(
@@ -272,6 +273,72 @@ class UnusedKaptProcessorTest : RunnerTest() {
   }
 
   @Test
+  fun `used in debug with main kapt should be auto-corrected to kaptDebug as overshot`() {
+
+    val app = androidLibrary(":app", "com.modulecheck.app") {
+      hasKapt = true
+
+      addExternalDependency("kapt".asConfigurationName(), dagger)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+          kotlin("kapt")
+        }
+
+        dependencies {
+          kapt("$dagger")
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.app
+
+        import javax.inject.Inject
+
+        class App @Inject constructor()
+        """,
+        SourceSetName.DEBUG
+      )
+    }
+
+    run(
+      autoCorrect = true
+    ).isSuccess shouldBe true
+
+    app.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+          kotlin("kapt")
+        }
+
+        dependencies {
+          kaptDebug("$dagger")
+          // kapt("$dagger")  // ModuleCheck finding [unused-kapt-processor]
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":app" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "kaptDebug",
+          dependency = dagger,
+          position = "7, 3"
+        ),
+        unusedKaptProcessor(
+          fixed = true,
+          configuration = "kapt",
+          dependency = dagger,
+          position = "7, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `unused with main kapt with autoCorrect and no other processors should remove processor and plugin`() {
 
     val app = kotlinProject(":app") {
@@ -311,7 +378,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         unusedKaptProcessor(
           fixed = true,
           configuration = "kapt",
-          dependency = "com.google.dagger:dagger-compiler",
+          dependency = dagger,
           position = "7, 3"
         ),
         unusedKaptPlugin(
@@ -363,7 +430,7 @@ class UnusedKaptProcessorTest : RunnerTest() {
         unusedKaptProcessor(
           fixed = true,
           configuration = "kapt",
-          dependency = "com.google.dagger:dagger-compiler",
+          dependency = dagger,
           position = "7, 3"
         ),
         unusedKaptPlugin(

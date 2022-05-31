@@ -32,7 +32,9 @@ class UnusedDependencyRule @Inject constructor(
   override suspend fun check(project: McProject): List<UnusedDependencyFinding> {
     return project.get(UnusedDependencies)
       .all()
-      .filterNot { it.dependency.path.value in settings.ignoreUnusedFinding }
+      .filterNot { it.dependency.identifier.name in settings.ignoreUnusedFinding }
+      // kapt has its own rule
+      .filterNot { it.configurationName.isKapt() }
       .distinctBy { it.dependency }
       .map { it.toFinding(name) }
   }

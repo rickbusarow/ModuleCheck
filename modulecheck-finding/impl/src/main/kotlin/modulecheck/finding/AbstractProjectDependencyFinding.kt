@@ -30,7 +30,7 @@ abstract class AbstractProjectDependencyFinding :
   Fixable,
   Finding,
   DependencyFinding,
-  ProjectDependencyFinding {
+  ConfiguredDependencyFinding {
 
   final override val dependentPath: StringProjectPath get() = dependentProject.path
   final override val buildFile: File get() = dependentProject.buildFile
@@ -61,7 +61,7 @@ abstract class AbstractProjectDependencyFinding :
       findingName = findingName,
       sourceOrNull = fromStringOrEmpty(),
       configurationName = configurationName.value,
-      dependencyIdentifier = dependency.path.value,
+      dependencyIdentifier = dependency.identifier.name,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,
       message = message,

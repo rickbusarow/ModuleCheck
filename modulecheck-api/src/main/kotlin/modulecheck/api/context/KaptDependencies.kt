@@ -17,6 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -56,8 +57,11 @@ data class KaptDependencies(
 
   companion object Key : ProjectContext.Key<KaptDependencies> {
 
-    internal const val KAPT_PLUGIN_COORDS =
-      "org.jetbrains.kotlin:kotlin-annotation-processing-gradle"
+    internal val KAPT_PLUGIN_COORDS = MavenCoordinates(
+      group = "org.jetbrains.kotlin",
+      moduleName = "kotlin-annotation-processing-gradle",
+      version = null
+    )
 
     override suspend operator fun invoke(project: McProject): KaptDependencies {
       return KaptDependencies(SafeCache(), project)

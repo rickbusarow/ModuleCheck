@@ -18,17 +18,27 @@ package modulecheck.model.dependency
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.HasMavenCoordinates
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.utils.lazy.unsafeLazy
 
-sealed class ExternalDependency : ConfiguredDependency {
+sealed class ExternalDependency :
+  ConfiguredDependency,
+  HasMavenCoordinates {
   abstract val group: String?
   abstract val moduleName: String
   abstract val version: String?
 
-  val coords by unsafeLazy { MavenCoordinates(group, moduleName, version) }
-  override val identifier by unsafeLazy { "${group ?: ""}:$moduleName" }
+  override val mavenCoordinates: MavenCoordinates by unsafeLazy {
+    MavenCoordinates(
+      group = group,
+      moduleName = moduleName,
+      version = version
+    )
+  }
+  override val identifier by unsafeLazy { mavenCoordinates }
   val nameWithVersion by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
+  val nameWithoutVersion by unsafeLazy { "${group ?: ""}:$moduleName" }
 
   class ExternalRuntimeDependency(
     override val configurationName: ConfigurationName,
@@ -98,6 +108,17 @@ sealed class ExternalDependency : ConfiguredDependency {
     }
   }
 
+  override fun toString(): String {
+
+    val declaration = if (isTestFixture) {
+      "${configurationName.value}(testFixtures(\"${nameWithVersion}\"))"
+    } else {
+      "${configurationName.value}(\"${nameWithVersion}\")"
+    }
+
+    return "${javaClass.simpleName}( $declaration )"
+  }
+
   /**
    * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
    * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
@@ -110,7 +131,8 @@ sealed class ExternalDependency : ConfiguredDependency {
       configurationName: ConfigurationName,
       group: String?,
       moduleName: String,
-      version: String?
+      version: String?,
+      isTestFixture: Boolean
     ): ExternalDependency
   }
 }

@@ -16,11 +16,13 @@
 package modulecheck.parsing.gradle.model
 
 import modulecheck.utils.capitalize
+import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
 
-sealed class ProjectPath : Comparable<ProjectPath> {
+sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
 
   abstract val value: String
+  override val name by unsafeLazy { value }
 
   val typeSafeValue: String by lazy {
     when (this) {

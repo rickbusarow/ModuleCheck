@@ -15,9 +15,10 @@
 
 package modulecheck.core.context
 
-import modulecheck.api.context.asApiOrImplementation
+import modulecheck.api.context.maybeAsApi
 import modulecheck.api.context.uses
 import modulecheck.finding.OverShotDependency
+import modulecheck.model.dependency.ConfiguredDependency.Companion.copy
 import modulecheck.model.dependency.toSourceSetDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
@@ -34,6 +35,10 @@ data class OverShotDependencies(
   override val key: ProjectContext.Key<OverShotDependencies>
     get() = Key
 
+  suspend fun all(): List<OverShotDependency> {
+    return project.configurations.keys.flatMap { get(it) }
+  }
+
   suspend fun get(configurationName: ConfigurationName): List<OverShotDependency> {
     return delegate.getOrPut(configurationName) {
 
@@ -42,8 +47,8 @@ data class OverShotDependencies(
         .flatMap { unused ->
 
           val unusedCpd = unused.dependency
-          val unusedSsd =
-            unusedCpd.toSourceSetDependency(unused.configurationName.toSourceSetName())
+          val unusedSsd = unusedCpd
+            .toSourceSetDependency(unused.configurationName.toSourceSetName())
           val unusedSourceSetName = unused.configurationName.toSourceSetName()
 
           val allUsedByConfigName = unusedSourceSetName
@@ -55,7 +60,7 @@ data class OverShotDependencies(
                   .mapToSet { it.toSourceSetDependency(sourceSetName) }
               }
 
-              val configName = sourceSetName.implementationConfig()
+              val configName = unused.configurationName.switchSourceSet(sourceSetName)
 
               val seed = when {
 
@@ -110,22 +115,17 @@ data class OverShotDependencies(
         }
         .map { (overshot, original) ->
 
-          val newCpd = overshot.asApiOrImplementation(project)
+          val newDependency = overshot.maybeAsApi(project)
 
           OverShotDependency(
             dependentProject = project,
-            newDependency = newCpd,
-            oldDependency = original,
-            configurationName = newCpd.configurationName
+            newDependency = newDependency,
+            oldDependency = original
           )
         }
-        .sortedBy { it.newDependency.path }
-        .distinctBy { it.newDependency.path }
+        .sortedBy { it.newDependency.identifier.name }
+        .distinctBy { it.newDependency.identifier }
     }
-  }
-
-  suspend fun all(): List<OverShotDependency> {
-    return project.configurations.keys.flatMap { get(it) }
   }
 
   companion object Key : ProjectContext.Key<OverShotDependencies> {

@@ -32,7 +32,6 @@ dependencies {
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:android"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
@@ -41,6 +40,8 @@ dependencies {
   api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(libs.kotlin.compiler)
+
+  implementation(project(path = ":modulecheck-config:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

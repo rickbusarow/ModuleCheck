@@ -50,7 +50,31 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
    * ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
    */
-  fun nameWithoutSourceSet() = value.removePrefix(toSourceSetName().value)
+  fun nameWithoutSourceSet(): String {
+    return when {
+      isKapt() -> ConfigurationName.kapt.value
+      else -> value.removePrefix(toSourceSetName().value)
+    }
+  }
+
+  /**
+   * Returns the base name of the Configuration without any source set prefix.
+   *
+   * For "main" source sets, this function just returns the same string,
+   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
+   *
+   * For other source sets, it returns the base configuration names:
+   * ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
+   * ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
+   */
+  fun switchSourceSet(newSourceSetName: SourceSetName): ConfigurationName {
+
+    return when {
+      isKapt() -> "${nameWithoutSourceSet()}${newSourceSetName.value.capitalize()}".asConfigurationName()
+      else -> "${newSourceSetName.value}${nameWithoutSourceSet().capitalize()}".asConfigurationName()
+    }
+  }
 
   /**
    * find the "base" configuration name and remove it
@@ -193,6 +217,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       implementation,
       compileOnly,
       compile,
+      kapt,
       runtimeOnly,
       runtime
     )

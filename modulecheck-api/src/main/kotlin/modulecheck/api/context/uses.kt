@@ -54,7 +54,7 @@ private suspend fun <T> McProject.usesCodeGenDependency(
                  T : MightHaveCodeGeneratorBinding {
 
   val codeGeneratorBinding = dependency.codeGeneratorBindingOrNull
-  // If the dependency doesn't have a binding, default to treating it as used
+    // If the dependency doesn't have a binding, default to treating it as used
     ?: return true
 
   val referencesSourceSetName = dependency.configurationName.toSourceSetName()

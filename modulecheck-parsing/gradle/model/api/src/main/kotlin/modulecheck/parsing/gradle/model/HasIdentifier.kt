@@ -15,6 +15,16 @@
 
 package modulecheck.parsing.gradle.model
 
-interface HasPath {
+interface HasPath : HasIdentifier {
   val path: ProjectPath
+  override val identifier: Identifier get() = path
+}
+
+interface HasIdentifier {
+  val identifier: Identifier
+}
+
+interface HasMavenCoordinates : HasIdentifier {
+  val mavenCoordinates: MavenCoordinates
+  override val identifier: Identifier get() = mavenCoordinates
 }

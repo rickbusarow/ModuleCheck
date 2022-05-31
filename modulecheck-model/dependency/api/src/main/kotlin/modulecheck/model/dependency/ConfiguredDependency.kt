@@ -16,6 +16,7 @@
 package modulecheck.model.dependency
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.Identifier
 import modulecheck.parsing.gradle.model.PluginAccessor
 
 sealed interface ConfiguredDependency : Dependency {
@@ -30,10 +31,32 @@ sealed interface ConfiguredDependency : Dependency {
    * For an [ExternalDependency], this is the Maven coordinates with or without a version, like
    * `com.example.foo:ui-widgets:1.0.0`.
    */
-  val identifier: String
+  val identifier: Identifier
 
   /** Is the dependency being invoked via `testFixtures(project(...))`? */
   val isTestFixture: Boolean
+
+  companion object {
+
+    inline fun <reified T : ConfiguredDependency> T.copy(
+      configurationName: ConfigurationName = this.configurationName,
+      isTestFixture: Boolean = this.isTestFixture
+    ): ConfiguredDependency = when (this as ConfiguredDependency) {
+      is ExternalDependency -> (this as ExternalDependency).copy(
+        configurationName = configurationName,
+        group = group,
+        moduleName = moduleName,
+        version = version,
+        isTestFixture = isTestFixture
+      )
+
+      is ProjectDependency -> (this as ProjectDependency).copy(
+        configurationName = configurationName,
+        path = path,
+        isTestFixture = isTestFixture
+      )
+    }
+  }
 }
 
 sealed interface Dependency

@@ -17,6 +17,7 @@ package modulecheck.gradle.platforms
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
+import modulecheck.parsing.gradle.model.ConfigFactory
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.asConfigurationName
 import org.gradle.api.Project

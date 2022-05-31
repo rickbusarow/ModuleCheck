@@ -18,36 +18,50 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 
+/**
+ * Represents a [ConfiguredDependency] which is unused in the
+ * [SourceSet][modulecheck.parsing.gradle.model.SourceSet] to which it's added, but *is* used in
+ * another source set downstream. For instance, a dependency is overshot if it's added to `main`,
+ * but only used in `test`.
+ *
+ * @property dependentProject the [McProject] declaring the dependency
+ * @property oldDependency the [ConfiguredDependency] which adds the unused dependency
+ * @property newDependency the [ConfiguredDependency] which should be added
+ */
 data class OverShotDependency(
   val dependentProject: McProject,
-  val newDependency: ProjectDependency,
-  val oldDependency: ProjectDependency,
-  val configurationName: ConfigurationName
+  val newDependency: ConfiguredDependency,
+  val oldDependency: ConfiguredDependency
 ) {
-  fun toFinding(findingName: FindingName): OverShotDependencyFinding = OverShotDependencyFinding(
-    findingName = findingName,
+  /**
+   * Converts the `OverShotDependency` to an [OverShotDependencyFinding].
+   *
+   * @return the finding matching this [OverShotDependency]
+   */
+  fun toFinding(): OverShotDependencyFinding = OverShotDependencyFinding(
     dependentProject = dependentProject,
     newDependency = newDependency,
-    oldDependency = oldDependency,
-    configurationName = configurationName
+    oldDependency = oldDependency
   )
 }
 
 data class OverShotDependencyFinding(
-  override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val newDependency: ProjectDependency,
-  val oldDependency: ProjectDependency,
-  override val configurationName: ConfigurationName
+  override val newDependency: ConfiguredDependency,
+  val oldDependency: ConfiguredDependency
 ) : AbstractProjectDependencyFinding(),
   AddsDependency {
+
+  override val findingName: FindingName = NAME
+
+  override val configurationName: ConfigurationName = newDependency.configurationName
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?>
     // intentionally look this up every time, since the declaration doesn't exist at first
@@ -66,7 +80,7 @@ data class OverShotDependencyFinding(
     }
 
   override val dependency get() = newDependency
-  override val dependencyIdentifier: String get() = newDependency.path.value
+  override val dependencyIdentifier: String get() = newDependency.identifier.name
 
   override val message: String
     get() = "The dependency is not used in the source set for which it is configured, but it is " +
@@ -83,5 +97,9 @@ data class OverShotDependencyFinding(
       "\tdependencyIdentifier='$dependencyIdentifier', \n" +
       "\tconfigurationName=$configurationName\n" +
       ")"
+  }
+
+  companion object {
+    val NAME = FindingName("overshot-dependency")
   }
 }

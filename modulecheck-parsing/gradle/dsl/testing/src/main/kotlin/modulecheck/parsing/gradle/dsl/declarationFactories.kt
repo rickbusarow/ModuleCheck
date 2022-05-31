@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle.dsl
 
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 
 fun UnknownDependencyDeclaration(
@@ -57,8 +58,9 @@ fun ExternalDependencyDeclaration(
   statementWithSurroundingText: String,
   suppressed: List<String> = emptyList(),
   group: String?,
-  moduleName: String?,
-  version: String?
+  moduleName: String,
+  version: String?,
+  coordinates: MavenCoordinates = MavenCoordinates(group, moduleName, version)
 ): ExternalDependencyDeclaration = ExternalDependencyDeclaration(
   configName = configName,
   declarationText = declarationText,
@@ -67,5 +69,6 @@ fun ExternalDependencyDeclaration(
   configurationNameTransform = { it.value },
   group = group,
   moduleName = moduleName,
-  version = version
+  version = version,
+  coordinates = coordinates
 )

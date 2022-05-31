@@ -20,14 +20,13 @@ import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.HasPath
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 
 /** Represents a specific dependency upon an internal project dependency. */
 sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
   /** name == path */
-  override val identifier get() = path.value
+  override val identifier get() = path
 
   /**
    * The typical implementation of [ProjectDependency], for normal JVM or Android dependencies.
@@ -155,45 +154,3 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
     ): ProjectDependency
   }
 }
-
-data class TransitiveProjectDependency(
-  val source: ProjectDependency,
-  val contributed: ProjectDependency
-) {
-
-  fun withContributedConfiguration(
-    configurationName: ConfigurationName = source.configurationName
-  ): TransitiveProjectDependency {
-    val newContributed = contributed.copy(configurationName = configurationName)
-    return copy(contributed = newContributed)
-  }
-
-  override fun toString(): String {
-    return """TransitiveProjectDependency(
-      |       source=$source
-      |  contributed=$contributed
-      |)
-    """.trimMargin()
-  }
-}
-
-data class DownstreamDependency(
-  val dependentProjectPath: StringProjectPath,
-  val projectDependency: ProjectDependency
-)
-
-data class SourceSetDependency(
-  val sourceSetName: SourceSetName,
-  override val path: ProjectPath,
-  val isTestFixture: Boolean
-) : HasPath
-
-fun ProjectDependency.toSourceSetDependency(
-  sourceSetName: SourceSetName = configurationName.toSourceSetName(),
-  path: ProjectPath = this@toSourceSetDependency.path,
-  isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture
-) = SourceSetDependency(
-  sourceSetName = sourceSetName,
-  path = path,
-  isTestFixture = isTestFixture
-)

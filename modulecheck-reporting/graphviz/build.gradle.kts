@@ -27,7 +27,6 @@ dependencies {
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
 
   implementation(libs.rickBusarow.dispatch.core)
 

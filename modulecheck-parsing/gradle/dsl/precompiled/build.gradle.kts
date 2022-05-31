@@ -29,7 +29,6 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api-dependency"))
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
 

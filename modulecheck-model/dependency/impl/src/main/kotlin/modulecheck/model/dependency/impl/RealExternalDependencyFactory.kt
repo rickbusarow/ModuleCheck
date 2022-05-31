@@ -26,8 +26,8 @@ import javax.inject.Inject
 
 /**
  * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
- * a [CodeGeneratorBinding] in the event that the project dependency in question
- * is an annotation processor.
+ * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
+ * processor.
  *
  * @property generatorBindings the list of possible bindings to search
  */
@@ -39,7 +39,8 @@ class RealExternalDependencyFactory @Inject constructor(
     configurationName: ConfigurationName,
     group: String?,
     moduleName: String,
-    version: String?
+    version: String?,
+    isTestFixture: Boolean
   ): ExternalDependency {
     val name by unsafeLazy { "${group ?: ""}:$moduleName" }
 
@@ -49,6 +50,7 @@ class RealExternalDependencyFactory @Inject constructor(
         group = group,
         moduleName = moduleName,
         version = version,
+        isTestFixture = isTestFixture,
         codeGeneratorBindingOrNull = generatorBindings.filterIsInstance<CodeGeneratorBinding.AnnotationProcessor>()
           .firstOrNull { it.generatorMavenCoordinates == name }
       )
@@ -58,6 +60,7 @@ class RealExternalDependencyFactory @Inject constructor(
         group = group,
         moduleName = moduleName,
         version = version,
+        isTestFixture = isTestFixture
       )
     }
   }

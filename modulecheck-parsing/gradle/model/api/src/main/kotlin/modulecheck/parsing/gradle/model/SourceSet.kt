@@ -133,9 +133,11 @@ value class SourceSetName(val value: String) {
     value.endsWith(ANDROID_TEST.value, ignoreCase = true) -> {
       value.removePrefix(ANDROID_TEST.value).decapitalize().asSourceSetName()
     }
+
     value.endsWith(TEST.value, ignoreCase = true) -> {
       value.removePrefix(TEST.value).decapitalize().asSourceSetName()
     }
+
     this == TEST_FIXTURES -> MAIN
     else -> this
   }
@@ -146,7 +148,9 @@ value class SourceSetName(val value: String) {
       ConfigurationName.main()
     } else {
       ConfigurationName.mainConfigurations
+        .filterNot { it.asConfigurationName().isKapt() }
         .map { "${this.value}${it.capitalize()}".asConfigurationName() }
+        .plus(kaptVariant())
     }
   }
 

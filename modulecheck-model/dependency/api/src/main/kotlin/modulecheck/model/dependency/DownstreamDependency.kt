@@ -13,27 +13,11 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.model.dependency
 
-mcbuild {
-  artifactId = "modulecheck-parsing-gradle-model-api-dependency"
-  anvil = true
-}
+import modulecheck.parsing.gradle.model.ProjectPath
 
-dependencies {
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
-  implementation(project(path = ":modulecheck-parsing:source:api"))
-  implementation(project(path = ":modulecheck-config:api"))
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-}
+data class DownstreamDependency(
+  val dependentProjectPath: ProjectPath.StringProjectPath,
+  val projectDependency: ProjectDependency
+)

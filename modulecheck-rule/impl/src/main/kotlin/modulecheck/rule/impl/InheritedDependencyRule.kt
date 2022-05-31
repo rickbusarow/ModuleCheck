@@ -16,8 +16,8 @@
 package modulecheck.rule.impl
 
 import kotlinx.coroutines.flow.toList
-import modulecheck.api.context.asApiOrImplementation
 import modulecheck.api.context.classpathDependencies
+import modulecheck.api.context.maybeAsApi
 import modulecheck.api.context.uses
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
@@ -159,7 +159,7 @@ class InheritedDependencyRule @Inject constructor() :
         InheritedDependencyFinding(
           findingName = name,
           dependentProject = project,
-          newDependency = inherited.asApiOrImplementation(project),
+          newDependency = inherited.maybeAsApi(project),
           source = source
         )
       }

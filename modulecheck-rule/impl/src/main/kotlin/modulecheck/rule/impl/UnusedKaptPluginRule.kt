@@ -16,31 +16,20 @@
 package modulecheck.rule.impl
 
 import modulecheck.api.context.kaptDependencies
-import modulecheck.config.CodeGeneratorBinding
+import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.config.asMap
-import modulecheck.config.internal.defaultCodeGeneratorBindings
+import modulecheck.core.context.overshotDependencies
 import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedPluginFinding
 import modulecheck.parsing.gradle.model.PluginDefinition
 import modulecheck.project.McProject
-import modulecheck.utils.mapToSet
+import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazy.lazyDeferred
 import javax.inject.Inject
 
-class UnusedKaptPluginRule @Inject constructor(
-  private val settings: ModuleCheckSettings
-) : DocumentedRule<Finding>() {
-
-  private val generatorBindings: List<CodeGeneratorBinding>
-    get() = settings.additionalCodeGenerators
-      .plus(
-        @Suppress("DEPRECATION")
-        settings.additionalKaptMatchers
-          .mapToSet { it.toCodeGeneratorBinding() }
-      )
-      .plus(defaultCodeGeneratorBindings())
+class UnusedKaptPluginRule @Inject constructor() : DocumentedRule<Finding>() {
 
   override val name = FindingName("unused-kapt-plugin")
   override val description = "Warns if the kapt plugin is applied, but unused"
@@ -48,32 +37,37 @@ class UnusedKaptPluginRule @Inject constructor(
   override suspend fun check(project: McProject): List<Finding> {
     if (!project.hasKapt) return emptyList()
 
-    val matchers = generatorBindings.asMap()
-
     val kaptDependencies = project.kaptDependencies()
 
-    val processorIsUsed = project
-      .configurations
-      .keys
+    val overshotKapt = project.configurations.keys
       .filter { it.isKapt() }
-      .any { configName ->
+      .flatMapToSet { project.overshotDependencies().get(it) }
 
-        val processors = kaptDependencies.get(configName)
-          .filter { matchers.containsKey(it.identifier) }
+    val processorIsUsed = lazyDeferred {
+      project
+        .configurations
+        .keys
+        .filter { it.isKapt() }
+        .any { configName ->
 
-        if (processors.isEmpty()) return@any false
+          val processors = kaptDependencies.get(configName)
+            .filterIsInstance<MightHaveCodeGeneratorBinding>()
+            .filter { it.codeGeneratorBindingOrNull != null }
 
-        val unusedAndNotSuppressed = project.unusedKaptProcessors()
-          .get(configName, settings)
-          .filterNot { it.isSuppressed.await() }
+          if (processors.isEmpty()) return@any false
 
-        processors.size - unusedAndNotSuppressed.size != 0
-      }
+          val unusedAndNotSuppressed = project.unusedKaptProcessors()
+            .get(configName)
+            .filterNot { it.isSuppressed.await() }
 
-    return if (processorIsUsed) {
-      emptyList()
-    } else {
-      listOf(
+          processors.size - unusedAndNotSuppressed.size != 0
+        }
+    }
+
+    return when {
+      overshotKapt.isNotEmpty() -> emptyList()
+      processorIsUsed.await() -> emptyList()
+      else -> listOf(
         UnusedPluginFinding(
           dependentProject = project,
           dependentPath = project.path,

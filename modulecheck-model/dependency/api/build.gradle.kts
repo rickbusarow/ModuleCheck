@@ -30,6 +30,8 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
+  implementation(project(":modulecheck-utils:lazy"))
+
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)

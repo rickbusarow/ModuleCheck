@@ -16,6 +16,7 @@
 package modulecheck.project.test
 
 import modulecheck.parsing.gradle.model.Config
+import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.removePrefix
@@ -174,6 +175,8 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.populateDownstreams() {
 internal fun SourceSetName.configurationName(configName: String): String {
   return if (this == SourceSetName.MAIN) {
     configName
+  } else if (configName == ConfigurationName.kapt.value) {
+    "${configName}${value.capitalize()}"
   } else {
     "${value}${configName.capitalize()}"
   }

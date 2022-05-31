@@ -22,7 +22,6 @@ import modulecheck.api.context.uses
 import modulecheck.finding.UnusedDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
@@ -50,9 +49,7 @@ data class UnusedDependencies(
 
     return delegate.getOrPut(configurationName) {
       val external = project.externalDependencies[configurationName].orEmpty()
-      val internal = project
-        .projectDependencies
-        .all()
+      val internal = project.projectDependencies[configurationName].orEmpty()
 
       val dependencies = external + internal
 

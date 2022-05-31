@@ -20,6 +20,7 @@ package modulecheck.parsing.groovy.antlr
 import groovyjarjarantlr4.v4.runtime.tree.RuleNode
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.reporting.logging.McLogger
@@ -100,6 +101,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
               original.maybeRemove(ctx.configClosure()) to typeSafe
             }
           }
+
           "project" -> {
             val original = ctx.originalText()
 
@@ -111,6 +113,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
               original.maybeRemove(ctx.configClosure()) to name
             }
           }
+
           else -> {
             null
           }

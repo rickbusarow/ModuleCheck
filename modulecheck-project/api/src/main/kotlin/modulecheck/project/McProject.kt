@@ -19,6 +19,9 @@ import modulecheck.parsing.gradle.dsl.HasBuildFile
 import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.HasConfigurations
+import modulecheck.parsing.gradle.model.HasPath
+import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets

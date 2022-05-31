@@ -36,7 +36,7 @@ class UnusedKaptProcessorRule @Inject constructor(
 
   override suspend fun check(project: McProject): List<Finding> {
 
-    return project.unusedKaptProcessors().all(settings)
+    return project.unusedKaptProcessors().all()
   }
 
   override fun shouldApply(settings: ModuleCheckSettings): Boolean {
