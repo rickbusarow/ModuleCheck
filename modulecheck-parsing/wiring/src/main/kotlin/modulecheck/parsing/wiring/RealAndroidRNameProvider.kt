@@ -51,13 +51,13 @@ class RealAndroidRNameProvider constructor(
 
         val transitiveSourceSetName = transitiveDependency.source
           .declaringSourceSetName(
-            transitiveDependency.source.project(project.projectCache).isAndroid()
+            transitiveDependency.source.project(project).isAndroid()
           )
 
         dataSource {
           setOfNotNull(
             transitiveDependency.contributed
-              .project(project.projectCache)
+              .project(project)
               .androidRDeclaredNameForSourceSetName(transitiveSourceSetName)
           )
         }

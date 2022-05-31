@@ -59,7 +59,7 @@ class UnusedKaptPluginRule @Inject constructor(
       .any { configName ->
 
         val processors = kaptDependencies.get(configName)
-          .filter { matchers.containsKey(it.name) }
+          .filter { matchers.containsKey(it.identifier) }
 
         if (processors.isEmpty()) return@any false
 

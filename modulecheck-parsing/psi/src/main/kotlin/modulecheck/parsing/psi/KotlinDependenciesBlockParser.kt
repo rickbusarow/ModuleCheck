@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.buildFileInvocationText
@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 class KotlinDependenciesBlockParser @Inject constructor(
   private val logger: McLogger,
-  private val configuredProjectDependency: ConfiguredProjectDependency.Factory
+  private val projectDependency: ProjectDependency.Factory
 ) {
 
   @Suppress("ReturnCount")
@@ -76,7 +76,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
           lambdaContent = blockWhiteSpace + contentString,
           suppressAll = blockSuppressed,
           configurationNameTransform = { it.buildFileInvocationText(invokesConfigurationNames) },
-          configuredProjectDependency = configuredProjectDependency
+          projectDependency = projectDependency
         )
 
         contentBlock.children

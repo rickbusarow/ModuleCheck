@@ -15,7 +15,7 @@
 
 package modulecheck.finding
 
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -76,7 +76,7 @@ interface ConfigurationFinding {
 }
 
 interface ProjectDependencyFinding : ConfigurationFinding {
-  val dependency: ConfiguredProjectDependency
+  val dependency: ProjectDependency
 
   override val configurationName: ConfigurationName
 }

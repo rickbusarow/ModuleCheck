@@ -41,9 +41,9 @@ class RealAndroidDataBindingNameProvider constructor(
       .get(sourceSetName)
       .map { tpd ->
 
-        val sourceProject = tpd.source.project(project.projectCache)
+        val sourceProject = tpd.source.project(project)
 
-        tpd.contributed.project(project.projectCache)
+        tpd.contributed.project(project)
           .androidDataBindingDeclarationsForSourceSetName(
             tpd.source.declaringSourceSetName(sourceProject.isAndroid())
           )

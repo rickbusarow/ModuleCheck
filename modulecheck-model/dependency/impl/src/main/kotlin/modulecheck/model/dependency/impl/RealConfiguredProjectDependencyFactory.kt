@@ -20,9 +20,9 @@ import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.CodeGeneratorBinding.AnnotationProcessor
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
-import modulecheck.model.dependency.ConfiguredProjectDependency
-import modulecheck.model.dependency.ConfiguredProjectDependency.ConfiguredCodeGeneratorProjectDependency
-import modulecheck.model.dependency.ConfiguredProjectDependency.ConfiguredRuntimeProjectDependency
+import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
+import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -31,24 +31,24 @@ import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import javax.inject.Inject
 
 /**
- * Creates a [ConfiguredProjectDependency] for given arguments,
- * using [pathResolver] and [generatorBindings] to look up a [CodeGeneratorBinding] in the event
- * that the project dependency in question is an annotation processor.
+ * Creates a [ProjectDependency] for given arguments, using [pathResolver] and [generatorBindings]
+ * to look up a [CodeGeneratorBinding] in the event that the project dependency in question is an
+ * annotation processor.
  *
  * @property pathResolver used to look up the [StringProjectPath] of any internal project code
- * generators.  This is necessary in order to look up the [CodeGeneratorBinding].
+ *   generators. This is necessary in order to look up the [CodeGeneratorBinding].
  * @property generatorBindings the list of possible bindings to search
  */
 @ContributesBinding(AppScope::class)
 class RealConfiguredProjectDependencyFactory @Inject constructor(
   private val pathResolver: TypeSafeProjectPathResolver,
   private val generatorBindings: DaggerList<CodeGeneratorBinding>
-) : ConfiguredProjectDependency.Factory {
+) : ProjectDependency.Factory {
   override fun create(
     configurationName: ConfigurationName,
     path: ProjectPath,
     isTestFixture: Boolean
-  ): ConfiguredProjectDependency {
+  ): ProjectDependency {
 
     val stringPath = when (path) {
       is StringProjectPath -> path
@@ -56,7 +56,7 @@ class RealConfiguredProjectDependencyFactory @Inject constructor(
     }
 
     return when {
-      configurationName.isKapt() -> ConfiguredCodeGeneratorProjectDependency(
+      configurationName.isKapt() -> CodeGeneratorProjectDependency(
         configurationName = configurationName,
         path = path,
         isTestFixture = isTestFixture,
@@ -64,7 +64,7 @@ class RealConfiguredProjectDependencyFactory @Inject constructor(
           .firstOrNull { it.generatorMavenCoordinates == stringPath.value }
       )
 
-      else -> ConfiguredRuntimeProjectDependency(
+      else -> RuntimeProjectDependency(
         configurationName = configurationName,
         path = path,
         isTestFixture = isTestFixture

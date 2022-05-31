@@ -25,6 +25,9 @@ interface HasProjectCache {
 }
 
 fun HasPath.project(projectCache: ProjectCache): McProject = projectCache.getValue(path)
+fun HasPath.project(hasProjectCache: HasProjectCache): McProject = hasProjectCache.projectCache
+  .getValue(path)
+
 fun DownstreamDependency.project(
   projectCache: ProjectCache
 ): McProject = projectCache.getValue(dependentProjectPath)

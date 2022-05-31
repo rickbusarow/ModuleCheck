@@ -23,45 +23,39 @@ import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 
-/**
- * Represents a specific dependency upon an internal project dependency.
- */
-sealed class ConfiguredProjectDependency : ConfiguredDependency, HasPath {
-
-  /** Is the dependency being invoked via `testFixtures(project(...))`? */
-  abstract val isTestFixture: Boolean
+/** Represents a specific dependency upon an internal project dependency. */
+sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
   /** name == path */
-  override val name get() = path.value
+  override val identifier get() = path.value
 
   /**
-   * The typical implementation of [ConfiguredProjectDependency],
-   * for normal JVM or Android dependencies.
+   * The typical implementation of [ProjectDependency], for normal JVM or Android dependencies.
    *
    * @property configurationName the configuration used
    * @property path the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
    */
-  class ConfiguredRuntimeProjectDependency(
+  class RuntimeProjectDependency(
     override val configurationName: ConfigurationName,
     override val path: ProjectPath,
     override val isTestFixture: Boolean
-  ) : ConfiguredProjectDependency()
+  ) : ProjectDependency()
 
   /**
-   * The implementation of [ConfiguredProjectDependency] used for code-generator dependencies.
+   * The implementation of [ProjectDependency] used for code-generator dependencies.
    *
    * @property configurationName the configuration used
    * @property path the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
    * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGeneratorBinding]
    */
-  class ConfiguredCodeGeneratorProjectDependency(
+  class CodeGeneratorProjectDependency(
     override val configurationName: ConfigurationName,
     override val path: ProjectPath,
     override val isTestFixture: Boolean,
     override val codeGeneratorBindingOrNull: CodeGeneratorBinding?
-  ) : ConfiguredProjectDependency(), MightHaveCodeGeneratorBinding
+  ) : ProjectDependency(), MightHaveCodeGeneratorBinding
 
   /** @suppress */
   operator fun component1(): ConfigurationName = configurationName
@@ -97,15 +91,15 @@ sealed class ConfiguredProjectDependency : ConfiguredDependency, HasPath {
     configurationName: ConfigurationName = this.configurationName,
     path: ProjectPath = this.path,
     isTestFixture: Boolean = this.isTestFixture
-  ): ConfiguredProjectDependency {
+  ): ProjectDependency {
     return when (this) {
-      is ConfiguredRuntimeProjectDependency -> ConfiguredRuntimeProjectDependency(
+      is RuntimeProjectDependency -> RuntimeProjectDependency(
         configurationName = configurationName,
         path = path,
         isTestFixture = isTestFixture
       )
 
-      is ConfiguredCodeGeneratorProjectDependency -> ConfiguredCodeGeneratorProjectDependency(
+      is CodeGeneratorProjectDependency -> CodeGeneratorProjectDependency(
         configurationName = configurationName,
         path = path,
         isTestFixture = isTestFixture,
@@ -129,7 +123,7 @@ sealed class ConfiguredProjectDependency : ConfiguredDependency, HasPath {
     if (this === other) return true
     if (javaClass != other?.javaClass) return false
 
-    other as ConfiguredProjectDependency
+    other as ProjectDependency
 
     if (configurationName != other.configurationName) return false
     if (path != other.path) return false
@@ -147,25 +141,24 @@ sealed class ConfiguredProjectDependency : ConfiguredDependency, HasPath {
   }
 
   /**
-   * Creates a [ConfiguredProjectDependency] for given arguments,
-   * using [TypeSafeProjectPathResolver] and a `List<CodeGeneratorBinding>` to look up
-   * a [CodeGeneratorBinding] in the event that the project dependency in question
-   * is an annotation processor.
+   * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and a
+   * `List<CodeGeneratorBinding>` to look up a [CodeGeneratorBinding] in the event that the project
+   * dependency in question is an annotation processor.
    */
   fun interface Factory {
 
-    /** @return the [ConfiguredProjectDependency] for this dependency declaration */
+    /** @return the [ProjectDependency] for this dependency declaration */
     fun create(
       configurationName: ConfigurationName,
       path: ProjectPath,
       isTestFixture: Boolean
-    ): ConfiguredProjectDependency
+    ): ProjectDependency
   }
 }
 
 data class TransitiveProjectDependency(
-  val source: ConfiguredProjectDependency,
-  val contributed: ConfiguredProjectDependency
+  val source: ProjectDependency,
+  val contributed: ProjectDependency
 ) {
 
   fun withContributedConfiguration(
@@ -186,7 +179,7 @@ data class TransitiveProjectDependency(
 
 data class DownstreamDependency(
   val dependentProjectPath: StringProjectPath,
-  val configuredProjectDependency: ConfiguredProjectDependency
+  val projectDependency: ProjectDependency
 )
 
 data class SourceSetDependency(
@@ -195,7 +188,7 @@ data class SourceSetDependency(
   val isTestFixture: Boolean
 ) : HasPath
 
-fun ConfiguredProjectDependency.toSourceSetDependency(
+fun ProjectDependency.toSourceSetDependency(
   sourceSetName: SourceSetName = configurationName.toSourceSetName(),
   path: ProjectPath = this@toSourceSetDependency.path,
   isTestFixture: Boolean = this@toSourceSetDependency.isTestFixture

@@ -15,38 +15,38 @@
 
 package modulecheck.project
 
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 
 class ProjectDependencies(
-  map: MutableMap<ConfigurationName, List<ConfiguredProjectDependency>>
-) : MutableMap<ConfigurationName, List<ConfiguredProjectDependency>> by map {
-  fun main(): List<ConfiguredProjectDependency> = ConfigurationName.main()
+  map: MutableMap<ConfigurationName, List<ProjectDependency>>
+) : MutableMap<ConfigurationName, List<ProjectDependency>> by map {
+  fun main(): List<ProjectDependency> = ConfigurationName.main()
     .flatMap { configurationName ->
       get(configurationName).orEmpty()
     }
 
-  fun public(): List<ConfiguredProjectDependency> = ConfigurationName.public()
+  fun public(): List<ProjectDependency> = ConfigurationName.public()
     .flatMap { configurationName ->
       get(configurationName).orEmpty()
     }
 
-  fun private(): List<ConfiguredProjectDependency> = ConfigurationName.private()
+  fun private(): List<ProjectDependency> = ConfigurationName.private()
     .flatMap { configurationName ->
       get(configurationName).orEmpty()
     }
 
-  operator fun get(sourceSetName: SourceSetName): List<ConfiguredProjectDependency> {
+  operator fun get(sourceSetName: SourceSetName): List<ProjectDependency> {
     return sourceSetName.javaConfigurationNames().flatMap { get(it).orEmpty() }
   }
 
-  fun add(cpd: ConfiguredProjectDependency) {
+  fun add(cpd: ProjectDependency) {
     val oldDependencies = get(cpd.configurationName) ?: emptyList()
     put(cpd.configurationName, oldDependencies + cpd)
   }
 
-  fun remove(cpd: ConfiguredProjectDependency) {
+  fun remove(cpd: ProjectDependency) {
     val oldDependencies = get(cpd.configurationName) ?: emptyList()
     put(cpd.configurationName, oldDependencies.filter { it != cpd })
   }

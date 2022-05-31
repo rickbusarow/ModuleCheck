@@ -18,7 +18,7 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
@@ -27,8 +27,8 @@ import modulecheck.utils.lazy.lazyDeferred
 data class InheritedDependencyFinding(
   override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val newDependency: ConfiguredProjectDependency,
-  val source: ConfiguredProjectDependency
+  override val newDependency: ProjectDependency,
+  val source: ProjectDependency
 ) : AbstractProjectDependencyFinding(),
   AddsDependency,
   Comparable<InheritedDependencyFinding> {

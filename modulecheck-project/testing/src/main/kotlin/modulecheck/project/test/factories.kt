@@ -16,7 +16,7 @@
 package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.dsl.internal.RealBuildFileParser
 import modulecheck.parsing.gradle.model.Configurations
@@ -168,7 +168,7 @@ internal fun Configurations.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, c
 }
 
 fun buildFileParserFactory(
-  configuredProjectDependency: ConfiguredProjectDependency.Factory,
+  projectDependency: ProjectDependency.Factory,
   logger: McLogger = PrintLogger()
 ): BuildFileParser.Factory {
   return BuildFileParser.Factory { invokesConfigurationNames ->
@@ -176,8 +176,8 @@ fun buildFileParserFactory(
     RealBuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependenciesBlockParser(logger, configuredProjectDependency),
-          kotlinParser = KotlinDependenciesBlockParser(logger, configuredProjectDependency),
+          groovyParser = GroovyDependenciesBlockParser(logger, projectDependency),
+          kotlinParser = KotlinDependenciesBlockParser(logger, projectDependency),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },

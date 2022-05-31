@@ -17,7 +17,7 @@ package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
@@ -37,7 +37,7 @@ abstract class ProjectTest : BaseTest(), ProjectCollector {
   override val codeGeneratorBindings: List<CodeGeneratorBinding>
     get() = defaultCodeGeneratorBindings()
 
-  val configuredProjectDependencyFactory: ConfiguredProjectDependency.Factory
+  val projectDependencyFactory: ProjectDependency.Factory
     get() = RealConfiguredProjectDependencyFactory(
       pathResolver = TypeSafeProjectPathResolver(projectProvider),
       generatorBindings = codeGeneratorBindings
@@ -51,7 +51,7 @@ abstract class ProjectTest : BaseTest(), ProjectCollector {
     val old = projectDependencies[configurationName].orEmpty()
 
     val cpd =
-      configuredProjectDependencyFactory.create(configurationName, project.path, asTestFixture)
+      projectDependencyFactory.create(configurationName, project.path, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
   }

@@ -38,11 +38,11 @@ data class DownstreamProjects(
           otherProject
             .classpathDependencies()
             .all()
-            .filter { it.contributed.project(project.projectCache) == project }
+            .filter { it.contributed.project(project) == project }
             .map { transitive ->
               DownstreamDependency(
                 dependentProjectPath = otherProject.path,
-                configuredProjectDependency = transitive.withContributedConfiguration().contributed
+                projectDependency = transitive.withContributedConfiguration().contributed
               )
             }
         }

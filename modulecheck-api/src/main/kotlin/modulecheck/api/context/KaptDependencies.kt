@@ -48,7 +48,7 @@ data class KaptDependencies(
       val allDependencies = external + internal
 
       allDependencies
-        .filterNot { it.name == KAPT_PLUGIN_COORDS }
+        .filterNot { it.identifier == KAPT_PLUGIN_COORDS }
         .filter { it.configurationName == configurationName }
         .toSet()
     }

@@ -21,7 +21,19 @@ import modulecheck.parsing.gradle.model.PluginAccessor
 sealed interface ConfiguredDependency : Dependency {
 
   val configurationName: ConfigurationName
-  val name: String
+
+  /**
+   * The path/id/coordinates of the dependency.
+   *
+   * For a [ProjectDependency], this is a Gradle path like `:common:ui:widgets`.
+   *
+   * For an [ExternalDependency], this is the Maven coordinates with or without a version, like
+   * `com.example.foo:ui-widgets:1.0.0`.
+   */
+  val identifier: String
+
+  /** Is the dependency being invoked via `testFixtures(project(...))`? */
+  val isTestFixture: Boolean
 }
 
 sealed interface Dependency

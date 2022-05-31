@@ -21,7 +21,7 @@ import modulecheck.finding.internal.removeDependencyWithComment
 import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 
 interface RemovesDependency : Fixable {
 
@@ -29,7 +29,7 @@ interface RemovesDependency : Fixable {
 
   suspend fun removeDependency(removalStrategy: RemovalStrategy): Boolean {
 
-    val oldDeclaration = (oldDependency as? ConfiguredProjectDependency)
+    val oldDeclaration = (oldDependency as? ProjectDependency)
       ?.statementOrNullIn(dependentProject)
       ?: statementOrNull.await()
       ?: return false

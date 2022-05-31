@@ -44,7 +44,7 @@ data class Depths(
 
   private suspend fun fetchForSourceSet(sourceSetName: SourceSetName): ProjectDepth {
     val (childDepth, children) = project.projectDependencies[sourceSetName]
-      .map { it.project(project.projectCache) }
+      .map { it.project(project) }
       .distinct()
       .map { it.depthForSourceSetName(SourceSetName.MAIN) }
       .groupBy { it.depth }

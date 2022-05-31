@@ -15,13 +15,14 @@
 
 package modulecheck.finding
 
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 
 data class UnusedDependency(
   val dependentProject: McProject,
-  val dependency: ConfiguredProjectDependency,
+  val dependency: ConfiguredDependency,
   val dependencyIdentifier: String,
   val configurationName: ConfigurationName
 ) {
@@ -38,7 +39,7 @@ data class UnusedDependency(
 data class UnusedDependencyFinding(
   override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val oldDependency: ConfiguredProjectDependency,
+  override val oldDependency: ProjectDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : AbstractProjectDependencyFinding(),
@@ -51,11 +52,12 @@ data class UnusedDependencyFinding(
     get() = when {
       dependency.isTestFixture -> {
         "The declared dependency " +
-          "`${configurationName.value}(testFixtures(\"${dependency.path}\"))` " +
+          "`${configurationName.value}(testFixtures(\"${dependency.identifier}\"))` " +
           "is not used in this module."
       }
+
       else -> {
-        "The declared dependency `${configurationName.value}(\"${dependency.path}\")` " +
+        "The declared dependency `${configurationName.value}(\"${dependency.identifier}\")` " +
           "is not used in this module."
       }
     }

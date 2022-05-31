@@ -17,7 +17,7 @@ package modulecheck.parsing.gradle.dsl.internal
 
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
@@ -40,15 +40,15 @@ abstract class AbstractDependenciesBlock(
   private val logger: McLogger,
   suppressedForEntireBlock: List<String>,
   private val configurationNameTransform: ConfigurationNameTransform,
-  private val configuredProjectDependency: ConfiguredProjectDependency.Factory
+  private val projectDependency: ProjectDependency.Factory
 ) : DependenciesBlock {
 
   private val resetManager = ResetManager()
 
   val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
 
-  override val allSuppressions: Map<ConfiguredProjectDependency, Set<FindingName>> by resetManager.lazyResets {
-    buildMap<ConfiguredProjectDependency, MutableSet<FindingName>> {
+  override val allSuppressions: Map<ProjectDependency, Set<FindingName>> by resetManager.lazyResets {
+    buildMap<ProjectDependency, MutableSet<FindingName>> {
 
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
@@ -77,7 +77,7 @@ abstract class AbstractDependenciesBlock(
     mutableMapOf<MavenCoordinates, MutableList<ExternalDependencyDeclaration>>()
 
   private val allModuleDeclarations =
-    mutableMapOf<ConfiguredProjectDependency, MutableList<ModuleDependencyDeclaration>>()
+    mutableMapOf<ProjectDependency, MutableList<ModuleDependencyDeclaration>>()
 
   fun addNonModuleStatement(
     configName: ConfigurationName,
@@ -135,7 +135,7 @@ abstract class AbstractDependenciesBlock(
 
     val isTestFixtures = parsedString.contains(testFixturesRegex)
 
-    val cpd = configuredProjectDependency.create(
+    val cpd = projectDependency.create(
       configurationName = configName,
       path = projectPath,
       isTestFixture = isTestFixtures
@@ -187,7 +187,7 @@ abstract class AbstractDependenciesBlock(
   ): List<ModuleDependencyDeclaration> {
 
     return allModuleDeclarations[
-      configuredProjectDependency.create(
+      projectDependency.create(
         configurationName = configName,
         path = moduleRef,
         isTestFixture = testFixtures

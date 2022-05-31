@@ -73,7 +73,7 @@ data class ResolvedDeclaredNames internal constructor(
         .get(sourceSetName)
         .asSequence()
         .map { it.contributed }
-        .distinctBy { it.project(project.projectCache) to it.isTestFixture }
+        .distinctBy { it.project(project) to it.isTestFixture }
         .firstNotNullOfOrNull { sourceCpd ->
 
           listOfNotNull(
@@ -81,7 +81,7 @@ data class ResolvedDeclaredNames internal constructor(
             SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
           )
             .firstNotNullOfOrNull { dependencySourceSetName ->
-              sourceCpd.project(project.projectCache)
+              sourceCpd.project(project)
                 .resolvedDeclaredNames()
                 .getSource(declaredName, dependencySourceSetName)
             }

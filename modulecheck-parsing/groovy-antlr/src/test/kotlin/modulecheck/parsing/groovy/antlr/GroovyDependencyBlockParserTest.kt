@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import modulecheck.model.dependency.ConfiguredProjectDependency.ConfiguredRuntimeProjectDependency
+import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
@@ -661,7 +661,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
         GroovyDependenciesBlockParser(
           PrintLogger()
         ) { configurationName, projectPath, isTestFixture ->
-          ConfiguredRuntimeProjectDependency(configurationName, projectPath, isTestFixture)
+          RuntimeProjectDependency(configurationName, projectPath, isTestFixture)
         }.parse(file)
       }
       .single()

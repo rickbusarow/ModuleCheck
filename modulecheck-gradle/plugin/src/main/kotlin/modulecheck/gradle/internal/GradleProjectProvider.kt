@@ -25,7 +25,7 @@ import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
-import modulecheck.model.dependency.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
@@ -67,7 +67,7 @@ class GradleProjectProvider @Inject constructor(
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
   private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
-  private val configuredProjectDependency: ConfiguredProjectDependency.Factory,
+  private val projectDependency: modulecheck.model.dependency.ConfiguredProjectDependency.ProjectDependency.Factory,
   private val externalDependency: ExternalDependency.Factory
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
@@ -179,7 +179,7 @@ class GradleProjectProvider @Inject constructor(
               .filterIsInstance<ProjectDerivedCapability>()
               .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
 
-            configuredProjectDependency.create(
+            projectDependency.create(
               configurationName = config.name.asConfigurationName(),
               path = StringProjectPath(it.dependencyProject.path),
               isTestFixture = isTestFixture

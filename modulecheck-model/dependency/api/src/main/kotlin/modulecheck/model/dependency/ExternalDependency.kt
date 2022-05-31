@@ -27,14 +27,15 @@ sealed class ExternalDependency : ConfiguredDependency {
   abstract val version: String?
 
   val coords by unsafeLazy { MavenCoordinates(group, moduleName, version) }
-  override val name by unsafeLazy { "${group ?: ""}:$moduleName" }
+  override val identifier by unsafeLazy { "${group ?: ""}:$moduleName" }
   val nameWithVersion by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
 
   class ExternalRuntimeDependency(
     override val configurationName: ConfigurationName,
     override val group: String?,
     override val moduleName: String,
-    override val version: String?
+    override val version: String?,
+    override val isTestFixture: Boolean
   ) : ExternalDependency()
 
   class ExternalCodeGeneratorDependency(
@@ -42,6 +43,7 @@ sealed class ExternalDependency : ConfiguredDependency {
     override val group: String?,
     override val moduleName: String,
     override val version: String?,
+    override val isTestFixture: Boolean,
     override val codeGeneratorBindingOrNull: CodeGeneratorBinding?
   ) : ExternalDependency(), MightHaveCodeGeneratorBinding
 
@@ -73,7 +75,8 @@ sealed class ExternalDependency : ConfiguredDependency {
     configurationName: ConfigurationName = this.configurationName,
     group: String? = this.group,
     moduleName: String = this.moduleName,
-    version: String? = this.version
+    version: String? = this.version,
+    isTestFixture: Boolean = this.isTestFixture
   ): ExternalDependency {
     return when (this) {
       is ExternalRuntimeDependency -> ExternalRuntimeDependency(
@@ -81,6 +84,7 @@ sealed class ExternalDependency : ConfiguredDependency {
         group = group,
         moduleName = moduleName,
         version = version,
+        isTestFixture = isTestFixture
       )
 
       is ExternalCodeGeneratorDependency -> ExternalCodeGeneratorDependency(
@@ -88,6 +92,7 @@ sealed class ExternalDependency : ConfiguredDependency {
         group = group,
         moduleName = moduleName,
         version = version,
+        isTestFixture = isTestFixture,
         codeGeneratorBindingOrNull = codeGeneratorBindingOrNull
       )
     }
@@ -95,12 +100,12 @@ sealed class ExternalDependency : ConfiguredDependency {
 
   /**
    * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
-   * a [CodeGeneratorBinding] in the event that the project dependency in question
-   * is an annotation processor.
+   * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
+   * processor.
    */
   fun interface Factory {
 
-    /** @return the [ConfiguredProjectDependency] for this dependency declaration */
+    /** @return the [ProjectDependency] for this dependency declaration */
     fun create(
       configurationName: ConfigurationName,
       group: String?,

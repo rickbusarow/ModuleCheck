@@ -23,7 +23,7 @@ import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedDependencyFinding
-import modulecheck.model.dependency.ConfiguredProjectDependency.ConfiguredRuntimeProjectDependency
+import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.suffixIfNot
@@ -75,7 +75,7 @@ class SarifReportTest : RunnerTest() {
     val finding = UnusedDependencyFinding(
       findingName = FindingName("unused-dependency"),
       dependentProject = p2,
-      oldDependency = ConfiguredRuntimeProjectDependency(ConfigurationName.api, p1.path, false),
+      oldDependency = RuntimeProjectDependency(ConfigurationName.api, p1.path, false),
       dependencyIdentifier = p1.path.value,
       configurationName = ConfigurationName.api
     ).toResult(true)
