@@ -18,9 +18,8 @@ package modulecheck.core.context
 import modulecheck.api.context.asApiOrImplementation
 import modulecheck.api.context.uses
 import modulecheck.finding.OverShotDependency
+import modulecheck.model.dependency.toSourceSetDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
@@ -73,9 +72,8 @@ data class OverShotDependencies(
 
               seed
                 .map { (configName, isTestFixture) ->
-                  ConfiguredProjectDependency(
+                  unused.dependency.copy(
                     configurationName = configName,
-                    path = unused.dependency.path,
                     isTestFixture = isTestFixture
                   )
                 }

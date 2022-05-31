@@ -17,11 +17,11 @@ package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan
@@ -31,7 +31,7 @@ import modulecheck.utils.sortedWith
 import modulecheck.utils.suffixIfNot
 
 fun McProject.addDependency(
-  cpd: ConfiguredProjectDependency,
+  cpd: ProjectDependency,
   newDeclaration: DependencyDeclaration,
   existingDeclaration: DependencyDeclaration? = null
 ) {
@@ -54,7 +54,7 @@ fun McProject.addDependency(
  * @return the closest matching declaration, or null if there are no declarations at all.
  */
 suspend fun McProject.closestDeclarationOrNull(
-  newDependency: ConfiguredProjectDependency,
+  newDependency: ProjectDependency,
   matchPathFirst: Boolean
 ): DependencyDeclaration? {
 
@@ -202,7 +202,7 @@ fun McProject.removeDependencyWithComment(
 
   buildFile.writeText(newText)
 
-  if (configuredDependency is ConfiguredProjectDependency) {
+  if (configuredDependency is ProjectDependency) {
 
     projectDependencies.remove(configuredDependency)
   }
@@ -222,7 +222,7 @@ fun McProject.removeDependencyWithDelete(
     text.replaceFirst(statement.statementWithSurroundingText.prefixIfNot("\n"), "")
   )
 
-  if (configuredDependency is ConfiguredProjectDependency) {
+  if (configuredDependency is ProjectDependency) {
     projectDependencies.remove(configuredDependency)
   }
 }

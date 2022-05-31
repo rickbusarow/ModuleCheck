@@ -18,8 +18,14 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.toSet
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.config.MightHaveCodeGeneratorBinding
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ExternalDependency.ExternalCodeGeneratorDependency
+import modulecheck.model.dependency.ExternalDependency.ExternalRuntimeDependency
+import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
+import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.Generated
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
@@ -28,7 +34,40 @@ import modulecheck.utils.lazy.containsAny
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazySet
 
-suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
+suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean {
+
+  return when (dependency) {
+    is RuntimeProjectDependency -> usesRuntimeDependency(dependency)
+    is ExternalRuntimeDependency -> {
+      // External runtime dependencies aren't parsed yet, so treat them all as used.
+      true
+    }
+
+    is ExternalCodeGeneratorDependency -> usesCodeGenDependency(dependency)
+    is CodeGeneratorProjectDependency -> usesCodeGenDependency(dependency)
+  }
+}
+
+private suspend fun <T> McProject.usesCodeGenDependency(
+  dependency: T
+): Boolean where T : ConfiguredDependency,
+                 T : MightHaveCodeGeneratorBinding {
+
+  val codeGeneratorBinding = dependency.codeGeneratorBindingOrNull
+  // If the dependency doesn't have a binding, default to treating it as used
+    ?: return true
+
+  val referencesSourceSetName = dependency.configurationName.toSourceSetName()
+
+  val refs = referencesForSourceSetName(referencesSourceSetName)
+
+  return codeGeneratorBinding.annotationNames
+    .any { annotationName ->
+      refs.contains(AgnosticDeclaredName(annotationName))
+    }
+}
+
+private suspend fun McProject.usesRuntimeDependency(dependency: RuntimeProjectDependency): Boolean {
 
   val dependencyDeclarations = dependency.declarations(projectCache)
 
@@ -63,9 +102,9 @@ suspend fun McProject.uses(dependency: ConfiguredProjectDependency): Boolean {
   val usedUpstream = generatedFromThisDependency.isNotEmpty() && dependents()
     .any { downstreamDependency ->
 
-      val downstreamProject = downstreamDependency.configuredProjectDependency.project()
+      val downstreamProject = downstreamDependency.projectDependency.project()
 
-      val downstreamSourceSet = downstreamDependency.configuredProjectDependency
+      val downstreamSourceSet = downstreamDependency.projectDependency
         .declaringSourceSetName(downstreamProject.isAndroid())
 
       projectCache.getValue(downstreamDependency.dependentProjectPath)

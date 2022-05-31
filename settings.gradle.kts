@@ -102,6 +102,8 @@ include(
   ":modulecheck-gradle:platforms:internal-jvm",
   ":modulecheck-gradle:plugin",
   ":modulecheck-internal-testing",
+  ":modulecheck-model:dependency:api",
+  ":modulecheck-model:dependency:impl",
   ":modulecheck-parsing:android",
   ":modulecheck-parsing:gradle:dsl:api",
   ":modulecheck-parsing:gradle:dsl:internal",

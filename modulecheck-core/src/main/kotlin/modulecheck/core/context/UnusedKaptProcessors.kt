@@ -75,7 +75,7 @@ data class UnusedKaptProcessors(
 
       processors
         .filterNot {
-          val matcher = matchers[it.name] ?: return@filterNot true
+          val matcher = matchers[it.identifier] ?: return@filterNot true
 
           matcher.matchedIn(references)
         }

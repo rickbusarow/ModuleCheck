@@ -46,6 +46,7 @@ dependencies {
   api(project(path = ":modulecheck-gradle:platforms:impl"))
   api(project(path = ":modulecheck-gradle:platforms:internal-android"))
   api(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
@@ -70,6 +71,7 @@ dependencies {
   implementation(libs.google.dagger.api)
   implementation(libs.semVer)
 
+  implementation(project(path = ":modulecheck-model:dependency:impl"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))

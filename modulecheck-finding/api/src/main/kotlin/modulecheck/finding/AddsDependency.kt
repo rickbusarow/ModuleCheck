@@ -17,13 +17,13 @@ package modulecheck.finding
 
 import modulecheck.finding.internal.addDependency
 import modulecheck.finding.internal.closestDeclarationOrNull
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.createProjectDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 
 interface AddsDependency : Fixable {
 
-  val newDependency: ConfiguredProjectDependency
+  val newDependency: ProjectDependency
 
   suspend fun addDependency(): Boolean {
     val token = dependentProject

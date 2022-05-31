@@ -18,8 +18,10 @@ package modulecheck.runtime.test
 import dispatch.core.DispatcherProvider
 import io.kotest.assertions.asClue
 import kotlinx.coroutines.runBlocking
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.config.fake.TestSettings
+import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.dagger.DaggerList
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingResultFactory
@@ -41,6 +43,7 @@ import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
+import modulecheck.utils.mapToSet
 
 abstract class RunnerTest : ProjectTest() {
 
@@ -55,6 +58,14 @@ abstract class RunnerTest : ProjectTest() {
   open val findingFactory: FindingFactory<out Finding> by resets {
     MultiRuleFindingFactory(settings, rules)
   }
+
+  override val codeGeneratorBindings: List<CodeGeneratorBinding>
+    get() = settings.additionalCodeGenerators
+      .plus(defaultCodeGeneratorBindings())
+      .plus(
+        @Suppress("DEPRECATION")
+        settings.additionalKaptMatchers.mapToSet { it.toCodeGeneratorBinding() }
+      )
 
   @Suppress("LongParameterList")
   fun run(

@@ -15,7 +15,8 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.model.DownstreamDependency
+import modulecheck.model.dependency.DownstreamDependency
+import modulecheck.parsing.gradle.model.HasPath
 
 interface HasProjectCache {
   val projectCache: ProjectCache
@@ -24,6 +25,9 @@ interface HasProjectCache {
 }
 
 fun HasPath.project(projectCache: ProjectCache): McProject = projectCache.getValue(path)
+fun HasPath.project(hasProjectCache: HasProjectCache): McProject = hasProjectCache.projectCache
+  .getValue(path)
+
 fun DownstreamDependency.project(
   projectCache: ProjectCache
 ): McProject = projectCache.getValue(dependentProjectPath)

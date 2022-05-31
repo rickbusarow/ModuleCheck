@@ -155,6 +155,7 @@ fun List<CodeGeneratorBinding>.asMap(): Map<String, CodeGeneratorBinding> =
  * [ConfiguredDependency][modulecheck.parsing.gradle.model.ConfiguredDependency]) is associated with
  * an established [CodeGeneratorBinding].
  */
-interface HasCodeGeneratorBinding {
-  val codeGeneratorBinding: CodeGeneratorBinding
+interface MightHaveCodeGeneratorBinding {
+  /** The [CodeGeneratorBinding] if it is defined, or null. */
+  val codeGeneratorBindingOrNull: CodeGeneratorBinding?
 }

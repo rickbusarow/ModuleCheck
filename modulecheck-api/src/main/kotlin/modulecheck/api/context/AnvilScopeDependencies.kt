@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -23,14 +23,14 @@ import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 
 data class AnvilScopeDependencies(
-  private val delegate: SafeCache<SourceSetName, List<ConfiguredProjectDependency>>,
+  private val delegate: SafeCache<SourceSetName, List<ProjectDependency>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeDependencies>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): List<ConfiguredProjectDependency> {
+  suspend fun get(sourceSetName: SourceSetName): List<ProjectDependency> {
     return delegate.getOrPut(sourceSetName) {
       val merged = project.anvilScopeMergesForSourceSetName(sourceSetName)
 
@@ -43,8 +43,7 @@ data class AnvilScopeDependencies(
         .distinct()
         .filter { cpd ->
 
-          val contributed = cpd
-            .project(project.projectCache)
+          val contributed = cpd.project(project)
             .anvilScopeContributionsForSourceSetName(cpd.configurationName.toSourceSetName())
 
           contributed.any { (scopeName, _) ->
@@ -67,4 +66,4 @@ suspend fun ProjectContext.anvilScopeDependencies(): AnvilScopeDependencies =
 
 suspend fun ProjectContext.anvilScopeDependenciesForSourceSetName(
   sourceSetName: SourceSetName
-): List<ConfiguredProjectDependency> = anvilScopeDependencies().get(sourceSetName)
+): List<ProjectDependency> = anvilScopeDependencies().get(sourceSetName)

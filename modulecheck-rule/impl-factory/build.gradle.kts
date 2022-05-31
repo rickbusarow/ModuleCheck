@@ -37,6 +37,7 @@ dependencies {
   api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   testImplementation(libs.bundles.hermit)

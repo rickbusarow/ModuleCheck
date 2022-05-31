@@ -22,12 +22,12 @@ import modulecheck.api.context.uses
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.InheritedDependencyFinding
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetDependency
+import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.SourceSetDependency
+import modulecheck.model.dependency.TransitiveProjectDependency
+import modulecheck.model.dependency.toSourceSetDependency
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.TransitiveProjectDependency
 import modulecheck.parsing.gradle.model.sortedByInheritance
-import modulecheck.parsing.gradle.model.toSourceSetDependency
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
@@ -52,7 +52,7 @@ class InheritedDependencyRule @Inject constructor() :
     //
     // For example, this function will return true for a `testImplementation` configured dependency
     // which is already declared in the main source set (such as with `api` or `implementation`).
-    fun alreadyInLocalClasspath(cpd: ConfiguredProjectDependency): Boolean {
+    fun alreadyInLocalClasspath(cpd: ProjectDependency): Boolean {
       fun dependencyPathsForSourceSet(
         sourceSetName: SourceSetName
       ): Set<SourceSetDependency> {
@@ -199,10 +199,10 @@ class InheritedDependencyRule @Inject constructor() :
   ): Sequence<TransitiveProjectDependency> {
 
     return sortedWith { o1, o2 ->
-      val o1IsAndroid = o1.contributed.project(project.projectCache).isAndroid()
+      val o1IsAndroid = o1.contributed.project(project).isAndroid()
       val o1SourceSet = o1.contributed.declaringSourceSetName(o1IsAndroid)
 
-      val o2IsAndroid = o2.contributed.project(project.projectCache).isAndroid()
+      val o2IsAndroid = o2.contributed.project(project).isAndroid()
       val o2SourceSet = o2.contributed.declaringSourceSetName(o2IsAndroid)
 
       o2SourceSet.inheritsFrom(o1SourceSet, project).compareTo(true)

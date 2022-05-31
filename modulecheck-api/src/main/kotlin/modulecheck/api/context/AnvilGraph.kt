@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
@@ -162,7 +162,7 @@ data class AnvilGraph(
         .orEmpty()
         .asFlow()
         .mapNotNull { cpd ->
-          cpd.project(project.projectCache)
+          cpd.project(project)
             .declarations()
             .get(SourceSetName.MAIN, includeUpstream = true)
             .filter { maybeExtraReferences.contains(it) }
@@ -183,7 +183,7 @@ data class AnvilGraph(
     return AnvilScopeName(rawScopeName)
   }
 
-  private fun McProject.dependenciesBySourceSetName(): Map<SourceSetName, List<ConfiguredProjectDependency>> {
+  private fun McProject.dependenciesBySourceSetName(): Map<SourceSetName, List<ProjectDependency>> {
     return configurations
       .map { (configurationName, _) ->
         configurationName.toSourceSetName() to projectDependencies[configurationName].orEmpty()

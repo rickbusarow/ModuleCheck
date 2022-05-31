@@ -25,10 +25,10 @@ import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
+import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
@@ -66,7 +66,9 @@ class GradleProjectProvider @Inject constructor(
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
-  private val allProjectPathsProviderDelegate: AllProjectPathsProvider
+  private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
+  private val projectDependency: modulecheck.model.dependency.ConfiguredProjectDependency.ProjectDependency.Factory,
+  private val externalDependency: ExternalDependency.Factory
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -150,7 +152,7 @@ class GradleProjectProvider @Inject constructor(
           .filterIsInstance<ExternalModuleDependency>()
           .map { dep ->
 
-            ExternalDependency(
+            externalDependency.create(
               configurationName = configuration.name.asConfigurationName(),
               group = dep.group,
               moduleName = dep.name,
@@ -177,7 +179,7 @@ class GradleProjectProvider @Inject constructor(
               .filterIsInstance<ProjectDerivedCapability>()
               .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
 
-            ConfiguredProjectDependency(
+            projectDependency.create(
               configurationName = config.name.asConfigurationName(),
               path = StringProjectPath(it.dependencyProject.path),
               isTestFixture = isTestFixture

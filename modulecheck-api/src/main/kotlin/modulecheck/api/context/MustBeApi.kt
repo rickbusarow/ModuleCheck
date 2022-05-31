@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.NamedSymbol
@@ -82,7 +82,7 @@ data class MustBeApi(
             .toSet()
 
           val directMainDependencies by lazy {
-            project.projectDependencies[sourceSetName].map { it.project(project.projectCache) }
+            project.projectDependencies[sourceSetName].map { it.project(project) }
           }
 
           mainDependencies
@@ -97,7 +97,7 @@ data class MustBeApi(
               cpd.copy(configurationName = cpd.configurationName.apiVariant()) in directApiProjects
             }
             .filterAsync {
-              !sourceSetName.isTestingOnly() && it.project(project.projectCache)
+              !sourceSetName.isTestingOnly() && it.project(project)
                 .mustBeApiIn(
                   dependentProject = project,
                   referencesFromDependencies = importsFromDependencies,
@@ -129,7 +129,7 @@ data class MustBeApi(
               InheritedDependencyWithSource(cpd, source)
             }
             .toList()
-            .distinctBy { it.configuredProjectDependency }
+            .distinctBy { it.projectDependency }
             .toSet()
         }
 
@@ -225,12 +225,12 @@ private suspend fun McProject.mustBeApiIn(
 }
 
 /**
- * @return Returns a [ConfiguredProjectDependency] with an `-api` variant configuration if the
- *   dependency should be `api`, or `-implementation` otherwise.
+ * @return Returns a [ProjectDependency] with an `-api` variant configuration if the dependency
+ *   should be `api`, or `-implementation` otherwise.
  */
-suspend fun ConfiguredProjectDependency.asApiOrImplementation(
+suspend fun ProjectDependency.asApiOrImplementation(
   dependentProject: McProject
-): ConfiguredProjectDependency {
+): ProjectDependency {
   val mustBeApi = project(dependentProject.projectCache)
     .mustBeApiIn(
       dependentProject = dependentProject,
@@ -248,8 +248,8 @@ suspend fun ConfiguredProjectDependency.asApiOrImplementation(
 }
 
 data class InheritedDependencyWithSource(
-  val configuredProjectDependency: ConfiguredProjectDependency,
-  val source: ConfiguredProjectDependency?
+  val projectDependency: ProjectDependency,
+  val source: ProjectDependency?
 )
 
 suspend fun ProjectContext.mustBeApi(): MustBeApi = get(MustBeApi)

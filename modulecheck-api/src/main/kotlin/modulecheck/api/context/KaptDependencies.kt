@@ -15,8 +15,8 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredDependency
 import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -48,7 +48,7 @@ data class KaptDependencies(
       val allDependencies = external + internal
 
       allDependencies
-        .filterNot { it.name == KAPT_PLUGIN_COORDS }
+        .filterNot { it.identifier == KAPT_PLUGIN_COORDS }
         .filter { it.configurationName == configurationName }
         .toSet()
     }

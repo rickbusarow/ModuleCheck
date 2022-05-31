@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.dsl.internal.AbstractDependenciesBlock
 import modulecheck.reporting.logging.McLogger
@@ -24,11 +25,13 @@ class KotlinDependenciesBlock internal constructor(
   override val fullText: String,
   override val lambdaContent: String,
   suppressAll: List<String>,
-  configurationNameTransform: ConfigurationNameTransform
+  configurationNameTransform: ConfigurationNameTransform,
+  projectDependency: ProjectDependency.Factory
 ) : AbstractDependenciesBlock(
   logger = logger,
   suppressedForEntireBlock = suppressAll,
-  configurationNameTransform = configurationNameTransform
+  configurationNameTransform = configurationNameTransform,
+  projectDependency = projectDependency
 ) {
 
   override fun originalLineMatchesParsed(

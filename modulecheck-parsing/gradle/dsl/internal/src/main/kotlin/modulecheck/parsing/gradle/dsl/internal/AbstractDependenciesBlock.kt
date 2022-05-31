@@ -17,6 +17,7 @@ package modulecheck.parsing.gradle.dsl.internal
 
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
@@ -26,7 +27,7 @@ import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
@@ -38,15 +39,16 @@ import modulecheck.utils.remove
 abstract class AbstractDependenciesBlock(
   private val logger: McLogger,
   suppressedForEntireBlock: List<String>,
-  private val configurationNameTransform: ConfigurationNameTransform
+  private val configurationNameTransform: ConfigurationNameTransform,
+  private val projectDependency: ProjectDependency.Factory
 ) : DependenciesBlock {
 
   private val resetManager = ResetManager()
 
   val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
 
-  override val allSuppressions: Map<ConfiguredProjectDependency, Set<FindingName>> by resetManager.lazyResets {
-    buildMap<ConfiguredProjectDependency, MutableSet<FindingName>> {
+  override val allSuppressions: Map<ProjectDependency, Set<FindingName>> by resetManager.lazyResets {
+    buildMap<ProjectDependency, MutableSet<FindingName>> {
 
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
@@ -75,7 +77,7 @@ abstract class AbstractDependenciesBlock(
     mutableMapOf<MavenCoordinates, MutableList<ExternalDependencyDeclaration>>()
 
   private val allModuleDeclarations =
-    mutableMapOf<ConfiguredProjectDependency, MutableList<ModuleDependencyDeclaration>>()
+    mutableMapOf<ProjectDependency, MutableList<ModuleDependencyDeclaration>>()
 
   fun addNonModuleStatement(
     configName: ConfigurationName,
@@ -133,7 +135,7 @@ abstract class AbstractDependenciesBlock(
 
     val isTestFixtures = parsedString.contains(testFixturesRegex)
 
-    val cpd = ConfiguredProjectDependency(
+    val cpd = projectDependency.create(
       configurationName = configName,
       path = projectPath,
       isTestFixture = isTestFixtures
@@ -185,7 +187,7 @@ abstract class AbstractDependenciesBlock(
   ): List<ModuleDependencyDeclaration> {
 
     return allModuleDeclarations[
-      ConfiguredProjectDependency(
+      projectDependency.create(
         configurationName = configName,
         path = moduleRef,
         isTestFixture = testFixtures

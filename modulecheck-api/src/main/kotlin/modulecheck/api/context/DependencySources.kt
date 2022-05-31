@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.context.DependencySources.SourceResult.Found
 import modulecheck.api.context.DependencySources.SourceResult.NOT_PRESENT
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
@@ -36,7 +36,7 @@ data class DependencySources(
   )
 
   sealed interface SourceResult {
-    data class Found(val sourceDependency: ConfiguredProjectDependency) : SourceResult
+    data class Found(val sourceDependency: ProjectDependency) : SourceResult
     object NOT_PRESENT : SourceResult
   }
 
@@ -47,7 +47,7 @@ data class DependencySources(
     dependencyProjectPath: ProjectPath,
     sourceSetName: SourceSetName,
     isTestFixture: Boolean
-  ): ConfiguredProjectDependency? {
+  ): ProjectDependency? {
 
     val key = SourceKey(
       sourceSetName = sourceSetName,
@@ -91,7 +91,7 @@ suspend fun McProject.requireSourceOf(
   dependencyProject: McProject,
   sourceSetName: SourceSetName,
   isTestFixture: Boolean
-): ConfiguredProjectDependency {
+): ProjectDependency {
   return dependencySources().sourceOfOrNull(
     dependencyProjectPath = dependencyProject.path,
     sourceSetName = sourceSetName,

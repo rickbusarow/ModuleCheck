@@ -15,8 +15,14 @@
 
 package modulecheck.parsing.gradle.dsl
 
+import modulecheck.parsing.gradle.model.PluginAccessor
+import modulecheck.utils.lazy.unsafeLazy
+
 data class PluginDeclaration(
-  override val declarationText: String,
   override val statementWithSurroundingText: String,
+  override val declarationText: String,
   override val suppressed: List<String>
-) : BuildFileStatement
+) : BuildFileStatement {
+  /** All possible variations on an accessor for this plugin's ID. */
+  val accessor: PluginAccessor by unsafeLazy { PluginAccessor(declarationText) }
+}
