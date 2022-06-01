@@ -19,6 +19,8 @@ com.squareup.anvil:annotations:2.4.0
 com.squareup.moshi:moshi:1.13.0
 com.squareup.okio:okio:2.10.0
 com.squareup:kotlinpoet:1.11.0
+guru.nidi:graphviz-java-min-deps:0.18.1
+guru.nidi:graphviz-java:0.18.1
 io.github.java-diff-utils:java-diff-utils:4.11
 io.kotest:kotest-assertions-api-jvm:5.3.0
 io.kotest:kotest-assertions-api:5.3.0
@@ -74,4 +76,7 @@ org.junit.platform:junit-platform-engine:1.8.2
 org.junit:junit-bom:5.8.2
 org.objenesis:objenesis:3.1
 org.opentest4j:opentest4j:1.2.0
+org.slf4j:jcl-over-slf4j:1.7.30
+org.slf4j:jul-to-slf4j:1.7.30
+org.slf4j:slf4j-api:1.7.30
 org.unbescape:unbescape:1.1.6.RELEASE

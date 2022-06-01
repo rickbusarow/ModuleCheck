@@ -76,6 +76,35 @@ fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
   IndentScope(indent, this).action()
 }
 
+/** A naive auto-indent which just counts brackets. */
+fun String.indent(tab: String = "  "): String {
+
+  var tabCount = 0
+
+  val open = setOf('{', '(', '[', '<')
+  val close = setOf('}', ')', ']', '>')
+
+  return lines()
+    .map { it.trim() }
+    .joinToString("\n") { line ->
+
+      if (line.firstOrNull() in close) {
+        tabCount--
+      }
+
+      "${tab.repeat(tabCount)}$line"
+        .also {
+
+          // Arrows aren't brackets
+          val noSpecials = line.remove("<=", "->")
+
+          tabCount += noSpecials.count { char -> char in open }
+          // Skip the first char because if it's a closing bracket, it was already counted above.
+          tabCount -= noSpecials.drop(1).count { char -> char in close }
+        }
+    }
+}
+
 fun String.remove(vararg strings: String): String = strings.fold(this) { acc, string ->
   acc.replace(string, "")
 }

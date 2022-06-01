@@ -28,6 +28,7 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
+  implementation(libs.graphviz.java.min)
   implementation(libs.rickBusarow.dispatch.core)
 
   implementation(project(path = ":modulecheck-project:api"))

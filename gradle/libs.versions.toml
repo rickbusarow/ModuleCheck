@@ -33,6 +33,7 @@ google-dagger = "2.42"
 google-material = "1.4.0"
 
 gradleDoctor = "0.8.1"
+graphviz = "0.18.1"
 groovy = "3.0.10"
 jUnit = "5.8.2"
 javaParser = "3.24.2"
@@ -111,6 +112,10 @@ google-dagger-api = { module = "com.google.dagger:dagger", version.ref = "google
 google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
 
 google-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "google-ksp" }
+
+graphviz-java = { module = "guru.nidi:graphviz-java", version.ref = "graphviz" }
+graphviz-java-min = { module = "guru.nidi:graphviz-java-min-deps", version.ref = "graphviz" }
+graphviz-kotlin = { module = "guru.nidi:graphviz-kotlin", version.ref = "graphviz" }
 
 groovy = { module = "org.codehaus.groovy:groovy", version.ref = "groovy" }
 groovyXml = { module = "org.codehaus.groovy:groovy-xml", version.ref = "groovy" }
