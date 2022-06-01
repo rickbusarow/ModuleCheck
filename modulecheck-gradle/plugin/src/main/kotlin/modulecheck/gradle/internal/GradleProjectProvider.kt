@@ -25,10 +25,9 @@ import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.internal.toJavaVersion
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
@@ -46,11 +45,12 @@ import modulecheck.project.impl.RealMcProject
 import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
 import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
+import org.gradle.api.artifacts.ProjectDependency as GradleProjectDependency
 
 @Suppress("LongParameterList")
 @ContributesBinding(AppScope::class, ProjectProvider::class)
@@ -66,7 +66,9 @@ class GradleProjectProvider @Inject constructor(
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
-  private val allProjectPathsProviderDelegate: AllProjectPathsProvider
+  private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
+  private val projectDependency: modulecheck.model.dependency.ProjectDependency.Factory,
+  private val externalDependency: ExternalDependency.Factory
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -150,11 +152,12 @@ class GradleProjectProvider @Inject constructor(
           .filterIsInstance<ExternalModuleDependency>()
           .map { dep ->
 
-            ExternalDependency(
+            externalDependency.create(
               configurationName = configuration.name.asConfigurationName(),
               group = dep.group,
               moduleName = dep.name,
-              version = dep.version
+              version = dep.version,
+              isTestFixture = dep.isTestFixtures()
             )
           }
 
@@ -165,22 +168,22 @@ class GradleProjectProvider @Inject constructor(
     ExternalDependencies(map)
   }
 
+  private fun ModuleDependency.isTestFixtures() = requestedCapabilities
+    .filterIsInstance<ProjectDerivedCapability>()
+    .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
+
   private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> = lazy {
     val map = configurations
       .filterNot { it.name == "ktlintRuleset" }
       .associate { config ->
         config.name.asConfigurationName() to config.dependencies
-          .withType(ProjectDependency::class.java)
+          .withType(GradleProjectDependency::class.java)
           .map {
 
-            val isTestFixture = it.requestedCapabilities
-              .filterIsInstance<ProjectDerivedCapability>()
-              .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
-
-            ConfiguredProjectDependency(
+            projectDependency.create(
               configurationName = config.name.asConfigurationName(),
               path = StringProjectPath(it.dependencyProject.path),
-              isTestFixture = isTestFixture
+              isTestFixture = it.isTestFixtures()
             )
           }
       }

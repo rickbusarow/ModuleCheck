@@ -18,17 +18,15 @@ package modulecheck.core.context
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
-import modulecheck.api.context.anvilScopeDependenciesForSourceSetName
 import modulecheck.api.context.uses
 import modulecheck.finding.UnusedDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
-import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.coroutines.filterAsync
 import modulecheck.utils.coroutines.mapAsync
-import modulecheck.utils.lazy.lazyDeferred
 
 data class UnusedDependencies(
   private val delegate: SafeCache<ConfigurationName, Set<UnusedDependency>>,
@@ -50,28 +48,25 @@ data class UnusedDependencies(
   suspend fun get(configurationName: ConfigurationName): Set<UnusedDependency> {
 
     return delegate.getOrPut(configurationName) {
-      val dependencies = project.projectDependencies[configurationName]
-        ?: return@getOrPut emptySet()
+      val external = project.externalDependencies[configurationName].orEmpty()
+      val internal = project.projectDependencies[configurationName].orEmpty()
 
-      val neededForScopes = lazyDeferred {
-        project.anvilScopeDependenciesForSourceSetName(configurationName.toSourceSetName())
-          .map { it.project(project.projectCache) }
-          .toSet()
-      }
+      val dependencies = external + internal
 
       dependencies
+        .asSequence()
         // test configurations have the main source project as a dependency.
-        // without this, every project will report itself as unused.
-        .filterNot { cpd -> cpd.path == project.path }
-        .filterAsync { cpd ->
-          !project.uses(cpd) && !neededForScopes.await().contains(cpd.project(project.projectCache))
+        // without this filter, every project will report itself as unused.
+        .filterNot { cd -> (cd as? ProjectDependency)?.path == project.path }
+        .filterAsync { dependency ->
+          !project.uses(dependency)
         }
-        .map { cpd ->
+        .map { dependency ->
           UnusedDependency(
             dependentProject = project,
-            dependency = cpd,
-            dependencyIdentifier = cpd.path.value,
-            configurationName = cpd.configurationName
+            dependency = dependency,
+            dependencyIdentifier = dependency.identifier,
+            configurationName = dependency.configurationName
           )
         }
         .toSet()

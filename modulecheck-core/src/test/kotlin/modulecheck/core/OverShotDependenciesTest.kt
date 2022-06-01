@@ -1254,8 +1254,9 @@ class OverShotDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           testImplementation(project(":lib1"))
+
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 
@@ -1265,7 +1266,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = "7, 3"
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,
@@ -1327,8 +1328,9 @@ class OverShotDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           testImplementation(project(":lib1"))
+
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 
@@ -1338,7 +1340,7 @@ class OverShotDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = "7, 3"
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = false,

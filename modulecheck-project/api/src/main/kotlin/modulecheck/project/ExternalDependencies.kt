@@ -15,8 +15,8 @@
 
 package modulecheck.project
 
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 
 class ExternalDependencies(
@@ -39,5 +39,15 @@ class ExternalDependencies(
 
   operator fun get(sourceSetName: SourceSetName): List<ExternalDependency> {
     return sourceSetName.javaConfigurationNames().flatMap { get(it).orEmpty() }
+  }
+
+  fun add(dependency: ExternalDependency) {
+    val oldDependencies = get(dependency.configurationName) ?: emptyList()
+    put(dependency.configurationName, oldDependencies + dependency)
+  }
+
+  fun remove(dependency: ExternalDependency) {
+    val oldDependencies = get(dependency.configurationName) ?: emptyList()
+    put(dependency.configurationName, oldDependencies.filter { it != dependency })
   }
 }

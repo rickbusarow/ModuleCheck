@@ -68,16 +68,16 @@ class DisableViewBindingRule @Inject constructor() : DocumentedRule<DisableViewB
           .await()
           .any { downstream ->
 
-            val downstreamProject = downstream.configuredProjectDependency
-              .project(project.projectCache)
+            val downstreamProject = downstream.projectDependency
+              .project(project)
 
             // Get the source set which is exposed to the dependent project through its
             // configuration.  This will typically be `main`, but it could be another build variant
             // if the entire dependency chain is using another source set's configuration.
-            val exposedSourceSetName = downstream.configuredProjectDependency
+            val exposedSourceSetName = downstream.projectDependency
               .declaringSourceSetName(downstreamProject.isAndroid())
 
-            val references = downstream.project(project.projectCache)
+            val references = downstream.project(project)
               .referencesForSourceSetName(exposedSourceSetName)
 
             generatedBindings.any { generated ->

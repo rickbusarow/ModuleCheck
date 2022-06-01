@@ -31,13 +31,13 @@ class MustBeApiRule @Inject constructor() : DocumentedRule<MustBeApiFinding>() {
   override suspend fun check(project: McProject): List<MustBeApiFinding> {
     return project.get(MustBeApi)
       .map {
-        val oldConfig = it.configuredProjectDependency.configurationName
+        val oldConfig = it.projectDependency.configurationName
         MustBeApiFinding(
           findingName = name,
           dependentProject = project,
-          newDependency = it.configuredProjectDependency
+          newDependency = it.projectDependency
             .copy(configurationName = oldConfig.apiVariant()),
-          oldDependency = it.configuredProjectDependency,
+          oldDependency = it.projectDependency,
           configurationName = oldConfig,
           source = it.source
         )

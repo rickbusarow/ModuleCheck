@@ -15,9 +15,9 @@
 
 package modulecheck.finding
 
+import modulecheck.model.dependency.Dependency
+import modulecheck.model.dependency.PluginDependency.Companion.toPluginDependency
 import modulecheck.parsing.gradle.dsl.HasBuildFile
-import modulecheck.parsing.gradle.model.Dependency
-import modulecheck.parsing.gradle.model.PluginDependency
 import modulecheck.project.HasProjectCache
 
 class Suppressions(
@@ -66,7 +66,7 @@ suspend fun <T> T.getSuppressions(): Suppressions
     ?.let { pluginsBlock ->
 
       pluginsBlock.allSuppressions.forEach { (pluginDeclaration, newNames) ->
-        val dependency = PluginDependency(pluginDeclaration.declarationText)
+        val dependency = pluginDeclaration.accessor.toPluginDependency()
 
         val cachedNames = fromDependencies.getOrPut(dependency) { mutableSetOf() }
 

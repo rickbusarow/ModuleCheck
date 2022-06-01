@@ -15,15 +15,15 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 
 data class PublicDependencies(
-  private val delegate: Set<ConfiguredProjectDependency>
-) : Set<ConfiguredProjectDependency> by delegate,
+  private val delegate: Set<ProjectDependency>
+) : Set<ProjectDependency> by delegate,
   ProjectContext.Element {
 
   override val key: ProjectContext.Key<PublicDependencies>
@@ -38,7 +38,7 @@ data class PublicDependencies(
 
     private fun McProject.allPublicClassPathDependencyDeclarations(
       includePrivate: Boolean = true
-    ): Set<ConfiguredProjectDependency> {
+    ): Set<ProjectDependency> {
       val privateDependencies = if (includePrivate) {
         projectDependencies.all()
       } else {

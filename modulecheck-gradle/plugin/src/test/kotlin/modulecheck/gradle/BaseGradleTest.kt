@@ -15,6 +15,8 @@
 
 package modulecheck.gradle
 
+import modulecheck.config.CodeGeneratorBinding
+import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.gradle.TestVersions.Companion.DEFAULT_AGP_VERSION
 import modulecheck.gradle.TestVersions.Companion.DEFAULT_ANVIL_VERSION
 import modulecheck.gradle.TestVersions.Companion.DEFAULT_GRADLE_VERSION
@@ -111,6 +113,8 @@ abstract class BaseGradleTest :
     }
     """.trimIndent()
   }
+
+  override val codeGeneratorBindings: List<CodeGeneratorBinding> = defaultCodeGeneratorBindings()
 
   val rootSettings by resets {
     root.child("settings.gradle.kts")

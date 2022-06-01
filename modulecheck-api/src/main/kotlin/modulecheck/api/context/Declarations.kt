@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
 import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
@@ -114,7 +114,7 @@ data class Declarations private constructor(
 
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
-suspend fun ConfiguredProjectDependency.declarations(
+suspend fun ProjectDependency.declarations(
   projectCache: ProjectCache
 ): LazySet<DeclaredName> {
   val project = projectCache.getValue(path)

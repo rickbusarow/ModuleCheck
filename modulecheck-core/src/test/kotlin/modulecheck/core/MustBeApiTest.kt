@@ -1105,8 +1105,9 @@ class MustBeApiTest : RunnerTest() {
         }
 
         dependencies {
-          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           api(project(":lib1"))
+
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 
@@ -1174,8 +1175,9 @@ class MustBeApiTest : RunnerTest() {
         }
 
         dependencies {
-          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           api(project(":lib1"))
+
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 

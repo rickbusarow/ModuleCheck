@@ -65,8 +65,8 @@ abstract class AbstractPluginsBlock(
     val originalString = getOriginalString(parsedString)
 
     val declaration = PluginDeclaration(
-      declarationText = parsedString,
       statementWithSurroundingText = originalString,
+      declarationText = parsedString,
       suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock
     )
     _allDeclarations.add(declaration)

@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.buildFileInvocationText
@@ -38,7 +39,8 @@ import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import javax.inject.Inject
 
 class KotlinDependenciesBlockParser @Inject constructor(
-  private val logger: McLogger
+  private val logger: McLogger,
+  private val projectDependency: ProjectDependency.Factory
 ) {
 
   @Suppress("ReturnCount")
@@ -73,7 +75,8 @@ class KotlinDependenciesBlockParser @Inject constructor(
           fullText = fullText,
           lambdaContent = blockWhiteSpace + contentString,
           suppressAll = blockSuppressed,
-          configurationNameTransform = { it.buildFileInvocationText(invokesConfigurationNames) }
+          configurationNameTransform = { it.buildFileInvocationText(invokesConfigurationNames) },
+          projectDependency = projectDependency
         )
 
         contentBlock.children
@@ -85,6 +88,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
 
                 element.getChildOfType<KtCallExpression>()?.parseStatements(block, suppressed)
               }
+
               is KtCallExpression -> {
                 element.parseStatements(block, listOf())
               }

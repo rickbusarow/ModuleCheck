@@ -15,22 +15,21 @@
 
 package modulecheck.parsing.gradle.model
 
+import modulecheck.utils.lazy.unsafeLazy
+
 data class MavenCoordinates(
-  /**
-   * In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`.
-   */
+  /** In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`. */
   val group: String?,
 
-  /**
-   * In `com.google.dagger:dagger:2.32`, this is `__:dagger:__`.
-   */
+  /** In `com.google.dagger:dagger:2.32`, this is `__:dagger:__`. */
   val moduleName: String,
 
-  /**
-   * In `com.google.dagger:dagger:2.32`, this is `__:__:2.32`.
-   */
+  /** In `com.google.dagger:dagger:2.32`, this is `__:__:2.32`. */
   val version: String?
-) {
+) : Identifier, Comparable<MavenCoordinates> {
+
+  override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
+
   companion object {
 
     private val MATCHER = "([\\w\\.]+):([\\w\\-]+):([\\w\\.]+)".toRegex()
@@ -43,4 +42,33 @@ data class MavenCoordinates(
         }
     }
   }
+
+  override fun compareTo(other: MavenCoordinates): Int {
+    return name.compareTo(other.name)
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as MavenCoordinates
+
+    if (group != other.group) return false
+    if (moduleName != other.moduleName) return false
+    // if either version is null (or both), that's a wildcard, and they match
+    if (version != null && other.version != null && version != other.version) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = group?.hashCode() ?: 0
+    result = 31 * result + moduleName.hashCode()
+    result = 31 * result + (version?.hashCode() ?: 0)
+    return result
+  }
+}
+
+sealed interface Identifier {
+  val name: String
 }

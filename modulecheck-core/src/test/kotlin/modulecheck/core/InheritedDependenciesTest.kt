@@ -1606,8 +1606,9 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           implementation(project(":lib1"))
+
+          implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 
@@ -1702,8 +1703,9 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
           implementation(project(":lib1"))
+
+          api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
     """
 

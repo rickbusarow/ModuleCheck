@@ -45,6 +45,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-config:fake"))
   testImplementation(project(path = ":modulecheck-finding:impl"))
   testImplementation(project(path = ":modulecheck-finding:name"))
+  testImplementation(project(path = ":modulecheck-model:dependency:api"))
   testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))
 }

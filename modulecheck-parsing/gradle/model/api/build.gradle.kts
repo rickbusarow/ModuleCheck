@@ -29,6 +29,7 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:source:api"))
 
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

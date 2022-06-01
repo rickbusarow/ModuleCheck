@@ -17,6 +17,8 @@ package modulecheck.parsing.gradle.dsl
 
 import modulecheck.parsing.gradle.dsl.ProjectAccessor.TypeSafeProjectAccessor
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.Identifier
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -55,11 +57,11 @@ suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T):
     project.getConfigurationInvocations().contains(value)
 }
 
-suspend fun <T> T.createProjectDependencyDeclaration(
+suspend fun <T> T.createDependencyDeclaration(
   configurationName: ConfigurationName,
-  projectPath: ProjectPath,
+  identifier: Identifier,
   isTestFixtures: Boolean
-): ModuleDependencyDeclaration
+): DependencyDeclaration
   where T : PluginAware,
         T : HasDependencyDeclarations {
 
@@ -69,8 +71,83 @@ suspend fun <T> T.createProjectDependencyDeclaration(
     isKotlin && !configurationName.isDefinitelyPrecompiledForProject(this) -> {
       configurationName.wrapInQuotes()
     }
+
     else -> configurationName.value
   }
+
+  return when (identifier) {
+    is MavenCoordinates -> createExternalDependencyDeclaration(
+      isKotlin = isKotlin,
+      configInvocation = configInvocation,
+      configurationName = configurationName,
+      identifier = identifier,
+      isTestFixtures = isTestFixtures
+    )
+
+    is ProjectPath -> createProjectDependencyDeclaration(
+      isKotlin = isKotlin,
+      configInvocation = configInvocation,
+      configurationName = configurationName,
+      projectPath = identifier,
+      isTestFixtures = isTestFixtures
+    )
+  }
+}
+
+suspend fun <T> T.createExternalDependencyDeclaration(
+  isKotlin: Boolean,
+  configInvocation: String,
+  configurationName: ConfigurationName,
+  identifier: Identifier,
+  isTestFixtures: Boolean
+): ExternalDependencyDeclaration
+  where T : PluginAware,
+        T : HasDependencyDeclarations {
+
+  identifier as MavenCoordinates
+
+  val accessorText = if (isKotlin) {
+    "\"${identifier.name}\""
+  } else {
+    "'${identifier.name}'"
+  }
+
+  val accessorMaybeWithTestFixtures = accessorText
+    .letIf(isTestFixtures) { "testFixtures($it)" }
+
+  val declarationText = if (isKotlin) {
+    "$configInvocation($accessorMaybeWithTestFixtures)"
+  } else "$configInvocation $accessorMaybeWithTestFixtures"
+
+  val statementWithSurroundingText = buildFileParser.dependenciesBlocks()
+    .map { it.lambdaContent.findMinimumIndent() }
+    .minByOrNull { it.length }
+    .let { min ->
+      val indent = min ?: "  "
+      "$indent$declarationText\n"
+    }
+
+  return ExternalDependencyDeclaration(
+    configName = configurationName,
+    declarationText = declarationText,
+    statementWithSurroundingText = statementWithSurroundingText,
+    suppressed = emptyList(),
+    configurationNameTransform = { it.value },
+    group = identifier.group,
+    moduleName = identifier.moduleName, version = identifier.version,
+    coordinates = identifier
+  )
+}
+
+suspend fun <T> T.createProjectDependencyDeclaration(
+  isKotlin: Boolean,
+  configInvocation: String,
+  configurationName: ConfigurationName,
+  projectPath: ProjectPath,
+  isTestFixtures: Boolean
+): ModuleDependencyDeclaration
+  where T : PluginAware,
+        T : HasDependencyDeclarations {
 
   val projectAccessorText = projectAccessors()
     .any { it is TypeSafeProjectAccessor }
@@ -152,9 +229,11 @@ private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project:
       hasPrefix(SourceSetName.ANDROID_TEST) -> {
         return removePrefix(SourceSetName.ANDROID_TEST).isDefinitelyPrecompiledForProject(project)
       }
+
       hasPrefix(SourceSetName.DEBUG) -> {
         return removePrefix(Companion.DEBUG).isDefinitelyPrecompiledForProject(project)
       }
+
       hasPrefix(SourceSetName.RELEASE) -> {
         return removePrefix(SourceSetName.RELEASE).isDefinitelyPrecompiledForProject(project)
       }

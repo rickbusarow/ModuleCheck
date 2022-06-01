@@ -15,14 +15,15 @@
 
 package modulecheck.finding
 
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.model.Identifier
 import modulecheck.project.McProject
 
 data class UnusedDependency(
   val dependentProject: McProject,
-  val dependency: ConfiguredProjectDependency,
-  val dependencyIdentifier: String,
+  val dependency: ConfiguredDependency,
+  val dependencyIdentifier: Identifier,
   val configurationName: ConfigurationName
 ) {
 
@@ -30,7 +31,7 @@ data class UnusedDependency(
     findingName = findingName,
     dependentProject = dependentProject,
     oldDependency = dependency,
-    dependencyIdentifier = dependencyIdentifier,
+    dependencyIdentifier = dependencyIdentifier.name,
     configurationName = configurationName
   )
 }
@@ -38,7 +39,7 @@ data class UnusedDependency(
 data class UnusedDependencyFinding(
   override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val oldDependency: ConfiguredProjectDependency,
+  override val oldDependency: ConfiguredDependency,
   override val dependencyIdentifier: String,
   override val configurationName: ConfigurationName
 ) : AbstractProjectDependencyFinding(),
@@ -51,11 +52,12 @@ data class UnusedDependencyFinding(
     get() = when {
       dependency.isTestFixture -> {
         "The declared dependency " +
-          "`${configurationName.value}(testFixtures(\"${dependency.path}\"))` " +
+          "`${configurationName.value}(testFixtures(\"${dependency.identifier}\"))` " +
           "is not used in this module."
       }
+
       else -> {
-        "The declared dependency `${configurationName.value}(\"${dependency.path}\")` " +
+        "The declared dependency `${configurationName.value}(\"${dependency.identifier}\")` " +
           "is not used in this module."
       }
     }

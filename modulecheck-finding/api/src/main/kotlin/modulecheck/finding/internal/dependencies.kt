@@ -17,11 +17,15 @@ package modulecheck.finding.internal
 
 import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
+import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
+import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan
@@ -30,8 +34,16 @@ import modulecheck.utils.replaceDestructured
 import modulecheck.utils.sortedWith
 import modulecheck.utils.suffixIfNot
 
+/**
+ * @receiver the project to which we're adding a dependency
+ * @param configuredDependency the dependency model being added
+ * @param newDeclaration the text to be added to the project's build file
+ * @param existingDeclaration if not null, the new declaration will be added above or beyond this
+ *   declaration. Of all declarations in the `dependencies { ... }` block, this
+ *   declaration should be closest to the desired location of the new declaration.
+ */
 fun McProject.addDependency(
-  cpd: ConfiguredProjectDependency,
+  configuredDependency: ConfiguredDependency,
   newDeclaration: DependencyDeclaration,
   existingDeclaration: DependencyDeclaration? = null
 ) {
@@ -42,28 +54,31 @@ fun McProject.addDependency(
     addStatement(newDeclaration = newDeclaration)
   }
 
-  projectDependencies.add(cpd)
+  when (configuredDependency) {
+    is ProjectDependency -> projectDependencies.add(configuredDependency)
+    is ExternalDependency -> externalDependencies.add(configuredDependency)
+  }
 }
 
 /**
  * Finds the existing project dependency declaration (if there are any) which is the closest match
  * to the desired new dependency.
  *
+ * @param newDependency The dependency being added
  * @param matchPathFirst If true, matching project paths will be prioritized over matching
  *   configurations. If false, configuration matches will take priority over a matching project path.
  * @return the closest matching declaration, or null if there are no declarations at all.
  */
 suspend fun McProject.closestDeclarationOrNull(
-  newDependency: ConfiguredProjectDependency,
+  newDependency: ConfiguredDependency,
   matchPathFirst: Boolean
 ): DependencyDeclaration? {
 
   return buildFileParser.dependenciesBlocks()
     .firstNotNullOfOrNull { dependenciesBlock ->
 
-      val allModuleDeclarations = dependenciesBlock.settings
-
-      allModuleDeclarations
+      dependenciesBlock.settings
+        .filterNot { it is UnknownDependencyDeclaration }
         .sortedWith(
           {
             if (matchPathFirst) it.configName == newDependency.configurationName
@@ -79,33 +94,65 @@ suspend fun McProject.closestDeclarationOrNull(
               ?.projectPath
               ?.value
               ?.removePrefix(":")
-              ?.replace(".", ":") ?: ""
+              ?.replace(".", ":")
+              ?: (it as? ExternalDependencyDeclaration)
+                ?.coordinates
+                ?.name
+              ?: ""
           }
         )
         .let { sorted ->
 
-          sorted.firstOrNull { it.projectPathOrNull() == newDependency.path }
+          sorted.firstOrNull {
+            when (newDependency) {
+              is ExternalDependency -> it.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
+              is ProjectDependency -> it.projectPathOrNull() == newDependency.path
+            }
+          }
             ?: sorted.firstOrNull {
-              it.projectPathOrNull()?.isGreaterThan(newDependency.path) ?: false
+
+              when (newDependency) {
+                is ExternalDependency -> it.mavenCoordinatesOrNull()
+                  ?.isGreaterThan(newDependency.mavenCoordinates)
+
+                is ProjectDependency -> it.projectPathOrNull()
+                  ?.isGreaterThan(newDependency.path)
+              } ?: false
             }
             ?: sorted.lastOrNull()
         }
         ?.let { declaration ->
 
-          val sameProject = declaration.projectPathOrNull() == newDependency.path
+          val sameDependency = when (newDependency) {
+            is ExternalDependency -> declaration.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
+            is ProjectDependency -> declaration.projectPathOrNull() == newDependency.path
+          }
 
-          if (sameProject) {
+          if (sameDependency) {
             declaration
           } else {
 
             val precedingWhitespace = "^\\s*".toRegex()
               .find(declaration.statementWithSurroundingText)?.value ?: ""
 
-            (declaration as? ModuleDependencyDeclaration)?.copy(
-              statementWithSurroundingText = declaration.statementWithSurroundingText
-                .prefixIfNot(precedingWhitespace),
-              suppressed = emptyList()
-            )
+            when (declaration) {
+              is ExternalDependencyDeclaration -> declaration.copy(
+                statementWithSurroundingText = declaration.statementWithSurroundingText
+                  .prefixIfNot(precedingWhitespace),
+                suppressed = emptyList()
+              )
+
+              is ModuleDependencyDeclaration -> declaration.copy(
+                statementWithSurroundingText = declaration.statementWithSurroundingText
+                  .prefixIfNot(precedingWhitespace),
+                suppressed = emptyList()
+              )
+
+              is UnknownDependencyDeclaration -> {
+                // this shouldn't actually be possible
+                null
+              }
+            }
           }
         }
     }
@@ -113,6 +160,10 @@ suspend fun McProject.closestDeclarationOrNull(
 
 private fun DependencyDeclaration.projectPathOrNull(): ProjectPath? {
   return (this as? ModuleDependencyDeclaration)?.projectPath
+}
+
+private fun DependencyDeclaration.mavenCoordinatesOrNull(): MavenCoordinates? {
+  return (this as? ExternalDependencyDeclaration)?.coordinates
 }
 
 private fun McProject.prependStatement(
@@ -202,7 +253,7 @@ fun McProject.removeDependencyWithComment(
 
   buildFile.writeText(newText)
 
-  if (configuredDependency is ConfiguredProjectDependency) {
+  if (configuredDependency is ProjectDependency) {
 
     projectDependencies.remove(configuredDependency)
   }
@@ -222,7 +273,7 @@ fun McProject.removeDependencyWithDelete(
     text.replaceFirst(statement.statementWithSurroundingText.prefixIfNot("\n"), "")
   )
 
-  if (configuredDependency is ConfiguredProjectDependency) {
+  if (configuredDependency is ProjectDependency) {
     projectDependencies.remove(configuredDependency)
   }
 }

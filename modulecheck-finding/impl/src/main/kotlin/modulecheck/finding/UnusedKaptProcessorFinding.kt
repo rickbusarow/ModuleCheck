@@ -18,11 +18,11 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
-import modulecheck.parsing.gradle.model.ExternalDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
@@ -48,18 +48,17 @@ data class UnusedKaptProcessorFinding(
       "This can be a significant performance hit."
 
   override val dependencyIdentifier = when (oldDependency) {
-    is ConfiguredProjectDependency -> oldDependency.path.value
-    is ExternalDependency -> oldDependency.name
-  }
+    is ProjectDependency -> oldDependency.path
+    is ExternalDependency -> oldDependency.identifier
+  }.name
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     when (oldDependency) {
-      is ConfiguredProjectDependency ->
+      is ProjectDependency ->
         oldDependency.statementOrNullIn(dependentProject)
 
       is ExternalDependency ->
-        oldDependency
-          .statementOrNullIn(dependentProject, oldDependency.configurationName)
+        oldDependency.statementOrNullIn(dependentProject)
     }
   }
 

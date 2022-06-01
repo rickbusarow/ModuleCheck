@@ -13,8 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+plugins {
+  id("mcbuild")
+}
 
-interface HasPath {
-  val path: ProjectPath
+mcbuild {
+  artifactId = "modulecheck-model-dependency-api"
+  anvil = true
+}
+
+dependencies {
+
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+
+  api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+
+  implementation(project(":modulecheck-utils:lazy"))
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 }

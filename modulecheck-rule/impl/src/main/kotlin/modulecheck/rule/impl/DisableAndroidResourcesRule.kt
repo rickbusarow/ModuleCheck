@@ -72,7 +72,7 @@ class DisableAndroidResourcesRule @Inject constructor() :
 
     val usedInDownstreamProject = project.dependents()
       .any { downstream ->
-        downstream.project(project.projectCache)
+        downstream.project(project)
           .sourceSets
           .keys
           .any any2@{ sourceSetName ->

@@ -17,6 +17,7 @@ package modulecheck.parsing.gradle.dsl
 
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
@@ -206,8 +207,88 @@ data class ExternalDependencyDeclaration(
   val configurationNameTransform: ConfigurationNameTransform,
   val group: String?,
   val moduleName: String?,
-  val version: String?
+  val version: String?,
+  val coordinates: MavenCoordinates
 ) : DependencyDeclaration {
+
+  suspend fun copy(
+    newConfigName: ConfigurationName = configName,
+    newCoordinates: MavenCoordinates = coordinates,
+    testFixtures: Boolean
+  ): ExternalDependencyDeclaration {
+
+    val newConfigText = configurationNameTransform(newConfigName)
+
+    // Figure out if the old configuration is used as a string extension, like:
+    // `"implementation"(...)`  instead of `implementation(...)`
+    val quotedOldConfig = "\"${configName.value}\""
+    val configIsInQuotes = declarationText.startsWith(quotedOldConfig)
+
+    /*
+    If the old config is a string extension, then we need to perform a String.replace(...) on
+    the full string including the quotes, instead of just the configuration name. Otherwise, we
+    can wind up with a precompiled config name (api, implementation, etc.) inside quotes.
+
+    This isn't a very likely scenario if the SourceSet/Configuration hierarchies are working
+    properly, but it's possible.  One scenario would be if the build file simply has an `"api"(...)`
+    somewhere -- perhaps automatically added by the IDE's intention.  This might be the only string
+    extension in the whole project, but without this check, autocorrect would use string extensions
+    whenever that `"api"(...)` dependency is the source.
+     */
+    val configToReplace = if (configIsInQuotes) {
+      quotedOldConfig
+    } else {
+      configName.value
+    }
+
+    val newLibraryCoordinates = newCoordinates != coordinates
+    val precedingWhitespace = "^\\s*".toRegex()
+      .find(statementWithSurroundingText)?.value ?: ""
+
+    val newDeclaration = declarationText
+      .letIf(newLibraryCoordinates) {
+        // strip out any config block
+        it.remove(""" *\{[\s\S]*}""".toRegex())
+      }
+      .addOrRemoveTestFixtures(testFixtures)
+      .replaceFirst(configToReplace, newConfigText)
+      .replaceFirst(coordinates.name, newCoordinates.name)
+      .maybeFixExtraQuotes()
+
+    val newStatement = when {
+      newLibraryCoordinates -> newDeclaration.prefixIfNot(precedingWhitespace)
+      else -> statementWithSurroundingText.replaceFirst(declarationText, newDeclaration)
+    }
+
+    return copy(
+      coordinates = newCoordinates,
+      configName = newConfigName,
+      declarationText = newDeclaration,
+      statementWithSurroundingText = newStatement
+    )
+  }
+
+  /** replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"` */
+  private fun String.maybeFixExtraQuotes(): String {
+    return replaceDestructured("\"\"([^\"]*)\"\"".toRegex()) { group1 ->
+      "\"$group1\""
+    }
+  }
+
+  private fun String.addOrRemoveTestFixtures(
+    testFixtures: Boolean
+  ): String {
+
+    val escapedCoords = Regex.escape(coordinates.name)
+    val regex = "testFixtures\\s*\\(\\s*$escapedCoords\\s*\\)".toRegex()
+
+    return when {
+      testFixtures && regex.containsMatchIn(this) -> this
+      testFixtures -> "testFixtures($this)"
+      else -> replace(regex, coordinates.name)
+    }
+  }
+
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (javaClass != other?.javaClass) return false

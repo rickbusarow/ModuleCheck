@@ -22,21 +22,22 @@ import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
 import modulecheck.api.context.references
+import modulecheck.config.CodeGeneratorBinding
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ConfiguredProjectDependency
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
+import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.Reference.ExplicitReference
 import modulecheck.parsing.source.Reference.InterpretedReference
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.ProjectProvider
 import modulecheck.utils.lazy.lazySet
 import java.io.File
 
@@ -44,6 +45,27 @@ interface ProjectCollector {
 
   val root: File
   val projectCache: ProjectCache
+
+  val codeGeneratorBindings: List<CodeGeneratorBinding>
+
+  val projectProvider: ProjectProvider
+    get() = object : ProjectProvider {
+
+      override val projectCache: ProjectCache
+        get() = this@ProjectCollector.projectCache
+
+      override fun get(path: ProjectPath): McProject {
+        return projectCache.getValue(path)
+      }
+
+      override fun getAll(): List<McProject> = allProjects()
+
+      override fun clearCaches() {
+        allProjects().forEach { it.clearContext() }
+      }
+    }
+
+  fun allProjects(): List<McProject> = projectCache.values.toList()
 
   fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
     return when (this) {
@@ -54,6 +76,7 @@ interface ProjectCollector {
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
+
       is AndroidDynamicFeaturePlugin -> AndroidDynamicFeaturePluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -62,6 +85,7 @@ interface ProjectCollector {
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
+
       is AndroidLibraryPlugin -> AndroidLibraryPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -71,6 +95,7 @@ interface ProjectCollector {
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
+
       is AndroidTestPlugin -> AndroidTestPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -79,10 +104,12 @@ interface ProjectCollector {
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
+
       is JavaLibraryPlugin -> JavaLibraryPluginBuilder(
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
       )
+
       is KotlinJvmPlugin -> KotlinJvmPluginBuilder(
         sourceSets = sourceSets.toBuilderMap(),
         configurations = configurations.toBuilderMap()
@@ -97,14 +124,16 @@ interface ProjectCollector {
       path = path,
       projectDir = projectDir,
       buildFile = buildFile,
+      platformPlugin = platformPlugin.toBuilder() as P,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
+      projectCache = projectCache,
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       hasKapt = hasKapt,
-      anvilGradlePlugin = anvilGradlePlugin,
-      projectCache = projectCache,
       hasTestFixturesPlugin = hasTestFixturesPlugin,
-      javaSourceVersion = javaSourceVersion,
-      platformPlugin = platformPlugin.toBuilder() as P
+      anvilGradlePlugin = anvilGradlePlugin,
+      javaSourceVersion = javaSourceVersion
     )
   }
 
@@ -128,6 +157,8 @@ interface ProjectCollector {
       path = path,
       pluginBuilder = platformPlugin,
       androidPackageOrNull = null,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
       config = config
     )
   }
@@ -143,6 +174,8 @@ interface ProjectCollector {
       path = path,
       pluginBuilder = AndroidApplicationPluginBuilder(),
       androidPackageOrNull = androidPackage,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
       config = config
     )
   }
@@ -158,6 +191,8 @@ interface ProjectCollector {
       path = path,
       pluginBuilder = AndroidLibraryPluginBuilder(),
       androidPackageOrNull = androidPackage,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
       config = config
     )
   }
@@ -173,6 +208,8 @@ interface ProjectCollector {
       path = path,
       pluginBuilder = AndroidDynamicFeaturePluginBuilder(),
       androidPackageOrNull = androidPackage,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
       config = config
     )
   }
@@ -188,20 +225,10 @@ interface ProjectCollector {
       path = path,
       pluginBuilder = AndroidTestPluginBuilder(),
       androidPackageOrNull = androidPackage,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
       config = config
     )
-  }
-
-  fun McProject.addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val cpd = ConfiguredProjectDependency(configurationName, project.path, asTestFixture)
-
-    projectDependencies[configurationName] = old + cpd
   }
 
   fun simpleProject(
@@ -232,7 +259,8 @@ interface ProjectCollector {
 
         val thisProjectDeclarations = project.declarations().all()
 
-        val allDependencies = project.classpathDependencies().all().map { it.contributed }
+        val allDependencies = project.classpathDependencies().all()
+          .map { it.contributed }
           .plus(project.projectDependencies.values.flatten())
           .map { dependency -> dependency.declarations(projectCache) }
           .plus(thisProjectDeclarations)
