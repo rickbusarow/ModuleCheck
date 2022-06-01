@@ -281,25 +281,28 @@ internal class DepthOutputTest : RunnerTest() {
 
         if (graphsReport) {
           testProjectDir.child("graphs", "app", "main.dot") shouldHaveText """
-          strict digraph DependencyGraph {
-            ratio = 0.5625;
-            node [style = "rounded,filled" shape = box];
-
-            labelloc = "t"
-            label = ":app -- main";
-
-            ":app" [fillcolor = "#F89820"];
-            ":lib1" [fillcolor = "#F89820"];
-            ":lib2" [fillcolor = "#F89820"];
-
-            ":app" -> ":lib1" [style = bold; color = "#007744"];
-            ":app" -> ":lib2" [style = bold; color = "#007744"];
-
-            ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-            { rank = same; ":lib1"; }
-            { rank = same; ":lib2"; }
-            { rank = same; ":app"; }
+          strict digraph {
+            edge ["dir"="forward"]
+            graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+            node ["style"="rounded,filled","shape"="box"]
+            {
+              edge ["dir"="none"]
+              graph ["rank"="same"]
+              ":lib1" ["fillcolor"="#F89820"]
+            }
+            {
+              edge ["dir"="none"]
+              graph ["rank"="same"]
+              ":lib2" ["fillcolor"="#F89820"]
+            }
+            {
+              edge ["dir"="none"]
+              graph ["rank"="same"]
+              ":app" ["fillcolor"="#F89820"]
+            }
+            ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+            ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+            ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
           }
           """
         } else {

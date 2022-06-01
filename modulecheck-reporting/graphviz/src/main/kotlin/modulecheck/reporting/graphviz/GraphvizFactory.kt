@@ -15,175 +15,151 @@
 
 package modulecheck.reporting.graphviz
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import guru.nidi.graphviz.attribute.Arrow
+import guru.nidi.graphviz.attribute.Color
+import guru.nidi.graphviz.attribute.Label
+import guru.nidi.graphviz.attribute.Label.Location.TOP
+import guru.nidi.graphviz.attribute.Rank
+import guru.nidi.graphviz.attribute.Rank.RankDir
+import guru.nidi.graphviz.attribute.Rank.RankType.SAME
+import guru.nidi.graphviz.attribute.Shape
+import guru.nidi.graphviz.attribute.Style
+import guru.nidi.graphviz.engine.Graphviz
+import guru.nidi.graphviz.model.Factory
+import guru.nidi.graphviz.model.Factory.mutGraph
+import guru.nidi.graphviz.model.Factory.mutNode
+import guru.nidi.graphviz.model.Factory.node
 import modulecheck.api.context.ProjectDepth
-import modulecheck.api.context.depthForSourceSetName
-import modulecheck.api.context.sourceSetDependencies
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
-import modulecheck.project.McProject
 import modulecheck.project.isAndroid
-import modulecheck.project.project
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.ANDROID_GREEN
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.API_RED
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.BLACK
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.IMPLEMENTATION_GREEN
-import modulecheck.reporting.graphviz.GraphvizFactory.Color.JAVA_ORANGE
+import modulecheck.reporting.graphviz.GraphvizFactory.Colors.API_LINE
+import modulecheck.reporting.graphviz.GraphvizFactory.Colors.BLACK
+import modulecheck.reporting.graphviz.GraphvizFactory.Colors.IMPLEMENTATION_LINE
+import modulecheck.reporting.graphviz.GraphvizFactory.Colors.JAVA_BLUE
+import modulecheck.utils.applyEach
 import javax.inject.Inject
 
+/**
+ * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
+ *
+ * @property typeSafeProjectPathResolver used to resolve project paths from type-safe project
+ *   accessors
+ */
 class GraphvizFactory @Inject constructor(
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver
 ) {
 
-  suspend fun create(root: ProjectDepth): String = buildString {
+  /**
+   * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
+   *
+   * @param root the root of the dependency graph, starting at a single
+   *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
+   * @return the graph model for this dependency graph
+   */
+  suspend fun create(root: ProjectDepth): Graphviz {
 
     val allDepths = root.fullTree()
+    val sourceSetName = root.sourceSetName
 
-    appendLine("strict digraph DependencyGraph {")
+    val graphName = "${root.dependentPath.value} -- ${sourceSetName.value}"
 
-    val inner = buildString {
-
-      appendLine(
-        """
-        |ratio = 0.5625;
-        |node [style = "rounded,filled" shape = box];
-        |
-        |labelloc = "t"
-        |label = "${root.dependentPath.value} -- ${root.sourceSetName.value}";
-        |
-        """.trimMargin()
+    val rootGraph = mutGraph()
+      .setStrict(true)
+      .setDirected(true)
+      .setCluster(true)
+      .graphAttrs().apply {
+        // ratio is the aspect ratio.  0.5625 is 16:9
+        @Suppress("MagicNumber")
+        add("ratio", 0.5625)
+      }
+      .add(
+        Rank.dir(RankDir.TOP_TO_BOTTOM),
+        Label.markdown("**$graphName**").locate(TOP)
+      )
+      .nodeAttrs().add(
+        Style.combine(Style.ROUNDED, Style.FILLED),
+        Shape.BOX
       )
 
-      defineModuleBoxes(root)
-
-      appendLine()
-
-      defineEdges(allDepths)
-
-      defineRanks(root)
-    }
-
-    append(inner.lines().joinToString("\n") { if (it.isBlank()) it else TAB + it })
-    appendLine("}")
-  }
-
-  private suspend fun StringBuilder.defineModuleBoxes(root: ProjectDepth) {
-    root.dependentProject
-      .allProjectDependencies(root.sourceSetName, includeSelf = true)
-      .sortedBy { it.path }
-      .distinctBy { it.path }
-      .forEach {
-        if (it.isAndroid()) {
-          appendLine("${it.pathString()} [fillcolor = \"${ANDROID_GREEN.value}\"];")
-        } else {
-          appendLine("${it.pathString()} [fillcolor = \"${JAVA_ORANGE.value}\"];")
-        }
-      }
-  }
-
-  private suspend fun StringBuilder.defineEdges(allDepths: Set<ProjectDepth>) {
-    coroutineScope {
-      allDepths.map { depthFinding ->
-        async { depthFinding.edgesSection() }
-      }
-        .awaitAll()
-        .sortedBy { it.first.path }
-        .filter { it.second.isNotBlank() }
-        .forEach { appendLine(it.second) }
-    }
-  }
-
-  private fun ProjectDepth.edgesSection(): Pair<McProject, String> {
-    return dependentProject to buildString {
-      dependentProject
-        .projectDependencies[sourceSetName]
-        .forEach { cpd ->
-
-          val lineColor = when (cpd.configurationName) {
-            ConfigurationName.compileOnlyApi -> IMPLEMENTATION_GREEN
-            ConfigurationName.api -> API_RED
-            ConfigurationName.kapt -> IMPLEMENTATION_GREEN
-            ConfigurationName.implementation -> IMPLEMENTATION_GREEN
-            ConfigurationName.compileOnly -> IMPLEMENTATION_GREEN
-            ConfigurationName.compile -> IMPLEMENTATION_GREEN
-            ConfigurationName.runtimeOnly -> IMPLEMENTATION_GREEN
-            ConfigurationName.runtime -> IMPLEMENTATION_GREEN
-            else -> BLACK
-          }
-
-          appendLine(
-            "${dependentProject.pathString()} " +
-              "-> " +
-              "${cpd.path.pathString(typeSafeProjectPathResolver)} " +
-              "[style = bold; color = \"${lineColor.value}\"];"
-          )
-        }
-    }
-  }
-
-  private suspend fun StringBuilder.defineRanks(root: ProjectDepth) {
-    root.dependentProject.allProjectDependencies(root.sourceSetName, includeSelf = false)
-      .map { it.depthForSourceSetName(SourceSetName.MAIN) }
-      // If the root is a non-main source set, one of its dependencies may depend upon its main
-      // sources.  For instance, if :lib-1 depends upon :lib-2 with `testImplementation`, but :lib-2
-      // depends upon :lib-1 with `implementation`.
-      .filterNot { it.dependentPath == root.dependentPath }
-      .plus(root)
+    /* ranks */
+    allDepths
       .groupBy { it.depth }
       .toSortedMap()
-      .entries
-      .forEach { (_, allSame) ->
+      .forEach { (_, sameRank) ->
 
-        val paths = allSame
-          .sortedBy { it.dependentPath }
-          .joinToString("; ", postfix = ";") { it.dependentProject.pathString() }
-
-        appendLine("{ rank = same; $paths }")
+        mutGraph()
+          .graphAttrs()
+          .add(Rank.inSubgraph(SAME))
+          .applyEach(
+            sameRank
+              .distinctBy { it.dependentPath }
+              .sortedBy { it.dependentPath }
+          ) { projectDepth ->
+            add(
+              mutNode(projectDepth.pathString(), false)
+                .add(projectDepth.nodeColor())
+            )
+          }
+          .addTo(rootGraph)
       }
-  }
 
-  private suspend fun McProject.allProjectDependencies(
-    sourceSetName: SourceSetName,
-    includeSelf: Boolean
-  ): List<McProject> {
-    return sourceSetDependencies()
-      .get(sourceSetName)
-      .distinct()
-      .map { it.contributed.project() }
-      .let { deps ->
-        if (includeSelf) {
-          deps + this
-        } else {
-          deps
-        }
+    /* edges */
+    allDepths.sortedBy { it.dependentPath }
+      .forEach { depthFinding ->
+        depthFinding.dependentProject
+          .projectDependencies[depthFinding.sourceSetName]
+          .sortedBy { it.path }
+          .forEach { cpd ->
+
+            val lineColor = cpd.lineColor()
+
+            rootGraph.add(
+              node(depthFinding.pathString())
+                .link(
+                  Factory.to(node(cpd.path.pathString()))
+                    .with(Arrow.NORMAL, Style.BOLD, lineColor)
+                )
+            )
+          }
       }
-      .distinct()
+
+    return Graphviz.fromGraph(rootGraph)
   }
 
-  private fun ProjectPath.pathString(
-    typeSafeProjectPathResolver: TypeSafeProjectPathResolver
-  ): String = "\"${pathValue(typeSafeProjectPathResolver)}\""
-
-  private fun McProject.pathString(): String = "\"${this.path.value}\""
-
-  enum class Color(val value: String) {
-    ANDROID_GREEN("#A4C639"),
-    JAVA_ORANGE("#F89820"),
-    JAVA_BLUE("#5382A1"),
-    API_RED("#AA0000"),
-    IMPLEMENTATION_GREEN("#007744"),
-    BLACK("#000000")
+  private fun ProjectDepth.pathString(): String {
+    return dependentPath.pathValue(typeSafeProjectPathResolver)
   }
 
-  companion object {
+  private fun ProjectDepth.nodeColor(): Color {
+    return when {
+      dependentProject.isAndroid() -> Colors.ANDROID_GREEN.fill()
+      else -> Colors.JAVA_ORANGE.fill()
+    }
+  }
 
-    const val TAB = "  "
+  private fun ProjectPath.pathString(): String {
+    return pathValue(typeSafeProjectPathResolver)
+  }
 
-    const val API_LINE = "\"#FF6347\""
-    const val IMPLEMENTATION_LINE = "\"#FF6347\""
+  private fun ProjectDependency.lineColor(): Color {
+    return when {
+      configurationName.isApi() -> API_LINE
+      configurationName.isKapt() -> JAVA_BLUE
+      configurationName.isImplementation() -> IMPLEMENTATION_LINE
+      else -> BLACK
+    }
+  }
+
+  private object Colors {
+    val ANDROID_GREEN: Color = Color.rgb("A4C639")
+    val API_RED: Color = Color.rgb("AA0000")
+    val BLACK: Color = Color.rgb("000000")
+    val IMPLEMENTATION_GREEN: Color = Color.rgb("007744")
+    val JAVA_BLUE: Color = Color.rgb("5382A1")
+    val JAVA_ORANGE: Color = Color.rgb("F89820")
+    val API_LINE: Color = Color.rgb("FF6347")
+    val IMPLEMENTATION_LINE: Color = Color.rgb("FF6347")
   }
 }

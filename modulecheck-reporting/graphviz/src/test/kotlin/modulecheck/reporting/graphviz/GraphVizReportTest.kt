@@ -62,7 +62,7 @@ internal class GraphVizReportTest : RunnerTest() {
   }
 
   @Test
-  fun `depth report should be created if enabled in settings`() {
+  fun `graph should be created if enabled in settings`() {
 
     settings.reports.graphs.enabled = true
 
@@ -80,25 +80,28 @@ internal class GraphVizReportTest : RunnerTest() {
     run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- main";
-
-        ":app" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":app" -> ":lib1" [style = bold; color = "#007744"];
-        ":app" -> ":lib2" [style = bold; color = "#007744"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
   }
@@ -140,58 +143,61 @@ internal class GraphVizReportTest : RunnerTest() {
     ).forAll { (project, sourceSet) ->
 
       graph(project, sourceSet) shouldHaveText """
-        strict digraph DependencyGraph {
-          ratio = 0.5625;
-          node [style = "rounded,filled" shape = box];
-
-          labelloc = "t"
-          label = "${project.path.value} -- ${sourceSet.value}";
-
-          "${project.path.value}" [fillcolor = "#F89820"];
-
-          { rank = same; "${project.path.value}"; }
+        strict digraph {
+          edge ["dir"="forward"]
+          graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>${project.path.value} -- ${sourceSet.value}</b>>,"labelloc"="t"]
+          node ["style"="rounded,filled","shape"="box"]
+          {
+            edge ["dir"="none"]
+            graph ["rank"="same"]
+            "${project.path.value}" ["fillcolor"="#F89820"]
+          }
         }
         """
     }
 
     graph(lib2, SourceSetName.MAIN) shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":lib2 -- main";
-
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:lib2 -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
 
     graph(app, SourceSetName.MAIN) shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- main";
-
-        ":app" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":app" -> ":lib1" [style = bold; color = "#007744"];
-        ":app" -> ":lib2" [style = bold; color = "#007744"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
   }
@@ -208,16 +214,15 @@ internal class GraphVizReportTest : RunnerTest() {
     run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.graphFile() shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":lib1 -- main";
-
-        ":lib1" [fillcolor = "#F89820"];
-
-        { rank = same; ":lib1"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:lib1 -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
       }
     """
   }
@@ -234,16 +239,15 @@ internal class GraphVizReportTest : RunnerTest() {
     run(autoCorrect = false).isSuccess shouldBe true
 
     lib1.graphFile() shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":lib1 -- main";
-
-        ":lib1" [fillcolor = "#F89820"];
-
-        { rank = same; ":lib1"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:lib1 -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
       }
     """
   }
@@ -277,72 +281,80 @@ internal class GraphVizReportTest : RunnerTest() {
     run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- main";
-
-        ":app" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":app" -> ":lib1" [style = bold; color = "#007744"];
-        ":app" -> ":lib2" [style = bold; color = "#007744"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
 
     app.graphFile("test") shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- test";
-
-        ":app" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-        ":test1" [fillcolor = "#F89820"];
-
-        ":app" -> ":test1" [style = bold; color = "#000000"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        ":test1" -> ":lib1" [style = bold; color = "#007744"];
-        ":test1" -> ":lib2" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
-        { rank = same; ":test1"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- test</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":test1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":test1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":test1" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":test1" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
 
     lib1.graphFile("test") shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":lib1 -- test";
-
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":lib1" -> ":lib2" [style = bold; color = "#000000"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib2"; }
-        { rank = same; ":lib1"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:lib1 -- test</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        ":lib1" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
   }
@@ -375,56 +387,63 @@ internal class GraphVizReportTest : RunnerTest() {
     run(autoCorrect = false).isSuccess shouldBe true
 
     app.graphFile() shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- main";
-
-        ":app" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":app" -> ":lib1" [style = bold; color = "#007744"];
-        ":app" -> ":lib2" [style = bold; color = "#007744"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":lib2"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- main</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":app" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
 
     app.graphFile("debug") shouldHaveText """
-      strict digraph DependencyGraph {
-        ratio = 0.5625;
-        node [style = "rounded,filled" shape = box];
-
-        labelloc = "t"
-        label = ":app -- debug";
-
-        ":app" [fillcolor = "#F89820"];
-        ":debug1" [fillcolor = "#F89820"];
-        ":debug2" [fillcolor = "#F89820"];
-        ":lib1" [fillcolor = "#F89820"];
-        ":lib2" [fillcolor = "#F89820"];
-
-        ":app" -> ":debug1" [style = bold; color = "#000000"];
-        ":app" -> ":debug2" [style = bold; color = "#000000"];
-
-        ":debug1" -> ":lib1" [style = bold; color = "#007744"];
-
-        ":debug2" -> ":debug1" [style = bold; color = "#007744"];
-        ":debug2" -> ":lib2" [style = bold; color = "#007744"];
-
-        ":lib2" -> ":lib1" [style = bold; color = "#007744"];
-
-        { rank = same; ":lib1"; }
-        { rank = same; ":debug1"; ":lib2"; }
-        { rank = same; ":debug2"; }
-        { rank = same; ":app"; }
+      strict digraph {
+        edge ["dir"="forward"]
+        graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>:app -- debug</b>>,"labelloc"="t"]
+        node ["style"="rounded,filled","shape"="box"]
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":lib1" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":debug1" ["fillcolor"="#F89820"]
+          ":lib2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":debug2" ["fillcolor"="#F89820"]
+        }
+        {
+          edge ["dir"="none"]
+          graph ["rank"="same"]
+          ":app" ["fillcolor"="#F89820"]
+        }
+        ":app" -> ":debug2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":app" -> ":debug1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":debug1" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":debug2" -> ":lib2" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":debug2" -> ":debug1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
+        ":lib2" -> ":lib1" ["arrowhead"="normal","style"="bold","color"="#FF6347"]
       }
     """
   }
