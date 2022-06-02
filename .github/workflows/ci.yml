@@ -304,7 +304,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-0819cf6510be4c6f2
+          ec2-image-id: ami-0e05c4ec12dae0d2f
           ec2-instance-type: t3.2xlarge
           ec2-os: windows
           subnet-id: ${{ secrets.EC2_SUBNET_ID }}
