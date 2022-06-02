@@ -21,14 +21,9 @@ const runnerVersion = '2.291.1'
 
 // User data scripts are run as the root user
 function buildUserDataScript(githubRegistrationToken, label) {
-  // core.info(`Building data script for ${config.input.ec2Os}`)
-
-
-  core.info(`ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
+  core.info(`Building data script for ${config.input.ec2Os}`)
 
   if (config.input.ec2Os === 'windows') {
-
-    core.info(`WINDOWS TWO!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
     if (config.input.runnerHomeDir) {
 
       core.info(`using an existing runner home dir of ${config.input.runnerHomeDir}`);
@@ -56,8 +51,6 @@ function buildUserDataScript(githubRegistrationToken, label) {
       ]
     }
   } else if (config.input.ec2Os === 'linux') {
-
-    core.info(`LINUX TWO!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
     if (config.input.runnerHomeDir) {
       // If runner home directory is specified, we expect the actions-runner software (and dependencies)
       // to be pre-installed in the AMI, so we simply cd into that directory and then start the runner
@@ -126,7 +119,7 @@ async function terminateEc2Instance() {
   };
 
   try {
-    await ec2.terminateInstances(params).promise();
+    await ec2.stopInstances(params).promise();
     core.info(`AWS EC2 instance ${config.input.ec2InstanceId} is terminated`);
   } catch (error) {
     core.error(`AWS EC2 instance ${config.input.ec2InstanceId} termination error`);
