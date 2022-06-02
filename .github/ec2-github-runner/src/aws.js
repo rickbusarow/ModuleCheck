@@ -23,7 +23,12 @@ const runnerVersion = '2.291.1'
 function buildUserDataScript(githubRegistrationToken, label) {
   core.info(`Building data script for ${config.input.ec2Os}`)
 
+
+  core.info(`ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
+
   if (config.input.ec2Os === 'windows') {
+
+    core.info(`WINDOWS TWO!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
     if (config.input.runnerHomeDir) {
 
       core.info(`using an existing runner home dir of ${config.input.runnerHomeDir}`);
@@ -51,6 +56,8 @@ function buildUserDataScript(githubRegistrationToken, label) {
       ]
     }
   } else if (config.input.ec2Os === 'linux') {
+
+    core.info(`LINUX TWO!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);
     if (config.input.runnerHomeDir) {
       // If runner home directory is specified, we expect the actions-runner software (and dependencies)
       // to be pre-installed in the AMI, so we simply cd into that directory and then start the runner
@@ -96,11 +103,9 @@ async function startEc2Instance(label, githubRegistrationToken) {
     TagSpecifications: config.tagSpecifications,
   };
 
-  // if (config.input.awsKeyPairName) {
-  //   params['KeyName'] = config.input.awsKeyPairName
-  // }
-
-  params['KeyName'] = 'ModuleCheck_GHA_Windows'
+  if (config.input.awsKeyPairName) {
+    params['KeyName'] = config.input.awsKeyPairName
+  }
 
   try {
     const result = await ec2.runInstances(params).promise();
