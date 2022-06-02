@@ -119,7 +119,7 @@ async function terminateEc2Instance() {
   };
 
   try {
-    await ec2.stopInstances(params).promise();
+    await ec2.terminateInstances(params).promise();
     core.info(`AWS EC2 instance ${config.input.ec2InstanceId} is terminated`);
   } catch (error) {
     core.error(`AWS EC2 instance ${config.input.ec2InstanceId} termination error`);
