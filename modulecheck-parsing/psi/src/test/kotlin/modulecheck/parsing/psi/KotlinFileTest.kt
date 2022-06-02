@@ -456,6 +456,39 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
   }
 
   @Test
+  fun `named companion object and function should also have declarations using original class name`() =
+    test {
+
+      val project = kotlinProject(":subject")
+
+      val file = project.createFile(
+        """
+      package com.subject
+
+      class SubjectClass {
+
+        companion object Factory {
+          fun create() = SubjectClass()
+        }
+      }
+      """
+      )
+
+      file shouldBe {
+        references {
+          interpretedKotlin("SubjectClass")
+          interpretedKotlin("com.subject.SubjectClass")
+        }
+        declarations {
+          agnostic("com.subject.SubjectClass")
+          agnostic("com.subject.SubjectClass.Factory")
+          agnostic("com.subject.SubjectClass.Factory.create")
+          kotlin("com.subject.SubjectClass.create")
+        }
+      }
+    }
+
+  @Test
   fun `explicit fully qualified type of public property in public class should be api reference`() =
     test {
 
