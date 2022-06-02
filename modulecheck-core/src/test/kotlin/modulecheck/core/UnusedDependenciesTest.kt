@@ -835,6 +835,136 @@ class UnusedDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `module contributing a named companion object, consumed in the same package should not be unused`() {
+    // https://github.com/RBusarow/ModuleCheck/issues/705
+
+    settings.deleteUnused = false
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.common
+
+        class Lib1Class {
+          companion object Factory {
+            fun create() = Lib1Class()
+          }
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.common
+
+        fun foo() {
+          bar(Lib1Class.create())
+        }
+
+        fun bar(any: Any) = Unit
+        """.trimIndent(),
+        SourceSetName.MAIN
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
+  fun `module contributing a named companion object, consumed by the companion name should not be unused`() {
+    // https://github.com/RBusarow/ModuleCheck/issues/705
+
+    settings.deleteUnused = false
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.common
+
+        class Lib1Class {
+          companion object Factory {
+            fun create() = Lib1Class()
+          }
+        }
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.common
+
+        import com.modulecheck.common.Lib1Class.Factory
+
+        fun foo() {
+          bar(Factory.create())
+        }
+
+        fun bar(any: Any) = Unit
+        """.trimIndent(),
+        SourceSetName.MAIN
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `testImplementation used in test should not be unused`() {
 
     settings.deleteUnused = false

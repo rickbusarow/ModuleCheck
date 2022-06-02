@@ -28,7 +28,6 @@ import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
-import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
@@ -50,6 +49,7 @@ import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
+import kotlin.contracts.contract
 
 inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
 
@@ -126,6 +126,7 @@ suspend fun PsiElement.fqNameOrNull(
         ?.let { return it }
         ?: text
     }
+
     is KtNameReferenceExpression -> getReferencedName()
     is KtUserType -> {
       val isGenericType = children.any { it is KtTypeArgumentList }
@@ -163,6 +164,7 @@ suspend fun PsiElement.fqNameOrNull(
         text
       }
     }
+
     is KtTypeReference -> {
       val children = children
       if (children.size == 1) {
@@ -173,6 +175,7 @@ suspend fun PsiElement.fqNameOrNull(
         text
       }
     }
+
     is KtNullableType -> return innerType?.fqNameOrNull(project, sourceSetName)
     is KtAnnotationEntry -> return typeReference?.fqNameOrNull(project, sourceSetName)
     is KtClassLiteralExpression -> {
@@ -180,6 +183,7 @@ suspend fun PsiElement.fqNameOrNull(
       return children.singleOrNull()
         ?.fqNameOrNull(project, sourceSetName)
     }
+
     is KtSuperTypeListEntry -> return typeReference?.fqNameOrNull(project, sourceSetName)
     else -> return null
   }
@@ -197,6 +201,7 @@ suspend fun PsiElement.fqNameOrNull(
       when {
         matchingImportPaths.size == 1 ->
           return matchingImportPaths[0].fqName
+
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
             project.canResolveFqName(importPath.fqName, sourceSetName)
@@ -210,6 +215,7 @@ suspend fun PsiElement.fqNameOrNull(
       when {
         matchingImportPaths.size == 1 ->
           return FqName("${matchingImportPaths[0].fqName.parent()}.$classReference")
+
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
             project.canResolveFqName(
@@ -257,10 +263,24 @@ suspend fun PsiElement.fqNameOrNull(
 
 fun KtDeclaration.isInObject() = containingClassOrObject?.isObjectLiteral() ?: false
 
-fun KtDeclaration.isInCompanionObject() = containingClassOrObject?.isCompanionObject() ?: false
+/**
+ * @return true if the receiver declaration is inside a companion object
+ */
+fun KtDeclaration.isInCompanionObject(): Boolean {
+  return containingClassOrObject?.isCompanionObject() ?: false
+}
+
 fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
 
-fun KtClassOrObject.isCompanionObject(): Boolean = this is KtObjectDeclaration && isCompanion()
+/**
+ * @return true if the receiver declaration is a companion object
+ */
+fun KtDeclaration.isCompanionObject(): Boolean {
+  contract {
+    returns(true) implies (this@isCompanionObject is KtObjectDeclaration)
+  }
+  return this is KtObjectDeclaration && isCompanion()
+}
 
 fun PsiElement.isQualifiedPropertyOrCallExpression(): Boolean {
   // properties which are qualified have a direct parent of `KtQualifiedExpression`

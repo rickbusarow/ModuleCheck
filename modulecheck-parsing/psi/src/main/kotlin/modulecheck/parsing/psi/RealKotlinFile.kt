@@ -22,6 +22,8 @@ import modulecheck.parsing.psi.internal.callSiteName
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
+import modulecheck.parsing.psi.internal.isCompanionObject
+import modulecheck.parsing.psi.internal.isInCompanionObject
 import modulecheck.parsing.psi.internal.isJvmStatic
 import modulecheck.parsing.psi.internal.isPartOf
 import modulecheck.parsing.psi.internal.isPrivateOrInternal
@@ -146,18 +148,29 @@ class RealKotlinFile(
         }
       }
 
-      when {
-        nameAsString.contains(".Companion") -> {
-          both(nameAsString)
+      val psi = this@declaredNames
 
-          if (isStatic()) {
-            both(nameAsString.remove(".Companion"))
-          } else if (this@declaredNames is KtCallableDeclaration) {
-            kotlin(nameAsString.remove(".Companion"))
-          }
+      fun parseCompanionObjectDeclarations(companionName: String) {
+        both(nameAsString)
+
+        if (isStatic()) {
+          both(nameAsString.remove(".$companionName"))
+        } else if (psi is KtCallableDeclaration) {
+          kotlin(nameAsString.remove(".$companionName"))
+        }
+      }
+
+      when {
+        psi.isCompanionObject() -> {
+          parseCompanionObjectDeclarations(psi.name ?: "Companion")
         }
 
-        isTopLevelKtOrJavaMember() && this@declaredNames !is KtClassOrObject && !isStatic() -> {
+        psi.isInCompanionObject() -> {
+          val companion = containingClassOrObject as KtObjectDeclaration
+          parseCompanionObjectDeclarations(companion.name ?: "Companion")
+        }
+
+        isTopLevelKtOrJavaMember() && psi !is KtClassOrObject && !isStatic() -> {
           kotlin(nameAsString)
 
           jvmSimpleNames().forEach {
@@ -190,7 +203,7 @@ class RealKotlinFile(
 
           val jvmNames = jvmSimpleNames()
 
-          if (this@declaredNames is KtFunction && jvmNameOrNull() == null) {
+          if (psi is KtFunction && psi.jvmNameOrNull() == null) {
             both(nameAsString)
           } else {
             kotlin(nameAsString)
@@ -204,8 +217,7 @@ class RealKotlinFile(
           }
         }
 
-        this@declaredNames is KtParameter ||
-          (this@declaredNames is KtProperty && !isTopLevelKtOrJavaMember()) -> {
+        psi is KtParameter || (psi is KtProperty && !psi.isTopLevelKtOrJavaMember()) -> {
 
           kotlin(nameAsString)
 
