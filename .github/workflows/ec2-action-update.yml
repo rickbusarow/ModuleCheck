@@ -1,0 +1,49 @@
+name: Rebuild Ec2 launcher action
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  cancel-other-jobs:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+  update-ec2-launcher-action:
+
+    runs-on: ubuntu-latest
+    if: github.actor != 'renovate[bot]'
+    steps:
+
+      - name: Check out repo (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: yarn
+          cache-dependency-path: .github/ec2-github-runner/yarn.lock
+
+      - name: build ec2 launcher action (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          cd .github/ec2-github-runner
+          yarn install --frozen-lockfile
+          yarn run package
+
+      - name: commit changes (used by main repo)
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update ec2 launcher action
+          commit_options: '--no-verify --signoff'
