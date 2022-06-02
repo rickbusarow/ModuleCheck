@@ -21,7 +21,7 @@ const runnerVersion = '2.291.1'
 
 // User data scripts are run as the root user
 function buildUserDataScript(githubRegistrationToken, label) {
-  core.info(`Building data script for ${config.input.ec2Os}`)
+  // core.info(`Building data script for ${config.input.ec2Os}`)
 
 
   core.info(`ONE!!!!!!!!!!!!!!!!!!!!!!!!!!!!`);

@@ -282,7 +282,7 @@ jobs:
     name: Maybe start self-hosted EC2 runner
     runs-on: ubuntu-latest
     outputs:
-      label: ${{ steps.start-ec2-windows-runner.outputs.label }}
+      label: ${{ steps.determine-windows-runner-label.outputs.value }}
       ec2-instance-id: ${{ steps.start-ec2-windows-runner.outputs.ec2-instance-id }}
     steps:
 
@@ -310,6 +310,14 @@ jobs:
           subnet-id: ${{ secrets.EC2_SUBNET_ID }}
           security-group-id: ${{ secrets.EC2_SECURITY_GROUP_ID }}
           runner-home-dir: C:\actions-runner
+
+      - name: Determine Windows runner label
+        uses: haya14busa/action-cond@v1
+        id: determine-windows-runner-label
+        with:
+          cond: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+          if_true: ${{ steps.start-ec2-windows-runner.outputs.label }}
+          if_false: windows-latest
 
   tests-windows:
 
