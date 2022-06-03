@@ -63,7 +63,7 @@ interface AddsDependency : Fixable {
             configurationName = newDependency.configurationName,
             identifier = newDependency.mavenCoordinates,
             isTestFixtures = newDependency.isTestFixture
-          ) as ModuleDependencyDeclaration
+          ) as ExternalDependencyDeclaration
       }
     }
 
