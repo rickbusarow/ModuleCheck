@@ -54,7 +54,6 @@ data class UnusedDependencies(
       val dependencies = external + internal
 
       dependencies
-        .asSequence()
         // test configurations have the main source project as a dependency.
         // without this filter, every project will report itself as unused.
         .filterNot { cd -> (cd as? ProjectDependency)?.path == project.path }
@@ -76,7 +75,9 @@ data class UnusedDependencies(
   companion object Key : ProjectContext.Key<UnusedDependencies> {
     override suspend operator fun invoke(project: McProject): UnusedDependencies {
 
-      return UnusedDependencies(SafeCache(), project)
+      return UnusedDependencies(
+        SafeCache(listOf(project.path, UnusedDependencies::class)), project
+      )
     }
   }
 }

@@ -85,7 +85,10 @@ data class AndroidUnqualifiedDeclarationNames(
   companion object Key : ProjectContext.Key<AndroidUnqualifiedDeclarationNames> {
     override suspend operator fun invoke(project: McProject): AndroidUnqualifiedDeclarationNames {
 
-      return AndroidUnqualifiedDeclarationNames(SafeCache(), project)
+      return AndroidUnqualifiedDeclarationNames(
+        SafeCache(listOf(project.path, AndroidUnqualifiedDeclarationNames::class)),
+        project
+      )
     }
   }
 }

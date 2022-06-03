@@ -68,7 +68,10 @@ data class UnusedKaptProcessors(
   companion object Key : ProjectContext.Key<UnusedKaptProcessors> {
     override suspend operator fun invoke(project: McProject): UnusedKaptProcessors {
 
-      return UnusedKaptProcessors(SafeCache(), project)
+      return UnusedKaptProcessors(
+        SafeCache(listOf(project.path, UnusedKaptProcessors::class)),
+        project
+      )
     }
   }
 }

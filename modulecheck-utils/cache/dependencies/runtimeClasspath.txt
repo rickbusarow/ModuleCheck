@@ -1,5 +1,6 @@
 com.github.ben-manes.caffeine:caffeine:3.1.1
 com.google.errorprone:error_prone_annotations:2.14.0
+com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
 org.checkerframework:checker-qual:3.22.0
 org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10

@@ -76,7 +76,10 @@ data class AndroidDataBindingDeclarations(
   companion object Key : ProjectContext.Key<AndroidDataBindingDeclarations> {
     override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
 
-      return AndroidDataBindingDeclarations(SafeCache(), project)
+      return AndroidDataBindingDeclarations(
+        SafeCache(listOf(project.path, AndroidDataBindingDeclarations::class)),
+        project
+      )
     }
   }
 }

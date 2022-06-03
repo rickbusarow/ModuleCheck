@@ -48,6 +48,7 @@ import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
+import modulecheck.utils.trace.Trace
 
 interface NamedSymbolTest : FancyShould {
 
@@ -126,7 +127,7 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun LazySet<Reference>.shouldBe(other: Collection<Reference>) {
-    runBlocking {
+    runBlocking(Trace.start(NamedSymbolTest::class)) {
       toList()
         .distinct()
         .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
@@ -134,7 +135,7 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun LazyDeferred<Set<Reference>>.shouldBe(other: Collection<Reference>) {
-    runBlocking {
+    runBlocking(Trace.start(NamedSymbolTest::class)) {
       await()
         .distinct()
         .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
@@ -142,7 +143,7 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun List<LazySet.DataSource<Reference>>.shouldBe(other: Collection<Reference>) {
-    runBlocking {
+    runBlocking(Trace.start(NamedSymbolTest::class)) {
       flatMap { it.get() }
         .distinct()
         .prettyPrint()

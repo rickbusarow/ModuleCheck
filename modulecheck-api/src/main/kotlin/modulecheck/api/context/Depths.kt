@@ -65,7 +65,7 @@ data class Depths(
   companion object Key : ProjectContext.Key<Depths> {
     override suspend operator fun invoke(project: McProject): Depths {
 
-      return Depths(SafeCache(), project)
+      return Depths(SafeCache(listOf(project.path, Depths::class)), project)
     }
   }
 }
@@ -83,7 +83,9 @@ data class ProjectDepth(
   val children: List<ProjectDepth>,
   val sourceSetName: SourceSetName
 ) : Comparable<ProjectDepth> {
-  private val treeCache = SafeCache<SourceSetName, Set<ProjectDepth>>()
+  private val treeCache = SafeCache<SourceSetName, Set<ProjectDepth>>(
+    listOf(dependentProject.path, ProjectDepth::class)
+  )
 
   fun toFinding(name: FindingName): DepthFinding = DepthFinding(
     dependentProject = dependentProject,

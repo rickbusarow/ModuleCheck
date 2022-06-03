@@ -31,6 +31,7 @@ dependencies {
   implementation(libs.graphviz.java.min)
   implementation(libs.rickBusarow.dispatch.core)
 
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 

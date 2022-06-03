@@ -29,6 +29,7 @@ import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.parsing.test.NamedSymbolTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -1058,7 +1059,7 @@ internal class JavaFileTest : ProjectTest(), NamedSymbolTest {
     project: McProject = simpleProject(),
     sourceSetName: SourceSetName = SourceSetName.MAIN,
     javaVersion: JavaVersion = VERSION_14
-  ): RealJavaFile = runBlocking {
+  ): RealJavaFile = runBlocking(Trace.start(listOf(JavaFileTest::class))) {
     project.editSimple {
       addJavaSource(content, sourceSetName)
       javaSourceVersion = javaVersion

@@ -54,7 +54,7 @@ data class Imports(
   companion object Key : ProjectContext.Key<Imports> {
     override suspend operator fun invoke(project: McProject): Imports {
 
-      return Imports(SafeCache(), project)
+      return Imports(SafeCache(listOf(project.path, Imports::class)), project)
     }
   }
 }

@@ -39,7 +39,16 @@ import javax.inject.Inject
 import javax.inject.Provider
 
 @SingleIn(AppScope::class)
-class FileCache @Inject constructor() : SafeCache<File, JvmFile> by SafeCache()
+class FileCache @Inject constructor() {
+  private val delegate = SafeCache<File, JvmFile>(listOf(FileCache::class))
+
+  suspend fun getOrPut(
+    file: File,
+    default: suspend () -> JvmFile
+  ): JvmFile {
+    return delegate.getOrPut(key = file, default)
+  }
+}
 
 class RealJvmFileProvider(
   private val fileCache: FileCache,

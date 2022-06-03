@@ -20,8 +20,8 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart.UNDISPATCHED
 import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
 import modulecheck.utils.lazy.lazyDeferred
+import modulecheck.utils.trace.test.runTestTraced
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 import java.util.concurrent.atomic.AtomicInteger
@@ -31,9 +31,9 @@ internal class SafeCacheTest : HermitJUnit5() {
   val expectCount by resets { AtomicInteger(0) }
 
   @Test
-  fun `concurrent misses should only execute the lambda once`() = runBlocking {
+  fun `concurrent misses should only execute the lambda once`() = runTestTraced {
 
-    val cache = SafeCache<String, Int>()
+    val cache = SafeCache<String, Int>(listOf("cache"))
     val lock = CompletableDeferred<Unit>()
 
     val one = async(start = UNDISPATCHED) {
@@ -57,9 +57,9 @@ internal class SafeCacheTest : HermitJUnit5() {
   }
 
   @Test
-  fun `loaders can access other keys in the same cache`() = runBlocking {
+  fun `loaders can access other keys in the same cache`() = runTestTraced {
 
-    val cache = SafeCache<String, Int>()
+    val cache = SafeCache<String, Int>(listOf("cache"))
 
     val one = lazyDeferred {
       expect(2)

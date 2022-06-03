@@ -39,4 +39,5 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:trace"))
 }

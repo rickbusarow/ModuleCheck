@@ -25,6 +25,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.test.NamedSymbolTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
+import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
@@ -1810,7 +1811,7 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
     @Language("kotlin")
     content: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
-  ): RealKotlinFile = runBlocking {
+  ): RealKotlinFile = runBlocking(Trace.start(KotlinFileTest::class)) {
     editSimple {
       addKotlinSource(content, sourceSetName)
     }.jvmFiles()

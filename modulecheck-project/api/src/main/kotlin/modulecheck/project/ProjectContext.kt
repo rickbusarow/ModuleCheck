@@ -18,6 +18,8 @@ package modulecheck.project
 import modulecheck.project.ProjectContext.Element
 import modulecheck.project.ProjectContext.Key
 import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 
 interface ProjectContext {
   suspend fun <E : Element> get(key: Key<E>): E
@@ -39,15 +41,21 @@ interface ProjectContext {
 
 internal class RealProjectContext(val project: McProject) : ProjectContext {
 
-  private var cache = SafeCache<Key<*>, Element>()
+  private var cache = newCache()
+
+  private fun newCache() = SafeCache<Key<*>, LazyDeferred<Element>>(
+    listOf(project.path, RealProjectContext::class)
+  )
 
   override suspend fun <E : Element> get(key: Key<E>): E {
 
     @Suppress("UNCHECKED_CAST")
-    return cache.getOrPut(key) { key.invoke(project) } as E
+    return cache.getOrPut(key) {
+      lazyDeferred { key.invoke(project) }
+    }.await() as E
   }
 
   override fun clearContext() {
-    cache = SafeCache()
+    cache = newCache()
   }
 }

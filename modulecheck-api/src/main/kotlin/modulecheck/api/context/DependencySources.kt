@@ -80,7 +80,7 @@ data class DependencySources(
 
   companion object Key : ProjectContext.Key<DependencySources> {
     override suspend fun invoke(project: McProject): DependencySources {
-      return DependencySources(SafeCache(), project)
+      return DependencySources(SafeCache(listOf(project.path, DependencySources::class)), project)
     }
   }
 }
