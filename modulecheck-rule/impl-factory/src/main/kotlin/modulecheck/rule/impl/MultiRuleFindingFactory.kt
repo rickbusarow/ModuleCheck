@@ -36,6 +36,8 @@ import modulecheck.rule.ReportOnlyRule
 import modulecheck.rule.SortRule
 import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.sortedWith
+import modulecheck.utils.trace.HasTraceTags
+import modulecheck.utils.trace.traced
 import javax.inject.Inject
 
 @Module
@@ -48,7 +50,10 @@ interface FindingFactoryModule {
 class MultiRuleFindingFactory @Inject constructor(
   private val settings: ModuleCheckSettings,
   private val rules: DaggerList<ModuleCheckRule<*>>
-) : FindingFactory<Finding> {
+) : FindingFactory<Finding>, HasTraceTags {
+
+  override val tags: Iterable<Any>
+    get() = listOf(MultiRuleFindingFactory::class)
 
   override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> {
     return evaluate(projects) { it !is SortRule && it !is ReportOnlyRule }
@@ -113,7 +118,12 @@ class MultiRuleFindingFactory @Inject constructor(
     // Sort all projects by depth, so that zero-dependency modules are first and the most expensive
     // are last.  This is just a simple way of building up cached data, so that when the
     // heavy-weight modules are evaluated, they can pull declarations and other data from cache.
-    val sortedProjects = projects.mapAsync { it.depths().get(SourceSetName.MAIN).depth to it }
+    val sortedProjects = projects.mapAsync { project ->
+
+      traced(project) {
+        project.depths().get(SourceSetName.MAIN).depth to project
+      }
+    }
       .toList()
       .sortedBy { it.first }
       .map { it.second }
@@ -121,7 +131,8 @@ class MultiRuleFindingFactory @Inject constructor(
     return rules.filter { predicate(it) && it.shouldApply(settings) }
       .flatMap { rule ->
         sortedProjects.mapAsync { project ->
-          rule.check(project)
+
+          traced(project, rule) { rule.check(project) }
         }.toList()
       }.flatten()
   }

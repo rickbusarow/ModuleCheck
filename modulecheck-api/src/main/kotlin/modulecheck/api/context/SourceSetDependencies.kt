@@ -75,7 +75,10 @@ data class SourceSetDependencies(
 
   companion object Key : ProjectContext.Key<SourceSetDependencies> {
     override suspend operator fun invoke(project: McProject): SourceSetDependencies {
-      return SourceSetDependencies(SafeCache(), project)
+      return SourceSetDependencies(
+        SafeCache(listOf(project.path, SourceSetDependencies::class)),
+        project
+      )
     }
   }
 }

@@ -52,7 +52,7 @@ data class LayoutFiles(
   companion object Key : ProjectContext.Key<LayoutFiles> {
     override suspend operator fun invoke(project: McProject): LayoutFiles {
 
-      return LayoutFiles(SafeCache(), project)
+      return LayoutFiles(SafeCache(listOf(project.path, LayoutFiles::class)), project)
     }
   }
 }

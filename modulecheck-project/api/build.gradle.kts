@@ -29,9 +29,11 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
+  api(project(path = ":modulecheck-utils:trace"))
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils:cache"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

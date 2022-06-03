@@ -18,9 +18,13 @@ package modulecheck.utils.cache
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.supervisorScope
 import modulecheck.utils.coroutines.mapAsyncNotNull
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
+import modulecheck.utils.trace.HasTraceTags
+import modulecheck.utils.trace.trace
+import modulecheck.utils.trace.traced
 
 /**
  * A thread (and coroutine) -safe cache, with automatic eviction.
@@ -28,7 +32,7 @@ import modulecheck.utils.lazy.lazyDeferred
  * When accessing data via [getOrPut], the operation inside the lambda is guaranteed to only execute
  * once for each key -- unless the previous data has been evicted from the cache.
  */
-interface SafeCache<K : Any, V> {
+interface SafeCache<K : Any, V> : HasTraceTags {
 
   val values: Flow<V>
 
@@ -37,30 +41,45 @@ interface SafeCache<K : Any, V> {
    * [ConcurrentHashMap.computeIfAbsent][java.util.concurrent.ConcurrentHashMap.computeIfAbsent].
    *
    * @param key the unique key for the desired value
-   * @param loader the action to perform if [key] does not already have a value in the cache.
-   *   This action is guaranteed only to be performed once per key.
+   * @param loader the action to perform if [key] does not already have a value in the cache. This
+   *   action is guaranteed only to be performed once per key.
    * @return the value associated with this [key]
    */
   suspend fun getOrPut(key: K, loader: suspend () -> V): V
 
   companion object {
-    /**
-     * @return a [SafeCache] with initial initialValues of [initialValues]
-     */
+    /** @return a [SafeCache] with initial initialValues of [initialValues] */
     operator fun <K : Any, V> invoke(
+      tags: Iterable<Any>,
       initialValues: Map<K, V> = emptyMap()
-    ): SafeCache<K, V> = RealSafeCache(initialValues.toList())
+    ): SafeCache<K, V> {
 
-    /**
-     * @return a [SafeCache] with initial initialValues of [initialValues]
-     */
+      val tagsList = tags.toList()
+
+      check(tagsList.isNotEmpty()) {
+        "You must provide at least one tag when creating a ${SafeCache::class.java.simpleName}."
+      }
+      return RealSafeCache(tagsList, initialValues.toList())
+    }
+
+    /** @return a [SafeCache] with initial initialValues of [initialValues] */
     operator fun <K : Any, V> invoke(
+      tags: Iterable<Any>,
       vararg initialValues: Pair<K, V>
-    ): SafeCache<K, V> = RealSafeCache(initialValues.toList())
+    ): SafeCache<K, V> {
+
+      val tagsList = tags.toList()
+
+      check(tagsList.isNotEmpty()) {
+        "You must provide at least one tag when creating a ${SafeCache::class.java.simpleName}."
+      }
+      return RealSafeCache(tagsList, initialValues = initialValues.toList())
+    }
   }
 }
 
 internal class RealSafeCache<K : Any, V>(
+  override val tags: Iterable<Any>,
   initialValues: List<Pair<K, V>>
 ) : SafeCache<K, V> {
 
@@ -85,11 +104,18 @@ internal class RealSafeCache<K : Any, V>(
       .mapAsyncNotNull { it.await() }
 
   override suspend fun getOrPut(key: K, loader: suspend () -> V): V {
+    return traced(key) {
+      supervisorScope {
+        try {
+          // Note that the cache is only holding a LazyDeferred,
+          // and we return that LazyDeferred without actually calling `await()`.
+          val deferred = delegate.get(key) { lazyDeferred { loader() } }
 
-    // Note that the cache is only holding a LazyDeferred, and we return that LazyDeferred without
-    // actually calling `await()`.
-    val deferred = delegate.get(key) { lazyDeferred { loader() } }
-
-    return deferred.await()
+          deferred.await()
+        } catch (e: IllegalStateException) {
+          throw IllegalStateException("${e.message}\n\n${trace().asString()}\n\n", e)
+        }
+      }
+    }
   }
 }

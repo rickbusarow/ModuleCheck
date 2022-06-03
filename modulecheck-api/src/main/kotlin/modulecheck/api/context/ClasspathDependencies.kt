@@ -51,7 +51,7 @@ data class ClasspathDependencies(
       sourceSetName: SourceSetName,
       isTestFixtures: Boolean
     ): Set<ConfigurationName> = setOfNotNull(
-      sourceSetName.apiConfig(),
+      if (sourceSetName.isTestingOnly()) SourceSetName.DEBUG.apiConfig() else sourceSetName.apiConfig(),
       ConfigurationName.api,
       if (isTestFixtures) SourceSetName.TEST_FIXTURES.apiConfig() else null
     )
@@ -88,7 +88,9 @@ data class ClasspathDependencies(
 
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
     override suspend operator fun invoke(project: McProject): ClasspathDependencies {
-      return ClasspathDependencies(SafeCache(), project)
+      return ClasspathDependencies(
+        SafeCache(listOf(project.path, ClasspathDependencies::class)), project
+      )
     }
   }
 }

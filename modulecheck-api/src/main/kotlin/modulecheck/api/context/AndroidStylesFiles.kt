@@ -51,7 +51,7 @@ data class AndroidStylesFiles(
   companion object Key : ProjectContext.Key<AndroidStylesFiles> {
     override suspend operator fun invoke(project: McProject): AndroidStylesFiles {
 
-      return AndroidStylesFiles(SafeCache(), project)
+      return AndroidStylesFiles(SafeCache(listOf(project.path, AndroidStylesFiles::class)), project)
     }
   }
 }

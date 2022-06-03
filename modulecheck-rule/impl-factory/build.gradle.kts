@@ -27,6 +27,7 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
+  api(project(path = ":modulecheck-utils:trace"))
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))

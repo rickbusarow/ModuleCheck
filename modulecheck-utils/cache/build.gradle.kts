@@ -27,6 +27,8 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
+  api(project(path = ":modulecheck-utils:trace"))
+
   implementation(project(path = ":modulecheck-utils:coroutines"))
   implementation(project(path = ":modulecheck-utils:lazy"))
 
@@ -35,4 +37,6 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.turbine)
+
+  testImplementation(project(path = ":modulecheck-utils:trace-testing"))
 }

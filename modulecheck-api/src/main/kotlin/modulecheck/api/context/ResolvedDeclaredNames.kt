@@ -92,7 +92,10 @@ data class ResolvedDeclaredNames internal constructor(
 
   companion object Key : ProjectContext.Key<ResolvedDeclaredNames> {
     override suspend operator fun invoke(project: McProject): ResolvedDeclaredNames {
-      return ResolvedDeclaredNames(SafeCache(), project)
+      return ResolvedDeclaredNames(
+        SafeCache(listOf(project.path, ResolvedDeclaredNames::class)),
+        project
+      )
     }
   }
 }

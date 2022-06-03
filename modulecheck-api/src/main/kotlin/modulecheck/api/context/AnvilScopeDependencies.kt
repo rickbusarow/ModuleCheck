@@ -56,7 +56,9 @@ data class AnvilScopeDependencies(
   companion object Key : ProjectContext.Key<AnvilScopeDependencies> {
 
     override suspend operator fun invoke(project: McProject): AnvilScopeDependencies {
-      return AnvilScopeDependencies(SafeCache(), project)
+      return AnvilScopeDependencies(
+        SafeCache(listOf(project.path, AnvilScopeDependencies::class)), project
+      )
     }
   }
 }

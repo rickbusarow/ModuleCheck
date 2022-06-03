@@ -16,6 +16,7 @@
 package modulecheck.utils.lazy
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.toSet
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.LazySet.DataSource
@@ -87,6 +88,10 @@ suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: LazySet<E>): Bool
   return elements.any { contains(it) }
 }
 
+fun <E> Flow<E>.asDataSource(
+  priority: Priority = MEDIUM
+): DataSource<E> = dataSource(priority) { toSet() }
+
 fun <E> LazyDeferred<Set<E>>.asDataSource(
   priority: Priority = MEDIUM
 ): DataSource<E> = dataSource(priority) { await() }
@@ -137,6 +142,12 @@ fun <E> lazySet(
   dataSource: suspend () -> E
 ): LazySet<E> {
   return lazySet(dataSource(priority) { setOf(dataSource()) })
+}
+
+fun <E> Flow<E>.toLazySet(
+  priority: Priority = MEDIUM
+): LazySet<E> {
+  return lazySet(priority) { toSet() }
 }
 
 fun <E> lazySet(

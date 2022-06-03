@@ -45,7 +45,7 @@ data class ResSourceFiles(
 
   companion object Key : ProjectContext.Key<ResSourceFiles> {
     override suspend operator fun invoke(project: McProject): ResSourceFiles {
-      return ResSourceFiles(SafeCache(), project)
+      return ResSourceFiles(SafeCache(listOf(project.path, ResSourceFiles::class)), project)
     }
   }
 }

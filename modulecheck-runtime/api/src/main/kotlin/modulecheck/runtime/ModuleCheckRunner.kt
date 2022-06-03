@@ -40,6 +40,7 @@ import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.createSafely
+import modulecheck.utils.trace.Trace
 import java.io.File
 import kotlin.system.measureTimeMillis
 
@@ -69,7 +70,9 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val autoCorrect: Boolean
 ) {
 
-  fun run(projects: List<McProject>): Result<Unit> = runBlocking(dispatcherProvider.io) {
+  fun run(projects: List<McProject>): Result<Unit> = runBlocking(
+    dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)
+  ) {
     // total findings, whether they're fixed or not
     var totalFindings = 0
 

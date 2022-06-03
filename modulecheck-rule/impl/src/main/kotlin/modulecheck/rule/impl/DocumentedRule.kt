@@ -27,6 +27,8 @@ sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
   final override val documentationUrl: String
     get() = "$RULES_BASE_URL${name.snakeCase}"
 
+  override fun toString(): String = "${this::class.simpleName}(${name.id})"
+
   companion object {
     const val RULES_BASE_URL = "https://rbusarow.github.io/ModuleCheck/docs/rules/"
   }

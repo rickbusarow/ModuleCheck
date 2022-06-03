@@ -131,7 +131,9 @@ data class OverShotDependencies(
   companion object Key : ProjectContext.Key<OverShotDependencies> {
     override suspend operator fun invoke(project: McProject): OverShotDependencies {
 
-      return OverShotDependencies(SafeCache(), project)
+      return OverShotDependencies(
+        SafeCache(listOf(project.path, OverShotDependencies::class)), project
+      )
     }
   }
 }

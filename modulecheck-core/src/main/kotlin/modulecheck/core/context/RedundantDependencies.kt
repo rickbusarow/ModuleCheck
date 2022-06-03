@@ -73,7 +73,10 @@ data class RedundantDependencies(
   companion object Key : ProjectContext.Key<RedundantDependencies> {
     override suspend operator fun invoke(project: McProject): RedundantDependencies {
 
-      return RedundantDependencies(SafeCache(), project)
+      return RedundantDependencies(
+        SafeCache(listOf(project.path, RedundantDependencies::class)),
+        project
+      )
     }
   }
 }

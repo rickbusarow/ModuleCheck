@@ -21,12 +21,15 @@ import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.requireNotNull
+import modulecheck.utils.trace.HasTraceTags
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 @SingleIn(AppScope::class)
-class ProjectCache @Inject constructor() {
+class ProjectCache @Inject constructor() : HasTraceTags {
   private val delegate = ConcurrentHashMap<ProjectPath, McProject>()
+
+  override val tags = listOf(this::class)
 
   val values: MutableCollection<McProject> get() = delegate.values
 

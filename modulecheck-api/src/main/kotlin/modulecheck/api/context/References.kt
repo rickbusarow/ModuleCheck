@@ -62,7 +62,9 @@ data class References(
   companion object Key : ProjectContext.Key<References> {
     override suspend operator fun invoke(project: McProject): References {
 
-      return References(SafeCache(), project)
+      return References(
+        SafeCache(listOf(project.path, References::class)), project
+      )
     }
   }
 }

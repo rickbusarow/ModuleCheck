@@ -17,9 +17,9 @@ package modulecheck.testing
 
 import hermit.test.junit.HermitJUnit5
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
 import modulecheck.utils.child
 import modulecheck.utils.remove
+import modulecheck.utils.trace.test.runTestTraced
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import java.io.File
@@ -113,7 +113,9 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
       )
   }
 
-  fun test(action: suspend CoroutineScope.() -> Unit) = runBlocking(block = action)
+  fun test(action: suspend CoroutineScope.() -> Unit) {
+    runTestTraced(action)
+  }
 
   // This is automatically injected by JUnit5
   @BeforeEach
