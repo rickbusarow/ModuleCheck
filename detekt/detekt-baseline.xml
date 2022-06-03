@@ -29,6 +29,9 @@
     <ID>OutdatedDocumentation:ConfiguredDependency.kt$PluginDependency : Dependency</ID>
     <ID>OutdatedDocumentation:ModuleCheckRunner.kt$ModuleCheckRunner</ID>
     <ID>OutdatedDocumentation:OverShotDependencyFinding.kt$OverShotDependency</ID>
+    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> HasTraceTags.traced( args: Iterable&lt;Any>, block: suspend CoroutineScope.() -> T ): T</ID>
+    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> HasTraceTags.traced( vararg args: Any, block: suspend CoroutineScope.() -> T ): T</ID>
+    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> traced( tags: Iterable&lt;Any>, args: Iterable&lt;Any>, block: suspend CoroutineScope.() -> T ): T</ID>
     <ID>OutdatedDocumentation:precompiled.kt$ suspend fun &lt;T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean</ID>
     <ID>SerialVersionUIDInSerializableClass:ArtifactConfig.kt$ArtifactConfig : Serializable</ID>
     <ID>UndocumentedPublicClass:AbstractDependenciesBlock.kt$AbstractDependenciesBlock : DependenciesBlock</ID>
@@ -202,8 +205,6 @@
     <ID>UndocumentedPublicClass:FqNames.kt$FqNames</ID>
     <ID>UndocumentedPublicClass:GradleMcLogger.kt$GradleMcLogger : McLogger</ID>
     <ID>UndocumentedPublicClass:GradleProjectProvider.kt$GradleProjectProvider : ProjectProviderAllProjectPathsProvider</ID>
-    <ID>UndocumentedPublicClass:GraphvizFactory.kt$GraphvizFactory</ID>
-    <ID>UndocumentedPublicClass:GraphvizFactory.kt$GraphvizFactory$Color</ID>
     <ID>UndocumentedPublicClass:GraphvizFileWriter.kt$GraphvizFileWriter</ID>
     <ID>UndocumentedPublicClass:GroovyAndroidGradleParser.kt$GroovyAndroidGradleParser : AndroidGradleParser</ID>
     <ID>UndocumentedPublicClass:GroovyDependenciesBlock.kt$GroovyDependenciesBlock : AbstractDependenciesBlock</ID>
@@ -296,7 +297,7 @@
     <ID>UndocumentedPublicClass:ModuleCheckSettings.kt$ReportsSettings</ID>
     <ID>UndocumentedPublicClass:ModuleCheckSettings.kt$SortSettings</ID>
     <ID>UndocumentedPublicClass:MultiRuleFindingFactory.kt$FindingFactoryModule</ID>
-    <ID>UndocumentedPublicClass:MultiRuleFindingFactory.kt$MultiRuleFindingFactory : FindingFactory</ID>
+    <ID>UndocumentedPublicClass:MultiRuleFindingFactory.kt$MultiRuleFindingFactory : FindingFactoryHasTraceTags</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$InheritedDependencyWithSource</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$MustBeApi : SetElement</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$MustBeApi$Key : Key</ID>
@@ -332,7 +333,7 @@
     <ID>UndocumentedPublicClass:ProjectAccessor.kt$ProjectAccessor</ID>
     <ID>UndocumentedPublicClass:ProjectAccessor.kt$ProjectAccessor$StringProjectAccessor : ProjectAccessor</ID>
     <ID>UndocumentedPublicClass:ProjectAccessor.kt$ProjectAccessor$TypeSafeProjectAccessor : ProjectAccessor</ID>
-    <ID>UndocumentedPublicClass:ProjectCache.kt$ProjectCache</ID>
+    <ID>UndocumentedPublicClass:ProjectCache.kt$ProjectCache : HasTraceTags</ID>
     <ID>UndocumentedPublicClass:ProjectContext.kt$ProjectContext</ID>
     <ID>UndocumentedPublicClass:ProjectContext.kt$ProjectContext$Element</ID>
     <ID>UndocumentedPublicClass:ProjectContext.kt$ProjectContext$Key&lt;E : Element></ID>
@@ -368,7 +369,7 @@
     <ID>UndocumentedPublicClass:RealDocsWebsiteUrlProvider.kt$RealSourceWebsiteUrlProvider : SourceWebsiteUrlProvider</ID>
     <ID>UndocumentedPublicClass:RealFindingResultFactory.kt$RealFindingResultFactory : FindingResultFactory</ID>
     <ID>UndocumentedPublicClass:RealJavaFile.kt$RealJavaFile : JavaFile</ID>
-    <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$FileCache : SafeCache</ID>
+    <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$FileCache</ID>
     <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$RealJvmFileProvider : JvmFileProvider</ID>
     <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$RealJvmFileProvider$Factory : Factory</ID>
     <ID>UndocumentedPublicClass:RealJvmSourceSetsParser.kt$RealJvmSourceSetsParser : JvmSourceSetsParser</ID>
@@ -432,6 +433,7 @@
     <ID>UndocumentedPublicClass:TestSettings.kt$TestReportsSettings : ReportsSettings</ID>
     <ID>UndocumentedPublicClass:TestSettings.kt$TestSettings : ModuleCheckSettings</ID>
     <ID>UndocumentedPublicClass:TestSettings.kt$TestSortSettings : SortSettings</ID>
+    <ID>UndocumentedPublicClass:Trace.kt$Trace$Key : Key</ID>
     <ID>UndocumentedPublicClass:TransitiveProjectDependency.kt$TransitiveProjectDependency</ID>
     <ID>UndocumentedPublicClass:TypeSafeProjectPathResolver.kt$AllProjectPathsProvider</ID>
     <ID>UndocumentedPublicClass:UnusedDependencies.kt$UnusedDependencies : Element</ID>
@@ -621,7 +623,6 @@
     <ID>UndocumentedPublicFunction:FindingResultFactory.kt$FindingResultFactory$suspend fun create( findings: List&lt;Finding>, autoCorrect: Boolean, deleteUnused: Boolean ): List&lt;FindingResult></ID>
     <ID>UndocumentedPublicFunction:Fixable.kt$Fixable$fun fixLabel()</ID>
     <ID>UndocumentedPublicFunction:Fixable.kt$Fixable$suspend fun fix(removalStrategy: RemovalStrategy): Boolean</ID>
-    <ID>UndocumentedPublicFunction:GraphvizFactory.kt$GraphvizFactory$suspend fun create(root: ProjectDepth): String</ID>
     <ID>UndocumentedPublicFunction:GraphvizFileWriter.kt$GraphvizFileWriter$suspend fun write(depths: List&lt;ProjectDepth>)</ID>
     <ID>UndocumentedPublicFunction:GroovyDependenciesBlockParser.kt$GroovyDependenciesBlockParser$fun parse(file: File): List&lt;GroovyDependenciesBlock></ID>
     <ID>UndocumentedPublicFunction:GroovyPluginsBlockParser.kt$GroovyPluginsBlockParser$fun parse(file: File): GroovyPluginsBlock?</ID>
@@ -667,6 +668,8 @@
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet.DataSource$suspend fun get(): Set&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$LazySet.State$fun nextSources(): Sequence&lt;List&lt;DataSource&lt;E>>></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Collection&lt;LazySetComponent&lt;E>>.toLazySet(): LazySet&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
+    <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Flow&lt;E>.toLazySet( priority: Priority = MEDIUM ): LazySet&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> Lazy&lt;Set&lt;E>>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> LazyDeferred&lt;Set&lt;E>>.asDataSource( priority: Priority = MEDIUM ): DataSource&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> dataSource( priority: Priority = MEDIUM, factory: suspend () -> Set&lt;E> ): DataSource&lt;E></ID>
@@ -762,6 +765,7 @@
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeResolved(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun FieldDeclaration.apiReferences(): List&lt;String></ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun MethodDeclaration.apiReferences(): List&lt;String></ID>
+    <ID>UndocumentedPublicFunction:RealJvmFileProvider.kt$FileCache$suspend fun getOrPut( file: File, default: suspend () -> JvmFile ): JvmFile</ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$RedundantDependencies$suspend fun all(): List&lt;RedundantDependency></ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$RedundantDependencies$suspend fun get(sourceSetName: SourceSetName): List&lt;RedundantDependency></ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$suspend fun ProjectContext.redundantDependencies(): RedundantDependencies</ID>
@@ -851,11 +855,6 @@
     <ID>UndocumentedPublicFunction:collection.kt$inline fun &lt;T, R> Iterable&lt;T>.flatMapToSet( destination: MutableSet&lt;R> = mutableSetOf(), transform: (T) -> Iterable&lt;R> ): Set&lt;R></ID>
     <ID>UndocumentedPublicFunction:collection.kt$inline fun &lt;T, R> Sequence&lt;T>.flatMapToSet( destination: MutableSet&lt;R> = mutableSetOf(), transform: (T) -> Iterable&lt;R> ): Set&lt;R></ID>
     <ID>UndocumentedPublicFunction:comparable.kt$infix fun &lt;T> Comparable&lt;T>.isGreaterThan(other: T): Boolean</ID>
-    <ID>UndocumentedPublicFunction:coroutines.kt$fun &lt;T, R> List&lt;T>.mapBlocking(transform: suspend (T) -> R): List&lt;R></ID>
-    <ID>UndocumentedPublicFunction:coroutines.kt$fun &lt;T, R> Sequence&lt;T>.flatMapBlocking(transform: suspend (T) -> Iterable&lt;R>): Sequence&lt;R></ID>
-    <ID>UndocumentedPublicFunction:coroutines.kt$fun &lt;T, R> Sequence&lt;T>.mapBlocking(transform: suspend (T) -> R): Sequence&lt;R></ID>
-    <ID>UndocumentedPublicFunction:coroutines.kt$fun &lt;T> Sequence&lt;T>.filterBlocking(predicate: suspend (T) -> Boolean): Sequence&lt;T></ID>
-    <ID>UndocumentedPublicFunction:coroutines.kt$fun &lt;T> Sequence&lt;T>.filterNotBlocking(predicate: suspend (T) -> Boolean): Sequence&lt;T></ID>
     <ID>UndocumentedPublicFunction:dagger.kt$fun Project.applyDagger(anvil: Boolean, dagger: Boolean)</ID>
     <ID>UndocumentedPublicFunction:declarationFactories.kt$@Suppress("LongParameterList") fun ExternalDependencyDeclaration( configName: ConfigurationName, declarationText: String, statementWithSurroundingText: String, suppressed: List&lt;String> = emptyList(), group: String?, moduleName: String, version: String?, coordinates: MavenCoordinates = MavenCoordinates(group, moduleName, version) ): ExternalDependencyDeclaration</ID>
     <ID>UndocumentedPublicFunction:declarationFactories.kt$@Suppress("LongParameterList") fun ModuleDependencyDeclaration( projectPath: ProjectPath, projectAccessor: String, configName: ConfigurationName, declarationText: String, statementWithSurroundingText: String, suppressed: List&lt;String> = emptyList() ): ModuleDependencyDeclaration</ID>
@@ -925,8 +924,6 @@
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtBlockExpression.nameSafe(): String?</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtCallExpression.nameSafe(): String?</ID>
-    <ID>UndocumentedPublicFunction:psiElement.kt$fun KtClassOrObject.isCompanionObject(): Boolean</ID>
-    <ID>UndocumentedPublicFunction:psiElement.kt$fun KtDeclaration.isInCompanionObject()</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtDeclaration.isInObject()</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun KtDeclaration.isInObjectOrCompanionObject()</ID>
     <ID>UndocumentedPublicFunction:psiElement.kt$fun PsiElement.file(): File</ID>
@@ -1088,10 +1085,6 @@
     <ID>UndocumentedPublicProperty:FqNames.kt$FqNames$val inject = FqName("javax.inject.Inject")</ID>
     <ID>UndocumentedPublicProperty:FqNames.kt$FqNames$val jvmField = FqName("kotlin.jvm.JvmField")</ID>
     <ID>UndocumentedPublicProperty:FqNames.kt$FqNames$val jvmStatic = FqName("kotlin.jvm.JvmStatic")</ID>
-    <ID>UndocumentedPublicProperty:GraphvizFactory.kt$GraphvizFactory.Color$val value: String</ID>
-    <ID>UndocumentedPublicProperty:GraphvizFactory.kt$GraphvizFactory.Companion$const val API_LINE = "\"#FF6347\""</ID>
-    <ID>UndocumentedPublicProperty:GraphvizFactory.kt$GraphvizFactory.Companion$const val IMPLEMENTATION_LINE = "\"#FF6347\""</ID>
-    <ID>UndocumentedPublicProperty:GraphvizFactory.kt$GraphvizFactory.Companion$const val TAB = " "</ID>
     <ID>UndocumentedPublicProperty:GroovyDependenciesBlockParser.kt$GroovyDependenciesBlockParser.Companion$val BLOCK_BODY_REGEX = """dependencies\s*\{([\s\S]*)\}""".toRegex()</ID>
     <ID>UndocumentedPublicProperty:GroovyDependenciesBlockParser.kt$GroovyDependenciesBlockParser.Companion$val NO_INSPECTION_REGEX = """//noinspection\s+(.*)\n""".toRegex()</ID>
     <ID>UndocumentedPublicProperty:HasConfigurations.kt$HasConfigurations$val configurations: Configurations</ID>
@@ -1286,6 +1279,9 @@
     <ID>UndocumentedPublicProperty:SourceSetDependency.kt$SourceSetDependency.SourceSetExternalDependency$val version: String?</ID>
     <ID>UndocumentedPublicProperty:TaskComponent.kt$TaskComponent$val multiRuleFindingFactory: MultiRuleFindingFactory</ID>
     <ID>UndocumentedPublicProperty:TaskComponent.kt$TaskComponent$val projectProvider: GradleProjectProvider</ID>
+    <ID>UndocumentedPublicProperty:Trace.kt$HasTraceTags$val tags: Iterable&lt;Any></ID>
+    <ID>UndocumentedPublicProperty:Trace.kt$Trace$abstract val depth: Int</ID>
+    <ID>UndocumentedPublicProperty:Trace.kt$Trace$val tags: List&lt;String></ID>
     <ID>UndocumentedPublicProperty:TransitiveProjectDependency.kt$TransitiveProjectDependency$val contributed: ProjectDependency</ID>
     <ID>UndocumentedPublicProperty:TransitiveProjectDependency.kt$TransitiveProjectDependency$val source: ProjectDependency</ID>
     <ID>UndocumentedPublicProperty:UnusedDependency.kt$UnusedDependency$val configurationName: ConfigurationName</ID>
@@ -1312,5 +1308,6 @@
     <ID>UndocumentedPublicProperty:publishing.kt$const val PLUGIN_ID = "com.rickbusarow.module-check"</ID>
     <ID>UndocumentedPublicProperty:publishing.kt$const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"</ID>
     <ID>UndocumentedPublicProperty:publishing.kt$const val VERSION_NAME = "0.13.0-SNAPSHOT"</ID>
+    <ID>UnusedPrivateMember:Trace.kt$tags: Iterable&lt;Any></ID>
   </CurrentIssues>
 </SmellBaseline>
