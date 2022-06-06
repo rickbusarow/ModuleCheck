@@ -22,7 +22,6 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.android.DisableViewBindingGenerationFinding
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSetName.Companion
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
