@@ -98,6 +98,26 @@ module.exports = {
       darkTheme: require("prism-react-renderer/themes/dracula"),
       additionalLanguages: ["kotlin", "groovy", "java"],
     },
+    algolia: {
+      // The application ID provided by Algolia
+      appId: 'D6Z21RYLG1',
+
+      // Public API key: it is safe to commit it
+      apiKey: '2b25d0dd3470c3fdbe2ffa4e3299b0e9',
+
+      indexName: 'modulecheck',
+
+      // Optional: see doc section below
+      contextualSearch: true,
+
+      // Optional: Algolia search parameters
+      searchParameters: {},
+
+      // Optional: path for search page that enabled by default (`false` to disable it)
+      searchPagePath: 'search',
+
+      //... other Algolia params
+    },
   },
   presets: [
     [
