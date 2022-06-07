@@ -26,9 +26,8 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-utils:stdlib"))
-
   implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

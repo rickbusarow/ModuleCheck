@@ -37,12 +37,12 @@ dependencies {
   api(project(path = ":modulecheck-reporting:graphviz"))
   api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-reporting:logging:testing"))
-  api(project(path = ":modulecheck-reporting:sarif"))
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-rule:impl-factory"))
-  api(project(path = ":modulecheck-runtime:api"))
 
   implementation(project(path = ":modulecheck-config:fake"))
+  implementation(project(path = ":modulecheck-reporting:sarif"))
   implementation(project(path = ":modulecheck-rule:testing"))
+  implementation(project(path = ":modulecheck-runtime:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 }

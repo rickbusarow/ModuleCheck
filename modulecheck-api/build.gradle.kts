@@ -35,13 +35,13 @@ dependencies {
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
-  api(project(path = ":modulecheck-utils:coroutines"))
   api(project(path = ":modulecheck-utils:lazy"))
-  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(libs.kotlin.compiler)
 
   implementation(project(path = ":modulecheck-config:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

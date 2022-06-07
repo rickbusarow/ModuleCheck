@@ -26,7 +26,6 @@ dependencies {
 
   api(libs.kotlinx.coroutines.core)
 
-  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
@@ -38,6 +37,7 @@ dependencies {
   api(project(path = ":modulecheck-reporting:sarif"))
   api(project(path = ":modulecheck-rule:api"))
 
+  implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
   implementation(project(path = ":modulecheck-utils:trace"))
 }

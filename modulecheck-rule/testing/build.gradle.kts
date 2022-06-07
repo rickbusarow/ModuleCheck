@@ -30,9 +30,9 @@ dependencies {
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-rule:impl"))
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-rule:impl"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

@@ -27,7 +27,6 @@ dependencies {
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
 
   compileOnly(gradleApi())
@@ -38,6 +37,7 @@ dependencies {
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
 
+  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
