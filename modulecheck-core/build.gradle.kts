@@ -27,20 +27,21 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-finding:impl"))
-  api(project(path = ":modulecheck-finding:name"))
-  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
-  api(project(path = ":modulecheck-utils:coroutines"))
-  api(project(path = ":modulecheck-utils:lazy"))
-  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlinx.coroutines.jvm)
   implementation(libs.semVer)
+
+  implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-finding:name"))
+  implementation(project(path = ":modulecheck-model:dependency:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

@@ -29,7 +29,6 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-core"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-finding:impl"))
@@ -40,12 +39,13 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-utils:coroutines"))
   api(project(path = ":modulecheck-utils:lazy"))
-  api(project(path = ":modulecheck-utils:stdlib"))
 
+  implementation(project(path = ":modulecheck-core"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

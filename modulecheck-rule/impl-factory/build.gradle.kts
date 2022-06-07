@@ -27,19 +27,19 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-utils:trace"))
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
-  api(project(path = ":modulecheck-finding:impl"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
-  api(project(path = ":modulecheck-utils:coroutines"))
-  api(project(path = ":modulecheck-utils:stdlib"))
+  api(project(path = ":modulecheck-utils:trace"))
 
   implementation(project(path = ":modulecheck-api"))
+  implementation(project(path = ":modulecheck-finding:impl"))
   implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
