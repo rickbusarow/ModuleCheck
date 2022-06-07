@@ -31,6 +31,7 @@ import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
+import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtLiteralStringTemplateEntry
 import org.jetbrains.kotlin.psi.KtStringTemplateExpression
 import org.jetbrains.kotlin.psi.KtTreeVisitorVoid
@@ -74,7 +75,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
           logger = logger,
           fullText = fullText,
           lambdaContent = blockWhiteSpace + contentString,
-          suppressAll = blockSuppressed,
+          blockSuppressed = blockSuppressed,
           configurationNameTransform = { it.buildFileInvocationText(invokesConfigurationNames) },
           projectDependency = projectDependency
         )
@@ -282,6 +283,10 @@ inline fun literalStringTemplateRecursiveVisitor(
     block(entry)
   }
 }
+
+internal fun KtExpression.suppressedNames(): List<String> = (parent as? KtAnnotatedExpression)
+  ?.suppressedNames()
+  .orEmpty()
 
 internal fun KtAnnotatedExpression.suppressedNames(): List<String> = annotationEntries
   .filter { it.typeReference?.text == "Suppress" || it.typeReference?.text == "SuppressWarnings" }

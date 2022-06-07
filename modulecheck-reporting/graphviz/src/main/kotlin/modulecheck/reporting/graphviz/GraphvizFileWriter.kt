@@ -20,7 +20,7 @@ import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
-import modulecheck.utils.indent
+import modulecheck.utils.indentByBrackets
 import java.io.File
 import javax.inject.Inject
 
@@ -60,7 +60,7 @@ class GraphvizFileWriter @Inject constructor(
         val dotString = graphviz
           .render(Format.DOT)
           .toString()
-          .indent()
+          .indentByBrackets()
 
         dotFile.createSafely(dotString)
 

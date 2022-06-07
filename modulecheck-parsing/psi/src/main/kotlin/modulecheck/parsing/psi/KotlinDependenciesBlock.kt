@@ -24,12 +24,12 @@ class KotlinDependenciesBlock internal constructor(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
-  suppressAll: List<String>,
+  blockSuppressed: List<String>,
   configurationNameTransform: ConfigurationNameTransform,
   projectDependency: ProjectDependency.Factory
 ) : AbstractDependenciesBlock(
   logger = logger,
-  suppressedForEntireBlock = suppressAll,
+  blockSuppressed = blockSuppressed,
   configurationNameTransform = configurationNameTransform,
   projectDependency = projectDependency
 ) {

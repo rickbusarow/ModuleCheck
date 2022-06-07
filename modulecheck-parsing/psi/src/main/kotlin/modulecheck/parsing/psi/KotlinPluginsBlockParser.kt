@@ -61,7 +61,7 @@ class KotlinPluginsBlockParser @Inject constructor(
           logger = logger,
           fullText = fullText,
           lambdaContent = blockWhiteSpace + contentString,
-          suppressedForEntireBlock = blockSuppressed
+          blockSuppressed = blockSuppressed
         )
 
         contentBlock.children

@@ -27,13 +27,15 @@ data class AndroidGradleSettings(
     data class AndroidBlock(
       override val fullText: String,
       override val lambdaContent: String,
-      override val settings: List<Assignment>
+      override val settings: List<Assignment>,
+      override val blockSuppressed: List<String>
     ) : AgpBlock
 
     data class BuildFeaturesBlock(
       override val fullText: String,
       override val lambdaContent: String,
-      override val settings: List<Assignment>
+      override val settings: List<Assignment>,
+      override val blockSuppressed: List<String>
     ) : AgpBlock
   }
 }

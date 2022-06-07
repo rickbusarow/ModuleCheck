@@ -26,7 +26,7 @@ import java.io.File
 
 abstract class AbstractPluginsBlock(
   private val logger: McLogger,
-  suppressedForEntireBlock: List<String>
+  blockSuppressed: List<String>
 ) : PluginsBlock {
 
   private val resetManager = ResetManager()
@@ -40,7 +40,7 @@ abstract class AbstractPluginsBlock(
 
   protected val allBlockStatements = mutableListOf<String>()
 
-  private val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
+  override val blockSuppressed = blockSuppressed.updateOldSuppresses()
 
   override val allSuppressions: Map<PluginDeclaration, Set<FindingName>> by resetManager.lazyResets {
     buildMap<PluginDeclaration, MutableSet<FindingName>> {
@@ -48,11 +48,11 @@ abstract class AbstractPluginsBlock(
       _allDeclarations.forEach { pluginDeclaration ->
 
         val cached = getOrPut(pluginDeclaration) {
-          suppressedForEntireBlock.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
         }
 
         cached += pluginDeclaration.suppressed.updateOldSuppresses()
-          .plus(suppressedForEntireBlock)
+          .plus(blockSuppressed)
           .asFindingNames()
       }
     }
@@ -67,7 +67,7 @@ abstract class AbstractPluginsBlock(
     val declaration = PluginDeclaration(
       statementWithSurroundingText = originalString,
       declarationText = parsedString,
-      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock
+      suppressed = suppressed.updateOldSuppresses() + blockSuppressed
     )
     _allDeclarations.add(declaration)
     resetManager.resetAll()

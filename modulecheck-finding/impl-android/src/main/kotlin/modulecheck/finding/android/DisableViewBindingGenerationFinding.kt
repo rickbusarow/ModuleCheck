@@ -33,25 +33,26 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class DisableViewBindingGenerationFinding(
-  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File
 ) : Finding, Fixable {
+
+  override val findingName = NAME
 
   override val message: String
     get() = "Android viewBinding generation is enabled, but no generated code is being used."
 
   override val dependencyIdentifier = ""
 
-  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred { null }
-
-  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
-
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     dependentProject.buildFileParser.androidSettings()
       .assignments
       .firstOrNull { it.propertyFullName == "viewBinding" }
-      ?.declarationText
+  }
+
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
+    statementOrNull.await()?.declarationText
   }
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
@@ -138,5 +139,10 @@ data class DisableViewBindingGenerationFinding(
     val newBlockText = fullText.replace(lambdaContent, newContent)
 
     return buildFile.readText().replace(fullText, newBlockText)
+  }
+
+  companion object {
+    /** @suppress */
+    val NAME = FindingName("disable-view-binding")
   }
 }

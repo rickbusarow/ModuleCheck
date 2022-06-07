@@ -23,11 +23,11 @@ class GroovyDependenciesBlock internal constructor(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
-  suppressAll: List<String>,
+  blockSuppressed: List<String>,
   projectDependency: ProjectDependency.Factory
 ) : AbstractDependenciesBlock(
   logger = logger,
-  suppressedForEntireBlock = suppressAll,
+  blockSuppressed = blockSuppressed,
   configurationNameTransform = { it.value },
   projectDependency = projectDependency
 ) {

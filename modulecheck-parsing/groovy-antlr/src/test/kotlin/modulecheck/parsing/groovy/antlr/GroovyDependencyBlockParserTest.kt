@@ -181,7 +181,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
       """
     ) {
 
-      suppressedForEntireBlock shouldBe listOf("must-be-api", "unused-dependency")
+      blockSuppressed shouldBe listOf("must-be-api", "unused-dependency")
 
       settings shouldBe listOf(
         ModuleDependencyDeclaration(
@@ -217,7 +217,7 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
       """
     ) {
 
-      suppressedForEntireBlock shouldBe listOf("must-be-api", "unused-dependency")
+      blockSuppressed shouldBe listOf("must-be-api", "unused-dependency")
 
       settings shouldBe listOf(
         ModuleDependencyDeclaration(

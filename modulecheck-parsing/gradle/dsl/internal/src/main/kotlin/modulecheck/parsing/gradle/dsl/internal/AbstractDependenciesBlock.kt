@@ -38,14 +38,14 @@ import modulecheck.utils.remove
 
 abstract class AbstractDependenciesBlock(
   private val logger: McLogger,
-  suppressedForEntireBlock: List<String>,
+  blockSuppressed: List<String>,
   private val configurationNameTransform: ConfigurationNameTransform,
   private val projectDependency: ProjectDependency.Factory
 ) : DependenciesBlock {
 
   private val resetManager = ResetManager()
 
-  val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()
+  final override val blockSuppressed = blockSuppressed.updateOldSuppresses()
 
   override val allSuppressions: Map<ProjectDependency, Set<FindingName>> by resetManager.lazyResets {
     buildMap<ProjectDependency, MutableSet<FindingName>> {
@@ -53,13 +53,13 @@ abstract class AbstractDependenciesBlock(
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
         val cached = getOrPut(configuredModule) {
-          suppressedForEntireBlock.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
         }
 
         declarations.forEach { moduleDependencyDeclaration ->
 
           cached += moduleDependencyDeclaration.suppressed.updateOldSuppresses()
-            .plus(suppressedForEntireBlock)
+            .plus(blockSuppressed)
             .asFindingNames()
         }
       }
@@ -95,7 +95,7 @@ abstract class AbstractDependenciesBlock(
       moduleName = coordinates.moduleName,
       version = coordinates.version,
       coordinates = coordinates,
-      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
+      suppressed = suppressed.updateOldSuppresses() + blockSuppressed,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -116,7 +116,7 @@ abstract class AbstractDependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
+      suppressed = suppressed.updateOldSuppresses() + blockSuppressed,
       configurationNameTransform = configurationNameTransform
     )
     _allDeclarations.add(declaration)
@@ -150,7 +150,7 @@ abstract class AbstractDependenciesBlock(
       configName = configName,
       declarationText = parsedString,
       statementWithSurroundingText = originalString,
-      suppressed = suppressed.updateOldSuppresses() + suppressedForEntireBlock,
+      suppressed = suppressed.updateOldSuppresses() + blockSuppressed,
       configurationNameTransform = configurationNameTransform
     )
 

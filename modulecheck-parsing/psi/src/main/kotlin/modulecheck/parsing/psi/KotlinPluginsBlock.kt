@@ -22,8 +22,11 @@ class KotlinPluginsBlock(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
-  suppressedForEntireBlock: List<String>
-) : AbstractPluginsBlock(logger = logger, suppressedForEntireBlock = suppressedForEntireBlock) {
+  blockSuppressed: List<String>
+) : AbstractPluginsBlock(
+  logger = logger,
+  blockSuppressed = blockSuppressed
+) {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines
     .indexOfFirst { originalLine ->

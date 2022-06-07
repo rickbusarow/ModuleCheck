@@ -21,6 +21,7 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
+import modulecheck.utils.prefixIfNot
 import modulecheck.utils.requireNotNull
 import org.apache.groovy.parser.antlr4.GroovyParser.AssignmentExprAltContext
 import org.apache.groovy.parser.antlr4.GroovyParser.ClosureOrLambdaExpressionContext
@@ -28,6 +29,7 @@ import org.apache.groovy.parser.antlr4.GroovyParser.NamePartContext
 import org.apache.groovy.parser.antlr4.GroovyParser.PathElementContext
 import org.apache.groovy.parser.antlr4.GroovyParser.PathExpressionContext
 import org.apache.groovy.parser.antlr4.GroovyParser.PostfixExpressionContext
+import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
 import java.io.File
 import javax.inject.Inject
 
@@ -41,8 +43,15 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
     val allAssignments = mutableListOf<Assignment>()
     val buildFeaturesAssignments = mutableListOf<Assignment>()
 
-    fun List<AssignmentExprAltContext>.mapAssignments(fullText: String) =
-      map { assignmentExpression ->
+    class AssignmentVisitor(
+      private val fullText: String,
+      private val blockSuppressed: List<String>
+    ) : GroovyParserBaseVisitor<Unit>() {
+
+      val assignments = mutableListOf<Assignment>()
+
+      override fun visitAssignmentExprAlt(assignmentExpression: AssignmentExprAltContext) {
+        super.visitAssignmentExprAlt(assignmentExpression)
 
         val assignmentText = assignmentExpression.originalText()
 
@@ -59,27 +68,47 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
           .last()
           .originalText()
 
-        Assignment(
-          fullText = fullText,
-          propertyFullName = propertyName,
-          value = valueText,
-          declarationText = assignmentText
+        val allSuppressed = blockSuppressed.plus(
+          assignmentExpression.precedingCommentNodeOrNull()
+            ?.originalText()
+            ?.suppressions()
+            .orEmpty()
+        )
+          .distinct()
+
+        assignments.add(
+          Assignment(
+            fullText = fullText,
+            propertyFullName = propertyName,
+            value = valueText,
+            declarationText = assignmentText,
+            suppressed = allSuppressed
+          )
         )
       }
+    }
 
-    val commandVisitor = commandExpressionVisitor(true) { ctx ->
+    val visitor = commandExpressionVisitor(true) { ctx ->
 
       val android = ctx.takeIf { it.isNamed("android") }
         ?: return@commandExpressionVisitor
+
+      val precedingCommentOrEmpty = android.precedingCommentNodeOrNull()?.originalText() ?: ""
+
+      val androidSuppressed = precedingCommentOrEmpty.suppressions()
 
       val androidLambda = android.lambdaBlock()
 
       val androidIsBlock = androidLambda != null
 
-      val androidAssignments = android.childrenOfTypeRecursive<AssignmentExprAltContext>()
-        .mapAssignments(ctx.originalText())
+      val androidBlockVisitor = AssignmentVisitor(
+        ctx.originalText().prefixIfNot(precedingCommentOrEmpty).trim(),
+        androidSuppressed
+      )
 
-      allAssignments += androidAssignments
+      android.accept(androidBlockVisitor)
+
+      allAssignments += androidBlockVisitor.assignments
 
       if (androidIsBlock) {
 
@@ -87,16 +116,32 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
           ?.originalText()
           .requireNotNull()
 
-        androidBlocks.add(AndroidBlock(android.originalText(), lambdaContent, androidAssignments))
+        androidBlocks.add(
+          AndroidBlock(
+            fullText = android.originalText(),
+            lambdaContent = lambdaContent,
+            settings = androidBlockVisitor.assignments,
+            blockSuppressed = androidSuppressed
+          )
+        )
 
         android.accept(
           commandExpressionVisitor { buildFeatures ->
             if (buildFeatures.isNamed("buildFeatures")) {
 
-              val assignments = buildFeatures.childrenOfTypeRecursive<AssignmentExprAltContext>()
-                .mapAssignments(ctx.originalText())
+              val blockSuppressed = androidSuppressed.plus(
+                buildFeatures.precedingCommentNodeOrNull()
+                  ?.originalText()
+                  ?.suppressions()
+                  .orEmpty()
+              )
+                .distinct()
 
-              buildFeaturesAssignments += assignments
+              val blockStatementVisitor = AssignmentVisitor(ctx.originalText(), blockSuppressed)
+
+              buildFeatures.accept(blockStatementVisitor)
+
+              buildFeaturesAssignments += blockStatementVisitor.assignments
 
               buildFeatures.lambdaBlock()
                 ?.closureContent()
@@ -107,7 +152,8 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
                     BuildFeaturesBlock(
                       fullText = android.originalText(),
                       lambdaContent = buildFeaturesLambda,
-                      settings = assignments
+                      settings = blockStatementVisitor.assignments,
+                      blockSuppressed = blockSuppressed
                     )
                   )
                 }
@@ -119,10 +165,20 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
           pathExpressionVisitor { buildFeatures ->
 
             if (buildFeatures.isNamed("buildFeatures")) {
-              val assignments = buildFeatures.childrenOfTypeRecursive<AssignmentExprAltContext>()
-                .mapAssignments(ctx.originalText())
 
-              buildFeaturesAssignments += assignments
+              val blockSuppressed = androidSuppressed.plus(
+                buildFeatures.precedingCommentNodeOrNull()
+                  ?.originalText()
+                  ?.suppressions()
+                  .orEmpty()
+              )
+                .distinct()
+
+              val blockStatementVisitor = AssignmentVisitor(ctx.originalText(), blockSuppressed)
+
+              buildFeatures.accept(blockStatementVisitor)
+
+              buildFeaturesAssignments += blockStatementVisitor.assignments
 
               val buildFeaturesLambdaContent = buildFeatures.pathElement()
                 ?.lastOrNull()
@@ -131,11 +187,13 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
                 ?.originalText()
 
               if (buildFeaturesLambdaContent != null) {
+
                 buildFeaturesBlocks.add(
                   BuildFeaturesBlock(
                     fullText = android.originalText(),
                     lambdaContent = buildFeaturesLambdaContent,
-                    settings = assignments
+                    settings = blockStatementVisitor.assignments,
+                    blockSuppressed = blockSuppressed
                   )
                 )
               }
@@ -145,7 +203,7 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
       }
     }
 
-    parser.accept(commandVisitor)
+    parser.accept(visitor)
 
     return AndroidGradleSettings(
       assignments = allAssignments,

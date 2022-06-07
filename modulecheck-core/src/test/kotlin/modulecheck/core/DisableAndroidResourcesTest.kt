@@ -150,6 +150,44 @@ class DisableAndroidResourcesTest : RunnerTest() {
   }
 
   @Test
+  fun `unused resource generation should pass if suppressed`() {
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          @Suppress("disable-android-resources")
+          buildFeatures.androidResources = true
+        }
+        """
+      }
+    }
+
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe true
+
+    lib1.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        @Suppress("disable-android-resources")
+        buildFeatures.androidResources = true
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `unused resource generation should be ignored in dynamic-feature module`() {
 
     val lib1 = androidDynamicFeature(":lib1", "com.modulecheck.lib1") {

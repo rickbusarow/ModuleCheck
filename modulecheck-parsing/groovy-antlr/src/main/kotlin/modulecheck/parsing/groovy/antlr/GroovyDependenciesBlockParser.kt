@@ -173,7 +173,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
             logger = logger,
             fullText = statement.originalText(),
             lambdaContent = blockBody,
-            suppressAll = blockSuppressed,
+            blockSuppressed = blockSuppressed,
             projectDependency = projectDependency
           )
 

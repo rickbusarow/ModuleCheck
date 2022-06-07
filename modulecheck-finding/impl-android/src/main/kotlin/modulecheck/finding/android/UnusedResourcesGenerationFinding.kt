@@ -33,25 +33,26 @@ import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
 
 data class UnusedResourcesGenerationFinding(
-  override val findingName: FindingName,
   override val dependentProject: McProject,
   override val dependentPath: ProjectPath.StringProjectPath,
   override val buildFile: File
 ) : Finding, Fixable {
+
+  override val findingName = NAME
 
   override val message: String
     get() = "`androidResources` generation is enabled, but no resources are defined in this module."
 
   override val dependencyIdentifier = ""
 
-  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred { null }
-
-  override val statementTextOrNull = lazyDeferred {
-
+  override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     dependentProject.buildFileParser.androidSettings()
       .assignments
       .firstOrNull { it.propertyFullName == "androidResources" }
-      ?.declarationText
+  }
+
+  override val statementTextOrNull = lazyDeferred {
+    statementOrNull.await()?.declarationText
   }
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred {
@@ -139,5 +140,10 @@ data class UnusedResourcesGenerationFinding(
     val newBlockText = fullText.replace(lambdaContent, newContent)
 
     return buildFile.readText().replace(fullText, newBlockText)
+  }
+
+  companion object {
+    /** @suppress */
+    val NAME = FindingName("disable-android-resources")
   }
 }

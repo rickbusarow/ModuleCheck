@@ -19,4 +19,7 @@ sealed interface Block<T> {
   val fullText: String
   val lambdaContent: String
   val settings: List<T>
+
+  /** [FindingNames][modulecheck.finding.FindingName] which are suppressed at the block level */
+  val blockSuppressed: List<String>
 }

@@ -70,7 +70,7 @@ class GroovyPluginsBlockParser @Inject constructor(
             logger = logger,
             fullText = statement.originalText(),
             lambdaContent = blockBody,
-            suppressedForEntireBlock = blockSuppressed
+            blockSuppressed = blockSuppressed
           )
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
