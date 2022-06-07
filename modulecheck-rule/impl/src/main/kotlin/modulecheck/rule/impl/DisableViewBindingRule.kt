@@ -21,6 +21,7 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.android.DisableViewBindingGenerationFinding
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
@@ -52,7 +53,7 @@ class DisableViewBindingRule @Inject constructor() : DocumentedRule<DisableViewB
           .takeIf { it.isNotEmpty() }
           ?: return@forEach
 
-        val usedInProject = sourceSetName.withDownStream(project)
+        val usedInProject = sourceSetName.withDownStream(project).plus(SourceSetName.MAIN)
           .any { sourceSetNameOrDownstream ->
 
             generatedBindings.any { generated ->

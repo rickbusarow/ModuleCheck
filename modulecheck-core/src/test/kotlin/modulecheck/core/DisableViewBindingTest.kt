@@ -279,6 +279,85 @@ class DisableViewBindingTest : RunnerTest() {
   }
 
   @Test
+  fun `ViewBinding from debug & release is used in main source set`() {
+
+    val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          buildFeatures.viewBinding = true
+        }
+        """
+      }
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          />
+        """,
+        SourceSetName.DEBUG
+      )
+      addLayoutFile(
+        "fragment_lib1.xml",
+        """<?xml version="1.0" encoding="utf-8"?>
+        <androidx.constraintlayout.widget.ConstraintLayout
+          xmlns:android="https://schemas.android.com/apk/res/android"
+          android:id="@+id/fragment_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+          <!-- Slightly different XML layout for release-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        """,
+        SourceSetName.RELEASE
+      )
+
+      // Setting a debug base package, but it's never used.  The inferred FqName for the generated
+      // binding should still reflect the main source set even though it's evaluating a file in
+      // debug.
+      platformPlugin.manifests[SourceSetName.DEBUG] = projectDir
+        .child("src/debug/AndroidManifest.xml")
+        .createSafely("<manifest package=\"com.modulecheck.lib1.debug\" />")
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        import com.modulecheck.lib1.databinding.FragmentLib1Binding
+
+        val binding = FragmentLib1Binding()
+        """
+      )
+    }
+
+    run(
+      autoCorrect = false
+    ).isSuccess shouldBe true
+
+    lib1.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      android {
+        buildFeatures.viewBinding = true
+      }
+    """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `ViewBinding from debug with different base package is used in debug source set`() {
 
     val lib1 = androidLibrary(":lib1", "com.modulecheck.lib1") {
