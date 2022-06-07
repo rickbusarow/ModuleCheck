@@ -32,6 +32,5 @@ dependencies {
   implementation(libs.kotlinPoet)
 
   implementation(project(path = ":modulecheck-utils:stdlib"))
-  implementation(project(path = ":modulecheck-utils:trace"))
   implementation(project(path = ":modulecheck-utils:trace-testing"))
 }

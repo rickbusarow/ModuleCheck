@@ -33,14 +33,14 @@ dependencies {
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils:cache"))
-  api(project(path = ":modulecheck-utils:coroutines"))
   api(project(path = ":modulecheck-utils:lazy"))
-  api(project(path = ":modulecheck-utils:stdlib"))
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-parsing:java"))
+  implementation(project(path = ":modulecheck-utils:cache"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

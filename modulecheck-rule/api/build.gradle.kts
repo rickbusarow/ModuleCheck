@@ -24,10 +24,11 @@ mcbuild {
 dependencies {
 
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-finding:name"))
   api(project(path = ":modulecheck-project:api"))
+
+  implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-finding:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

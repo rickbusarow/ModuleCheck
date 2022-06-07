@@ -24,7 +24,7 @@ mcbuild {
 
 dependencies {
 
-  api(project(":modulecheck-finding:api"))
+  api(project(path = ":modulecheck-finding:api"))
 
   implementation(libs.unbescape)
 

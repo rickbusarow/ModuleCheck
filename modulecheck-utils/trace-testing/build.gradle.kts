@@ -27,7 +27,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
   api(libs.rickBusarow.dispatch.core)
 
-  api(project(path = ":modulecheck-utils:trace"))
+  implementation(project(path = ":modulecheck-utils:trace"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

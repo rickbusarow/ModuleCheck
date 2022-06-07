@@ -26,7 +26,6 @@ dependencies {
 
   api(libs.javax.inject)
 
-  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
@@ -37,6 +36,8 @@ dependencies {
 
   implementation(libs.kotlin.reflect)
   implementation(libs.semVer)
+
+  implementation(project(path = ":modulecheck-dagger"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
