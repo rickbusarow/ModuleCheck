@@ -1,3 +1,54 @@
+# 0.12.3
+
+### 🐛 Bug Fixes
+
+- fix suppressing findings within the AGP
+  DSL ([#712](https://github.com/rbusarow/ModuleCheck/pull/712))
+- parse the declarations of named companion objects and their
+  members ([#706](https://github.com/rbusarow/ModuleCheck/pull/706))
+- treat annotation processor dependencies the same as runtime dependencies for `McProject.uses()`
+  and overshot behavior ([#701](https://github.com/rbusarow/ModuleCheck/pull/701))
+- fix false positive for 'unused-dependency' when consuming `debug` source
+  from `testImplementation` [@tasomaniac](https://github.com/tasomaniac) ([#685](https://github.com/rbusarow/ModuleCheck/pull/685))
+- revert Kotlin to 1.6.10 to fix build issues in targets using
+  1.6.10 ([#683](https://github.com/rbusarow/ModuleCheck/pull/683))
+
+### 🧰 Maintenance
+
+- Update dependency com.vanniktech:gradle-maven-publish-plugin to
+  v0.20.0 ([#707](https://github.com/rbusarow/ModuleCheck/pull/707))
+- Update dependency com.autonomousapps.dependency-analysis to
+  v1.4.0 ([#698](https://github.com/rbusarow/ModuleCheck/pull/698))
+- Update dependency com.osacky.doctor to
+  v0.8.1 ([#699](https://github.com/rbusarow/ModuleCheck/pull/699))
+- Update docusaurus monorepo to
+  v2.0.0-beta.21 ([#691](https://github.com/rbusarow/ModuleCheck/pull/691))
+- Update kotlinx-coroutines to v1.6.2 ([#695](https://github.com/rbusarow/ModuleCheck/pull/695))
+- Update dependency com.autonomousapps.dependency-analysis to
+  v1.3.0 ([#696](https://github.com/rbusarow/ModuleCheck/pull/696))
+- Update dependency com.github.ben-manes.caffeine:caffeine to
+  v3.1.1 ([#694](https://github.com/rbusarow/ModuleCheck/pull/694))
+- remove CI's `tests-windows` need
+  for `publish-maven-local` [@RBusarow](https://github.com/RBusarow) ([#693](https://github.com/rbusarow/ModuleCheck/pull/693))
+- use Caffeine for caching, with `LazyDeferred`
+  loaders [@RBusarow](https://github.com/RBusarow) ([#692](https://github.com/rbusarow/ModuleCheck/pull/692))
+- Update dropbox-dependencyGuard to
+  v0.3.0 ([#690](https://github.com/rbusarow/ModuleCheck/pull/690))
+- don't sign `-SNAPSHOT`
+  builds [@RBusarow](https://github.com/RBusarow) ([#686](https://github.com/rbusarow/ModuleCheck/pull/686))
+- disable KtLint's broken `experimental:type-parameter-list-spacing`
+  rule [@RBusarow](https://github.com/RBusarow) ([#681](https://github.com/rbusarow/ModuleCheck/pull/681))
+- Update crazy-max/ghaction-github-pages action to
+  v3 ([#679](https://github.com/rbusarow/ModuleCheck/pull/679))
+- update changelog for `0.12.2`
+  release [@RBusarow](https://github.com/RBusarow) ([#680](https://github.com/rbusarow/ModuleCheck/pull/680))
+- Update dependency com.rickbusarow.module-check to
+  v0.12.2 ([#678](https://github.com/rbusarow/ModuleCheck/pull/678))
+
+### Contributors
+
+[@RBusarow](https://github.com/RBusarow) and [@tasomaniac](https://github.com/tasomaniac)
+
 # 0.12.2
 
 ### 🐛 Bug Fixes
