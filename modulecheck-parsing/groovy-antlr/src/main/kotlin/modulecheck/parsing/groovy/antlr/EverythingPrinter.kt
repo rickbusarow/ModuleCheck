@@ -15,54 +15,53 @@
 
 package modulecheck.parsing.groovy.antlr
 
-import groovyjarjarantlr4.v4.runtime.tree.ParseTree
-import groovyjarjarantlr4.v4.runtime.tree.RuleNode
-import org.apache.groovy.parser.antlr4.GroovyParser
-import org.apache.groovy.parser.antlr4.GroovyParserBaseVisitor
+import groovyjarjarantlr4.v4.runtime.ParserRuleContext
+import groovyjarjarantlr4.v4.runtime.RuleContext
+import modulecheck.utils.requireNotNull
 
-internal class EverythingPrinter : GroovyParserBaseVisitor<Unit>() {
+internal fun ParserRuleContext.printEverything() {
 
-  private val dashes = "------------------------------------------------------------"
+  val levels = mutableMapOf<RuleContext, Int>(this to 0)
+  val dashes = "------------------------------------------------------------"
 
-  override fun visit(tree: ParseTree) {
-
-    val parent = tree.parent?.let { it::class.java.simpleName }
-
+  fun printNode(nodeSimpleName: String, parentName: String, nodeText: String, level: Int) {
     println(
-      """ $dashes  ${tree::class.java.simpleName}    -- parent: $parent
+      """
+      |   $dashes  $nodeSimpleName    -- parent: $parentName
       |
-      |`${tree.text}`
-      |
+      |   `$nodeText`
       """.trimMargin()
+        .lines()
+        .let {
+          it.dropLast(1) + it.last().replaceFirst("  ", "└─")
+        }
+        .joinToString("\n")
+        .prependIndent("│   ".repeat(level))
     )
-    super.visit(tree)
   }
 
-  override fun visitChildren(node: RuleNode) {
+  printNode(
+    nodeSimpleName = javaClass.simpleName, parentName = "null", nodeText = text, level = 0
+  )
 
-    val parent = node.parent?.let { it::class.java.simpleName }
+  childrenOfTypeRecursive<ParserRuleContext>()
+    .filterNot { it == this }
+    .forEach { node ->
 
-    println(
-      """ $dashes  ${node::class.java.simpleName}    -- parent: $parent
-      |
-      |`${node.text}`
-      |
-      """.trimMargin()
-    )
-    super.visitChildren(node)
-  }
+      val parent = node.parent.requireNotNull {
+        "Parent is null for ${node.javaClass.simpleName}, but that's impossible?"
+      }
 
-  override fun visitExpression(ctx: GroovyParser.ExpressionContext) {
+      val parentLevel = levels.getValue(parent)
+      levels[node] = parentLevel + 1
 
-    val parent = ctx.parent?.let { it::class.java.simpleName }
+      val parentName = parent.javaClass.simpleName
 
-    println(
-      """ $dashes  ${ctx::class.java.simpleName}    -- parent: $parent
-      |
-      |`${ctx.text}`
-      |
-      """.trimMargin()
-    )
-    super.visitExpression(ctx)
-  }
+      printNode(
+        nodeSimpleName = node.javaClass.simpleName,
+        parentName = parentName,
+        nodeText = node.text,
+        level = parentLevel + 1
+      )
+    }
 }

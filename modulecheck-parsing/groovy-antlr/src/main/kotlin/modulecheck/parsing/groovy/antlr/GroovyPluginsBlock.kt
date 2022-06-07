@@ -22,10 +22,10 @@ class GroovyPluginsBlock(
   logger: McLogger,
   override val fullText: String,
   override val lambdaContent: String,
-  suppressedForEntireBlock: List<String>
+  blockSuppressed: List<String>
 ) : AbstractPluginsBlock(
   logger = logger,
-  suppressedForEntireBlock = suppressedForEntireBlock
+  blockSuppressed = blockSuppressed
 ) {
 
   override fun findOriginalStringIndex(parsedString: String) = originalLines

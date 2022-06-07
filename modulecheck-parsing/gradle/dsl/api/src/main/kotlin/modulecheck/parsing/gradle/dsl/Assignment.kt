@@ -21,5 +21,5 @@ data class Assignment(
   val value: String,
   override val declarationText: String,
   override val statementWithSurroundingText: String = declarationText,
-  override val suppressed: List<String> = emptyList()
+  override val suppressed: List<String>
 ) : BuildFileStatement

@@ -24,9 +24,14 @@ interface Problem :
   Finding,
   DependencyFinding {
 
+  /**
+   * Whether this Problem should be ignored. True if the associated statement is annotated with
+   * `@Suppress` and the corresponding finding ID.
+   */
   val isSuppressed: LazyDeferred<Boolean>
     get() = lazyDeferred {
-      statementOrNull.await()?.suppressed
+      statementOrNull.await()
+        ?.suppressed
         ?.contains(findingName.id)
         ?: false
     }

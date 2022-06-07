@@ -23,6 +23,7 @@ import modulecheck.parsing.gradle.dsl.Assignment
 import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBinaryExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtConstantExpression
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.psiUtil.findDescendantOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
+import org.jetbrains.kotlin.psi.psiUtil.parents
 import java.io.File
 import javax.inject.Inject
 
@@ -43,7 +45,7 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
 
     val androidQualifiedSettings = file.getChildrenOfTypeRecursive<KtBinaryExpression>()
       .filter { it.findDescendantOfType<KtNameReferenceExpression>()?.text == "android" }
-      .mapNotNull { it.toAssignmentOrNull(it.text) }
+      .mapNotNull { it.toAssignmentOrNull(it.text, it.suppressedNames()) }
 
     val androidQualified = file.getChildrenOfTypeRecursive<KtDotQualifiedExpression>()
       .filter { it.getChildOfType<KtNameReferenceExpression>()?.text == "android" }
@@ -53,15 +55,18 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
     val androidBlocks = androidBlocksPsi
       .mapNotNull { androidBlock ->
 
+        val blockSuppressed = androidBlock.suppressedNames()
+
         val fullText = androidBlock.text
 
-        val content = androidBlock.getChildrenOfTypeRecursive<KtBlockExpression>()
+        val block = androidBlock.getChildrenOfTypeRecursive<KtBlockExpression>()
           .firstOrNull()
-          ?.text ?: return@mapNotNull null
 
-        val settings = androidBlock.mapAssignments(fullText)
+        val content = block?.text ?: return@mapNotNull null
 
-        AndroidBlock(fullText, content, settings)
+        val settings = androidBlock.mapAssignments(fullText, blockSuppressed)
+
+        AndroidBlock(fullText, content, settings, blockSuppressed)
       }
 
     val buildFeaturesBlocks = (androidBlocksPsi + androidQualified)
@@ -69,6 +74,8 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
 
         android.buildFeaturesBlocks()
           .mapNotNull { buildFeaturesBlock ->
+
+            val blockSuppressed = buildFeaturesBlock.suppressedNames()
 
             val fullText = android.text
 
@@ -78,9 +85,13 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
 
             val content = contentBlock.text
 
-            val settings = contentBlock.mapAssignments(fullText)
+            val allSuppressed = buildFeaturesBlock.parents.filterIsInstance<KtAnnotatedExpression>()
+              .flatMap { it.suppressedNames() }
+              .toList()
 
-            BuildFeaturesBlock(fullText, content, settings)
+            val settings = contentBlock.mapAssignments(fullText, allSuppressed)
+
+            BuildFeaturesBlock(fullText, content, settings, blockSuppressed)
           }
       }
 
@@ -96,12 +107,20 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
     )
   }
 
-  private fun PsiElement.mapAssignments(fullText: String): List<Assignment> {
+  private fun PsiElement.mapAssignments(
+    fullText: String,
+    blockSuppressed: List<String>
+  ): List<Assignment> {
     return getChildrenOfTypeRecursive<KtBinaryExpression>()
-      .mapNotNull { it.toAssignmentOrNull(fullText) }
+      .mapNotNull { it.toAssignmentOrNull(fullText, blockSuppressed) }
   }
 
-  private fun KtBinaryExpression.toAssignmentOrNull(fullText: String): Assignment? {
+  private fun KtBinaryExpression.toAssignmentOrNull(
+    fullText: String,
+    blockSuppressed: List<String>
+  ): Assignment? {
+
+    val suppressed = blockSuppressed.plus(suppressedNames()).distinct()
 
     val propertyFullName = getChildOfType<KtNameReferenceExpression>()?.text
       ?: getChildOfType<KtDotQualifiedExpression>()
@@ -109,16 +128,14 @@ class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
         ?.lastOrNull()
         ?.text
       ?: return null
-    val value = getChildOfType<KtConstantExpression>()
-      ?.text ?: return null
-
-    val assignmentText = text
+    val value = getChildOfType<KtConstantExpression>()?.text ?: return null
 
     return Assignment(
       fullText = fullText,
       propertyFullName = propertyFullName,
       value = value,
-      declarationText = assignmentText
+      declarationText = text,
+      suppressed = suppressed
     )
   }
 }

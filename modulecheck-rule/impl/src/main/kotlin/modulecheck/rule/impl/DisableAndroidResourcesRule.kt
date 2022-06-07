@@ -22,7 +22,6 @@ import modulecheck.api.context.androidResourceReferencesForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.finding.FindingName
 import modulecheck.finding.android.UnusedResourcesGenerationFinding
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
@@ -33,7 +32,7 @@ import javax.inject.Inject
 class DisableAndroidResourcesRule @Inject constructor() :
   DocumentedRule<UnusedResourcesGenerationFinding>() {
 
-  override val name = FindingName("disable-android-resources")
+  override val name = UnusedResourcesGenerationFinding.NAME
   override val description =
     "Finds modules which have android resources R file generation enabled, " +
       "but don't actually use any resources from the module"
@@ -48,7 +47,6 @@ class DisableAndroidResourcesRule @Inject constructor() :
 
     fun findingList() = listOf(
       UnusedResourcesGenerationFinding(
-        findingName = name,
         dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
       )
     )

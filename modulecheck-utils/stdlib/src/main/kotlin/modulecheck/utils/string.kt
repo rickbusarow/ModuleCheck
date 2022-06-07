@@ -77,7 +77,7 @@ fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
 }
 
 /** A naive auto-indent which just counts brackets. */
-fun String.indent(tab: String = "  "): String {
+fun String.indentByBrackets(tab: String = "  "): String {
 
   var tabCount = 0
 
