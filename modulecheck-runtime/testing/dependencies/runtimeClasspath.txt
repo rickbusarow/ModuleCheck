@@ -18,7 +18,6 @@ com.rickbusarow.hermit:hermit-junit5:0.9.5
 com.squareup.anvil:annotations:2.4.0
 com.squareup.moshi:moshi:1.13.0
 com.squareup.okio:okio:2.10.0
-com.squareup:kotlinpoet:1.11.0
 guru.nidi:graphviz-java-min-deps:0.18.1
 guru.nidi:graphviz-java:0.18.1
 io.github.java-diff-utils:java-diff-utils:4.11
