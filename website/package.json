@@ -22,8 +22,8 @@
     "mdx-mermaid": "1.2.3",
     "mermaid": "9.1.2",
     "prism-react-renderer": "1.3.3",
-    "react": "18.1.0",
-    "react-dom": "18.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-infima": "0.0.1-alpha.4"
   },
   "browserslist": {
