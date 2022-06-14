@@ -79,7 +79,6 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlinPoet)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
