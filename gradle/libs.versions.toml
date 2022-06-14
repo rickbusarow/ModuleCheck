@@ -142,8 +142,6 @@ kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", versi
 
 kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.9"
 
-kotlinPoet = "com.squareup:kotlinpoet:1.12.0"
-
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-coreCommon = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common", version.ref = "kotlinx-coroutines" }
@@ -184,6 +182,8 @@ square-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", versio
 square-anvil-compiler-core = { module = "com.squareup.anvil:compiler", version.ref = "square-anvil" }
 square-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "square-anvil" }
 square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref = "square-anvil" }
+
+square-kotlinPoet = "com.squareup:kotlinpoet:1.12.0"
 
 square-moshi = { module = "com.squareup.moshi:moshi", version.ref = "square-moshi" }
 square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "square-moshi" }
