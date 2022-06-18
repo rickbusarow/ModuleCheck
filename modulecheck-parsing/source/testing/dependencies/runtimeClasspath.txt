@@ -4,7 +4,7 @@ com.rickbusarow.dispatch:dispatch-test:1.0.0-beta10
 com.rickbusarow.hermit:hermit-core:0.9.5
 com.rickbusarow.hermit:hermit-coroutines:0.9.5
 com.rickbusarow.hermit:hermit-junit5:0.9.5
-com.squareup.anvil:annotations:2.4.0
+com.squareup.anvil:annotations:2.4.1-1-6
 io.github.java-diff-utils:java-diff-utils:4.11
 io.kotest:kotest-assertions-api-jvm:5.3.1
 io.kotest:kotest-assertions-api:5.3.1
