@@ -43,7 +43,6 @@ fun Project.configurePublishing(
   artifactId: String
 ) {
   apply(plugin = "com.vanniktech.maven.publish.base")
-  apply(plugin = "mcbuild.dokka")
 
   version = VERSION_NAME
 
