@@ -14,6 +14,7 @@
  */
 
 import modulecheck.builds.ModuleCheckBuildExtension
+import org.gradle.kotlin.dsl.findByType
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
@@ -23,70 +24,54 @@ plugins {
   id("org.jetbrains.dokka")
 }
 
-// Dokka doesn't support configuration caching
-tasks.withType(AbstractDokkaLeafTask::class.java) {
-  notCompatibleWithConfigurationCache("")
-}
+tasks
+  .withType<AbstractDokkaLeafTask>()
+  .all {
 
-subprojects {
+    // Dokka doesn't support configuration caching
+    notCompatibleWithConfigurationCache("Dokka doesn't support configuration caching")
 
-  val proj = this
+    // Dokka uses their outputs but doesn't explicitly depend upon them.
+    mustRunAfter(tasks.withType(KotlinCompile::class.java))
+    mustRunAfter(tasks.withType(KtLintCheckTask::class.java))
+    mustRunAfter(tasks.withType(KtLintFormatTask::class.java))
 
-  val includeSubproject = when {
-    path == ":modulecheck-internal-testing" -> false
-    path == ":modulecheck-specs" -> false
-    else -> File("${proj.projectDir}/src").exists()
-  }
+    // The default moduleName for each module in the module list is its unqualified "name",
+    // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
+    // artifact ID, if it has one, or default to its full Gradle path for internal modules.
+    val fullModuleName = extensions.findByType<ModuleCheckBuildExtension>()?.artifactId
+      ?: project.path.removePrefix(":")
+    moduleName.set(fullModuleName)
 
-  if (includeSubproject) {
-    apply(plugin = "org.jetbrains.dokka")
+    if (project != rootProject) {
+      dokkaSourceSets {
 
-    proj.tasks
-      .withType<AbstractDokkaLeafTask>()
-      .configureEach {
+        getByName("main") {
 
-        // Dokka doesn't support configuration caching
-        notCompatibleWithConfigurationCache("")
-
-        // Dokka uses their outputs but doesn't explicitly depend upon them.
-        mustRunAfter(allprojects.map { it.tasks.withType(KotlinCompile::class.java) })
-        mustRunAfter(allprojects.map { it.tasks.withType(KtLintCheckTask::class.java) })
-        mustRunAfter(allprojects.map { it.tasks.withType(KtLintFormatTask::class.java) })
-
-        proj.extensions.configure<ModuleCheckBuildExtension> {
-
-          // The default moduleName for each module in the module list is its unqualified "name",
-          // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
-          // artifact ID, if it has one, or default to its full Gradle path for internal modules.
-          moduleName.set(artifactId ?: proj.path.removePrefix(":"))
-        }
-
-        dokkaSourceSets {
-
-          getByName("main") {
-
-            samples.setFrom(
-              fileTree(proj.projectDir) {
-                include("samples/**")
-              }
-            )
-
-            if (File("${proj.projectDir}/README.md").exists()) {
-              includes.from(files("${proj.projectDir}/README.md"))
+          samples.setFrom(
+            fileTree(projectDir) {
+              include("samples/**")
             }
+          )
 
-            sourceLink {
-              localDirectory.set(file("src/main"))
+          val readmeFile = file("$projectDir/README.md")
 
-              val modulePath = proj.path.replace(":", "/").replaceFirst("/", "")
+          if (readmeFile.exists()) {
+            includes.from(readmeFile)
+          }
 
-              // URL showing where the source code can be accessed through the web browser
-              remoteUrl.set(uri("https://github.com/RBusarow/ModuleCheck/blob/main/$modulePath/src/main").toURL())
-              // Suffix which is used to append the line number to the URL. Use #L for GitHub
-              remoteLineSuffix.set("#L")
-            }
+          sourceLink {
+            localDirectory.set(file("src/main"))
+
+            val modulePath = project.path.replace(":", "/")
+              .replaceFirst("/", "")
+
+            // URL showing where the source code can be accessed through the web browser
+            remoteUrl.set(uri("https://github.com/RBusarow/ModuleCheck/blob/main/$modulePath/src/main").toURL())
+            // Suffix which is used to append the line number to the URL. Use #L for GitHub
+            remoteLineSuffix.set("#L")
           }
         }
       }
+    }
   }
-}
