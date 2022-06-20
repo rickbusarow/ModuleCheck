@@ -240,9 +240,10 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
             **/build
+            **/website
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-gradle-build-website
 
       - name: build website
         run: ./gradlew buildSite --no-daemon
@@ -280,7 +281,7 @@ jobs:
             **/build
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-gradle-tests-ubuntu
 
       - name: all tests
         run: ./gradlew testJvm --no-daemon
