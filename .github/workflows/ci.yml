@@ -41,6 +41,16 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
       - name: dependency-guard
         run: ./gradlew dependencyGuard --no-daemon --refresh-dependencies
 
@@ -79,6 +89,16 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           cache: 'gradle'
+
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
 
       - name: KtLint format (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -120,6 +140,16 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
       - name: ModuleCheck with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
         run: ./gradlew moduleCheckAuto --no-daemon
@@ -159,6 +189,16 @@ jobs:
           distribution: 'adopt'
           java-version: '14'
           cache: 'gradle'
+
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
 
       - name: Check that the version is a -SNAPSHOT version
         run: ./gradlew checkVersionIsSnapshot --no-daemon
@@ -233,12 +273,20 @@ jobs:
 
       - uses: gradle/wrapper-validation-action@v1
 
-      - name: cache 'build website'
+      - name: cache gradle
         uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: cache 'build website'
+        uses: actions/cache@v3
+        with:
+          path: |
             **/build
             **/website
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
@@ -272,12 +320,20 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
-      - name: cache 'tests-ubuntu'
+      - name: cache gradle
         uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: cache build
+        uses: actions/cache@v3
+        with:
+          path: |
             **/build
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
@@ -326,12 +382,20 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
-      - name: cache 'tests-windows'
+      - name: cache gradle
         uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: cache build
+        uses: actions/cache@v3
+        with:
+          path: |
             **/build
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
