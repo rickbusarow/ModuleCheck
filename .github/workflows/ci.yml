@@ -203,44 +203,9 @@ jobs:
           commit_message: update website changelog
           commit_options: '--no-verify --signoff'
 
-  publish-maven-local:
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: check out with token (used by forks)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
-
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'adopt'
-          java-version: '11'
-          cache: 'gradle'
-
-      - name: publish to maven local and build tests
-        uses: burrunan/gradle-cache-action@v1
-        with:
-          gradle-dependencies-cache-key: gradle/libs.versions.toml
-          arguments: |
-            publishToMavenLocal
-            buildTests
-          concurrent: true
-          gradle-build-scan-report: false
-
   website:
     name: build website
     runs-on: ubuntu-latest
-    needs: publish-maven-local
     steps:
 
       - name: Check out repo
@@ -268,13 +233,23 @@ jobs:
 
       - uses: gradle/wrapper-validation-action@v1
 
+      - name: cache 'build website'
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            **/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: build website
         run: ./gradlew buildSite --no-daemon
 
   tests-ubuntu:
 
     runs-on: ubuntu-latest
-    needs: publish-maven-local
 
     steps:
       - name: check out with token (used by forks)
@@ -296,13 +271,19 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
-      - name: all tests
-        uses: burrunan/gradle-cache-action@v1
+      - name: cache 'tests-ubuntu'
+        uses: actions/cache@v3
         with:
-          gradle-dependencies-cache-key: gradle/libs.versions.toml
-          arguments: testJvm
-          concurrent: true
-          gradle-build-scan-report: false
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            **/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: all tests
+        run: ./gradlew testJvm --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
@@ -344,13 +325,19 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
-      - name: all tests
-        uses: burrunan/gradle-cache-action@v1
+      - name: cache 'tests-windows'
+        uses: actions/cache@v3
         with:
-          gradle-dependencies-cache-key: gradle/libs.versions.toml
-          arguments: testJvm
-          concurrent: true
-          gradle-build-scan-report: false
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            **/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: all tests
+        run: ./gradlew testJvm --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
