@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.safeAs
@@ -25,8 +25,10 @@ import kotlin.io.path.name
 sealed interface AndroidResourceDeclaredName : DeclaredName
 
 /** example: `com.example.app.R` */
-class AndroidRDeclaredName(override val name: String) :
-  AndroidResourceDeclaredName,
+class AndroidRDeclaredName(
+  override val name: String,
+  override val packageName: PackageName
+) : AndroidResourceDeclaredName,
   KotlinCompatibleDeclaredName,
   JavaCompatibleDeclaredName,
   XmlCompatibleDeclaredName {
@@ -51,8 +53,9 @@ class AndroidRDeclaredName(override val name: String) :
 }
 
 class GeneratedAndroidResourceDeclaredName(
-  val sourceR: AndroidRReference,
-  val sourceResource: UnqualifiedAndroidResourceReference
+  val sourceR: AndroidRReferenceName,
+  val sourceResource: UnqualifiedAndroidResourceReferenceName,
+  override val packageName: PackageName
 ) : AndroidResourceDeclaredName,
   JavaCompatibleDeclaredName,
   KotlinCompatibleDeclaredName,
@@ -63,12 +66,12 @@ class GeneratedAndroidResourceDeclaredName(
     "${sourceR.name}.${sourceResource.prefix}.${sourceResource.identifier}"
   }
 
-  override val sources: Set<Reference> = setOf(sourceR, sourceResource)
+  override val sources: Set<ReferenceName> = setOf(sourceR, sourceResource)
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<ExplicitReference>()?.name },
+      ifReference = { name == it.safeAs<ExplicitReferenceName>()?.name },
       ifDeclaration = { it::class == this::class && name == it.name }
     )
   }
@@ -80,24 +83,30 @@ class GeneratedAndroidResourceDeclaredName(
 
 class AndroidDataBindingDeclaredName(
   override val name: String,
-  val sourceLayout: UnqualifiedAndroidResourceReference
+  val sourceLayout: UnqualifiedAndroidResourceReferenceName,
+  override val packageName: PackageName
 ) : AndroidResourceDeclaredName,
   JavaCompatibleDeclaredName,
   KotlinCompatibleDeclaredName,
   XmlCompatibleDeclaredName,
   Generated {
 
-  constructor(name: String, sourceLayout: Layout) : this(
+  constructor(
+    name: String,
+    sourceLayoutDeclaration: Layout,
+    packageName: PackageName
+  ) : this(
     name = name,
-    sourceLayout = UnqualifiedAndroidResourceReference(sourceLayout.name)
+    sourceLayout = UnqualifiedAndroidResourceReferenceName(sourceLayoutDeclaration.name),
+    packageName = packageName
   )
 
-  override val sources: Set<Reference> = setOf(sourceLayout)
+  override val sources: Set<ReferenceName> = setOf(sourceLayout)
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<ExplicitReference>()?.name },
+      ifReference = { name == it.safeAs<ExplicitReferenceName>()?.name },
       ifDeclaration = { it::class == this::class && name == it.name }
     )
   }
@@ -110,6 +119,8 @@ class AndroidDataBindingDeclaredName(
 sealed class UnqualifiedAndroidResourceDeclaredName(
   val prefix: String
 ) : AndroidResourceDeclaredName {
+
+  final override val packageName: PackageName = PackageName.DEFAULT
 
   abstract val identifier: String
 
@@ -148,15 +159,16 @@ sealed class UnqualifiedAndroidResourceDeclaredName(
     androidRDeclaration: AndroidRDeclaredName
   ): GeneratedAndroidResourceDeclaredName {
     return GeneratedAndroidResourceDeclaredName(
-      sourceR = AndroidRReference(androidRDeclaration.name),
-      sourceResource = UnqualifiedAndroidResourceReference(this.name)
+      sourceR = AndroidRReferenceName(androidRDeclaration.name),
+      sourceResource = UnqualifiedAndroidResourceReferenceName(this.name),
+      packageName = androidRDeclaration.packageName
     )
   }
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReference>()?.name },
+      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReferenceName>()?.name },
       ifDeclaration = { it::class == this::class && name == it.name }
     )
   }

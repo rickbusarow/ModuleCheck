@@ -15,11 +15,11 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -28,47 +28,59 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
 
   @Test
   fun `agnostic declaration should match self and any reference type`() {
-    AgnosticDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
+    AgnosticDeclaredName(
+      "com.modulecheck.subject",
+      PackageName("com.modulecheck")
+    ).matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
-      ExplicitJavaReference::class,
-      ExplicitKotlinReference::class,
-      ExplicitXmlReference::class,
-      InterpretedJavaReference::class,
-      InterpretedKotlinReference::class
+      ExplicitJavaReferenceName::class,
+      ExplicitKotlinReferenceName::class,
+      ExplicitXmlReferenceName::class,
+      InterpretedJavaReferenceName::class,
+      InterpretedKotlinReferenceName::class
     )
   }
 
   @Test
   fun `kotlin specific declaration should match self and any KotlinReference type`() {
-    KotlinSpecificDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      ExplicitKotlinReference::class,
-      InterpretedKotlinReference::class,
+    KotlinSpecificDeclaredName(
+      "com.modulecheck.subject",
+      PackageName("com.modulecheck")
+    ).matchedClasses() shouldBe listOf(
+      ExplicitKotlinReferenceName::class,
+      InterpretedKotlinReferenceName::class,
       KotlinSpecificDeclaredName::class
     )
   }
 
   @Test
   fun `java specific declaration should match self and any JavaReference or XmlReference type`() {
-    JavaSpecificDeclaredName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      ExplicitJavaReference::class,
-      ExplicitXmlReference::class,
-      InterpretedJavaReference::class,
+    JavaSpecificDeclaredName(
+      "com.modulecheck.subject",
+      PackageName("com.modulecheck")
+    ).matchedClasses() shouldBe listOf(
+      ExplicitJavaReferenceName::class,
+      ExplicitXmlReferenceName::class,
+      InterpretedJavaReferenceName::class,
       JavaSpecificDeclaredName::class
     )
   }
 
   @Test
   fun `android r declaration should match self and any Reference type`() {
-    AndroidRDeclaredName("com.modulecheck.R").matchedClasses() shouldBe listOf(
-      AndroidDataBindingReference::class,
+    AndroidRDeclaredName(
+      "com.modulecheck.R",
+      PackageName("com.modulecheck")
+    ).matchedClasses() shouldBe listOf(
+      AndroidDataBindingReferenceName::class,
       AndroidRDeclaredName::class,
-      AndroidRReference::class,
-      ExplicitJavaReference::class,
-      ExplicitKotlinReference::class,
-      ExplicitXmlReference::class,
-      InterpretedJavaReference::class,
-      InterpretedKotlinReference::class,
-      UnqualifiedAndroidResourceReference::class
+      AndroidRReferenceName::class,
+      ExplicitJavaReferenceName::class,
+      ExplicitKotlinReferenceName::class,
+      ExplicitXmlReferenceName::class,
+      InterpretedJavaReferenceName::class,
+      InterpretedKotlinReferenceName::class,
+      UnqualifiedAndroidResourceReferenceName::class
     )
   }
 
@@ -81,20 +93,20 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       ) { subject ->
 
         oneOfEach("subject")
-          .plus(UnqualifiedAndroidResourceReference("R.${subject.prefix}.subject"))
+          .plus(UnqualifiedAndroidResourceReferenceName("R.${subject.prefix}.subject"))
           .filter { it == subject }
           .map { it::class }
           .sortedBy { it.java.simpleName } shouldBe listOf(
           subject::class,
-          UnqualifiedAndroidResourceReference::class
+          UnqualifiedAndroidResourceReferenceName::class
         ).sortedBy { it.simpleName }
       }
 
   @Test
   fun `duplicate names of incompatible types are allowed in a set`() {
     val list = listOf(
-      JavaSpecificDeclaredName("name"),
-      KotlinSpecificDeclaredName("name")
+      JavaSpecificDeclaredName("name", PackageName("com.modulecheck")),
+      KotlinSpecificDeclaredName("name", PackageName("com.modulecheck"))
     )
 
     val set = list.toSet()
@@ -105,8 +117,8 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
   @Test
   fun `duplicate names of compatible types are allowed in a set`() {
     val list = listOf(
-      AgnosticDeclaredName("name"),
-      KotlinSpecificDeclaredName("name")
+      AgnosticDeclaredName("name", PackageName("com.modulecheck")),
+      KotlinSpecificDeclaredName("name", PackageName("com.modulecheck"))
     )
 
     val set = list.toSet()
@@ -122,10 +134,10 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       .reversed()
       .flatMap {
         listOf(
-          KotlinSpecificDeclaredName(it),
-          AgnosticDeclaredName(it),
-          JavaSpecificDeclaredName(it),
-          AndroidRDeclaredName("$it.R")
+          KotlinSpecificDeclaredName(it, PackageName("com.modulecheck")),
+          AgnosticDeclaredName(it, PackageName("com.modulecheck")),
+          JavaSpecificDeclaredName(it, PackageName("com.modulecheck")),
+          AndroidRDeclaredName("$it.R", PackageName("com.modulecheck"))
         )
       }
       .shuffled()

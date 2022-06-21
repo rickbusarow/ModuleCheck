@@ -34,11 +34,12 @@ import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
+import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.KotlinReference
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitKotlinReference
@@ -84,10 +85,10 @@ class RealKotlinFile(
 
   override val name = ktFile.name
 
-  override val packageFqName by lazy { ktFile.packageFqName.asString() }
+  override val packageName by lazy { PackageName(ktFile.packageFqName.asString()) }
 
   // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
-  private val _aliasMap = mutableMapOf<String, ExplicitKotlinReference>()
+  private val _aliasMap = mutableMapOf<String, ExplicitKotlinReferenceName>()
 
   private val importsStrings: Lazy<Set<String>> = lazy {
 
@@ -114,7 +115,7 @@ class RealKotlinFile(
       }
       .toSet()
   }
-  override val importsLazy: Lazy<Set<Reference>> = lazy {
+  override val importsLazy: Lazy<Set<ReferenceName>> = lazy {
     importsStrings.value
       .mapToSet { it.asExplicitKotlinReference() }
   }
@@ -133,18 +134,18 @@ class RealKotlinFile(
 
     return buildList {
       fun both(name: String) {
-        add(name.asDeclaredName())
+        add(name.asDeclaredName(packageName))
       }
 
       fun kotlin(name: String) {
-        if (!contains(name.asDeclaredName())) {
-          add(name.asKotlinDeclaredName())
+        if (!contains(name.asDeclaredName(packageName))) {
+          add(name.asKotlinDeclaredName(packageName))
         }
       }
 
       fun java(name: String) {
-        if (!contains(name.asDeclaredName())) {
-          add(name.asJavaDeclaredName())
+        if (!contains(name.asDeclaredName(packageName))) {
+          add(name.asJavaDeclaredName(packageName))
         }
       }
 
@@ -257,8 +258,9 @@ class RealKotlinFile(
       .toSet()
   }
 
-  override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
-    return@lazyDeferred refs.await().apiReferences
+  override val apiReferences: LazyDeferred<Set<ReferenceName>> = lazyDeferred {
+
+    refs.await().apiReferenceNames
   }
 
   private val referenceVisitor by lazy {
@@ -284,28 +286,28 @@ class RealKotlinFile(
 
     nameParser.parse(
       NameParserPacket(
-        packageName = packageFqName,
+        packageName = packageName,
         imports = importsStrings.value,
         wildcardImports = wildcardImports,
         aliasedImports = _aliasMap,
         resolved = emptySet(),
         unresolved = unresolved,
         mustBeApi = mustBeApi,
-        apiReferences = emptySet(),
-        toExplicitReference = Reference::ExplicitKotlinReference,
-        toInterpretedReference = Reference::InterpretedKotlinReference,
+        apiReferenceNames = emptySet(),
+        toExplicitReferenceName = ReferenceName::ExplicitKotlinReferenceName,
+        toInterpretedReferenceName = ReferenceName::InterpretedKotlinReferenceName,
         stdLibNameOrNull = String::kotlinStdLibNameOrNull
       )
     )
   }
 
-  override val references: LazySet<Reference> = listOf(
+  override val references: LazySet<ReferenceName> = listOf(
     dataSource { refs.await().resolved }
   ).toLazySet()
 
   override suspend fun getAnvilScopeArguments(
-    allAnnotations: List<ExplicitReference>,
-    mergeAnnotations: List<ExplicitReference>
+    allAnnotations: List<ExplicitReferenceName>,
+    mergeAnnotations: List<ExplicitReferenceName>
   ): ScopeArgumentParseResult {
     val mergeArguments = mutableSetOf<RawAnvilAnnotatedType>()
     val contributeArguments = mutableSetOf<RawAnvilAnnotatedType>()
@@ -360,11 +362,11 @@ class RealKotlinFile(
     val resolvedScope = this@RealKotlinFile.references
       .firstOrNull { ref ->
         ref.endsWith(entryText)
-      } as? KotlinReference
+      } as? KotlinReferenceName
       ?: entryText
 
     return RawAnvilAnnotatedType(
-      declaredName = typeFqName.asDeclaredName(),
+      declaredName = typeFqName.asDeclaredName(packageName),
       anvilScopeNameEntry = AnvilScopeNameEntry(resolvedScope)
     )
   }

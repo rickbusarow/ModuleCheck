@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.source.AndroidRDeclaredName
-import modulecheck.parsing.source.AndroidRReference
-import modulecheck.parsing.source.AndroidResourceReference
-import modulecheck.parsing.source.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.AndroidRReferenceName
+import modulecheck.parsing.source.AndroidResourceReferenceName
+import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
@@ -43,7 +43,7 @@ class AndroidResourceReferenceParsingInterceptor(
 
     val localROrNull = packet.findLocalROrNull(rNames)
 
-    val newFullyQualified = mutableSetOf<Reference>()
+    val newFullyQualified = mutableSetOf<ReferenceName>()
 
     val usedRDeclarations = rNames
       .filter { rName ->
@@ -54,8 +54,8 @@ class AndroidResourceReferenceParsingInterceptor(
       }
       .toSet()
 
-    val resolvedRs: MutableSet<AndroidResourceReference> = usedRDeclarations
-      .map { AndroidRReference(it.name) }
+    val resolvedRs: MutableSet<AndroidResourceReferenceName> = usedRDeclarations
+      .map { AndroidRReferenceName(it.name) }
       .toMutableSet()
 
     val validRPrefixes = usedRDeclarations + listOfNotNull(localROrNull)
@@ -67,7 +67,7 @@ class AndroidResourceReferenceParsingInterceptor(
           ?.let { rPrefix ->
 
             if (rPrefix == localROrNull) {
-              resolvedRs.add(AndroidRReference(rPrefix.name))
+              resolvedRs.add(AndroidRReferenceName(rPrefix.name))
             }
 
             ref.name.removePrefix("${rPrefix.name}.")
@@ -76,9 +76,9 @@ class AndroidResourceReferenceParsingInterceptor(
 
                 val fqName = unqualifiedDeclaredName.toNamespacedDeclaredName(rPrefix).name
 
-                newFullyQualified.add(QualifiedAndroidResourceReference(fqName))
+                newFullyQualified.add(QualifiedAndroidResourceReferenceName(fqName))
 
-                UnqualifiedAndroidResourceReference(unqualifiedDeclaredName.name)
+                UnqualifiedAndroidResourceReferenceName(unqualifiedDeclaredName.name)
               }
           }
 
@@ -98,10 +98,10 @@ class AndroidResourceReferenceParsingInterceptor(
             if (localROrNull != null) {
               val fqName = unqualifiedDeclaredName.toNamespacedDeclaredName(localROrNull).name
 
-              newFullyQualified.add(QualifiedAndroidResourceReference(fqName))
+              newFullyQualified.add(QualifiedAndroidResourceReferenceName(fqName))
             }
 
-            UnqualifiedAndroidResourceReference(unqualifiedDeclaredName.name)
+            UnqualifiedAndroidResourceReferenceName(unqualifiedDeclaredName.name)
           }
           ?: ref.twoPartUnqualifiedDeclarationOrNull()
             ?.let { unqualifiedDeclaredName ->
@@ -122,10 +122,10 @@ class AndroidResourceReferenceParsingInterceptor(
               if (rRef != null) {
                 val fqName = unqualifiedDeclaredName.toNamespacedDeclaredName(rRef).name
 
-                newFullyQualified.add(QualifiedAndroidResourceReference(fqName))
+                newFullyQualified.add(QualifiedAndroidResourceReferenceName(fqName))
               }
 
-              UnqualifiedAndroidResourceReference(unqualifiedDeclaredName.name)
+              UnqualifiedAndroidResourceReferenceName(unqualifiedDeclaredName.name)
             }
 
         if (unqualifiedRRef == null) {
@@ -133,7 +133,7 @@ class AndroidResourceReferenceParsingInterceptor(
         }
 
         if (localROrNull != null && unqualifiedRRef != null) {
-          resolvedRs.add(AndroidRReference(localROrNull.name))
+          resolvedRs.add(AndroidRReferenceName(localROrNull.name))
         }
 
         unqualifiedRRef
@@ -185,7 +185,7 @@ class AndroidResourceReferenceParsingInterceptor(
   ): AndroidRDeclaredName? {
     val aliasValueStrings = aliasedImports.values.mapToSet { it.name }
     return androidRNameProvider.getLocalOrNull()
-      .takeIf { it?.name == "$packageName.R" }
+      .takeIf { it?.name == packageName.append("R") }
       ?: rNames.firstOrNull { imports.contains(it.name) && !aliasValueStrings.contains(it.name) }
       ?: wildcardImports
         .firstNotNullOfOrNull { wildcard ->

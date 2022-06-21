@@ -15,26 +15,29 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.AgnosticReference
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.JavaReference
-import modulecheck.parsing.source.Reference.KotlinReference
+import modulecheck.parsing.source.ReferenceName.AgnosticReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.safeAs
 
-sealed interface AndroidResourceReference : Reference, AgnosticReference
+sealed interface AndroidResourceReferenceName : ReferenceName, AgnosticReferenceName
 
-class AndroidRReference(override val name: String) :
-  AndroidResourceReference,
-  ExplicitReference,
-  KotlinReference,
-  JavaReference {
+class AndroidRReferenceName(override val name: String) :
+  AndroidResourceReferenceName,
+  ExplicitReferenceName,
+  KotlinReferenceName,
+  JavaReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other = other,
       ifReference = {
-        name == (it.safeAs<AndroidRReference>()?.name ?: it.safeAs<ExplicitReference>()?.name)
+        name == (
+          it.safeAs<AndroidRReferenceName>()?.name
+            ?: it.safeAs<ExplicitReferenceName>()?.name
+          )
       },
       ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
     )
@@ -45,9 +48,9 @@ class AndroidRReference(override val name: String) :
   override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
-class UnqualifiedAndroidResourceReference(override val name: String) :
-  AndroidResourceReference,
-  ExplicitReference {
+class UnqualifiedAndroidResourceReferenceName(override val name: String) :
+  AndroidResourceReferenceName,
+  ExplicitReferenceName {
 
   private val split by unsafeLazy {
     name.split('.').also {
@@ -65,7 +68,7 @@ class UnqualifiedAndroidResourceReference(override val name: String) :
   override fun equals(other: Any?): Boolean {
     return matches(
       other = other,
-      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReference>()?.name },
+      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReferenceName>()?.name },
       ifDeclaration = { name == it.safeAs<AndroidResourceDeclaredName>()?.name }
     )
   }
@@ -75,9 +78,9 @@ class UnqualifiedAndroidResourceReference(override val name: String) :
   override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
-class AndroidDataBindingReference(override val name: String) :
-  AndroidResourceReference,
-  ExplicitReference {
+class AndroidDataBindingReferenceName(override val name: String) :
+  AndroidResourceReferenceName,
+  ExplicitReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
@@ -92,17 +95,20 @@ class AndroidDataBindingReference(override val name: String) :
   override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
-class QualifiedAndroidResourceReference(override val name: String) :
-  AndroidResourceReference,
-  ExplicitReference,
-  KotlinReference,
-  JavaReference {
+class QualifiedAndroidResourceReferenceName(override val name: String) :
+  AndroidResourceReferenceName,
+  ExplicitReferenceName,
+  KotlinReferenceName,
+  JavaReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other = other,
       ifReference = {
-        name == (it.safeAs<AndroidRReference>()?.name ?: it.safeAs<ExplicitReference>()?.name)
+        name == (
+          it.safeAs<AndroidRReferenceName>()?.name
+            ?: it.safeAs<ExplicitReferenceName>()?.name
+          )
       },
       ifDeclaration = { name == it.safeAs<GeneratedAndroidResourceDeclaredName>()?.name }
     )

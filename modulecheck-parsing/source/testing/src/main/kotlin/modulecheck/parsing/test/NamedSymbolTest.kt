@@ -19,24 +19,25 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
-import modulecheck.parsing.source.AndroidDataBindingReference
+import modulecheck.parsing.source.AndroidDataBindingReferenceName
 import modulecheck.parsing.source.AndroidRDeclaredName
-import modulecheck.parsing.source.AndroidRReference
+import modulecheck.parsing.source.AndroidRReferenceName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
 import modulecheck.parsing.source.NamedSymbol
-import modulecheck.parsing.source.QualifiedAndroidResourceReference
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asExplicitKotlinReference
@@ -54,8 +55,8 @@ interface NamedSymbolTest : FancyShould {
 
   class JvmFileBuilder {
 
-    val references = mutableListOf<Reference>()
-    val apiReferences = mutableListOf<Reference>()
+    val referenceNames = mutableListOf<ReferenceName>()
+    val apiReferenceNames = mutableListOf<ReferenceName>()
     val declarations = mutableListOf<DeclaredName>()
 
     fun references(builder: NormalReferenceBuilder.() -> Unit) {
@@ -71,22 +72,22 @@ interface NamedSymbolTest : FancyShould {
     }
 
     open class ReferenceBuilder(
-      private val target: MutableList<Reference>
+      private val target: MutableList<ReferenceName>
     ) {
 
-      fun androidR(name: String) = AndroidRReference(name)
+      fun androidR(name: String) = AndroidRReferenceName(name)
         .also { target.add(it) }
 
       fun androidDataBinding(name: String) =
-        AndroidDataBindingReference(name)
+        AndroidDataBindingReferenceName(name)
           .also { target.add(it) }
 
       fun qualifiedAndroidResource(name: String) =
-        QualifiedAndroidResourceReference(name)
+        QualifiedAndroidResourceReferenceName(name)
           .also { target.add(it) }
 
       fun unqualifiedAndroidResource(name: String) =
-        UnqualifiedAndroidResourceReference(name)
+        UnqualifiedAndroidResourceReferenceName(name)
           .also { target.add(it) }
 
       fun explicitKotlin(name: String) = name.asExplicitKotlinReference()
@@ -102,14 +103,22 @@ interface NamedSymbolTest : FancyShould {
         .also { target.add(it) }
     }
 
-    inner class NormalReferenceBuilder : ReferenceBuilder(references)
+    inner class NormalReferenceBuilder : ReferenceBuilder(referenceNames)
 
-    inner class ApiReferenceBuilder : ReferenceBuilder(apiReferences)
+    inner class ApiReferenceBuilder : ReferenceBuilder(apiReferenceNames)
 
     inner class DeclarationsBuilder {
-      fun kotlin(name: String) = name.asKotlinDeclaredName().also { declarations.add(it) }
-      fun java(name: String) = name.asJavaDeclaredName().also { declarations.add(it) }
-      fun agnostic(name: String) = name.asDeclaredName().also { declarations.add(it) }
+      fun kotlin(name: String, packageName: String = "com.subject") =
+        name.asKotlinDeclaredName(PackageName(packageName))
+          .also { declarations.add(it) }
+
+      fun java(name: String, packageName: String = "com.subject") =
+        name.asJavaDeclaredName(PackageName(packageName))
+          .also { declarations.add(it) }
+
+      fun agnostic(name: String, packageName: String = "com.subject") =
+        name.asDeclaredName(PackageName(packageName))
+          .also { declarations.add(it) }
     }
   }
 
@@ -117,8 +126,8 @@ interface NamedSymbolTest : FancyShould {
 
     val other = JvmFileBuilder().also { it.config() }
 
-    references shouldBe other.references
-    apiReferences shouldBe other.apiReferences
+    references shouldBe other.referenceNames
+    apiReferences shouldBe other.apiReferenceNames
     declarations shouldBe other.declarations
   }
 
@@ -126,7 +135,7 @@ interface NamedSymbolTest : FancyShould {
     prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
   }
 
-  infix fun LazySet<Reference>.shouldBe(other: Collection<Reference>) {
+  infix fun LazySet<ReferenceName>.shouldBe(other: Collection<ReferenceName>) {
     runBlocking(Trace.start(NamedSymbolTest::class)) {
       toList()
         .distinct()
@@ -134,7 +143,7 @@ interface NamedSymbolTest : FancyShould {
     }
   }
 
-  infix fun LazyDeferred<Set<Reference>>.shouldBe(other: Collection<Reference>) {
+  infix fun LazyDeferred<Set<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
     runBlocking(Trace.start(NamedSymbolTest::class)) {
       await()
         .distinct()
@@ -142,7 +151,7 @@ interface NamedSymbolTest : FancyShould {
     }
   }
 
-  infix fun List<LazySet.DataSource<Reference>>.shouldBe(other: Collection<Reference>) {
+  infix fun List<LazySet.DataSource<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
     runBlocking(Trace.start(NamedSymbolTest::class)) {
       flatMap { it.get() }
         .distinct()
@@ -151,16 +160,19 @@ interface NamedSymbolTest : FancyShould {
     }
   }
 
-  fun kotlin(name: String) = name.asKotlinDeclaredName()
+  fun kotlin(name: String, packageName: String = "com.subject") =
+    name.asKotlinDeclaredName(PackageName(packageName))
 
-  fun java(name: String) = name.asJavaDeclaredName()
+  fun java(name: String, packageName: String = "com.subject") =
+    name.asJavaDeclaredName(PackageName(packageName))
 
-  fun agnostic(name: String) = name.asDeclaredName()
+  fun agnostic(name: String, packageName: String = "com.subject") =
+    name.asDeclaredName(PackageName(packageName))
 
-  fun androidR(name: String) = AndroidRReference(name)
-  fun androidDataBinding(name: String) = AndroidDataBindingReference(name)
-  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReference(name)
-  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReference(name)
+  fun androidR(name: String) = AndroidRReferenceName(name)
+  fun androidDataBinding(name: String) = AndroidDataBindingReferenceName(name)
+  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReferenceName(name)
+  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReferenceName(name)
 }
 
 fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
@@ -169,15 +181,15 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
   .joinToString("\n") { (_, names) ->
     val name = when (val symbol = names.first()) {
       // declarations
-      is ExplicitJavaReference -> "explicitJava"
-      is ExplicitKotlinReference -> "explicitKotlin"
-      is ExplicitXmlReference -> "explicitXml"
-      is InterpretedJavaReference -> "interpretedJava"
-      is InterpretedKotlinReference -> "interpretedKotlin"
-      is UnqualifiedAndroidResourceReference -> "unqualifiedAndroidResource"
-      is AndroidRReference -> "androidR"
-      is QualifiedAndroidResourceReference -> "qualifiedAndroidResource"
-      is AndroidDataBindingReference -> "androidDataBinding"
+      is ExplicitJavaReferenceName -> "explicitJava"
+      is ExplicitKotlinReferenceName -> "explicitKotlin"
+      is ExplicitXmlReferenceName -> "explicitXml"
+      is InterpretedJavaReferenceName -> "interpretedJava"
+      is InterpretedKotlinReferenceName -> "interpretedKotlin"
+      is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
+      is AndroidRReferenceName -> "androidR"
+      is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
+      is AndroidDataBindingReferenceName -> "androidDataBinding"
       // references
       is AgnosticDeclaredName -> "agnostic"
       is AndroidRDeclaredName -> "androidR"
@@ -186,6 +198,8 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
       is UnqualifiedAndroidResourceDeclaredName -> symbol.prefix
       is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
       is AndroidDataBindingDeclaredName -> "androidDataBinding"
+      // package
+      is PackageName -> "packageName"
     }
     names
       .sortedBy { it.name }

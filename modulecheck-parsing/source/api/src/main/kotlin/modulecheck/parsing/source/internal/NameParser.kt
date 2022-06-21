@@ -15,30 +15,31 @@
 
 package modulecheck.parsing.source.internal
 
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 
 fun interface NameParser {
   suspend fun parse(packet: NameParserPacket): NameParserPacket
 
   data class NameParserPacket(
-    val packageName: String,
+    val packageName: PackageName,
     val imports: Set<String>,
     val wildcardImports: Set<String>,
-    val aliasedImports: Map<String, ExplicitReference>,
-    val resolved: Set<Reference>,
+    val aliasedImports: Map<String, ExplicitReferenceName>,
+    val resolved: Set<ReferenceName>,
     val unresolved: Set<String>,
     // should be a subset of [unresolved]
     val mustBeApi: Set<String>,
-    val apiReferences: Set<Reference>,
-    val toExplicitReference: String.() -> Reference.ExplicitReference,
-    val toInterpretedReference: String.() -> Reference.InterpretedReference,
-    val stdLibNameOrNull: String.() -> ExplicitReference?
+    val apiReferenceNames: Set<ReferenceName>,
+    val toExplicitReferenceName: String.() -> ReferenceName.ExplicitReferenceName,
+    val toInterpretedReferenceName: String.() -> ReferenceName.InterpretedReferenceName,
+    val stdLibNameOrNull: String.() -> ExplicitReferenceName?
   ) {
     override fun toString(): String {
       return """NameParserPacket(
-        |packageName='$packageName',
+        |packageName='${packageName.name}',
         |
         |imports=$imports,
         |
@@ -52,7 +53,7 @@ fun interface NameParser {
         |
         |mustBeApi=$mustBeApi,
         |
-        |apiReferences=$apiReferences
+        |apiReferences=$apiReferenceNames
         |
         |)
       """.trimMargin()

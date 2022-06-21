@@ -16,9 +16,9 @@
 package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.name.FqName
 
 class PsiElementResolver(
   private val project: McProject,
@@ -26,7 +26,7 @@ class PsiElementResolver(
 ) {
   suspend fun fqNameOrNull(
     token: PsiElement
-  ): FqName? {
-    return token.fqNameOrNull(project, sourceSetName)
+  ): DeclaredName? {
+    return token.declaredNameOrNull(project, sourceSetName)
   }
 }

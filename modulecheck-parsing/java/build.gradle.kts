@@ -28,6 +28,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
 
@@ -35,7 +36,6 @@ dependencies {
   implementation(libs.javaParser.symbols)
   implementation(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

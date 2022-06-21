@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.remove
 import org.jetbrains.kotlin.name.FqName
@@ -49,9 +51,14 @@ class JavaParserNodeResolver(
       acc + wildcard.remove(".*").plus(".$nameWithScope")
     }
       .asFlow()
-      .map { project.resolveFqNameOrNull(FqName(it), sourceSetName) }
+      .map {
+        project.resolveFqNameOrNull(
+          declaredName = FqName(it).asDeclaredName(PackageName(packageName)),
+          sourceSetName = sourceSetName
+        )
+      }
       .firstOrNull()
-      ?.let { return it }
+      ?.let { return FqName(it.name) }
 
     return node.fqNameOrNull()
   }
