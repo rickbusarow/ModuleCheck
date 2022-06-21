@@ -194,7 +194,7 @@ val integrationTest by tasks.creating(Test::class) {
   val integrationTestSourceSet = java.sourceSets["integrationTest"]
   testClassesDirs = integrationTestSourceSet.output.classesDirs
   classpath = integrationTestSourceSet.runtimeClasspath
-  dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
+  dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
 }
 
 tasks.matching { it.name == "check" }.all { dependsOn(integrationTest) }
