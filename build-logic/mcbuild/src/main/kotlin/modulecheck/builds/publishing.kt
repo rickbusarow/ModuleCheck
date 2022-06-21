@@ -46,6 +46,8 @@ fun Project.configurePublishing(
 
   version = VERSION_NAME
 
+  var skipDokka = false
+
   configure<MavenPublishBaseExtension> {
     publishToMavenCentral(DEFAULT)
     signAllPublications()
@@ -116,14 +118,24 @@ fun Project.configurePublishing(
     notCompatibleWithConfigurationCache("")
     // skip signing for -LOCAL and -SNAPSHOT publishing
     onlyIf {
-
       !VERSION_NAME.endsWith("SNAPSHOT") && !VERSION_NAME.endsWith("LOCAL")
     }
   }
   tasks.withType(AbstractDokkaLeafTask::class.java) {
-    // skip signing for -LOCAL publishing
-    onlyIf {
-      !VERSION_NAME.endsWith("LOCAL")
-    }
+    onlyIf { !skipDokka }
+  }
+
+  // Integration tests require `publishToMavenLocal`, but they definitely don't need Dokka output,
+  // and generating kdoc for everything takes forever -- especially on a GitHub Actions server.
+  // So for integration tests, skip Dokka tasks.
+  val publishToMavenLocalNoDokka = tasks.register("publishToMavenLocalNoDokka") {
+
+    doFirst { skipDokka = true }
+
+    finalizedBy(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
+  }
+
+  tasks.matching { it.name == "publishToMavenLocal" }.all {
+    mustRunAfter(publishToMavenLocalNoDokka)
   }
 }

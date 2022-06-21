@@ -66,6 +66,11 @@ val publishToMavenLocal by tasks.registering {
     dependsOn(sub.tasks.matching { it.name == "publishToMavenLocal" })
   }
 }
+val publishToMavenLocalNoDokka by tasks.registering {
+  subprojects.forEach { sub ->
+    dependsOn(sub.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
+  }
+}
 
 tasks.matching { it.name == "ktlintFormat" }.configureEach {
   dependsOn(gradle.includedBuild("build-logic").task(":ktlintFormat"))
