@@ -19,6 +19,7 @@ import io.kotest.common.runBlocking
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.toSet
 import org.junit.jupiter.api.Test
 
 class LazySetTest {
@@ -29,6 +30,22 @@ class LazySetTest {
 
     subject.isEmpty() shouldBe true
     subject.isNotEmpty() shouldBe false
+  }
+
+  @Test
+  fun `data source is only evaluated once`() = runBlocking {
+
+    var invocations = 0
+
+    val ds = dataSource {
+      setOf(++invocations)
+    }
+
+    val ls1 = lazySet(ds)
+    val ls2 = lazySet(ds)
+
+    ls1.toSet() shouldBe setOf(1)
+    ls2.toSet() shouldBe setOf(1)
   }
 
   @Test
