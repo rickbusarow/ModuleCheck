@@ -18,13 +18,13 @@ package modulecheck.parsing.android
 import groovy.util.Node
 import groovy.util.NodeList
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.utils.flatMapToSet
 import java.io.File
 
 class AndroidStylesParser {
 
-  fun parseFile(file: File): Set<UnqualifiedAndroidResourceReference> {
+  fun parseFile(file: File): Set<UnqualifiedAndroidResourceReferenceName> {
 
     val xmlParser = SafeXmlParser()
 
@@ -38,7 +38,7 @@ class AndroidStylesParser {
       .flatMapToSet { it }
   }
 
-  private fun parseNode(styleNode: Node): Set<UnqualifiedAndroidResourceReference> {
+  private fun parseNode(styleNode: Node): Set<UnqualifiedAndroidResourceReferenceName> {
 
     // We don't actually need this attribute, but if it isn't there, this isn't a valid style.
     styleNode.attribute("name")?.toString() ?: return emptySet()
@@ -48,7 +48,7 @@ class AndroidStylesParser {
       ?.let { parentName ->
 
         UnqualifiedAndroidResourceDeclaredName.fromValuePair("style", parentName)
-          ?.let { UnqualifiedAndroidResourceReference(it.name) }
+          ?.let { UnqualifiedAndroidResourceReferenceName(it.name) }
       }
 
     return styleNode.children()
@@ -58,7 +58,7 @@ class AndroidStylesParser {
       .filterIsInstance<NodeList>()
       .mapNotNull { valueNodeList ->
         UnqualifiedAndroidResourceDeclaredName.fromString(valueNodeList.text())
-          ?.let { UnqualifiedAndroidResourceReference(it.name) }
+          ?.let { UnqualifiedAndroidResourceReferenceName(it.name) }
       }
       .plus(listOfNotNull(parentOrNull))
       .toSet()

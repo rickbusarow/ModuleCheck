@@ -15,24 +15,24 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitReference
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.utils.lazy.LazyDeferred
 
 sealed interface JvmFile : HasReferences {
   val name: String
-  val packageFqName: String
+  val packageName: PackageName
   val declarations: Set<DeclaredName>
 
-  val importsLazy: Lazy<Set<Reference>>
-  val apiReferences: LazyDeferred<Set<Reference>>
+  val importsLazy: Lazy<Set<ReferenceName>>
+  val apiReferences: LazyDeferred<Set<ReferenceName>>
 }
 
 interface KotlinFile : JvmFile {
 
   /** A weird, dated function for getting Anvil scope arguments */
   suspend fun getAnvilScopeArguments(
-    allAnnotations: List<ExplicitReference>,
-    mergeAnnotations: List<ExplicitReference>
+    allAnnotations: List<ExplicitReferenceName>,
+    mergeAnnotations: List<ExplicitReferenceName>
   ): ScopeArgumentParseResult
 
   data class ScopeArgumentParseResult(

@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
@@ -28,14 +28,14 @@ import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.toLazySet
 
 data class References(
-  private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<ReferenceName>>,
   private val project: McProject
 ) : Element {
 
   override val key: ProjectContext.Key<References>
     get() = Key
 
-  suspend fun all(): LazySet<Reference> {
+  suspend fun all(): LazySet<ReferenceName> {
 
     return project.sourceSets
       .keys
@@ -44,11 +44,11 @@ data class References(
       .let { lazySet(it) }
   }
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<ReferenceName> {
     return delegate.getOrPut(sourceSetName) { fetchNewReferences(sourceSetName) }
   }
 
-  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
+  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<ReferenceName> {
 
     return project.jvmFilesForSourceSetName(sourceSetName)
       .toList()
@@ -73,4 +73,4 @@ suspend fun ProjectContext.references(): References = get(References)
 
 suspend fun ProjectContext.referencesForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<Reference> = references().get(sourceSetName)
+): LazySet<ReferenceName> = references().get(sourceSetName)

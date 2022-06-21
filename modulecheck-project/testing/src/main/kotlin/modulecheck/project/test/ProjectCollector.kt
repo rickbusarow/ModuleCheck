@@ -32,9 +32,9 @@ import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.Reference.ExplicitReference
-import modulecheck.parsing.source.Reference.InterpretedReference
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedReferenceName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -273,9 +273,9 @@ interface ProjectCollector {
           .forEach eachRef@{ reference ->
 
             val referenceName = when (reference) {
-              is ExplicitReference -> reference.name
-              is InterpretedReference -> return@eachRef
-              is UnqualifiedAndroidResourceReference -> reference.name
+              is ExplicitReferenceName -> reference.name
+              is InterpretedReferenceName -> return@eachRef
+              is UnqualifiedAndroidResourceReferenceName -> reference.name
             }
 
             // Only check for references which would be provided by internal projects. Using a

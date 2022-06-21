@@ -16,8 +16,8 @@
 package modulecheck.parsing.wiring
 
 import kotlinx.coroutines.flow.firstOrNull
-import modulecheck.parsing.source.AndroidDataBindingReference
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.AndroidDataBindingReferenceName
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
@@ -31,7 +31,7 @@ class AndroidDataBindingReferenceParsingInterceptor(
   override suspend fun intercept(chain: ParsingInterceptor.Chain): NameParser.NameParserPacket {
     val packet = chain.packet
 
-    val dataBindingReferences = mutableSetOf<Reference>()
+    val dataBindingReferenceNames = mutableSetOf<ReferenceName>()
 
     val stillUnresolved = packet.unresolved.toMutableSet()
 
@@ -43,12 +43,12 @@ class AndroidDataBindingReferenceParsingInterceptor(
         .flatMap { wildcardImport ->
           packet.unresolved
             .map { toResolve ->
-              toResolve to AndroidDataBindingReference(wildcardImport.replace("*", toResolve))
+              toResolve to AndroidDataBindingReferenceName(wildcardImport.replace("*", toResolve))
             }
         }
 
       val fullyQualified = packet.unresolved
-        .map { it to AndroidDataBindingReference(it) }
+        .map { it to AndroidDataBindingReferenceName(it) }
 
       val fromUnresolved = concatenatedWildcards
         .plus(fullyQualified)
@@ -56,25 +56,25 @@ class AndroidDataBindingReferenceParsingInterceptor(
           dataBindingDeclarations.firstOrNull { ref.startsWith(it) }
             ?.let { declaration ->
               stillUnresolved.remove(toResolve)
-              setOf(AndroidDataBindingReference(declaration.name), ref)
+              setOf(AndroidDataBindingReferenceName(declaration.name), ref)
             }
         }
         .flatten()
 
-      dataBindingReferences.addAll(fromUnresolved)
+      dataBindingReferenceNames.addAll(fromUnresolved)
 
       val fromResolved = packet.resolved
         .map { it.name }
         .mapNotNull { resolved ->
-          AndroidDataBindingReference(resolved)
+          AndroidDataBindingReferenceName(resolved)
             .takeIf { ref -> dataBindingDeclarations.any { ref.startsWith(it) } }
         }.toSet()
         .plus(fromUnresolved)
 
-      dataBindingReferences.addAll(fromResolved)
+      dataBindingReferenceNames.addAll(fromResolved)
     }
 
-    val newResolved = dataBindingReferences + packet.resolved
+    val newResolved = dataBindingReferenceNames + packet.resolved
 
     val newResolvedNames = newResolved.mapToSet { it.name }
 

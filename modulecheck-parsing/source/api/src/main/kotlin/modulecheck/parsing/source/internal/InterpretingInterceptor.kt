@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.source.internal
 
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.utils.mapToSet
 
 class InterpretingInterceptor : ParsingInterceptor {
@@ -24,21 +24,21 @@ class InterpretingInterceptor : ParsingInterceptor {
     val packet = chain.packet
 
     val trimmedWildcards = packet.wildcardImports.map { it.removeSuffix(".*") }
-    val newResolved = mutableSetOf<Reference>()
-    val newApi = mutableSetOf<Reference>()
+    val newResolved = mutableSetOf<ReferenceName>()
+    val newApi = mutableSetOf<ReferenceName>()
 
     chain.packet.unresolved
       .forEach { toResolve ->
 
         val interpreted = buildSet {
           // no import
-          add(packet.toInterpretedReference(toResolve))
+          add(packet.toInterpretedReferenceName(toResolve))
 
           // concat with package
-          add(packet.toInterpretedReference("${packet.packageName}.$toResolve"))
+          add(packet.toInterpretedReferenceName(packet.packageName.append(toResolve)))
 
           // concat with any wildcard imports
-          addAll(trimmedWildcards.mapToSet { packet.toInterpretedReference("$it.$toResolve") })
+          addAll(trimmedWildcards.mapToSet { packet.toInterpretedReferenceName("$it.$toResolve") })
         }
 
         newResolved.addAll(interpreted)
@@ -49,7 +49,7 @@ class InterpretingInterceptor : ParsingInterceptor {
 
     return packet.copy(
       resolved = packet.resolved + newResolved,
-      apiReferences = packet.apiReferences + newApi,
+      apiReferenceNames = packet.apiReferenceNames + newApi,
       unresolved = emptySet()
     )
   }

@@ -64,8 +64,9 @@ data class AndroidDataBindingDeclarations(
 
                 // fully qualified
                 AndroidDataBindingDeclaredName(
-                  name = "$basePackage.databinding.$simpleBindingName",
-                  sourceLayout = layoutDeclaration
+                  name = basePackage.append("databinding.$simpleBindingName"),
+                  sourceLayoutDeclaration = layoutDeclaration,
+                  packageName = basePackage
                 )
               }
           }
