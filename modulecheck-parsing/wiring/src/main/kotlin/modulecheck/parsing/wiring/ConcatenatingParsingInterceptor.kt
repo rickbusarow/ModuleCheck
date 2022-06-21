@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.wiring
 
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
 import modulecheck.utils.mapToSet
@@ -29,9 +29,9 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
     val packet = chain.packet
 
     val resolved = packet.resolved
-      .plus(packet.imports.mapToSet { packet.toExplicitReference(it) })
+      .plus(packet.imports.mapToSet { packet.toExplicitReferenceName(it) })
       .toMutableSet()
-    val resolvedApiReferences = mutableSetOf<Reference>()
+    val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
 
     val stillUnresolved = packet.unresolved
       .filter { toResolve ->
@@ -56,10 +56,10 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
 
         if (concatOrNull != null) {
 
-          val asReference = packet.toExplicitReference(concatOrNull)
+          val asReference = packet.toExplicitReferenceName(concatOrNull)
 
           if (packet.mustBeApi.contains(toResolve)) {
-            resolvedApiReferences.add(asReference)
+            resolvedApiReferenceNames.add(asReference)
           }
 
           resolved.add(asReference)
@@ -71,14 +71,14 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
     val newPacket = packet.copy(
       resolved = resolved,
       unresolved = stillUnresolved.toSet(),
-      apiReferences = resolvedApiReferences
+      apiReferenceNames = resolvedApiReferenceNames
     )
 
     return chain.proceed(newPacket)
   }
 
   private fun String.inlineAliasOrNull(
-    aliasedImports: Map<String, Reference.ExplicitReference>
+    aliasedImports: Map<String, ReferenceName.ExplicitReferenceName>
   ): String? {
 
     val toResolve = this

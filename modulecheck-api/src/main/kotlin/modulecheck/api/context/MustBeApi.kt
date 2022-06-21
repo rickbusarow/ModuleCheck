@@ -29,8 +29,8 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.NamedSymbol
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -143,7 +143,7 @@ data class MustBeApi(
 
 private suspend fun McProject.referencesFromDependencies(
   sourceSetName: SourceSetName
-): Set<Reference> {
+): Set<ReferenceName> {
   return sourceSetName.withUpstream(this)
     .flatMapToSet { sourceSetOrUpstream ->
 
@@ -184,7 +184,7 @@ suspend fun McProject.mustBeApiIn(
 
 private suspend fun McProject.mustBeApiIn(
   dependentProject: McProject,
-  referencesFromDependencies: Set<Reference>,
+  referencesFromDependencies: Set<ReferenceName>,
   sourceSetName: SourceSetName,
   isTestFixtures: Boolean,
   directMainDependencies: List<McProject>
@@ -204,7 +204,7 @@ private suspend fun McProject.mustBeApiIn(
   val rTypeMatcher = "^R(?:\\.\\w+)?$".toRegex()
 
   val (rTypes, nonRTypeReferences) = referencesFromDependencies
-    .partition { it is UnqualifiedAndroidResourceReference }
+    .partition { it is UnqualifiedAndroidResourceReferenceName }
 
   nonRTypeReferences
     .firstOrNull { ref ->

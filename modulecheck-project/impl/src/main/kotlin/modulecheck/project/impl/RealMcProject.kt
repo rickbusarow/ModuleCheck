@@ -21,8 +21,8 @@ import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
@@ -30,7 +30,6 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
 import modulecheck.reporting.logging.McLogger
-import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
 @Suppress("LongParameterList")
@@ -87,11 +86,11 @@ class RealMcProject(
   }
 
   override suspend fun resolveFqNameOrNull(
-    declaredName: FqName,
+    declaredName: DeclaredName,
     sourceSetName: SourceSetName
-  ): FqName? {
+  ): DeclaredName? {
     return resolvedDeclaredNames().getSource(
-      declaredName.asDeclaredName(),
+      declaredName,
       sourceSetName
     )
       ?.run { declaredName }

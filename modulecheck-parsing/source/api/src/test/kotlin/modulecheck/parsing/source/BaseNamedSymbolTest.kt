@@ -17,11 +17,11 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.ExplicitXmlReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Anim
@@ -69,14 +69,17 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
     .map { it::class }
     .sortedBy { it.java.simpleName }
 
-  fun oneOfEach(name: String): List<NamedSymbol> {
+  fun oneOfEach(name: String, packageName: String = "com.subject"): List<NamedSymbol> {
     val identifier = name.split(".").last()
 
     return listOf(
-      AndroidRDeclaredName(name.suffixIfNot(".R")),
+      AndroidRDeclaredName(
+        name.suffixIfNot(".R"),
+        packageName = PackageName(packageName)
+      ),
       AndroidDataBindingDeclaredName(
         "com.modulecheck.databinding.${identifier.capitalize()}Binding",
-        sourceLayout = Layout(identifier)
+        sourceLayoutDeclaration = Layout(identifier), packageName = PackageName(packageName)
       ),
 
       AndroidInteger(identifier),
@@ -96,22 +99,29 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
       Raw(identifier),
       Style(identifier),
 
-      AndroidString(identifier)
-        .toNamespacedDeclaredName(AndroidRDeclaredName("com.modulecheck.R")),
+      AndroidString(identifier).toNamespacedDeclaredName(
+        AndroidRDeclaredName(
+          "com.modulecheck.R",
+          packageName = PackageName(packageName)
+        )
+      ),
 
-      AgnosticDeclaredName(name),
-      JavaSpecificDeclaredName(name),
-      KotlinSpecificDeclaredName(name),
+      AgnosticDeclaredName(name, packageName = PackageName(packageName)),
+      JavaSpecificDeclaredName(name, packageName = PackageName(packageName)),
+      KotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
 
-      ExplicitJavaReference(name),
-      ExplicitKotlinReference(name),
-      ExplicitXmlReference(name),
-      InterpretedJavaReference(name),
-      InterpretedKotlinReference(name),
-      AndroidRReference(name),
-      UnqualifiedAndroidResourceReference(name),
-      QualifiedAndroidResourceReference(name),
-      AndroidDataBindingReference(name)
+      ExplicitJavaReferenceName(name),
+      ExplicitKotlinReferenceName(name),
+      ExplicitXmlReferenceName(name),
+      InterpretedJavaReferenceName(name),
+      InterpretedKotlinReferenceName(name),
+      AndroidRReferenceName(name),
+      UnqualifiedAndroidResourceReferenceName(name),
+      QualifiedAndroidResourceReferenceName(name),
+      AndroidDataBindingReferenceName(name),
+
+      PackageNameImpl(name),
+      PackageName.DEFAULT
     ).requireIsExhaustive()
       .sortedBy { it::class.qualifiedName }
   }

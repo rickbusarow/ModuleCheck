@@ -18,7 +18,7 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
@@ -28,17 +28,17 @@ import modulecheck.utils.lazy.asDataSource
 import modulecheck.utils.lazy.lazySet
 
 data class Imports(
-  private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<ReferenceName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<Imports>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<ReferenceName> {
     return delegate.getOrPut(sourceSetName) {
 
-      val jvm: List<DataSource<Reference>> = project.get(JvmFiles)
+      val jvm: List<DataSource<ReferenceName>> = project.get(JvmFiles)
         .get(sourceSetName)
         .map { it.importsLazy.asDataSource(DataSource.Priority.HIGH) }
         .toList()
@@ -62,6 +62,6 @@ data class Imports(
 suspend fun ProjectContext.imports(): Imports = get(Imports)
 suspend fun ProjectContext.importsForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<Reference> {
+): LazySet<ReferenceName> {
   return imports().get(sourceSetName)
 }

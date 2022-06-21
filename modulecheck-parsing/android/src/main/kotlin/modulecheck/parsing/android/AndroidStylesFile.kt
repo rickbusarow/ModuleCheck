@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.android
 
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.mapToSet
@@ -31,7 +31,7 @@ data class AndroidStylesFile(
     AndroidStylesParser().parseFile(file)
   }
 
-  override val references: LazySet<Reference> = lazySet {
+  override val references: LazySet<ReferenceName> = lazySet {
     rawReferences
   }
 

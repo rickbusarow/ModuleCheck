@@ -27,9 +27,9 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.reporting.logging.McLogger
-import org.jetbrains.kotlin.name.FqName
 import java.io.File
 
 @Suppress("TooManyFunctions")
@@ -70,9 +70,9 @@ interface McProject :
   override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 
   suspend fun resolveFqNameOrNull(
-    declaredName: FqName,
+    declaredName: DeclaredName,
     sourceSetName: SourceSetName
-  ): FqName?
+  ): DeclaredName?
 }
 
 private suspend fun McProject.configurationInvocations(): Set<String> {

@@ -16,20 +16,21 @@
 package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.cache.SafeCache
 
 data class AndroidBasePackages(
-  private val delegate: SafeCache<SourceSetName, String?>,
+  private val delegate: SafeCache<SourceSetName, PackageName?>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidBasePackages>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): String? {
+  suspend fun get(sourceSetName: SourceSetName): PackageName? {
     if (!project.isAndroid()) return null
 
     return delegate.getOrPut(sourceSetName) {
@@ -60,4 +61,4 @@ suspend fun ProjectContext.androidBasePackages(): AndroidBasePackages =
 
 suspend fun ProjectContext.androidBasePackagesForSourceSetName(
   sourceSetName: SourceSetName
-): String? = androidBasePackages().get(sourceSetName)
+): PackageName? = androidBasePackages().get(sourceSetName)

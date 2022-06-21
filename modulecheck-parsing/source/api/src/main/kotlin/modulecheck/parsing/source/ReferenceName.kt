@@ -15,18 +15,18 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.ExplicitKotlinReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
-import modulecheck.parsing.source.Reference.InterpretedKotlinReference
+import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.safeAs
 
-sealed interface Reference : NamedSymbol {
+sealed interface ReferenceName : NamedSymbol {
 
-  sealed interface JavaReference : Reference
-  sealed interface KotlinReference : Reference
-  sealed interface AgnosticReference : Reference
+  sealed interface JavaReferenceName : ReferenceName
+  sealed interface KotlinReferenceName : ReferenceName
+  sealed interface AgnosticReferenceName : ReferenceName
 
   /**
    * Marker for any reference made from an XML file.
@@ -34,22 +34,25 @@ sealed interface Reference : NamedSymbol {
    * Note that aside from references to android resources, xml follows the same reference names as
    * Java.
    */
-  sealed interface XmlReference : Reference, JavaReference
+  sealed interface XmlReferenceName : ReferenceName, JavaReferenceName
 
-  sealed interface ExplicitReference : Reference
+  sealed interface ExplicitReferenceName : ReferenceName
 
-  sealed interface InterpretedReference : Reference
+  sealed interface InterpretedReferenceName : ReferenceName
 
-  class ExplicitKotlinReference(override val name: String) :
-    Reference,
-    ExplicitReference,
-    KotlinReference {
+  class ExplicitKotlinReferenceName(override val name: String) :
+    ReferenceName,
+    ExplicitReferenceName,
+    KotlinReferenceName {
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = {
-          name == (it.safeAs<KotlinReference>()?.name ?: it.safeAs<AgnosticReference>()?.name)
+          name == (
+            it.safeAs<KotlinReferenceName>()?.name
+              ?: it.safeAs<AgnosticReferenceName>()?.name
+            )
         },
         ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
       )
@@ -60,16 +63,19 @@ sealed interface Reference : NamedSymbol {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class InterpretedKotlinReference(override val name: String) :
-    Reference,
-    InterpretedReference,
-    KotlinReference {
+  class InterpretedKotlinReferenceName(override val name: String) :
+    ReferenceName,
+    InterpretedReferenceName,
+    KotlinReferenceName {
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = {
-          name == (it.safeAs<KotlinReference>()?.name ?: it.safeAs<AgnosticReference>()?.name)
+          name == (
+            it.safeAs<KotlinReferenceName>()?.name
+              ?: it.safeAs<AgnosticReferenceName>()?.name
+            )
         },
         ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
       )
@@ -80,16 +86,16 @@ sealed interface Reference : NamedSymbol {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class ExplicitJavaReference(override val name: String) :
-    Reference,
-    ExplicitReference,
-    JavaReference {
+  class ExplicitJavaReferenceName(override val name: String) :
+    ReferenceName,
+    ExplicitReferenceName,
+    JavaReferenceName {
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = {
-          name == (it.safeAs<JavaReference>()?.name ?: it.safeAs<AgnosticReference>()?.name)
+          name == (it.safeAs<JavaReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
         },
         ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
       )
@@ -100,16 +106,16 @@ sealed interface Reference : NamedSymbol {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class ExplicitXmlReference(override val name: String) :
-    Reference,
-    ExplicitReference,
-    XmlReference {
+  class ExplicitXmlReferenceName(override val name: String) :
+    ReferenceName,
+    ExplicitReferenceName,
+    XmlReferenceName {
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = {
-          name == (it.safeAs<XmlReference>()?.name ?: it.safeAs<AgnosticReference>()?.name)
+          name == (it.safeAs<XmlReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
         },
         ifDeclaration = { name == it.safeAs<XmlCompatibleDeclaredName>()?.name }
       )
@@ -120,16 +126,16 @@ sealed interface Reference : NamedSymbol {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class InterpretedJavaReference(override val name: String) :
-    Reference,
-    InterpretedReference,
-    JavaReference {
+  class InterpretedJavaReferenceName(override val name: String) :
+    ReferenceName,
+    InterpretedReferenceName,
+    JavaReferenceName {
 
     override fun equals(other: Any?): Boolean {
       return matches(
         other = other,
         ifReference = {
-          name == (it.safeAs<JavaReference>()?.name ?: it.safeAs<AgnosticReference>()?.name)
+          name == (it.safeAs<JavaReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
         },
         ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
       )
@@ -141,14 +147,17 @@ sealed interface Reference : NamedSymbol {
   }
 }
 
-fun String.asExplicitKotlinReference(): ExplicitKotlinReference = ExplicitKotlinReference(this)
-fun String.asInterpretedKotlinReference(): InterpretedKotlinReference =
-  InterpretedKotlinReference(this)
+fun String.asExplicitKotlinReference(): ExplicitKotlinReferenceName =
+  ExplicitKotlinReferenceName(this)
 
-fun String.asExplicitJavaReference(): ExplicitJavaReference = ExplicitJavaReference(this)
-fun String.asInterpretedJavaReference(): InterpretedJavaReference = InterpretedJavaReference(this)
+fun String.asInterpretedKotlinReference(): InterpretedKotlinReferenceName =
+  InterpretedKotlinReferenceName(this)
+
+fun String.asExplicitJavaReference(): ExplicitJavaReferenceName = ExplicitJavaReferenceName(this)
+fun String.asInterpretedJavaReference(): InterpretedJavaReferenceName =
+  InterpretedJavaReferenceName(this)
 
 interface HasReferences {
 
-  val references: LazySet<Reference>
+  val references: LazySet<ReferenceName>
 }
