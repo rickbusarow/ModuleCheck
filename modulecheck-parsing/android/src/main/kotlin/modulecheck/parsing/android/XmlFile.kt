@@ -16,10 +16,11 @@
 package modulecheck.parsing.android
 
 import modulecheck.parsing.source.HasReferences
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitXmlReference
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReference
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.asDataSource
 import modulecheck.utils.lazy.dataSource
@@ -39,8 +40,8 @@ interface XmlFile : HasReferences {
 
     val name: String = file.nameWithoutExtension
 
-    val customViews: Lazy<Set<Reference>> = lazy {
-      AndroidLayoutParser().parseViews(file).mapToSet { ExplicitXmlReference(it) }
+    val customViews: Lazy<Set<ReferenceName>> = lazy {
+      AndroidLayoutParser().parseViews(file).mapToSet { ExplicitXmlReferenceName(it) }
     }
 
     private val attributes by lazy {
@@ -71,10 +72,10 @@ interface XmlFile : HasReferences {
         .toSet()
     }
 
-    override val references: LazySet<Reference> = listOf(
+    override val references: LazySet<ReferenceName> = listOf(
       customViews.asDataSource(),
       dataSource {
-        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
+        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReferenceName(it) }
       }
     ).toLazySet()
   }
@@ -83,8 +84,8 @@ interface XmlFile : HasReferences {
     override val file: File
   ) : XmlFile {
 
-    val basePackage: String? by lazy {
-      AndroidManifestParser().parse(file)["package"]
+    val basePackage: PackageName? by lazy {
+      AndroidManifestParser().parse(file)["package"]?.let { PackageName(it) }
     }
 
     private val rawResources: Set<String> by lazy {
@@ -102,9 +103,9 @@ interface XmlFile : HasReferences {
       declarations.mapToSet { it.name }
     }
 
-    override val references: LazySet<Reference> = listOf(
+    override val references: LazySet<ReferenceName> = listOf(
       dataSource {
-        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReference(it) }
+        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReferenceName(it) }
       }
     ).toLazySet()
   }

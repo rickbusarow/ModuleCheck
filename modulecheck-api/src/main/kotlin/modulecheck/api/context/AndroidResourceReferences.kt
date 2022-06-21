@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.AndroidResourceReference
-import modulecheck.parsing.source.Reference
+import modulecheck.parsing.source.AndroidResourceReferenceName
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -33,18 +33,18 @@ import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.toLazySet
 
 data class AndroidResourceReferences(
-  private val delegate: SafeCache<SourceSetName, LazySet<Reference>>,
+  private val delegate: SafeCache<SourceSetName, LazySet<ReferenceName>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AndroidResourceReferences>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<Reference> {
+  suspend fun get(sourceSetName: SourceSetName): LazySet<ReferenceName> {
     return delegate.getOrPut(sourceSetName) { fetchNewReferences(sourceSetName) }
   }
 
-  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<Reference> {
+  private suspend fun fetchNewReferences(sourceSetName: SourceSetName): LazySet<ReferenceName> {
 
     if (!project.isAndroid()) return emptyLazySet()
 
@@ -53,7 +53,7 @@ data class AndroidResourceReferences(
 
         dataSource {
           jvmFile.references
-            .filterIsInstance<AndroidResourceReference>()
+            .filterIsInstance<AndroidResourceReferenceName>()
             .toSet()
         }
       }
@@ -91,4 +91,4 @@ data class AndroidResourceReferences(
 
 suspend fun ProjectContext.androidResourceReferencesForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<Reference> = get(AndroidResourceReferences).get(sourceSetName)
+): LazySet<ReferenceName> = get(AndroidResourceReferences).get(sourceSetName)

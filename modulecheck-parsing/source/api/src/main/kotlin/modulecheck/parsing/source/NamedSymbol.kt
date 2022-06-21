@@ -21,7 +21,7 @@ package modulecheck.parsing.source
  * requirements.
  *
  * @see DeclaredName
- * @see Reference
+ * @see ReferenceName
  */
 sealed interface NamedSymbol : Comparable<NamedSymbol> {
   val name: String
@@ -51,13 +51,13 @@ sealed interface NamedSymbol : Comparable<NamedSymbol> {
 
 internal inline fun NamedSymbol.matches(
   other: Any?,
-  ifReference: (Reference) -> Boolean,
+  ifReference: (ReferenceName) -> Boolean,
   ifDeclaration: (DeclaredName) -> Boolean
 ): Boolean {
   if (this === other) return true
 
   return when (other) {
-    is Reference -> ifReference(other)
+    is ReferenceName -> ifReference(other)
     is DeclaredName -> ifDeclaration(other)
     else -> false
   }

@@ -58,9 +58,9 @@ import modulecheck.parsing.source.JavaVersion.VERSION_1_8
 import modulecheck.parsing.source.JavaVersion.VERSION_1_9
 import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
-import modulecheck.parsing.source.Reference
-import modulecheck.parsing.source.Reference.ExplicitJavaReference
-import modulecheck.parsing.source.Reference.InterpretedJavaReference
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.internal.NameParser
@@ -70,6 +70,7 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.toLazySet
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
@@ -112,37 +113,37 @@ class RealJavaFile(
 
   private val parsed by ParsedFile.fromCompilationUnitLazy(compilationUnit)
 
-  override val packageFqName by lazy { parsed.packageFqName }
+  override val packageName by unsafeLazy { parsed.packageName }
 
-  override val importsLazy = lazy {
+  override val importsLazy = unsafeLazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
       .map { it.nameAsString.asExplicitJavaReference() }
       .toSet()
   }
 
-  override val declarations by lazy {
+  override val declarations by unsafeLazy {
     parsed.typeDeclarations
       .asSequence()
       .filterNot { it.isPrivate }
       .mapNotNull { declaration ->
         declaration.fullyQualifiedName
           .getOrNull()
-          ?.asDeclaredName()
+          ?.asDeclaredName(packageName)
       }
       .toSet()
       .plus(parsed.fieldDeclarations)
       .plus(parsed.enumDeclarations)
   }
 
-  private val wildcardImports: Set<String> by lazy {
+  private val wildcardImports: Set<String> by unsafeLazy {
     compilationUnit.imports
       .filter { it.isAsterisk }
       .map { "${it.nameAsString}.*" }
       .toSet()
   }
 
-  private val typeReferenceNames: Set<String> by lazy {
+  private val typeReferenceNames: Set<String> by unsafeLazy {
 
     compilationUnit
       .getChildrenOfTypeRecursive<ClassOrInterfaceType>()
@@ -176,9 +177,9 @@ class RealJavaFile(
       ?: nameAsString
   }
 
-  override val apiReferences: LazyDeferred<Set<Reference>> = lazyDeferred {
+  override val apiReferences: LazyDeferred<Set<ReferenceName>> = lazyDeferred {
 
-    refs.await().apiReferences
+    refs.await().apiReferenceNames
   }
 
   private val apiStrings by lazy {
@@ -220,23 +221,23 @@ class RealJavaFile(
       .toSet()
 
     val packet = NameParserPacket(
-      packageName = packageFqName,
+      packageName = packageName,
       imports = importsLazy.value.mapToSet { it.name },
       wildcardImports = wildcardImports,
       aliasedImports = emptyMap(),
       resolved = emptySet(),
       unresolved = typeReferenceNames + methodNames + propertyNames,
       mustBeApi = apiStrings.toSet(),
-      apiReferences = emptySet(),
-      toExplicitReference = ::ExplicitJavaReference,
-      toInterpretedReference = ::InterpretedJavaReference,
+      apiReferenceNames = emptySet(),
+      toExplicitReferenceName = ::ExplicitJavaReferenceName,
+      toInterpretedReferenceName = ::InterpretedJavaReferenceName,
       stdLibNameOrNull = String::javaLangFqNameOrNull
     )
 
     nameParser.parse(packet)
   }
 
-  override val references: LazySet<Reference> = listOf(
+  override val references: LazySet<ReferenceName> = listOf(
     dataSource { refs.await().resolved }
   ).toLazySet()
 }

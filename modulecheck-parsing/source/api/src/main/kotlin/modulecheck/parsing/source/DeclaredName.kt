@@ -15,21 +15,24 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.Reference.JavaReference
-import modulecheck.parsing.source.Reference.KotlinReference
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.utils.safeAs
 import org.jetbrains.kotlin.name.FqName
 
 sealed interface Generated : DeclaredName {
 
-  val sources: Set<Reference>
+  val sources: Set<ReferenceName>
 }
 
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
-sealed interface DeclaredName : NamedSymbol {
+sealed interface DeclaredName : NamedSymbol, HasPackageName {
 
   companion object {
-    operator fun invoke(fqName: String) = AgnosticDeclaredName(fqName)
+    operator fun invoke(
+      fqName: String,
+      packageName: PackageName
+    ) = AgnosticDeclaredName(fqName, packageName)
   }
 }
 
@@ -58,14 +61,16 @@ sealed interface XmlCompatibleDeclaredName : JavaCompatibleDeclaredName, Declare
  * @see KotlinReference
  * @see JavaSpecificDeclaredName
  */
-class KotlinSpecificDeclaredName(override val name: String) :
-  DeclaredName,
+class KotlinSpecificDeclaredName(
+  override val name: String,
+  override val packageName: PackageName
+) : DeclaredName,
   KotlinCompatibleDeclaredName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<KotlinReference>()?.name },
+      ifReference = { name == it.safeAs<KotlinReferenceName>()?.name },
       ifDeclaration = { name == it.safeAs<KotlinSpecificDeclaredName>()?.name }
     )
   }
@@ -91,20 +96,22 @@ class KotlinSpecificDeclaredName(override val name: String) :
  *
  * In Java, this will be accessed as `com.example.FileKt.getSomeProperty();`
  *
- * These Java-specific declarations will only match to the [JavaReference] type.
+ * These Java-specific declarations will only match to the [JavaReferenceName] type.
  *
- * @see JavaReference
+ * @see JavaReferenceName
  * @see JavaSpecificDeclaredName
  */
-class JavaSpecificDeclaredName(override val name: String) :
-  DeclaredName,
+class JavaSpecificDeclaredName(
+  override val name: String,
+  override val packageName: PackageName
+) : DeclaredName,
   JavaCompatibleDeclaredName,
   XmlCompatibleDeclaredName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<JavaReference>()?.name },
+      ifReference = { name == it.safeAs<JavaReferenceName>()?.name },
       ifDeclaration = { name == it.safeAs<JavaSpecificDeclaredName>()?.name }
     )
   }
@@ -117,13 +124,16 @@ class JavaSpecificDeclaredName(override val name: String) :
 /**
  * Represents names which can only be referenced from either Java or Kotlin.
  *
- * These language-neutral declarations will match to any [JavaReference] or [KotlinReference] type.
+ * These language-neutral declarations will match to any [JavaReferenceName] or
+ * [KotlinReferenceName] type.
  *
- * @see JavaReference
+ * @see JavaReferenceName
  * @see JavaSpecificDeclaredName
  */
-class AgnosticDeclaredName(override val name: String) :
-  DeclaredName,
+class AgnosticDeclaredName(
+  override val name: String,
+  override val packageName: PackageName
+) : DeclaredName,
   JavaCompatibleDeclaredName,
   KotlinCompatibleDeclaredName,
   XmlCompatibleDeclaredName {
@@ -141,17 +151,17 @@ class AgnosticDeclaredName(override val name: String) :
   override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
-fun String.asAndroidRDeclaration(): AndroidRDeclaredName = AndroidRDeclaredName(this)
+fun String.asAndroidRDeclaration(packageName: PackageName): AndroidRDeclaredName =
+  AndroidRDeclaredName(this, packageName)
 
-fun String.asKotlinDeclaredName(): DeclaredName = KotlinSpecificDeclaredName(this)
+fun String.asKotlinDeclaredName(packageName: PackageName): DeclaredName =
+  KotlinSpecificDeclaredName(this, packageName)
 
-fun String.asJavaDeclaredName(): DeclaredName = JavaSpecificDeclaredName(this)
+fun String.asJavaDeclaredName(packageName: PackageName): DeclaredName =
+  JavaSpecificDeclaredName(this, packageName)
 
-fun String.asDeclaredName(): DeclaredName = AgnosticDeclaredName(this)
+fun String.asDeclaredName(packageName: PackageName): DeclaredName =
+  AgnosticDeclaredName(this, packageName)
 
-fun FqName.asDeclaredName(): DeclaredName = AgnosticDeclaredName(asString())
-
-@JvmName("containsDeclaredName")
-fun Set<DeclaredName>.containsAny(names: Set<String>): Boolean {
-  return names.any { it.asDeclaredName() in this }
-}
+fun FqName.asDeclaredName(packageName: PackageName): DeclaredName =
+  AgnosticDeclaredName(asString(), packageName)

@@ -25,11 +25,12 @@ import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.type.ClassOrInterfaceType
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
 import modulecheck.utils.mapToSet
 import org.jetbrains.kotlin.name.FqName
 
 internal data class ParsedFile(
-  val packageFqName: String,
+  val packageName: PackageName,
   val imports: List<ImportDeclaration>,
   val classOrInterfaceTypes: Set<FqName>,
   val typeDeclarations: List<TypeDeclaration<*>>,
@@ -40,7 +41,9 @@ internal data class ParsedFile(
 
     fun fromCompilationUnitLazy(compilationUnit: CompilationUnit): Lazy<ParsedFile> {
       return lazy {
-        val packageFqName = compilationUnit.packageDeclaration.getOrNull()?.nameAsString ?: ""
+        val packageName = PackageName(
+          compilationUnit.packageDeclaration.getOrNull()?.nameAsString
+        )
         val imports = compilationUnit.imports.orEmpty()
 
         val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
@@ -58,32 +61,35 @@ internal data class ParsedFile(
 
                 if (node.canBeResolved()) {
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                    memberDeclarations.add(AgnosticDeclaredName(fqName))
+                    memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
                   }
                 }
               }
+
               is VariableDeclarator -> {
                 node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                  memberDeclarations.add(AgnosticDeclaredName(fqName))
+                  memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
                 }
               }
+
               is FieldDeclaration -> {
                 if (node.canBeResolved()) {
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                    memberDeclarations.add(AgnosticDeclaredName(fqName))
+                    memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
                   }
                 }
               }
+
               is EnumConstantDeclaration -> {
                 node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                  enumDeclarations.add(AgnosticDeclaredName(fqName))
+                  enumDeclarations.add(AgnosticDeclaredName(fqName, packageName))
                 }
               }
             }
           }
 
         ParsedFile(
-          packageFqName = packageFqName,
+          packageName = packageName,
           imports = imports,
           classOrInterfaceTypes = classOrInterfaceTypes.mapToSet { FqName(it.nameWithScope) },
           typeDeclarations = typeDeclarations.distinct(),

@@ -173,12 +173,12 @@ data class AnvilGraph(
       // Scope must be defined in this same module
       ?: maybeExtraReferences
         .mapNotNull { reference ->
-          reference.name.takeIf { it.startsWith(kotlinFile.packageFqName) }
+          reference.takeIf { it.startsWith(kotlinFile.packageName) }
         }
         .firstOrNull { maybeExtra -> maybeExtra.endsWith(scopeNameEntry.name.name) }
-        ?.let { FqName(it) }
+        ?.let { FqName(it.name) }
       // Scope must be defined in this same package
-      ?: FqName("${kotlinFile.packageFqName}.${scopeNameEntry.name}")
+      ?: FqName("${kotlinFile.packageName}.${scopeNameEntry.name}")
 
     return AnvilScopeName(rawScopeName)
   }

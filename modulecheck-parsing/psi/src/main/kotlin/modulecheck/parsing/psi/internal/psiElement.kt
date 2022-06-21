@@ -17,6 +17,9 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
@@ -95,7 +98,7 @@ fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 }
 
 suspend fun McProject.canResolveFqName(
-  declaredName: FqName,
+  declaredName: DeclaredName,
   sourceSetName: SourceSetName
 ): Boolean {
   return resolveFqNameOrNull(declaredName, sourceSetName) != null
@@ -107,22 +110,24 @@ fun PsiElement.file(): File {
 }
 
 @Suppress("NestedBlockDepth", "ComplexMethod")
-suspend fun PsiElement.fqNameOrNull(
+suspend fun PsiElement.declaredNameOrNull(
   project: McProject,
   sourceSetName: SourceSetName
-): FqName? {
+): DeclaredName? {
 
   val containingKtFile = parentsWithSelf
     .filterIsInstance<KtPureElement>()
     .first()
     .containingKtFile
 
+  val packageName = PackageName(containingKtFile.packageFqName.asString())
+
   val classReference = when (this) {
     // If a fully qualified name is used, then we're done and don't need to do anything further.
     // An inner class reference like Abc.Inner is also considered a KtDotQualifiedExpression in
     // some cases.
     is KtDotQualifiedExpression -> {
-      project.resolveFqNameOrNull(FqName(text), sourceSetName)
+      project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
         ?.let { return it }
         ?: text
     }
@@ -141,7 +146,10 @@ suspend fun PsiElement.fqNameOrNull(
         if (qualifierText != null) {
 
           // The generic might be fully qualified. Try to resolve it and return early.
-          project.resolveFqNameOrNull(FqName("$qualifierText.$className"), sourceSetName)
+          project.resolveFqNameOrNull(
+            FqName("$qualifierText.$className").asDeclaredName(packageName),
+            sourceSetName
+          )
             ?.let { return it }
 
           // If the name isn't fully qualified, then it's something like "Outer.Inner".
@@ -155,7 +163,7 @@ suspend fun PsiElement.fqNameOrNull(
 
         // Sometimes a KtUserType is a fully qualified name. Give it a try and return early.
         if (text.contains(".") && text[0].isLowerCase()) {
-          project.resolveFqNameOrNull(FqName(text), sourceSetName)
+          project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
             ?.let { return it }
         }
 
@@ -169,22 +177,22 @@ suspend fun PsiElement.fqNameOrNull(
       val children = children
       if (children.size == 1) {
         // Could be a KtNullableType or KtUserType.
-        children[0].fqNameOrNull(project, sourceSetName)
+        children[0].declaredNameOrNull(project, sourceSetName)
           ?.let { return it } ?: text
       } else {
         text
       }
     }
 
-    is KtNullableType -> return innerType?.fqNameOrNull(project, sourceSetName)
-    is KtAnnotationEntry -> return typeReference?.fqNameOrNull(project, sourceSetName)
+    is KtNullableType -> return innerType?.declaredNameOrNull(project, sourceSetName)
+    is KtAnnotationEntry -> return typeReference?.declaredNameOrNull(project, sourceSetName)
     is KtClassLiteralExpression -> {
       // Returns "Abc" for "Abc::class".
       return children.singleOrNull()
-        ?.fqNameOrNull(project, sourceSetName)
+        ?.declaredNameOrNull(project, sourceSetName)
     }
 
-    is KtSuperTypeListEntry -> return typeReference?.fqNameOrNull(project, sourceSetName)
+    is KtSuperTypeListEntry -> return typeReference?.declaredNameOrNull(project, sourceSetName)
     else -> return null
   }
 
@@ -200,12 +208,13 @@ suspend fun PsiElement.fqNameOrNull(
     .also { matchingImportPaths ->
       when {
         matchingImportPaths.size == 1 ->
-          return matchingImportPaths[0].fqName
+          return matchingImportPaths[0].fqName.asDeclaredName(packageName)
 
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
-            project.canResolveFqName(importPath.fqName, sourceSetName)
+            project.canResolveFqName(importPath.fqName.asDeclaredName(packageName), sourceSetName)
           }?.fqName
+            ?.asDeclaredName(packageName)
       }
     }
 
@@ -215,14 +224,17 @@ suspend fun PsiElement.fqNameOrNull(
       when {
         matchingImportPaths.size == 1 ->
           return FqName("${matchingImportPaths[0].fqName.parent()}.$classReference")
+            .asDeclaredName(packageName)
 
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
             project.canResolveFqName(
-              importPath.fqName.child(Name.identifier(classReference)),
+              importPath.fqName.child(Name.identifier(classReference))
+                .asDeclaredName(packageName),
               sourceSetName
             )
           }?.fqName
+            ?.asDeclaredName(packageName)
       }
     }
 
@@ -236,7 +248,7 @@ suspend fun PsiElement.fqNameOrNull(
     }
     .forEach { importFqName ->
       project.resolveFqNameOrNull(
-        importFqName.child(Name.identifier(classReference)),
+        importFqName.child(Name.identifier(classReference)).asDeclaredName(packageName),
         sourceSetName
       )
         ?.let { return it }
@@ -244,7 +256,8 @@ suspend fun PsiElement.fqNameOrNull(
 
   // If there is no import, then try to resolve the class with the same package as this file.
   project.resolveFqNameOrNull(
-    containingKtFile.packageFqName.child(Name.identifier(classReference)),
+    containingKtFile.packageFqName.child(Name.identifier(classReference))
+      .asDeclaredName(packageName),
     sourceSetName
   )
     ?.let { return it }
@@ -253,28 +266,25 @@ suspend fun PsiElement.fqNameOrNull(
   containingKtFile.importDirectives
     .firstOrNull { classReference == it.importPath?.importedName?.asString() }
     ?.importedFqName
-    ?.let { return it }
+    ?.let { return it.asDeclaredName(packageName) }
 
   // If this doesn't work, then maybe a class from the Kotlin package is used.
-  classReference.kotlinStdLibNameOrNull()?.let { return FqName(it.name) }
+  classReference.kotlinStdLibNameOrNull()
+    ?.let { return FqName(it.name).asDeclaredName(packageName) }
 
   return null
 }
 
 fun KtDeclaration.isInObject() = containingClassOrObject?.isObjectLiteral() ?: false
 
-/**
- * @return true if the receiver declaration is inside a companion object
- */
+/** @return true if the receiver declaration is inside a companion object */
 fun KtDeclaration.isInCompanionObject(): Boolean {
   return containingClassOrObject?.isCompanionObject() ?: false
 }
 
 fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
 
-/**
- * @return true if the receiver declaration is a companion object
- */
+/** @return true if the receiver declaration is a companion object */
 fun KtDeclaration.isCompanionObject(): Boolean {
   contract {
     returns(true) implies (this@isCompanionObject is KtObjectDeclaration)

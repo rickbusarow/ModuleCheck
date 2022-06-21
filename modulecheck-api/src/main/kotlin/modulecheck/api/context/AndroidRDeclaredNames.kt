@@ -42,7 +42,7 @@ data class AndroidRDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
       project.androidBasePackagesForSourceSetName(sourceSetName)
-        ?.let { "$it.R".asAndroidRDeclaration() }
+        ?.let { it.append("R").asAndroidRDeclaration(it) }
     }
   }
 
