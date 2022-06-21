@@ -337,7 +337,7 @@ jobs:
             **/build
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-tests-ubuntu
+            ${{ runner.os }}-unit-tests
 
       - name: all tests
         run: ./gradlew testJvm --no-daemon
@@ -356,6 +356,67 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - Ubuntu
+
+  integration-tests-ubuntu:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-integration-tests
+
+      - name: integration tests
+        run: ./gradlew integrationTest --no-daemon
+
+      - name: Archive integration test results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: integration-test-results-ubuntu
+          path: ./**/build/reports/tests/
+
+      - name: Unit test results
+        uses: mikepenz/action-junit-report@v3
+        if: failure()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Integration Test Results - Ubuntu
 
   tests-windows:
 
@@ -399,7 +460,7 @@ jobs:
             **/build
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-unit-tests
 
       - name: all tests
         run: ./gradlew testJvm --no-daemon
@@ -418,3 +479,66 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
           check_name: Unit Test Results - Windows
+
+
+  integration-tests-windows:
+
+    runs-on: windows-latest
+
+    steps:
+
+      - name: check out with token (used by forks)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name != github.repository
+
+      - name: check out with PAT (used by main repo)
+        uses: actions/checkout@v3
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: cache gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle
+
+      - name: cache build
+        uses: actions/cache@v3
+        with:
+          path: |
+            **/build
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-integration-tests
+
+      - name: integration tests
+        run: ./gradlew integrationTest --no-daemon
+
+      - name: Archive integration test results
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: integration-test-results-windows
+          path: ./**/build/reports/tests/
+
+      - name: Integration test results
+        uses: mikepenz/action-junit-report@v3
+        if: failure()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          report_paths: '**/build/**/TEST-*.xml'
+          check_name: Integration Test Results - Windows
