@@ -20,15 +20,28 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-interface LazyDeferred<T> {
+/**
+ * Lazily invokes some the first time [await][Deferred.await] or [join][kotlinx.coroutines.Job.join]
+ * is called.
+ *
+ * This action is only invoked once. The caller's coroutine is used to execute this action.
+ *
+ * ```
+ * val expensive = lazyDeferred { repository.getAll() }
+ *
+ * suspend fun getExpensive() = expensive.await()
+ * ```
+ */
+interface LazyDeferred<out T> {
   val isCompleted: Boolean
   suspend fun await(): T
 }
 
 /**
- * Lazily invokes [action] the first time [await][Deferred.await] or [join][kotlinx.coroutines.Job.join] is called.
+ * Lazily invokes [action] the first time [await][Deferred.await] or
+ * [join][kotlinx.coroutines.Job.join] is called.
  *
- * This [action] is only invoked once.  The caller's coroutine is used to execute this action.
+ * This [action] is only invoked once. The caller's coroutine is used to execute this action.
  *
  * ```
  * val expensive = lazyDeferred { repository.getAll() }
