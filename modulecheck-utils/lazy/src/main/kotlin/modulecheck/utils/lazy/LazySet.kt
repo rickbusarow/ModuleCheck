@@ -21,7 +21,6 @@ import modulecheck.utils.coroutines.any
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.LazySet.DataSource
 import modulecheck.utils.lazy.LazySet.DataSource.Priority
-import modulecheck.utils.lazy.LazySet.DataSource.Priority.LOW
 import modulecheck.utils.lazy.LazySet.DataSource.Priority.MEDIUM
 import modulecheck.utils.lazy.internal.DataSourceImpl
 import modulecheck.utils.lazy.internal.LazySetImpl
@@ -37,10 +36,22 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   fun snapshot(): State<E>
 
-  interface DataSource<out E> : Comparable<DataSource<*>>, LazySetComponent<E> {
+  /**
+   * A **Lazy** data source for a [LazySet], which performs some suspending operation [get] in order
+   * to incrementally add data to the `LazySet`.
+   */
+  interface DataSource<out E> :
+    Comparable<DataSource<*>>,
+    LazySetComponent<E>,
+    LazyDeferred<Set<E>> {
 
+    /**
+     * The priority which should be applied to this source while in a LazySet. Higher priority
+     * sources are invoked first.
+     */
     val priority: Priority
 
+    /** Called to retrieve this source's data. Implementations are thread-safe and lazy. */
     suspend fun get(): Set<E>
 
     enum class Priority : Comparable<Priority> {
@@ -100,25 +111,23 @@ fun <E> Lazy<Set<E>>.asDataSource(
   priority: Priority = MEDIUM
 ): DataSource<E> = dataSource(priority) { value }
 
-fun <E> emptyDataSource(): DataSource<E> = object : DataSource<E> {
-  override val priority: Priority
-    get() = LOW
-
-  override suspend fun get(): Set<E> = emptySet()
-}
-
 fun <E> dataSourceOf(
   vararg elements: E,
   priority: Priority = MEDIUM
-): DataSource<E> = DataSourceImpl(priority) { elements.toSet() }
+): DataSource<E> = DataSourceImpl(priority, lazyDeferred { elements.toSet() })
 
+/** @return A DataSource<E> from this [priority] and [factory] */
+fun <E> dataSource(
+  priority: Priority = MEDIUM,
+  factory: LazyDeferred<Set<E>>
+): DataSource<E> = DataSourceImpl(priority, factory)
+
+/** @return A DataSource<E> from this [priority] and [factory] */
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: suspend () -> Set<E>
 ): DataSource<E> {
-  val lazyFactory = lazyDeferred { factory() }
-
-  return DataSourceImpl(priority) { lazyFactory.await() }
+  return DataSourceImpl(priority, lazyDeferred { factory() })
 }
 
 fun <E> Collection<LazySetComponent<E>>.toLazySet(): LazySet<E> = lazySet(this)
