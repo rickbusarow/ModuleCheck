@@ -55,7 +55,14 @@ tasks.withType<Detekt> detekt@{
   setSource(files(projectDir))
 
   include("**/*.kt", "**/*.kts")
-  exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
+  exclude(
+    "**/resources/**",
+    "**/build/**",
+    "**/src/integrationTest/java**",
+    "**/src/test/java**",
+    "**/src/integrationTest/kotlin**",
+    "**/src/test/kotlin**"
+  )
 
   doFirst {
     require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {

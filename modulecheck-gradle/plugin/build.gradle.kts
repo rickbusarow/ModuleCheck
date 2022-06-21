@@ -24,6 +24,29 @@ mcbuild {
   dagger = true
 }
 
+val main by sourceSets.getting
+val test by sourceSets.getting
+
+java {
+  sourceSets {
+    val integrationTest by creating {
+      kotlin.apply {
+        compileClasspath += main.get().output
+          .plus(test.get().output)
+          .plus(configurations.testRuntimeClasspath.get())
+        runtimeClasspath += output + compileClasspath
+      }
+    }
+  }
+}
+
+val integrationTestCompile by configurations.creating {
+  extendsFrom(configurations["testCompileOnly"])
+}
+val integrationTestRuntime by configurations.creating {
+  extendsFrom(configurations["testRuntimeOnly"])
+}
+
 dependencies {
 
   api(libs.javax.inject)
@@ -64,6 +87,21 @@ dependencies {
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
+
+  "integrationTestImplementation"(project(path = ":modulecheck-config:api"))
+  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:impl"))
+  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-android"))
+  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
+  "integrationTestImplementation"(project(path = ":modulecheck-internal-testing"))
+  "integrationTestImplementation"(project(path = ":modulecheck-model:dependency:impl"))
+  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:api"))
+  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
+  "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
+  "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
+  "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
+  "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))
+  "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
@@ -107,7 +145,7 @@ sourceSets {
   }
 }
 
-val generateBuildProperties by tasks.registering generator@{
+val generateBuildProperties by tasks.registering {
 
   val version = modulecheck.builds.VERSION_NAME
   val sourceWebsite = modulecheck.builds.SOURCE_WEBSITE
@@ -152,34 +190,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
   dependsOn(generateBuildProperties)
 }
 
-val main by sourceSets.getting
-val test by sourceSets.getting
-
-java {
-  sourceSets {
-    val integrationTest by creating {
-      kotlin.apply {
-        compileClasspath += main.get().output
-          .plus(test.get().output)
-          .plus(configurations.testRuntimeClasspath.get())
-        runtimeClasspath += output + compileClasspath
-      }
-    }
-  }
-}
-
-val integrationTestCompile by configurations.creating {
-  extendsFrom(configurations["testCompileOnly"])
-}
-val integrationTestRuntime by configurations.creating {
-  extendsFrom(configurations["testRuntimeOnly"])
-}
-
 val integrationTest by tasks.creating(Test::class) {
   val integrationTestSourceSet = java.sourceSets["integrationTest"]
   testClassesDirs = integrationTestSourceSet.output.classesDirs
   classpath = integrationTestSourceSet.runtimeClasspath
+  dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
 }
+
+tasks.matching { it.name == "check" }.all { dependsOn(integrationTest) }
 
 kotlin {
   val compilations = target.compilations
