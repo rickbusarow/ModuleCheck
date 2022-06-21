@@ -340,7 +340,7 @@ jobs:
             ${{ runner.os }}-unit-tests
 
       - name: all tests
-        run: ./gradlew testJvm --no-daemon
+        run: ./gradlew test --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
@@ -463,7 +463,7 @@ jobs:
             ${{ runner.os }}-unit-tests
 
       - name: all tests
-        run: ./gradlew testJvm --no-daemon
+        run: ./gradlew test --no-daemon
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
