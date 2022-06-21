@@ -24,17 +24,6 @@ mcbuild {
   dagger = true
 }
 
-tasks.withType(Test::class.java)
-  .configureEach {
-
-    if (!System.getenv("CI").isNullOrBlank()) {
-      // Gradle TestKit somewhat regularly runs out of memory on the freebie GitHub runners
-      maxParallelForks = 1
-    }
-
-    dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
-  }
-
 dependencies {
 
   api(libs.javax.inject)
@@ -161,4 +150,41 @@ tasks.matching {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
   dependsOn(generateBuildProperties)
+}
+
+val main by sourceSets.getting
+val test by sourceSets.getting
+
+java {
+  sourceSets {
+    val integrationTest by creating {
+      kotlin.apply {
+        compileClasspath += main.get().output
+          .plus(test.get().output)
+          .plus(configurations.testRuntimeClasspath.get())
+        runtimeClasspath += output + compileClasspath
+      }
+    }
+  }
+}
+
+val integrationTestCompile by configurations.creating {
+  extendsFrom(configurations["testCompileOnly"])
+}
+val integrationTestRuntime by configurations.creating {
+  extendsFrom(configurations["testRuntimeOnly"])
+}
+
+val integrationTest by tasks.creating(Test::class) {
+  val integrationTestSourceSet = java.sourceSets["integrationTest"]
+  testClassesDirs = integrationTestSourceSet.output.classesDirs
+  classpath = integrationTestSourceSet.runtimeClasspath
+}
+
+kotlin {
+  val compilations = target.compilations
+
+  compilations.getByName("integrationTest") {
+    associateWith(compilations.getByName("main"))
+  }
 }
