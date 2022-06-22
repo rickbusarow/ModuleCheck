@@ -15,15 +15,16 @@
 
 package modulecheck.utils.lazy.internal
 
+import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 
 @PublishedApi
 internal class DataSourceImpl<E>(
   override val priority: LazySet.DataSource.Priority,
-  private val factory: suspend () -> Set<E>
-) : LazySet.DataSource<E> {
+  private val lazyDeferred: LazyDeferred<Set<E>>
+) : LazySet.DataSource<E>, LazyDeferred<Set<E>> by lazyDeferred {
 
-  override suspend fun get(): Set<E> = factory()
+  override suspend fun get(): Set<E> = await()
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -31,10 +32,10 @@ internal class DataSourceImpl<E>(
 
     other as DataSourceImpl<*>
 
-    if (factory != other.factory) return false
+    if (lazyDeferred != other.lazyDeferred) return false
 
     return true
   }
 
-  override fun hashCode(): Int = factory.hashCode()
+  override fun hashCode(): Int = lazyDeferred.hashCode()
 }
