@@ -35,7 +35,8 @@ class ConfigValidationTest : BaseGradleTest() {
       "doNotCheck",
       "ignoreUnusedFinding",
       "reports",
-      "sort"
+      "sort",
+      "trace"
     )
 
     ChecksExtension::class.memberProperties
@@ -73,6 +74,7 @@ class ConfigValidationTest : BaseGradleTest() {
       moduleCheck {
 
         deleteUnused = true // default is false
+        trace = true // default is false
 
         checks {
           overShotDependency = true  // default is true
@@ -157,6 +159,7 @@ class ConfigValidationTest : BaseGradleTest() {
 
       moduleCheck {
         deleteUnused = true // default is false
+        trace = true // default is false
 
         checks {
           overShotDependency = true  // default is true

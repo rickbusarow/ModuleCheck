@@ -16,6 +16,7 @@
 package modulecheck.utils.trace
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlin.DeprecationLevel.ERROR
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
@@ -218,7 +219,11 @@ private suspend fun <T> tracedInternal(
     callsInPlace(block, EXACTLY_ONCE)
   }
 
-  val oldTrace = trace()
+  val oldTrace = traceOrNull()
+    // If the Trace doesn't already exist in the context, it must be disabled.
+    // In that case, just make this a no-op
+    ?: return coroutineScope { block() }
+
   val newTrace = oldTrace.child(tags, args)
   return withContext(newTrace, block)
 }
@@ -230,6 +235,9 @@ private suspend fun <T> tracedInternal(
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  */
 suspend fun trace(): Trace = coroutineContext.requireTrace()
+
+/** @return a [Trace] from inside a coroutine if it exists, else null */
+internal suspend fun traceOrNull(): Trace? = coroutineContext[Trace]
 
 /**
  * Unsafe-ish extension for extracting a [Trace] from inside a coroutine.

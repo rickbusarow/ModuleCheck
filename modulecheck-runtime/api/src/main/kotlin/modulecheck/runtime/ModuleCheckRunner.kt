@@ -71,7 +71,11 @@ data class ModuleCheckRunner @AssistedInject constructor(
 ) {
 
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(
-    dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)
+    if (settings.trace) {
+      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)
+    } else {
+      dispatcherProvider.default
+    }
   ) {
     // total findings, whether they're fixed or not
     var totalFindings = 0
