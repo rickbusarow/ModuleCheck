@@ -45,6 +45,7 @@ import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
 import modulecheck.parsing.source.asKotlinDeclaredName
+import modulecheck.parsing.source.element.McElement
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred
@@ -133,6 +134,12 @@ interface NamedSymbolTest : FancyShould {
 
   infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
     prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+  }
+
+  infix fun LazySet<McElement>.shouldBe(other: List<McElement>) {
+    runBlocking(Trace.start(NamedSymbolTest::class)) {
+      toList().trimmedShouldBe(other.toList())
+    }
   }
 
   infix fun LazySet<ReferenceName>.shouldBe(other: Collection<ReferenceName>) {

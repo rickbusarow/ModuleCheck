@@ -66,7 +66,14 @@ tasks.withType<Detekt> detekt@{
 
   doFirst {
     require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {
-      "Update Detekt to `1.20.0` (or later) when Kotlin is updated to `1.6.21` or later."
+
+      val conventionPath = rootDir
+        .resolve("build-logic/mcbuild/src/main/kotlin/mcbuild.detekt.gradle.kts")
+        .absolutePath
+
+      "Update Detekt to `1.20.0` (or later) when Kotlin is updated to `1.6.21` or later, " +
+        "then delete this check in the detekt plugin:\n" +
+        "file://$conventionPath: (61, 5)"
     }
   }
 }

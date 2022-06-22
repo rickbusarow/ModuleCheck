@@ -46,8 +46,8 @@ class ReferenceNameTest : BaseNamedSymbolTest() {
       AndroidRReferenceName::class,
       ExplicitKotlinReferenceName::class,
       InterpretedKotlinReferenceName::class,
-      KotlinSpecificDeclaredName::class,
-      QualifiedAndroidResourceReferenceName::class
+      QualifiedAndroidResourceReferenceName::class,
+      TopLevelKotlinSpecificDeclaredName::class
     )
   }
 
@@ -83,7 +83,7 @@ class ReferenceNameTest : BaseNamedSymbolTest() {
       AndroidDataBindingReferenceName::class,
       ExplicitKotlinReferenceName::class,
       InterpretedKotlinReferenceName::class,
-      KotlinSpecificDeclaredName::class
+      TopLevelKotlinSpecificDeclaredName::class
     )
   }
 

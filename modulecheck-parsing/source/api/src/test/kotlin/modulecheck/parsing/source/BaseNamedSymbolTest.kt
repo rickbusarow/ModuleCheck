@@ -108,7 +108,7 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
 
       AgnosticDeclaredName(name, packageName = PackageName(packageName)),
       JavaSpecificDeclaredName(name, packageName = PackageName(packageName)),
-      KotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
+      TopLevelKotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
 
       ExplicitJavaReferenceName(name),
       ExplicitKotlinReferenceName(name),

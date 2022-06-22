@@ -38,6 +38,7 @@ dependencies {
   compileOnly(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
+  implementation(project(path = ":modulecheck-utils:cache"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
@@ -49,6 +50,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:testing"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
+  testImplementation(project(path = ":modulecheck-parsing:wiring"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))
   testImplementation(project(path = ":modulecheck-utils:trace"))

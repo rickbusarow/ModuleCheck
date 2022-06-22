@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.wiring
+package modulecheck.parsing.psi
 
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser

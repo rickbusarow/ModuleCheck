@@ -1842,6 +1842,6 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
     }.jvmFiles()
       .get(sourceSetName)
       .filterIsInstance<RealKotlinFile>()
-      .first { it.ktFile.text == content.trimIndent() }
+      .first { it.psi.text == content.trimIndent() }
   }
 }

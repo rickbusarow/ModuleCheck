@@ -63,30 +63,35 @@ data class ResolvedDeclaredNames internal constructor(
     declaredName: DeclaredName,
     sourceSetName: SourceSetName
   ): SourceResult {
-    return project.takeIf {
-      project.declarations()
-        .get(sourceSetName, includeUpstream = false)
-        .contains(declaredName)
-    }
-      ?.let { Found(McProjectWithSourceSetName(it, sourceSetName)) }
-      ?: project.classpathDependencies()
-        .get(sourceSetName)
-        .asSequence()
-        .map { it.contributed }
-        .distinctBy { it.project(project) to it.isTestFixture }
-        .firstNotNullOfOrNull { sourceCpd ->
 
-          listOfNotNull(
-            SourceSetName.MAIN,
-            SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
-          )
-            .firstNotNullOfOrNull { dependencySourceSetName ->
-              sourceCpd.project(project)
-                .resolvedDeclaredNames()
-                .getSource(declaredName, dependencySourceSetName)
-            }
-        }
-        ?.let { Found(it) }
+    return sourceSetName.withUpstream(project)
+      .firstNotNullOfOrNull { sourceSetOrUpstream ->
+
+        val hasDeclaration = project.declarations()
+          .get(sourceSetOrUpstream, includeUpstream = false)
+          .contains(declaredName)
+
+        if (hasDeclaration) {
+          Found(McProjectWithSourceSetName(project, sourceSetOrUpstream))
+        } else null
+      } ?: project.classpathDependencies()
+      .get(sourceSetName)
+      .asSequence()
+      .map { it.contributed }
+      .distinctBy { it.project(project) to it.isTestFixture }
+      .firstNotNullOfOrNull { sourceCpd ->
+
+        listOfNotNull(
+          SourceSetName.MAIN,
+          SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
+        )
+          .firstNotNullOfOrNull { dependencySourceSetName ->
+            sourceCpd.project(project)
+              .resolvedDeclaredNames()
+              .getSource(declaredName, dependencySourceSetName)
+          }
+      }
+      ?.let { Found(it) }
       ?: NOT_PRESENT
   }
 

@@ -78,21 +78,21 @@ import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 
 class RealKotlinFile(
-  val ktFile: KtFile,
+  val psi: KtFile,
   private val psiResolver: PsiElementResolver,
   private val nameParser: NameParser
 ) : KotlinFile {
 
-  override val name = ktFile.name
+  override val name = psi.name
 
-  override val packageName by lazy { PackageName(ktFile.packageFqName.asString()) }
+  override val packageName by lazy { PackageName(psi.packageFqName.asString()) }
 
   // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
   private val _aliasMap = mutableMapOf<String, ExplicitKotlinReferenceName>()
 
   private val importsStrings: Lazy<Set<String>> = lazy {
 
-    ktFile.importDirectives.asSequence()
+    psi.importDirectives.asSequence()
       .filter { it.isValidImport }
       .filter { it.identifier() != null }
       .filter { it.identifier()?.contains("*")?.not() == true }
@@ -121,10 +121,10 @@ class RealKotlinFile(
   }
 
   val constructorInjectedParams = lazyDeferred {
-    referenceVisitor.constructorInjected.mapNotNull { psiResolver.fqNameOrNull(it) }.toSet()
+    referenceVisitor.constructorInjected.mapNotNull { psiResolver.declaredNameOrNull(it) }.toSet()
   }
 
-  private val fileJavaFacadeName by lazy { ktFile.javaFileFacadeFqName.asString() }
+  private val fileJavaFacadeName by lazy { psi.javaFileFacadeFqName.asString() }
 
   @Suppress("ComplexMethod")
   private fun KtNamedDeclaration.declaredNames(): List<DeclaredName> {
@@ -240,7 +240,7 @@ class RealKotlinFile(
 
   override val declarations by lazy {
 
-    ktFile.getChildrenOfTypeRecursive<KtNamedDeclaration>()
+    psi.getChildrenOfTypeRecursive<KtNamedDeclaration>()
       .asSequence()
       .filterNot { it.isPrivateOrInternal() }
       .filterNot {
@@ -253,7 +253,7 @@ class RealKotlinFile(
 
   private val wildcardImports by lazy {
 
-    ktFile.importDirectives.filter { it.identifier()?.contains("*") != false }
+    psi.importDirectives.filter { it.identifier()?.contains("*") != false }
       .mapNotNull { it.importPath?.pathStr }
       .toSet()
   }
@@ -264,7 +264,7 @@ class RealKotlinFile(
   }
 
   private val referenceVisitor by lazy {
-    ReferenceVisitor().also { ktFile.accept(it) }
+    ReferenceVisitor().also { psi.accept(it) }
   }
 
   private val typeReferences = lazyDeferred {
@@ -337,7 +337,7 @@ class RealKotlinFile(
       }
     }
 
-    ktFile.accept(visitor)
+    psi.accept(visitor)
 
     return ScopeArgumentParseResult(
       mergeArguments = mergeArguments,
@@ -371,7 +371,7 @@ class RealKotlinFile(
     )
   }
 
-  private companion object {
+  internal companion object {
     val operatorSet = setOf(
       "compareTo",
       "contains",

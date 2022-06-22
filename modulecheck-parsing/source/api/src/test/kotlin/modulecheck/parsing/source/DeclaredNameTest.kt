@@ -49,7 +49,7 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
     ).matchedClasses() shouldBe listOf(
       ExplicitKotlinReferenceName::class,
       InterpretedKotlinReferenceName::class,
-      KotlinSpecificDeclaredName::class
+      TopLevelKotlinSpecificDeclaredName::class
     )
   }
 
@@ -143,25 +143,30 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       .shuffled()
 
     val prettySorted = instances.sorted()
-      .joinToString("\n") { "${it::class.java.simpleName.padStart(28)} ${it.name}" }
+      .joinToString("\n") { "${it::class.java.simpleName.padStart(36)} ${it.name}" }
 
     prettySorted shouldBe """
-            AgnosticDeclaredName a
-        JavaSpecificDeclaredName a
-      KotlinSpecificDeclaredName a
-            AndroidRDeclaredName a.R
-            AgnosticDeclaredName b
-        JavaSpecificDeclaredName b
-      KotlinSpecificDeclaredName b
-            AndroidRDeclaredName b.R
-            AgnosticDeclaredName c
-        JavaSpecificDeclaredName c
-      KotlinSpecificDeclaredName c
-            AndroidRDeclaredName c.R
-            AgnosticDeclaredName d
-        JavaSpecificDeclaredName d
-      KotlinSpecificDeclaredName d
-            AndroidRDeclaredName d.R
+                AgnosticDeclaredName a
+            JavaSpecificDeclaredName a
+  TopLevelKotlinSpecificDeclaredName a
+                AndroidRDeclaredName a.R
+                AgnosticDeclaredName b
+            JavaSpecificDeclaredName b
+  TopLevelKotlinSpecificDeclaredName b
+                AndroidRDeclaredName b.R
+                AgnosticDeclaredName c
+            JavaSpecificDeclaredName c
+  TopLevelKotlinSpecificDeclaredName c
+                AndroidRDeclaredName c.R
+                AgnosticDeclaredName d
+            JavaSpecificDeclaredName d
+  TopLevelKotlinSpecificDeclaredName d
+                AndroidRDeclaredName d.R
     """.trimIndent()
   }
+
+  fun KotlinSpecificDeclaredName(
+    name: String,
+    packageName: PackageName
+  ) = TopLevelKotlinSpecificDeclaredName(name, packageName)
 }

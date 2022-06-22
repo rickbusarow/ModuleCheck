@@ -20,6 +20,7 @@ import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.java.RealJavaFile
+import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.asKtFile
@@ -68,7 +69,7 @@ class RealJvmFileProvider(
     return fileCache.getOrPut(file) {
       when {
         file.isKtFile() -> RealKotlinFile(
-          ktFile = file.asKtFile(),
+          psi = file.asKtFile(),
           psiResolver = PsiElementResolver(
             project = project,
             sourceSetName = sourceSetName

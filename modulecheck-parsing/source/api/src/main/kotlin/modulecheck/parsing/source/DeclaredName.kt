@@ -41,46 +41,6 @@ sealed interface KotlinCompatibleDeclaredName : DeclaredName
 sealed interface XmlCompatibleDeclaredName : JavaCompatibleDeclaredName, DeclaredName
 
 /**
- * Represents names which can only be referenced from Kotlin.
- *
- * For instance, given this top-level property:
- *
- * ```
- * // File.kt
- * package com.example
- *
- * val someProperty = true
- * ```
- *
- * Kotlin code will access this as `com.example.someProperty`.
- *
- * In Java, this will be accessed as `com.example.FileKt.getSomeProperty();`
- *
- * These Kotlin-specific declarations will only match to the [KotlinReference] type.
- *
- * @see KotlinReference
- * @see JavaSpecificDeclaredName
- */
-class KotlinSpecificDeclaredName(
-  override val name: String,
-  override val packageName: PackageName
-) : DeclaredName,
-  KotlinCompatibleDeclaredName {
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.safeAs<KotlinReferenceName>()?.name },
-      ifDeclaration = { name == it.safeAs<KotlinSpecificDeclaredName>()?.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-}
-
-/**
  * Represents names which can only be referenced from Java.
  *
  * For instance, given this top-level property:
@@ -155,7 +115,7 @@ fun String.asAndroidRDeclaration(packageName: PackageName): AndroidRDeclaredName
   AndroidRDeclaredName(this, packageName)
 
 fun String.asKotlinDeclaredName(packageName: PackageName): DeclaredName =
-  KotlinSpecificDeclaredName(this, packageName)
+  TopLevelKotlinSpecificDeclaredName(this, packageName)
 
 fun String.asJavaDeclaredName(packageName: PackageName): DeclaredName =
   JavaSpecificDeclaredName(this, packageName)
