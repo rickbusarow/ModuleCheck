@@ -31,6 +31,15 @@ interface ModuleCheckSettings {
   var deleteUnused: Boolean
 
   /**
+   * If true, ModuleCheck will collect a trace of expensive and delicate operations. This trace is
+   * added to any thrown exceptions. Tracing is disabled by default, as it does incur a performance
+   * penalty.
+   *
+   * Default value is false
+   */
+  var trace: Boolean
+
+  /**
    * Set of modules which are allowed to be unused.
    *
    * For instance, given:
