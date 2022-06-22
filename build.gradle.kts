@@ -98,8 +98,29 @@ val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.Detek
   parallel.set(true)
   setSource(files(rootDir))
   config.setFrom(files("$rootDir/detekt/detekt-config.yml"))
-  baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
+
+  val baselineFile = file("$rootDir/detekt/detekt-baseline.xml")
+  baseline.set(baselineFile)
 
   include("**/*.kt", "**/*.kts")
-  exclude("**/resources/**", "**/build/**", "**/src/test/java**", "**/src/test/kotlin**")
+  exclude(
+    "**/resources/**",
+    "**/build/**",
+    "**/src/test/java**",
+    "**/src/test/kotlin**",
+    "**/src/integrationTest/java**",
+    "**/src/integrationTest/kotlin**"
+  )
+
+  doLast {
+    // Detekt completely re-writes this file's contents any time it has to update.
+    // After updating the baseline file, insert the comment to exclude it from auto-format.
+    val oldText = baselineFile.readText()
+    val newText = oldText.replaceFirst(
+      "<?xml version='1.0' encoding='UTF-8'?>",
+      "<?xml version='1.0' encoding='UTF-8'?>\n" +
+        "<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->"
+    )
+    baselineFile.writeText(newText)
+  }
 }
