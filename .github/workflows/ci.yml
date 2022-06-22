@@ -289,9 +289,9 @@ jobs:
           path: |
             **/build
             **/website
-          key: ${{ runner.os }}-gradle
+          key: ${{ runner.os }}-build-website
           restore-keys: |
-            ${{ runner.os }}-gradle-build-website
+            ${{ runner.os }}-build-website
 
       - name: build website
         run: ./gradlew buildSite --no-daemon
