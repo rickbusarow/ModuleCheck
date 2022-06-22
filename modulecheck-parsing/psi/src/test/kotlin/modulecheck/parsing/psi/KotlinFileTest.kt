@@ -928,6 +928,31 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
   }
 
   @Test
+  fun `file without package should put declarations at the root`() = test {
+
+    val file = project.createFile(
+      //language=text
+      """
+        import com.lib1.Lib1Class
+
+        class Subject {
+          private val lib1Class = Lib1Class()
+        }
+        """
+    )
+
+    file shouldBe {
+      references {
+        explicitKotlin("com.lib1.Lib1Class")
+      }
+
+      declarations {
+        agnostic("Subject")
+      }
+    }
+  }
+
+  @Test
   fun `top-level function with JvmName annotation should have alternate name`() = test {
     val file = project.createFile(
       """
