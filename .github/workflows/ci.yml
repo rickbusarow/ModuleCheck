@@ -47,7 +47,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -96,7 +96,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -146,7 +146,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -196,7 +196,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -279,7 +279,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -289,7 +289,7 @@ jobs:
           path: |
             **/build
             **/website
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle-build-website
 
@@ -326,7 +326,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -335,7 +335,7 @@ jobs:
         with:
           path: |
             **/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-unit-tests
           restore-keys: |
             ${{ runner.os }}-unit-tests
 
@@ -387,7 +387,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -396,7 +396,7 @@ jobs:
         with:
           path: |
             **/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-integration-tests
           restore-keys: |
             ${{ runner.os }}-integration-tests
 
@@ -449,7 +449,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -458,7 +458,7 @@ jobs:
         with:
           path: |
             **/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-unit-tests
           restore-keys: |
             ${{ runner.os }}-unit-tests
 
@@ -512,7 +512,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
 
@@ -521,7 +521,7 @@ jobs:
         with:
           path: |
             **/build
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-integration-tests
           restore-keys: |
             ${{ runner.os }}-integration-tests
 
