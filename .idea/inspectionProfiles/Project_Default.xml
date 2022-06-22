@@ -4,7 +4,7 @@
     <inspection_tool class="ClassName" enabled="false" level="WEAK WARNING" enabled_by_default="false">
       <scope name="Tests" level="WEAK WARNING" enabled="false" />
     </inspection_tool>
-    <inspection_tool class="FunctionName" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+    <inspection_tool class="FunctionName" enabled="false" level="WEAK WARNING" enabled_by_default="false">
       <option name="namePattern" value="[`|A-Za-z][A-Za-z\d]*" />
     </inspection_tool>
     <inspection_tool class="IncorrectFormatting" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
