@@ -18,34 +18,6 @@ package modulecheck.parsing.source
 import modulecheck.parsing.source.PackageName.DEFAULT
 
 /**
- * @property name the full name of this package
- * @see NamedSymbol
- * @since 0.13.0
- * @throws IllegalArgumentException if the [name] parameter is empty or blank
- */
-@JvmInline
-value class PackageNameImpl internal constructor(override val name: String) : PackageName {
-  init {
-    require(name.isNotBlank()) {
-      "A ${this.javaClass.canonicalName} must be a non-empty, non-blank String.  " +
-        "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
-        "This name argument, wrapped in single quotes: '$name'"
-    }
-  }
-
-  override fun append(simpleName: String): String = "$name.$simpleName"
-
-  companion object {
-    /**
-     * @receiver the String literal representation of a package name
-     * @return a [PackageName] from this String literal
-     * @since 0.13.0
-     */
-    fun String.asPackageName(): PackageName = PackageName(this)
-  }
-}
-
-/**
  * Represents a package name.
  *
  * Note that a java/kotlin file without a package declaration will have a `null` _declaration_, but
@@ -81,16 +53,46 @@ sealed interface PackageName : NamedSymbol {
    *
    * If the package name is not blank, this function will append a period to the package name, then
    * add the simple name.
+   *
+   * @since 0.13.0
    */
   fun append(simpleName: String): String
 
   companion object {
     operator fun invoke(nameOrNull: String?): PackageName {
-      return when (nameOrNull) {
-        null -> PackageName.DEFAULT
+      return when {
+        nameOrNull.isNullOrBlank() -> DEFAULT
         else -> PackageNameImpl(nameOrNull)
       }
     }
+  }
+}
+
+/**
+ * @property name the full name of this package
+ * @see NamedSymbol
+ * @since 0.13.0
+ * @throws IllegalArgumentException if the [name] parameter is empty or blank
+ */
+@JvmInline
+value class PackageNameImpl internal constructor(override val name: String) : PackageName {
+  init {
+    require(name.isNotBlank()) {
+      "A ${this.javaClass.canonicalName} must be a non-empty, non-blank String.  " +
+        "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
+        "This name argument, wrapped in single quotes: '$name'"
+    }
+  }
+
+  override fun append(simpleName: String): String = "$name.$simpleName"
+
+  companion object {
+    /**
+     * @receiver the String literal representation of a package name
+     * @return a [PackageName] from this String literal
+     * @since 0.13.0
+     */
+    fun String.asPackageName(): PackageName = PackageName(this)
   }
 }
 
@@ -102,16 +104,9 @@ sealed interface PackageName : NamedSymbol {
  * 2. Even though it's convention, jvm files don't need to have a package name. In this case, it's
  *    tempting to just create a [PackageName] with an empty
  *    string, but it's far more accurate to treat it as null.
+ *
+ * @since 0.13.0
  */
 interface HasPackageName {
   val packageName: PackageName
-}
-
-/**
- * Convenience interface for providing a nullable [PackageName].
- *
- * @see HasPackageName
- */
-interface MaybeHasPackageName {
-  val packageName: PackageName?
 }

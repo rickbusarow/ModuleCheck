@@ -17,6 +17,7 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.throwables.shouldNotThrow
 import io.kotest.assertions.throwables.shouldThrowWithMessage
+import io.kotest.matchers.shouldBe
 import io.kotest.property.Arb
 import io.kotest.property.arbitrary.stringPattern
 import modulecheck.parsing.source.PackageName.DEFAULT
@@ -38,19 +39,19 @@ internal class PackageNameTest {
   }
 
   @Test
-  fun `an empty package name throws exception with message`() {
+  fun `an empty package name parameter to PackageNameImpl throws exception with message`() {
 
     shouldThrowWithMessage<IllegalArgumentException>(
       "A ${PackageNameImpl::class.qualifiedName} must be a non-empty, non-blank String.  " +
         "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
         "This name argument, wrapped in single quotes: ''"
     ) {
-      PackageName("")
+      PackageNameImpl("")
     }
   }
 
   @Test
-  fun `a blank package name throws exception with message`() {
+  fun `a blank package name parameter to PackageNameImpl throws exception with message`() {
 
     Arb.stringPattern("\\s*")
       .forAllBlocking { name ->
@@ -60,8 +61,24 @@ internal class PackageNameTest {
             "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
             "This name argument, wrapped in single quotes: '$name'"
         ) {
-          PackageName(name)
+          PackageNameImpl(name)
         }
+      }
+  }
+
+  @Test
+  fun `an empty package name becomes DEFAULT`() {
+
+    PackageName("") shouldBe DEFAULT
+  }
+
+  @Test
+  fun `a blank package name becomes DEFAULT`() {
+
+    Arb.stringPattern("\\s*")
+      .forAllBlocking { name ->
+
+        PackageName(name) shouldBe DEFAULT
       }
   }
 }
