@@ -14,6 +14,7 @@
   ~ limitations under the License.
   -->
 
+<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
@@ -963,7 +964,6 @@
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.getChildrenOfType(): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.getChildrenOfTypeRecursive(): Sequence&lt;T></ID>
     <ID>UndocumentedPublicFunction:visitor.kt$inline fun &lt;reified T : Node> Node.requireChildOfType(): T</ID>
-    <ID>UndocumentedPublicProperty:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$val suppressedForEntireBlock = suppressedForEntireBlock.updateOldSuppresses()</ID>
     <ID>UndocumentedPublicProperty:AbstractDependenciesBlock.kt$AbstractDependenciesBlock.Companion$val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()</ID>
     <ID>UndocumentedPublicProperty:AbstractModuleCheckTask.kt$AbstractModuleCheckTask$@get:Input val settings: ModuleCheckExtension = project.extensions .getByType(ModuleCheckExtension::class.java)</ID>
     <ID>UndocumentedPublicProperty:AndroidGradleSettings.kt$AndroidGradleSettings$val androidBlocks: List&lt;AgpBlock.AndroidBlock></ID>
@@ -1217,7 +1217,6 @@
     <ID>UndocumentedPublicProperty:PluginAware.kt$PluginAware$val hasKapt: Boolean</ID>
     <ID>UndocumentedPublicProperty:PluginAware.kt$PluginAware$val hasTestFixturesPlugin: Boolean</ID>
     <ID>UndocumentedPublicProperty:PluginAware.kt$PluginAware$val platformPlugin: PlatformPlugin</ID>
-    <ID>UndocumentedPublicProperty:Problem.kt$Problem$val isSuppressed: LazyDeferred&lt;Boolean> get() = lazyDeferred { statementOrNull.await()?.suppressed ?.contains(findingName.id) ?: false }</ID>
     <ID>UndocumentedPublicProperty:ProjectAccessor.kt$ProjectAccessor$val projectPath: ProjectPath</ID>
     <ID>UndocumentedPublicProperty:ProjectAccessor.kt$ProjectAccessor$val statementText: String</ID>
     <ID>UndocumentedPublicProperty:ProjectCache.kt$ProjectCache$val values: MutableCollection&lt;McProject> get() = delegate.values</ID>
