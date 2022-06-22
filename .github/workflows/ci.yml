@@ -47,6 +47,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -96,6 +97,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -146,6 +148,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -196,6 +199,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -279,6 +283,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -326,6 +331,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -387,6 +393,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -449,6 +456,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
@@ -512,6 +520,7 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ./**/.gradle
           key: ${{ runner.os }}-gradle
           restore-keys: |
             ${{ runner.os }}-gradle
