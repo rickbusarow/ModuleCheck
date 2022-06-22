@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "unused")
 
 package modulecheck.gradle
 
@@ -58,7 +58,6 @@ import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
 import javax.inject.Inject
 
-@Suppress("UnstableApiUsage")
 open class ModuleCheckExtension @Inject constructor(
   objects: ObjectFactory,
   projectLayout: ProjectLayout
@@ -72,6 +71,15 @@ open class ModuleCheckExtension @Inject constructor(
    * Default value is false.
    */
   override var deleteUnused: Boolean by objects.property(false)
+
+  /**
+   * If true, ModuleCheck will collect a trace of expensive and delicate operations. This trace is
+   * added to any thrown exceptions. Tracing is disabled by default, as it does incur a performance
+   * penalty.
+   *
+   * Default value is false
+   */
+  override var trace: Boolean by objects.property(false)
 
   /**
    * Set of modules which are allowed to be unused.
@@ -99,7 +107,8 @@ open class ModuleCheckExtension @Inject constructor(
   override var additionalKaptMatchers: List<KaptMatcher> by objects.listProperty()
 
   /**
-   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with ModuleCheck.
+   * List of [CodeGeneratorBinding]'s to be checked, which aren't included by default with
+   * ModuleCheck.
    */
   override var additionalCodeGenerators: List<CodeGeneratorBinding> by objects.listProperty()
 
@@ -122,7 +131,6 @@ open class ModuleCheckExtension @Inject constructor(
   }
 }
 
-@Suppress("UnstableApiUsage")
 open class ChecksExtension @Inject constructor(
   objects: ObjectFactory
 ) : ChecksSettings {
@@ -145,7 +153,6 @@ open class ChecksExtension @Inject constructor(
   override var depths: Boolean by objects.property(DEPTHS_DEFAULT)
 }
 
-@Suppress("UnstableApiUsage")
 open class SortExtension @Inject constructor(
   objects: ObjectFactory
 ) : SortSettings {
@@ -156,7 +163,6 @@ open class SortExtension @Inject constructor(
     .listProperty(DEPENDENCY_COMPARATORS_DEFAULT)
 }
 
-@Suppress("UnstableApiUsage")
 open class ReportsExtension @Inject constructor(
   objects: ObjectFactory,
   projectLayout: ProjectLayout
@@ -223,7 +229,6 @@ open class ReportsExtension @Inject constructor(
   }
 }
 
-@Suppress("UnstableApiUsage")
 open class ReportExtension(
   objects: ObjectFactory,
   enabledDefault: Boolean,
@@ -236,7 +241,6 @@ open class ReportExtension(
   override var outputPath: String by objects.property(outputPath)
 }
 
-@Suppress("UnstableApiUsage")
 open class PerModuleReportExtension(
   objects: ObjectFactory,
   enabledDefault: Boolean,
