@@ -29,6 +29,7 @@ import modulecheck.config.SortSettings
 @Suppress("UNUSED_PARAMETER")
 data class TestSettings(
   override var deleteUnused: Boolean = false,
+  override var trace: Boolean = false,
   override var ignoreUnusedFinding: Set<String> = emptySet(),
   override var doNotCheck: Set<String> = emptySet(),
   @Deprecated("use additionalCodeGenerators instead")
