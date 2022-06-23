@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.source.element
+package modulecheck.parsing.element
 
-import modulecheck.parsing.source.element.McVisibility.McJavaVisibility
-import modulecheck.parsing.source.element.McVisibility.McKtVisibility
+import modulecheck.parsing.element.McVisibility.McJavaVisibility
+import modulecheck.parsing.element.McVisibility.McKtVisibility
 
 interface HasVisibility {
   val visibility: McVisibility

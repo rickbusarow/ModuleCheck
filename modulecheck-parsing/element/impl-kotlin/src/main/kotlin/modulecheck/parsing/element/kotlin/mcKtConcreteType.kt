@@ -13,11 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
-import modulecheck.parsing.source.element.McFile.McKtFile
-import modulecheck.parsing.source.element.McKtElement
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.McFile.McKtFile
+import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtElement

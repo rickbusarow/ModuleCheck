@@ -13,17 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.source.element
+package modulecheck.parsing.element
 
+import modulecheck.parsing.element.McFile.McJavaFile
+import modulecheck.parsing.element.McFile.McKtFile
+import modulecheck.parsing.element.McType.McConcreteType
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
 import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
-import modulecheck.parsing.source.element.McFile.McKtFile
-import modulecheck.parsing.source.element.McType.McConcreteType
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.LazySet.DataSource
@@ -44,7 +45,7 @@ sealed interface McElement {
 }
 
 sealed interface McJavaElement : McElement {
-  override val containingFile: McFile.McJavaFile
+  override val containingFile: McJavaFile
 }
 
 sealed interface McKtElement : McElement {

@@ -105,6 +105,8 @@ include(
   ":modulecheck-model:dependency:api",
   ":modulecheck-model:dependency:impl",
   ":modulecheck-parsing:android",
+  ":modulecheck-parsing:element:api",
+  ":modulecheck-parsing:element:impl-kotlin",
   ":modulecheck-parsing:gradle:dsl:api",
   ":modulecheck-parsing:gradle:dsl:internal",
   ":modulecheck-parsing:gradle:dsl:precompiled",

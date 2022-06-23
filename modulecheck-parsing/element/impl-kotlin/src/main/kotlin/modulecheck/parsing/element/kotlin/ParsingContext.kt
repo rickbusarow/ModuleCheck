@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
+import modulecheck.parsing.element.McElement
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
-import modulecheck.parsing.source.element.McElement
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.lazy.LazySet

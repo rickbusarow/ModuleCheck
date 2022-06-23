@@ -13,8 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.source.element
+package modulecheck.parsing.element
 
+import modulecheck.parsing.element.McFile.McJavaFile
+import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.utils.lazy.LazySet
 
 sealed interface McType : McElementWithParent<McElement>, McAnnotated {
@@ -45,7 +47,7 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
       override val innerTypes: LazySet<McJavaConcreteType>
       override val innerTypesRecursive: LazySet<McJavaConcreteType>
 
-      override val containingFile: McFile.McJavaFile
+      override val containingFile: McJavaFile
 
       interface McJavaInterface : McJavaConcreteType, Declared
       interface McJavaClass : McJavaConcreteType, Declared {
@@ -59,7 +61,7 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
       override val innerTypes: LazySet<McKtConcreteType>
       override val innerTypesRecursive: LazySet<McKtConcreteType>
 
-      override val containingFile: McFile.McKtFile
+      override val containingFile: McKtFile
 
       interface McKtAnnotationClass : McKtConcreteType, McKtElement, Declared
       interface McKtClass : McKtConcreteType, McKtElement, Declared {

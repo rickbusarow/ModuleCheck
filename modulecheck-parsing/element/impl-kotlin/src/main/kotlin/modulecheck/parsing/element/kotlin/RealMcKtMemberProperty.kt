@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
+import modulecheck.parsing.element.HasKtVisibility
+import modulecheck.parsing.element.McAnnotation
+import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.parsing.source.element.HasKtVisibility
-import modulecheck.parsing.source.element.McAnnotation
-import modulecheck.parsing.source.element.McKtElement
-import modulecheck.parsing.source.element.McProperty
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazyDeferred

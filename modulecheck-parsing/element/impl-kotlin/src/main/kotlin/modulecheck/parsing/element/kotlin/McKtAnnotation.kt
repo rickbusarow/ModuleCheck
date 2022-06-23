@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
+import modulecheck.parsing.element.McAnnotation.McKtAnnotation
+import modulecheck.parsing.element.McAnnotationArgument.McKtAnnotationArgument
+import modulecheck.parsing.element.McKtElement
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.element.McAnnotation.McKtAnnotation
-import modulecheck.parsing.source.element.McAnnotationArgument.McKtAnnotationArgument
-import modulecheck.parsing.source.element.McKtElement
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

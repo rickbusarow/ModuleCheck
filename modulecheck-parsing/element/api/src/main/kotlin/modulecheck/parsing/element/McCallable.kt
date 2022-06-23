@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.source.element
+package modulecheck.parsing.element
 
+import modulecheck.parsing.element.McCallable.McJavaCallable
+import modulecheck.parsing.element.McCallable.McKtCallable
+import modulecheck.parsing.element.McFunction.McKtFunction
+import modulecheck.parsing.element.McProperty.McKtProperty
+import modulecheck.parsing.element.McType.McGenericType
+import modulecheck.parsing.element.McVisibility.McJavaVisibility
+import modulecheck.parsing.element.McVisibility.McKtVisibility
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.element.McCallable.McJavaCallable
-import modulecheck.parsing.source.element.McCallable.McKtCallable
-import modulecheck.parsing.source.element.McFunction.McKtFunction
-import modulecheck.parsing.source.element.McProperty.McKtProperty
-import modulecheck.parsing.source.element.McType.McGenericType
-import modulecheck.parsing.source.element.McVisibility.McJavaVisibility
-import modulecheck.parsing.source.element.McVisibility.McKtVisibility
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import org.jetbrains.kotlin.psi.KtCallableDeclaration

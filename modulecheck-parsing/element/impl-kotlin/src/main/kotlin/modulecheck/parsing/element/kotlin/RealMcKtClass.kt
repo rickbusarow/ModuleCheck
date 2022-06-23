@@ -13,26 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.toSet
+import modulecheck.parsing.element.McAnnotation
+import modulecheck.parsing.element.McFile.McKtFile
+import modulecheck.parsing.element.McFunction.McKtFunction
+import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.McProperty
+import modulecheck.parsing.element.McType
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtClass
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtCompanionObject
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtInterface
+import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtObject
+import modulecheck.parsing.element.McType.McConcreteType.McKtType
+import modulecheck.parsing.element.McVisibility
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.element.McAnnotation
-import modulecheck.parsing.source.element.McFile.McKtFile
-import modulecheck.parsing.source.element.McFunction.McKtFunction
-import modulecheck.parsing.source.element.McKtElement
-import modulecheck.parsing.source.element.McProperty
-import modulecheck.parsing.source.element.McType
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType.McKtClass
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType.McKtCompanionObject
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType.McKtInterface
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtConcreteType.McKtObject
-import modulecheck.parsing.source.element.McType.McConcreteType.McKtType
-import modulecheck.parsing.source.element.McVisibility
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.mapToSet

@@ -17,6 +17,7 @@ package modulecheck.parsing.test
 
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import modulecheck.parsing.element.McElement
 import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingReferenceName
@@ -45,7 +46,6 @@ import modulecheck.parsing.source.asInterpretedJavaReference
 import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
 import modulecheck.parsing.source.asKotlinDeclaredName
-import modulecheck.parsing.source.element.McElement
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred

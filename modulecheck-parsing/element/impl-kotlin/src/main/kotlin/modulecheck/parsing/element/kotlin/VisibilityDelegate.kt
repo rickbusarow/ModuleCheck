@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.element
+package modulecheck.parsing.element.kotlin
 
-import modulecheck.parsing.source.element.HasKtVisibility
-import modulecheck.parsing.source.element.McVisibility
+import modulecheck.parsing.element.HasKtVisibility
+import modulecheck.parsing.element.McVisibility
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.psi.KtModifierListOwner
 
