@@ -36,6 +36,7 @@ plugins {
   id("mcbuild.artifacts-check")
   id("mcbuild.ben-manes")
   id("mcbuild.clean")
+  id("mcbuild.detekt")
   id("mcbuild.dokka")
   id("mcbuild.knit")
   id("mcbuild.kotlin")
@@ -88,39 +89,5 @@ doctor {
     // JAVA_HOME is /Users/rbusarow/Library/Java/JavaVirtualMachines/azul-11-ARM64
     // Gradle is using /Users/rbusarow/Library/Java/JavaVirtualMachines/azul-11-ARM64/zulu-11.jdk/Contents/Home
     ensureJavaHomeMatches.set(false)
-  }
-}
-
-val detektProjectBaseline by tasks.registering(io.gitlab.arturbosch.detekt.DetektCreateBaselineTask::class) {
-  description = "Overrides current baseline."
-  buildUponDefaultConfig.set(true)
-  ignoreFailures.set(true)
-  parallel.set(true)
-  setSource(files(rootDir))
-  config.setFrom(files("$rootDir/detekt/detekt-config.yml"))
-
-  val baselineFile = file("$rootDir/detekt/detekt-baseline.xml")
-  baseline.set(baselineFile)
-
-  include("**/*.kt", "**/*.kts")
-  exclude(
-    "**/resources/**",
-    "**/build/**",
-    "**/src/test/java**",
-    "**/src/test/kotlin**",
-    "**/src/integrationTest/java**",
-    "**/src/integrationTest/kotlin**"
-  )
-
-  doLast {
-    // Detekt completely re-writes this file's contents any time it has to update.
-    // After updating the baseline file, insert the comment to exclude it from auto-format.
-    val oldText = baselineFile.readText()
-    val newText = oldText.replaceFirst(
-      "<?xml version='1.0' encoding='UTF-8'?>",
-      "<?xml version='1.0' encoding='UTF-8'?>\n" +
-        "<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->"
-    )
-    baselineFile.writeText(newText)
   }
 }

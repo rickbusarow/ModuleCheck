@@ -14,6 +14,7 @@
  */
 
 import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import modulecheck.builds.libsCatalog
 import modulecheck.builds.version
@@ -26,15 +27,21 @@ val reportMerge by tasks.registering(ReportMergeTask::class) {
   output.set(rootProject.buildDir.resolve("reports/detekt/merged.sarif"))
 }
 
-detekt {
-
-  parallel = true
-  baseline = file("$rootDir/detekt/detekt-baseline.xml")
-  config = files("$rootDir/detekt/detekt-config.yml")
-  buildUponDefaultConfig = true
-}
+val detektExcludes = listOf(
+  "**/resources/**",
+  "**/build/**",
+  "**/src/integrationTest/java**",
+  "**/src/test/java**",
+  "**/src/integrationTest/kotlin**",
+  "**/src/test/kotlin**"
+)
 
 tasks.withType<Detekt> detekt@{
+
+  parallel = true
+  baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
+  config.from(files("$rootDir/detekt/detekt-config.yml"))
+  buildUponDefaultConfig = true
 
   // If in CI, merge sarif reports.  Skip this locally because it's not worth looking at
   // and the task is unnecessarily chatty.
@@ -55,18 +62,42 @@ tasks.withType<Detekt> detekt@{
   setSource(files(projectDir))
 
   include("**/*.kt", "**/*.kts")
-  exclude(
-    "**/resources/**",
-    "**/build/**",
-    "**/src/integrationTest/java**",
-    "**/src/test/java**",
-    "**/src/integrationTest/kotlin**",
-    "**/src/test/kotlin**"
-  )
+  exclude(detektExcludes)
 
   doFirst {
     require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {
       "Update Detekt to `1.20.0` (or later) when Kotlin is updated to `1.6.21` or later."
     }
   }
+}
+
+if (project == rootProject) {
+
+  tasks.register("detektProjectBaseline", DetektCreateBaselineTask::class) {
+    description = "Overrides current baseline."
+    buildUponDefaultConfig.set(true)
+    ignoreFailures.set(true)
+    parallel.set(true)
+    setSource(files(rootDir))
+    config.setFrom(files("$rootDir/detekt/detekt-config.yml"))
+
+    val baselineFile = file("$rootDir/detekt/detekt-baseline.xml")
+    baseline.set(baselineFile)
+
+    include("**/*.kt", "**/*.kts")
+    exclude(detektExcludes)
+
+    doLast {
+      // Detekt completely re-writes this file's contents any time it has to update.
+      // After updating the baseline file, insert the comment to exclude it from auto-format.
+      val oldText = baselineFile.readText()
+      val newText = oldText.replaceFirst(
+        "<?xml version='1.0' encoding='UTF-8'?>",
+        "<?xml version='1.0' encoding='UTF-8'?>\n" +
+          "<!--@formatter:off   this file (or Detekt's parsing?) is broken if this gets auto-formatted-->"
+      )
+      baselineFile.writeText(newText)
+    }
+  }
+
 }
