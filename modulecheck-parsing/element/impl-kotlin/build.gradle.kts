@@ -26,7 +26,6 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:element:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:cache"))
@@ -42,14 +41,11 @@ dependencies {
   testImplementation(libs.kotest.runner)
 
   testImplementation(project(path = ":modulecheck-api"))
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-model:dependency:api"))
-  testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:testing"))
+  testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
+  testImplementation(project(path = ":modulecheck-parsing:wiring"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-reporting:logging:api"))
   testImplementation(project(path = ":modulecheck-utils:trace"))
 }
