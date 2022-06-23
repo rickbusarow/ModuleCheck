@@ -51,6 +51,7 @@ dependencies {
 
 java {
   // This is different from the Kotlin jvm target.
+  @Suppress("MagicNumber")
   toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
 
