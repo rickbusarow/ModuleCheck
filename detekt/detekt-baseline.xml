@@ -20,9 +20,7 @@
   <CurrentIssues>
     <ID>ComplexMethod:dependencies.kt$ suspend fun McProject.closestDeclarationOrNull( newDependency: ConfiguredDependency, matchPathFirst: Boolean ): DependencyDeclaration?</ID>
     <ID>MagicNumber:ArtifactsTask.kt$ArtifactsTask$4</ID>
-    <ID>MagicNumber:build.gradle.kts$11</ID>
     <ID>MagicNumber:mcbuild.java-library.gradle.kts$11</ID>
-    <ID>MaxLineLength:build.gradle.kts$"max-line-length"</ID>
     <ID>NestedBlockDepth:ArtifactsCheckTask.kt$ArtifactsCheckTask$private fun StringBuilder.maybeAddChangedValueMessages( changed: List&lt;Pair&lt;ArtifactConfig, ArtifactConfig>> ): StringBuilder</ID>
     <ID>OutdatedDocumentation:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$ fun addModuleStatement( configName: ConfigurationName, parsedString: String, projectPath: ProjectPath, projectAccessor: ProjectAccessor, suppressed: List&lt;String> )</ID>
     <ID>OutdatedDocumentation:AppScope.kt$SingleIn</ID>
@@ -1198,7 +1196,6 @@
     <ID>UndocumentedPublicProperty:OverShotDependencyFinding.kt$OverShotDependencyFinding.Companion$val NAME = FindingName("overshot-dependency")</ID>
     <ID>UndocumentedPublicProperty:OverShotDependencyRule.kt$OverShotDependencyRule$val settings: ModuleCheckSettings</ID>
     <ID>UndocumentedPublicProperty:PackageName.kt$HasPackageName$val packageName: PackageName</ID>
-    <ID>UndocumentedPublicProperty:PackageName.kt$MaybeHasPackageName$val packageName: PackageName?</ID>
     <ID>UndocumentedPublicProperty:PlatformPlugin.kt$AndroidPlatformPlugin$val kotlinAndroidExtensionEnabled: Boolean</ID>
     <ID>UndocumentedPublicProperty:PlatformPlugin.kt$AndroidPlatformPlugin$val manifests: Map&lt;SourceSetName, File></ID>
     <ID>UndocumentedPublicProperty:PlatformPlugin.kt$AndroidPlatformPlugin$val nonTransientRClass: Boolean</ID>
