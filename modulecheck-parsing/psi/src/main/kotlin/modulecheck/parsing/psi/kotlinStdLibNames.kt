@@ -18,7 +18,7 @@ package modulecheck.parsing.psi
 import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
 import modulecheck.parsing.source.asExplicitKotlinReference
 
-internal fun String.kotlinStdLibNameOrNull(): ExplicitKotlinReferenceName? {
+fun String.kotlinStdLibNameOrNull(): ExplicitKotlinReferenceName? {
 
   return kotlinStdLibNames[this]?.asExplicitKotlinReference()
 }

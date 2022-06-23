@@ -19,8 +19,8 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.parsing.element.kotlin.ParsingContext.DeclarationsInPackageProvider
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.psi.element.ParsingContext.DeclarationsInPackageProvider
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject

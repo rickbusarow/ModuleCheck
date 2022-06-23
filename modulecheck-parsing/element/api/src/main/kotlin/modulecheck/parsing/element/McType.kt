@@ -38,12 +38,15 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
     val innerTypesRecursive: LazySet<McType>
     val properties: LazySet<McProperty>
 
-    interface McJavaType : McType, McJavaElement
-    interface McKtType : McType, McKtElement
+    interface McJavaType : McType, McJavaElement {
+      override val parent: McJavaElement
+    }
+
+    interface McKtType : McType, McKtElement {
+      override val parent: McKtElement
+    }
 
     sealed interface McJavaConcreteType : McConcreteType, McJavaType, McJavaElement {
-
-      override val parent: McJavaElement
       override val innerTypes: LazySet<McJavaConcreteType>
       override val innerTypesRecursive: LazySet<McJavaConcreteType>
 
