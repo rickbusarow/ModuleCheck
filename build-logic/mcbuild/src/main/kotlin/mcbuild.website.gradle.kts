@@ -221,63 +221,6 @@ val yarnInstall by tasks.registering(Exec::class) {
   commandLine("yarn", "install")
 }
 
-val startSite by tasks.registering(Exec::class) {
-
-  description = "launches the local development website"
-  group = "website"
-
-  dependsOn(
-    yarnInstall,
-    updateWebsiteApiDocs,
-    updateWebsiteChangelog,
-    updateWebsiteNextDocsVersionRefs,
-    updateWebsitePackageJsonVersion
-  )
-
-  workingDir("$rootDir/website")
-  commandLine("yarn", "run", "start")
-}
-
-val buildSite by tasks.registering(Exec::class) {
-
-  description = "builds the website"
-  group = "website"
-
-  dependsOn(
-    yarnInstall,
-    versionDocs,
-    updateWebsiteApiDocs,
-    updateWebsiteChangelog,
-    updateWebsiteNextDocsVersionRefs,
-    updateWebsitePackageJsonVersion
-  )
-
-  workingDir("./website")
-  commandLine("yarn", "run", "build")
-}
-
-val versionDocs by tasks.registering(Exec::class) {
-
-  description =
-    "creates a new version snapshot of website docs, using the current version defined in gradle.properties"
-  group = "website"
-
-  val existingVersions = with(File("$rootDir/website/versions.json")) {
-    "\"([^\"]*)\"".toRegex()
-      .findAll(readText())
-      .flatMap { it.destructured.toList() }
-  }
-
-  val devVersions = ".*(?:-SNAPSHOT|-LOCAL)".toRegex()
-
-  val version = VERSION_NAME
-
-  enabled = version !in existingVersions && !version.matches(devVersions)
-
-  workingDir("$rootDir/website")
-  commandLine("yarn", "run", "docusaurus", "docs:version", version)
-}
-
 val updateWebsiteApiDocs by tasks.registering(Copy::class) {
 
   description = "creates new Dokka api docs and copies them to the website's static dir"
@@ -334,4 +277,62 @@ val updateWebsiteChangelog by tasks.registering(Copy::class) {
 
     changelog.writeText(newText)
   }
+}
+
+val versionDocs by tasks.registering(Exec::class) {
+
+  description =
+    "creates a new version snapshot of website docs, using the current version defined in gradle.properties"
+  group = "website"
+
+  val existingVersions = with(File("$rootDir/website/versions.json")) {
+    "\"([^\"]*)\"".toRegex()
+      .findAll(readText())
+      .flatMap { it.destructured.toList() }
+  }
+
+  val devVersions = ".*(?:-SNAPSHOT|-LOCAL)".toRegex()
+
+  val version = VERSION_NAME
+
+  enabled = version !in existingVersions && !version.matches(devVersions)
+
+  workingDir("$rootDir/website")
+  commandLine("yarn", "run", "docusaurus", "docs:version", version)
+}
+
+val startSite by tasks.registering(Exec::class) {
+
+  description = "launches the local development website"
+  group = "website"
+
+  dependsOn(
+    yarnInstall,
+    versionDocs,
+    updateWebsiteApiDocs,
+    updateWebsiteChangelog,
+    updateWebsiteNextDocsVersionRefs,
+    updateWebsitePackageJsonVersion
+  )
+
+  workingDir("$rootDir/website")
+  commandLine("yarn", "run", "start")
+}
+
+val buildSite by tasks.registering(Exec::class) {
+
+  description = "builds the website"
+  group = "website"
+
+  dependsOn(
+    yarnInstall,
+    versionDocs,
+    updateWebsiteApiDocs,
+    updateWebsiteChangelog,
+    updateWebsiteNextDocsVersionRefs,
+    updateWebsitePackageJsonVersion
+  )
+
+  workingDir("$rootDir/website")
+  commandLine("yarn", "run", "build")
 }
