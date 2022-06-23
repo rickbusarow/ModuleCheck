@@ -17,10 +17,16 @@ plugins {
   base
 }
 
-// delete any empty directories
-tasks.withType<Delete> {
+val deleteDocusaurusFoo by tasks.registering(Delete::class) {
 
-  notCompatibleWithConfigurationCache("Delete does not support configuration cache")
+  description = "Delete the `/docusaurus/foo` directory created by Docusaurus in the project root."
+
+  delete(files("docusaurus/foo"))
+}
+
+val deleteEmptyDirs by tasks.registering(Delete::class) {
+
+  description = "Delete all empty directories within a project."
 
   doLast {
 
@@ -36,15 +42,23 @@ tasks.withType<Delete> {
   }
 }
 
+tasks.matching { it.name == "clean" }.all {
+  dependsOn(deleteDocusaurusFoo, deleteEmptyDirs)
+}
+
+// delete any empty directories
+tasks.withType<Delete> {
+  notCompatibleWithConfigurationCache("Delete does not support configuration cache")
+}
+
 tasks.register("cleanGradle", SourceTask::class.java) {
 
   source(".gradle")
 
   doLast {
-
     projectDir.walkBottomUp()
       .filter { it.isDirectory }
       .filter { it.path.contains(".gradle") }
-      .forEach { it.deleteRecursively() }
+      .all { it.deleteRecursively() }
   }
 }
