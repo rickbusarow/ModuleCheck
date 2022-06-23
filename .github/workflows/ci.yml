@@ -37,29 +37,26 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
 
       - name: dependency-guard
-        run: ./gradlew dependencyGuard --no-daemon --refresh-dependencies
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dependencyGuard
+          cache-read-only: false --refresh-dependencies
 
       - name: artifacts check
-        run: ./gradlew artifactsCheck --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: artifactsCheck
+          cache-read-only: false
 
       - name: detekt
-        run: ./gradlew detekt --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: detekt
+          cache-read-only: false
 
       - name: Upload SARIF to Github using the upload-sarif action
         uses: github/codeql-action/upload-sarif@v2
@@ -87,24 +84,15 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
 
       - name: KtLint format (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew ktlintformat -q --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ktlintformat -q
+          cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes (used by main repo)
@@ -116,7 +104,10 @@ jobs:
 
       - name: KtLint check (used by forks)
         if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew ktlintCheck -q --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: ktlintCheck -q
+          cache-read-only: false
 
   modulecheck:
 
@@ -138,24 +129,15 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
 
       - name: ModuleCheck with auto-correct (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew moduleCheckAuto --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: moduleCheckAuto
+          cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
       - name: commit changes (used by main repo)
@@ -167,7 +149,10 @@ jobs:
 
       - name: ModuleCheck check (used by forks)
         if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew moduleCheck --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: moduleCheck
+          cache-read-only: false
 
   versioning:
 
@@ -189,31 +174,28 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
-          java-version: '14'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
+          distribution: 'zulu'
+          java-version: '11'
 
       - name: Check that the version is a -SNAPSHOT version
-        run: ./gradlew checkVersionIsSnapshot --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: checkVersionIsSnapshot
+          cache-read-only: false
 
       - name: Sync versions in website docs (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsiteNextDocsVersionRefs --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: updateWebsiteNextDocsVersionRefs
+          cache-read-only: false
 
       - name: Check versions in website docs (used by forks)
         if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew checkWebsiteNextDocsVersionRefs --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: checkWebsiteNextDocsVersionRefs
+          cache-read-only: false
 
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -223,11 +205,17 @@ jobs:
 
       - name: Update version in website package.json (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsitePackageJsonVersion --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: updateWebsitePackageJsonVersion
+          cache-read-only: false
 
       - name: Check version in website package.json (used by forks)
         if: github.event.pull_request.head.repo.full_name != github.repository
-        run: ./gradlew checkWebsitePackageJsonVersion --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: checkWebsitePackageJsonVersion
+          cache-read-only: false
 
       - name: commit changes (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -238,7 +226,10 @@ jobs:
 
       - name: Update website changelog from root CHANGELOG (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
-        run: ./gradlew updateWebsiteChangelog --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: updateWebsiteChangelog
+          cache-read-only: false
 
       - name: commit changes (used by main repo)
         if: github.event.pull_request.head.repo.full_name == github.repository
@@ -268,38 +259,19 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
+      - uses: gradle/wrapper-validation-action@v1
+
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - uses: gradle/wrapper-validation-action@v1
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: cache 'build website'
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/build
-            **/website
-          key: ${{ runner.os }}-build-website
-          restore-keys: |
-            ${{ runner.os }}-build-website
 
       - name: build website
-        run: ./gradlew buildSite --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: buildSite
+          cache-read-only: false
 
   tests-ubuntu:
 
@@ -321,32 +293,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: cache build
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/build
-          key: ${{ runner.os }}-unit-tests
-          restore-keys: |
-            ${{ runner.os }}-unit-tests
 
       - name: all tests
-        run: ./gradlew test --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test
+          cache-read-only: false
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
@@ -383,32 +337,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: cache build
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/build
-          key: ${{ runner.os }}-integration-tests
-          restore-keys: |
-            ${{ runner.os }}-integration-tests
 
       - name: integration tests
-        run: ./gradlew integrationTest --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: integrationTest
+          cache-read-only: false
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
@@ -446,32 +382,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: cache build
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/build
-          key: ${{ runner.os }}-unit-tests
-          restore-keys: |
-            ${{ runner.os }}-unit-tests
 
       - name: all tests
-        run: ./gradlew test --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: test
+          cache-read-only: false
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
@@ -510,32 +428,14 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
-
-      - name: cache gradle
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ./**/.gradle
-          key: ${{ runner.os }}-gradle
-          restore-keys: |
-            ${{ runner.os }}-gradle
-
-      - name: cache build
-        uses: actions/cache@v3
-        with:
-          path: |
-            **/build
-          key: ${{ runner.os }}-integration-tests
-          restore-keys: |
-            ${{ runner.os }}-integration-tests
 
       - name: integration tests
-        run: ./gradlew integrationTest --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: integrationTest
+          cache-read-only: false
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
