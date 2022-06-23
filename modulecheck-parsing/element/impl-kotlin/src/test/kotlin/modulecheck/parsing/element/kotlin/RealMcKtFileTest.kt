@@ -40,9 +40,11 @@ import modulecheck.project.test.ProjectTest
 import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
+@Disabled
 internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
 
   val lib1 by resets {
