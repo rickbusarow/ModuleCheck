@@ -38,9 +38,14 @@ allprojects {
       outputToConsole.set(true)
       disabledRules.set(
         setOf(
-          "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-          "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-          "experimental:argument-list-wrapping" // doesn't work half the time
+          // manually formatting still does this,
+          // and KTLint will still wrap long chains when possible
+          "max-line-length",
+          // same as Detekt's MatchingDeclarationName,
+          // but Detekt's version can be suppressed and this can't
+          "filename",
+          // doesn't work half the time
+          "experimental:argument-list-wrapping"
         )
       )
     }
