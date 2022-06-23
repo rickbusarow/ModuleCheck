@@ -17,7 +17,9 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject
+import modulecheck.utils.lazy.LazySet
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 class PsiElementResolver(
@@ -29,4 +31,16 @@ class PsiElementResolver(
   ): DeclaredName? {
     return token.declaredNameOrNull(project, sourceSetName)
   }
+}
+
+interface DeclarationsInPackageProvider {
+  suspend fun get(
+    sourceSetName: SourceSetName,
+    packageName: PackageName
+  ): LazySet<DeclaredName>
+
+  suspend fun getWithUpstream(
+    sourceSetName: SourceSetName,
+    packageName: PackageName
+  ): LazySet<DeclaredName>
 }

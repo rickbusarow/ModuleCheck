@@ -16,13 +16,10 @@
 package modulecheck.parsing.element.kotlin
 
 import modulecheck.parsing.element.McElement
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.psi.internal.DeclarationsInPackageProvider
 import modulecheck.parsing.psi.internal.PsiElementResolver
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.utils.cache.SafeCache
-import modulecheck.utils.lazy.LazySet
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 class ParsingContext(
@@ -30,17 +27,4 @@ class ParsingContext(
   val nameParser: NameParser,
   val declarationsInPackageProvider: DeclarationsInPackageProvider,
   val psiResolver: PsiElementResolver
-) {
-
-  interface DeclarationsInPackageProvider {
-    suspend fun get(
-      sourceSetName: SourceSetName,
-      packageName: PackageName
-    ): LazySet<DeclaredName>
-
-    suspend fun getWithUpstream(
-      sourceSetName: SourceSetName,
-      packageName: PackageName
-    ): LazySet<DeclaredName>
-  }
-}
+)
