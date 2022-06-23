@@ -47,7 +47,7 @@ kotlinx-knit = "0.4.0"
 google-ksp = "1.6.10-1.0.2"
 
 ktlint-plugin = "10.3.0"
-ktlint-lib = "0.45.2"
+ktlint-lib = "0.46.1"
 
 mavenPublish = "0.13.0"
 
