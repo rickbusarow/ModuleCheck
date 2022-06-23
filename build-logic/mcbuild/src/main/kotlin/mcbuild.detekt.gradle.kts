@@ -99,5 +99,4 @@ if (project == rootProject) {
       baselineFile.writeText(newText)
     }
   }
-
 }
