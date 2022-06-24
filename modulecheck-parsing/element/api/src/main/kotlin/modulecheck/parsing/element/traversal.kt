@@ -13,28 +13,23 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
+package modulecheck.parsing.element
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
+import modulecheck.utils.coroutines.plus
+
+fun McElement.childrenRecursive(): Flow<McElement> {
+  return flowOf(this)
+    .plus(
+      children.flatMapConcat { child ->
+        child.childrenRecursive()
+      }
+    )
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-element-api"
-  anvil = true
-}
-
-dependencies {
-  api(libs.kotlin.compiler)
-  api(libs.semVer)
-
-  api(project(path = ":modulecheck-parsing:source:api"))
-
-  implementation(project(path = ":modulecheck-utils:coroutines"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlin.reflect)
-
-  testImplementation(project(path = ":modulecheck-internal-testing"))
+inline fun <reified E : McElement> McElement.childrenOfTypeRecursive(): Flow<E> {
+  return childrenRecursive().filterIsInstance()
 }

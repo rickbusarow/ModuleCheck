@@ -18,18 +18,20 @@ package modulecheck.parsing.element.kotlin
 import modulecheck.parsing.element.McAnnotation.McKtAnnotation
 import modulecheck.parsing.element.McAnnotationArgument.McKtAnnotationArgument
 import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
 import org.jetbrains.kotlin.psi.KtValueArgument
 
 internal fun KtAnnotated.annotations(
-  parsingContext: ParsingContext,
+  parsingContext: ParsingContext<PsiElement>,
   parent: McKtElement
 ): Set<RealMcKtAnnotation> = annotationEntries
   .mapToSet {
@@ -41,7 +43,7 @@ internal fun KtAnnotated.annotations(
   }
 
 data class RealMcKtAnnotation(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtAnnotationEntry,
   override val parent: McKtElement
 ) : McKtAnnotation {
@@ -69,7 +71,7 @@ data class RealMcKtAnnotation(
 }
 
 data class RealMcKtAnnotationArgument(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtValueArgument,
   override val parent: McKtElement
 ) : McKtAnnotationArgument {

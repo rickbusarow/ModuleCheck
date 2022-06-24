@@ -25,14 +25,15 @@ dependencies {
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
-  api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-reporting:logging:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-model:dependency:api"))
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:api"))
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-parsing:element:api"))
+  implementation(project(path = ":modulecheck-parsing:source:api"))
+  implementation(project(path = ":modulecheck-project:api"))
+  implementation(project(path = ":modulecheck-reporting:logging:api"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(libs.kotlin.reflect)
 

@@ -18,6 +18,8 @@ package modulecheck.parsing.element.kotlin
 import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.parsing.element.McKtElement
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.resolve.ParsingContext
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtElement
@@ -25,7 +27,7 @@ import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.psiUtil.getChildrenOfType
 
 internal fun McKtConcreteType(
-  parsingContext: ParsingContext,
+  parsingContext: ParsingContext<PsiElement>,
   containingFile: McKtFile,
   clazz: KtClassOrObject,
   parent: McKtElement
@@ -68,7 +70,7 @@ internal fun McKtConcreteType(
   }
 
 internal fun KtElement.mcKtConcreteTypesDirect(
-  parsingContext: ParsingContext,
+  parsingContext: ParsingContext<PsiElement>,
   containingFile: McKtFile,
   parent: McKtElement
 ): Set<McKtConcreteType> {

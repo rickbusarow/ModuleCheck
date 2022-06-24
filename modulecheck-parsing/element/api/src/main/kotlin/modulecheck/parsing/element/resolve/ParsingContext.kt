@@ -13,18 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.element.kotlin
+package modulecheck.parsing.element.resolve
 
-import modulecheck.parsing.element.McElement
-import modulecheck.parsing.psi.internal.DeclarationsInPackageProvider
-import modulecheck.parsing.psi.internal.PsiElementResolver
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.internal.NameParser
-import modulecheck.utils.cache.SafeCache
-import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
-class ParsingContext(
-  val psiCache: SafeCache<PsiElement, McElement>,
+class ParsingContext<T>(
   val nameParser: NameParser,
-  val declarationsInPackageProvider: DeclarationsInPackageProvider,
-  val psiResolver: PsiElementResolver
+  val symbolResolver: SymbolResolver<T>
 )
+
+fun interface SymbolResolver<T> {
+  suspend fun declaredNameOrNull(symbol: T): DeclaredName?
+}

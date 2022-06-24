@@ -25,6 +25,7 @@ import modulecheck.parsing.element.McFunction
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.element.McVisibility
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.PackageName
@@ -33,13 +34,14 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.unsafeLazy
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.fileClasses.javaFileFacadeFqName
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
 class RealMcKtFile(
-  private val parsingContext: ParsingContext,
-  override val javaFile: File,
+  private val parsingContext: ParsingContext<PsiElement>,
+  override val file: File,
   override val psi: KtFile
 ) : McKtFile {
 

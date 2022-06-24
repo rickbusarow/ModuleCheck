@@ -19,6 +19,7 @@ import modulecheck.parsing.element.HasKtVisibility
 import modulecheck.parsing.element.McAnnotation
 import modulecheck.parsing.element.McKtElement
 import modulecheck.parsing.element.McProperty
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
@@ -28,11 +29,12 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.requireNotNull
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 
 data class RealMcKtMemberProperty(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtProperty,
   override val parent: McKtElement
 ) : McProperty.McKtProperty.KtMemberProperty,
@@ -42,7 +44,7 @@ data class RealMcKtMemberProperty(
 
     psi.delegateExpressionOrInitializer
 
-    parsingContext.psiResolver
+    parsingContext.symbolResolver
       .declaredNameOrNull(psi.typeReference.requireNotNull())
       .requireNotNull()
       .name
@@ -62,7 +64,7 @@ data class RealMcKtMemberProperty(
 }
 
 data class RealMcKtConstructorProperty(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtParameter,
   override val parent: McKtElement
 ) : McProperty.McKtProperty.KtConstructorProperty,
@@ -70,7 +72,7 @@ data class RealMcKtConstructorProperty(
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
 
-    parsingContext.psiResolver
+    parsingContext.symbolResolver
       .declaredNameOrNull(psi.typeReference.requireNotNull())
       .requireNotNull()
       .name

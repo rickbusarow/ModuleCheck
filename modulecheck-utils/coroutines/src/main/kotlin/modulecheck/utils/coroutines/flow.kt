@@ -15,13 +15,14 @@
 
 package modulecheck.utils.coroutines
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
@@ -66,7 +67,6 @@ suspend fun <T, R> Flow<T>.flatMapSetConcat(
 private val DEFAULT_CONCURRENCY: Int
   get() = max(Runtime.getRuntime().availableProcessors(), 2)
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R> Flow<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
@@ -80,7 +80,6 @@ fun <T, R> Flow<T>.mapAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R> Iterable<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
@@ -96,7 +95,6 @@ fun <T, R> Iterable<T>.mapAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Iterable<T>.onEachAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   action: suspend (T) -> Unit
@@ -115,7 +113,6 @@ fun <T> Iterable<T>.onEachAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R> Sequence<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
@@ -128,7 +125,6 @@ fun <T, R> Sequence<T>.mapAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     this@mapAsyncNotNull.onEach { element -> transform(element)?.let { send(it) } }
@@ -136,7 +132,6 @@ fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> 
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     forEach { element ->
@@ -145,7 +140,6 @@ fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     forEach { element ->
@@ -154,7 +148,6 @@ fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     this@filterAsync.onEach { if (predicate(it)) send(it) }
@@ -162,16 +155,27 @@ fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     forEach { launch { if (predicate(it)) send(it) } }
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     forEach { launch { if (predicate(it)) send(it) } }
   }
+}
+
+/**
+ * Shorthand for `onCompletion { if (it == null) emitAll(other) }`
+ *
+ * ```
+ * val mySingleFlow = someFlow + someOtherFlow
+ * ```
+ *
+ * @since 0.13.0
+ */
+operator fun <T> Flow<T>.plus(other: Flow<T>): Flow<T> {
+  return onCompletion { if (it == null) emitAll(other) }
 }

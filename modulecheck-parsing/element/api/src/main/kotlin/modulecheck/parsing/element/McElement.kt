@@ -15,10 +15,13 @@
 
 package modulecheck.parsing.element
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import modulecheck.parsing.element.McFile.McJavaFile
 import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.parsing.element.McType.McConcreteType
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
@@ -39,9 +42,37 @@ interface Declared : HasVisibility {
   val simpleName: String
 }
 
+/**
+ * Creates an [McElement]
+ *
+ * @since 0.13.0
+ */
+interface McElementFactory<T> {
+  /**
+   * @param parsingContext the context from which symbols should be resolved
+   * @param fileSystemFile the java.io.File containing this element
+   * @param backingElement the AST symbol used for actual parsing
+   * @param parent the parent element for this new element
+   * @return some subtype of [McElement] which wraps [backingElement]
+   * @since 0.13.0
+   */
+  fun create(
+    parsingContext: ParsingContext<T>,
+    fileSystemFile: File,
+    backingElement: T,
+    parent: McElement
+  ): McElement
+}
+
+/**
+ * A caching wrapper for any other parsing type (Kotlin Psi, Java Psi, Kotlin compiler Descriptors)
+ *
+ * @since 0.13.0
+ */
 sealed interface McElement {
   val psi: PsiElement
   val containingFile: McFile
+  val children: Flow<McElement> get() = flowOf()
 }
 
 sealed interface McJavaElement : McElement {
@@ -102,7 +133,7 @@ interface McAnnotationArgument : McElement, McElementWithParent<McElement> {
 
 sealed interface McFile : McElement, Declared {
 
-  val javaFile: File
+  val file: File
   val imports: DataSource<ExplicitReferenceName>
 
   val apiReferences: List<DataSource<ReferenceName>>
@@ -113,6 +144,11 @@ sealed interface McFile : McElement, Declared {
   val declaredTypes: LazySet<McConcreteType>
   val declaredTypesAndInnerTypes: LazySet<McConcreteType>
 
+  /**
+   * Represents a single Kotlin file.
+   *
+   * @since 0.13.0
+   */
   interface McKtFile : McFile, McKtElement, McAnnotated {
     override val psi: KtFile
 

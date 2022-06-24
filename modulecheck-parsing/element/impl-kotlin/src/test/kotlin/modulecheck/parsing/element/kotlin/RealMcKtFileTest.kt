@@ -24,6 +24,7 @@ import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.element.McElement
 import modulecheck.parsing.element.McProperty.McKtProperty.KtConstructorProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
@@ -37,7 +38,6 @@ import modulecheck.parsing.test.NamedSymbolTest
 import modulecheck.parsing.wiring.RealDeclarationsInPackageProvider
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Disabled
@@ -207,10 +207,8 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
       val declarationsInPackage = RealDeclarationsInPackageProvider(this@createFile)
 
       val context = ParsingContext(
-        psiCache = SafeCache(listOf(ParsingContext::class)),
         nameParser = nameParser,
-        declarationsInPackageProvider = declarationsInPackage,
-        psiResolver = PsiElementResolver(this@createFile, sourceSetName)
+        symbolResolver = PsiElementResolver(this@createFile, sourceSetName)
       )
 
       editSimple {
@@ -222,7 +220,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
         .let {
           RealMcKtFile(
             parsingContext = context,
-            javaFile = it.psi.file(),
+            file = it.psi.file(),
             psi = it.psi
           )
         }

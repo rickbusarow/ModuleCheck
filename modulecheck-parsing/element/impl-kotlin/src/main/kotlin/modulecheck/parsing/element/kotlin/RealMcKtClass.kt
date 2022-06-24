@@ -30,6 +30,7 @@ import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtIn
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtObject
 import modulecheck.parsing.element.McType.McConcreteType.McKtType
 import modulecheck.parsing.element.McVisibility
+import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.asDeclaredName
@@ -37,12 +38,13 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.mapToSet
 import modulecheck.utils.requireNotNull
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 
 abstract class AbstractMcKtConcreteType internal constructor(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClassOrObject
 ) : McKtConcreteType,
@@ -88,12 +90,14 @@ abstract class AbstractMcKtConcreteType internal constructor(
     get() = TODO("Not yet implemented")
 
   final override fun toString(): String {
-    return "${this::class.java.simpleName}(name = `${declaredName.name}`, containingFile=${containingFile.javaFile.path}, psi=${psi::class.simpleName})"
+    return "${this::class.java.simpleName}(name = `${declaredName.name}`, " +
+      "containingFile=${containingFile.file.path}, " +
+      "psi=${psi::class.simpleName})"
   }
 }
 
 data class RealMcKtClass(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClass,
   override val parent: McKtElement
@@ -105,21 +109,21 @@ data class RealMcKtClass(
 }
 
 data class RealMcKtInterface(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClass,
   override val parent: McKtElement
 ) : AbstractMcKtConcreteType(parsingContext, containingFile, psi), McKtInterface
 
 data class RealMcKtCompanionObject(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtObjectDeclaration,
   override val parent: McKtElement
 ) : AbstractMcKtConcreteType(parsingContext, containingFile, psi), McKtCompanionObject
 
 data class RealMcKtObject(
-  private val parsingContext: ParsingContext,
+  private val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtObjectDeclaration,
   override val parent: McKtElement
