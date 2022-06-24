@@ -118,19 +118,18 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
       references {
 
         lib1Class
+        explicitKotlin("com.subject.SubjectClass.lib1Class")
 
         interpretedKotlin("Inject")
         interpretedKotlin("com.subject.Inject")
         interpretedKotlin("com.subject.inject")
         interpretedKotlin("com.subject.javax")
         interpretedKotlin("com.subject.javax.inject.Inject")
-        interpretedKotlin("com.subject.lib1Class")
         interpretedKotlin("com.subject.this")
         interpretedKotlin("com.subject.this.lib1Class")
         interpretedKotlin("inject")
         interpretedKotlin("javax")
         interpretedKotlin("javax.inject.Inject")
-        interpretedKotlin("lib1Class")
         interpretedKotlin("this")
         interpretedKotlin("this.lib1Class")
       }
@@ -292,11 +291,10 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
 
         lib1Class
         explicitKotlin("javax.inject.Inject")
+        explicitKotlin("com.subject.SubjectClass.lib1Class")
 
-        interpretedKotlin("com.subject.lib1Class")
         interpretedKotlin("com.subject.this")
         interpretedKotlin("com.subject.this.lib1Class")
-        interpretedKotlin("lib1Class")
         interpretedKotlin("this")
         interpretedKotlin("this.lib1Class")
       }
@@ -338,9 +336,7 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
         lib1Class
         explicitKotlin("org.jetbrains.kotlin.name.FqName")
         explicitKotlin("javax.inject.Inject")
-
-        interpretedKotlin("com.subject.lib1Class")
-        interpretedKotlin("lib1Class")
+        explicitKotlin("com.subject.SubjectClass.lib1Class")
       }
       apiReferences {
 
@@ -477,8 +473,7 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
 
       file shouldBe {
         references {
-          interpretedKotlin("SubjectClass")
-          interpretedKotlin("com.subject.SubjectClass")
+          explicitKotlin("com.subject.SubjectClass")
         }
         declarations {
           agnostic("com.subject.SubjectClass")

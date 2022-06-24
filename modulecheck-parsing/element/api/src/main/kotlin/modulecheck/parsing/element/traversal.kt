@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
+import modulecheck.utils.coroutines.distinct
 import modulecheck.utils.coroutines.plus
 
 fun McElement.childrenRecursive(): Flow<McElement> {
@@ -28,6 +29,7 @@ fun McElement.childrenRecursive(): Flow<McElement> {
         child.childrenRecursive()
       }
     )
+    .distinct()
 }
 
 inline fun <reified E : McElement> McElement.childrenOfTypeRecursive(): Flow<E> {

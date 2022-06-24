@@ -44,7 +44,6 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-@Disabled
 internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
 
   val lib1 by resets {
@@ -197,14 +196,14 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
   ): RealMcKtFile {
     return runBlocking(Trace.start(RealMcKtFileTest::class)) {
 
+      val declarationsInPackage = RealDeclarationsInPackageProvider(this@createFile)
+
       val nameParser = ParsingChain.Factory(
         listOf(
-          ConcatenatingParsingInterceptor(),
+          ConcatenatingParsingInterceptor(declarationsInPackage, sourceSetName),
           InterpretingInterceptor()
         )
       )
-
-      val declarationsInPackage = RealDeclarationsInPackageProvider(this@createFile)
 
       val context = ParsingContext(
         nameParser = nameParser,

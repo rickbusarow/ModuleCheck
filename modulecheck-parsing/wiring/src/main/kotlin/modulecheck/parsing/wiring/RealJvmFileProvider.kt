@@ -76,7 +76,10 @@ class RealJvmFileProvider(
           ),
           nameParser = ParsingChain.Factory(
             listOf(
-              ConcatenatingParsingInterceptor(),
+              ConcatenatingParsingInterceptor(
+                RealDeclarationsInPackageProvider(project),
+                sourceSetName
+              ),
               AndroidResourceReferenceParsingInterceptor(
                 androidRNameProvider = androidRNameProvider
               ),
@@ -87,12 +90,16 @@ class RealJvmFileProvider(
             )
           )
         )
+
         else -> RealJavaFile(
           file = file,
           javaVersion = project.javaSourceVersion,
           nameParser = ParsingChain.Factory(
             listOf(
-              ConcatenatingParsingInterceptor(),
+              ConcatenatingParsingInterceptor(
+                RealDeclarationsInPackageProvider(project),
+                sourceSetName
+              ),
               AndroidResourceReferenceParsingInterceptor(
                 androidRNameProvider = androidRNameProvider
               ),

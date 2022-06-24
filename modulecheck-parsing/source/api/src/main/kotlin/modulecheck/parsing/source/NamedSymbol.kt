@@ -34,6 +34,11 @@ sealed interface NamedSymbol : Comparable<NamedSymbol> {
     return name.endsWith(str)
   }
 
+  /** @return true if the last segment of this symbol matches [str], otherwise false */
+  fun endsWithSimpleName(str: String): Boolean {
+    return name.split('.').last() == str
+  }
+
   fun endsWith(symbol: NamedSymbol): Boolean {
     return name.endsWith(symbol.name)
   }

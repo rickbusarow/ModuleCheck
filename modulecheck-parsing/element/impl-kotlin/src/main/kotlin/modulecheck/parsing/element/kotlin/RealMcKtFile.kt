@@ -15,6 +15,8 @@
 
 package modulecheck.parsing.element.kotlin
 
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.element.McAnnotation
@@ -60,6 +62,10 @@ class RealMcKtFile(
     }
   }
   override val containingFile: McFile.McKtFile get() = this
+
+  override val children = flow {
+    emitAll(declaredTypes)
+  }
 
   private val fileJavaFacadeName by lazy { psi.javaFileFacadeFqName.asString() }
 
