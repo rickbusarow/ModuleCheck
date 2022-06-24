@@ -19,6 +19,19 @@ plugins {
 
 extensions.configure<kotlinx.knit.KnitPluginExtension> {
 
+  moduleRoots = listOf(".")
+
+  moduleDocs = "build/dokka/htmlMultiModule"
+  dokkaMultiModuleRoot = "build/dokka/htmlMultiModule"
+  moduleMarkers = listOf("build.gradle", "build.gradle.kts")
+  siteRoot = "https://rbusarow.github.io/ModuleCheck/api/"
+}
+
+// Build API docs for all modules with dokka before running Knit
+tasks.withType<kotlinx.knit.KnitTask>().all {
+  notCompatibleWithConfigurationCache("")
+  dependsOn("dokkaHtmlMultiModule")
+
   rootDir = rootProject.rootDir
 
   files = fileTree(project.rootDir) {
@@ -34,18 +47,4 @@ extensions.configure<kotlinx.knit.KnitPluginExtension> {
       "**/.gradle/**"
     )
   }
-
-  moduleRoots = listOf(".")
-
-  moduleDocs = "build/dokka/htmlMultiModule"
-  dokkaMultiModuleRoot = "build/dokka/htmlMultiModule"
-  moduleMarkers = listOf("build.gradle", "build.gradle.kts")
-  siteRoot = "https://rbusarow.github.io/ModuleCheck/api/"
 }
-
-// Build API docs for all modules with dokka before running Knit
-tasks.withType<kotlinx.knit.KnitTask>()
-  .configureEach {
-    notCompatibleWithConfigurationCache("")
-    dependsOn("dokkaHtmlMultiModule")
-  }
