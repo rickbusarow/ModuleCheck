@@ -273,6 +273,12 @@ jobs:
           arguments: buildSite
           cache-read-only: false
 
+      - name: knit check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: knitcheck
+          cache-read-only: false
+
   tests-ubuntu:
 
     runs-on: ubuntu-latest
