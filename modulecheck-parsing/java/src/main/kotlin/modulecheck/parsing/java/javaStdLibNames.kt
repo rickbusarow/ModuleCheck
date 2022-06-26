@@ -15,15 +15,15 @@
 
 package modulecheck.parsing.java
 
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.asExplicitJavaReference
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.asJavaReference
 
-internal fun String.javaLangFqNameOrNull(): ExplicitJavaReferenceName? {
+internal fun String.javaLangFqNameOrNull(): JavaReferenceName? {
 
   val maybeJavaLang = "java.lang.$this"
 
   return if (maybeJavaLang in javaStdLibNames) {
-    maybeJavaLang.asExplicitJavaReference()
+    maybeJavaLang.asJavaReference()
   } else {
     null
   }

@@ -17,7 +17,6 @@ package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 
 fun interface NameParser {
@@ -27,15 +26,14 @@ fun interface NameParser {
     val packageName: PackageName,
     val imports: Set<String>,
     val wildcardImports: Set<String>,
-    val aliasedImports: Map<String, ExplicitReferenceName>,
+    val aliasedImports: Map<String, ReferenceName>,
     val resolved: Set<ReferenceName>,
     val unresolved: Set<String>,
     // should be a subset of [unresolved]
     val mustBeApi: Set<String>,
     val apiReferenceNames: Set<ReferenceName>,
-    val toExplicitReferenceName: String.() -> ReferenceName.ExplicitReferenceName,
-    val toInterpretedReferenceName: String.() -> ReferenceName.InterpretedReferenceName,
-    val stdLibNameOrNull: String.() -> ExplicitReferenceName?
+    val toReferenceName: String.() -> ReferenceName,
+    val stdLibNameOrNull: String.() -> ReferenceName?
   ) {
     override fun toString(): String {
       return """NameParserPacket(

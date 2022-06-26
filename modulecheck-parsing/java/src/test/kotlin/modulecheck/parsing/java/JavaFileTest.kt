@@ -24,8 +24,7 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asInterpretedJavaReference
+import modulecheck.parsing.source.asJavaReference
 import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -1038,8 +1037,8 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
   }
 
-  fun explicit(name: String) = name.asExplicitJavaReference()
-  fun interpreted(name: String) = name.asInterpretedJavaReference()
+  fun explicit(name: String) = name.asJavaReference()
+  fun interpreted(name: String) = name.asJavaReference()
 
   fun McProject.createFile(
     @Language("java")

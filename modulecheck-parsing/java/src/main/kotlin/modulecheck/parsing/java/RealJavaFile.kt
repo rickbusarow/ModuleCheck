@@ -59,10 +59,9 @@ import modulecheck.parsing.source.JavaVersion.VERSION_1_9
 import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asExplicitJavaReference
+import modulecheck.parsing.source.asJavaReference
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
@@ -118,7 +117,7 @@ class RealJavaFile(
   override val importsLazy = unsafeLazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
-      .map { it.nameAsString.asExplicitJavaReference() }
+      .map { it.nameAsString.asJavaReference() }
       .toSet()
   }
 
@@ -229,8 +228,7 @@ class RealJavaFile(
       unresolved = typeReferenceNames + methodNames + propertyNames,
       mustBeApi = apiStrings.toSet(),
       apiReferenceNames = emptySet(),
-      toExplicitReferenceName = ::ExplicitJavaReferenceName,
-      toInterpretedReferenceName = ::InterpretedJavaReferenceName,
+      toReferenceName = ::JavaReferenceNameImpl,
       stdLibNameOrNull = String::javaLangFqNameOrNull
     )
 
