@@ -31,20 +31,16 @@ import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.parsing.source.asInterpretedJavaReference
-import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
+import modulecheck.parsing.source.asJavaReference
 import modulecheck.parsing.source.asKotlinDeclaredName
+import modulecheck.parsing.source.asKotlinReference
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred
@@ -90,16 +86,16 @@ interface McNameTest : FancyShould {
         UnqualifiedAndroidResourceReferenceName(name)
           .also { target.add(it) }
 
-      fun explicitKotlin(name: String) = name.asExplicitKotlinReference()
+      fun explicitKotlin(name: String) = name.asKotlinReference()
         .also { target.add(it) }
 
-      fun interpretedKotlin(name: String) = name.asInterpretedKotlinReference()
+      fun interpretedKotlin(name: String) = name.asKotlinReference()
         .also { target.add(it) }
 
-      fun explicitJava(name: String) = name.asExplicitJavaReference()
+      fun explicitJava(name: String) = name.asJavaReference()
         .also { target.add(it) }
 
-      fun interpretedJava(name: String) = name.asInterpretedJavaReference()
+      fun interpretedJava(name: String) = name.asJavaReference()
         .also { target.add(it) }
     }
 
@@ -181,11 +177,9 @@ fun Collection<McName>.prettyPrint() = groupBy { it::class }
   .joinToString("\n") { (_, names) ->
     val typeName = when (val mcName = names.first()) {
       // declarations
-      is ExplicitJavaReferenceName -> "explicitJava"
-      is ExplicitKotlinReferenceName -> "explicitKotlin"
-      is ExplicitXmlReferenceName -> "explicitXml"
-      is InterpretedJavaReferenceName -> "interpretedJava"
-      is InterpretedKotlinReferenceName -> "interpretedKotlin"
+      is JavaReferenceNameImpl -> "java"
+      is KotlinReferenceNameImpl -> "kotlin"
+      is XmlReferenceNameImpl -> "xml"
       is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
       is AndroidRReferenceName -> "androidR"
       is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"

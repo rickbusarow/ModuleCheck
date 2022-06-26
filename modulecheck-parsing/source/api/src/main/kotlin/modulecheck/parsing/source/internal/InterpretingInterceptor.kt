@@ -32,13 +32,13 @@ class InterpretingInterceptor : ParsingInterceptor {
 
         val interpreted = buildSet {
           // no import
-          add(packet.toInterpretedReferenceName(toResolve))
+          add(packet.toReferenceName(toResolve))
 
           // concat with package
-          add(packet.toInterpretedReferenceName(packet.packageName.append(toResolve)))
+          add(packet.toReferenceName(packet.packageName.append(toResolve)))
 
           // concat with any wildcard imports
-          addAll(trimmedWildcards.mapToSet { packet.toInterpretedReferenceName("$it.$toResolve") })
+          addAll(trimmedWildcards.mapToSet { packet.toReferenceName("$it.$toResolve") })
         }
 
         newResolved.addAll(interpreted)

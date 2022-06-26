@@ -28,7 +28,7 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.RawAnvilAnnotatedType
-import modulecheck.parsing.source.asExplicitKotlinReference
+import modulecheck.parsing.source.asKotlinReference
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -51,14 +51,14 @@ data class AnvilGraph(
     "com.squareup.anvil.annotations.ContributesBinding",
     "com.squareup.anvil.annotations.ContributesMultibinding",
     "com.squareup.anvil.annotations.ContributesSubcomponent"
-  ).map { it.asExplicitKotlinReference() }
+  ).map { it.asKotlinReference() }
 
   private val mergeAnnotations = setOf(
     "com.squareup.anvil.annotations.compat.MergeInterfaces",
     "com.squareup.anvil.annotations.compat.MergeModules",
     "com.squareup.anvil.annotations.MergeComponent",
     "com.squareup.anvil.annotations.MergeSubcomponent"
-  ).map { it.asExplicitKotlinReference() }
+  ).map { it.asKotlinReference() }
 
   val allAnnotations = mergeAnnotations + contributeAnnotations
 

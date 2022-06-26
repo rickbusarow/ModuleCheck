@@ -16,7 +16,6 @@
 package modulecheck.parsing.source
 
 import modulecheck.parsing.source.ReferenceName.AgnosticReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.ReferenceName.JavaReferenceName
 import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.utils.lazy.unsafeLazy
@@ -26,20 +25,15 @@ sealed interface AndroidResourceReferenceName : ReferenceName, AgnosticReference
 
 class AndroidRReferenceName(override val name: String) :
   AndroidResourceReferenceName,
-  ExplicitReferenceName,
   KotlinReferenceName,
+  AgnosticReferenceName,
   JavaReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other = other,
-      ifReference = {
-        name == (
-          it.safeAs<AndroidRReferenceName>()?.name
-            ?: it.safeAs<ExplicitReferenceName>()?.name
-          )
-      },
-      ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
+      ifReference = { name == it.name },
+      ifDeclaration = { name == it.name }
     )
   }
 
@@ -49,8 +43,7 @@ class AndroidRReferenceName(override val name: String) :
 }
 
 class UnqualifiedAndroidResourceReferenceName(override val name: String) :
-  AndroidResourceReferenceName,
-  ExplicitReferenceName {
+  AndroidResourceReferenceName {
 
   private val split by unsafeLazy {
     name.split('.').also {
@@ -79,8 +72,7 @@ class UnqualifiedAndroidResourceReferenceName(override val name: String) :
 }
 
 class AndroidDataBindingReferenceName(override val name: String) :
-  AndroidResourceReferenceName,
-  ExplicitReferenceName {
+  AndroidResourceReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
@@ -97,19 +89,14 @@ class AndroidDataBindingReferenceName(override val name: String) :
 
 class QualifiedAndroidResourceReferenceName(override val name: String) :
   AndroidResourceReferenceName,
-  ExplicitReferenceName,
+  AgnosticReferenceName,
   KotlinReferenceName,
   JavaReferenceName {
 
   override fun equals(other: Any?): Boolean {
     return matches(
       other = other,
-      ifReference = {
-        name == (
-          it.safeAs<AndroidRReferenceName>()?.name
-            ?: it.safeAs<ExplicitReferenceName>()?.name
-          )
-      },
+      ifReference = { name == it.name },
       ifDeclaration = { name == it.safeAs<GeneratedAndroidResourceDeclaredName>()?.name }
     )
   }

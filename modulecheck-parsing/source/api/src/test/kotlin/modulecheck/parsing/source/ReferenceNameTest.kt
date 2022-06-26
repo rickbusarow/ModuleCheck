@@ -15,75 +15,50 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import org.junit.jupiter.api.Test
 
 class ReferenceNameTest : BaseMcNameTest() {
 
   @Test
-  fun `explicit java reference`() {
-    ExplicitJavaReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
+  fun `java reference`() {
+    JavaReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
       AndroidDataBindingReferenceName::class,
       AndroidRReferenceName::class,
-      ExplicitJavaReferenceName::class,
-      InterpretedJavaReferenceName::class,
+      JavaReferenceNameImpl::class,
       JavaSpecificDeclaredName::class,
       QualifiedAndroidResourceReferenceName::class
     )
   }
 
   @Test
-  fun `explicit kotlin reference`() {
-    ExplicitKotlinReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
+  fun `kotlin reference`() {
+    KotlinReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
       AndroidDataBindingReferenceName::class,
       AndroidRReferenceName::class,
-      ExplicitKotlinReferenceName::class,
-      InterpretedKotlinReferenceName::class,
+      KotlinReferenceNameImpl::class,
       KotlinSpecificDeclaredName::class,
       QualifiedAndroidResourceReferenceName::class
     )
   }
 
   @Test
-  fun `explicit xml reference`() {
-    ExplicitXmlReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
+  fun `xml reference`() {
+    XmlReferenceNameImpl("com.modulecheck.subject").matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
       AndroidDataBindingReferenceName::class,
       AndroidRReferenceName::class,
-      ExplicitJavaReferenceName::class,
-      ExplicitXmlReferenceName::class,
-      InterpretedJavaReferenceName::class,
+      JavaReferenceNameImpl::class,
       JavaSpecificDeclaredName::class,
-      QualifiedAndroidResourceReferenceName::class
-    )
-  }
-
-  @Test
-  fun `interpreted java reference`() {
-    InterpretedJavaReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      ExplicitJavaReferenceName::class,
-      InterpretedJavaReferenceName::class,
-      JavaSpecificDeclaredName::class
-    )
-  }
-
-  @Test
-  fun `interpreted kotlin reference`() {
-    InterpretedKotlinReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      ExplicitKotlinReferenceName::class,
-      InterpretedKotlinReferenceName::class,
-      KotlinSpecificDeclaredName::class
+      QualifiedAndroidResourceReferenceName::class,
+      XmlReferenceNameImpl::class
     )
   }
 
@@ -94,21 +69,19 @@ class ReferenceNameTest : BaseMcNameTest() {
       AndroidDataBindingReferenceName::class,
       AndroidRReferenceName::class,
       AndroidString::class,
-      ExplicitJavaReferenceName::class,
-      ExplicitKotlinReferenceName::class,
-      ExplicitXmlReferenceName::class,
-      InterpretedJavaReferenceName::class,
-      InterpretedKotlinReferenceName::class,
+      JavaReferenceNameImpl::class,
+      KotlinReferenceNameImpl::class,
       QualifiedAndroidResourceReferenceName::class,
-      UnqualifiedAndroidResourceReferenceName::class
+      UnqualifiedAndroidResourceReferenceName::class,
+      XmlReferenceNameImpl::class
     )
   }
 
   @Test
   fun `duplicate names of incompatible types are allowed in a set`() {
     val list = listOf(
-      ExplicitKotlinReferenceName("name"),
-      ExplicitJavaReferenceName("name")
+      KotlinReferenceName("name"),
+      JavaReferenceName("name")
     )
 
     val set = list.toSet()
@@ -119,8 +92,8 @@ class ReferenceNameTest : BaseMcNameTest() {
   @Test
   fun `duplicate names of compatible types are allowed in a set`() {
     val list = listOf(
-      ExplicitKotlinReferenceName("name"),
-      ExplicitJavaReferenceName("name")
+      KotlinReferenceName("name"),
+      JavaReferenceName("name")
     )
 
     val set = list.toSet()

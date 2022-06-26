@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.safeAs
@@ -71,7 +70,7 @@ class GeneratedAndroidResourceDeclaredName(
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<ExplicitReferenceName>()?.name },
+      ifReference = { name == it.name },
       ifDeclaration = { it::class == this::class && name == it.name }
     )
   }
@@ -106,7 +105,7 @@ class AndroidDataBindingDeclaredName(
   override fun equals(other: Any?): Boolean {
     return matches(
       other,
-      ifReference = { name == it.safeAs<ExplicitReferenceName>()?.name },
+      ifReference = { name == it.name },
       ifDeclaration = { it::class == this::class && name == it.name }
     )
   }

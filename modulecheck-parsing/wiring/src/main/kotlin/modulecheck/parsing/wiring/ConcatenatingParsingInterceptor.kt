@@ -29,7 +29,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
     val packet = chain.packet
 
     val resolved = packet.resolved
-      .plus(packet.imports.mapToSet { packet.toExplicitReferenceName(it) })
+      .plus(packet.imports.mapToSet { packet.toReferenceName(it) })
       .toMutableSet()
     val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
 
@@ -56,7 +56,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
 
         if (concatOrNull != null) {
 
-          val asReference = packet.toExplicitReferenceName(concatOrNull)
+          val asReference = packet.toReferenceName(concatOrNull)
 
           if (packet.mustBeApi.contains(toResolve)) {
             resolvedApiReferenceNames.add(asReference)
@@ -78,7 +78,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
   }
 
   private fun String.inlineAliasOrNull(
-    aliasedImports: Map<String, ReferenceName.ExplicitReferenceName>
+    aliasedImports: Map<String, ReferenceName>
   ): String? {
 
     val toResolve = this

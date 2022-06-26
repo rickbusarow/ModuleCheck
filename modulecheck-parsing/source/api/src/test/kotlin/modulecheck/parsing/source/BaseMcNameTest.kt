@@ -17,11 +17,9 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Anim
@@ -110,11 +108,9 @@ abstract class BaseMcNameTest : BaseTest(), DynamicTests {
       JavaSpecificDeclaredName(name, packageName = PackageName(packageName)),
       KotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
 
-      ExplicitJavaReferenceName(name),
-      ExplicitKotlinReferenceName(name),
-      ExplicitXmlReferenceName(name),
-      InterpretedJavaReferenceName(name),
-      InterpretedKotlinReferenceName(name),
+      JavaReferenceName(name),
+      KotlinReferenceName(name),
+      XmlReferenceNameImpl(name),
       AndroidRReferenceName(name),
       UnqualifiedAndroidResourceReferenceName(name),
       QualifiedAndroidResourceReferenceName(name),
