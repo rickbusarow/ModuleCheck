@@ -23,7 +23,7 @@ import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import org.junit.jupiter.api.Test
 
-class ReferenceNameTest : BaseNamedSymbolTest() {
+class ReferenceNameTest : BaseMcNameTest() {
 
   @Test
   fun `explicit java reference`() {

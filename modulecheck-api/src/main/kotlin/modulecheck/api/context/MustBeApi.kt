@@ -28,7 +28,7 @@ import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.NamedSymbol
+import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.project.McProject
@@ -212,7 +212,7 @@ private suspend fun McProject.mustBeApiIn(
     }
     ?.let { return true }
 
-  val rTypesFromExisting: LazyDeferred<Set<NamedSymbol>> = lazyDeferred {
+  val rTypesFromExisting: LazyDeferred<Set<McName>> = lazyDeferred {
     directMainDependencies
       .mapAsync { directProject ->
         directProject.declarations(isTestFixtures = false)
