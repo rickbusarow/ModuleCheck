@@ -23,22 +23,26 @@ package modulecheck.parsing.source
  * @see DeclaredName
  * @see ReferenceName
  */
-sealed interface NamedSymbol : Comparable<NamedSymbol> {
+sealed interface McName : Comparable<McName> {
+  /** The raw String value of this name, such as `com.example.lib1.Lib1Class`. */
   val name: String
 
-  fun startsWith(symbol: NamedSymbol): Boolean {
-    return name.startsWith(symbol.name)
+  /** @return true if this [name] value with the name string of [other], otherwise false */
+  fun startsWith(other: McName): Boolean {
+    return name.startsWith(other.name)
   }
 
+  /** @return true if this [name] value ends with the [str] parameter, otherwise false */
   fun endsWith(str: String): Boolean {
     return name.endsWith(str)
   }
 
-  fun endsWith(symbol: NamedSymbol): Boolean {
-    return name.endsWith(symbol.name)
+  /** @return true if this [name] value ends with the name string of [other], otherwise false */
+  fun endsWith(other: McName): Boolean {
+    return name.endsWith(other.name)
   }
 
-  override fun compareTo(other: NamedSymbol): Int {
+  override fun compareTo(other: McName): Int {
     // sort by name first, then by type.
     return compareValuesBy(
       this,
@@ -49,7 +53,7 @@ sealed interface NamedSymbol : Comparable<NamedSymbol> {
   }
 }
 
-internal inline fun NamedSymbol.matches(
+internal inline fun McName.matches(
   other: Any?,
   ifReference: (ReferenceName) -> Boolean,
   ifDeclaration: (DeclaredName) -> Boolean

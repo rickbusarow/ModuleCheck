@@ -27,7 +27,7 @@ import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
-import modulecheck.parsing.source.NamedSymbol
+import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.ReferenceName
@@ -51,7 +51,7 @@ import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.trace.Trace
 
-interface NamedSymbolTest : FancyShould {
+interface McNameTest : FancyShould {
 
   class JvmFileBuilder {
 
@@ -132,31 +132,31 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
-    prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+    prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
   }
 
   infix fun LazySet<ReferenceName>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       toList()
         .distinct()
-        .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
   infix fun LazyDeferred<Set<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       await()
         .distinct()
-        .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
   infix fun List<LazySet.DataSource<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       flatMap { it.get() }
         .distinct()
         .prettyPrint()
-        .trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
@@ -175,11 +175,11 @@ interface NamedSymbolTest : FancyShould {
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReferenceName(name)
 }
 
-fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
+fun Collection<McName>.prettyPrint() = groupBy { it::class }
   .toList()
   .sortedBy { it.first.qualifiedName }
   .joinToString("\n") { (_, names) ->
-    val name = when (val symbol = names.first()) {
+    val typeName = when (val mcName = names.first()) {
       // declarations
       is ExplicitJavaReferenceName -> "explicitJava"
       is ExplicitKotlinReferenceName -> "explicitKotlin"
@@ -195,7 +195,7 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
       is AndroidRDeclaredName -> "androidR"
       is JavaSpecificDeclaredName -> "java"
       is KotlinSpecificDeclaredName -> "kotlin"
-      is UnqualifiedAndroidResourceDeclaredName -> symbol.prefix
+      is UnqualifiedAndroidResourceDeclaredName -> mcName.prefix
       is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
       is AndroidDataBindingDeclaredName -> "androidDataBinding"
       // package
@@ -203,5 +203,5 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
     }
     names
       .sortedBy { it.name }
-      .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
+      .joinToString("\n", "$typeName {\n", "\n}") { "\t${it.name}" }
   }

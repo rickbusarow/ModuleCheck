@@ -45,10 +45,10 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.suffixIfNot
 import kotlin.reflect.full.isSubclassOf
 
-abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
+abstract class BaseMcNameTest : BaseTest(), DynamicTests {
 
-  inline fun <C : Collection<T>, reified T : NamedSymbol> C.requireIsExhaustive(): C = apply {
-    val allSealedSubclasses = NamedSymbol::class.sealedSubclassesRecursive()
+  inline fun <C : Collection<T>, reified T : McName> C.requireIsExhaustive(): C = apply {
+    val allSealedSubclasses = McName::class.sealedSubclassesRecursive()
 
     val actualClasses = map { it::class }
 
@@ -64,12 +64,12 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
     }
   }
 
-  fun NamedSymbol.matches() = oneOfEach(name).filter { it == this }
-  fun NamedSymbol.matchedClasses() = matches()
+  fun McName.matches() = oneOfEach(name).filter { it == this }
+  fun McName.matchedClasses() = matches()
     .map { it::class }
     .sortedBy { it.java.simpleName }
 
-  fun oneOfEach(name: String, packageName: String = "com.subject"): List<NamedSymbol> {
+  fun oneOfEach(name: String, packageName: String = "com.subject"): List<McName> {
     val identifier = name.split(".").last()
 
     return listOf(

@@ -26,7 +26,7 @@ import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.asExplicitJavaReference
 import modulecheck.parsing.source.asInterpretedJavaReference
-import modulecheck.parsing.test.NamedSymbolTest
+import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
@@ -34,7 +34,7 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class JavaFileTest : ProjectTest(), NamedSymbolTest {
+internal class JavaFileTest : ProjectTest(), McNameTest {
 
   @Nested
   inner class `resolvable declarations` {

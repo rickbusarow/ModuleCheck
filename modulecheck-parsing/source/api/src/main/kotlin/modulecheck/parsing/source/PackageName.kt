@@ -23,11 +23,11 @@ import modulecheck.parsing.source.PackageName.DEFAULT
  * Note that a java/kotlin file without a package declaration will have a `null` _declaration_, but
  * it still has a "default" package. Files with a default package should use [PackageName.DEFAULT].
  *
- * @see NamedSymbol
+ * @see McName
  * @see DEFAULT
  * @since 0.13.0
  */
-sealed interface PackageName : NamedSymbol {
+sealed interface PackageName : McName {
   /** the full name of this package */
   override val name: String
 
@@ -35,7 +35,7 @@ sealed interface PackageName : NamedSymbol {
    * Represents a [PackageName] when there isn't actually a package name, meaning that top-level
    * declarations in that file are at the root of source without qualifiers.
    *
-   * @see NamedSymbol
+   * @see McName
    * @see DEFAULT
    * @since 0.13.0
    */
@@ -70,7 +70,7 @@ sealed interface PackageName : NamedSymbol {
 
 /**
  * @property name the full name of this package
- * @see NamedSymbol
+ * @see McName
  * @since 0.13.0
  * @throws IllegalArgumentException if the [name] parameter is empty or blank
  */
