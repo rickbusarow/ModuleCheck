@@ -22,7 +22,16 @@ import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.safeAs
 
-sealed interface ReferenceName : NamedSymbol {
+/**
+ * Represents a call-site reference to a name, such as:
+ * - the name in an import statement
+ * - the type declaration of a parameter or property
+ * - a function return type
+ * - a super-type declaration
+ * - a function call
+ * - a property read/write
+ */
+sealed interface ReferenceName : McName {
 
   sealed interface JavaReferenceName : ReferenceName
   sealed interface KotlinReferenceName : ReferenceName
