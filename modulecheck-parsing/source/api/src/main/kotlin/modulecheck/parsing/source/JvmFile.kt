@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.utils.lazy.LazyDeferred
 
 sealed interface JvmFile : HasReferences {
@@ -31,8 +30,8 @@ interface KotlinFile : JvmFile {
 
   /** A weird, dated function for getting Anvil scope arguments */
   suspend fun getAnvilScopeArguments(
-    allAnnotations: List<ExplicitReferenceName>,
-    mergeAnnotations: List<ExplicitReferenceName>
+    allAnnotations: List<ReferenceName>,
+    mergeAnnotations: List<ReferenceName>
   ): ScopeArgumentParseResult
 
   data class ScopeArgumentParseResult(

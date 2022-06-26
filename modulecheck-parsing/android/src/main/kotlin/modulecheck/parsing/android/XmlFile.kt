@@ -18,7 +18,7 @@ package modulecheck.parsing.android
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.utils.lazy.LazySet
@@ -41,7 +41,7 @@ interface XmlFile : HasReferences {
     val name: String = file.nameWithoutExtension
 
     val customViews: Lazy<Set<ReferenceName>> = lazy {
-      AndroidLayoutParser().parseViews(file).mapToSet { ExplicitXmlReferenceName(it) }
+      AndroidLayoutParser().parseViews(file).mapToSet { XmlReferenceNameImpl(it) }
     }
 
     private val attributes by lazy {
