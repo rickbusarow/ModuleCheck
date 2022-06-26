@@ -24,7 +24,7 @@ import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
-class DeclaredNameTest : BaseNamedSymbolTest() {
+class DeclaredNameTest : BaseMcNameTest() {
 
   @Test
   fun `agnostic declaration should match self and any reference type`() {

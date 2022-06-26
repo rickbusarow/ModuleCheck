@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.test.NamedSymbolTest
+import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
+internal class KotlinFileTest : ProjectTest(), McNameTest {
 
   val lib1 by resets {
     kotlinProject(":lib1") {
@@ -51,7 +51,7 @@ internal class KotlinFileTest : ProjectTest(), NamedSymbolTest {
     }
   }
 
-  val NamedSymbolTest.JvmFileBuilder.ReferenceBuilder.lib1Class
+  val McNameTest.JvmFileBuilder.ReferenceBuilder.lib1Class
     get() = explicitKotlin("com.lib1.Lib1Class")
 
   @Test
