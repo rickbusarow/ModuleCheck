@@ -15,10 +15,8 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.safeAs
 
@@ -33,8 +31,18 @@ import modulecheck.utils.safeAs
  */
 sealed interface ReferenceName : McName {
 
-  sealed interface JavaReferenceName : ReferenceName
-  sealed interface KotlinReferenceName : ReferenceName
+  sealed interface JavaReferenceName : ReferenceName {
+    companion object {
+      operator fun invoke(name: String): JavaReferenceName = JavaReferenceNameImpl(name)
+    }
+  }
+
+  sealed interface KotlinReferenceName : ReferenceName {
+    companion object {
+      operator fun invoke(name: String): KotlinReferenceName = KotlinReferenceNameImpl(name)
+    }
+  }
+
   sealed interface AgnosticReferenceName : ReferenceName
 
   /**
@@ -45,13 +53,8 @@ sealed interface ReferenceName : McName {
    */
   sealed interface XmlReferenceName : ReferenceName, JavaReferenceName
 
-  sealed interface ExplicitReferenceName : ReferenceName
-
-  sealed interface InterpretedReferenceName : ReferenceName
-
-  class ExplicitKotlinReferenceName(override val name: String) :
+  class KotlinReferenceNameImpl(override val name: String) :
     ReferenceName,
-    ExplicitReferenceName,
     KotlinReferenceName {
 
     override fun equals(other: Any?): Boolean {
@@ -72,32 +75,8 @@ sealed interface ReferenceName : McName {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class InterpretedKotlinReferenceName(override val name: String) :
+  class JavaReferenceNameImpl(override val name: String) :
     ReferenceName,
-    InterpretedReferenceName,
-    KotlinReferenceName {
-
-    override fun equals(other: Any?): Boolean {
-      return matches(
-        other = other,
-        ifReference = {
-          name == (
-            it.safeAs<KotlinReferenceName>()?.name
-              ?: it.safeAs<AgnosticReferenceName>()?.name
-            )
-        },
-        ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
-      )
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-  }
-
-  class ExplicitJavaReferenceName(override val name: String) :
-    ReferenceName,
-    ExplicitReferenceName,
     JavaReferenceName {
 
     override fun equals(other: Any?): Boolean {
@@ -115,9 +94,8 @@ sealed interface ReferenceName : McName {
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
 
-  class ExplicitXmlReferenceName(override val name: String) :
+  class XmlReferenceNameImpl(override val name: String) :
     ReferenceName,
-    ExplicitReferenceName,
     XmlReferenceName {
 
     override fun equals(other: Any?): Boolean {
@@ -134,37 +112,10 @@ sealed interface ReferenceName : McName {
 
     override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
   }
-
-  class InterpretedJavaReferenceName(override val name: String) :
-    ReferenceName,
-    InterpretedReferenceName,
-    JavaReferenceName {
-
-    override fun equals(other: Any?): Boolean {
-      return matches(
-        other = other,
-        ifReference = {
-          name == (it.safeAs<JavaReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
-        },
-        ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
-      )
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-  }
 }
 
-fun String.asExplicitKotlinReference(): ExplicitKotlinReferenceName =
-  ExplicitKotlinReferenceName(this)
-
-fun String.asInterpretedKotlinReference(): InterpretedKotlinReferenceName =
-  InterpretedKotlinReferenceName(this)
-
-fun String.asExplicitJavaReference(): ExplicitJavaReferenceName = ExplicitJavaReferenceName(this)
-fun String.asInterpretedJavaReference(): InterpretedJavaReferenceName =
-  InterpretedJavaReferenceName(this)
+fun String.asKotlinReference(): KotlinReferenceName = KotlinReferenceName(this)
+fun String.asJavaReference(): JavaReferenceName = JavaReferenceName(this)
 
 interface HasReferences {
 

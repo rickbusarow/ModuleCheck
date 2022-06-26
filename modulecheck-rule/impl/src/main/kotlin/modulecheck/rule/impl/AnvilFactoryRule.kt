@@ -24,7 +24,7 @@ import modulecheck.finding.FindingName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
-import modulecheck.parsing.source.asExplicitKotlinReference
+import modulecheck.parsing.source.asKotlinReference
 import modulecheck.project.McProject
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.lazy.containsAny
@@ -38,11 +38,11 @@ class AnvilFactoryRule @Inject constructor() : DocumentedRule<CouldUseAnvilFindi
     "instead of Dagger's"
 
   private val anvilMergeComponent =
-    "com.squareup.anvil.annotations.MergeComponent".asExplicitKotlinReference()
-  private val daggerComponent = "dagger.Component".asExplicitKotlinReference()
+    "com.squareup.anvil.annotations.MergeComponent".asKotlinReference()
+  private val daggerComponent = "dagger.Component".asKotlinReference()
 
-  private val daggerInject = "dagger.Inject".asExplicitKotlinReference()
-  private val daggerModule = "dagger.Module".asExplicitKotlinReference()
+  private val daggerInject = "dagger.Inject".asKotlinReference()
+  private val daggerModule = "dagger.Module".asKotlinReference()
 
   @Suppress("MagicNumber")
   private val minimumAnvilVersion = SemVer(2, 0, 11)
