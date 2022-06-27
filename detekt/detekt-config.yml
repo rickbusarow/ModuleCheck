@@ -113,6 +113,7 @@ complexity:
   LargeClass:
     active: true
     threshold: 600
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
   LongMethod:
     active: false
     threshold: 60
@@ -318,7 +319,7 @@ naming:
     excludeClassPattern: '$^'
     ignoreOverridden: true
   InvalidPackageDeclaration:
-    active: false
+    active: true
     rootPackage: ''
     requireRootInDeclaration: false
   LambdaParameterNaming:
@@ -357,6 +358,7 @@ naming:
     active: true
     variablePattern: '[a-z][A-Za-z0-9]*'
     privateVariablePattern: '(_)?[a-z][A-Za-z0-9]*'
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
     excludeClassPattern: '$^'
     ignoreOverridden: true
 
@@ -563,6 +565,7 @@ style:
   MaxLineLength:
     active: true
     maxLineLength: 120
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false

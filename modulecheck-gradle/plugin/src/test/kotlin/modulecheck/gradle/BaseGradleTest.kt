@@ -55,6 +55,7 @@ abstract class BaseGradleTest :
   override val root: File
     get() = testProjectDir
 
+  @Suppress("VariableNaming")
   val DEFAULT_BUILD_FILE by resets {
     """
     buildscript {
@@ -75,6 +76,7 @@ abstract class BaseGradleTest :
       .createSafely(DEFAULT_BUILD_FILE)
   }
 
+  @Suppress("VariableNaming")
   val DEFAULT_SETTINGS_FILE by resets {
     """
     rootProject.name = "root"
