@@ -289,6 +289,7 @@ naming:
   ClassNaming:
     active: false
     classPattern: '[A-Z][a-zA-Z0-9]*'
+    excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
   ConstructorParameterNaming:
     active: true
     parameterPattern: '[a-z][A-Za-z0-9]*'
