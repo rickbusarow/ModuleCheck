@@ -32,9 +32,6 @@ import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedReferenceName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -272,17 +269,11 @@ interface ProjectCollector {
           .toList()
           .forEach eachRef@{ reference ->
 
-            val referenceName = when (reference) {
-              is ExplicitReferenceName -> reference.name
-              is InterpretedReferenceName -> return@eachRef
-              is UnqualifiedAndroidResourceReferenceName -> reference.name
-            }
-
             // Only check for references which would be provided by internal projects. Using a
             // block-list is a bit of a hack, but it's safer to have to add than remove.
-            if (referenceName.startsWith("androidx")) return@eachRef
+            if (reference.name.startsWith("androidx")) return@eachRef
 
-            val unresolved = !allDependencies.contains(referenceName)
+            val unresolved = !allDependencies.contains(reference.name)
 
             if (unresolved) {
               fail(
@@ -290,7 +281,7 @@ interface ProjectCollector {
                 |Project ${project.path} has a reference which must be declared in a dependency kotlinProject.
                 |
                 |-- reference:
-                |   $referenceName
+                |   ${reference.name}
                 |
                 |-- all declarations:
                 |${allDependencies.joinToString("\n") { "   $it" }}

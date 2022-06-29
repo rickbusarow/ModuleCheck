@@ -26,7 +26,7 @@ sealed interface Generated : DeclaredName {
 }
 
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
-sealed interface DeclaredName : NamedSymbol, HasPackageName {
+sealed interface DeclaredName : McName, HasPackageName {
 
   companion object {
     operator fun invoke(

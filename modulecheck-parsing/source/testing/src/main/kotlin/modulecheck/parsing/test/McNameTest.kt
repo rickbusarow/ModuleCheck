@@ -28,31 +28,27 @@ import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
 import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinSpecificDeclaredName
-import modulecheck.parsing.source.NamedSymbol
+import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asExplicitKotlinReference
-import modulecheck.parsing.source.asInterpretedJavaReference
-import modulecheck.parsing.source.asInterpretedKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
+import modulecheck.parsing.source.asJavaReference
 import modulecheck.parsing.source.asKotlinDeclaredName
+import modulecheck.parsing.source.asKotlinReference
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.trace.Trace
 
-interface NamedSymbolTest : FancyShould {
+interface McNameTest : FancyShould {
 
   class JvmFileBuilder {
 
@@ -91,16 +87,16 @@ interface NamedSymbolTest : FancyShould {
         UnqualifiedAndroidResourceReferenceName(name)
           .also { target.add(it) }
 
-      fun explicitKotlin(name: String) = name.asExplicitKotlinReference()
+      fun explicitKotlin(name: String) = name.asKotlinReference()
         .also { target.add(it) }
 
-      fun interpretedKotlin(name: String) = name.asInterpretedKotlinReference()
+      fun interpretedKotlin(name: String) = name.asKotlinReference()
         .also { target.add(it) }
 
-      fun explicitJava(name: String) = name.asExplicitJavaReference()
+      fun explicitJava(name: String) = name.asJavaReference()
         .also { target.add(it) }
 
-      fun interpretedJava(name: String) = name.asInterpretedJavaReference()
+      fun interpretedJava(name: String) = name.asJavaReference()
         .also { target.add(it) }
     }
 
@@ -133,7 +129,7 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
-    prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+    prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
   }
 
   infix fun LazySet<McElement>.shouldBe(other: List<McElement>) {
@@ -143,27 +139,27 @@ interface NamedSymbolTest : FancyShould {
   }
 
   infix fun LazySet<ReferenceName>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       toList()
         .distinct()
-        .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
   infix fun LazyDeferred<Set<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       await()
         .distinct()
-        .prettyPrint().trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
   infix fun List<LazySet.DataSource<ReferenceName>>.shouldBe(other: Collection<ReferenceName>) {
-    runBlocking(Trace.start(NamedSymbolTest::class)) {
+    runBlocking(Trace.start(McNameTest::class)) {
       flatMap { it.get() }
         .distinct()
         .prettyPrint()
-        .trimmedShouldBe(other.prettyPrint(), NamedSymbolTest::class)
+        .trimmedShouldBe(other.prettyPrint(), McNameTest::class)
     }
   }
 
@@ -182,17 +178,15 @@ interface NamedSymbolTest : FancyShould {
   fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReferenceName(name)
 }
 
-fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
+fun Collection<McName>.prettyPrint() = groupBy { it::class }
   .toList()
   .sortedBy { it.first.qualifiedName }
   .joinToString("\n") { (_, names) ->
-    val name = when (val symbol = names.first()) {
+    val typeName = when (val mcName = names.first()) {
       // declarations
-      is ExplicitJavaReferenceName -> "explicitJava"
-      is ExplicitKotlinReferenceName -> "explicitKotlin"
-      is ExplicitXmlReferenceName -> "explicitXml"
-      is InterpretedJavaReferenceName -> "interpretedJava"
-      is InterpretedKotlinReferenceName -> "interpretedKotlin"
+      is JavaReferenceNameImpl -> "java"
+      is KotlinReferenceNameImpl -> "kotlin"
+      is XmlReferenceNameImpl -> "xml"
       is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
       is AndroidRReferenceName -> "androidR"
       is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
@@ -202,7 +196,7 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
       is AndroidRDeclaredName -> "androidR"
       is JavaSpecificDeclaredName -> "java"
       is KotlinSpecificDeclaredName -> "kotlin"
-      is UnqualifiedAndroidResourceDeclaredName -> symbol.prefix
+      is UnqualifiedAndroidResourceDeclaredName -> mcName.prefix
       is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
       is AndroidDataBindingDeclaredName -> "androidDataBinding"
       // package
@@ -210,5 +204,5 @@ fun Collection<NamedSymbol>.prettyPrint() = groupBy { it::class }
     }
     names
       .sortedBy { it.name }
-      .joinToString("\n", "$name {\n", "\n}") { "\t${it.name}" }
+      .joinToString("\n", "$typeName {\n", "\n}") { "\t${it.name}" }
   }

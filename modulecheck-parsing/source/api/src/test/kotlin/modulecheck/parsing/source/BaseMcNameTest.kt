@@ -17,11 +17,9 @@ package modulecheck.parsing.source
 
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceName
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Anim
@@ -45,10 +43,10 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.suffixIfNot
 import kotlin.reflect.full.isSubclassOf
 
-abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
+abstract class BaseMcNameTest : BaseTest(), DynamicTests {
 
-  inline fun <C : Collection<T>, reified T : NamedSymbol> C.requireIsExhaustive(): C = apply {
-    val allSealedSubclasses = NamedSymbol::class.sealedSubclassesRecursive()
+  inline fun <C : Collection<T>, reified T : McName> C.requireIsExhaustive(): C = apply {
+    val allSealedSubclasses = McName::class.sealedSubclassesRecursive()
 
     val actualClasses = map { it::class }
 
@@ -64,12 +62,12 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
     }
   }
 
-  fun NamedSymbol.matches() = oneOfEach(name).filter { it == this }
-  fun NamedSymbol.matchedClasses() = matches()
+  fun McName.matches() = oneOfEach(name).filter { it == this }
+  fun McName.matchedClasses() = matches()
     .map { it::class }
     .sortedBy { it.java.simpleName }
 
-  fun oneOfEach(name: String, packageName: String = "com.subject"): List<NamedSymbol> {
+  fun oneOfEach(name: String, packageName: String = "com.subject"): List<McName> {
     val identifier = name.split(".").last()
 
     return listOf(
@@ -110,11 +108,9 @@ abstract class BaseNamedSymbolTest : BaseTest(), DynamicTests {
       JavaSpecificDeclaredName(name, packageName = PackageName(packageName)),
       TopLevelKotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
 
-      ExplicitJavaReferenceName(name),
-      ExplicitKotlinReferenceName(name),
-      ExplicitXmlReferenceName(name),
-      InterpretedJavaReferenceName(name),
-      InterpretedKotlinReferenceName(name),
+      JavaReferenceName(name),
+      KotlinReferenceName(name),
+      XmlReferenceNameImpl(name),
       AndroidRReferenceName(name),
       UnqualifiedAndroidResourceReferenceName(name),
       QualifiedAndroidResourceReferenceName(name),

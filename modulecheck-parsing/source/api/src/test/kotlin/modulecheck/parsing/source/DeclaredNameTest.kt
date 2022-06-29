@@ -15,16 +15,14 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.ExplicitJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitXmlReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedJavaReferenceName
-import modulecheck.parsing.source.ReferenceName.InterpretedKotlinReferenceName
+import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
+import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
 import modulecheck.testing.sealedSubclassInstances
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
-class DeclaredNameTest : BaseNamedSymbolTest() {
+class DeclaredNameTest : BaseMcNameTest() {
 
   @Test
   fun `agnostic declaration should match self and any reference type`() {
@@ -33,11 +31,10 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       PackageName("com.modulecheck")
     ).matchedClasses() shouldBe listOf(
       AgnosticDeclaredName::class,
-      ExplicitJavaReferenceName::class,
-      ExplicitKotlinReferenceName::class,
-      ExplicitXmlReferenceName::class,
-      InterpretedJavaReferenceName::class,
-      InterpretedKotlinReferenceName::class
+      AndroidRReferenceName::class,
+      JavaReferenceNameImpl::class,
+      KotlinReferenceNameImpl::class,
+      XmlReferenceNameImpl::class
     )
   }
 
@@ -47,8 +44,8 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       "com.modulecheck.subject",
       PackageName("com.modulecheck")
     ).matchedClasses() shouldBe listOf(
-      ExplicitKotlinReferenceName::class,
-      InterpretedKotlinReferenceName::class,
+      AndroidRReferenceName::class,
+      KotlinReferenceNameImpl::class,
       TopLevelKotlinSpecificDeclaredName::class
     )
   }
@@ -59,10 +56,10 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       "com.modulecheck.subject",
       PackageName("com.modulecheck")
     ).matchedClasses() shouldBe listOf(
-      ExplicitJavaReferenceName::class,
-      ExplicitXmlReferenceName::class,
-      InterpretedJavaReferenceName::class,
-      JavaSpecificDeclaredName::class
+      AndroidRReferenceName::class,
+      JavaReferenceNameImpl::class,
+      JavaSpecificDeclaredName::class,
+      XmlReferenceNameImpl::class
     )
   }
 
@@ -75,12 +72,10 @@ class DeclaredNameTest : BaseNamedSymbolTest() {
       AndroidDataBindingReferenceName::class,
       AndroidRDeclaredName::class,
       AndroidRReferenceName::class,
-      ExplicitJavaReferenceName::class,
-      ExplicitKotlinReferenceName::class,
-      ExplicitXmlReferenceName::class,
-      InterpretedJavaReferenceName::class,
-      InterpretedKotlinReferenceName::class,
-      UnqualifiedAndroidResourceReferenceName::class
+      JavaReferenceNameImpl::class,
+      KotlinReferenceNameImpl::class,
+      UnqualifiedAndroidResourceReferenceName::class,
+      XmlReferenceNameImpl::class
     )
   }
 

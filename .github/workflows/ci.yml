@@ -14,7 +14,7 @@ jobs:
     steps:
       # cancel previous jobs
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
+        uses: styfle/cancel-workflow-action@0.10.0
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
@@ -271,6 +271,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: buildSite
+          cache-read-only: false
+
+      - name: knit check
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: knitcheck
           cache-read-only: false
 
   tests-ubuntu:

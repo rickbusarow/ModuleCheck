@@ -37,14 +37,12 @@ import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
 import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.parsing.source.asJavaDeclaredName
 import modulecheck.parsing.source.asKotlinDeclaredName
+import modulecheck.parsing.source.asKotlinReference
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
@@ -87,8 +85,8 @@ class RealKotlinFile(
 
   override val packageName by lazy { PackageName(psi.packageFqName.asString()) }
 
-  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
-  private val _aliasMap = mutableMapOf<String, ExplicitKotlinReferenceName>()
+  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asKotlinReference()`
+  private val _aliasMap = mutableMapOf<String, KotlinReferenceName>()
 
   private val importsStrings: Lazy<Set<String>> = lazy {
 
@@ -109,7 +107,7 @@ class RealKotlinFile(
               // respectively.
               ?.lastChild
               ?.text?.let { alias ->
-                _aliasMap[alias] = nameString.asExplicitKotlinReference()
+                _aliasMap[alias] = nameString.asKotlinReference()
               }
           }
       }
@@ -117,7 +115,7 @@ class RealKotlinFile(
   }
   override val importsLazy: Lazy<Set<ReferenceName>> = lazy {
     importsStrings.value
-      .mapToSet { it.asExplicitKotlinReference() }
+      .mapToSet { it.asKotlinReference() }
   }
 
   val constructorInjectedParams = lazyDeferred {
@@ -294,8 +292,7 @@ class RealKotlinFile(
         unresolved = unresolved,
         mustBeApi = mustBeApi,
         apiReferenceNames = emptySet(),
-        toExplicitReferenceName = ReferenceName::ExplicitKotlinReferenceName,
-        toInterpretedReferenceName = ReferenceName::InterpretedKotlinReferenceName,
+        toReferenceName = { KotlinReferenceName(this) },
         stdLibNameOrNull = String::kotlinStdLibNameOrNull
       )
     )
@@ -306,8 +303,8 @@ class RealKotlinFile(
   ).toLazySet()
 
   override suspend fun getAnvilScopeArguments(
-    allAnnotations: List<ExplicitReferenceName>,
-    mergeAnnotations: List<ExplicitReferenceName>
+    allAnnotations: List<ReferenceName>,
+    mergeAnnotations: List<ReferenceName>
   ): ScopeArgumentParseResult {
     val mergeArguments = mutableSetOf<RawAnvilAnnotatedType>()
     val contributeArguments = mutableSetOf<RawAnvilAnnotatedType>()
@@ -357,7 +354,7 @@ class RealKotlinFile(
     val entryText = valueArgument.text
       .remove(".+=+".toRegex()) // remove the names for arguments
       .replace("::class", "").trim()
-      .asExplicitKotlinReference()
+      .asKotlinReference()
 
     val resolvedScope = this@RealKotlinFile.references
       .firstOrNull { ref ->

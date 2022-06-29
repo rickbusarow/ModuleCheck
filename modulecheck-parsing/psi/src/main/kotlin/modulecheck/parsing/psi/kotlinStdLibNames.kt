@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.asExplicitKotlinReference
+import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.asKotlinReference
 
-fun String.kotlinStdLibNameOrNull(): ExplicitKotlinReferenceName? {
+fun String.kotlinStdLibNameOrNull(): KotlinReferenceName? {
 
-  return kotlinStdLibNames[this]?.asExplicitKotlinReference()
+  return kotlinStdLibNames[this]?.asKotlinReference()
 }
 
 @Suppress("MaxLineLength")

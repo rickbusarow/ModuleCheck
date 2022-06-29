@@ -18,6 +18,7 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import modulecheck.builds.libsCatalog
 import modulecheck.builds.version
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -29,14 +30,10 @@ val reportMerge by tasks.registering(ReportMergeTask::class) {
 
 val detektExcludes = listOf(
   "**/resources/**",
-  "**/build/**",
-  "**/src/integrationTest/java**",
-  "**/src/test/java**",
-  "**/src/integrationTest/kotlin**",
-  "**/src/test/kotlin**"
+  "**/build/**"
 )
 
-tasks.withType<Detekt> detekt@{
+tasks.withType<Detekt> {
 
   parallel = true
   baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
@@ -48,7 +45,7 @@ tasks.withType<Detekt> detekt@{
   if (!System.getenv("CI").isNullOrBlank()) {
     finalizedBy(reportMerge)
     reportMerge.configure {
-      input.from(this@detekt.sarifReportFile)
+      input.from(sarifReportFile)
     }
   }
 
@@ -63,6 +60,9 @@ tasks.withType<Detekt> detekt@{
 
   include("**/*.kt", "**/*.kts")
   exclude(detektExcludes)
+  subprojects.forEach { sub ->
+    exclude("**/${sub.projectDir.relativeTo(rootDir)}/**")
+  }
 
   doFirst {
     require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {

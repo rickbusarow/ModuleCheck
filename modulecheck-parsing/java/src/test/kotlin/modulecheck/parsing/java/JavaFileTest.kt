@@ -24,9 +24,8 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.parsing.source.asExplicitJavaReference
-import modulecheck.parsing.source.asInterpretedJavaReference
-import modulecheck.parsing.test.NamedSymbolTest
+import modulecheck.parsing.source.asJavaReference
+import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
@@ -34,7 +33,7 @@ import org.intellij.lang.annotations.Language
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class JavaFileTest : ProjectTest(), NamedSymbolTest {
+internal class JavaFileTest : ProjectTest(), McNameTest {
 
   @Nested
   inner class `resolvable declarations` {
@@ -1038,8 +1037,8 @@ internal class JavaFileTest : ProjectTest(), NamedSymbolTest {
     }
   }
 
-  fun explicit(name: String) = name.asExplicitJavaReference()
-  fun interpreted(name: String) = name.asInterpretedJavaReference()
+  fun explicit(name: String) = name.asJavaReference()
+  fun interpreted(name: String) = name.asJavaReference()
 
   fun McProject.createFile(
     @Language("java")
