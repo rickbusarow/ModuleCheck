@@ -41,6 +41,7 @@ Thumbs.db
 !/.idea/fileTemplates/
 !/.idea/icon.png
 !/.idea/inspectionProfiles/
+!/.idea/detekt.xml
 !/.idea/ktlint.xml
 !/.idea/scopes/
 
