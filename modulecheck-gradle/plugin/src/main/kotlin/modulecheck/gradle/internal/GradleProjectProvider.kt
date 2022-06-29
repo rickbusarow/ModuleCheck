@@ -101,7 +101,6 @@ class GradleProjectProvider @Inject constructor(
     projectCache.clearContexts()
   }
 
-  @Suppress("UnstableApiUsage")
   private fun createProject(path: StringProjectPath): McProject {
     val gradleProject = gradleProjects.getValue(path)
 

@@ -38,6 +38,12 @@ data class Depths(
       .forEach { fetchForSourceSet(it) }
   }
 
+  /**
+   * @return a [ProjectDepth] for each [SourceSet][modulecheck.parsing.gradle.model.SourceSet] in
+   *   this project.
+   */
+  suspend fun all(): List<ProjectDepth> = project.sourceSets.map { get(it.key) }
+
   suspend fun get(key: SourceSetName): ProjectDepth {
     return delegate.getOrPut(key) { fetchForSourceSet(key) }
   }

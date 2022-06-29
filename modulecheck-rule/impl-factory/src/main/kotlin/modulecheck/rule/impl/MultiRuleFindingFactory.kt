@@ -19,7 +19,6 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.flow.toList
-import modulecheck.api.context.depths
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
@@ -28,13 +27,11 @@ import modulecheck.finding.Finding
 import modulecheck.finding.ModifiesProjectDependency
 import modulecheck.finding.OverShotDependencyFinding
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.ReportOnlyRule
 import modulecheck.rule.SortRule
-import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.sortedWith
 import modulecheck.utils.trace.HasTraceTags
 import modulecheck.utils.trace.traced
@@ -114,26 +111,16 @@ class MultiRuleFindingFactory @Inject constructor(
     projects: List<McProject>,
     predicate: (ModuleCheckRule<*>) -> Boolean
   ): List<Finding> {
-
-    // Sort all projects by depth, so that zero-dependency modules are first and the most expensive
-    // are last.  This is just a simple way of building up cached data, so that when the
-    // heavy-weight modules are evaluated, they can pull declarations and other data from cache.
-    val sortedProjects = projects.mapAsync { project ->
-
-      traced(project) {
-        project.depths().get(SourceSetName.MAIN).depth to project
+    return ProjectQueue(projects)
+      .process { project ->
+        rules.filter { rule ->
+          predicate(rule) && rule.shouldApply(settings)
+        }
+          .flatMap { rule ->
+            traced(project, rule) { rule.check(project) }
+          }
       }
-    }
       .toList()
-      .sortedBy { it.first }
-      .map { it.second }
-
-    return rules.filter { predicate(it) && it.shouldApply(settings) }
-      .flatMap { rule ->
-        sortedProjects.mapAsync { project ->
-
-          traced(project, rule) { rule.check(project) }
-        }.toList()
-      }.flatten()
+      .flatten()
   }
 }
