@@ -17,6 +17,7 @@ package modulecheck.utils.trace
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.withContext
 import kotlin.DeprecationLevel.ERROR
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
@@ -234,10 +235,10 @@ private suspend fun <T> tracedInternal(
  * @see requireTrace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  */
-suspend fun trace(): Trace = coroutineContext.requireTrace()
+suspend fun trace(): Trace = currentCoroutineContext().requireTrace()
 
 /** @return a [Trace] from inside a coroutine if it exists, else null */
-internal suspend fun traceOrNull(): Trace? = coroutineContext[Trace]
+internal suspend fun traceOrNull(): Trace? = currentCoroutineContext()[Trace]
 
 /**
  * Unsafe-ish extension for extracting a [Trace] from inside a coroutine.
