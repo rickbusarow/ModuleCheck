@@ -15,7 +15,6 @@
 
 package modulecheck.utils.coroutines
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -23,17 +22,23 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
 import java.lang.Integer.max
 
+/** @return true if at least one element matches the given predicate */
 suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
   val matching = firstOrNull(predicate)
 
   return matching != null
 }
 
+/**
+ * @return a [Flow] containing only distinct elements from the receiver flow. When there are equal
+ *   elements in the receiver, the first value is the one emitted in the returned flow.
+ */
 fun <T> Flow<T>.distinct(): Flow<T> = flow {
   val past = mutableSetOf<T>()
   collect {
@@ -41,22 +46,25 @@ fun <T> Flow<T>.distinct(): Flow<T> = flow {
   }
 }
 
+/** @return true if the receiver [Flow] contains [element], otherwise false. */
 suspend fun <T> Flow<T>.contains(element: T): Boolean {
   return any { it == element }
 }
 
+/** A slightly optimized version of `flatMapConcat {...}.toList()` */
 suspend fun <T, R> Flow<T>.flatMapListConcat(
   destination: MutableList<R> = mutableListOf(),
-  transform: suspend (T) -> List<R>
+  transform: suspend (T) -> Iterable<R>
 ): List<R> {
   return fold(destination) { acc, value ->
     acc.also { it.addAll(transform(value)) }
   }
 }
 
+/** A slightly optimized version of `flatMapConcat {...}.toSet()` */
 suspend fun <T, R> Flow<T>.flatMapSetConcat(
   destination: MutableSet<R> = mutableSetOf(),
-  transform: suspend (T) -> Set<R>
+  transform: suspend (T) -> Iterable<R>
 ): Set<R> {
   return fold(destination) { acc, value ->
     acc.also { it.addAll(transform(value)) }
@@ -66,21 +74,58 @@ suspend fun <T, R> Flow<T>.flatMapSetConcat(
 private val DEFAULT_CONCURRENCY: Int
   get() = max(Runtime.getRuntime().availableProcessors(), 2)
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * Returns a [Flow] from the receiver [Flow], performing [transform] upon each element
+ * *concurrently* before that element is emitted.
+ *
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ */
 fun <T, R> Flow<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
 ): Flow<R> {
   val semaphore = Semaphore(concurrency)
   return channelFlow {
-    semaphore.withPermit {
-      this@mapAsync.onEach { send(transform(it)) }
-        .launchIn(this)
+    this@mapAsync.collect {
+      launch {
+        semaphore.withPermit {
+          send(transform(it))
+        }
+      }
     }
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/** Shorthand for `mapAsync(concurrency, transform).flatMapSetConcat { it.toSet() }` */
+suspend fun <T, R> Iterable<T>.flatMapSetMerge(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> Iterable<R>
+): Set<R> {
+  return mapAsync(concurrency, transform).flatMapSetConcat { it.toSet() }
+}
+
+/** Shorthand for `mapAsync(concurrency, transform).toList().flatten()` */
+suspend fun <T, R> Iterable<T>.flatMapListMerge(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> Iterable<R>
+): List<R> {
+  return mapAsync(concurrency, transform).toList().flatten()
+}
+
+/** Shorthand for `mapAsync(concurrency, transform).toList().flatten()` */
+suspend fun <T, R> Flow<T>.flatMapListMerge(
+  concurrency: Int = DEFAULT_CONCURRENCY,
+  transform: suspend (T) -> Iterable<R>
+): List<R> {
+  return mapAsync(concurrency, transform).toList().flatten()
+}
+
+/**
+ * Returns a [Flow] from the receiver [Iterable], performing [transform] upon each element
+ * *concurrently* before that element is emitted.
+ *
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ */
 fun <T, R> Iterable<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
@@ -96,7 +141,12 @@ fun <T, R> Iterable<T>.mapAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * Returns a [Flow] from the receiver [Iterable], performing [action] upon each element
+ * *concurrently* before that element is emitted.
+ *
+ * **This is a "hot" flow**, since [action] is performed eagerly.
+ */
 fun <T> Iterable<T>.onEachAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   action: suspend (T) -> Unit
@@ -115,7 +165,12 @@ fun <T> Iterable<T>.onEachAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Sequence], performing [transform] upon each element
+ *   *concurrently* before that element is emitted.
+ */
 fun <T, R> Sequence<T>.mapAsync(
   concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
@@ -128,7 +183,12 @@ fun <T, R> Sequence<T>.mapAsync(
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Flow], performing [transform] and filtering out `null` values
+ *   upon each element *concurrently*.
+ */
 fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     this@mapAsyncNotNull.onEach { element -> transform(element)?.let { send(it) } }
@@ -136,7 +196,12 @@ fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> 
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Iterable], performing [transform] and filtering out `null`
+ *   values upon each element *concurrently*.
+ */
 fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     forEach { element ->
@@ -145,7 +210,12 @@ fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Sequence], performing [transform] and filtering out `null`
+ *   values upon each element *concurrently*.
+ */
 fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
     forEach { element ->
@@ -154,7 +224,12 @@ fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [predicate] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Flow], filtering values based upon [predicate]
+ *   *concurrently*.
+ */
 fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     this@filterAsync.onEach { if (predicate(it)) send(it) }
@@ -162,14 +237,24 @@ fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [predicate] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Iterable], filtering values based upon [predicate]
+ *   *concurrently*.
+ */
 fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     forEach { launch { if (predicate(it)) send(it) } }
   }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
+/**
+ * **This is a "hot" flow**, since [predicate] is performed eagerly.
+ *
+ * @return a [Flow] from the receiver [Sequence], filtering values based upon [predicate]
+ *   *concurrently*.
+ */
 fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     forEach { launch { if (predicate(it)) send(it) } }
