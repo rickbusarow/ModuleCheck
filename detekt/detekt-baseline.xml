@@ -855,21 +855,6 @@
     <ID>UndocumentedPublicFunction:file.kt$fun File.writeJava( @Language("java") content: String )</ID>
     <ID>UndocumentedPublicFunction:file.kt$fun File.writeKotlin( @Language("kotlin") content: String )</ID>
     <ID>UndocumentedPublicFunction:file.kt$fun Path.child(vararg childPath: String): File</ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R : Any> Flow&lt;T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R : Any> Iterable&lt;T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R : Any> Sequence&lt;T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R> Flow&lt;T>.mapAsync( concurrency: Int = DEFAULT_CONCURRENCY, transform: suspend (T) -> R ): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R> Iterable&lt;T>.mapAsync( concurrency: Int = DEFAULT_CONCURRENCY, transform: suspend (T) -> R ): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T, R> Sequence&lt;T>.mapAsync( concurrency: Int = DEFAULT_CONCURRENCY, transform: suspend (T) -> R ): Flow&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T> Flow&lt;T>.filterAsync(predicate: suspend (T) -> Boolean): Flow&lt;T></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T> Iterable&lt;T>.filterAsync(predicate: suspend (T) -> Boolean): Flow&lt;T></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T> Iterable&lt;T>.onEachAsync( concurrency: Int = DEFAULT_CONCURRENCY, action: suspend (T) -> Unit ): Flow&lt;T></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$@OptIn(ExperimentalCoroutinesApi::class) fun &lt;T> Sequence&lt;T>.filterAsync(predicate: suspend (T) -> Boolean): Flow&lt;T></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$fun &lt;T> Flow&lt;T>.distinct(): Flow&lt;T></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$suspend fun &lt;T, R> Flow&lt;T>.flatMapListConcat( destination: MutableList&lt;R> = mutableListOf(), transform: suspend (T) -> List&lt;R> ): List&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$suspend fun &lt;T, R> Flow&lt;T>.flatMapSetConcat( destination: MutableSet&lt;R> = mutableSetOf(), transform: suspend (T) -> Set&lt;R> ): Set&lt;R></ID>
-    <ID>UndocumentedPublicFunction:flow.kt$suspend fun &lt;T> Flow&lt;T>.any(predicate: suspend (T) -> Boolean): Boolean</ID>
-    <ID>UndocumentedPublicFunction:flow.kt$suspend fun &lt;T> Flow&lt;T>.contains(element: T): Boolean</ID>
     <ID>UndocumentedPublicFunction:hermit.kt$fun Hermit.tempDir(path: String = UUID.randomUUID().toString()): LazyResets&lt;File></ID>
     <ID>UndocumentedPublicFunction:hermit.kt$fun Hermit.tempFile(path: String = "temp.kt"): LazyResets&lt;File></ID>
     <ID>UndocumentedPublicFunction:javaVersion.kt$@Suppress("UnstableApiUsage") fun GradleJavaVersion.toJavaVersion(): JavaVersion</ID>
