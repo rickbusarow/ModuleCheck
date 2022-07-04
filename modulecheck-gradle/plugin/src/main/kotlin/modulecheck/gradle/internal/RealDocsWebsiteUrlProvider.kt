@@ -24,15 +24,15 @@ import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
 class RealDocsWebsiteUrlProvider @Inject constructor() : DocsWebsiteUrlProvider {
-  override fun get(): String = BuildProperties.DOCS_WEBSITE
+  override fun get(): String = BuildProperties().docsWebsite
 }
 
 @ContributesBinding(AppScope::class)
 class RealSourceWebsiteUrlProvider @Inject constructor() : SourceWebsiteUrlProvider {
-  override fun get(): String = BuildProperties.SOURCE_WEBSITE
+  override fun get(): String = BuildProperties().sourceWebsite
 }
 
 @ContributesBinding(AppScope::class)
 class RealModuleCheckVersionProvider @Inject constructor() : ModuleCheckVersionProvider {
-  override fun get(): String = BuildProperties.VERSION
+  override fun get(): String = BuildProperties().version
 }
