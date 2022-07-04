@@ -94,7 +94,7 @@ abstract class BaseGradleTest :
             useVersion("$agpVersion")
           }
           if (requested.id.id == "com.rickbusarow.module-check") {
-            useVersion("${BuildProperties.VERSION}")
+            useVersion("${BuildProperties().version}")
           }
           if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
             useVersion("$kotlinVersion")
