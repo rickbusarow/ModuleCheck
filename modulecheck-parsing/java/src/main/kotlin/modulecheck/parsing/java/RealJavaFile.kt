@@ -37,28 +37,6 @@ import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSol
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaFile
-import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.source.JavaVersion.VERSION_11
-import modulecheck.parsing.source.JavaVersion.VERSION_12
-import modulecheck.parsing.source.JavaVersion.VERSION_13
-import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.parsing.source.JavaVersion.VERSION_15
-import modulecheck.parsing.source.JavaVersion.VERSION_16
-import modulecheck.parsing.source.JavaVersion.VERSION_17
-import modulecheck.parsing.source.JavaVersion.VERSION_18
-import modulecheck.parsing.source.JavaVersion.VERSION_19
-import modulecheck.parsing.source.JavaVersion.VERSION_1_1
-import modulecheck.parsing.source.JavaVersion.VERSION_1_10
-import modulecheck.parsing.source.JavaVersion.VERSION_1_2
-import modulecheck.parsing.source.JavaVersion.VERSION_1_3
-import modulecheck.parsing.source.JavaVersion.VERSION_1_4
-import modulecheck.parsing.source.JavaVersion.VERSION_1_5
-import modulecheck.parsing.source.JavaVersion.VERSION_1_6
-import modulecheck.parsing.source.JavaVersion.VERSION_1_7
-import modulecheck.parsing.source.JavaVersion.VERSION_1_8
-import modulecheck.parsing.source.JavaVersion.VERSION_1_9
-import modulecheck.parsing.source.JavaVersion.VERSION_20
-import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
 import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.ReferenceName
@@ -72,13 +50,25 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.JvmTarget.JVM_10
+import org.jetbrains.kotlin.config.JvmTarget.JVM_11
+import org.jetbrains.kotlin.config.JvmTarget.JVM_12
+import org.jetbrains.kotlin.config.JvmTarget.JVM_13
+import org.jetbrains.kotlin.config.JvmTarget.JVM_14
+import org.jetbrains.kotlin.config.JvmTarget.JVM_15
+import org.jetbrains.kotlin.config.JvmTarget.JVM_16
+import org.jetbrains.kotlin.config.JvmTarget.JVM_17
+import org.jetbrains.kotlin.config.JvmTarget.JVM_1_6
+import org.jetbrains.kotlin.config.JvmTarget.JVM_1_8
+import org.jetbrains.kotlin.config.JvmTarget.JVM_9
 import java.io.File
 import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract
 
 class RealJavaFile(
   val file: File,
-  private val javaVersion: JavaVersion,
+  private val jvmTarget: JvmTarget,
   private val nameParser: NameParser
 ) : JavaFile {
 
@@ -99,7 +89,7 @@ class RealJavaFile(
     ParserConfiguration()
       .apply {
         setSymbolResolver(symbolSolver)
-        languageLevel = javaVersion.toLanguageLevel()
+        languageLevel = jvmTarget.toLanguageLevel()
       }
   }
 
@@ -341,34 +331,24 @@ fun <T> T.canBeImported(): Boolean
   return isStatic() && !isPrivate() && this is Resolvable<*>
 }
 
-internal fun JavaVersion.toLanguageLevel(): LanguageLevel {
+@Suppress("ComplexMethod")
+internal fun JvmTarget.toLanguageLevel(): LanguageLevel {
   return when (this) {
-    VERSION_1_1 -> LanguageLevel.JAVA_1_1
-    VERSION_1_2 -> LanguageLevel.JAVA_1_2
-    VERSION_1_3 -> LanguageLevel.JAVA_1_3
-    VERSION_1_4 -> LanguageLevel.JAVA_1_4
-    VERSION_1_5 -> LanguageLevel.JAVA_5
-    VERSION_1_6 -> LanguageLevel.JAVA_6
-    VERSION_1_7 -> LanguageLevel.JAVA_7
-    VERSION_1_8 -> LanguageLevel.JAVA_8
-    VERSION_1_9 -> LanguageLevel.JAVA_9
-    VERSION_1_10 -> LanguageLevel.JAVA_10
-    VERSION_11 -> LanguageLevel.JAVA_11
-    VERSION_12 -> LanguageLevel.JAVA_12
-    VERSION_13 -> LanguageLevel.JAVA_13
-    VERSION_14 -> LanguageLevel.JAVA_14
+    JVM_1_6 -> LanguageLevel.JAVA_6
+    JVM_1_8 -> LanguageLevel.JAVA_8
+    JVM_9 -> LanguageLevel.JAVA_9
+    JVM_10 -> LanguageLevel.JAVA_10
+    JVM_11 -> LanguageLevel.JAVA_11
+    JVM_12 -> LanguageLevel.JAVA_12
+    JVM_13 -> LanguageLevel.JAVA_13
+    JVM_14 -> LanguageLevel.JAVA_14
     // TODO
     //  Gradle itself leaks JavaParser 3.17.0 to its classpath, so these later versions of Java
     //  won't resolve
-    // VERSION_15 -> LanguageLevel.JAVA_15
-    // VERSION_16 -> LanguageLevel.JAVA_16
-    // VERSION_17 -> LanguageLevel.JAVA_17
-    VERSION_15 -> LanguageLevel.CURRENT
-    VERSION_16 -> LanguageLevel.CURRENT
-    VERSION_17 -> LanguageLevel.CURRENT
-    VERSION_18 -> LanguageLevel.CURRENT
-    VERSION_19 -> LanguageLevel.CURRENT
-    VERSION_20 -> LanguageLevel.CURRENT
-    VERSION_HIGHER -> LanguageLevel.CURRENT
+    JVM_15 -> LanguageLevel.CURRENT
+    JVM_16 -> LanguageLevel.CURRENT
+    JVM_17 -> LanguageLevel.CURRENT
+    else -> LanguageLevel.CURRENT
+    // JVM_18 -> LanguageLevel.CURRENT
   }
 }

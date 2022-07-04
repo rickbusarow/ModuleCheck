@@ -25,8 +25,6 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
@@ -37,6 +35,7 @@ import modulecheck.utils.createSafely
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
 @Suppress("LongParameterList")
@@ -53,7 +52,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var hasKapt: Boolean = false,
   var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
-  var javaSourceVersion: JavaVersion = VERSION_14
+  var jvmTarget: JvmTarget = JvmTarget.JVM_11
 ) {
 
   val configuredProjectDependency by lazy {

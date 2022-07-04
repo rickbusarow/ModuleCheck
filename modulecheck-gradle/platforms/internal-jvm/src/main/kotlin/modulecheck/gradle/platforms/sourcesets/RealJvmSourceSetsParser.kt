@@ -43,6 +43,8 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
 
       val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
 
+      val jvmTarget = gradleProject.jvmTarget()
+
       if (kotlinExtensionOrNull != null) {
 
         kotlinExtensionOrNull.sourceSets
@@ -78,6 +80,7 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 jvmFiles = kotlinSourceSet.kotlin.srcDirs,
                 resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
+                jvmTarget = jvmTarget,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
               )
@@ -119,6 +122,7 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 jvmFiles = gradleSourceSet.allJava.srcDirs,
                 resourceFiles = gradleSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
+                jvmTarget = jvmTarget,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
               )

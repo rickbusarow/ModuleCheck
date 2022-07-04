@@ -17,8 +17,36 @@ package modulecheck.parsing.gradle.model
 
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
+/**
+ * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
+ * AGP, KGP, and the Java Gradle Plugin.
+ *
+ * @property name the name of this source set, like 'main' or 'internalRelease'
+ * @property compileOnlyConfiguration the configuration name of this source set's 'compileOnly'
+ *   configuration, like 'compileOnly' for 'main' or 'debugCompileOnly' for 'debug'
+ * @property apiConfiguration the configuration name of this source set's 'api' configuration, like
+ *   'api' for 'main' or 'debugApi' for 'debug'
+ * @property implementationConfiguration the configuration name of this source set's
+ *   'implementation' configuration, like 'implementation'
+ *   for 'main' or 'debugImplementationpi' for 'debug'
+ * @property runtimeOnlyConfiguration the configuration name of this source set's 'runtimeOnly'
+ *   configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
+ * @property annotationProcessorConfiguration the configuration name of this source set's
+ *   'annotationProcessor' configuration, like 'annotationProcessor'
+ *   for 'main' or 'debugAnnotationProcessor' for 'debug'
+ * @property jvmFiles all java/kotlin/scala/groovy files in this source set
+ * @property resourceFiles all xml 'res' files for this source set
+ * @property layoutFiles all android layout files for this source set. This is a subset of
+ *   [resourceFiles].
+ * @property jvmTarget the Java version used when compiling this source set
+ * @property upstreamLazy all source sets upstream of this one, like `main` if this source set is
+ *   `test`
+ * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
+ *   is `main`
+ */
 data class SourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: Config,
@@ -29,6 +57,7 @@ data class SourceSet(
   val jvmFiles: Set<File>,
   val resourceFiles: Set<File>,
   val layoutFiles: Set<File>,
+  val jvmTarget: JvmTarget,
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<SourceSet> {
