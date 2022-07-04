@@ -15,93 +15,22 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
-import modulecheck.testing.sealedSubclassInstances
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestFactory
 
 class DeclaredNameTest : BaseMcNameTest() {
 
   @Test
-  fun `agnostic declaration should match self and any reference type`() {
-    AgnosticDeclaredName(
-      "com.modulecheck.subject",
-      PackageName("com.modulecheck")
-    ).matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidRReferenceName::class,
-      JavaReferenceNameImpl::class,
-      KotlinReferenceNameImpl::class,
-      XmlReferenceNameImpl::class
-    )
-  }
-
-  @Test
-  fun `kotlin specific declaration should match self and any KotlinReference type`() {
-    KotlinSpecificDeclaredName(
-      "com.modulecheck.subject",
-      PackageName("com.modulecheck")
-    ).matchedClasses() shouldBe listOf(
-      AndroidRReferenceName::class,
-      KotlinReferenceNameImpl::class,
-      TopLevelKotlinSpecificDeclaredName::class
-    )
-  }
-
-  @Test
-  fun `java specific declaration should match self and any JavaReference or XmlReference type`() {
-    JavaSpecificDeclaredName(
-      "com.modulecheck.subject",
-      PackageName("com.modulecheck")
-    ).matchedClasses() shouldBe listOf(
-      AndroidRReferenceName::class,
-      JavaReferenceNameImpl::class,
-      JavaSpecificDeclaredName::class,
-      XmlReferenceNameImpl::class
-    )
-  }
-
-  @Test
-  fun `android r declaration should match self and any Reference type`() {
-    AndroidRDeclaredName(
-      "com.modulecheck.R",
-      PackageName("com.modulecheck")
-    ).matchedClasses() shouldBe listOf(
-      AndroidDataBindingReferenceName::class,
-      AndroidRDeclaredName::class,
-      AndroidRReferenceName::class,
-      JavaReferenceNameImpl::class,
-      KotlinReferenceNameImpl::class,
-      UnqualifiedAndroidResourceReferenceName::class,
-      XmlReferenceNameImpl::class
-    )
-  }
-
-  @TestFactory
-  fun `android resource declaration should match self and any Reference type`() =
-    UnqualifiedAndroidResourceDeclaredName::class
-      .sealedSubclassInstances("subject")
-      .dynamic(
-        testName = { subject -> subject::class.java.simpleName }
-      ) { subject ->
-
-        oneOfEach("subject")
-          .plus(UnqualifiedAndroidResourceReferenceName("R.${subject.prefix}.subject"))
-          .filter { it == subject }
-          .map { it::class }
-          .sortedBy { it.java.simpleName } shouldBe listOf(
-          subject::class,
-          UnqualifiedAndroidResourceReferenceName::class
-        ).sortedBy { it.simpleName }
-      }
-
-  @Test
   fun `duplicate names of incompatible types are allowed in a set`() {
     val list = listOf(
-      JavaSpecificDeclaredName("name", PackageName("com.modulecheck")),
-      KotlinSpecificDeclaredName("name", PackageName("com.modulecheck"))
+      DeclaredName.java(
+        PackageName("com.modulecheck"),
+        listOf("name".asSimpleName())
+      ),
+      DeclaredName.kotlin(
+        PackageName("com.modulecheck"),
+        listOf("name".asSimpleName())
+      )
     )
 
     val set = list.toSet()
@@ -112,8 +41,14 @@ class DeclaredNameTest : BaseMcNameTest() {
   @Test
   fun `duplicate names of compatible types are allowed in a set`() {
     val list = listOf(
-      AgnosticDeclaredName("name", PackageName("com.modulecheck")),
-      KotlinSpecificDeclaredName("name", PackageName("com.modulecheck"))
+      DeclaredName.agnostic(
+        PackageName("com.modulecheck"),
+        listOf("name".asSimpleName())
+      ),
+      DeclaredName.kotlin(
+        PackageName("com.modulecheck"),
+        listOf("name".asSimpleName())
+      )
     )
 
     val set = list.toSet()
@@ -122,46 +57,58 @@ class DeclaredNameTest : BaseMcNameTest() {
   }
 
   @Test
-  fun `sorting should be by name first, then class name`() {
-    val names = listOf("a", "b", "c", "d")
+  fun `sorting should be by name first, then the name of the DeclaredName class`() {
+    val packageNames = listOf("a", "b", "c", "d")
+    val simpleNames = listOf("X", "Y", "Z")
 
-    val instances = names
+    val instances = packageNames
       .reversed()
-      .flatMap {
-        listOf(
-          KotlinSpecificDeclaredName(it, PackageName("com.modulecheck")),
-          AgnosticDeclaredName(it, PackageName("com.modulecheck")),
-          JavaSpecificDeclaredName(it, PackageName("com.modulecheck")),
-          AndroidRDeclaredName("$it.R", PackageName("com.modulecheck"))
-        )
+      .flatMap { packageName ->
+        simpleNames
+          .reversed()
+          .flatMap { simpleName ->
+
+            listOf(
+              DeclaredName.kotlin(
+                PackageName(packageName),
+                listOf(simpleName.asSimpleName())
+              ),
+              DeclaredName.agnostic(
+                PackageName(packageName),
+                listOf(simpleName.asSimpleName())
+              ),
+              DeclaredName.java(
+                PackageName(packageName),
+                listOf(simpleName.asSimpleName())
+              ),
+              AndroidResourceDeclaredName.r(PackageName(packageName))
+            )
+          }
       }
       .shuffled()
+      // Android R names will be duplicated, so clean those up
+      .distinctBy { it.name to it::class }
 
     val prettySorted = instances.sorted()
-      .joinToString("\n") { "${it::class.java.simpleName.padStart(36)} ${it.name}" }
+      .joinToString("\n") { "${it::class.java.simpleName.padStart(28)} ${it.name}" }
 
     prettySorted shouldBe """
-                AgnosticDeclaredName a
-            JavaSpecificDeclaredName a
-  TopLevelKotlinSpecificDeclaredName a
-                AndroidRDeclaredName a.R
-                AgnosticDeclaredName b
-            JavaSpecificDeclaredName b
-  TopLevelKotlinSpecificDeclaredName b
-                AndroidRDeclaredName b.R
-                AgnosticDeclaredName c
-            JavaSpecificDeclaredName c
-  TopLevelKotlinSpecificDeclaredName c
-                AndroidRDeclaredName c.R
-                AgnosticDeclaredName d
-            JavaSpecificDeclaredName d
-  TopLevelKotlinSpecificDeclaredName d
-                AndroidRDeclaredName d.R
+         AndroidRDeclaredName a.R
+    QualifiedDeclaredNameImpl a.X
+    QualifiedDeclaredNameImpl a.Y
+    QualifiedDeclaredNameImpl a.Z
+         AndroidRDeclaredName b.R
+    QualifiedDeclaredNameImpl b.X
+    QualifiedDeclaredNameImpl b.Y
+    QualifiedDeclaredNameImpl b.Z
+         AndroidRDeclaredName c.R
+    QualifiedDeclaredNameImpl c.X
+    QualifiedDeclaredNameImpl c.Y
+    QualifiedDeclaredNameImpl c.Z
+         AndroidRDeclaredName d.R
+    QualifiedDeclaredNameImpl d.X
+    QualifiedDeclaredNameImpl d.Y
+    QualifiedDeclaredNameImpl d.Z
     """.trimIndent()
   }
-
-  fun KotlinSpecificDeclaredName(
-    name: String,
-    packageName: PackageName
-  ) = TopLevelKotlinSpecificDeclaredName(name, packageName)
 }

@@ -15,73 +15,55 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
+import io.kotest.matchers.shouldNotBe
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 
 class ReferenceNameTest : BaseMcNameTest() {
 
-  @Test
-  fun `java reference`() {
-    JavaReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      AndroidRReferenceName::class,
-      JavaReferenceNameImpl::class,
-      JavaSpecificDeclaredName::class,
-      QualifiedAndroidResourceReferenceName::class
-    )
+  @Nested
+  inner class `java reference` {
+
+    val subject = ReferenceName("com.test.Subject", JAVA)
+
+    @TestFactory
+    fun `equals matches other reference types with the same name and language`() =
+      allReferenceNames("com.test.Subject", languages = listOf(JAVA))
+        .dynamic { other ->
+
+          other shouldBe subject
+          subject shouldBe other
+        }
+
+    @TestFactory
+    fun `equals does not match any reference types with a different language`() =
+      allReferenceNames("com.test.Subject", languages = listOf(XML, KOTLIN))
+        .dynamic { other ->
+
+          other shouldNotBe subject
+          subject shouldNotBe other
+        }
+
+    @TestFactory
+    fun `equals does not match any reference types with a different name`() =
+      allReferenceNames("com.test.Other", languages = listOf(JAVA))
+        .dynamic { other ->
+
+          other shouldNotBe subject
+          subject shouldNotBe other
+        }
   }
 
   @Test
-  fun `kotlin reference`() {
-    KotlinReferenceName("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      AndroidRReferenceName::class,
-      KotlinReferenceNameImpl::class,
-      QualifiedAndroidResourceReferenceName::class,
-      TopLevelKotlinSpecificDeclaredName::class
-    )
-  }
-
-  @Test
-  fun `xml reference`() {
-    XmlReferenceNameImpl("com.modulecheck.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      AndroidRReferenceName::class,
-      JavaReferenceNameImpl::class,
-      JavaSpecificDeclaredName::class,
-      QualifiedAndroidResourceReferenceName::class,
-      XmlReferenceNameImpl::class
-    )
-  }
-
-  @Test
-  fun `unqualified android resource reference`() {
-    UnqualifiedAndroidResourceReferenceName("R.string.subject").matchedClasses() shouldBe listOf(
-      AgnosticDeclaredName::class,
-      AndroidDataBindingReferenceName::class,
-      AndroidRReferenceName::class,
-      AndroidString::class,
-      JavaReferenceNameImpl::class,
-      KotlinReferenceNameImpl::class,
-      QualifiedAndroidResourceReferenceName::class,
-      UnqualifiedAndroidResourceReferenceName::class,
-      XmlReferenceNameImpl::class
-    )
-  }
-
-  @Test
-  fun `duplicate names of incompatible types are allowed in a set`() {
+  fun `duplicate names of different languages are allowed in a set`() {
     val list = listOf(
-      KotlinReferenceName("name"),
-      JavaReferenceName("name")
+      ReferenceName("name", KOTLIN),
+      ReferenceName("name", JAVA),
+      ReferenceName("name", XML)
     )
 
     val set = list.toSet()
@@ -90,14 +72,16 @@ class ReferenceNameTest : BaseMcNameTest() {
   }
 
   @Test
-  fun `duplicate names of compatible types are allowed in a set`() {
-    val list = listOf(
-      KotlinReferenceName("name"),
-      JavaReferenceName("name")
-    )
+  fun `Android R reference equals Android R declaration`() {
 
-    val set = list.toSet()
+    val r = AndroidRReferenceName(PackageName("com.test"), KOTLIN)
+    val d = AndroidResourceDeclaredName.r(PackageName("com.test"))
 
-    set.toList() shouldBe list
+    r shouldBe d
+
+    setOf<McName>(d).contains(r) shouldBe true
+    setOf<McName>(r).contains(d) shouldBe true
+
+    d shouldBe r
   }
 }

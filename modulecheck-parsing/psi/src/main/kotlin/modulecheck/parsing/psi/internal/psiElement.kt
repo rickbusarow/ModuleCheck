@@ -17,8 +17,8 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
-import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
@@ -97,8 +97,8 @@ fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
     .any { it == annotationFqName.shortName().asString() }
 }
 
-suspend fun McProject.canResolveFqName(
-  declaredName: DeclaredName,
+suspend fun McProject.canResolveDeclaredName(
+  declaredName: QualifiedDeclaredName,
   sourceSetName: SourceSetName
 ): Boolean {
   return resolveFqNameOrNull(declaredName, sourceSetName) != null
@@ -113,7 +113,7 @@ fun PsiElement.file(): File {
 suspend fun PsiElement.declaredNameOrNull(
   project: McProject,
   sourceSetName: SourceSetName
-): DeclaredName? {
+): QualifiedDeclaredName? {
 
   val containingKtFile = parentsWithSelf
     .filterIsInstance<KtPureElement>()
@@ -212,7 +212,10 @@ suspend fun PsiElement.declaredNameOrNull(
 
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
-            project.canResolveFqName(importPath.fqName.asDeclaredName(packageName), sourceSetName)
+            project.canResolveDeclaredName(
+              importPath.fqName.asDeclaredName(packageName),
+              sourceSetName
+            )
           }?.fqName
             ?.asDeclaredName(packageName)
       }
@@ -228,7 +231,7 @@ suspend fun PsiElement.declaredNameOrNull(
 
         matchingImportPaths.size > 1 ->
           return matchingImportPaths.firstOrNull { importPath ->
-            project.canResolveFqName(
+            project.canResolveDeclaredName(
               importPath.fqName.child(Name.identifier(classReference))
                 .asDeclaredName(packageName),
               sourceSetName

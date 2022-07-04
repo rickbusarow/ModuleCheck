@@ -35,6 +35,7 @@ import com.github.javaparser.resolution.Resolvable
 import com.github.javaparser.symbolsolver.JavaSymbolSolver
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_11
@@ -58,10 +59,10 @@ import modulecheck.parsing.source.JavaVersion.VERSION_1_8
 import modulecheck.parsing.source.JavaVersion.VERSION_1_9
 import modulecheck.parsing.source.JavaVersion.VERSION_20
 import modulecheck.parsing.source.JavaVersion.VERSION_HIGHER
+import modulecheck.parsing.source.McName
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
-import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asJavaReference
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
@@ -117,7 +118,7 @@ class RealJavaFile(
   override val importsLazy = unsafeLazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
-      .map { it.nameAsString.asJavaReference() }
+      .map { ReferenceName(it.nameAsString, JAVA) }
       .toSet()
   }
 
@@ -128,7 +129,12 @@ class RealJavaFile(
       .mapNotNull { declaration ->
         declaration.fullyQualifiedName
           .getOrNull()
-          ?.asDeclaredName(packageName)
+          ?.let {
+            DeclaredName.agnostic(
+              packageName = packageName,
+              simpleNames = it.stripPackageNameFromFqName(packageName)
+            )
+          }
       }
       .toSet()
       .plus(parsed.fieldDeclarations)
@@ -228,7 +234,7 @@ class RealJavaFile(
       unresolved = typeReferenceNames + methodNames + propertyNames,
       mustBeApi = apiStrings.toSet(),
       apiReferenceNames = emptySet(),
-      toReferenceName = ::JavaReferenceNameImpl,
+      referenceLanguage = McName.CompatibleLanguage.JAVA,
       stdLibNameOrNull = String::javaLangFqNameOrNull
     )
 

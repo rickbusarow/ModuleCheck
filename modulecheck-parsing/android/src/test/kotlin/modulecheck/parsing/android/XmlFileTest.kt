@@ -15,7 +15,8 @@
 
 package modulecheck.parsing.android
 
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.ID
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
+import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.id
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -56,8 +57,8 @@ internal class XmlFileTest : BaseTest() {
     val declarations = XmlFile.LayoutFile(xml).idDeclarations
 
     declarations shouldBe setOf(
-      ID("fragment_container"),
-      ID("fragment_container_nested")
+      id("fragment_container".asSimpleName()),
+      id("fragment_container_nested".asSimpleName())
     )
   }
 }

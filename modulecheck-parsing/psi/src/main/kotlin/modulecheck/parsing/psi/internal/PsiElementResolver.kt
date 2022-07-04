@@ -19,6 +19,7 @@ import modulecheck.parsing.element.resolve.SymbolResolver
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazySet
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -29,7 +30,7 @@ class PsiElementResolver(
 ) : SymbolResolver<PsiElement> {
   override suspend fun declaredNameOrNull(
     symbol: PsiElement
-  ): DeclaredName? {
+  ): QualifiedDeclaredName? {
     return symbol.declaredNameOrNull(project, sourceSetName)
   }
 }

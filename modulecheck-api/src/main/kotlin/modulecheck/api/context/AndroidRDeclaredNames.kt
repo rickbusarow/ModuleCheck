@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AndroidRDeclaredName
-import modulecheck.parsing.source.asAndroidRDeclaration
+import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
@@ -42,7 +42,7 @@ data class AndroidRDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
       project.androidBasePackagesForSourceSetName(sourceSetName)
-        ?.let { it.append("R").asAndroidRDeclaration(it) }
+        ?.let { AndroidResourceDeclaredName.r(it) }
     }
   }
 

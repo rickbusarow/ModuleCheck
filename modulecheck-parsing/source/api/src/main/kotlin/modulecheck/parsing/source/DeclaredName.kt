@@ -15,113 +15,145 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
-import modulecheck.utils.safeAs
+import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.parsing.source.SimpleName.Companion.asString
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
+import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.name.FqName
 
-sealed interface Generated : DeclaredName {
+/** Represents a "declaration" -- a named object which can be referenced elsewhere. */
+sealed interface DeclaredName : McName, HasSimpleNames {
 
-  val sources: Set<ReferenceName>
+  /**
+   * The languages with which this declaration is compatible. For instance, a member property will
+   * typically have a [KOTLIN] declaration using property access syntax, but will also have a
+   * [JAVA]/[XML] declaration for setter and getter functions.
+   */
+  val languages: Set<CompatibleLanguage> get() = setOf(KOTLIN, JAVA, XML)
+
+  companion object {
+
+    /**
+     * Shorthand for creating a [QualifiedDeclaredName] which is only accessible from Kotlin files.
+     *
+     * @see McName.CompatibleLanguage.KOTLIN
+     */
+    fun kotlin(
+      packageName: PackageName,
+      simpleNames: Iterable<SimpleName>
+    ): QualifiedDeclaredName = QualifiedDeclaredNameImpl(
+      packageName = packageName,
+      simpleNames = simpleNames.toList(),
+      languages = setOf(KOTLIN)
+    )
+
+    /**
+     * Shorthand for creating a [QualifiedDeclaredName] which is only accessible from Java or XML
+     * files.
+     *
+     * @see McName.CompatibleLanguage.JAVA
+     * @see McName.CompatibleLanguage.XML
+     */
+    fun java(
+      packageName: PackageName,
+      simpleNames: Iterable<SimpleName>
+    ): QualifiedDeclaredName = QualifiedDeclaredNameImpl(
+      packageName = packageName,
+      simpleNames = simpleNames.toList(),
+      languages = setOf(JAVA, XML)
+    )
+
+    /**
+     * Shorthand for creating a [QualifiedDeclaredName] which is accessible from files in any
+     * language.
+     *
+     * @see McName.CompatibleLanguage.JAVA
+     * @see McName.CompatibleLanguage.KOTLIN
+     * @see McName.CompatibleLanguage.XML
+     */
+    fun agnostic(
+      packageName: PackageName,
+      simpleNames: Iterable<SimpleName>
+    ): QualifiedDeclaredName = QualifiedDeclaredNameImpl(
+      packageName = packageName,
+      simpleNames = simpleNames.toList(),
+      languages = setOf(KOTLIN, JAVA, XML)
+    )
+  }
 }
 
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
-sealed interface DeclaredName : McName, HasPackageName {
+sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSimpleNames {
 
-  companion object {
-    operator fun invoke(
-      fqName: String,
-      packageName: PackageName
-    ) = AgnosticDeclaredName(fqName, packageName)
+  override val name: String
+    get() = packageName.append(simpleNames.asString())
+
+  override val segments: List<String> by unsafeLazy { name.split('.') }
+
+  final override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+
+    when (other) {
+      is ReferenceName -> {
+
+        if (name != other.name) return false
+        if (!languages.contains(other.language)) return false
+      }
+
+      is QualifiedDeclaredName -> {
+
+        if (name != other.name) return false
+        if (languages != other.languages) return false
+      }
+
+      else -> return false
+    }
+    return true
   }
+
+  final override fun hashCode(): Int = name.hashCode()
+
+  final override fun toString(): String =
+    "(${this::class.java.simpleName}) `$name`  language=$languages"
 }
 
-sealed interface JavaCompatibleDeclaredName : DeclaredName
-sealed interface KotlinCompatibleDeclaredName : DeclaredName
-sealed interface XmlCompatibleDeclaredName : JavaCompatibleDeclaredName, DeclaredName
-
-/**
- * Represents names which can only be referenced from Java.
- *
- * For instance, given this top-level property:
- *
- * ```
- * // File.kt
- * package com.example
- *
- * val someProperty = true
- * ```
- *
- * Kotlin code will access this as `com.example.someProperty`.
- *
- * In Java, this will be accessed as `com.example.FileKt.getSomeProperty();`
- *
- * These Java-specific declarations will only match to the [JavaReferenceName] type.
- *
- * @see JavaReferenceName
- * @see JavaSpecificDeclaredName
- */
-class JavaSpecificDeclaredName(
-  override val name: String,
-  override val packageName: PackageName
-) : DeclaredName,
-  JavaCompatibleDeclaredName,
-  XmlCompatibleDeclaredName {
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.safeAs<JavaReferenceName>()?.name },
-      ifDeclaration = { name == it.safeAs<JavaSpecificDeclaredName>()?.name }
-    )
+internal class QualifiedDeclaredNameImpl(
+  override val packageName: PackageName,
+  override val simpleNames: List<SimpleName>,
+  override val languages: Set<CompatibleLanguage>
+) : QualifiedDeclaredName() {
+  init {
+    checkSimpleNames()
   }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
 /**
- * Represents names which can only be referenced from either Java or Kotlin.
- *
- * These language-neutral declarations will match to any [JavaReferenceName] or
- * [KotlinReferenceName] type.
- *
- * @see JavaReferenceName
- * @see JavaSpecificDeclaredName
+ * @return a [QualifiedDeclaredName], where the String after [packageName] is split and treated as
+ *   the collection of [SimpleNames][SimpleName].
  */
-class AgnosticDeclaredName(
-  override val name: String,
-  override val packageName: PackageName
-) : DeclaredName,
-  JavaCompatibleDeclaredName,
-  KotlinCompatibleDeclaredName,
-  XmlCompatibleDeclaredName {
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.safeAs<AgnosticDeclaredName>()?.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+fun FqName.asDeclaredName(
+  packageName: PackageName,
+  vararg languages: CompatibleLanguage
+): QualifiedDeclaredName {
+  return asString().stripPackageNameFromFqName(packageName).asDeclaredName(packageName, *languages)
 }
 
-fun String.asAndroidRDeclaration(packageName: PackageName): AndroidRDeclaredName =
-  AndroidRDeclaredName(this, packageName)
-
-fun String.asKotlinDeclaredName(packageName: PackageName): DeclaredName =
-  TopLevelKotlinSpecificDeclaredName(this, packageName)
-
-fun String.asJavaDeclaredName(packageName: PackageName): DeclaredName =
-  JavaSpecificDeclaredName(this, packageName)
-
-fun String.asDeclaredName(packageName: PackageName): DeclaredName =
-  AgnosticDeclaredName(this, packageName)
-
-fun FqName.asDeclaredName(packageName: PackageName): DeclaredName =
-  AgnosticDeclaredName(asString(), packageName)
+/**
+ * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
+ *   [SimpleNames][SimpleName]
+ */
+fun Iterable<SimpleName>.asDeclaredName(
+  packageName: PackageName,
+  vararg languages: CompatibleLanguage
+): QualifiedDeclaredName {
+  return when {
+    languages.isEmpty() -> DeclaredName.agnostic(packageName, this)
+    !languages.contains(JAVA) -> DeclaredName.kotlin(packageName, this)
+    !languages.contains(KOTLIN) -> DeclaredName.java(packageName, this)
+    else -> DeclaredName.agnostic(packageName, this)
+  }
+}

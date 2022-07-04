@@ -16,6 +16,7 @@
 package modulecheck.parsing.source
 
 import modulecheck.parsing.source.PackageName.DEFAULT
+import modulecheck.utils.lazy.unsafeLazy
 
 /**
  * Represents a package name.
@@ -28,7 +29,11 @@ import modulecheck.parsing.source.PackageName.DEFAULT
  * @since 0.13.0
  */
 sealed interface PackageName : McName {
-  /** the full name of this package */
+  /**
+   * the full name of this package
+   *
+   * @since 0.13.0
+   */
   override val name: String
 
   /**
@@ -42,7 +47,9 @@ sealed interface PackageName : McName {
   object DEFAULT : PackageName {
     override val name: String = ""
 
-    override fun append(simpleName: String): String = simpleName
+    override fun append(simpleNames: Iterable<String>): String = simpleNames.joinToString(".")
+    override val segments: List<String>
+      get() = emptyList()
   }
 
   /**
@@ -56,9 +63,23 @@ sealed interface PackageName : McName {
    *
    * @since 0.13.0
    */
-  fun append(simpleName: String): String
+  fun append(simpleNames: Iterable<String>): String
 
   companion object {
+    /**
+     * Shorthand for calling [PackageName.invoke] in-line.
+     *
+     * @since 0.13.0
+     */
+    fun String?.asPackageName(): PackageName = PackageName(this)
+
+    /**
+     * Shorthand for calling [PackageName.invoke] in-line.
+     *
+     * @return A `PackageName` wrapper around [nameOrNull]. If [nameOrNull] is null or blank, this
+     *   will return [PackageName.DEFAULT].
+     * @since 0.13.0
+     */
     operator fun invoke(nameOrNull: String?): PackageName {
       return when {
         nameOrNull.isNullOrBlank() -> DEFAULT
@@ -69,13 +90,25 @@ sealed interface PackageName : McName {
 }
 
 /**
+ * Safe function for appending a simple name to the "end" of a package name.
+ *
+ * If the package name is default/empty, this function will return just the simple name without a
+ * preceding period.
+ *
+ * If the package name is not blank, this function will append a period to the package name, then
+ * add the simple name.
+ *
+ * @since 0.13.0
+ */
+fun PackageName.append(vararg simpleNames: String): String = append(simpleNames.toList())
+
+/**
  * @property name the full name of this package
  * @see McName
  * @since 0.13.0
  * @throws IllegalArgumentException if the [name] parameter is empty or blank
  */
-@JvmInline
-value class PackageNameImpl internal constructor(override val name: String) : PackageName {
+data class PackageNameImpl internal constructor(override val name: String) : PackageName {
   init {
     require(name.isNotBlank()) {
       "A ${this.javaClass.canonicalName} must be a non-empty, non-blank String.  " +
@@ -84,26 +117,14 @@ value class PackageNameImpl internal constructor(override val name: String) : Pa
     }
   }
 
-  override fun append(simpleName: String): String = "$name.$simpleName"
+  override fun append(simpleNames: Iterable<String>): String =
+    "$name.${simpleNames.joinToString(".")}"
 
-  companion object {
-    /**
-     * @receiver the String literal representation of a package name
-     * @return a [PackageName] from this String literal
-     * @since 0.13.0
-     */
-    fun String.asPackageName(): PackageName = PackageName(this)
-  }
+  override val segments: List<String> by unsafeLazy { name.split('.') }
 }
 
 /**
  * Convenience interface for providing a [PackageName].
- *
- * N.B. Ideally, this interface would be implemented by [DeclaredName], but:
- * 1. By design, [UnqualifiedAndroidResourceDeclaredName] does not have a package name.
- * 2. Even though it's convention, jvm files don't need to have a package name. In this case, it's
- *    tempting to just create a [PackageName] with an empty
- *    string, but it's far more accurate to treat it as null.
  *
  * @since 0.13.0
  */

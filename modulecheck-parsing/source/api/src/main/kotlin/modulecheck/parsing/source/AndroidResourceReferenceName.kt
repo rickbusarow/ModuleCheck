@@ -15,35 +15,39 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.AgnosticReferenceName
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.lazy.unsafeLazy
-import modulecheck.utils.safeAs
 
-sealed interface AndroidResourceReferenceName : ReferenceName, AgnosticReferenceName
+/** Any reference to an Android resource */
+sealed class AndroidResourceReferenceName : ReferenceName()
 
-class AndroidRReferenceName(override val name: String) :
-  AndroidResourceReferenceName,
-  KotlinReferenceName,
-  AgnosticReferenceName,
-  JavaReferenceName {
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other = other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+/**
+ * example: `com.example.R`
+ *
+ * @property packageName the package of this reference (which is just the full string, minus `.R`)
+ * @property language the language making this reference
+ */
+class AndroidRReferenceName(
+  val packageName: PackageName,
+  override val language: CompatibleLanguage
+) : AndroidResourceReferenceName() {
+  override val name: String by unsafeLazy { packageName.append("R") }
 }
 
-class UnqualifiedAndroidResourceReferenceName(override val name: String) :
-  AndroidResourceReferenceName {
+/**
+ * example: `R.string.app_name`
+ *
+ * @property name `R.string.____`
+ * @property language the language making this reference
+ */
+// hashcode behavior is intentionally handled by super
+@Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
+class UnqualifiedAndroidResourceReferenceName(
+  override val name: String,
+  override val language: CompatibleLanguage
+) : AndroidResourceReferenceName(),
+  HasSimpleNames {
 
   private val split by unsafeLazy {
     name.split('.').also {
@@ -55,53 +59,43 @@ class UnqualifiedAndroidResourceReferenceName(override val name: String) :
     }
   }
 
-  val prefix by unsafeLazy { split[1] }
-  val identifier by unsafeLazy { split[2] }
+  /** example: 'string' in `R.string.app_name` */
+  val prefix by unsafeLazy { split[1].asSimpleName() }
 
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other = other,
-      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReferenceName>()?.name },
-      ifDeclaration = { name == it.safeAs<AndroidResourceDeclaredName>()?.name }
-    )
+  /** example: 'app_name' in `R.string.app_name` */
+  val identifier by unsafeLazy { split[2].asSimpleName() }
+
+  override val simpleNames by unsafeLazy {
+    listOf("R".asSimpleName(), prefix, identifier)
   }
 
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-}
-
-class AndroidDataBindingReferenceName(override val name: String) :
-  AndroidResourceReferenceName {
-
   override fun equals(other: Any?): Boolean {
-    return matches(
-      other = other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.safeAs<AndroidResourceDeclaredName>()?.name }
-    )
+    if (other is UnqualifiedAndroidResource) {
+      return name == other.name
+    }
+
+    return super.equals(other)
   }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
-class QualifiedAndroidResourceReferenceName(override val name: String) :
-  AndroidResourceReferenceName,
-  AgnosticReferenceName,
-  KotlinReferenceName,
-  JavaReferenceName {
+/**
+ * example: `com.example.databinding.FragmentViewBinding`
+ *
+ * @property name `com.example.databinding.FragmentViewBinding`
+ * @property language the language making this reference
+ */
+class AndroidDataBindingReferenceName(
+  override val name: String,
+  override val language: CompatibleLanguage
+) : AndroidResourceReferenceName()
 
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other = other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.safeAs<GeneratedAndroidResourceDeclaredName>()?.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-}
+/**
+ * example: `com.example.R.string.app_name`
+ *
+ * @property name `com.example.R.string.app_name`
+ * @property language the language making this reference
+ */
+class QualifiedAndroidResourceReferenceName constructor(
+  override val name: String,
+  override val language: CompatibleLanguage
+) : AndroidResourceReferenceName()

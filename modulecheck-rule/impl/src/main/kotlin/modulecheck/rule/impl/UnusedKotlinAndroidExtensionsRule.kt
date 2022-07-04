@@ -20,7 +20,8 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedPluginFinding
 import modulecheck.parsing.gradle.model.PluginDefinition
-import modulecheck.parsing.source.asKotlinReference
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.utils.coroutines.any
 import javax.inject.Inject
@@ -35,8 +36,9 @@ class UnusedKotlinAndroidExtensionsRule @Inject constructor() :
   override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
-  private val parcelizeImport = "kotlinx.android.parcel.Parcelize".asKotlinReference()
-  private val syntheticReferencePackage = "kotlinx.android.synthetic".asKotlinReference()
+  private val parcelizeImport = ReferenceName("kotlinx.android.parcel.Parcelize", KOTLIN)
+  private val syntheticReferencePackage =
+    ReferenceName("kotlinx.android.synthetic", KOTLIN)
 
   override suspend fun check(project: McProject): List<UnusedPluginFinding> {
     val androidPlugin = project.platformPlugin.asAndroidOrNull() ?: return emptyList()

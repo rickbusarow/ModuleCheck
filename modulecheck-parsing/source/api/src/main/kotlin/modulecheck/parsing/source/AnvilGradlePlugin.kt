@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
 import net.swiftzer.semver.SemVer
 import org.jetbrains.kotlin.name.FqName
 
@@ -25,12 +24,12 @@ data class AnvilGradlePlugin(
 )
 
 data class AnvilAnnotatedType(
-  val contributedTypeDeclaration: DeclaredName,
+  val contributedTypeDeclaration: QualifiedDeclaredName,
   val contributedScope: AnvilScopeName
 )
 
 data class RawAnvilAnnotatedType(
-  val declaredName: DeclaredName,
+  val declaredName: QualifiedDeclaredName,
   val anvilScopeNameEntry: AnvilScopeNameEntry
 )
 
@@ -38,4 +37,4 @@ data class AnvilScopeName(val fqName: FqName) {
   override fun toString(): String = fqName.asString()
 }
 
-data class AnvilScopeNameEntry(val name: KotlinReferenceName)
+data class AnvilScopeNameEntry(val name: ReferenceName)

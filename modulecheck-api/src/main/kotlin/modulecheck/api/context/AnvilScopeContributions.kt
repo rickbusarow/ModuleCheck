@@ -17,20 +17,24 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
 
 data class AnvilScopeContributions(
-  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclaredName>>>,
+  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<QualifiedDeclaredName>>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeContributions>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclaredName>> {
+  /**
+   * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName]
+   *   for which they're contributed
+   */
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
     return delegate.getOrPut(sourceSetName) {
       project.anvilGraph().get(sourceSetName)
         .mapValues { (_, declarations) ->
@@ -54,6 +58,10 @@ data class AnvilScopeContributions(
 suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
   get(AnvilScopeContributions)
 
+/**
+ * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for
+ *   which they're contributed
+ */
 suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclaredName>> = anvilScopeContributions().get(sourceSetName)
+): Map<AnvilScopeName, Set<QualifiedDeclaredName>> = anvilScopeContributions().get(sourceSetName)

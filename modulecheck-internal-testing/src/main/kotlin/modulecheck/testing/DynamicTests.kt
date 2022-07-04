@@ -34,13 +34,21 @@ interface DynamicTests : ResetManager {
       }
   }
 
+  /**
+   * @return a collection of [DynamicTest], named after [testName] for each test and executing the
+   *   logic within [test]
+   */
   fun <T : Any> Sequence<T>.dynamic(
-    testName: (T) -> String,
+    testName: (T) -> String = { it.toString() },
     test: (T) -> Unit
   ): List<DynamicTest> = toList().dynamic(testName, test)
 
+  /**
+   * @return a collection of [DynamicTest], named after [testName] for each test and executing the
+   *   logic within [test]
+   */
   fun <T : Any> Iterable<T>.dynamic(
-    testName: (T) -> String,
+    testName: (T) -> String = { it.toString() },
     test: (T) -> Unit
   ): List<DynamicTest> {
     return map { subject ->

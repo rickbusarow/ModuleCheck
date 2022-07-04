@@ -18,30 +18,26 @@ package modulecheck.parsing.test
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.element.McElement
-import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingReferenceName
 import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.AndroidRReferenceName
 import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.GeneratedAndroidResourceDeclaredName
-import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.JvmFile
-import modulecheck.parsing.source.KotlinSpecificDeclaredName
 import modulecheck.parsing.source.McName
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.JavaReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceNameImpl
-import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asJavaDeclaredName
-import modulecheck.parsing.source.asJavaReference
-import modulecheck.parsing.source.asKotlinDeclaredName
-import modulecheck.parsing.source.asKotlinReference
 import modulecheck.testing.FancyShould
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.lazy.LazyDeferred
@@ -50,11 +46,13 @@ import modulecheck.utils.trace.Trace
 
 interface McNameTest : FancyShould {
 
+  val defaultLanguage: CompatibleLanguage
+
   class JvmFileBuilder {
 
     val referenceNames = mutableListOf<ReferenceName>()
     val apiReferenceNames = mutableListOf<ReferenceName>()
-    val declarations = mutableListOf<DeclaredName>()
+    val declarations = mutableListOf<QualifiedDeclaredName>()
 
     fun references(builder: NormalReferenceBuilder.() -> Unit) {
       NormalReferenceBuilder().builder()
@@ -72,31 +70,26 @@ interface McNameTest : FancyShould {
       private val target: MutableList<ReferenceName>
     ) {
 
-      fun androidR(name: String) = AndroidRReferenceName(name)
-        .also { target.add(it) }
+      fun androidR(packageName: PackageName = PackageName("com.test")) =
+        AndroidRReferenceName(packageName, XML)
+          .also { target.add(it) }
 
       fun androidDataBinding(name: String) =
-        AndroidDataBindingReferenceName(name)
+        AndroidDataBindingReferenceName(name, XML)
           .also { target.add(it) }
 
       fun qualifiedAndroidResource(name: String) =
-        QualifiedAndroidResourceReferenceName(name)
+        QualifiedAndroidResourceReferenceName(name, XML)
           .also { target.add(it) }
 
       fun unqualifiedAndroidResource(name: String) =
-        UnqualifiedAndroidResourceReferenceName(name)
+        UnqualifiedAndroidResourceReferenceName(name, XML)
           .also { target.add(it) }
 
-      fun explicitKotlin(name: String) = name.asKotlinReference()
+      fun kotlin(name: String) = ReferenceName(name, KOTLIN)
         .also { target.add(it) }
 
-      fun interpretedKotlin(name: String) = name.asKotlinReference()
-        .also { target.add(it) }
-
-      fun explicitJava(name: String) = name.asJavaReference()
-        .also { target.add(it) }
-
-      fun interpretedJava(name: String) = name.asJavaReference()
+      fun java(name: String) = ReferenceName(name, JAVA)
         .also { target.add(it) }
     }
 
@@ -105,16 +98,21 @@ interface McNameTest : FancyShould {
     inner class ApiReferenceBuilder : ReferenceBuilder(apiReferenceNames)
 
     inner class DeclarationsBuilder {
-      fun kotlin(name: String, packageName: String = "com.subject") =
-        name.asKotlinDeclaredName(PackageName(packageName))
+      fun kotlin(name: String, packageName: PackageName = PackageName("com.subject")) =
+        DeclaredName.kotlin(
+          packageName, name.stripPackageNameFromFqName(packageName)
+        )
           .also { declarations.add(it) }
 
-      fun java(name: String, packageName: String = "com.subject") =
-        name.asJavaDeclaredName(PackageName(packageName))
+      fun java(name: String, packageName: PackageName = PackageName("com.subject")) =
+        DeclaredName.java(
+          packageName, name.stripPackageNameFromFqName(packageName)
+        )
           .also { declarations.add(it) }
 
-      fun agnostic(name: String, packageName: String = "com.subject") =
-        name.asDeclaredName(PackageName(packageName))
+      fun agnostic(name: String, packageName: PackageName = PackageName("com.subject")) =
+        name.stripPackageNameFromFqName(packageName)
+          .asDeclaredName(packageName)
           .also { declarations.add(it) }
     }
   }
@@ -128,7 +126,7 @@ interface McNameTest : FancyShould {
     declarations shouldBe other.declarations
   }
 
-  infix fun Collection<DeclaredName>.shouldBe(other: Collection<DeclaredName>) {
+  infix fun Collection<QualifiedDeclaredName>.shouldBe(other: Collection<QualifiedDeclaredName>) {
     prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
   }
 
@@ -163,19 +161,26 @@ interface McNameTest : FancyShould {
     }
   }
 
-  fun kotlin(name: String, packageName: String = "com.subject") =
-    name.asKotlinDeclaredName(PackageName(packageName))
+  fun kotlin(name: String, packageName: PackageName = PackageName("com.test")) =
+    DeclaredName.kotlin(packageName, name.stripPackageNameFromFqName(packageName))
 
-  fun java(name: String, packageName: String = "com.subject") =
-    name.asJavaDeclaredName(PackageName(packageName))
+  fun java(name: String, packageName: PackageName = PackageName("com.test")) =
+    DeclaredName.java(packageName, name.stripPackageNameFromFqName(packageName))
 
-  fun agnostic(name: String, packageName: String = "com.subject") =
-    name.asDeclaredName(PackageName(packageName))
+  fun agnostic(name: String, packageName: PackageName = PackageName("com.test")) =
+    name.stripPackageNameFromFqName(packageName).asDeclaredName(packageName)
 
-  fun androidR(name: String) = AndroidRReferenceName(name)
-  fun androidDataBinding(name: String) = AndroidDataBindingReferenceName(name)
-  fun qualifiedAndroidResource(name: String) = QualifiedAndroidResourceReferenceName(name)
-  fun unqualifiedAndroidResource(name: String) = UnqualifiedAndroidResourceReferenceName(name)
+  fun androidR(packageName: PackageName = PackageName("com.test")) =
+    AndroidRReferenceName(packageName, defaultLanguage)
+
+  fun androidDataBinding(name: String) =
+    AndroidDataBindingReferenceName(name, defaultLanguage)
+
+  fun qualifiedAndroidResource(name: String) =
+    QualifiedAndroidResourceReferenceName(name, defaultLanguage)
+
+  fun unqualifiedAndroidResource(name: String) =
+    UnqualifiedAndroidResourceReferenceName(name, defaultLanguage)
 }
 
 fun Collection<McName>.prettyPrint() = groupBy { it::class }
@@ -183,22 +188,31 @@ fun Collection<McName>.prettyPrint() = groupBy { it::class }
   .sortedBy { it.first.qualifiedName }
   .joinToString("\n") { (_, names) ->
     val typeName = when (val mcName = names.first()) {
-      // declarations
-      is JavaReferenceNameImpl -> "java"
-      is KotlinReferenceNameImpl -> "kotlin"
-      is XmlReferenceNameImpl -> "xml"
+      // references
       is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
       is AndroidRReferenceName -> "androidR"
       is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
       is AndroidDataBindingReferenceName -> "androidDataBinding"
-      // references
-      is AgnosticDeclaredName -> "agnostic"
+      is ReferenceName -> when {
+        mcName.isJava() -> "java"
+        mcName.isKotlin() -> "kotlin"
+        mcName.isXml() -> "xml"
+        else -> throw IllegalArgumentException("???")
+      }
+
       is AndroidRDeclaredName -> "androidR"
-      is JavaSpecificDeclaredName -> "java"
-      is KotlinSpecificDeclaredName -> "kotlin"
-      is UnqualifiedAndroidResourceDeclaredName -> mcName.prefix
-      is GeneratedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
+      is UnqualifiedAndroidResource -> mcName.prefix.name
+      is QualifiedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
       is AndroidDataBindingDeclaredName -> "androidDataBinding"
+
+      // declarations
+      is QualifiedDeclaredName -> when {
+        mcName.languages.containsAll(setOf(KOTLIN, JAVA)) -> "agnostic"
+        mcName.languages.contains(KOTLIN) -> "kotlin"
+        mcName.languages.contains(JAVA) -> "java"
+        mcName.languages.contains(XML) -> "xml"
+        else -> throw IllegalArgumentException("???")
+      }
       // package
       is PackageName -> "packageName"
     }
