@@ -36,6 +36,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.utils.lazy.lazySet
+import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
 interface ProjectCollector {
@@ -130,7 +131,7 @@ interface ProjectCollector {
       hasKapt = hasKapt,
       hasTestFixturesPlugin = hasTestFixturesPlugin,
       anvilGradlePlugin = anvilGradlePlugin,
-      javaSourceVersion = javaSourceVersion
+      jvmTarget = sourceSets.values.firstOrNull()?.jvmTarget ?: JvmTarget.JVM_11
     )
   }
 

@@ -27,7 +27,6 @@ dependencies {
   api(libs.javax.inject)
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-parsing:source:api"))
 
   compileOnly(gradleApi())
 

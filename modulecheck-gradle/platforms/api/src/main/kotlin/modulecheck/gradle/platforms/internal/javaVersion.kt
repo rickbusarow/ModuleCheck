@@ -15,7 +15,6 @@
 
 package modulecheck.gradle.platforms.internal
 
-import modulecheck.parsing.source.JavaVersion
 import org.gradle.api.JavaVersion.VERSION_11
 import org.gradle.api.JavaVersion.VERSION_12
 import org.gradle.api.JavaVersion.VERSION_13
@@ -23,46 +22,41 @@ import org.gradle.api.JavaVersion.VERSION_14
 import org.gradle.api.JavaVersion.VERSION_15
 import org.gradle.api.JavaVersion.VERSION_16
 import org.gradle.api.JavaVersion.VERSION_17
-import org.gradle.api.JavaVersion.VERSION_18
-import org.gradle.api.JavaVersion.VERSION_19
-import org.gradle.api.JavaVersion.VERSION_1_1
 import org.gradle.api.JavaVersion.VERSION_1_10
-import org.gradle.api.JavaVersion.VERSION_1_2
-import org.gradle.api.JavaVersion.VERSION_1_3
-import org.gradle.api.JavaVersion.VERSION_1_4
-import org.gradle.api.JavaVersion.VERSION_1_5
 import org.gradle.api.JavaVersion.VERSION_1_6
-import org.gradle.api.JavaVersion.VERSION_1_7
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.gradle.api.JavaVersion.VERSION_1_9
-import org.gradle.api.JavaVersion.VERSION_20
-import org.gradle.api.JavaVersion.VERSION_HIGHER
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.JvmTarget.JVM_10
+import org.jetbrains.kotlin.config.JvmTarget.JVM_11
+import org.jetbrains.kotlin.config.JvmTarget.JVM_12
+import org.jetbrains.kotlin.config.JvmTarget.JVM_13
+import org.jetbrains.kotlin.config.JvmTarget.JVM_14
+import org.jetbrains.kotlin.config.JvmTarget.JVM_15
+import org.jetbrains.kotlin.config.JvmTarget.JVM_16
+import org.jetbrains.kotlin.config.JvmTarget.JVM_17
+import org.jetbrains.kotlin.config.JvmTarget.JVM_1_6
+import org.jetbrains.kotlin.config.JvmTarget.JVM_1_8
+import org.jetbrains.kotlin.config.JvmTarget.JVM_9
 
 typealias GradleJavaVersion = org.gradle.api.JavaVersion
 
-@Suppress("UnstableApiUsage")
-fun GradleJavaVersion.toJavaVersion(): JavaVersion {
+/** @return the [JvmTarget] version for this receiver [JavaVersion][GradleJavaVersion] */
+@Suppress("ComplexMethod")
+fun GradleJavaVersion.toJavaVersion(): JvmTarget {
   return when (this) {
-    VERSION_1_1 -> JavaVersion.VERSION_1_1
-    VERSION_1_2 -> JavaVersion.VERSION_1_2
-    VERSION_1_3 -> JavaVersion.VERSION_1_3
-    VERSION_1_4 -> JavaVersion.VERSION_1_4
-    VERSION_1_5 -> JavaVersion.VERSION_1_5
-    VERSION_1_6 -> JavaVersion.VERSION_1_6
-    VERSION_1_7 -> JavaVersion.VERSION_1_7
-    VERSION_1_8 -> JavaVersion.VERSION_1_8
-    VERSION_1_9 -> JavaVersion.VERSION_1_9
-    VERSION_1_10 -> JavaVersion.VERSION_1_10
-    VERSION_11 -> JavaVersion.VERSION_11
-    VERSION_12 -> JavaVersion.VERSION_12
-    VERSION_13 -> JavaVersion.VERSION_13
-    VERSION_14 -> JavaVersion.VERSION_14
-    VERSION_15 -> JavaVersion.VERSION_15
-    VERSION_16 -> JavaVersion.VERSION_16
-    VERSION_17 -> JavaVersion.VERSION_17
-    VERSION_18 -> JavaVersion.VERSION_18
-    VERSION_19 -> JavaVersion.VERSION_19
-    VERSION_20 -> JavaVersion.VERSION_20
-    VERSION_HIGHER -> JavaVersion.VERSION_HIGHER
+    VERSION_1_6 -> JVM_1_6
+    VERSION_1_8 -> JVM_1_8
+    VERSION_1_9 -> JVM_9
+    VERSION_1_10 -> JVM_10
+    VERSION_11 -> JVM_11
+    VERSION_12 -> JVM_12
+    VERSION_13 -> JVM_13
+    VERSION_14 -> JVM_14
+    VERSION_15 -> JVM_15
+    VERSION_16 -> JVM_16
+    VERSION_17 -> JVM_17
+    // VERSION_18 -> JVM_18
+    else -> error("Unsupported Java version: $this")
   }
 }
