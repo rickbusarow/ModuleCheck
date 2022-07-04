@@ -29,9 +29,10 @@ import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.element.McVisibility
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.JavaSpecificDeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.SimpleName
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazySet
@@ -76,7 +77,7 @@ class RealMcKtFile(
     importParser.aliasMap
   }
 
-  override val imports: LazySet.DataSource<ReferenceName.ExplicitReferenceName> =
+  override val imports: LazySet.DataSource<ReferenceName> =
     dataSource(priority = LazySet.DataSource.Priority.HIGH) {
       importParser.imports
     }
@@ -84,9 +85,11 @@ class RealMcKtFile(
     importParser.wildcards
   }
 
-  override val simpleName: String by lazy { fileJavaFacadeName.split(".").last() }
+  override val simpleNames: List<SimpleName> by lazy {
+    fileJavaFacadeName.stripPackageNameFromFqName(packageName)
+  }
   override val declaredName: DeclaredName by lazy {
-    JavaSpecificDeclaredName(simpleName, packageName)
+    DeclaredName.kotlin(packageName, simpleNames)
   }
 
   override val packageName: PackageName by lazy { PackageName(psi.packageFqName.asString()) }
@@ -102,8 +105,8 @@ class RealMcKtFile(
   override val declarations: List<LazySet.DataSource<DeclaredName>> = emptyList()
 
   override suspend fun getAnvilScopeArguments(
-    allAnnotations: List<ReferenceName.ExplicitReferenceName>,
-    mergeAnnotations: List<ReferenceName.ExplicitReferenceName>
+    allAnnotations: List<ReferenceName>,
+    mergeAnnotations: List<ReferenceName>
   ): ScopeArgumentParseResult {
     TODO("Not yet implemented")
   }

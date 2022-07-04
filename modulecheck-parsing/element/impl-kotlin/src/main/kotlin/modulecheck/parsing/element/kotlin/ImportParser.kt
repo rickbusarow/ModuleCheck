@@ -15,23 +15,22 @@
 
 package modulecheck.parsing.element.kotlin
 
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.asExplicitKotlinReference
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.psi.KtImportDirective
 
 internal class ImportParser(private val importDirectives: List<KtImportDirective>) {
 
-  private val _aliasMap = mutableMapOf<String, ReferenceName.ExplicitKotlinReferenceName>()
+  private val _aliasMap = mutableMapOf<String, ReferenceName>()
 
-  val aliasMap: Map<String, ExplicitKotlinReferenceName> by unsafeLazy {
+  val aliasMap: Map<String, ReferenceName> by unsafeLazy {
     imports
     _aliasMap
   }
 
-  val imports: Set<ExplicitKotlinReferenceName> by lazy {
+  val imports: Set<ReferenceName> by lazy {
 
     importDirectives
       .asSequence()
@@ -41,7 +40,7 @@ internal class ImportParser(private val importDirectives: List<KtImportDirective
       .map { directive ->
         directive.importPath.requireNotNull()
           .pathStr
-          .asExplicitKotlinReference()
+          .let { ReferenceName(it, KOTLIN) }
           .also { it.maybeCacheAlias(directive) }
       }
       .toSet()
@@ -61,7 +60,7 @@ internal class ImportParser(private val importDirectives: List<KtImportDirective
       .toSet()
   }
 
-  private fun ExplicitKotlinReferenceName.maybeCacheAlias(
+  private fun ReferenceName.maybeCacheAlias(
     importDirective: KtImportDirective
   ) {
     val explicitReference = this

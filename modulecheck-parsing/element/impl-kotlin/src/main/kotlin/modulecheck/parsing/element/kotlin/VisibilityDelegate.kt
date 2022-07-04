@@ -15,10 +15,22 @@
 
 package modulecheck.parsing.element.kotlin
 
+import modulecheck.parsing.element.Declared
 import modulecheck.parsing.element.HasKtVisibility
+import modulecheck.parsing.element.McCallable
+import modulecheck.parsing.element.McKtElement
 import modulecheck.parsing.element.McVisibility
+import modulecheck.parsing.psi.internal.requireSimpleName
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.SimpleName
+import modulecheck.parsing.source.asDeclaredName
+import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.lexer.KtTokens
+import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtModifierListOwner
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
 internal class VisibilityDelegate(psi: KtModifierListOwner) : HasKtVisibility {
   override val visibility: McVisibility.McKtVisibility by lazy {
@@ -31,3 +43,30 @@ internal class VisibilityDelegate(psi: KtModifierListOwner) : HasKtVisibility {
     }
   }
 }
+
+internal class DeclaredDelegate<T : KtElement, E>(
+  psi: T,
+  parent: E
+) : Declared where E : McKtElement, E : Declared, E : McCallable {
+  override val packageName: PackageName by unsafeLazy { parent.packageName }
+  override val simpleNames: List<SimpleName> by unsafeLazy {
+    parent.simpleNames + psi.requireSimpleName()
+  }
+  override val declaredName: DeclaredName by declaredNameLazy()
+  override val visibility: McVisibility
+    get() = TODO("Not yet implemented")
+}
+
+interface DeclaredNameLazy : ReadOnlyProperty<Declared, DeclaredName>
+internal class DeclaredNameLazyImpl : DeclaredNameLazy, ReadOnlyProperty<Declared, DeclaredName> {
+
+  private var value: DeclaredName? = null
+
+  override fun getValue(thisRef: Declared, property: KProperty<*>): DeclaredName {
+    return value
+      ?: thisRef.simpleNames.asDeclaredName(thisRef.packageName)
+        .also { newValue -> value = newValue }
+  }
+}
+
+fun Declared.declaredNameLazy(): DeclaredNameLazy = DeclaredNameLazyImpl()

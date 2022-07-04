@@ -20,6 +20,7 @@ import modulecheck.parsing.element.McAnnotationArgument.McKtAnnotationArgument
 import modulecheck.parsing.element.McKtElement
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
@@ -60,8 +61,7 @@ data class RealMcKtAnnotation(
         unresolved = emptySet(),
         mustBeApi = emptySet(),
         apiReferenceNames = emptySet(),
-        toExplicitReferenceName = ReferenceName::ExplicitKotlinReferenceName,
-        toInterpretedReferenceName = ReferenceName::InterpretedKotlinReferenceName,
+        referenceLanguage = KOTLIN,
         stdLibNameOrNull = String::kotlinStdLibNameOrNull
       )
     )

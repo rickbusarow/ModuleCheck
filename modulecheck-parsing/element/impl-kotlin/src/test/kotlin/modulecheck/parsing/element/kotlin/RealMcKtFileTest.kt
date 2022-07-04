@@ -31,20 +31,21 @@ import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
-import modulecheck.parsing.source.asExplicitKotlinReference
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.internal.InterpretingInterceptor
 import modulecheck.parsing.source.internal.ParsingChain
-import modulecheck.parsing.test.NamedSymbolTest
+import modulecheck.parsing.test.McNameTest
 import modulecheck.parsing.wiring.RealDeclarationsInPackageProvider
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
+internal class RealMcKtFileTest : ProjectTest(), McNameTest {
+
+  override val defaultLanguage = KOTLIN
 
   val lib1 by resets {
     kotlinProject(":lib1") {
@@ -64,15 +65,15 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
     }
   }
 
-  val NamedSymbolTest.JvmFileBuilder.ReferenceBuilder.lib1Class
-    get() = explicitKotlin("com.lib1.Lib1Class")
+  val McNameTest.JvmFileBuilder.ReferenceBuilder.lib1Class
+    get() = kotlin("com.lib1.Lib1Class")
 
   suspend fun RealMcKtFile.subjectClass() = declaredTypesAndInnerTypes.toList()
-    .single { it.simpleName == "SubjectClass" }
+    .single { it.simpleNames.last().name == "SubjectClass" }
 
   suspend fun McKtConcreteType.property(
     name: String
-  ) = properties.first { it.simpleName == name }
+  ) = properties.first { it.simpleNames.last().name == name }
 
   @Test
   fun `experiments`() = test {
@@ -103,8 +104,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
       """
     )
 
-    val subjectClass = file.declaredTypesAndInnerTypes.toList()
-      .single { it.simpleName == "SubjectClass" }
+    val subjectClass = file.subjectClass()
 
     subjectClass.properties.toList()
       .filterIsInstance<KtConstructorProperty>()
@@ -117,7 +117,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
     file.declaredTypesAndInnerTypes shouldBe listOf<McElement>()
 
     file.simpleName shouldBe "SourceKt"
-    file.imports shouldBe listOf("com.lib1.Lib1Class".asExplicitKotlinReference())
+    file.imports shouldBe listOf("com.lib1.Lib1Class".asReferenceName())
   }
 
   @Nested
@@ -139,7 +139,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
 
         val lib1Class = file.subjectClass().property("lib1Class")
 
-        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asExplicitKotlinReference()
+        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asReferenceName()
       }
   }
 
@@ -164,7 +164,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
 
         val lib1Class = file.subjectClass().property("lib1Class")
 
-        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asExplicitKotlinReference()
+        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asReferenceName()
       }
 
     @Test
@@ -185,7 +185,7 @@ internal class RealMcKtFileTest : ProjectTest(), NamedSymbolTest {
 
         val lib1Class = file.subjectClass().property("lib1Class")
 
-        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asExplicitKotlinReference()
+        lib1Class.typeReferenceName.await() shouldBe "com.lib1.Lib1Class".asReferenceName()
       }
   }
 

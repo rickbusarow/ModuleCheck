@@ -33,9 +33,11 @@ import modulecheck.parsing.element.McVisibility
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
-import modulecheck.parsing.source.asDeclaredName
+import modulecheck.parsing.source.SimpleName
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazySet
+import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
 import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
@@ -49,11 +51,17 @@ abstract class AbstractMcKtConcreteType internal constructor(
   override val psi: KtClassOrObject
 ) : McKtConcreteType,
   McKtType {
-  override val declaredName: DeclaredName by lazy {
-    psi.fqName.requireNotNull().asString().asDeclaredName(containingFile.packageName)
+  override val simpleNames: List<SimpleName> by unsafeLazy {
+    psi.fqName.requireNotNull()
+      .asString()
+      .stripPackageNameFromFqName(containingFile.packageName)
   }
-  override val simpleName: String
-    get() = psi.name.requireNotNull()
+  override val declaredName: DeclaredName by lazy {
+    DeclaredName.kotlin(
+      containingFile.packageName,
+      simpleNames
+    )
+  }
 
   override val innerTypes: LazySet<McKtConcreteType> = lazySet {
     psi.body

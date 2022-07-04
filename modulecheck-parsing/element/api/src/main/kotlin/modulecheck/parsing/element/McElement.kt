@@ -26,8 +26,7 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitKotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.ExplicitReferenceName
+import modulecheck.parsing.source.SimpleName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.LazySet.DataSource
@@ -37,9 +36,10 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
 interface Declared : HasVisibility {
-  val declaredName: DeclaredName
   val packageName: PackageName
-  val simpleName: String
+  val simpleNames: List<SimpleName>
+  val simpleName: SimpleName get() = simpleNames.last()
+  val declaredName: DeclaredName
 }
 
 /**
@@ -134,7 +134,7 @@ interface McAnnotationArgument : McElement, McElementWithParent<McElement> {
 sealed interface McFile : McElement, Declared {
 
   val file: File
-  val imports: DataSource<ExplicitReferenceName>
+  val imports: DataSource<ReferenceName>
 
   val apiReferences: List<DataSource<ReferenceName>>
   val references: List<DataSource<ReferenceName>>
@@ -160,8 +160,8 @@ sealed interface McFile : McElement, Declared {
 
     /** A weird, dated function for getting Anvil scope arguments */
     suspend fun getAnvilScopeArguments(
-      allAnnotations: List<ExplicitReferenceName>,
-      mergeAnnotations: List<ExplicitReferenceName>
+      allAnnotations: List<ReferenceName>,
+      mergeAnnotations: List<ReferenceName>
     ): ScopeArgumentParseResult
 
     data class ScopeArgumentParseResult(
@@ -169,7 +169,7 @@ sealed interface McFile : McElement, Declared {
       val contributeArguments: Set<RawAnvilAnnotatedType>
     )
 
-    val importAliases: Map<String, ExplicitKotlinReferenceName>
+    val importAliases: Map<String, ReferenceName>
   }
 
   interface McJavaFile : McFile, McJavaElement
