@@ -42,7 +42,7 @@ import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlug
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asSourceSetName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
@@ -73,7 +73,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
     val manifests = gradleProject.androidManifests(agpApiAccess).orEmpty()
 
-    val resValues = parseResValues(type)
+    val resValuesLazy = lazy { parseResValues(type) }
 
     val hasKotlinAndroidExtensions = gradleProject
       .pluginManager
@@ -106,7 +106,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         nonTransientRClass = nonTransientRClass,
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
-        manifests = manifests, resValues = resValues
+        manifests = manifests,
+        resValuesLazy = resValuesLazy
       )
 
       is DynamicFeature -> AndroidDynamicFeaturePlugin(
@@ -116,7 +117,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
-        buildConfigEnabled = buildConfigEnabled, resValues = resValues
+        buildConfigEnabled = buildConfigEnabled,
+        resValuesLazy = resValuesLazy
       )
 
       is Library -> AndroidLibraryPlugin(
@@ -127,7 +129,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
         androidResourcesEnabled = androidResourcesEnabled,
-        buildConfigEnabled = buildConfigEnabled, resValues = resValues
+        buildConfigEnabled = buildConfigEnabled,
+        resValuesLazy = resValuesLazy
       )
 
       is Test -> AndroidTestPlugin(
@@ -137,7 +140,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
-        buildConfigEnabled = buildConfigEnabled, resValues = resValues
+        buildConfigEnabled = buildConfigEnabled,
+        resValuesLazy = resValuesLazy
       )
     }
   }
@@ -145,7 +149,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
   @UnsafeDirectAgpApiReference
   private fun parseResValues(
     type: Type<*>
-  ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>> {
+  ): MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> {
     fun AndroidCommonExtension.mergedFlavors(): List<MergedFlavor> {
       return when (this) {
         is AppExtension -> applicationVariants.map { it.cast<ApplicationVariantImpl>().mergedFlavor }
@@ -162,13 +166,13 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       }
     }
 
-    val mfs = type.extension.mergedFlavors()
-      .associate { mf ->
-        val sourceSetName = mf.name.asSourceSetName()
+    val map = type.extension.mergedFlavors()
+      .associate { mergedFlavor ->
+        val sourceSetName = mergedFlavor.name.asSourceSetName()
 
-        sourceSetName to mf.resValues.values
+        sourceSetName to mergedFlavor.resValues.values
           .mapNotNull { classField ->
-            UnqualifiedAndroidResourceDeclaredName.fromValuePair(classField.type, classField.name)
+            UnqualifiedAndroidResource.fromValuePair(classField.type, classField.name)
           }.toSet()
       }.toMutableMap()
 
@@ -176,13 +180,13 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       .forEach { buildType ->
         val sourceSetName = buildType.name.asSourceSetName()
 
-        mfs[sourceSetName] = buildType.resValues.values
+        map[sourceSetName] = buildType.resValues.values
           .mapNotNull { classField ->
-            UnqualifiedAndroidResourceDeclaredName.fromValuePair(classField.type, classField.name)
+            UnqualifiedAndroidResource.fromValuePair(classField.type, classField.name)
           }.toSet()
       }
 
-    return mfs
+    return map
   }
 
   sealed interface Type<T : AndroidCommonExtension> {

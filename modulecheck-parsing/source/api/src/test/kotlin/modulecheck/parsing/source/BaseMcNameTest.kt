@@ -15,110 +15,30 @@
 
 package modulecheck.parsing.source
 
-import io.kotest.assertions.asClue
-import io.kotest.inspectors.forAll
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
-import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidInteger
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Anim
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Animator
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Arrays
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Bool
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Color
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Dimen
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Drawable
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Font
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.ID
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Menu
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Mipmap
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Raw
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Style
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
-import modulecheck.testing.sealedSubclassesRecursive
-import modulecheck.utils.capitalize
-import modulecheck.utils.suffixIfNot
-import kotlin.reflect.full.isSubclassOf
+import modulecheck.utils.letIf
 
 abstract class BaseMcNameTest : BaseTest(), DynamicTests {
 
-  inline fun <C : Collection<T>, reified T : McName> C.requireIsExhaustive(): C = apply {
-    val allSealedSubclasses = McName::class.sealedSubclassesRecursive()
+  fun allReferenceNames(
+    name: String = "com.test.Subject",
+    skipUnqualified: Boolean = false,
+    languages: List<CompatibleLanguage> = listOf(JAVA, KOTLIN, XML)
+  ): List<ReferenceName> {
 
-    val actualClasses = map { it::class }
-
-    // assert that every possible sealed subclass/interface is represented by at least one of the
-    // elements in the receiver
-    allSealedSubclasses.forAll { subInterface ->
-
-      "should have a subtype in this list".asClue {
-        actualClasses.any { actual ->
-          actual.isSubclassOf(subInterface)
-        } shouldBe true
+    return languages.flatMap { lang ->
+      listOf(
+        ReferenceName(name, lang),
+        AndroidDataBindingReferenceName(name, lang),
+        QualifiedAndroidResourceReferenceName(name, lang)
+      ).letIf(!skipUnqualified) {
+        it + UnqualifiedAndroidResourceReferenceName(name, lang)
       }
     }
-  }
-
-  fun McName.matches() = oneOfEach(name).filter { it == this }
-  fun McName.matchedClasses() = matches()
-    .map { it::class }
-    .sortedBy { it.java.simpleName }
-
-  fun oneOfEach(name: String, packageName: String = "com.subject"): List<McName> {
-    val identifier = name.split(".").last()
-
-    return listOf(
-      AndroidRDeclaredName(
-        name.suffixIfNot(".R"),
-        packageName = PackageName(packageName)
-      ),
-      AndroidDataBindingDeclaredName(
-        "com.modulecheck.databinding.${identifier.capitalize()}Binding",
-        sourceLayoutDeclaration = Layout(identifier), packageName = PackageName(packageName)
-      ),
-
-      AndroidInteger(identifier),
-      AndroidString(identifier),
-      Anim(identifier),
-      Animator(identifier),
-      Arrays(identifier),
-      Bool(identifier),
-      Color(identifier),
-      Dimen(identifier),
-      Drawable(identifier),
-      Font(identifier),
-      ID(identifier),
-      Layout(identifier),
-      Menu(identifier),
-      Mipmap(identifier),
-      Raw(identifier),
-      Style(identifier),
-
-      AndroidString(identifier).toNamespacedDeclaredName(
-        AndroidRDeclaredName(
-          "com.modulecheck.R",
-          packageName = PackageName(packageName)
-        )
-      ),
-
-      AgnosticDeclaredName(name, packageName = PackageName(packageName)),
-      JavaSpecificDeclaredName(name, packageName = PackageName(packageName)),
-      KotlinSpecificDeclaredName(name, packageName = PackageName(packageName)),
-
-      JavaReferenceName(name),
-      KotlinReferenceName(name),
-      XmlReferenceNameImpl(name),
-      AndroidRReferenceName(name),
-      UnqualifiedAndroidResourceReferenceName(name),
-      QualifiedAndroidResourceReferenceName(name),
-      AndroidDataBindingReferenceName(name),
-
-      PackageNameImpl(name),
-      PackageName.DEFAULT
-    ).requireIsExhaustive()
-      .sortedBy { it::class.qualifiedName }
   }
 }

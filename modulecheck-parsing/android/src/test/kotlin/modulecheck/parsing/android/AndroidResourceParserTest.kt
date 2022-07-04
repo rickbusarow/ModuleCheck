@@ -15,8 +15,9 @@
 
 package modulecheck.parsing.android
 
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.AndroidString
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Style
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
+import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.string
+import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.style
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -76,7 +77,7 @@ internal class AndroidResourceParserTest : BaseTest() {
     val declarations = AndroidResourceParser().parseFile(xml)
 
     declarations shouldBe setOf(
-      AndroidString("app_name")
+      string("app_name".asSimpleName())
     )
   }
 
@@ -96,7 +97,7 @@ internal class AndroidResourceParserTest : BaseTest() {
     val declarations = AndroidResourceParser().parseFile(xml)
 
     declarations shouldBe setOf(
-      Style("AppTheme_ClearActionBar")
+      style("AppTheme_ClearActionBar".asSimpleName())
     )
   }
 }

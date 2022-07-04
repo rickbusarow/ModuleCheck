@@ -26,6 +26,8 @@ import modulecheck.parsing.psi.internal.asKtFile
 import modulecheck.parsing.psi.internal.isKotlinFile
 import modulecheck.parsing.psi.internal.isKtFile
 import modulecheck.parsing.source.JvmFile
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.InterpretingInterceptor
@@ -77,7 +79,8 @@ class RealJvmFileProvider(
             listOf(
               ConcatenatingParsingInterceptor(),
               AndroidResourceReferenceParsingInterceptor(
-                androidRNameProvider = androidRNameProvider
+                androidRNameProvider = androidRNameProvider,
+                language = CompatibleLanguage.KOTLIN
               ),
               AndroidDataBindingReferenceParsingInterceptor(
                 androidDataBindingNameProvider = androidDataBindingNameProvider
@@ -86,6 +89,7 @@ class RealJvmFileProvider(
             )
           )
         )
+
         else -> RealJavaFile(
           file = file,
           javaVersion = project.javaSourceVersion,
@@ -93,7 +97,8 @@ class RealJvmFileProvider(
             listOf(
               ConcatenatingParsingInterceptor(),
               AndroidResourceReferenceParsingInterceptor(
-                androidRNameProvider = androidRNameProvider
+                androidRNameProvider = androidRNameProvider,
+                language = JAVA
               ),
               AndroidDataBindingReferenceParsingInterceptor(
                 androidDataBindingNameProvider = androidDataBindingNameProvider

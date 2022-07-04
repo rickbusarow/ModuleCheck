@@ -16,10 +16,10 @@
 package modulecheck.parsing.android
 
 import modulecheck.parsing.source.HasReferences
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.XmlReferenceNameImpl
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.asDataSource
@@ -40,19 +40,24 @@ interface XmlFile : HasReferences {
 
     val name: String = file.nameWithoutExtension
 
+    /**
+     * All custom view types *used* within this file. Note that this is not the declaration of a
+     * view.
+     */
     val customViews: Lazy<Set<ReferenceName>> = lazy {
-      AndroidLayoutParser().parseViews(file).mapToSet { XmlReferenceNameImpl(it) }
+      AndroidLayoutParser().parseViews(file).mapToSet { ReferenceName(it, XML) }
     }
 
     private val attributes by lazy {
       AndroidLayoutParser().parseResources(file)
     }
 
-    val idDeclarations: Set<UnqualifiedAndroidResourceDeclaredName> by lazy {
+    /** Declared ids, using `@+id/________`, which are expressed as `R.id._____` */
+    val idDeclarations: Set<UnqualifiedAndroidResource> by lazy {
       attributes.filter { attribute ->
         attribute.startsWith("@+id/")
       }
-        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .mapNotNull { UnqualifiedAndroidResource.fromXmlString(it) }
         .toSet()
     }
 
@@ -67,7 +72,7 @@ interface XmlFile : HasReferences {
 
     override val resourceReferencesAsRReferences: Set<String> by lazy {
       rawResources
-        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .mapNotNull { UnqualifiedAndroidResource.fromXmlString(it) }
         .map { it.name }
         .toSet()
     }
@@ -75,7 +80,9 @@ interface XmlFile : HasReferences {
     override val references: LazySet<ReferenceName> = listOf(
       customViews.asDataSource(),
       dataSource {
-        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReferenceName(it) }
+        resourceReferencesAsRReferences.mapToSet {
+          UnqualifiedAndroidResourceReferenceName(it, XML)
+        }
       }
     ).toLazySet()
   }
@@ -96,7 +103,7 @@ interface XmlFile : HasReferences {
 
     private val declarations by lazy {
       rawResources
-        .mapNotNull { UnqualifiedAndroidResourceDeclaredName.fromString(it) }
+        .mapNotNull { UnqualifiedAndroidResource.fromXmlString(it) }
     }
 
     override val resourceReferencesAsRReferences: Set<String> by lazy {
@@ -105,7 +112,9 @@ interface XmlFile : HasReferences {
 
     override val references: LazySet<ReferenceName> = listOf(
       dataSource {
-        resourceReferencesAsRReferences.mapToSet { UnqualifiedAndroidResourceReferenceName(it) }
+        resourceReferencesAsRReferences.mapToSet {
+          UnqualifiedAndroidResourceReferenceName(it, XML)
+        }
       }
     ).toLazySet()
   }

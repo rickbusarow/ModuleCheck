@@ -41,3 +41,7 @@ extensions.configure(KtlintExtension::class.java) {
     "Re-enable the `experimental:type-parameter-list-spacing` rule when updating to 0.46.0."
   }
 }
+
+tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
+  workerMaxHeapSize.set("512m")
+}

@@ -2516,14 +2516,14 @@ enum class ColumnKind(val value: String) {
 @JsonClass(generateAdapter = true)
 data class ExternalPropertyFileReferences(
   /**
-   * An array of external property files containing run.addresses arrays to be merged with the root
+   * An array of external property files containing run.addresses array to be merged with the root
    * log file.
    */
   @Json(name = "addresses")
   val addresses: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.artifacts arrays to be merged with the root
+   * An array of external property files containing run.artifacts array to be merged with the root
    * log file.
    */
   @Json(name = "artifacts")
@@ -2543,7 +2543,7 @@ data class ExternalPropertyFileReferences(
   val driver: ExternalPropertyFileReference? = null,
 
   /**
-   * An array of external property files containing run.extensions arrays to be merged with the root
+   * An array of external property files containing run.extensions array to be merged with the root
    * log file.
    */
   @Json(name = "extensions")
@@ -2564,21 +2564,21 @@ data class ExternalPropertyFileReferences(
   val graphs: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.invocations arrays to be merged with the
+   * An array of external property files containing run.invocations array to be merged with the
    * root log file.
    */
   @Json(name = "invocations")
   val invocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.logicalLocations arrays to be merged with
+   * An array of external property files containing run.logicalLocations array to be merged with
    * the root log file.
    */
   @Json(name = "logicalLocations")
   val logicalLocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.policies arrays to be merged with the root
+   * An array of external property files containing run.policies array to be merged with the root
    * log file.
    */
   @Json(name = "policies")
@@ -2589,42 +2589,42 @@ data class ExternalPropertyFileReferences(
   val properties: PropertyBag? = null,
 
   /**
-   * An array of external property files containing run.results arrays to be merged with the root
+   * An array of external property files containing run.results array to be merged with the root
    * log file.
    */
   @Json(name = "results")
   val results: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.taxonomies arrays to be merged with the root
+   * An array of external property files containing run.taxonomies array to be merged with the root
    * log file.
    */
   @Json(name = "taxonomies")
   val taxonomies: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.threadFlowLocations arrays to be merged with
+   * An array of external property files containing run.threadFlowLocations array to be merged with
    * the root log file.
    */
   @Json(name = "threadFlowLocations")
   val threadFlowLocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.translations arrays to be merged with the
+   * An array of external property files containing run.translations array to be merged with the
    * root log file.
    */
   @Json(name = "translations")
   val translations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.requests arrays to be merged with the root
+   * An array of external property files containing run.requests array to be merged with the root
    * log file.
    */
   @Json(name = "webRequests")
   val webRequests: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.responses arrays to be merged with the root
+   * An array of external property files containing run.responses array to be merged with the root
    * log file.
    */
   @Json(name = "webResponses")

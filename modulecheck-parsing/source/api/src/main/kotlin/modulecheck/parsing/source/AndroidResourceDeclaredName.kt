@@ -15,237 +15,107 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName.Layout
+import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
+import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.unsafeLazy
-import modulecheck.utils.safeAs
-import java.io.File
-import kotlin.io.path.name
 
-sealed interface AndroidResourceDeclaredName : DeclaredName
+/**
+ * - fully qualified generated resources like `com.example.R.string.app_name`
+ * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
+ * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
+ * - R declarations, like `com.example.R`
+ */
+sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
+
+  companion object {
+    /** @return example: `com.example.app.R` */
+    fun r(packageName: PackageName) = AndroidRDeclaredName(packageName)
+
+    /** @return `com.example.R.string.app_name` */
+    fun qualifiedAndroidResource(
+      sourceR: AndroidRReferenceName,
+      sourceResource: UnqualifiedAndroidResourceReferenceName
+    ) = QualifiedAndroidResourceDeclaredName(sourceR, sourceResource)
+
+    /** @return `com.example.databinding.FragmentListBinding` */
+    fun dataBinding(
+      sourceLayout: UnqualifiedAndroidResourceReferenceName,
+      packageName: PackageName
+    ) = AndroidDataBindingDeclaredName(sourceLayout, packageName)
+
+    /** @return `com.example.databinding.FragmentListBinding` */
+    fun dataBinding(
+      sourceLayoutDeclaration: UnqualifiedAndroidResource,
+      packageName: PackageName
+    ) = AndroidDataBindingDeclaredName(
+      UnqualifiedAndroidResourceReferenceName(
+        name = sourceLayoutDeclaration.name,
+        language = XML
+      ),
+      packageName
+    )
+  }
+}
 
 /** example: `com.example.app.R` */
 class AndroidRDeclaredName(
-  override val name: String,
   override val packageName: PackageName
-) : AndroidResourceDeclaredName,
-  KotlinCompatibleDeclaredName,
-  JavaCompatibleDeclaredName,
-  XmlCompatibleDeclaredName {
-  init {
-    check(name.endsWith(".R")) {
-      "An ${this::class.java.simpleName} fqName must be the base package, appended with `.R`, " +
-        "such as `com.example.app.R`.  This instance's fqName is: `$name`."
-    }
-  }
+) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
 
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.name },
-      ifDeclaration = { name == it.safeAs<AndroidRDeclaredName>()?.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  override val simpleNames by lazy { listOf("R".asSimpleName()) }
 }
 
-class GeneratedAndroidResourceDeclaredName(
+/**
+ * example: `com.example.R.string.app_name`
+ *
+ * @property sourceR the R declaration used when AGP generates this fully qualified resource
+ * @property sourceResource the resource declaration, like `_.string.app_name`, used when AGP
+ *   generates this fully qualified resource
+ */
+class QualifiedAndroidResourceDeclaredName(
   val sourceR: AndroidRReferenceName,
-  val sourceResource: UnqualifiedAndroidResourceReferenceName,
-  override val packageName: PackageName
-) : AndroidResourceDeclaredName,
-  JavaCompatibleDeclaredName,
-  KotlinCompatibleDeclaredName,
-  XmlCompatibleDeclaredName,
-  Generated {
+  val sourceResource: UnqualifiedAndroidResourceReferenceName
+) : QualifiedDeclaredName(), AndroidResourceDeclaredName, Generated {
+
+  override val packageName: PackageName by unsafeLazy { sourceR.packageName }
+
+  override val simpleNames by unsafeLazy { sourceResource.simpleNames }
 
   override val name: String by unsafeLazy {
-    "${sourceR.name}.${sourceResource.prefix}.${sourceResource.identifier}"
+    "${sourceR.name}.${sourceResource.prefix.name}.${sourceResource.identifier.name}"
   }
 
   override val sources: Set<ReferenceName> = setOf(sourceR, sourceResource)
 
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.name },
-      ifDeclaration = { it::class == this::class && name == it.name }
-    )
+  init {
+    checkSimpleNames()
   }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
 }
 
+/** example: `com.example.databinding.FragmentListBinding` */
 class AndroidDataBindingDeclaredName(
-  override val name: String,
-  val sourceLayout: UnqualifiedAndroidResourceReferenceName,
+  sourceLayout: UnqualifiedAndroidResourceReferenceName,
   override val packageName: PackageName
-) : AndroidResourceDeclaredName,
-  JavaCompatibleDeclaredName,
-  KotlinCompatibleDeclaredName,
-  XmlCompatibleDeclaredName,
-  Generated {
+) : QualifiedDeclaredName(), AndroidResourceDeclaredName, Generated {
 
-  constructor(
-    name: String,
-    sourceLayoutDeclaration: Layout,
-    packageName: PackageName
-  ) : this(
-    name = name,
-    sourceLayout = UnqualifiedAndroidResourceReferenceName(sourceLayoutDeclaration.name),
-    packageName = packageName
-  )
+  override val simpleNames: List<SimpleName> by unsafeLazy {
 
-  override val sources: Set<ReferenceName> = setOf(sourceLayout)
+    val simpleBindingName = sourceLayout.identifier.name
+      .split("_")
+      .joinToString("") { fragment -> fragment.capitalize() }
+      .plus("Binding")
+      .asSimpleName()
 
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.name },
-      ifDeclaration = { it::class == this::class && name == it.name }
+    listOf(
+      "databinding".asSimpleName(),
+      simpleBindingName
     )
   }
+  override val sources: Set<ReferenceName> by unsafeLazy { setOf(sourceLayout) }
 
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-}
-
-sealed class UnqualifiedAndroidResourceDeclaredName(
-  val prefix: String
-) : AndroidResourceDeclaredName {
-
-  final override val packageName: PackageName = PackageName.DEFAULT
-
-  abstract val identifier: String
-
-  override val name: String by unsafeLazy { "R.$prefix.${this.identifier}" }
-
-  class AndroidInteger(
-    override val identifier: String
-  ) : UnqualifiedAndroidResourceDeclaredName("integer")
-
-  class AndroidString(
-    override val identifier: String
-  ) : UnqualifiedAndroidResourceDeclaredName("string")
-
-  class Anim(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("anim")
-  class Animator(
-    override val identifier: String
-  ) : UnqualifiedAndroidResourceDeclaredName("animator")
-
-  class Arrays(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("array")
-  class Bool(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("bool")
-  class Color(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("color")
-  class Dimen(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("dimen")
-  class Drawable(
-    override val identifier: String
-  ) : UnqualifiedAndroidResourceDeclaredName("drawable")
-
-  class Font(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("font")
-  class ID(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("id")
-  class Layout(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("layout")
-  class Menu(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("menu")
-  class Mipmap(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("mipmap")
-  class Raw(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("raw")
-  class Style(override val identifier: String) : UnqualifiedAndroidResourceDeclaredName("style")
-
-  fun toNamespacedDeclaredName(
-    androidRDeclaration: AndroidRDeclaredName
-  ): GeneratedAndroidResourceDeclaredName {
-    return GeneratedAndroidResourceDeclaredName(
-      sourceR = AndroidRReferenceName(androidRDeclaration.name),
-      sourceResource = UnqualifiedAndroidResourceReferenceName(this.name),
-      packageName = androidRDeclaration.packageName
-    )
-  }
-
-  override fun equals(other: Any?): Boolean {
-    return matches(
-      other,
-      ifReference = { name == it.safeAs<UnqualifiedAndroidResourceReferenceName>()?.name },
-      ifDeclaration = { it::class == this::class && name == it.name }
-    )
-  }
-
-  override fun hashCode(): Int = name.hashCode()
-
-  override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-
-  companion object {
-
-    private val REGEX = """"?@\+?(.*)\/(.*)"?""".toRegex()
-
-    fun prefixes() = listOf(
-      "anim",
-      "animator",
-      "array",
-      "bool",
-      "color",
-      "dimen",
-      "drawable",
-      "font",
-      "id",
-      "integer",
-      "layout",
-      "menu",
-      "mipmap",
-      "raw",
-      "string",
-      "style"
-    )
-
-    fun fromFile(file: File): UnqualifiedAndroidResourceDeclaredName? {
-      val dir = file.toPath().parent?.name ?: return null
-      val name = file.nameWithoutExtension
-
-      return when {
-        dir.startsWith("anim") -> Anim(name)
-        dir.startsWith("animator") -> Animator(name)
-        dir.startsWith("color") -> Color(name)
-        dir.startsWith("dimen") -> Dimen(name)
-        dir.startsWith("drawable") -> Drawable(name)
-        dir.startsWith("font") -> Font(name)
-        dir.startsWith("layout") -> Layout(name)
-        dir.startsWith("menu") -> Menu(name)
-        dir.startsWith("mipmap") -> Mipmap(name)
-        dir.startsWith("raw") -> Raw(name)
-        else -> null
-      }
-    }
-
-    fun fromValuePair(type: String, name: String): UnqualifiedAndroidResourceDeclaredName? {
-      val fixedName = name.replace('.', '_')
-      return when (type) {
-        "anim" -> Anim(fixedName)
-        "animator" -> Animator(fixedName)
-        "array" -> Arrays(fixedName)
-        "bool" -> Bool(fixedName)
-        "color" -> Color(fixedName)
-        "dimen" -> Dimen(fixedName)
-        "drawable" -> Drawable(fixedName)
-        "font" -> Font(fixedName)
-        "id" -> ID(fixedName)
-        "integer" -> AndroidInteger(fixedName)
-        "integer-array" -> Arrays(fixedName)
-        "layout" -> Layout(fixedName)
-        "menu" -> Menu(fixedName)
-        "mipmap" -> Mipmap(fixedName)
-        "raw" -> Raw(fixedName)
-        "string" -> AndroidString(fixedName)
-        "style" -> Style(fixedName)
-        else -> null
-      }
-    }
-
-    fun fromString(str: String): UnqualifiedAndroidResourceDeclaredName? {
-      val (prefix, name) = REGEX.find(str)?.destructured ?: return null
-
-      return fromValuePair(prefix, name)
-    }
+  init {
+    checkSimpleNames()
   }
 }
