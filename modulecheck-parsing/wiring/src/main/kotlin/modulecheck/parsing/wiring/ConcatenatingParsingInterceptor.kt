@@ -29,7 +29,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
     val packet = chain.packet
 
     val resolved = packet.resolved
-      .plus(packet.imports.mapToSet { packet.toReferenceName(it) })
+      .plus(packet.imports.mapToSet { ReferenceName(it, packet.referenceLanguage) })
       .toMutableSet()
     val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
 
@@ -48,6 +48,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
                 val withoutStart = toResolve.removePrefix(referenceStart)
                 "$import$withoutStart"
               }
+
               else -> null
             }
           }
@@ -56,7 +57,7 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
 
         if (concatOrNull != null) {
 
-          val asReference = packet.toReferenceName(concatOrNull)
+          val asReference = ReferenceName(concatOrNull, packet.referenceLanguage)
 
           if (packet.mustBeApi.contains(toResolve)) {
             resolvedApiReferenceNames.add(asReference)

@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.gradle.model
 
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File
 import kotlin.contracts.contract
 
@@ -62,7 +62,9 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   val viewBindingEnabled: Boolean
   val kotlinAndroidExtensionEnabled: Boolean
   val manifests: Map<SourceSetName, File>
-  val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
+
+  /** All resource declarations -- without a package -- grouped by [SourceSetName] */
+  val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>>
 
   interface CanDisableAndroidResources {
     val androidResourcesEnabled: Boolean
@@ -72,17 +74,21 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     val buildConfigEnabled: Boolean
   }
 
-  data class AndroidApplicationPlugin(
+  @Suppress("LongParameterList")
+  class AndroidApplicationPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
     override val nonTransientRClass: Boolean,
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
-    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
-  ) : PlatformPlugin, AndroidPlatformPlugin
+    resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
+  ) : PlatformPlugin, AndroidPlatformPlugin {
+    override val resValues by resValuesLazy
+  }
 
-  data class AndroidLibraryPlugin(
+  @Suppress("LongParameterList")
+  class AndroidLibraryPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
     override val nonTransientRClass: Boolean,
@@ -91,13 +97,16 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val manifests: Map<SourceSetName, File>,
     override val androidResourcesEnabled: Boolean,
     override val buildConfigEnabled: Boolean,
-    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
+    resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidResources,
-    CanDisableAndroidBuildConfig
+    CanDisableAndroidBuildConfig {
+    override val resValues by resValuesLazy
+  }
 
-  data class AndroidDynamicFeaturePlugin(
+  @Suppress("LongParameterList")
+  class AndroidDynamicFeaturePlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
     override val nonTransientRClass: Boolean,
@@ -105,12 +114,15 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
     override val buildConfigEnabled: Boolean,
-    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
+    resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
-    CanDisableAndroidBuildConfig
+    CanDisableAndroidBuildConfig {
+    override val resValues by resValuesLazy
+  }
 
-  data class AndroidTestPlugin(
+  @Suppress("LongParameterList")
+  class AndroidTestPlugin(
     override val sourceSets: SourceSets,
     override val configurations: Configurations,
     override val nonTransientRClass: Boolean,
@@ -118,8 +130,10 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
     override val buildConfigEnabled: Boolean,
-    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResourceDeclaredName>>
+    resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
-    CanDisableAndroidBuildConfig
+    CanDisableAndroidBuildConfig {
+    override val resValues by resValuesLazy
+  }
 }

@@ -18,7 +18,7 @@ package modulecheck.api.context
 import modulecheck.parsing.android.AndroidResourceParser
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
@@ -29,15 +29,20 @@ import modulecheck.utils.lazy.emptyLazySet
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.toLazySet
 
-data class AndroidUnqualifiedDeclarationNames(
-  private val delegate: SafeCache<SourceSetName, LazySet<UnqualifiedAndroidResourceDeclaredName>>,
+/** the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext] */
+data class AndroidUnqualifiedResources(
+  private val delegate: SafeCache<SourceSetName, LazySet<UnqualifiedAndroidResource>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
-  override val key: ProjectContext.Key<AndroidUnqualifiedDeclarationNames>
+  override val key: ProjectContext.Key<AndroidUnqualifiedResources>
     get() = Key
 
-  suspend fun get(sourceSetName: SourceSetName): LazySet<UnqualifiedAndroidResourceDeclaredName> {
+  /**
+   * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
+   *   `R.string.app_name`
+   */
+  suspend fun get(sourceSetName: SourceSetName): LazySet<UnqualifiedAndroidResource> {
     val platformPlugin = project.platformPlugin as? AndroidPlatformPlugin
       ?: return emptyLazySet()
 
@@ -53,7 +58,7 @@ data class AndroidUnqualifiedDeclarationNames(
 
               dataSource {
                 layoutFile.idDeclarations
-                  .plus(UnqualifiedAndroidResourceDeclaredName.fromFile(layoutFile.file))
+                  .plus(UnqualifiedAndroidResource.fromFile(layoutFile.file))
                   .filterNotNull()
                   .toSet()
               }
@@ -82,21 +87,26 @@ data class AndroidUnqualifiedDeclarationNames(
     }
   }
 
-  companion object Key : ProjectContext.Key<AndroidUnqualifiedDeclarationNames> {
-    override suspend operator fun invoke(project: McProject): AndroidUnqualifiedDeclarationNames {
+  companion object Key : ProjectContext.Key<AndroidUnqualifiedResources> {
+    override suspend operator fun invoke(project: McProject): AndroidUnqualifiedResources {
 
-      return AndroidUnqualifiedDeclarationNames(
-        SafeCache(listOf(project.path, AndroidUnqualifiedDeclarationNames::class)),
+      return AndroidUnqualifiedResources(
+        SafeCache(listOf(project.path, AndroidUnqualifiedResources::class)),
         project
       )
     }
   }
 }
 
-suspend fun ProjectContext.androidUnqualifiedDeclarationNames(): AndroidUnqualifiedDeclarationNames =
-  get(AndroidUnqualifiedDeclarationNames)
+/** @return the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext] */
+suspend fun ProjectContext.androidUnqualifiedResources(): AndroidUnqualifiedResources =
+  get(AndroidUnqualifiedResources)
 
-suspend fun ProjectContext.androidUnqualifiedDeclarationNamesForSourceSetName(
+/**
+ * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
+ *   `R.string.app_name`
+ */
+suspend fun ProjectContext.androidUnqualifiedResourcesForSourceSetName(
   sourceSetName: SourceSetName
-): LazySet<UnqualifiedAndroidResourceDeclaredName> =
-  androidUnqualifiedDeclarationNames().get(sourceSetName)
+): LazySet<UnqualifiedAndroidResource> =
+  androidUnqualifiedResources().get(sourceSetName)

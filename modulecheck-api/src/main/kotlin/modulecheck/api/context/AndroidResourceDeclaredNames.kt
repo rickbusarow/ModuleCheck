@@ -45,6 +45,13 @@ data class AndroidResourceDeclaredNames(
   override val key: ProjectContext.Key<AndroidResourceDeclaredNames>
     get() = Key
 
+  /**
+   * @return every [AndroidResourceDeclaredName] declared within any [SourceSetName]. This includes:
+   * - fully qualified generated resources like `com.example.R.string.app_name`
+   * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
+   * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
+   * - R declarations, like `com.example.R`
+   */
   suspend fun all(): LazySet<AndroidResourceDeclaredName> {
     return delegate.getOrPut("all_source_sets".asSourceSetName()) {
       project.platformPlugin
@@ -55,6 +62,14 @@ data class AndroidResourceDeclaredNames(
     }
   }
 
+  /**
+   * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This
+   *   includes:
+   * - fully qualified generated resources like `com.example.R.string.app_name`
+   * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
+   * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
+   * - R declarations, like `com.example.R`
+   */
   suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidResourceDeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
 
@@ -79,11 +94,11 @@ data class AndroidResourceDeclaredNames(
           )
 
           tpd.contributed.project(project)
-            .androidUnqualifiedDeclarationNamesForSourceSetName(transitiveSourceSetName)
+            .androidUnqualifiedResourcesForSourceSetName(transitiveSourceSetName)
         } else flowOf()
 
       val localUnqualified = project
-        .androidUnqualifiedDeclarationNamesForSourceSetName(sourceSetName)
+        .androidUnqualifiedResourcesForSourceSetName(sourceSetName)
 
       val qualified = dataSource {
 
@@ -93,7 +108,7 @@ data class AndroidResourceDeclaredNames(
 
             unqualifiedLazySet
               .map { unqualified ->
-                unqualified.toNamespacedDeclaredName(rName)
+                unqualified.toQualifiedDeclaredName(rName)
               }
               .toSet()
           }
@@ -127,6 +142,13 @@ data class AndroidResourceDeclaredNames(
 suspend fun ProjectContext.androidResourceDeclaredNames(): AndroidResourceDeclaredNames =
   get(AndroidResourceDeclaredNames)
 
+/**
+ * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This includes:
+ * - fully qualified generated resources like `com.example.R.string.app_name`
+ * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
+ * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
+ * - R declarations, like `com.example.R`
+ */
 suspend fun ProjectContext.androidResourceDeclaredNamesForSourceSetName(
   sourceSetName: SourceSetName
 ): LazySet<AndroidResourceDeclaredName> {

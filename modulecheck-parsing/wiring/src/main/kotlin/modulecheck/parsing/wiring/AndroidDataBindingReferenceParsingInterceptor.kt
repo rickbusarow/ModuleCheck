@@ -43,12 +43,20 @@ class AndroidDataBindingReferenceParsingInterceptor(
         .flatMap { wildcardImport ->
           packet.unresolved
             .map { toResolve ->
-              toResolve to AndroidDataBindingReferenceName(wildcardImport.replace("*", toResolve))
+              toResolve to AndroidDataBindingReferenceName(
+                name = wildcardImport.replace("*", toResolve),
+                language = packet.referenceLanguage
+              )
             }
         }
 
       val fullyQualified = packet.unresolved
-        .map { it to AndroidDataBindingReferenceName(it) }
+        .map {
+          it to AndroidDataBindingReferenceName(
+            name = it,
+            language = packet.referenceLanguage
+          )
+        }
 
       val fromUnresolved = concatenatedWildcards
         .plus(fullyQualified)
@@ -56,7 +64,13 @@ class AndroidDataBindingReferenceParsingInterceptor(
           dataBindingDeclarations.firstOrNull { ref.startsWith(it) }
             ?.let { declaration ->
               stillUnresolved.remove(toResolve)
-              setOf(AndroidDataBindingReferenceName(declaration.name), ref)
+              setOf(
+                AndroidDataBindingReferenceName(
+                  name = declaration.name,
+                  language = packet.referenceLanguage
+                ),
+                ref
+              )
             }
         }
         .flatten()
@@ -66,7 +80,10 @@ class AndroidDataBindingReferenceParsingInterceptor(
       val fromResolved = packet.resolved
         .map { it.name }
         .mapNotNull { resolved ->
-          AndroidDataBindingReferenceName(resolved)
+          AndroidDataBindingReferenceName(
+            name = resolved,
+            language = packet.referenceLanguage
+          )
             .takeIf { ref -> dataBindingDeclarations.any { ref.startsWith(it) } }
         }.toSet()
         .plus(fromUnresolved)

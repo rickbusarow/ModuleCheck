@@ -17,7 +17,8 @@ package modulecheck.parsing.android
 
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -48,9 +49,9 @@ internal class StylesFileTest : BaseTest() {
     val file = AndroidStylesFile(xml)
 
     file.references.toList() shouldBe setOf(
-      UnqualifiedAndroidResourceDeclaredName.Color("transparent"),
-      UnqualifiedAndroidResourceDeclaredName.Style("SomeOtherStyle"),
-      UnqualifiedAndroidResourceDeclaredName.Style("Theme_AppCompat_Light_DarkActionBar")
+      UnqualifiedAndroidResource.color("transparent".asSimpleName()),
+      UnqualifiedAndroidResource.style("SomeOtherStyle".asSimpleName()),
+      UnqualifiedAndroidResource.style("Theme_AppCompat_Light_DarkActionBar".asSimpleName())
     )
   }
 }

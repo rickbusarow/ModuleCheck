@@ -23,9 +23,10 @@ import com.github.javaparser.ast.body.MethodDeclaration
 import com.github.javaparser.ast.body.TypeDeclaration
 import com.github.javaparser.ast.body.VariableDeclarator
 import com.github.javaparser.ast.type.ClassOrInterfaceType
-import modulecheck.parsing.source.AgnosticDeclaredName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.mapToSet
 import org.jetbrains.kotlin.name.FqName
 
@@ -34,8 +35,8 @@ internal data class ParsedFile(
   val imports: List<ImportDeclaration>,
   val classOrInterfaceTypes: Set<FqName>,
   val typeDeclarations: List<TypeDeclaration<*>>,
-  val fieldDeclarations: Set<DeclaredName>,
-  val enumDeclarations: Set<DeclaredName>
+  val fieldDeclarations: Set<QualifiedDeclaredName>,
+  val enumDeclarations: Set<QualifiedDeclaredName>
 ) {
   companion object {
 
@@ -48,8 +49,8 @@ internal data class ParsedFile(
 
         val classOrInterfaceTypes = mutableSetOf<ClassOrInterfaceType>()
         val typeDeclarations = mutableListOf<TypeDeclaration<*>>()
-        val memberDeclarations = mutableSetOf<DeclaredName>()
-        val enumDeclarations = mutableSetOf<DeclaredName>()
+        val memberDeclarations = mutableSetOf<QualifiedDeclaredName>()
+        val enumDeclarations = mutableSetOf<QualifiedDeclaredName>()
 
         compilationUnit.childrenRecursive()
           .forEach { node ->
@@ -61,28 +62,48 @@ internal data class ParsedFile(
 
                 if (node.canBeResolved()) {
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                    memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
+                    memberDeclarations.add(
+                      DeclaredName.agnostic(
+                        packageName,
+                        fqName.stripPackageNameFromFqName(packageName)
+                      )
+                    )
                   }
                 }
               }
 
               is VariableDeclarator -> {
                 node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                  memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
+                  memberDeclarations.add(
+                    DeclaredName.agnostic(
+                      packageName,
+                      fqName.stripPackageNameFromFqName(packageName)
+                    )
+                  )
                 }
               }
 
               is FieldDeclaration -> {
                 if (node.canBeResolved()) {
                   node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                    memberDeclarations.add(AgnosticDeclaredName(fqName, packageName))
+                    memberDeclarations.add(
+                      DeclaredName.agnostic(
+                        packageName,
+                        fqName.stripPackageNameFromFqName(packageName)
+                      )
+                    )
                   }
                 }
               }
 
               is EnumConstantDeclaration -> {
                 node.fqNameOrNull(typeDeclarations)?.let { fqName ->
-                  enumDeclarations.add(AgnosticDeclaredName(fqName, packageName))
+                  enumDeclarations.add(
+                    DeclaredName.agnostic(
+                      packageName,
+                      fqName.stripPackageNameFromFqName(packageName)
+                    )
+                  )
                 }
               }
             }

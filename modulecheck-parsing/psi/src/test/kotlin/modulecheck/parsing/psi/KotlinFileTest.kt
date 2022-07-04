@@ -22,6 +22,10 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -32,6 +36,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class KotlinFileTest : ProjectTest(), McNameTest {
+
+  override val defaultLanguage: CompatibleLanguage
+    get() = KOTLIN
 
   val lib1 by resets {
     kotlinProject(":lib1") {
@@ -52,7 +59,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   }
 
   val McNameTest.JvmFileBuilder.ReferenceBuilder.lib1Class
-    get() = explicitKotlin("com.lib1.Lib1Class")
+    get() = kotlin("com.lib1.Lib1Class")
 
   @Test
   fun `fully qualified annotated primary constructor arguments should be injected`() = test {
@@ -73,14 +80,14 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
         lib1Class
 
-        interpretedKotlin("Inject")
-        interpretedKotlin("com.subject.Inject")
-        interpretedKotlin("com.subject.inject")
-        interpretedKotlin("com.subject.javax")
-        interpretedKotlin("com.subject.javax.inject.Inject")
-        interpretedKotlin("inject")
-        interpretedKotlin("javax")
-        interpretedKotlin("javax.inject.Inject")
+        kotlin("Inject")
+        kotlin("com.subject.Inject")
+        kotlin("com.subject.inject")
+        kotlin("com.subject.javax")
+        kotlin("com.subject.javax.inject.Inject")
+        kotlin("inject")
+        kotlin("javax")
+        kotlin("javax.inject.Inject")
       }
       apiReferences {
 
@@ -119,20 +126,20 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
         lib1Class
 
-        interpretedKotlin("Inject")
-        interpretedKotlin("com.subject.Inject")
-        interpretedKotlin("com.subject.inject")
-        interpretedKotlin("com.subject.javax")
-        interpretedKotlin("com.subject.javax.inject.Inject")
-        interpretedKotlin("com.subject.lib1Class")
-        interpretedKotlin("com.subject.this")
-        interpretedKotlin("com.subject.this.lib1Class")
-        interpretedKotlin("inject")
-        interpretedKotlin("javax")
-        interpretedKotlin("javax.inject.Inject")
-        interpretedKotlin("lib1Class")
-        interpretedKotlin("this")
-        interpretedKotlin("this.lib1Class")
+        kotlin("Inject")
+        kotlin("com.subject.Inject")
+        kotlin("com.subject.inject")
+        kotlin("com.subject.javax")
+        kotlin("com.subject.javax.inject.Inject")
+        kotlin("com.subject.lib1Class")
+        kotlin("com.subject.this")
+        kotlin("com.subject.this.lib1Class")
+        kotlin("inject")
+        kotlin("javax")
+        kotlin("javax.inject.Inject")
+        kotlin("lib1Class")
+        kotlin("this")
+        kotlin("this.lib1Class")
       }
       apiReferences {
 
@@ -166,7 +173,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       references {
 
         lib1Class
-        explicitKotlin("javax.inject.Inject")
+        kotlin("javax.inject.Inject")
       }
       apiReferences {
 
@@ -199,17 +206,17 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     file shouldBe {
       references {
 
-        explicitKotlin("javax.inject.Inject")
+        kotlin("javax.inject.Inject")
 
-        interpretedKotlin("Lib1Class")
-        interpretedKotlin("com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.Lib1Class")
+        kotlin("Lib1Class")
+        kotlin("com.lib1.Lib1Class")
+        kotlin("com.subject.Lib1Class")
       }
       apiReferences {
 
-        interpretedKotlin("Lib1Class")
-        interpretedKotlin("com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.Lib1Class")
+        kotlin("Lib1Class")
+        kotlin("com.lib1.Lib1Class")
+        kotlin("com.subject.Lib1Class")
       }
       declarations {
         agnostic("com.subject.SubjectClass")
@@ -236,27 +243,27 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     file shouldBe {
       references {
 
-        explicitKotlin("javax.inject.Inject")
+        kotlin("javax.inject.Inject")
 
-        interpretedKotlin("Lib1Class")
-        interpretedKotlin("com")
-        interpretedKotlin("com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.Lib1Class")
-        interpretedKotlin("com.subject.com")
-        interpretedKotlin("com.subject.com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.lib1")
-        interpretedKotlin("lib1")
+        kotlin("Lib1Class")
+        kotlin("com")
+        kotlin("com.lib1.Lib1Class")
+        kotlin("com.subject.Lib1Class")
+        kotlin("com.subject.com")
+        kotlin("com.subject.com.lib1.Lib1Class")
+        kotlin("com.subject.lib1")
+        kotlin("lib1")
       }
       apiReferences {
 
-        interpretedKotlin("Lib1Class")
-        interpretedKotlin("com")
-        interpretedKotlin("com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.Lib1Class")
-        interpretedKotlin("com.subject.com")
-        interpretedKotlin("com.subject.com.lib1.Lib1Class")
-        interpretedKotlin("com.subject.lib1")
-        interpretedKotlin("lib1")
+        kotlin("Lib1Class")
+        kotlin("com")
+        kotlin("com.lib1.Lib1Class")
+        kotlin("com.subject.Lib1Class")
+        kotlin("com.subject.com")
+        kotlin("com.subject.com.lib1.Lib1Class")
+        kotlin("com.subject.lib1")
+        kotlin("lib1")
       }
 
       declarations {
@@ -291,14 +298,14 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       references {
 
         lib1Class
-        explicitKotlin("javax.inject.Inject")
+        kotlin("javax.inject.Inject")
 
-        interpretedKotlin("com.subject.lib1Class")
-        interpretedKotlin("com.subject.this")
-        interpretedKotlin("com.subject.this.lib1Class")
-        interpretedKotlin("lib1Class")
-        interpretedKotlin("this")
-        interpretedKotlin("this.lib1Class")
+        kotlin("com.subject.lib1Class")
+        kotlin("com.subject.this")
+        kotlin("com.subject.this.lib1Class")
+        kotlin("lib1Class")
+        kotlin("this")
+        kotlin("this.lib1Class")
       }
       apiReferences {
 
@@ -336,16 +343,16 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       references {
 
         lib1Class
-        explicitKotlin("org.jetbrains.kotlin.name.FqName")
-        explicitKotlin("javax.inject.Inject")
+        kotlin("org.jetbrains.kotlin.name.FqName")
+        kotlin("javax.inject.Inject")
 
-        interpretedKotlin("com.subject.lib1Class")
-        interpretedKotlin("lib1Class")
+        kotlin("com.subject.lib1Class")
+        kotlin("lib1Class")
       }
       apiReferences {
 
         lib1Class
-        explicitKotlin("org.jetbrains.kotlin.name.FqName")
+        kotlin("org.jetbrains.kotlin.name.FqName")
       }
 
       declarations {
@@ -381,23 +388,23 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          androidR("com.subject.R")
+          androidR("com.subject".asPackageName())
 
-          explicitKotlin("androidx.lifecycle.ViewModel")
-          explicitKotlin("com.modulecheck.ResourceProvider")
+          kotlin("androidx.lifecycle.ViewModel")
+          kotlin("com.modulecheck.ResourceProvider")
 
-          interpretedKotlin("com.subject.resourceProvider.getString")
-          interpretedKotlin("com.subject.viewEffect")
-          interpretedKotlin("resourceProvider.getString")
-          interpretedKotlin("viewEffect")
+          kotlin("com.subject.resourceProvider.getString")
+          kotlin("com.subject.viewEffect")
+          kotlin("resourceProvider.getString")
+          kotlin("viewEffect")
 
           qualifiedAndroidResource("com.subject.R.string.google_places_api_key")
           unqualifiedAndroidResource("R.string.google_places_api_key")
         }
         apiReferences {
 
-          explicitKotlin("androidx.lifecycle.ViewModel")
-          explicitKotlin("com.modulecheck.ResourceProvider")
+          kotlin("androidx.lifecycle.ViewModel")
+          kotlin("com.modulecheck.ResourceProvider")
         }
 
         declarations {
@@ -429,23 +436,23 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        androidR("com.subject.R")
+        androidR("com.subject".asPackageName())
 
-        explicitKotlin("com.lib.Config")
+        kotlin("com.lib.Config")
 
-        interpretedKotlin("ConfigImpl")
-        interpretedKotlin("com.subject.ConfigImpl")
-        interpretedKotlin("com.subject.getString")
-        interpretedKotlin("com.subject.googleApiKey")
-        interpretedKotlin("getString")
-        interpretedKotlin("googleApiKey")
+        kotlin("ConfigImpl")
+        kotlin("com.subject.ConfigImpl")
+        kotlin("com.subject.getString")
+        kotlin("com.subject.googleApiKey")
+        kotlin("getString")
+        kotlin("googleApiKey")
 
         qualifiedAndroidResource("com.subject.R.string.google_places_api_key")
         unqualifiedAndroidResource("R.string.google_places_api_key")
       }
       apiReferences {
 
-        explicitKotlin("com.lib.Config")
+        kotlin("com.lib.Config")
       }
 
       declarations {
@@ -477,8 +484,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          interpretedKotlin("SubjectClass")
-          interpretedKotlin("com.subject.SubjectClass")
+          kotlin("SubjectClass")
+          kotlin("com.subject.SubjectClass")
         }
         declarations {
           agnostic("com.subject.SubjectClass")
@@ -510,30 +517,30 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          androidR("com.subject.R")
+          androidR("com.subject".asPackageName())
 
-          interpretedKotlin("Config")
-          interpretedKotlin("ConfigImpl")
-          interpretedKotlin("com")
-          interpretedKotlin("com.lib.Config")
-          interpretedKotlin("com.subject.Config")
-          interpretedKotlin("com.subject.ConfigImpl")
-          interpretedKotlin("com.subject.com")
-          interpretedKotlin("com.subject.com.lib.Config")
-          interpretedKotlin("com.subject.getString")
-          interpretedKotlin("com.subject.googleApiKey")
-          interpretedKotlin("com.subject.lib")
-          interpretedKotlin("getString")
-          interpretedKotlin("googleApiKey")
-          interpretedKotlin("lib")
+          kotlin("Config")
+          kotlin("ConfigImpl")
+          kotlin("com")
+          kotlin("com.lib.Config")
+          kotlin("com.subject.Config")
+          kotlin("com.subject.ConfigImpl")
+          kotlin("com.subject.com")
+          kotlin("com.subject.com.lib.Config")
+          kotlin("com.subject.getString")
+          kotlin("com.subject.googleApiKey")
+          kotlin("com.subject.lib")
+          kotlin("getString")
+          kotlin("googleApiKey")
+          kotlin("lib")
 
           qualifiedAndroidResource("com.subject.R.string.google_places_api_key")
           unqualifiedAndroidResource("R.string.google_places_api_key")
         }
         apiReferences {
 
-          interpretedKotlin("com.lib.Config")
-          interpretedKotlin("com.subject.com.lib.Config")
+          kotlin("com.lib.Config")
+          kotlin("com.subject.com.lib.Config")
         }
 
         declarations {
@@ -564,14 +571,14 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("com.lib.Config")
+          kotlin("com.lib.Config")
 
-          interpretedKotlin("ConfigImpl")
-          interpretedKotlin("com.subject.ConfigImpl")
-          interpretedKotlin("com.subject.getString")
-          interpretedKotlin("com.subject.googleApiKey")
-          interpretedKotlin("getString")
-          interpretedKotlin("googleApiKey")
+          kotlin("ConfigImpl")
+          kotlin("com.subject.ConfigImpl")
+          kotlin("com.subject.getString")
+          kotlin("com.subject.googleApiKey")
+          kotlin("getString")
+          kotlin("googleApiKey")
 
           unqualifiedAndroidResource("R.string.google_places_api_key")
         }
@@ -607,17 +614,17 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("com.lib.Config")
+          kotlin("com.lib.Config")
 
-          interpretedKotlin("com.subject.getString")
-          interpretedKotlin("com.subject.googleApiKey")
-          interpretedKotlin("getString")
-          interpretedKotlin("googleApiKey")
+          kotlin("com.subject.getString")
+          kotlin("com.subject.googleApiKey")
+          kotlin("getString")
+          kotlin("googleApiKey")
 
           unqualifiedAndroidResource("R.string.google_places_api_key")
         }
         apiReferences {
-          explicitKotlin("com.lib.Config")
+          kotlin("com.lib.Config")
         }
 
         declarations {
@@ -647,8 +654,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("kotlin.Unit")
-        explicitKotlin("kotlin.jvm.JvmName")
+        kotlin("kotlin.Unit")
+        kotlin("kotlin.jvm.JvmName")
       }
 
       declarations {
@@ -678,7 +685,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.jvm.JvmName")
+          kotlin("kotlin.jvm.JvmName")
         }
         declarations {
           agnostic(name = "com.subject.SubjectClass")
@@ -700,7 +707,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("kotlin.Unit")
+        kotlin("kotlin.Unit")
       }
       declarations {
         kotlin("com.subject.someFunction")
@@ -877,16 +884,16 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("kotlin.String")
-        explicitKotlin("kotlin.text.replace")
+        kotlin("kotlin.String")
+        kotlin("kotlin.text.replace")
 
         // TODO this is all definitely wrong
-        interpretedKotlin("\"[^aeiou]\".toRegex")
-        interpretedKotlin("com.subject.\"[^aeiou]\".toRegex")
+        kotlin("\"[^aeiou]\".toRegex")
+        kotlin("com.subject.\"[^aeiou]\".toRegex")
       }
 
       apiReferences {
-        explicitKotlin("kotlin.String")
+        kotlin("kotlin.String")
       }
 
       declarations {
@@ -908,16 +915,16 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("kotlin.String")
-        explicitKotlin("kotlin.text.replace")
+        kotlin("kotlin.String")
+        kotlin("kotlin.text.replace")
 
         // TODO this is all definitely wrong
-        interpretedKotlin("\"[^aeiou]\".toRegex")
-        interpretedKotlin("com.subject.\"[^aeiou]\".toRegex")
+        kotlin("\"[^aeiou]\".toRegex")
+        kotlin("com.subject.\"[^aeiou]\".toRegex")
       }
 
       apiReferences {
-        explicitKotlin("kotlin.String")
+        kotlin("kotlin.String")
       }
 
       declarations {
@@ -943,11 +950,11 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("com.lib1.Lib1Class")
+        kotlin("com.lib1.Lib1Class")
       }
 
       declarations {
-        agnostic("Subject")
+        agnostic("Subject", packageName = PackageName(null))
       }
     }
   }
@@ -965,8 +972,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
     file shouldBe {
       references {
-        explicitKotlin("kotlin.Unit")
-        explicitKotlin("kotlin.jvm.JvmName")
+        kotlin("kotlin.Unit")
+        kotlin("kotlin.jvm.JvmName")
       }
 
       apiReferences {
@@ -1023,8 +1030,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("com.modulecheck.lib1.R")
-          explicitKotlin("com.modulecheck.lib1.R.string.app_name")
+          kotlin("com.modulecheck.lib1.R")
+          kotlin("com.modulecheck.lib1.R.string.app_name")
         }
 
         apiReferences {
@@ -1053,12 +1060,12 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("com.modulecheck.lib1.foo")
+          kotlin("com.modulecheck.lib1.foo")
         }
 
         apiReferences {
           // TODO this is wrong
-          explicitKotlin("com.modulecheck.lib1.foo")
+          kotlin("com.modulecheck.lib1.foo")
         }
 
         declarations {
@@ -1087,7 +1094,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
+          kotlin("kotlin.Unit")
         }
 
         apiReferences {
@@ -1119,8 +1126,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1154,7 +1161,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
+          kotlin("kotlin.Unit")
         }
 
         apiReferences {
@@ -1185,8 +1192,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1221,8 +1228,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmName")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmName")
         }
 
         apiReferences {
@@ -1254,8 +1261,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1291,9 +1298,9 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmName")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmName")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1330,7 +1337,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
+          kotlin("kotlin.Unit")
         }
 
         apiReferences {
@@ -1360,8 +1367,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1372,6 +1379,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
           agnostic("com.subject.Utils.someFunction")
           java("com.subject.Utils.INSTANCE")
           java("com.subject.Utils.INSTANCE.someFunction")
+          java("com.subject.Utils.someFunction")
         }
       }
     }
@@ -1392,9 +1400,9 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmName")
-          explicitKotlin("kotlin.jvm.JvmStatic")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmName")
+          kotlin("kotlin.jvm.JvmStatic")
         }
 
         apiReferences {
@@ -1425,8 +1433,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          explicitKotlin("kotlin.Unit")
-          explicitKotlin("kotlin.jvm.JvmName")
+          kotlin("kotlin.Unit")
+          kotlin("kotlin.jvm.JvmName")
         }
 
         apiReferences {
@@ -1461,7 +1469,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       file shouldBe {
         references {
           unqualifiedAndroidResource("R.string.app_name")
-          androidR("com.subject.R")
+          androidR("com.subject".asPackageName())
           qualifiedAndroidResource("com.subject.R.string.app_name")
         }
 
@@ -1498,7 +1506,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          androidR("com.modulecheck.other.R")
+          androidR("com.modulecheck.other".asPackageName())
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }
@@ -1536,8 +1544,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          androidR("com.modulecheck.other.R")
-          explicitKotlin("com.modulecheck.other.R.string")
+          androidR("com.modulecheck.other".asPackageName())
+          kotlin("com.modulecheck.other.R.string")
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }
@@ -1576,7 +1584,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       file shouldBe {
         references {
 
-          androidR("com.subject.R")
+          androidR("com.subject".asPackageName())
           qualifiedAndroidResource("com.subject.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }
@@ -1615,7 +1623,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       file shouldBe {
         references {
 
-          androidR("com.modulecheck.other.R")
+          androidR("com.modulecheck.other".asPackageName())
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }
@@ -1652,7 +1660,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       file shouldBe {
         references {
 
-          androidR("com.modulecheck.other.R")
+          androidR("com.modulecheck.other".asPackageName())
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }
@@ -1688,8 +1696,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          androidR("com.modulecheck.other.R")
-          explicitKotlin("com.modulecheck.other.R.string")
+          androidR("com.modulecheck.other".asPackageName())
+          kotlin("com.modulecheck.other.R.string")
           qualifiedAndroidResource("com.modulecheck.other.R.string.app_name")
           unqualifiedAndroidResource("R.string.app_name")
         }

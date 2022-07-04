@@ -17,24 +17,29 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
-import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache
 
 data class AnvilScopeMerges(
-  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<DeclaredName>>>,
+  private val delegate: SafeCache<SourceSetName, Map<AnvilScopeName, Set<QualifiedDeclaredName>>>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<AnvilScopeMerges>
     get() = Key
 
-  suspend fun all(): List<Map<AnvilScopeName, Set<DeclaredName>>> {
+  /** @return all scope merges from any source set */
+  suspend fun all(): List<Map<AnvilScopeName, Set<QualifiedDeclaredName>>> {
     return project.sourceSets.keys.map { get(it) }
   }
 
-  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<DeclaredName>> {
+  /**
+   * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for
+   *   which they're merged
+   */
+  suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
     return delegate.getOrPut(sourceSetName) {
       project.anvilGraph().get(sourceSetName)
         .mapValues { (_, declarations) ->
@@ -54,6 +59,10 @@ data class AnvilScopeMerges(
 
 suspend fun ProjectContext.anvilScopeMerges(): AnvilScopeMerges = get(AnvilScopeMerges)
 
+/**
+ * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for which
+ *   they're merged
+ */
 suspend fun ProjectContext.anvilScopeMergesForSourceSetName(
   sourceSetName: SourceSetName
-): Map<AnvilScopeName, Set<DeclaredName>> = anvilScopeMerges().get(sourceSetName)
+): Map<AnvilScopeName, Set<QualifiedDeclaredName>> = anvilScopeMerges().get(sourceSetName)

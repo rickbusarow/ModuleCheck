@@ -27,8 +27,8 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaVersion
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.reporting.logging.McLogger
 import java.io.File
 
@@ -69,10 +69,14 @@ interface McProject :
 
   override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 
+  /**
+   * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
+   *   [sourceSetName]
+   */
   suspend fun resolveFqNameOrNull(
-    declaredName: DeclaredName,
+    declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
-  ): DeclaredName?
+  ): QualifiedDeclaredName?
 }
 
 private suspend fun McProject.configurationInvocations(): Set<String> {
