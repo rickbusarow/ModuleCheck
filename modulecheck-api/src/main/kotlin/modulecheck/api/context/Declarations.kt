@@ -30,6 +30,7 @@ import modulecheck.utils.cache.SafeCache
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.LazySet.DataSource
 import modulecheck.utils.lazy.LazySetComponent
+import modulecheck.utils.lazy.asDataSource
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.dataSourceOf
 import modulecheck.utils.lazy.lazySet
@@ -90,6 +91,7 @@ data class Declarations private constructor(
           check(project.isAndroid())
 
           val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetOrUpstream)
+            .asDataSource()
 
           components.add(resources)
 

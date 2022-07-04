@@ -15,109 +15,80 @@
 
 package modulecheck.parsing.source
 
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.utils.lazy.LazySet
-import modulecheck.utils.safeAs
+import modulecheck.utils.lazy.unsafeLazy
 
-/**
- * Represents a call-site reference to a name, such as:
- * - the name in an import statement
- * - the type declaration of a parameter or property
- * - a function return type
- * - a super-type declaration
- * - a function call
- * - a property read/write
- */
-sealed interface ReferenceName : McName {
+/** Marker which indicates that [references] exist. Typically implemented by "file" types */
+interface HasReferences {
 
-  sealed interface JavaReferenceName : ReferenceName {
-    companion object {
-      operator fun invoke(name: String): JavaReferenceName = JavaReferenceNameImpl(name)
+  /** The references in this object, calculated lazily */
+  val references: LazySet<ReferenceName>
+}
+
+/** Represents a name -- fully qualified or not -- which references a declaration somewhere else */
+sealed class ReferenceName : McName {
+  /** The [language][CompatibleLanguage] of the file making this reference */
+  abstract val language: CompatibleLanguage
+
+  override val segments: List<String> by unsafeLazy { name.split('.') }
+
+  /** This reference is from a Java source file */
+  fun isJava() = language == JAVA
+
+  /** This reference is from a Kotlin source file */
+  fun isKotlin() = language == KOTLIN
+
+  /** This reference is from an xml source file */
+  @Suppress("GrazieInspection")
+  fun isXml() = language == XML
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+
+    when (other) {
+      is ReferenceName -> {
+
+        if (name != other.name) return false
+        if (language != other.language) return false
+      }
+
+      is QualifiedDeclaredName -> {
+
+        if (name != other.name) return false
+        if (!other.languages.contains(language)) return false
+      }
+
+      else -> return false
     }
+    return true
   }
 
-  sealed interface KotlinReferenceName : ReferenceName {
-    companion object {
-      operator fun invoke(name: String): KotlinReferenceName = KotlinReferenceNameImpl(name)
-    }
+  final override fun hashCode(): Int = name.hashCode()
+
+  override fun toString(): String {
+    return "${this::class.simpleName!!}(name='$name'  language=$language)"
   }
 
-  sealed interface AgnosticReferenceName : ReferenceName
-
-  /**
-   * Marker for any reference made from an XML file.
-   *
-   * Note that aside from references to android resources, xml follows the same reference names as
-   * Java.
-   */
-  sealed interface XmlReferenceName : ReferenceName, JavaReferenceName
-
-  class KotlinReferenceNameImpl(override val name: String) :
-    ReferenceName,
-    KotlinReferenceName {
-
-    override fun equals(other: Any?): Boolean {
-      return matches(
-        other = other,
-        ifReference = {
-          name == (
-            it.safeAs<KotlinReferenceName>()?.name
-              ?: it.safeAs<AgnosticReferenceName>()?.name
-            )
-        },
-        ifDeclaration = { name == it.safeAs<KotlinCompatibleDeclaredName>()?.name }
-      )
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-  }
-
-  class JavaReferenceNameImpl(override val name: String) :
-    ReferenceName,
-    JavaReferenceName {
-
-    override fun equals(other: Any?): Boolean {
-      return matches(
-        other = other,
-        ifReference = {
-          name == (it.safeAs<JavaReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
-        },
-        ifDeclaration = { name == it.safeAs<JavaCompatibleDeclaredName>()?.name }
-      )
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
-  }
-
-  class XmlReferenceNameImpl(override val name: String) :
-    ReferenceName,
-    XmlReferenceName {
-
-    override fun equals(other: Any?): Boolean {
-      return matches(
-        other = other,
-        ifReference = {
-          name == (it.safeAs<XmlReferenceName>()?.name ?: it.safeAs<AgnosticReferenceName>()?.name)
-        },
-        ifDeclaration = { name == it.safeAs<XmlCompatibleDeclaredName>()?.name }
-      )
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "(${this::class.java.simpleName}) `$name`"
+  companion object {
+    /** @return a basic [ReferenceName] for this name and language. */
+    operator fun invoke(
+      name: String,
+      language: CompatibleLanguage
+    ): ReferenceName = ReferenceNameImpl(
+      name = name, language = language
+    )
   }
 }
 
-fun String.asKotlinReference(): KotlinReferenceName = KotlinReferenceName(this)
-fun String.asJavaReference(): JavaReferenceName = JavaReferenceName(this)
-
-interface HasReferences {
-
-  val references: LazySet<ReferenceName>
+private class ReferenceNameImpl(
+  override val name: String,
+  override val language: CompatibleLanguage
+) : ReferenceName(), McName {
+  override val simpleName by unsafeLazy {
+    name.split('.').last()
+  }
 }

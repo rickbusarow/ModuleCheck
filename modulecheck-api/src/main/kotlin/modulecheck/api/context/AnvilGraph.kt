@@ -24,11 +24,12 @@ import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
-import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.KotlinFile
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
-import modulecheck.parsing.source.asKotlinReference
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -37,8 +38,8 @@ import org.jetbrains.kotlin.name.FqName
 
 data class AnvilScopedDeclarations(
   val scopeName: AnvilScopeName,
-  val contributions: MutableSet<DeclaredName>,
-  val merges: MutableSet<DeclaredName>
+  val contributions: MutableSet<QualifiedDeclaredName>,
+  val merges: MutableSet<QualifiedDeclaredName>
 )
 
 data class AnvilGraph(
@@ -51,14 +52,14 @@ data class AnvilGraph(
     "com.squareup.anvil.annotations.ContributesBinding",
     "com.squareup.anvil.annotations.ContributesMultibinding",
     "com.squareup.anvil.annotations.ContributesSubcomponent"
-  ).map { it.asKotlinReference() }
+  ).map { ReferenceName(it, KOTLIN) }
 
   private val mergeAnnotations = setOf(
     "com.squareup.anvil.annotations.compat.MergeInterfaces",
     "com.squareup.anvil.annotations.compat.MergeModules",
     "com.squareup.anvil.annotations.MergeComponent",
     "com.squareup.anvil.annotations.MergeSubcomponent"
-  ).map { it.asKotlinReference() }
+  ).map { ReferenceName(it, KOTLIN) }
 
   val allAnnotations = mergeAnnotations + contributeAnnotations
 

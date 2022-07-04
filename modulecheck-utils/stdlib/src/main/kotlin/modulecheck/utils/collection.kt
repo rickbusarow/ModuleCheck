@@ -15,6 +15,12 @@
 
 package modulecheck.utils
 
+/** functional style shorthand for `listOf(this)` */
+fun <T> T.singletonList() = listOf(this)
+
+/** functional style shorthand for `setOf(this)` */
+fun <T> T.singletonSet() = setOf(this)
+
 inline fun <C : Collection<T>, T, R> C.mapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> R
@@ -39,7 +45,8 @@ inline fun <T, R> Sequence<T>.flatMapToSet(
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other
+ * after sorting.
  */
 public fun <T> Iterable<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): List<T> {
   if (this is Collection) {
@@ -53,7 +60,8 @@ public fun <T> Iterable<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): L
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other
+ * after sorting.
  */
 public fun <T> Sequence<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): Sequence<T> {
   return sortedWith(compareBy(*selectors))
@@ -62,7 +70,8 @@ public fun <T> Sequence<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): S
 /**
  * Returns a list of all elements sorted according to the specified [selectors].
  *
- * The sort is _stable_. It means that equal elements preserve their order relative to each other after sorting.
+ * The sort is _stable_. It means that equal elements preserve their order relative to each other
+ * after sorting.
  */
 public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Comparable<*>): List<T> {
   return sortedWith(*selectors).reversed()

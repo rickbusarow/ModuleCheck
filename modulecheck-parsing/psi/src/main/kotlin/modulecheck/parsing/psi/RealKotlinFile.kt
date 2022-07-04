@@ -34,15 +34,13 @@ import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.KotlinFile.ScopeArgumentParseResult
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.KotlinReferenceName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.parsing.source.asDeclaredName
-import modulecheck.parsing.source.asJavaDeclaredName
-import modulecheck.parsing.source.asKotlinDeclaredName
-import modulecheck.parsing.source.asKotlinReference
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 import modulecheck.utils.lazy.LazyDeferred
@@ -50,7 +48,6 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.toLazySet
-import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
@@ -85,8 +82,8 @@ class RealKotlinFile(
 
   override val packageName by lazy { PackageName(ktFile.packageFqName.asString()) }
 
-  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asKotlinReference()`
-  private val _aliasMap = mutableMapOf<String, KotlinReferenceName>()
+  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
+  private val _aliasMap = mutableMapOf<String, ReferenceName>()
 
   private val importsStrings: Lazy<Set<String>> = lazy {
 
@@ -107,7 +104,7 @@ class RealKotlinFile(
               // respectively.
               ?.lastChild
               ?.text?.let { alias ->
-                _aliasMap[alias] = nameString.asKotlinReference()
+                _aliasMap[alias] = ReferenceName(nameString, KOTLIN)
               }
           }
       }
@@ -115,35 +112,43 @@ class RealKotlinFile(
   }
   override val importsLazy: Lazy<Set<ReferenceName>> = lazy {
     importsStrings.value
-      .mapToSet { it.asKotlinReference() }
+      .mapToSet { ReferenceName(it, KOTLIN) }
   }
 
   val constructorInjectedParams = lazyDeferred {
-    referenceVisitor.constructorInjected.mapNotNull { psiResolver.fqNameOrNull(it) }.toSet()
+    referenceVisitor.constructorInjected.mapNotNull { psiResolver.declaredNameOrNull(it) }.toSet()
   }
 
   private val fileJavaFacadeName by lazy { ktFile.javaFileFacadeFqName.asString() }
 
   @Suppress("ComplexMethod")
-  private fun KtNamedDeclaration.declaredNames(): List<DeclaredName> {
+  private fun KtNamedDeclaration.declaredNames(): List<QualifiedDeclaredName> {
     val fq = fqName ?: return emptyList()
 
     val nameAsString = fq.asString()
 
     return buildList {
       fun both(name: String) {
-        add(name.asDeclaredName(packageName))
+        val declared = name.stripPackageNameFromFqName(packageName)
+          .asDeclaredName(packageName)
+        add(declared)
       }
 
       fun kotlin(name: String) {
-        if (!contains(name.asDeclaredName(packageName))) {
-          add(name.asKotlinDeclaredName(packageName))
+        val declared = DeclaredName.kotlin(
+          packageName, name.stripPackageNameFromFqName(packageName)
+        )
+        if (!contains(declared)) {
+          add(declared)
         }
       }
 
       fun java(name: String) {
-        if (!contains(name.asDeclaredName(packageName))) {
-          add(name.asJavaDeclaredName(packageName))
+        val declared = DeclaredName.java(
+          packageName, name.stripPackageNameFromFqName(packageName)
+        )
+        if (!contains(declared)) {
+          add(declared)
         }
       }
 
@@ -292,7 +297,7 @@ class RealKotlinFile(
         unresolved = unresolved,
         mustBeApi = mustBeApi,
         apiReferenceNames = emptySet(),
-        toReferenceName = { KotlinReferenceName(this) },
+        referenceLanguage = KOTLIN,
         stdLibNameOrNull = String::kotlinStdLibNameOrNull
       )
     )
@@ -351,15 +356,16 @@ class RealKotlinFile(
   ): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList?.getByNameOrIndex(0, "scope") ?: return null
 
-    val entryText = valueArgument.text
-      .remove(".+=+".toRegex()) // remove the names for arguments
-      .replace("::class", "").trim()
-      .asKotlinReference()
+    val entryText = // remove the names for arguments
+      ReferenceName(
+        valueArgument.text
+          .remove(".+=+".toRegex()) // remove the names for arguments
+          .replace("::class", "").trim(),
+        KOTLIN
+      )
 
     val resolvedScope = this@RealKotlinFile.references
-      .firstOrNull { ref ->
-        ref.endsWith(entryText)
-      } as? KotlinReferenceName
+      .firstOrNull { ref -> ref.endsWith(entryText) }
       ?: entryText
 
     return RawAnvilAnnotatedType(
@@ -398,7 +404,5 @@ class RealKotlinFile(
       "unaryPlus"
     )
     val componentNRegex = Regex("component\\d+")
-
-    val prefixes by unsafeLazy { UnqualifiedAndroidResourceDeclaredName.prefixes() }
   }
 }

@@ -16,6 +16,7 @@
 package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.append
 import modulecheck.utils.mapToSet
 
 class InterpretingInterceptor : ParsingInterceptor {
@@ -32,13 +33,25 @@ class InterpretingInterceptor : ParsingInterceptor {
 
         val interpreted = buildSet {
           // no import
-          add(packet.toReferenceName(toResolve))
+          add(ReferenceName.invoke(toResolve, packet.referenceLanguage))
 
           // concat with package
-          add(packet.toReferenceName(packet.packageName.append(toResolve)))
+          add(
+            ReferenceName(
+              packet.packageName.append(toResolve),
+              packet.referenceLanguage
+            )
+          )
 
           // concat with any wildcard imports
-          addAll(trimmedWildcards.mapToSet { packet.toReferenceName("$it.$toResolve") })
+          addAll(
+            trimmedWildcards.mapToSet {
+              ReferenceName(
+                name = "$it.$toResolve",
+                language = packet.referenceLanguage
+              )
+            }
+          )
         }
 
         newResolved.addAll(interpreted)

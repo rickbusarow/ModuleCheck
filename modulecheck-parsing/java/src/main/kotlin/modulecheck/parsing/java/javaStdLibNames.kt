@@ -15,15 +15,15 @@
 
 package modulecheck.parsing.java
 
-import modulecheck.parsing.source.ReferenceName.JavaReferenceName
-import modulecheck.parsing.source.asJavaReference
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.ReferenceName
 
-internal fun String.javaLangFqNameOrNull(): JavaReferenceName? {
+internal fun String.javaLangFqNameOrNull(): ReferenceName? {
 
   val maybeJavaLang = "java.lang.$this"
 
   return if (maybeJavaLang in javaStdLibNames) {
-    maybeJavaLang.asJavaReference()
+    ReferenceName(maybeJavaLang, JAVA)
   } else {
     null
   }

@@ -17,7 +17,8 @@ package modulecheck.parsing.android
 
 import groovy.util.Node
 import groovy.util.NodeList
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.utils.flatMapToSet
 import java.io.File
@@ -47,8 +48,8 @@ class AndroidStylesParser {
       ?.toString()
       ?.let { parentName ->
 
-        UnqualifiedAndroidResourceDeclaredName.fromValuePair("style", parentName)
-          ?.let { UnqualifiedAndroidResourceReferenceName(it.name) }
+        UnqualifiedAndroidResource.fromValuePair("style", parentName)
+          ?.let { UnqualifiedAndroidResourceReferenceName(it.name, XML) }
       }
 
     return styleNode.children()
@@ -57,8 +58,8 @@ class AndroidStylesParser {
       .map { it.value() }
       .filterIsInstance<NodeList>()
       .mapNotNull { valueNodeList ->
-        UnqualifiedAndroidResourceDeclaredName.fromString(valueNodeList.text())
-          ?.let { UnqualifiedAndroidResourceReferenceName(it.name) }
+        UnqualifiedAndroidResource.fromXmlString(valueNodeList.text())
+          ?.let { UnqualifiedAndroidResourceReferenceName(it.name, XML) }
       }
       .plus(listOfNotNull(parentOrNull))
       .toSet()

@@ -20,7 +20,9 @@ import modulecheck.utils.lazy.LazyDeferred
 sealed interface JvmFile : HasReferences {
   val name: String
   val packageName: PackageName
-  val declarations: Set<DeclaredName>
+
+  /** All declared names within this file */
+  val declarations: Set<QualifiedDeclaredName>
 
   val importsLazy: Lazy<Set<ReferenceName>>
   val apiReferences: LazyDeferred<Set<ReferenceName>>
