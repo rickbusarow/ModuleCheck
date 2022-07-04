@@ -100,7 +100,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     return create(
       parsedConfigurations = mcConfigurations,
       extension = requireBaseExtension(),
-      hasTestFixturesPlugin = hasTestFixturesPlugin || hasAgpTestFixtures()
+      hasTestFixturesPlugin = hasTestFixturesPlugin || hasAgpTestFixtures(),
+      gradleProject = gradleProject
     )
   }
 }

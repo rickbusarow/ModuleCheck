@@ -22,8 +22,6 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.JavaVersion
-import modulecheck.parsing.source.JavaVersion.VERSION_14
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.PackageName
@@ -34,6 +32,8 @@ import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -170,7 +170,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
         public static record MyRecord(Lib1Class lib1Class) {}
         """,
-        javaVersion = JavaVersion.VERSION_16
+        jvmTarget = JvmTarget.JVM_16
       )
 
       file.apiReferences shouldBe listOf()
@@ -194,7 +194,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
         public static record MyRecord(Lib1Class lib1Class) {}
         """,
-        javaVersion = JavaVersion.VERSION_16
+        jvmTarget = JvmTarget.JVM_16
       )
 
       file.apiReferences shouldBe listOf()
@@ -214,8 +214,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         package com.test;
 
         public class MyClass {}
-        """,
-        javaVersion = JavaVersion.VERSION_16
+        """
       )
 
       file.apiReferences shouldBe listOf()
@@ -1064,11 +1063,11 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     content: String,
     project: McProject = simpleProject(),
     sourceSetName: SourceSetName = SourceSetName.MAIN,
-    javaVersion: JavaVersion = VERSION_14
+    jvmTarget: JvmTarget = JVM_11
   ): RealJavaFile = runBlocking(Trace.start(listOf(JavaFileTest::class))) {
     project.editSimple {
       addJavaSource(content, sourceSetName)
-      javaSourceVersion = javaVersion
+      this.jvmTarget = jvmTarget
     }.jvmFiles()
       .get(sourceSetName)
       .filterIsInstance<RealJavaFile>()
