@@ -20,12 +20,21 @@ package modulecheck.parsing.source
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
  * requirements.
  *
- * @see DeclaredName
+ * @see QualifiedDeclaredName
  * @see ReferenceName
  */
 sealed interface McName : Comparable<McName> {
   /** The raw String value of this name, such as `com.example.lib1.Lib1Class`. */
   val name: String
+
+  /** ex: 'com.example.Subject' has the segments ['com', 'example', 'Subject'] */
+  val segments: List<String>
+
+  /**
+   * The simplest name. For an inner class like `com.example.Outer.Inner`, this will be 'Inner'.
+   */
+  val simpleName: String
+    get() = segments.last()
 
   /** @return true if this [name] value with the name string of [other], otherwise false */
   fun startsWith(other: McName): Boolean {
@@ -35,6 +44,11 @@ sealed interface McName : Comparable<McName> {
   /** @return true if this [name] value ends with the [str] parameter, otherwise false */
   fun endsWith(str: String): Boolean {
     return name.endsWith(str)
+  }
+
+  /** @return true if the last segment of this symbol matches [str], otherwise false */
+  fun endsWithSimpleName(str: String): Boolean {
+    return name.split('.').last() == str
   }
 
   /** @return true if this [name] value ends with the name string of [other], otherwise false */
@@ -51,18 +65,25 @@ sealed interface McName : Comparable<McName> {
       { it::class.java.simpleName }
     )
   }
-}
 
-internal inline fun McName.matches(
-  other: Any?,
-  ifReference: (ReferenceName) -> Boolean,
-  ifDeclaration: (DeclaredName) -> Boolean
-): Boolean {
-  if (this === other) return true
+  /**
+   * The language which contains a given [ReferenceName], or the language which can access a given
+   * [DeclaredName]
+   */
+  sealed interface CompatibleLanguage {
+    /** Java */
+    object JAVA : CompatibleLanguage {
+      override fun toString(): String = this::class.java.simpleName
+    }
 
-  return when (other) {
-    is ReferenceName -> ifReference(other)
-    is DeclaredName -> ifDeclaration(other)
-    else -> false
+    /** Kotlin */
+    object KOTLIN : CompatibleLanguage {
+      override fun toString(): String = this::class.java.simpleName
+    }
+
+    /** Xml, which is treated the same as [JAVA] */
+    object XML : CompatibleLanguage {
+      override fun toString(): String = this::class.java.simpleName
+    }
   }
 }

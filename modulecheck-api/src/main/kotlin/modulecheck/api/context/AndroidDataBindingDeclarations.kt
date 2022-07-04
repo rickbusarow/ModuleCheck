@@ -17,12 +17,13 @@ package modulecheck.api.context
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
-import modulecheck.parsing.source.UnqualifiedAndroidResourceDeclaredName
+import modulecheck.parsing.source.AndroidResourceDeclaredName
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
+import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.utils.cache.SafeCache
-import modulecheck.utils.capitalize
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
@@ -55,16 +56,11 @@ data class AndroidDataBindingDeclarations(
               .mapNotNull { it.file.existsOrNull() }
               .mapToSet { layoutFile ->
 
-                val layoutDeclaration = UnqualifiedAndroidResourceDeclaredName
-                  .Layout(layoutFile.nameWithoutExtension)
-
-                val simpleBindingName = layoutFile.nameWithoutExtension
-                  .split("_")
-                  .joinToString("") { fragment -> fragment.capitalize() } + "Binding"
+                val layoutDeclaration = UnqualifiedAndroidResource
+                  .layout(layoutFile.nameWithoutExtension.asSimpleName())
 
                 // fully qualified
-                AndroidDataBindingDeclaredName(
-                  name = basePackage.append("databinding.$simpleBindingName"),
+                AndroidResourceDeclaredName.dataBinding(
                   sourceLayoutDeclaration = layoutDeclaration,
                   packageName = basePackage
                 )

@@ -52,10 +52,6 @@ allprojects {
   }
 }
 
-tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
-  workerMaxHeapSize.set("512m")
-}
-
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> rootTask@{
 
   val isFormat = this@rootTask.name.contains("Format", ignoreCase = true)

@@ -24,7 +24,11 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.JavaVersion.VERSION_14
-import modulecheck.parsing.source.asJavaReference
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.PackageName.Companion.asPackageName
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.test.McNameTest
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -34,6 +38,9 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
 internal class JavaFileTest : ProjectTest(), McNameTest {
+
+  override val defaultLanguage: CompatibleLanguage
+    get() = JAVA
 
   @Nested
   inner class `resolvable declarations` {
@@ -195,7 +202,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         explicit("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
-        agnostic("MyRecord")
+        agnostic("MyRecord", PackageName.DEFAULT)
       )
     }
 
@@ -630,7 +637,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.references shouldBe listOf(
         unqualifiedAndroidResource("R.string.app_name"),
-        androidR("com.test.R"),
+        androidR("com.test".asPackageName()),
         qualifiedAndroidResource("com.test.R.string.app_name")
       )
 
@@ -665,7 +672,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
       file.references shouldBe listOf(
-        androidR("com.modulecheck.other.R"),
+        androidR("com.modulecheck.other".asPackageName()),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -701,7 +708,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
       file.references shouldBe listOf(
-        androidR("com.modulecheck.other.R"),
+        androidR("com.modulecheck.other".asPackageName()),
         explicit("com.modulecheck.other.R.string"),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
@@ -738,7 +745,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
       file.references shouldBe listOf(
-        androidR("com.test.R"),
+        androidR("com.test".asPackageName()),
         qualifiedAndroidResource("com.test.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -774,7 +781,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       val file = project.jvmFiles().get(SourceSetName.MAIN).single()
 
       file.references shouldBe listOf(
-        androidR("com.modulecheck.other.R"),
+        androidR("com.modulecheck.other".asPackageName()),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -808,7 +815,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.references shouldBe listOf(
-        androidR("com.modulecheck.other.R"),
+        androidR("com.modulecheck.other".asPackageName()),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -842,7 +849,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.references shouldBe listOf(
-        androidR("com.modulecheck.other.R"),
+        androidR("com.modulecheck.other".asPackageName()),
         explicit("com.modulecheck.other.R.string"),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
@@ -1037,8 +1044,8 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
   }
 
-  fun explicit(name: String) = name.asJavaReference()
-  fun interpreted(name: String) = name.asJavaReference()
+  fun explicit(name: String) = ReferenceName(name, JAVA)
+  fun interpreted(name: String) = ReferenceName(name, JAVA)
 
   fun McProject.createFile(
     @Language("java")

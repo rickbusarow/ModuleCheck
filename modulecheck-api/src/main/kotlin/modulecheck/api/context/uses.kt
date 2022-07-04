@@ -25,9 +25,10 @@ import modulecheck.model.dependency.ExternalDependency.ExternalRuntimeDependency
 import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.source.AgnosticDeclaredName
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.Generated
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.utils.coroutines.any
@@ -64,10 +65,12 @@ private suspend fun <T> McProject.usesCodeGenDependency(
 
   return codeGeneratorBinding.annotationNames
     .any { annotationName ->
+      val split = annotationName.split('.')
+
       refs.contains(
-        AgnosticDeclaredName(
-          name = annotationName,
-          packageName = PackageName(annotationName.split('.').dropLast(1).joinToString("."))
+        DeclaredName.agnostic(
+          packageName = PackageName(split.dropLast(1).joinToString(".")),
+          simpleNames = listOf(split.last().asSimpleName())
         )
       )
     }

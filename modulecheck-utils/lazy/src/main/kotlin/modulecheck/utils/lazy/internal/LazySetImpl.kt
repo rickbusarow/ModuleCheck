@@ -76,10 +76,7 @@ internal class LazySetImpl<E>(
 
     val snap = state.get()
 
-    return (
-      snap.cache.contains(element) || snap.remainingFlow()
-        .any { it.contains(element) }
-      )
+    return snap.cache.contains(element) || snap.remainingFlow().any { it.contains(element) }
   }
 
   private fun updateCache(new: Set<E>, completed: List<DataSource<E>>) {

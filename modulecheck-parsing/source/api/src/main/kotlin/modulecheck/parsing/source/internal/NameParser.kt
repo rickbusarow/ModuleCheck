@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source.internal
 
+import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
@@ -22,6 +23,19 @@ import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 fun interface NameParser {
   suspend fun parse(packet: NameParserPacket): NameParserPacket
 
+  /**
+   * @property packageName the package name declared for this associated file
+   * @property imports all fully qualified names from import statements
+   * @property wildcardImports all wildcard "ullUnder" imports for this file
+   * @property aliasedImports a map of alias name to the normal fully qualified name being aliased
+   * @property resolved all fully qualified names which have already been resolved
+   * @property unresolved all names which have not yet been resolved
+   * @property mustBeApi every declaration which is part of the public api
+   * @property apiReferenceNames every reference which is part of the public api
+   * @property referenceLanguage is this file Java or Kotlin?
+   * @property stdLibNameOrNull returns a [ReferenceName] if the receiver name is part of the stdlib
+   *   of this [referenceLanguage], otherwise null
+   */
   data class NameParserPacket(
     val packageName: PackageName,
     val imports: Set<String>,
@@ -32,7 +46,7 @@ fun interface NameParser {
     // should be a subset of [unresolved]
     val mustBeApi: Set<String>,
     val apiReferenceNames: Set<ReferenceName>,
-    val toReferenceName: String.() -> ReferenceName,
+    val referenceLanguage: McName.CompatibleLanguage,
     val stdLibNameOrNull: String.() -> ReferenceName?
   ) {
     override fun toString(): String {
