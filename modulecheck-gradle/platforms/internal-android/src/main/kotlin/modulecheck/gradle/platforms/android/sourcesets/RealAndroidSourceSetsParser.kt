@@ -33,6 +33,7 @@ import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetN
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
+import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -49,6 +50,7 @@ import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
 import java.io.File
 import javax.inject.Inject
+import org.gradle.api.Project as GradleProject
 
 /**
  * Given this Android config block:
@@ -134,7 +136,8 @@ import javax.inject.Inject
 class RealAndroidSourceSetsParser private constructor(
   private val parsedConfigurations: Configurations,
   private val extension: BaseExtension,
-  private val hasTestFixturesPlugin: Boolean
+  private val hasTestFixturesPlugin: Boolean,
+  private val gradleProject: GradleProject
 ) : AndroidSourceSetsParser {
 
   private val gradleAndroidSourceSets by lazy {
@@ -382,6 +385,7 @@ class RealAndroidSourceSetsParser private constructor(
         jvmFiles = jvmFiles,
         resourceFiles = resourceFiles,
         layoutFiles = layoutFiles,
+        jvmTarget = gradleProject.jvmTarget(),
         upstreamLazy = upstreamLazy,
         downstreamLazy = downstreamLazy
       )
@@ -537,6 +541,7 @@ class RealAndroidSourceSetsParser private constructor(
             jvmFiles = jvmFiles,
             resourceFiles = resourceFiles,
             layoutFiles = layoutFiles,
+            jvmTarget = gradleProject.jvmTarget(),
             upstreamLazy = upstreamLazy,
             downstreamLazy = downstreamLazy
           )
@@ -581,9 +586,13 @@ class RealAndroidSourceSetsParser private constructor(
     override fun create(
       parsedConfigurations: Configurations,
       extension: BaseExtension,
-      hasTestFixturesPlugin: Boolean
+      hasTestFixturesPlugin: Boolean,
+      gradleProject: GradleProject
     ): RealAndroidSourceSetsParser {
-      return RealAndroidSourceSetsParser(parsedConfigurations, extension, hasTestFixturesPlugin)
+      return RealAndroidSourceSetsParser(
+        parsedConfigurations, extension, hasTestFixturesPlugin,
+        gradleProject
+      )
     }
   }
 }

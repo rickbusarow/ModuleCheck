@@ -21,7 +21,6 @@ import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
@@ -30,6 +29,7 @@ import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectDependencies
 import modulecheck.reporting.logging.McLogger
+import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
 @Suppress("LongParameterList")
@@ -43,7 +43,7 @@ class RealMcProject(
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val logger: McLogger,
   override val jvmFileProviderFactory: JvmFileProvider.Factory,
-  override val javaSourceVersion: JavaVersion,
+  override val jvmTarget: JvmTarget,
   projectDependencies: Lazy<ProjectDependencies>,
   externalDependencies: Lazy<ExternalDependencies>,
   buildFileParserFactory: BuildFileParser.Factory,

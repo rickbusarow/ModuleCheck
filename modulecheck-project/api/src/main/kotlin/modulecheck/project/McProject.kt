@@ -27,9 +27,9 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.reporting.logging.McLogger
+import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
 @Suppress("TooManyFunctions")
@@ -65,7 +65,8 @@ interface McProject :
   val logger: McLogger
   val jvmFileProviderFactory: JvmFileProvider.Factory
 
-  val javaSourceVersion: JavaVersion
+  /** The Java version used to compile this project */
+  val jvmTarget: JvmTarget
 
   override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 

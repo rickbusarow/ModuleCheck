@@ -34,7 +34,6 @@ import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.parsing.source.JavaVersion
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
@@ -48,6 +47,7 @@ import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
+import org.jetbrains.kotlin.config.JvmTarget
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 import org.gradle.api.artifacts.ProjectDependency as GradleProjectDependency
@@ -135,7 +135,7 @@ class GradleProjectProvider @Inject constructor(
       anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
       logger = gradleLogger,
       jvmFileProviderFactory = jvmFileProviderFactory,
-      javaSourceVersion = gradleProject.javaVersion(),
+      jvmTarget = gradleProject.javaVersion(),
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       buildFileParserFactory = buildFileParserFactory,
@@ -190,11 +190,11 @@ class GradleProjectProvider @Inject constructor(
     ProjectDependencies(map)
   }
 
-  private fun GradleProject.javaVersion(): JavaVersion {
+  private fun GradleProject.javaVersion(): JvmTarget {
     return extensions.findByType(JavaPluginExtension::class.java)
       ?.sourceCompatibility
       ?.toJavaVersion()
-      ?: JavaVersion.VERSION_1_8
+      ?: JvmTarget.JVM_1_8
   }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
