@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-@file:Suppress("DEPRECATION")
-
 package modulecheck.gradle.platforms.sourcesets
 
 import modulecheck.gradle.platforms.android.AndroidBaseExtension
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.SourceSets
+import org.gradle.api.Project as GradleProject
 
 fun interface AndroidSourceSetsParser {
   fun parse(): SourceSets
@@ -31,13 +30,15 @@ fun interface AndroidSourceSetsParser {
      * @param extension the instance of AGP extension applied to this project
      * @param hasTestFixturesPlugin has either the `java-test-fixtures` plugin or
      *   `buildFeatures.testFixtures` is enabled in the extension
+     * @param gradleProject the project being parsed
      * @return the [AndroidSourceSetsParser] for this project
      */
     @UnsafeDirectAgpApiReference
     fun create(
       parsedConfigurations: Configurations,
       extension: AndroidBaseExtension,
-      hasTestFixturesPlugin: Boolean
+      hasTestFixturesPlugin: Boolean,
+      gradleProject: GradleProject
     ): AndroidSourceSetsParser
   }
 }

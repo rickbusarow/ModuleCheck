@@ -23,6 +23,8 @@ import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.parsing.gradle.model.removeSuffix
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import java.io.File
 
 data class SourceSetBuilder(
@@ -36,7 +38,8 @@ data class SourceSetBuilder(
   var resourceFiles: Set<File>,
   var layoutFiles: Set<File>,
   val upstream: MutableList<SourceSetName>,
-  val downstream: MutableList<SourceSetName>
+  val downstream: MutableList<SourceSetName>,
+  var jvmTarget: JvmTarget = JVM_11
 ) {
   fun toSourceSet() = SourceSet(
     name = name,
@@ -48,6 +51,7 @@ data class SourceSetBuilder(
     jvmFiles = jvmFiles,
     resourceFiles = resourceFiles,
     layoutFiles = layoutFiles,
+    jvmTarget = jvmTarget,
     upstreamLazy = lazy { upstream },
     downstreamLazy = lazy { downstream }
   )
@@ -65,7 +69,8 @@ data class SourceSetBuilder(
         resourceFiles = sourceSet.resourceFiles,
         layoutFiles = sourceSet.layoutFiles,
         upstream = sourceSet.upstream.toMutableList(),
-        downstream = sourceSet.downstream.toMutableList()
+        downstream = sourceSet.downstream.toMutableList(),
+        jvmTarget = sourceSet.jvmTarget
       )
     }
   }
@@ -88,7 +93,8 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
   resourceFiles: Set<File> = emptySet(),
   layoutFiles: Set<File> = emptySet(),
   upstreamNames: List<SourceSetName> = emptyList(),
-  downstreamNames: List<SourceSetName> = emptyList()
+  downstreamNames: List<SourceSetName> = emptyList(),
+  jvmTarget: JvmTarget = JVM_11
 ): SourceSetBuilder {
 
   if (name.isTestFixtures()) {
@@ -124,7 +130,8 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       resourceFiles = resourceFiles,
       layoutFiles = layoutFiles,
       upstream = upstream,
-      downstream = downstreamNames.toMutableList()
+      downstream = downstreamNames.toMutableList(),
+      jvmTarget = jvmTarget
     )
   }
   platformPlugin.populateConfigsFromSourceSets()

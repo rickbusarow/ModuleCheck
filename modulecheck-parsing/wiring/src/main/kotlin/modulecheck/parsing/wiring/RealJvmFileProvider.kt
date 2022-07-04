@@ -96,7 +96,7 @@ class RealJvmFileProvider(
 
         else -> RealJavaFile(
           file = file,
-          javaVersion = project.javaSourceVersion,
+          jvmTarget = project.jvmTarget,
           nameParser = ParsingChain.Factory(
             listOf(
               ConcatenatingParsingInterceptor(
