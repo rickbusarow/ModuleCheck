@@ -27,23 +27,19 @@ mcbuild {
 val main by sourceSets.getting
 val test by sourceSets.getting
 
-java {
-  sourceSets {
-    val integrationTest by creating {
-      kotlin.apply {
-        compileClasspath += main.get().output
-          .plus(test.get().output)
-          .plus(configurations.testRuntimeClasspath.get())
-        runtimeClasspath += output + compileClasspath
-      }
-    }
+val integrationTest by java.sourceSets.registering {
+  kotlin.apply {
+    compileClasspath += main.output
+      .plus(test.output)
+      .plus(configurations.testRuntimeClasspath.get())
+    runtimeClasspath += output + compileClasspath
   }
 }
 
-val integrationTestCompile by configurations.creating {
+val integrationTestCompile by configurations.registering {
   extendsFrom(configurations["testCompileOnly"])
 }
-val integrationTestRuntime by configurations.creating {
+val integrationTestRuntime by configurations.registering {
   extendsFrom(configurations["testRuntimeOnly"])
 }
 
@@ -152,22 +148,41 @@ val generateBuildProperties by tasks.registering {
   val docsWebsite = modulecheck.builds.DOCS_WEBSITE
 
   val buildPropertiesDir = File(generatedDirPath)
-  val buildPropertiesFile = File(buildPropertiesDir, "modulecheck/gradle/task/BuildProperties.kt")
+  val buildPropertiesFile = File(
+    buildPropertiesDir, "modulecheck/gradle/internal/BuildProperties.kt"
+  )
 
   inputs.file(rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"))
   outputs.file(buildPropertiesFile)
 
   doLast {
 
-    buildPropertiesDir.mkdirs()
+    buildPropertiesDir.deleteRecursively()
+    buildPropertiesFile.parentFile.mkdirs()
 
     buildPropertiesFile.writeText(
-      """package modulecheck.gradle.internal
+      """
+      |/*
+      | * Copyright (C) 2021-2022 Rick Busarow
+      | * Licensed under the Apache License, Version 2.0 (the "License");
+      | * you may not use this file except in compliance with the License.
+      | * You may obtain a copy of the License at
+      | *
+      | *      http://www.apache.org/licenses/LICENSE-2.0
+      | *
+      | * Unless required by applicable law or agreed to in writing, software
+      | * distributed under the License is distributed on an "AS IS" BASIS,
+      | * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      | * See the License for the specific language governing permissions and
+      | * limitations under the License.
+      | */
       |
-      |internal object BuildProperties {
-      |  const val VERSION = "$version"
-      |  const val SOURCE_WEBSITE = "$sourceWebsite"
-      |  const val DOCS_WEBSITE = "$docsWebsite"
+      |package modulecheck.gradle.internal
+      |
+      |internal class BuildProperties {
+      |  val version = "$version"
+      |  val sourceWebsite = "$sourceWebsite"
+      |  val docsWebsite = "$docsWebsite"
       |}
       |
       """.trimMargin()
@@ -190,14 +205,14 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
   dependsOn(generateBuildProperties)
 }
 
-val integrationTest by tasks.creating(Test::class) {
+val integrationTestTask = tasks.register("integrationTest", Test::class) {
   val integrationTestSourceSet = java.sourceSets["integrationTest"]
   testClassesDirs = integrationTestSourceSet.output.classesDirs
   classpath = integrationTestSourceSet.runtimeClasspath
   dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
 }
 
-tasks.matching { it.name == "check" }.all { dependsOn(integrationTest) }
+tasks.matching { it.name == "check" }.all { dependsOn(integrationTestTask) }
 
 kotlin {
   val compilations = target.compilations
