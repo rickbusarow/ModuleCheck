@@ -59,7 +59,11 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
       }
     }
 
-    interface McKtConcreteType : McKtType, McConcreteType, McKtElement {
+    interface McKtConcreteType :
+      McKtType,
+      McConcreteType,
+      McKtDeclaredElement,
+      McKtElement {
       override val parent: McKtElement
       override val innerTypes: LazySet<McKtConcreteType>
       override val innerTypesRecursive: LazySet<McKtConcreteType>

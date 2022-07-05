@@ -30,7 +30,7 @@ interface HasReferences {
 }
 
 /** Represents a name -- fully qualified or not -- which references a declaration somewhere else */
-sealed class ReferenceName : McName {
+sealed class ReferenceName : McName, ResolvableMcName {
   /** The [language][CompatibleLanguage] of the file making this reference */
   abstract val language: CompatibleLanguage
 

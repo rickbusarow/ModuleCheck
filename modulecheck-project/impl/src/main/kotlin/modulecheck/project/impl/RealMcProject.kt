@@ -22,6 +22,7 @@ import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.JvmFileProvider
 import modulecheck.project.McProject
@@ -85,14 +86,13 @@ class RealMcProject(
     return "${this::class.java.simpleName}('$path')"
   }
 
-  override suspend fun resolveFqNameOrNull(
-    declaredName: QualifiedDeclaredName,
+  override suspend fun resolvedNameOrNull(
+    resolvableMcName: ResolvableMcName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName? {
     return resolvedDeclaredNames().getSource(
-      declaredName,
+      resolvableMcName,
       sourceSetName
-    )
-      ?.run { declaredName }
+    )?.run { declaration }
   }
 }

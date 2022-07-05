@@ -86,3 +86,9 @@ sealed interface McName : Comparable<McName> {
     }
   }
 }
+
+/**
+ * An [McName] which has the potential to be resolved -- meaning any [ReferenceName], or a
+ * [QualifiedDeclaredName]
+ */
+sealed interface ResolvableMcName : McName

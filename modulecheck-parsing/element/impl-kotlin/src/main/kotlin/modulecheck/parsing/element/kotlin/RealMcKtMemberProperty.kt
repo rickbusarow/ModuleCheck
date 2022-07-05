@@ -18,16 +18,12 @@ package modulecheck.parsing.element.kotlin
 import modulecheck.parsing.element.Declared
 import modulecheck.parsing.element.HasKtVisibility
 import modulecheck.parsing.element.McAnnotation
-import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.McKtDeclaredElement
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.resolve.ParsingContext
-import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
-import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
-import modulecheck.parsing.source.SimpleName
-import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazyDeferred
@@ -40,14 +36,12 @@ import org.jetbrains.kotlin.psi.KtProperty
 data class RealMcKtMemberProperty(
   private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtProperty,
-  override val parent: McKtElement
+  override val parent: McKtDeclaredElement
 ) : McProperty.McKtProperty.KtMemberProperty,
   HasKtVisibility by VisibilityDelegate(psi),
   Declared by DeclaredDelegate(psi, parent) {
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
-
-    psi.delegateExpressionOrInitializer
 
     parsingContext.symbolResolver
       .declaredNameOrNull(psi.typeReference.requireNotNull())
@@ -55,14 +49,7 @@ data class RealMcKtMemberProperty(
       .name
       .asReferenceName(KOTLIN)
   }
-  override val declaredName: DeclaredName
-    get() = TODO("Not yet implemented")
-  override val packageName: PackageName
-    get() = containingFile.packageName
-  override val simpleNames: List<SimpleName>
-    get() = parent
-  override val simpleName: SimpleName
-    get() = psi.name!!.asSimpleName()
+
   override val annotations: LazySet<McAnnotation> = lazySet {
     psi.annotations(parsingContext, parent = this)
   }
@@ -73,9 +60,10 @@ data class RealMcKtMemberProperty(
 data class RealMcKtConstructorProperty(
   private val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtParameter,
-  override val parent: McKtElement
+  override val parent: McKtDeclaredElement
 ) : McProperty.McKtProperty.KtConstructorProperty,
-  HasKtVisibility by VisibilityDelegate(psi) {
+  HasKtVisibility by VisibilityDelegate(psi),
+  Declared by DeclaredDelegate(psi, parent) {
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
 
@@ -86,12 +74,6 @@ data class RealMcKtConstructorProperty(
       .asReferenceName(KOTLIN)
   }
 
-  override val declaredName: DeclaredName
-    get() = TODO("Not yet implemented")
-  override val packageName: PackageName
-    get() = containingFile.packageName
-  override val simpleName: SimpleName
-    get() = psi.name!!.asSimpleName()
   override val annotations: LazySet<McAnnotation> = lazySet {
     psi.annotations(parsingContext, parent = this)
   }

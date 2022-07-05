@@ -127,18 +127,18 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         lib1Class
         kotlin("com.subject.SubjectClass.lib1Class")
 
-      kotlin("Inject")
-      kotlin("com.subject.Inject")
-      kotlin("com.subject.inject")
-      kotlin("com.subject.javax")
-      kotlin("com.subject.javax.inject.Inject")
-      kotlin("com.subject.this")
-      kotlin("com.subject.this.lib1Class")
-      kotlin("inject")
-      kotlin("javax")
-      kotlin("javax.inject.Inject")
-      kotlin("this")
-      kotlin("this.lib1Class")
+        kotlin("Inject")
+        kotlin("com.subject.Inject")
+        kotlin("com.subject.inject")
+        kotlin("com.subject.javax")
+        kotlin("com.subject.javax.inject.Inject")
+        kotlin("com.subject.this")
+        kotlin("com.subject.this.lib1Class")
+        kotlin("inject")
+        kotlin("javax")
+        kotlin("javax.inject.Inject")
+        kotlin("this")
+        kotlin("this.lib1Class")
       }
       apiReferences {
 

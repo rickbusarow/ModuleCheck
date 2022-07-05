@@ -116,7 +116,6 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
 
     file.declaredTypesAndInnerTypes shouldBe listOf<McElement>()
 
-    file.simpleName shouldBe "SourceKt"
     file.imports shouldBe listOf("com.lib1.Lib1Class".asReferenceName())
   }
 

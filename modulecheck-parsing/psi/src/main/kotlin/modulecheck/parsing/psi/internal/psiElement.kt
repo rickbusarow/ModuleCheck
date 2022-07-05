@@ -19,6 +19,7 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
@@ -97,11 +98,18 @@ fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
     .any { it == annotationFqName.shortName().asString() }
 }
 
+suspend fun McProject.canResolveReferenceName(
+  declaredName: ReferenceName,
+  sourceSetName: SourceSetName
+): Boolean {
+  return resolvedNameOrNull(declaredName, sourceSetName) != null
+}
+
 suspend fun McProject.canResolveDeclaredName(
   declaredName: QualifiedDeclaredName,
   sourceSetName: SourceSetName
 ): Boolean {
-  return resolveFqNameOrNull(declaredName, sourceSetName) != null
+  return resolvedNameOrNull(declaredName, sourceSetName) != null
 }
 
 fun PsiElement.file(): File {
@@ -127,7 +135,10 @@ suspend fun PsiElement.declaredNameOrNull(
     // An inner class reference like Abc.Inner is also considered a KtDotQualifiedExpression in
     // some cases.
     is KtDotQualifiedExpression -> {
-      project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
+      project.resolvedNameOrNull(
+        FqName(text).asDeclaredName(packageName),
+        sourceSetName
+      )
         ?.let { return it }
         ?: text
     }
@@ -146,7 +157,7 @@ suspend fun PsiElement.declaredNameOrNull(
         if (qualifierText != null) {
 
           // The generic might be fully qualified. Try to resolve it and return early.
-          project.resolveFqNameOrNull(
+          project.resolvedNameOrNull(
             FqName("$qualifierText.$className").asDeclaredName(packageName),
             sourceSetName
           )
@@ -163,7 +174,10 @@ suspend fun PsiElement.declaredNameOrNull(
 
         // Sometimes a KtUserType is a fully qualified name. Give it a try and return early.
         if (text.contains(".") && text[0].isLowerCase()) {
-          project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
+          project.resolvedNameOrNull(
+            FqName(text).asDeclaredName(packageName),
+            sourceSetName
+          )
             ?.let { return it }
         }
 
@@ -200,6 +214,8 @@ suspend fun PsiElement.declaredNameOrNull(
   val classReferenceOuter = classReference.substringBefore(".")
 
   val importPaths = containingKtFile.importDirectives.mapNotNull { it.importPath }
+
+  println("### class ref -- $classReference")
 
   // First look in the imports for the reference name. If the class is imported, then we know the
   // fully qualified name.
@@ -250,7 +266,7 @@ suspend fun PsiElement.declaredNameOrNull(
       it.importPath?.fqName
     }
     .forEach { importFqName ->
-      project.resolveFqNameOrNull(
+      project.resolvedNameOrNull(
         importFqName.child(Name.identifier(classReference)).asDeclaredName(packageName),
         sourceSetName
       )
@@ -258,7 +274,7 @@ suspend fun PsiElement.declaredNameOrNull(
     }
 
   // If there is no import, then try to resolve the class with the same package as this file.
-  project.resolveFqNameOrNull(
+  project.resolvedNameOrNull(
     containingKtFile.packageFqName.child(Name.identifier(classReference))
       .asDeclaredName(packageName),
     sourceSetName

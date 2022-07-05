@@ -21,7 +21,11 @@ import modulecheck.parsing.source.internal.NameParser
 class ParsingContext<T>(
   val nameParser: NameParser,
   val symbolResolver: SymbolResolver<T>
-)
+) {
+  suspend fun declaredNameOrNull(symbol: T): DeclaredName? {
+    TODO()
+  }
+}
 
 fun interface SymbolResolver<T> {
   suspend fun declaredNameOrNull(symbol: T): DeclaredName?

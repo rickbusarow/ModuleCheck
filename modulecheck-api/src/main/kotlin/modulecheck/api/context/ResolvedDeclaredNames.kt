@@ -15,27 +15,24 @@
 
 package modulecheck.api.context
 
+import kotlinx.coroutines.flow.firstOrNull
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.Found
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.NOT_PRESENT
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 
-data class ResolvedDeclaredNames internal constructor(
-  private val delegate: SafeCache<DeclarationInSourceSet, SourceResult>,
+class ResolvedDeclaredNames private constructor(
+  private val delegate: SafeCache<NameInSourceSet, SourceResult>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResolvedDeclaredNames>
     get() = Key
-
-  internal data class DeclarationInSourceSet(
-    val declaredName: QualifiedDeclaredName,
-    val sourceSetName: SourceSetName
-  )
 
   internal sealed interface SourceResult {
     data class Found(val sourceProject: McProjectWithSourceSetName) : SourceResult
@@ -44,36 +41,44 @@ data class ResolvedDeclaredNames internal constructor(
 
   data class McProjectWithSourceSetName(
     val project: McProject,
-    val sourceSetName: SourceSetName
+    val sourceSetName: SourceSetName,
+    val declaration: QualifiedDeclaredName
   )
 
   suspend fun getSource(
-    declaredName: QualifiedDeclaredName,
+    name: ResolvableMcName,
     sourceSetName: SourceSetName
   ): McProjectWithSourceSetName? {
-    val declarationInSourceSet = DeclarationInSourceSet(declaredName, sourceSetName)
+    val nameInSourceSet = NameInSourceSet(name, sourceSetName)
 
     val existing = delegate
-      .getOrPut(declarationInSourceSet) { fetchNewSource(declaredName, sourceSetName) }
+      .getOrPut(nameInSourceSet) { fetchNewSource(name, sourceSetName) }
 
     return (existing as? Found)?.sourceProject
   }
 
   private suspend fun fetchNewSource(
-    declaredName: QualifiedDeclaredName,
+    name: ResolvableMcName,
     sourceSetName: SourceSetName
   ): SourceResult {
 
     return sourceSetName.withUpstream(project)
       .firstNotNullOfOrNull { sourceSetOrUpstream ->
 
-        val hasDeclaration = project.declarations()
-          .get(sourceSetOrUpstream, includeUpstream = false)
-          .contains(declaredName)
+        val s: Set<Int> = setOf(1, 2, 3)
 
-        if (hasDeclaration) {
-          Found(McProjectWithSourceSetName(project, sourceSetOrUpstream))
-        } else null
+        project.declarations()
+          .get(sourceSetOrUpstream, includeUpstream = false)
+          .firstOrNull { it is QualifiedDeclaredName && it == name }
+          ?.let {
+            Found(
+              McProjectWithSourceSetName(
+                project = project,
+                sourceSetName = sourceSetOrUpstream,
+                declaration = it as QualifiedDeclaredName
+              )
+            )
+          }
       } ?: project.classpathDependencies()
       .get(sourceSetName)
       .asSequence()
@@ -88,7 +93,7 @@ data class ResolvedDeclaredNames internal constructor(
           .firstNotNullOfOrNull { dependencySourceSetName ->
             sourceCpd.project(project)
               .resolvedDeclaredNames()
-              .getSource(declaredName, dependencySourceSetName)
+              .getSource(name, dependencySourceSetName)
           }
       }
       ?.let { Found(it) }
@@ -103,6 +108,11 @@ data class ResolvedDeclaredNames internal constructor(
       )
     }
   }
+
+  data class NameInSourceSet(
+    val name: ResolvableMcName,
+    val sourceSetName: SourceSetName
+  )
 }
 
 suspend fun ProjectContext.resolvedDeclaredNames(): ResolvedDeclaredNames =

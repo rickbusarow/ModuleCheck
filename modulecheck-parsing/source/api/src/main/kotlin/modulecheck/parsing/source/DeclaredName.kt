@@ -23,6 +23,7 @@ import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asString
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.singletonList
 import org.jetbrains.kotlin.name.FqName
 
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
@@ -87,7 +88,12 @@ sealed interface DeclaredName : McName, HasSimpleNames {
 }
 
 /** Represents a "declaration" -- a named object which can be referenced elsewhere. */
-sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSimpleNames {
+sealed class QualifiedDeclaredName :
+  DeclaredName,
+  McName,
+  HasPackageName,
+  HasSimpleNames,
+  ResolvableMcName {
 
   override val name: String
     get() = packageName.append(simpleNames.asString())
@@ -156,4 +162,15 @@ fun Iterable<SimpleName>.asDeclaredName(
     !languages.contains(KOTLIN) -> DeclaredName.java(packageName, this)
     else -> DeclaredName.agnostic(packageName, this)
   }
+}
+
+/**
+ * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
+ *   [SimpleNames][SimpleName]
+ */
+fun SimpleName.asDeclaredName(
+  packageName: PackageName,
+  vararg languages: CompatibleLanguage
+): QualifiedDeclaredName {
+  return singletonList().asDeclaredName(packageName, *languages)
 }

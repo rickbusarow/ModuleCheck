@@ -23,10 +23,10 @@ import modulecheck.parsing.element.McType.McConcreteType
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.HasPackageName
+import modulecheck.parsing.source.HasSimpleNames
 import modulecheck.parsing.source.RawAnvilAnnotatedType
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.SimpleName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.LazySet.DataSource
@@ -35,10 +35,9 @@ import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
-interface Declared : HasVisibility {
-  val packageName: PackageName
-  val simpleNames: List<SimpleName>
-  val simpleName: SimpleName get() = simpleNames.last()
+interface Declared :
+  HasPackageName,
+  HasSimpleNames {
   val declaredName: DeclaredName
 }
 
@@ -92,6 +91,8 @@ sealed interface McKtElement : McElement {
     }
 }
 
+sealed interface McKtDeclaredElement : McKtElement, Declared
+
 sealed interface McElementWithParent<E : McElement> : McElement {
   val parent: E
 }
@@ -131,7 +132,7 @@ interface McAnnotationArgument : McElement, McElementWithParent<McElement> {
   val value: Any
 }
 
-sealed interface McFile : McElement, Declared {
+sealed interface McFile : McElement, HasPackageName {
 
   val file: File
   val imports: DataSource<ReferenceName>
@@ -149,7 +150,10 @@ sealed interface McFile : McElement, Declared {
    *
    * @since 0.13.0
    */
-  interface McKtFile : McFile, McKtElement, McAnnotated {
+  interface McKtFile :
+    McFile,
+    McKtElement,
+    McAnnotated {
     override val psi: KtFile
 
     override val declaredTypes: LazySet<McKtConcreteType>

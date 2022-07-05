@@ -29,7 +29,6 @@ import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtCo
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtInterface
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtObject
 import modulecheck.parsing.element.McType.McConcreteType.McKtType
-import modulecheck.parsing.element.McVisibility
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
@@ -79,7 +78,11 @@ abstract class AbstractMcKtConcreteType internal constructor(
   override val properties: LazySet<McProperty> = lazySet {
     psi.body?.properties
       .orEmpty()
-      .mapToSet { RealMcKtMemberProperty(parsingContext, it, this) }
+      .mapToSet {
+        RealMcKtMemberProperty(
+          parsingContext = parsingContext, psi = it, parent = this
+        )
+      }
       .plus(
         psi.primaryConstructor
           ?.valueParameters
@@ -93,8 +96,6 @@ abstract class AbstractMcKtConcreteType internal constructor(
   override val typeParameters: LazySet<McType.McGenericType>
     get() = TODO("Not yet implemented")
   override val packageName: PackageName
-    get() = TODO("Not yet implemented")
-  override val visibility: McVisibility
     get() = TODO("Not yet implemented")
 
   final override fun toString(): String {

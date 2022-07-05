@@ -26,13 +26,10 @@ import modulecheck.parsing.element.McFile.McKtFile.ScopeArgumentParseResult
 import modulecheck.parsing.element.McFunction
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
-import modulecheck.parsing.element.McVisibility
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.SimpleName
-import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.lazySet
@@ -72,7 +69,7 @@ class RealMcKtFile(
 
   private val importParser by unsafeLazy { ImportParser(psi.importDirectives) }
 
-  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
+  // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo"`
   override val importAliases by lazy {
     importParser.aliasMap
   }
@@ -85,16 +82,7 @@ class RealMcKtFile(
     importParser.wildcards
   }
 
-  override val simpleNames: List<SimpleName> by lazy {
-    fileJavaFacadeName.stripPackageNameFromFqName(packageName)
-  }
-  override val declaredName: DeclaredName by lazy {
-    DeclaredName.kotlin(packageName, simpleNames)
-  }
-
   override val packageName: PackageName by lazy { PackageName(psi.packageFqName.asString()) }
-  override val visibility: McVisibility
-    get() = TODO("Not yet implemented")
 
   override val topLevelFunctions: LazySet<McFunction>
     get() = TODO("Not yet implemented")
