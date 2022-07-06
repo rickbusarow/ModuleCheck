@@ -46,13 +46,19 @@ sealed interface McName : Comparable<McName> {
     return name.endsWith(str)
   }
 
-  /** @return true if the last segment of this symbol matches [str], otherwise false */
+  /** @return true if the last segment of this name matches [str], otherwise false */
   fun endsWithSimpleName(str: String): Boolean {
     return name.split('.').last() == str
   }
 
-  fun endsWith(symbol: McName): Boolean {
-    return name.endsWith(symbol.name)
+  /** @return true if the last segment of this name matches [simpleName], otherwise false */
+  fun endsWithSimpleName(simpleName: SimpleName): Boolean {
+    return name.split('.').last() == simpleName.name
+  }
+
+  /** @return true if the last segment of this name matches [other], otherwise false */
+  fun endsWith(other: McName): Boolean {
+    return name.endsWith(other.name)
   }
 
   override fun compareTo(other: McName): Int {

@@ -24,17 +24,22 @@ import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.element.McElement
 import modulecheck.parsing.element.McProperty.McKtProperty.KtConstructorProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.resolve.AndroidDataBindingReferenceParsingInterceptor2
+import modulecheck.parsing.element.resolve.AndroidResourceReferenceParsingInterceptor2
+import modulecheck.parsing.element.resolve.ConcatenatingParsingInterceptor2
+import modulecheck.parsing.element.resolve.ImportAliasUnwrappingParsingInterceptor2
+import modulecheck.parsing.element.resolve.InterpretingInterceptor2
+import modulecheck.parsing.element.resolve.ParsingChain2
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
-import modulecheck.parsing.source.internal.InterpretingInterceptor
-import modulecheck.parsing.source.internal.ParsingChain
 import modulecheck.parsing.test.McNameTest
+import modulecheck.parsing.wiring.RealAndroidDataBindingNameProvider
+import modulecheck.parsing.wiring.RealAndroidRNameProvider
 import modulecheck.parsing.wiring.RealDeclarationsInPackageProvider
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -195,12 +200,17 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
   ): RealMcKtFile {
     return runBlocking(Trace.start(RealMcKtFileTest::class)) {
 
+      val androidDataBinding = RealAndroidDataBindingNameProvider(this@createFile, sourceSetName)
+      val androidRNameProvider = RealAndroidRNameProvider(this@createFile, sourceSetName)
       val declarationsInPackage = RealDeclarationsInPackageProvider(this@createFile)
 
-      val nameParser = ParsingChain.Factory(
+      val nameParser = ParsingChain2.Factory(
         listOf(
-          ConcatenatingParsingInterceptor(declarationsInPackage, sourceSetName),
-          InterpretingInterceptor()
+          ImportAliasUnwrappingParsingInterceptor2(),
+          ConcatenatingParsingInterceptor2(declarationsInPackage, sourceSetName),
+          AndroidResourceReferenceParsingInterceptor2(androidRNameProvider),
+          AndroidDataBindingReferenceParsingInterceptor2(androidDataBinding),
+          InterpretingInterceptor2()
         )
       )
 

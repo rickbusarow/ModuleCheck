@@ -15,18 +15,13 @@
 
 package modulecheck.parsing.wiring
 
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import modulecheck.api.context.jvmFilesForSourceSetName
+import modulecheck.api.context.declarations
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.internal.DeclarationsInPackageProvider
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazySet
-import modulecheck.utils.lazy.dataSource
-import modulecheck.utils.lazy.toLazySet
 
 class RealDeclarationsInPackageProvider(
   private val project: McProject
@@ -35,21 +30,13 @@ class RealDeclarationsInPackageProvider(
     sourceSetName: SourceSetName,
     packageName: PackageName
   ): LazySet<DeclaredName> {
-    return project.jvmFilesForSourceSetName(sourceSetName)
-      .filter { it.packageName == packageName }
-      .map { dataSource { it.declarations } }
-      .toList()
-      .toLazySet()
+    return project.declarations().get(sourceSetName, false, packageName)
   }
 
   override suspend fun getWithUpstream(
     sourceSetName: SourceSetName,
     packageName: PackageName
   ): LazySet<DeclaredName> {
-    return sourceSetName.withUpstream(project)
-      .map { sourceSetOrUpstream ->
-        get(sourceSetOrUpstream, packageName)
-      }
-      .toLazySet()
+    return project.declarations().get(sourceSetName, true, packageName)
   }
 }

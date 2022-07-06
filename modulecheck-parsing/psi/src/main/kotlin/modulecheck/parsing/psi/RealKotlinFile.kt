@@ -356,13 +356,14 @@ class RealKotlinFile(
   ): RawAnvilAnnotatedType? {
     val valueArgument = valueArgumentList?.getByNameOrIndex(0, "scope") ?: return null
 
-    val entryText = // remove the names for arguments
-      ReferenceName(
-        valueArgument.text
-          .remove(".+=+".toRegex()) // remove the names for arguments
-          .replace("::class", "").trim(),
-        KOTLIN
-      )
+    val entryText = ReferenceName(
+      valueArgument.text
+        // remove the names for arguments
+        .remove(".+=+".toRegex())
+        .remove("::class")
+        .trim(),
+      KOTLIN
+    )
 
     val resolvedScope = this@RealKotlinFile.references
       .firstOrNull { ref -> ref.endsWith(entryText) }

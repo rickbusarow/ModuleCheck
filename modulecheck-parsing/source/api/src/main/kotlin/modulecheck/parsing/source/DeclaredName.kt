@@ -100,6 +100,12 @@ sealed class QualifiedDeclaredName :
 
   override val segments: List<String> by unsafeLazy { name.split('.') }
 
+  /**
+   * `true` if a declaration is top-level in a file, otherwise `false` such as if the declaration is
+   * a nested type or a member declaration
+   */
+  val isTopLevel: Boolean by unsafeLazy { simpleNames.size == 1 }
+
   final override fun equals(other: Any?): Boolean {
     if (this === other) return true
 

@@ -18,30 +18,38 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-element-kotlin"
+  artifactId = "modulecheck-parsing-element-api"
+  anvil = true
 }
 
 dependencies {
+
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
-
-  api(project(path = ":modulecheck-parsing:element:impl-resolve"))
+  api(libs.kotlin.compiler)
+  api(libs.semVer)
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:element:api"))
+  api(project(path = ":modulecheck-parsing:element:impl-resolve"))
   api(project(path = ":modulecheck-parsing:psi"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:cache"))
   api(project(path = ":modulecheck-utils:lazy"))
-
   compileOnly(libs.kotlin.reflect)
-
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
-
+  testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner)
-
+  testImplementation(libs.kotlin.reflect)
   testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))

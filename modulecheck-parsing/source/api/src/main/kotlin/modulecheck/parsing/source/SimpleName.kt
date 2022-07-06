@@ -33,8 +33,8 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
   override fun compareTo(other: SimpleName): Int = name.compareTo(other.name)
 
   companion object {
-    /** shorthand for `joinToString(".") { it.name }` */
-    fun List<SimpleName>.asString() = joinToString(".") { it.name }
+    /** shorthand for `joinToString(".") { it.name.trim() }` */
+    fun List<SimpleName>.asString() = joinToString(".") { it.name.trim() }
 
     /** wraps this String in a [SimpleName] */
     fun String.asSimpleName() = SimpleName(this)

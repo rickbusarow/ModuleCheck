@@ -13,19 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.element.resolve
+package modulecheck.parsing.psi.internal
 
+import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
+import modulecheck.utils.lazy.LazySet
 
-class ParsingContext<T>(
-  val nameParser: NameParser2,
-  val symbolResolver: SymbolResolver<T>
-) {
-  suspend fun declaredNameOrNull(symbol: T): DeclaredName? {
-    TODO()
-  }
-}
+interface DeclarationsInPackageProvider {
+  suspend fun get(
+    sourceSetName: SourceSetName,
+    packageName: PackageName
+  ): LazySet<DeclaredName>
 
-fun interface SymbolResolver<T> {
-  suspend fun declaredNameOrNull(symbol: T): DeclaredName?
+  suspend fun getWithUpstream(
+    sourceSetName: SourceSetName,
+    packageName: PackageName
+  ): LazySet<DeclaredName>
 }

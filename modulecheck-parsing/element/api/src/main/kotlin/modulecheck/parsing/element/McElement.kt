@@ -39,6 +39,8 @@ interface Declared :
   HasPackageName,
   HasSimpleNames {
   val declaredName: DeclaredName
+
+  val isApi: Boolean get() = false
 }
 
 /**

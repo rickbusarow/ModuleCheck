@@ -107,6 +107,7 @@ include(
   ":modulecheck-parsing:android",
   ":modulecheck-parsing:element:api",
   ":modulecheck-parsing:element:impl-kotlin",
+  ":modulecheck-parsing:element:impl-resolve",
   ":modulecheck-parsing:gradle:dsl:api",
   ":modulecheck-parsing:gradle:dsl:internal",
   ":modulecheck-parsing:gradle:dsl:precompiled",
