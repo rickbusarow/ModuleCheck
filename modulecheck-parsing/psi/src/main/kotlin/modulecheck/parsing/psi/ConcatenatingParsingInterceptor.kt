@@ -17,7 +17,7 @@ package modulecheck.parsing.psi
 
 import kotlinx.coroutines.flow.firstOrNull
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.psi.internal.DeclarationsInPackageProvider
+import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
@@ -25,7 +25,7 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 
 class ConcatenatingParsingInterceptor(
-  private val declarationsInPackageProvider: DeclarationsInPackageProvider,
+  private val declarationsProvider: DeclarationsProvider,
   private val sourceSetName: SourceSetName
 ) : ParsingInterceptor {
 
@@ -41,9 +41,9 @@ class ConcatenatingParsingInterceptor(
     val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
 
     val declarationsInPackage = lazyDeferred {
-      declarationsInPackageProvider.getWithUpstream(
+      declarationsProvider.getWithUpstream(
         sourceSetName = sourceSetName,
-        packageName = packet.packageName
+        packageNameOrNull = packet.packageName
       )
     }
 

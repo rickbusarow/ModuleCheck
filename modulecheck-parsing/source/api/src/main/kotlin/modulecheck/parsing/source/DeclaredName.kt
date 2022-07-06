@@ -20,6 +20,7 @@ import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.SimpleName.Companion.asString
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.unsafeLazy
@@ -99,6 +100,10 @@ sealed class QualifiedDeclaredName :
     get() = packageName.append(simpleNames.asString())
 
   override val segments: List<String> by unsafeLazy { name.split('.') }
+
+  open fun asReferenceName(language: CompatibleLanguage): ReferenceName {
+    return name.asReferenceName(language)
+  }
 
   /**
    * `true` if a declaration is top-level in a file, otherwise `false` such as if the declaration is

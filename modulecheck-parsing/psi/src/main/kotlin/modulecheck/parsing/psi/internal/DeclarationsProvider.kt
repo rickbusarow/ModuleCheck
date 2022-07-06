@@ -13,30 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.wiring
+package modulecheck.parsing.psi.internal
 
-import modulecheck.api.context.declarations
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.psi.internal.DeclarationsInPackageProvider
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
-import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazySet
 
-class RealDeclarationsInPackageProvider(
-  private val project: McProject
-) : DeclarationsInPackageProvider {
-  override suspend fun get(
+interface DeclarationsProvider {
+  suspend fun get(
     sourceSetName: SourceSetName,
     packageName: PackageName
-  ): LazySet<DeclaredName> {
-    return project.declarations().get(sourceSetName, false, packageName)
-  }
+  ): LazySet<DeclaredName>
 
-  override suspend fun getWithUpstream(
+  suspend fun getWithUpstream(
     sourceSetName: SourceSetName,
-    packageName: PackageName
-  ): LazySet<DeclaredName> {
-    return project.declarations().get(sourceSetName, true, packageName)
-  }
+    packageNameOrNull: PackageName? = null
+  ): LazySet<DeclaredName>
 }

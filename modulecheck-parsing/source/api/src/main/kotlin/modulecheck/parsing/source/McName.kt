@@ -15,6 +15,10 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import modulecheck.utils.lazy.LazySet
+
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
@@ -98,3 +102,9 @@ sealed interface McName : Comparable<McName> {
  * [QualifiedDeclaredName]
  */
 sealed interface ResolvableMcName : McName
+
+suspend inline fun <reified T : McName> LazySet<McName>.getNameOrNull(element: McName): T? {
+  return takeIf { it.contains(element) }
+    ?.filterIsInstance<T>()
+    ?.firstOrNull { it == element }
+}

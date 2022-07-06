@@ -15,17 +15,35 @@
 
 package modulecheck.parsing.element.resolve
 
-import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.element.McFile
+import modulecheck.parsing.element.resolve.NameParser2.NameParser2Packet
+import modulecheck.parsing.source.McName.CompatibleLanguage
+import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ReferenceName
 
 class ParsingContext<T>(
   val nameParser: NameParser2,
-  val symbolResolver: SymbolResolver<T>
+  val symbolResolver: SymbolResolver<T>,
+  val language: CompatibleLanguage,
+  val stdLibNameOrNull: ReferenceName.() -> QualifiedDeclaredName?
 ) {
-  suspend fun declaredNameOrNull(symbol: T): DeclaredName? {
+  suspend fun declaredNameOrNull(symbol: T): QualifiedDeclaredName? {
     TODO()
+  }
+
+  suspend fun resolveReferenceNameOrNull(file: McFile, toResolve: ReferenceName): ReferenceName? {
+
+    return nameParser.parse(
+      NameParser2Packet(
+        file = file,
+        toResolve = toResolve,
+        referenceLanguage = language,
+        stdLibNameOrNull = stdLibNameOrNull
+      )
+    )
   }
 }
 
 fun interface SymbolResolver<T> {
-  suspend fun declaredNameOrNull(symbol: T): DeclaredName?
+  suspend fun declaredNameOrNull(symbol: T): QualifiedDeclaredName?
 }

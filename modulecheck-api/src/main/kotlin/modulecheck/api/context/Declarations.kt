@@ -68,7 +68,7 @@ data class Declarations private constructor(
   suspend fun get(
     sourceSetName: SourceSetName,
     includeUpstream: Boolean,
-    packageNameOrNull: PackageName?
+    packageNameOrNull: PackageName? = null
   ): LazySet<DeclaredName> {
     val key = Parameterized(sourceSetName, includeUpstream, packageNameOrNull)
     return delegate.getOrPut(key) {
@@ -126,7 +126,7 @@ suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
 suspend fun ProjectDependency.declarations(
   projectCache: ProjectCache,
-  packageNameOrNull: PackageName?
+  packageNameOrNull: PackageName? = null
 ): LazySet<DeclaredName> {
   val project = projectCache.getValue(path)
   if (isTestFixture) {

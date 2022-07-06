@@ -79,7 +79,7 @@ class RealJvmFileProvider(
           nameParser = ParsingChain.Factory(
             listOf(
               ConcatenatingParsingInterceptor(
-                RealDeclarationsInPackageProvider(project),
+                RealDeclarationsProvider(project),
                 sourceSetName
               ),
               AndroidResourceReferenceParsingInterceptor(
@@ -100,7 +100,7 @@ class RealJvmFileProvider(
           nameParser = ParsingChain.Factory(
             listOf(
               ConcatenatingParsingInterceptor(
-                RealDeclarationsInPackageProvider(project),
+                RealDeclarationsProvider(project),
                 sourceSetName
               ),
               AndroidResourceReferenceParsingInterceptor(

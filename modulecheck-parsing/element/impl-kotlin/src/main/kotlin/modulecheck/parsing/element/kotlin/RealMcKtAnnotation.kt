@@ -18,14 +18,16 @@ package modulecheck.parsing.element.kotlin
 import modulecheck.parsing.element.McAnnotation.McKtAnnotation
 import modulecheck.parsing.element.McAnnotationArgument.McKtAnnotationArgument
 import modulecheck.parsing.element.McKtElement
+import modulecheck.parsing.element.resolve.NameParser2.NameParser2Packet
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.internal.NameParser.NameParserPacket
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtAnnotated
 import org.jetbrains.kotlin.psi.KtAnnotationEntry
@@ -52,21 +54,14 @@ data class RealMcKtAnnotation(
   override val referenceName = lazyDeferred {
 
     parsingContext.nameParser.parse(
-      NameParserPacket(
-        packageName = containingFile.packageName,
-        imports = containingFile.imports.get().mapToSet { it.name },
-        wildcardImports = containingFile.wildcardImports.get(),
-        aliasedImports = containingFile.importAliases,
-        resolved = emptySet(),
-        unresolved = emptySet(),
-        mustBeApi = emptySet(),
-        apiReferenceNames = emptySet(),
+      NameParser2Packet(
+        file = containingFile,
+        toResolve = psi.shortName!!.asString().asReferenceName(KOTLIN),
         referenceLanguage = KOTLIN,
-        stdLibNameOrNull = String::kotlinStdLibNameOrNull
+        stdLibNameOrNull = { name.kotlinStdLibNameOrNull() }
       )
     )
-      .resolved
-      .singleOrNull { it.endsWith(psi.shortName!!.asString()) }
+      .requireNotNull()
   }
 }
 

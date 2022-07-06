@@ -15,12 +15,12 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.flow.firstOrNull
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.Found
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.NOT_PRESENT
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ResolvableMcName
+import modulecheck.parsing.source.getNameOrNull
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -65,17 +65,15 @@ class ResolvedDeclaredNames private constructor(
     return sourceSetName.withUpstream(project)
       .firstNotNullOfOrNull { sourceSetOrUpstream ->
 
-        val s: Set<Int> = setOf(1, 2, 3)
-
         project.declarations()
           .get(sourceSetOrUpstream, includeUpstream = false)
-          .firstOrNull { it is QualifiedDeclaredName && it == name }
+          .getNameOrNull<QualifiedDeclaredName>(name)
           ?.let {
             Found(
               McProjectWithSourceSetName(
                 project = project,
                 sourceSetName = sourceSetOrUpstream,
-                declaration = it as QualifiedDeclaredName
+                declaration = it
               )
             )
           }

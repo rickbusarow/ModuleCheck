@@ -51,14 +51,6 @@ internal class DeclaredDelegate<T : KtModifierListOwner, E>(
 
   override val packageName: PackageName by unsafeLazy { parent.packageName }
   override val simpleNames: List<SimpleName> by unsafeLazy {
-
-    println(
-      """ ~~~~~~~~~~~
-      |parent --------- $parent
-      |parent simple -- ${parent.simpleNames}
-      |psi simple ----- ${psi.requireSimpleName()}
-      """.trimMargin()
-    )
     parent.simpleNames + psi.requireSimpleName()
   }
   override val declaredName: DeclaredName by unsafeLazy {

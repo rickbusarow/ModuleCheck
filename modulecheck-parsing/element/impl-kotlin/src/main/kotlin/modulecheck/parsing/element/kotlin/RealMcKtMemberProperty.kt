@@ -30,6 +30,9 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
+import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 
@@ -43,11 +46,34 @@ data class RealMcKtMemberProperty(
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
 
+    // delegate.await()
+
+    // parsingContext.resolveReferenceNameOrNull(
+    //   containingFile,
+    //   psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
+    // )
+    //   .requireNotNull()
+
     parsingContext.symbolResolver
       .declaredNameOrNull(psi.typeReference.requireNotNull())
       .requireNotNull()
       .name
       .asReferenceName(KOTLIN)
+  }
+
+  val delegate = lazyDeferred {
+
+    val expression = when (val expr = psi.delegateExpressionOrInitializer) {
+      is KtDotQualifiedExpression -> expr.selectorExpression
+      is KtExpression -> expr
+      null -> return@lazyDeferred null
+      else -> throw IllegalArgumentException("??? $expr")
+    } as? KtCallExpression
+      ?: return@lazyDeferred null
+
+    expression.typeArguments.joinToString("\n") { it.text }.also(::println)
+
+    println("################  --- ${expression::class.qualifiedName}")
   }
 
   override val annotations: LazySet<McAnnotation> = lazySet {
@@ -66,6 +92,12 @@ data class RealMcKtConstructorProperty(
   Declared by DeclaredDelegate(psi, parent) {
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
+
+    // parsingContext.resolveReferenceNameOrNull(
+    //   containingFile,
+    //   psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
+    // )
+    //   .requireNotNull()
 
     parsingContext.symbolResolver
       .declaredNameOrNull(psi.typeReference.requireNotNull())

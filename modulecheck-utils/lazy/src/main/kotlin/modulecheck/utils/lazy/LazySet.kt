@@ -16,6 +16,8 @@
 package modulecheck.utils.lazy
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toSet
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.flatMapToSet
@@ -87,6 +89,12 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
       }
     }
   }
+}
+
+suspend inline fun <reified T : E, E> LazySet<E>.getOrNull(element: E): T? {
+  return takeIf { it.contains(element) }
+    ?.filterIsInstance<T>()
+    ?.firstOrNull { it == element }
 }
 
 sealed interface LazySetComponent<out E>

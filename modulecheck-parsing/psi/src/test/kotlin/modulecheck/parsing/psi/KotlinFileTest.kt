@@ -300,10 +300,8 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         kotlin("javax.inject.Inject")
         kotlin("com.subject.SubjectClass.lib1Class")
 
-        kotlin("com.subject.lib1Class")
         kotlin("com.subject.this")
         kotlin("com.subject.this.lib1Class")
-        kotlin("lib1Class")
         kotlin("this")
         kotlin("this.lib1Class")
       }

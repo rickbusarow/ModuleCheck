@@ -19,6 +19,7 @@ import modulecheck.parsing.element.McFile
 import modulecheck.parsing.element.resolve.NameParser2.NameParser2Packet
 import modulecheck.parsing.element.resolve.ParsingInterceptor2.Chain
 import modulecheck.parsing.source.McName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
 
 fun interface NameParser2 {
@@ -35,7 +36,7 @@ fun interface NameParser2 {
     val file: McFile,
     val toResolve: ReferenceName,
     val referenceLanguage: McName.CompatibleLanguage,
-    val stdLibNameOrNull: ReferenceName.() -> ReferenceName?
+    val stdLibNameOrNull: ReferenceName.() -> QualifiedDeclaredName?
   )
 }
 

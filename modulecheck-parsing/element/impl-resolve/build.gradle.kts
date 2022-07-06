@@ -30,7 +30,6 @@ dependencies {
   api(libs.semVer)
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:element:api"))
-  api(project(path = ":modulecheck-parsing:element:impl-resolve"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-parsing:source:api"))

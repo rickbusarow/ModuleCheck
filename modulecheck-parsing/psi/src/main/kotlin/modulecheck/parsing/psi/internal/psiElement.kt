@@ -215,8 +215,6 @@ suspend fun PsiElement.declaredNameOrNull(
 
   val importPaths = containingKtFile.importDirectives.mapNotNull { it.importPath }
 
-  println("### class ref -- $classReference")
-
   // First look in the imports for the reference name. If the class is imported, then we know the
   // fully qualified name.
   importPaths
@@ -289,7 +287,7 @@ suspend fun PsiElement.declaredNameOrNull(
 
   // If this doesn't work, then maybe a class from the Kotlin package is used.
   classReference.kotlinStdLibNameOrNull()
-    ?.let { return FqName(it.name).asDeclaredName(packageName) }
+    ?.let { return it }
 
   return null
 }
