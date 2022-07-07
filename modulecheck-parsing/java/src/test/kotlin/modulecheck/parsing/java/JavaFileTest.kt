@@ -175,7 +175,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.apiReferences shouldBe listOf()
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.MyRecord")
@@ -199,7 +199,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.apiReferences shouldBe listOf()
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("MyRecord", PackageName.DEFAULT)
@@ -245,10 +245,10 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -274,7 +274,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.apiReferences shouldBe listOf()
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass")
@@ -299,7 +299,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.apiReferences shouldBe listOf()
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -324,14 +324,14 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        interpreted("com.test.Lib1Class"),
-        interpreted("com.lib1.Lib1Class"),
-        interpreted("Lib1Class")
+        java("com.test.Lib1Class"),
+        java("com.lib1.Lib1Class"),
+        java("Lib1Class")
       )
       file.references shouldBe listOf(
-        interpreted("com.test.Lib1Class"),
-        interpreted("com.lib1.Lib1Class"),
-        interpreted("Lib1Class")
+        java("com.test.Lib1Class"),
+        java("com.lib1.Lib1Class"),
+        java("Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -354,12 +354,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        interpreted("com.lib1.Lib1Class"),
-        interpreted("com.test.com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class"),
+        java("com.test.com.lib1.Lib1Class")
       )
       file.references shouldBe listOf(
-        interpreted("com.lib1.Lib1Class"),
-        interpreted("com.test.com.lib1.Lib1Class")
+        java("com.lib1.Lib1Class"),
+        java("com.test.com.lib1.Lib1Class")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -385,12 +385,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("com.lib1.Lib1Class"),
-        explicit("java.util.List")
+        java("com.lib1.Lib1Class"),
+        java("java.util.List")
       )
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class"),
-        explicit("java.util.List")
+        java("com.lib1.Lib1Class"),
+        java("java.util.List")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -415,10 +415,10 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("java.util.List")
+        java("java.util.List")
       )
       file.references shouldBe listOf(
-        explicit("java.util.List")
+        java("java.util.List")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -444,11 +444,11 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("java.util.List")
+        java("java.util.List")
       )
       file.references shouldBe listOf(
-        explicit("com.lib1.Lib1Class"),
-        explicit("java.util.List")
+        java("com.lib1.Lib1Class"),
+        java("java.util.List")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -473,12 +473,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("java.util.List"),
-        explicit("java.lang.CharSequence")
+        java("java.util.List"),
+        java("java.lang.CharSequence")
       )
       file.references shouldBe listOf(
-        explicit("java.util.List"),
-        explicit("java.lang.CharSequence")
+        java("java.util.List"),
+        java("java.lang.CharSequence")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -503,12 +503,12 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.apiReferences shouldBe listOf(
-        explicit("java.util.List"),
-        explicit("java.lang.String")
+        java("java.util.List"),
+        java("java.lang.String")
       )
       file.references shouldBe listOf(
-        explicit("java.util.List"),
-        explicit("java.lang.String")
+        java("java.util.List"),
+        java("java.lang.String")
       )
       file.declarations shouldBe setOf(
         agnostic("com.test.ParsedClass"),
@@ -534,14 +534,14 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
 
         file.apiReferences shouldBe listOf(
-          interpreted("Lib1Class"),
-          interpreted("com.lib1.Lib1Class"),
-          interpreted("com.test.Lib1Class")
+          java("Lib1Class"),
+          java("com.lib1.Lib1Class"),
+          java("com.test.Lib1Class")
         )
         file.references shouldBe listOf(
-          interpreted("Lib1Class"),
-          interpreted("com.lib1.Lib1Class"),
-          interpreted("com.test.Lib1Class")
+          java("Lib1Class"),
+          java("com.lib1.Lib1Class"),
+          java("com.test.Lib1Class")
         )
         file.declarations shouldBe setOf(
           agnostic("com.test.ParsedClass"),
@@ -567,10 +567,10 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
 
         file.apiReferences shouldBe listOf(
-          explicit("com.lib1.Lib1Class")
+          java("com.lib1.Lib1Class")
         )
         file.references shouldBe listOf(
-          explicit("com.lib1.Lib1Class")
+          java("com.lib1.Lib1Class")
         )
         file.declarations shouldBe setOf(
           agnostic("com.test.ParsedClass"),
@@ -597,16 +597,16 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
         )
 
         file.apiReferences shouldBe listOf(
-          interpreted("Lib1Class"),
-          explicit("java.util.List"),
-          interpreted("com.lib1.Lib1Class"),
-          interpreted("com.test.Lib1Class")
+          java("Lib1Class"),
+          java("java.util.List"),
+          java("com.lib1.Lib1Class"),
+          java("com.test.Lib1Class")
         )
         file.references shouldBe listOf(
-          interpreted("Lib1Class"),
-          explicit("java.util.List"),
-          interpreted("com.lib1.Lib1Class"),
-          interpreted("com.test.Lib1Class")
+          java("Lib1Class"),
+          java("java.util.List"),
+          java("com.lib1.Lib1Class"),
+          java("com.test.Lib1Class")
         )
         file.declarations shouldBe setOf(
           agnostic("com.test.ParsedClass"),
@@ -708,7 +708,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.references shouldBe listOf(
         androidR("com.modulecheck.other".asPackageName()),
-        explicit("com.modulecheck.other.R.string"),
+        java("com.modulecheck.other.R.string"),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -849,7 +849,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
 
       file.references shouldBe listOf(
         androidR("com.modulecheck.other".asPackageName()),
-        explicit("com.modulecheck.other.R.string"),
+        java("com.modulecheck.other.R.string"),
         qualifiedAndroidResource("com.modulecheck.other.R.string.app_name"),
         unqualifiedAndroidResource("R.string.app_name")
       )
@@ -1006,8 +1006,8 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
       )
 
       file.references shouldBe listOf(
-        explicit("com.test.AnInterface"),
-        explicit("org.junit.Test")
+        java("com.test.AnInterface"),
+        java("org.junit.Test")
       )
 
       file.declarations shouldBe listOf(
@@ -1043,8 +1043,7 @@ internal class JavaFileTest : ProjectTest(), McNameTest {
     }
   }
 
-  fun explicit(name: String) = ReferenceName(name, JAVA)
-  fun interpreted(name: String) = ReferenceName(name, JAVA)
+  fun java(name: String) = ReferenceName(name, JAVA)
 
   fun McProject.createFile(
     @Language("java")
