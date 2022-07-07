@@ -935,10 +935,65 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
   }
 
   @Test
+  fun `class with name wrapped in backticks is allowed`() = test {
+
+    val file = project.createFile(
+      """
+        package com.subject
+
+        class `outer in backticks` {
+          inner class `inner in backticks` {
+            fun `function in backticks`() { }
+          }
+        }
+        """
+    )
+
+    file shouldBe {
+      declarations {
+        kotlin(
+          "`outer in backticks`.`inner in backticks`.`function in backticks`",
+          packageName = "com.subject".asPackageName()
+        )
+        kotlin("`outer in backticks`", packageName = "com.subject".asPackageName())
+        kotlin(
+          "`outer in backticks`.`inner in backticks`",
+          packageName = "com.subject".asPackageName()
+        )
+      }
+    }
+  }
+
+  @Test
+  fun `function with name wrapped in backticks is allowed`() = test {
+
+    val file = project.createFile(
+      """
+        import com.lib1.Lib1Class
+
+        class Subject {
+          fun `name in backticks`() = Unit
+        }
+        """
+    )
+
+    file shouldBe {
+      references {
+        kotlin("com.lib1.Lib1Class")
+        kotlin("kotlin.Unit")
+      }
+
+      declarations {
+        agnostic("Subject", packageName = PackageName(null))
+        kotlin("Subject.`name in backticks`", packageName = PackageName(null))
+      }
+    }
+  }
+
+  @Test
   fun `file without package should put declarations at the root`() = test {
 
     val file = project.createFile(
-      //language=text
       """
         import com.lib1.Lib1Class
 
