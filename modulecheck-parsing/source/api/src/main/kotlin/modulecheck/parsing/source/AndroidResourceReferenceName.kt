@@ -98,8 +98,4 @@ class AndroidDataBindingReferenceName(
 class QualifiedAndroidResourceReferenceName constructor(
   override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName() {
-  init {
-    println(Exception("<Rick>").stackTraceToString())
-  }
-}
+) : AndroidResourceReferenceName()
