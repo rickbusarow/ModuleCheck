@@ -16,6 +16,7 @@
 package modulecheck.parsing.psi
 
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
@@ -343,7 +344,9 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
     )
   }
 
-  fun parse(file: File) = KotlinAndroidGradleParser(NoContextPsiFileFactory()).parse(file)
+  fun parse(file: File) = runBlocking {
+    KotlinAndroidGradleParser(NoContextPsiFileFactory()).parse(file)
+  }
 
   fun runTest(block: (enabled: Boolean) -> Unit): List<DynamicTest> {
     return listOf(true, false).map { enabled ->
