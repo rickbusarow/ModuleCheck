@@ -25,6 +25,9 @@ import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
+import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.source.JvmFile
