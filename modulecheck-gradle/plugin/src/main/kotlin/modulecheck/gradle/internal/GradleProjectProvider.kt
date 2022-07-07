@@ -24,8 +24,9 @@ import modulecheck.gradle.GradleMcLogger
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
-import modulecheck.gradle.platforms.internal.toJavaVersion
+import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
 import modulecheck.parsing.gradle.model.ProjectPath
@@ -45,9 +46,7 @@ import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
-import org.jetbrains.kotlin.config.JvmTarget
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 import org.gradle.api.artifacts.ProjectDependency as GradleProjectDependency
@@ -67,7 +66,7 @@ class GradleProjectProvider @Inject constructor(
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
   private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
-  private val projectDependency: modulecheck.model.dependency.ProjectDependency.Factory,
+  private val projectDependency: ProjectDependency.Factory,
   private val externalDependency: ExternalDependency.Factory
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
@@ -135,7 +134,7 @@ class GradleProjectProvider @Inject constructor(
       anvilGradlePlugin = gradleProject.anvilGradlePluginOrNull(),
       logger = gradleLogger,
       jvmFileProviderFactory = jvmFileProviderFactory,
-      jvmTarget = gradleProject.javaVersion(),
+      jvmTarget = gradleProject.jvmTarget(),
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       buildFileParserFactory = buildFileParserFactory,
@@ -188,13 +187,6 @@ class GradleProjectProvider @Inject constructor(
       }
       .toMutableMap()
     ProjectDependencies(map)
-  }
-
-  private fun GradleProject.javaVersion(): JvmTarget {
-    return extensions.findByType(JavaPluginExtension::class.java)
-      ?.sourceCompatibility
-      ?.toJavaVersion()
-      ?: JvmTarget.JVM_1_8
   }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {

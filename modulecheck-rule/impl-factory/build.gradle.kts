@@ -33,6 +33,7 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-utils:trace"))
+  api(project(path = ":modulecheck-utils:trace"))
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-finding:impl"))

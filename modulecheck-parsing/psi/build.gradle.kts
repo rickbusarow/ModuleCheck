@@ -30,6 +30,7 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   implementation(project(path = ":modulecheck-parsing:element:api"))
+  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:api"))
   implementation(project(path = ":modulecheck-reporting:logging:api"))

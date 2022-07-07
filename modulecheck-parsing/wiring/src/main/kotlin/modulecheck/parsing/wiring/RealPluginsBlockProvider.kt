@@ -20,8 +20,8 @@ import modulecheck.dagger.AppScope
 import modulecheck.parsing.gradle.dsl.PluginsBlock
 import modulecheck.parsing.gradle.dsl.PluginsBlockProvider
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
-import modulecheck.parsing.psi.internal.asKtFile
 import org.jetbrains.kotlin.incremental.isKotlinFile
 import java.io.File
 import javax.inject.Inject
@@ -30,12 +30,16 @@ import javax.inject.Provider
 class RealPluginsBlockProvider(
   private val groovyParser: GroovyPluginsBlockParser,
   private val kotlinParser: KotlinPluginsBlockParser,
-  private val buildFile: File
+  private val buildFile: File,
+  private val psiFileFactory: NoContextPsiFileFactory
 ) : PluginsBlockProvider {
 
   override fun get(): PluginsBlock? {
     return when {
-      buildFile.isKotlinFile(listOf("kts")) -> kotlinParser.parse(buildFile.asKtFile())
+      buildFile.isKotlinFile(listOf("kts")) ->
+        kotlinParser
+          .parse(psiFileFactory.createKotlin(buildFile))
+
       buildFile.extension == "gradle" -> groovyParser.parse(buildFile)
       else -> throw IllegalArgumentException(
         "The file argument must be either a `*.gradle.kts` file or `*.gradle`.  " +
@@ -47,13 +51,15 @@ class RealPluginsBlockProvider(
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val groovyParserProvider: Provider<GroovyPluginsBlockParser>,
-    private val kotlinParserProvider: Provider<KotlinPluginsBlockParser>
+    private val kotlinParserProvider: Provider<KotlinPluginsBlockParser>,
+    private val psiFileFactory: NoContextPsiFileFactory
   ) : PluginsBlockProvider.Factory {
     override fun create(buildFile: File): PluginsBlockProvider {
       return RealPluginsBlockProvider(
         groovyParser = groovyParserProvider.get(),
         kotlinParser = kotlinParserProvider.get(),
-        buildFile = buildFile
+        buildFile = buildFile,
+        psiFileFactory = psiFileFactory
       )
     }
   }

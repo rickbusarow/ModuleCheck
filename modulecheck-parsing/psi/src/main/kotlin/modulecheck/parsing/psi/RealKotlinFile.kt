@@ -17,6 +17,7 @@ package modulecheck.parsing.psi
 
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.callSiteName
 import modulecheck.parsing.psi.internal.fqNameSafe
@@ -72,12 +73,17 @@ import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
+import java.io.File
 
 class RealKotlinFile(
-  val psi: KtFile,
+  override val file: File,
+  override val psi: KtFile,
   private val psiResolver: PsiElementResolver,
-  private val nameParser: NameParser
+  private val nameParser: NameParser,
+  private val kotlinEnvironment: KotlinEnvironment
 ) : KotlinFile {
+
+  private val bindingContext by lazy { kotlinEnvironment.bindingContext }
 
   override val name = psi.name
 

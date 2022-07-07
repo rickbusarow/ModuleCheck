@@ -1,418 +1,418 @@
 [
   {
-    "gradlePath" : ":modulecheck-api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-core",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-core",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-core",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-core",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-dagger",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-dagger",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-dagger",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-dagger",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-config:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-config-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-config:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-config-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-config:fake",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-config-fake",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-config:fake",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-config-fake",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-finding:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-finding-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-finding:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-finding:impl",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-finding-impl",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-finding:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-finding:impl-android",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-finding-impl-android",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-finding:impl-android",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl-android",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-finding:impl-sort",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-finding-impl-sort",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-finding:impl-sort",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-impl-sort",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-finding:name",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-finding-name",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-finding:name",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-finding-name",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:android",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-core",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:android",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-core",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:groovy-antlr",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-groovy-antlr",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:groovy-antlr",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-groovy-antlr",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:java",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-java",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:java",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-java",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:psi",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-psi",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:psi",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-psi",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:wiring",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-wiring",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:wiring",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-wiring",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-project:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-project-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-project:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-project-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-project:impl",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-project-impl",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-project:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-project-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-project:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-project-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-project:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-project-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:checkstyle",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-checkstyle",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:checkstyle",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-checkstyle",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:console",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-console",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:console",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-console",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:graphviz",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-graphviz",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:graphviz",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-graphviz",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:sarif",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-sarif",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:sarif",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-sarif",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-rule:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-rule-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-rule:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-rule:impl",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-rule-impl",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-rule:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-rule:impl-factory",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-rule-impl-factory",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-rule:impl-factory",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-impl-factory",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-rule:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-rule-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-rule:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-rule-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-runtime:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-runtime-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-runtime:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-runtime-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-runtime:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-runtime-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-runtime:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-runtime-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:cache",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-cache",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:cache",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-cache",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:coroutines",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-coroutines",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:coroutines",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-coroutines",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:lazy",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-lazy",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:lazy",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-lazy",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:stdlib",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-stdlib",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:stdlib",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-stdlib",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:trace",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-trace",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:trace",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-trace",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-utils:trace-testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-utils-trace-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-utils:trace-testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-utils-trace-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-gradle:platforms:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-gradle-platform-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-gradle:platforms:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-gradle-platform-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-gradle:platforms:impl",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-gradle-platform-impl",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-gradle:platforms:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-gradle-platform-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-gradle:platforms:internal-android",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-gradle-platform-internal-android",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-gradle:platforms:internal-android",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-gradle-platform-internal-android",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-gradle:platforms:internal-jvm",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-gradle-platform-internal-jvm",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-gradle:platforms:internal-jvm",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-gradle-platform-internal-jvm",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-model:dependency:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-model-dependency-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-model:dependency:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-model-dependency-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-model:dependency:impl",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-model-dependency-impl",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-model:dependency:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-model-dependency-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:element:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-element-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:kotlin-compiler:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-kotlin-compiler-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:element:impl-kotlin",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-element-kotlin",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:kotlin-compiler:impl",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-kotlin-compiler-impl",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:source:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-source-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:source:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-source-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:source:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-source-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:source:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-source-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:logging:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-logging-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:logging:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-logging-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-reporting:logging:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-reporting-logging-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-reporting:logging:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-reporting-logging-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:dsl:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-dsl-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:dsl:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-dsl-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:dsl:internal",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-dsl-internal",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:dsl:internal",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-dsl-internal",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:dsl:precompiled",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-dsl-precompiled",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:dsl:precompiled",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-dsl-precompiled",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:dsl:testing",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-dsl-testing",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:dsl:testing",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-dsl-testing",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:model:api",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-model-api",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:model:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-model-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   },
   {
-    "gradlePath" : ":modulecheck-parsing:gradle:model:impl-typesafe",
-    "group" : "com.rickbusarow.modulecheck",
-    "artifactId" : "modulecheck-parsing-gradle-model-impl-typesafe",
-    "description" : "Fast dependency graph linting for Gradle projects",
-    "packaging" : "jar",
-    "javaVersion" : "11"
+    "gradlePath": ":modulecheck-parsing:gradle:model:impl-typesafe",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-parsing-gradle-model-impl-typesafe",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
   }
 ]
