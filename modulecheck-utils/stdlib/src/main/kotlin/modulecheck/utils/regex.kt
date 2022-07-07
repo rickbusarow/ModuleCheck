@@ -15,7 +15,18 @@
 
 package modulecheck.utils
 
+import org.intellij.lang.annotations.Language
+import kotlin.text.replace
 import kotlin.text.replace as matchResultReplace
+
+/** code golf for `replace(regex.toRegex(), replacement)` */
+fun String.replaceRegex(
+  @Language("regex")
+  regex: String,
+  replacement: String
+): String = replace(
+  regex = regex.toRegex(), replacement = replacement
+)
 
 inline fun String.replaceDestructured(
   regex: Regex,
