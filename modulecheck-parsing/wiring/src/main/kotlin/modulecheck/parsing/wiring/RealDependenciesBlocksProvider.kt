@@ -21,8 +21,8 @@ import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependenciesBlocksProvider
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
+import modulecheck.parsing.kotlin.compiler.internal.isKotlinScriptFile
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
-import modulecheck.parsing.psi.internal.isKotlinScriptFile
 import javax.inject.Inject
 import javax.inject.Provider
 

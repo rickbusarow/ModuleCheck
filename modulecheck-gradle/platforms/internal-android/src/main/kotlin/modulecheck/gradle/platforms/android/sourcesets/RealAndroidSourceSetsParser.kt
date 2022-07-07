@@ -34,6 +34,7 @@ import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetN
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
+import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -45,9 +46,11 @@ import modulecheck.parsing.gradle.model.names
 import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
+import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
@@ -161,6 +164,17 @@ class RealAndroidSourceSetsParser private constructor(
       .mapValues { (_, productFlavors) -> productFlavors.map { GradleSourceSetName.FlavorName(it.name) } }
 
     flavorDimensions.map { mapped.getValue(it) }
+  }
+
+  private val variantMap by lazy {
+
+    val tested = (extension as? TestedExtension)
+      ?.let { it.testVariants + it.unitTestVariants }
+      .orEmpty()
+
+    extension.publishedVariants()
+      .plus(tested)
+      .associateBy { GradleSourceSetName.VariantName(it.name) }
   }
 
   private val sourceSetNameToUpstreamMap = buildMap<String, List<GradleSourceSetName>> {
@@ -371,6 +385,28 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
+      val fromVariant = upstreamLazy.value
+        .asSequence()
+        .map { it.value }
+        .plus(name)
+        .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
+        .flatMapToSet { variant ->
+          sequenceOf(
+            variant.compileConfiguration,
+            variant.runtimeConfiguration
+          )
+            .flatMap { config ->
+              config.fileCollection { dependency -> dependency is ExternalModuleDependency }
+            }
+            .mapNotNull { it.existsOrNull() }
+            .toSet()
+        }
+      val classpath = lazy {
+        fromVariant
+          .filter { it.exists() }
+          .toSet()
+      }
+
       SourceSet(
         name = sourceSetName,
         compileOnlyConfiguration = parsedConfigurations
@@ -385,6 +421,8 @@ class RealAndroidSourceSetsParser private constructor(
         jvmFiles = jvmFiles,
         resourceFiles = resourceFiles,
         layoutFiles = layoutFiles,
+        classpath = classpath,
+        kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
         jvmTarget = gradleProject.jvmTarget(),
         upstreamLazy = upstreamLazy,
         downstreamLazy = downstreamLazy
@@ -541,6 +579,8 @@ class RealAndroidSourceSetsParser private constructor(
             jvmFiles = jvmFiles,
             resourceFiles = resourceFiles,
             layoutFiles = layoutFiles,
+            classpath = lazy { extension.bootClasspath.toSet() },
+            kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget(),
             upstreamLazy = upstreamLazy,
             downstreamLazy = downstreamLazy
@@ -590,7 +630,9 @@ class RealAndroidSourceSetsParser private constructor(
       gradleProject: GradleProject
     ): RealAndroidSourceSetsParser {
       return RealAndroidSourceSetsParser(
-        parsedConfigurations, extension, hasTestFixturesPlugin,
+        parsedConfigurations,
+        extension,
+        hasTestFixturesPlugin,
         gradleProject
       )
     }

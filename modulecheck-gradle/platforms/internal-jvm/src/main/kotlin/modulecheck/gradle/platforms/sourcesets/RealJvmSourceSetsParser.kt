@@ -26,10 +26,13 @@ import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.utils.flatMapToSet
+import modulecheck.utils.requireNotNull
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
+
+typealias GradleSourceSet = org.gradle.api.tasks.SourceSet
 
 @ContributesBinding(AppScope::class)
 class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
@@ -42,6 +45,9 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
     val map = buildMap<SourceSetName, SourceSet> {
 
       val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
+
+      val javaExtension = gradleProject.extensions
+        .findByType(JavaPluginExtension::class.java)
 
       val jvmTarget = gradleProject.jvmTarget()
 
@@ -64,6 +70,19 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
               downstreamLazy
             ) = parseHierarchy(sourceSetName, configs)
 
+            val classpath = javaExtension?.sourceSets
+              ?.findByName(sourceSetName.value)
+              ?.classpath()
+              ?.filter { it.exists() }
+              ?.filterNotNull()
+              ?.toSet()
+              .orEmpty()
+
+            val kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
+              .requireNotNull {
+                "kotlin version is null for project -- ${gradleProject.path}"
+              }
+
             put(
               kotlinSourceSet.name.asSourceSetName(),
               SourceSet(
@@ -80,6 +99,8 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 jvmFiles = kotlinSourceSet.kotlin.srcDirs,
                 resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
+                classpath = lazy { classpath },
+                kotlinLanguageVersion = kotlinVersion,
                 jvmTarget = jvmTarget,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
@@ -122,6 +143,8 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 jvmFiles = gradleSourceSet.allJava.srcDirs,
                 resourceFiles = gradleSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
+                classpath = lazy { gradleSourceSet.classpath() },
+                kotlinLanguageVersion = null,
                 jvmTarget = jvmTarget,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
@@ -161,4 +184,8 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
 
     return upstreamLazy to downstreamLazy
   }
+
+  private fun GradleSourceSet.classpath() = compileClasspath.existingFiles()
+    .plus(output.classesDirs.existingFiles())
+    .toSet()
 }

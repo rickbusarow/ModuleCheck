@@ -20,12 +20,14 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
 import org.jetbrains.kotlin.cli.common.repl.replEscapeLineBreaks
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import java.io.File
 
 internal class KotlinAndroidGradleParserTest : BaseTest() {
 
@@ -80,7 +82,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
       statementWithSurroundingText = declarationText1,
       suppressed = listOf()
     )
-    val result = KotlinAndroidGradleParser().parse(testFile)
+    val result = parse(testFile)
 
     result.assignments shouldContainExactlyInAnyOrder listOf(
       viewBindingAssignment,
@@ -144,7 +146,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
 
     testFile.writeText(block)
 
-    KotlinAndroidGradleParser().parse(testFile) shouldBe run {
+    parse(testFile) shouldBe run {
       val declarationText1 = "viewBinding = $enabled"
       val declarationText2 = "androidResources = ${!enabled}"
       val declarationText3 = "viewBinding = $enabled"
@@ -234,7 +236,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
 
     testFile.writeText(block)
 
-    KotlinAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
+    parse(testFile) shouldBe AndroidGradleSettings(
       assignments = listOf(
         Assignment(
           fullText = "android.buildFeatures.androidResources = $enabled",
@@ -261,7 +263,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
 
     testFile.writeText(block)
 
-    KotlinAndroidGradleParser().parse(testFile) shouldBe run {
+    parse(testFile) shouldBe run {
       val declarationText1 = "viewBinding = $enabled"
       val declarationText2 = "viewBinding = $enabled"
       AndroidGradleSettings(
@@ -309,7 +311,7 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
 
     testFile.writeText(block)
 
-    KotlinAndroidGradleParser().parse(testFile) shouldBe AndroidGradleSettings(
+    parse(testFile) shouldBe AndroidGradleSettings(
       assignments = listOf(
         Assignment(
           fullText = "android {\n  @Suppress(\"disable-view-binding\")\n  buildFeatures.viewBinding = $enabled\n}",
@@ -340,6 +342,8 @@ internal class KotlinAndroidGradleParserTest : BaseTest() {
       buildFeaturesBlocks = listOf()
     )
   }
+
+  fun parse(file: File) = KotlinAndroidGradleParser(NoContextPsiFileFactory()).parse(file)
 
   fun runTest(block: (enabled: Boolean) -> Unit): List<DynamicTest> {
     return listOf(true, false).map { enabled ->

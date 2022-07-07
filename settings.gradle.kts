@@ -112,6 +112,8 @@ include(
   ":modulecheck-parsing:gradle:model:api",
   ":modulecheck-parsing:gradle:model:impl-typesafe",
   ":modulecheck-parsing:groovy-antlr",
+  ":modulecheck-parsing:kotlin-compiler:api",
+  ":modulecheck-parsing:kotlin-compiler:impl",
   ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",
   ":modulecheck-parsing:source:api",

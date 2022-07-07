@@ -25,6 +25,8 @@ import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
+import org.jetbrains.kotlin.config.LanguageVersion
+import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
 data class SourceSetBuilder(
@@ -37,8 +39,12 @@ data class SourceSetBuilder(
   var jvmFiles: Set<File>,
   var resourceFiles: Set<File>,
   var layoutFiles: Set<File>,
+  var classpath: MutableSet<File> = mutableSetOf(
+    File(CharRange::class.java.protectionDomain.codeSource.location.path)
+  ),
   val upstream: MutableList<SourceSetName>,
   val downstream: MutableList<SourceSetName>,
+  var kotlinLanguageVersion: LanguageVersion? = KOTLIN_1_6,
   var jvmTarget: JvmTarget = JVM_11
 ) {
   fun toSourceSet() = SourceSet(
@@ -51,6 +57,8 @@ data class SourceSetBuilder(
     jvmFiles = jvmFiles,
     resourceFiles = resourceFiles,
     layoutFiles = layoutFiles,
+    classpath = lazy { classpath },
+    kotlinLanguageVersion = kotlinLanguageVersion,
     jvmTarget = jvmTarget,
     upstreamLazy = lazy { upstream },
     downstreamLazy = lazy { downstream }
@@ -68,6 +76,7 @@ data class SourceSetBuilder(
         jvmFiles = sourceSet.jvmFiles,
         resourceFiles = sourceSet.resourceFiles,
         layoutFiles = sourceSet.layoutFiles,
+        classpath = sourceSet.classpath.value.toMutableSet(),
         upstream = sourceSet.upstream.toMutableList(),
         downstream = sourceSet.downstream.toMutableList(),
         jvmTarget = sourceSet.jvmTarget
@@ -92,6 +101,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
   jvmFiles: Set<File> = emptySet(),
   resourceFiles: Set<File> = emptySet(),
   layoutFiles: Set<File> = emptySet(),
+  classpath: Set<File> = setOf(File(CharRange::class.java.protectionDomain.codeSource.location.path)),
   upstreamNames: List<SourceSetName> = emptyList(),
   downstreamNames: List<SourceSetName> = emptyList(),
   jvmTarget: JvmTarget = JVM_11
@@ -129,6 +139,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       jvmFiles = jvmFiles,
       resourceFiles = resourceFiles,
       layoutFiles = layoutFiles,
+      classpath = classpath.toMutableSet(),
       upstream = upstream,
       downstream = downstreamNames.toMutableList(),
       jvmTarget = jvmTarget

@@ -1905,6 +1905,6 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     }.jvmFiles()
       .get(sourceSetName)
       .filterIsInstance<RealKotlinFile>()
-      .first { it.ktFile.text == content.trimIndent() }
+      .first { it.psi.text == content.trimIndent() }
   }
 }

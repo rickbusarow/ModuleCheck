@@ -27,13 +27,13 @@ import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
+import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
-import modulecheck.parsing.wiring.FileCache
-import modulecheck.parsing.wiring.RealAndroidDataBindingNameProvider
+import modulecheck.parsing.wiring.JvmFileCache
 import modulecheck.parsing.wiring.RealAndroidGradleSettingsProvider
-import modulecheck.parsing.wiring.RealAndroidRNameProvider
 import modulecheck.parsing.wiring.RealDependenciesBlocksProvider
 import modulecheck.parsing.wiring.RealJvmFileProvider
 import modulecheck.parsing.wiring.RealPluginsBlockProvider
@@ -117,15 +117,10 @@ internal inline fun <reified T : McProjectBuilder<P>,
   platformPlugin.populateConfigsFromSourceSets()
   platformPlugin.sourceSets.populateDownstreams()
 
-  val jvmFileProviderFactory = JvmFileProvider.Factory { project, sourceSetName ->
-    RealJvmFileProvider(
-      fileCache = FileCache(),
-      project = project,
-      sourceSetName = sourceSetName,
-      androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
-      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
-    )
-  }
+  val jvmFileProviderFactory = RealJvmFileProvider.Factory(
+    { JvmFileCache() },
+    RealKotlinEnvironment.Factory(projectCache)
+  )
 
   return projectFactory(jvmFileProviderFactory)
     .also { finalProject ->
@@ -177,7 +172,11 @@ fun buildFileParserFactory(
       {
         RealDependenciesBlocksProvider(
           groovyParser = GroovyDependenciesBlockParser(logger, projectDependency),
-          kotlinParser = KotlinDependenciesBlockParser(logger, projectDependency),
+          kotlinParser = KotlinDependenciesBlockParser(
+            logger,
+            NoContextPsiFileFactory(),
+            projectDependency
+          ),
           invokesConfigurationNames = invokesConfigurationNames
         )
       },
@@ -185,13 +184,13 @@ fun buildFileParserFactory(
         RealPluginsBlockProvider(
           groovyParser = GroovyPluginsBlockParser(logger),
           kotlinParser = KotlinPluginsBlockParser(logger),
-          buildFile = invokesConfigurationNames.buildFile
+          buildFile = invokesConfigurationNames.buildFile, NoContextPsiFileFactory()
         )
       },
       {
         RealAndroidGradleSettingsProvider(
           groovyParser = GroovyAndroidGradleParser(),
-          kotlinParser = KotlinAndroidGradleParser(),
+          kotlinParser = KotlinAndroidGradleParser(NoContextPsiFileFactory()),
           buildFile = invokesConfigurationNames.buildFile
         )
       },
