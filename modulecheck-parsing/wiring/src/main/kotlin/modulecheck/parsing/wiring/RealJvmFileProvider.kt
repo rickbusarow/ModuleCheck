@@ -20,18 +20,13 @@ import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.java.RealJavaFile
-import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
-import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
-import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.source.JvmFile
-import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.AndroidRNameProvider
 import modulecheck.parsing.source.internal.InterpretingInterceptor
@@ -100,7 +95,7 @@ class RealJvmFileProvider(
           ),
           InterpretingInterceptor()
         )
-        )
+      )
       when {
         file.isKtFile() -> RealKotlinFile(
           file = file,
