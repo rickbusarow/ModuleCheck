@@ -867,64 +867,144 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     }
   }
 
-  @Test
-  fun `top-level extension property`() = test {
-    val file = project.createFile(
-      """
+  @Nested
+  inner class `extensions` {
+
+    @Test
+    fun `top-level extension property declaration`() = test {
+      val file = project.createFile(
+        """
       package com.subject
 
       val String.vowels get() = replace("[^aeiou]".toRegex(),"")
       """
-    )
+      )
 
-    file shouldBe {
-      references {
-        kotlin("kotlin.String")
-        kotlin("kotlin.text.replace")
+      file shouldBe {
+        references {
+          kotlin("kotlin.String")
+          kotlin("kotlin.text.replace")
 
-        // TODO this is all definitely wrong
-        kotlin("\"[^aeiou]\".toRegex")
-        kotlin("com.subject.\"[^aeiou]\".toRegex")
-      }
+          // TODO this is all definitely wrong
+          kotlin("\"[^aeiou]\".toRegex")
+          kotlin("com.subject.\"[^aeiou]\".toRegex")
+        }
 
-      apiReferences {
-        kotlin("kotlin.String")
-      }
+        apiReferences {
+          kotlin("kotlin.String")
+        }
 
-      declarations {
-        kotlin("com.subject.vowels")
-        java("com.subject.SourceKt.getVowels")
+        declarations {
+          kotlin("com.subject.vowels")
+          java("com.subject.SourceKt.getVowels")
+        }
       }
     }
-  }
 
-  @Test
-  fun `top-level extension function`() = test {
-    val file = project.createFile(
+    @Disabled
+    @Test
+    fun `top-level extension property reference from String literal`() = test {
+      val file = project.createFile(
+        """
+      package com.subject
+
+      val String.vowels get() = replace("[^aeiou]".toRegex(),"")
+
+      val someVowels = "some string".vowels
       """
+      )
+
+      file shouldBe {
+        references {
+          kotlin("kotlin.String")
+          kotlin("kotlin.text.replace")
+
+          // TODO this is all definitely wrong
+          kotlin("\"[^aeiou]\".toRegex")
+          kotlin("com.subject.\"[^aeiou]\".toRegex")
+        }
+
+        apiReferences {
+          kotlin("kotlin.String")
+        }
+
+        declarations {
+          kotlin("com.subject.foo")
+          kotlin("com.subject.vowels")
+          java("com.subject.SourceKt.foo")
+          java("com.subject.SourceKt.getVowels")
+        }
+      }
+    }
+
+    @Disabled
+    @Test
+    fun `top-level extension function`() = test {
+      val file = project.createFile(
+        """
       package com.subject
 
       fun String.vowels() = replace("[^aeiou]".toRegex(),"")
       """
-    )
+      )
 
-    file shouldBe {
-      references {
-        kotlin("kotlin.String")
-        kotlin("kotlin.text.replace")
+      file shouldBe {
+        references {
+          kotlin("kotlin.String")
+          kotlin("kotlin.text.replace")
 
-        // TODO this is all definitely wrong
-        kotlin("\"[^aeiou]\".toRegex")
-        kotlin("com.subject.\"[^aeiou]\".toRegex")
+          // TODO this is all definitely wrong
+          kotlin("\"[^aeiou]\".toRegex")
+          kotlin("com.subject.\"[^aeiou]\".toRegex")
+        }
+
+        apiReferences {
+          kotlin("kotlin.String")
+        }
+
+        declarations {
+          java("com.subject.SourceKt.getVowels")
+
+          kotlin("com.subject.vowels")
+        }
       }
+    }
 
-      apiReferences {
-        kotlin("kotlin.String")
+    @Disabled
+    @Test
+    fun `extension property reference from variable`() = test {
+      val file = project.createFile(
+        """
+      package com.subject
+
+      val String.vowels get() = replace("[^aeiou]".toRegex(),"")
+
+      fun foo(someString: String) {
+        val someVowels = someString.vowels
       }
+      """
+      )
 
-      declarations {
-        kotlin("com.subject.vowels")
-        java("com.subject.SourceKt.vowels")
+      file shouldBe {
+        references {
+          kotlin("kotlin.String")
+          kotlin("kotlin.text.replace")
+
+          // TODO this is all definitely wrong
+          // interpretedKotlin("\"[^aeiou]\".toRegex")
+          // interpretedKotlin("com.subject.\"[^aeiou]\".toRegex")
+          // interpretedKotlin("com.subject.someString.vowels")
+          // interpretedKotlin("someString.vowels")
+        }
+
+        apiReferences {
+          kotlin("kotlin.String")
+        }
+
+        declarations {
+          kotlin("com.subject.vowels")
+          java("com.subject.SourceKt.vowels")
+        }
       }
     }
   }

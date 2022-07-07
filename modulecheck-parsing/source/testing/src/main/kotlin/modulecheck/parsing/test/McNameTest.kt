@@ -186,40 +186,46 @@ interface McNameTest : FancyShould {
     UnqualifiedAndroidResourceReferenceName(name, defaultLanguage)
 }
 
-fun Collection<McName>.prettyPrint() = groupBy { it::class }
-  .toList()
-  .sortedBy { it.first.qualifiedName }
-  .joinToString("\n") { (_, names) ->
-    val typeName = when (val mcName = names.first()) {
-      // references
-      is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
-      is AndroidRReferenceName -> "androidR"
-      is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
-      is AndroidDataBindingReferenceName -> "androidDataBinding"
-      is ReferenceName -> when {
-        mcName.isJava() -> "java"
-        mcName.isKotlin() -> "kotlin"
-        mcName.isXml() -> "xml"
-        else -> throw IllegalArgumentException("???")
-      }
+fun Collection<McName>.prettyPrint() = map { mcName ->
+  val typeName = when (mcName) {
+    // references
+    is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
+    is AndroidRReferenceName -> "androidR"
+    is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
+    is AndroidDataBindingReferenceName -> "androidDataBinding"
+    is ReferenceName -> when {
+      mcName.isJava() -> "java"
+      mcName.isKotlin() -> "kotlin"
+      mcName.isXml() -> "xml"
+      else -> throw IllegalArgumentException("???")
+    }
 
-      is AndroidRDeclaredName -> "androidR"
-      is UnqualifiedAndroidResource -> mcName.prefix.name
-      is QualifiedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
-      is AndroidDataBindingDeclaredName -> "androidDataBinding"
+    is AndroidRDeclaredName -> "androidR"
+    is UnqualifiedAndroidResource -> mcName.prefix.name
+    is QualifiedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
+    is AndroidDataBindingDeclaredName -> "androidDataBinding"
 
-      // declarations
-      is QualifiedDeclaredName -> when {
+    // declarations
+    is QualifiedDeclaredName -> {
+      when {
         mcName.languages.containsAll(setOf(KOTLIN, JAVA)) -> "agnostic"
         mcName.languages.contains(KOTLIN) -> "kotlin"
         mcName.languages.contains(JAVA) -> "java"
         mcName.languages.contains(XML) -> "xml"
         else -> throw IllegalArgumentException("???")
       }
-      // package
-      is PackageName -> "packageName"
     }
-    names
+    // package
+    is PackageName -> "packageName"
+  }
+  typeName to mcName
+}
+  .groupBy { it.first }
+  .toList()
+  .sortedBy { it.first }
+  .joinToString("\n") { (typeName, pairs) ->
+
+    pairs.map { it.second }
       .sortedBy { it.name }
       .joinToString("\n", "$typeName {\n", "\n}") { "\t${it.name}" }
   }
