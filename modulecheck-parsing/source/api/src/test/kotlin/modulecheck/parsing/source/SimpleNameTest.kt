@@ -38,6 +38,16 @@ internal class SimpleNameTest {
   }
 
   @Test
+  fun `a name with whitespaces is allowed if wrapped in backticks`() {
+
+    val name = "`a name with whitespaces is allowed if wrapped in backticks`"
+
+    shouldNotThrow<Throwable> {
+      SimpleName(name).name shouldBe name
+    }
+  }
+
+  @Test
   fun `a name with a white space throws exception with message`() {
 
     Arb.stringPattern("""\s+""")

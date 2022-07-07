@@ -112,3 +112,16 @@ fun String.remove(vararg strings: String): String = strings.fold(this) { acc, st
 fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, regex ->
   acc.replace(regex, "")
 }
+
+/**
+ * @return a string with no leading or trailing whitespace, and no whitespace before or after any
+ *   instance of [delimiter]
+ */
+fun String.trimSegments(delimiter: String = "."): String {
+  val escapedDelimiter = Regex.escape(delimiter)
+  return replaceRegex(
+    regex = """(?>\s+$escapedDelimiter\s+)|(?>\s+$escapedDelimiter)|(?>$escapedDelimiter\s+)""",
+    replacement = delimiter
+  )
+    .trim()
+}
