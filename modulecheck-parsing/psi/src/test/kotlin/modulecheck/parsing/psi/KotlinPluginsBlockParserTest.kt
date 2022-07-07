@@ -16,12 +16,9 @@
 package modulecheck.parsing.psi
 
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
-import modulecheck.parsing.psi.internal.psiFileFactory
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
-import org.jetbrains.kotlin.idea.KotlinLanguage
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 import org.junit.jupiter.api.Test
 
 internal class KotlinPluginsBlockParserTest : BaseTest() {
@@ -149,9 +146,8 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   fun parse(
     string: String
   ): KotlinPluginsBlock {
-    val file = psiFileFactory
-      .createFileFromText("build.gradle.kts", KotlinLanguage.INSTANCE, string)
-      .cast<KtFile>()
+    val file = NoContextPsiFileFactory()
+      .createKotlin("build.gradle.kts", string)
 
     return KotlinPluginsBlockParser(logger).parse(file)!!
   }
