@@ -112,10 +112,10 @@ class RealKotlinEnvironment(
 
   /** Creates an instance of [KotlinEnvironment] */
   @ContributesBinding(AppScope::class)
-  class Factory @Inject constructor(
+  class Provider @Inject constructor(
     private val projectCache: ProjectCache
-  ) : KotlinEnvironment.Factory {
-    override suspend fun create(
+  ) : KotlinEnvironment.Provider {
+    override suspend fun getOrPut(
       projectPath: ProjectPath,
       sourceSetName: SourceSetName
     ): KotlinEnvironment {

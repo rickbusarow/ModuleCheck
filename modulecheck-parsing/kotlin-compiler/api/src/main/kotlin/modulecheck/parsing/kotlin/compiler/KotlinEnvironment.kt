@@ -106,12 +106,12 @@ interface KotlinEnvironment {
   )
 
   /** Creates an instance of [KotlinEnvironment] */
-  fun interface Factory {
+  fun interface Provider {
     /**
      * @param projectPath the path of the project for which this environment is being modeled
      * @param sourceSetName the name of the source set for which this environment is being modeled
      */
-    suspend fun create(
+    suspend fun getOrPut(
       projectPath: ProjectPath,
       sourceSetName: SourceSetName
     ): KotlinEnvironment
