@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.toSet
 import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.AndroidRReferenceName
-import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
@@ -35,12 +34,12 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.mapToSet
 
 class AndroidResourceReferenceParsingInterceptor(
-  private val androidRNameProvider: AndroidRNameProvider,
-  private val language: CompatibleLanguage
+  private val androidRNameProvider: AndroidRNameProvider
 ) : ParsingInterceptor {
 
   override suspend fun intercept(chain: ParsingInterceptor.Chain): NameParser.NameParserPacket {
     val packet = chain.packet
+    val language = packet.referenceLanguage
 
     val allAvailableRNames = androidRNameProvider.getAll()
 
@@ -195,6 +194,8 @@ class AndroidResourceReferenceParsingInterceptor(
     localROrNull: AndroidRDeclaredName?
   ): Set<AndroidRReferenceName> {
     val resolvedStrings = packet.resolved.mapToSet { it.name }
+
+    val language = packet.referenceLanguage
 
     return mapNotNull { declaredName ->
       val name = declaredName.name
