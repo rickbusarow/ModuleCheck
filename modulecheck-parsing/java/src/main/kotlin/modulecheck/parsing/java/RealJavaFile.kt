@@ -50,6 +50,7 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.mapToSet
+import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_10
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
@@ -67,12 +68,13 @@ import kotlin.LazyThreadSafetyMode.NONE
 import kotlin.contracts.contract
 
 class RealJavaFile(
-  val file: File,
+  override val file: File,
+  override val psi: PsiJavaFile,
   private val jvmTarget: JvmTarget,
   private val nameParser: NameParser
 ) : JavaFile {
 
-  override val name = file.name
+  override val name: String = file.name
 
   private val parserConfiguration by lazy(NONE) {
     // Set up a minimal type solver that only looks at the classes used to run this sample.

@@ -20,7 +20,7 @@ import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
 import modulecheck.parsing.gradle.dsl.Assignment
-import modulecheck.parsing.psi.internal.asKtFile
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
@@ -37,11 +37,13 @@ import org.jetbrains.kotlin.psi.psiUtil.parents
 import java.io.File
 import javax.inject.Inject
 
-class KotlinAndroidGradleParser @Inject constructor() : AndroidGradleParser {
+class KotlinAndroidGradleParser @Inject constructor(
+  private val psiFileFactory: NoContextPsiFileFactory
+) : AndroidGradleParser {
 
   override fun parse(buildFile: File): AndroidGradleSettings {
 
-    val file = buildFile.asKtFile()
+    val file = psiFileFactory.createKotlin(buildFile)
 
     val androidQualifiedSettings = file.getChildrenOfTypeRecursive<KtBinaryExpression>()
       .filter { it.findDescendantOfType<KtNameReferenceExpression>()?.text == "android" }
