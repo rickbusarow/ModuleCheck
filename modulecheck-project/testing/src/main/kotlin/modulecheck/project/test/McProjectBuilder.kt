@@ -23,7 +23,6 @@ import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
-import modulecheck.parsing.psi.internal.KtFile
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
@@ -32,7 +31,6 @@ import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
-import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.requireNotNull
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.config.JvmTarget
@@ -154,21 +152,24 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val name = fileName ?: "Source.java"
 
-    val packageName by unsafeLazy {
-      "package (.*);".toRegex()
-        .find(java)
-        ?.destructured
-        ?.component1()
-        ?: ""
-    }
+    val packageName = "package (.*);".toRegex()
+      .find(java)
+      ?.destructured
+      ?.component1()
+      ?: ""
 
-    return addJvmSource(
+    val file = createJvmPhysicalFile(
+      content = java,
       directory = directory,
       packageName = packageName,
-      sourceSetName = sourceSetName,
       fileSimpleName = name,
-      content = java,
+      sourceSetName = sourceSetName,
       sourceDirName = sourceDirName
+    )
+
+    return addJvmSource(
+      file = file,
+      sourceSetName = sourceSetName
     )
   }
 
@@ -183,34 +184,49 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val name = fileName ?: "Source.kt"
 
-    val ktFile = KtFile(kotlin)
-    val packageName = ktFile.packageFqName.asString()
+    val packageName = "package (.*)".toRegex()
+      .find(kotlin)
+      ?.destructured
+      ?.component1()
+      ?: ""
 
-    return addJvmSource(
+    val file = createJvmPhysicalFile(
+      content = kotlin,
       directory = directory,
       packageName = packageName,
-      sourceSetName = sourceSetName,
       fileSimpleName = name,
-      content = kotlin,
+      sourceSetName = sourceSetName,
       sourceDirName = sourceDirName
     )
+
+    return addJvmSource(
+      file = file,
+      sourceSetName = sourceSetName
+    )
+  }
+
+  private fun createJvmPhysicalFile(
+    content: String,
+    directory: String?,
+    packageName: String,
+    fileSimpleName: String,
+    sourceSetName: SourceSetName,
+    sourceDirName: String = "java"
+  ): File {
+
+    val dir = (directory ?: packageName.replace('.', '/'))
+      .fixFileSeparators()
+
+    return projectDir
+      .child("src", sourceSetName.value, sourceDirName, dir, fileSimpleName)
+      .createSafely(content.trimIndent())
   }
 
   @Suppress("LongParameterList")
   private fun addJvmSource(
-    directory: String?,
-    packageName: String,
-    sourceSetName: SourceSetName,
-    fileSimpleName: String,
-    content: String,
-    sourceDirName: String
+    file: File,
+    sourceSetName: SourceSetName
   ): File {
-    val dir = (directory ?: packageName.replace('.', '/'))
-      .fixFileSeparators()
-
-    val file = projectDir
-      .child("src", sourceSetName.value, sourceDirName, dir, fileSimpleName)
-      .createSafely(content.trimIndent())
 
     val oldSourceSet = maybeAddSourceSet(sourceSetName)
 

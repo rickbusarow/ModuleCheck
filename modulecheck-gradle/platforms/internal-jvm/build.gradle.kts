@@ -25,6 +25,10 @@ mcbuild {
 dependencies {
 
   api(libs.javax.inject)
+  api(libs.kotlin.compiler)
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))

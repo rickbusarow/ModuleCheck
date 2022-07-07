@@ -20,11 +20,11 @@ import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.java.RealJavaFile
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
+import modulecheck.parsing.kotlin.compiler.internal.isKtFile
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
-import modulecheck.parsing.psi.internal.asKtFile
-import modulecheck.parsing.psi.internal.isKotlinFile
-import modulecheck.parsing.psi.internal.isKtFile
 import modulecheck.parsing.source.JvmFile
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.parsing.source.internal.AndroidRNameProvider
@@ -38,10 +38,19 @@ import java.io.File
 import javax.inject.Inject
 import javax.inject.Provider
 
+/**
+ * Note that there is also a Psi file cache inside the [KotlinEnvironment]. This cache of [JvmFile]
+ * just provides the next layer, in order to have caching for parsed declarations, references, and
+ * whatnot.
+ *
+ * The Psi file cache re-uses Psi files because they have internal caching used internally by the
+ * compilation object.
+ */
 @SingleIn(AppScope::class)
-class FileCache @Inject constructor() {
-  private val delegate = SafeCache<File, JvmFile>(listOf(FileCache::class))
+class JvmFileCache @Inject constructor() {
+  private val delegate = SafeCache<File, JvmFile>(listOf(JvmFileCache::class))
 
+  /** @return a cached [file], or creates and caches a new one using [default] */
   suspend fun getOrPut(
     file: File,
     default: suspend () -> JvmFile
@@ -51,11 +60,12 @@ class FileCache @Inject constructor() {
 }
 
 class RealJvmFileProvider(
-  private val fileCache: FileCache,
+  private val jvmFileCache: JvmFileCache,
   private val project: McProject,
   private val sourceSetName: SourceSetName,
   private val androidRNameProvider: AndroidRNameProvider,
-  private val androidDataBindingNameProvider: AndroidDataBindingNameProvider
+  private val androidDataBindingNameProvider: AndroidDataBindingNameProvider,
+  private val kotlinEnvironmentFactory: KotlinEnvironment.Factory
 ) : JvmFileProvider {
 
   override suspend fun getOrNull(
@@ -65,43 +75,40 @@ class RealJvmFileProvider(
     // ignore anything which isn't Kotlin or Java
     if (!file.isKotlinFile() && !file.isJavaFile()) return null
 
-    return fileCache.getOrPut(file) {
+    return jvmFileCache.getOrPut(file) {
+
+      val sourceSet = project.sourceSets.getValue(sourceSetName)
+      val kotlinEnvironment = kotlinEnvironmentFactory.create(project.path, sourceSetName)
+
+      val nameParser = ParsingChain.Factory(
+        listOf(
+          ConcatenatingParsingInterceptor(),
+          AndroidResourceReferenceParsingInterceptor(
+            androidRNameProvider = androidRNameProvider
+          ),
+          AndroidDataBindingReferenceParsingInterceptor(
+            androidDataBindingNameProvider = androidDataBindingNameProvider
+          ),
+          InterpretingInterceptor()
+        )
+      )
       when {
         file.isKtFile() -> RealKotlinFile(
-          ktFile = file.asKtFile(),
+          file = file,
+          psi = kotlinEnvironment.ktFiles.getValue(file),
           psiResolver = PsiElementResolver(
             project = project,
             sourceSetName = sourceSetName
           ),
-          nameParser = ParsingChain.Factory(
-            listOf(
-              ConcatenatingParsingInterceptor(),
-              AndroidResourceReferenceParsingInterceptor(
-                androidRNameProvider = androidRNameProvider
-              ),
-              AndroidDataBindingReferenceParsingInterceptor(
-                androidDataBindingNameProvider = androidDataBindingNameProvider
-              ),
-              InterpretingInterceptor()
-            )
-          )
+          nameParser = nameParser,
+          kotlinEnvironment = kotlinEnvironment
         )
 
         else -> RealJavaFile(
           file = file,
-          jvmTarget = project.jvmTarget,
-          nameParser = ParsingChain.Factory(
-            listOf(
-              ConcatenatingParsingInterceptor(),
-              AndroidResourceReferenceParsingInterceptor(
-                androidRNameProvider = androidRNameProvider
-              ),
-              AndroidDataBindingReferenceParsingInterceptor(
-                androidDataBindingNameProvider = androidDataBindingNameProvider
-              ),
-              InterpretingInterceptor()
-            )
-          )
+          psi = kotlinEnvironment.javaFiles.getValue(file),
+          jvmTarget = sourceSet.jvmTarget,
+          nameParser = nameParser
         )
       }
     }
@@ -109,18 +116,20 @@ class RealJvmFileProvider(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val fileCacheProvider: Provider<FileCache>
+    private val jvmFileCacheProvider: Provider<JvmFileCache>,
+    private val kotlinEnvironmentFactory: KotlinEnvironment.Factory
   ) : JvmFileProvider.Factory {
 
     override fun create(
       project: McProject,
       sourceSetName: SourceSetName
     ): RealJvmFileProvider = RealJvmFileProvider(
-      fileCache = fileCacheProvider.get(),
+      jvmFileCache = jvmFileCacheProvider.get(),
       project = project,
       sourceSetName = sourceSetName,
       androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
-      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
+      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName),
+      kotlinEnvironmentFactory = kotlinEnvironmentFactory
     )
   }
 }

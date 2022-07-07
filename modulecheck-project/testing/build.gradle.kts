@@ -28,10 +28,11 @@ dependencies {
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-internal-testing"))
-  api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
