@@ -36,7 +36,7 @@ import modulecheck.utils.lazy.dataSourceOf
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.letIf
 
-data class Declarations private constructor(
+class Declarations private constructor(
   private val delegate: SafeCache<DeclarationsKey, LazySet<DeclaredName>>,
   private val project: McProject
 ) : ProjectContext.Element {

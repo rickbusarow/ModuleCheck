@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.callSiteName
+import modulecheck.parsing.psi.internal.fqNameSafe
 import modulecheck.parsing.psi.internal.getByNameOrIndex
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.identifier
@@ -123,22 +124,31 @@ class RealKotlinFile(
 
   @Suppress("ComplexMethod")
   private fun KtNamedDeclaration.declaredNames(): List<QualifiedDeclaredName> {
-    val fq = fqName ?: return emptyList()
+    val fq = fqNameSafe() ?: return emptyList()
 
     val nameAsString = fq.asString()
 
     return buildList {
-      fun both(name: String) {
-        val declared = name.stripPackageNameFromFqName(packageName)
-          .asDeclaredName(packageName)
-        add(declared)
-      }
 
       fun kotlin(name: String) {
         val declared = DeclaredName.kotlin(
           packageName, name.stripPackageNameFromFqName(packageName)
         )
         if (!contains(declared)) {
+          add(declared)
+        }
+      }
+
+      fun both(name: String) {
+
+        val kotlinOnly = nameAsString.contains("`.*`".toRegex())
+
+        if (kotlinOnly) {
+          kotlin(name)
+        } else {
+
+          val declared = name.stripPackageNameFromFqName(packageName)
+            .asDeclaredName(packageName)
           add(declared)
         }
       }
@@ -201,7 +211,7 @@ class RealKotlinFile(
 
         // object static properties
         isPartOf<KtObjectDeclaration>() && isStatic() -> {
-          val parentFqName = containingClassOrObject?.fqName
+          val parentFqName = containingClassOrObject?.fqNameSafe()
             .requireNotNull()
             .asString()
 
@@ -225,8 +235,9 @@ class RealKotlinFile(
 
           kotlin(nameAsString)
 
-          val parentFqName = containingClassOrObject.requireNotNull()
-            .fqName.requireNotNull()
+          val parentFqName = containingClassOrObject.requireNotNull { text }
+            .fqNameSafe()
+            .requireNotNull()
             .asString()
 
           jvmSimpleNames().forEach {
@@ -316,7 +327,7 @@ class RealKotlinFile(
 
     val visitor = classOrObjectRecursiveVisitor vis@{ classOrObject ->
 
-      val typeFqName = classOrObject.fqName ?: return@vis
+      val typeFqName = classOrObject.fqNameSafe() ?: return@vis
       val annotated = classOrObject.safeAs<KtAnnotated>() ?: return@vis
 
       annotated.annotationEntries.filter { annotationEntry ->

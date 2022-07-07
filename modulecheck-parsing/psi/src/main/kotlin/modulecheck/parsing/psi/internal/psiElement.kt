@@ -50,6 +50,7 @@ import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.getChildOfType
 import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
+import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
@@ -377,3 +378,35 @@ fun KtBlockExpression.nameSafe(): String? {
 }
 
 internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() ?: false
+
+/** Basically the same as `name`, but if the name has backticks, this will include it. */
+fun KtNamedDeclaration.identifierName() = nameIdentifier?.text
+
+/**
+ * For a declaration with a name wrapped in backticks, this returns a name with those backticks. The
+ * regular `fqName` property does not.
+ */
+fun KtNamedDeclaration.fqNameSafe(): FqName? {
+  val base = fqName ?: return null
+
+  if (!base.asString().contains("\\s+".toRegex())) {
+    return base
+  }
+
+  val packageOffset = containingKtFile.packageFqName.pathSegments().size
+
+  val parentsList = listOf(this@fqNameSafe)
+    .plus(parents.filterIsInstance<KtNamedDeclaration>())
+    .distinct()
+    .reversed()
+
+  return FqName.fromSegments(
+    base.pathSegments()
+      .mapIndexed { index, name ->
+
+        name.asString()
+          .takeIf { !it.contains("\\s+".toRegex()) }
+          ?: parentsList[index - packageOffset].identifierName()
+      }
+  )
+}
