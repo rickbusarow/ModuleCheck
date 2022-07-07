@@ -23,6 +23,7 @@ import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.reporting.logging.PrintLogger
@@ -31,7 +32,10 @@ import org.junit.jupiter.api.Test
 internal class KotlinDependenciesBlockParserTest : ProjectTest() {
 
   val parser by resets {
-    KotlinDependenciesBlockParser(PrintLogger()) { configurationName, projectPath, isTestFixture ->
+    KotlinDependenciesBlockParser(
+      logger = PrintLogger(),
+      psiFileFactory = NoContextPsiFileFactory()
+    ) { configurationName, projectPath, isTestFixture ->
       RuntimeProjectDependency(configurationName, projectPath, isTestFixture)
     }
   }

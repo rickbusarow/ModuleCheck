@@ -16,19 +16,33 @@
 package modulecheck.parsing.source
 
 import modulecheck.utils.lazy.LazyDeferred
+import org.jetbrains.kotlin.com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
+import org.jetbrains.kotlin.psi.KtFile
+import java.io.File
 
 sealed interface JvmFile : HasReferences {
+  /** The [java.io.File] version of this file */
+  val file: File
+
+  /** The simple name of this file, with extension. Like `App.java` or `App.kt`. */
   val name: String
+
+  /** the package name of this file, or [PackageName.DEFAULT] if a package is not declared */
   val packageName: PackageName
 
   /** All declared names within this file */
   val declarations: Set<QualifiedDeclaredName>
+
+  /** The Kotlin compiler version of this file. It will either be a [KtFile] or [PsiJavaFile] */
+  val psi: PsiFile
 
   val importsLazy: Lazy<Set<ReferenceName>>
   val apiReferences: LazyDeferred<Set<ReferenceName>>
 }
 
 interface KotlinFile : JvmFile {
+  override val psi: KtFile
 
   /** A weird, dated function for getting Anvil scope arguments */
   suspend fun getAnvilScopeArguments(
@@ -42,4 +56,7 @@ interface KotlinFile : JvmFile {
   )
 }
 
-interface JavaFile : JvmFile
+interface JavaFile : JvmFile {
+  /** The [PsiJavaFile] version of this file */
+  override val psi: PsiJavaFile
+}

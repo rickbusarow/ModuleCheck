@@ -22,7 +22,7 @@ import modulecheck.parsing.gradle.dsl.buildFileInvocationText
 import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.psi.internal.asKtFile
+import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe
 import modulecheck.reporting.logging.McLogger
@@ -41,6 +41,7 @@ import javax.inject.Inject
 
 class KotlinDependenciesBlockParser @Inject constructor(
   private val logger: McLogger,
+  private val psiFileFactory: NoContextPsiFileFactory,
   private val projectDependency: ProjectDependency.Factory
 ) {
 
@@ -49,7 +50,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
     invokesConfigurationNames: InvokesConfigurationNames
   ): List<KotlinDependenciesBlock> {
 
-    val file = invokesConfigurationNames.buildFile.asKtFile()
+    val file = psiFileFactory.createKotlin(invokesConfigurationNames.buildFile)
 
     val blocks = file.getChildrenOfTypeRecursive<KtCallExpression>()
       .filter { it.nameSafe() == "dependencies" }

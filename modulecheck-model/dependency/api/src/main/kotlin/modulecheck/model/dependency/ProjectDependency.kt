@@ -71,6 +71,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    *   returns `main`. For a `debugImplementation`, it would return `debug`.
    */
   fun declaringSourceSetName(isAndroid: Boolean) = when {
+    // <anyConfig>(testFixtures(___))
     isTestFixture -> {
       SourceSetName.TEST_FIXTURES
     }
@@ -78,6 +79,11 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
     configurationName.toSourceSetName().isTestingOnly() -> {
       if (isAndroid) SourceSetName.DEBUG
       else SourceSetName.MAIN
+    }
+
+    // testFixturesApi(___)
+    configurationName.toSourceSetName() == SourceSetName.TEST_FIXTURES -> {
+      SourceSetName.MAIN
     }
 
     else -> {
