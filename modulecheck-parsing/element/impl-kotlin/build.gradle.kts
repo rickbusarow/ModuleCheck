@@ -25,11 +25,9 @@ dependencies {
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
-  api(project(path = ":modulecheck-parsing:element:impl-resolve"))
   api(project(path = ":modulecheck-parsing:element:api"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils:cache"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(libs.kotlin.reflect)
@@ -42,6 +40,7 @@ dependencies {
   testImplementation(libs.kotest.runner)
 
   testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-parsing:element:impl-resolve"))
   testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
