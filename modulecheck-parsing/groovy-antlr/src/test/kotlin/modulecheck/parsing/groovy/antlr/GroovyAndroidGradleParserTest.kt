@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.groovy.antlr
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.AndroidBlock
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings.AgpBlock.BuildFeaturesBlock
@@ -430,7 +431,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
     )
   }
 
-  fun runTest(block: (enabled: Boolean) -> Unit): List<DynamicTest> {
+  fun runTest(block: suspend (enabled: Boolean) -> Unit): List<DynamicTest> {
     return listOf(true, false).map { enabled ->
 
       val paramsString = " -- enabled: $enabled"
@@ -438,7 +439,7 @@ internal class GroovyAndroidGradleParserTest : BaseTest() {
       val name = "${testDisplayName.replace("()", "")}$paramsString"
 
       DynamicTest.dynamicTest(name) {
-        block(enabled)
+        runBlocking { block(enabled) }
         resetAll()
 
         System.gc()
