@@ -51,7 +51,7 @@ import javax.inject.Provider
 class JvmFileCache @Inject constructor() {
   private val delegate = SafeCache<File, JvmFile>(listOf(JvmFileCache::class))
 
-  /** @return a cached [file], or creates and caches a new one using [default] */
+  /** @return a cached [JvmFile], or creates and caches a new one using [default] */
   suspend fun getOrPut(
     file: File,
     default: suspend () -> JvmFile
@@ -66,7 +66,7 @@ class RealJvmFileProvider(
   private val sourceSetName: SourceSetName,
   private val androidRNameProvider: AndroidRNameProvider,
   private val androidDataBindingNameProvider: AndroidDataBindingNameProvider,
-  private val kotlinEnvironmentFactory: KotlinEnvironment.Factory
+  private val kotlinEnvironmentProvider: KotlinEnvironment.Provider
 ) : JvmFileProvider {
 
   override suspend fun getOrNull(
@@ -79,7 +79,7 @@ class RealJvmFileProvider(
     return jvmFileCache.getOrPut(file) {
 
       val sourceSet = project.sourceSets.getValue(sourceSetName)
-      val kotlinEnvironment = kotlinEnvironmentFactory.create(project.path, sourceSetName)
+      val kotlinEnvironment = kotlinEnvironmentProvider.getOrPut(project.path, sourceSetName)
 
       val nameParser = ParsingChain.Factory(
         listOf(
@@ -96,6 +96,7 @@ class RealJvmFileProvider(
           InterpretingInterceptor()
         )
       )
+
       when {
         file.isKtFile() -> RealKotlinFile(
           file = file,
@@ -121,7 +122,7 @@ class RealJvmFileProvider(
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val jvmFileCacheProvider: Provider<JvmFileCache>,
-    private val kotlinEnvironmentFactory: KotlinEnvironment.Factory
+    private val kotlinEnvironmentProvider: KotlinEnvironment.Provider
   ) : JvmFileProvider.Factory {
 
     override fun create(
@@ -133,7 +134,7 @@ class RealJvmFileProvider(
       sourceSetName = sourceSetName,
       androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
       androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName),
-      kotlinEnvironmentFactory = kotlinEnvironmentFactory
+      kotlinEnvironmentProvider = kotlinEnvironmentProvider
     )
   }
 }

@@ -119,7 +119,7 @@ internal inline fun <reified T : McProjectBuilder<P>,
 
   val jvmFileProviderFactory = RealJvmFileProvider.Factory(
     { JvmFileCache() },
-    RealKotlinEnvironment.Factory(projectCache)
+    RealKotlinEnvironment.Provider(projectCache)
   )
 
   return projectFactory(jvmFileProviderFactory)
