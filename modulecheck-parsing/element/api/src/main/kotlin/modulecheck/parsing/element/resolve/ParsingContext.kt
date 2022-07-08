@@ -17,6 +17,7 @@ package modulecheck.parsing.element.resolve
 
 import modulecheck.parsing.element.McFile
 import modulecheck.parsing.element.resolve.NameParser2.NameParser2Packet
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
@@ -25,8 +26,12 @@ class ParsingContext<T>(
   val nameParser: NameParser2,
   val symbolResolver: SymbolResolver<T>,
   val language: CompatibleLanguage,
+  val kotlinEnvironment: KotlinEnvironment,
   val stdLibNameOrNull: ReferenceName.() -> QualifiedDeclaredName?
 ) {
+
+  val bindingContext by lazy { kotlinEnvironment.bindingContext }
+
   suspend fun declaredNameOrNull(symbol: T): QualifiedDeclaredName? {
     TODO()
   }

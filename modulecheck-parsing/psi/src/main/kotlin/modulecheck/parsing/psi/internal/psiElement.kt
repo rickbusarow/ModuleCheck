@@ -175,10 +175,7 @@ suspend fun PsiElement.declaredNameOrNull(
 
         // Sometimes a KtUserType is a fully qualified name. Give it a try and return early.
         if (text.contains(".") && text[0].isLowerCase()) {
-          project.resolvedNameOrNull(
-            FqName(text).asDeclaredName(packageName),
-            sourceSetName
-          )
+          project.resolvedNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
             ?.let { return it }
         }
 

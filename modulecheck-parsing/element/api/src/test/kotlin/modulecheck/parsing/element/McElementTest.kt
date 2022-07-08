@@ -35,7 +35,7 @@ class McElementTest : BaseTest() {
       .filterNot {
         // The language-specific element types are technically subclasses,
         // but also can't have parents.
-        it == McJavaElement::class || it == McKtElement::class
+        it == McJavaElement::class || it == McKtElement::class || it == McKtDeclaredElement::class
       }
       .forAll { sub ->
 

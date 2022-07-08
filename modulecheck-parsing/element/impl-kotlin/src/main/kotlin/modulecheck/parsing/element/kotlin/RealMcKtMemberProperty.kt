@@ -21,6 +21,7 @@ import modulecheck.parsing.element.McAnnotation
 import modulecheck.parsing.element.McKtDeclaredElement
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.resolve.ParsingContext
+import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
@@ -35,6 +36,7 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
 data class RealMcKtMemberProperty(
   private val parsingContext: ParsingContext<PsiElement>,
@@ -46,19 +48,19 @@ data class RealMcKtMemberProperty(
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
 
-    // delegate.await()
+    delegate.await()
 
-    // parsingContext.resolveReferenceNameOrNull(
-    //   containingFile,
-    //   psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
-    // )
-    //   .requireNotNull()
-
-    parsingContext.symbolResolver
-      .declaredNameOrNull(psi.typeReference.requireNotNull())
+    parsingContext.resolveReferenceNameOrNull(
+      containingFile,
+      psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
+    )
       .requireNotNull()
-      .name
-      .asReferenceName(KOTLIN)
+
+    // parsingContext.symbolResolver
+    //   .declaredNameOrNull(psi.typeReference.requireNotNull())
+    //   .requireNotNull()
+    //   .name
+    //   .asReferenceName(KOTLIN)
   }
 
   val delegate = lazyDeferred {
@@ -71,7 +73,24 @@ data class RealMcKtMemberProperty(
     } as? KtCallExpression
       ?: return@lazyDeferred null
 
+    psi.getChildrenOfTypeRecursive<KtExpression>()
+      .forEach { expr ->
+
+        println(
+          """ ******
+          |expression --------- ${expr.text}
+          |expression class --- ${expr::class.java.simpleName}
+          |expression type ---- ${expr.getType(parsingContext.bindingContext)}
+          |_____
+          """.trimMargin()
+        )
+      }
+
+    val t = parsingContext.bindingContext.getType(expression.calleeExpression!!)
+
     expression.typeArguments.joinToString("\n") { it.text }.also(::println)
+
+    println("expression type -- $t")
 
     println("################  --- ${expression::class.qualifiedName}")
   }
@@ -93,17 +112,17 @@ data class RealMcKtConstructorProperty(
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
 
-    // parsingContext.resolveReferenceNameOrNull(
-    //   containingFile,
-    //   psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
-    // )
-    //   .requireNotNull()
-
-    parsingContext.symbolResolver
-      .declaredNameOrNull(psi.typeReference.requireNotNull())
+    parsingContext.resolveReferenceNameOrNull(
+      containingFile,
+      psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
+    )
       .requireNotNull()
-      .name
-      .asReferenceName(KOTLIN)
+
+    // parsingContext.symbolResolver
+    //   .declaredNameOrNull(psi.typeReference.requireNotNull())
+    //   .requireNotNull()
+    //   .name
+    //   .asReferenceName(KOTLIN)
   }
 
   override val annotations: LazySet<McAnnotation> = lazySet {

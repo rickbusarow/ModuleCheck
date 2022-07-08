@@ -42,6 +42,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-api"))
   testImplementation(project(path = ":modulecheck-parsing:element:impl-resolve"))
   testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-parsing:wiring"))

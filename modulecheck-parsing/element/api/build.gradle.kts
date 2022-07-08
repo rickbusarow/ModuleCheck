@@ -26,6 +26,7 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
 
   implementation(project(path = ":modulecheck-utils:coroutines"))

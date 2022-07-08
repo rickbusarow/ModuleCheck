@@ -30,6 +30,7 @@ import modulecheck.parsing.element.resolve.ParsingChain2
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.kotlin.compiler.impl.kotlinEnvironmentCache
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
@@ -276,10 +277,13 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
         )
       )
 
+      val kotlinEnvironment = kotlinEnvironmentCache().get(sourceSetName)
+
       val context = ParsingContext(
         nameParser = nameParser,
         symbolResolver = PsiElementResolver(this@createFile, sourceSetName),
         language = KOTLIN,
+        kotlinEnvironment = kotlinEnvironment,
         stdLibNameOrNull = ReferenceName::kotlinStdLibNameOrNull
       )
 
