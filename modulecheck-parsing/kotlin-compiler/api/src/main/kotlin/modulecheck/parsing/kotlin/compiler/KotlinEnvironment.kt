@@ -17,9 +17,11 @@ package modulecheck.parsing.kotlin.compiler
 
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
@@ -42,7 +44,7 @@ interface KotlinEnvironment {
    * The result of file analysis, used for last-resort type resolution. This object is very
    * expensive to create, but it's created lazily.
    */
-  val bindingContext: BindingContext
+  val bindingContext: LazyDeferred<BindingContext>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
@@ -116,4 +118,6 @@ interface KotlinEnvironment {
       sourceSetName: SourceSetName
     ): KotlinEnvironment
   }
+
+  val moduleDescriptor: LazyDeferred<ModuleDescriptor?>
 }

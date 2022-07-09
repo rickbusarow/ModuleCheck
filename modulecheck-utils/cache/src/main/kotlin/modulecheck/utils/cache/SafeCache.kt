@@ -17,13 +17,14 @@ package modulecheck.utils.cache
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.supervisorScope
 import modulecheck.utils.coroutines.mapAsyncNotNull
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.trace.HasTraceTags
-import modulecheck.utils.trace.trace
+import modulecheck.utils.trace.Trace
 import modulecheck.utils.trace.traced
 
 /**
@@ -113,7 +114,9 @@ internal class RealSafeCache<K : Any, V>(
 
           deferred.await()
         } catch (e: IllegalStateException) {
-          throw IllegalStateException("${e.message}\n\n${trace().asString()}\n\n", e)
+
+          val trace = currentCoroutineContext()[Trace] ?: throw e
+          throw IllegalStateException("${e.message}\n\n${trace.asString()}\n\n", e)
         }
       }
     }

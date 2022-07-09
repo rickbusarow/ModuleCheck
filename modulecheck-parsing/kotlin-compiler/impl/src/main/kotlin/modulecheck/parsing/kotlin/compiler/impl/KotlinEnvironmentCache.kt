@@ -42,14 +42,16 @@ data class KotlinEnvironmentCache(
       val kotlinLanguageVersion = sourceSet.kotlinLanguageVersion
       val jvmTarget = sourceSet.jvmTarget
 
-      val inheritedSources = project.projectInheritedSources().get(sourceSetName)
+      val inheritedSources = project.projectInheritedSources()
+        .get(sourceSetName)
 
       RealKotlinEnvironment(
-        classpath.value,
-        sourceDirs,
-        kotlinLanguageVersion,
-        jvmTarget,
-        inheritedSources
+        projectPath = project.path,
+        classpathFiles = classpath,
+        sourceDirs = sourceDirs,
+        kotlinLanguageVersion = kotlinLanguageVersion,
+        jvmTarget = jvmTarget,
+        inheritedSources = inheritedSources
       )
     }
   }

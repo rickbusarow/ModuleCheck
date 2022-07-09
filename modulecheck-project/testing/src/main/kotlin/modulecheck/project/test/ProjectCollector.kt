@@ -143,6 +143,24 @@ interface ProjectCollector {
       .toRealMcProject()
   }
 
+  fun javaProject(
+    path: String,
+    config: McProjectBuilder<JavaLibraryPluginBuilder>.() -> Unit = {}
+  ): McProject {
+    val platformPlugin = JavaLibraryPluginBuilder()
+
+    return createProject(
+      projectCache = projectCache,
+      projectDir = root,
+      path = path,
+      pluginBuilder = platformPlugin,
+      androidPackageOrNull = null,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
+      config = config
+    )
+  }
+
   fun kotlinProject(
     path: String,
     config: McProjectBuilder<KotlinJvmPluginBuilder>.() -> Unit = {}

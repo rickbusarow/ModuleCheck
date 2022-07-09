@@ -83,8 +83,6 @@ class RealKotlinFile(
   private val kotlinEnvironment: KotlinEnvironment
 ) : KotlinFile {
 
-  private val bindingContext by lazy { kotlinEnvironment.bindingContext }
-
   override val name = psi.name
 
   override val packageName by lazy { PackageName(psi.packageFqName.asString()) }

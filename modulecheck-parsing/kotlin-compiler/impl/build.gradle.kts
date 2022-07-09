@@ -47,4 +47,6 @@ dependencies {
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner)
+
+  testImplementation(project(path = ":modulecheck-project:testing"))
 }

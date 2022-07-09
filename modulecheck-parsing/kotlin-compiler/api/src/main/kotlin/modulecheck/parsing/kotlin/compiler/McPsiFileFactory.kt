@@ -33,9 +33,7 @@ interface McPsiFileFactory {
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
    * @see createKotlin
-   * @see createKotlinOrNull
    * @see createJava
-   * @see createJavaOrNull
    */
   fun create(file: File): PsiFile
 
@@ -44,17 +42,8 @@ interface McPsiFileFactory {
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
    * @see create
-   * @see createKotlinOrNull
    */
   fun createKotlin(file: File): KtFile
-
-  /**
-   * @return a Psi `KtFile` for existing Kotlin files with an extension of `.kt` or `.kts`,
-   *   otherwise null
-   * @see create
-   * @see createKotlin
-   */
-  fun createKotlinOrNull(file: File): KtFile?
 
   /**
    * @return a "virtual" Psi `KtFile` with the given [name] and [content]. This file does not exist
@@ -73,17 +62,9 @@ interface McPsiFileFactory {
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
    * @see create
-   * @see createJavaOrNull
    */
   fun createJava(file: File): PsiJavaFile
 
-  /**
-   * @return a Psi `PsiJavaFile` for existing Java files with an extension of `.java`, otherwise
-   *   null
-   * @see create
-   * @see createJava
-   */
-  fun createJavaOrNull(file: File): PsiJavaFile?
 
   /**
    * @return a "virtual" Psi `PsiJavaFile` with the given [name] and [content]. This file does not

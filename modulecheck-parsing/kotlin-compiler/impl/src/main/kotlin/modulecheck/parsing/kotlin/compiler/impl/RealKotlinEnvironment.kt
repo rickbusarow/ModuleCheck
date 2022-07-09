@@ -18,12 +18,17 @@ package modulecheck.parsing.kotlin.compiler.impl
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment.InheritedSources
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.project.ProjectCache
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
+import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
@@ -48,6 +53,7 @@ import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
+import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
@@ -55,6 +61,7 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import sun.reflect.ReflectionFactory
 import java.io.File
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 /**
  * @property classpathFiles `.jar` files from external dependencies
@@ -66,7 +73,8 @@ import javax.inject.Inject
  *   compilation
  */
 class RealKotlinEnvironment(
-  private val classpathFiles: Collection<File>,
+  private val projectPath: StringProjectPath,
+  private val classpathFiles: Lazy<Collection<File>>,
   private val sourceDirs: Collection<File>,
   private val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
@@ -82,7 +90,8 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration by lazy {
     createCompilerConfiguration(
-      classpathFiles = classpathFiles.toList() + inheritedSources.classpathFiles,
+      projectPath = projectPath,
+      classpathFiles = classpathFiles.value.toList() + inheritedSources.classpathFiles,
       sourceFiles = sourceFiles.toList() + inheritedSources.jvmFiles,
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -102,12 +111,36 @@ class RealKotlinEnvironment(
       .associateWith { file -> psiFileFactory.createKotlin(file) }
   }
 
-  override val bindingContext by lazy {
-    createBindingContext(
+  val analysisResult: LazyDeferred<AnalysisResult?> = lazyDeferred {
+    maybeCreateAnalysisResult(
       coreEnvironment = coreEnvironment,
-      classpathFiles = classpathFiles,
+      classpathFiles = classpathFiles.value,
       ktFiles = ktFiles.values.toList() + inheritedSources.ktFiles
     )
+  }
+
+  override val bindingContext = lazyDeferred {
+    val bc: BindingContext
+
+    val time = measureTimeMillis {
+
+      println(" ".repeat(40) + "starting bindingContext for ${projectPath.value}")
+
+      bc = analysisResult.await()?.bindingContext ?: BindingContext.EMPTY
+    }
+
+    val sec = time / 1000
+    val ms = (time % 1000).toString().padStart(3, '0')
+
+    val ts = "${sec}s.$ms".padEnd(20, '_')
+
+    println("binding context time -- $ts${projectPath.value}")
+
+    bc
+  }
+
+  override val moduleDescriptor: LazyDeferred<ModuleDescriptor?> = lazyDeferred {
+    analysisResult.await()?.moduleDescriptor
   }
 
   /** Creates an instance of [KotlinEnvironment] */
@@ -126,17 +159,17 @@ class RealKotlinEnvironment(
   }
 }
 
-private fun createBindingContext(
+private fun maybeCreateAnalysisResult(
   coreEnvironment: KotlinCoreEnvironment,
   classpathFiles: Collection<File>,
   ktFiles: List<KtFile>
-): BindingContext {
+): AnalysisResult? {
 
   if (classpathFiles.isEmpty() && ktFiles.isEmpty()) {
-    return BindingContext.EMPTY
+    return null
   }
 
-  val result = VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
+  return VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
     project = coreEnvironment.project,
     files = ktFiles,
     trace = NoScopeRecordCliBindingTrace(),
@@ -144,11 +177,10 @@ private fun createBindingContext(
     packagePartProvider = coreEnvironment::createPackagePartProvider,
     declarationProviderFactory = ::FileBasedDeclarationProviderFactory
   )
-
-  return result.bindingContext
 }
 
 private fun createCompilerConfiguration(
+  projectPath: StringProjectPath,
   classpathFiles: List<File>,
   sourceFiles: List<File>,
   kotlinLanguageVersion: LanguageVersion?,
@@ -182,12 +214,14 @@ private fun createCompilerConfiguration(
         apiVersion = ApiVersion.createByLanguageVersion(kotlinLanguageVersion)
       )
       put(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, languageVersionSettings)
+    } else {
+      println("kotlin version is null for project -- $projectPath")
     }
 
     put(JVMConfigurationKeys.JVM_TARGET, jvmTarget)
 
     addJavaSourceRoots(javaFiles)
-    // addKotlinSourceRoots(kotlinFiles)
+    addKotlinSourceRoots(kotlinFiles)
     addJvmClasspathRoots(classpathFiles)
   }
 }

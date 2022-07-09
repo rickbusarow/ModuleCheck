@@ -31,6 +31,7 @@ import modulecheck.gradle.platforms.android.AndroidTestExtension
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
+import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.VariantName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
@@ -374,6 +375,7 @@ class RealAndroidSourceSetsParser private constructor(
           .distinct()
           .map { it.value.asSourceSetName() }
       }
+
       val downstreamLazy = lazy {
         namesMap.entries
           .filter { (_, upstream) ->
@@ -385,24 +387,24 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val fromVariant = upstreamLazy.value
-        .asSequence()
-        .map { it.value }
-        .plus(name)
-        .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-        .flatMapToSet { variant ->
-          sequenceOf(
-            variant.compileConfiguration,
-            variant.runtimeConfiguration
-          )
-            .flatMap { config ->
-              config.fileCollection { dependency -> dependency is ExternalModuleDependency }
-            }
-            .mapNotNull { it.existsOrNull() }
-            .toSet()
-        }
       val classpath = lazy {
-        fromVariant
+
+        upstreamLazy.value
+          .asSequence()
+          .map { it.value }
+          .plus(name)
+          .mapNotNull { variantMap[VariantName(it)] }
+          .flatMapToSet { variant ->
+            sequenceOf(
+              variant.compileConfiguration,
+              variant.runtimeConfiguration
+            )
+              .flatMap { config ->
+                config.fileCollection { dependency -> dependency is ExternalModuleDependency }
+              }
+              .mapNotNull { it.existsOrNull() }
+              .toSet()
+          }
           .filter { it.exists() }
           .toSet()
       }

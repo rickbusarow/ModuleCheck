@@ -22,9 +22,13 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.lang.java.JavaLanguage
 import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.com.intellij.openapi.util.text.StringUtilRt
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.StandardFileSystems
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileManager
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileSystem
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiFileFactory
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
+import org.jetbrains.kotlin.com.intellij.psi.PsiManager
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtPsiFactory
@@ -41,6 +45,11 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
   abstract val coreEnvironment: KotlinCoreEnvironment
 
   private val psiProject: Project by lazy { coreEnvironment.project }
+  private val psiManager: PsiManager by lazy { PsiManager.getInstance(psiProject) }
+  private val virtualFileSystem: VirtualFileSystem by lazy {
+    VirtualFileManager.getInstance()
+      .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
+  }
 
   private val ktFileFactory: KtPsiFactory by lazy {
     KtPsiFactory(psiProject, markGenerated = false)
@@ -58,18 +67,15 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
   }
 
   override fun createKotlin(file: File): KtFile {
-    if (!file.exists()) throw FileNotFoundException("could not find file $this")
+    if (!file.exists()) throw FileNotFoundException("could not find file $file")
     if (!file.isKotlinFile()) throw IllegalArgumentException(
       "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
     )
-    return ktFileFactory.createPhysicalFile(
-      file.name,
-      StringUtilRt.convertLineSeparators(file.readText().trimIndent())
-    )
-  }
 
-  override fun createKotlinOrNull(file: File): KtFile? {
-    return kotlin.runCatching { createKotlin(file) }.getOrNull()
+    val vFile = virtualFileSystem.findFileByPath(file.path)
+      ?: throw FileNotFoundException("could not find file $file")
+
+    return psiManager.findFile(vFile) as KtFile
   }
 
   override fun createKotlin(
@@ -89,14 +95,20 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
         "the file's extension must be `.java`, but it was `${file.extension}`."
       )
     }
+
+    // val virtualFileSystem = VirtualFileManager.getInstance()
+    //   .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
+    //
+    // val vFile = virtualFileSystem.findFileByPath(file.absolutePath)!!
+    //
+    // val psi = psiManager.findFile(vFile)
+    //
+    // return psi as PsiJavaFile
+
     val text = file.existsOrNull()?.readText()
       ?: throw FileNotFoundException("could not find file $this")
 
     return javaFileFactory.createFileFromText(file.name, JavaLanguage.INSTANCE, text) as PsiJavaFile
-  }
-
-  override fun createJavaOrNull(file: File): PsiJavaFile? {
-    return kotlin.runCatching { createJava(file) }.getOrNull()
   }
 
   override fun createJava(

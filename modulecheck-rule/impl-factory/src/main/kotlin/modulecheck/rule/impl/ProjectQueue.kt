@@ -93,7 +93,7 @@ class ProjectQueue(
                   .also { unused ->
                     if (unused) {
                       // after all checks are done for a given project, clear its cache
-                      maybeClear.clearContext()
+                      // maybeClear.clearContext()
                     }
                   }
               }

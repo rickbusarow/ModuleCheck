@@ -29,7 +29,7 @@ import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
-data class SourceSetBuilder(
+data class SourceSetBuilder constructor(
   var name: SourceSetName,
   var compileOnlyConfiguration: Config,
   var apiConfiguration: Config?,
@@ -44,7 +44,7 @@ data class SourceSetBuilder(
   ),
   val upstream: MutableList<SourceSetName>,
   val downstream: MutableList<SourceSetName>,
-  var kotlinLanguageVersion: LanguageVersion? = KOTLIN_1_6,
+  var kotlinLanguageVersion: LanguageVersion? = null,
   var jvmTarget: JvmTarget = JVM_11
 ) {
   fun toSourceSet() = SourceSet(
@@ -79,6 +79,7 @@ data class SourceSetBuilder(
         classpath = sourceSet.classpath.value.toMutableSet(),
         upstream = sourceSet.upstream.toMutableList(),
         downstream = sourceSet.downstream.toMutableList(),
+        kotlinLanguageVersion = sourceSet.kotlinLanguageVersion,
         jvmTarget = sourceSet.jvmTarget
       )
     }
@@ -128,6 +129,11 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
 
   val configFactory = platformPlugin.configFactory
 
+  val kotlinLanguageVersion = when (platformPlugin) {
+    is JavaLibraryPluginBuilder -> null
+    else -> KOTLIN_1_6
+  }
+
   val sourceSet = platformPlugin.sourceSets.getOrPut(name) {
     SourceSetBuilder(
       name = name,
@@ -142,6 +148,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       classpath = classpath.toMutableSet(),
       upstream = upstream,
       downstream = downstreamNames.toMutableList(),
+      kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
     )
   }
