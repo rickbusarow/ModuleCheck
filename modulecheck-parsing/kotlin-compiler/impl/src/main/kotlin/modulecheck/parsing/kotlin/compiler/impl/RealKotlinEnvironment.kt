@@ -21,7 +21,6 @@ import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.parsing.kotlin.compiler.KotlinEnvironment.InheritedSources
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.project.ProjectCache
 import modulecheck.utils.lazy.LazyDeferred
@@ -53,10 +52,9 @@ import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import sun.reflect.ReflectionFactory
 import java.io.File
@@ -64,13 +62,14 @@ import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
 /**
+ * @property projectPath path of the associated Gradle project
  * @property classpathFiles `.jar` files from external dependencies
  * @property sourceDirs all jvm source code directories for this source set, like
  *   `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property inheritedSources all upstream sources, used as dependencies when performing an actual
- *   compilation
+ * @property dependencyModuleDescriptors module descriptors for all project dependencies, taken from
+ *   their own kotlin environments
  */
 class RealKotlinEnvironment(
   private val projectPath: StringProjectPath,
@@ -78,7 +77,7 @@ class RealKotlinEnvironment(
   private val sourceDirs: Collection<File>,
   private val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  private val inheritedSources: InheritedSources
+  private val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>
 ) : KotlinEnvironment {
 
   private val sourceFiles by lazy {
@@ -90,9 +89,8 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration by lazy {
     createCompilerConfiguration(
-      projectPath = projectPath,
-      classpathFiles = classpathFiles.value.toList() + inheritedSources.classpathFiles,
-      sourceFiles = sourceFiles.toList() + inheritedSources.jvmFiles,
+      classpathFiles = classpathFiles.value.toList(),
+      sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
     )
@@ -111,22 +109,20 @@ class RealKotlinEnvironment(
       .associateWith { file -> psiFileFactory.createKotlin(file) }
   }
 
-  val analysisResult: LazyDeferred<AnalysisResult?> = lazyDeferred {
-    maybeCreateAnalysisResult(
-      coreEnvironment = coreEnvironment,
-      classpathFiles = classpathFiles.value,
-      ktFiles = ktFiles.values.toList() + inheritedSources.ktFiles
-    )
-  }
+  private val analysisResult: LazyDeferred<AnalysisResult> = lazyDeferred {
+    val ar: AnalysisResult
 
-  override val bindingContext = lazyDeferred {
-    val bc: BindingContext
+    val descriptors = dependencyModuleDescriptors.await()
 
     val time = measureTimeMillis {
 
-      println(" ".repeat(40) + "starting bindingContext for ${projectPath.value}")
+      println(" ".repeat(20) + "starting compiler analysis for ${projectPath.value}")
 
-      bc = analysisResult.await()?.bindingContext ?: BindingContext.EMPTY
+      ar = maybeCreateAnalysisResult(
+        coreEnvironment = coreEnvironment,
+        ktFiles = ktFiles.values.toList(),
+        dependencyModuleDescriptors = descriptors
+      )
     }
 
     val sec = time / 1000
@@ -134,13 +130,17 @@ class RealKotlinEnvironment(
 
     val ts = "${sec}s.$ms".padEnd(20, '_')
 
-    println("binding context time -- $ts${projectPath.value}")
+    println(" ".repeat(70) + "compiler analysis time -- $ts${projectPath.value}")
 
-    bc
+    ar
   }
 
-  override val moduleDescriptor: LazyDeferred<ModuleDescriptor?> = lazyDeferred {
-    analysisResult.await()?.moduleDescriptor
+  override val bindingContext = lazyDeferred {
+    analysisResult.await().bindingContext
+  }
+
+  override val moduleDescriptor: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
+    analysisResult.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
   /** Creates an instance of [KotlinEnvironment] */
@@ -161,13 +161,9 @@ class RealKotlinEnvironment(
 
 private fun maybeCreateAnalysisResult(
   coreEnvironment: KotlinCoreEnvironment,
-  classpathFiles: Collection<File>,
-  ktFiles: List<KtFile>
-): AnalysisResult? {
-
-  if (classpathFiles.isEmpty() && ktFiles.isEmpty()) {
-    return null
-  }
+  ktFiles: List<KtFile>,
+  dependencyModuleDescriptors: List<ModuleDescriptorImpl>
+): AnalysisResult {
 
   return VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
     project = coreEnvironment.project,
@@ -175,18 +171,17 @@ private fun maybeCreateAnalysisResult(
     trace = NoScopeRecordCliBindingTrace(),
     configuration = coreEnvironment.configuration,
     packagePartProvider = coreEnvironment::createPackagePartProvider,
-    declarationProviderFactory = ::FileBasedDeclarationProviderFactory
+    declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
+    explicitModuleDependencyList = dependencyModuleDescriptors
   )
 }
 
 private fun createCompilerConfiguration(
-  projectPath: StringProjectPath,
   classpathFiles: List<File>,
   sourceFiles: List<File>,
   kotlinLanguageVersion: LanguageVersion?,
   jvmTarget: JvmTarget
 ): CompilerConfiguration {
-
   val javaFiles = mutableListOf<File>()
   val kotlinFiles = mutableListOf<String>()
 
@@ -208,14 +203,11 @@ private fun createCompilerConfiguration(
     )
 
     if (kotlinLanguageVersion != null) {
-
       val languageVersionSettings = LanguageVersionSettingsImpl(
         languageVersion = kotlinLanguageVersion,
         apiVersion = ApiVersion.createByLanguageVersion(kotlinLanguageVersion)
       )
       put(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, languageVersionSettings)
-    } else {
-      println("kotlin version is null for project -- $projectPath")
     }
 
     put(JVMConfigurationKeys.JVM_TARGET, jvmTarget)
@@ -264,7 +256,8 @@ private class ModuleCheckPomModel : UserDataHolderBase(), PomModel {
     val transactionCandidate = transaction as? PomTransactionBase
 
     val pomTransaction = requireNotNull(transactionCandidate) {
-      "expected ${PomTransactionBase::class.simpleName} but actual was ${transaction.javaClass.simpleName}"
+      "expected ${PomTransactionBase::class.simpleName} " +
+        "but actual was ${transaction.javaClass.simpleName}"
     }
 
     pomTransaction.run()

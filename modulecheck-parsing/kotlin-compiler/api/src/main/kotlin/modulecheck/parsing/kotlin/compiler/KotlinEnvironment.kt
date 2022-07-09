@@ -21,7 +21,7 @@ import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
@@ -45,6 +45,15 @@ interface KotlinEnvironment {
    * expensive to create, but it's created lazily.
    */
   val bindingContext: LazyDeferred<BindingContext>
+
+  /**
+   * The result of file analysis, used for last-resort type resolution. This object is very
+   * expensive to create, but it's created lazily.
+   *
+   * N.B. it's gross, but this has to be an -Impl instead of just the `ModuleDescriptor` interface
+   * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
+   */
+  val moduleDescriptor: LazyDeferred<ModuleDescriptorImpl>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
@@ -118,6 +127,4 @@ interface KotlinEnvironment {
       sourceSetName: SourceSetName
     ): KotlinEnvironment
   }
-
-  val moduleDescriptor: LazyDeferred<ModuleDescriptor?>
 }

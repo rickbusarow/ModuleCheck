@@ -88,7 +88,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
 
     require(java1 === java2) { "java" }
 
-    ke.bindingContext
+    ke.bindingContext.await()
 
     require(false) { "show me" }
   }

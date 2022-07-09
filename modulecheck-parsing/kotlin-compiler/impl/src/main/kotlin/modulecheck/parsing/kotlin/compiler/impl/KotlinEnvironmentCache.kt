@@ -15,11 +15,15 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
+import modulecheck.api.context.classpathDependencies
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.project.isAndroid
+import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.lazy.lazyDeferred
 
 /** cache for [KotlinEnvironment] per project/source set */
 data class KotlinEnvironmentCache(
@@ -42,8 +46,44 @@ data class KotlinEnvironmentCache(
       val kotlinLanguageVersion = sourceSet.kotlinLanguageVersion
       val jvmTarget = sourceSet.jvmTarget
 
-      val inheritedSources = project.projectInheritedSources()
-        .get(sourceSetName)
+      val descriptors = lazyDeferred {
+        project.classpathDependencies()
+          .get(sourceSetName)
+          .map { transitive ->
+            val dependencyProject = transitive.contributed.project(project)
+            val dependencySourceSetName = transitive.contributed
+              .declaringSourceSetName(dependencyProject.isAndroid())
+
+            dependencyProject.kotlinEnvironmentCache()
+              .get(dependencySourceSetName)
+              .moduleDescriptor
+              .await()
+          }
+      }
+
+      val descriptors2 = lazyDeferred {
+
+        sourceSetName.withUpstream(project).map { sourceSetOrUpstream ->
+          project.projectDependencies[sourceSetOrUpstream].map { dep ->
+            dep.project(project)
+              .kotlinEnvironmentCache()
+              .get(SourceSetName.MAIN).moduleDescriptor.await()
+          }
+        }
+
+        project.classpathDependencies()
+          .get(sourceSetName)
+          .map { transitive ->
+            val dependencyProject = transitive.contributed.project(project)
+            val dependencySourceSetName = transitive.contributed
+              .declaringSourceSetName(dependencyProject.isAndroid())
+
+            dependencyProject.kotlinEnvironmentCache()
+              .get(dependencySourceSetName)
+              .moduleDescriptor
+              .await()
+          }
+      }
 
       RealKotlinEnvironment(
         projectPath = project.path,
@@ -51,8 +91,9 @@ data class KotlinEnvironmentCache(
         sourceDirs = sourceDirs,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        inheritedSources = inheritedSources
+        dependencyModuleDescriptors = descriptors2
       )
+        .also { it.bindingContext.await() }
     }
   }
 
@@ -60,7 +101,8 @@ data class KotlinEnvironmentCache(
   companion object Key : ProjectContext.Key<KotlinEnvironmentCache> {
     override suspend fun invoke(project: McProject): KotlinEnvironmentCache {
       return KotlinEnvironmentCache(
-        SafeCache(listOf(project.path, KotlinEnvironmentCache::class)), project
+        SafeCache(listOf(project.path, KotlinEnvironmentCache::class)),
+        project
       )
     }
   }

@@ -45,13 +45,6 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val agpApiAccess = AgpApiAccess()
 
-    // target.registerTasks(
-    //   name = "moduleCheckSortDependencies",
-    //   findingName = SortDependenciesFinding.NAME,
-    //   includeAuto = true,
-    //   disableConfigCache = disableConfigCache,
-    //   agpApiAccess = agpApiAccess
-    // )
     target.registerTasks(
       name = "moduleCheckSortDependencies",
       findingName = FindingName("sort-dependencies"),
@@ -116,12 +109,20 @@ class ModuleCheckPlugin : Plugin<Project> {
       configure { mcTask ->
         allprojects
           .filter { it.isMissingManifestFile(agpApiAccess) }
-          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java) }
+          .flatMap {
+            it.tasks.withType(
+              com.android.build.gradle.tasks.ManifestProcessorTask::class.java
+            )
+          }
           .forEach { mcTask.dependsOn(it) }
 
         allprojects
           .filter { it.generatesBuildConfig(agpApiAccess) }
-          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java) }
+          .flatMap {
+            it.tasks.withType(
+              com.android.build.gradle.tasks.GenerateBuildConfig::class.java
+            )
+          }
           .forEach { mcTask.dependsOn(it) }
       }
     }

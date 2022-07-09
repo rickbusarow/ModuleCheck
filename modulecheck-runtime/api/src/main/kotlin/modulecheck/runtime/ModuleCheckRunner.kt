@@ -19,6 +19,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
@@ -42,6 +43,7 @@ import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.createSafely
 import modulecheck.utils.trace.Trace
 import java.io.File
+import java.util.concurrent.Executors
 import kotlin.system.measureTimeMillis
 
 /**
@@ -69,6 +71,20 @@ data class ModuleCheckRunner @AssistedInject constructor(
   @Assisted
   val autoCorrect: Boolean
 ) {
+
+  suspend fun foo() {
+
+    val current = Thread.currentThread()
+
+    // Executors.
+
+    val threadPool = Executors.newSingleThreadExecutor { task ->
+
+      val tg: ThreadGroup = current.threadGroup
+
+      Thread(task, "my-background-thread")
+    }.asCoroutineDispatcher()
+  }
 
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(
     if (settings.trace) {

@@ -162,7 +162,9 @@ class RealAndroidSourceSetsParser private constructor(
   private val productFlavors2D by lazy {
     val mapped = extension.productFlavors
       .groupBy { it.dimension ?: "default_flavor_dimension" }
-      .mapValues { (_, productFlavors) -> productFlavors.map { GradleSourceSetName.FlavorName(it.name) } }
+      .mapValues { (_, productFlavors) ->
+        productFlavors.map { GradleSourceSetName.FlavorName(it.name) }
+      }
 
     flavorDimensions.map { mapped.getValue(it) }
   }
@@ -387,27 +389,24 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val classpath = lazy {
-
-        upstreamLazy.value
-          .asSequence()
-          .map { it.value }
-          .plus(name)
-          .mapNotNull { variantMap[VariantName(it)] }
-          .flatMapToSet { variant ->
-            sequenceOf(
-              variant.compileConfiguration,
-              variant.runtimeConfiguration
-            )
-              .flatMap { config ->
-                config.fileCollection { dependency -> dependency is ExternalModuleDependency }
-              }
-              .mapNotNull { it.existsOrNull() }
-              .toSet()
-          }
-          .filter { it.exists() }
-          .toSet()
-      }
+      val classpath = upstreamLazy.value
+        .asSequence()
+        .map { it.value }
+        .plus(name)
+        .mapNotNull { variantMap[VariantName(it)] }
+        .flatMapToSet { variant ->
+          sequenceOf(
+            variant.compileConfiguration,
+            variant.runtimeConfiguration
+          )
+            .flatMap { config ->
+              config.fileCollection { dependency -> dependency is ExternalModuleDependency }
+            }
+            .mapNotNull { it.existsOrNull() }
+            .toSet()
+        }
+        .filter { it.exists() }
+        .toSet()
 
       SourceSet(
         name = sourceSetName,
@@ -423,7 +422,7 @@ class RealAndroidSourceSetsParser private constructor(
         jvmFiles = jvmFiles,
         resourceFiles = resourceFiles,
         layoutFiles = layoutFiles,
-        classpath = classpath,
+        classpath = lazy { classpath },
         kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
         jvmTarget = gradleProject.jvmTarget(),
         upstreamLazy = upstreamLazy,
@@ -469,8 +468,7 @@ class RealAndroidSourceSetsParser private constructor(
       )
     }
 
-  private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType():
-    Pair<ConcatenatedFlavorsName, BuildTypeName> {
+  private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType(): Pair<ConcatenatedFlavorsName, BuildTypeName> {
     buildTypeNames
       // Sort descending by length because there may be multiple build types with the same
       // suffix, like ["internalRelease", "Release"].  In that example, it's important that
