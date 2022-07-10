@@ -65,7 +65,6 @@ interface McPsiFileFactory {
    */
   fun createJava(file: File): PsiJavaFile
 
-
   /**
    * @return a "virtual" Psi `PsiJavaFile` with the given [name] and [content]. This file does not
    *   exist in a Java file system.
