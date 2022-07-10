@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.dagger
+package modulecheck.utils.coroutines
 
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -24,7 +24,12 @@ import dispatch.core.IOCoroutineScope
 import dispatch.core.MainCoroutineScope
 import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.SingleIn
+import modulecheck.utils.coroutines.fork.LimitedDispatcher
 
 @Module
 @ContributesTo(AppScope::class)
@@ -51,7 +56,16 @@ object CoroutineScopeModule {
 
   @SingleIn(AppScope::class)
   @Provides
-  fun provideDispatcherProvider(): DispatcherProvider = DispatcherProvider()
+  fun provideDispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
+    override val default: CoroutineDispatcher = LimitedDispatcher(
+      dispatcher = Dispatchers.Default,
+      parallelism = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
+    )
+    override val io: CoroutineDispatcher = Dispatchers.IO
+    override val main: CoroutineDispatcher = Dispatchers.Main
+    override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate
+    override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
+  }
 }
 
 @ContributesTo(AppScope::class)

@@ -61,6 +61,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
+  api(project(path = ":modulecheck-utils:coroutines-wiring"))
 
   compileOnly(gradleApi())
 
@@ -99,6 +100,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))
+  "integrationTestImplementation"(project(path = ":modulecheck-utils:coroutines-wiring"))
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

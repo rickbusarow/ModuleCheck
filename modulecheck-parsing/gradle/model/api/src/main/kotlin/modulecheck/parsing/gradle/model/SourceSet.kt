@@ -50,7 +50,7 @@ import java.io.File
  * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
  *   is `main`
  */
-data class SourceSet(
+data class SourceSet constructor(
   val name: SourceSetName,
   val compileOnlyConfiguration: Config,
   val apiConfiguration: Config?,

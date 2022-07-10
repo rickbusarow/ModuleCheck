@@ -35,7 +35,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
-import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.Disposable
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
@@ -58,6 +57,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import sun.reflect.ReflectionFactory
 import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
@@ -73,12 +73,15 @@ import kotlin.system.measureTimeMillis
  */
 class RealKotlinEnvironment(
   private val projectPath: StringProjectPath,
+  private val sourceSetName: SourceSetName,
   private val classpathFiles: Lazy<Collection<File>>,
   private val sourceDirs: Collection<File>,
   private val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
   private val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>
 ) : KotlinEnvironment {
+
+  val id = UUID.randomUUID().toString()
 
   private val sourceFiles by lazy {
     sourceDirs.asSequence()
@@ -116,7 +119,7 @@ class RealKotlinEnvironment(
 
     val time = measureTimeMillis {
 
-      println(" ".repeat(20) + "starting compiler analysis for ${projectPath.value}")
+      println(" ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id")
 
       ar = maybeCreateAnalysisResult(
         coreEnvironment = coreEnvironment,
@@ -128,9 +131,9 @@ class RealKotlinEnvironment(
     val sec = time / 1000
     val ms = (time % 1000).toString().padStart(3, '0')
 
-    val ts = "${sec}s.$ms".padEnd(20, '_')
+    val ts = "$sec.$ms".padStart(12).padEnd(20, '_')
 
-    println(" ".repeat(70) + "compiler analysis time -- $ts${projectPath.value}")
+    println(" ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value} -- $id")
 
     ar
   }
@@ -214,7 +217,7 @@ private fun createCompilerConfiguration(
 
     addJavaSourceRoots(javaFiles)
     addKotlinSourceRoots(kotlinFiles)
-    addJvmClasspathRoots(classpathFiles)
+    // addJvmClasspathRoots(classpathFiles)
   }
 }
 

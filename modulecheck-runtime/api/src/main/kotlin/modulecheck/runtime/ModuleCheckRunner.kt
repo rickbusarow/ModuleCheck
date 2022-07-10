@@ -19,7 +19,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
-import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
@@ -41,9 +40,10 @@ import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.createSafely
+import modulecheck.utils.letIf
 import modulecheck.utils.trace.Trace
 import java.io.File
-import java.util.concurrent.Executors
+import kotlin.coroutines.CoroutineContext
 import kotlin.system.measureTimeMillis
 
 /**
@@ -72,26 +72,11 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val autoCorrect: Boolean
 ) {
 
-  suspend fun foo() {
-
-    val current = Thread.currentThread()
-
-    // Executors.
-
-    val threadPool = Executors.newSingleThreadExecutor { task ->
-
-      val tg: ThreadGroup = current.threadGroup
-
-      Thread(task, "my-background-thread")
-    }.asCoroutineDispatcher()
-  }
-
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(
-    if (settings.trace) {
-      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)
-    } else {
-      dispatcherProvider.default
-    }
+    dispatcherProvider.default
+      .letIf<CoroutineContext>(settings.trace) {
+        it + Trace.start(ModuleCheckRunner::class)
+      }
   ) {
     // total findings, whether they're fixed or not
     var totalFindings = 0

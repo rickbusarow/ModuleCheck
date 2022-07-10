@@ -136,6 +136,7 @@ include(
   ":modulecheck-runtime:testing",
   ":modulecheck-utils:cache",
   ":modulecheck-utils:coroutines",
+  ":modulecheck-utils:coroutines-wiring",
   ":modulecheck-utils:lazy",
   ":modulecheck-utils:stdlib",
   ":modulecheck-utils:trace",

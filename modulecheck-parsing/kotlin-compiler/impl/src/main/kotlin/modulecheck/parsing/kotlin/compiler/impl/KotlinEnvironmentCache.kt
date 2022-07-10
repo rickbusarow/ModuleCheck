@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
-import modulecheck.api.context.classpathDependencies
+import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.project.McProject
@@ -23,6 +23,7 @@ import modulecheck.project.ProjectContext
 import modulecheck.project.isAndroid
 import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
+import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.lazy.lazyDeferred
 
 /** cache for [KotlinEnvironment] per project/source set */
@@ -39,7 +40,8 @@ data class KotlinEnvironmentCache(
 
     return delegate.getOrPut(sourceSetName) {
 
-      val sourceSet = project.sourceSets.getValue(sourceSetName)
+      val sourceSet = project.sourceSets[sourceSetName]
+        ?: project.sourceSets.getValue(SourceSetName.MAIN)
 
       val classpath = sourceSet.classpath
       val sourceDirs = sourceSet.jvmFiles
@@ -47,51 +49,32 @@ data class KotlinEnvironmentCache(
       val jvmTarget = sourceSet.jvmTarget
 
       val descriptors = lazyDeferred {
-        project.classpathDependencies()
-          .get(sourceSetName)
-          .map { transitive ->
-            val dependencyProject = transitive.contributed.project(project)
-            val dependencySourceSetName = transitive.contributed
-              .declaringSourceSetName(dependencyProject.isAndroid())
 
-            dependencyProject.kotlinEnvironmentCache()
-              .get(dependencySourceSetName)
+        // sourceSetName.withUpstream(project)
+        //   .flatMapListMerge { sourceSetOrUpstream ->
+
+        project.projectDependencies[sourceSetName]
+          .mapAsync { dep ->
+            val depProject = dep.project(project)
+
+            depProject.kotlinEnvironmentCache()
+              .get(dep.declaringSourceSetName(depProject.isAndroid()))
               .moduleDescriptor
               .await()
           }
-      }
+          .toList()
 
-      val descriptors2 = lazyDeferred {
-
-        sourceSetName.withUpstream(project).map { sourceSetOrUpstream ->
-          project.projectDependencies[sourceSetOrUpstream].map { dep ->
-            dep.project(project)
-              .kotlinEnvironmentCache()
-              .get(SourceSetName.MAIN).moduleDescriptor.await()
-          }
-        }
-
-        project.classpathDependencies()
-          .get(sourceSetName)
-          .map { transitive ->
-            val dependencyProject = transitive.contributed.project(project)
-            val dependencySourceSetName = transitive.contributed
-              .declaringSourceSetName(dependencyProject.isAndroid())
-
-            dependencyProject.kotlinEnvironmentCache()
-              .get(dependencySourceSetName)
-              .moduleDescriptor
-              .await()
-          }
+        // }
       }
 
       RealKotlinEnvironment(
         projectPath = project.path,
+        sourceSetName = sourceSetName,
         classpathFiles = classpath,
         sourceDirs = sourceDirs,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        dependencyModuleDescriptors = descriptors2
+        dependencyModuleDescriptors = descriptors
       )
         .also { it.bindingContext.await() }
     }
