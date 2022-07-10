@@ -778,6 +778,37 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     }
 
   @Test
+  fun `generic type of public property is api reference`() =
+    test {
+      val file = project.createFile(
+        """
+        package com.subject
+
+        val genericString : com.subject.Generic<String> = getGeneric()
+        """
+      )
+
+      file shouldBe {
+        references {
+          kotlin("Generic<String>")
+          kotlin("com.subject.Generic")
+          kotlin("com.subject.Generic<String>")
+          kotlin("com.subject.getGeneric")
+          kotlin("getGeneric")
+          kotlin("kotlin.String")
+        }
+        apiReferences {
+          kotlin("Generic<String>")
+          kotlin("com.subject.Generic<String>")
+        }
+        declarations {
+          kotlin("com.subject.genericString")
+          java("com.subject.SourceKt.getGenericString")
+        }
+      }
+    }
+
+  @Test
   fun `is- prefix should not be removed if the following character is a lowercase letter`() =
     test {
       val file = project.createFile(
