@@ -13,29 +13,16 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.gradle.platforms
 
-mcbuild {
-  artifactId = "modulecheck-parsing-kotlin-compiler-api"
-}
+import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.utils.lazy.LazyDeferred
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 
-dependencies {
-  api(libs.kotlin.compiler)
-  api(libs.kotlin.reflect)
-
-  compileOnly(gradleApi())
-
-  compileOnly(libs.agp)
-
-  implementation(libs.groovy)
-
-  implementation(project(path = ":modulecheck-utils:lazy"))
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotest.runner)
+fun interface DependencyModuleDescriptorProvider {
+  fun get(
+    projectPath: ProjectPath,
+    sourceSetName: SourceSetName
+  ): LazyDeferred<List<ModuleDescriptorImpl>>
 }

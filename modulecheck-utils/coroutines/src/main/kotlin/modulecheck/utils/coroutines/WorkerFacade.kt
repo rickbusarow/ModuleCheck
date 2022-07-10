@@ -13,29 +13,12 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
+package modulecheck.utils.coroutines
+
+interface WorkerFacade {
+  operator fun <T> invoke(action: RealDispatchAction<T>): T
 }
 
-mcbuild {
-  artifactId = "modulecheck-parsing-kotlin-compiler-api"
-}
-
-dependencies {
-  api(libs.kotlin.compiler)
-  api(libs.kotlin.reflect)
-
-  compileOnly(gradleApi())
-
-  compileOnly(libs.agp)
-
-  implementation(libs.groovy)
-
-  implementation(project(path = ":modulecheck-utils:lazy"))
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotest.runner)
+fun interface RealDispatchAction<T> {
+  operator fun invoke(): T
 }

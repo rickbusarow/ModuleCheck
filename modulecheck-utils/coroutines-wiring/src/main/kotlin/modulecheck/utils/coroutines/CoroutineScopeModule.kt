@@ -15,6 +15,7 @@
 
 package modulecheck.utils.coroutines
 
+import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -30,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.utils.coroutines.fork.LimitedDispatcher
+import javax.inject.Inject
 
 @Module
 @ContributesTo(AppScope::class)
@@ -53,22 +55,27 @@ object CoroutineScopeModule {
 
   @Provides
   fun provideUnconfinedCoroutineScope(): UnconfinedCoroutineScope = UnconfinedCoroutineScope()
-
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideDispatcherProvider(): DispatcherProvider = object : DispatcherProvider {
-    override val default: CoroutineDispatcher = LimitedDispatcher(
-      dispatcher = Dispatchers.Default,
-      parallelism = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
-    )
-    override val io: CoroutineDispatcher = Dispatchers.IO
-    override val main: CoroutineDispatcher = Dispatchers.Main
-    override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate
-    override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
-  }
 }
 
 @ContributesTo(AppScope::class)
 interface DispatcherProviderComponent {
   val dispatcherProvider: DispatcherProvider
+}
+
+abstract class WorkerDispatcher : CoroutineDispatcher()
+
+@SingleIn(AppScope::class)
+@ContributesBinding(AppScope::class)
+class ModuleCheckDispatcherProvider @Inject constructor(
+  workerDispatcher: WorkerDispatcher
+) : DispatcherProvider {
+
+  override val default: CoroutineDispatcher = LimitedDispatcher(
+    dispatcher = Dispatchers.Default,
+    parallelism = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
+  )
+  override val io: CoroutineDispatcher = default
+  override val main: CoroutineDispatcher = Dispatchers.Main
+  override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate
+  override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
 }

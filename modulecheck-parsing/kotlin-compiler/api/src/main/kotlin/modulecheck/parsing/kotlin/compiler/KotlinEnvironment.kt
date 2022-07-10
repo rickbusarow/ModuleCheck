@@ -15,8 +15,6 @@
 
 package modulecheck.parsing.kotlin.compiler
 
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
@@ -53,7 +51,7 @@ interface KotlinEnvironment {
    * N.B. it's gross, but this has to be an -Impl instead of just the `ModuleDescriptor` interface
    * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
    */
-  val moduleDescriptor: LazyDeferred<ModuleDescriptorImpl>
+  val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
@@ -71,60 +69,4 @@ interface KotlinEnvironment {
    * dependency modules, and much of their implementation is Lazy, so re-use is important.
    */
   val javaFiles: Map<File, PsiJavaFile>
-
-  @Suppress("MaxLineLength")
-  /**
-   * Model for additional sources coming from upstream "dependencies". These files can come from:
-   * - an upstream source set within the same project
-   * - an internal project dependency, like `implementation(project(":lib1"))`
-   * - an external dependency, like `implementation("com.google.dagger:dagger")`
-   *
-   * ```
-   * ┌──────────────────────┐
-   * │:lib2                 │
-   * │                      │
-   * │  ┌────────────────┐  │
-   * │  │    src/test    │  │
-   * │  └────────────────┘  │
-   * │           │          │
-   * │           └────────────────────────────────┐
-   * │                      │      ┌──────────────│───────┐
-   * │  ┌────────────────┐  │      │:lib1         ▼       │
-   * │  │    src/main    │  │      │  ┌────────────────┐  │
-   * │  └────────────────┘  │    ─ ─ ▶│    src/main    │  │
-   * │           ▲          │   │  │  └────────────────┘  │
-   * │                      │      │                      │
-   * └───────────│──────────┘   │  └──────────────────────┘
-   *
-   *             │              │
-   *    ┌ ─ ─ ─ ─ ─ ─ ─ ─ ┐
-   *                            │
-   *    │InheritedSources │─ ─ ─
-   *
-   *    └ ─ ─ ─ ─ ─ ─ ─ ─ ┘
-   * ```
-   *
-   * @property ktFiles all Psi "Kt" files. These should be the same instances as those used in the
-   *   upstream source sets. Note that this can only be Kotlin Psi files, per the signature of
-   *   [TopDownAnalyzerFacadeForJvm.analyzeFilesWithJavaIntegration][org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration]
-   * @property jvmFiles all source code files, whether they're `.java` or `.kt`.
-   * @property classpathFiles `.jar` files from external dependencies
-   */
-  data class InheritedSources(
-    val ktFiles: Set<KtFile>,
-    val jvmFiles: Set<File>,
-    val classpathFiles: Set<File>
-  )
-
-  /** Creates an instance of [KotlinEnvironment] */
-  fun interface Provider {
-    /**
-     * @param projectPath the path of the project for which this environment is being modeled
-     * @param sourceSetName the name of the source set for which this environment is being modeled
-     */
-    suspend fun getOrPut(
-      projectPath: ProjectPath,
-      sourceSetName: SourceSetName
-    ): KotlinEnvironment
-  }
 }

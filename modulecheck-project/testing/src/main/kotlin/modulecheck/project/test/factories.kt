@@ -28,7 +28,6 @@ import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
@@ -117,10 +116,7 @@ internal inline fun <reified T : McProjectBuilder<P>,
   platformPlugin.populateConfigsFromSourceSets()
   platformPlugin.sourceSets.populateDownstreams()
 
-  val jvmFileProviderFactory = RealJvmFileProvider.Factory(
-    { JvmFileCache() },
-    RealKotlinEnvironment.Provider(projectCache)
-  )
+  val jvmFileProviderFactory = RealJvmFileProvider.Factory { JvmFileCache() }
 
   return projectFactory(jvmFileProviderFactory)
     .also { finalProject ->
@@ -153,7 +149,7 @@ inline fun <reified T : McProjectBuilder<P>,
 }
 
 @PublishedApi
-internal fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
+internal suspend fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
   SourceSetBuilder.fromSourceSet(sourceSet)
 }
 

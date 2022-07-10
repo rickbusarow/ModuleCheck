@@ -84,7 +84,9 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     } ?: false
 
   /** @return A new [AndroidPlatformPlugin] using this scope's [gradleProject] */
-  fun AndroidPlatformPluginFactory.create(hasTestFixturesPlugin: Boolean): AndroidPlatformPlugin {
+  fun AndroidPlatformPluginFactory.create(
+    hasTestFixturesPlugin: Boolean
+  ): AndroidPlatformPlugin {
     return create(
       gradleProject = gradleProject,
       androidCommonExtension = requireCommonExtension(),

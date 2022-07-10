@@ -129,33 +129,32 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val tasks = if (findingName != null) {
       listOfNotNull(
-        tasks.register(
-          name,
-          SingleRuleModuleCheckTask::class.java,
-          findingName,
-          false,
-          disableConfigCache
-        ),
-        if (includeAuto) {
-          tasks.register(
-            "${name}Auto",
-            SingleRuleModuleCheckTask::class.java,
-            findingName,
-            true,
-            disableConfigCache
+        tasks.register(name, SingleRuleModuleCheckTask::class.java) {
+          it.configure(
+            findingName = findingName,
+            autoCorrect = false,
+            disableConfigCache = disableConfigCache
           )
+        },
+        if (includeAuto) {
+          tasks.register("${name}Auto", SingleRuleModuleCheckTask::class.java) {
+            it.configure(
+              findingName = findingName,
+              autoCorrect = true,
+              disableConfigCache = disableConfigCache
+            )
+          }
         } else null
       )
     } else {
       listOfNotNull(
-        tasks.register(name, MultiRuleModuleCheckTask::class.java, false, disableConfigCache),
+        tasks.register(name, MultiRuleModuleCheckTask::class.java) {
+          it.configure(autoCorrect = false, disableConfigCache = disableConfigCache)
+        },
         if (includeAuto) {
-          tasks.register(
-            "${name}Auto",
-            MultiRuleModuleCheckTask::class.java,
-            true,
-            disableConfigCache
-          )
+          tasks.register("${name}Auto", MultiRuleModuleCheckTask::class.java) {
+            it.configure(autoCorrect = true, disableConfigCache = disableConfigCache)
+          }
         } else null
       )
     }

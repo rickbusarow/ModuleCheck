@@ -1886,6 +1886,70 @@ class MustBeApiTest : RunnerTest() {
   }
 
   @Test
+  fun `public generic wrapping type should count as api reference`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        class Lib1Class<T>
+        """
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.implementation, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          implementation(project(path = ":lib1"))
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Class
+
+        val lib1ClassOfString: Lib1Class<String> = TODO()
+        """
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          // implementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
+        }
+    """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        mustBeApi(
+          fixed = true,
+          configuration = "implementation",
+          dependency = ":lib1",
+          position = "6, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `two public public properties from implementation with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {

@@ -62,7 +62,7 @@ class RealKotlinEnvironmentTest : ProjectTest() {
       addKotlinSource("""object Butt""", fileName = "Butt.kt")
     }
 
-    val ke = lib2.kotlinEnvironmentCache().get(SourceSetName.MAIN)
+    val ke = lib2.sourceSets.getValue(SourceSetName.MAIN).kotlinEnvironmentDeferred.await()
 
     val compilerConfiguration = ke.compilerConfiguration
     val intelliJProject = ke.coreEnvironment.project

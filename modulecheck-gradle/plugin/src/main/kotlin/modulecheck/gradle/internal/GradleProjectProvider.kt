@@ -47,9 +47,6 @@ import net.swiftzer.semver.SemVer
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
-import org.gradle.workers.WorkAction
-import org.gradle.workers.WorkParameters
-import org.gradle.workers.WorkerExecutor
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
 import org.gradle.api.artifacts.ProjectDependency as GradleProjectDependency
@@ -75,16 +72,6 @@ class GradleProjectProvider @Inject constructor(
 
   private val gradleProjects = rootGradleProject.allprojects
     .associateBy { StringProjectPath(it.path) }
-
-  interface WP : WorkParameters
-  interface WA : WorkAction<WP>
-
-  fun butt(exec: WorkerExecutor) {
-
-    exec.processIsolation { action ->
-    }.submit(WA::class.java) { wp ->
-    }
-  }
 
   override fun get(path: ProjectPath): McProject {
     return projectCache.getOrPut(path) {

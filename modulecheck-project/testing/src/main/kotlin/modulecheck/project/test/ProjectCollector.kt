@@ -65,7 +65,7 @@ interface ProjectCollector {
 
   fun allProjects(): List<McProject> = projectCache.values.toList()
 
-  fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
+  suspend fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
     return when (this) {
       is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
@@ -115,8 +115,7 @@ interface ProjectCollector {
     }
   }
 
-  fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder():
-    McProjectBuilder<P> {
+  suspend fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder(): McProjectBuilder<P> {
     @Suppress("UNCHECKED_CAST")
     return McProjectBuilder(
       path = path,
@@ -135,7 +134,7 @@ interface ProjectCollector {
     )
   }
 
-  fun McProject.editSimple(
+  suspend fun McProject.editSimple(
     config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
   ): McProject {
     return toProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>()

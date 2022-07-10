@@ -17,15 +17,19 @@ package modulecheck.gradle.platforms.sourcesets
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
+import modulecheck.gradle.platforms.DependencyModuleDescriptorProvider
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.parsing.gradle.model.Config
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.gradle.model.asSourceSetName
+import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.requireNotNull
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -35,7 +39,9 @@ import org.gradle.api.Project as GradleProject
 typealias GradleSourceSet = org.gradle.api.tasks.SourceSet
 
 @ContributesBinding(AppScope::class)
-class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
+class RealJvmSourceSetsParser @Inject constructor(
+  private val descriptorProvider: DependencyModuleDescriptorProvider
+) : JvmSourceSetsParser {
 
   override fun parse(
     parsedConfigurations: Configurations,
@@ -50,6 +56,8 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
         .findByType(JavaPluginExtension::class.java)
 
       val jvmTarget = gradleProject.jvmTarget()
+
+      val projectPath = StringProjectPath(gradleProject.path)
 
       if (kotlinExtensionOrNull != null) {
 
@@ -83,6 +91,25 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 "kotlin version is null for project -- ${gradleProject.path}"
               }
 
+            val descriptorsDeferred = descriptorProvider.get(
+              projectPath,
+              sourceSetName
+            )
+
+            val jvmFiles = kotlinSourceSet.kotlin.srcDirs
+
+            val kotlinEnvironmentDeferred = lazyDeferred {
+              RealKotlinEnvironment(
+                projectPath = projectPath,
+                sourceSetName = sourceSetName,
+                classpathFiles = lazy { classpath },
+                sourceDirs = jvmFiles,
+                kotlinLanguageVersion = kotlinVersion,
+                jvmTarget = jvmTarget,
+                dependencyModuleDescriptors = descriptorsDeferred
+              )
+            }
+
             put(
               kotlinSourceSet.name.asSourceSetName(),
               SourceSet(
@@ -96,12 +123,11 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 runtimeOnlyConfiguration = parsedConfigurations
                   .getValue(kotlinSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
                 annotationProcessorConfiguration = null,
-                jvmFiles = kotlinSourceSet.kotlin.srcDirs,
+                jvmFiles = jvmFiles,
                 resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
-                classpath = lazy { classpath },
-                kotlinLanguageVersion = kotlinVersion,
                 jvmTarget = jvmTarget,
+                kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
               )
@@ -127,6 +153,24 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
               downstreamLazy
             ) = parseHierarchy(sourceSetName, configs)
 
+            val jvmFiles = gradleSourceSet.allJava.srcDirs
+
+            val descriptorsDeferred = descriptorProvider.get(
+              projectPath,
+              sourceSetName
+            )
+            val kotlinEnvironmentDeferred = lazyDeferred {
+              RealKotlinEnvironment(
+                projectPath = projectPath,
+                sourceSetName = sourceSetName,
+                classpathFiles = lazy { gradleSourceSet.classpath() },
+                sourceDirs = jvmFiles,
+                kotlinLanguageVersion = null,
+                jvmTarget = jvmTarget,
+                dependencyModuleDescriptors = descriptorsDeferred
+              )
+            }
+
             put(
               gradleSourceSet.name.asSourceSetName(),
               SourceSet(
@@ -140,12 +184,11 @@ class RealJvmSourceSetsParser @Inject constructor() : JvmSourceSetsParser {
                 runtimeOnlyConfiguration = parsedConfigurations
                   .getValue(gradleSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
                 annotationProcessorConfiguration = null,
-                jvmFiles = gradleSourceSet.allJava.srcDirs,
+                jvmFiles = jvmFiles,
                 resourceFiles = gradleSourceSet.resources.sourceDirectories.files,
                 layoutFiles = emptySet(),
-                classpath = lazy { gradleSourceSet.classpath() },
-                kotlinLanguageVersion = null,
                 jvmTarget = jvmTarget,
+                kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
                 upstreamLazy = upstreamLazy,
                 downstreamLazy = downstreamLazy
               )

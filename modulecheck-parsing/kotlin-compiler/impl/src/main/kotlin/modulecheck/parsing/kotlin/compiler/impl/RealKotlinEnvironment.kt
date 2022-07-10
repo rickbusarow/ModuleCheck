@@ -15,14 +15,10 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
-import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
-import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
-import modulecheck.project.ProjectCache
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.analyzer.AnalysisResult
@@ -58,7 +54,6 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import sun.reflect.ReflectionFactory
 import java.io.File
 import java.util.UUID
-import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
 /**
@@ -74,11 +69,11 @@ import kotlin.system.measureTimeMillis
 class RealKotlinEnvironment(
   private val projectPath: StringProjectPath,
   private val sourceSetName: SourceSetName,
-  private val classpathFiles: Lazy<Collection<File>>,
+  val classpathFiles: Lazy<Collection<File>>,
   private val sourceDirs: Collection<File>,
-  private val kotlinLanguageVersion: LanguageVersion?,
+  val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  private val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>
+  val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>
 ) : KotlinEnvironment {
 
   val id = UUID.randomUUID().toString()
@@ -142,23 +137,8 @@ class RealKotlinEnvironment(
     analysisResult.await().bindingContext
   }
 
-  override val moduleDescriptor: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
-    analysisResult.await().moduleDescriptor as ModuleDescriptorImpl
-  }
-
-  /** Creates an instance of [KotlinEnvironment] */
-  @ContributesBinding(AppScope::class)
-  class Provider @Inject constructor(
-    private val projectCache: ProjectCache
-  ) : KotlinEnvironment.Provider {
-    override suspend fun getOrPut(
-      projectPath: ProjectPath,
-      sourceSetName: SourceSetName
-    ): KotlinEnvironment {
-      return projectCache.getValue(projectPath)
-        .kotlinEnvironmentCache()
-        .get(sourceSetName)
-    }
+  override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
+    (analysisResult.await().moduleDescriptor as ModuleDescriptorImpl)
   }
 }
 

@@ -61,6 +61,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
   api(project(path = ":modulecheck-rule:impl-factory"))
   api(project(path = ":modulecheck-runtime:api"))
+  api(project(path = ":modulecheck-utils:coroutines"))
   api(project(path = ":modulecheck-utils:coroutines-wiring"))
 
   compileOnly(gradleApi())

@@ -29,6 +29,7 @@ import modulecheck.rule.RulesComponent
 import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.RunnerComponent
 import org.gradle.api.Project
+import org.gradle.workers.WorkerExecutor
 
 @SingleIn(AppScope::class)
 @MergeComponent(AppScope::class)
@@ -48,7 +49,9 @@ interface TaskComponent : RunnerComponent, RulesComponent {
       @BindsInstance
       ruleFilter: RuleFilter,
       @BindsInstance
-      projectRoot: ProjectRoot
+      projectRoot: ProjectRoot,
+      @BindsInstance
+      workerExecutor: WorkerExecutor
     ): TaskComponent
   }
 }
