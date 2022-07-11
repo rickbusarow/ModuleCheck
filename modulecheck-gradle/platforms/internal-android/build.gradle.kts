@@ -36,7 +36,6 @@ dependencies {
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-utils:coroutines"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
@@ -51,7 +50,6 @@ dependencies {
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 

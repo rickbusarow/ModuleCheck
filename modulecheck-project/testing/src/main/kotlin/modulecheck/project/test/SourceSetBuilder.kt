@@ -15,7 +15,6 @@
 
 package modulecheck.project.test
 
-import modulecheck.gradle.platforms.RealDependencyModuleDescriptorProvider
 import modulecheck.parsing.gradle.model.Config
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
@@ -35,7 +34,7 @@ import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import java.io.File
 
-data class SourceSetBuilder(
+data class SourceSetBuilder constructor(
   var name: SourceSetName,
   var compileOnlyConfiguration: Config,
   var apiConfiguration: Config?,
@@ -55,7 +54,6 @@ data class SourceSetBuilder(
   val descriptorsDeferred: LazyDeferred<List<ModuleDescriptorImpl>>
 ) {
   fun toSourceSet(): SourceSet {
-
     val kotlinEnvironmentDeferred = lazyDeferred {
       RealKotlinEnvironment(
         projectPath = StringProjectPath("dummy"),
@@ -64,7 +62,7 @@ data class SourceSetBuilder(
         sourceDirs = jvmFiles,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        dependencyModuleDescriptors = descriptorsDeferred
+        safeAnalysisResultAccess = TODO()
       )
     }
 
@@ -87,7 +85,6 @@ data class SourceSetBuilder(
 
   companion object {
     suspend fun fromSourceSet(sourceSet: SourceSet): SourceSetBuilder {
-
       val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await() as RealKotlinEnvironment
 
       return SourceSetBuilder(
@@ -105,7 +102,7 @@ data class SourceSetBuilder(
         downstream = sourceSet.downstream.toMutableList(),
         kotlinLanguageVersion = kotlinEnvironment.kotlinLanguageVersion,
         jvmTarget = sourceSet.jvmTarget,
-        descriptorsDeferred = kotlinEnvironment.dependencyModuleDescriptors
+        descriptorsDeferred = TODO()
       )
     }
   }
@@ -127,12 +124,13 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
   jvmFiles: Set<File> = emptySet(),
   resourceFiles: Set<File> = emptySet(),
   layoutFiles: Set<File> = emptySet(),
-  classpath: Set<File> = setOf(File(CharRange::class.java.protectionDomain.codeSource.location.path)),
+  classpath: Set<File> = setOf(
+    File(CharRange::class.java.protectionDomain.codeSource.location.path)
+  ),
   upstreamNames: List<SourceSetName> = emptyList(),
   downstreamNames: List<SourceSetName> = emptyList(),
   jvmTarget: JvmTarget = JVM_11
 ): SourceSetBuilder {
-
   if (name.isTestFixtures()) {
     hasTestFixturesPlugin = true
   }
@@ -159,9 +157,6 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
     else -> KOTLIN_1_6
   }
 
-  val descriptorsDeferred = RealDependencyModuleDescriptorProvider(projectCache)
-    .get(path, name)
-
   val sourceSet = platformPlugin.sourceSets.getOrPut(name) {
     SourceSetBuilder(
       name = name,
@@ -178,7 +173,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       downstream = downstreamNames.toMutableList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget,
-      descriptorsDeferred = descriptorsDeferred
+      descriptorsDeferred = TODO()
     )
   }
   platformPlugin.populateConfigsFromSourceSets()
@@ -215,7 +210,6 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.requireSourceSetExists(
 
 @PublishedApi
 internal fun MutableMap<SourceSetName, SourceSetBuilder>.populateDownstreams() {
-
   values.forEach { sourceSetBuilder ->
     sourceSetBuilder.downstream.clear()
     sourceSetBuilder.downstream.addAll(

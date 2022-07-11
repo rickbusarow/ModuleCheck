@@ -15,14 +15,20 @@
 
 package modulecheck.gradle.platforms
 
-import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.utils.lazy.LazyDeferred
-import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
+import org.jetbrains.kotlin.config.JvmTarget
+import org.jetbrains.kotlin.config.LanguageVersion
+import java.io.File
 
-fun interface DependencyModuleDescriptorProvider {
-  suspend fun get(
-    projectPath: ProjectPath,
-    sourceSetName: SourceSetName
-  ): LazyDeferred<List<ModuleDescriptorImpl>>
+fun interface KotlinEnvironmentFactory {
+  fun create(
+    projectPath: StringProjectPath,
+    sourceSetName: SourceSetName,
+    classpathFiles: Lazy<Collection<File>>,
+    sourceDirs: Collection<File>,
+    kotlinLanguageVersion: LanguageVersion?,
+    jvmTarget: JvmTarget
+  ): KotlinEnvironment
 }

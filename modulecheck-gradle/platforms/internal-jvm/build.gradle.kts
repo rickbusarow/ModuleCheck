@@ -43,7 +43,6 @@ dependencies {
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

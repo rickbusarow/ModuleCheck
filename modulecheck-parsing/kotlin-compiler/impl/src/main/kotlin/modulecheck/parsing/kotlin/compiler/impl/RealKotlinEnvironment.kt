@@ -15,7 +15,10 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
+import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
+import modulecheck.dagger.AppScope
+import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
@@ -56,6 +59,7 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import sun.reflect.ReflectionFactory
 import java.io.File
 import java.util.UUID
+import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
 /**
@@ -115,15 +119,15 @@ class RealKotlinEnvironment(
 
     val time = measureTimeMillis {
 
-      println(
-        " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id"
-      )
-
       ar = safeAnalysisResultAccess.withLeases(
         requester = this,
         projectPath = projectPath,
         sourceSetName = sourceSetName
       ) { dependencyEnvironments ->
+
+        println(
+          " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id"
+        )
 
         val descriptors = dependencyEnvironments
           .mapAsync { it.moduleDescriptorDeferred.await() }
@@ -155,6 +159,28 @@ class RealKotlinEnvironment(
 
   override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
     (analysisResult.await().moduleDescriptor as ModuleDescriptorImpl)
+  }
+
+  @ContributesBinding(AppScope::class)
+  class Factory @Inject constructor(
+    private val safeAnalysisResultAccess: SafeAnalysisResultAccess
+  ) : KotlinEnvironmentFactory {
+    override fun create(
+      projectPath: StringProjectPath,
+      sourceSetName: SourceSetName,
+      classpathFiles: Lazy<Collection<File>>,
+      sourceDirs: Collection<File>,
+      kotlinLanguageVersion: LanguageVersion?,
+      jvmTarget: JvmTarget
+    ): RealKotlinEnvironment = RealKotlinEnvironment(
+      projectPath = projectPath,
+      sourceSetName = sourceSetName,
+      classpathFiles = classpathFiles,
+      sourceDirs = sourceDirs,
+      kotlinLanguageVersion = kotlinLanguageVersion,
+      jvmTarget = jvmTarget,
+      safeAnalysisResultAccess = safeAnalysisResultAccess
+    )
   }
 }
 

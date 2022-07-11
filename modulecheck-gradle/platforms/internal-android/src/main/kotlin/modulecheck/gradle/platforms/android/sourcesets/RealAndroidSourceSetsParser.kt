@@ -25,7 +25,7 @@ import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
-import modulecheck.gradle.platforms.DependencyModuleDescriptorProvider
+import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.android.AndroidAppExtension
 import modulecheck.gradle.platforms.android.AndroidLibraryExtension
 import modulecheck.gradle.platforms.android.AndroidTestExtension
@@ -47,9 +47,7 @@ import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.parsing.gradle.model.distinctSourceSetNames
 import modulecheck.parsing.gradle.model.names
 import modulecheck.parsing.gradle.model.removePrefix
-import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.utils.capitalize
-import modulecheck.utils.coroutines.WorkerFacade
 import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
@@ -147,8 +145,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val extension: BaseExtension,
   private val hasTestFixturesPlugin: Boolean,
   private val gradleProject: GradleProject,
-  private val descriptorProvider: DependencyModuleDescriptorProvider,
-  private val workerFacade: WorkerFacade
+  private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
 ) : AndroidSourceSetsParser {
 
   val projectPath = StringProjectPath(gradleProject.path)
@@ -234,7 +231,6 @@ class RealAndroidSourceSetsParser private constructor(
   private val sourceSetCache = mutableMapOf<SourceSetName, SourceSet>()
 
   override fun parse(): SourceSets {
-
     val m = gradleAndroidSourceSets.values
       .mapNotNull { it.toSourceSetOrNull() }
       .associateBy { it.name }
@@ -247,7 +243,6 @@ class RealAndroidSourceSetsParser private constructor(
   private fun GradleSourceSetName.VariantName.parseNames(
     testTypeOrNull: GradleSourceSetName.TestType?
   ): ParsedNames {
-
     if (extension.productFlavors.isEmpty()) {
       return ParsedNames(
         variantName = this,
@@ -285,7 +280,6 @@ class RealAndroidSourceSetsParser private constructor(
   private fun MutableMap<String, List<GradleSourceSetName>>.saveNameHierarchy(
     parsedNames: ParsedNames
   ) {
-
     val (
       variantName,
       concatenatedFlavorsName,
@@ -347,13 +341,11 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   private fun DefaultAndroidSourceSet.toSourceSetOrNull(): SourceSet? {
-
     if (!sourceSetNameToUpstreamMap.containsKey(name)) return null
 
     val sourceSetName = name.asSourceSetName()
 
     return sourceSetCache.getOrPut(sourceSetName) {
-
       val jvmFiles = javaDirectories
         .plus(kotlinDirectories)
         .flatMapToSet { it.walkTopDown().toList() }
@@ -376,7 +368,6 @@ class RealAndroidSourceSetsParser private constructor(
       val upstreamNames = namesMap.getValue(sourceSetName.value)
 
       val upstreamLazy = lazy {
-
         upstreamNames
           .flatMap { upstreamName ->
             sourceSetNameToUpstreamMap.getValue(upstreamName.value)
@@ -417,20 +408,14 @@ class RealAndroidSourceSetsParser private constructor(
         .filter { it.exists() }
         .toSet()
 
-      val descriptorsDeferred = descriptorProvider.get(
-        projectPath,
-        sourceSetName
-      )
-
       val kotlinEnvironmentDeferred = lazyDeferred {
-        RealKotlinEnvironment(
+        kotlinEnvironmentFactory.create(
           projectPath = projectPath,
           sourceSetName = sourceSetName,
           classpathFiles = lazy { classpath },
           sourceDirs = jvmFiles,
           kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
-          jvmTarget = gradleProject.jvmTarget(),
-          dependencyModuleDescriptors = descriptorsDeferred
+          jvmTarget = gradleProject.jvmTarget()
         )
       }
 
@@ -457,7 +442,6 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   private fun ConcatenatedFlavorsName.upstreamFlavors(): List<GradleSourceSetName.FlavorName> {
-
     val upstreamNames = mutableListOf<GradleSourceSetName.FlavorName>()
 
     var runningName = value
@@ -527,7 +511,6 @@ class RealAndroidSourceSetsParser private constructor(
   corresponding testFixtures one.
    */
   private fun MutableMap<SourceSetName, SourceSet>.maybeAddTestFixturesSourceSets() = apply {
-
     // The testFixtures source sets are defined regardless of whether the testFixtures feature is
     // actually enabled.  If it isn't enabled, don't add the Gradle source sets to our types.
     if (!hasTestFixturesPlugin) return@apply
@@ -546,7 +529,6 @@ class RealAndroidSourceSetsParser private constructor(
         ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
 
         val upstreamLazy = lazy {
-
           val upstream = androidSourceSet.name.removeTestFixturesPrefix()
             .let { this.getValue(it) }
             .withUpstream()
@@ -588,20 +570,14 @@ class RealAndroidSourceSetsParser private constructor(
           }
           .toSet()
 
-        val descriptorsDeferred = descriptorProvider.get(
-          projectPath,
-          sourceSetName
-        )
-
         val kotlinEnvironmentDeferred = lazyDeferred {
-          RealKotlinEnvironment(
+          kotlinEnvironmentFactory.create(
             projectPath = projectPath,
             sourceSetName = sourceSetName,
             classpathFiles = lazy { extension.bootClasspath.toSet() },
             sourceDirs = jvmFiles,
             kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
-            jvmTarget = gradleProject.jvmTarget(),
-            dependencyModuleDescriptors = descriptorsDeferred
+            jvmTarget = gradleProject.jvmTarget()
           )
         }
 
@@ -665,8 +641,7 @@ class RealAndroidSourceSetsParser private constructor(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val descriptorProvider: DependencyModuleDescriptorProvider,
-    private val workerFacade: WorkerFacade
+    private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
   ) : AndroidSourceSetsParser.Factory {
     override fun create(
       parsedConfigurations: Configurations,
@@ -679,8 +654,7 @@ class RealAndroidSourceSetsParser private constructor(
         extension = extension,
         hasTestFixturesPlugin = hasTestFixturesPlugin,
         gradleProject = gradleProject,
-        descriptorProvider = descriptorProvider,
-        workerFacade = workerFacade
+        kotlinEnvironmentFactory = kotlinEnvironmentFactory
       )
     }
   }

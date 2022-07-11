@@ -27,7 +27,7 @@ dependencies {
   api(libs.javax.inject)
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
 
   compileOnly(gradleApi())
 

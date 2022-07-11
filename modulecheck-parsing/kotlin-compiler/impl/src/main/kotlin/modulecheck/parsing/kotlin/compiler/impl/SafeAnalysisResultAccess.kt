@@ -36,8 +36,8 @@ interface SafeAnalysisResultAccess {
 
   suspend fun <T> withLeases(
     requester: HasPsiAnalysis,
-    projectPath: modulecheck.parsing.gradle.model.ProjectPath,
-    sourceSetName: modulecheck.parsing.gradle.model.SourceSetName,
+    projectPath: ProjectPath,
+    sourceSetName: SourceSetName,
     action: suspend (Collection<HasPsiAnalysis>) -> T
   ): T
 }
@@ -93,11 +93,6 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
         .letIf(sort) { list ->
           list.sortedBy { pair -> pair.second }
         }
-    }
-  }
-
-  private suspend fun removeFromQueue(requester: HasPsiAnalysis) {
-    cacheLock.withLock {
     }
   }
 

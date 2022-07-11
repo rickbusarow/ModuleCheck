@@ -49,7 +49,6 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-api"))
-  implementation(project(path = ":modulecheck-gradle:platforms:impl"))
   implementation(project(path = ":modulecheck-internal-testing"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
