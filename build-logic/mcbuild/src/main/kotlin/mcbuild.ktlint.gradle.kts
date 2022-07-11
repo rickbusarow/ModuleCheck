@@ -34,11 +34,18 @@ extensions.configure(KtlintExtension::class.java) {
       "experimental:no-empty-first-line-in-method-block", // code golf...
       // This can be re-enabled once 0.46.0 is released
       // https://github.com/pinterest/ktlint/issues/1435
-      "experimental:type-parameter-list-spacing"
+      "experimental:type-parameter-list-spacing",
+      // added in 0.46.0
+      "experimental:function-signature"
     )
   )
   require(libsCatalog.version("ktlint-lib").requiredVersion < "0.46.0") {
-    "Re-enable the `experimental:type-parameter-list-spacing` rule when updating to 0.46.0."
+    """
+    when updating to 0.46.0:
+    - Re-enable `experimental:type-parameter-list-spacing`
+    - remove 'experimental' from 'argument-list-wrapping'
+    - remove 'experimental' from 'no-empty-first-line-in-method-block'
+    """.trimIndent()
   }
 }
 
