@@ -18,9 +18,7 @@ package modulecheck.parsing.kotlin.compiler.impl
 import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.kotlin.compiler.HasPsiAnalysis
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.parsing.kotlin.compiler.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.lazy.LazyDeferred
@@ -67,8 +65,9 @@ import kotlin.system.measureTimeMillis
  *   `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property dependencyModuleDescriptors module descriptors for all project dependencies, taken from
- *   their own kotlin environments
+ * @property safeAnalysisResultAccess provides thread-safe, "leased" access to the ModuleDescriptors
+ *   of dependencies, since only one downstream project can safely
+ *   consume (and update the cache of) a descriptor at any given time
  */
 class RealKotlinEnvironment(
   private val projectPath: StringProjectPath,
@@ -77,7 +76,6 @@ class RealKotlinEnvironment(
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  val dependencyModuleDescriptors: LazyDeferred<List<HasPsiAnalysis>>,
   private val safeAnalysisResultAccess: SafeAnalysisResultAccess
 ) : KotlinEnvironment {
 
@@ -115,15 +113,19 @@ class RealKotlinEnvironment(
   private val analysisResult: LazyDeferred<AnalysisResult> = lazyDeferred {
     val ar: AnalysisResult
 
-    val descriptorSources = dependencyModuleDescriptors.await()
-
     val time = measureTimeMillis {
 
-      println(" ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id")
+      println(
+        " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id"
+      )
 
-      ar = safeAnalysisResultAccess.withLeases(descriptorSources) {
+      ar = safeAnalysisResultAccess.withLeases(
+        requester = this,
+        projectPath = projectPath,
+        sourceSetName = sourceSetName
+      ) { dependencyEnvironments ->
 
-        val descriptors = descriptorSources
+        val descriptors = dependencyEnvironments
           .mapAsync { it.moduleDescriptorDeferred.await() }
           .toList()
 
@@ -140,7 +142,9 @@ class RealKotlinEnvironment(
 
     val ts = "$sec.$ms".padStart(12).padEnd(20, '_')
 
-    println(" ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value} -- $id")
+    println(
+      " ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value} -- $id"
+    )
 
     ar
   }
@@ -159,7 +163,6 @@ private fun maybeCreateAnalysisResult(
   ktFiles: List<KtFile>,
   dependencyModuleDescriptors: List<ModuleDescriptorImpl>
 ): AnalysisResult {
-
   return VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
     project = coreEnvironment.project,
     files = ktFiles,

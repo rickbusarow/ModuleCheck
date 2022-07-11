@@ -39,12 +39,6 @@ interface KotlinEnvironment : HasPsiAnalysis {
   val coreEnvironment: KotlinCoreEnvironment
 
   /**
-   * The result of file analysis, used for last-resort type resolution. This object is very
-   * expensive to create, but it's created lazily.
-   */
-  val bindingContext: LazyDeferred<BindingContext>
-
-  /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
    */
   val compilerConfiguration: CompilerConfiguration
@@ -67,9 +61,15 @@ interface HasPsiAnalysis {
   /**
    * The result of file analysis, used for last-resort type resolution. This object is very
    * expensive to create, but it's created lazily.
+   */
+  val bindingContext: LazyDeferred<BindingContext>
+
+  /**
+   * The result of file analysis, used for last-resort type resolution. This object is very
+   * expensive to create, but it's created lazily.
    *
-   * N.B. it's gross, but this has to be an -Impl instead of just the `ModuleDescriptor` interface
-   * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
+   * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface because
+   * `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
    */
   val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 }
