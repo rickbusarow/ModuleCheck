@@ -15,10 +15,14 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
+import kotlinx.coroutines.flow.toList
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.kotlin.compiler.HasPsiAnalysis
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
+import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.analyzer.AnalysisResult
@@ -73,7 +77,8 @@ class RealKotlinEnvironment(
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  val dependencyModuleDescriptors: LazyDeferred<List<ModuleDescriptorImpl>>
+  val dependencyModuleDescriptors: LazyDeferred<List<HasPsiAnalysis>>,
+  private val safeAnalysisResultAccess: SafeAnalysisResultAccess
 ) : KotlinEnvironment {
 
   val id = UUID.randomUUID().toString()
@@ -110,17 +115,24 @@ class RealKotlinEnvironment(
   private val analysisResult: LazyDeferred<AnalysisResult> = lazyDeferred {
     val ar: AnalysisResult
 
-    val descriptors = dependencyModuleDescriptors.await()
+    val descriptorSources = dependencyModuleDescriptors.await()
 
     val time = measureTimeMillis {
 
       println(" ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id")
 
-      ar = maybeCreateAnalysisResult(
-        coreEnvironment = coreEnvironment,
-        ktFiles = ktFiles.values.toList(),
-        dependencyModuleDescriptors = descriptors
-      )
+      ar = safeAnalysisResultAccess.withLeases(descriptorSources) {
+
+        val descriptors = descriptorSources
+          .mapAsync { it.moduleDescriptorDeferred.await() }
+          .toList()
+
+        maybeCreateAnalysisResult(
+          coreEnvironment = coreEnvironment,
+          ktFiles = ktFiles.values.toList(),
+          dependencyModuleDescriptors = descriptors
+        )
+      }
     }
 
     val sec = time / 1000

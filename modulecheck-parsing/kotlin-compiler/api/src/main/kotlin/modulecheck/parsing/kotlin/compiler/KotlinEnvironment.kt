@@ -28,7 +28,7 @@ import java.io.File
  * Models everything needed in order to creat authentic Psi files for [BindingContext]-backed type
  * resolution.
  */
-interface KotlinEnvironment {
+interface KotlinEnvironment : HasPsiAnalysis {
   /** Used to create Psi files for Kotlin and Java */
   val psiFileFactory: McPsiFileFactory
 
@@ -43,15 +43,6 @@ interface KotlinEnvironment {
    * expensive to create, but it's created lazily.
    */
   val bindingContext: LazyDeferred<BindingContext>
-
-  /**
-   * The result of file analysis, used for last-resort type resolution. This object is very
-   * expensive to create, but it's created lazily.
-   *
-   * N.B. it's gross, but this has to be an -Impl instead of just the `ModuleDescriptor` interface
-   * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
-   */
-  val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
@@ -69,4 +60,16 @@ interface KotlinEnvironment {
    * dependency modules, and much of their implementation is Lazy, so re-use is important.
    */
   val javaFiles: Map<File, PsiJavaFile>
+}
+
+interface HasPsiAnalysis {
+
+  /**
+   * The result of file analysis, used for last-resort type resolution. This object is very
+   * expensive to create, but it's created lazily.
+   *
+   * N.B. it's gross, but this has to be an -Impl instead of just the `ModuleDescriptor` interface
+   * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
+   */
+  val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 }

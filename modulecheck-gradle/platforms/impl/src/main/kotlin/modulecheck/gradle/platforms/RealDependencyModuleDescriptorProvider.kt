@@ -31,14 +31,15 @@ import javax.inject.Inject
 @ContributesBinding(AppScope::class)
 class RealDependencyModuleDescriptorProvider @Inject constructor(
   private val projectCache: ProjectCache
+
 ) : DependencyModuleDescriptorProvider {
 
-  override fun get(
+  override suspend fun get(
     projectPath: ProjectPath,
     sourceSetName: SourceSetName
   ): LazyDeferred<List<ModuleDescriptorImpl>> {
     return lazyDeferred {
-      projectCache.getValue(projectPath)
+      val environments = projectCache.getValue(projectPath)
         .projectDependencies[sourceSetName]
         .mapAsyncNotNull { dep ->
 
@@ -48,9 +49,12 @@ class RealDependencyModuleDescriptorProvider @Inject constructor(
           dependencySourceSetName.withUpstream(dependencyProject)
             .firstNotNullOfOrNull { dependencyProject.sourceSets[it] }
             ?.kotlinEnvironmentDeferred?.await()
-            ?.moduleDescriptorDeferred?.await()
         }
         .toList()
+
+      safeAnalysisResultAccess.withLeases(environments) {
+        environments.map { it.moduleDescriptorDeferred.await() }
+      }
     }
   }
 }

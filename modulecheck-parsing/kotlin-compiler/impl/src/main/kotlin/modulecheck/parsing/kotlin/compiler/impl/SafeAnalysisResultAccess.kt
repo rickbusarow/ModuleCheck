@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms
+package modulecheck.parsing.kotlin.compiler.impl
 
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.utils.lazy.LazyDeferred
-import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
+import modulecheck.parsing.kotlin.compiler.HasPsiAnalysis
 
-fun interface DependencyModuleDescriptorProvider {
-  suspend fun get(
-    projectPath: ProjectPath,
-    sourceSetName: SourceSetName
-  ): LazyDeferred<List<ModuleDescriptorImpl>>
+interface SafeAnalysisResultAccess {
+
+  suspend fun <T> withLeases(
+    caller: HasPsiAnalysis,
+    projectPath: modulecheck.parsing.gradle.model.ProjectPath,
+    sourceSetName: modulecheck.parsing.gradle.model.SourceSetName,
+    action: suspend (Collection<HasPsiAnalysis>) -> T
+  ): T
 }

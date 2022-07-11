@@ -30,6 +30,10 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  implementation(project(path = ":modulecheck-utils:cache"))
+  implementation(project(path = ":modulecheck-project:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
