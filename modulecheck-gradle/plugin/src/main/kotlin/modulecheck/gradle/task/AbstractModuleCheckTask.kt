@@ -90,7 +90,6 @@ abstract class AbstractModuleCheckTask(
     if (disableConfigCache) {
       // If the runtime Gradle distro is 7.4+, disable configuration caching.
       // This function was introduced in 7.4.
-      @Suppress("LeakingThis")
       notCompatibleWithConfigurationCache("Not supported yet")
     }
   }
@@ -129,6 +128,7 @@ open class SingleRuleModuleCheckTask @Inject constructor(
     autoCorrect: Boolean,
     disableConfigCache: Boolean
   ) {
+    this.autoCorrect.set(autoCorrect)
     this.findingName.set(findingName)
 
     maybeDisableConfigurationCaching(disableConfigCache)

@@ -231,6 +231,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val sourceSetCache = mutableMapOf<SourceSetName, SourceSet>()
 
   override fun parse(): SourceSets {
+
     val m = gradleAndroidSourceSets.values
       .mapNotNull { it.toSourceSetOrNull() }
       .associateBy { it.name }
@@ -243,6 +244,7 @@ class RealAndroidSourceSetsParser private constructor(
   private fun GradleSourceSetName.VariantName.parseNames(
     testTypeOrNull: GradleSourceSetName.TestType?
   ): ParsedNames {
+
     if (extension.productFlavors.isEmpty()) {
       return ParsedNames(
         variantName = this,
@@ -280,6 +282,7 @@ class RealAndroidSourceSetsParser private constructor(
   private fun MutableMap<String, List<GradleSourceSetName>>.saveNameHierarchy(
     parsedNames: ParsedNames
   ) {
+
     val (
       variantName,
       concatenatedFlavorsName,
@@ -341,11 +344,13 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   private fun DefaultAndroidSourceSet.toSourceSetOrNull(): SourceSet? {
+
     if (!sourceSetNameToUpstreamMap.containsKey(name)) return null
 
     val sourceSetName = name.asSourceSetName()
 
     return sourceSetCache.getOrPut(sourceSetName) {
+
       val jvmFiles = javaDirectories
         .plus(kotlinDirectories)
         .flatMapToSet { it.walkTopDown().toList() }
@@ -368,6 +373,7 @@ class RealAndroidSourceSetsParser private constructor(
       val upstreamNames = namesMap.getValue(sourceSetName.value)
 
       val upstreamLazy = lazy {
+
         upstreamNames
           .flatMap { upstreamName ->
             sourceSetNameToUpstreamMap.getValue(upstreamName.value)

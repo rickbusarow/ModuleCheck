@@ -49,9 +49,19 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
 ) : SafeAnalysisResultAccess {
   private val cache = mutableMapOf<HasPsiAnalysis, Boolean>()
 
-  private val queue = MutableStateFlow<List<Pair<HasPsiAnalysis, Int>>>(emptyList())
+  private val queue = MutableStateFlow<List<PendingRequest>>(emptyList())
 
   private val cacheLock = Mutex(locked = false)
+
+  private class PendingRequest(
+    val requester: HasPsiAnalysis,
+    val dependencies: List<HasPsiAnalysis>
+  ) : Comparable<PendingRequest> {
+    override fun compareTo(other: PendingRequest): Int {
+      return dependencies.contains(other.requester)
+        .compareTo(other.dependencies.contains(requester))
+    }
+  }
 
   override suspend fun <T> withLeases(
     requester: HasPsiAnalysis,
@@ -89,9 +99,9 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
   ) {
     cacheLock.withLock {
       queue.value = queue.value
-        .plus(requester to requested.size)
+        .plus(PendingRequest(requester, requested))
         .letIf(sort) { list ->
-          list.sortedBy { pair -> pair.second }
+          list.sorted()
         }
     }
   }
@@ -106,16 +116,17 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
 
     queue
       .takeWhile { !completed }
-      .collect { allPairs ->
+      .collect { allPending ->
 
-        val (head, _) = allPairs.first()
+        val head = allPending.first()
         // only do work when this requester is first in line.
-        if (head != requester) return@collect
+        if (head.requester != requester) return@collect
 
         val acquired = cacheLock.withLock {
           // If this requester is first, remove it from the queue and try to lock all of its
-          // environments. If it can't lock everything, it'll be placed in the back of the queue.
-          queue.value = queue.value.filterNot { it.first == requester }
+          // environments. If we can't lock everything, this pending request be placed in the back
+          // of the queue.
+          queue.value = queue.value.filterNot { it.requester == requester }
 
           maybeLockAll(requested)
         }
@@ -126,13 +137,13 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
           // release the locks and update the queue with a new sort
           cacheLock.withLock {
             requested.forEach { cache[it] = false }
-            queue.value = queue.value.sortedBy { it.second }
+            queue.value = queue.value.sorted()
           }
           // stop collecting so that we return out of the function
           completed = true
         } else {
-          // if this requester is blocked by some other consumer, go to the end of the line
-          // once there's a change to
+          // If this requester is blocked by some other consumer, go to the end of the line once
+          // there's a change to.
           addToQueue(
             requester = requester,
             requested = requested,

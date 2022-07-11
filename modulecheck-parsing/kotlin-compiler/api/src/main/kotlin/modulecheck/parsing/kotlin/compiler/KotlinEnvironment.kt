@@ -56,6 +56,10 @@ interface KotlinEnvironment : HasPsiAnalysis {
   val javaFiles: Map<File, PsiJavaFile>
 }
 
+/**
+ * Holds the [BindingContext] and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
+ * retrieved from an [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
+ */
 interface HasPsiAnalysis {
 
   /**
