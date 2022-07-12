@@ -17,8 +17,10 @@ package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import modulecheck.dagger.AppScope
@@ -26,10 +28,12 @@ import modulecheck.dagger.SingleIn
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.HasPsiAnalysis
+import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.isAndroid
-import modulecheck.utils.coroutines.mapAsyncNotNull
+import modulecheck.utils.coroutines.flatMapListMerge
 import modulecheck.utils.letIf
+import java.util.Random
 import javax.inject.Inject
 
 interface SafeAnalysisResultAccess {
@@ -47,21 +51,11 @@ interface SafeAnalysisResultAccess {
 class SafeAnalysisResultAccessImpl @Inject constructor(
   private val projectCache: ProjectCache
 ) : SafeAnalysisResultAccess {
-  private val cache = mutableMapOf<HasPsiAnalysis, Boolean>()
+
+  private val locksCacheLock = Mutex(locked = false)
+  private val locksCache = mutableMapOf<HasPsiAnalysis, Boolean>()
 
   private val queue = MutableStateFlow<List<PendingRequest>>(emptyList())
-
-  private val cacheLock = Mutex(locked = false)
-
-  private class PendingRequest(
-    val requester: HasPsiAnalysis,
-    val dependencies: List<HasPsiAnalysis>
-  ) : Comparable<PendingRequest> {
-    override fun compareTo(other: PendingRequest): Int {
-      return dependencies.contains(other.requester)
-        .compareTo(other.dependencies.contains(requester))
-    }
-  }
 
   override suspend fun <T> withLeases(
     requester: HasPsiAnalysis,
@@ -69,103 +63,157 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
     sourceSetName: SourceSetName,
     action: suspend (Collection<HasPsiAnalysis>) -> T
   ): T {
+
+    val thisProject = projectCache.getValue(projectPath)
+
     val requested = projectCache.getValue(projectPath)
       .projectDependencies[sourceSetName]
-      .mapAsyncNotNull { dep ->
+      .flatMapListMerge { dep ->
 
         val dependencyProject = projectCache.getValue(dep.path)
         val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.isAndroid())
 
-        dependencySourceSetName.withUpstream(dependencyProject)
-          .firstNotNullOfOrNull { dependencyProject.sourceSets[it] }
-          ?.kotlinEnvironmentDeferred?.await()
+        dependencySourceSetName.upstreamEnvironments(dependencyProject)
       }
+      .plus(sourceSetName.upstreamEnvironments(thisProject).filterNot { it == requester })
       .toList()
-      .plus(requester)
+
+    val pendingRequest = PendingRequest(
+      requester = requester,
+      dependencies = requested
+    )
 
     addToQueue(
-      requester = requester,
-      requested = requested,
+      pendingRequest = pendingRequest,
       sort = true
     )
 
-    return withLeases(requester, requested) { action(requested) }
-  }
-
-  private suspend fun addToQueue(
-    requester: HasPsiAnalysis,
-    requested: List<HasPsiAnalysis>,
-    sort: Boolean
-  ) {
-    cacheLock.withLock {
-      queue.value = queue.value
-        .plus(PendingRequest(requester, requested))
-        .letIf(sort) { list ->
-          list.sorted()
-        }
-    }
+    return withLeases(pendingRequest) { action(requested) }
   }
 
   private suspend fun <T> withLeases(
-    requester: HasPsiAnalysis,
-    requested: List<HasPsiAnalysis>,
+    pendingRequest: PendingRequest,
     action: suspend () -> T
   ): T {
     var completed = false
     var result: T? = null
 
     queue
-      .takeWhile { !completed }
-      .collect { allPending ->
+      // only do work when this requester is first in line.
+      .filter { it.firstOrNull() == pendingRequest }
+      .onEach {
 
-        val head = allPending.first()
-        // only do work when this requester is first in line.
-        if (head.requester != requester) return@collect
+        // log("ping pending - ${allPending.map { it.name }}")
 
-        val acquired = cacheLock.withLock {
+        val acquired = locksCacheLock.withLock {
           // If this requester is first, remove it from the queue and try to lock all of its
           // environments. If we can't lock everything, this pending request be placed in the back
           // of the queue.
-          queue.value = queue.value.filterNot { it.requester == requester }
+          queue.value = queue.value.filterNot { it == pendingRequest }
+            .asDifferentList()
 
-          maybeLockAll(requested)
+          maybeLockAll(pendingRequest)
         }
 
         if (acquired) {
           // do the work we need the locks for
           result = action()
           // release the locks and update the queue with a new sort
-          cacheLock.withLock {
-            requested.forEach { cache[it] = false }
-            queue.value = queue.value.sorted()
+          locksCacheLock.withLock {
+
+            pendingRequest.dependencies
+              .plus(pendingRequest.requester)
+              .forEach { locksCache[it] = false }
+
+            queue.value = queue.value.sorted().asDifferentList()
           }
+
           // stop collecting so that we return out of the function
           completed = true
         } else {
           // If this requester is blocked by some other consumer, go to the end of the line once
           // there's a change to.
           addToQueue(
-            requester = requester,
-            requested = requested,
+            pendingRequest = pendingRequest,
             sort = false
           )
         }
       }
+      .takeWhile { !completed }
+      .collect()
 
     @Suppress("UNCHECKED_CAST")
     return result as T
   }
 
+  private suspend fun addToQueue(
+    pendingRequest: PendingRequest,
+    sort: Boolean
+  ) {
+    locksCacheLock.withLock {
+      queue.value = queue.value
+        .plus(pendingRequest)
+        .letIf(sort) { list ->
+          list.sorted()
+        }
+        .asDifferentList()
+    }
+  }
+
   private fun maybeLockAll(
-    requested: Collection<HasPsiAnalysis>
-  ): Boolean = requested
-    .map { cache.getOrPut(it) { false } }
-    .none { locked -> locked }
-    .also { allUnlocked ->
-      if (allUnlocked) {
-        requested.forEach { key ->
-          cache[key] = true
+    pendingRequest: PendingRequest
+  ): Boolean {
+
+    val all = pendingRequest.dependencies
+      .plus(pendingRequest.requester)
+
+    return pendingRequest.dependencies
+      .map { dependency ->
+        locksCache.getOrPut(dependency) { true }
+      }
+      .all { locked -> !locked }
+      .also { allUnlocked ->
+        if (allUnlocked) {
+
+          all.forEach { key ->
+            locksCache[key] = true
+          }
         }
       }
+  }
+
+  private data class PendingRequest(
+    val requester: HasPsiAnalysis,
+    val dependencies: List<HasPsiAnalysis>
+  ) : Comparable<PendingRequest> {
+
+    /**
+     * Compares this object with the specified object for order. Returns zero if this object is
+     * equal to the specified other object, a negative number if it's less than other, or a positive
+     * number if it's greater than other.
+     */
+    override fun compareTo(other: PendingRequest): Int {
+      return dependencies.size.compareTo(other.dependencies.size)
+      // return when {
+      //   dependencies.contains(other.requester) -> 1
+      //   other.dependencies.contains(requester) -> -1
+      //   else -> dependencies.size.compareTo(other.dependencies.size)
+      // }
     }
+  }
+
+  private class DifferentList<E>(delegate: List<E>) : List<E> by delegate {
+    override fun equals(other: Any?): Boolean = false
+    override fun hashCode(): Int = Random().nextInt()
+  }
+
+  private fun <E> List<E>.asDifferentList() = DifferentList(this)
+
+  private suspend fun SourceSetName.upstreamEnvironments(project: McProject) = withUpstream(project)
+    .mapNotNull { project.sourceSets[it]?.kotlinEnvironmentDeferred?.await() }
+}
+
+private fun HasPsiAnalysis.name(): String {
+  val asReal = this as RealKotlinEnvironment
+  return "${asReal.projectPath.value}:${asReal.sourceSetName.value}"
 }

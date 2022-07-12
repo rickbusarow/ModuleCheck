@@ -58,7 +58,6 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import sun.reflect.ReflectionFactory
 import java.io.File
-import java.util.UUID
 import javax.inject.Inject
 import kotlin.system.measureTimeMillis
 
@@ -74,16 +73,14 @@ import kotlin.system.measureTimeMillis
  *   consume (and update the cache of) a descriptor at any given time
  */
 class RealKotlinEnvironment(
-  private val projectPath: StringProjectPath,
-  private val sourceSetName: SourceSetName,
+  val projectPath: StringProjectPath,
+  val sourceSetName: SourceSetName,
   val classpathFiles: Lazy<Collection<File>>,
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  private val safeAnalysisResultAccess: SafeAnalysisResultAccess
+  val safeAnalysisResultAccess: SafeAnalysisResultAccess
 ) : KotlinEnvironment {
-
-  val id = UUID.randomUUID().toString()
 
   private val sourceFiles by lazy {
     sourceDirs.asSequence()
@@ -115,42 +112,45 @@ class RealKotlinEnvironment(
   }
 
   private val analysisResult: LazyDeferred<AnalysisResult> = lazyDeferred {
-    val ar: AnalysisResult
 
-    val time = measureTimeMillis {
+    safeAnalysisResultAccess.withLeases(
+      requester = this,
+      projectPath = projectPath,
+      sourceSetName = sourceSetName
+    ) { dependencyEnvironments ->
 
-      ar = safeAnalysisResultAccess.withLeases(
-        requester = this,
-        projectPath = projectPath,
-        sourceSetName = sourceSetName
-      ) { dependencyEnvironments ->
+      val ar: AnalysisResult
 
-        println(
-          " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value} -- $id"
-        )
+      println(
+        " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value}"
+      )
+
+      val time = measureTimeMillis {
 
         val descriptors = dependencyEnvironments
-          .mapAsync { it.moduleDescriptorDeferred.await() }
+          .mapAsync { dependency ->
+            dependency.moduleDescriptorDeferred.await()
+          }
           .toList()
 
-        maybeCreateAnalysisResult(
+        ar = maybeCreateAnalysisResult(
           coreEnvironment = coreEnvironment,
           ktFiles = ktFiles.values.toList(),
           dependencyModuleDescriptors = descriptors
         )
       }
+
+      val sec = time / 1000
+      val ms = (time % 1000).toString().padStart(3, '0')
+
+      val ts = "$sec.$ms".padStart(12).padEnd(20, '_')
+
+      println(
+        " ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value}"
+      )
+
+      ar
     }
-
-    val sec = time / 1000
-    val ms = (time % 1000).toString().padStart(3, '0')
-
-    val ts = "$sec.$ms".padStart(12).padEnd(20, '_')
-
-    println(
-      " ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value} -- $id"
-    )
-
-    ar
   }
 
   override val bindingContext = lazyDeferred {
@@ -158,7 +158,7 @@ class RealKotlinEnvironment(
   }
 
   override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
-    (analysisResult.await().moduleDescriptor as ModuleDescriptorImpl)
+    analysisResult.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
   @ContributesBinding(AppScope::class)

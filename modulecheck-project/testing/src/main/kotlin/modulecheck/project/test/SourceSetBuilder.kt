@@ -23,15 +23,14 @@ import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.parsing.gradle.model.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
-import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
-import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import java.io.File
 
 data class SourceSetBuilder constructor(
@@ -50,10 +49,9 @@ data class SourceSetBuilder constructor(
   val upstream: MutableList<SourceSetName>,
   val downstream: MutableList<SourceSetName>,
   var kotlinLanguageVersion: LanguageVersion? = null,
-  var jvmTarget: JvmTarget = JVM_11,
-  val descriptorsDeferred: LazyDeferred<List<ModuleDescriptorImpl>>
+  var jvmTarget: JvmTarget = JVM_11
 ) {
-  fun toSourceSet(): SourceSet {
+  fun toSourceSet(safeAnalysisResultAccess: SafeAnalysisResultAccess): SourceSet {
     val kotlinEnvironmentDeferred = lazyDeferred {
       RealKotlinEnvironment(
         projectPath = StringProjectPath("dummy"),
@@ -62,7 +60,7 @@ data class SourceSetBuilder constructor(
         sourceDirs = jvmFiles,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        safeAnalysisResultAccess = TODO()
+        safeAnalysisResultAccess = safeAnalysisResultAccess
       )
     }
 
@@ -101,8 +99,7 @@ data class SourceSetBuilder constructor(
         upstream = sourceSet.upstream.toMutableList(),
         downstream = sourceSet.downstream.toMutableList(),
         kotlinLanguageVersion = kotlinEnvironment.kotlinLanguageVersion,
-        jvmTarget = sourceSet.jvmTarget,
-        descriptorsDeferred = TODO()
+        jvmTarget = sourceSet.jvmTarget
       )
     }
   }
@@ -172,8 +169,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       upstream = upstream,
       downstream = downstreamNames.toMutableList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
-      jvmTarget = jvmTarget,
-      descriptorsDeferred = TODO()
+      jvmTarget = jvmTarget
     )
   }
   platformPlugin.populateConfigsFromSourceSets()
