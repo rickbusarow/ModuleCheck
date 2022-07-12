@@ -19,7 +19,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dispatch.core.DispatcherProvider
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
@@ -40,7 +39,6 @@ import modulecheck.reporting.logging.McLogger
 import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
-import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.createSafely
 import modulecheck.utils.letIf
 import modulecheck.utils.trace.Trace
@@ -84,11 +82,6 @@ data class ModuleCheckRunner @AssistedInject constructor(
     var totalFindings = 0
 
     val allFindings = mutableListOf<Finding>()
-
-    // TODO - delete me
-    projects.flatMap { it.sourceSets.values }
-      .mapAsync { it.kotlinEnvironmentDeferred.await().bindingContext.await() }
-      .toList()
 
     // number of findings which couldn't be fixed
     // time does not include initial parsing from GradleProjectProvider,
