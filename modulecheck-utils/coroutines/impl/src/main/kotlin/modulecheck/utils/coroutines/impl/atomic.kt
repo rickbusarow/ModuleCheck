@@ -13,24 +13,20 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
+package modulecheck.utils.coroutines.impl
+
+import java.util.concurrent.atomic.AtomicReference
+
+internal inline fun <T> AtomicReference<T>.loop(action: (T) -> Unit): Nothing {
+  while (true) {
+    action(get())
+  }
 }
 
-mcbuild {
-  artifactId = "modulecheck-utils-lazy"
-}
-
-dependencies {
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-
-  implementation(project(path = ":modulecheck-utils:coroutines:api"))
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.square.turbine)
+internal inline fun <T> AtomicReference<T>.update(function: (T) -> T) {
+  while (true) {
+    val cur = get()
+    val upd = function(cur)
+    if (compareAndSet(cur, upd)) return
+  }
 }

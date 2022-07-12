@@ -39,7 +39,7 @@ dependencies {
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-finding:name"))
   implementation(project(path = ":modulecheck-model:dependency:api"))
-  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
