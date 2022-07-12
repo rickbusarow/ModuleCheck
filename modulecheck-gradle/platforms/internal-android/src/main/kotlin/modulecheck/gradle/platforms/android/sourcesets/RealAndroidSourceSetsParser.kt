@@ -50,6 +50,7 @@ import modulecheck.parsing.gradle.model.names
 import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
@@ -407,9 +408,9 @@ class RealAndroidSourceSetsParser private constructor(
             variant.runtimeConfiguration
           )
             .flatMap { config ->
-              config.files { dependency -> dependency is ExternalModuleDependency }
+              config.fileCollection { dependency -> dependency is ExternalModuleDependency }
+                .mapNotNull { it.existsOrNull() }
             }
-            .filter { it.exists() }
             .toSet()
         }
 
