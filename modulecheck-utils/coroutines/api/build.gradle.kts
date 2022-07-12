@@ -18,25 +18,17 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-utils-cache"
+  artifactId = "modulecheck-utils-coroutines-api"
 }
 
 dependencies {
 
-  api(libs.benManes.caffeine)
   api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jdk8)
   api(libs.kotlinx.coroutines.jvm)
-
-  api(project(path = ":modulecheck-utils:trace"))
-
-  implementation(project(path = ":modulecheck-utils:coroutines:api"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.square.turbine)
-
-  testImplementation(project(path = ":modulecheck-utils:trace-testing"))
 }
