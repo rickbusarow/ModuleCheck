@@ -16,7 +16,6 @@
 package modulecheck.parsing.android
 
 import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.testing.BaseTest
@@ -28,13 +27,101 @@ import org.junit.jupiter.api.Test
 internal class StylesFileTest : BaseTest() {
 
   @Test
-  fun `style parent and value references should count as references`() = runBlocking {
+  fun `external style parent and value references should count as references`() = test {
     @Language("xml")
     val text = """
     <?xml version="1.0" encoding="utf-8"?>
     <resources>
 
       <style name="AppTheme.ClearActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="alertDialogStyle">@style/SomeOtherStyle</item>
+      </style>
+
+    </resources>
+    """.trimIndent()
+
+    val xml = testProjectDir
+      .child("styles.xml")
+      .createSafely(text)
+
+    val file = AndroidStylesFile(xml)
+
+    file.references.toList() shouldBe setOf(
+      UnqualifiedAndroidResource.color("transparent".asSimpleName()),
+      UnqualifiedAndroidResource.style("SomeOtherStyle".asSimpleName()),
+      UnqualifiedAndroidResource.style("Theme_AppCompat_Light_DarkActionBar".asSimpleName())
+    )
+  }
+
+  @Test
+  fun `external style parent with android prefix and value references should count as references`() =
+    test {
+      @Language("xml")
+      val text = """
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+
+      <style name="AppTheme.ClearActionBar" parent="android:Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="alertDialogStyle">@style/SomeOtherStyle</item>
+      </style>
+
+    </resources>
+      """.trimIndent()
+
+      val xml = testProjectDir
+        .child("styles.xml")
+        .createSafely(text)
+
+      val file = AndroidStylesFile(xml)
+
+      file.references.toList() shouldBe setOf(
+        UnqualifiedAndroidResource.color("transparent".asSimpleName()),
+        UnqualifiedAndroidResource.style("SomeOtherStyle".asSimpleName()),
+        UnqualifiedAndroidResource.style("Theme_AppCompat_Light_DarkActionBar".asSimpleName())
+      )
+    }
+
+  @Test
+  fun `at style parent with android prefix and value references should count as references`() =
+    test {
+
+      @Language("xml")
+      val text = """
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+
+      <style name="AppTheme.ClearActionBar" parent="@android:style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/transparent</item>
+        <item name="alertDialogStyle">@style/SomeOtherStyle</item>
+      </style>
+
+    </resources>
+      """.trimIndent()
+
+      val xml = testProjectDir
+        .child("styles.xml")
+        .createSafely(text)
+
+      val file = AndroidStylesFile(xml)
+
+      file.references.toList() shouldBe setOf(
+        UnqualifiedAndroidResource.color("transparent".asSimpleName()),
+        UnqualifiedAndroidResource.style("SomeOtherStyle".asSimpleName()),
+        UnqualifiedAndroidResource.style("Theme_AppCompat_Light_DarkActionBar".asSimpleName())
+      )
+    }
+
+  @Test
+  fun `at style parent and value references should count as references`() = test {
+
+    @Language("xml")
+    val text = """
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+
+      <style name="AppTheme.ClearActionBar" parent="@style/Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/transparent</item>
         <item name="alertDialogStyle">@style/SomeOtherStyle</item>
       </style>
