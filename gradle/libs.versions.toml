@@ -186,6 +186,7 @@ square-anvil-gradle = { module = "com.squareup.anvil:gradle-plugin", version.ref
 square-kotlinPoet = "com.squareup:kotlinpoet:1.12.0"
 
 square-moshi = { module = "com.squareup.moshi:moshi", version.ref = "square-moshi" }
+square-moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "square-moshi" }
 square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "square-moshi" }
 
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }

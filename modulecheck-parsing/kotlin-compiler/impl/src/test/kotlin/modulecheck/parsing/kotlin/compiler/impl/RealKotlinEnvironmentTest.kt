@@ -15,12 +15,16 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import io.kotest.matchers.types.shouldBeSameInstanceAs
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.project.test.ProjectTest
 import org.jetbrains.kotlin.cli.common.config.kotlinSourceRoots
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.junit.jupiter.api.Test
 
 class RealKotlinEnvironmentTest : ProjectTest() {
@@ -62,7 +66,18 @@ class RealKotlinEnvironmentTest : ProjectTest() {
       addKotlinSource("""object Butt""", fileName = "Butt.kt")
     }
 
-    val ke = lib2.sourceSets.getValue(SourceSetName.MAIN).kotlinEnvironmentDeferred.await()
+    val ke = lib1.sourceSets.getValue(SourceSetName.MAIN).kotlinEnvironmentDeferred.await()
+
+    val descriptor = ke.moduleDescriptorDeferred.await()
+
+    val moshi = Moshi.Builder()
+      .addLast(KotlinJsonAdapterFactory())
+      .build()
+    val jsonAdapter = moshi.adapter<ModuleDescriptorImpl>()
+
+    val json = jsonAdapter.toJson(descriptor)
+
+    println(json)
 
     val compilerConfiguration = ke.compilerConfiguration
     val intelliJProject = ke.coreEnvironment.project

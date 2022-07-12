@@ -51,10 +51,13 @@ data class SourceSetBuilder constructor(
   var kotlinLanguageVersion: LanguageVersion? = null,
   var jvmTarget: JvmTarget = JVM_11
 ) {
-  fun toSourceSet(safeAnalysisResultAccess: SafeAnalysisResultAccess): SourceSet {
+  fun toSourceSet(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): SourceSet {
     val kotlinEnvironmentDeferred = lazyDeferred {
       RealKotlinEnvironment(
-        projectPath = StringProjectPath("dummy"),
+        projectPath = projectPath,
         sourceSetName = name,
         classpathFiles = lazy { classpath },
         sourceDirs = jvmFiles,

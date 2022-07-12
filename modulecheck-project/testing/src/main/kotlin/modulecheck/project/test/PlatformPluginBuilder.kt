@@ -25,6 +25,7 @@ import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
@@ -35,7 +36,10 @@ interface PlatformPluginBuilder<T : PlatformPlugin> {
   val sourceSets: MutableMap<SourceSetName, SourceSetBuilder>
   val configurations: MutableMap<ConfigurationName, ConfigBuilder>
 
-  fun toPlugin(safeAnalysisResultAccess: SafeAnalysisResultAccess): T
+  fun toPlugin(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): T
 }
 
 data class JavaLibraryPluginBuilder(
@@ -43,26 +47,40 @@ data class JavaLibraryPluginBuilder(
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf()
 ) : PlatformPluginBuilder<JavaLibraryPlugin> {
 
-  override fun toPlugin(safeAnalysisResultAccess: SafeAnalysisResultAccess): JavaLibraryPlugin =
-    JavaLibraryPlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
-    )
+  override fun toPlugin(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): JavaLibraryPlugin = JavaLibraryPlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
+  )
 }
 
 data class KotlinJvmPluginBuilder(
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf()
 ) : PlatformPluginBuilder<KotlinJvmPlugin> {
-  override fun toPlugin(safeAnalysisResultAccess: SafeAnalysisResultAccess): KotlinJvmPlugin =
-    KotlinJvmPlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
-    )
+  override fun toPlugin(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): KotlinJvmPlugin = KotlinJvmPlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
+  )
 }
 
 interface AndroidPlatformPluginBuilder<T : AndroidPlatformPlugin> : PlatformPluginBuilder<T> {
@@ -83,19 +101,24 @@ data class AndroidApplicationPluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidApplicationPlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess
-  ): AndroidApplicationPlugin =
-    AndroidApplicationPlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
-      nonTransientRClass = nonTransientRClass,
-      viewBindingEnabled = viewBindingEnabled,
-      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-      manifests = manifests,
-      resValuesLazy = lazy { resValues }
-    )
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): AndroidApplicationPlugin = AndroidApplicationPlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
+    viewBindingEnabled = viewBindingEnabled,
+    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+    manifests = manifests,
+    resValuesLazy = lazy { resValues }
+  )
 }
 
 data class AndroidLibraryPluginBuilder(
@@ -109,20 +132,27 @@ data class AndroidLibraryPluginBuilder(
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidLibraryPlugin> {
-  override fun toPlugin(safeAnalysisResultAccess: SafeAnalysisResultAccess): AndroidLibraryPlugin =
-    AndroidLibraryPlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
-      nonTransientRClass = nonTransientRClass,
-      viewBindingEnabled = viewBindingEnabled,
-      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-      manifests = manifests,
-      androidResourcesEnabled = androidResourcesEnabled,
-      buildConfigEnabled = buildConfigEnabled,
-      resValuesLazy = lazy { resValues }
-    )
+  override fun toPlugin(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): AndroidLibraryPlugin = AndroidLibraryPlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
+    viewBindingEnabled = viewBindingEnabled,
+    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+    manifests = manifests,
+    androidResourcesEnabled = androidResourcesEnabled,
+    buildConfigEnabled = buildConfigEnabled,
+    resValuesLazy = lazy { resValues }
+  )
 }
 
 data class AndroidDynamicFeaturePluginBuilder(
@@ -136,20 +166,25 @@ data class AndroidDynamicFeaturePluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidDynamicFeaturePlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess
-  ): AndroidDynamicFeaturePlugin =
-    AndroidDynamicFeaturePlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
-      nonTransientRClass = nonTransientRClass,
-      viewBindingEnabled = viewBindingEnabled,
-      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-      manifests = manifests,
-      buildConfigEnabled = buildConfigEnabled,
-      resValuesLazy = lazy { resValues }
-    )
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): AndroidDynamicFeaturePlugin = AndroidDynamicFeaturePlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
+    viewBindingEnabled = viewBindingEnabled,
+    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+    manifests = manifests,
+    buildConfigEnabled = buildConfigEnabled,
+    resValuesLazy = lazy { resValues }
+  )
 }
 
 data class AndroidTestPluginBuilder(
@@ -162,17 +197,24 @@ data class AndroidTestPluginBuilder(
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidTestPlugin> {
-  override fun toPlugin(safeAnalysisResultAccess: SafeAnalysisResultAccess): AndroidTestPlugin =
-    AndroidTestPlugin(
-      sourceSets = SourceSets(
-        sourceSets.mapValues { it.value.toSourceSet(safeAnalysisResultAccess = safeAnalysisResultAccess) }
-      ),
-      configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
-      nonTransientRClass = nonTransientRClass,
-      viewBindingEnabled = viewBindingEnabled,
-      kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
-      manifests = manifests,
-      buildConfigEnabled = buildConfigEnabled,
-      resValuesLazy = lazy { resValues }
-    )
+  override fun toPlugin(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): AndroidTestPlugin = AndroidTestPlugin(
+    sourceSets = SourceSets(
+      sourceSets.mapValues {
+        it.value.toSourceSet(
+          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          projectPath = projectPath
+        )
+      }
+    ),
+    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    nonTransientRClass = nonTransientRClass,
+    viewBindingEnabled = viewBindingEnabled,
+    kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
+    manifests = manifests,
+    buildConfigEnabled = buildConfigEnabled,
+    resValuesLazy = lazy { resValues }
+  )
 }

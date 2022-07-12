@@ -15,6 +15,7 @@
 
 plugins {
   id("mcbuild")
+  id("com.google.devtools.ksp")
 }
 
 mcbuild {
@@ -47,7 +48,12 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  implementation(libs.square.moshi)
+  implementation(libs.square.moshi.kotlin)
   testImplementation(libs.kotest.runner)
+
+  "ksp"(libs.square.moshi.codegen)
+  "kspTest"(libs.square.moshi.codegen)
 
   testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))

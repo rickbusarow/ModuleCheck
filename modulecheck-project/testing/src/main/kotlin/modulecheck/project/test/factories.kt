@@ -146,7 +146,7 @@ inline fun <reified T : McProjectBuilder<P>,
       projectDependencies = lazy { projectDependencies },
       externalDependencies = lazy { externalDependencies },
       buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
-      platformPlugin = platformPlugin.toPlugin(safeAnalysisResultAccess)
+      platformPlugin = platformPlugin.toPlugin(safeAnalysisResultAccess, projectPath = path)
     )
   }
 }
