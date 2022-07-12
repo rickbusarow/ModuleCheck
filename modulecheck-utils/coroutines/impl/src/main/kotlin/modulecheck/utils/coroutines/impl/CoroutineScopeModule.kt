@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.dagger
+package modulecheck.utils.coroutines.impl
 
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
@@ -25,10 +25,25 @@ import dispatch.core.MainCoroutineScope
 import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.SingleIn
+import modulecheck.utils.coroutines.LimitedDispatcher
 
+@Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass")
 @Module
 @ContributesTo(AppScope::class)
 object CoroutineScopeModule {
+
+  private val DEFAULT_CONCURRENCY: Int
+    get() = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
+
+  @Provides
+  @SingleIn(AppScope::class)
+  fun provideDefaultDispatcher(): LimitedDispatcher = LimitedDispatcherImpl(
+    dispatcher = Dispatchers.Default,
+    parallelism = DEFAULT_CONCURRENCY
+  )
 
   @Provides
   fun provideCoroutineScope(): CoroutineScope = DefaultCoroutineScope()
@@ -48,10 +63,6 @@ object CoroutineScopeModule {
 
   @Provides
   fun provideUnconfinedCoroutineScope(): UnconfinedCoroutineScope = UnconfinedCoroutineScope()
-
-  @SingleIn(AppScope::class)
-  @Provides
-  fun provideDispatcherProvider(): DispatcherProvider = DispatcherProvider()
 }
 
 @ContributesTo(AppScope::class)

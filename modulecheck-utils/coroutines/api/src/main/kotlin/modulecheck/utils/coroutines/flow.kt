@@ -26,9 +26,6 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Semaphore
-import kotlinx.coroutines.sync.withPermit
-import java.lang.Integer.max
 
 /** @return true if at least one element matches the given predicate */
 suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
@@ -73,9 +70,6 @@ suspend fun <T, R> Flow<T>.flatMapSetConcat(
   }
 }
 
-private val DEFAULT_CONCURRENCY: Int
-  get() = max(Runtime.getRuntime().availableProcessors(), 2)
-
 /**
  * Returns a [Flow] from the receiver [Flow], performing [transform] upon each element
  * *concurrently* before that element is emitted.
@@ -83,43 +77,34 @@ private val DEFAULT_CONCURRENCY: Int
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  */
 fun <T, R> Flow<T>.mapAsync(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
 ): Flow<R> {
-  val semaphore = Semaphore(concurrency)
   return channelFlow {
     this@mapAsync.collect {
-      launch {
-        semaphore.withPermit {
-          send(transform(it))
-        }
-      }
+      launch { send(transform(it)) }
     }
   }
 }
 
-/** Shorthand for `mapAsync(concurrency, transform).flatMapSetConcat { it.toSet() }` */
+/** Shorthand for `mapAsync(transform).flatMapSetConcat { it.toSet() }` */
 suspend fun <T, R> Iterable<T>.flatMapSetMerge(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> Iterable<R>
 ): Set<R> {
-  return mapAsync(concurrency, transform).flatMapSetConcat { it.toSet() }
+  return mapAsync(transform).flatMapSetConcat { it.toSet() }
 }
 
-/** Shorthand for `mapAsync(concurrency, transform).toList().flatten()` */
+/** Shorthand for `mapAsync(transform).toList().flatten()` */
 suspend fun <T, R> Iterable<T>.flatMapListMerge(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> Iterable<R>
 ): List<R> {
-  return mapAsync(concurrency, transform).toList().flatten()
+  return mapAsync(transform).toList().flatten()
 }
 
-/** Shorthand for `mapAsync(concurrency, transform).toList().flatten()` */
+/** Shorthand for `mapAsync(transform).toList().flatten()` */
 suspend fun <T, R> Flow<T>.flatMapListMerge(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> Iterable<R>
 ): List<R> {
-  return mapAsync(concurrency, transform).toList().flatten()
+  return mapAsync(transform).toList().flatten()
 }
 
 /**
@@ -129,16 +114,12 @@ suspend fun <T, R> Flow<T>.flatMapListMerge(
  * **This is a "hot" flow**, since [transform] is performed eagerly.
  */
 fun <T, R> Iterable<T>.mapAsync(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
 ): Flow<R> {
 
-  val semaphore = Semaphore(concurrency)
   return channelFlow {
     forEach {
-      semaphore.withPermit {
-        launch { send(transform(it)) }
-      }
+      launch { send(transform(it)) }
     }
   }
 }
@@ -150,18 +131,14 @@ fun <T, R> Iterable<T>.mapAsync(
  * **This is a "hot" flow**, since [action] is performed eagerly.
  */
 fun <T> Iterable<T>.onEachAsync(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   action: suspend (T) -> Unit
 ): Flow<T> {
 
-  val semaphore = Semaphore(concurrency)
   return channelFlow {
     forEach {
-      semaphore.withPermit {
-        launch {
-          action(it)
-          send(it)
-        }
+      launch {
+        action(it)
+        send(it)
       }
     }
   }
@@ -174,13 +151,11 @@ fun <T> Iterable<T>.onEachAsync(
  *   *concurrently* before that element is emitted.
  */
 fun <T, R> Sequence<T>.mapAsync(
-  concurrency: Int = DEFAULT_CONCURRENCY,
   transform: suspend (T) -> R
 ): Flow<R> {
-  val semaphore = Semaphore(concurrency)
   return channelFlow {
     forEach {
-      semaphore.withPermit { launch { send(transform(it)) } }
+      launch { send(transform(it)) }
     }
   }
 }

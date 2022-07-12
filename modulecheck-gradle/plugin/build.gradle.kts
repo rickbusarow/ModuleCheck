@@ -83,6 +83,7 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
   implementation(project(path = ":modulecheck-rule:impl"))
+  implementation(project(path = ":modulecheck-utils:coroutines:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   "integrationTestImplementation"(project(path = ":modulecheck-config:api"))
@@ -99,6 +100,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))
+  "integrationTestImplementation"(project(path = ":modulecheck-utils:coroutines:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
