@@ -13,24 +13,13 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.utils.coroutines
 
-mcbuild {
-  artifactId = "modulecheck-utils-lazy"
-}
+import kotlinx.coroutines.CoroutineDispatcher
 
-dependencies {
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-
-  implementation(project(path = ":modulecheck-utils:coroutines:api"))
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.square.turbine)
-}
+/**
+ * An abstract marker representing the `limitParallelism(...)` functionality in coroutines 1.6.x,
+ * which is forked here
+ */
+@Suppress("UnnecessaryAbstractClass")
+abstract class LimitedDispatcher : CoroutineDispatcher()

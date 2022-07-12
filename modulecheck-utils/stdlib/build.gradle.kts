@@ -31,5 +31,5 @@ dependencies {
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
 
-  testImplementation(project(path = ":modulecheck-utils:coroutines"))
+  testImplementation(project(path = ":modulecheck-utils:coroutines:api"))
 }
