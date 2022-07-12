@@ -20,7 +20,7 @@ import modulecheck.finding.FindingName
 import modulecheck.gradle.ModuleCheckExtension
 import modulecheck.rule.RuleFilter
 import modulecheck.utils.cast
-import modulecheck.utils.coroutines.DispatcherProviderComponent
+import modulecheck.utils.coroutines.impl.DispatcherProviderComponent
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.model.ObjectFactory

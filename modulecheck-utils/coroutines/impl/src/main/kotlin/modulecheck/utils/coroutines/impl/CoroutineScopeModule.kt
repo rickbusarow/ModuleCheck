@@ -13,7 +13,13 @@
  * limitations under the License.
  */
 
+<<<<<<<< HEAD:modulecheck-utils/coroutines-wiring/src/main/kotlin/modulecheck/utils/coroutines/CoroutineScopeModule.kt
 package modulecheck.utils.coroutines
+|||||||| 826f2215:modulecheck-dagger/src/main/kotlin/modulecheck/dagger/CoroutineScopeModule.kt
+package modulecheck.dagger
+========
+package modulecheck.utils.coroutines.impl
+>>>>>>>> main:modulecheck-utils/coroutines/impl /src/main/kotlin/modulecheck/utils/coroutines/impl /CoroutineScopeModule.kt
 
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesTo
@@ -27,15 +33,37 @@ import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
+
+<<<<<<<< HEAD:modulecheck-utils/coroutines-wiring/src/main/kotlin/modulecheck/utils/coroutines/CoroutineScopeModule.kt
 import kotlinx.coroutines.Dispatchers
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.utils.coroutines.fork.LimitedDispatcher
 import javax.inject.Inject
 
+|||||||| 826f2215:modulecheck-dagger/src/main/kotlin/modulecheck/dagger/CoroutineScopeModule.kt
+========
+import kotlinx.coroutines.Dispatchers
+import modulecheck.dagger.AppScope
+import modulecheck.dagger.SingleIn
+import modulecheck.utils.coroutines.LimitedDispatcher
+
+>>>>>>>> main:modulecheck-utils/coroutines/impl /src/main/kotlin/modulecheck/utils/coroutines/impl /CoroutineScopeModule.kt
+
+@Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass")
 @Module
 @ContributesTo(AppScope::class)
 object CoroutineScopeModule {
+
+  private val DEFAULT_CONCURRENCY: Int
+    get() = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
+
+  @Provides
+  @SingleIn(AppScope::class)
+  fun provideDefaultDispatcher(): LimitedDispatcher = LimitedDispatcherImpl(
+    dispatcher = Dispatchers.Default,
+    parallelism = DEFAULT_CONCURRENCY
+  )
 
   @Provides
   fun provideCoroutineScope(): CoroutineScope = DefaultCoroutineScope()

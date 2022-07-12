@@ -40,7 +40,7 @@ dependencies {
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-parsing:java"))
   implementation(project(path = ":modulecheck-utils:cache"))
-  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

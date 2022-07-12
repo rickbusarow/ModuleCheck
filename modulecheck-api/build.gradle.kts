@@ -40,7 +40,7 @@ dependencies {
   implementation(libs.kotlin.compiler)
 
   implementation(project(path = ":modulecheck-config:api"))
-  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
