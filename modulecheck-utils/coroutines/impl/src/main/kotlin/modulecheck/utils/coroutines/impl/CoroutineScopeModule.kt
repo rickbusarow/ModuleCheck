@@ -13,15 +13,8 @@
  * limitations under the License.
  */
 
-<<<<<<<< HEAD:modulecheck-utils/coroutines-wiring/src/main/kotlin/modulecheck/utils/coroutines/CoroutineScopeModule.kt
-package modulecheck.utils.coroutines
-|||||||| 826f2215:modulecheck-dagger/src/main/kotlin/modulecheck/dagger/CoroutineScopeModule.kt
-package modulecheck.dagger
-========
 package modulecheck.utils.coroutines.impl
->>>>>>>> main:modulecheck-utils/coroutines/impl /src/main/kotlin/modulecheck/utils/coroutines/impl /CoroutineScopeModule.kt
 
-import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.annotations.ContributesTo
 import dagger.Module
 import dagger.Provides
@@ -31,24 +24,11 @@ import dispatch.core.IOCoroutineScope
 import dispatch.core.MainCoroutineScope
 import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-
-<<<<<<<< HEAD:modulecheck-utils/coroutines-wiring/src/main/kotlin/modulecheck/utils/coroutines/CoroutineScopeModule.kt
-import kotlinx.coroutines.Dispatchers
-import modulecheck.dagger.AppScope
-import modulecheck.dagger.SingleIn
-import modulecheck.utils.coroutines.fork.LimitedDispatcher
-import javax.inject.Inject
-
-|||||||| 826f2215:modulecheck-dagger/src/main/kotlin/modulecheck/dagger/CoroutineScopeModule.kt
-========
 import kotlinx.coroutines.Dispatchers
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
 import modulecheck.utils.coroutines.LimitedDispatcher
-
->>>>>>>> main:modulecheck-utils/coroutines/impl /src/main/kotlin/modulecheck/utils/coroutines/impl /CoroutineScopeModule.kt
 
 @Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass")
 @Module
@@ -88,22 +68,4 @@ object CoroutineScopeModule {
 @ContributesTo(AppScope::class)
 interface DispatcherProviderComponent {
   val dispatcherProvider: DispatcherProvider
-}
-
-abstract class WorkerDispatcher : CoroutineDispatcher()
-
-@SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
-class ModuleCheckDispatcherProvider @Inject constructor(
-  workerDispatcher: WorkerDispatcher
-) : DispatcherProvider {
-
-  override val default: CoroutineDispatcher = LimitedDispatcher(
-    dispatcher = Dispatchers.Default,
-    parallelism = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
-  )
-  override val io: CoroutineDispatcher = default
-  override val main: CoroutineDispatcher = Dispatchers.Main
-  override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate
-  override val unconfined: CoroutineDispatcher = Dispatchers.Unconfined
 }

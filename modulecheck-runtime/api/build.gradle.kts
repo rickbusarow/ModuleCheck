@@ -38,7 +38,6 @@ dependencies {
   api(project(path = ":modulecheck-rule:api"))
 
   implementation(project(path = ":modulecheck-api"))
-  implementation(project(path = ":modulecheck-utils:coroutines"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
   implementation(project(path = ":modulecheck-utils:trace"))
 }

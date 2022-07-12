@@ -51,7 +51,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils:coroutines"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

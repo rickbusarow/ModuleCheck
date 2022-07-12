@@ -16,11 +16,8 @@
 package modulecheck.gradle.task
 
 import com.squareup.anvil.annotations.ContributesBinding
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.Runnable
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.platforms.ConfigurationFileResolver
-import modulecheck.utils.coroutines.WorkerDispatcher
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.file.FileCollection
@@ -30,7 +27,6 @@ import org.gradle.workers.WorkParameters
 import org.gradle.workers.WorkerExecutor
 import java.io.File
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @ContributesBinding(AppScope::class)
 class RealConfigurationFileResolver @Inject constructor(
@@ -58,30 +54,6 @@ class RealConfigurationFileResolver @Inject constructor(
           .files { dep -> dep is ExternalModuleDependency }
           .filter { it.exists() }
       }
-  }
-}
-
-@ContributesBinding(AppScope::class)
-class RealWorkerDispatcher @Inject constructor(
-  workerExecutor: WorkerExecutor
-) : WorkerDispatcher() {
-
-  private val queue = workerExecutor.processIsolation()
-
-  @InternalCoroutinesApi
-  override fun dispatchYield(context: CoroutineContext, block: Runnable) {
-    super.dispatchYield(context, block)
-  }
-
-  override fun dispatch(context: CoroutineContext, block: Runnable) {
-
-    queue.submit(DispatchAction::class.java) {
-
-      println("                         dispatching")
-
-      // it.action.set { block.run() }
-      println("                                                  dispatched")
-    }
   }
 }
 
