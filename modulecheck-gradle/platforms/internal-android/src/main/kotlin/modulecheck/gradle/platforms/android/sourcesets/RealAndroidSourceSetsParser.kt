@@ -54,6 +54,7 @@ import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
+import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
@@ -401,16 +402,16 @@ class RealAndroidSourceSetsParser private constructor(
         .plus(name)
         .mapNotNull { variantMap[VariantName(it)] }
         .flatMapToSet { variant ->
-
-          workerFacade.resolve(
-            listOf(
-              variant.compileConfiguration,
-              variant.runtimeConfiguration
-            )
+          sequenceOf(
+            variant.compileConfiguration,
+            variant.runtimeConfiguration
           )
+            .flatMap { config ->
+              config.files { dependency -> dependency is ExternalModuleDependency }
+            }
+            .filter { it.exists() }
+            .toSet()
         }
-        .filter { it.exists() }
-        .toSet()
 
       val kotlinEnvironmentDeferred = lazyDeferred {
         kotlinEnvironmentFactory.create(

@@ -23,6 +23,7 @@ import modulecheck.gradle.platforms.ConfigurationFileResolver
 import modulecheck.utils.coroutines.WorkerDispatcher
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
+import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
@@ -42,7 +43,11 @@ class RealConfigurationFileResolver @Inject constructor(
 
     configurations.forEach { config ->
       queue.submit(DispatchAction::class.java) { params ->
-        params.configuration.set(config)
+        params.configuration.set(
+          config.fileCollection { dep ->
+            dep is ExternalModuleDependency
+          }
+        )
       }
     }
     queue.await()
@@ -83,13 +88,17 @@ class RealWorkerDispatcher @Inject constructor(
 abstract class DispatchAction : WorkAction<DispatchParams> {
   override fun execute() {
     val config = parameters.configuration.get()
-    if (config.isCanBeResolved) {
-      config.resolve()
-    }
+    // if (config.isCanBeResolved) {
+    //   config.resolve()
+    // }
+
+    config
+      .filter { it.exists() }
+      .files
   }
 }
 
 interface DispatchParams : WorkParameters {
-  val configuration: Property<Configuration>
+  val configuration: Property<FileCollection>
   // val action: Property<Runnable>
 }
