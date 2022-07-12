@@ -15,8 +15,12 @@
 
 package modulecheck.parsing.android
 
+import kotlinx.coroutines.flow.toList
+import modulecheck.parsing.source.McName.CompatibleLanguage.XML
+import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.source.UnqualifiedAndroidResource.Companion.id
+import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -26,7 +30,7 @@ import org.junit.jupiter.api.Test
 internal class XmlFileTest : BaseTest() {
 
   @Test
-  fun `an id which is declared in a layout should count as a declaration`() {
+  fun `an id which is declared in a layout should count as a declaration`() = test {
     @Language("xml")
     val text = """
     <?xml version="1.0" encoding="utf-8"?>
@@ -43,6 +47,7 @@ internal class XmlFileTest : BaseTest() {
       <LinearLayout
         android:id="@+id/fragment_container_nested"
         android:layout_width="match_parent"
+        style="@style/Theme.AppCompat.Light.DarkActionBar"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         />
@@ -54,11 +59,20 @@ internal class XmlFileTest : BaseTest() {
       .child("stubs.xml")
       .createSafely(text)
 
-    val declarations = XmlFile.LayoutFile(xml).idDeclarations
+    val file = XmlFile.LayoutFile(xml)
 
-    declarations shouldBe setOf(
+    file.idDeclarations shouldBe setOf(
       id("fragment_container".asSimpleName()),
       id("fragment_container_nested".asSimpleName())
     )
+
+    file.resourceReferencesAsRReferences shouldBe setOf("R.style.Theme_AppCompat_Light_DarkActionBar")
+
+    file.references.toList() shouldBe listOf(
+      ReferenceName("LinearLayout", XML),
+      UnqualifiedAndroidResourceReferenceName("R.style.Theme_AppCompat_Light_DarkActionBar", XML)
+    )
+
+    file.customViews.value shouldBe setOf(ReferenceName("LinearLayout", XML))
   }
 }
