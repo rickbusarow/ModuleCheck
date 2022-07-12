@@ -19,57 +19,40 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Runnable
 import modulecheck.dagger.AppScope
-import modulecheck.utils.coroutines.RealDispatchAction
+import modulecheck.gradle.platforms.ConfigurationFileResolver
 import modulecheck.utils.coroutines.WorkerDispatcher
-import modulecheck.utils.coroutines.WorkerFacade
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
-import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
 import java.io.File
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 @ContributesBinding(AppScope::class)
-class RealWorkerFacade @Inject constructor(
+class RealConfigurationFileResolver @Inject constructor(
   private val workerExecutor: WorkerExecutor
-) : WorkerFacade {
-  override fun <T> invoke(action: RealDispatchAction<T>): T {
+) : ConfigurationFileResolver {
 
-    var result: T? = null
+  override fun resolve(configurations: List<Configuration>): List<File> {
 
     val queue = workerExecutor.noIsolation()
 
-    queue.doThings(action)
-
+    configurations.forEach { config ->
+      queue.submit(DispatchAction::class.java) { params ->
+        params.configuration.set(config)
+      }
+    }
     queue.await()
 
-    workerExecutor.noIsolation()
-      .also {
-        it.submit(DispatchAction::class.java) { params ->
-          params.action.set(object : Runnable {
-            override fun run() {
-              result = action()
-            }
-          })
-        }
-      }.await()
-
-    @Suppress("UNCHECKED_CAST")
-    return result as T
-  }
-}
-
-fun <T> WorkQueue.doThings(action: RealDispatchAction<T>) {
-  submit(DispatchAction::class.java) { params ->
-    // params.action.set(object : Runnable {
-    //   override fun run() {
-    //     action.invoke()
-    //   }
-    // })
+    return configurations
+      .flatMap { config ->
+        config
+          .files { dep -> dep is ExternalModuleDependency }
+          .filter { it.exists() }
+      }
   }
 }
 
@@ -100,15 +83,13 @@ class RealWorkerDispatcher @Inject constructor(
 abstract class DispatchAction : WorkAction<DispatchParams> {
   override fun execute() {
     val config = parameters.configuration.get()
-    val files = config.files { it is ExternalModuleDependency }
-      .filter { it.exists() }
-    parameters.files.set(files)
-    // parameters.action.get().run()
+    if (config.isCanBeResolved) {
+      config.resolve()
+    }
   }
 }
 
 interface DispatchParams : WorkParameters {
   val configuration: Property<Configuration>
-  val files: Property<List<File>>
   // val action: Property<Runnable>
 }

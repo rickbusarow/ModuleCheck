@@ -16,8 +16,15 @@
 package modulecheck.gradle.platforms
 
 import modulecheck.parsing.gradle.model.Configurations
+import org.gradle.api.artifacts.Configuration
+import java.io.File
 import org.gradle.api.Project as GradleProject
 
 interface ConfigurationsFactory {
   fun create(gradleProject: GradleProject): Configurations
+}
+
+interface ConfigurationFileResolver {
+
+  fun resolve(configurations: List<Configuration>): List<File>
 }

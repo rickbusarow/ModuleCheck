@@ -25,6 +25,7 @@ import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
+import modulecheck.gradle.platforms.ConfigurationFileResolver
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.android.AndroidAppExtension
 import modulecheck.gradle.platforms.android.AndroidLibraryExtension
@@ -48,14 +49,11 @@ import modulecheck.parsing.gradle.model.distinctSourceSetNames
 import modulecheck.parsing.gradle.model.names
 import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.capitalize
-import modulecheck.utils.coroutines.RealDispatchAction
-import modulecheck.utils.coroutines.WorkerFacade
 import modulecheck.utils.decapitalize
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
-import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
 import org.gradle.api.Project as GradleProject
@@ -147,7 +145,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val hasTestFixturesPlugin: Boolean,
   private val gradleProject: GradleProject,
   private val kotlinEnvironmentFactory: KotlinEnvironmentFactory,
-  private val workerFacade: WorkerFacade
+  private val workerFacade: ConfigurationFileResolver
 ) : AndroidSourceSetsParser {
 
   val projectPath = StringProjectPath(gradleProject.path)
@@ -397,7 +395,6 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      foo(workerFacade)
       val classpath = upstreamLazy.value
         .asSequence()
         .map { it.value }
@@ -405,7 +402,12 @@ class RealAndroidSourceSetsParser private constructor(
         .mapNotNull { variantMap[VariantName(it)] }
         .flatMapToSet { variant ->
 
-          variant.files(workerFacade)
+          workerFacade.resolve(
+            listOf(
+              variant.compileConfiguration,
+              variant.runtimeConfiguration
+            )
+          )
         }
         .filter { it.exists() }
         .toSet()
@@ -644,7 +646,7 @@ class RealAndroidSourceSetsParser private constructor(
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val kotlinEnvironmentFactory: KotlinEnvironmentFactory,
-    private val workerFacade: WorkerFacade
+    private val workerFacade: ConfigurationFileResolver
   ) : AndroidSourceSetsParser.Factory {
     override fun create(
       parsedConfigurations: Configurations,
@@ -661,32 +663,5 @@ class RealAndroidSourceSetsParser private constructor(
         workerFacade = workerFacade
       )
     }
-  }
-}
-
-private fun BaseVariant.files(workerFacade: WorkerFacade) =
-  workerFacade(object : RealDispatchAction<Set<File>> {
-    override fun invoke(): Set<File> {
-      return sequenceOf(
-        compileConfiguration,
-        runtimeConfiguration
-      )
-        .flatMap { config ->
-          config.files { dependency -> dependency is ExternalModuleDependency }
-            .filter { it.exists() }
-        }
-        .toSet()
-    }
-  })
-
-fun foo(workerFacade: WorkerFacade) {
-
-  repeat(50) {
-
-    workerFacade.invoke(object : RealDispatchAction<Unit> {
-      override fun invoke() {
-        println("hello!!!!!!!!!!!!  $it")
-      }
-    })
   }
 }
