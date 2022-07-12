@@ -43,8 +43,9 @@ class UnqualifiedAndroidResource private constructor(
    * @return the fully qualified name of a generated Android resource, like
    *   `com.example.R.string.app_name` from the combination of `com.example.R` and `R.string.app_name`
    */
-  fun toQualifiedDeclaredName(androidRDeclaration: AndroidRDeclaredName):
-    QualifiedAndroidResourceDeclaredName {
+  fun toQualifiedDeclaredName(
+    androidRDeclaration: AndroidRDeclaredName
+  ): QualifiedAndroidResourceDeclaredName {
     return AndroidResourceDeclaredName.qualifiedAndroidResource(
       sourceR = AndroidRReferenceName(androidRDeclaration.packageName, XML),
       sourceResource = UnqualifiedAndroidResourceReferenceName(this.name, XML)
@@ -164,7 +165,7 @@ class UnqualifiedAndroidResource private constructor(
     /** @return `R.id.foo` for [type] `id` and [name] `foo` */
     fun fromValuePair(type: String, name: String): UnqualifiedAndroidResource? {
       val fixedName = name.replace('.', '_')
-      return when (type) {
+      return when (type.removePrefix("android:")) {
         "anim" -> anim(fixedName.asSimpleName())
         "animator" -> animator(fixedName.asSimpleName())
         "array" -> array(fixedName.asSimpleName())
