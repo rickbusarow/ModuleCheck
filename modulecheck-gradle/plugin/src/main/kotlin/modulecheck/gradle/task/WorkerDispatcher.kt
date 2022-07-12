@@ -22,10 +22,14 @@ import modulecheck.dagger.AppScope
 import modulecheck.utils.coroutines.RealDispatchAction
 import modulecheck.utils.coroutines.WorkerDispatcher
 import modulecheck.utils.coroutines.WorkerFacade
+import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.provider.Property
 import org.gradle.workers.WorkAction
 import org.gradle.workers.WorkParameters
+import org.gradle.workers.WorkQueue
 import org.gradle.workers.WorkerExecutor
+import java.io.File
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -37,17 +41,35 @@ class RealWorkerFacade @Inject constructor(
 
     var result: T? = null
 
+    val queue = workerExecutor.noIsolation()
+
+    queue.doThings(action)
+
+    queue.await()
+
     workerExecutor.noIsolation()
       .also {
         it.submit(DispatchAction::class.java) { params ->
-          params.action.set {
-            result = action()
-          }
+          params.action.set(object : Runnable {
+            override fun run() {
+              result = action()
+            }
+          })
         }
       }.await()
 
     @Suppress("UNCHECKED_CAST")
     return result as T
+  }
+}
+
+fun <T> WorkQueue.doThings(action: RealDispatchAction<T>) {
+  submit(DispatchAction::class.java) { params ->
+    // params.action.set(object : Runnable {
+    //   override fun run() {
+    //     action.invoke()
+    //   }
+    // })
   }
 }
 
@@ -69,7 +91,7 @@ class RealWorkerDispatcher @Inject constructor(
 
       println("                         dispatching")
 
-      it.action.set { block.run() }
+      // it.action.set { block.run() }
       println("                                                  dispatched")
     }
   }
@@ -77,10 +99,16 @@ class RealWorkerDispatcher @Inject constructor(
 
 abstract class DispatchAction : WorkAction<DispatchParams> {
   override fun execute() {
-    parameters.action.get().invoke()
+    val config = parameters.configuration.get()
+    val files = config.files { it is ExternalModuleDependency }
+      .filter { it.exists() }
+    parameters.files.set(files)
+    // parameters.action.get().run()
   }
 }
 
 interface DispatchParams : WorkParameters {
-  val action: Property<() -> Unit>
+  val configuration: Property<Configuration>
+  val files: Property<List<File>>
+  // val action: Property<Runnable>
 }

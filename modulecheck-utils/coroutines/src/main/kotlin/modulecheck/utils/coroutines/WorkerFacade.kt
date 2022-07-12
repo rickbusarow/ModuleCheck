@@ -19,6 +19,6 @@ interface WorkerFacade {
   operator fun <T> invoke(action: RealDispatchAction<T>): T
 }
 
-fun interface RealDispatchAction<T> {
+interface RealDispatchAction<T> {
   operator fun invoke(): T
 }
