@@ -16,7 +16,6 @@
 package modulecheck.parsing.kotlin.compiler.internal
 
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
-import modulecheck.utils.existsOrNull
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.lang.java.JavaLanguage
@@ -47,6 +46,9 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
   private val psiProject: Project by lazy { coreEnvironment.project }
   private val psiManager: PsiManager by lazy { PsiManager.getInstance(psiProject) }
   private val virtualFileSystem: VirtualFileSystem by lazy {
+    // make sure that the PsiManager has initialized, or we'll get NPE's when trying to initialize
+    // the VirtualFileManager instance
+    psiManager
     VirtualFileManager.getInstance()
       .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
   }
@@ -96,19 +98,14 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
       )
     }
 
-    // val virtualFileSystem = VirtualFileManager.getInstance()
-    //   .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
-    //
-    // val vFile = virtualFileSystem.findFileByPath(file.absolutePath)!!
-    //
-    // val psi = psiManager.findFile(vFile)
-    //
-    // return psi as PsiJavaFile
+    val virtualFileSystem = VirtualFileManager.getInstance()
+      .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
 
-    val text = file.existsOrNull()?.readText()
-      ?: throw FileNotFoundException("could not find file $this")
+    val vFile = virtualFileSystem.findFileByPath(file.absolutePath)!!
 
-    return javaFileFactory.createFileFromText(file.name, JavaLanguage.INSTANCE, text) as PsiJavaFile
+    val psi = psiManager.findFile(vFile)
+
+    return psi as PsiJavaFile
   }
 
   override fun createJava(

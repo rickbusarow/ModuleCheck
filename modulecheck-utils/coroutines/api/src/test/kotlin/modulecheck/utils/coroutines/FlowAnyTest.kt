@@ -17,11 +17,8 @@ package modulecheck.utils.coroutines
 
 import io.kotest.assertions.fail
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
@@ -49,26 +46,5 @@ internal class FlowAnyTest {
   fun `should return false if flow does not contain matching element`() = runBlocking {
 
     flowOf(1, 2, 3).any { it == 4 } shouldBe false
-  }
-
-  @Test
-  fun `sanity`() = runBlocking<Unit> {
-
-    var complete = false
-
-    flowOf(1, 2, 3, 4, 5, 6, 7, 8)
-      .onEach { println("upstream - $it") }
-      .onEach {
-        if (it % 2 == 0) {
-          complete = true
-        }
-      }
-      .takeWhile { !complete }
-      .onEach { println("downstream - $it") }
-      .collect()
-
-    println("after")
-
-    fail("show me")
   }
 }

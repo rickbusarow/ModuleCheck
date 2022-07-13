@@ -1700,7 +1700,7 @@ class UnusedDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testImplementation",
           dependency = ":lib1",
-          position = "6, 3"
+          position = "7, 3"
         ),
         unusedDependency(
           fixed = true,

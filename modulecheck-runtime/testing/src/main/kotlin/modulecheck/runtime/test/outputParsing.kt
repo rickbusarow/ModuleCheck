@@ -76,6 +76,7 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
         currentPath = line
         return@forEach
       }
+
       resultLineStarters.any { line.startsWith(it) } -> {
 
         val split = line.split(DELIM)
@@ -108,18 +109,21 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
             source,
             position
           )
+
           "must-be-api" -> mustBeApi(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
+
           "overshot-dependency" -> overshot(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
+
           "redundant-dependency" -> redundant(
             fixed = fixed,
             configuration = configuration,
@@ -127,12 +131,14 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
             source = source,
             position = position
           )
+
           "unused-dependency" -> unusedDependency(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
+
           "project-depth" -> depth(fixed)
           "use-anvil-factory-generation" -> useAnvilFactories(fixed)
           "disable-view-binding" -> disableViewBinding(fixed = fixed, position = position)
@@ -143,16 +149,19 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
             dependency = dependency,
             position = position
           )
+
           "unused-kapt-processor" -> unusedKaptProcessor(
             fixed = fixed,
             configuration = configuration,
             dependency = dependency,
             position = position
           )
+
           "unused-kotlin-android-extensions" -> unusedKotlinAndroidExtensions(
             fixed = fixed,
             position = position
           )
+
           "disable-android-resources" -> disableAndroidResources(fixed = fixed, position = position)
           else -> error("could not parse a finding result type for name of `$name`.")
         }
@@ -162,5 +171,5 @@ internal fun String.parseReportOutput(): List<Pair<ProjectPath, List<ProjectFind
     }
   }
 
-  return map.toList()
+  return map.toList().map { it.first to it.second.sortedBy { it::class.java.simpleName } }
 }
