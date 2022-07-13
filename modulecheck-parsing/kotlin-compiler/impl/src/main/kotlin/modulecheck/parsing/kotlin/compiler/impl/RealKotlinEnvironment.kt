@@ -59,7 +59,6 @@ import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProvid
 import sun.reflect.ReflectionFactory
 import java.io.File
 import javax.inject.Inject
-import kotlin.system.measureTimeMillis
 
 /**
  * @property projectPath path of the associated Gradle project
@@ -119,37 +118,17 @@ class RealKotlinEnvironment(
       sourceSetName = sourceSetName
     ) { dependencyEnvironments ->
 
-      val ar: AnalysisResult
+      val descriptors = dependencyEnvironments
+        .mapAsync { dependency ->
+          dependency.moduleDescriptorDeferred.await()
+        }
+        .toList()
 
-      println(
-        " ".repeat(5) + "starting analysis -- ${projectPath.value} / ${sourceSetName.value}"
+      maybeCreateAnalysisResult(
+        coreEnvironment = coreEnvironment,
+        ktFiles = ktFiles.values.toList(),
+        dependencyModuleDescriptors = descriptors
       )
-
-      val time = measureTimeMillis {
-
-        val descriptors = dependencyEnvironments
-          .mapAsync { dependency ->
-            dependency.moduleDescriptorDeferred.await()
-          }
-          .toList()
-
-        ar = maybeCreateAnalysisResult(
-          coreEnvironment = coreEnvironment,
-          ktFiles = ktFiles.values.toList(),
-          dependencyModuleDescriptors = descriptors
-        )
-      }
-
-      val sec = time / 1000
-      val ms = (time % 1000).toString().padStart(3, '0')
-
-      val ts = "$sec.$ms".padStart(12).padEnd(20, '_')
-
-      println(
-        " ".repeat(60) + "analysis time -- $ts${projectPath.value} / ${sourceSetName.value}"
-      )
-
-      ar
     }
   }
 

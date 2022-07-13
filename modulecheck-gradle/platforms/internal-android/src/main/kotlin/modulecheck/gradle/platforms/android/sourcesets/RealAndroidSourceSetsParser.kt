@@ -147,7 +147,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val hasTestFixturesPlugin: Boolean,
   private val gradleProject: GradleProject,
   private val kotlinEnvironmentFactory: KotlinEnvironmentFactory,
-  private val workerFacade: ConfigurationFileResolver
+  private val configurationFileResolver: ConfigurationFileResolver
 ) : AndroidSourceSetsParser {
 
   val projectPath = StringProjectPath(gradleProject.path)
@@ -662,7 +662,7 @@ class RealAndroidSourceSetsParser private constructor(
         hasTestFixturesPlugin = hasTestFixturesPlugin,
         gradleProject = gradleProject,
         kotlinEnvironmentFactory = kotlinEnvironmentFactory,
-        workerFacade = workerFacade
+        configurationFileResolver = workerFacade
       )
     }
   }
