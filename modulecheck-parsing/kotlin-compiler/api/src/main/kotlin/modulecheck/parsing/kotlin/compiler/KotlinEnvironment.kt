@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler
 
 import modulecheck.utils.lazy.LazyDeferred
+import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -28,7 +29,7 @@ import java.io.File
  * Models everything needed in order to creat authentic Psi files for [BindingContext]-backed type
  * resolution.
  */
-interface KotlinEnvironment : HasPsiAnalysis {
+interface KotlinEnvironment : HasAnalysisResult {
   /** Used to create Psi files for Kotlin and Java */
   val psiFileFactory: McPsiFileFactory
 
@@ -57,20 +58,34 @@ interface KotlinEnvironment : HasPsiAnalysis {
 }
 
 /**
- * Holds the [BindingContext] and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
+ * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
  * retrieved from an [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
  */
-interface HasPsiAnalysis {
-
+interface HasAnalysisResult {
   /**
-   * The result of file analysis, used for last-resort type resolution. This object is very
-   * expensive to create, but it's created lazily.
+   * The result of file analysis. This object is very expensive to create, but it's created lazily.
+   *
+   * Holds the [bindingContextDeferred] and [moduleDescriptorDeferred] used for last-resort type and
+   * reference resolution.
    */
-  val bindingContext: LazyDeferred<BindingContext>
+  val analysisResultDeferred: LazyDeferred<AnalysisResult>
 
   /**
-   * The result of file analysis, used for last-resort type resolution. This object is very
-   * expensive to create, but it's created lazily.
+   * Used as the entry point for type resolution in Psi files. Under the hood, it frequently
+   * delegates to this environment's ModuleDescriptor or the descriptors from its dependency
+   * environments.
+   */
+  val bindingContextDeferred: LazyDeferred<BindingContext>
+
+  /**
+   * The real force behind type resolution. Prefer using [bindingContextDeferred] as the entry point, as it
+   * will give references to Psi elements when they're known. But when we have to resolve things
+   * from dependencies (including other source sets in the same module), this is always done using
+   * the descriptor.
+   *
+   * N.B. This is not thread-safe. This holds lazily cached data. That cache is partially filled
+   * after the initial analysis, but the cache is still added to when this descriptor is used in the
+   * analysis of downstream compilations.
    *
    * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface because
    * `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.

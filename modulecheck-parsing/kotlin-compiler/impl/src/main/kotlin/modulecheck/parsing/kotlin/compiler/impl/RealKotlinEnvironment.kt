@@ -111,7 +111,7 @@ class RealKotlinEnvironment(
       .associateWith { file -> psiFileFactory.createKotlin(file) }
   }
 
-  private val analysisResult: LazyDeferred<AnalysisResult> = lazyDeferred {
+  override val analysisResultDeferred: LazyDeferred<AnalysisResult> = lazyDeferred {
 
     safeAnalysisResultAccess.withLeases(
       requester = this,
@@ -153,12 +153,12 @@ class RealKotlinEnvironment(
     }
   }
 
-  override val bindingContext = lazyDeferred {
-    analysisResult.await().bindingContext
+  override val bindingContextDeferred = lazyDeferred {
+    analysisResultDeferred.await().bindingContext
   }
 
   override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
-    analysisResult.await().moduleDescriptor as ModuleDescriptorImpl
+    analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
   @ContributesBinding(AppScope::class)

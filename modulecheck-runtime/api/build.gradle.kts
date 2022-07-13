@@ -39,5 +39,6 @@ dependencies {
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:trace"))
 }
