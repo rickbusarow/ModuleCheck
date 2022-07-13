@@ -3681,7 +3681,7 @@ class InheritedDependenciesTest : RunnerTest() {
           fixed = true,
           configuration = "testFixturesApi",
           dependency = ":lib1",
-          position = "7, 3"
+          position = "6, 3"
         ),
         unusedDependency(
           fixed = true,
