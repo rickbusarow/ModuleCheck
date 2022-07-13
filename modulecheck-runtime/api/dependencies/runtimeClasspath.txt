@@ -22,10 +22,10 @@ org.jetbrains.kotlin:kotlin-stdlib-common:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10
 org.jetbrains.kotlin:kotlin-stdlib:1.6.10
-org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.2
-org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.2
-org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2
-org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.2
+org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4
+org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4
+org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4
+org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4
 org.jetbrains:annotations:13.0
 org.slf4j:jcl-over-slf4j:1.7.30
 org.slf4j:jul-to-slf4j:1.7.30
