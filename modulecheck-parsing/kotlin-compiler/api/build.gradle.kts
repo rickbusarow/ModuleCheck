@@ -25,6 +25,8 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlin.reflect)
 
+  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+
   compileOnly(gradleApi())
 
   compileOnly(libs.agp)
