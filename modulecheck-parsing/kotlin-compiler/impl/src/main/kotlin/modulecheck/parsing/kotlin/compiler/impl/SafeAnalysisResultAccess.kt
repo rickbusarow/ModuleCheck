@@ -76,7 +76,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
         dependencySourceSetName.upstreamEnvironments(dependencyProject)
       }
       .plus(sourceSetName.upstreamEnvironments(thisProject).filterNot { it == requester })
-      .toList()
+      .toSet()
 
     val pendingRequest = PendingRequest(
       requester = requester,
@@ -182,9 +182,9 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
       }
   }
 
-  private data class PendingRequest(
+  internal data class PendingRequest(
     val requester: HasPsiAnalysis,
-    val dependencies: List<HasPsiAnalysis>
+    val dependencies: Set<HasPsiAnalysis>
   ) : Comparable<PendingRequest> {
 
     /**
@@ -193,10 +193,15 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
      * number if it's greater than other.
      */
     override fun compareTo(other: PendingRequest): Int {
-      return dependencies.size.compareTo(other.dependencies.size)
+      // return dependencies.size.compareTo(other.dependencies.size)
+
+      return other.dependencies.contains(requester).compareTo(true)
+        .compareTo(dependencies.contains(other.requester).compareTo(true))
+
       // return when {
       //   dependencies.contains(other.requester) -> 1
       //   other.dependencies.contains(requester) -> -1
+      //   else -> 0
       //   else -> dependencies.size.compareTo(other.dependencies.size)
       // }
     }
@@ -211,9 +216,4 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
 
   private suspend fun SourceSetName.upstreamEnvironments(project: McProject) = withUpstream(project)
     .mapNotNull { project.sourceSets[it]?.kotlinEnvironmentDeferred?.await() }
-}
-
-private fun HasPsiAnalysis.name(): String {
-  val asReal = this as RealKotlinEnvironment
-  return "${asReal.projectPath.value}:${asReal.sourceSetName.value}"
 }
