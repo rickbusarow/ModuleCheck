@@ -15,8 +15,6 @@
 
 package modulecheck.parsing.kotlin.compiler
 
-import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
@@ -26,76 +24,18 @@ import java.io.FileNotFoundException
 interface McPsiFileFactory {
 
   /**
-   * Prefer [createKotlin] or [createJava] instead, for better type safety
-   *
-   * @return a Psi file for either Java or Kotlin files. The file extension must be `.java`, `.kt`,
-   *   or `.kts`.
-   * @throws IllegalArgumentException if the [file] is an unsupported extension
-   * @throws FileNotFoundException if the [file] does not exist in the Java file system
-   * @see createKotlin
-   * @see createKotlinOrNull
-   * @see createJava
-   * @see createJavaOrNull
-   */
-  fun create(file: File): PsiFile
-
-  /**
    * @return a Psi `KtFile` for Kotlin files. The file extension must be `.kt` or `.kts`.
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
-   * @see create
-   * @see createKotlinOrNull
    */
   fun createKotlin(file: File): KtFile
-
-  /**
-   * @return a Psi `KtFile` for existing Kotlin files with an extension of `.kt` or `.kts`,
-   *   otherwise null
-   * @see create
-   * @see createKotlin
-   */
-  fun createKotlinOrNull(file: File): KtFile?
-
-  /**
-   * @return a "virtual" Psi `KtFile` with the given [name] and [content]. This file does not exist
-   *   in a Java file system.
-   * @see create
-   * @see createKotlin
-   */
-  fun createKotlin(
-    name: String,
-    @Language("kotlin")
-    content: String
-  ): KtFile
 
   /**
    * @return a Psi `PsiJavaFile` for Java files. The file extension must be `.java`.
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
-   * @see create
-   * @see createJavaOrNull
    */
   fun createJava(file: File): PsiJavaFile
-
-  /**
-   * @return a Psi `PsiJavaFile` for existing Java files with an extension of `.java`, otherwise
-   *   null
-   * @see create
-   * @see createJava
-   */
-  fun createJavaOrNull(file: File): PsiJavaFile?
-
-  /**
-   * @return a "virtual" Psi `PsiJavaFile` with the given [name] and [content]. This file does not
-   *   exist in a Java file system.
-   * @see create
-   * @see createJava
-   */
-  fun createJava(
-    name: String,
-    @Language("java")
-    content: String
-  ): PsiJavaFile
 
   /** Creates an instance of [McPsiFileFactory] */
   fun interface Factory {

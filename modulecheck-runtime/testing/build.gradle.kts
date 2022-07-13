@@ -41,6 +41,7 @@ dependencies {
   api(project(path = ":modulecheck-rule:impl-factory"))
 
   implementation(project(path = ":modulecheck-config:fake"))
+  implementation(project(path = ":modulecheck-internal-testing"))
   implementation(project(path = ":modulecheck-reporting:sarif"))
   implementation(project(path = ":modulecheck-rule:testing"))
   implementation(project(path = ":modulecheck-runtime:api"))

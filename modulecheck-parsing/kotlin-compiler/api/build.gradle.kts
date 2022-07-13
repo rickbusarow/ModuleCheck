@@ -33,8 +33,6 @@ dependencies {
 
   implementation(libs.groovy)
 
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
