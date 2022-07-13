@@ -20,6 +20,14 @@ import modulecheck.dagger.AppScope
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
+import org.jetbrains.kotlin.com.intellij.openapi.project.Project
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.StandardFileSystems
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileManager
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileSystem
+import org.jetbrains.kotlin.com.intellij.psi.PsiFile
+import org.jetbrains.kotlin.com.intellij.psi.PsiManager
+import java.io.File
+import java.io.FileNotFoundException
 import javax.inject.Inject
 
 /**
@@ -35,6 +43,33 @@ class RealMcPsiFileFactory(
   McPsiFileFactory {
 
   override val coreEnvironment by lazy { kotlinEnvironment.coreEnvironment }
+
+  private val psiProject: Project by lazy { coreEnvironment.project }
+  private val psiManager: PsiManager by lazy { PsiManager.getInstance(psiProject) }
+  private val virtualFileSystem: VirtualFileSystem by lazy {
+    // make sure that the PsiManager has initialized, or we'll get NPE's when trying to initialize
+    // the VirtualFileManager instance
+    psiManager
+    VirtualFileManager.getInstance()
+      .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
+  }
+
+  override fun create(file: File): PsiFile {
+    if (!file.exists()) throw FileNotFoundException("could not find file $file")
+
+    val vFile = virtualFileSystem.findFileByPath(file.absolutePath)
+      ?: throw FileNotFoundException("could not find file $file")
+
+    val psi = psiManager.findFile(vFile)
+
+    return when (file.extension) {
+      "java" -> psi as PsiFile
+      "kt", "kts" -> psi as PsiFile
+      else -> throw IllegalArgumentException(
+        "file extension must be one of [java, kt, kts], but it was `${file.extension}`."
+      )
+    }
+  }
 
   /** Creates an instance of [McPsiFileFactory] */
   @ContributesBinding(AppScope::class)
