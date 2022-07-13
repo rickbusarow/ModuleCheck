@@ -98,9 +98,6 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
       )
     }
 
-    val virtualFileSystem = VirtualFileManager.getInstance()
-      .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
-
     val vFile = virtualFileSystem.findFileByPath(file.absolutePath)!!
 
     val psi = psiManager.findFile(vFile)

@@ -35,6 +35,9 @@ google-material = "1.4.0"
 gradleDoctor = "0.8.1"
 graphviz = "0.18.1"
 groovy = "3.0.10"
+
+intellij = "1.6.0"
+
 jUnit = "5.8.2"
 javaParser = "3.24.2"
 knit = "0.4.0"
@@ -78,6 +81,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dropbox-dependencyGuard = { id = "com.dropbox.dependency-guard", version.ref = "dropbox-dependencyGuard" }
 exhaustive = { id = "app.cash.exhaustive:exhaustive-gradle", version.ref = "exhaustive" }
 gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
+intellij = { id = "org.jetbrains.intellij", version.ref = "intellij" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
 taskTree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
