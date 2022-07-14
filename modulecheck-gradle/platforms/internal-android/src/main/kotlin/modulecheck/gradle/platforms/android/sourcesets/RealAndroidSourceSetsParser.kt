@@ -25,6 +25,7 @@ import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
+import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.android.AndroidAppExtension
 import modulecheck.gradle.platforms.android.AndroidLibraryExtension
 import modulecheck.gradle.platforms.android.AndroidTestExtension
@@ -36,6 +37,7 @@ import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
@@ -48,6 +50,7 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.ExternalModuleDependency
@@ -140,8 +143,11 @@ class RealAndroidSourceSetsParser private constructor(
   private val parsedConfigurations: Configurations,
   private val extension: BaseExtension,
   private val hasTestFixturesPlugin: Boolean,
-  private val gradleProject: GradleProject
+  private val gradleProject: GradleProject,
+  private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
 ) : AndroidSourceSetsParser {
+
+  private val projectPath = StringProjectPath(gradleProject.path)
 
   private val gradleAndroidSourceSets by lazy {
     extension.sourceSets
@@ -161,7 +167,9 @@ class RealAndroidSourceSetsParser private constructor(
   private val productFlavors2D by lazy {
     val mapped = extension.productFlavors
       .groupBy { it.dimension ?: "default_flavor_dimension" }
-      .mapValues { (_, productFlavors) -> productFlavors.map { GradleSourceSetName.FlavorName(it.name) } }
+      .mapValues { (_, productFlavors) ->
+        productFlavors.map { GradleSourceSetName.FlavorName(it.name) }
+      }
 
     flavorDimensions.map { mapped.getValue(it) }
   }
@@ -374,6 +382,7 @@ class RealAndroidSourceSetsParser private constructor(
           .distinct()
           .map { it.value.asSourceSetName() }
       }
+
       val downstreamLazy = lazy {
         namesMap.entries
           .filter { (_, upstream) ->
@@ -385,7 +394,7 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val fromVariant = upstreamLazy.value
+      val classpath = upstreamLazy.value
         .asSequence()
         .map { it.value }
         .plus(name)
@@ -397,14 +406,20 @@ class RealAndroidSourceSetsParser private constructor(
           )
             .flatMap { config ->
               config.fileCollection { dependency -> dependency is ExternalModuleDependency }
+                .mapNotNull { it.existsOrNull() }
             }
-            .mapNotNull { it.existsOrNull() }
             .toSet()
         }
-      val classpath = lazy {
-        fromVariant
-          .filter { it.exists() }
-          .toSet()
+
+      val kotlinEnvironmentDeferred = lazyDeferred {
+        kotlinEnvironmentFactory.create(
+          projectPath = projectPath,
+          sourceSetName = sourceSetName,
+          classpathFiles = lazy { classpath },
+          sourceDirs = jvmFiles,
+          kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
+          jvmTarget = gradleProject.jvmTarget()
+        )
       }
 
       SourceSet(
@@ -421,9 +436,8 @@ class RealAndroidSourceSetsParser private constructor(
         jvmFiles = jvmFiles,
         resourceFiles = resourceFiles,
         layoutFiles = layoutFiles,
-        classpath = classpath,
-        kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
         jvmTarget = gradleProject.jvmTarget(),
+        kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
         upstreamLazy = upstreamLazy,
         downstreamLazy = downstreamLazy
       )
@@ -431,7 +445,6 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   private fun ConcatenatedFlavorsName.upstreamFlavors(): List<GradleSourceSetName.FlavorName> {
-
     val upstreamNames = mutableListOf<GradleSourceSetName.FlavorName>()
 
     var runningName = value
@@ -467,8 +480,7 @@ class RealAndroidSourceSetsParser private constructor(
       )
     }
 
-  private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType():
-    Pair<ConcatenatedFlavorsName, BuildTypeName> {
+  private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType(): Pair<ConcatenatedFlavorsName, BuildTypeName> {
     buildTypeNames
       // Sort descending by length because there may be multiple build types with the same
       // suffix, like ["internalRelease", "Release"].  In that example, it's important that
@@ -502,7 +514,6 @@ class RealAndroidSourceSetsParser private constructor(
   corresponding testFixtures one.
    */
   private fun MutableMap<SourceSetName, SourceSet>.maybeAddTestFixturesSourceSets() = apply {
-
     // The testFixtures source sets are defined regardless of whether the testFixtures feature is
     // actually enabled.  If it isn't enabled, don't add the Gradle source sets to our types.
     if (!hasTestFixturesPlugin) return@apply
@@ -521,7 +532,6 @@ class RealAndroidSourceSetsParser private constructor(
         ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
 
         val upstreamLazy = lazy {
-
           val upstream = androidSourceSet.name.removeTestFixturesPrefix()
             .let { this.getValue(it) }
             .withUpstream()
@@ -562,6 +572,18 @@ class RealAndroidSourceSetsParser private constructor(
               .contains("""/res/layout.*/.*.xml""".toRegex())
           }
           .toSet()
+
+        val kotlinEnvironmentDeferred = lazyDeferred {
+          kotlinEnvironmentFactory.create(
+            projectPath = projectPath,
+            sourceSetName = sourceSetName,
+            classpathFiles = lazy { extension.bootClasspath.toSet() },
+            sourceDirs = jvmFiles,
+            kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
+            jvmTarget = gradleProject.jvmTarget()
+          )
+        }
+
         put(
           sourceSetName,
           SourceSet(
@@ -579,9 +601,8 @@ class RealAndroidSourceSetsParser private constructor(
             jvmFiles = jvmFiles,
             resourceFiles = resourceFiles,
             layoutFiles = layoutFiles,
-            classpath = lazy { extension.bootClasspath.toSet() },
-            kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget(),
+            kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
             upstreamLazy = upstreamLazy,
             downstreamLazy = downstreamLazy
           )
@@ -622,7 +643,9 @@ class RealAndroidSourceSetsParser private constructor(
   }
 
   @ContributesBinding(AppScope::class)
-  class Factory @Inject constructor() : AndroidSourceSetsParser.Factory {
+  class Factory @Inject constructor(
+    private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
+  ) : AndroidSourceSetsParser.Factory {
     override fun create(
       parsedConfigurations: Configurations,
       extension: BaseExtension,
@@ -630,10 +653,11 @@ class RealAndroidSourceSetsParser private constructor(
       gradleProject: GradleProject
     ): RealAndroidSourceSetsParser {
       return RealAndroidSourceSetsParser(
-        parsedConfigurations,
-        extension,
-        hasTestFixturesPlugin,
-        gradleProject
+        parsedConfigurations = parsedConfigurations,
+        extension = extension,
+        hasTestFixturesPlugin = hasTestFixturesPlugin,
+        gradleProject = gradleProject,
+        kotlinEnvironmentFactory = kotlinEnvironmentFactory
       )
     }
   }

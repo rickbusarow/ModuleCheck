@@ -37,6 +37,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
 
@@ -44,7 +45,6 @@ dependencies {
   implementation(libs.bundles.jUnit)
   implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)
-  implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-api"))
@@ -54,6 +54,5 @@ dependencies {
   implementation(project(path = ":modulecheck-parsing:groovy-antlr"))
   implementation(project(path = ":modulecheck-parsing:wiring"))
   implementation(project(path = ":modulecheck-project:impl"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 }
