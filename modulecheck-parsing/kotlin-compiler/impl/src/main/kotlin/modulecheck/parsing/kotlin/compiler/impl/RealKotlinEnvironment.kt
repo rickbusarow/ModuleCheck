@@ -36,6 +36,7 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
+import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.Disposable
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
@@ -93,6 +94,7 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration by lazy {
     createCompilerConfiguration(
+      classpathFiles = classpathFiles.value.toList(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -183,6 +185,7 @@ private fun maybeCreateAnalysisResult(
 }
 
 private fun createCompilerConfiguration(
+  classpathFiles: List<File>,
   sourceFiles: List<File>,
   kotlinLanguageVersion: LanguageVersion?,
   jvmTarget: JvmTarget
@@ -219,7 +222,7 @@ private fun createCompilerConfiguration(
 
     addJavaSourceRoots(javaFiles)
     addKotlinSourceRoots(kotlinFiles)
-    // addJvmClasspathRoots(classpathFiles)
+    addJvmClasspathRoots(classpathFiles)
   }
 }
 

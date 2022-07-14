@@ -30,7 +30,7 @@ class ParsingContext<T>(
   val stdLibNameOrNull: ReferenceName.() -> QualifiedDeclaredName?
 ) {
 
-  val bindingContext by lazy { kotlinEnvironment.bindingContext }
+  val bindingContextDeferred = kotlinEnvironment.bindingContextDeferred
 
   suspend fun declaredNameOrNull(symbol: T): QualifiedDeclaredName? {
     TODO()

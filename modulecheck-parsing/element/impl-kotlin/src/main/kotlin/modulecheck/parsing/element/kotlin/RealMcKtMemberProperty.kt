@@ -36,6 +36,7 @@ import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 
 data class RealMcKtMemberProperty(
@@ -73,20 +74,25 @@ data class RealMcKtMemberProperty(
     } as? KtCallExpression
       ?: return@lazyDeferred null
 
-    psi.getChildrenOfTypeRecursive<KtExpression>()
+    val bc = parsingContext.bindingContextDeferred.await()
+
+    println("resolved call -- ${psi.delegate?.getResolvedCall(bc)}")
+
+    sequenceOf(psi)
+      .plus(psi.getChildrenOfTypeRecursive<KtExpression>())
       .forEach { expr ->
 
         println(
           """ ******
           |expression --------- ${expr.text}
           |expression class --- ${expr::class.java.simpleName}
-          |expression type ---- ${expr.getType(parsingContext.bindingContext)}
+          |expression type ---- ${expr.getType(bc)}
           |_____
           """.trimMargin()
         )
       }
 
-    val t = parsingContext.bindingContext.getType(expression.calleeExpression!!)
+    val t = parsingContext.bindingContextDeferred.await().getType(expression.calleeExpression!!)
 
     expression.typeArguments.joinToString("\n") { it.text }.also(::println)
 

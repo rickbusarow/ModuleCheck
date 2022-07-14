@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
 import modulecheck.parsing.element.McElement
 import modulecheck.parsing.element.McProperty.McKtProperty.KtConstructorProperty
+import modulecheck.parsing.element.McProperty.McKtProperty.KtMemberProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.element.resolve.ConcatenatingParsingInterceptor2
 import modulecheck.parsing.element.resolve.ImportAliasUnwrappingParsingInterceptor2
@@ -30,7 +31,6 @@ import modulecheck.parsing.element.resolve.ParsingChain2
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.kotlin.compiler.impl.kotlinEnvironmentCache
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
@@ -45,6 +45,7 @@ import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -226,6 +227,15 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
           }
           """
         )
+        val ke = project.sourceSets.getValue(SourceSetName.MAIN).kotlinEnvironmentDeferred.await()
+
+        val bindingContext = ke.bindingContextDeferred.await()
+
+        val psiProperties = file.subjectClass().properties.toList()
+          .filterIsInstance<KtMemberProperty>()
+          .map { it.psi }
+          .map { it.getType(bindingContext) }
+          .also(::println)
 
         val lib1Class = file.subjectClass().property("lib1Class")
 
@@ -277,7 +287,9 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
         )
       )
 
-      val kotlinEnvironment = kotlinEnvironmentCache().get(sourceSetName)
+      val sourceSet = sourceSets.getValue(sourceSetName)
+
+      val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await()
 
       val context = ParsingContext(
         nameParser = nameParser,

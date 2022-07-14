@@ -29,7 +29,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
 
-  implementation(project(path = ":modulecheck-utils:coroutines"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
