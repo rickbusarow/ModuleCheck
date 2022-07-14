@@ -17,19 +17,23 @@ package modulecheck.project.test
 
 import modulecheck.parsing.gradle.model.Config
 import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.parsing.gradle.model.removeSuffix
+import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
+import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
-data class SourceSetBuilder(
+data class SourceSetBuilder constructor(
   var name: SourceSetName,
   var compileOnlyConfiguration: Config,
   var apiConfiguration: Config?,
@@ -44,28 +48,46 @@ data class SourceSetBuilder(
   ),
   val upstream: MutableList<SourceSetName>,
   val downstream: MutableList<SourceSetName>,
-  var kotlinLanguageVersion: LanguageVersion? = KOTLIN_1_6,
+  var kotlinLanguageVersion: LanguageVersion? = null,
   var jvmTarget: JvmTarget = JVM_11
 ) {
-  fun toSourceSet() = SourceSet(
-    name = name,
-    compileOnlyConfiguration = compileOnlyConfiguration,
-    apiConfiguration = apiConfiguration,
-    implementationConfiguration = implementationConfiguration,
-    runtimeOnlyConfiguration = runtimeOnlyConfiguration,
-    annotationProcessorConfiguration = annotationProcessorConfiguration,
-    jvmFiles = jvmFiles,
-    resourceFiles = resourceFiles,
-    layoutFiles = layoutFiles,
-    classpath = lazy { classpath },
-    kotlinLanguageVersion = kotlinLanguageVersion,
-    jvmTarget = jvmTarget,
-    upstreamLazy = lazy { upstream },
-    downstreamLazy = lazy { downstream }
-  )
+  fun toSourceSet(
+    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    projectPath: StringProjectPath
+  ): SourceSet {
+    val kotlinEnvironmentDeferred = lazyDeferred {
+      RealKotlinEnvironment(
+        projectPath = projectPath,
+        sourceSetName = name,
+        classpathFiles = lazy { classpath },
+        sourceDirs = jvmFiles,
+        kotlinLanguageVersion = kotlinLanguageVersion,
+        jvmTarget = jvmTarget,
+        safeAnalysisResultAccess = safeAnalysisResultAccess
+      )
+    }
+
+    return SourceSet(
+      name = name,
+      compileOnlyConfiguration = compileOnlyConfiguration,
+      apiConfiguration = apiConfiguration,
+      implementationConfiguration = implementationConfiguration,
+      runtimeOnlyConfiguration = runtimeOnlyConfiguration,
+      annotationProcessorConfiguration = annotationProcessorConfiguration,
+      jvmFiles = jvmFiles,
+      resourceFiles = resourceFiles,
+      layoutFiles = layoutFiles,
+      jvmTarget = jvmTarget,
+      kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
+      upstreamLazy = lazy { upstream },
+      downstreamLazy = lazy { downstream }
+    )
+  }
 
   companion object {
-    fun fromSourceSet(sourceSet: SourceSet): SourceSetBuilder {
+    suspend fun fromSourceSet(sourceSet: SourceSet): SourceSetBuilder {
+      val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await() as RealKotlinEnvironment
+
       return SourceSetBuilder(
         name = sourceSet.name,
         compileOnlyConfiguration = sourceSet.compileOnlyConfiguration,
@@ -76,9 +98,10 @@ data class SourceSetBuilder(
         jvmFiles = sourceSet.jvmFiles,
         resourceFiles = sourceSet.resourceFiles,
         layoutFiles = sourceSet.layoutFiles,
-        classpath = sourceSet.classpath.value.toMutableSet(),
+        classpath = kotlinEnvironment.classpathFiles.value.toMutableSet(),
         upstream = sourceSet.upstream.toMutableList(),
         downstream = sourceSet.downstream.toMutableList(),
+        kotlinLanguageVersion = kotlinEnvironment.kotlinLanguageVersion,
         jvmTarget = sourceSet.jvmTarget
       )
     }
@@ -101,12 +124,13 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
   jvmFiles: Set<File> = emptySet(),
   resourceFiles: Set<File> = emptySet(),
   layoutFiles: Set<File> = emptySet(),
-  classpath: Set<File> = setOf(File(CharRange::class.java.protectionDomain.codeSource.location.path)),
+  classpath: Set<File> = setOf(
+    File(CharRange::class.java.protectionDomain.codeSource.location.path)
+  ),
   upstreamNames: List<SourceSetName> = emptyList(),
   downstreamNames: List<SourceSetName> = emptyList(),
   jvmTarget: JvmTarget = JVM_11
 ): SourceSetBuilder {
-
   if (name.isTestFixtures()) {
     hasTestFixturesPlugin = true
   }
@@ -128,6 +152,11 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
 
   val configFactory = platformPlugin.configFactory
 
+  val kotlinLanguageVersion = when (platformPlugin) {
+    is JavaLibraryPluginBuilder -> null
+    else -> KOTLIN_1_6
+  }
+
   val sourceSet = platformPlugin.sourceSets.getOrPut(name) {
     SourceSetBuilder(
       name = name,
@@ -142,6 +171,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       classpath = classpath.toMutableSet(),
       upstream = upstream,
       downstream = downstreamNames.toMutableList(),
+      kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
     )
   }
@@ -179,7 +209,6 @@ internal fun MutableMap<SourceSetName, SourceSetBuilder>.requireSourceSetExists(
 
 @PublishedApi
 internal fun MutableMap<SourceSetName, SourceSetBuilder>.populateDownstreams() {
-
   values.forEach { sourceSetBuilder ->
     sourceSetBuilder.downstream.clear()
     sourceSetBuilder.downstream.addAll(

@@ -23,6 +23,7 @@ import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
@@ -45,6 +46,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   val codeGeneratorBindings: List<CodeGeneratorBinding>,
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
+  val safeAnalysisResultAccess: SafeAnalysisResultAccess,
   val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
   val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
   var hasKapt: Boolean = false,

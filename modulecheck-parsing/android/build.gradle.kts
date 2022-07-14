@@ -24,12 +24,12 @@ mcbuild {
 
 dependencies {
 
+  api(libs.groovy)
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
   api(project(path = ":modulecheck-parsing:source:api"))
 
-  implementation(libs.groovy)
   implementation(libs.groovyXml)
 
   implementation(project(path = ":modulecheck-utils:lazy"))

@@ -15,10 +15,11 @@
 
 package modulecheck.parsing.gradle.model
 
+import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
-import org.jetbrains.kotlin.config.LanguageVersion
 import java.io.File
 
 /**
@@ -42,15 +43,16 @@ import java.io.File
  * @property resourceFiles all xml 'res' files for this source set
  * @property layoutFiles all android layout files for this source set. This is a subset of
  *   [resourceFiles].
- * @property classpath all files making up this source set's compilation classpath
- * @property kotlinLanguageVersion the Kotlin version used when compiling this source set
  * @property jvmTarget the Java version used when compiling this source set
+ * @property kotlinEnvironmentDeferred the kotlin environment used for "compiling" and parsing this
+ *   source set
  * @property upstreamLazy all source sets upstream of this one, like `main` if this source set is
  *   `test`
  * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
  *   is `main`
  */
-data class SourceSet(
+@Suppress("LongParameterList")
+class SourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: Config,
   val apiConfiguration: Config?,
@@ -60,15 +62,17 @@ data class SourceSet(
   val jvmFiles: Set<File>,
   val resourceFiles: Set<File>,
   val layoutFiles: Set<File>,
-  val classpath: Lazy<Set<File>>,
-  val kotlinLanguageVersion: LanguageVersion?,
   val jvmTarget: JvmTarget,
+  val kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<SourceSet> {
 
-  val upstream: List<SourceSetName> by lazy { upstreamLazy.value }
-  val downstream: List<SourceSetName> by lazy { downstreamLazy.value }
+  /** upstsream source set names */
+  val upstream: List<SourceSetName> by upstreamLazy
+
+  /** downstsream source set names */
+  val downstream: List<SourceSetName> by downstreamLazy
 
   fun withUpstream() = listOf(name) + upstream
   fun withDownstream() = listOf(name) + downstream

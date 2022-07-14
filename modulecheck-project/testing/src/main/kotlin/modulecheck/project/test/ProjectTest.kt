@@ -21,6 +21,8 @@ import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.testing.BaseTest
@@ -30,6 +32,9 @@ import java.nio.charset.Charset
 abstract class ProjectTest : BaseTest(), ProjectCollector {
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
+  override val safeAnalysisResultAccess: SafeAnalysisResultAccess by resets {
+    SafeAnalysisResultAccessImpl(projectCache)
+  }
 
   override val root: File
     get() = testProjectDir

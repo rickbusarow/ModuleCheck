@@ -15,11 +15,12 @@
 
 package modulecheck.parsing.kotlin.compiler
 
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.utils.lazy.LazyDeferred
+import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
@@ -28,7 +29,7 @@ import java.io.File
  * Models everything needed in order to creat authentic Psi files for [BindingContext]-backed type
  * resolution.
  */
-interface KotlinEnvironment {
+interface KotlinEnvironment : HasAnalysisResult {
   /** Used to create Psi files for Kotlin and Java */
   val psiFileFactory: McPsiFileFactory
 
@@ -37,12 +38,6 @@ interface KotlinEnvironment {
    * dependencies)
    */
   val coreEnvironment: KotlinCoreEnvironment
-
-  /**
-   * The result of file analysis, used for last-resort type resolution. This object is very
-   * expensive to create, but it's created lazily.
-   */
-  val bindingContext: BindingContext
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
@@ -60,60 +55,40 @@ interface KotlinEnvironment {
    * dependency modules, and much of their implementation is Lazy, so re-use is important.
    */
   val javaFiles: Map<File, PsiJavaFile>
+}
 
-  @Suppress("MaxLineLength")
+/**
+ * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
+ * retrieved from an [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
+ */
+interface HasAnalysisResult {
   /**
-   * Model for additional sources coming from upstream "dependencies". These files can come from:
-   * - an upstream source set within the same project
-   * - an internal project dependency, like `implementation(project(":lib1"))`
-   * - an external dependency, like `implementation("com.google.dagger:dagger")`
+   * The result of file analysis. This object is very expensive to create, but it's created lazily.
    *
-   * ```
-   * ┌──────────────────────┐
-   * │:lib2                 │
-   * │                      │
-   * │  ┌────────────────┐  │
-   * │  │    src/test    │  │
-   * │  └────────────────┘  │
-   * │           │          │
-   * │           └────────────────────────────────┐
-   * │                      │      ┌──────────────│───────┐
-   * │  ┌────────────────┐  │      │:lib1         ▼       │
-   * │  │    src/main    │  │      │  ┌────────────────┐  │
-   * │  └────────────────┘  │    ─ ─ ▶│    src/main    │  │
-   * │           ▲          │   │  │  └────────────────┘  │
-   * │                      │      │                      │
-   * └───────────│──────────┘   │  └──────────────────────┘
-   *
-   *             │              │
-   *    ┌ ─ ─ ─ ─ ─ ─ ─ ─ ┐
-   *                            │
-   *    │InheritedSources │─ ─ ─
-   *
-   *    └ ─ ─ ─ ─ ─ ─ ─ ─ ┘
-   * ```
-   *
-   * @property ktFiles all Psi "Kt" files. These should be the same instances as those used in the
-   *   upstream source sets. Note that this can only be Kotlin Psi files, per the signature of
-   *   [TopDownAnalyzerFacadeForJvm.analyzeFilesWithJavaIntegration][org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration]
-   * @property jvmFiles all source code files, whether they're `.java` or `.kt`.
-   * @property classpathFiles `.jar` files from external dependencies
+   * Holds the [bindingContextDeferred] and [moduleDescriptorDeferred] used for last-resort type and
+   * reference resolution.
    */
-  data class InheritedSources(
-    val ktFiles: Set<KtFile>,
-    val jvmFiles: Set<File>,
-    val classpathFiles: Set<File>
-  )
+  val analysisResultDeferred: LazyDeferred<AnalysisResult>
 
-  /** Creates an instance of [KotlinEnvironment] */
-  fun interface Provider {
-    /**
-     * @param projectPath the path of the project for which this environment is being modeled
-     * @param sourceSetName the name of the source set for which this environment is being modeled
-     */
-    suspend fun getOrPut(
-      projectPath: ProjectPath,
-      sourceSetName: SourceSetName
-    ): KotlinEnvironment
-  }
+  /**
+   * Used as the entry point for type resolution in Psi files. Under the hood, it frequently
+   * delegates to this environment's ModuleDescriptor or the descriptors from its dependency
+   * environments.
+   */
+  val bindingContextDeferred: LazyDeferred<BindingContext>
+
+  /**
+   * The real force behind type resolution. Prefer using [bindingContextDeferred] as the entry point, as it
+   * will give references to Psi elements when they're known. But when we have to resolve things
+   * from dependencies (including other source sets in the same module), this is always done using
+   * the descriptor.
+   *
+   * N.B. This is not thread-safe. This holds lazily cached data. That cache is partially filled
+   * after the initial analysis, but the cache is still added to when this descriptor is used in the
+   * analysis of downstream compilations.
+   *
+   * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface because
+   * `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
+   */
+  val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 }
