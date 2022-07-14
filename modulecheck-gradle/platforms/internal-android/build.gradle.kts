@@ -33,9 +33,11 @@ tasks.withType<KotlinCompile> {
 dependencies {
 
   api(libs.javax.inject)
+  api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
 
@@ -46,7 +48,6 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin.api)
 
   implementation(libs.kotlin.reflect)
-  implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-parsing:source:api"))

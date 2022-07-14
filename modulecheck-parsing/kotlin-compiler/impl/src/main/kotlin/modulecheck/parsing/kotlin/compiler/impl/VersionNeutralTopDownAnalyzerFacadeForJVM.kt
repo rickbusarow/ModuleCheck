@@ -53,7 +53,7 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
    * Note that this process is eager, and can be very time-consuming for large
    * projects or projects with lots of internal dependencies. It's only a bit
    * faster than doing a normal compilation. This function is called when the lazy
-   * [KotlinEnvironment.bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContext]
+   * [KotlinEnvironment.bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
    * is accessed.
    */
   @Suppress("LongParameterList")
@@ -63,8 +63,8 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
     trace: BindingTrace,
     configuration: CompilerConfiguration,
     packagePartProvider: (GlobalSearchScope) -> PackagePartProvider,
-    declarationProviderFactory:
-      (StorageManager, Collection<KtFile>) -> DeclarationProviderFactory = ::FileBasedDeclarationProviderFactory,
+    declarationProviderFactory: (StorageManager, Collection<KtFile>) -> DeclarationProviderFactory =
+      ::FileBasedDeclarationProviderFactory,
     sourceModuleSearchScope: GlobalSearchScope = TopDownAnalyzerFacadeForJVM.newModuleSearchScope(
       project,
       files

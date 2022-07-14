@@ -28,23 +28,24 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlin.reflect)
 
-  api(project(path = ":modulecheck-api"))
+  api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-utils:cache"))
-
-  compileOnly(gradleApi())
+  api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(libs.agp)
 
-  implementation(libs.groovy)
-
   implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-parsing:source:api"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.kotest.runner)
+
+  testImplementation(project(path = ":modulecheck-internal-testing"))
+  testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
 }

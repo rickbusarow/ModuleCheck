@@ -28,7 +28,7 @@ import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
@@ -52,6 +52,7 @@ import java.io.File
 @Suppress("LongParameterList")
 internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> createProject(
   projectCache: ProjectCache,
+  safeAnalysisResultAccess: SafeAnalysisResultAccess,
   projectDir: File,
   path: String,
   pluginBuilder: T,
@@ -74,7 +75,8 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
     platformPlugin = pluginBuilder,
     projectCache = projectCache,
     codeGeneratorBindings = codeGeneratorBindings,
-    projectProvider = projectProvider
+    projectProvider = projectProvider,
+    safeAnalysisResultAccess = safeAnalysisResultAccess
   )
     .also {
       it.maybeAddSourceSet(SourceSetName.MAIN)
@@ -117,10 +119,7 @@ internal inline fun <reified T : McProjectBuilder<P>,
   platformPlugin.populateConfigsFromSourceSets()
   platformPlugin.sourceSets.populateDownstreams()
 
-  val jvmFileProviderFactory = RealJvmFileProvider.Factory(
-    { JvmFileCache() },
-    RealKotlinEnvironment.Provider(projectCache)
-  )
+  val jvmFileProviderFactory = RealJvmFileProvider.Factory { JvmFileCache() }
 
   return projectFactory(jvmFileProviderFactory)
     .also { finalProject ->
@@ -147,13 +146,13 @@ inline fun <reified T : McProjectBuilder<P>,
       projectDependencies = lazy { projectDependencies },
       externalDependencies = lazy { externalDependencies },
       buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
-      platformPlugin = platformPlugin.toPlugin()
+      platformPlugin = platformPlugin.toPlugin(safeAnalysisResultAccess, projectPath = path)
     )
   }
 }
 
 @PublishedApi
-internal fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
+internal suspend fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
   SourceSetBuilder.fromSourceSet(sourceSet)
 }
 

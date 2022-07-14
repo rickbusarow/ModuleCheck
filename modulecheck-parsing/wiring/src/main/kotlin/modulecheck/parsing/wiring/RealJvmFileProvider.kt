@@ -64,8 +64,7 @@ class RealJvmFileProvider(
   private val project: McProject,
   private val sourceSetName: SourceSetName,
   private val androidRNameProvider: AndroidRNameProvider,
-  private val androidDataBindingNameProvider: AndroidDataBindingNameProvider,
-  private val kotlinEnvironmentProvider: KotlinEnvironment.Provider
+  private val androidDataBindingNameProvider: AndroidDataBindingNameProvider
 ) : JvmFileProvider {
 
   override suspend fun getOrNull(
@@ -78,7 +77,7 @@ class RealJvmFileProvider(
     return jvmFileCache.getOrPut(file) {
 
       val sourceSet = project.sourceSets.getValue(sourceSetName)
-      val kotlinEnvironment = kotlinEnvironmentProvider.getOrPut(project.path, sourceSetName)
+      val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await()
 
       val nameParser = ParsingChain.Factory(
         listOf(
@@ -101,8 +100,7 @@ class RealJvmFileProvider(
             project = project,
             sourceSetName = sourceSetName
           ),
-          nameParser = nameParser,
-          kotlinEnvironment = kotlinEnvironment
+          nameParser = nameParser
         )
 
         else -> RealJavaFile(
@@ -117,8 +115,7 @@ class RealJvmFileProvider(
 
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
-    private val jvmFileCacheProvider: Provider<JvmFileCache>,
-    private val kotlinEnvironmentProvider: KotlinEnvironment.Provider
+    private val jvmFileCacheProvider: Provider<JvmFileCache>
   ) : JvmFileProvider.Factory {
 
     override fun create(
@@ -129,8 +126,7 @@ class RealJvmFileProvider(
       project = project,
       sourceSetName = sourceSetName,
       androidRNameProvider = RealAndroidRNameProvider(project, sourceSetName),
-      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName),
-      kotlinEnvironmentProvider = kotlinEnvironmentProvider
+      androidDataBindingNameProvider = RealAndroidDataBindingNameProvider(project, sourceSetName)
     )
   }
 }

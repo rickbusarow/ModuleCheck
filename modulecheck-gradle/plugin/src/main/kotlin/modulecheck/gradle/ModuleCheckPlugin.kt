@@ -45,13 +45,6 @@ class ModuleCheckPlugin : Plugin<Project> {
 
     val agpApiAccess = AgpApiAccess()
 
-    // target.registerTasks(
-    //   name = "moduleCheckSortDependencies",
-    //   findingName = SortDependenciesFinding.NAME,
-    //   includeAuto = true,
-    //   disableConfigCache = disableConfigCache,
-    //   agpApiAccess = agpApiAccess
-    // )
     target.registerTasks(
       name = "moduleCheckSortDependencies",
       findingName = FindingName("sort-dependencies"),
