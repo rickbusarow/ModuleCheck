@@ -25,8 +25,10 @@ mcbuild {
 dependencies {
 
   api(libs.javax.inject)
+  api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
 
   compileOnly(gradleApi())
 

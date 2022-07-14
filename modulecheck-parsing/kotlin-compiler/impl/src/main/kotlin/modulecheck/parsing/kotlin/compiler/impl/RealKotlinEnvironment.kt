@@ -16,14 +16,19 @@
 package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
+import kotlinx.coroutines.flow.toList
 import modulecheck.dagger.AppScope
-import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.gradle.platforms.KotlinEnvironmentFactory
+import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.parsing.kotlin.compiler.KotlinEnvironment.InheritedSources
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
-import modulecheck.project.ProjectCache
+import modulecheck.utils.coroutines.mapAsync
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
+import org.jetbrains.kotlin.analyzer.AnalysisResult
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
@@ -31,7 +36,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
-import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.com.intellij.openapi.Disposable
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
@@ -48,29 +52,36 @@ import org.jetbrains.kotlin.config.JVMConfigurationKeys
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
+import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import sun.reflect.ReflectionFactory
 import java.io.File
 import javax.inject.Inject
 
 /**
+ * @property projectPath path of the associated Gradle project
+ * @property sourceSetName name of the associated
+ *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
  * @property classpathFiles `.jar` files from external dependencies
  * @property sourceDirs all jvm source code directories for this source set, like
  *   `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property inheritedSources all upstream sources, used as dependencies when performing an actual
- *   compilation
+ * @property safeAnalysisResultAccess provides thread-safe, "leased" access to the ModuleDescriptors
+ *   of dependencies, since only one downstream project can safely
+ *   consume (and update the cache of) a descriptor at any given time
  */
+@Suppress("LongParameterList")
 class RealKotlinEnvironment(
-  private val classpathFiles: Collection<File>,
+  val projectPath: StringProjectPath,
+  val sourceSetName: SourceSetName,
+  val classpathFiles: Lazy<Collection<File>>,
   private val sourceDirs: Collection<File>,
-  private val kotlinLanguageVersion: LanguageVersion?,
+  val kotlinLanguageVersion: LanguageVersion?,
   private val jvmTarget: JvmTarget,
-  private val inheritedSources: InheritedSources
+  val safeAnalysisResultAccess: SafeAnalysisResultAccess
 ) : KotlinEnvironment {
 
   private val sourceFiles by lazy {
@@ -82,8 +93,7 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration by lazy {
     createCompilerConfiguration(
-      classpathFiles = classpathFiles.toList() + inheritedSources.classpathFiles,
-      sourceFiles = sourceFiles.toList() + inheritedSources.jvmFiles,
+      sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
     )
@@ -102,59 +112,81 @@ class RealKotlinEnvironment(
       .associateWith { file -> psiFileFactory.createKotlin(file) }
   }
 
-  override val bindingContext by lazy {
-    createBindingContext(
-      coreEnvironment = coreEnvironment,
-      classpathFiles = classpathFiles,
-      ktFiles = ktFiles.values.toList() + inheritedSources.ktFiles
-    )
+  override val analysisResultDeferred: LazyDeferred<AnalysisResult> = lazyDeferred {
+
+    safeAnalysisResultAccess.withLeases(
+      requester = this,
+      projectPath = projectPath,
+      sourceSetName = sourceSetName
+    ) { dependencyEnvironments ->
+
+      val descriptors = dependencyEnvironments
+        .mapAsync { dependency ->
+          dependency.moduleDescriptorDeferred.await()
+        }
+        .toList()
+
+      maybeCreateAnalysisResult(
+        coreEnvironment = coreEnvironment,
+        ktFiles = ktFiles.values.toList(),
+        dependencyModuleDescriptors = descriptors
+      )
+    }
   }
 
-  /** Creates an instance of [KotlinEnvironment] */
+  override val bindingContextDeferred = lazyDeferred {
+    analysisResultDeferred.await().bindingContext
+  }
+
+  override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
+    analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
+  }
+
+  /** Dagger implementation for [KotlinEnvironmentFactory] */
   @ContributesBinding(AppScope::class)
-  class Provider @Inject constructor(
-    private val projectCache: ProjectCache
-  ) : KotlinEnvironment.Provider {
-    override suspend fun getOrPut(
-      projectPath: ProjectPath,
-      sourceSetName: SourceSetName
-    ): KotlinEnvironment {
-      return projectCache.getValue(projectPath)
-        .kotlinEnvironmentCache()
-        .get(sourceSetName)
-    }
+  class Factory @Inject constructor(
+    private val safeAnalysisResultAccess: SafeAnalysisResultAccess
+  ) : KotlinEnvironmentFactory {
+    override fun create(
+      projectPath: StringProjectPath,
+      sourceSetName: SourceSetName,
+      classpathFiles: Lazy<Collection<File>>,
+      sourceDirs: Collection<File>,
+      kotlinLanguageVersion: LanguageVersion?,
+      jvmTarget: JvmTarget
+    ): RealKotlinEnvironment = RealKotlinEnvironment(
+      projectPath = projectPath,
+      sourceSetName = sourceSetName,
+      classpathFiles = classpathFiles,
+      sourceDirs = sourceDirs,
+      kotlinLanguageVersion = kotlinLanguageVersion,
+      jvmTarget = jvmTarget,
+      safeAnalysisResultAccess = safeAnalysisResultAccess
+    )
   }
 }
 
-private fun createBindingContext(
+private fun maybeCreateAnalysisResult(
   coreEnvironment: KotlinCoreEnvironment,
-  classpathFiles: Collection<File>,
-  ktFiles: List<KtFile>
-): BindingContext {
-
-  if (classpathFiles.isEmpty() && ktFiles.isEmpty()) {
-    return BindingContext.EMPTY
-  }
-
-  val result = VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
+  ktFiles: List<KtFile>,
+  dependencyModuleDescriptors: List<ModuleDescriptorImpl>
+): AnalysisResult {
+  return VersionNeutralTopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
     project = coreEnvironment.project,
     files = ktFiles,
     trace = NoScopeRecordCliBindingTrace(),
     configuration = coreEnvironment.configuration,
     packagePartProvider = coreEnvironment::createPackagePartProvider,
-    declarationProviderFactory = ::FileBasedDeclarationProviderFactory
+    declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
+    explicitModuleDependencyList = dependencyModuleDescriptors
   )
-
-  return result.bindingContext
 }
 
 private fun createCompilerConfiguration(
-  classpathFiles: List<File>,
   sourceFiles: List<File>,
   kotlinLanguageVersion: LanguageVersion?,
   jvmTarget: JvmTarget
 ): CompilerConfiguration {
-
   val javaFiles = mutableListOf<File>()
   val kotlinFiles = mutableListOf<String>()
 
@@ -176,7 +208,6 @@ private fun createCompilerConfiguration(
     )
 
     if (kotlinLanguageVersion != null) {
-
       val languageVersionSettings = LanguageVersionSettingsImpl(
         languageVersion = kotlinLanguageVersion,
         apiVersion = ApiVersion.createByLanguageVersion(kotlinLanguageVersion)
@@ -187,8 +218,8 @@ private fun createCompilerConfiguration(
     put(JVMConfigurationKeys.JVM_TARGET, jvmTarget)
 
     addJavaSourceRoots(javaFiles)
-    // addKotlinSourceRoots(kotlinFiles)
-    addJvmClasspathRoots(classpathFiles)
+    addKotlinSourceRoots(kotlinFiles)
+    // addJvmClasspathRoots(classpathFiles)
   }
 }
 
@@ -230,7 +261,8 @@ private class ModuleCheckPomModel : UserDataHolderBase(), PomModel {
     val transactionCandidate = transaction as? PomTransactionBase
 
     val pomTransaction = requireNotNull(transactionCandidate) {
-      "expected ${PomTransactionBase::class.simpleName} but actual was ${transaction.javaClass.simpleName}"
+      "expected ${PomTransactionBase::class.simpleName} " +
+        "but actual was ${transaction.javaClass.simpleName}"
     }
 
     pomTransaction.run()

@@ -35,7 +35,6 @@ dependencies {
   compileOnly(libs.kotlin.gradle.plugin.api)
 
   implementation(libs.kotlin.reflect)
-  implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
 
