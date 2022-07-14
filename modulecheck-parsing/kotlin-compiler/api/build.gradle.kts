@@ -25,15 +25,11 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.kotlin.reflect)
 
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
-
   compileOnly(gradleApi())
 
   compileOnly(libs.agp)
 
-  implementation(libs.groovy)
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

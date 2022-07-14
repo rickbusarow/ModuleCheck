@@ -32,6 +32,7 @@ import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.PlatformPlugin
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -43,6 +44,7 @@ interface ProjectCollector {
 
   val root: File
   val projectCache: ProjectCache
+  val safeAnalysisResultAccess: SafeAnalysisResultAccess
 
   val codeGeneratorBindings: List<CodeGeneratorBinding>
 
@@ -65,7 +67,7 @@ interface ProjectCollector {
 
   fun allProjects(): List<McProject> = projectCache.values.toList()
 
-  fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
+  suspend fun PlatformPlugin.toBuilder(): PlatformPluginBuilder<*> {
     return when (this) {
       is AndroidApplicationPlugin -> AndroidApplicationPluginBuilder(
         viewBindingEnabled = viewBindingEnabled,
@@ -115,8 +117,7 @@ interface ProjectCollector {
     }
   }
 
-  fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder():
-    McProjectBuilder<P> {
+  suspend fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder(): McProjectBuilder<P> {
     @Suppress("UNCHECKED_CAST")
     return McProjectBuilder(
       path = path,
@@ -126,6 +127,7 @@ interface ProjectCollector {
       codeGeneratorBindings = codeGeneratorBindings,
       projectProvider = projectProvider,
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       hasKapt = hasKapt,
@@ -135,12 +137,31 @@ interface ProjectCollector {
     )
   }
 
-  fun McProject.editSimple(
+  suspend fun McProject.editSimple(
     config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
   ): McProject {
     return toProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>()
       .also { it.config() }
       .toRealMcProject()
+  }
+
+  fun javaProject(
+    path: String,
+    config: McProjectBuilder<JavaLibraryPluginBuilder>.() -> Unit = {}
+  ): McProject {
+    val platformPlugin = JavaLibraryPluginBuilder()
+
+    return createProject(
+      projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      projectDir = root,
+      path = path,
+      pluginBuilder = platformPlugin,
+      androidPackageOrNull = null,
+      codeGeneratorBindings = codeGeneratorBindings,
+      projectProvider = projectProvider,
+      config = config
+    )
   }
 
   fun kotlinProject(
@@ -151,6 +172,7 @@ interface ProjectCollector {
 
     return createProject(
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDir = root,
       path = path,
       pluginBuilder = platformPlugin,
@@ -168,6 +190,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidApplicationPluginBuilder(),
@@ -185,6 +208,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidLibraryPluginBuilder(),
@@ -202,6 +226,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidDynamicFeaturePluginBuilder(),
@@ -219,6 +244,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidTestPluginBuilder(),

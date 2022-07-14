@@ -48,8 +48,24 @@ class AndroidStylesParser {
       ?.toString()
       ?.let { parentName ->
 
-        UnqualifiedAndroidResource.fromValuePair("style", parentName)
-          ?.let { UnqualifiedAndroidResourceReferenceName(it.name, XML) }
+        val declaration = when {
+          // ex: `parent="@style/Theme.AppCompat.Light.DarkActionBar"`
+          // ex: `parent="@android:style/Theme.AppCompat.Light.DarkActionBar"`
+          parentName.startsWith("@") -> {
+            UnqualifiedAndroidResource.fromXmlString(parentName)
+          }
+
+          // ex: `parent="Theme.AppCompat.Light.DarkActionBar"`
+          // ex: `parent="android:Theme.AppCompat.Light.DarkActionBar"`
+          else -> {
+            UnqualifiedAndroidResource.fromValuePair(
+              "style",
+              parentName.removePrefix("android:")
+            )
+          }
+        }
+
+        declaration?.let { UnqualifiedAndroidResourceReferenceName(it.name, XML) }
       }
 
     return styleNode.children()

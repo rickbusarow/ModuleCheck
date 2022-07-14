@@ -43,6 +43,7 @@ import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
+import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.mapToSet
 
 abstract class RunnerTest : ProjectTest() {
@@ -140,5 +141,14 @@ abstract class RunnerTest : ProjectTest() {
     return collectReport().joinToString()
       .clean()
       .parseReportOutput()
+  }
+
+  private fun List<Pair<String, List<ProjectFindingReport>>>.sorted() = sortedBy { it.first }
+    .map { it.first to it.second.sortedBy { it::class.java.simpleName } }
+
+  infix fun List<Pair<String, List<ProjectFindingReport>>>.shouldBe(
+    expected: List<Pair<String, List<ProjectFindingReport>>>
+  ) {
+    sorted().trimmedShouldBe(expected.sorted(), RunnerTest::class)
   }
 }

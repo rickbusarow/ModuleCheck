@@ -22,6 +22,8 @@ import modulecheck.gradle.TestVersions.Companion.DEFAULT_ANVIL_VERSION
 import modulecheck.gradle.TestVersions.Companion.DEFAULT_GRADLE_VERSION
 import modulecheck.gradle.TestVersions.Companion.DEFAULT_KOTLIN_VERSION
 import modulecheck.gradle.internal.BuildProperties
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.ProjectCache
 import modulecheck.project.test.ProjectCollector
 import modulecheck.testing.BaseTest
@@ -51,6 +53,9 @@ abstract class BaseGradleTest :
   override var anvilVersion = DEFAULT_ANVIL_VERSION
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
+  override val safeAnalysisResultAccess: SafeAnalysisResultAccess by resets {
+    SafeAnalysisResultAccessImpl(projectCache)
+  }
 
   override val root: File
     get() = testProjectDir
