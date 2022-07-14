@@ -62,6 +62,8 @@ import javax.inject.Inject
 
 /**
  * @property projectPath path of the associated Gradle project
+ * @property sourceSetName name of the associated
+ *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
  * @property classpathFiles `.jar` files from external dependencies
  * @property sourceDirs all jvm source code directories for this source set, like
  *   `[...]/myProject/src/main/java`.
@@ -71,6 +73,7 @@ import javax.inject.Inject
  *   of dependencies, since only one downstream project can safely
  *   consume (and update the cache of) a descriptor at any given time
  */
+@Suppress("LongParameterList")
 class RealKotlinEnvironment(
   val projectPath: StringProjectPath,
   val sourceSetName: SourceSetName,
@@ -140,6 +143,7 @@ class RealKotlinEnvironment(
     analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
+  /** Dagger implementation for [KotlinEnvironmentFactory] */
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val safeAnalysisResultAccess: SafeAnalysisResultAccess
@@ -180,7 +184,6 @@ private fun maybeCreateAnalysisResult(
 }
 
 private fun createCompilerConfiguration(
-  classpathFiles: List<File>,
   sourceFiles: List<File>,
   kotlinLanguageVersion: LanguageVersion?,
   jvmTarget: JvmTarget

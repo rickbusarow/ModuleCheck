@@ -22,7 +22,10 @@ import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import java.io.File
 
+/** Kotlin environment factory */
 fun interface KotlinEnvironmentFactory {
+  /** @return a kotlin environment for these many arguments */
+  @Suppress("LongParameterList")
   fun create(
     projectPath: StringProjectPath,
     sourceSetName: SourceSetName,

@@ -15,7 +15,6 @@
 
 plugins {
   id("mcbuild")
-  id("com.google.devtools.ksp")
 }
 
 mcbuild {
@@ -35,11 +34,7 @@ dependencies {
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
-  compileOnly(gradleApi())
-
   compileOnly(libs.agp)
-
-  implementation(libs.groovy)
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
@@ -48,15 +43,9 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  implementation(libs.square.moshi)
-  implementation(libs.square.moshi.kotlin)
   testImplementation(libs.kotest.runner)
 
-  "ksp"(libs.square.moshi.codegen)
-  "kspTest"(libs.square.moshi.codegen)
-
-  testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
-  testImplementation(project(path = ":modulecheck-project:testing"))
 }

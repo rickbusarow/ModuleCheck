@@ -45,7 +45,6 @@ dependencies {
   implementation(libs.bundles.jUnit)
   implementation(libs.bundles.kotest)
   implementation(libs.bundles.kotest)
-  implementation(libs.groovy)
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-api"))

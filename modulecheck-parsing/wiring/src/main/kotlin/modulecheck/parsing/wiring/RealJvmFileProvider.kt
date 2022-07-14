@@ -100,8 +100,7 @@ class RealJvmFileProvider(
             project = project,
             sourceSetName = sourceSetName
           ),
-          nameParser = nameParser,
-          kotlinEnvironment = kotlinEnvironment
+          nameParser = nameParser
         )
 
         else -> RealJavaFile(

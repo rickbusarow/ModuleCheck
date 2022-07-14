@@ -68,7 +68,10 @@ class SourceSet(
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<SourceSet> {
 
+  /** upstsream source set names */
   val upstream: List<SourceSetName> by upstreamLazy
+
+  /** downstsream source set names */
   val downstream: List<SourceSetName> by downstreamLazy
 
   fun withUpstream() = listOf(name) + upstream

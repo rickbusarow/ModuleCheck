@@ -38,8 +38,18 @@ import modulecheck.utils.letIf
 import javax.inject.Inject
 import kotlin.random.Random
 
+/**
+ * Thread-safe, "leased" access to
+ * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult] creation and subsequent
+ * [ModuleDescriptorImpl][org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl] access.
+ */
 interface SafeAnalysisResultAccess {
 
+  /**
+   * Suspends until all dependency module descriptors are available for use, then acquires locks for
+   * all of them and performs [action]. No other project/source set will be able to read from those
+   * analysis results, binding contexts, or module descriptors until [action] has completed.
+   */
   suspend fun <T> withLeases(
     requester: HasAnalysisResult,
     projectPath: ProjectPath,
@@ -48,6 +58,7 @@ interface SafeAnalysisResultAccess {
   ): T
 }
 
+/** The only implementation of [SafeAnalysisResultAccess] */
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class SafeAnalysisResultAccessImpl @Inject constructor(
@@ -57,7 +68,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
   private val locksCacheLock = Mutex(locked = false)
   private val locks = mutableMapOf<HasAnalysisResult, Boolean>()
 
-  private val queue = MutableStateFlow<DifferentList>(DifferentList(emptyList()))
+  private val queue = MutableStateFlow(DifferentList(emptyList()))
 
   override suspend fun <T> withLeases(
     requester: HasAnalysisResult,
@@ -213,6 +224,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
    * lists.
    */
   private class DifferentList(delegate: List<PendingRequest>) : List<PendingRequest> by delegate {
+    @Suppress("EqualsAlwaysReturnsTrueOrFalse")
     override fun equals(other: Any?): Boolean = false
     override fun hashCode(): Int = Random.nextInt()
   }

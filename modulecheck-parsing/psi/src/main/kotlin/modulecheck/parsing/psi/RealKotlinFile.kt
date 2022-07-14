@@ -17,7 +17,6 @@ package modulecheck.parsing.psi
 
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.callSiteName
 import modulecheck.parsing.psi.internal.fqNameSafe
@@ -79,8 +78,7 @@ class RealKotlinFile(
   override val file: File,
   override val psi: KtFile,
   private val psiResolver: PsiElementResolver,
-  private val nameParser: NameParser,
-  private val kotlinEnvironment: KotlinEnvironment
+  private val nameParser: NameParser
 ) : KotlinFile {
 
   override val name = psi.name

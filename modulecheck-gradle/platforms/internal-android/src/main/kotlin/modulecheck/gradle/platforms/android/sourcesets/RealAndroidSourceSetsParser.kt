@@ -150,7 +150,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val configurationFileResolver: ConfigurationFileResolver
 ) : AndroidSourceSetsParser {
 
-  val projectPath = StringProjectPath(gradleProject.path)
+  private val projectPath = StringProjectPath(gradleProject.path)
 
   private val gradleAndroidSourceSets by lazy {
     extension.sourceSets

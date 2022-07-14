@@ -63,7 +63,8 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
     trace: BindingTrace,
     configuration: CompilerConfiguration,
     packagePartProvider: (GlobalSearchScope) -> PackagePartProvider,
-    declarationProviderFactory: (StorageManager, Collection<KtFile>) -> DeclarationProviderFactory = ::FileBasedDeclarationProviderFactory,
+    declarationProviderFactory: (StorageManager, Collection<KtFile>) -> DeclarationProviderFactory =
+      ::FileBasedDeclarationProviderFactory,
     sourceModuleSearchScope: GlobalSearchScope = TopDownAnalyzerFacadeForJVM.newModuleSearchScope(
       project,
       files
