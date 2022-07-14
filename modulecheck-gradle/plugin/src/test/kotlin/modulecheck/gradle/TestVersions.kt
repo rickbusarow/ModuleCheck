@@ -19,15 +19,61 @@ import hermit.test.ResetManager
 import modulecheck.testing.DynamicTests
 import org.junit.jupiter.api.DynamicTest
 
+data class TestVersions(
+  val gradleVersion: String,
+  val agpVersion: String,
+  val kotlinVersion: String,
+  val anvilVersion: String
+) {
+  override fun toString(): String {
+    return "[gradle $gradleVersion, agp $agpVersion, kotlin $kotlinVersion, anvil $anvilVersion]"
+  }
+
+  fun isValid(): Boolean {
+    return when {
+      // anvil 2.3.x requires 1.5.32, anvil 2.4.x requires 1.6.x
+      kotlinVersion == "1.5.32" && anvilVersion >= "2.4.0" -> false
+      kotlinVersion >= "1.6.0" && anvilVersion < "2.4.0" -> false
+      // agp 7.2.0 requires gradle 7.3.3
+      gradleVersion < "7.3.3" && agpVersion >= "7.2.0" -> false
+      // these exclusions just save time
+      kotlinVersion == "1.5.32" && agpVersion >= "7.1.0" -> false
+      kotlinVersion <= "1.6.10" && agpVersion < "7.1.0" -> false
+      gradleVersion < "7.4" && agpVersion < "7.1.0" -> false
+      else -> true
+    }
+  }
+
+  companion object {
+
+    val DEFAULT_GRADLE_VERSION: String = System
+      .getProperty("modulecheck.gradleVersion", "7.5")
+      /*
+       * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command
+       * line argument of "7". That version doesn't resolve.  So if the String doesn't contain
+       * a period, just append ".0"
+       */
+      .let { prop ->
+        if (prop.contains('.')) prop else "$prop.0"
+      }
+    val DEFAULT_KOTLIN_VERSION: String =
+      System.getProperty("modulecheck.kotlinVersion", "1.6.20")
+    val DEFAULT_AGP_VERSION: String =
+      System.getProperty("modulecheck.agpVersion", "7.0.4")
+    val DEFAULT_ANVIL_VERSION: String =
+      System.getProperty("modulecheck.anvilVersion", "2.4.1")
+  }
+}
+
 interface VersionsMatrixTest : DynamicTests, ResetManager {
 
-  val kotlinVersions get() = listOf("1.5.32", "1.6.10", "1.6.21", "1.7.0-RC")
-  // val gradleVersions get() = listOf("7.2", "7.3.3", "7.4.2", "7.5-rc-1")
+  val kotlinVersions get() = listOf("1.5.32", "1.6.10", "1.6.21", "1.7.10")
+  // val gradleVersions get() = listOf("7.2", "7.3.3", "7.4.2", "7.5")
   // val agpVersions get() = listOf("7.0.1", "7.1.3", "7.2.0")
   // val anvilVersions get() = listOf("2.3.11", "2.4.0")
 
   // val kotlinVersions get() = listOf("1.6.10")
-  val gradleVersions get() = listOf("7.4.2")
+  val gradleVersions get() = listOf("7.5")
   val agpVersions get() = listOf("7.0.1")
   val anvilVersions get() = listOf("2.4.0")
 
@@ -125,50 +171,4 @@ interface VersionsMatrixTest : DynamicTests, ResetManager {
     setup: (T) -> Unit,
     action: (T) -> Unit
   ): DynamicTest
-}
-
-data class TestVersions(
-  val gradleVersion: String,
-  val agpVersion: String,
-  val kotlinVersion: String,
-  val anvilVersion: String
-) {
-  override fun toString(): String {
-    return "[gradle $gradleVersion, agp $agpVersion, kotlin $kotlinVersion, anvil $anvilVersion]"
-  }
-
-  fun isValid(): Boolean {
-    return when {
-      // anvil 2.3.x requires 1.5.32, anvil 2.4.x requires 1.6.x
-      kotlinVersion == "1.5.32" && anvilVersion >= "2.4.0" -> false
-      kotlinVersion >= "1.6.0" && anvilVersion < "2.4.0" -> false
-      // agp 7.2.0 requires gradle 7.3.3
-      gradleVersion < "7.3.3" && agpVersion >= "7.2.0" -> false
-      // these exclusions just save time
-      kotlinVersion == "1.5.32" && agpVersion >= "7.1.0" -> false
-      kotlinVersion <= "1.6.10" && agpVersion < "7.1.0" -> false
-      gradleVersion < "7.4" && agpVersion < "7.1.0" -> false
-      else -> true
-    }
-  }
-
-  companion object {
-
-    val DEFAULT_GRADLE_VERSION: String = System
-      .getProperty("modulecheck.gradleVersion", "7.4.2")
-      /*
-       * The GitHub Actions test matrix parses "7.0" into an Int and passes in a command
-       * line argument of "7". That version doesn't resolve.  So if the String doesn't contain
-       * a period, just append ".0"
-       */
-      .let { prop ->
-        if (prop.contains('.')) prop else "$prop.0"
-      }
-    val DEFAULT_KOTLIN_VERSION: String =
-      System.getProperty("modulecheck.kotlinVersion", "1.6.20")
-    val DEFAULT_AGP_VERSION: String =
-      System.getProperty("modulecheck.agpVersion", "7.0.4")
-    val DEFAULT_ANVIL_VERSION: String =
-      System.getProperty("modulecheck.anvilVersion", "2.4.0")
-  }
 }
