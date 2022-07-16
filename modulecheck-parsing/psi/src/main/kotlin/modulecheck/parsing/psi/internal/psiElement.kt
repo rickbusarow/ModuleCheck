@@ -25,6 +25,7 @@ import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -39,6 +40,7 @@ import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtPropertyDelegate
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtScriptInitializer
@@ -52,6 +54,8 @@ import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 import kotlin.contracts.contract
@@ -68,6 +72,28 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .flatten()
     .filterIsInstance<T>()
     .toList()
+}
+
+fun KtProperty.resolveType(bindingContext: BindingContext): KotlinType? {
+  val property = this.parent as? KtProperty ?: return null
+  val propertyDescriptor =
+    bindingContext[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
+  return propertyDescriptor?.getter?.let {
+    bindingContext[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, it]
+      ?.resultingDescriptor
+      ?.returnType
+  }
+}
+
+fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {
+  val property = this.parent as? KtProperty ?: return null
+  val propertyDescriptor =
+    bindingContext[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
+  return propertyDescriptor?.getter?.let {
+    bindingContext[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, it]
+      ?.resultingDescriptor
+      ?.returnType
+  }
 }
 
 fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
