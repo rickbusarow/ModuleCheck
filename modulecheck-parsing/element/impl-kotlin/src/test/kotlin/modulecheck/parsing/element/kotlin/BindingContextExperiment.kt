@@ -33,10 +33,12 @@ import org.jetbrains.kotlin.asJava.toLightClassWithBuiltinMapping
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtClassOrObject
+import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.BindingContextUtils
+import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.junit.jupiter.api.Test
 import java.io.File
@@ -83,7 +85,7 @@ class BindingContextExperiment : ProjectTest() {
 
           val lib1 = Lib1Class(someName)
 
-          fun someFunction(name: String) : String = name
+          fun Lib2Class.someFunction(name: String) = name
 
           fun Lib1Class.foo() = println(this)
         }
@@ -101,6 +103,31 @@ class BindingContextExperiment : ProjectTest() {
       .filterIsInstance<RealKotlinFile>()
       .first()
       .psi
+
+    fun printFunctionThings(textMatcher: String) {
+
+      val function = twoK.getChildrenOfTypeRecursive<KtFunction>()
+        .single { it.text.contains(textMatcher) }
+
+      val functionDescriptor = bc[BindingContext.FUNCTION, function]!!
+
+      val receiverTypeRef = function.receiverTypeReference
+
+      val receiverType = bc[BindingContext.TYPE, receiverTypeRef]!!
+
+      println("##############################################")
+      println("############  `${function.text}`")
+      println("##############################################")
+
+      println(
+        "return type -------- ${functionDescriptor.returnType?.getJetTypeFqName(false)}"
+      )
+      println("receiver type ref -- $receiverTypeRef")
+      println("receiver type ------ ${receiverType.getJetTypeFqName(false)}")
+      println("__________________\n\n")
+    }
+
+    printFunctionThings("fun Lib2Class.someFunction")
 
     fun printPropertyThings(textMatcher: String) {
 
@@ -125,7 +152,8 @@ class BindingContextExperiment : ProjectTest() {
       println("delegate memberScope classifier names -- ${delegateReturnKotlinType?.memberScope?.getClassifierNames()}")
       println("descriptor type ------------------------ ${variableDescriptor?.type}")
       println("using getType -------------------------- ${property.getType(bc)}")
-      println("lib1Prop delegate type ----------------- ${property.delegate?.let { it::class.simpleName }}")
+      println("delegate type -------------------------- ${property.delegate?.let { it::class.simpleName }}")
+      println("resolved call -------------------------- ${property.getResolvedCall(bc)}")
       println("__________________\n\n")
     }
 

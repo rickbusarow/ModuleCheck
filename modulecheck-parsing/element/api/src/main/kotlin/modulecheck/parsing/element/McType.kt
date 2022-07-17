@@ -17,6 +17,7 @@ package modulecheck.parsing.element
 
 import modulecheck.parsing.element.McFile.McJavaFile
 import modulecheck.parsing.element.McFile.McKtFile
+import modulecheck.parsing.element.McProperty.McKtProperty
 import modulecheck.utils.lazy.LazySet
 
 sealed interface McType : McElementWithParent<McElement>, McAnnotated {
@@ -69,6 +70,7 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
       override val innerTypesRecursive: LazySet<McKtConcreteType>
 
       override val containingFile: McKtFile
+      override val properties: LazySet<McKtProperty>
 
       interface McKtAnnotationClass : McKtConcreteType, McKtElement, Declared
       interface McKtClass : McKtConcreteType, McKtElement, Declared {

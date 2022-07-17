@@ -17,11 +17,10 @@ package modulecheck.parsing.element.kotlin
 
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
-import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
-import modulecheck.parsing.element.McElement
 import modulecheck.parsing.element.McProperty.McKtProperty.KtConstructorProperty
 import modulecheck.parsing.element.McProperty.McKtProperty.KtMemberProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
@@ -35,15 +34,18 @@ import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.PackageName.Companion.asPackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.parsing.test.McNameTest
 import modulecheck.parsing.wiring.RealAndroidDataBindingNameProvider
 import modulecheck.parsing.wiring.RealAndroidRNameProvider
 import modulecheck.parsing.wiring.RealDeclarationsProvider
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
-import modulecheck.utils.trace.Trace
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.junit.jupiter.api.Nested
@@ -90,7 +92,7 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
       import com.lib1.Lib1Class
       import javax.inject.Inject
 
-      @Inject(AppScope::class, "things")
+      @Inject(Unit::class, "things")
       class SubjectClass(
         val lib1Class: Lib1Class
       ) {
@@ -120,9 +122,21 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
       .map { it.referenceName.await() }
       .also(::println)
 
-    file.declaredTypesAndInnerTypes shouldBe listOf<McElement>()
+    file.declaredTypesAndInnerTypes
+      .map { it.declaredName }
+      .toList() shouldBe listOf(
+      DeclaredName.kotlin("com.subject", "SubjectClass"),
+      DeclaredName.kotlin("com.subject", "SubjectClass", "SubjectInnerClass"),
+      DeclaredName.kotlin("com.subject", "SubjectInterface"),
+      DeclaredName.kotlin("com.subject", "SubjectObject"),
+      DeclaredName.kotlin("com.subject", "CompanionHolderClass"),
+      DeclaredName.kotlin("com.subject", "CompanionHolderClass", "SubjectCompanion")
+    )
 
-    file.imports shouldBe listOf("com.lib1.Lib1Class".asReferenceName())
+    file.imports shouldBe listOf(
+      "com.lib1.Lib1Class".asReferenceName(),
+      "javax.inject.Inject".asReferenceName()
+    )
   }
 
   @Nested
@@ -173,10 +187,9 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
       }
 
     @Test
-    fun `member property with explicit stdlib type should resolve`() =
-      test {
-        val file = project.createFile(
-          """
+    fun `member property with explicit stdlib type should resolve`() = test {
+      val file = project.createFile(
+        """
           package com.subject
 
           import com.lib1.Lib1Class
@@ -185,18 +198,17 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
             val name: String = "foo"
           }
           """
-        )
+      )
 
-        val name = file.subjectClass().property("name")
+      val name = file.subjectClass().property("name")
 
-        name.typeReferenceName.await() shouldBe "kotlin.String".asReferenceName()
-      }
+      name.typeReferenceName.await() shouldBe "kotlin.String".asReferenceName()
+    }
 
     @Test
-    fun `member property with explicit single-param stdlib generic type should resolve`() =
-      test {
-        val file = project.createFile(
-          """
+    fun `member property with explicit single-param stdlib generic type should resolve`() = test {
+      val file = project.createFile(
+        """
           package com.subject
 
           import com.lib1.Lib1Class
@@ -205,12 +217,12 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
             lateinit var classes : List<Lib1Class>
           }
           """
-        )
+      )
 
-        val classes = file.subjectClass().property("classes")
+      val classes = file.subjectClass().property("classes")
 
-        classes.typeReferenceName.await() shouldBe "kotlin.collections.List".asReferenceName()
-      }
+      classes.typeReferenceName.await() shouldBe "kotlin.collections.List".asReferenceName()
+    }
 
     @Test
     fun `member property with inferred type from fully imported generic delegate should have resolved type`() =
@@ -227,7 +239,8 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
           }
           """
         )
-        val ke = project.sourceSets.getValue(SourceSetName.MAIN).kotlinEnvironmentDeferred.await()
+
+        val ke = file.parsingContext.kotlinEnvironment
 
         val bindingContext = ke.bindingContextDeferred.await()
 
@@ -264,54 +277,61 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
       }
   }
 
-  fun McProject.createFile(
+  suspend fun McProject.createFile(
     @Language("kotlin")
     content: String,
     sourceSetName: SourceSetName = SourceSetName.MAIN
   ): RealMcKtFile {
-    return runBlocking(Trace.start(RealMcKtFileTest::class)) {
 
-      val androidDataBinding = RealAndroidDataBindingNameProvider(this@createFile, sourceSetName)
-      val androidRNameProvider = RealAndroidRNameProvider(this@createFile, sourceSetName)
-      val declarationsInPackage = RealDeclarationsProvider(this@createFile)
+    val updatedProject = editSimple {
+      addKotlinSource(content, sourceSetName)
+    }
 
-      val nameParser = ParsingChain2.Factory(
-        listOf(
-          ImportAliasUnwrappingParsingInterceptor2(),
-          ConcatenatingParsingInterceptor2(
-            androidRNameProvider = androidRNameProvider,
-            dataBindingNameProvider = androidDataBinding,
-            declarationsProvider = declarationsInPackage,
-            sourceSetName = sourceSetName
-          )
+    val androidDataBinding = RealAndroidDataBindingNameProvider(updatedProject, sourceSetName)
+    val androidRNameProvider = RealAndroidRNameProvider(updatedProject, sourceSetName)
+    val declarationsInPackage = RealDeclarationsProvider(updatedProject)
+
+    val nameParser = ParsingChain2.Factory(
+      listOf(
+        ImportAliasUnwrappingParsingInterceptor2(),
+        ConcatenatingParsingInterceptor2(
+          androidRNameProvider = androidRNameProvider,
+          dataBindingNameProvider = androidDataBinding,
+          declarationsProvider = declarationsInPackage,
+          sourceSetName = sourceSetName
         )
       )
+    )
 
-      val sourceSet = sourceSets.getValue(sourceSetName)
+    val sourceSet = updatedProject.sourceSets.getValue(sourceSetName)
 
-      val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await()
+    val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await()
 
-      val context = ParsingContext(
-        nameParser = nameParser,
-        symbolResolver = PsiElementResolver(this@createFile, sourceSetName),
-        language = KOTLIN,
-        kotlinEnvironment = kotlinEnvironment,
-        stdLibNameOrNull = ReferenceName::kotlinStdLibNameOrNull
-      )
+    val context = ParsingContext(
+      nameParser = nameParser,
+      symbolResolver = PsiElementResolver(updatedProject, sourceSetName),
+      language = KOTLIN,
+      kotlinEnvironment = kotlinEnvironment,
+      stdLibNameOrNull = ReferenceName::kotlinStdLibNameOrNull
+    )
 
-      editSimple {
-        addKotlinSource(content, sourceSetName)
-      }.jvmFiles()
-        .get(sourceSetName)
-        .filterIsInstance<RealKotlinFile>()
-        .first { it.psi.text == content.trimIndent() }
-        .let {
-          RealMcKtFile(
-            parsingContext = context,
-            file = it.psi.file(),
-            psi = it.psi
-          )
-        }
-    }
+    return updatedProject.jvmFiles()
+      .get(sourceSetName)
+      .filterIsInstance<RealKotlinFile>()
+      .first { it.psi.text == content.trimIndent() }
+      .let {
+        RealMcKtFile(
+          parsingContext = context,
+          file = it.psi.file(),
+          psi = it.psi
+        )
+      }
+  }
+
+  fun DeclaredName.Companion.kotlin(
+    packageName: String,
+    vararg simpleNames: String
+  ): QualifiedDeclaredName {
+    return kotlin(packageName.asPackageName(), simpleNames.map { it.asSimpleName() })
   }
 }

@@ -22,6 +22,7 @@ import modulecheck.parsing.element.McKtDeclaredElement
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
+import modulecheck.parsing.psi.internal.resolveType
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
@@ -31,6 +32,7 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.psi.KtCallExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtExpression
@@ -51,11 +53,11 @@ data class RealMcKtMemberProperty(
 
     delegate.await()
 
-    parsingContext.resolveReferenceNameOrNull(
-      containingFile,
-      psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
-    )
+    psi.resolveType(parsingContext.kotlinEnvironment.bindingContextDeferred.await())
       .requireNotNull()
+      .type
+      .getJetTypeFqName(false)
+      .asReferenceName(KOTLIN)
 
     // parsingContext.symbolResolver
     //   .declaredNameOrNull(psi.typeReference.requireNotNull())

@@ -26,6 +26,7 @@ import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
+import org.jetbrains.kotlin.descriptors.VariableDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -74,15 +75,8 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .toList()
 }
 
-fun KtProperty.resolveType(bindingContext: BindingContext): KotlinType? {
-  val property = this.parent as? KtProperty ?: return null
-  val propertyDescriptor =
-    bindingContext[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
-  return propertyDescriptor?.getter?.let {
-    bindingContext[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, it]
-      ?.resultingDescriptor
-      ?.returnType
-  }
+fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
+  return bindingContext[BindingContext.VARIABLE, this]
 }
 
 fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {

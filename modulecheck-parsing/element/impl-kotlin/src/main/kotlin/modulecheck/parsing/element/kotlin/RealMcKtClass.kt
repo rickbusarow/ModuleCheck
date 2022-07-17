@@ -21,7 +21,7 @@ import modulecheck.parsing.element.McAnnotation
 import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.parsing.element.McFunction.McKtFunction
 import modulecheck.parsing.element.McKtElement
-import modulecheck.parsing.element.McProperty
+import modulecheck.parsing.element.McProperty.McKtProperty
 import modulecheck.parsing.element.McType
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType.McKtClass
@@ -75,7 +75,7 @@ abstract class AbstractMcKtConcreteType internal constructor(
       acc + type + type.innerTypesRecursive.toSet()
     }
   }
-  override val properties: LazySet<McProperty> = lazySet {
+  override val properties: LazySet<McKtProperty> = lazySet {
     psi.body?.properties
       .orEmpty()
       .mapToSet {

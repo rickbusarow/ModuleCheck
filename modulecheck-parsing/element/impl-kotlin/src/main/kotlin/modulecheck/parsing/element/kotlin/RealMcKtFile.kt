@@ -40,7 +40,7 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
 class RealMcKtFile(
-  private val parsingContext: ParsingContext<PsiElement>,
+  val parsingContext: ParsingContext<PsiElement>,
   override val file: File,
   override val psi: KtFile
 ) : McKtFile {
