@@ -21,6 +21,7 @@ import modulecheck.parsing.element.McFile.McJavaFile
 import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.parsing.element.McType.McConcreteType
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
+import modulecheck.parsing.element.McType.McTypeParameter
 import modulecheck.parsing.element.resolve.ParsingContext
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.HasPackageName
@@ -107,6 +108,11 @@ fun McElementWithParent<*>.parents(): Sequence<McElement> {
 
 interface McAnnotated {
   val annotations: LazySet<McAnnotation>
+}
+
+interface McHasTypeParameters {
+
+  val typeParameters: LazySet<McTypeParameter>
 }
 
 interface McAnnotation : McElement, McElementWithParent<McElement> {

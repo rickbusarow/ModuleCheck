@@ -19,13 +19,14 @@ import modulecheck.parsing.element.McCallable.McJavaCallable
 import modulecheck.parsing.element.McCallable.McKtCallable
 import modulecheck.parsing.element.McFunction.McKtFunction
 import modulecheck.parsing.element.McProperty.McKtProperty
-import modulecheck.parsing.element.McType.McGenericType
+import modulecheck.parsing.element.McType.McTypeParameter
 import modulecheck.parsing.element.McVisibility.McJavaVisibility
 import modulecheck.parsing.element.McVisibility.McKtVisibility
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import org.jetbrains.kotlin.psi.KtCallableDeclaration
+import org.jetbrains.kotlin.psi.KtFunction
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
 
@@ -64,6 +65,10 @@ sealed interface McProperty : McCallable, McElement, Declared {
       override val psi: KtProperty
     }
 
+    interface KtExtensionProperty : KtMemberProperty, McHasTypeParameters {
+      override val psi: KtProperty
+    }
+
     interface KtConstructorProperty : McKtProperty {
       override val psi: KtParameter
     }
@@ -82,19 +87,20 @@ sealed interface McParameter : McCallable, McElement {
   }
 }
 
-sealed interface McFunction : McCallable, McElement {
+sealed interface McFunction : McCallable, McElement, McHasTypeParameters {
 
   val parameters: LazySet<McParameter>
   val properties: LazySet<McProperty>
 
   val returnType: McType
-  val typeParamters: LazySet<McGenericType>
+  val typeParamters: LazySet<McTypeParameter>
 
   interface McJavaFunction : McFunction, McJavaCallable {
     override val parent: McJavaElement
   }
 
   interface McKtFunction : McFunction, McKtCallable {
+    override val psi: KtFunction
     override val parent: McKtElement
   }
 }

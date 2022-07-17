@@ -91,12 +91,19 @@ abstract class AbstractMcKtConcreteType internal constructor(
           .map { RealMcKtConstructorProperty(parsingContext, it, this) }
       )
   }
-  override val superTypes: LazySet<McType>
-    get() = TODO("Not yet implemented")
-  override val typeParameters: LazySet<McType.McGenericType>
-    get() = TODO("Not yet implemented")
+  override val functions: LazySet<McKtFunction> = lazySet {
+    psi.body?.functions
+      .orEmpty()
+      .mapToSet {
+        RealMcKtFunction(parsingContext = parsingContext, psi = it, parent = this)
+      }
+  }
+  override val superTypes: LazySet<McType> = lazySet { TODO("Not yet implemented") }
+  override val typeParameters: LazySet<McType.McTypeParameter> = lazySet {
+    TODO("Not yet implemented")
+  }
   override val packageName: PackageName
-    get() = TODO("Not yet implemented")
+    get() = containingFile.packageName
 
   final override fun toString(): String {
     return "${this::class.java.simpleName}(name = `${declaredName.name}`, " +

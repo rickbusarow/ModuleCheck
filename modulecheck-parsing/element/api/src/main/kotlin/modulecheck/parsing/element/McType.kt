@@ -17,10 +17,11 @@ package modulecheck.parsing.element
 
 import modulecheck.parsing.element.McFile.McJavaFile
 import modulecheck.parsing.element.McFile.McKtFile
+import modulecheck.parsing.element.McFunction.McKtFunction
 import modulecheck.parsing.element.McProperty.McKtProperty
 import modulecheck.utils.lazy.LazySet
 
-sealed interface McType : McElementWithParent<McElement>, McAnnotated {
+sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasTypeParameters {
 
   /**
    * In a concrete type, this represents super-classes and interfaces.
@@ -28,7 +29,6 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
    * In a generic type, supers are the upper bound(s).
    */
   val superTypes: LazySet<McType>
-  val typeParameters: LazySet<McGenericType>
 
   /** Represents a class, interface, object, or companion object */
   sealed interface McConcreteType : McType, Declared {
@@ -38,6 +38,7 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
     val innerTypes: LazySet<McConcreteType>
     val innerTypesRecursive: LazySet<McType>
     val properties: LazySet<McProperty>
+    val functions: LazySet<McFunction>
 
     interface McJavaType : McType, McJavaElement {
       override val parent: McJavaElement
@@ -71,6 +72,7 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
 
       override val containingFile: McKtFile
       override val properties: LazySet<McKtProperty>
+      override val functions: LazySet<McKtFunction>
 
       interface McKtAnnotationClass : McKtConcreteType, McKtElement, Declared
       interface McKtClass : McKtConcreteType, McKtElement, Declared {
@@ -90,5 +92,5 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated {
   }
 
   /** Represents a generic type used as a parameter, like `<T>` or `<R: Any>`. */
-  interface McGenericType : McType
+  interface McTypeParameter : McType
 }
