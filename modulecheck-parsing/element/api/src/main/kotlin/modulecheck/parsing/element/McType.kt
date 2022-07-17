@@ -19,6 +19,8 @@ import modulecheck.parsing.element.McFile.McJavaFile
 import modulecheck.parsing.element.McFile.McKtFile
 import modulecheck.parsing.element.McFunction.McKtFunction
 import modulecheck.parsing.element.McProperty.McKtProperty
+import modulecheck.parsing.element.McType.McConcreteType.McJavaType
+import modulecheck.parsing.element.McType.McConcreteType.McKtType
 import modulecheck.utils.lazy.LazySet
 
 sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasTypeParameters {
@@ -93,4 +95,6 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasType
 
   /** Represents a generic type used as a parameter, like `<T>` or `<R: Any>`. */
   interface McTypeParameter : McType
+  interface McJavaTypeParameter : McTypeParameter, McJavaType
+  interface McKtTypeParameter : McTypeParameter, McKtType
 }

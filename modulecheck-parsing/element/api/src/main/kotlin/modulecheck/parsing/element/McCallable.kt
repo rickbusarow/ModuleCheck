@@ -18,7 +18,9 @@ package modulecheck.parsing.element
 import modulecheck.parsing.element.McCallable.McJavaCallable
 import modulecheck.parsing.element.McCallable.McKtCallable
 import modulecheck.parsing.element.McFunction.McKtFunction
+import modulecheck.parsing.element.McParameter.McKtParameter
 import modulecheck.parsing.element.McProperty.McKtProperty
+import modulecheck.parsing.element.McType.McKtTypeParameter
 import modulecheck.parsing.element.McType.McTypeParameter
 import modulecheck.parsing.element.McVisibility.McJavaVisibility
 import modulecheck.parsing.element.McVisibility.McKtVisibility
@@ -92,7 +94,7 @@ sealed interface McFunction : McCallable, McElement, McHasTypeParameters {
   val parameters: LazySet<McParameter>
   val properties: LazySet<McProperty>
 
-  val returnType: McType
+  val returnType: LazyDeferred<ReferenceName>
   val typeParamters: LazySet<McTypeParameter>
 
   interface McJavaFunction : McFunction, McJavaCallable {
@@ -102,6 +104,11 @@ sealed interface McFunction : McCallable, McElement, McHasTypeParameters {
   interface McKtFunction : McFunction, McKtCallable {
     override val psi: KtFunction
     override val parent: McKtElement
+    override val parameters: LazySet<McKtParameter>
+    override val properties: LazySet<McKtProperty>
+
+    override val returnType: LazyDeferred<ReferenceName>
+    override val typeParamters: LazySet<McKtTypeParameter>
   }
 }
 

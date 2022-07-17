@@ -128,6 +128,7 @@ class BindingContextExperiment : ProjectTest() {
     }
 
     printFunctionThings("fun Lib2Class.someFunction")
+    printFunctionThings("fun Lib1Class.foo")
 
     fun printPropertyThings(textMatcher: String) {
 

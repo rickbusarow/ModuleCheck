@@ -17,16 +17,20 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
 import org.jetbrains.kotlin.descriptors.VariableDescriptor
+import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -74,6 +78,13 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .filterIsInstance<T>()
     .toList()
 }
+
+fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
+  .getJetTypeFqName(false)
+  .asReferenceName(KOTLIN)
+
+fun KotlinType.asReferenceName(): ReferenceName = getJetTypeFqName(false)
+  .asReferenceName(KOTLIN)
 
 fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
   return bindingContext[BindingContext.VARIABLE, this]

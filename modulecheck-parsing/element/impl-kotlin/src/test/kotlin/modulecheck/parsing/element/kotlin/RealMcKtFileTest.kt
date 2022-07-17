@@ -125,12 +125,12 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
     file.declaredTypesAndInnerTypes
       .map { it.declaredName }
       .toList() shouldBe listOf(
-      DeclaredName.kotlin("com.subject", "SubjectClass"),
-      DeclaredName.kotlin("com.subject", "SubjectClass", "SubjectInnerClass"),
-      DeclaredName.kotlin("com.subject", "SubjectInterface"),
-      DeclaredName.kotlin("com.subject", "SubjectObject"),
-      DeclaredName.kotlin("com.subject", "CompanionHolderClass"),
-      DeclaredName.kotlin("com.subject", "CompanionHolderClass", "SubjectCompanion")
+      DeclaredName.agnostic("com.subject", "SubjectClass"),
+      DeclaredName.agnostic("com.subject", "SubjectClass", "SubjectInnerClass"),
+      DeclaredName.agnostic("com.subject", "SubjectInterface"),
+      DeclaredName.agnostic("com.subject", "SubjectObject"),
+      DeclaredName.agnostic("com.subject", "CompanionHolderClass"),
+      DeclaredName.agnostic("com.subject", "CompanionHolderClass", "SubjectCompanion")
     )
 
     file.imports shouldBe listOf(
@@ -240,7 +240,7 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
           """
         )
 
-        val ke = file.parsingContext.kotlinEnvironment
+        val ke = file.parsingContext.kotlinEnvironmentDeferred.await()
 
         val bindingContext = ke.bindingContextDeferred.await()
 
@@ -305,13 +305,13 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
 
     val sourceSet = updatedProject.sourceSets.getValue(sourceSetName)
 
-    val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await()
+    val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred
 
     val context = ParsingContext(
       nameParser = nameParser,
       symbolResolver = PsiElementResolver(updatedProject, sourceSetName),
       language = KOTLIN,
-      kotlinEnvironment = kotlinEnvironment,
+      kotlinEnvironmentDeferred = kotlinEnvironment,
       stdLibNameOrNull = ReferenceName::kotlinStdLibNameOrNull
     )
 
@@ -326,6 +326,13 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
           psi = it.psi
         )
       }
+  }
+
+  fun DeclaredName.Companion.agnostic(
+    packageName: String,
+    vararg simpleNames: String
+  ): QualifiedDeclaredName {
+    return agnostic(packageName.asPackageName(), simpleNames.map { it.asSimpleName() })
   }
 
   fun DeclaredName.Companion.kotlin(

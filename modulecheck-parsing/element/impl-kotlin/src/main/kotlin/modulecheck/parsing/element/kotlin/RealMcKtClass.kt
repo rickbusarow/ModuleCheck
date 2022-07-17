@@ -45,18 +45,19 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 
 abstract class AbstractMcKtConcreteType internal constructor(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClassOrObject
 ) : McKtConcreteType,
-  McKtType {
+  McKtType,
+  HasParsingContext {
   override val simpleNames: List<SimpleName> by unsafeLazy {
     psi.fqName.requireNotNull()
       .asString()
       .stripPackageNameFromFqName(containingFile.packageName)
   }
   override val declaredName: DeclaredName by lazy {
-    DeclaredName.kotlin(
+    DeclaredName.agnostic(
       containingFile.packageName,
       simpleNames
     )
@@ -113,7 +114,7 @@ abstract class AbstractMcKtConcreteType internal constructor(
 }
 
 data class RealMcKtClass(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClass,
   override val parent: McKtElement
@@ -125,21 +126,21 @@ data class RealMcKtClass(
 }
 
 data class RealMcKtInterface(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtClass,
   override val parent: McKtElement
 ) : AbstractMcKtConcreteType(parsingContext, containingFile, psi), McKtInterface
 
 data class RealMcKtCompanionObject(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtObjectDeclaration,
   override val parent: McKtElement
 ) : AbstractMcKtConcreteType(parsingContext, containingFile, psi), McKtCompanionObject
 
 data class RealMcKtObject(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val containingFile: McKtFile,
   override val psi: KtObjectDeclaration,
   override val parent: McKtElement

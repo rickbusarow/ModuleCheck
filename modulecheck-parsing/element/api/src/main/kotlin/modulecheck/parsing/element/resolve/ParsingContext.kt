@@ -21,16 +21,21 @@ import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 
 class ParsingContext<T>(
   val nameParser: NameParser2,
   val symbolResolver: SymbolResolver<T>,
   val language: CompatibleLanguage,
-  val kotlinEnvironment: KotlinEnvironment,
+  val kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
   val stdLibNameOrNull: ReferenceName.() -> QualifiedDeclaredName?
 ) {
 
-  val bindingContextDeferred = kotlinEnvironment.bindingContextDeferred
+  val bindingContextDeferred = lazyDeferred {
+    kotlinEnvironmentDeferred.await()
+      .bindingContextDeferred.await()
+  }
 
   suspend fun declaredNameOrNull(symbol: T): QualifiedDeclaredName? {
     TODO()

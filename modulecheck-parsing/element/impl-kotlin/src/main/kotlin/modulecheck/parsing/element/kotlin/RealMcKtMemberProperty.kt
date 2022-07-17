@@ -21,86 +21,32 @@ import modulecheck.parsing.element.McAnnotation
 import modulecheck.parsing.element.McKtDeclaredElement
 import modulecheck.parsing.element.McProperty
 import modulecheck.parsing.element.resolve.ParsingContext
-import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
-import modulecheck.parsing.psi.internal.resolveType
-import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.psi.internal.requireReferenceName
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
-import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
-import org.jetbrains.kotlin.psi.KtCallExpression
-import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
-import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtParameter
 import org.jetbrains.kotlin.psi.KtProperty
-import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
-import org.jetbrains.kotlin.resolve.calls.callUtil.getType
+import org.jetbrains.kotlin.resolve.BindingContext
 
 data class RealMcKtMemberProperty(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtProperty,
   override val parent: McKtDeclaredElement
 ) : McProperty.McKtProperty.KtMemberProperty,
   HasKtVisibility by VisibilityDelegate(psi),
-  Declared by DeclaredDelegate(psi, parent) {
+  Declared by DeclaredDelegate(psi, parent),
+  HasParsingContext {
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
-
-    delegate.await()
-
-    psi.resolveType(parsingContext.kotlinEnvironment.bindingContextDeferred.await())
+    bindingContext(BindingContext.VARIABLE, psi)
       .requireNotNull()
       .type
-      .getJetTypeFqName(false)
-      .asReferenceName(KOTLIN)
-
-    // parsingContext.symbolResolver
-    //   .declaredNameOrNull(psi.typeReference.requireNotNull())
-    //   .requireNotNull()
-    //   .name
-    //   .asReferenceName(KOTLIN)
-  }
-
-  val delegate = lazyDeferred {
-
-    val expression = when (val expr = psi.delegateExpressionOrInitializer) {
-      is KtDotQualifiedExpression -> expr.selectorExpression
-      is KtExpression -> expr
-      null -> return@lazyDeferred null
-      else -> throw IllegalArgumentException("??? $expr")
-    } as? KtCallExpression
-      ?: return@lazyDeferred null
-
-    val bc = parsingContext.bindingContextDeferred.await()
-
-    println("resolved call -- ${psi.delegate?.getResolvedCall(bc)}")
-
-    sequenceOf(psi)
-      .plus(psi.getChildrenOfTypeRecursive<KtExpression>())
-      .forEach { expr ->
-
-        println(
-          """ ******
-          |expression --------- ${expr.text}
-          |expression class --- ${expr::class.java.simpleName}
-          |expression type ---- ${expr.getType(bc)}
-          |_____
-          """.trimMargin()
-        )
-      }
-
-    val t = parsingContext.bindingContextDeferred.await().getType(expression.calleeExpression!!)
-
-    expression.typeArguments.joinToString("\n") { it.text }.also(::println)
-
-    println("expression type -- $t")
-
-    println("################  --- ${expression::class.qualifiedName}")
+      .requireReferenceName()
   }
 
   override val annotations: LazySet<McAnnotation> = lazySet {
@@ -111,26 +57,19 @@ data class RealMcKtMemberProperty(
 }
 
 data class RealMcKtConstructorProperty(
-  private val parsingContext: ParsingContext<PsiElement>,
+  override val parsingContext: ParsingContext<PsiElement>,
   override val psi: KtParameter,
   override val parent: McKtDeclaredElement
 ) : McProperty.McKtProperty.KtConstructorProperty,
   HasKtVisibility by VisibilityDelegate(psi),
-  Declared by DeclaredDelegate(psi, parent) {
+  Declared by DeclaredDelegate(psi, parent),
+  HasParsingContext {
 
   override val typeReferenceName: LazyDeferred<ReferenceName> = lazyDeferred {
-
-    parsingContext.resolveReferenceNameOrNull(
-      containingFile,
-      psi.typeReference!!.typeElement!!.text.asReferenceName(KOTLIN)
-    )
+    bindingContext(BindingContext.VALUE_PARAMETER, psi)
       .requireNotNull()
-
-    // parsingContext.symbolResolver
-    //   .declaredNameOrNull(psi.typeReference.requireNotNull())
-    //   .requireNotNull()
-    //   .name
-    //   .asReferenceName(KOTLIN)
+      .type
+      .requireReferenceName()
   }
 
   override val annotations: LazySet<McAnnotation> = lazySet {
