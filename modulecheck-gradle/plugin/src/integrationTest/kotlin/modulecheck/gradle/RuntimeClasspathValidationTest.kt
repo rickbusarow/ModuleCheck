@@ -15,6 +15,7 @@
 
 package modulecheck.gradle
 
+import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContain
 import modulecheck.gradle.internal.BuildProperties
 import modulecheck.utils.remove
@@ -24,79 +25,67 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
 
   @TestFactory
   fun `all tasks should succeed without any other libraries in the build classpath`() =
-    testProjectVersions()
-      .flatMap { versions ->
-        listOf(
-          "moduleCheckAuto",
-          "moduleCheckDepths",
-          "moduleCheckGraphs",
-          "moduleCheckSortDependenciesAuto",
-          "moduleCheckSortPluginsAuto"
-        ).map { taskName ->
-          taskName to versions
-        }
-      }
-      .dynamic(
-        filter = { second.isValid() },
-        testName = { it.second.toString() + " - ${it.first}" },
-        setup = { (_, versions) ->
-          agpVersion = versions.agpVersion
-          gradleVersion = versions.gradleVersion
-          kotlinVersion = versions.kotlinVersion
-        }
-      ) { (taskName, _) ->
-        rootBuild.writeText(
-          """
+    matrix {
+      rootBuild.writeText(
+        """
           plugins {
             id("com.rickbusarow.module-check")
           }
           """
-        )
-        // This is the same settings as the default used in other tests,
-        // except no `google()` repository.  `google()` shouldn't be necessary since there should be
-        // no dependency upon AGP.
-        rootSettings.writeText(
-          """
-          rootProject.name = "root"
+      )
+      // This is the same settings as the default used in other tests,
+      // except no `google()` repository.  `google()` shouldn't be necessary since there should be
+      // no dependency upon AGP.
+      rootSettings.writeText(
+        """
+        rootProject.name = "root"
 
-          pluginManagement {
-            repositories {
-              gradlePluginPortal()
-              mavenCentral()
-              mavenLocal()
-            }
-            resolutionStrategy {
-              eachPlugin {
-                if (requested.id.id.startsWith("com.android")) {
-                  useVersion("$agpVersion")
-                }
-                if (requested.id.id == "com.rickbusarow.module-check") {
-                  useVersion("${BuildProperties().version}")
-                }
-                if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                  useVersion("$kotlinVersion")
-                }
-                if (requested.id.id == "com.squareup.anvil") {
-                  useVersion("$anvilVersion")
-                }
+        pluginManagement {
+          repositories {
+            gradlePluginPortal()
+            mavenCentral()
+            mavenLocal()
+          }
+          resolutionStrategy {
+            eachPlugin {
+              if (requested.id.id.startsWith("com.android")) {
+                useVersion("$agpVersion")
+              }
+              if (requested.id.id == "com.rickbusarow.module-check") {
+                useVersion("${BuildProperties().version}")
+              }
+              if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
+                useVersion("$kotlinVersion")
+              }
+              if (requested.id.id == "com.squareup.anvil") {
+                useVersion("$anvilVersion")
               }
             }
           }
-          dependencyResolutionManagement {
-            @Suppress("UnstableApiUsage")
-            repositories {
-              mavenCentral()
-              mavenLocal()
-            }
+        }
+        dependencyResolutionManagement {
+          @Suppress("UnstableApiUsage")
+          repositories {
+            mavenCentral()
+            mavenLocal()
           }
-          """.trimIndent()
-        )
+        }
+        """.trimIndent()
+      )
 
-        // just double-check that this settings file is in sync with the default
-        rootSettings shouldHaveText DEFAULT_SETTINGS_FILE.remove("\\s*google\\(\\)".toRegex())
+      // just double-check that this settings file is in sync with the default
+      rootSettings shouldHaveText DEFAULT_SETTINGS_FILE.remove("\\s*google\\(\\)".toRegex())
 
+      listOf(
+        "moduleCheckAuto",
+        "moduleCheckDepths",
+        "moduleCheckGraphs",
+        "moduleCheckSortDependenciesAuto",
+        "moduleCheckSortPluginsAuto"
+      ).forAll { taskName ->
         shouldSucceed(taskName)
       }
+    }
 
   @TestFactory
   fun `test project should have its own versions for AGP and KGP in classpath`() =
