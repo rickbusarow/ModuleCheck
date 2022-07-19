@@ -17,6 +17,7 @@ plugins {
   id("mcbuild")
   id("com.gradle.plugin-publish") version "0.21.0"
   id("java-gradle-plugin")
+  idea
 }
 
 mcbuild {
@@ -33,6 +34,18 @@ val integrationTest by java.sourceSets.registering {
       .plus(test.output)
       .plus(configurations.testRuntimeClasspath.get())
     runtimeClasspath += output + compileClasspath
+  }
+}
+
+// mark the integrationTest directory as a test directory in the IDE
+idea {
+  module {
+    integrationTest.configure {
+      allSource.srcDirs
+        .forEach { srcDir ->
+          module.testSourceDirs.add(srcDir)
+        }
+    }
   }
 }
 
