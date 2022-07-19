@@ -19,14 +19,14 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.ProjectPath
-import org.gradle.api.Project
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
 class RealAllProjectPathsProvider @Inject constructor(
   @RootGradleProject
-  private val rootGradleProject: Project
+  private val rootGradleProject: GradleProject
 ) : AllProjectPathsProvider {
 
   private val _allPaths by lazy {

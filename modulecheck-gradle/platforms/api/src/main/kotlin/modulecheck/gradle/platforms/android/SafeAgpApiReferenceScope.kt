@@ -18,8 +18,8 @@ package modulecheck.gradle.platforms.android
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
-import org.gradle.api.Project as GradleProject
 
 /**
  * Wrapper for accessing AGP declarations only after it's been established that they exist in the
