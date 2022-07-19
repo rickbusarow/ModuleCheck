@@ -32,7 +32,7 @@ package modulecheck.gradle.platforms.android
 @RequiresOptIn(
   message = "This reference will probably cause a runtime exception " +
     "if the Android Gradle Plugin is not in the classpath.  " +
-    "Wrap this reference in `AgpApiAvailability.ifSafeOrNull { ... } to be safe.",
+    "Wrap this reference in `AgpApiAccess.ifSafeOrNull { ... } to be safe.",
   level = RequiresOptIn.Level.ERROR
 )
 annotation class UnsafeDirectAgpApiReference
