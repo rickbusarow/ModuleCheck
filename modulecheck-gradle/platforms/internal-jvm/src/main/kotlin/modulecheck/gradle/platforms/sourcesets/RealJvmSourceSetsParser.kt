@@ -21,6 +21,8 @@ import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.parsing.gradle.model.Config
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.parsing.gradle.model.GradleSourceSet
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -33,9 +35,6 @@ import modulecheck.utils.requireNotNull
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
-
-typealias GradleSourceSet = org.gradle.api.tasks.SourceSet
 
 @ContributesBinding(AppScope::class)
 class RealJvmSourceSetsParser @Inject constructor(

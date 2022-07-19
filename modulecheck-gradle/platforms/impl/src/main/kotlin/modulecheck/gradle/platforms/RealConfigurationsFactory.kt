@@ -19,18 +19,18 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.parsing.gradle.model.ConfigFactory
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleConfiguration
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.asConfigurationName
-import org.gradle.api.Project
-import org.gradle.api.artifacts.Configuration
 import org.gradle.api.initialization.dsl.ScriptHandler
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)
 class RealConfigurationsFactory @Inject constructor() : ConfigurationsFactory {
 
-  override fun create(gradleProject: Project): Configurations {
+  override fun create(gradleProject: GradleProject): Configurations {
 
-    val configFactory = ConfigFactory<Configuration>(
+    val configFactory = ConfigFactory<GradleConfiguration>(
       identifier = { name },
       allFactory = { gradleProject.configurations.asSequence() },
       extendsFrom = {

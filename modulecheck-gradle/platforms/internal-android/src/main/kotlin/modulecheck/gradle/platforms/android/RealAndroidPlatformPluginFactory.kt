@@ -40,12 +40,12 @@ import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplication
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
 
 @ContributesBinding(AppScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
