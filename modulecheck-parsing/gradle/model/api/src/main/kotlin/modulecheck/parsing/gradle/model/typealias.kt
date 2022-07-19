@@ -13,29 +13,16 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.parsing.gradle.model
 
-mcbuild {
-  artifactId = "modulecheck-parsing-gradle-model-api"
-  anvil = true
-}
+/** [org.gradle.api.tasks.SourceSet] */
+typealias GradleSourceSet = org.gradle.api.tasks.SourceSet
 
-dependencies {
+/** [org.gradle.api.artifacts.Configuration] */
+typealias GradleConfiguration = org.gradle.api.artifacts.Configuration
 
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
+/** [org.gradle.api.Project] */
+typealias GradleProject = org.gradle.api.Project
 
-  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
-  api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
-
-  compileOnly(gradleApi())
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
-}
+/** [org.gradle.api.artifacts.ProjectDependency] */
+typealias GradleProjectDependency = org.gradle.api.artifacts.ProjectDependency

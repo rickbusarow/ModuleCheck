@@ -17,11 +17,11 @@ package modulecheck.gradle.platforms.sourcesets
 
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.gradle.platforms.internal.toJavaVersion
+import modulecheck.parsing.gradle.model.GradleProject
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
-import org.gradle.api.Project as GradleProject
 
 /**
  * @return every file which is an actual file (not directory), and actually exists in this file

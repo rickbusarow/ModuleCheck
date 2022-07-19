@@ -19,9 +19,9 @@ import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.JvmSourceSetsParser
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.SourceSets
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
 
 class SourceSetsFactory @Inject constructor(
   private val agpApiAccess: AgpApiAccess,

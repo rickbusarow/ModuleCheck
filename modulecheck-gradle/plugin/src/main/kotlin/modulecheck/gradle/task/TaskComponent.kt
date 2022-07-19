@@ -23,12 +23,12 @@ import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
 import modulecheck.gradle.internal.GradleProjectProvider
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
 import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.RunnerComponent
-import org.gradle.api.Project
 
 @SingleIn(AppScope::class)
 @MergeComponent(AppScope::class)
@@ -39,10 +39,17 @@ interface TaskComponent : RunnerComponent, RulesComponent {
 
   @Component.Factory
   interface Factory {
+    /**
+     * @param rootProject the root (`:`) rootProject
+     * @param moduleCheckSettings settings...
+     * @param ruleFilter this lets the tasks define which rule(s) they're going to apply
+     * @param projectRoot the root directory for the rootProject. This is the same as calling
+     *   `rootProject.rootDir`.
+     */
     fun create(
       @RootGradleProject
       @BindsInstance
-      project: Project,
+      rootProject: GradleProject,
       @BindsInstance
       moduleCheckSettings: ModuleCheckSettings,
       @BindsInstance
