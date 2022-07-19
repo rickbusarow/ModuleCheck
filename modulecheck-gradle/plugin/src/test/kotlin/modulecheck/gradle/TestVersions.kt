@@ -30,10 +30,15 @@ data class TestVersions(
   }
 
   fun isValid(): Boolean {
+
     return when {
-      // anvil 2.3.x requires 1.5.32, anvil 2.4.x requires 1.6.x
+      // anvil 2.3.x requires 1.5.32, anvil 2.4.0 requires 1.6.x, anvil 2.4.1 requires 1.7.x
       kotlinVersion == "1.5.32" && anvilVersion >= "2.4.0" -> false
-      kotlinVersion >= "1.6.0" && anvilVersion < "2.4.0" -> false
+      kotlinVersion in "1.6.0".."1.6.9" &&
+        (anvilVersion < "2.4.0" || !anvilVersion.endsWith("-1-6")) -> false
+
+      kotlinVersion >= "1.7.0" &&
+        anvilVersion >= "2.4.0" && anvilVersion.endsWith("-1-6") -> false
       // agp 7.2.0 requires gradle 7.3.3
       gradleVersion < "7.3.3" && agpVersion >= "7.2.0" -> false
       // these exclusions just save time
@@ -67,15 +72,17 @@ data class TestVersions(
 
 interface VersionsMatrixTest : DynamicTests, ResetManager {
 
-  val kotlinVersions get() = listOf("1.5.32", "1.6.10", "1.6.21", "1.7.10")
-  // val gradleVersions get() = listOf("7.2", "7.3.3", "7.4.2", "7.5")
-  // val agpVersions get() = listOf("7.0.1", "7.1.3", "7.2.0")
-  // val anvilVersions get() = listOf("2.3.11", "2.4.0")
-
   // val kotlinVersions get() = listOf("1.6.10")
-  val gradleVersions get() = listOf("7.5")
-  val agpVersions get() = listOf("7.0.1")
-  val anvilVersions get() = listOf("2.4.0")
+  val kotlinVersions get() = listOf("1.6.10", "1.6.21", "1.7.0", "1.7.10")
+
+  // val gradleVersions get() = listOf("7.2", "7.3.3", "7.4.2", "7.5")
+  val gradleVersions get() = listOf("7.4.2")
+
+  // val agpVersions get() = listOf("7.0.1")
+  val agpVersions get() = listOf("7.0.1", "7.1.3", "7.2.1")
+
+  // val anvilVersions get() = listOf("2.3.11", "2.4.0")
+  val anvilVersions get() = listOf("2.4.1-1-6", "2.4.1")
 
   var kotlinVersion: String
   var agpVersion: String
@@ -83,10 +90,13 @@ interface VersionsMatrixTest : DynamicTests, ResetManager {
   var anvilVersion: String
 
   fun testProjectVersions() =
-    gradleVersions.flatMap { gradleVersion ->
+    gradleVersions.flatMap { gradle ->
       agpVersions.flatMap { agpVersion ->
-        kotlinVersions.map { kotlinVersion ->
-          TestVersions(gradleVersion, agpVersion, kotlinVersion, anvilVersion)
+        kotlinVersions.flatMap { kotlinVersion ->
+          anvilVersions.mapNotNull { anvil ->
+            TestVersions(gradle, agpVersion, kotlinVersion, anvil)
+              .takeIf { it.isValid() }
+          }
         }
       }
     }
@@ -147,17 +157,16 @@ interface VersionsMatrixTest : DynamicTests, ResetManager {
     action: (TestVersions) -> Unit
   ): List<DynamicTest> {
 
-    return testProjectVersions().toList()
-      .dynamic(
-        filter = { isValid() },
-        testName = { it.toString() },
-        setup = { subject ->
-          agpVersion = subject.agpVersion
-          gradleVersion = subject.gradleVersion
-          kotlinVersion = subject.kotlinVersion
-        },
-        action = action
-      )
+    return testProjectVersions().dynamic(
+      filter = { isValid() },
+      testName = { it.toString() },
+      setup = { subject ->
+        agpVersion = subject.agpVersion
+        gradleVersion = subject.gradleVersion
+        kotlinVersion = subject.kotlinVersion
+      },
+      action = action
+    )
   }
 
   fun <T> List<T>.dynamic(
