@@ -41,12 +41,11 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName.Companion.asSourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.parsing.gradle.model.distinctSourceSetNames
 import modulecheck.parsing.gradle.model.names
-import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
@@ -80,35 +79,54 @@ import javax.inject.Inject
  * }
  * ```
  *
- * `BuildType` names: [[debug, internalRelease, release]]
+ * `BuildType` names:
  *
- * Primitive flavor names: [[light, dark, red, blue]]
+ * ```text
+ * [[debug, internalRelease, release]]
+ * ```
  *
- * Combined flavor names: [[lightRed, lightBlue, darkRed, darkBlue]]
+ * Primitive flavor names:
+ *
+ * ```text
+ * [[light, dark, red, blue]]
+ * ```
+ *
+ * Combined flavor names:
+ *
+ * ```text
+ * [[lightRed, lightBlue, darkRed, darkBlue]]
+ * ```
  *
  * Flavor dimensions are just arbitrary keys which allow us to group flavors together. These names
  * are not used to create SourceSets. The final collection of SourceSets would be unaffected if
  * these were just named something like [["a", "b"]].
  *
- * ```
- *   Flavor dimensions (these do not become SourceSets): [[shade, color]]
- *   Product flavors: { color: [[blue, red]], shade: [[light, dark]] }
+ * Flavor dimensions (these do not become SourceSets):
+ *
+ * ```text
+ * [[shade, color]]
  * ```
  *
- * Flavors get combined via matrix multiplication and string concatenation in order to create more
- * SourceSets. The order of the concatenated string components ("light", "red", etc.) is determined
- * by the order in which their corresponding flavor dimensions are added. In this example, since
- * "shade" is added before "color", then the flavors of "shade" ("light", "dark") will be before the
- * flavors of "color" ("red", "blue").
+ * Product flavors:
  *
+ * ```text
+ * { color: [[blue, red]], shade: [[light, dark]] }
  * ```
+ *
+ * Flavors get combined as a matrix via string concatenation in order to create more SourceSets. The
+ * order of the concatenated string components ("light", "red", etc.) is determined by the order in
+ * which their corresponding flavor dimensions are added. In this example, since "shade" is added
+ * before "color", then the flavors of "shade" ("light", "dark") will be before the flavors of
+ * "color" ("red", "blue").
+ *
+ * ```text
  * [light, dark] x [red, blue] = [lightRed, lightBlue, darkRed, darkBlue]
  * ```
  *
- * Build Variants are now created via more matrix multiplication and string concatenation, between
- * the `BuildType` and combined flavor names. **BuildType names are always last.**
+ * Build Variants are now created via more matrix combination and string concatenation, between the
+ * `BuildType` and combined flavor names. **BuildType names are always last.**
  *
- * ```
+ * ```text
  * [lightRed, lightBlue, darkRed, darkBlue] x [debug, internalRelease, release] =
  *   [
  *     lightRedDebug, lightRedRelease, lightRedInternalRelease,
@@ -160,11 +178,15 @@ class RealAndroidSourceSetsParser private constructor(
       BuildTypeName(it.name)
     }
   }
+
+  /** Arbitrary names for grouping flavors -- not included in SourceSet names */
   private val flavorDimensions by lazy {
     extension.flavorDimensionList
       .ifEmpty { listOf("default_flavor_dimension") }
   }
-  private val productFlavors2D by lazy {
+
+  /** Product flavors2d */
+  private val productFlavorsSorted2D by lazy {
     val mapped = extension.productFlavors
       .groupBy { it.dimension ?: "default_flavor_dimension" }
       .mapValues { (_, productFlavors) ->
@@ -449,22 +471,23 @@ class RealAndroidSourceSetsParser private constructor(
 
     var runningName = value
 
-    productFlavors2D.forEachIndexed { index, flavors ->
+    productFlavorsSorted2D.values
+      .forEachIndexed { index, flavors ->
 
-      fun String.expectedCapitalization() = if (index == 0) {
-        this
-      } else {
-        capitalize()
+        fun String.expectedCapitalization() = if (index == 0) {
+          this
+        } else {
+          capitalize()
+        }
+
+        val match = flavors
+          .sortedByDescending { it.value.length }
+          .first { runningName.startsWith(it.value.expectedCapitalization()) }
+
+        upstreamNames.add(match)
+
+        runningName = runningName.removePrefix(match.value.expectedCapitalization())
       }
-
-      val match = flavors
-        .sortedByDescending { it.value.length }
-        .first { runningName.startsWith(it.value.expectedCapitalization()) }
-
-      upstreamNames.add(match)
-
-      runningName = runningName.removePrefix(match.value.expectedCapitalization())
-    }
 
     return upstreamNames.distinct()
   }

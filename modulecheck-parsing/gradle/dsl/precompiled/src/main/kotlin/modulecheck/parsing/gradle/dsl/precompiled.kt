@@ -23,8 +23,6 @@ import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.SourceSetName.Companion
-import modulecheck.parsing.gradle.model.hasPrefix
-import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.findMinimumIndent
 import modulecheck.utils.letIf
 import modulecheck.utils.mapToSet

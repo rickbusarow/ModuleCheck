@@ -23,12 +23,13 @@ import modulecheck.parsing.gradle.model.Config
 import modulecheck.parsing.gradle.model.Configurations
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.GradleSourceSet
+import modulecheck.parsing.gradle.model.JvmSourceSet
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.parsing.gradle.model.SourceSetName.Companion.asSourceSetName
 import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.requireNotNull
@@ -101,7 +102,7 @@ class RealJvmSourceSetsParser @Inject constructor(
 
             put(
               kotlinSourceSet.name.asSourceSetName(),
-              SourceSet(
+              JvmSourceSet(
                 name = sourceSetName,
                 compileOnlyConfiguration = parsedConfigurations
                   .getValue(kotlinSourceSet.compileOnlyConfigurationName.asConfigurationName()),
@@ -157,7 +158,7 @@ class RealJvmSourceSetsParser @Inject constructor(
 
             put(
               gradleSourceSet.name.asSourceSetName(),
-              SourceSet(
+              JvmSourceSet(
                 name = sourceSetName,
                 compileOnlyConfiguration = parsedConfigurations
                   .getValue(gradleSourceSet.compileOnlyConfigurationName.asConfigurationName()),

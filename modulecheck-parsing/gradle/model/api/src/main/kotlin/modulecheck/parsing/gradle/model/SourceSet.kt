@@ -13,14 +13,18 @@
  * limitations under the License.
  */
 
+@file:Suppress("LongParameterList")
+
 package modulecheck.parsing.gradle.model
 
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.utils.capitalize
-import modulecheck.utils.decapitalize
 import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
+
+class SourceSets(
+  delegate: Map<SourceSetName, SourceSet>
+) : Map<SourceSetName, SourceSet> by delegate
 
 /**
  * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
@@ -33,7 +37,7 @@ import java.io.File
  *   'api' for 'main' or 'debugApi' for 'debug'
  * @property implementationConfiguration the configuration name of this source set's
  *   'implementation' configuration, like 'implementation'
- *   for 'main' or 'debugImplementationpi' for 'debug'
+ *   for 'main' or 'debugImplementation' for 'debug'
  * @property runtimeOnlyConfiguration the configuration name of this source set's 'runtimeOnly'
  *   configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
  * @property annotationProcessorConfiguration the configuration name of this source set's
@@ -51,8 +55,7 @@ import java.io.File
  * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
  *   is `main`
  */
-@Suppress("LongParameterList")
-class SourceSet(
+sealed class SourceSet(
   val name: SourceSetName,
   val compileOnlyConfiguration: Config,
   val apiConfiguration: Config?,
@@ -68,10 +71,10 @@ class SourceSet(
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<SourceSet> {
 
-  /** upstsream source set names */
+  /** upstream source set names */
   val upstream: List<SourceSetName> by upstreamLazy
 
-  /** downstsream source set names */
+  /** downstream source set names */
   val downstream: List<SourceSetName> by downstreamLazy
 
   fun withUpstream() = listOf(name) + upstream
@@ -88,6 +91,23 @@ class SourceSet(
       dir.walkBottomUp()
         .any { file -> file.isFile && file.exists() }
     }
+  }
+
+  override fun toString(): String {
+    return """${javaClass.simpleName}(
+        |  name=$name,
+        |  compileOnlyConfiguration=$compileOnlyConfiguration,
+        |  apiConfiguration=$apiConfiguration,
+        |  implementationConfiguration=$implementationConfiguration,
+        |  runtimeOnlyConfiguration=$runtimeOnlyConfiguration,
+        |  kaptConfiguration=$annotationProcessorConfiguration,
+        |  jvmFiles=$jvmFiles,
+        |  resourceFiles=$resourceFiles,
+        |  layoutFiles=$layoutFiles,
+        |  upstreamLazy=${upstreamLazy.value.map { it.value }},
+        |  downstreamLazy=${downstreamLazy.value.map { it.value }}
+        |)
+    """.trimMargin()
   }
 
   /**
@@ -109,23 +129,68 @@ class SourceSet(
     }
   }
 
-  override fun toString(): String {
-    return """SourceSet(
-        |  name=$name,
-        |  compileOnlyConfiguration=$compileOnlyConfiguration,
-        |  apiConfiguration=$apiConfiguration,
-        |  implementationConfiguration=$implementationConfiguration,
-        |  runtimeOnlyConfiguration=$runtimeOnlyConfiguration,
-        |  kaptConfiguration=$annotationProcessorConfiguration,
-        |  jvmFiles=$jvmFiles,
-        |  resourceFiles=$resourceFiles,
-        |  layoutFiles=$layoutFiles,
-        |  upstreamLazy=${upstreamLazy.value.map { it.value }},
-        |  downstreamLazy=${downstreamLazy.value.map { it.value }}
-        |)
-    """.trimMargin()
+  companion object {
+    operator fun invoke(
+      name: SourceSetName,
+      compileOnlyConfiguration: Config,
+      apiConfiguration: Config?,
+      implementationConfiguration: Config,
+      runtimeOnlyConfiguration: Config,
+      annotationProcessorConfiguration: Config?,
+      jvmFiles: Set<File>,
+      resourceFiles: Set<File>,
+      layoutFiles: Set<File>,
+      jvmTarget: JvmTarget,
+      kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
+      upstreamLazy: Lazy<List<SourceSetName>>,
+      downstreamLazy: Lazy<List<SourceSetName>>
+    ) = JvmSourceSet(
+      name,
+      compileOnlyConfiguration,
+      apiConfiguration,
+      implementationConfiguration,
+      runtimeOnlyConfiguration,
+      annotationProcessorConfiguration,
+      jvmFiles,
+      resourceFiles,
+      layoutFiles,
+      jvmTarget,
+      kotlinEnvironmentDeferred,
+      upstreamLazy,
+      downstreamLazy
+    )
   }
 }
+
+class JvmSourceSet(
+  name: SourceSetName,
+  compileOnlyConfiguration: Config,
+  apiConfiguration: Config?,
+  implementationConfiguration: Config,
+  runtimeOnlyConfiguration: Config,
+  annotationProcessorConfiguration: Config?,
+  jvmFiles: Set<File>,
+  resourceFiles: Set<File>,
+  layoutFiles: Set<File>,
+  jvmTarget: JvmTarget,
+  kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
+  upstreamLazy: Lazy<List<SourceSetName>>,
+  downstreamLazy: Lazy<List<SourceSetName>>
+) : SourceSet(
+  name = name,
+  compileOnlyConfiguration = compileOnlyConfiguration,
+  apiConfiguration = apiConfiguration,
+  implementationConfiguration = implementationConfiguration,
+  runtimeOnlyConfiguration = runtimeOnlyConfiguration,
+  annotationProcessorConfiguration = annotationProcessorConfiguration,
+  jvmFiles = jvmFiles,
+  resourceFiles = resourceFiles,
+  layoutFiles = layoutFiles,
+  jvmTarget = jvmTarget,
+  kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
+  upstreamLazy = upstreamLazy,
+  downstreamLazy = downstreamLazy
+)
 
 fun Iterable<SourceSet>.names(): List<SourceSetName> = map { it.name }
 fun Sequence<SourceSet>.names(): Sequence<SourceSetName> = map { it.name }
@@ -147,148 +212,3 @@ fun Collection<SourceSet>.sortedByInheritance(): Sequence<SourceSet> {
       }
   }
 }
-
-@JvmInline
-value class SourceSetName(val value: String) {
-
-  fun isTestingOnly() = when {
-    this.value.startsWith(TEST_FIXTURES.value) -> false
-    this.value.startsWith(ANDROID_TEST.value) -> true
-    this.value.startsWith(TEST.value) -> true
-    else -> false
-  }
-
-  fun isTestOrAndroidTest() = when {
-    this.value.startsWith(ANDROID_TEST.value, ignoreCase = true) -> true
-    this.value.startsWith(TEST.value, ignoreCase = true) -> true
-    else -> false
-  }
-
-  fun isTestFixtures() = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
-
-  fun nonTestSourceSetNameOrNull() = when {
-    isTestingOnly() -> null
-    value.endsWith(ANDROID_TEST.value, ignoreCase = true) -> {
-      value.removePrefix(ANDROID_TEST.value).decapitalize().asSourceSetName()
-    }
-
-    value.endsWith(TEST.value, ignoreCase = true) -> {
-      value.removePrefix(TEST.value).decapitalize().asSourceSetName()
-    }
-
-    this == TEST_FIXTURES -> MAIN
-    else -> this
-  }
-
-  fun javaConfigurationNames(): List<ConfigurationName> {
-
-    return if (this == MAIN) {
-      ConfigurationName.main()
-    } else {
-      ConfigurationName.mainConfigurations
-        .filterNot { it.asConfigurationName().isKapt() }
-        .map { "${this.value}${it.capitalize()}".asConfigurationName() }
-        .plus(kaptVariant())
-    }
-  }
-
-  fun apiConfig(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.api
-    } else {
-      "${value}Api".asConfigurationName()
-    }
-  }
-
-  fun implementationConfig(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.implementation
-    } else {
-      "${value}Implementation".asConfigurationName()
-    }
-  }
-
-  /**
-   * @return the 'kapt' name for this source set, such as `kapt`, `kaptTest`, or `kaptAndroidTest`
-   */
-  fun kaptVariant(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.kapt
-    } else {
-      "${ConfigurationName.kapt.value}${value.capitalize()}".asConfigurationName()
-    }
-  }
-
-  fun withUpstream(
-    hasConfigurations: HasConfigurations
-  ): List<SourceSetName> {
-    return hasConfigurations.sourceSets[this]
-      ?.withUpstream()
-      .orEmpty()
-  }
-
-  fun withDownStream(
-    hasConfigurations: HasConfigurations
-  ): List<SourceSetName> {
-    return hasConfigurations.sourceSets[this]
-      ?.withDownstream()
-      .orEmpty()
-  }
-
-  fun inheritsFrom(
-    other: SourceSetName,
-    hasConfigurations: HasConfigurations
-  ): Boolean {
-
-    // SourceSets can't inherit from themselves, so quit early and skip some lookups.
-    if (this == other) return false
-
-    return hasConfigurations.sourceSets[this]
-      ?.upstream
-      ?.contains(other)
-      ?: false
-  }
-
-  override fun toString(): String = "(SourceSetName) `$value`"
-
-  companion object {
-    val ANDROID_TEST = SourceSetName("androidTest")
-    val ANVIL = SourceSetName("anvil")
-    val DEBUG = SourceSetName("debug")
-    val KAPT = SourceSetName("kapt")
-    val MAIN = SourceSetName("main")
-    val RELEASE = SourceSetName("release")
-    val TEST = SourceSetName("test")
-    val TEST_FIXTURES = SourceSetName("testFixtures")
-  }
-}
-
-fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
-
-class SourceSets(
-  delegate: Map<SourceSetName, SourceSet>
-) : Map<SourceSetName, SourceSet> by delegate
-
-fun SourceSetName.removePrefix(prefix: String) = value.removePrefix(prefix)
-  .decapitalize()
-  .asSourceSetName()
-
-fun SourceSetName.removePrefix(prefix: SourceSetName) = removePrefix(prefix.value)
-
-fun SourceSetName.hasPrefix(prefix: String) = value.startsWith(prefix)
-fun SourceSetName.hasPrefix(prefix: SourceSetName) = hasPrefix(prefix.value)
-
-fun SourceSetName.addPrefix(prefix: String) = prefix.plus(value.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.addPrefix(prefix: SourceSetName) = addPrefix(prefix.value)
-
-fun SourceSetName.removeSuffix(suffix: String) = value.removeSuffix(suffix.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.removeSuffix(suffix: SourceSetName) = removeSuffix(suffix.value.capitalize())
-
-fun SourceSetName.addSuffix(suffix: String) = value.plus(suffix.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.addSuffix(suffix: SourceSetName) = addSuffix(suffix.value)

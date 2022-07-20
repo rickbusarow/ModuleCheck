@@ -20,8 +20,6 @@ import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.removePrefix
-import modulecheck.parsing.gradle.model.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.testing.requireNotNullOrFail
