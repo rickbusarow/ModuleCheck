@@ -17,9 +17,9 @@ package modulecheck.gradle.platforms.android
 
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
 
 /**
  * This class provides:

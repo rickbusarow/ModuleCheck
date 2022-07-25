@@ -39,6 +39,7 @@ import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.SourceSet
 import modulecheck.parsing.gradle.model.SourceSetName
@@ -58,7 +59,6 @@ import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
 
 /**
  * Given this Android config block:

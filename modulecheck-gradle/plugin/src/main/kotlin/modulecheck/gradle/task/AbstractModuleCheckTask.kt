@@ -54,7 +54,7 @@ abstract class AbstractModuleCheckTask(
   protected val component by lazy {
     DaggerTaskComponent.factory()
       .create(
-        project = project,
+        rootProject = project,
         moduleCheckSettings = settings,
         ruleFilter = ruleFilter(),
         projectRoot = { project.rootDir },

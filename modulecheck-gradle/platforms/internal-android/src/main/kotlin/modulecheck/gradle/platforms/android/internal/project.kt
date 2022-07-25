@@ -19,10 +19,10 @@ package modulecheck.gradle.platforms.android.internal
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.gradle.model.asSourceSetName
 import java.io.File
-import org.gradle.api.Project as GradleProject
 
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
 
@@ -31,7 +31,6 @@ fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
  * @return A map of the [SourceSetName] to manifest [File] if the AGP plugin is applied, or null if
  *   AGP isn't applied
  */
-@Suppress("UnstableApiUsage")
 @UnsafeDirectAgpApiReference
 fun GradleProject.androidManifests(
   agpApiAccess: AgpApiAccess

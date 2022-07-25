@@ -21,14 +21,14 @@ import modulecheck.gradle.platforms.android.internal.generatesBuildConfig
 import modulecheck.gradle.platforms.android.internal.isMissingManifestFile
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
+import modulecheck.parsing.gradle.model.GradleProject
 import org.gradle.api.Plugin
-import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 
-class ModuleCheckPlugin : Plugin<Project> {
+class ModuleCheckPlugin : Plugin<GradleProject> {
 
-  override fun apply(target: Project) {
+  override fun apply(target: GradleProject) {
     val settings = target.extensions
       .create("moduleCheck", ModuleCheckExtension::class.java)
 
@@ -96,7 +96,7 @@ class ModuleCheckPlugin : Plugin<Project> {
   }
 
   @Suppress("LongParameterList")
-  private fun Project.registerTasks(
+  private fun GradleProject.registerTasks(
     name: String,
     findingName: FindingName?,
     includeAuto: Boolean,
