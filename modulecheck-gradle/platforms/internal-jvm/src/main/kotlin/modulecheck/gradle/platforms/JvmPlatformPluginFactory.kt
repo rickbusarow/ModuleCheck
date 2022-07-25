@@ -15,11 +15,11 @@
 
 package modulecheck.gradle.platforms
 
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
 
 class JvmPlatformPluginFactory @Inject constructor(
   private val configurationsFactory: ConfigurationsFactory,

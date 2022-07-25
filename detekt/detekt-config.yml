@@ -510,8 +510,16 @@ style:
     customMessage: ''
   ForbiddenImport:
     active: true
-    imports: [ 'groovy.xml.XmlParser', 'com.android.build.*' ]
+    imports:
+      - 'com.android.build.*'
+      - 'groovy.xml.XmlParser'
+      - 'org.gradle.api.Project'
+      - 'org.gradle.api.artifacts.ProjectDependency'
+      - 'org.gradle.api.artifacts.Configuration'
+      - 'org.gradle.api.tasks.SourceSet'
+      - 'org.gradle.tooling.model.GradleProject'
     forbiddenPatterns: ''
+    excludes: [ '**/build-logic/**' ]
   ForbiddenMethodCall:
     active: false
     methods:

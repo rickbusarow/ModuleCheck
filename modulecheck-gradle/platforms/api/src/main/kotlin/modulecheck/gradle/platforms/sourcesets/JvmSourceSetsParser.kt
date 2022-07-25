@@ -16,8 +16,8 @@
 package modulecheck.gradle.platforms.sourcesets
 
 import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.SourceSets
-import org.gradle.api.Project as GradleProject
 
 fun interface JvmSourceSetsParser {
   fun parse(

@@ -29,6 +29,8 @@ import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.model.AllProjectPathsProvider
+import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.parsing.gradle.model.GradleProjectDependency
 import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
@@ -48,8 +50,6 @@ import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import javax.inject.Inject
-import org.gradle.api.Project as GradleProject
-import org.gradle.api.artifacts.ProjectDependency as GradleProjectDependency
 
 @Suppress("LongParameterList")
 @ContributesBinding(AppScope::class, ProjectProvider::class)
