@@ -55,5 +55,7 @@ data class DownstreamProjects(
 /**
  * All projects which are downstream of the receiver project, including those which only inherit via
  * another dependency's `api` configuration without declaring the dependency directly.
+ *
+ * @since 0.12.0
  */
 suspend fun ProjectContext.dependents(): DownstreamProjects = get(DownstreamProjects)

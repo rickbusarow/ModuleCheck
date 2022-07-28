@@ -76,7 +76,11 @@ fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
   IndentScope(indent, this).action()
 }
 
-/** A naive auto-indent which just counts brackets. */
+/**
+ * A naive auto-indent which just counts brackets.
+ *
+ * @since 0.12.0
+ */
 fun String.indentByBrackets(tab: String = "  "): String {
 
   var tabCount = 0
@@ -116,6 +120,7 @@ fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r
 /**
  * @return a string with no leading or trailing whitespace, and no whitespace before or after any
  *   instance of [delimiter]
+ * @since 0.12.0
  */
 fun String.trimSegments(delimiter: String = "."): String {
   val escapedDelimiter = Regex.escape(delimiter)

@@ -230,6 +230,7 @@ private suspend fun McProject.mustBeApiIn(
 /**
  * @return Returns a [ConfiguredDependency] with an `-api` variant configuration if the dependency
  *   should be `api`, or `-implementation` otherwise.
+ * @since 0.12.0
  */
 suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
   dependentProject: McProject

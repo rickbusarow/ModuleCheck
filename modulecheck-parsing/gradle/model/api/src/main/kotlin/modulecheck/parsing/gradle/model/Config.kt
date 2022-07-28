@@ -49,6 +49,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * For other source sets, it returns the base configuration names:
    * ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
    * ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
+   *
+   * @since 0.12.0
    */
   fun nameWithoutSourceSet(): String {
     return when {
@@ -67,6 +69,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * For other source sets, it returns the base configuration names:
    * ConfigurationName("debugApi").nameWithoutSourceSet() == "Api"
    * ConfigurationName("testImplementation").nameWithoutSourceSet() == "Implementation"
+   *
+   * @since 0.12.0
    */
   fun switchSourceSet(newSourceSetName: SourceSetName): ConfigurationName {
 
@@ -81,6 +85,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    *
    * For instance, `debugCompileOnly` would find the "CompileOnly" and remove it, returning "debug"
    * as the sourceSet name
+   *
+   * @since 0.12.0
    */
   private fun String.extractSourceSetName(): SourceSetName {
     // All kapt configurations start with `kapt`
@@ -127,6 +133,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    *
    * @return for any main/common configuration, just returns `api`. For any other configuration, it
    *   returns the [SourceSetName] appended with `Api`.
+   * @since 0.12.0
    */
   fun apiVariant() = toSourceSetName().apiConfig()
 
@@ -139,6 +146,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    *
    * @return for any main/common configuration, just returns `implementation`. For any other
    *   configuration, it returns the [SourceSetName] appended with `Implementation`.
+   * @since 0.12.0
    */
   fun implementationVariant() = toSourceSetName().implementationConfig()
 
@@ -147,16 +155,26 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    *
    * @return for any main/common configuration, just returns `kapt`. For any other configuration, it
    *   returns `kapt` appended with the [SourceSetName].
+   * @since 0.12.0
    */
   fun kaptVariant() = toSourceSetName().kaptVariant()
 
-  /** @return true if the configuration is an `api` variant */
+  /**
+   * @return true if the configuration is an `api` variant
+   * @since 0.12.0
+   */
   fun isApi(): Boolean = this == apiVariant()
 
-  /** @return true if the configuration is an `implementation` variant */
+  /**
+   * @return true if the configuration is an `implementation` variant
+   * @since 0.12.0
+   */
   fun isImplementation(): Boolean = this == implementationVariant()
 
-  /** @return true if the configuration is a `kapt` variant */
+  /**
+   * @return true if the configuration is a `kapt` variant
+   * @since 0.12.0
+   */
   fun isKapt(): Boolean = this == kaptVariant()
 
   override fun compareTo(other: ConfigurationName): Int {
@@ -199,6 +217,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       /**
        * The order of this list matters. CompileOnlyApi must be before `api` or
        * `extractSourceSetName` below will match the wrong suffix.
+       *
+       * @since 0.12.0
        */
       .sortedByDescending { it.length }
 

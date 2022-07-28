@@ -218,6 +218,11 @@ tasks.matching {
     dependsOn(generateBuildProperties)
   }
 
+// generate the build properties file during an IDE sync, so no more red squigglies
+rootProject.tasks.named("prepareKotlinBuildScriptModel") {
+  dependsOn(generateBuildProperties)
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
   dependsOn(generateBuildProperties)
 }

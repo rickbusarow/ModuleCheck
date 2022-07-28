@@ -38,6 +38,8 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
    *
    * This directory is deleted at the **start** of test execution, so it's always fresh, but the
    * source is still there after the test completes.
+   *
+   * @since 0.12.0
    */
   val testProjectDir: File by resets {
     File("build")
@@ -51,29 +53,49 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
    *
    * For a `TestFactory` test, this will be:
    * `$className/$functionName/$displayName`
+   *
+   * @since 0.12.0
    */
   val testRelativePath by resets {
     "$testClassName${File.separator}$testDisplayName"
   }
 
-  /** Test class name */
+  /**
+   * Test class name
+   *
+   * @since 0.12.0
+   */
   protected var testClassName: String by Delegates.notNull()
 
-  /** Test function name */
+  /**
+   * Test function name
+   *
+   * @since 0.12.0
+   */
   protected var testFunctionName: String by Delegates.notNull()
 
   /**
    * This is typically the same as the function name, but for dynamic tests, the name for each
    * permutation is appended.
+   *
+   * @since 0.12.0
    */
   protected var testDisplayName: String by Delegates.notNull()
 
   fun File.relativePath() = path.removePrefix(testProjectDir.path)
 
-  /** Replace CRLF and CR line endings with Unix LF endings. */
+  /**
+   * Replace CRLF and CR line endings with Unix LF endings.
+   *
+   * @since 0.12.0
+   */
   fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
 
-  /** Replace Windows file separators with Unix ones, just for string comparison in tests */
+  /**
+   * Replace Windows file separators with Unix ones, just for string comparison in tests
+   *
+   * @since 0.12.0
+   */
   fun String.alwaysUnixFileSeparators(): String = replace(File.separator, "/")
 
   fun String.clean(): String {
@@ -98,12 +120,20 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
       .trimStart('\n')
   }
 
-  /** replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues` */
+  /**
+   * replace `ModuleCheck found 2 issues in 1.866 seconds.` with `ModuleCheck found 2 issues`
+   *
+   * @since 0.12.0
+   */
   fun String.removeDuration(): String {
     return replace(durationSuffixRegex) { it.destructured.component1() }
   }
 
-  /** replace absolute paths with relative ones */
+  /**
+   * replace absolute paths with relative ones
+   *
+   * @since 0.12.0
+   */
   fun String.useRelativePaths(): String {
     return alwaysUnixFileSeparators()
       .remove(

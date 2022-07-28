@@ -20,6 +20,7 @@ package modulecheck.parsing.source
  * A name which is not fully qualified, like `Foo` in `com.example.Foo`
  *
  * @property name the string value of this name
+ * @since 0.12.0
  */
 value class SimpleName(val name: String) : Comparable<SimpleName> {
 
@@ -33,10 +34,18 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
   override fun compareTo(other: SimpleName): Int = name.compareTo(other.name)
 
   companion object {
-    /** shorthand for `joinToString(".") { it.name }` */
+    /**
+     * shorthand for `joinToString(".") { it.name }`
+     *
+     * @since 0.12.0
+     */
     fun List<SimpleName>.asString() = joinToString(".") { it.name }
 
-    /** wraps this String in a [SimpleName] */
+    /**
+     * wraps this String in a [SimpleName]
+     *
+     * @since 0.12.0
+     */
     fun String.asSimpleName() = SimpleName(this)
 
     /**
@@ -44,6 +53,8 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
      * remainder by dots and returns that list as [SimpleName]
      *
      * example: `com.example.Outer.Inner` becomes `[Outer, Inner]`
+     *
+     * @since 0.12.0
      */
     fun String.stripPackageNameFromFqName(packageName: PackageName): List<SimpleName> {
       return removePrefix("${packageName.name}.").split('.')
@@ -58,7 +69,11 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
  * @since 0.13.0
  */
 interface HasSimpleNames {
-  /** The contained [SimpleNames][SimpleName] */
+  /**
+   * The contained [SimpleNames][SimpleName]
+   *
+   * @since 0.12.0
+   */
   val simpleNames: List<SimpleName>
 
   /**
@@ -66,6 +81,8 @@ interface HasSimpleNames {
    *
    * example: Given a full name of `com.example.Outer.Inner`, with the [simpleNames] `[Outer,
    * Inner]`, this value will be `Inner`.
+   *
+   * @since 0.12.0
    */
   val simplestName: SimpleName
     get() = simpleNames.last()

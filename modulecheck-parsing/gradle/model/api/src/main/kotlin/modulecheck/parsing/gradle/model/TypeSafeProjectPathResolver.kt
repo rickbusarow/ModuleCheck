@@ -32,6 +32,8 @@ import javax.inject.Inject
  *
  * So, in order to convert a type-safe name into its original String path, we need the list of
  * actual paths to compare against.
+ *
+ * @since 0.12.0
  */
 class TypeSafeProjectPathResolver @Inject constructor(
   private val allProjectPathsProvider: AllProjectPathsProvider

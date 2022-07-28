@@ -30,6 +30,7 @@ import javax.inject.Inject
  * processor.
  *
  * @property generatorBindings the list of possible bindings to search
+ * @since 0.12.0
  */
 @ContributesBinding(AppScope::class)
 class RealExternalDependencyFactory @Inject constructor(

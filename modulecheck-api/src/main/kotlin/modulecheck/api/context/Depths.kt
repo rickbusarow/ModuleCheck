@@ -41,6 +41,7 @@ data class Depths(
   /**
    * @return a [ProjectDepth] for each [SourceSet][modulecheck.parsing.gradle.model.SourceSet] in
    *   this project.
+   * @since 0.12.0
    */
   suspend fun all(): List<ProjectDepth> = project.sourceSets.map { get(it.key) }
 

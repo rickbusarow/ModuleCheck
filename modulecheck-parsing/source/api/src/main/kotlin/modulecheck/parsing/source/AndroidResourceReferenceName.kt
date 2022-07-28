@@ -19,7 +19,11 @@ import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.lazy.unsafeLazy
 
-/** Any reference to an Android resource */
+/**
+ * Any reference to an Android resource
+ *
+ * @since 0.12.0
+ */
 sealed class AndroidResourceReferenceName : ReferenceName()
 
 /**
@@ -27,6 +31,7 @@ sealed class AndroidResourceReferenceName : ReferenceName()
  *
  * @property packageName the package of this reference (which is just the full string, minus `.R`)
  * @property language the language making this reference
+ * @since 0.12.0
  */
 class AndroidRReferenceName(
   val packageName: PackageName,
@@ -40,6 +45,7 @@ class AndroidRReferenceName(
  *
  * @property name `R.string.____`
  * @property language the language making this reference
+ * @since 0.12.0
  */
 // hashcode behavior is intentionally handled by super
 @Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
@@ -59,10 +65,18 @@ class UnqualifiedAndroidResourceReferenceName(
     }
   }
 
-  /** example: 'string' in `R.string.app_name` */
+  /**
+   * example: 'string' in `R.string.app_name`
+   *
+   * @since 0.12.0
+   */
   val prefix by unsafeLazy { split[1].asSimpleName() }
 
-  /** example: 'app_name' in `R.string.app_name` */
+  /**
+   * example: 'app_name' in `R.string.app_name`
+   *
+   * @since 0.12.0
+   */
   val identifier by unsafeLazy { split[2].asSimpleName() }
 
   override val simpleNames by unsafeLazy {
@@ -83,6 +97,7 @@ class UnqualifiedAndroidResourceReferenceName(
  *
  * @property name `com.example.databinding.FragmentViewBinding`
  * @property language the language making this reference
+ * @since 0.12.0
  */
 class AndroidDataBindingReferenceName(
   override val name: String,
@@ -94,6 +109,7 @@ class AndroidDataBindingReferenceName(
  *
  * @property name `com.example.R.string.app_name`
  * @property language the language making this reference
+ * @since 0.12.0
  */
 class QualifiedAndroidResourceReferenceName constructor(
   override val name: String,

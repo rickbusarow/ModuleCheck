@@ -35,12 +35,13 @@ import modulecheck.utils.sortedWith
 import modulecheck.utils.suffixIfNot
 
 /**
- * @receiver the project to which we're adding a dependency
  * @param configuredDependency the dependency model being added
  * @param newDeclaration the text to be added to the project's build file
  * @param existingDeclaration if not null, the new declaration will be added above or beyond this
  *   declaration. Of all declarations in the `dependencies { ... }` block, this
  *   declaration should be closest to the desired location of the new declaration.
+ * @receiver the project to which we're adding a dependency
+ * @since 0.12.0
  */
 fun McProject.addDependency(
   configuredDependency: ConfiguredDependency,
@@ -68,6 +69,7 @@ fun McProject.addDependency(
  * @param matchPathFirst If true, matching project paths will be prioritized over matching
  *   configurations. If false, configuration matches will take priority over a matching project path.
  * @return the closest matching declaration, or null if there are no declarations at all.
+ * @since 0.12.0
  */
 suspend fun McProject.closestDeclarationOrNull(
   newDependency: ConfiguredDependency,

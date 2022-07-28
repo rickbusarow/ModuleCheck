@@ -50,6 +50,7 @@ import java.io.File
  *   `test`
  * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
  *   is `main`
+ * @since 0.12.0
  */
 @Suppress("LongParameterList")
 class SourceSet(
@@ -68,10 +69,18 @@ class SourceSet(
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<SourceSet> {
 
-  /** upstsream source set names */
+  /**
+   * upstsream source set names
+   *
+   * @since 0.12.0
+   */
   val upstream: List<SourceSetName> by upstreamLazy
 
-  /** downstsream source set names */
+  /**
+   * downstsream source set names
+   *
+   * @since 0.12.0
+   */
   val downstream: List<SourceSetName> by downstreamLazy
 
   fun withUpstream() = listOf(name) + upstream
@@ -97,6 +106,8 @@ class SourceSet(
    * If two source sets are siblings (neither extends the other, such as in build flavors from
    * different dimensions), then they should be sorted alphabetically (by name). The alphabetical
    * sort just ensures that all lists are stable.
+   *
+   * @since 0.12.0
    */
   override fun compareTo(other: SourceSet): Int {
 
@@ -210,6 +221,7 @@ value class SourceSetName(val value: String) {
 
   /**
    * @return the 'kapt' name for this source set, such as `kapt`, `kaptTest`, or `kaptAndroidTest`
+   * @since 0.12.0
    */
   fun kaptVariant(): ConfigurationName {
     return if (this == MAIN) {

@@ -125,6 +125,7 @@ abstract class AbstractDependenciesBlock(
   /**
    * @param projectPath `:my:project:lib1` or `my.project.lib1`
    * @param projectAccessor `project(:my:project:lib1)` or `projects.my.project.lib1`
+   * @since 0.12.0
    */
   fun addModuleStatement(
     configName: ConfigurationName,
@@ -232,6 +233,8 @@ abstract class AbstractDependenciesBlock(
    *
    * From this value, [getOriginalString] will return a multi-line string which includes the blank
    * line and the comment.
+   *
+   * @since 0.12.0
    */
   private fun findLastMatchingRowIndex(parsedString: String): Int {
     val targetLines = parsedString.lines()
