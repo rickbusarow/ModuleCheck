@@ -17,6 +17,8 @@
 
 package modulecheck.gradle.platforms.android.internal
 
+import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.gradle.BasePlugin
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidTestedExtension
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
@@ -24,7 +26,9 @@ import modulecheck.model.dependency.SourceSets
 import modulecheck.model.dependency.isTestingOnly
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
+import modulecheck.parsing.gradle.model.GradleConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.utils.mapToSet
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.PackageName.Companion.asPackageName
 import java.io.File
@@ -98,6 +102,67 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
       ?.manifest
       ?.let { it as? com.android.build.gradle.internal.api.DefaultAndroidSourceFile }
       ?.srcFile
+  }
+}
+
+/**
+ * @param agpApiAccess the [AgpApiAccess] to use for safe access
+ * @return the main src `AndroidManifest.xml` file if it exists. This will typically be
+ *     `$projectDir/src/main/AndroidManifest.xml`, but if the position has been changed in the
+ *     Android extension, the new path will be used.
+ * @since 0.12.0
+ */
+fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin.() -> Unit) {
+
+  plugins.withType(BasePlugin::class.java) { plugin ->
+    action(plugin)
+  }
+  // pluginManager.withPlugin("com.android.application") { plugin ->
+  //   action(plugin as BasePlugin)
+  // }
+}
+
+/**
+ * Invokes [configAction] for the compiled configurations (`api`, `implementation`, `compileOnly`,
+ * `runtimeOnly`) of *each build variant* once AGP has finalized the list.
+ *
+ * Immediately returns `null` if the receiver project does not have AGP applied.
+ *
+ * @param agpApiAccess ensures that AGP is in the classpath and applied before using its apis
+ * @param configAction invoked *for each build variant* with the set of compiled configurations
+ * @return [Unit] if the project had AGP and registered the callback, or `null` if the project does
+ *     not have AGP
+ */
+@Suppress("UnstableApiUsage")
+inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
+  agpApiAccess: AgpApiAccess,
+  crossinline configAction: (SourceSetName, Set<GradleConfiguration>) -> Unit
+): Unit? {
+  return agpApiAccess.ifSafeOrNull(this@onAndroidCompileConfigurationsOrNull) {
+
+    val commonExtension = requireCommonExtension()
+
+    val componentsExtension = extensions.getByType(AndroidComponentsExtension::class.java)
+
+    componentsExtension.onVariants { variant ->
+
+      val sourceSet = commonExtension.sourceSets
+        .getByName(variant.name)
+
+      val configs = sequenceOf(
+        sourceSet.apiConfigurationName,
+        sourceSet.implementationConfigurationName,
+        sourceSet.compileOnlyConfigurationName,
+        sourceSet.runtimeOnlyConfigurationName
+      )
+        .mapToSet { configName -> configurations.getByName(configName) }
+
+      println("######## configs for $path")
+      configs.joinToString("\n") { it.name }
+        .also(::println)
+
+      configAction(sourceSet.name.asSourceSetName(), configs)
+    }
   }
 }
 

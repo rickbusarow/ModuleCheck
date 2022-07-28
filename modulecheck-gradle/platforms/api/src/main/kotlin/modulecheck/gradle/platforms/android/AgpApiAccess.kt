@@ -40,6 +40,7 @@ class AgpApiAccess @Inject constructor() {
   val androidIsInClasspath by lazy {
     @Suppress("SwallowedException")
     try {
+      @Suppress("SENSELESS_COMPARISON")
       Class.forName(
         "com.android.build.gradle.BasePlugin",
         false,
@@ -71,7 +72,7 @@ class AgpApiAccess @Inject constructor() {
    *
    * @param project the project to be used for this [SafeAgpApiReferenceScope]
    * @param action the action to perform if AGP is in the classpath and AGP is applied to this
-   *   specific [project]
+   *     specific [project]
    * @return the output `T` of this [action], or `null` if AGP is not in the classpath
    * @since 0.12.0
    */
