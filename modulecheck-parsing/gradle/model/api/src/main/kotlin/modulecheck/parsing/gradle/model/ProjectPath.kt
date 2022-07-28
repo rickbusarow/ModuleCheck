@@ -101,6 +101,8 @@ internal val projectSplitRegex = "[.\\-_]".toRegex()
  * - `:core:jvm` becomes `core.jvm`
  * - `:core-testing` becomes `coreTesting`
  * - `:base:ui:navigation` becomes `base.ui.navigation`
+ *
+ * @since 0.12.0
  */
 internal fun String.typeSafeName(): String = split(projectSplitRegex)
   .filterNot { it.isBlank() }

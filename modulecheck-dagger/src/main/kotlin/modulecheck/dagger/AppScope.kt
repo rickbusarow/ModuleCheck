@@ -29,6 +29,7 @@ annotation class RootGradleProject
  * Indicates that the annotated dependency will be a singleton within this scope.
  *
  * @param scope the scope in which this will be a singleton.
+ * @since 0.12.0
  */
 @Scope
 @Retention(AnnotationRetention.RUNTIME)

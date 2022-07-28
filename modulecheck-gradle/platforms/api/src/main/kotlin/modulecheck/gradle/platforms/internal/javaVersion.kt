@@ -41,7 +41,10 @@ import org.jetbrains.kotlin.config.JvmTarget.JVM_9
 
 typealias GradleJavaVersion = org.gradle.api.JavaVersion
 
-/** @return the [JvmTarget] version for this receiver [JavaVersion][GradleJavaVersion] */
+/**
+ * @return the [JvmTarget] version for this receiver [JavaVersion][GradleJavaVersion]
+ * @since 0.12.0
+ */
 @Suppress("ComplexMethod")
 fun GradleJavaVersion.toJavaVersion(): JvmTarget {
   return when (this) {

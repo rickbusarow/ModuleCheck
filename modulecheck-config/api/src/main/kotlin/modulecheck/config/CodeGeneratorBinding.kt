@@ -31,6 +31,8 @@ import modulecheck.parsing.gradle.model.PluginDefinition
  * N.B. Code generators often evolve over time, adding new annotations. So if a defined generator
  * is throwing a false positive saying it's unused, it's best to first check the list of
  * [annotationNames] to make sure it's exhaustive.
+ *
+ * @since 0.12.0
  */
 // TODO (maybe) - 99.9% of code generators will be triggered by annotations, but technically they
 //   don't have to be.  Code generators can be triggered by any symbol, such as keywords like `data`
@@ -40,6 +42,8 @@ sealed class CodeGeneratorBinding(
   /**
    * The human-readable name for this type of extension, like 'annotation processor' or 'KSP
    * extension'
+   *
+   * @since 0.12.0
    */
   val extensionTypeName: String,
   /**
@@ -50,6 +54,8 @@ sealed class CodeGeneratorBinding(
    * This should almost always just be a single name. It's a List because annotations processors may
    * be `kapt` or `annotationProcessor` depending upon whether they're applied to a Kotlin module or
    * a pure Java one.
+   *
+   * @since 0.12.0
    */
   val baseConfigNames: List<ConfigurationName>
 ) {
@@ -59,6 +65,8 @@ sealed class CodeGeneratorBinding(
    *
    * This name doesn't strictly need to be unique, but that's probably a good idea. For instance,
    * instead of two extensions named 'Room', we have 'Room (annotation processor)' and 'Room (KSP)'.
+   *
+   * @since 0.12.0
    */
   abstract val name: String
 
@@ -69,6 +77,8 @@ sealed class CodeGeneratorBinding(
    * For KSP, annotation processors, and Anvil, the extensions are typically added in the build file
    * like `kapt("com.example.foo:compiler:1.2.3")`. For a Kotlin compiler plugin, this will probably
    * be an "invisible" dependency added via the library's Gradle plugin.
+   *
+   * @since 0.12.0
    */
   abstract val generatorMavenCoordinates: String
 
@@ -86,6 +96,8 @@ sealed class CodeGeneratorBinding(
    * On the other hand, an annotation from the library does not need to be listed just because it's
    * an annotation. An example of this would be `tangle.inject.InternalTangleApi`, which is not used
    * by the compiler.
+   *
+   * @since 0.12.0
    */
   abstract val annotationNames: List<String>
 
@@ -95,6 +107,8 @@ sealed class CodeGeneratorBinding(
    *
    * For any processor which also has a KSP implementation, that extension should just be listed
    * twice.
+   *
+   * @since 0.12.0
    */
   data class AnnotationProcessor(
     override val name: String,
@@ -110,6 +124,8 @@ sealed class CodeGeneratorBinding(
    *
    * For any extension which also has annotation processor implementation, that extension should
    * just be listed twice.
+   *
+   * @since 0.12.0
    */
   data class KspExtension(
     override val name: String,
@@ -125,6 +141,7 @@ sealed class CodeGeneratorBinding(
    * itself**.
    *
    * @see KotlinCompilerPlugin
+   * @since 0.12.0
    */
   data class AnvilExtension(
     override val name: String,
@@ -135,7 +152,11 @@ sealed class CodeGeneratorBinding(
     listOf(ConfigurationName.anvil)
   )
 
-  /** Pure Kotlin compiler plugins, like Anvil. */
+  /**
+   * Pure Kotlin compiler plugins, like Anvil.
+   *
+   * @since 0.12.0
+   */
   data class KotlinCompilerPlugin(
     override val name: String,
     override val generatorMavenCoordinates: String,
@@ -154,8 +175,14 @@ fun List<CodeGeneratorBinding>.asMap(): Map<String, CodeGeneratorBinding> =
  * Indicates that some type (probably a
  * [ConfiguredDependency][modulecheck.parsing.gradle.model.ConfiguredDependency]) is associated with
  * an established [CodeGeneratorBinding].
+ *
+ * @since 0.12.0
  */
 interface MightHaveCodeGeneratorBinding {
-  /** The [CodeGeneratorBinding] if it is defined, or null. */
+  /**
+   * The [CodeGeneratorBinding] if it is defined, or null.
+   *
+   * @since 0.12.0
+   */
   val codeGeneratorBindingOrNull: CodeGeneratorBinding?
 }

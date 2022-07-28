@@ -19,7 +19,11 @@ import org.intellij.lang.annotations.Language
 import kotlin.text.replace
 import kotlin.text.replace as matchResultReplace
 
-/** code golf for `replace(regex.toRegex(), replacement)` */
+/**
+ * code golf for `replace(regex.toRegex(), replacement)`
+ *
+ * @since 0.12.0
+ */
 fun String.replaceRegex(
   @Language("regex")
   regex: String,

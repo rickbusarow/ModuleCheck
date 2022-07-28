@@ -80,7 +80,11 @@ sealed class ExternalDependency :
     return result
   }
 
-  /** Let's pretend this is a data class. */
+  /**
+   * Let's pretend this is a data class.
+   *
+   * @since 0.12.0
+   */
   fun copy(
     configurationName: ConfigurationName = this.configurationName,
     group: String? = this.group,
@@ -123,10 +127,15 @@ sealed class ExternalDependency :
    * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
    * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
    * processor.
+   *
+   * @since 0.12.0
    */
   fun interface Factory {
 
-    /** @return the [ProjectDependency] for this dependency declaration */
+    /**
+     * @return the [ProjectDependency] for this dependency declaration
+     * @since 0.12.0
+     */
     fun create(
       configurationName: ConfigurationName,
       group: String?,

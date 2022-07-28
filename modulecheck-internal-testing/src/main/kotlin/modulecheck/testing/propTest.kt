@@ -20,7 +20,11 @@ import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyContext
 import kotlinx.coroutines.runBlocking
 
-/** shorthand for the Kotest `forAll`, but blocking and always returning Unit */
+/**
+ * shorthand for the Kotest `forAll`, but blocking and always returning Unit
+ *
+ * @since 0.12.0
+ */
 fun <A> forAllBlocking(
   genA: Gen<A>,
   property: suspend PropertyContext.(A) -> Unit
@@ -31,7 +35,11 @@ fun <A> forAllBlocking(
   }
 }
 
-/** shorthand for the Kotest `forAll`, but blocking and always returning Unit */
+/**
+ * shorthand for the Kotest `forAll`, but blocking and always returning Unit
+ *
+ * @since 0.12.0
+ */
 @JvmName("forAllBlockingExtension")
 fun <A> Gen<A>.forAllBlocking(
   property: suspend PropertyContext.(A) -> Unit

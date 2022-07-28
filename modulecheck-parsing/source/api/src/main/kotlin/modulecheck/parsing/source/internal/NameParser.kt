@@ -35,6 +35,7 @@ fun interface NameParser {
    * @property referenceLanguage is this file Java or Kotlin?
    * @property stdLibNameOrNull returns a [ReferenceName] if the receiver name is part of the stdlib
    *   of this [referenceLanguage], otherwise null
+   * @since 0.12.0
    */
   data class NameParserPacket(
     val packageName: PackageName,
@@ -104,7 +105,11 @@ fun interface ParsingInterceptor {
   interface Chain {
     val packet: NameParserPacket
 
-    /** Passes the [packet] argument on to the next interceptor in this chain. */
+    /**
+     * Passes the [packet] argument on to the next interceptor in this chain.
+     *
+     * @since 0.12.0
+     */
     suspend fun proceed(packet: NameParserPacket): NameParserPacket
   }
 }

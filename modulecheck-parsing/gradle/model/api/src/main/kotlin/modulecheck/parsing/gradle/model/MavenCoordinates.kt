@@ -18,13 +18,25 @@ package modulecheck.parsing.gradle.model
 import modulecheck.utils.lazy.unsafeLazy
 
 data class MavenCoordinates(
-  /** In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`. */
+  /**
+   * In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`.
+   *
+   * @since 0.12.0
+   */
   val group: String?,
 
-  /** In `com.google.dagger:dagger:2.32`, this is `__:dagger:__`. */
+  /**
+   * In `com.google.dagger:dagger:2.32`, this is `__:dagger:__`.
+   *
+   * @since 0.12.0
+   */
   val moduleName: String,
 
-  /** In `com.google.dagger:dagger:2.32`, this is `__:__:2.32`. */
+  /**
+   * In `com.google.dagger:dagger:2.32`, this is `__:__:2.32`.
+   *
+   * @since 0.12.0
+   */
   val version: String?
 ) : Identifier, Comparable<MavenCoordinates> {
 

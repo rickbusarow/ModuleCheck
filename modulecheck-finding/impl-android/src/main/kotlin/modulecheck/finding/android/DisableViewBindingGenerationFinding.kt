@@ -142,7 +142,10 @@ data class DisableViewBindingGenerationFinding(
   }
 
   companion object {
-    /** @suppress */
+    /**
+     * @since 0.12.0
+     * @suppress
+     */
     val NAME = FindingName("disable-view-binding")
   }
 }

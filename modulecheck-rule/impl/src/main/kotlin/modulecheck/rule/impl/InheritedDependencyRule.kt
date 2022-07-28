@@ -181,6 +181,8 @@ class InheritedDependencyRule @Inject constructor() :
    * For example, if we're checking to see if a transitive dependency is used in `main`, we should
    * also check whether it's used in the source sets which inherit from `main` (like `debug`,
    * `release`, `androidTest`, `test`, etc.).
+   *
+   * @since 0.12.0
    */
   private fun TransitiveProjectDependency.withDownstreamVariants(
     project: McProject
@@ -212,9 +214,9 @@ class InheritedDependencyRule @Inject constructor() :
   /**
    * @return a sequence containing all original transitive dependencies, but adds `main` contributed
    *   dependencies where the original transitive dependency was providing `main` via `testFixtures`.
+   * @since 0.12.0
    */
-  private fun Sequence<TransitiveProjectDependency>.withTestFixturesMainSource():
-    Sequence<TransitiveProjectDependency> {
+  private fun Sequence<TransitiveProjectDependency>.withTestFixturesMainSource(): Sequence<TransitiveProjectDependency> {
 
     return flatMap { transitiveCpd ->
       sequence {
