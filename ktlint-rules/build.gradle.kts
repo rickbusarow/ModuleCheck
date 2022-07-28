@@ -35,15 +35,15 @@ val kotlinVersion = libs.versions.kotlin.get()
 dependencies {
   api(libs.detekt.api)
 
-  "ksp"(libs.zacSweers.auto.service.ksp)
-
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
   implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
   implementation(libs.ktlint.core)
-  implementation(libs.ktlint.ruleset.standard)
   implementation(libs.ktlint.gradle)
+  implementation(libs.ktlint.ruleset.standard)
+
+  "ksp"(libs.zacSweers.auto.service.ksp)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
