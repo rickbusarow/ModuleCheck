@@ -19,7 +19,6 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.classpathLazy
-import modulecheck.gradle.platforms.classpathLazy
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.McConfiguration
@@ -71,10 +70,6 @@ class RealJvmSourceSetsParser @Inject constructor(
               downstreamLazy
             ) = parseHierarchy(sourceSetName, configs)
 
-            val classpath =  lazyDeferred {
-              configs.classpathLazy(gradleProject)
-            }
-
             val kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
               .requireNotNull {
                 "kotlin version is null for project -- ${gradleProject.path}"
@@ -86,7 +81,7 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = classpath,
+                classpathFiles = configs.classpathLazy(gradleProject),
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = kotlinVersion,
                 jvmTarget = jvmTarget
@@ -142,7 +137,7 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = lazyDeferred { configs.classpathLazy(gradleProject) },
+                classpathFiles = configs.classpathLazy(gradleProject),
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = null,
                 jvmTarget = jvmTarget

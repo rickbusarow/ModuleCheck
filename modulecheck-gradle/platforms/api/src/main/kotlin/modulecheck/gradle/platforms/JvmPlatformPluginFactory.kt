@@ -20,7 +20,8 @@ import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.model.dependency.McConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.utils.flatMapToSet
+import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.lazy.lazyDeferred
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
@@ -68,12 +69,12 @@ fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
  */
 fun List<McConfiguration>.classpathLazy(
   gradleProject: GradleProject
-): Lazy<Set<File>> {
-  return lazy {
-    this.map { (name) ->
+): LazyDeferred<List<File>> {
+  return lazyDeferred {
+    map { (name) ->
       gradleProject.configurations.getByName(name.value)
     }
-      .flatMapToSet { gradleConfiguration ->
+      .flatMap { gradleConfiguration ->
         gradleConfiguration.fileCollection { dep ->
           dep is ExternalModuleDependency
         }
