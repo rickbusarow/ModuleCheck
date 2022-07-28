@@ -38,6 +38,7 @@ import javax.inject.Inject
  * @property pathResolver used to look up the [StringProjectPath] of any internal project code
  *   generators. This is necessary in order to look up the [CodeGeneratorBinding].
  * @property generatorBindings the list of possible bindings to search
+ * @since 0.12.0
  */
 @ContributesBinding(AppScope::class)
 class RealConfiguredProjectDependencyFactory @Inject constructor(

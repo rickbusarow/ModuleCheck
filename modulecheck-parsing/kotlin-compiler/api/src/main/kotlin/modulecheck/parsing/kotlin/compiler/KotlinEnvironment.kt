@@ -28,31 +28,45 @@ import java.io.File
 /**
  * Models everything needed in order to creat authentic Psi files for [BindingContext]-backed type
  * resolution.
+ *
+ * @since 0.13.0
  */
 interface KotlinEnvironment : HasAnalysisResult {
-  /** Used to create Psi files for Kotlin and Java */
+  /**
+   * Used to create Psi files for Kotlin and Java
+   *
+   * @since 0.13.0
+   */
   val psiFileFactory: McPsiFileFactory
 
   /**
    * wrapper around "core" settings like Kotlin version, source files, and classpath files (external
    * dependencies)
+   *
+   * @since 0.13.0
    */
   val coreEnvironment: KotlinCoreEnvironment
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
+   *
+   * @since 0.13.0
    */
   val compilerConfiguration: CompilerConfiguration
 
   /**
    * The cache of Kotlin Psi files created by [psiFileFactory]. Note that these are re-used in
    * dependency modules, and much of their implementation is Lazy, so re-use is important.
+   *
+   * @since 0.13.0
    */
   val ktFiles: Map<File, KtFile>
 
   /**
    * The cache of Java Psi files created by [psiFileFactory]. Note that these are re-used in
    * dependency modules, and much of their implementation is Lazy, so re-use is important.
+   *
+   * @since 0.13.0
    */
   val javaFiles: Map<File, PsiJavaFile>
 }
@@ -60,6 +74,8 @@ interface KotlinEnvironment : HasAnalysisResult {
 /**
  * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
  * retrieved from an [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
+ *
+ * @since 0.13.0
  */
 interface HasAnalysisResult {
   /**
@@ -67,6 +83,8 @@ interface HasAnalysisResult {
    *
    * Holds the [bindingContextDeferred] and [moduleDescriptorDeferred] used for last-resort type and
    * reference resolution.
+   *
+   * @since 0.13.0
    */
   val analysisResultDeferred: LazyDeferred<AnalysisResult>
 
@@ -74,6 +92,8 @@ interface HasAnalysisResult {
    * Used as the entry point for type resolution in Psi files. Under the hood, it frequently
    * delegates to this environment's ModuleDescriptor or the descriptors from its dependency
    * environments.
+   *
+   * @since 0.13.0
    */
   val bindingContextDeferred: LazyDeferred<BindingContext>
 
@@ -89,6 +109,8 @@ interface HasAnalysisResult {
    *
    * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface because
    * `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
+   *
+   * @since 0.13.0
    */
   val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 }

@@ -39,6 +39,8 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
   /**
    * A **Lazy** data source for a [LazySet], which performs some suspending operation [get] in order
    * to incrementally add data to the `LazySet`.
+   *
+   * @since 0.12.0
    */
   interface DataSource<out E> :
     Comparable<DataSource<*>>,
@@ -48,10 +50,16 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
     /**
      * The priority which should be applied to this source while in a LazySet. Higher priority
      * sources are invoked first.
+     *
+     * @since 0.12.0
      */
     val priority: Priority
 
-    /** Called to retrieve this source's data. Implementations are thread-safe and lazy. */
+    /**
+     * Called to retrieve this source's data. Implementations are thread-safe and lazy.
+     *
+     * @since 0.12.0
+     */
     suspend fun get(): Set<E>
 
     enum class Priority : Comparable<Priority> {
@@ -116,13 +124,19 @@ fun <E> dataSourceOf(
   priority: Priority = MEDIUM
 ): DataSource<E> = DataSourceImpl(priority, lazyDeferred { elements.toSet() })
 
-/** @return A DataSource<E> from this [priority] and [factory] */
+/**
+ * @return A DataSource<E> from this [priority] and [factory]
+ * @since 0.12.0
+ */
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: LazyDeferred<Set<E>>
 ): DataSource<E> = DataSourceImpl(priority, factory)
 
-/** @return A DataSource<E> from this [priority] and [factory] */
+/**
+ * @return A DataSource<E> from this [priority] and [factory]
+ * @since 0.12.0
+ */
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: suspend () -> Set<E>

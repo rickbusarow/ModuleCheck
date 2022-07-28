@@ -20,8 +20,10 @@ package modulecheck.gradle.platforms.android
  * referenced if AGP is in the target project's *build* classpath, so it needs to be handled
  * carefully.
  *
- * Using [AgpApiAccess.ifSafeOrNull] is the easiest and safest way to ensure there are no
- * runtime exceptions.
+ * Using [AgpApiAccess.ifSafeOrNull] is the easiest and safest way to ensure there are no runtime
+ * exceptions.
+ *
+ * @since 0.12.0
  */
 @Target(
   AnnotationTarget.TYPEALIAS,

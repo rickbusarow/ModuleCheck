@@ -43,6 +43,8 @@ import org.jetbrains.kotlin.storage.StorageManager
  * classes. The `explicitCompilerEnvironment: TargetEnvironment = CompilerEnvironment` argument with
  * default was added in 1.6.20, and causes a `NotSuchMethodError` exception if parsing a 1.6.2x
  * project with 1.6.10 source.
+ *
+ * @since 0.13.0
  */
 object VersionNeutralTopDownAnalyzerFacadeForJVM {
   /**
@@ -55,6 +57,8 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
    * faster than doing a normal compilation. This function is called when the lazy
    * [KotlinEnvironment.bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
    * is accessed.
+   *
+   * @since 0.13.0
    */
   @Suppress("LongParameterList")
   fun analyzeFilesWithJavaIntegration(

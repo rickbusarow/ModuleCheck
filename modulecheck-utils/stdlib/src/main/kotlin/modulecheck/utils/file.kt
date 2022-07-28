@@ -45,5 +45,6 @@ fun File.createSafely(content: String? = null) = apply {
  * Creates the directories if they don't already exist
  *
  * @see File.mkdirs
+ * @since 0.12.0
  */
 fun File.mkdirsInline() = apply { mkdirs() }

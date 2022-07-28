@@ -23,6 +23,8 @@ sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
   /**
    * This should correspond to the finding name in `snake_case`. So a rule with a `findingName.id`
    * of 'unused-dependency' would have a documentation url of `<docs root>/rules/unused_dependency`.
+   *
+   * @since 0.12.0
    */
   final override val documentationUrl: String
     get() = "$RULES_BASE_URL${name.snakeCase}"

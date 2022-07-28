@@ -32,7 +32,6 @@ import modulecheck.utils.mapToSet
 /**
  * Precompiled configuration names are names which are added by a pre-compiled plugin. These names
  * can be used as functions in Kotlin scripts. examples:
- *
  * ```
  *   api("some-dependency")
  *   testImplementation(project(":my-lib"))
@@ -41,13 +40,13 @@ import modulecheck.utils.mapToSet
  *
  * If a configuration is added in a local build script, then it won't have a function associated
  * with it. In this case, the Kotlin script supports using a String extension function:
- *
  * ```
  *   "internalReleaseApi"(libs.timber)
  * ```
  *
  * @param project the project in which the configuration name is being used
  * @return `true` if we can know for sure that it's pre-compiled. `false` if we aren't certain.
+ * @since 0.12.0
  */
 suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
   where T : PluginAware,
@@ -251,6 +250,7 @@ private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project:
  *
  * @return The text used to add a dependency using this [ConfigurationName], in this project.
  * @see isDefinitelyPrecompiledForProject
+ * @since 0.12.0
  */
 suspend fun ConfigurationName.buildFileInvocationText(
   invokesConfigurationNames: InvokesConfigurationNames
@@ -272,6 +272,8 @@ private fun ConfigurationName.wrapInQuotes(): String =
  * - this exact configuration name is already used as a string extension
  * - this configuration name is atypical (such as `internalDebugApi`) and not already used as a
  *   non-string invocation, so there's no way to be sure that the function is precompiled.
+ *
+ * @since 0.12.0
  */
 private suspend fun ConfigurationName.shouldUseQuotes(
   invokesConfigurationNames: InvokesConfigurationNames

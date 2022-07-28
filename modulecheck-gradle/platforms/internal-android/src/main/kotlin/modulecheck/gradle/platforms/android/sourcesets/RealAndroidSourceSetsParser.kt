@@ -60,7 +60,6 @@ import javax.inject.Inject
 
 /**
  * Given this Android config block:
- *
  * ```
  * android {
  *   buildTypes {
@@ -121,7 +120,6 @@ import javax.inject.Inject
  * Finally, a "main" SourceSet is always created.
  *
  * So just within the *production code* sources, we get all these SourceSets:
- *
  * ```
  * // primitives
  * main
@@ -138,6 +136,8 @@ import javax.inject.Inject
  * lightBlueDebug    lightBlueInternalRelease   lightBlueRelease
  * darkBlueDebug     darkBlueInternalRelease    darkBlueRelease
  * ```
+ *
+ * @since 0.12.0
  */
 class RealAndroidSourceSetsParser private constructor(
   private val parsedConfigurations: Configurations,
@@ -613,6 +613,8 @@ class RealAndroidSourceSetsParser private constructor(
   /**
    * This removes the `-AndroidTest` suffix from **variant** names. SourceSet names don't get this
    * suffix
+   *
+   * @since 0.12.0
    */
   @Suppress("DEPRECATION")
   fun TestVariant.nameWithoutAndroidTestSuffix(): String {
@@ -626,6 +628,8 @@ class RealAndroidSourceSetsParser private constructor(
   /**
    * This removes the `-UnitTest` suffix from **variant** names. SourceSet names don't get this
    * suffix
+   *
+   * @since 0.12.0
    */
   @Suppress("DEPRECATION")
   fun UnitTestVariant.nameWithoutUnitTestSuffix(): String {

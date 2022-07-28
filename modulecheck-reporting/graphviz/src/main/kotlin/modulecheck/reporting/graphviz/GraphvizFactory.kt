@@ -46,6 +46,7 @@ import javax.inject.Inject
  *
  * @property typeSafeProjectPathResolver used to resolve project paths from type-safe project
  *   accessors
+ * @since 0.12.0
  */
 class GraphvizFactory @Inject constructor(
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver
@@ -57,6 +58,7 @@ class GraphvizFactory @Inject constructor(
    * @param root the root of the dependency graph, starting at a single
    *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
    * @return the graph model for this dependency graph
+   * @since 0.12.0
    */
   suspend fun create(root: ProjectDepth): Graphviz {
 

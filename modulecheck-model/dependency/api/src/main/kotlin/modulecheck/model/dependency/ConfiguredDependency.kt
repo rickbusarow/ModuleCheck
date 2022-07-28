@@ -30,10 +30,16 @@ sealed interface ConfiguredDependency : Dependency {
    *
    * For an [ExternalDependency], this is the Maven coordinates with or without a version, like
    * `com.example.foo:ui-widgets:1.0.0`.
+   *
+   * @since 0.12.0
    */
   val identifier: Identifier
 
-  /** Is the dependency being invoked via `testFixtures(project(...))`? */
+  /**
+   * Is the dependency being invoked via `testFixtures(project(...))`?
+   *
+   * @since 0.12.0
+   */
   val isTestFixture: Boolean
 
   companion object {
@@ -74,12 +80,16 @@ sealed interface Dependency
  *       - `kotlin("kapt")`
  *    - alias invocations for Gradle's type-safe catalogs
  *       - `alias(libs.plugins.anvil)`
+ * @since 0.12.0
  */
 data class PluginDependency(
   val accessor: PluginAccessor
 ) : Dependency {
   companion object {
-    /** @return a [PluginDependency] wrapping the [PluginAccessor] receiver */
+    /**
+     * @return a [PluginDependency] wrapping the [PluginAccessor] receiver
+     * @since 0.12.0
+     */
     fun PluginAccessor.toPluginDependency(): PluginDependency = PluginDependency(this)
   }
 }

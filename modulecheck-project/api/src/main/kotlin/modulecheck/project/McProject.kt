@@ -65,7 +65,11 @@ interface McProject :
   val logger: McLogger
   val jvmFileProviderFactory: JvmFileProvider.Factory
 
-  /** The Java version used to compile this project */
+  /**
+   * The Java version used to compile this project
+   *
+   * @since 0.12.0
+   */
   val jvmTarget: JvmTarget
 
   override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
@@ -73,6 +77,7 @@ interface McProject :
   /**
    * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
    *   [sourceSetName]
+   * @since 0.12.0
    */
   suspend fun resolveFqNameOrNull(
     declaredName: QualifiedDeclaredName,

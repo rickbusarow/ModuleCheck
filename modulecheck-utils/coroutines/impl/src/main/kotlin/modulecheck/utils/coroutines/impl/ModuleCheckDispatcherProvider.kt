@@ -26,6 +26,8 @@ import javax.inject.Inject
 
 /**
  * Uses a [LimitedDispatcher] as the [default] in order to keep things "fair" and limit heap size.
+ *
+ * @since 0.12.0
  */
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)

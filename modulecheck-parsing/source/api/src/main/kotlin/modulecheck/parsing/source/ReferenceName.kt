@@ -22,27 +22,55 @@ import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.unsafeLazy
 
-/** Marker which indicates that [references] exist. Typically implemented by "file" types */
+/**
+ * Marker which indicates that [references] exist. Typically implemented by "file" types
+ *
+ * @since 0.12.0
+ */
 interface HasReferences {
 
-  /** The references in this object, calculated lazily */
+  /**
+   * The references in this object, calculated lazily
+   *
+   * @since 0.12.0
+   */
   val references: LazySet<ReferenceName>
 }
 
-/** Represents a name -- fully qualified or not -- which references a declaration somewhere else */
+/**
+ * Represents a name -- fully qualified or not -- which references a declaration somewhere else
+ *
+ * @since 0.12.0
+ */
 sealed class ReferenceName : McName {
-  /** The [language][CompatibleLanguage] of the file making this reference */
+  /**
+   * The [language][CompatibleLanguage] of the file making this reference
+   *
+   * @since 0.12.0
+   */
   abstract val language: CompatibleLanguage
 
   override val segments: List<String> by unsafeLazy { name.split('.') }
 
-  /** This reference is from a Java source file */
+  /**
+   * This reference is from a Java source file
+   *
+   * @since 0.12.0
+   */
   fun isJava() = language == JAVA
 
-  /** This reference is from a Kotlin source file */
+  /**
+   * This reference is from a Kotlin source file
+   *
+   * @since 0.12.0
+   */
   fun isKotlin() = language == KOTLIN
 
-  /** This reference is from an xml source file */
+  /**
+   * This reference is from an xml source file
+   *
+   * @since 0.12.0
+   */
   @Suppress("GrazieInspection")
   fun isXml() = language == XML
 
@@ -74,7 +102,10 @@ sealed class ReferenceName : McName {
   }
 
   companion object {
-    /** @return a basic [ReferenceName] for this name and language. */
+    /**
+     * @return a basic [ReferenceName] for this name and language.
+     * @since 0.12.0
+     */
     operator fun invoke(
       name: String,
       language: CompatibleLanguage

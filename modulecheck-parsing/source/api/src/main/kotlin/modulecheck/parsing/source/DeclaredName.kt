@@ -25,13 +25,19 @@ import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqNam
 import modulecheck.utils.lazy.unsafeLazy
 import org.jetbrains.kotlin.name.FqName
 
-/** Represents a "declaration" -- a named object which can be referenced elsewhere. */
+/**
+ * Represents a "declaration" -- a named object which can be referenced elsewhere.
+ *
+ * @since 0.12.0
+ */
 sealed interface DeclaredName : McName, HasSimpleNames {
 
   /**
    * The languages with which this declaration is compatible. For instance, a member property will
    * typically have a [KOTLIN] declaration using property access syntax, but will also have a
    * [JAVA]/[XML] declaration for setter and getter functions.
+   *
+   * @since 0.12.0
    */
   val languages: Set<CompatibleLanguage> get() = setOf(KOTLIN, JAVA, XML)
 
@@ -41,6 +47,7 @@ sealed interface DeclaredName : McName, HasSimpleNames {
      * Shorthand for creating a [QualifiedDeclaredName] which is only accessible from Kotlin files.
      *
      * @see McName.CompatibleLanguage.KOTLIN
+     * @since 0.12.0
      */
     fun kotlin(
       packageName: PackageName,
@@ -57,6 +64,7 @@ sealed interface DeclaredName : McName, HasSimpleNames {
      *
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.XML
+     * @since 0.12.0
      */
     fun java(
       packageName: PackageName,
@@ -74,6 +82,7 @@ sealed interface DeclaredName : McName, HasSimpleNames {
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.KOTLIN
      * @see McName.CompatibleLanguage.XML
+     * @since 0.12.0
      */
     fun agnostic(
       packageName: PackageName,
@@ -86,7 +95,11 @@ sealed interface DeclaredName : McName, HasSimpleNames {
   }
 }
 
-/** Represents a "declaration" -- a named object which can be referenced elsewhere. */
+/**
+ * Represents a "declaration" -- a named object which can be referenced elsewhere.
+ *
+ * @since 0.12.0
+ */
 sealed class QualifiedDeclaredName : DeclaredName, McName, HasPackageName, HasSimpleNames {
 
   override val name: String
@@ -134,6 +147,7 @@ internal class QualifiedDeclaredNameImpl(
 /**
  * @return a [QualifiedDeclaredName], where the String after [packageName] is split and treated as
  *   the collection of [SimpleNames][SimpleName].
+ * @since 0.12.0
  */
 fun FqName.asDeclaredName(
   packageName: PackageName,
@@ -145,6 +159,7 @@ fun FqName.asDeclaredName(
 /**
  * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
  *   [SimpleNames][SimpleName]
+ * @since 0.12.0
  */
 fun Iterable<SimpleName>.asDeclaredName(
   packageName: PackageName,

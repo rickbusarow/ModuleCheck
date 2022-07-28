@@ -36,6 +36,8 @@ import javax.inject.Inject
  * The files created from this factory are backed by a meaningful
  * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which is aware of the full
  * classpath and may be used for type resolution.
+ *
+ * @since 0.13.0
  */
 class RealMcPsiFileFactory(
   private val kotlinEnvironment: KotlinEnvironment
@@ -71,7 +73,11 @@ class RealMcPsiFileFactory(
     }
   }
 
-  /** Creates an instance of [McPsiFileFactory] */
+  /**
+   * Creates an instance of [McPsiFileFactory]
+   *
+   * @since 0.13.0
+   */
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor() : McPsiFileFactory.Factory {
     override fun create(

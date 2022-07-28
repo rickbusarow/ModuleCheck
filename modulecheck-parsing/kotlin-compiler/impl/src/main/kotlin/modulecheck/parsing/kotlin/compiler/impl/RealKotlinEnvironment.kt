@@ -72,6 +72,7 @@ import javax.inject.Inject
  * @property safeAnalysisResultAccess provides thread-safe, "leased" access to the ModuleDescriptors
  *   of dependencies, since only one downstream project can safely
  *   consume (and update the cache of) a descriptor at any given time
+ * @since 0.13.0
  */
 @Suppress("LongParameterList")
 class RealKotlinEnvironment(
@@ -142,7 +143,11 @@ class RealKotlinEnvironment(
     analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
-  /** Dagger implementation for [KotlinEnvironmentFactory] */
+  /**
+   * Dagger implementation for [KotlinEnvironmentFactory]
+   *
+   * @since 0.13.0
+   */
   @ContributesBinding(AppScope::class)
   class Factory @Inject constructor(
     private val safeAnalysisResultAccess: SafeAnalysisResultAccess
@@ -254,6 +259,8 @@ private fun createKotlinCoreEnvironment(
 
 /**
  * https://github.com/pinterest/ktlint/blob/69cc0f7f826e18d7ec20e7a0f05df12d53a3c1e1/ktlint-core/src/main/kotlin/com/pinterest/ktlint/core/internal/KotlinPsiFileFactory.kt#L70
+ *
+ * @since 0.13.0
  */
 private class ModuleCheckPomModel : UserDataHolderBase(), PomModel {
 

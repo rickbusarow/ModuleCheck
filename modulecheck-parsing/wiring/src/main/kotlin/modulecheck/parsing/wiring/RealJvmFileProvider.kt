@@ -45,12 +45,17 @@ import javax.inject.Provider
  *
  * The Psi file cache re-uses Psi files because they have internal caching used internally by the
  * compilation object.
+ *
+ * @since 0.12.0
  */
 @SingleIn(AppScope::class)
 class JvmFileCache @Inject constructor() {
   private val delegate = SafeCache<File, JvmFile>(listOf(JvmFileCache::class))
 
-  /** @return a cached [JvmFile], or creates and caches a new one using [default] */
+  /**
+   * @return a cached [JvmFile], or creates and caches a new one using [default]
+   * @since 0.12.0
+   */
   suspend fun getOrPut(
     file: File,
     default: suspend () -> JvmFile

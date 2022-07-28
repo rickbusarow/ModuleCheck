@@ -18,7 +18,11 @@ package modulecheck.testing
 import hermit.test.ResetManager
 import org.junit.jupiter.api.DynamicTest
 
-/** Different functions for creating dynamic tests. */
+/**
+ * Different functions for creating dynamic tests.
+ *
+ * @since 0.12.0
+ */
 interface DynamicTests : ResetManager {
 
   fun <T : Any> Iterable<() -> T>.dynamic(
@@ -37,6 +41,7 @@ interface DynamicTests : ResetManager {
   /**
    * @return a collection of [DynamicTest], named after [testName] for each test and executing the
    *   logic within [test]
+   * @since 0.12.0
    */
   fun <T : Any> Sequence<T>.dynamic(
     testName: (T) -> String = { it.toString() },
@@ -46,6 +51,7 @@ interface DynamicTests : ResetManager {
   /**
    * @return a collection of [DynamicTest], named after [testName] for each test and executing the
    *   logic within [test]
+   * @since 0.12.0
    */
   fun <T : Any> Iterable<T>.dynamic(
     testName: (T) -> String = { it.toString() },

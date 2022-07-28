@@ -20,6 +20,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 /**
  * An abstract marker representing the `limitParallelism(...)` functionality in coroutines 1.6.x,
  * which is forked here
+ *
+ * @since 0.12.0
  */
 @Suppress("UnnecessaryAbstractClass")
 abstract class LimitedDispatcher : CoroutineDispatcher()
