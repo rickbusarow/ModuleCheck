@@ -2,7 +2,7 @@ com.github.ben-manes.caffeine:caffeine:3.1.1
 com.github.javaparser:javaparser-core:3.24.2
 com.github.javaparser:javaparser-symbol-solver-core:3.24.2
 com.google.code.findbugs:jsr305:3.0.2
-com.google.dagger:dagger:2.42
+com.google.dagger:dagger:2.43
 com.google.errorprone:error_prone_annotations:2.14.0
 com.google.guava:failureaccess:1.0.1
 com.google.guava:guava:31.1-jre
