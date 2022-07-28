@@ -41,6 +41,7 @@ inline fun <T> Iterable<T>.filterToSet(
   return filterTo(destination, predicate)
 }
 
+/** shorthand for `mapTo(destination, transform)` */
 inline fun <C : Collection<T>, T, R> C.mapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> R
@@ -48,6 +49,7 @@ inline fun <C : Collection<T>, T, R> C.mapToSet(
   return mapTo(destination, transform)
 }
 
+/** shorthand for `flatMapTo(destination, transform)` */
 inline fun <T, R> Iterable<T>.flatMapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> Iterable<R>
@@ -55,11 +57,20 @@ inline fun <T, R> Iterable<T>.flatMapToSet(
   return flatMapTo(destination, transform)
 }
 
+/** shorthand for `flatMapTo(destination, transform)` */
 inline fun <T, R> Sequence<T>.flatMapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> Iterable<R>
 ): Set<R> {
   return flatMapTo(destination, transform)
+}
+
+/** shorthand for `mapTo(destination, transform)` */
+inline fun <T, R> Sequence<T>.mapToSet(
+  destination: MutableSet<R> = mutableSetOf(),
+  transform: (T) -> R
+): Set<R> {
+  return mapTo(destination, transform)
 }
 
 /**

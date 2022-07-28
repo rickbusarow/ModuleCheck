@@ -46,6 +46,7 @@ class TaskLifecycleTest : BaseGradleTest() {
       task(":moduleCheck")!!.outcome shouldBe SUCCESS
 
       tasks shouldBe listOf(
+        task(":resolveExternalDependencies"),
         task(":moduleCheck"),
         task(":check")
       )
@@ -79,6 +80,7 @@ class TaskLifecycleTest : BaseGradleTest() {
       task(":moduleCheck")!!.outcome shouldBe SUCCESS
 
       tasks shouldBe listOf(
+        task(":resolveExternalDependencies"),
         task(":moduleCheck"),
         task(":check")
       )

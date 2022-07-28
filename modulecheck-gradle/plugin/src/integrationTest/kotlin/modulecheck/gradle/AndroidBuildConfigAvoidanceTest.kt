@@ -38,6 +38,9 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
             targetSdkVersion(30)
           }
         }
+        dependencies {
+          implementation("com.google.auto:auto-common:1.2.1")
+        }
         """
         }
       }

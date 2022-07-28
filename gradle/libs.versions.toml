@@ -147,6 +147,9 @@ kotest-runner = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "
 
 kotlin-annotation-processing = { module = "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable", version.ref = "kotlin" }
 kotlin-compiler = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-compiler-embeddable = { module = "org.jetbrains.kotlin:kotlin-compiler-embeddable", version.ref = "kotlin" }
+kotlin-compiler-frontend = { module = "org.jetbrains.kotlin:kotlin-compiler-frontend", version.ref = "kotlin" }
+kotlin-compiler-runner = { module = "org.jetbrains.kotlin:kotlin-compiler-runner", version.ref = "kotlin" }
 kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }

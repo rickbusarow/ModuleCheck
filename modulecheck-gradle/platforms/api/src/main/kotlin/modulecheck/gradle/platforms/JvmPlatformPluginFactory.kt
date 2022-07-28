@@ -18,8 +18,13 @@ package modulecheck.gradle.platforms
 import modulecheck.model.dependency.JvmPlatformPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
+import modulecheck.model.dependency.McConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.utils.flatMapToSet
+import org.gradle.api.artifacts.ExternalModuleDependency
+import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+import java.io.File
 import javax.inject.Inject
 
 class JvmPlatformPluginFactory @Inject constructor(
@@ -50,3 +55,28 @@ class JvmPlatformPluginFactory @Inject constructor(
 
 fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
   extensions.findByName("kotlin") as? KotlinProjectExtension
+
+/** shorthand for `extensions.findByType(JavaPluginExtension::class.java)` */
+fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
+  extensions.findByType(JavaPluginExtension::class.java)
+
+/**
+ * returns a [Lazy][kotlin.Lazy] set of all external dependency files for a list of configurations
+ *
+ * NB This is technically unsafe, in that it assumes the files have all been resolved already. If
+ * they need to be resolved still, it may happen on a non-Gradle thread, which causes an exception.
+ */
+fun List<McConfiguration>.classpathLazy(
+  gradleProject: GradleProject
+): Lazy<Set<File>> {
+  return lazy {
+    this.map { (name) ->
+      gradleProject.configurations.getByName(name.value)
+    }
+      .flatMapToSet { gradleConfiguration ->
+        gradleConfiguration.fileCollection { dep ->
+          dep is ExternalModuleDependency
+        }
+      }
+  }
+}

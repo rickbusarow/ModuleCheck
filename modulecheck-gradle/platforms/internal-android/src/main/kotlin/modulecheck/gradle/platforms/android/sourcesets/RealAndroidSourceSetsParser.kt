@@ -37,6 +37,7 @@ import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.McSourceSet
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.SourceSets
@@ -48,12 +49,12 @@ import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
+import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
-import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
 
@@ -399,20 +400,18 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.value }
           .plus(name)
           .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-          .flatMap { variant ->
+          .flatMapToSet { variant ->
             sequenceOf(
               variant.compileConfiguration,
               variant.runtimeConfiguration
             )
               .flatMap { config ->
-                config.fileCollection { dependency ->
-                  dependency is ExternalModuleDependency
-                }
-                  .mapNotNull { it.existsOrNull() }
+                val resolved = config.resolvedConfiguration
+                val lenient = resolved.lenientConfiguration
+                lenient.getFiles { it is ExternalDependency }
               }
               .toSet()
           }
-          .toList()
       }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
