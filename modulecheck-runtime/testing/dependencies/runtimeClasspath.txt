@@ -47,8 +47,8 @@ org.antlr:antlr-runtime:3.5.3
 org.antlr:antlr4-runtime:4.10.1
 org.antlr:antlr4:4.10.1
 org.checkerframework:checker-qual:3.22.0
-org.codehaus.groovy:groovy-xml:3.0.10
-org.codehaus.groovy:groovy:3.0.10
+org.codehaus.groovy:groovy-xml:3.0.12
+org.codehaus.groovy:groovy:3.0.12
 org.glassfish:javax.json:1.0.4
 org.javassist:javassist:3.28.0-GA
 org.jetbrains.intellij.deps:trove4j:1.0.20181211
