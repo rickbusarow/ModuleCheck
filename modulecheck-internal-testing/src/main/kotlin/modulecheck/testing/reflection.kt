@@ -25,6 +25,8 @@ import kotlin.reflect.jvm.isAccessible
  * Returns the full tree of classes which implement a base sealed class/interface, including
  * grandchildren, great-grandchildren, etc. This is different from [KClass.sealedSubclasses] in that
  * the latter only returns the direct children.
+ *
+ * @since 0.12.0
  */
 inline fun <reified T : Any> KClass<T>.sealedSubclassesRecursive(): Sequence<KClass<out T>> {
   return generateSequence(sealedSubclasses.asSequence()) { subs ->

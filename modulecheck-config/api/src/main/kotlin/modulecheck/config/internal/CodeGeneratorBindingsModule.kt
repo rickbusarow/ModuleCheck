@@ -25,6 +25,8 @@ import modulecheck.utils.mapToSet
 
 /**
  * Dagger bindings for [CodeGeneratorBinding]
+ *
+ * @since 0.12.0
  */
 @dagger.Module
 @ContributesTo(AppScope::class)
@@ -33,6 +35,7 @@ object CodeGeneratorBindingsModule {
   /**
    * @return the default [CodeGeneratorBindings][defaultCodeGeneratorBindings] with custom ones
    * defined in [ModuleCheckSettings]
+   * @since 0.12.0
    */
   @Provides
   fun provideCodeGeneratorBindings(

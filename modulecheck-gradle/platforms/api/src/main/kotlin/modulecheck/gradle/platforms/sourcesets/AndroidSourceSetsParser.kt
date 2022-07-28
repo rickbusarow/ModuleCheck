@@ -32,6 +32,7 @@ fun interface AndroidSourceSetsParser {
      *   `buildFeatures.testFixtures` is enabled in the extension
      * @param gradleProject the project being parsed
      * @return the [AndroidSourceSetsParser] for this project
+     * @since 0.12.0
      */
     @UnsafeDirectAgpApiReference
     fun create(

@@ -32,7 +32,11 @@ import modulecheck.utils.mapToSet
 import modulecheck.utils.trace.HasTraceTags
 import modulecheck.utils.trace.traced
 
-/** Processes projects in a set order, and automatically clears the cache of each */
+/**
+ * Processes projects in a set order, and automatically clears the cache of each
+ *
+ * @since 0.12.0
+ */
 class ProjectQueue(
   private val projects: List<McProject>
 ) : HasTraceTags {
@@ -40,7 +44,11 @@ class ProjectQueue(
   override val tags: Iterable<Any>
     get() = listOf(ProjectQueue::class)
 
-  /** Processes projects in a set order, and automatically clears the cache of each */
+  /**
+   * Processes projects in a set order, and automatically clears the cache of each
+   *
+   * @since 0.12.0
+   */
   fun <T> process(transform: suspend (project: McProject) -> T): Flow<T> {
 
     return channelFlow {
@@ -55,7 +63,11 @@ class ProjectQueue(
       // it's processed.
       val upstreamPending = projectsToDependencyPaths.toMutableMap()
 
-      /** Are there any projects still being processed which depend upon the receiver project? */
+      /**
+       * Are there any projects still being processed which depend upon the receiver project?
+       *
+       * @since 0.12.0
+       */
       fun McProject.hasRemainingDownstream() = upstreamPending.entries
         .none { it.value.contains(path) }
 
@@ -108,7 +120,11 @@ class ProjectQueue(
     }
   }
 
-  /** Prioritize the projects with the most dependencies */
+  /**
+   * Prioritize the projects with the most dependencies
+   *
+   * @since 0.12.0
+   */
   private suspend fun MutableMap<McProject, Set<StringProjectPath>>.sortByHierarchy(): List<McProject> {
 
     val pending = keys.mapAsync { project ->

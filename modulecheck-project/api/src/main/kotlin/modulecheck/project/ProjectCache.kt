@@ -38,6 +38,8 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    * ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared using the
    * derived type-safe variant. So, there are no cache misses when a project is already stored using
    * the String variant, but then we attempt to look it up via the type-safe one.
+   *
+   * @since 0.12.0
    */
   fun getOrPut(path: ProjectPath, defaultValue: () -> McProject): McProject {
     return delegate.getOrPut(path, defaultValue)

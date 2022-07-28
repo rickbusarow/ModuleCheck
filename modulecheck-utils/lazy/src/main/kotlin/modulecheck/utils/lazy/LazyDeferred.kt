@@ -31,6 +31,8 @@ import kotlinx.coroutines.sync.withLock
  *
  * suspend fun getExpensive() = expensive.await()
  * ```
+ *
+ * @since 0.12.0
  */
 interface LazyDeferred<out T> {
   val isCompleted: Boolean
@@ -48,6 +50,8 @@ interface LazyDeferred<out T> {
  *
  * suspend fun getExpensive() = expensive.await()
  * ```
+ *
+ * @since 0.12.0
  */
 fun <T> lazyDeferred(action: suspend () -> T): LazyDeferred<T> {
 

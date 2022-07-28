@@ -139,7 +139,11 @@ data class ModuleDependencyDeclaration(
     )
   }
 
-  /** replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"` */
+  /**
+   * replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"`
+   *
+   * @since 0.12.0
+   */
   private fun String.maybeFixExtraQuotes(): String {
     return replaceDestructured("\"\"([^\"]*)\"\"".toRegex()) { group1 ->
       "\"$group1\""
@@ -268,7 +272,11 @@ data class ExternalDependencyDeclaration(
     )
   }
 
-  /** replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"` */
+  /**
+   * replace any doubled up quotes with singles, like `""internalApi""` -> `"internalApi"`
+   *
+   * @since 0.12.0
+   */
   private fun String.maybeFixExtraQuotes(): String {
     return replaceDestructured("\"\"([^\"]*)\"\"".toRegex()) { group1 ->
       "\"$group1\""

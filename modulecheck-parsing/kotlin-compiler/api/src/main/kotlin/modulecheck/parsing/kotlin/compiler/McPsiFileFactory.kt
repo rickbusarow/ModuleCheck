@@ -20,13 +20,18 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 import java.io.FileNotFoundException
 
-/** Creates Kotlin and Java Psi files using a shared [KotlinEnvironment] */
+/**
+ * Creates Kotlin and Java Psi files using a shared [KotlinEnvironment]
+ *
+ * @since 0.13.0
+ */
 interface McPsiFileFactory {
 
   /**
    * @return a Psi `KtFile` for Kotlin files. The file extension must be `.kt` or `.kts`.
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
+   * @since 0.13.0
    */
   fun createKotlin(file: File): KtFile
 
@@ -34,13 +39,21 @@ interface McPsiFileFactory {
    * @return a Psi `PsiJavaFile` for Java files. The file extension must be `.java`.
    * @throws IllegalArgumentException if the [file] is an unsupported extension
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
+   * @since 0.13.0
    */
   fun createJava(file: File): PsiJavaFile
 
-  /** Creates an instance of [McPsiFileFactory] */
+  /**
+   * Creates an instance of [McPsiFileFactory]
+   *
+   * @since 0.13.0
+   */
   fun interface Factory {
 
-    /** @return an instance of [McPsiFileFactory] for the given [kotlinEnvironment] */
+    /**
+     * @return an instance of [McPsiFileFactory] for the given [kotlinEnvironment]
+     * @since 0.13.0
+     */
     fun create(kotlinEnvironment: KotlinEnvironment): McPsiFileFactory
   }
 }

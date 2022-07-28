@@ -42,6 +42,8 @@ import kotlin.random.Random
  * Thread-safe, "leased" access to
  * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult] creation and subsequent
  * [ModuleDescriptorImpl][org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl] access.
+ *
+ * @since 0.13.0
  */
 interface SafeAnalysisResultAccess {
 
@@ -49,6 +51,8 @@ interface SafeAnalysisResultAccess {
    * Suspends until all dependency module descriptors are available for use, then acquires locks for
    * all of them and performs [action]. No other project/source set will be able to read from those
    * analysis results, binding contexts, or module descriptors until [action] has completed.
+   *
+   * @since 0.13.0
    */
   suspend fun <T> withLeases(
     requester: HasAnalysisResult,
@@ -58,7 +62,11 @@ interface SafeAnalysisResultAccess {
   ): T
 }
 
-/** The only implementation of [SafeAnalysisResultAccess] */
+/**
+ * The only implementation of [SafeAnalysisResultAccess]
+ *
+ * @since 0.13.0
+ */
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
 class SafeAnalysisResultAccessImpl @Inject constructor(
@@ -222,6 +230,8 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
    *
    * As a bonus, this is also cheaper since we don't need to compare all the elements of the two
    * lists.
+   *
+   * @since 0.13.0
    */
   private class DifferentList(delegate: List<PendingRequest>) : List<PendingRequest> by delegate {
     @Suppress("EqualsAlwaysReturnsTrueOrFalse")
