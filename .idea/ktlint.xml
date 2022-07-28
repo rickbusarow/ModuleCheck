@@ -14,5 +14,10 @@
         <option value="experimental:type-parameter-list-spacing" />
       </list>
     </disabledRules>
+    <externalJarPaths>
+      <list>
+        <option value="ktlint-rules/build/libs/ktlint-rules.jar" />
+      </list>
+    </externalJarPaths>
   </component>
 </project>

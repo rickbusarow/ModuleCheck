@@ -49,6 +49,10 @@ extensions.configure(KtlintExtension::class.java) {
   }
 }
 
+dependencies {
+  "ktlintRuleset"(project(path = ":ktlint-rules"))
+}
+
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {
   workerMaxHeapSize.set("512m")
 }
