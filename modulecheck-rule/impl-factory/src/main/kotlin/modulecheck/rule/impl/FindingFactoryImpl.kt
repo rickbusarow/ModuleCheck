@@ -19,7 +19,6 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.flow.toList
-import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
 import modulecheck.finding.AddsDependency
@@ -40,17 +39,27 @@ import javax.inject.Inject
 @Module
 @ContributesTo(AppScope::class)
 interface FindingFactoryModule {
+  // TODO maybe take another stab at removing the generic Finding type from FindingFactory
   @Binds
-  fun MultiRuleFindingFactory.bindFindingFactory(): FindingFactory<out Finding>
+  fun FindingFactoryImpl.bindFindingFactory(): FindingFactory<out Finding>
 }
 
-class MultiRuleFindingFactory @Inject constructor(
-  private val settings: ModuleCheckSettings,
+/**
+ * Sorts rules and applies the appropriate types for each function. Sorting is stable and
+ * prioritizes modification rules so that they don't clobber each other.
+ *
+ * NB The incoming rules should already be filtered using [RuleFilter][modulecheck.rule.RuleFilter].
+ * The filtering done within this class should only be done with regard to categorizing rules up by
+ * fixable/sorts/reports categories.
+ *
+ * @since 0.12.0
+ */
+class FindingFactoryImpl @Inject constructor(
   private val rules: DaggerList<ModuleCheckRule<*>>
 ) : FindingFactory<Finding>, HasTraceTags {
 
   override val tags: Iterable<Any>
-    get() = listOf(MultiRuleFindingFactory::class)
+    get() = listOf(FindingFactoryImpl::class)
 
   override suspend fun evaluateFixable(projects: List<McProject>): List<Finding> {
     return evaluate(projects) { it !is SortRule && it !is ReportOnlyRule }
@@ -113,9 +122,7 @@ class MultiRuleFindingFactory @Inject constructor(
   ): List<Finding> {
     return ProjectQueue(projects)
       .process { project ->
-        rules.filter { rule ->
-          predicate(rule) && rule.shouldApply(settings)
-        }
+        rules.filter { rule -> predicate(rule) }
           .flatMap { rule ->
             traced(project, rule) { rule.check(project) }
           }

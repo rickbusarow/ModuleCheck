@@ -27,14 +27,12 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
-import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.RunnerComponent
 
 @SingleIn(AppScope::class)
 @MergeComponent(AppScope::class)
 interface TaskComponent : RunnerComponent, RulesComponent {
 
-  val multiRuleFindingFactory: MultiRuleFindingFactory
   val projectProvider: GradleProjectProvider
 
   @Component.Factory
