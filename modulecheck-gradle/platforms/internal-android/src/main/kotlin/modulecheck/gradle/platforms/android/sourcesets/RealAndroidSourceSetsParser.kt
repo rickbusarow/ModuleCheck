@@ -49,8 +49,6 @@ import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
-import modulecheck.utils.decapitalize
-import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
@@ -400,7 +398,7 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.value }
           .plus(name)
           .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-          .flatMapToSet { variant ->
+          .flatMap { variant ->
             sequenceOf(
               variant.compileConfiguration,
               variant.runtimeConfiguration
@@ -412,6 +410,7 @@ class RealAndroidSourceSetsParser private constructor(
               }
               .toSet()
           }
+          .toList()
       }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
