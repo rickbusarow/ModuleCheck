@@ -116,7 +116,6 @@
     <ID>UndocumentedPublicClass:ConfigurationsFactory.kt$ConfigurationsFactory</ID>
     <ID>UndocumentedPublicClass:ConfiguredDependency.kt$ConfiguredDependency : Dependency</ID>
     <ID>UndocumentedPublicClass:ConfiguredDependency.kt$Dependency</ID>
-    <ID>UndocumentedPublicClass:CoroutineScopeModule.kt$CoroutineScopeModule</ID>
     <ID>UndocumentedPublicClass:CoroutineScopeModule.kt$DispatcherProviderComponent</ID>
     <ID>UndocumentedPublicClass:CouldUseAnvilFinding.kt$CouldUseAnvilFinding : FindingFixable</ID>
     <ID>UndocumentedPublicClass:DIListener.kt$DIListener</ID>
@@ -166,6 +165,7 @@
     <ID>UndocumentedPublicClass:Finding.kt$ProjectDependencyFinding : ConfiguredDependencyFindingConfigurationFinding</ID>
     <ID>UndocumentedPublicClass:FindingFactory.kt$FindingFactory&lt;T : Finding></ID>
     <ID>UndocumentedPublicClass:FindingFactory.kt$RuleFilter</ID>
+    <ID>UndocumentedPublicClass:FindingFactoryImpl.kt$FindingFactoryModule</ID>
     <ID>UndocumentedPublicClass:FindingName.kt$FindingName</ID>
     <ID>UndocumentedPublicClass:FindingResultFactory.kt$FindingResultFactory</ID>
     <ID>UndocumentedPublicClass:Fixable.kt$Fixable : FindingProblem</ID>
@@ -195,7 +195,6 @@
     <ID>UndocumentedPublicClass:InvokesConfigurationNames.kt$InvokesConfigurationNames : PluginAwareHasBuildFileHasConfigurationsHasDependencyDeclarations</ID>
     <ID>UndocumentedPublicClass:JavaParserNodeResolver.kt$JavaParserNodeResolver</ID>
     <ID>UndocumentedPublicClass:JvmFile.kt$JavaFile : JvmFile</ID>
-    <ID>UndocumentedPublicClass:JvmFile.kt$JavaVersion</ID>
     <ID>UndocumentedPublicClass:JvmFile.kt$JvmFile : HasReferences</ID>
     <ID>UndocumentedPublicClass:JvmFile.kt$KotlinFile : JvmFile</ID>
     <ID>UndocumentedPublicClass:JvmFile.kt$KotlinFile$ScopeArgumentParseResult</ID>
@@ -262,8 +261,6 @@
     <ID>UndocumentedPublicClass:ModuleCheckSettings.kt$ReportSettings</ID>
     <ID>UndocumentedPublicClass:ModuleCheckSettings.kt$ReportsSettings</ID>
     <ID>UndocumentedPublicClass:ModuleCheckSettings.kt$SortSettings</ID>
-    <ID>UndocumentedPublicClass:MultiRuleFindingFactory.kt$FindingFactoryModule</ID>
-    <ID>UndocumentedPublicClass:MultiRuleFindingFactory.kt$MultiRuleFindingFactory : FindingFactoryHasTraceTags</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$InheritedDependencyWithSource</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$MustBeApi : SetElement</ID>
     <ID>UndocumentedPublicClass:MustBeApi.kt$MustBeApi$Key : Key</ID>
@@ -334,7 +331,6 @@
     <ID>UndocumentedPublicClass:RealDocsWebsiteUrlProvider.kt$RealSourceWebsiteUrlProvider : SourceWebsiteUrlProvider</ID>
     <ID>UndocumentedPublicClass:RealFindingResultFactory.kt$RealFindingResultFactory : FindingResultFactory</ID>
     <ID>UndocumentedPublicClass:RealJavaFile.kt$RealJavaFile : JavaFile</ID>
-    <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$FileCache</ID>
     <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$RealJvmFileProvider : JvmFileProvider</ID>
     <ID>UndocumentedPublicClass:RealJvmFileProvider.kt$RealJvmFileProvider$Factory : Factory</ID>
     <ID>UndocumentedPublicClass:RealJvmSourceSetsParser.kt$RealJvmSourceSetsParser : JvmSourceSetsParser</ID>
@@ -368,7 +364,6 @@
     <ID>UndocumentedPublicClass:SortDependenciesRule.kt$SortDependenciesRule : DocumentedRuleSortRule</ID>
     <ID>UndocumentedPublicClass:SortPluginsFinding.kt$SortPluginsFinding : FindingFixable</ID>
     <ID>UndocumentedPublicClass:SortPluginsRule.kt$SortPluginsRule : DocumentedRuleSortRule</ID>
-    <ID>UndocumentedPublicClass:SourceSet.kt$SourceSet : Comparable</ID>
     <ID>UndocumentedPublicClass:SourceSet.kt$SourceSetName</ID>
     <ID>UndocumentedPublicClass:SourceSet.kt$SourceSets : Map</ID>
     <ID>UndocumentedPublicClass:SourceSetDependencies.kt$SourceSetDependencies : Element</ID>
@@ -465,8 +460,6 @@
     <ID>UndocumentedPublicFunction:BaseTest.kt$BaseTest$fun File.relativePath()</ID>
     <ID>UndocumentedPublicFunction:BaseTest.kt$BaseTest$fun String.clean(): String</ID>
     <ID>UndocumentedPublicFunction:BaseTest.kt$BaseTest$fun test(action: suspend CoroutineScope.() -> Unit)</ID>
-    <ID>UndocumentedPublicFunction:BindingContext.kt$/* Borrowed from Detekt https://github.com/detekt/detekt/blob/master/detekt-parser/src/main/kotlin/io/github/detekt/parser/KotlinEnvironmentUtils.kt */ fun createKotlinCoreEnvironment( configuration: CompilerConfiguration = CompilerConfiguration(), disposable: Disposable = Disposer.newDisposable() ): KotlinCoreEnvironment</ID>
-    <ID>UndocumentedPublicFunction:BindingContext.kt$fun createBindingContext( classpath: List&lt;String>, files: List&lt;KtFile> ): BindingContext</ID>
     <ID>UndocumentedPublicFunction:BuildFileParser.kt$BuildFileParser$suspend fun androidSettings(): AndroidGradleSettings</ID>
     <ID>UndocumentedPublicFunction:BuildFileParser.kt$BuildFileParser$suspend fun dependenciesBlocks(): List&lt;DependenciesBlock></ID>
     <ID>UndocumentedPublicFunction:BuildFileParser.kt$BuildFileParser$suspend fun pluginsBlock(): PluginsBlock?</ID>
@@ -493,13 +486,6 @@
     <ID>UndocumentedPublicFunction:ConfigFactory.kt$ConfigFactory$fun create(t: T): Config</ID>
     <ID>UndocumentedPublicFunction:ConfigurationsFactory.kt$ConfigurationsFactory$fun create(gradleProject: GradleProject): Configurations</ID>
     <ID>UndocumentedPublicFunction:ConfiguredDependency.kt$ConfiguredDependency.Companion$inline fun &lt;reified T : ConfiguredDependency> T.copy( configurationName: ConfigurationName = this.configurationName, isTestFixture: Boolean = this.isTestFixture ): ConfiguredDependency</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideCoroutineScope(): CoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideDefaultCoroutineScope(): DefaultCoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideIOCoroutineScope(): IOCoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideMainCoroutineScope(): MainCoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideMainImmediateCoroutineScope(): MainImmediateCoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@Provides fun provideUnconfinedCoroutineScope(): UnconfinedCoroutineScope</ID>
-    <ID>UndocumentedPublicFunction:CoroutineScopeModule.kt$CoroutineScopeModule$@SingleIn(AppScope::class) @Provides fun provideDispatcherProvider(): DispatcherProvider</ID>
     <ID>UndocumentedPublicFunction:DIListener.kt$DIListener$fun onChanged(anvil: Boolean, dagger: Boolean)</ID>
     <ID>UndocumentedPublicFunction:Declarations.kt$Declarations$suspend fun all(): LazySet&lt;DeclaredName></ID>
     <ID>UndocumentedPublicFunction:Declarations.kt$Declarations$suspend fun get( sourceSetName: SourceSetName, includeUpstream: Boolean ): LazySet&lt;DeclaredName></ID>
@@ -544,6 +530,7 @@
     <ID>UndocumentedPublicFunction:FindingFactory.kt$FindingFactory$suspend fun evaluateReports(projects: List&lt;McProject>): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:FindingFactory.kt$FindingFactory$suspend fun evaluateSorts(projects: List&lt;McProject>): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:FindingFactory.kt$RuleFilter$fun shouldEvaluate(rule: ModuleCheckRule&lt;*>, settings: ModuleCheckSettings): Boolean</ID>
+    <ID>UndocumentedPublicFunction:FindingFactoryImpl.kt$FindingFactoryModule$// TODO maybe take another stab at removing the generic Finding type from FindingFactory @Binds fun FindingFactoryImpl.bindFindingFactory(): FindingFactory&lt;out Finding></ID>
     <ID>UndocumentedPublicFunction:FindingName.kt$FindingName.Companion$@Deprecated("This will be removed soon.") fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String?</ID>
     <ID>UndocumentedPublicFunction:FindingResultFactory.kt$FindingResultFactory$suspend fun create( findings: List&lt;Finding>, autoCorrect: Boolean, deleteUnused: Boolean ): List&lt;FindingResult></ID>
     <ID>UndocumentedPublicFunction:Fixable.kt$Fixable$fun fixLabel()</ID>
@@ -638,7 +625,6 @@
     <ID>UndocumentedPublicFunction:ModuleCheckRule.kt$ModuleCheckRule$suspend fun check(project: McProject): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:ModuleCheckRunner.kt$ModuleCheckRunner$fun run(projects: List&lt;McProject>): Result&lt;Unit></ID>
     <ID>UndocumentedPublicFunction:ModuleCheckRunner.kt$ModuleCheckRunner.Factory$fun create(autoCorrect: Boolean): ModuleCheckRunner</ID>
-    <ID>UndocumentedPublicFunction:MultiRuleFindingFactory.kt$FindingFactoryModule$@Binds fun MultiRuleFindingFactory.bindFindingFactory(): FindingFactory&lt;out Finding></ID>
     <ID>UndocumentedPublicFunction:MustBeApi.kt$suspend fun McProject.mustBeApiIn( dependentProject: McProject, sourceSetName: SourceSetName, isTestFixtures: Boolean ): Boolean</ID>
     <ID>UndocumentedPublicFunction:MustBeApi.kt$suspend fun ProjectContext.mustBeApi(): MustBeApi</ID>
     <ID>UndocumentedPublicFunction:NameParser.kt$NameParser$suspend fun parse(packet: NameParserPacket): NameParserPacket</ID>
@@ -683,7 +669,6 @@
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeResolved(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun FieldDeclaration.apiReferences(): List&lt;String></ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun MethodDeclaration.apiReferences(): List&lt;String></ID>
-    <ID>UndocumentedPublicFunction:RealJvmFileProvider.kt$FileCache$suspend fun getOrPut( file: File, default: suspend () -> JvmFile ): JvmFile</ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$RedundantDependencies$suspend fun all(): List&lt;RedundantDependency></ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$RedundantDependencies$suspend fun get(sourceSetName: SourceSetName): List&lt;RedundantDependency></ID>
     <ID>UndocumentedPublicFunction:RedundantDependencies.kt$suspend fun ProjectContext.redundantDependencies(): RedundantDependencies</ID>
@@ -738,7 +723,6 @@
     <ID>UndocumentedPublicFunction:Suppressions.kt$Suppressions$fun get(dependency: Dependency): Set&lt;FindingName></ID>
     <ID>UndocumentedPublicFunction:Suppressions.kt$Suppressions$fun get(findingName: FindingName): Set&lt;Dependency></ID>
     <ID>UndocumentedPublicFunction:Suppressions.kt$suspend fun &lt;T> T.getSuppressions(): Suppressions</ID>
-    <ID>UndocumentedPublicFunction:TaskComponent.kt$TaskComponent.Factory$fun create( @RootGradleProject @BindsInstance project: Project, @BindsInstance moduleCheckSettings: ModuleCheckSettings, @BindsInstance ruleFilter: RuleFilter, @BindsInstance projectRoot: ProjectRoot ): TaskComponent</ID>
     <ID>UndocumentedPublicFunction:TestSettings.kt$TestSettings$@Suppress("UNUSED") fun checks(block: ChecksSettings.() -> Unit)</ID>
     <ID>UndocumentedPublicFunction:TestSettings.kt$TestSettings$@Suppress("UNUSED") fun sort(block: SortSettings.() -> Unit)</ID>
     <ID>UndocumentedPublicFunction:TransitiveProjectDependency.kt$TransitiveProjectDependency$fun withContributedConfiguration( configurationName: ConfigurationName = source.configurationName ): TransitiveProjectDependency</ID>
@@ -784,18 +768,6 @@
     <ID>UndocumentedPublicFunction:file.kt$fun File.writeJava( @Language("java") content: String )</ID>
     <ID>UndocumentedPublicFunction:file.kt$fun File.writeKotlin( @Language("kotlin") content: String )</ID>
     <ID>UndocumentedPublicFunction:file.kt$fun Path.child(vararg childPath: String): File</ID>
-    <ID>UndocumentedPublicFunction:hermit.kt$fun Hermit.tempDir(path: String = UUID.randomUUID().toString()): LazyResets&lt;File></ID>
-    <ID>UndocumentedPublicFunction:hermit.kt$fun Hermit.tempFile(path: String = "temp.kt"): LazyResets&lt;File></ID>
-    <ID>UndocumentedPublicFunction:javaVersion.kt$@Suppress("UnstableApiUsage") fun GradleJavaVersion.toJavaVersion(): JavaVersion</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun Collection&lt;File>.ktFiles(): List&lt;KtFile></ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.asKotlinScriptFileOrNull(): KtFile?</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.asKtFile(): KtFile</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.asKtFileOrNull(): KtFile?</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.isKotlinFile(): Boolean</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.isKotlinScriptFile(): Boolean</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun File.isKtFile(): Boolean</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun KtFile( @Language("kotlin") content: String ): KtFile</ID>
-    <ID>UndocumentedPublicFunction:kotlinFiles.kt$fun KtFile( name: String, @Language("kotlin") content: String ): KtFile</ID>
     <ID>UndocumentedPublicFunction:ksp.kt$fun Project.applyKsp(useKsp: Boolean)</ID>
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtCallableDeclaration.isJvmStatic(): Boolean</ID>
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtFunction.jvmNameOrNull(): String?</ID>
@@ -989,8 +961,6 @@
     <ID>UndocumentedPublicProperty:InvokesConfigurationNames.kt$HasBuildFile$val buildFileParser: BuildFileParser</ID>
     <ID>UndocumentedPublicProperty:JvmFile.kt$JvmFile$val apiReferences: LazyDeferred&lt;Set&lt;ReferenceName>></ID>
     <ID>UndocumentedPublicProperty:JvmFile.kt$JvmFile$val importsLazy: Lazy&lt;Set&lt;ReferenceName>></ID>
-    <ID>UndocumentedPublicProperty:JvmFile.kt$JvmFile$val name: String</ID>
-    <ID>UndocumentedPublicProperty:JvmFile.kt$JvmFile$val packageName: PackageName</ID>
     <ID>UndocumentedPublicProperty:JvmFile.kt$KotlinFile.ScopeArgumentParseResult$val contributeArguments: Set&lt;RawAnvilAnnotatedType></ID>
     <ID>UndocumentedPublicProperty:JvmFile.kt$KotlinFile.ScopeArgumentParseResult$val mergeArguments: Set&lt;RawAnvilAnnotatedType></ID>
     <ID>UndocumentedPublicProperty:KaptMatcher.kt$KaptMatcher$val annotationImports: List&lt;String></ID>
@@ -1005,7 +975,6 @@
     <ID>UndocumentedPublicProperty:McLogger.kt$Report.ReportEntry$val message: String</ID>
     <ID>UndocumentedPublicProperty:McProject.kt$McProject$val anvilGradlePlugin: AnvilGradlePlugin?</ID>
     <ID>UndocumentedPublicProperty:McProject.kt$McProject$val externalDependencies: ExternalDependencies</ID>
-    <ID>UndocumentedPublicProperty:McProject.kt$McProject$val javaSourceVersion: JavaVersion</ID>
     <ID>UndocumentedPublicProperty:McProject.kt$McProject$val jvmFileProviderFactory: JvmFileProvider.Factory</ID>
     <ID>UndocumentedPublicProperty:McProject.kt$McProject$val logger: McLogger</ID>
     <ID>UndocumentedPublicProperty:McProject.kt$McProject$val projectDependencies: ProjectDependencies</ID>
@@ -1101,9 +1070,7 @@
     <ID>UndocumentedPublicProperty:PsiElementWithSurroundingText.kt$PsiElementWithSurroundingText$val psiElement: PsiElement</ID>
     <ID>UndocumentedPublicProperty:PsiElementWithSurroundingText.kt$PsiElementWithSurroundingText$val statementText: String = psiElement.text</ID>
     <ID>UndocumentedPublicProperty:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type$val extension: T</ID>
-    <ID>UndocumentedPublicProperty:RealJavaFile.kt$RealJavaFile$val file: File</ID>
     <ID>UndocumentedPublicProperty:RealKotlinFile.kt$RealKotlinFile$val constructorInjectedParams = lazyDeferred { referenceVisitor.constructorInjected.mapNotNull { psiResolver.declaredNameOrNull(it) }.toSet() }</ID>
-    <ID>UndocumentedPublicProperty:RealKotlinFile.kt$RealKotlinFile$val ktFile: KtFile</ID>
     <ID>UndocumentedPublicProperty:RedundantDependencyFinding.kt$RedundantDependency$val configurationName: ConfigurationName</ID>
     <ID>UndocumentedPublicProperty:RedundantDependencyFinding.kt$RedundantDependency$val dependency: ProjectDependency</ID>
     <ID>UndocumentedPublicProperty:RedundantDependencyFinding.kt$RedundantDependency$val dependentProject: McProject</ID>
@@ -1124,18 +1091,7 @@
     <ID>UndocumentedPublicProperty:SortDependenciesFinding.kt$SortDependenciesFinding.Companion$val NAME = FindingName("sort-dependencies")</ID>
     <ID>UndocumentedPublicProperty:SortPluginsFinding.kt$SortPluginsFinding$val comparator: Comparator&lt;PluginDeclaration></ID>
     <ID>UndocumentedPublicProperty:SortPluginsFinding.kt$SortPluginsFinding.Companion$val NAME = FindingName("sort-plugins")</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val annotationProcessorConfiguration: Config?</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val apiConfiguration: Config?</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val compileOnlyConfiguration: Config</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val downstream: List&lt;SourceSetName> by lazy { downstreamLazy.value }</ID>
     <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val hasExistingSourceFiles by lazy { jvmFiles.hasExistingFiles() || resourceFiles.hasExistingFiles() || layoutFiles.hasExistingFiles() }</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val implementationConfiguration: Config</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val jvmFiles: Set&lt;File></ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val layoutFiles: Set&lt;File></ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val name: SourceSetName</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val resourceFiles: Set&lt;File></ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val runtimeOnlyConfiguration: Config</ID>
-    <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSet$val upstream: List&lt;SourceSetName> by lazy { upstreamLazy.value }</ID>
     <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSetName$val value: String</ID>
     <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSetName.Companion$val ANDROID_TEST = SourceSetName("androidTest")</ID>
     <ID>UndocumentedPublicProperty:SourceSet.kt$SourceSetName.Companion$val ANVIL = SourceSetName("anvil")</ID>
@@ -1150,7 +1106,6 @@
     <ID>UndocumentedPublicProperty:SourceSetDependency.kt$SourceSetDependency.SourceSetExternalDependency$val group: String?</ID>
     <ID>UndocumentedPublicProperty:SourceSetDependency.kt$SourceSetDependency.SourceSetExternalDependency$val moduleName: String</ID>
     <ID>UndocumentedPublicProperty:SourceSetDependency.kt$SourceSetDependency.SourceSetExternalDependency$val version: String?</ID>
-    <ID>UndocumentedPublicProperty:TaskComponent.kt$TaskComponent$val multiRuleFindingFactory: MultiRuleFindingFactory</ID>
     <ID>UndocumentedPublicProperty:TaskComponent.kt$TaskComponent$val projectProvider: GradleProjectProvider</ID>
     <ID>UndocumentedPublicProperty:Trace.kt$HasTraceTags$val tags: Iterable&lt;Any></ID>
     <ID>UndocumentedPublicProperty:Trace.kt$Trace$abstract val depth: Int</ID>
@@ -1172,13 +1127,6 @@
     <ID>UndocumentedPublicProperty:XmlFile.kt$XmlFile.ManifestFile$val basePackage: PackageName? by lazy { AndroidManifestParser().parse(file)["package"]?.let { PackageName(it) } }</ID>
     <ID>UndocumentedPublicProperty:catalogs.kt$@Suppress("UnstableApiUsage") val Project.catalogs: VersionCatalogsExtension get() = extensions.getByType(VersionCatalogsExtension::class)</ID>
     <ID>UndocumentedPublicProperty:catalogs.kt$@Suppress("UnstableApiUsage") val Project.libsCatalog: VersionCatalog get() = catalogs.named("libs")</ID>
-    <ID>UndocumentedPublicProperty:psi.kt$val configuration = CompilerConfiguration().apply { put( CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, PrintingMessageCollector( System.err, MessageRenderer.PLAIN_FULL_PATHS, false ) ) }</ID>
-    <ID>UndocumentedPublicProperty:psi.kt$val psiFileFactory: PsiFileFactory = PsiFileFactory.getInstance(psiProject)</ID>
-    <ID>UndocumentedPublicProperty:publishing.kt$const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"</ID>
-    <ID>UndocumentedPublicProperty:publishing.kt$const val GROUP = "com.rickbusarow.modulecheck"</ID>
-    <ID>UndocumentedPublicProperty:publishing.kt$const val PLUGIN_ID = "com.rickbusarow.module-check"</ID>
-    <ID>UndocumentedPublicProperty:publishing.kt$const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"</ID>
-    <ID>UndocumentedPublicProperty:publishing.kt$const val VERSION_NAME = "0.13.0-SNAPSHOT"</ID>
     <ID>UnusedPrivateMember:Trace.kt$tags: Iterable&lt;Any></ID>
   </CurrentIssues>
 </SmellBaseline>

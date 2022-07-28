@@ -23,7 +23,7 @@ import kotlinx.coroutines.test.runTest
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.rule.impl.MultiRuleFindingFactory
+import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
 import modulecheck.utils.remove
@@ -114,7 +114,7 @@ internal class DepthOutputTest : RunnerTest() {
     }
 
     run(
-      findingFactory = MultiRuleFindingFactory(settings, rules)
+      findingFactory = FindingFactoryImpl(rules)
     ).isSuccess shouldBe true
 
     logger.collectReport()
