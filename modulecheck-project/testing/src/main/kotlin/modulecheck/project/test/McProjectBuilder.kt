@@ -241,7 +241,11 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     return file
   }
 
-  /** Replace Windows file separators with Unix ones, just for string comparison in tests */
+  /**
+   * Replace Windows file separators with Unix ones, just for string comparison in tests
+   *
+   * @since 0.12.0
+   */
   private fun String.fixFileSeparators(): String = replace("/", File.separator)
 
   fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addResourceFile(

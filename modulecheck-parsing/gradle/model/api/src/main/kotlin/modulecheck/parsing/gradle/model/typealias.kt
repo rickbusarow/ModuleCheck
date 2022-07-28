@@ -15,14 +15,30 @@
 
 package modulecheck.parsing.gradle.model
 
-/** [org.gradle.api.tasks.SourceSet] */
+/**
+ * [org.gradle.api.tasks.SourceSet]
+ *
+ * @since 0.12.0
+ */
 typealias GradleSourceSet = org.gradle.api.tasks.SourceSet
 
-/** [org.gradle.api.artifacts.Configuration] */
+/**
+ * [org.gradle.api.artifacts.Configuration]
+ *
+ * @since 0.12.0
+ */
 typealias GradleConfiguration = org.gradle.api.artifacts.Configuration
 
-/** [org.gradle.api.Project] */
+/**
+ * [org.gradle.api.Project]
+ *
+ * @since 0.12.0
+ */
 typealias GradleProject = org.gradle.api.Project
 
-/** [org.gradle.api.artifacts.ProjectDependency] */
+/**
+ * [org.gradle.api.artifacts.ProjectDependency]
+ *
+ * @since 0.12.0
+ */
 typealias GradleProjectDependency = org.gradle.api.artifacts.ProjectDependency

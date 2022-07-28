@@ -34,6 +34,7 @@ import modulecheck.utils.lazy.lazyDeferred
  * @property dependentProject the [McProject] declaring the dependency
  * @property oldDependency the [ConfiguredDependency] which adds the unused dependency
  * @property newDependency the [ConfiguredDependency] which should be added
+ * @since 0.12.0
  */
 data class OverShotDependency(
   val dependentProject: McProject,
@@ -44,6 +45,7 @@ data class OverShotDependency(
    * Converts the `OverShotDependency` to an [OverShotDependencyFinding].
    *
    * @return the finding matching this [OverShotDependency]
+   * @since 0.12.0
    */
   fun toFinding(): OverShotDependencyFinding = OverShotDependencyFinding(
     dependentProject = dependentProject,

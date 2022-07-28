@@ -27,6 +27,7 @@ import kotlin.io.path.name
  *
  * @property prefix 'string' in `R.string.app_name`
  * @property identifier 'app_name' in `R.string.app_name`
+ * @since 0.12.0
  */
 class UnqualifiedAndroidResource private constructor(
   val prefix: SimpleName,
@@ -42,6 +43,7 @@ class UnqualifiedAndroidResource private constructor(
   /**
    * @return the fully qualified name of a generated Android resource, like
    *   `com.example.R.string.app_name` from the combination of `com.example.R` and `R.string.app_name`
+   * @since 0.12.0
    */
   fun toQualifiedDeclaredName(
     androidRDeclaration: AndroidRDeclaredName
@@ -78,71 +80,138 @@ class UnqualifiedAndroidResource private constructor(
 
   companion object {
 
-    /** `R.anim.foo` */
+    /**
+     * `R.anim.foo`
+     *
+     * @since 0.12.0
+     */
     fun anim(identifier: SimpleName) =
       UnqualifiedAndroidResource("anim".asSimpleName(), identifier = identifier)
 
-    /** `R.animator.foo` */
+    /**
+     * `R.animator.foo`
+     *
+     * @since 0.12.0
+     */
     fun animator(identifier: SimpleName) =
       UnqualifiedAndroidResource("animator".asSimpleName(), identifier = identifier)
 
-    /** `R.array.foo` */
+    /**
+     * `R.array.foo`
+     *
+     * @since 0.12.0
+     */
     fun array(identifier: SimpleName) =
       UnqualifiedAndroidResource("array".asSimpleName(), identifier = identifier)
 
-    /** `R.bool.foo` */
+    /**
+     * `R.bool.foo`
+     *
+     * @since 0.12.0
+     */
     fun bool(identifier: SimpleName) =
       UnqualifiedAndroidResource("bool".asSimpleName(), identifier = identifier)
 
-    /** `R.color.foo` */
+    /**
+     * `R.color.foo`
+     *
+     * @since 0.12.0
+     */
     fun color(identifier: SimpleName) =
       UnqualifiedAndroidResource("color".asSimpleName(), identifier = identifier)
 
-    /** `R.dimen.foo` */
+    /**
+     * `R.dimen.foo`
+     *
+     * @since 0.12.0
+     */
     fun dimen(identifier: SimpleName) =
       UnqualifiedAndroidResource("dimen".asSimpleName(), identifier = identifier)
 
-    /** `R.drawable.foo` */
+    /**
+     * `R.drawable.foo`
+     *
+     * @since 0.12.0
+     */
     fun drawable(identifier: SimpleName) =
       UnqualifiedAndroidResource("drawable".asSimpleName(), identifier = identifier)
 
-    /** `R.font.foo` */
+    /**
+     * `R.font.foo`
+     *
+     * @since 0.12.0
+     */
     fun font(identifier: SimpleName) =
       UnqualifiedAndroidResource("font".asSimpleName(), identifier = identifier)
 
-    /** `R.id.foo` */
+    /**
+     * `R.id.foo`
+     *
+     * @since 0.12.0
+     */
     fun id(identifier: SimpleName) =
       UnqualifiedAndroidResource("id".asSimpleName(), identifier = identifier)
 
-    /** `R.integer.foo` */
+    /**
+     * `R.integer.foo`
+     *
+     * @since 0.12.0
+     */
     fun integer(identifier: SimpleName) =
       UnqualifiedAndroidResource("integer".asSimpleName(), identifier = identifier)
 
-    /** `R.layout.foo` */
+    /**
+     * `R.layout.foo`
+     *
+     * @since 0.12.0
+     */
     fun layout(identifier: SimpleName) =
       UnqualifiedAndroidResource("layout".asSimpleName(), identifier = identifier)
 
-    /** `R.menu.foo` */
+    /**
+     * `R.menu.foo`
+     *
+     * @since 0.12.0
+     */
     fun menu(identifier: SimpleName) =
       UnqualifiedAndroidResource("menu".asSimpleName(), identifier = identifier)
 
-    /** `R.mipmap.foo` */
+    /**
+     * `R.mipmap.foo`
+     *
+     * @since 0.12.0
+     */
     fun mipmap(identifier: SimpleName) =
       UnqualifiedAndroidResource("mipmap".asSimpleName(), identifier = identifier)
 
-    /** `R.raw.foo` */
+    /**
+     * `R.raw.foo`
+     *
+     * @since 0.12.0
+     */
     fun raw(identifier: SimpleName) =
       UnqualifiedAndroidResource("raw".asSimpleName(), identifier = identifier)
 
-    /** `R.string.foo` */
+    /**
+     * `R.string.foo`
+     *
+     * @since 0.12.0
+     */
     fun string(identifier: SimpleName) =
       UnqualifiedAndroidResource("string".asSimpleName(), identifier = identifier)
 
-    /** `R.style.foo` */
+    /**
+     * `R.style.foo`
+     *
+     * @since 0.12.0
+     */
     fun style(identifier: SimpleName) =
       UnqualifiedAndroidResource("style".asSimpleName(), identifier = identifier)
 
-    /** @return all resources declared within the given [file] */
+    /**
+     * @return all resources declared within the given [file]
+     * @since 0.12.0
+     */
     fun fromFile(file: File): UnqualifiedAndroidResource? {
       val dir = file.toPath().parent?.name ?: return null
       val name = file.nameWithoutExtension
@@ -162,7 +231,10 @@ class UnqualifiedAndroidResource private constructor(
       }
     }
 
-    /** @return `R.id.foo` for [type] `id` and [name] `foo` */
+    /**
+     * @return `R.id.foo` for [type] `id` and [name] `foo`
+     * @since 0.12.0
+     */
     fun fromValuePair(type: String, name: String): UnqualifiedAndroidResource? {
       val fixedName = name.replace('.', '_')
       return when (type.removePrefix("android:")) {
@@ -189,7 +261,10 @@ class UnqualifiedAndroidResource private constructor(
 
     private val REGEX = """"?@\+?(.*)\/(.*)"?""".toRegex()
 
-    /** @return a resource declaration from a string in XML, like `@+id/______` */
+    /**
+     * @return a resource declaration from a string in XML, like `@+id/______`
+     * @since 0.12.0
+     */
     fun fromXmlString(str: String): UnqualifiedAndroidResource? {
       val (prefix, name) = REGEX.find(str)?.destructured ?: return null
 

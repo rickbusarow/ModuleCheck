@@ -20,13 +20,15 @@ import modulecheck.utils.mapToSet
 /**
  * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
  *
- * @property name A descriptive name for this plugin, such as 'Kotlin kapt' or 'Android Gradle Plugin'
+ * @property name A descriptive name for this plugin, such as 'Kotlin kapt' or 'Android Gradle
+ *   Plugin'
  * @property qualifiedId The canonical ID for the plugin, like `org.jetbrains.kotlin.kapt`
  * @property legacyIdOrNull An older, "legacy" ID for the plugin like `kotlin-kapt`
  * @property precompiledAccessorOrNull A special accessor invoked like a property, with or without
  *   backticks, like `base`.
  * @property kotlinFunctionArgumentOrNull The `kotlin(...)` function used for official libraries in
  *   Kotlin DSL files, like `kotlin("kapt")`.
+ * @since 0.12.0
  */
 data class PluginDefinition(
   val name: String,
@@ -35,7 +37,11 @@ data class PluginDefinition(
   val precompiledAccessorOrNull: String?,
   val kotlinFunctionArgumentOrNull: String?
 ) {
-  /** All possible variations on an accessor for this plugin's ID. */
+  /**
+   * All possible variations on an accessor for this plugin's ID.
+   *
+   * @since 0.12.0
+   */
   val accessors by lazy {
 
     buildList {
@@ -79,6 +85,7 @@ data class PluginDefinition(
  *     - `alias(libs.plugins.anvil)`
  *
  * @property text the raw text used to create the declaration, without surrounding whitespace.
+ * @since 0.12.0
  */
 @JvmInline
 value class PluginAccessor(val text: String)

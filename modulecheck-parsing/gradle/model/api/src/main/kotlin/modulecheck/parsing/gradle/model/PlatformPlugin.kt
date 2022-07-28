@@ -28,6 +28,8 @@ import kotlin.contracts.contract
  * In Android projects, the Kotlin Android plugin *must* be added in order to use Kotlin. In this
  * case, kotlin is the implementation detail, since it's just enabling kotlin compilation in the
  * build configured by AGP.
+ *
+ * @since 0.12.0
  */
 sealed interface PlatformPlugin : HasConfigurations {
 
@@ -63,7 +65,11 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   val kotlinAndroidExtensionEnabled: Boolean
   val manifests: Map<SourceSetName, File>
 
-  /** All resource declarations -- without a package -- grouped by [SourceSetName] */
+  /**
+   * All resource declarations -- without a package -- grouped by [SourceSetName]
+   *
+   * @since 0.12.0
+   */
   val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>>
 
   interface CanDisableAndroidResources {

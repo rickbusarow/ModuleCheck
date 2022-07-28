@@ -26,7 +26,11 @@ import modulecheck.parsing.gradle.dsl.createDependencyDeclaration
 
 interface AddsDependency : Fixable {
 
-  /** The dependency to be added */
+  /**
+   * The dependency to be added
+   *
+   * @since 0.12.0
+   */
   val newDependency: ConfiguredDependency
 
   suspend fun addDependency(): Boolean {

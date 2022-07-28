@@ -23,6 +23,10 @@ data class PluginDeclaration(
   override val declarationText: String,
   override val suppressed: List<String>
 ) : BuildFileStatement {
-  /** All possible variations on an accessor for this plugin's ID. */
+  /**
+   * All possible variations on an accessor for this plugin's ID.
+   *
+   * @since 0.12.0
+   */
   val accessor: PluginAccessor by unsafeLazy { PluginAccessor(declarationText) }
 }

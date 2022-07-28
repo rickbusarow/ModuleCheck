@@ -26,14 +26,20 @@ class ExternalDependencyDeclarationVisitor(
   private val configuration: String,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "com.google.dagger"
+   *
+   * @since 0.12.0
    */
   group: String? = null,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "dagger"
+   *
+   * @since 0.12.0
    */
   name: String? = null,
   /**
    * In "com.google.dagger:dagger:2.32", this would be "2.32"
+   *
+   * @since 0.12.0
    */
   version: String? = null
 ) {

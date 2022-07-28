@@ -26,11 +26,17 @@ import javax.inject.Inject
  * 1. 'Static', project-independent information about AGP in the build classpath.
  * 2. A gateway to [SafeAgpApiReferenceScope], which allows access to AGP classes after it's
  *    verified that they exist in the classpath.
+ *
+ * @since 0.12.0
  */
 @SingleIn(AppScope::class)
 class AgpApiAccess @Inject constructor() {
 
-  /** Checks that [com.android.build.gradle.BasePlugin] is in the project's *build* classpath. */
+  /**
+   * Checks that [com.android.build.gradle.BasePlugin] is in the project's *build* classpath.
+   *
+   * @since 0.12.0
+   */
   val androidIsInClasspath by lazy {
     @Suppress("SwallowedException")
     try {
@@ -44,7 +50,11 @@ class AgpApiAccess @Inject constructor() {
     }
   }
 
-  /** The target project's AGP version, such as '7.0.4' or '7.1.3'. */
+  /**
+   * The target project's AGP version, such as '7.0.4' or '7.1.3'.
+   *
+   * @since 0.12.0
+   */
   val agpVersionOrNull by lazy {
     if (androidIsInClasspath) {
       // `com.android.builder.model.Version` shouldn't really be deprecated,
@@ -62,6 +72,7 @@ class AgpApiAccess @Inject constructor() {
    * @param action the action to perform if AGP is in the classpath and AGP is applied to this
    *   specific [project]
    * @return the output `T` of this [action], or `null` if AGP is not in the classpath
+   * @since 0.12.0
    */
   inline fun <T> ifSafeOrNull(
     project: GradleProject,
@@ -73,7 +84,10 @@ class AgpApiAccess @Inject constructor() {
   }
 }
 
-/** @return `true` if the project has a `com.android.*` plugin applied, else false */
+/**
+ * @return `true` if the project has a `com.android.*` plugin applied, else false
+ * @since 0.12.0
+ */
 fun GradleProject.isAndroid(
   agpApiAccess: AgpApiAccess
 ): Boolean {

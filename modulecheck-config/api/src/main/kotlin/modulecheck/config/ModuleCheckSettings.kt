@@ -27,6 +27,8 @@ interface ModuleCheckSettings {
    * If false, ModuleCheck will comment out declarations of unused dependencies.
    *
    * Default value is false.
+   *
+   * @since 0.12.0
    */
   var deleteUnused: Boolean
 
@@ -36,6 +38,8 @@ interface ModuleCheckSettings {
    * penalty.
    *
    * Default value is false
+   *
+   * @since 0.12.0
    */
   var trace: Boolean
 
@@ -49,6 +53,8 @@ interface ModuleCheckSettings {
    * ```
    *
    * If a module declares `:core` as a dependency but does not use it, no finding will be reported.
+   *
+   * @since 0.12.0
    */
   var ignoreUnusedFinding: Set<String>
 
@@ -56,10 +62,16 @@ interface ModuleCheckSettings {
    * Set of modules which will not be excluded from error reporting. The most common use-case would
    * be if the module is the root of a dependency graph, like an Android application module, and it
    * needs everything in its classpath for dependency injection purposes.
+   *
+   * @since 0.12.0
    */
   var doNotCheck: Set<String>
 
-  /** List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck. */
+  /**
+   * List of [KaptMatcher]'s to be checked, which aren't included by default with ModuleCheck.
+   *
+   * @since 0.12.0
+   */
   @Suppress("DEPRECATION")
   @Deprecated("use additionalCodeGenerators instead")
   var additionalKaptMatchers: List<KaptMatcher>
@@ -84,6 +96,8 @@ interface ModuleCheckSettings {
    *   )
    * }
    * ```
+   *
+   * @since 0.12.0
    */
   var additionalCodeGenerators: List<CodeGeneratorBinding>
 
@@ -91,7 +105,11 @@ interface ModuleCheckSettings {
 
   val sort: SortSettings
 
-  /** Configures reporting options */
+  /**
+   * Configures reporting options
+   *
+   * @since 0.12.0
+   */
   val reports: ReportsSettings
 }
 
@@ -153,19 +171,39 @@ interface ChecksSettings {
 
 interface ReportsSettings {
 
-  /** checkstyle-formatted xml report */
+  /**
+   * checkstyle-formatted xml report
+   *
+   * @since 0.12.0
+   */
   val checkstyle: ReportSettings
 
-  /** SARIF-formatted report */
+  /**
+   * SARIF-formatted report
+   *
+   * @since 0.12.0
+   */
   val sarif: ReportSettings
 
-  /** plain-text report file matching the console output */
+  /**
+   * plain-text report file matching the console output
+   *
+   * @since 0.12.0
+   */
   val text: ReportSettings
 
-  /** report of the depth for each source set for each module */
+  /**
+   * report of the depth for each source set for each module
+   *
+   * @since 0.12.0
+   */
   val depths: ReportSettings
 
-  /** create dependency graphs for each source set for each module */
+  /**
+   * create dependency graphs for each source set for each module
+   *
+   * @since 0.12.0
+   */
   val graphs: PerModuleReportSettings
 
   companion object {
