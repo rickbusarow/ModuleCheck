@@ -39,7 +39,7 @@ import modulecheck.reporting.sarif.SarifReportFactory
 import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.RuleFilter
-import modulecheck.rule.impl.MultiRuleFindingFactory
+import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.RealFindingResultFactory
 import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
@@ -57,7 +57,7 @@ abstract class RunnerTest : ProjectTest() {
     AllRulesComponent.create(settings, ruleFilter).allRules
   }
   open val findingFactory: FindingFactory<out Finding> by resets {
-    MultiRuleFindingFactory(settings, rules)
+    FindingFactoryImpl(rules)
   }
 
   override val codeGeneratorBindings: List<CodeGeneratorBinding>
