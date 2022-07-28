@@ -86,6 +86,7 @@ rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+  ":ktlint-rules",
   ":modulecheck-api",
   ":modulecheck-config:api",
   ":modulecheck-config:fake",

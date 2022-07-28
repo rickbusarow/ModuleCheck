@@ -18,7 +18,6 @@ import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import modulecheck.builds.libsCatalog
 import modulecheck.builds.version
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -35,6 +34,7 @@ val detektExcludes = listOf(
 
 tasks.withType<Detekt> {
 
+  autoCorrect = true
   parallel = true
   baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
   config.from(files("$rootDir/detekt/detekt-config.yml"))
