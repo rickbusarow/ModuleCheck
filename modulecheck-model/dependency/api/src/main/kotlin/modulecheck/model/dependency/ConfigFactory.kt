@@ -20,6 +20,8 @@ import modulecheck.utils.mapToSet
 
 class ConfigFactory<T : Any>(
   private val identifier: T.() -> String,
+  private val projectDependencies: T.() -> Set<ProjectDependency>,
+  private val externalDependencies: T.() -> Set<ExternalDependency>,
   private val allFactory: () -> Sequence<T>,
   private val extendsFrom: String.() -> List<T>
 ) {
@@ -27,6 +29,8 @@ class ConfigFactory<T : Any>(
 
     return McConfiguration(
       name = t.identifier().asConfigurationName(),
+      projectDependencies = projectDependencies(t),
+      externalDependencies = externalDependencies(t),
       upstreamSequence = t.withUpstream()
         .drop(1)
         .map { create(it) },

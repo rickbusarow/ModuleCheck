@@ -22,9 +22,11 @@ import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidTestPlugin
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.model.dependency.PlatformPlugin
+import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.SourceSets
 import modulecheck.model.sourceset.SourceSetName
@@ -38,7 +40,9 @@ interface PlatformPluginBuilder<T : PlatformPlugin> {
 
   fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): T
 }
 
@@ -49,7 +53,9 @@ data class JavaLibraryPluginBuilder(
 
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): JavaLibraryPlugin = JavaLibraryPlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -59,7 +65,16 @@ data class JavaLibraryPluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    )
   )
 }
 
@@ -69,7 +84,9 @@ data class KotlinJvmPluginBuilder(
 ) : PlatformPluginBuilder<KotlinJvmPlugin> {
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): KotlinJvmPlugin = KotlinJvmPlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -79,7 +96,16 @@ data class KotlinJvmPluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) })
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    )
   )
 }
 
@@ -102,7 +128,9 @@ data class AndroidApplicationPluginBuilder(
 ) : AndroidPlatformPluginBuilder<AndroidApplicationPlugin> {
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): AndroidApplicationPlugin = AndroidApplicationPlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -112,7 +140,16 @@ data class AndroidApplicationPluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    ),
     nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -134,7 +171,9 @@ data class AndroidLibraryPluginBuilder(
 ) : AndroidPlatformPluginBuilder<AndroidLibraryPlugin> {
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): AndroidLibraryPlugin = AndroidLibraryPlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -144,7 +183,16 @@ data class AndroidLibraryPluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    ),
     nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -167,7 +215,9 @@ data class AndroidDynamicFeaturePluginBuilder(
 ) : AndroidPlatformPluginBuilder<AndroidDynamicFeaturePlugin> {
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): AndroidDynamicFeaturePlugin = AndroidDynamicFeaturePlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -177,7 +227,16 @@ data class AndroidDynamicFeaturePluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    ),
     nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
@@ -199,7 +258,9 @@ data class AndroidTestPluginBuilder(
 ) : AndroidPlatformPluginBuilder<AndroidTestPlugin> {
   override fun toPlugin(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
-    projectPath: StringProjectPath
+    projectPath: StringProjectPath,
+    projectDependencies: ProjectDependencies,
+    externalDependencies: ExternalDependencies
   ): AndroidTestPlugin = AndroidTestPlugin(
     sourceSets = SourceSets(
       sourceSets.mapValues {
@@ -209,7 +270,16 @@ data class AndroidTestPluginBuilder(
         )
       }
     ),
-    configurations = Configurations(configurations.mapValues { it.value.toConfig(configFactory) }),
+    configurations = Configurations(
+      configurations.mapValues {
+        it.value.toConfig(
+          configFactory(
+            projectDependencies,
+            externalDependencies
+          )
+        )
+      }
+    ),
     nonTransientRClass = nonTransientRClass,
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,

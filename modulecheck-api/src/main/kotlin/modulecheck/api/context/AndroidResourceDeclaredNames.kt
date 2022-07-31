@@ -65,13 +65,12 @@ data class AndroidResourceDeclaredNames(
   }
 
   /**
+   * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This
+   *   includes:
    * - fully qualified generated resources like `com.example.R.string.app_name`
    * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
    * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
    * - R declarations, like `com.example.R`
-   *
-   * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This
-   *   includes:
    * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidResourceDeclaredName> {
@@ -147,12 +146,11 @@ suspend fun ProjectContext.androidResourceDeclaredNames(): AndroidResourceDeclar
   get(AndroidResourceDeclaredNames)
 
 /**
+ * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This includes:
  * - fully qualified generated resources like `com.example.R.string.app_name`
  * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
  * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
  * - R declarations, like `com.example.R`
- *
- * @return every [AndroidResourceDeclaredName] declared within this [sourceSetName]. This includes:
  * @since 0.12.0
  */
 suspend fun ProjectContext.androidResourceDeclaredNamesForSourceSetName(
