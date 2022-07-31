@@ -15,12 +15,7 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.MightHaveCodeGeneratorBinding
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.HasPath
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 
 /**
  * Represents a specific dependency upon an internal project dependency.
@@ -56,14 +51,14 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    * @property configurationName the configuration used
    * @property path the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
-   * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGeneratorBinding]
+   * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGenerator]
    * @since 0.12.0
    */
   class CodeGeneratorProjectDependency(
     override val configurationName: ConfigurationName,
     override val path: ProjectPath,
     override val isTestFixture: Boolean,
-    override val codeGeneratorBindingOrNull: CodeGeneratorBinding?
+    override val codeGeneratorBindingOrNull: CodeGenerator?
   ) : ProjectDependency(), MightHaveCodeGeneratorBinding
 
   /**
@@ -171,7 +166,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
   /**
    * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and a
-   * `List<CodeGeneratorBinding>` to look up a [CodeGeneratorBinding] in the event that the project
+   * `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the event that the project
    * dependency in question is an annotation processor.
    *
    * @since 0.12.0

@@ -16,19 +16,20 @@
 package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.ExternalDependencies
+import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.ProjectDependencies
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.model.dependency.impl.RealExternalDependencyFactory
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.model.dependency.javaConfigurationNames
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
-import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
@@ -47,8 +48,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
   val safeAnalysisResultAccess: SafeAnalysisResultAccess,
-  val projectDependencies: ProjectDependencies = ProjectDependencies(mutableMapOf()),
-  val externalDependencies: ExternalDependencies = ExternalDependencies(mutableMapOf()),
+  val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
+  val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
   var hasKapt: Boolean = false,
   var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,

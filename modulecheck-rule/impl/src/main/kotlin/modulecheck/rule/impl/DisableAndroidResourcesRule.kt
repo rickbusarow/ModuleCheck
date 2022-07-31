@@ -23,7 +23,7 @@ import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.android.UnusedResourcesGenerationFinding
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
 import modulecheck.project.project
 import modulecheck.utils.lazy.containsAny

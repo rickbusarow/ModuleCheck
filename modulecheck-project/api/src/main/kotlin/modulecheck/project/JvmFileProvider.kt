@@ -15,7 +15,7 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.JvmFile
 import java.io.File
 

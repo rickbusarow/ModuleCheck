@@ -15,11 +15,12 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.model.Config
-import modulecheck.parsing.gradle.model.ConfigFactory
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.asConfigurationName
+import modulecheck.model.dependency.ConfigFactory
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.McConfiguration
+import modulecheck.model.dependency.asConfigurationName
+import modulecheck.model.dependency.javaConfigurationNames
+import modulecheck.model.sourceset.SourceSetName
 
 data class ConfigBuilder(
   val name: ConfigurationName,
@@ -29,11 +30,11 @@ data class ConfigBuilder(
   fun toConfig(configFactory: ConfigFactory<String>) = configFactory.create(name.value)
 
   companion object {
-    fun fromConfig(config: Config): ConfigBuilder {
+    fun fromConfig(configuration: McConfiguration): ConfigBuilder {
       return ConfigBuilder(
-        config.name,
-        config.upstream.mapTo(mutableListOf()) { it.name },
-        config.downstream.mapTo(mutableListOf()) { it.name }
+        configuration.name,
+        configuration.upstream.mapTo(mutableListOf()) { it.name },
+        configuration.downstream.mapTo(mutableListOf()) { it.name }
       )
     }
   }

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
 import modulecheck.utils.decapitalize
 import modulecheck.utils.mapToSet
@@ -23,9 +23,9 @@ class ConfigFactory<T : Any>(
   private val allFactory: () -> Sequence<T>,
   private val extendsFrom: String.() -> List<T>
 ) {
-  fun create(t: T): Config {
+  fun create(t: T): McConfiguration {
 
-    return Config(
+    return McConfiguration(
       name = t.identifier().asConfigurationName(),
       upstreamSequence = t.withUpstream()
         .drop(1)
@@ -40,15 +40,17 @@ class ConfigFactory<T : Any>(
 
     return generateSequence(sequenceOf(this)) { configurations ->
       configurations
-        .flatMap {
+        .flatMap { t ->
 
-          if (it.identifier().startsWith("testFixtures")) {
-            val withoutPrefix = it.identifier().removePrefix("testFixtures").decapitalize()
+          val identifier = t.identifier()
 
-            withoutPrefix.extendsFrom()
-              .plus(it.identifier().extendsFrom())
+          if (identifier.startsWith("testFixtures")) {
+            identifier.removePrefix("testFixtures")
+              .decapitalize()
+              .extendsFrom()
+              .plus(identifier.extendsFrom())
           } else {
-            it.identifier().extendsFrom()
+            identifier.extendsFrom()
           }
         }
         .takeIf { it.iterator().hasNext() }

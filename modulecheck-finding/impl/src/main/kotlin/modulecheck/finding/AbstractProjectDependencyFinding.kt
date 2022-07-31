@@ -19,8 +19,8 @@ import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import java.io.File

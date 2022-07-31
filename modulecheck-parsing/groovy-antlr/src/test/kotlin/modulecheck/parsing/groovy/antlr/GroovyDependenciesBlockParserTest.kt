@@ -15,13 +15,13 @@
 
 package modulecheck.parsing.groovy.antlr
 
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.BaseTest
 import modulecheck.utils.child

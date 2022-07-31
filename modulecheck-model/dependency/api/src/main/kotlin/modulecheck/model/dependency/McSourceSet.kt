@@ -13,14 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
-import modulecheck.utils.capitalize
-import modulecheck.utils.decapitalize
 import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
+
+interface HasSourceSets {
+  val sourceSets: SourceSets
+}
+
+/**
+ * Cache of [sourceSets][McSourceSet], probably at the project level.
+ *
+ * @since 0.13.0
+ */
+class SourceSets(
+  delegate: Map<SourceSetName, McSourceSet>
+) : Map<SourceSetName, McSourceSet> by delegate
 
 /**
  * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
@@ -33,7 +45,7 @@ import java.io.File
  *   'api' for 'main' or 'debugApi' for 'debug'
  * @property implementationConfiguration the configuration name of this source set's
  *   'implementation' configuration, like 'implementation'
- *   for 'main' or 'debugImplementationpi' for 'debug'
+ *   for 'main' or 'debugImplementation' for 'debug'
  * @property runtimeOnlyConfiguration the configuration name of this source set's 'runtimeOnly'
  *   configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
  * @property annotationProcessorConfiguration the configuration name of this source set's
@@ -53,13 +65,13 @@ import java.io.File
  * @since 0.12.0
  */
 @Suppress("LongParameterList")
-class SourceSet(
+class McSourceSet(
   val name: SourceSetName,
-  val compileOnlyConfiguration: Config,
-  val apiConfiguration: Config?,
-  val implementationConfiguration: Config,
-  val runtimeOnlyConfiguration: Config,
-  val annotationProcessorConfiguration: Config?,
+  val compileOnlyConfiguration: McConfiguration,
+  val apiConfiguration: McConfiguration?,
+  val implementationConfiguration: McConfiguration,
+  val runtimeOnlyConfiguration: McConfiguration,
+  val annotationProcessorConfiguration: McConfiguration?,
   val jvmFiles: Set<File>,
   val resourceFiles: Set<File>,
   val layoutFiles: Set<File>,
@@ -67,17 +79,17 @@ class SourceSet(
   val kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
-) : Comparable<SourceSet> {
+) : Comparable<McSourceSet> {
 
   /**
-   * upstsream source set names
+   * upstream source set names
    *
    * @since 0.12.0
    */
   val upstream: List<SourceSetName> by upstreamLazy
 
   /**
-   * downstsream source set names
+   * downstream source set names
    *
    * @since 0.12.0
    */
@@ -109,7 +121,7 @@ class SourceSet(
    *
    * @since 0.12.0
    */
-  override fun compareTo(other: SourceSet): Int {
+  override fun compareTo(other: McSourceSet): Int {
 
     if (this == other) return 0
 
@@ -138,10 +150,10 @@ class SourceSet(
   }
 }
 
-fun Iterable<SourceSet>.names(): List<SourceSetName> = map { it.name }
-fun Sequence<SourceSet>.names(): Sequence<SourceSetName> = map { it.name }
+fun Iterable<McSourceSet>.names(): List<SourceSetName> = map { it.name }
+fun Sequence<McSourceSet>.names(): Sequence<SourceSetName> = map { it.name }
 
-fun Collection<SourceSet>.sortedByInheritance(): Sequence<SourceSet> {
+fun Collection<McSourceSet>.sortedByInheritance(): Sequence<McSourceSet> {
 
   val pending = sortedBy { it.upstream.size }.toMutableList()
   val history = mutableSetOf<SourceSetName>()
@@ -159,148 +171,28 @@ fun Collection<SourceSet>.sortedByInheritance(): Sequence<SourceSet> {
   }
 }
 
-@JvmInline
-value class SourceSetName(val value: String) {
+fun SourceSetName.withUpstream(
+  hasSourceSets: HasSourceSets
+): List<SourceSetName> = hasSourceSets.sourceSets[this]
+  ?.withUpstream()
+  .orEmpty()
 
-  fun isTestingOnly() = when {
-    this.value.startsWith(TEST_FIXTURES.value) -> false
-    this.value.startsWith(ANDROID_TEST.value) -> true
-    this.value.startsWith(TEST.value) -> true
-    else -> false
-  }
+fun SourceSetName.withDownStream(
+  hasSourceSets: HasSourceSets
+): List<SourceSetName> = hasSourceSets.sourceSets[this]
+  ?.withDownstream()
+  .orEmpty()
 
-  fun isTestOrAndroidTest() = when {
-    this.value.startsWith(ANDROID_TEST.value, ignoreCase = true) -> true
-    this.value.startsWith(TEST.value, ignoreCase = true) -> true
-    else -> false
-  }
+fun SourceSetName.inheritsFrom(
+  other: SourceSetName,
+  hasSourceSets: HasSourceSets
+): Boolean {
 
-  fun isTestFixtures() = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
+  // SourceSets can't inherit from themselves, so quit early and skip some lookups.
+  if (this == other) return false
 
-  fun nonTestSourceSetNameOrNull() = when {
-    isTestingOnly() -> null
-    value.endsWith(ANDROID_TEST.value, ignoreCase = true) -> {
-      value.removePrefix(ANDROID_TEST.value).decapitalize().asSourceSetName()
-    }
-
-    value.endsWith(TEST.value, ignoreCase = true) -> {
-      value.removePrefix(TEST.value).decapitalize().asSourceSetName()
-    }
-
-    this == TEST_FIXTURES -> MAIN
-    else -> this
-  }
-
-  fun javaConfigurationNames(): List<ConfigurationName> {
-
-    return if (this == MAIN) {
-      ConfigurationName.main()
-    } else {
-      ConfigurationName.mainConfigurations
-        .filterNot { it.asConfigurationName().isKapt() }
-        .map { "${this.value}${it.capitalize()}".asConfigurationName() }
-        .plus(kaptVariant())
-    }
-  }
-
-  fun apiConfig(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.api
-    } else {
-      "${value}Api".asConfigurationName()
-    }
-  }
-
-  fun implementationConfig(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.implementation
-    } else {
-      "${value}Implementation".asConfigurationName()
-    }
-  }
-
-  /**
-   * @return the 'kapt' name for this source set, such as `kapt`, `kaptTest`, or `kaptAndroidTest`
-   * @since 0.12.0
-   */
-  fun kaptVariant(): ConfigurationName {
-    return if (this == MAIN) {
-      ConfigurationName.kapt
-    } else {
-      "${ConfigurationName.kapt.value}${value.capitalize()}".asConfigurationName()
-    }
-  }
-
-  fun withUpstream(
-    hasConfigurations: HasConfigurations
-  ): List<SourceSetName> {
-    return hasConfigurations.sourceSets[this]
-      ?.withUpstream()
-      .orEmpty()
-  }
-
-  fun withDownStream(
-    hasConfigurations: HasConfigurations
-  ): List<SourceSetName> {
-    return hasConfigurations.sourceSets[this]
-      ?.withDownstream()
-      .orEmpty()
-  }
-
-  fun inheritsFrom(
-    other: SourceSetName,
-    hasConfigurations: HasConfigurations
-  ): Boolean {
-
-    // SourceSets can't inherit from themselves, so quit early and skip some lookups.
-    if (this == other) return false
-
-    return hasConfigurations.sourceSets[this]
-      ?.upstream
-      ?.contains(other)
-      ?: false
-  }
-
-  override fun toString(): String = "(SourceSetName) `$value`"
-
-  companion object {
-    val ANDROID_TEST = SourceSetName("androidTest")
-    val ANVIL = SourceSetName("anvil")
-    val DEBUG = SourceSetName("debug")
-    val KAPT = SourceSetName("kapt")
-    val MAIN = SourceSetName("main")
-    val RELEASE = SourceSetName("release")
-    val TEST = SourceSetName("test")
-    val TEST_FIXTURES = SourceSetName("testFixtures")
-  }
+  return hasSourceSets.sourceSets[this]
+    ?.upstream
+    ?.contains(other)
+    ?: false
 }
-
-fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
-
-class SourceSets(
-  delegate: Map<SourceSetName, SourceSet>
-) : Map<SourceSetName, SourceSet> by delegate
-
-fun SourceSetName.removePrefix(prefix: String) = value.removePrefix(prefix)
-  .decapitalize()
-  .asSourceSetName()
-
-fun SourceSetName.removePrefix(prefix: SourceSetName) = removePrefix(prefix.value)
-
-fun SourceSetName.hasPrefix(prefix: String) = value.startsWith(prefix)
-fun SourceSetName.hasPrefix(prefix: SourceSetName) = hasPrefix(prefix.value)
-
-fun SourceSetName.addPrefix(prefix: String) = prefix.plus(value.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.addPrefix(prefix: SourceSetName) = addPrefix(prefix.value)
-
-fun SourceSetName.removeSuffix(suffix: String) = value.removeSuffix(suffix.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.removeSuffix(suffix: SourceSetName) = removeSuffix(suffix.value.capitalize())
-
-fun SourceSetName.addSuffix(suffix: String) = value.plus(suffix.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.addSuffix(suffix: SourceSetName) = addSuffix(suffix.value)

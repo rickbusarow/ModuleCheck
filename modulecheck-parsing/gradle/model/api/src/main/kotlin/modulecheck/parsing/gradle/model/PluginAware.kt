@@ -15,6 +15,9 @@
 
 package modulecheck.parsing.gradle.model
 
+import modulecheck.model.dependency.PlatformPlugin
+import modulecheck.model.dependency.isAndroid
+
 interface PluginAware {
 
   val hasKapt: Boolean

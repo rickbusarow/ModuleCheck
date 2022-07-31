@@ -15,10 +15,6 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.Identifier
-import modulecheck.parsing.gradle.model.PluginAccessor
-
 sealed interface ConfiguredDependency : Dependency {
 
   val configurationName: ConfigurationName

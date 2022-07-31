@@ -19,8 +19,8 @@ import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.coroutines.mapAsync
@@ -63,7 +63,7 @@ import javax.inject.Inject
 /**
  * @property projectPath path of the associated Gradle project
  * @property sourceSetName name of the associated
- *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
+ *   [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
  * @property classpathFiles `.jar` files from external dependencies
  * @property sourceDirs all jvm source code directories for this source set, like
  *   `[...]/myProject/src/main/java`.

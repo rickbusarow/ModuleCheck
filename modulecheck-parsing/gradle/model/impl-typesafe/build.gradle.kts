@@ -28,6 +28,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
 
   api(project(path = ":modulecheck-dagger"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   compileOnly(gradleApi())

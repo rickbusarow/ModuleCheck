@@ -15,13 +15,13 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.all
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.ProjectContext.Element
+import modulecheck.utils.allValues
 import modulecheck.utils.cache.SafeCache
 
 data class KaptDependencies(
@@ -44,7 +44,7 @@ data class KaptDependencies(
       val external = project.externalDependencies[configurationName].orEmpty()
       val internal = project
         .projectDependencies
-        .all()
+        .allValues()
 
       val allDependencies = external + internal
 

@@ -13,18 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
-
-interface HasPath : HasIdentifier {
-  val path: ProjectPath
-  override val identifier: Identifier get() = path
+plugins {
+  id("mcbuild")
 }
 
-interface HasIdentifier {
-  val identifier: Identifier
+mcbuild {
+  artifactId = "modulecheck-model-sourceset-api"
+  anvil = true
 }
 
-interface HasMavenCoordinates : HasIdentifier {
-  val mavenCoordinates: MavenCoordinates
-  override val identifier: Identifier get() = mavenCoordinates
+dependencies {
+
+  api(libs.kotlinx.coroutines.core)
+  api(libs.kotlinx.coroutines.jvm)
+
+  compileOnly(gradleApi())
+
+  implementation(project(path = ":modulecheck-utils:stdlib"))
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 }

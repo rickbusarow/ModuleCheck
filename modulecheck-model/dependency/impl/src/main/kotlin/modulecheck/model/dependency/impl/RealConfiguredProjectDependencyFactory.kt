@@ -20,14 +20,14 @@ import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.CodeGeneratorBinding.AnnotationProcessor
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import javax.inject.Inject
 
 /**

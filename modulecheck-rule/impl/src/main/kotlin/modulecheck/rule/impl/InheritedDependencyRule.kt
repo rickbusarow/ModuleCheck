@@ -25,9 +25,13 @@ import modulecheck.finding.InheritedDependencyFinding
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.SourceSetDependency
 import modulecheck.model.dependency.TransitiveProjectDependency
+import modulecheck.model.dependency.implementationConfig
+import modulecheck.model.dependency.inheritsFrom
+import modulecheck.model.dependency.sortedByInheritance
 import modulecheck.model.dependency.toSourceSetDependency
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.sortedByInheritance
+import modulecheck.model.dependency.withDownStream
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project

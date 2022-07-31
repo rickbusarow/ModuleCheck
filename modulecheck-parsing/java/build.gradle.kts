@@ -25,7 +25,7 @@ dependencies {
 
   api(libs.kotlin.compiler)
 
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:lazy"))
@@ -43,6 +43,7 @@ dependencies {
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-model:dependency:api"))
   testImplementation(project(path = ":modulecheck-parsing:java"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-project:testing"))

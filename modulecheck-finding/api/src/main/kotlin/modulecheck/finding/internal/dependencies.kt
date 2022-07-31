@@ -19,14 +19,14 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.isGreaterThan
 import modulecheck.utils.prefixIfNot
@@ -67,7 +67,8 @@ fun McProject.addDependency(
  *
  * @param newDependency The dependency being added
  * @param matchPathFirst If true, matching project paths will be prioritized over matching
- *   configurations. If false, configuration matches will take priority over a matching project path.
+ *   configurations. If false, configuration matches will take priority over a matching project
+ *   path.
  * @return the closest matching declaration, or null if there are no declarations at all.
  * @since 0.12.0
  */

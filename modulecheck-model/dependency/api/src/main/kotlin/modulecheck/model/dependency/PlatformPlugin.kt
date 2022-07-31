@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File
 import kotlin.contracts.contract
@@ -31,7 +32,7 @@ import kotlin.contracts.contract
  *
  * @since 0.12.0
  */
-sealed interface PlatformPlugin : HasConfigurations {
+sealed interface PlatformPlugin : HasConfigurations, HasSourceSets {
 
   fun asAndroidOrNull(): AndroidPlatformPlugin? = this as? AndroidPlatformPlugin
 }

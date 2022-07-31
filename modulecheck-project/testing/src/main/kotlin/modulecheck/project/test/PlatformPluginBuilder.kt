@@ -15,19 +15,19 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.Configurations
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
-import modulecheck.parsing.gradle.model.PlatformPlugin
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
+import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
+import modulecheck.model.dependency.PlatformPlugin
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File

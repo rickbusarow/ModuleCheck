@@ -21,10 +21,11 @@ import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.model.dependency.CodeGenerator
 import modulecheck.utils.mapToSet
 
 /**
- * Dagger bindings for [CodeGeneratorBinding]
+ * Dagger bindings for [CodeGenerator]
  *
  * @since 0.12.0
  */
@@ -34,7 +35,7 @@ object CodeGeneratorBindingsModule {
 
   /**
    * @return the default [CodeGeneratorBindings][defaultCodeGeneratorBindings] with custom ones
-   * defined in [ModuleCheckSettings]
+   *   defined in [ModuleCheckSettings]
    * @since 0.12.0
    */
   @Provides
