@@ -143,10 +143,13 @@ inline fun <reified T : McProjectBuilder<P>,
       logger = PrintLogger(),
       jvmFileProviderFactory = jvmFileProviderFactory,
       jvmTarget = jvmTarget,
-      projectDependencies = lazy { projectDependencies },
-      externalDependencies = lazy { externalDependencies },
       buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
-      platformPlugin = platformPlugin.toPlugin(safeAnalysisResultAccess, projectPath = path)
+      platformPlugin = platformPlugin.toPlugin(
+        safeAnalysisResultAccess = safeAnalysisResultAccess,
+        projectPath = path,
+        projectDependencies = projectDependencies,
+        externalDependencies = externalDependencies
+      )
     )
   }
 }

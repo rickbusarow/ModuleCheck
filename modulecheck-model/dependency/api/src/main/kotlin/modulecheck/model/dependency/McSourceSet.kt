@@ -18,6 +18,7 @@ package modulecheck.model.dependency
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.utils.lazy.LazyDeferred
+import modulecheck.utils.sequenceOfNotNull
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
@@ -80,6 +81,34 @@ class McSourceSet(
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<McSourceSet> {
+
+  val configurations by lazy {
+    Configurations(
+      sequenceOfNotNull(
+        compileOnlyConfiguration,
+        apiConfiguration,
+        implementationConfiguration,
+        runtimeOnlyConfiguration,
+        annotationProcessorConfiguration
+      ).associateBy { it.name }
+    )
+  }
+
+  val projectDependencies: ProjectDependencies by lazy {
+    ProjectDependencies(
+      configurations.mapValues { (_, configuration) ->
+        configuration.projectDependencies
+      }
+    )
+  }
+
+  val externalDependencies: ExternalDependencies by lazy {
+    ExternalDependencies(
+      configurations.mapValues { (_, configuration) ->
+        configuration.externalDependencies
+      }
+    )
+  }
 
   /**
    * upstream source set names
