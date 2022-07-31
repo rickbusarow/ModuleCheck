@@ -15,10 +15,10 @@
 
 package modulecheck.project
 
-import modulecheck.parsing.gradle.model.AllProjectPathsProvider
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.model.dependency.AllProjectPathsProvider
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import java.io.File
 
 interface ProjectProvider : HasProjectCache, AllProjectPathsProvider {

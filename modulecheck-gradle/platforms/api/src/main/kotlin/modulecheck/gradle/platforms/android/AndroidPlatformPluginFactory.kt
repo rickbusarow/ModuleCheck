@@ -15,7 +15,7 @@
 
 package modulecheck.gradle.platforms.android
 
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin
 
 interface AndroidPlatformPluginFactory {
   /**

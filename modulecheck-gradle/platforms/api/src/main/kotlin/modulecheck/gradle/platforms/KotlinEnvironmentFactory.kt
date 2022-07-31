@@ -15,8 +15,8 @@
 
 package modulecheck.gradle.platforms
 
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion

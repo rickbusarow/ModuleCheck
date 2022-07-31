@@ -20,8 +20,8 @@ import modulecheck.finding.Finding
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

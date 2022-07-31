@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName

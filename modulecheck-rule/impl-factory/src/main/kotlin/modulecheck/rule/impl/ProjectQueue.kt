@@ -24,7 +24,7 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.sync.withPermit
 import modulecheck.api.context.depths
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.flatMapToSet

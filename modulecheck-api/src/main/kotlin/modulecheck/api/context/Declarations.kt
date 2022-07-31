@@ -20,7 +20,8 @@ import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
 import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache

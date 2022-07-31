@@ -18,7 +18,8 @@ package modulecheck.core.context
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
 import modulecheck.finding.RedundantDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.javaConfigurationNames
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

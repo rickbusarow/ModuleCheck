@@ -15,7 +15,7 @@
 
 package modulecheck.gradle
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.child
 import org.junit.jupiter.api.TestFactory
 import java.io.File

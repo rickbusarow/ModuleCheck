@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.mapNotNull
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.AnvilScopeNameEntry
 import modulecheck.parsing.source.JvmFile

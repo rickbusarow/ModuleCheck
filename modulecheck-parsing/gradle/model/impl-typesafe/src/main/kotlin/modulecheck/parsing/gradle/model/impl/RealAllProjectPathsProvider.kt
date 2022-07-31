@@ -18,9 +18,9 @@ package modulecheck.parsing.gradle.model.impl
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
-import modulecheck.parsing.gradle.model.AllProjectPathsProvider
+import modulecheck.model.dependency.AllProjectPathsProvider
+import modulecheck.model.dependency.ProjectPath
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.ProjectPath
 import javax.inject.Inject
 
 @ContributesBinding(AppScope::class)

@@ -13,9 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
-interface HasConfigurations {
-  val sourceSets: SourceSets
-  val configurations: Configurations
+interface HasPath : HasIdentifier {
+  val path: ProjectPath
+  override val identifier: Identifier get() = path
+}
+
+interface HasIdentifier {
+  val identifier: Identifier
+}
+
+interface HasMavenCoordinates : HasIdentifier {
+  val mavenCoordinates: MavenCoordinates
+  override val identifier: Identifier get() = mavenCoordinates
 }

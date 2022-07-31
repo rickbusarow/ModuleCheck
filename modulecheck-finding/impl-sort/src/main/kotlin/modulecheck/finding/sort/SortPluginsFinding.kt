@@ -20,14 +20,14 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.FindingName
 import modulecheck.finding.Fixable
 import modulecheck.finding.RemovesDependency.RemovalStrategy
+import modulecheck.model.dependency.ProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
 import modulecheck.parsing.gradle.dsl.PluginsBlock
-import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
-import org.jetbrains.kotlin.util.suffixIfNot
+import modulecheck.utils.suffixIfNot
 import java.io.File
 
 class SortPluginsFinding(

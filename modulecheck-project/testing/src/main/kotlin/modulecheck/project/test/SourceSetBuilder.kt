@@ -15,13 +15,13 @@
 
 package modulecheck.project.test
 
-import modulecheck.parsing.gradle.model.Config
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSet
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.removePrefix
-import modulecheck.parsing.gradle.model.removeSuffix
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.McConfiguration
+import modulecheck.model.dependency.McSourceSet
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.removePrefix
+import modulecheck.model.sourceset.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.testing.requireNotNullOrFail
@@ -35,11 +35,11 @@ import java.io.File
 
 data class SourceSetBuilder constructor(
   var name: SourceSetName,
-  var compileOnlyConfiguration: Config,
-  var apiConfiguration: Config?,
-  var implementationConfiguration: Config,
-  var runtimeOnlyConfiguration: Config,
-  var annotationProcessorConfiguration: Config?,
+  var compileOnlyConfiguration: McConfiguration,
+  var apiConfiguration: McConfiguration?,
+  var implementationConfiguration: McConfiguration,
+  var runtimeOnlyConfiguration: McConfiguration,
+  var annotationProcessorConfiguration: McConfiguration?,
   var jvmFiles: Set<File>,
   var resourceFiles: Set<File>,
   var layoutFiles: Set<File>,
@@ -54,7 +54,7 @@ data class SourceSetBuilder constructor(
   fun toSourceSet(
     safeAnalysisResultAccess: SafeAnalysisResultAccess,
     projectPath: StringProjectPath
-  ): SourceSet {
+  ): McSourceSet {
     val kotlinEnvironmentDeferred = lazyDeferred {
       RealKotlinEnvironment(
         projectPath = projectPath,
@@ -67,7 +67,7 @@ data class SourceSetBuilder constructor(
       )
     }
 
-    return SourceSet(
+    return McSourceSet(
       name = name,
       compileOnlyConfiguration = compileOnlyConfiguration,
       apiConfiguration = apiConfiguration,
@@ -85,7 +85,7 @@ data class SourceSetBuilder constructor(
   }
 
   companion object {
-    suspend fun fromSourceSet(sourceSet: SourceSet): SourceSetBuilder {
+    suspend fun fromSourceSet(sourceSet: McSourceSet): SourceSetBuilder {
       val kotlinEnvironment = sourceSet.kotlinEnvironmentDeferred.await() as RealKotlinEnvironment
 
       return SourceSetBuilder(

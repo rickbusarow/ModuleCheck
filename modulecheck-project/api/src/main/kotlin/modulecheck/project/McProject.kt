@@ -15,17 +15,20 @@
 
 package modulecheck.project
 
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.ExternalDependencies
+import modulecheck.model.dependency.HasConfigurations
+import modulecheck.model.dependency.HasPath
+import modulecheck.model.dependency.HasSourceSets
+import modulecheck.model.dependency.ProjectDependencies
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.dependency.isAndroid
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.HasBuildFile
 import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
-import modulecheck.parsing.gradle.model.Configurations
-import modulecheck.parsing.gradle.model.HasConfigurations
-import modulecheck.parsing.gradle.model.HasPath
 import modulecheck.parsing.gradle.model.PluginAware
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
-import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.reporting.logging.McLogger
@@ -40,6 +43,7 @@ interface McProject :
   HasProjectCache,
   HasBuildFile,
   HasConfigurations,
+  HasSourceSets,
   HasDependencyDeclarations,
   InvokesConfigurationNames,
   PluginAware {

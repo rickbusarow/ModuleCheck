@@ -17,7 +17,7 @@ package modulecheck.api.context
 
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.Found
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.NOT_PRESENT
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

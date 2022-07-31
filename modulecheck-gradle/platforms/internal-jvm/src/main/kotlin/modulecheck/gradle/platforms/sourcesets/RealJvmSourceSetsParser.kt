@@ -19,16 +19,16 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
-import modulecheck.parsing.gradle.model.Config
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.McConfiguration
+import modulecheck.model.dependency.McSourceSet
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.dependency.asConfigurationName
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.GradleSourceSet
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSet
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
-import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.requireNotNull
@@ -45,7 +45,7 @@ class RealJvmSourceSetsParser @Inject constructor(
     parsedConfigurations: Configurations,
     gradleProject: GradleProject
   ): SourceSets {
-    val map = buildMap<SourceSetName, SourceSet> {
+    val map = buildMap<SourceSetName, McSourceSet> {
       val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
 
       val javaExtension = gradleProject.extensions
@@ -101,7 +101,7 @@ class RealJvmSourceSetsParser @Inject constructor(
 
             put(
               kotlinSourceSet.name.asSourceSetName(),
-              SourceSet(
+              McSourceSet(
                 name = sourceSetName,
                 compileOnlyConfiguration = parsedConfigurations
                   .getValue(kotlinSourceSet.compileOnlyConfigurationName.asConfigurationName()),
@@ -157,7 +157,7 @@ class RealJvmSourceSetsParser @Inject constructor(
 
             put(
               gradleSourceSet.name.asSourceSetName(),
-              SourceSet(
+              McSourceSet(
                 name = sourceSetName,
                 compileOnlyConfiguration = parsedConfigurations
                   .getValue(gradleSourceSet.compileOnlyConfigurationName.asConfigurationName()),
@@ -184,16 +184,16 @@ class RealJvmSourceSetsParser @Inject constructor(
     return SourceSets(map)
   }
 
-  private fun MutableMap<SourceSetName, SourceSet>.parseHierarchy(
+  private fun MutableMap<SourceSetName, McSourceSet>.parseHierarchy(
     sourceSetName: SourceSetName,
-    configs: List<Config>
+    configurations: List<McConfiguration>
   ): Pair<Lazy<List<SourceSetName>>, Lazy<List<SourceSetName>>> {
     // Get the up/downstream configurations for this source set.  Parse the SourceSetName out of the
     // ConfigurationName, and **if that name is in this map**, that SourceSetName must be
     // up/downstream of this particular source set.
 
     val upstreamLazy = lazy {
-      configs
+      configurations
         .flatMapToSet { it.upstream.map { upstreamConfig -> upstreamConfig.name.toSourceSetName() } }
         .filterNot { it == sourceSetName }
         .filter { this@parseHierarchy.contains(it) }
@@ -201,7 +201,7 @@ class RealJvmSourceSetsParser @Inject constructor(
     }
 
     val downstreamLazy = lazy {
-      configs
+      configurations
         .flatMapToSet { it.downstream.map { downstreamConfig -> downstreamConfig.name.toSourceSetName() } }
         .filterNot { it == sourceSetName }
         .filter { this@parseHierarchy.contains(it) }

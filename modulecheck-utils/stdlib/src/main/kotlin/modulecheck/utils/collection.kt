@@ -29,6 +29,18 @@ fun <T> T.singletonList() = listOf(this)
  */
 fun <T> T.singletonSet() = setOf(this)
 
+/**
+ * shorthand for `filterTo(destination, predicate)`
+ *
+ * @since 0.13.0
+ */
+inline fun <T> Iterable<T>.filterToSet(
+  destination: MutableSet<T> = mutableSetOf(),
+  predicate: (T) -> Boolean
+): Set<T> {
+  return filterTo(destination, predicate)
+}
+
 inline fun <C : Collection<T>, T, R> C.mapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> R
@@ -89,4 +101,26 @@ public fun <T> Sequence<T>.sortedWith(vararg selectors: (T) -> Comparable<*>): S
  */
 public fun <T> Iterable<T>.sortedWithDescending(vararg selectors: (T) -> Comparable<*>): List<T> {
   return sortedWith(*selectors).reversed()
+}
+
+/**
+ * shorthand for `values.flatten().distinct()`
+ *
+ * @since 0.13.0
+ */
+fun <K : Any, T : Any> Map<K, Collection<T>>.allValues(): List<T> {
+  return values.flatten().distinct()
+}
+
+/**
+ * Creates a sequence of those [elements] which are not null
+ *
+ * @since 0.13.0
+ */
+fun <T> sequenceOfNotNull(
+  vararg elements: T?
+): Sequence<T> = sequence {
+  elements.forEach { element ->
+    if (element != null) yield(element)
+  }
 }

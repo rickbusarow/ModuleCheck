@@ -16,8 +16,8 @@
 package modulecheck.gradle.platforms.android
 
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.Configurations
 import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 
