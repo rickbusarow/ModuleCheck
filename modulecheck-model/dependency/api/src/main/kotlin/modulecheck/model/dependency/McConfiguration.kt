@@ -31,6 +31,8 @@ class Configurations(
 
 data class McConfiguration(
   val name: ConfigurationName,
+  val projectDependencies: Set<ProjectDependency>,
+  val externalDependencies: Set<ExternalDependency>,
   private val upstreamSequence: Sequence<McConfiguration>,
   private val downstreamSequence: Sequence<McConfiguration>
 ) {

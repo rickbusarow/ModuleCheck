@@ -150,7 +150,10 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
     .distinct()
     .toMutableList()
 
-  val configFactory = platformPlugin.configFactory
+  val configFactory = platformPlugin.configFactory(
+    projectDependencies = projectDependencies,
+    externalDependencies = externalDependencies
+  )
 
   val kotlinLanguageVersion = when (platformPlugin) {
     is JavaLibraryPluginBuilder -> null
