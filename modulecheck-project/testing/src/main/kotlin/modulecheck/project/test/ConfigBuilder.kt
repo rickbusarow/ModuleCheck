@@ -17,7 +17,9 @@ package modulecheck.project.test
 
 import modulecheck.model.dependency.ConfigFactory
 import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.McConfiguration
+import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.dependency.javaConfigurationNames
 import modulecheck.model.sourceset.SourceSetName
@@ -40,17 +42,21 @@ data class ConfigBuilder(
   }
 }
 
-internal val PlatformPluginBuilder<*>.configFactory
-  get() = ConfigFactory(
-    { this },
-    { configurations.values.asSequence().map { it.name.value } },
-    {
-      configurations[asConfigurationName()]
-        ?.upstream
-        ?.map { it.value }
-        .orEmpty()
-    }
-  )
+internal fun PlatformPluginBuilder<*>.configFactory(
+  projectDependencies: ProjectDependencies,
+  externalDependencies: ExternalDependencies
+) = ConfigFactory(
+  { this },
+  { projectDependencies[this.asConfigurationName()].orEmpty() },
+  { externalDependencies[this.asConfigurationName()].orEmpty() },
+  { configurations.values.asSequence().map { it.name.value } },
+  {
+    configurations[asConfigurationName()]
+      ?.upstream
+      ?.map { it.value }
+      .orEmpty()
+  }
+)
 
 @PublishedApi
 internal fun PlatformPluginBuilder<*>.populateConfigsFromSourceSets() {

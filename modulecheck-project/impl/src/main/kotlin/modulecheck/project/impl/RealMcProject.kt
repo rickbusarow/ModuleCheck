@@ -44,15 +44,16 @@ class RealMcProject(
   override val logger: McLogger,
   override val jvmFileProviderFactory: Factory,
   override val jvmTarget: JvmTarget,
-  projectDependencies: Lazy<ProjectDependencies>,
-  externalDependencies: Lazy<ExternalDependencies>,
   buildFileParserFactory: BuildFileParser.Factory,
   override val platformPlugin: PlatformPlugin
 ) : McProject {
 
-  override val projectDependencies: ProjectDependencies by projectDependencies
-
-  override val externalDependencies: ExternalDependencies by externalDependencies
+  override val projectDependencies: ProjectDependencies by lazy {
+    ProjectDependencies(platformPlugin.configurations.mapValues { it.value.projectDependencies })
+  }
+  override val externalDependencies: ExternalDependencies by lazy {
+    ExternalDependencies(platformPlugin.configurations.mapValues { it.value.externalDependencies })
+  }
 
   override val buildFileParser: BuildFileParser by lazy { buildFileParserFactory.create(this) }
 
