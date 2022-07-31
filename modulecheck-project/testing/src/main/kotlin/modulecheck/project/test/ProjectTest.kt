@@ -17,10 +17,10 @@ package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject

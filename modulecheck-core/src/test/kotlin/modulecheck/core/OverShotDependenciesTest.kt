@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.overshot
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest

@@ -28,7 +28,9 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-finding:impl"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
 

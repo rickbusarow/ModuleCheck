@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement

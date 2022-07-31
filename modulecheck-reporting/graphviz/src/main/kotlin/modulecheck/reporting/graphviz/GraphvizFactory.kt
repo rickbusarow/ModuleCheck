@@ -31,8 +31,8 @@ import guru.nidi.graphviz.model.Factory.mutNode
 import guru.nidi.graphviz.model.Factory.node
 import modulecheck.api.context.ProjectDepth
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.project.isAndroid
 import modulecheck.reporting.graphviz.GraphvizFactory.Colors.API_LINE
 import modulecheck.reporting.graphviz.GraphvizFactory.Colors.BLACK
@@ -56,7 +56,7 @@ class GraphvizFactory @Inject constructor(
    * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
    *
    * @param root the root of the dependency graph, starting at a single
-   *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
+   *   [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
    * @return the graph model for this dependency graph
    * @since 0.12.0
    */

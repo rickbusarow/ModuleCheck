@@ -15,7 +15,7 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest

@@ -19,7 +19,7 @@ import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedPluginFinding
-import modulecheck.parsing.gradle.model.PluginDefinition
+import modulecheck.model.dependency.PluginDefinition
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject

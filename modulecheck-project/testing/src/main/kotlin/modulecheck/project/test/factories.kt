@@ -16,14 +16,14 @@
 package modulecheck.project.test
 
 import modulecheck.config.CodeGeneratorBinding
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.PlatformPlugin
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.gradle.dsl.internal.RealBuildFileParser
-import modulecheck.parsing.gradle.model.Configurations
-import modulecheck.parsing.gradle.model.PlatformPlugin
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser

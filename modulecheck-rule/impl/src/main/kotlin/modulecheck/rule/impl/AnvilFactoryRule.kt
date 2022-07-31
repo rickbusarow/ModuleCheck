@@ -21,7 +21,7 @@ import modulecheck.api.context.references
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.CouldUseAnvilFinding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.KotlinFile
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN

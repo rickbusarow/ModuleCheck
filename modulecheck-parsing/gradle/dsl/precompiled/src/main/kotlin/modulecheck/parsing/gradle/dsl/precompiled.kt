@@ -15,16 +15,15 @@
 
 package modulecheck.parsing.gradle.dsl
 
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.Identifier
+import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.hasPrefix
+import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.dsl.ProjectAccessor.TypeSafeProjectAccessor
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.Identifier
-import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.parsing.gradle.model.PluginAware
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSetName.Companion
-import modulecheck.parsing.gradle.model.hasPrefix
-import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.findMinimumIndent
 import modulecheck.utils.letIf
 import modulecheck.utils.mapToSet
@@ -230,7 +229,7 @@ private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project:
       }
 
       hasPrefix(SourceSetName.DEBUG) -> {
-        return removePrefix(Companion.DEBUG).isDefinitelyPrecompiledForProject(project)
+        return removePrefix(SourceSetName.DEBUG).isDefinitelyPrecompiledForProject(project)
       }
 
       hasPrefix(SourceSetName.RELEASE) -> {

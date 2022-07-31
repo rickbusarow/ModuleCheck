@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import javax.inject.Inject
 
 /**

@@ -15,7 +15,8 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName

@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.gradle.dsl
 
-import modulecheck.parsing.gradle.model.PluginAccessor
+import modulecheck.model.dependency.PluginAccessor
 import modulecheck.utils.lazy.unsafeLazy
 
 data class PluginDeclaration(

@@ -18,13 +18,13 @@ package modulecheck.api.context
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.toSet
-import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency.ExternalCodeGeneratorDependency
 import modulecheck.model.dependency.ExternalDependency.ExternalRuntimeDependency
+import modulecheck.model.dependency.MightHaveCodeGeneratorBinding
 import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.Generated
 import modulecheck.parsing.source.PackageName

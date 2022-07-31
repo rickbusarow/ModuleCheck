@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.gradle.dsl
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.ProjectPath
 
 fun UnknownDependencyDeclaration(
   argument: String,

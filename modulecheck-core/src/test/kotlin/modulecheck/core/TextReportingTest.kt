@@ -19,7 +19,7 @@ import modulecheck.config.fake.TestSettings
 import modulecheck.finding.CouldUseAnvilFinding
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
 import org.junit.jupiter.api.Test

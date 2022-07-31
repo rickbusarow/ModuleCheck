@@ -15,12 +15,12 @@
 
 package modulecheck.parsing.gradle.dsl
 
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.letIf
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.remove

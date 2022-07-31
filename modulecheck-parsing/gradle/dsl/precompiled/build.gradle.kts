@@ -27,9 +27,11 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
+  implementation(project(path = ":modulecheck-model:sourceset:api"))
+  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

@@ -18,9 +18,10 @@ package modulecheck.core.context
 import modulecheck.api.context.maybeAsApi
 import modulecheck.api.context.uses
 import modulecheck.finding.OverShotDependency
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency.Companion.copy
 import modulecheck.model.dependency.toSourceSetDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.withDownStream
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

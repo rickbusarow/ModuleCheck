@@ -17,11 +17,11 @@ package modulecheck.gradle.platforms
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.AppScope
-import modulecheck.parsing.gradle.model.ConfigFactory
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.ConfigFactory
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.asConfigurationName
 import modulecheck.parsing.gradle.model.GradleConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.asConfigurationName
 import org.gradle.api.initialization.dsl.ScriptHandler
 import javax.inject.Inject
 

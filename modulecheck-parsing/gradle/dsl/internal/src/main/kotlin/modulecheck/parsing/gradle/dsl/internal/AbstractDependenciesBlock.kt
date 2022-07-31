@@ -17,7 +17,11 @@ package modulecheck.parsing.gradle.dsl.internal
 
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
@@ -26,10 +30,6 @@ import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
@@ -212,7 +212,6 @@ abstract class AbstractDependenciesBlock(
    * and returns the index of **the last row** which matches the parsed string.
    *
    * So, given the target:
-   *
    * ```
    * api(projects.foo.bar) {
    *   exclude(group = "androidx.appcompat")
@@ -220,7 +219,6 @@ abstract class AbstractDependenciesBlock(
    * ```
    *
    * And given the dependencies lines:
-   *
    * ```
    * <blank line>
    * // Remove leaking AppCompat dependency

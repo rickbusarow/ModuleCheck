@@ -19,8 +19,8 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ExternalDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.utils.lazy.unsafeLazy
 import javax.inject.Inject
 

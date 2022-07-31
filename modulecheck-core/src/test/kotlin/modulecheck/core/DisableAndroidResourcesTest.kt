@@ -17,7 +17,7 @@ package modulecheck.core
 
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.runtime.test.ProjectFindingReport.disableAndroidResources
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child

@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.gradle.dsl
 
-import modulecheck.parsing.gradle.model.HasConfigurations
+import modulecheck.model.dependency.HasConfigurations
 import modulecheck.parsing.gradle.model.PluginAware
 import java.io.File
 
