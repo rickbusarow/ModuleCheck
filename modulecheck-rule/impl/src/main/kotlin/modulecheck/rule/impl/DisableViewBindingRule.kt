@@ -20,7 +20,8 @@ import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.finding.android.DisableViewBindingGenerationFinding
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.withDownStream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
 import modulecheck.project.project
@@ -28,7 +29,8 @@ import modulecheck.utils.coroutines.any
 import modulecheck.utils.lazy.lazyDeferred
 import javax.inject.Inject
 
-class DisableViewBindingRule @Inject constructor() : DocumentedRule<DisableViewBindingGenerationFinding>() {
+class DisableViewBindingRule @Inject constructor() :
+  DocumentedRule<DisableViewBindingGenerationFinding>() {
 
   override val name = DisableViewBindingGenerationFinding.NAME
   override val description = "Finds modules which have ViewBinding enabled, " +
@@ -39,7 +41,6 @@ class DisableViewBindingRule @Inject constructor() : DocumentedRule<DisableViewB
     val androidPlugin = project.platformPlugin.asAndroidOrNull() ?: return emptyList()
 
     // no chance of a finding if the feature's already disabled
-    @Suppress("UnstableApiUsage")
     if (!androidPlugin.viewBindingEnabled) return emptyList()
 
     val dependents = lazyDeferred { project.dependents() }

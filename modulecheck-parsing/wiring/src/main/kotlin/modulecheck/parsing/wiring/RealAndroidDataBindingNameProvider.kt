@@ -17,7 +17,7 @@ package modulecheck.parsing.wiring
 
 import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.classpathDependencies
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.internal.AndroidDataBindingNameProvider
 import modulecheck.project.McProject

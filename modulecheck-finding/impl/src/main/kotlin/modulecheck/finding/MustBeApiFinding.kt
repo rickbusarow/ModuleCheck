@@ -16,9 +16,9 @@
 package modulecheck.finding
 
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

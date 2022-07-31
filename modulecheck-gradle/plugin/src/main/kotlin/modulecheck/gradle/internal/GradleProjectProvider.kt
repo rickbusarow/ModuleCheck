@@ -25,26 +25,27 @@ import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
+import modulecheck.model.dependency.AllProjectPathsProvider
+import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.ExternalDependency
+import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
+import modulecheck.model.dependency.asConfigurationName
 import modulecheck.parsing.gradle.dsl.BuildFileParser
-import modulecheck.parsing.gradle.model.AllProjectPathsProvider
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.GradleProjectDependency
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
-import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.wiring.RealJvmFileProvider
-import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealMcProject
 import modulecheck.rule.impl.KAPT_PLUGIN_ID
+import modulecheck.utils.mapToSet
 import net.swiftzer.semver.SemVer
 import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.artifacts.ModuleDependency
@@ -148,7 +149,7 @@ class GradleProjectProvider @Inject constructor(
 
         val externalDependencies = configuration.dependencies
           .filterIsInstance<ExternalModuleDependency>()
-          .map { dep ->
+          .mapToSet { dep ->
 
             externalDependency.create(
               configurationName = configuration.name.asConfigurationName(),
@@ -176,7 +177,7 @@ class GradleProjectProvider @Inject constructor(
       .associate { config ->
         config.name.asConfigurationName() to config.dependencies
           .withType(GradleProjectDependency::class.java)
-          .map {
+          .mapToSet {
 
             projectDependency.create(
               configurationName = config.name.asConfigurationName(),

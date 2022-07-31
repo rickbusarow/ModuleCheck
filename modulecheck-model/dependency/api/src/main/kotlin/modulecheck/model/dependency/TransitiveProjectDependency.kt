@@ -15,8 +15,6 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-
 data class TransitiveProjectDependency(
   val source: ProjectDependency,
   val contributed: ProjectDependency

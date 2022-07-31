@@ -18,16 +18,16 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 
 /**
  * Represents a [ConfiguredDependency] which is unused in the
- * [SourceSet][modulecheck.parsing.gradle.model.SourceSet] to which it's added, but *is* used in
+ * [SourceSet][modulecheck.parsing.gradle.model.McSourceSet] to which it's added, but *is* used in
  * another source set downstream. For instance, a dependency is overshot if it's added to `main`,
  * but only used in `test`.
  *

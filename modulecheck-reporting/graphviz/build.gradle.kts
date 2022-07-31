@@ -26,7 +26,8 @@ dependencies {
 
   api(project(path = ":modulecheck-api"))
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
 
   implementation(libs.graphviz.java.min)
   implementation(libs.rickBusarow.dispatch.core)
@@ -38,9 +39,11 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlin.compiler)
   testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
+  testImplementation(project(path = ":modulecheck-model:sourceset:api"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
   testImplementation(project(path = ":modulecheck-rule:impl"))

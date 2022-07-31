@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.gradle.model
+package modulecheck.model.dependency
 
 import modulecheck.utils.mapToSet
 

@@ -19,9 +19,9 @@ package modulecheck.gradle.platforms.android.internal
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.asSourceSetName
 import java.io.File
 
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }

@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.android.AndroidResourceParser
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

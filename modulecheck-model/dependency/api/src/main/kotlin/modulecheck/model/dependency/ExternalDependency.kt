@@ -15,11 +15,6 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.MightHaveCodeGeneratorBinding
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.HasMavenCoordinates
-import modulecheck.parsing.gradle.model.MavenCoordinates
 import modulecheck.utils.lazy.unsafeLazy
 
 sealed class ExternalDependency :
@@ -54,7 +49,7 @@ sealed class ExternalDependency :
     override val moduleName: String,
     override val version: String?,
     override val isTestFixture: Boolean,
-    override val codeGeneratorBindingOrNull: CodeGeneratorBinding?
+    override val codeGeneratorBindingOrNull: CodeGenerator?
   ) : ExternalDependency(), MightHaveCodeGeneratorBinding
 
   override fun equals(other: Any?): Boolean {
@@ -125,7 +120,7 @@ sealed class ExternalDependency :
 
   /**
    * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
-   * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
+   * a [CodeGenerator] in the event that the project dependency in question is an annotation
    * processor.
    *
    * @since 0.12.0

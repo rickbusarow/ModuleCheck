@@ -16,7 +16,7 @@
 package modulecheck.config.internal
 
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.parsing.gradle.model.PluginDefinition
+import modulecheck.model.dependency.PluginDefinition
 
 fun defaultCodeGeneratorBindings(): List<CodeGeneratorBinding> = listOf(
   CodeGeneratorBinding.KotlinCompilerPlugin(

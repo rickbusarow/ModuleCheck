@@ -15,9 +15,9 @@
 
 package modulecheck.finding
 
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.Identifier
+import modulecheck.model.dependency.Identifier
 import modulecheck.project.McProject
 
 data class UnusedDependency(

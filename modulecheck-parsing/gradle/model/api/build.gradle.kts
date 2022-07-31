@@ -27,13 +27,9 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
-  api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-model:dependency:api"))
 
   compileOnly(gradleApi())
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

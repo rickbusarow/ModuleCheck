@@ -18,8 +18,8 @@ package modulecheck.api.context
 import modulecheck.api.context.DependencySources.SourceResult.Found
 import modulecheck.api.context.DependencySources.SourceResult.NOT_PRESENT
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

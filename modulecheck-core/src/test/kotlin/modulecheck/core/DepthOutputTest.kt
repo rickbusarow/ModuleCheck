@@ -22,7 +22,7 @@ import io.kotest.property.exhaustive.boolean
 import kotlinx.coroutines.test.runTest
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child

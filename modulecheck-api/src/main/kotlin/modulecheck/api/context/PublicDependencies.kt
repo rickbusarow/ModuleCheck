@@ -15,11 +15,11 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.all
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
+import modulecheck.utils.allValues
 
 data class PublicDependencies(
   private val delegate: Set<ProjectDependency>
@@ -40,7 +40,7 @@ data class PublicDependencies(
       includePrivate: Boolean = true
     ): Set<ProjectDependency> {
       val privateDependencies = if (includePrivate) {
-        projectDependencies.all()
+        projectDependencies.allValues()
       } else {
         emptyList()
       }

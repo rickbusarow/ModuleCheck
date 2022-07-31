@@ -18,12 +18,12 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ProjectPath
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

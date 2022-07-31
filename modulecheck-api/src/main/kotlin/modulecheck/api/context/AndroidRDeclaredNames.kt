@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AndroidRDeclaredName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
