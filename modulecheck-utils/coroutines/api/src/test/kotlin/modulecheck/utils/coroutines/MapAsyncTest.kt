@@ -55,6 +55,10 @@ internal class MapAsyncTest {
 
         expectNoEvents()
 
+        yield()
+        yield()
+        yield()
+
         waiting shouldBe listOf(1, 2)
 
         lock.complete(Unit)
@@ -87,19 +91,19 @@ internal class MapAsyncTest {
 
           // should trigger predicate and be transformed
           one.complete(1)
-          through shouldBe listOf(1)
           awaitItem() shouldBe 2
+          through shouldBe listOf(1)
 
           // should trigger predicate and be transformed
           two.complete(2)
-          through shouldBe listOf(1, 2)
           awaitItem() shouldBe 4
+          through shouldBe listOf(1, 2)
           expectNoEvents()
 
           // should trigger predicate and be transformed
           three.complete(3)
-          through shouldBe listOf(1, 2, 3)
           awaitItem() shouldBe 6
+          through shouldBe listOf(1, 2, 3)
 
           // filtered flow ends as soon as the source flow has no more elements
           awaitComplete()
@@ -136,6 +140,10 @@ internal class MapAsyncTest {
 
         expectNoEvents()
 
+        yield()
+        yield()
+        yield()
+
         waiting shouldBe listOf(1, 2)
 
         lock.complete(Unit)
@@ -168,19 +176,19 @@ internal class MapAsyncTest {
 
           // should trigger predicate and be transformed
           one.complete(1)
-          through shouldBe listOf(1)
           awaitItem() shouldBe 2
+          through shouldBe listOf(1)
 
           // should trigger predicate and be transformed
           two.complete(2)
-          through shouldBe listOf(1, 2)
           awaitItem() shouldBe 4
+          through shouldBe listOf(1, 2)
           expectNoEvents()
 
           // should trigger predicate and be transformed
           three.complete(3)
-          through shouldBe listOf(1, 2, 3)
           awaitItem() shouldBe 6
+          through shouldBe listOf(1, 2, 3)
 
           // filtered flow ends as soon as the source flow has no more elements
           awaitComplete()
@@ -217,6 +225,10 @@ internal class MapAsyncTest {
 
         expectNoEvents()
 
+        yield()
+        yield()
+        yield()
+
         waiting shouldBe listOf(1, 2)
 
         lock.complete(Unit)
@@ -249,19 +261,19 @@ internal class MapAsyncTest {
 
           // should trigger predicate and be transformed
           one.complete(1)
-          through shouldBe listOf(1)
           awaitItem() shouldBe 2
+          through shouldBe listOf(1)
 
           // should trigger predicate and be transformed
           two.complete(2)
-          through shouldBe listOf(1, 2)
           awaitItem() shouldBe 4
+          through shouldBe listOf(1, 2)
           expectNoEvents()
 
           // should trigger predicate and be transformed
           three.complete(3)
-          through shouldBe listOf(1, 2, 3)
           awaitItem() shouldBe 6
+          through shouldBe listOf(1, 2, 3)
 
           // filtered flow ends as soon as the source flow has no more elements
           awaitComplete()

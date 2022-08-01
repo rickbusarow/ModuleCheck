@@ -20,6 +20,7 @@ import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.yield
 import modulecheck.utils.coroutines.filterAsync
 import org.junit.jupiter.api.Test
 
@@ -54,17 +55,20 @@ internal class SequenceFilterAsyncTest {
 
         // should trigger predicate and be filtered out
         one.complete(1)
+        yield()
+        yield()
         throughFilter shouldBe listOf(1)
         expectNoEvents()
 
         // should trigger predicate and pass through
         two.complete(2)
-        throughFilter shouldBe listOf(1, 2)
         awaitItem() shouldBe two
+        throughFilter shouldBe listOf(1, 2)
         expectNoEvents()
 
         // should trigger predicate and be filtered out
         three.complete(3)
+        yield()
         throughFilter shouldBe listOf(1, 2, 3)
 
         // filtered flow ends as soon as the source flow has no more elements
