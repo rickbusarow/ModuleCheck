@@ -119,8 +119,8 @@ class McSourceSet(
    */
   val downstream: List<SourceSetName> by downstreamLazy
 
-  fun withUpstream(): List<SourceSetName> = listOf(name) + upstream
-  fun withDownstream(): List<SourceSetName> = listOf(name) + downstream
+  fun withUpstream() = listOf(name) + upstream
+  fun withDownstream() = listOf(name) + downstream
 
   val hasExistingSourceFiles: Boolean by lazy {
     jvmFiles.hasExistingFiles() ||

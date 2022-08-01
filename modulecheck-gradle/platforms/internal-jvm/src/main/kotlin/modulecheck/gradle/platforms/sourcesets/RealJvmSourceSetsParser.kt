@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
+import modulecheck.gradle.platforms.toSourceSets
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.McConfiguration
 import modulecheck.model.dependency.McSourceSet
@@ -31,9 +32,7 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.gradle.model.GradleSourceSet
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
-import modulecheck.utils.requireNotNull
 import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import javax.inject.Inject
 
 @ContributesBinding(TaskScope::class)
@@ -56,74 +55,17 @@ class RealJvmSourceSetsParser @Inject constructor(
       val projectPath = StringProjectPath(gradleProject.path)
 
       if (kotlinExtensionOrNull != null) {
-        kotlinExtensionOrNull.sourceSets
-          .forEach { kotlinSourceSet: KotlinSourceSet ->
 
-            val sourceSetName = kotlinSourceSet.name.asSourceSetName()
-
-            val configs = listOf(
-              kotlinSourceSet.compileOnlyConfigurationName,
-              kotlinSourceSet.apiConfigurationName,
-              kotlinSourceSet.implementationConfigurationName,
-              kotlinSourceSet.runtimeOnlyConfigurationName
-            ).mapNotNull { parsedConfigurations[it.asConfigurationName()] }
-
-            val (
-              upstreamLazy,
-              downstreamLazy
-            ) = parseHierarchy(sourceSetName, configs)
-
-            val classpath = lazyDeferred {
-              javaExtension?.sourceSets
-                ?.findByName(sourceSetName.value)
-                ?.classpath()
-                ?.filter { it.exists() }
-                ?.filterNotNull()
-                ?.toList()
-                .orEmpty()
-            }
-
-            val kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
-              .requireNotNull {
-                "kotlin version is null for project -- ${gradleProject.path}"
-              }
-
-            val jvmFiles = kotlinSourceSet.kotlin.srcDirs
-
-            val kotlinEnvironmentDeferred = lazyDeferred {
-              kotlinEnvironmentFactory.create(
-                projectPath = projectPath,
-                sourceSetName = sourceSetName,
-                classpathFiles = classpath,
-                sourceDirs = jvmFiles,
-                kotlinLanguageVersion = kotlinVersion,
-                jvmTarget = jvmTarget
-              )
-            }
-
-            put(
-              kotlinSourceSet.name.asSourceSetName(),
-              McSourceSet(
-                name = sourceSetName,
-                compileOnlyConfiguration = parsedConfigurations
-                  .getValue(kotlinSourceSet.compileOnlyConfigurationName.asConfigurationName()),
-                apiConfiguration = parsedConfigurations
-                  .get(kotlinSourceSet.apiConfigurationName.asConfigurationName()),
-                implementationConfiguration = parsedConfigurations
-                  .getValue(kotlinSourceSet.implementationConfigurationName.asConfigurationName()),
-                runtimeOnlyConfiguration = parsedConfigurations
-                  .getValue(kotlinSourceSet.runtimeOnlyConfigurationName.asConfigurationName()),
-                annotationProcessorConfiguration = null,
-                jvmFiles = jvmFiles,
-                resourceFiles = kotlinSourceSet.resources.sourceDirectories.files,
-                layoutFiles = emptySet(),
-                jvmTarget = jvmTarget,
-                kotlinEnvironmentDeferred = kotlinEnvironmentDeferred,
-                upstreamLazy = upstreamLazy,
-                downstreamLazy = downstreamLazy
-              )
-            )
-          }
+        putAll(
+          kotlinExtensionOrNull.toSourceSets(
+            kotlinEnvironmentFactory = kotlinEnvironmentFactory,
+            parsedConfigurations = parsedConfigurations,
+            javaExtension = javaExtension,
+            projectPath = projectPath,
+            jvmTarget = jvmTarget,
+            kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
+          )
+        )
       } else {
         gradleProject.extensions
           .findByType(JavaPluginExtension::class.java)

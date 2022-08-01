@@ -57,9 +57,9 @@ class RealConfigurationsFactory @Inject constructor(
     val map = gradleProject.configurations
       .filterNot { it.name == ScriptHandler.CLASSPATH_CONFIGURATION }
       .associate { configuration ->
-
         configuration.name.asConfigurationName() to configFactory.create(configuration)
       }
+
     return Configurations(map)
   }
 

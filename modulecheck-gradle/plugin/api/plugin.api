@@ -23,37 +23,6 @@ public final class anvil/hint/binding/modulecheck/gradle/internal/RealSourceWebs
 	public static final fun getModulecheck_gradle_internal_RealSourceWebsiteUrlProvider_scope0 ()Lkotlin/reflect/KClass;
 }
 
-public final class anvil/hint/merge/anvil/module/modulecheck/gradle/task/TaskComponentAnvilModuleKt {
-	public static final fun getAnvil_module_modulecheck_gradle_task_TaskComponentAnvilModule_reference ()Lkotlin/reflect/KClass;
-	public static final fun getAnvil_module_modulecheck_gradle_task_TaskComponentAnvilModule_scope0 ()Lkotlin/reflect/KClass;
-}
-
-public abstract class anvil/module/modulecheck/gradle/task/TaskComponentAnvilModule {
-	public fun <init> ()V
-	public abstract fun bindAllProjectPathsProvider (Lmodulecheck/parsing/gradle/model/impl/RealAllProjectPathsProvider;)Lmodulecheck/model/dependency/AllProjectPathsProvider;
-	public abstract fun bindAndroidPlatformPluginFactory (Lmodulecheck/gradle/platforms/android/RealAndroidPlatformPluginFactory;)Lmodulecheck/gradle/platforms/android/AndroidPlatformPluginFactory;
-	public abstract fun bindConfigurationsFactory (Lmodulecheck/gradle/platforms/RealConfigurationsFactory;)Lmodulecheck/gradle/platforms/ConfigurationsFactory;
-	public abstract fun bindDispatcherProvider (Lmodulecheck/utils/coroutines/impl/ModuleCheckDispatcherProvider;)Ldispatch/core/DispatcherProvider;
-	public abstract fun bindDocsWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealDocsWebsiteUrlProvider;)Lmodulecheck/dagger/DocsWebsiteUrlProvider;
-	public abstract fun bindFactory0 (Lmodulecheck/parsing/wiring/RealAndroidGradleSettingsProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/AndroidGradleSettingsProvider$Factory;
-	public abstract fun bindFactory1 (Lmodulecheck/parsing/wiring/RealDependenciesBlocksProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/DependenciesBlocksProvider$Factory;
-	public abstract fun bindFactory2 (Lmodulecheck/parsing/wiring/RealJvmFileProvider$Factory;)Lmodulecheck/project/JvmFileProvider$Factory;
-	public abstract fun bindFactory3 (Lmodulecheck/parsing/wiring/RealPluginsBlockProvider$Factory;)Lmodulecheck/parsing/gradle/dsl/PluginsBlockProvider$Factory;
-	public abstract fun bindFactory4 (Lmodulecheck/model/dependency/impl/RealConfiguredProjectDependencyFactory;)Lmodulecheck/model/dependency/ProjectDependency$Factory;
-	public abstract fun bindFactory5 (Lmodulecheck/model/dependency/impl/RealExternalDependencyFactory;)Lmodulecheck/model/dependency/ExternalDependency$Factory;
-	public abstract fun bindFactory6 (Lmodulecheck/gradle/platforms/android/sourcesets/RealAndroidSourceSetsParser$Factory;)Lmodulecheck/gradle/platforms/sourcesets/AndroidSourceSetsParser$Factory;
-	public abstract fun bindFactory7 (Lmodulecheck/parsing/kotlin/compiler/impl/RealMcPsiFileFactory$Factory;)Lmodulecheck/parsing/kotlin/compiler/McPsiFileFactory$Factory;
-	public abstract fun bindFactory8 (Lmodulecheck/parsing/gradle/dsl/internal/RealBuildFileParser$Factory;)Lmodulecheck/parsing/gradle/dsl/BuildFileParser$Factory;
-	public abstract fun bindFindingResultFactory (Lmodulecheck/rule/impl/RealFindingResultFactory;)Lmodulecheck/finding/FindingResultFactory;
-	public abstract fun bindJvmSourceSetsParser (Lmodulecheck/gradle/platforms/sourcesets/RealJvmSourceSetsParser;)Lmodulecheck/gradle/platforms/sourcesets/JvmSourceSetsParser;
-	public abstract fun bindKotlinEnvironmentFactory (Lmodulecheck/parsing/kotlin/compiler/impl/RealKotlinEnvironment$Factory;)Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;
-	public abstract fun bindMcLogger (Lmodulecheck/gradle/GradleMcLogger;)Lmodulecheck/reporting/logging/McLogger;
-	public abstract fun bindModuleCheckVersionProvider (Lmodulecheck/gradle/internal/RealModuleCheckVersionProvider;)Lmodulecheck/dagger/ModuleCheckVersionProvider;
-	public abstract fun bindProjectProvider (Lmodulecheck/gradle/internal/GradleProjectProvider;)Lmodulecheck/project/ProjectProvider;
-	public abstract fun bindSafeAnalysisResultAccess (Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccessImpl;)Lmodulecheck/parsing/kotlin/compiler/impl/SafeAnalysisResultAccess;
-	public abstract fun bindSourceWebsiteUrlProvider (Lmodulecheck/gradle/internal/RealSourceWebsiteUrlProvider;)Lmodulecheck/dagger/SourceWebsiteUrlProvider;
-}
-
 public class modulecheck/gradle/ChecksExtension : modulecheck/config/ChecksSettings {
 	public fun <init> (Lorg/gradle/api/model/ObjectFactory;)V
 	public fun getAnvilFactoryGeneration ()Z

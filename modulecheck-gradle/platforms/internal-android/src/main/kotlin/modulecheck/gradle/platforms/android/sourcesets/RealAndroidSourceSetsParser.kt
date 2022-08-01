@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2024 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,9 +33,11 @@ import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetN
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
+import modulecheck.gradle.platforms.toSourceSets
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.McSourceSet
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -54,12 +56,12 @@ import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.artifacts.ExternalModuleDependency
+import org.gradle.api.plugins.JavaPluginExtension
 import java.io.File
 import javax.inject.Inject
 
 /**
  * Given this Android config block:
- *
  * ```
  * android {
  *   buildTypes {
@@ -120,7 +122,6 @@ import javax.inject.Inject
  * Finally, a "main" SourceSet is always created.
  *
  * So just within the *production code* sources, we get all these SourceSets:
- *
  * ```
  * // primitives
  * main
@@ -232,13 +233,25 @@ class RealAndroidSourceSetsParser private constructor(
 
   override fun parse(): SourceSets {
 
-    val m = gradleAndroidSourceSets.values
-      .mapNotNull { it.toSourceSetOrNull() }
-      .associateBy { it.name }
+    val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
+
+    val javaExtension = gradleProject.extensions
+      .findByType(JavaPluginExtension::class.java)
+
+    val jvmTarget = gradleProject.jvmTarget()
+
+    val kotlin = kotlinExtensionOrNull!!.toSourceSets(
+      kotlinEnvironmentFactory = kotlinEnvironmentFactory,
+      parsedConfigurations = parsedConfigurations,
+      javaExtension = javaExtension,
+      projectPath = projectPath,
+      jvmTarget = jvmTarget,
+      kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
+    )
       .toMutableMap()
       .maybeAddTestFixturesSourceSets()
 
-    return SourceSets(m)
+    return SourceSets(kotlin)
   }
 
   private fun GradleSourceSetName.VariantName.parseNames(

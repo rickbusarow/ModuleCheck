@@ -26,37 +26,37 @@ internal class GraphReportTaskTest : BaseGradleTest() {
     kotlinProject(":lib1") {
       buildFile {
         """
-          plugins {
-            kotlin("jvm")
-          }
-          """
+        plugins {
+          kotlin("jvm")
+        }
+        """
       }
     }
 
     kotlinProject(":lib2") {
       buildFile {
         """
-          plugins {
-            kotlin("jvm")
-          }
-          dependencies {
-            implementation(project(":lib1"))
-          }
-          """
+        plugins {
+          kotlin("jvm")
+        }
+        dependencies {
+          implementation(project(":lib1"))
+        }
+        """
       }
     }
 
     val app = kotlinProject(":app") {
       buildFile {
         """
-          plugins {
-            kotlin("jvm")
-          }
-          dependencies {
-            implementation(project(":lib1"))
-            implementation(project(":lib2"))
-          }
-          """
+        plugins {
+          kotlin("jvm")
+        }
+        dependencies {
+          implementation(project(":lib1"))
+          implementation(project(":lib2"))
+        }
+        """
       }
     }
 

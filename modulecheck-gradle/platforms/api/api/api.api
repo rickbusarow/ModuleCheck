@@ -9,6 +9,8 @@ public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory {
 
 public final class modulecheck/gradle/platforms/JvmPlatformPluginFactoryKt {
 	public static final fun getKotlinExtensionOrNull (Lorg/gradle/api/Project;)Lorg/jetbrains/kotlin/gradle/dsl/KotlinProjectExtension;
+	public static final fun toMcSourceSet (Lorg/jetbrains/kotlin/gradle/plugin/KotlinSourceSet;Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;Lmodulecheck/model/dependency/Configurations;Lorg/gradle/api/plugins/JavaPluginExtension;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lorg/jetbrains/kotlin/config/JvmTarget;Lorg/jetbrains/kotlin/config/LanguageVersion;Lkotlin/jvm/functions/Function2;)Lmodulecheck/model/dependency/McSourceSet;
+	public static final fun toSourceSets (Lorg/jetbrains/kotlin/gradle/dsl/KotlinProjectExtension;Lmodulecheck/gradle/platforms/KotlinEnvironmentFactory;Lmodulecheck/model/dependency/Configurations;Lorg/gradle/api/plugins/JavaPluginExtension;Lmodulecheck/model/dependency/ProjectPath$StringProjectPath;Lorg/jetbrains/kotlin/config/JvmTarget;Lorg/jetbrains/kotlin/config/LanguageVersion;)Ljava/util/Map;
 }
 
 public final class modulecheck/gradle/platforms/JvmPlatformPluginFactory_Factory : dagger/internal/Factory {

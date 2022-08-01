@@ -58,9 +58,13 @@ data class McConfiguration(
   fun withDownstream(): List<McConfiguration> = listOf(this) + downstream
 
   override fun toString(): String {
-    return """Config   --  name=${name.value}
-    |  upstream=${upstream.map { it.name.value }}
-    |  downstream=${downstream.map { it.name.value }}
+    return """
+    |McConfiguration(
+    |  name = ${name.value},
+    |  projectDependencies = $projectDependencies,
+    |  externalDependencies = $externalDependencies,
+    |  upstream = ${upstream.map { it.name.value }},
+    |  downstream = ${downstream.map { it.name.value }}
     |)
     """.trimMargin()
   }
