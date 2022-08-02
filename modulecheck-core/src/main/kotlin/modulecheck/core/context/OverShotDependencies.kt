@@ -125,7 +125,10 @@ data class OverShotDependencies(
           )
         }
         .sortedBy { it.newDependency.identifier.name }
-        .distinctBy { it.newDependency.identifier }
+        // Only report each new path/configuration pair once.  So we can add multiple dependencies
+        // for the `testImplementation` config, or multiple configurations of the `:lib1` project,
+        // but we'll only add `testImplementation(project(":lib1"))` once.
+        .distinctBy { it.newDependency.identifier to it.newDependency.configurationName }
     }
   }
 
