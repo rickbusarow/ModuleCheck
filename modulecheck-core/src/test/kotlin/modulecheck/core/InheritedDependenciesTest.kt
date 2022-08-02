@@ -1027,6 +1027,114 @@ class InheritedDependenciesTest : RunnerTest() {
     }
 
   @Test
+  fun `inherited in both debug and release should be added as implementation`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        interface Lib1Interface
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2
+
+        import com.modulecheck.lib1.Lib1Interface
+
+        open class Lib2Class : Lib1Interface
+        """.trimIndent()
+      )
+    }
+
+    val lib3 = androidLibrary(":lib3", "com.modulecheck.lib3") {
+
+      addDependency("debugApi".asConfigurationName(), lib2)
+      addDependency("releaseApi".asConfigurationName(), lib2)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          debugApi(project(path = ":lib2"))
+          releaseApi(project(path = ":lib2"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3.debug
+
+        import com.modulecheck.lib1.Lib1Interface
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3ClassDebug : Lib2Class(), Lib1Interface
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+      addKotlinSource(
+        """
+        package com.modulecheck.lib3.release
+
+        import com.modulecheck.lib1.Lib1Interface
+        import com.modulecheck.lib2.Lib2Class
+
+        class Lib3ClassRelease : Lib2Class(), Lib1Interface
+        """.trimIndent(),
+        SourceSetName.RELEASE
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib3.buildFile shouldHaveText """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+          debugApi(project(path = ":lib2"))
+          releaseApi(project(path = ":lib2"))
+        }
+      """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib3" to listOf(
+        inheritedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          source = ":lib2",
+          position = null
+        )
+      )
+    )
+  }
+
+  @Test
   fun `inherited as implementation from invisible dependency with a visible unrelated api project dependency`() =
     test {
 
@@ -2192,7 +2300,8 @@ class InheritedDependenciesTest : RunnerTest() {
       buildFile {
         """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -2228,7 +2337,8 @@ class InheritedDependenciesTest : RunnerTest() {
 
     lib3.buildFile shouldHaveText """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -2244,7 +2354,7 @@ class InheritedDependenciesTest : RunnerTest() {
           configuration = "debugApi",
           dependency = ":lib1",
           source = ":lib2",
-          position = "6, 3"
+          position = "7, 3"
         )
       )
     )
@@ -2984,7 +3094,8 @@ class InheritedDependenciesTest : RunnerTest() {
         buildFile {
           """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -3017,7 +3128,8 @@ class InheritedDependenciesTest : RunnerTest() {
 
       lib3.buildFile shouldHaveText """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -3033,7 +3145,7 @@ class InheritedDependenciesTest : RunnerTest() {
             configuration = "debugImplementation",
             dependency = ":lib1",
             source = ":lib2",
-            position = "6, 3"
+            position = "7, 3"
           )
         )
       )
@@ -3084,7 +3196,8 @@ class InheritedDependenciesTest : RunnerTest() {
         buildFile {
           """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -3117,7 +3230,8 @@ class InheritedDependenciesTest : RunnerTest() {
 
       lib3.buildFile shouldHaveText """
         plugins {
-          kotlin("jvm")
+          id("com.android.library")
+          kotlin("android")
         }
 
         dependencies {
@@ -3133,7 +3247,7 @@ class InheritedDependenciesTest : RunnerTest() {
             configuration = "androidTestDebugImplementation",
             dependency = ":lib1",
             source = ":lib2",
-            position = "6, 3"
+            position = "7, 3"
           )
         )
       )
