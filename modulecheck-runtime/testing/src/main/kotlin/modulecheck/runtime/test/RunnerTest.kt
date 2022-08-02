@@ -144,7 +144,15 @@ abstract class RunnerTest : ProjectTest() {
   }
 
   private fun List<Pair<String, List<ProjectFindingReport>>>.sorted() = sortedBy { it.first }
-    .map { it.first to it.second.sortedBy { it::class.java.simpleName } }
+    .map { (path, findings) ->
+      path to findings.sortedBy { findingReport ->
+
+        val findingName = findingReport::class.java.simpleName
+        val config = findingReport.configuration ?: "-"
+
+        "$findingName$config${findingReport.position}"
+      }
+    }
 
   infix fun List<Pair<String, List<ProjectFindingReport>>>.shouldBe(
     expected: List<Pair<String, List<ProjectFindingReport>>>
