@@ -443,6 +443,72 @@ class OverShotDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `unused in main but used in both debug and release should not be overshot`() {
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        interface Lib1Interface
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2.debug
+
+        import com.modulecheck.lib1.Lib1Interface
+
+        class Lib2ClassDebug : Lib1Interface
+        """.trimIndent(),
+        SourceSetName.DEBUG
+      )
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2.release
+
+        import com.modulecheck.lib1.Lib1Interface
+
+        class Lib2ClassRelease : Lib1Interface
+        """.trimIndent(),
+        SourceSetName.RELEASE
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+        plugins {
+          kotlin("jvm")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+      """
+
+    logger.parsedReport() shouldBe listOf()
+  }
+
+  @Test
   fun `overshot as api but used in test with another testFixture with auto-correct should be fixed`() =
     test {
 
