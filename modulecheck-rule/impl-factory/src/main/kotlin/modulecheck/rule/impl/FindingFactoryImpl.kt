@@ -19,8 +19,8 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Binds
 import dagger.Module
 import kotlinx.coroutines.flow.toList
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 import modulecheck.finding.AddsDependency
 import modulecheck.finding.Finding
 import modulecheck.finding.ModifiesProjectDependency
@@ -37,7 +37,7 @@ import modulecheck.utils.trace.traced
 import javax.inject.Inject
 
 @Module
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 interface FindingFactoryModule {
   // TODO maybe take another stab at removing the generic Finding type from FindingFactory
   @Binds

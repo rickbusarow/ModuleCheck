@@ -19,8 +19,8 @@ import com.squareup.anvil.annotations.ContributesBinding
 import dispatch.core.DispatcherProvider
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.utils.coroutines.LimitedDispatcher
 import javax.inject.Inject
 
@@ -29,8 +29,8 @@ import javax.inject.Inject
  *
  * @since 0.12.0
  */
-@SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@SingleIn(TaskScope::class)
+@ContributesBinding(TaskScope::class)
 class ModuleCheckDispatcherProvider @Inject constructor(
   limitedDispatcher: LimitedDispatcher
 ) : DispatcherProvider {

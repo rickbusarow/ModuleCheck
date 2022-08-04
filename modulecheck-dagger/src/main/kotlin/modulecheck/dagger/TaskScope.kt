@@ -15,20 +15,31 @@
 
 package modulecheck.dagger
 
+import javax.inject.Provider
 import javax.inject.Qualifier
 import javax.inject.Scope
 import kotlin.reflect.KClass
 
+/**
+ * Tied to a single Gradle task. Currently, that's essentially the same as an `AppScope`.
+ *
+ * @since 0.13.0
+ */
 @Suppress("UnnecessaryAbstractClass")
-abstract class AppScope private constructor()
+abstract class TaskScope private constructor()
 
+/**
+ * path of ":"
+ *
+ * @since 0.13.0
+ */
 @Qualifier
 annotation class RootGradleProject
 
 /**
  * Indicates that the annotated dependency will be a singleton within this scope.
  *
- * @param scope the scope in which this will be a singleton.
+ * @property scope the scope in which this will be a singleton.
  * @since 0.12.0
  */
 @Scope
@@ -38,14 +49,33 @@ annotation class SingleIn(
   val scope: KClass<*>
 )
 
-fun interface SourceWebsiteUrlProvider {
-  fun get(): String
+/**
+ * example: "https://github.com/rbusarow/ModuleCheck"
+ *
+ * taken from the generated BuildProperties class
+ *
+ * @since 0.12.0
+ */
+fun interface SourceWebsiteUrlProvider : Provider<String> {
+  override fun get(): String
 }
 
-fun interface ModuleCheckVersionProvider {
-  fun get(): String
+/**
+ * example: "0.13.0"
+ *
+ * @since 0.12.0
+ */
+fun interface ModuleCheckVersionProvider : Provider<String> {
+  override fun get(): String
 }
 
-fun interface DocsWebsiteUrlProvider {
-  fun get(): String
+/**
+ * example: "https://rbusarow.github.io/ModuleCheck"
+ *
+ * taken from the generated BuildProperties class
+ *
+ * @since 0.12.0
+ */
+fun interface DocsWebsiteUrlProvider : Provider<String> {
+  override fun get(): String
 }

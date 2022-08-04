@@ -16,8 +16,8 @@
 package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.java.RealJavaFile
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
@@ -48,7 +48,7 @@ import javax.inject.Provider
  *
  * @since 0.12.0
  */
-@SingleIn(AppScope::class)
+@SingleIn(TaskScope::class)
 class JvmFileCache @Inject constructor() {
   private val delegate = SafeCache<File, JvmFile>(listOf(JvmFileCache::class))
 
@@ -118,7 +118,7 @@ class RealJvmFileProvider(
     }
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val jvmFileCacheProvider: Provider<JvmFileCache>
   ) : JvmFileProvider.Factory {
