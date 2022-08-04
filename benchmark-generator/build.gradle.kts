@@ -17,17 +17,10 @@ plugins {
   id("mcbuild")
 }
 
-mcbuild {
-  artifactId = "modulecheck-project-testing"
-  anvil = true
-}
-
 dependencies {
 
-  api(libs.bundles.hermit)
-
   api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-internal-testing"))
+  api(project(path = ":modulecheck-config:impl"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   api(project(path = ":modulecheck-project-gen:api"))
@@ -35,12 +28,10 @@ dependencies {
 
   compileOnly(gradleApi())
 
-  implementation(libs.bundles.hermit)
-  implementation(libs.bundles.jUnit)
-  implementation(libs.bundles.kotest)
-  implementation(libs.bundles.kotest)
-  implementation(libs.kotlin.reflect)
+  implementation(libs.kotlin.compiler)
+  implementation(libs.square.kotlinPoet)
 
-  implementation(project(path = ":modulecheck-config:impl"))
+  implementation(project(path = ":modulecheck-finding:api"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
 }

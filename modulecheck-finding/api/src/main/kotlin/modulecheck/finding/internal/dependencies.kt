@@ -19,38 +19,34 @@ import kotlinx.coroutines.runBlocking
 import modulecheck.finding.Fixable
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
-import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.model.dependency.ProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
-import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
-import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.project.McProject
-import modulecheck.utils.isGreaterThan
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.replaceDestructured
-import modulecheck.utils.sortedWith
 import modulecheck.utils.suffixIfNot
 
 /**
  * @param configuredDependency the dependency model being added
  * @param newDeclaration the text to be added to the project's build file
- * @param existingDeclaration if not null, the new declaration will be added above or beyond this
- *   declaration. Of all declarations in the `dependencies { ... }` block, this
- *   declaration should be closest to the desired location of the new declaration.
+ * @param existingMarkerDeclaration if not null, the new declaration will be added above or beyond
+ *     this declaration. Of all declarations in the `dependencies { ... }` block, this declaration
+ *     should be closest to the desired location of the new declaration.
  * @receiver the project to which we're adding a dependency
  * @since 0.12.0
  */
 fun McProject.addDependency(
   configuredDependency: ConfiguredDependency,
   newDeclaration: DependencyDeclaration,
-  existingDeclaration: DependencyDeclaration? = null
+  existingMarkerDeclaration: DependencyDeclaration? = null
 ) {
 
-  if (existingDeclaration != null) {
-    prependStatement(newDeclaration = newDeclaration, existingDeclaration = existingDeclaration)
+  if (existingMarkerDeclaration != null) {
+    prependStatement(
+      newDeclaration = newDeclaration,
+      existingDeclaration = existingMarkerDeclaration
+    )
   } else {
     addStatement(newDeclaration = newDeclaration)
   }
@@ -59,114 +55,6 @@ fun McProject.addDependency(
     is ProjectDependency -> projectDependencies.add(configuredDependency)
     is ExternalDependency -> externalDependencies.add(configuredDependency)
   }
-}
-
-/**
- * Finds the existing project dependency declaration (if there are any) which is the closest match
- * to the desired new dependency.
- *
- * @param newDependency The dependency being added
- * @param matchPathFirst If true, matching project paths will be prioritized over matching
- *   configurations. If false, configuration matches will take priority over a matching project
- *   path.
- * @return the closest matching declaration, or null if there are no declarations at all.
- * @since 0.12.0
- */
-suspend fun McProject.closestDeclarationOrNull(
-  newDependency: ConfiguredDependency,
-  matchPathFirst: Boolean
-): DependencyDeclaration? {
-
-  return buildFileParser.dependenciesBlocks()
-    .firstNotNullOfOrNull { dependenciesBlock ->
-
-      dependenciesBlock.settings
-        .filterNot { it is UnknownDependencyDeclaration }
-        .sortedWith(
-          {
-            if (matchPathFirst) it.configName == newDependency.configurationName
-            else it.configName != newDependency.configurationName
-          },
-          { it !is ModuleDependencyDeclaration },
-          {
-            // sort by module paths, but normalize between String paths and type-safe accessors.
-            // String paths will start with ":", so remove that prefix.
-            // Type-safe accessors will have "." separators, so replace those with ":".
-            // After that, everything should read like `foo:bar:baz`.
-            (it as? ModuleDependencyDeclaration)
-              ?.projectPath
-              ?.value
-              ?.removePrefix(":")
-              ?.replace(".", ":")
-              ?: (it as? ExternalDependencyDeclaration)
-                ?.coordinates
-                ?.name
-              ?: ""
-          }
-        )
-        .let { sorted ->
-
-          sorted.firstOrNull {
-            when (newDependency) {
-              is ExternalDependency -> it.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
-              is ProjectDependency -> it.projectPathOrNull() == newDependency.path
-            }
-          }
-            ?: sorted.firstOrNull {
-
-              when (newDependency) {
-                is ExternalDependency -> it.mavenCoordinatesOrNull()
-                  ?.isGreaterThan(newDependency.mavenCoordinates)
-
-                is ProjectDependency -> it.projectPathOrNull()
-                  ?.isGreaterThan(newDependency.path)
-              } ?: false
-            }
-            ?: sorted.lastOrNull()
-        }
-        ?.let { declaration ->
-
-          val sameDependency = when (newDependency) {
-            is ExternalDependency -> declaration.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
-            is ProjectDependency -> declaration.projectPathOrNull() == newDependency.path
-          }
-
-          if (sameDependency) {
-            declaration
-          } else {
-
-            val precedingWhitespace = "^\\s*".toRegex()
-              .find(declaration.statementWithSurroundingText)?.value ?: ""
-
-            when (declaration) {
-              is ExternalDependencyDeclaration -> declaration.copy(
-                statementWithSurroundingText = declaration.statementWithSurroundingText
-                  .prefixIfNot(precedingWhitespace),
-                suppressed = emptyList()
-              )
-
-              is ModuleDependencyDeclaration -> declaration.copy(
-                statementWithSurroundingText = declaration.statementWithSurroundingText
-                  .prefixIfNot(precedingWhitespace),
-                suppressed = emptyList()
-              )
-
-              is UnknownDependencyDeclaration -> {
-                // this shouldn't actually be possible
-                null
-              }
-            }
-          }
-        }
-    }
-}
-
-private fun DependencyDeclaration.projectPathOrNull(): ProjectPath? {
-  return (this as? ModuleDependencyDeclaration)?.projectPath
-}
-
-private fun DependencyDeclaration.mavenCoordinatesOrNull(): MavenCoordinates? {
-  return (this as? ExternalDependencyDeclaration)?.coordinates
 }
 
 private fun McProject.prependStatement(

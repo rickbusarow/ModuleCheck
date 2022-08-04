@@ -86,6 +86,7 @@ rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+  ":benchmark-generator",
   ":ktlint-rules",
   ":modulecheck-api",
   ":modulecheck-config:api",
@@ -125,6 +126,7 @@ include(
   ":modulecheck-project:api",
   ":modulecheck-project:impl",
   ":modulecheck-project:testing",
+  ":modulecheck-project-gen:api",
   ":modulecheck-reporting:checkstyle",
   ":modulecheck-reporting:console",
   ":modulecheck-reporting:graphviz",

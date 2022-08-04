@@ -13,35 +13,31 @@
  * limitations under the License.
  */
 
-package modulecheck.project.test
+package modulecheck.benchmark
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
+import modulecheck.finding.internal.addDependency
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
+import modulecheck.parsing.gradle.dsl.asDeclaration
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.gen.ProjectCollector
-import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
 
-abstract class ProjectTest : BaseTest(), ProjectCollector {
-
-  override val projectCache: ProjectCache by resets { ProjectCache() }
-  override val safeAnalysisResultAccess: SafeAnalysisResultAccess by resets {
-    SafeAnalysisResultAccessImpl(projectCache)
-  }
-
-  override val root: File
-    get() = testProjectDir
-
-  override val codeGeneratorBindings: List<CodeGeneratorBinding>
-    get() = defaultCodeGeneratorBindings()
+class RootProjectSpec(
+  override val root: File,
+  override val projectCache: ProjectCache = ProjectCache(),
+  override val safeAnalysisResultAccess: SafeAnalysisResultAccess =
+    SafeAnalysisResultAccessImpl(projectCache),
+  override val codeGeneratorBindings: List<CodeGeneratorBinding> = defaultCodeGeneratorBindings()
+) : ProjectCollector {
 
   val projectDependencyFactory: ProjectDependency.Factory
     get() = RealConfiguredProjectDependencyFactory(
@@ -49,17 +45,26 @@ abstract class ProjectTest : BaseTest(), ProjectCollector {
       generatorBindings = codeGeneratorBindings
     )
 
-  fun McProject.addDependency(
+  suspend fun McProject.addDependency(
     configurationName: ConfigurationName,
     project: McProject,
     asTestFixture: Boolean = false
   ) {
     val old = projectDependencies[configurationName].orEmpty()
 
-    val cpd =
-      projectDependencyFactory.create(configurationName, project.path, asTestFixture)
+    val newDependency = projectDependencyFactory
+      .create(configurationName, project.path, asTestFixture)
 
-    projectDependencies[configurationName] = old + cpd
+    val (newDeclaration, tokenOrNull) = newDependency
+      .asDeclaration(this@addDependency)
+
+    addDependency(
+      configuredDependency = newDependency,
+      newDeclaration = newDeclaration,
+      existingMarkerDeclaration = tokenOrNull
+    )
+
+    projectDependencies[configurationName] = old + newDependency
   }
 
   fun File.writeText(content: String) {

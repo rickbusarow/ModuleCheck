@@ -122,7 +122,7 @@ dependencies {
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-project-gen:api"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 
