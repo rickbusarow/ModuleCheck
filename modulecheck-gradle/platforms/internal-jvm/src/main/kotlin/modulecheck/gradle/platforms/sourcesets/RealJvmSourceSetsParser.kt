@@ -16,7 +16,7 @@
 package modulecheck.gradle.platforms.sourcesets
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.model.dependency.Configurations
@@ -36,7 +36,7 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealJvmSourceSetsParser @Inject constructor(
   private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
 ) : JvmSourceSetsParser {

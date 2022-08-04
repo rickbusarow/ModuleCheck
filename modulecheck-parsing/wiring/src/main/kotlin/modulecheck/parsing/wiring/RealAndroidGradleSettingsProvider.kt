@@ -16,7 +16,7 @@
 package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettingsProvider
 import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
@@ -43,7 +43,7 @@ class RealAndroidGradleSettingsProvider(
     }
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val groovyParserProvider: Provider<GroovyAndroidGradleParser>,
     private val kotlinParserProvider: Provider<KotlinAndroidGradleParser>

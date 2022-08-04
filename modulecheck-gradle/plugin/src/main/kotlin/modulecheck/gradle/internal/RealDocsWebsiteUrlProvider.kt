@@ -16,23 +16,23 @@
 package modulecheck.gradle.internal
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DocsWebsiteUrlProvider
 import modulecheck.dagger.ModuleCheckVersionProvider
 import modulecheck.dagger.SourceWebsiteUrlProvider
+import modulecheck.dagger.TaskScope
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealDocsWebsiteUrlProvider @Inject constructor() : DocsWebsiteUrlProvider {
   override fun get(): String = BuildProperties().docsWebsite
 }
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealSourceWebsiteUrlProvider @Inject constructor() : SourceWebsiteUrlProvider {
   override fun get(): String = BuildProperties().sourceWebsite
 }
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealModuleCheckVersionProvider @Inject constructor() : ModuleCheckVersionProvider {
   override fun get(): String = BuildProperties().version
 }

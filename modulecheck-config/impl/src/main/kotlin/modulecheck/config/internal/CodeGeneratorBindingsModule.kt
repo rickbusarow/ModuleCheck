@@ -19,8 +19,8 @@ import com.squareup.anvil.annotations.ContributesTo
 import dagger.Provides
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.CodeGenerator
 import modulecheck.utils.mapToSet
 
@@ -30,7 +30,7 @@ import modulecheck.utils.mapToSet
  * @since 0.12.0
  */
 @dagger.Module
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 object CodeGeneratorBindingsModule {
 
   /**

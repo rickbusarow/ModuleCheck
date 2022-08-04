@@ -16,7 +16,7 @@
 package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
@@ -78,7 +78,7 @@ class RealMcPsiFileFactory(
    *
    * @since 0.13.0
    */
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor() : McPsiFileFactory.Factory {
     override fun create(
       kotlinEnvironment: KotlinEnvironment

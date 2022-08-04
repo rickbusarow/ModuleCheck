@@ -18,8 +18,8 @@ package modulecheck.gradle.internal
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.GradleMcLogger
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
@@ -43,7 +43,7 @@ import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 
 @Suppress("LongParameterList")
-@ContributesBinding(AppScope::class, ProjectProvider::class)
+@ContributesBinding(TaskScope::class, ProjectProvider::class)
 class GradleProjectProvider @Inject constructor(
   @RootGradleProject
   private val rootGradleProject: GradleProject,

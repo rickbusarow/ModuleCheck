@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.api.ApplicationVariantImpl
 import com.android.build.gradle.internal.api.LibraryVariantImpl
 import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.ConfigurationsFactory
 import modulecheck.gradle.platforms.SourceSetsFactory
 import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Application
@@ -47,7 +47,7 @@ import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
   private val agpApiAccess: AgpApiAccess,
   private val configurationsFactory: ConfigurationsFactory,

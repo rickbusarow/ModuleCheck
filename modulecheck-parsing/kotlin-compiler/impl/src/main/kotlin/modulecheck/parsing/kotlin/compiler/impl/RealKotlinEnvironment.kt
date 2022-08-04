@@ -17,7 +17,7 @@ package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName
@@ -148,7 +148,7 @@ class RealKotlinEnvironment(
    *
    * @since 0.13.0
    */
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val safeAnalysisResultAccess: SafeAnalysisResultAccess
   ) : KotlinEnvironmentFactory {

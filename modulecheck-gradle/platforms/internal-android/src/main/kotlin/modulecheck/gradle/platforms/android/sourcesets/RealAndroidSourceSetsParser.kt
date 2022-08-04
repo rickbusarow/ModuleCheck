@@ -24,7 +24,7 @@ import com.android.build.gradle.api.TestVariant
 import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.android.AndroidAppExtension
 import modulecheck.gradle.platforms.android.AndroidLibraryExtension
@@ -646,7 +646,7 @@ class RealAndroidSourceSetsParser private constructor(
       ?: SourceSetName.MAIN
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
   ) : AndroidSourceSetsParser.Factory {

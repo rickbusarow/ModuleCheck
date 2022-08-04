@@ -26,20 +26,20 @@ import dispatch.core.MainImmediateCoroutineScope
 import dispatch.core.UnconfinedCoroutineScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.utils.coroutines.LimitedDispatcher
 
 @Suppress("UndocumentedPublicFunction", "UndocumentedPublicClass")
 @Module
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 object CoroutineScopeModule {
 
   private val DEFAULT_CONCURRENCY: Int
     get() = Integer.max(Runtime.getRuntime().availableProcessors(), 2)
 
   @Provides
-  @SingleIn(AppScope::class)
+  @SingleIn(TaskScope::class)
   fun provideDefaultDispatcher(): LimitedDispatcher = LimitedDispatcherImpl(
     dispatcher = Dispatchers.Default,
     parallelism = DEFAULT_CONCURRENCY
@@ -65,7 +65,7 @@ object CoroutineScopeModule {
   fun provideUnconfinedCoroutineScope(): UnconfinedCoroutineScope = UnconfinedCoroutineScope()
 }
 
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 interface DispatcherProviderComponent {
   val dispatcherProvider: DispatcherProvider
 }

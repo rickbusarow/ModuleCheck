@@ -16,10 +16,10 @@
 package modulecheck.rule
 
 import com.squareup.anvil.annotations.ContributesTo
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 interface RulesComponent {
 
   val allRules: DaggerList<ModuleCheckRule<*>>

@@ -15,8 +15,8 @@
 
 package modulecheck.gradle.platforms.android
 
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
@@ -29,7 +29,7 @@ import javax.inject.Inject
  *
  * @since 0.12.0
  */
-@SingleIn(AppScope::class)
+@SingleIn(TaskScope::class)
 class AgpApiAccess @Inject constructor() {
 
   /**
