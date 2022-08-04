@@ -19,9 +19,9 @@ import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.internal.GradleProjectProvider
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.ProjectRoot
@@ -29,8 +29,8 @@ import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
 import modulecheck.runtime.RunnerComponent
 
-@SingleIn(AppScope::class)
-@MergeComponent(AppScope::class)
+@SingleIn(TaskScope::class)
+@MergeComponent(TaskScope::class)
 interface TaskComponent : RunnerComponent, RulesComponent {
 
   val projectProvider: GradleProjectProvider

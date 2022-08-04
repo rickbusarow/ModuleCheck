@@ -18,8 +18,8 @@ package modulecheck.model.dependency.impl
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.CodeGeneratorBinding.AnnotationProcessor
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
@@ -40,7 +40,7 @@ import javax.inject.Inject
  * @property generatorBindings the list of possible bindings to search
  * @since 0.12.0
  */
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealConfiguredProjectDependencyFactory @Inject constructor(
   private val pathResolver: TypeSafeProjectPathResolver,
   private val generatorBindings: DaggerList<CodeGeneratorBinding>

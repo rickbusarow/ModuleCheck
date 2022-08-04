@@ -17,8 +17,8 @@ package modulecheck.model.dependency.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.config.CodeGeneratorBinding
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.utils.lazy.unsafeLazy
@@ -32,7 +32,7 @@ import javax.inject.Inject
  * @property generatorBindings the list of possible bindings to search
  * @since 0.12.0
  */
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealExternalDependencyFactory @Inject constructor(
   private val generatorBindings: DaggerList<CodeGeneratorBinding>
 ) : ExternalDependency.Factory {
