@@ -15,8 +15,8 @@
 
 package modulecheck.project
 
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
@@ -25,7 +25,7 @@ import modulecheck.utils.trace.HasTraceTags
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
-@SingleIn(AppScope::class)
+@SingleIn(TaskScope::class)
 class ProjectCache @Inject constructor() : HasTraceTags {
   private val delegate = ConcurrentHashMap<ProjectPath, McProject>()
 

@@ -24,8 +24,8 @@ import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
@@ -68,8 +68,8 @@ interface SafeAnalysisResultAccess {
  *
  * @since 0.13.0
  */
-@SingleIn(AppScope::class)
-@ContributesBinding(AppScope::class)
+@SingleIn(TaskScope::class)
+@ContributesBinding(TaskScope::class)
 class SafeAnalysisResultAccessImpl @Inject constructor(
   private val projectCache: ProjectCache
 ) : SafeAnalysisResultAccess {

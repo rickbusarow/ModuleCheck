@@ -16,7 +16,7 @@
 package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependenciesBlocksProvider
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
@@ -45,7 +45,7 @@ class RealDependenciesBlocksProvider(
     }
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val groovyParserProvider: Provider<GroovyDependenciesBlockParser>,
     private val kotlinParserProvider: Provider<KotlinDependenciesBlockParser>

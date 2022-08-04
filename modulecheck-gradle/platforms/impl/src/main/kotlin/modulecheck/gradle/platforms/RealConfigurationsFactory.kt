@@ -16,7 +16,7 @@
 package modulecheck.gradle.platforms
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ConfigFactory
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependency
@@ -33,7 +33,7 @@ import org.gradle.api.initialization.dsl.ScriptHandler
 import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealConfigurationsFactory @Inject constructor(
   private val projectDependencyFactory: ProjectDependency.Factory,
   private val externalDependencyFactory: ExternalDependency.Factory
