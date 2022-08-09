@@ -27,11 +27,12 @@ import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.gen.McProjectBuilder
 import modulecheck.project.gen.ProjectCollector
 import java.io.File
-import java.nio.charset.Charset
 
-class RootProjectSpec(
+class BenchmarkBuilder(
+  val numModules: Int,
   override val root: File,
   override val projectCache: ProjectCache = ProjectCache(),
   override val safeAnalysisResultAccess: SafeAnalysisResultAccess =
@@ -45,7 +46,8 @@ class RootProjectSpec(
       generatorBindings = codeGeneratorBindings
     )
 
-  suspend fun McProject.addDependency(
+
+  suspend fun McProjectBuilder<*>.addDependency(
     configurationName: ConfigurationName,
     project: McProject,
     asTestFixture: Boolean = false
@@ -67,7 +69,35 @@ class RootProjectSpec(
     projectDependencies[configurationName] = old + newDependency
   }
 
-  fun File.writeText(content: String) {
-    writeText(content.trimIndent(), Charset.defaultCharset())
+  fun run() {
+
+    val root = kotlinProject(":") {
+
+      val lib1 = kotlinProject(":lib1") {
+        buildFile {
+          """
+          plugins {
+            kotlin("jvm")
+          }
+          """.trimIndent()
+        }
+      }
+
+      val lib2 = kotlinProject(":lib2") {
+        addDependency(ConfigurationName.api, lib1)
+
+        buildFile {
+          """
+          plugins {
+            kotlin("jvm")
+          }
+
+          dependencies {
+
+          }
+          """.trimIndent()
+        }
+      }
+    }
   }
 }
