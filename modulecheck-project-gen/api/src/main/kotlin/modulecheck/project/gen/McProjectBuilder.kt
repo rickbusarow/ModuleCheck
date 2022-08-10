@@ -17,8 +17,10 @@ package modulecheck.project.gen
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.PlatformPlugin
 import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.TypeSafeProjectPathResolver
@@ -26,6 +28,9 @@ import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.model.dependency.impl.RealExternalDependencyFactory
 import modulecheck.model.dependency.javaConfigurationNames
 import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
+import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.McProject
@@ -42,19 +47,37 @@ import java.io.File
 class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var path: StringProjectPath,
   var projectDir: File,
-  var buildFile: File,
-  val platformPlugin: P,
+  override var buildFile: File,
+  val platformPluginBuilder: P,
   val codeGeneratorBindings: List<CodeGeneratorBinding>,
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
   val safeAnalysisResultAccess: SafeAnalysisResultAccess,
   val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
   val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
-  var hasKapt: Boolean = false,
-  var hasTestFixturesPlugin: Boolean = false,
+  override var hasKapt: Boolean = false,
+  override var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
   var jvmTarget: JvmTarget = JvmTarget.JVM_11
-) {
+) : HasDependencyDeclarations, InvokesConfigurationNames {
+  override suspend fun getConfigurationInvocations(): Set<String> {
+    TODO("Not yet implemented")
+  }
+
+  override val buildFileParser: BuildFileParser
+    get() = buildFileParserFactory(configuredProjectDependency).create(this)
+  override val configurations: Configurations
+    get() = platformPlugin.configurations
+  override val hasAnvil: Boolean
+    get() = TODO("Not yet implemented")
+
+  override val platformPlugin: PlatformPlugin
+    get() = platformPluginBuilder.toPlugin(
+      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      projectPath = path,
+      projectDependencies = projectDependencies,
+      externalDependencies = externalDependencies
+    )
 
   val configuredProjectDependency by lazy {
     RealConfiguredProjectDependencyFactory(
@@ -117,7 +140,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     // source sets.  Plugins like Kapt don't make their configs inherit from each other,
     // so just add an empty sequence for up/downstream.
     if (this !in sourceSetName.javaConfigurationNames()) {
-      platformPlugin.configurations[this] = ConfigBuilder(
+      platformPluginBuilder.configurations[this] = ConfigBuilder(
         name = this,
         upstream = mutableListOf(),
         downstream = mutableListOf()
@@ -141,7 +164,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val newSourceSet = oldSourceSet.copy(jvmFiles = newJvmFiles)
 
-    platformPlugin.sourceSets[sourceSetName] = newSourceSet
+    platformPluginBuilder.sourceSets[sourceSetName] = newSourceSet
   }
 
   fun addJavaSource(
@@ -237,7 +260,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val newSourceSet = oldSourceSet.copy(jvmFiles = newJvmFiles)
 
-    platformPlugin.sourceSets[sourceSetName] = newSourceSet
+    platformPluginBuilder.sourceSets[sourceSetName] = newSourceSet
 
     return file
   }
@@ -263,7 +286,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = maybeAddSourceSet(sourceSetName)
 
-    platformPlugin.sourceSets[sourceSetName] = old.copy(resourceFiles = old.resourceFiles + file)
+    platformPluginBuilder.sourceSets[sourceSetName] =
+      old.copy(resourceFiles = old.resourceFiles + file)
   }
 
   fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addLayoutFile(
@@ -277,7 +301,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = maybeAddSourceSet(sourceSetName)
 
-    platformPlugin.sourceSets[sourceSetName] = old.copy(layoutFiles = old.layoutFiles + file)
+    platformPluginBuilder.sourceSets[sourceSetName] = old.copy(layoutFiles = old.layoutFiles + file)
   }
 
   fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addManifest(
@@ -288,7 +312,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     val file = File(projectDir, "src/${sourceSetName.value}/AndroidManifest.xml")
       .createSafely(content)
 
-    platformPlugin.manifests[sourceSetName] = file
+    platformPluginBuilder.manifests[sourceSetName] = file
   }
 
   @Suppress("LongParameterList")
@@ -323,7 +347,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   }
 
   fun requireSourceSetExists(name: SourceSetName) {
-    platformPlugin.sourceSets.requireSourceSetExists(name)
+    platformPluginBuilder.sourceSets.requireSourceSetExists(name)
   }
 
   // fun toProject() = toRealMcProject()

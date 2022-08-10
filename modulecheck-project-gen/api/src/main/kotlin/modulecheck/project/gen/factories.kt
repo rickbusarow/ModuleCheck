@@ -72,7 +72,7 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
     path = StringProjectPath(path),
     projectDir = projectRoot,
     buildFile = buildFile,
-    platformPlugin = pluginBuilder,
+    platformPluginBuilder = pluginBuilder,
     projectCache = projectCache,
     codeGeneratorBindings = codeGeneratorBindings,
     projectProvider = projectProvider,
@@ -116,8 +116,8 @@ internal inline fun <reified T : McProjectBuilder<P>,
 ): McProject {
 
   populateSourceSets()
-  platformPlugin.populateConfigsFromSourceSets()
-  platformPlugin.sourceSets.populateDownstreams()
+  platformPluginBuilder.populateConfigsFromSourceSets()
+  platformPluginBuilder.sourceSets.populateDownstreams()
 
   val jvmFileProviderFactory = RealJvmFileProvider.Factory { JvmFileCache() }
 
@@ -144,7 +144,7 @@ inline fun <reified T : McProjectBuilder<P>,
       jvmFileProviderFactory = jvmFileProviderFactory,
       jvmTarget = jvmTarget,
       buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
-      platformPlugin = platformPlugin.toPlugin(
+      platformPlugin = platformPluginBuilder.toPlugin(
         safeAnalysisResultAccess = safeAnalysisResultAccess,
         projectPath = path,
         projectDependencies = projectDependencies,

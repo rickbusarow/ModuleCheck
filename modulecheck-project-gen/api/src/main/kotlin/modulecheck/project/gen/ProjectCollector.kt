@@ -123,7 +123,7 @@ interface ProjectCollector {
       path = path,
       projectDir = projectDir,
       buildFile = buildFile,
-      platformPlugin = platformPlugin.toBuilder() as P,
+      platformPluginBuilder = platformPlugin.toBuilder() as P,
       codeGeneratorBindings = codeGeneratorBindings,
       projectProvider = projectProvider,
       projectCache = projectCache,

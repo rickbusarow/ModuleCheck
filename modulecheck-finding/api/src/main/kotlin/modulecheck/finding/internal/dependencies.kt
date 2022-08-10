@@ -22,6 +22,7 @@ import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
+import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.project.McProject
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.replaceDestructured
@@ -36,7 +37,7 @@ import modulecheck.utils.suffixIfNot
  * @receiver the project to which we're adding a dependency
  * @since 0.12.0
  */
-fun McProject.addDependency(
+fun HasDependencyDeclarations.addDependency(
   configuredDependency: ConfiguredDependency,
   newDeclaration: DependencyDeclaration,
   existingMarkerDeclaration: DependencyDeclaration? = null
@@ -57,7 +58,7 @@ fun McProject.addDependency(
   }
 }
 
-private fun McProject.prependStatement(
+private fun HasDependencyDeclarations.prependStatement(
   newDeclaration: DependencyDeclaration,
   existingDeclaration: DependencyDeclaration
 ) = synchronized(buildFile) {
@@ -76,7 +77,7 @@ private fun McProject.prependStatement(
   buildFile.writeText(buildFileText.replace(oldStatement, combinedStatement))
 }
 
-private fun McProject.addStatement(
+private fun HasDependencyDeclarations.addStatement(
   newDeclaration: DependencyDeclaration
 ) = synchronized(buildFile) {
 
