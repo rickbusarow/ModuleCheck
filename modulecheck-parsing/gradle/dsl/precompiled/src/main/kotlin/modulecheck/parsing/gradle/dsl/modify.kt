@@ -13,17 +13,12 @@
  * limitations under the License.
  */
 
-package modulecheck.finding.internal
+package modulecheck.parsing.gradle.dsl
 
 import kotlinx.coroutines.runBlocking
-import modulecheck.finding.Fixable
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.dsl.DependencyDeclaration
-import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
-import modulecheck.project.McProject
 import modulecheck.utils.prefixIfNot
 import modulecheck.utils.replaceDestructured
 import modulecheck.utils.suffixIfNot
@@ -102,7 +97,8 @@ private fun HasDependencyDeclarations.addStatement(
       buildFile.writeText(buildFileText.replace(oldBlockOrNull.fullText, newBlock))
     } else {
 
-      val newBlock = "\n\ndependencies {\n${newStatement.suffixIfNot("\n")}}"
+      val newBlock = "dependencies {\n${newStatement.suffixIfNot("\n")}}"
+        .prefixIfNot("\n\n")
       val newText = buildFileText + newBlock
 
       buildFile.writeText(newText)
@@ -110,7 +106,7 @@ private fun HasDependencyDeclarations.addStatement(
   }
 }
 
-fun McProject.removeDependencyWithComment(
+fun HasDependencyDeclarations.removeDependencyWithComment(
   statement: BuildFileStatement,
   fixLabel: String,
   configuredDependency: ConfiguredDependency? = null
@@ -130,7 +126,7 @@ fun McProject.removeDependencyWithComment(
 
       val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
         val (whitespace, code) = mr.destructured
-        "$whitespace${Fixable.INLINE_COMMENT}$code"
+        "$whitespace// $code"
       }
 
       if (index == lastIndex) {
@@ -151,7 +147,7 @@ fun McProject.removeDependencyWithComment(
   }
 }
 
-fun McProject.removeDependencyWithDelete(
+fun HasDependencyDeclarations.removeDependencyWithDelete(
   statement: BuildFileStatement,
   configuredDependency: ConfiguredDependency? = null
 ) = synchronized(buildFile) {

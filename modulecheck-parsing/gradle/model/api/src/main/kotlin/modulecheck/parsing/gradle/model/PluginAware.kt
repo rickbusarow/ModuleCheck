@@ -16,12 +16,9 @@
 package modulecheck.parsing.gradle.model
 
 import modulecheck.model.dependency.PlatformPlugin
-import modulecheck.model.dependency.isAndroid
 
-interface HasPlatformPlugin {
+interface HasPlatformPlugin : PluginAware {
   val platformPlugin: PlatformPlugin
-  val hasAGP: Boolean
-    get() = platformPlugin.isAndroid()
 }
 
 interface PluginAware {

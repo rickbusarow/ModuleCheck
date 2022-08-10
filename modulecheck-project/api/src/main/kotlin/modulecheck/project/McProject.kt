@@ -18,6 +18,7 @@ package modulecheck.project
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.HasConfigurations
+import modulecheck.model.dependency.HasDependencies
 import modulecheck.model.dependency.HasPath
 import modulecheck.model.dependency.HasSourceSets
 import modulecheck.model.dependency.ProjectDependencies
@@ -44,6 +45,7 @@ interface McProject :
   HasProjectCache,
   HasBuildFile,
   HasConfigurations,
+  HasDependencies,
   HasSourceSets,
   HasDependencyDeclarations,
   InvokesConfigurationNames,
@@ -60,8 +62,8 @@ interface McProject :
 
   val projectDir: File
 
-  val projectDependencies: ProjectDependencies
-  val externalDependencies: ExternalDependencies
+  override val projectDependencies: ProjectDependencies
+  override val externalDependencies: ExternalDependencies
 
   val anvilGradlePlugin: AnvilGradlePlugin?
 
@@ -80,8 +82,6 @@ interface McProject :
    */
   val jvmTarget: JvmTarget
 
-  override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
-
   /**
    * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
    *     [sourceSetName]
@@ -91,21 +91,6 @@ interface McProject :
     declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName?
-}
-
-private suspend fun McProject.configurationInvocations(): Set<String> {
-  return buildFileParser.dependenciesBlocks()
-    .flatMap { it.settings }
-    .mapNotNull { declaration ->
-
-      val declarationText = declaration.declarationText.trim()
-
-      declaration.configName.value
-        .takeIf { declarationText.startsWith(it) }
-        ?: "\"${declaration.configName.value}\""
-          .takeIf { declarationText.startsWith(it) }
-    }
-    .toSet()
 }
 
 fun McProject.isAndroid(): Boolean = platformPlugin.isAndroid()

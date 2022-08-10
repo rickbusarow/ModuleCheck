@@ -26,6 +26,5 @@ internal class BenchmarkBuilderTest : BaseTest() {
     val builder = BenchmarkBuilder(5, testProjectDir)
 
     builder.run()
-
   }
 }

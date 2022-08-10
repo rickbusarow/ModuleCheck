@@ -47,6 +47,7 @@ dependencies {
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   implementation(project(path = ":modulecheck-parsing:groovy-antlr"))
   implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))

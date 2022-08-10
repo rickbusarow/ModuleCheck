@@ -15,8 +15,8 @@
 
 package modulecheck.finding
 
-import modulecheck.finding.internal.addDependency
 import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.parsing.gradle.dsl.addDependency
 import modulecheck.parsing.gradle.dsl.asDeclaration
 
 interface AddsDependency : Fixable {

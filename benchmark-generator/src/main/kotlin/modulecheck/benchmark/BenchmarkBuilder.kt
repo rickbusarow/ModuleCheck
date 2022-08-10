@@ -17,22 +17,13 @@ package modulecheck.benchmark
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
-import modulecheck.finding.internal.addDependency
-import modulecheck.finding.internal.addStatement
-import modulecheck.finding.internal.prependStatement
 import modulecheck.model.dependency.ConfigurationName
-import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
-import modulecheck.parsing.gradle.dsl.DependencyDeclaration
-import modulecheck.parsing.gradle.dsl.asDeclaration
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
-import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.generation.McProjectBuilder
 import modulecheck.project.generation.ProjectCollector
 import java.io.File
 
@@ -51,58 +42,6 @@ class BenchmarkBuilder(
       generatorBindings = codeGeneratorBindings
     )
 
-  suspend fun McProjectBuilder<*>.addDependency(
-    configurationName: ConfigurationName,
-    project: McProject,
-    asTestFixture: Boolean = false
-  ) {
-    val old = projectDependencies[configurationName].orEmpty()
-
-    val newDependency = projectDependencyFactory
-      .create(configurationName, project.path, asTestFixture)
-
-    val (newDeclaration, tokenOrNull) = newDependency
-      .asDeclaration(this@addDependency)
-
-    addDependency(
-      configuredDependency = newDependency,
-      newDeclaration = newDeclaration,
-      existingMarkerDeclaration = tokenOrNull
-    )
-
-    projectDependencies[configurationName] = old + newDependency
-  }
-
-  /**
-   * @param configuredDependency the dependency model being added
-   * @param newDeclaration the text to be added to the project's build file
-   * @param existingMarkerDeclaration if not null, the new declaration will be added above or beyond
-   *     this declaration. Of all declarations in the `dependencies { ... }` block, this declaration
-   *     should be closest to the desired location of the new declaration.
-   * @receiver the project to which we're adding a dependency
-   * @since 0.12.0
-   */
-  fun addDependency(
-    configuredDependency: ConfiguredDependency,
-    newDeclaration: DependencyDeclaration,
-    existingMarkerDeclaration: DependencyDeclaration? = null
-  ) {
-
-    if (existingMarkerDeclaration != null) {
-      prependStatement(
-        newDeclaration = newDeclaration,
-        existingDeclaration = existingMarkerDeclaration
-      )
-    } else {
-      addStatement(newDeclaration = newDeclaration)
-    }
-
-    when (configuredDependency) {
-      is ProjectDependency -> projectDependencies.add(configuredDependency)
-      is ExternalDependency -> externalDependencies.add(configuredDependency)
-    }
-  }
-
   fun run() {
 
     val root = kotlinProject(":") {
@@ -118,19 +57,15 @@ class BenchmarkBuilder(
       }
 
       val lib2 = kotlinProject(":lib2") {
-        addDependency(ConfigurationName.api, lib1)
-
         buildFile {
           """
           plugins {
             kotlin("jvm")
           }
-
-          dependencies {
-
-          }
           """.trimIndent()
         }
+
+        addDependency(ConfigurationName.api, lib1)
       }
     }
   }
