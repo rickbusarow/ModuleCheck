@@ -13,14 +13,13 @@
  * limitations under the License.
  */
 
-package modulecheck.project.gen
+package modulecheck.project.generation
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.MavenCoordinates
-import modulecheck.model.dependency.PlatformPlugin
 import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.TypeSafeProjectPathResolver
@@ -67,17 +66,9 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   override val buildFileParser: BuildFileParser
     get() = buildFileParserFactory(configuredProjectDependency).create(this)
   override val configurations: Configurations
-    get() = platformPlugin.configurations
+    get() = configurations
   override val hasAnvil: Boolean
     get() = TODO("Not yet implemented")
-
-  override val platformPlugin: PlatformPlugin
-    get() = platformPluginBuilder.toPlugin(
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
-      projectPath = path,
-      projectDependencies = projectDependencies,
-      externalDependencies = externalDependencies
-    )
 
   val configuredProjectDependency by lazy {
     RealConfiguredProjectDependencyFactory(

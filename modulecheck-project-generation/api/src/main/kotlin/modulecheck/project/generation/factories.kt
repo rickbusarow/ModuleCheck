@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.gen
+package modulecheck.project.generation
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.model.dependency.Configurations

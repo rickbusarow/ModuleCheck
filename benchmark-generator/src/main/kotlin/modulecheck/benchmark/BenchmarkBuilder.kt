@@ -32,8 +32,8 @@ import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.gen.McProjectBuilder
-import modulecheck.project.gen.ProjectCollector
+import modulecheck.project.generation.McProjectBuilder
+import modulecheck.project.generation.ProjectCollector
 import java.io.File
 
 class BenchmarkBuilder(

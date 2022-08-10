@@ -28,6 +28,7 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.HasBuildFile
 import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
+import modulecheck.parsing.gradle.model.HasPlatformPlugin
 import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
@@ -46,6 +47,7 @@ interface McProject :
   HasSourceSets,
   HasDependencyDeclarations,
   InvokesConfigurationNames,
+  HasPlatformPlugin,
   PluginAware {
 
   override val path: StringProjectPath
@@ -65,6 +67,8 @@ interface McProject :
 
   override val hasAnvil: Boolean
     get() = anvilGradlePlugin != null
+  override val hasAGP: Boolean
+    get() = platformPlugin.isAndroid()
 
   val logger: McLogger
   val jvmFileProviderFactory: JvmFileProvider.Factory
@@ -80,7 +84,7 @@ interface McProject :
 
   /**
    * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
-   *   [sourceSetName]
+   *     [sourceSetName]
    * @since 0.12.0
    */
   suspend fun resolveFqNameOrNull(

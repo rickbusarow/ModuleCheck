@@ -56,7 +56,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-finding:api"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:source:api"))
-  testImplementation(project(path = ":modulecheck-project-gen:api"))
+  testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-rule:impl-factory"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))

@@ -31,10 +31,7 @@ interface HasBuildFile {
   val buildFileParser: BuildFileParser
 }
 
-interface HasDependencyDeclarations :
-  HasBuildFile,
-  HasConfigurations,
-  PluginAware {
+interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
 
   suspend fun getConfigurationInvocations(): Set<String>
 }

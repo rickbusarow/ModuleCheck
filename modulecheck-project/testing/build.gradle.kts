@@ -30,7 +30,7 @@ dependencies {
   api(project(path = ":modulecheck-internal-testing"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
-  api(project(path = ":modulecheck-project-gen:api"))
+  api(project(path = ":modulecheck-project-generation:api"))
   api(project(path = ":modulecheck-project:api"))
 
   compileOnly(gradleApi())

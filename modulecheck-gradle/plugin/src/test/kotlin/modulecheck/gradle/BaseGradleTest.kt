@@ -25,7 +25,7 @@ import modulecheck.gradle.internal.BuildProperties
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.ProjectCache
-import modulecheck.project.gen.ProjectCollector
+import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
 import modulecheck.utils.child

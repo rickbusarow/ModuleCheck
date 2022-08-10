@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.gen
+package modulecheck.project.generation
 
 import modulecheck.model.dependency.AndroidPlatformPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlugin

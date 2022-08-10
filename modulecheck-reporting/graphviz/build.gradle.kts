@@ -44,7 +44,7 @@ dependencies {
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
   testImplementation(project(path = ":modulecheck-model:sourceset:api"))
-  testImplementation(project(path = ":modulecheck-project-gen:api"))
+  testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))

@@ -19,7 +19,7 @@ import io.kotest.inspectors.forAll
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.project.gen.maybeAddSourceSet
+import modulecheck.project.generation.maybeAddSourceSet
 import modulecheck.rule.impl.DepthRule
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child

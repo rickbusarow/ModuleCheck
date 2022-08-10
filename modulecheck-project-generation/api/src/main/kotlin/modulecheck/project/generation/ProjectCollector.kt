@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.gen
+package modulecheck.project.generation
 
 import io.kotest.assertions.fail
 import kotlinx.coroutines.flow.map

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.gen
+package modulecheck.project.generation
 
 import modulecheck.model.dependency.ConfigFactory
 import modulecheck.model.dependency.ConfigurationName
