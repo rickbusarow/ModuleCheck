@@ -13,25 +13,22 @@
  * limitations under the License.
  */
 
+rootProject.name = "build-logic"
 enableFeaturePreview("VERSION_CATALOGS")
 
 pluginManagement {
-  @Suppress("UnstableApiUsage")
   repositories {
-    google()
     mavenCentral()
-    mavenLocal()
+    google()
     maven("https://plugins.gradle.org/m2/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
   }
 }
 
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
-    google()
     mavenCentral()
-    mavenLocal()
+    google()
     maven("https://plugins.gradle.org/m2/")
   }
 
