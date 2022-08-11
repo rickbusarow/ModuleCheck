@@ -240,7 +240,7 @@ jobs:
 
   website:
     name: build website
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
 
       - name: Check out repo
@@ -270,7 +270,9 @@ jobs:
       - name: build website
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: buildSite
+          arguments: |
+            buildSite
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: knit check
@@ -279,9 +281,9 @@ jobs:
           arguments: knitcheck
           cache-read-only: false
 
-  tests-ubuntu:
+  tests-macos:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: check out with token (used by forks)
@@ -305,14 +307,16 @@ jobs:
       - name: all tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test
+          arguments: |
+            test
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive test results
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: test-results-ubuntu
+          name: test-results-macos
           path: ./**/build/reports/tests/
 
       - name: Unit test results
@@ -321,11 +325,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
-          check_name: Unit Test Results - Ubuntu
+          check_name: Unit Test Results - macos
 
-  integration-tests-ubuntu:
+  integration-tests-macos:
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: check out with token (used by forks)
@@ -349,14 +353,16 @@ jobs:
       - name: integration tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: integrationTest
+          arguments: |
+            integrationTest
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive integration test results
         uses: actions/upload-artifact@v3
         if: failure()
         with:
-          name: integration-test-results-ubuntu
+          name: integration-test-results-macos
           path: ./**/build/reports/tests/
 
       - name: Unit test results
@@ -365,7 +371,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           report_paths: '**/build/**/TEST-*.xml'
-          check_name: Integration Test Results - Ubuntu
+          check_name: Integration Test Results - macos
 
   tests-windows:
 
@@ -394,7 +400,9 @@ jobs:
       - name: all tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: test
+          arguments: |
+            test
+            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive test results
@@ -440,7 +448,9 @@ jobs:
       - name: integration tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: integrationTest
+          arguments: |
+            integrationTest
+            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive integration test results
