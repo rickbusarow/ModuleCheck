@@ -25,7 +25,6 @@ pluginManagement {
         includeGroup("com.rickbusarow.modulecheck")
       }
     }
-    mavenLocal()
   }
   @Suppress("UnstableApiUsage")
   includeBuild("build-logic")
@@ -34,11 +33,9 @@ pluginManagement {
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
-    google()
     mavenCentral()
-    mavenLocal()
+    google()
     maven("https://plugins.gradle.org/m2/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 
