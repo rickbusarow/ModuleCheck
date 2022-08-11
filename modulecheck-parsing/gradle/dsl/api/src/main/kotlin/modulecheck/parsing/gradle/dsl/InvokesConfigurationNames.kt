@@ -16,6 +16,7 @@
 package modulecheck.parsing.gradle.dsl
 
 import modulecheck.model.dependency.HasConfigurations
+import modulecheck.model.dependency.HasDependencies
 import modulecheck.parsing.gradle.model.PluginAware
 import java.io.File
 
@@ -31,7 +32,23 @@ interface HasBuildFile {
   val buildFileParser: BuildFileParser
 }
 
-interface HasDependencyDeclarations : HasBuildFile, HasConfigurations {
+interface HasDependencyDeclarations :
+  HasBuildFile,
+  HasDependencies,
+  HasConfigurations,
+  PluginAware
 
-  suspend fun getConfigurationInvocations(): Set<String>
+suspend fun HasDependencyDeclarations.getConfigurationInvocations(): Set<String> {
+  return buildFileParser.dependenciesBlocks()
+    .flatMap { it.settings }
+    .mapNotNull { declaration ->
+
+      val declarationText = declaration.declarationText.trim()
+
+      declaration.configName.value
+        .takeIf { declarationText.startsWith(it) }
+        ?: "\"${declaration.configName.value}\""
+          .takeIf { declarationText.startsWith(it) }
+    }
+    .toSet()
 }

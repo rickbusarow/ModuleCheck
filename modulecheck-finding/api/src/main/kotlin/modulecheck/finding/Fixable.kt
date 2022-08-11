@@ -43,6 +43,5 @@ interface Fixable : Finding, Problem {
   companion object {
 
     const val FIX_LABEL = "// ModuleCheck finding"
-    const val INLINE_COMMENT = "// "
   }
 }
