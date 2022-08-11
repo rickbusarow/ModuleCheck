@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  macosGradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  ubuntuGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  windowsGradleArgs: '-Dorg.gradle.jvmargs=-Xmx5g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
 
 jobs:
 
@@ -256,8 +260,7 @@ jobs:
 
       - name: Install Yarn
         working-directory: website
-        run: |
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - uses: gradle/wrapper-validation-action@v1
 
@@ -267,12 +270,22 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: build website
+      - name: compileKotlin
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            buildSite
-            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+          arguments: compileKotlin "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+      - name: dokkaHtmlMultiModule
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dokkaHtmlMultiModule "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
+      - name: buildSite
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: buildSite "${{ env.macosGradleArgs }}"
           cache-read-only: false
 
       - name: knit check
@@ -307,9 +320,7 @@ jobs:
       - name: all tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            test
-            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+          arguments: test "${{ env.macosGradleArgs }}"
           cache-read-only: false
 
       - name: Archive test results
@@ -350,12 +361,16 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
+      - name: publishToMavenLocal
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToMavenLocalNoDokka "${{ env.macosGradleArgs }}"
+          cache-read-only: false
+
       - name: integration tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            integrationTest
-            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+          arguments: integrationTest "${{ env.macosGradleArgs }}"
           cache-read-only: false
 
       - name: Archive integration test results
@@ -400,9 +415,7 @@ jobs:
       - name: all tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            test
-            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+          arguments: test "${{ env.windowsGradleArgs }}"
           cache-read-only: false
 
       - name: Archive test results
@@ -445,12 +458,16 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
+      - name: publishToMavenLocal
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publishToMavenLocalNoDokka "${{ env.windowsGradleArgs }}"
+          cache-read-only: false
+
       - name: integration tests
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: |
-            integrationTest
-            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+          arguments: integrationTest "${{ env.windowsGradleArgs }}"
           cache-read-only: false
 
       - name: Archive integration test results
