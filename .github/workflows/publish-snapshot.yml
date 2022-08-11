@@ -6,22 +6,40 @@ on:
     branches:
       - main
 
+env:
+  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+
 jobs:
   publish-snapshot:
     runs-on: macos-latest
     if: github.repository == 'RBusarow/ModuleCheck'
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          check-latest: true
+
+      # break the publishing builds down a little into smaller steps
+      # because gradle-build-action's caching is all-or-nothing.  If the full publish task
+      # takes too long and times out, no cache is retained.
+
+      - name: Compile Kotlin
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: compileKotlin "${{ env.gradleArgs }}"
+
+      - name: Dokka & JavadocJar
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dokkaJavadocJar "${{ env.gradleArgs }}"
 
       - name: Publish Snapshots
-        run: ./gradlew clean publish --no-build-cache --no-daemon --stacktrace --no-parallel "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: publish --no-parallel "${{ env.gradleArgs }}"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
