@@ -25,6 +25,7 @@ import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
+import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
