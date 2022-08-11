@@ -17,13 +17,13 @@ package modulecheck.finding
 
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.RemovesDependency.RemovalStrategy
-import modulecheck.finding.internal.removeDependencyWithComment
-import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.model.dependency.PluginAccessor
 import modulecheck.model.dependency.PluginDefinition
 import modulecheck.model.dependency.PluginDependency
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
+import modulecheck.parsing.gradle.dsl.removeDependencyWithComment
+import modulecheck.parsing.gradle.dsl.removeDependencyWithDelete
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred

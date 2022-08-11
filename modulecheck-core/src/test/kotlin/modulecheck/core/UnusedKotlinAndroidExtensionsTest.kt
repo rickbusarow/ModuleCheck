@@ -17,8 +17,8 @@ package modulecheck.core
 
 import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
-import modulecheck.project.test.AndroidPlatformPluginBuilder
-import modulecheck.project.test.McProjectBuilder
+import modulecheck.project.generation.AndroidPlatformPluginBuilder
+import modulecheck.project.generation.McProjectBuilder
 import modulecheck.runtime.test.ProjectFindingReport.unusedKotlinAndroidExtensions
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.testing.writeKotlin

@@ -152,6 +152,14 @@
     "javaVersion": "11"
   },
   {
+    "gradlePath": ":modulecheck-project-generation:api",
+    "group": "com.rickbusarow.modulecheck",
+    "artifactId": "modulecheck-project-generation-api",
+    "description": "Fast dependency graph linting for Gradle projects",
+    "packaging": "jar",
+    "javaVersion": "11"
+  },
+  {
     "gradlePath": ":modulecheck-reporting:checkstyle",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-reporting-checkstyle",

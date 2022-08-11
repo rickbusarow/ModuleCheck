@@ -125,6 +125,7 @@ include(
   ":modulecheck-project:api",
   ":modulecheck-project:impl",
   ":modulecheck-project:testing",
+  ":modulecheck-project-generation:api",
   ":modulecheck-reporting:checkstyle",
   ":modulecheck-reporting:console",
   ":modulecheck-reporting:graphviz",
