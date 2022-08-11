@@ -17,11 +17,11 @@ package modulecheck.finding
 
 import modulecheck.finding.RemovesDependency.RemovalStrategy.COMMENT
 import modulecheck.finding.RemovesDependency.RemovalStrategy.DELETE
-import modulecheck.finding.internal.removeDependencyWithComment
-import modulecheck.finding.internal.removeDependencyWithDelete
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.parsing.gradle.dsl.removeDependencyWithComment
+import modulecheck.parsing.gradle.dsl.removeDependencyWithDelete
 
 interface RemovesDependency : Fixable {
 

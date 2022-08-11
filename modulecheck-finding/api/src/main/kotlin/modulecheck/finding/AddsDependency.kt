@@ -15,14 +15,9 @@
 
 package modulecheck.finding
 
-import modulecheck.finding.internal.addDependency
-import modulecheck.finding.internal.closestDeclarationOrNull
 import modulecheck.model.dependency.ConfiguredDependency
-import modulecheck.model.dependency.ExternalDependency
-import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
-import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
-import modulecheck.parsing.gradle.dsl.createDependencyDeclaration
+import modulecheck.parsing.gradle.dsl.addDependency
+import modulecheck.parsing.gradle.dsl.asDeclaration
 
 interface AddsDependency : Fixable {
 
@@ -35,43 +30,10 @@ interface AddsDependency : Fixable {
 
   suspend fun addDependency(): Boolean {
 
-    val token = dependentProject
-      .closestDeclarationOrNull(
-        newDependency,
-        matchPathFirst = false
-      )
+    val (newDeclaration, tokenOrNull) = newDependency
+      .asDeclaration(dependentProject)
 
-    val newDeclaration = when (val newDependency = newDependency) {
-      is ProjectDependency -> {
-
-        (token as? ModuleDependencyDeclaration)?.copy(
-          newConfigName = newDependency.configurationName,
-          newModulePath = newDependency.path,
-          testFixtures = newDependency.isTestFixture
-        )
-          ?: dependentProject.createDependencyDeclaration(
-            configurationName = newDependency.configurationName,
-            identifier = newDependency.path,
-            isTestFixtures = newDependency.isTestFixture
-          ) as ModuleDependencyDeclaration
-      }
-
-      is ExternalDependency -> {
-
-        (token as? ExternalDependencyDeclaration)?.copy(
-          newConfigName = newDependency.configurationName,
-          newCoordinates = newDependency.mavenCoordinates,
-          testFixtures = newDependency.isTestFixture
-        )
-          ?: dependentProject.createDependencyDeclaration(
-            configurationName = newDependency.configurationName,
-            identifier = newDependency.mavenCoordinates,
-            isTestFixtures = newDependency.isTestFixture
-          ) as ExternalDependencyDeclaration
-      }
-    }
-
-    dependentProject.addDependency(newDependency, newDeclaration, token)
+    dependentProject.addDependency(newDependency, newDeclaration, tokenOrNull)
 
     return true
   }

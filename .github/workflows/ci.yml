@@ -272,7 +272,7 @@ jobs:
         with:
           arguments: |
             buildSite
-            -Dorg.gradle.jvmargs="-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: knit check
@@ -309,7 +309,7 @@ jobs:
         with:
           arguments: |
             test
-            -Dorg.gradle.jvmargs="-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive test results
@@ -355,7 +355,7 @@ jobs:
         with:
           arguments: |
             integrationTest
-            -Dorg.gradle.jvmargs="-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+            "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive integration test results
@@ -402,7 +402,7 @@ jobs:
         with:
           arguments: |
             test
-            -Dorg.gradle.jvmargs="-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive test results
@@ -450,7 +450,7 @@ jobs:
         with:
           arguments: |
             integrationTest
-            -Dorg.gradle.jvmargs="-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
+            "-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
           cache-read-only: false
 
       - name: Archive integration test results

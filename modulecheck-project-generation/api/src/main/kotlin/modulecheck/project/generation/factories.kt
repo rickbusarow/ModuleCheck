@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.project.test
+package modulecheck.project.generation
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.model.dependency.Configurations
@@ -109,52 +109,6 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
 }
 
 @PublishedApi
-internal inline fun <reified T : McProjectBuilder<P>,
-  reified P : PlatformPluginBuilder<G>,
-  G : PlatformPlugin> T.buildProject(
-  projectFactory: T.(JvmFileProvider.Factory) -> McProject
-): McProject {
-
-  populateSourceSets()
-  platformPlugin.populateConfigsFromSourceSets()
-  platformPlugin.sourceSets.populateDownstreams()
-
-  val jvmFileProviderFactory = RealJvmFileProvider.Factory { JvmFileCache() }
-
-  return projectFactory(jvmFileProviderFactory)
-    .also { finalProject ->
-      projectCache[finalProject.path] = finalProject
-    }
-}
-
-inline fun <reified T : McProjectBuilder<P>,
-  reified P : PlatformPluginBuilder<G>,
-  G : PlatformPlugin> T.toRealMcProject(): McProject {
-  return buildProject { jvmFileProviderFactory ->
-
-    RealMcProject(
-      path = path,
-      projectDir = projectDir,
-      buildFile = buildFile,
-      hasKapt = hasKapt,
-      hasTestFixturesPlugin = hasTestFixturesPlugin,
-      projectCache = projectCache,
-      anvilGradlePlugin = anvilGradlePlugin,
-      logger = PrintLogger(),
-      jvmFileProviderFactory = jvmFileProviderFactory,
-      jvmTarget = jvmTarget,
-      buildFileParserFactory = buildFileParserFactory(configuredProjectDependency),
-      platformPlugin = platformPlugin.toPlugin(
-        safeAnalysisResultAccess = safeAnalysisResultAccess,
-        projectPath = path,
-        projectDependencies = projectDependencies,
-        externalDependencies = externalDependencies
-      )
-    )
-  }
-}
-
-@PublishedApi
 internal suspend fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
   SourceSetBuilder.fromSourceSet(sourceSet)
 }
@@ -165,7 +119,7 @@ internal fun Configurations.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, c
 }
 
 fun buildFileParserFactory(
-  projectDependency: ProjectDependency.Factory,
+  projectDependencyFactory: ProjectDependency.Factory,
   logger: McLogger = PrintLogger()
 ): BuildFileParser.Factory {
   return BuildFileParser.Factory { invokesConfigurationNames ->
@@ -173,11 +127,11 @@ fun buildFileParserFactory(
     RealBuildFileParser(
       {
         RealDependenciesBlocksProvider(
-          groovyParser = GroovyDependenciesBlockParser(logger, projectDependency),
+          groovyParser = GroovyDependenciesBlockParser(logger, projectDependencyFactory),
           kotlinParser = KotlinDependenciesBlockParser(
             logger,
             NoContextPsiFileFactory(),
-            projectDependency
+            projectDependencyFactory
           ),
           invokesConfigurationNames = invokesConfigurationNames
         )
@@ -197,6 +151,56 @@ fun buildFileParserFactory(
         )
       },
       invokesConfigurationNames
+    )
+  }
+}
+
+@PublishedApi
+internal inline fun <reified T, reified P, G> T.buildProject(
+  projectFactory: T.(JvmFileProvider.Factory) -> McProject
+): McProject
+  where T : McProjectBuilder<P>,
+        P : PlatformPluginBuilder<G>,
+        G : PlatformPlugin {
+
+  populateSourceSets()
+  platformPlugin.populateConfigsFromSourceSets()
+  platformPlugin.sourceSets.populateDownstreams()
+
+  executeDuringBuildActions()
+
+  val jvmFileProviderFactory = RealJvmFileProvider.Factory { JvmFileCache() }
+
+  return projectFactory(jvmFileProviderFactory)
+    .also { finalProject ->
+      projectCache[finalProject.path] = finalProject
+    }
+}
+
+inline fun <reified T, reified P, G> T.toRealMcProject(): McProject
+  where T : McProjectBuilder<P>,
+        P : PlatformPluginBuilder<G>,
+        G : PlatformPlugin {
+  return buildProject { jvmFileProviderFactory ->
+
+    RealMcProject(
+      path = path,
+      projectDir = projectDir,
+      buildFile = buildFile,
+      hasKapt = hasKapt,
+      hasTestFixturesPlugin = hasTestFixturesPlugin,
+      projectCache = projectCache,
+      anvilGradlePlugin = anvilGradlePlugin,
+      logger = PrintLogger(),
+      jvmFileProviderFactory = jvmFileProviderFactory,
+      jvmTarget = jvmTarget,
+      buildFileParserFactory = buildFileParserFactory(configuredProjectDependencyFactory),
+      platformPlugin = platformPlugin.toPlugin(
+        safeAnalysisResultAccess = safeAnalysisResultAccess,
+        projectPath = path,
+        projectDependencies = projectDependencies,
+        externalDependencies = externalDependencies
+      )
     )
   }
 }

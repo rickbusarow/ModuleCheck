@@ -853,7 +853,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -929,7 +929,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1031,7 +1031,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1106,7 +1106,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1177,7 +1177,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1247,7 +1247,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1315,7 +1315,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1389,7 +1389,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
