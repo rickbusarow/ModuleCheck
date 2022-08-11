@@ -2,7 +2,7 @@ name: deploy-website
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -40,7 +40,10 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
 
       - name: build website
-        run: ./gradlew buildSite --no-daemon
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: buildSite
+          cache-read-only: false
 
       - name: Deploy to GitHub Pages
         if: success()
