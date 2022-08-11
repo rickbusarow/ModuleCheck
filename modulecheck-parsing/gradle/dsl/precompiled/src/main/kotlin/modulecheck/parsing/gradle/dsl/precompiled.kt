@@ -16,17 +16,22 @@
 package modulecheck.parsing.gradle.dsl
 
 import modulecheck.model.dependency.ConfigurationName
-import modulecheck.model.dependency.Identifier
+import modulecheck.model.dependency.ConfiguredDependency
+import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.hasPrefix
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.dsl.ProjectAccessor.TypeSafeProjectAccessor
-import modulecheck.parsing.gradle.model.PluginAware
+import modulecheck.parsing.kotlin.compiler.internal.isKotlinScriptFile
 import modulecheck.utils.findMinimumIndent
+import modulecheck.utils.isGreaterThan
 import modulecheck.utils.letIf
 import modulecheck.utils.mapToSet
+import modulecheck.utils.prefixIfNot
+import modulecheck.utils.sortedWith
 
 /**
  * Precompiled configuration names are names which are added by a pre-compiled plugin. These names
@@ -45,109 +50,222 @@ import modulecheck.utils.mapToSet
  *
  * @param project the project in which the configuration name is being used
  * @return `true` if we can know for sure that it's pre-compiled. `false` if we aren't certain.
+ * @receiver the configuration name which may have an accessor
  * @since 0.12.0
  */
-suspend fun <T> ConfigurationName.isDefinitelyPrecompiledForProject(project: T): Boolean
-  where T : PluginAware,
-        T : HasDependencyDeclarations {
+suspend fun ConfigurationName.isDefinitelyPrecompiledForProject(
+  project: HasDependencyDeclarations
+): Boolean {
 
   return toSourceSetName().isDefinitelyPrecompiledForProject(project) ||
     project.getConfigurationInvocations().contains(value)
 }
 
-suspend fun <T> T.createDependencyDeclaration(
-  configurationName: ConfigurationName,
-  identifier: Identifier,
-  isTestFixtures: Boolean
-): DependencyDeclaration
-  where T : PluginAware,
-        T : HasDependencyDeclarations {
+/**
+ * Creates a new [DependencyDeclaration] which can be added to a build file, potentially using a
+ * similar existing declaration as a template.
+ *
+ * @param project
+ * @return a Pair where the first declaration is the newly created one, and the second is the
+ *     pre-existing template, or null if a template was not used.
+ * @since 0.13.0
+ */
+suspend fun ConfiguredDependency.asDeclaration(
+  project: HasDependencyDeclarations
+): Pair<DependencyDeclaration, DependencyDeclaration?> {
 
-  val isKotlin = buildFile.extension == "kts"
-
-  val configInvocation = when {
-    isKotlin && !configurationName.isDefinitelyPrecompiledForProject(this) -> {
-      configurationName.wrapInQuotes()
-    }
-
-    else -> configurationName.value
-  }
-
-  return when (identifier) {
-    is MavenCoordinates -> createExternalDependencyDeclaration(
-      isKotlin = isKotlin,
-      configInvocation = configInvocation,
-      configurationName = configurationName,
-      identifier = identifier,
-      isTestFixtures = isTestFixtures
-    )
-
-    is ProjectPath -> createProjectDependencyDeclaration(
-      isKotlin = isKotlin,
-      configInvocation = configInvocation,
-      configurationName = configurationName,
-      projectPath = identifier,
-      isTestFixtures = isTestFixtures
-    )
-  }
-}
-
-suspend fun <T> T.createExternalDependencyDeclaration(
-  isKotlin: Boolean,
-  configInvocation: String,
-  configurationName: ConfigurationName,
-  identifier: Identifier,
-  isTestFixtures: Boolean
-): ExternalDependencyDeclaration
-  where T : PluginAware,
-        T : HasDependencyDeclarations {
-
-  identifier as MavenCoordinates
-
-  val accessorText = if (isKotlin) {
-    "\"${identifier.name}\""
-  } else {
-    "'${identifier.name}'"
-  }
-
-  val accessorMaybeWithTestFixtures = accessorText
-    .letIf(isTestFixtures) { "testFixtures($it)" }
-
-  val declarationText = if (isKotlin) {
-    "$configInvocation($accessorMaybeWithTestFixtures)"
-  } else "$configInvocation $accessorMaybeWithTestFixtures"
-
-  val statementWithSurroundingText = buildFileParser.dependenciesBlocks()
-    .map { it.lambdaContent.findMinimumIndent() }
-    .minByOrNull { it.length }
-    .let { min ->
-      val indent = min ?: "  "
-      "$indent$declarationText\n"
-    }
-
-  return ExternalDependencyDeclaration(
-    configName = configurationName,
-    declarationText = declarationText,
-    statementWithSurroundingText = statementWithSurroundingText,
-    suppressed = emptyList(),
-    configurationNameTransform = { it.value },
-    group = identifier.group,
-    moduleName = identifier.moduleName, version = identifier.version,
-    coordinates = identifier
+  val tokenOrNull = project.closestDeclarationOrNull(
+    newDependency = this,
+    matchPathFirst = true
   )
+
+  val newDeclaration = when (val newDependency = this) {
+    is ProjectDependency -> newDependency.asModuleDependencyDeclaration(project, tokenOrNull)
+    is ExternalDependency -> newDependency.asExternalDependencyDeclaration(tokenOrNull, project)
+  }
+
+  return newDeclaration to tokenOrNull
 }
 
-suspend fun <T> T.createProjectDependencyDeclaration(
-  isKotlin: Boolean,
-  configInvocation: String,
+/**
+ * Finds the existing dependency declaration (if there are any) which is the closest match to the
+ * desired new dependency.
+ *
+ * @param newDependency The dependency being added
+ * @param matchPathFirst If true, matching project paths will be prioritized over matching
+ *     configurations. If false, configuration matches will take priority over a matching project
+ *     path.
+ * @receiver the project containing this declaration's match
+ * @return the closest matching declaration, or null if there are no declarations at all.
+ * @since 0.12.0
+ */
+suspend fun HasDependencyDeclarations.closestDeclarationOrNull(
+  newDependency: ConfiguredDependency,
+  matchPathFirst: Boolean
+): DependencyDeclaration? {
+
+  return buildFileParser.dependenciesBlocks()
+    .firstNotNullOfOrNull { dependenciesBlock ->
+
+      val sorted = dependenciesBlock.settings
+        .filterNot { it is UnknownDependencyDeclaration }
+        .sorted(matchPathFirst, newDependency)
+
+      val closestDeclaration = sorted.firstOrNull {
+        when (newDependency) {
+          is ExternalDependency -> it.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
+          is ProjectDependency -> it.projectPathOrNull() == newDependency.path
+        }
+      }
+        ?: sorted.firstOrNull {
+
+          when (newDependency) {
+            is ExternalDependency -> it.mavenCoordinatesOrNull()
+              ?.isGreaterThan(newDependency.mavenCoordinates)
+
+            is ProjectDependency -> it.projectPathOrNull()
+              ?.isGreaterThan(newDependency.path)
+          } ?: false
+        }
+        ?: sorted.lastOrNull()
+        ?: return@firstNotNullOfOrNull null
+
+      val sameDependency = when (newDependency) {
+        is ExternalDependency -> {
+          closestDeclaration.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
+        }
+
+        is ProjectDependency -> {
+          closestDeclaration.projectPathOrNull() == newDependency.path
+        }
+      }
+
+      if (sameDependency) {
+        closestDeclaration
+      } else {
+
+        val precedingWhitespace = "^\\s*".toRegex()
+          .find(closestDeclaration.statementWithSurroundingText)?.value ?: ""
+
+        when (closestDeclaration) {
+          is ExternalDependencyDeclaration -> closestDeclaration.copy(
+            statementWithSurroundingText = closestDeclaration.statementWithSurroundingText
+              .prefixIfNot(precedingWhitespace),
+            suppressed = emptyList()
+          )
+
+          is ModuleDependencyDeclaration -> closestDeclaration.copy(
+            statementWithSurroundingText = closestDeclaration.statementWithSurroundingText
+              .prefixIfNot(precedingWhitespace),
+            suppressed = emptyList()
+          )
+
+          is UnknownDependencyDeclaration -> {
+            // this shouldn't actually be possible
+            null
+          }
+        }
+      }
+    }
+}
+
+private fun List<DependencyDeclaration>.sorted(
+  matchPathFirst: Boolean,
+  newDependency: ConfiguredDependency
+) = sortedWith(
+  {
+    if (matchPathFirst) it.configName == newDependency.configurationName
+    else it.configName != newDependency.configurationName
+  },
+  { it !is ModuleDependencyDeclaration },
+  {
+    // sort by module paths, but normalize between String paths and type-safe accessors.
+    // String paths will start with ":", so remove that prefix.
+    // Type-safe accessors will have "." separators, so replace those with ":".
+    // After that, everything should read like `foo:bar:baz`.
+    (it as? ModuleDependencyDeclaration)
+      ?.projectPath
+      ?.value
+      ?.removePrefix(":")
+      ?.replace(".", ":")
+      ?: (it as? ExternalDependencyDeclaration)
+        ?.coordinates
+        ?.name
+      ?: ""
+  }
+)
+
+private fun DependencyDeclaration.projectPathOrNull(): ProjectPath? {
+  return (this as? ModuleDependencyDeclaration)?.projectPath
+}
+
+private fun DependencyDeclaration.mavenCoordinatesOrNull(): MavenCoordinates? {
+  return (this as? ExternalDependencyDeclaration)?.coordinates
+}
+
+private suspend fun ProjectDependency.asModuleDependencyDeclaration(
+  project: HasDependencyDeclarations,
+  tokenOrNull: DependencyDeclaration?
+): ModuleDependencyDeclaration {
+  return if (tokenOrNull is ModuleDependencyDeclaration) {
+    tokenOrNull.copy(
+      newConfigName = configurationName,
+      newModulePath = path,
+      testFixtures = isTestFixture
+    )
+  } else {
+    project.createDependencyDeclaration(
+      configurationName = configurationName,
+      projectPath = path,
+      isTestFixtures = isTestFixture
+    )
+  }
+}
+
+private suspend fun ExternalDependency.asExternalDependencyDeclaration(
+  tokenOrNull: DependencyDeclaration?,
+  project: HasDependencyDeclarations
+): ExternalDependencyDeclaration {
+  return if (tokenOrNull is ExternalDependencyDeclaration) {
+    tokenOrNull.copy(
+      newConfigName = configurationName,
+      newCoordinates = mavenCoordinates,
+      testFixtures = isTestFixture
+    )
+  } else {
+    project.createDependencyDeclaration(
+      configurationName = configurationName,
+      mavenCoordinates = mavenCoordinates,
+      isTestFixtures = isTestFixture
+    )
+  }
+}
+
+/**
+ * Creates a new [ModuleDependencyDeclaration] from the void, without copying the style of any other
+ * dependency declarations.
+ *
+ * This does not automatically write the dependency to the build file or add it to any collections.
+ *
+ * @param configurationName the new config name
+ * @param projectPath the new project dependency
+ * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
+ *     `api(testFixtures(project(":lib1")))`
+ * @receiver the project receiving this new dependency
+ * @return a new declaration model
+ * @since 0.13.0
+ */
+suspend fun HasDependencyDeclarations.createDependencyDeclaration(
   configurationName: ConfigurationName,
   projectPath: ProjectPath,
   isTestFixtures: Boolean
-): ModuleDependencyDeclaration
-  where T : PluginAware,
-        T : HasDependencyDeclarations {
+): ModuleDependencyDeclaration {
 
-  val projectAccessorText = projectAccessors()
+  val isKotlin = buildFile.isKotlinScriptFile()
+
+  val configInvocation = getConfigInvocation(isKotlin, configurationName)
+
+  val accessorText = projectAccessors()
     .any { it is TypeSafeProjectAccessor }
     .let { useTypeSafe ->
 
@@ -159,37 +277,107 @@ suspend fun <T> T.createProjectDependencyDeclaration(
         "project('${projectPath.value}')"
       }
     }
+  val projectAccessor = ProjectAccessor.from(accessorText, projectPath = projectPath)
+  val (declarationText, statementWithSurroundingText) = getStatementWithSurroundingText(
+    accessorText = accessorText,
+    isTestFixtures = isTestFixtures,
+    isKotlin = isKotlin,
+    configInvocation = configInvocation
+  )
+  return ModuleDependencyDeclaration(
+    projectPath = projectPath,
+    projectAccessor = projectAccessor,
+    configName = configurationName,
+    declarationText = declarationText,
+    statementWithSurroundingText = statementWithSurroundingText,
+    suppressed = emptyList()
+  ) { it.value }
+}
 
-  val projectAccessor = ProjectAccessor.from(projectAccessorText, projectPath)
+private suspend fun HasDependencyDeclarations.getConfigInvocation(
+  isKotlin: Boolean,
+  configurationName: ConfigurationName
+): String {
+  return if (isKotlin && !configurationName.isDefinitelyPrecompiledForProject(project = this)) {
+    configurationName.wrapInQuotes()
+  } else {
+    configurationName.value
+  }
+}
 
-  val projectWithTestFixtures = projectAccessorText
+/**
+ * Creates a new [ExternalDependencyDeclaration] from the void, without copying the style of any
+ * other dependency declarations.
+ *
+ * This does not automatically write the dependency to the build file or add it to any collections.
+ *
+ * @param configurationName the new config name
+ * @param mavenCoordinates the new dependency
+ * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
+ *     `api(testFixtures("com.example:foo:1:))`
+ * @receiver the project receiving this new dependency
+ * @return a new declaration model
+ * @since 0.13.0
+ */
+suspend fun HasDependencyDeclarations.createDependencyDeclaration(
+  configurationName: ConfigurationName,
+  mavenCoordinates: MavenCoordinates,
+  isTestFixtures: Boolean
+): ExternalDependencyDeclaration {
+
+  val isKotlin = buildFile.isKotlinScriptFile()
+
+  val configInvocation = getConfigInvocation(isKotlin, configurationName)
+
+  val accessorText = if (isKotlin) {
+    "\"${mavenCoordinates.name}\""
+  } else {
+    "'${mavenCoordinates.name}'"
+  }
+  val (declarationText, statementWithSurroundingText) = getStatementWithSurroundingText(
+    accessorText = accessorText,
+    isTestFixtures = isTestFixtures,
+    isKotlin = isKotlin,
+    configInvocation = configInvocation
+  )
+  return ExternalDependencyDeclaration(
+    configName = configurationName,
+    declarationText = declarationText,
+    statementWithSurroundingText = statementWithSurroundingText,
+    suppressed = emptyList(),
+    configurationNameTransform = { it.value },
+    group = mavenCoordinates.group,
+    moduleName = mavenCoordinates.moduleName, version = mavenCoordinates.version,
+    coordinates = mavenCoordinates
+  )
+}
+
+private suspend fun HasDependencyDeclarations.getStatementWithSurroundingText(
+  accessorText: String,
+  isTestFixtures: Boolean,
+  isKotlin: Boolean,
+  configInvocation: String
+): Pair<String, String> {
+
+  val projectWithTestFixtures = accessorText
     .letIf(isTestFixtures) { "testFixtures($it)" }
 
   val declarationText = if (isKotlin) {
     "$configInvocation($projectWithTestFixtures)"
   } else "$configInvocation $projectWithTestFixtures"
 
-  val statementWithSurroundingText = buildFileParser.dependenciesBlocks()
+  return declarationText to buildFileParser.dependenciesBlocks()
     .map { it.lambdaContent.findMinimumIndent() }
     .minByOrNull { it.length }
     .let { min ->
       val indent = min ?: "  "
       "$indent$declarationText\n"
     }
-
-  return ModuleDependencyDeclaration(
-    projectPath,
-    projectAccessor,
-    configurationName,
-    declarationText,
-    statementWithSurroundingText,
-    emptyList()
-  ) { it.value }
 }
 
-private tailrec fun <T> SourceSetName.isDefinitelyPrecompiledForProject(project: T): Boolean
-  where T : PluginAware,
-        T : HasDependencyDeclarations {
+private tailrec fun SourceSetName.isDefinitelyPrecompiledForProject(
+  project: HasDependencyDeclarations
+): Boolean {
 
   // simple cases
   when (this) {

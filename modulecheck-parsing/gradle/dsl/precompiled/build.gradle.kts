@@ -31,7 +31,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
 
   implementation(project(path = ":modulecheck-model:sourceset:api"))
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

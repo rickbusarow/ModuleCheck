@@ -18,3 +18,8 @@ package modulecheck.model.dependency
 interface HasConfigurations {
   val configurations: Configurations
 }
+
+interface HasDependencies {
+  val projectDependencies: ProjectDependencies
+  val externalDependencies: ExternalDependencies
+}

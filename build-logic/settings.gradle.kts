@@ -43,4 +43,6 @@ dependencyResolutionManagement {
   }
 }
 
-include(":mcbuild")
+include(
+  ":mcbuild"
+)

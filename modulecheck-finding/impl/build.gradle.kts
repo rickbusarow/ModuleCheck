@@ -29,6 +29,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-project:api"))
 
+  implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
   implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 

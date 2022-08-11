@@ -13,11 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.project.test
+package modulecheck.project.generation
 
+import kotlinx.coroutines.runBlocking
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
+import modulecheck.model.dependency.HasDependencies
 import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -26,6 +29,11 @@ import modulecheck.model.dependency.impl.RealConfiguredProjectDependencyFactory
 import modulecheck.model.dependency.impl.RealExternalDependencyFactory
 import modulecheck.model.dependency.javaConfigurationNames
 import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.gradle.dsl.BuildFileParser
+import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
+import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
+import modulecheck.parsing.gradle.dsl.addDependency
+import modulecheck.parsing.gradle.dsl.asDeclaration
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.McProject
@@ -42,21 +50,32 @@ import java.io.File
 class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   var path: StringProjectPath,
   var projectDir: File,
-  var buildFile: File,
+  override var buildFile: File,
   val platformPlugin: P,
   val codeGeneratorBindings: List<CodeGeneratorBinding>,
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
   val safeAnalysisResultAccess: SafeAnalysisResultAccess,
-  val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
-  val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
-  var hasKapt: Boolean = false,
-  var hasTestFixturesPlugin: Boolean = false,
+  override val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
+  override val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
+  override var hasKapt: Boolean = false,
+  override var hasTestFixturesPlugin: Boolean = false,
   var anvilGradlePlugin: AnvilGradlePlugin? = null,
   var jvmTarget: JvmTarget = JvmTarget.JVM_11
-) {
+) : HasDependencyDeclarations, InvokesConfigurationNames, HasDependencies {
 
-  val configuredProjectDependency by lazy {
+  private val _duringBuildActions = mutableListOf<() -> Unit>()
+
+  override val buildFileParser: BuildFileParser
+    get() = buildFileParserFactory(configuredProjectDependencyFactory).create(this)
+  override val configurations: Configurations
+    get() = configurations
+  override val hasAnvil: Boolean
+    get() = anvilGradlePlugin != null
+  override val hasAGP: Boolean
+    get() = platformPlugin is AndroidPlatformPluginBuilder<*>
+
+  val configuredProjectDependencyFactory by lazy {
     RealConfiguredProjectDependencyFactory(
       pathResolver = TypeSafeProjectPathResolver(projectProvider),
       generatorBindings = codeGeneratorBindings
@@ -70,17 +89,41 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   fun addDependency(
     configurationName: ConfigurationName,
     project: McProject,
-    asTestFixture: Boolean = false
+    asTestFixture: Boolean = false,
+    addToBuildFile: Boolean = true
   ) {
 
     configurationName.maybeAddToSourceSetsAndConfigurations()
 
     val old = projectDependencies[configurationName].orEmpty()
 
-    val cpd = configuredProjectDependency
+    val newDependency = configuredProjectDependencyFactory
       .create(configurationName, project.path, asTestFixture)
 
-    projectDependencies[configurationName] = old + cpd
+    if (addToBuildFile) {
+      onBuild {
+
+        val declarationExists = runBlocking {
+          buildFileParser.dependenciesBlocks().any { dependenciesBlock ->
+            dependenciesBlock.getOrEmpty(project.path, configurationName, asTestFixture)
+              .isNotEmpty()
+          }
+        }
+
+        if (!declarationExists) {
+          val (newDeclaration, tokenOrNull) = runBlocking {
+            newDependency.asDeclaration(this@McProjectBuilder)
+          }
+          addDependency(
+            configuredDependency = newDependency,
+            newDeclaration = newDeclaration,
+            existingMarkerDeclaration = tokenOrNull
+          )
+        }
+      }
+    }
+
+    projectDependencies[configurationName] = old + newDependency
   }
 
   fun addExternalDependency(
@@ -263,7 +306,8 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
 
     val old = maybeAddSourceSet(sourceSetName)
 
-    platformPlugin.sourceSets[sourceSetName] = old.copy(resourceFiles = old.resourceFiles + file)
+    platformPlugin.sourceSets[sourceSetName] =
+      old.copy(resourceFiles = old.resourceFiles + file)
   }
 
   fun <T : AndroidPlatformPluginBuilder<*>> McProjectBuilder<T>.addLayoutFile(
@@ -326,5 +370,12 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     platformPlugin.sourceSets.requireSourceSetExists(name)
   }
 
-  // fun toProject() = toRealMcProject()
+  private fun onBuild(action: () -> Unit) {
+    _duringBuildActions.add(action)
+  }
+
+  @PublishedApi
+  internal fun executeDuringBuildActions() {
+    _duringBuildActions.forEach { it.invoke() }
+  }
 }
