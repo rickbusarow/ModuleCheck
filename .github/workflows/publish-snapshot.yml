@@ -8,7 +8,7 @@ on:
 
 jobs:
   publish-snapshot:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     if: github.repository == 'RBusarow/ModuleCheck'
     timeout-minutes: 25
 
@@ -21,7 +21,7 @@ jobs:
           check-latest: true
 
       - name: Publish Snapshots
-        run: ./gradlew clean publish --no-build-cache --no-daemon --stacktrace --no-parallel
+        run: ./gradlew clean publish --no-build-cache --no-daemon --stacktrace --no-parallel "-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
