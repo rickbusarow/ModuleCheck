@@ -7,6 +7,9 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish:
@@ -27,22 +30,30 @@ jobs:
 
       - name: Install Yarn
         working-directory: website
-        run: |
-          yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'zulu'
           java-version: '11'
-          cache: 'gradle'
 
-      - uses: gradle/wrapper-validation-action@v1
+      - name: compileKotlin
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: compileKotlin "${{ env.gradleArgs }}"
+          cache-read-only: false
+
+      - name: dokkaHtmlMultiModule
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dokkaHtmlMultiModule "${{ env.gradleArgs }}"
+          cache-read-only: false
 
       - name: build website
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: buildSite
+          arguments: buildSite "${{ env.gradleArgs }}"
           cache-read-only: false
 
       - name: Deploy to GitHub Pages
