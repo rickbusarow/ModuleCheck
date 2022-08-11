@@ -68,6 +68,7 @@ suspend fun ConfigurationName.isDefinitelyPrecompiledForProject(
  * @param project
  * @return a Pair where the first declaration is the newly created one, and the second is the
  *     pre-existing template, or null if a template was not used.
+ * @since 0.13.0
  */
 suspend fun ConfiguredDependency.asDeclaration(
   project: HasDependencyDeclarations
@@ -252,6 +253,7 @@ private suspend fun ExternalDependency.asExternalDependencyDeclaration(
  *     `api(testFixtures(project(":lib1")))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
+ * @since 0.13.0
  */
 suspend fun HasDependencyDeclarations.createDependencyDeclaration(
   configurationName: ConfigurationName,
@@ -315,6 +317,7 @@ private suspend fun HasDependencyDeclarations.getConfigInvocation(
  *     `api(testFixtures("com.example:foo:1:))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
+ * @since 0.13.0
  */
 suspend fun HasDependencyDeclarations.createDependencyDeclaration(
   configurationName: ConfigurationName,
