@@ -299,17 +299,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: check out with token (used by forks)
+      - name: check out with token
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -343,17 +334,8 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: check out with token (used by forks)
+      - name: check out with token
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -394,17 +376,8 @@ jobs:
 
     steps:
 
-      - name: check out with token (used by forks)
+      - name: check out with token
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -440,17 +413,8 @@ jobs:
 
     steps:
 
-      - name: check out with token (used by forks)
+      - name: check out
         uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name != github.repository
-
-      - name: check out with PAT (used by main repo)
-        uses: actions/checkout@v3
-        if: github.event.pull_request.head.repo.full_name == github.repository
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          fetch-depth: 0
 
       - name: Set up JDK
         uses: actions/setup-java@v3
