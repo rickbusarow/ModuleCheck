@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-wiring"
-  anvil = true
+  anvil()
 }
 
 dependencies {

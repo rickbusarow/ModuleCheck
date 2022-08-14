@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-project-generation-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {

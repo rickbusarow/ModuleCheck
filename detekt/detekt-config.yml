@@ -49,6 +49,7 @@ output-reports:
 
 comments:
   active: true
+  excludes: [ '**/build-logic/**' ]
   AbsentOrWrongFileLicense:
     active: true
     licenseTemplateFile: 'license.template'

@@ -17,20 +17,13 @@ import modulecheck.builds.DOCS_WEBSITE
 import modulecheck.builds.SOURCE_WEBSITE
 import modulecheck.builds.VERSION_NAME
 
-// `alias(libs.______)` inside the plugins block throws a false positive warning
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-// There's also an IntelliJ plugin to disable this warning globally:
-// https://plugins.jetbrains.com/plugin/18949-gradle-libs-error-suppressor
-@Suppress("DSL_SCOPE_VIOLATION")
-
 plugins {
   id("mcbuild")
 }
 
 mcbuild {
-  ksp = true
+  ksp()
 }
-val kotlinVersion = libs.versions.kotlin.get()
 
 dependencies {
   api(libs.detekt.api)
@@ -43,7 +36,7 @@ dependencies {
   implementation(libs.ktlint.gradle)
   implementation(libs.ktlint.ruleset.standard)
 
-  "ksp"(libs.zacSweers.auto.service.ksp)
+  ksp(libs.zacSweers.auto.service.ksp)
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
@@ -53,26 +46,6 @@ dependencies {
 
 tasks.withType<Test> {
   useJUnitPlatform()
-}
-
-java {
-  // This is different from the Kotlin jvm target.
-  @Suppress("MagicNumber")
-  toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions {
-
-    languageVersion = "1.5"
-    apiVersion = "1.5"
-
-    jvmTarget = "11"
-
-    freeCompilerArgs = freeCompilerArgs + listOf(
-      "-opt-in=kotlin.RequiresOptIn"
-    )
-  }
 }
 
 val generatedDirPath = "$buildDir/generated/sources/buildProperties/kotlin/main"
@@ -90,7 +63,9 @@ val generateBuildProperties by tasks.registering {
   )
 
   inputs.file(
-    rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt")
+    rootProject.file(
+      "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"
+    )
   )
   outputs.file(buildPropertiesFile)
 

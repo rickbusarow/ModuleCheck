@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-utils-coroutines-impl"
-  anvil = true
+  anvil()
 }
 
 dependencies {

@@ -15,12 +15,18 @@
 
 package modulecheck.builds
 
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
+interface DiExtension {
+  /**
+   * Applies the Anvil plugin with `generateDaggerFactories` set to `true`. Do not use at the same
+   * time as `dagger()`.
+   */
+  fun anvil()
 
-fun Project.applyKsp(useKsp: Boolean) {
-
-  if (!useKsp) return
-
-  apply(plugin = "com.google.devtools.ksp")
+  /**
+   * Applies kapt and the Anvil plugin with `generateDaggerFactories` set to `false`. Also adds the
+   * Dagger compiler `kapt` dependency.
+   *
+   * Do not use at the same time as `anvil()`.
+   */
+  fun dagger()
 }

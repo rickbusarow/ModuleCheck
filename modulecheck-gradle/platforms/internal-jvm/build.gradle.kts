@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-platform-internal-jvm"
-  anvil = true
+  anvil()
 }
 
 dependencies {

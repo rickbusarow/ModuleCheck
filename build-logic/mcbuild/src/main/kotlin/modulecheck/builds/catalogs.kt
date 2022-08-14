@@ -23,20 +23,22 @@ import org.gradle.api.artifacts.VersionConstraint
 import org.gradle.api.provider.Provider
 import org.gradle.kotlin.dsl.getByType
 
-@Suppress("UnstableApiUsage")
+const val GROUP = "com.rickbusarow.modulecheck"
+const val PLUGIN_ID = "com.rickbusarow.module-check"
+const val VERSION_NAME = "0.13.0-SNAPSHOT"
+const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
+const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
+
 val Project.catalogs: VersionCatalogsExtension
   get() = extensions.getByType(VersionCatalogsExtension::class)
 
-@Suppress("UnstableApiUsage")
 val Project.libsCatalog: VersionCatalog
   get() = catalogs.named("libs")
 
-@Suppress("UnstableApiUsage")
 fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDependency> {
   return findLibrary(alias).get()
 }
 
-@Suppress("UnstableApiUsage")
 fun VersionCatalog.version(alias: String): VersionConstraint {
   return findVersion(alias).get()
 }

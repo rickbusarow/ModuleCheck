@@ -15,18 +15,11 @@
 
 package modulecheck.builds
 
-import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
-fun Project.applyDagger(anvil: Boolean, dagger: Boolean) {
-
-  if (!dagger) return
-
-  if (anvil && dagger) throw GradleException(
-    "Don't apply both Anvil and Dagger.  If you need Dagger for components, just use Dagger."
-  )
+fun Project.applyDagger() {
 
   apply(plugin = "org.jetbrains.kotlin.kapt")
   apply(plugin = "com.squareup.anvil")
