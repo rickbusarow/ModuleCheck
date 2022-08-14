@@ -21,10 +21,6 @@ buildscript {
   }
 }
 
-// `alias(libs.______)` inside the plugins block throws a false positive warning
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-// There's also an IntelliJ plugin to disable this warning globally:
-// https://plugins.jetbrains.com/plugin/18949-gradle-libs-error-suppressor
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   alias(libs.plugins.dependencyAnalysis)
@@ -60,28 +56,37 @@ moduleCheck {
   }
 }
 
-// Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,
-// all subprojects are published.  This is used in plugin tests.
-val publishToMavenLocal by tasks.registering {
-  subprojects.forEach { sub ->
-    dependsOn(sub.tasks.matching { it.name == "publishToMavenLocal" })
-  }
-}
-val publishToMavenLocalNoDokka by tasks.registering {
-  subprojects.forEach { sub ->
-    dependsOn(sub.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
-  }
-}
+afterEvaluate {
 
-tasks.matching { it.name == "ktlintFormat" }.configureEach {
-  dependsOn(gradle.includedBuild("build-logic").task(":ktlintFormat"))
-}
-tasks.matching { it.name == "ktlintCheck" }.configureEach {
-  dependsOn(gradle.includedBuild("build-logic").task(":ktlintCheck"))
+  // Hack for ensuring that when 'publishToMavenLocal' is invoked from the root project,
+  // all subprojects are published.  This is used in plugin tests.
+  sequenceOf(
+    "publishToMavenLocal",
+    "publishToMavenLocalNoDokka"
+  ).forEach { taskName ->
+    tasks.register(taskName) {
+      subprojects.forEach { sub ->
+        dependsOn(sub.tasks.matching { it.name == taskName })
+      }
+    }
+  }
+
+  sequenceOf(
+    "buildHealth",
+    "clean",
+    "ktlintCheck",
+    "ktlintFormat",
+    "moduleCheckSortDependenciesAuto"
+  ).forEach { taskName ->
+    tasks.named(taskName).configure {
+      dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))
+    }
+  }
 }
 tasks.withType<Delete> {
   dependsOn(gradle.includedBuild("build-logic").task(":clean"))
 }
+
 doctor {
   disallowCleanTaskDependencies.set(false)
   javaHome {

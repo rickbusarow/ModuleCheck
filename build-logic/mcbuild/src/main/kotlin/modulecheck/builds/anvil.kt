@@ -21,13 +21,13 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 
-fun Project.applyAnvil(anvil: Boolean, dagger: Boolean) {
+fun Project.applyAnvil() {
 
-  if (!anvil) return
-
-  if (anvil && dagger) throw GradleException(
-    "Don't apply both Anvil and Dagger.  If you need Dagger for components, just use Dagger."
-  )
+  pluginManager.withPlugin("org.jetbrains.kotlin.kapt") {
+    throw GradleException(
+      "Don't use `mcbuild.anvil()` if kapt is also being applied.  Just use `dagger()`."
+    )
+  }
 
   apply(plugin = "com.squareup.anvil")
 

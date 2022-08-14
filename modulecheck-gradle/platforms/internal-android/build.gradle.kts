@@ -21,7 +21,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-platform-internal-android"
-  anvil = true
+  anvil()
 }
 
 tasks.withType<KotlinCompile> {

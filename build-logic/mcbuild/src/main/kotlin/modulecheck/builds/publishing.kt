@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@file:Suppress("UndocumentedPublicProperty")
 
 package modulecheck.builds
 
@@ -32,12 +31,6 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.Sign
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
-
-const val GROUP = "com.rickbusarow.modulecheck"
-const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.13.0-SNAPSHOT"
-const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
-const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
 @Suppress("UnstableApiUsage")
 fun Project.configurePublishing(

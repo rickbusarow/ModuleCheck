@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-logging-testing"
-  anvil = true
+  anvil()
 }
 
 dependencies {

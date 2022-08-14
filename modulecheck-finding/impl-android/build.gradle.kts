@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-finding-impl-android"
-  anvil = true
+  anvil()
 }
 dependencies {
 
