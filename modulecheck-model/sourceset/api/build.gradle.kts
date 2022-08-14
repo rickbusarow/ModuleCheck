@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-model-sourceset-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {

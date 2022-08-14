@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-rule-testing"
-  dagger = true
+  dagger()
 }
 
 dependencies {

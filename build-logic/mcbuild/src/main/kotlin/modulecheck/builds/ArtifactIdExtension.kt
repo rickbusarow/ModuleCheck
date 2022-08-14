@@ -15,6 +15,6 @@
 
 package modulecheck.builds
 
-fun interface DIListener {
-  fun onChanged(anvil: Boolean, dagger: Boolean)
+interface ArtifactIdExtension {
+  val artifactId: String?
 }

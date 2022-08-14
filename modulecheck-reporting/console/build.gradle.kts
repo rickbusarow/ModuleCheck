@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-console"
-  anvil = true
+  anvil()
 }
 
 dependencies {

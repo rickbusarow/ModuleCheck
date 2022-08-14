@@ -13,8 +13,7 @@
  * limitations under the License.
  */
 
-import modulecheck.builds.ModuleCheckBuildExtension
-import org.gradle.kotlin.dsl.findByType
+import modulecheck.builds.ArtifactIdExtension
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
@@ -24,9 +23,8 @@ plugins {
   id("org.jetbrains.dokka")
 }
 
-tasks
-  .withType<AbstractDokkaLeafTask>()
-  .all {
+tasks.withType<AbstractDokkaLeafTask>()
+  .configureEach {
 
     // Dokka doesn't support configuration caching
     notCompatibleWithConfigurationCache("Dokka doesn't support configuration caching")
@@ -39,7 +37,7 @@ tasks
     // The default moduleName for each module in the module list is its unqualified "name",
     // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
     // artifact ID, if it has one, or default to its full Gradle path for internal modules.
-    val fullModuleName = extensions.findByType<ModuleCheckBuildExtension>()?.artifactId
+    val fullModuleName = extensions.findByType<ArtifactIdExtension>()?.artifactId
       ?: project.path.removePrefix(":")
     moduleName.set(fullModuleName)
 
