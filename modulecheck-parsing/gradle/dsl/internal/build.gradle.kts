@@ -19,10 +19,8 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-gradle-dsl-internal"
-  anvil = true
+  anvil()
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 

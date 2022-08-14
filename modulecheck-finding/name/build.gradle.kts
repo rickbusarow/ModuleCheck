@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-finding-name"
-  anvil = true
+  anvil()
 }
 dependencies {
 

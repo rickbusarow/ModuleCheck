@@ -22,7 +22,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-plugin"
-  dagger = true
+  dagger()
 }
 
 val main by sourceSets.getting
@@ -170,7 +170,11 @@ val generateBuildProperties by tasks.registering {
     buildPropertiesDir, "modulecheck/gradle/internal/BuildProperties.kt"
   )
 
-  inputs.file(rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"))
+  inputs.file(
+    rootProject.file(
+      "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"
+    )
+  )
   outputs.file(buildPropertiesFile)
 
   doLast {

@@ -19,8 +19,8 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-sarif"
-  anvil = true
-  ksp = true
+  anvil()
+  ksp()
 }
 
 dependencies {
