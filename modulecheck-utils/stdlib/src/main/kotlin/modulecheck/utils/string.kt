@@ -37,19 +37,34 @@ fun String.findMinimumIndent(
 
   if (contains("\t")) return "\t"
 
-  return lines()
+  val parsedMinimumOrNull = lines()
     .filter { it.isNotBlank() }
     .map { it.indentWidth() }
     .filter { it > 0 }
     .minOrNull()
     ?.let { " ".repeat(it) }
+
+  return parsedMinimumOrNull
+    ?.takeIf { it.length >= absoluteMinimum.length }
     ?: absoluteMinimum
 }
 
 private fun String.indentWidth(): Int =
   indexOfFirst { !it.isWhitespace() }.let { if (it == -1) length else it }
 
-class IndentScope(private val indent: String, private val stringBuilder: StringBuilder) {
+/**
+ * A builder scope for [StringBuilder.indent][modulecheck.utils.indent] and [buildStringIndented].
+ *
+ * @since 0.13.0
+ */
+class IndentScope(
+  @PublishedApi
+  internal val indent: String,
+  @PublishedApi
+  internal val tab: String,
+  @PublishedApi
+  internal val stringBuilder: StringBuilder
+) {
 
   fun append(str: String) {
     stringBuilder.append(indent + str)
@@ -67,13 +82,81 @@ class IndentScope(private val indent: String, private val stringBuilder: StringB
     stringBuilder.appendLine(indent + c)
   }
 
-  fun indent(indent: String, action: IndentScope.() -> Unit) {
-    IndentScope(this.indent + indent, stringBuilder).action()
+  /**
+   * Creates another layer of indentation by adding [tab] to [indent], then performing [action].
+   *
+   * @since 0.13.0
+   */
+  inline fun indent(
+    tab: String = this.tab,
+    action: IndentScope.() -> Unit
+  ) {
+    IndentScope(
+      indent = indent + tab,
+      tab = tab,
+      stringBuilder = stringBuilder
+    )
+      .action()
   }
 }
 
-fun StringBuilder.indent(indent: String, action: IndentScope.() -> Unit) {
-  IndentScope(indent, this).action()
+/**
+ * Shorthand version of [StringBuilder.indent][modulecheck.utils.indent] for when the first line of
+ * the `buildString { ... }` block would just be a call to `indent(...) { ... }`.
+ *
+ * example:
+ * ```
+ * override fun toString() = buildStringIndented(baseIndent = "      ") {
+ *   appendLine("SomeClass(")
+ *   indent {
+ *     appendLine("prop1=$prop1")
+ *     appendLine("prop2=$prop2")
+ *   }
+ *   eppendLine(")")
+ * }
+ * ```
+ *
+ * @since 0.13.0
+ */
+inline fun buildStringIndented(
+  baseIndent: String,
+  tab: String = "  ",
+  action: IndentScope.() -> Unit
+): String {
+  return buildString {
+    indent(
+      startingIndent = baseIndent,
+      tab = tab,
+      action = action
+    )
+  }
+}
+
+/**
+ * example:
+ * ```
+ * override fun toString() = buildString {
+ *   appendLine("SomeClass(")
+ *   indent {
+ *     appendLine("prop1=$prop1")
+ *     appendLine("prop2=$prop2")
+ *   }
+ *   eppendLine(")")
+ * }
+ * ```
+ *
+ * @since 0.13.0
+ */
+inline fun StringBuilder.indent(
+  startingIndent: String = "",
+  tab: String = "  ",
+  action: IndentScope.() -> Unit
+) {
+  IndentScope(
+    indent = startingIndent,
+    tab = tab,
+    stringBuilder = this
+  ).action()
 }
 
 /**
@@ -119,7 +202,7 @@ fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r
 
 /**
  * @return a string with no leading or trailing whitespace, and no whitespace before or after any
- *   instance of [delimiter]
+ *     instance of [delimiter]
  * @since 0.12.0
  */
 fun String.trimSegments(delimiter: String = "."): String {
