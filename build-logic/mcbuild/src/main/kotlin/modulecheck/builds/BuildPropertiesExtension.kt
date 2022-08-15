@@ -1,0 +1,163 @@
+/*
+ * Copyright (C) 2021-2022 Rick Busarow
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package modulecheck.builds
+
+import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.api.tasks.TaskProvider
+import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.withType
+import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.util.prefixIfNot
+import org.jetbrains.kotlin.util.suffixIfNot
+import java.io.File
+
+interface BuildPropertiesExtension {
+
+  fun Project.buildProperties(
+    sourceSetName: String,
+    @Language("kotlin")
+    content: String
+  ) {
+    setUpGeneration(
+      sourceSetName = sourceSetName,
+      content = content.trimIndent()
+    )
+  }
+}
+
+private fun Project.setUpGeneration(
+  sourceSetName: String,
+  @Language("kotlin")
+  content: String
+) {
+
+  val generatedDir = generatedDir(sourceSetName)
+
+  extensions.configure<SourceSetContainer> {
+
+    named(sourceSetName) {
+      java.srcDir(generatedDir)
+    }
+  }
+
+  val (packageName, className) = packageNameToClassName(content)
+  val buildPropertiesFile = generatedFile(
+    sourceSetName = sourceSetName,
+    packageName = packageName,
+    className = className
+  )
+
+  val sourceSetTaskName = when (sourceSetName) {
+    "main" -> ""
+    else -> sourceSetName.capitalize()
+  }
+
+  val genTask = registerTask(
+    sourceSetTaskName = sourceSetTaskName,
+    generatedDir = generatedDir,
+    buildPropertiesFile = buildPropertiesFile,
+    content = content
+  )
+
+  tasks.matching {
+    it.name in setOf(
+      "javaSourcesJar",
+      "compile${sourceSetTaskName}Kotlin",
+      "runKtlintCheckOver${sourceSetTaskName}SourceSet",
+      "runKtlintFormatOver${sourceSetTaskName}SourceSet"
+    )
+  }
+    .configureEach {
+      dependsOn(genTask)
+    }
+
+  // generate the build properties file during an IDE sync, so no more red squigglies
+  rootProject.tasks.named("prepareKotlinBuildScriptModel") {
+    dependsOn(genTask)
+  }
+
+  tasks.withType<KotlinCompile>()
+    .configureEach {
+      dependsOn(genTask)
+    }
+}
+
+private fun Project.registerTask(
+  sourceSetTaskName: String,
+  generatedDir: File,
+  buildPropertiesFile: File,
+  content: String
+): TaskProvider<Task>? {
+  val catalogs = rootProject.file(
+    "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/catalogs.kt"
+  )
+
+  return tasks.register("generate${sourceSetTaskName}BuildProperties") {
+    inputs.file(catalogs)
+
+    outputs.file(buildPropertiesFile)
+
+    doLast {
+      generatedDir.deleteRecursively()
+      buildPropertiesFile.parentFile.mkdirs()
+      buildPropertiesFile.writeText(
+        content.prefixIfNot("@file:Suppress(\"AbsentOrWrongFileLicense\")\n\n")
+          .suffixIfNot("\n")
+      )
+    }
+  }
+}
+
+private fun Project.generatedDir(sourceSetName: String): File {
+  return buildDir.resolve(
+    "generated/sources/buildProperties/kotlin/$sourceSetName"
+  )
+}
+
+private fun packageNameToClassName(content: String): Pair<String, String> {
+
+  val packageNameRegex = "package (\\S*)".toRegex()
+
+  val lines = content.lines()
+    .filter { it.isNotBlank() }
+
+  val packageName = lines.first { it.trim().matches(packageNameRegex) }
+    .replace(packageNameRegex) { match ->
+      match.destructured.component1().trim()
+    }
+
+  val classNameRegex = "internal class (\\S*).*".toRegex()
+
+  val typeName = lines.first { it.trim().matches(classNameRegex) }
+    .replace(classNameRegex) { match ->
+      match.destructured.component1().trim()
+    }
+
+  return packageName to typeName
+}
+
+private fun Project.generatedFile(
+  sourceSetName: String,
+  packageName: String,
+  className: String
+): File {
+  return generatedDir(sourceSetName)
+    .resolve(packageName.replace(".", File.separator))
+    .resolve("$className.kt")
+}

@@ -23,6 +23,19 @@ plugins {
 
 mcbuild {
   ksp()
+
+  buildProperties(
+    "main",
+    """
+    package modulecheck.builds.ktlint
+
+    internal class BuildProperties {
+      val version = "$VERSION_NAME"
+      val sourceWebsite = "$SOURCE_WEBSITE"
+      val docsWebsite = "$DOCS_WEBSITE"
+    }
+    """
+  )
 }
 
 dependencies {
@@ -44,84 +57,7 @@ dependencies {
   testImplementation(libs.ktlint.test)
 }
 
-tasks.withType<Test> {
-  useJUnitPlatform()
-}
-
-val generatedDirPath = "$buildDir/generated/sources/buildProperties/kotlin/main"
-sourceSets {
-  main.configure {
-    java.srcDir(project.file(generatedDirPath))
-  }
-}
-
-val generateBuildProperties by tasks.registering {
-
-  val buildPropertiesDir = File(generatedDirPath)
-  val buildPropertiesFile = File(
-    buildPropertiesDir, "modulecheck/builds/ktlint/BuildProperties.kt"
-  )
-
-  inputs.file(
-    rootProject.file(
-      "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"
-    )
-  )
-  outputs.file(buildPropertiesFile)
-
-  doLast {
-
-    buildPropertiesDir.deleteRecursively()
-    buildPropertiesFile.parentFile.mkdirs()
-
-    buildPropertiesFile.writeText(
-      """
-      |/*
-      | * Copyright (C) 2021-2022 Rick Busarow
-      | * Licensed under the Apache License, Version 2.0 (the "License");
-      | * you may not use this file except in compliance with the License.
-      | * You may obtain a copy of the License at
-      | *
-      | *      http://www.apache.org/licenses/LICENSE-2.0
-      | *
-      | * Unless required by applicable law or agreed to in writing, software
-      | * distributed under the License is distributed on an "AS IS" BASIS,
-      | * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-      | * See the License for the specific language governing permissions and
-      | * limitations under the License.
-      | */
-      |
-      |package modulecheck.builds.ktlint
-      |
-      |internal class BuildProperties {
-      |  val version = "$VERSION_NAME"
-      |  val sourceWebsite = "$SOURCE_WEBSITE"
-      |  val docsWebsite = "$DOCS_WEBSITE"
-      |}
-      |
-      """.trimMargin()
-    )
-  }
-}
-
-tasks.matching {
-  it.name in setOf(
-    "javaSourcesJar",
-    "runKtlintCheckOverMainSourceSet",
-    "runKtlintFormatOverMainSourceSet"
-  )
-}
-  .configureEach {
-    dependsOn(generateBuildProperties)
-  }
-
 val jarTask = tasks.withType<Jar>()
-
 rootProject.tasks.named("prepareKotlinBuildScriptModel") {
-  dependsOn(generateBuildProperties, jarTask)
+  dependsOn(jarTask)
 }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
-  .configureEach {
-    dependsOn(generateBuildProperties)
-  }
