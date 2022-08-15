@@ -20,9 +20,7 @@ import org.gradle.api.Task
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.withType
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.util.prefixIfNot
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
@@ -63,50 +61,33 @@ private fun Project.setUpGeneration(
     className = className
   )
 
-  val sourceSetTaskName = when (sourceSetName) {
-    "main" -> ""
-    else -> sourceSetName.capitalize()
-  }
-
   val genTask = registerTask(
-    sourceSetTaskName = sourceSetTaskName,
+    sourceSetName = sourceSetName,
     generatedDir = generatedDir,
     buildPropertiesFile = buildPropertiesFile,
     content = content
   )
 
-  tasks.matching {
-    it.name in setOf(
-      "javaSourcesJar",
-      "compile${sourceSetTaskName}Kotlin",
-      "runKtlintCheckOver${sourceSetTaskName}SourceSet",
-      "runKtlintFormatOver${sourceSetTaskName}SourceSet"
-    )
-  }
-    .configureEach {
-      dependsOn(genTask)
-    }
-
-  // generate the build properties file during an IDE sync, so no more red squigglies
-  rootProject.tasks.named("prepareKotlinBuildScriptModel") {
-    dependsOn(genTask)
-  }
-
-  tasks.withType<KotlinCompile>()
-    .configureEach {
-      dependsOn(genTask)
-    }
+  registerSimpleGenerationTaskAsDependency(
+    sourceSetName = sourceSetName,
+    taskProvider = genTask
+  )
 }
 
 private fun Project.registerTask(
-  sourceSetTaskName: String,
+  sourceSetName: String,
   generatedDir: File,
   buildPropertiesFile: File,
   content: String
-): TaskProvider<Task>? {
+): TaskProvider<Task> {
   val catalogs = rootProject.file(
     "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/catalogs.kt"
   )
+
+  val sourceSetTaskName = when (sourceSetName) {
+    "main" -> ""
+    else -> sourceSetName.capitalize()
+  }
 
   return tasks.register("generate${sourceSetTaskName}BuildProperties") {
     inputs.file(catalogs)

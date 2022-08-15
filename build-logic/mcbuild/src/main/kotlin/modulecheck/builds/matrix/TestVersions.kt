@@ -13,27 +13,15 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.builds.matrix
 
-mcbuild {
-  versionsMatrix("main", "modulecheck.testing")
-}
-
-dependencies {
-
-  api(libs.bundles.hermit)
-  api(libs.bundles.jUnit)
-  api(libs.bundles.kotest)
-
-  compileOnly(gradleApi())
-
-  compileOnly(libs.groovyXml)
-
-  implementation(libs.kotlin.compiler)
-  implementation(libs.kotlin.reflect)
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-  implementation(project(path = ":modulecheck-utils:trace-testing"))
+data class TestVersions(
+  val gradle: String,
+  val agp: String,
+  val anvil: String,
+  val kotlin: String
+) {
+  override fun toString(): String {
+    return "[gradle $gradle, agp $agp, anvil $anvil, kotlin $kotlin]"
+  }
 }

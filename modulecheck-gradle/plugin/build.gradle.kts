@@ -136,6 +136,7 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-project-generation:api"))
+  testImplementation(project(path = ":modulecheck-utils:lazy"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 

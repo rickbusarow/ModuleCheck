@@ -28,7 +28,8 @@ abstract class ModuleCheckBuildExtension
   private val project: Project
 ) : ArtifactIdExtension,
   BuildPropertiesExtension,
-  DiExtension {
+  DiExtension,
+  VersionsMatrixExtension {
 
   override var artifactId: String? by objects.optionalProperty {
     project.configurePublishing(it)
