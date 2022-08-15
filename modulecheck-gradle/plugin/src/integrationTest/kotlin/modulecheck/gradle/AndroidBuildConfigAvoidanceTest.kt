@@ -20,10 +20,11 @@ import org.junit.jupiter.api.TestFactory
 class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
   @TestFactory
-  fun `buildConfig task should be required when not configured in android library module`() = agp {
-    androidLibrary(":lib", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `buildConfig task should be required when not configured in android library module`() =
+    factory {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -37,30 +38,30 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
           }
         }
         """
+        }
+      }
+
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path }.sorted() shouldBe listOf(
+          ":lib:extractDeepLinksDebug",
+          ":lib:generateDebugAndroidTestBuildConfig",
+          ":lib:generateDebugBuildConfig",
+          ":lib:generateReleaseBuildConfig",
+          ":lib:preBuild",
+          ":lib:preDebugAndroidTestBuild",
+          ":lib:preDebugBuild",
+          ":lib:preReleaseBuild",
+          ":lib:processDebugAndroidTestManifest",
+          ":lib:processDebugManifest",
+          ":moduleCheck"
+        )
       }
     }
 
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path }.sorted() shouldBe listOf(
-        ":lib:extractDeepLinksDebug",
-        ":lib:generateDebugAndroidTestBuildConfig",
-        ":lib:generateDebugBuildConfig",
-        ":lib:generateReleaseBuildConfig",
-        ":lib:preBuild",
-        ":lib:preDebugAndroidTestBuild",
-        ":lib:preDebugBuild",
-        ":lib:preReleaseBuild",
-        ":lib:processDebugAndroidTestManifest",
-        ":lib:processDebugManifest",
-        ":moduleCheck"
-      )
-    }
-  }
-
   @TestFactory
-  fun `buildConfig task should not be required when disabled in android library module`() = agp {
+  fun `buildConfig task should not be required when disabled in android library module`() = factory {
     androidLibrary(":lib", "com.modulecheck.lib1") {
       buildFile {
         """
@@ -90,7 +91,7 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
   @TestFactory
   fun `buildConfig task should not be required when disabled in android dynamic-feature module`() =
-    agp {
+    factory {
       androidLibrary(":lib", "com.modulecheck.lib1") {
         buildFile {
           """
@@ -118,10 +119,11 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
     }
 
   @TestFactory
-  fun `buildConfig task should not be required when disabled in android test module`() = agp {
-    androidLibrary(":lib", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `buildConfig task should not be required when disabled in android test module`() =
+    factory {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.test")
           kotlin("android")
@@ -142,12 +144,12 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
           compileOnly(project(path = ":app"))
         }
         """
+        }
       }
-    }
 
-    androidLibrary(":app", "com.modulecheck.app") {
-      buildFile {
-        """
+      androidLibrary(":app", "com.modulecheck.app") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -162,13 +164,13 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
           buildFeatures.buildConfig = false
         }
         """
+        }
+      }
+
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path } shouldBe listOf(":moduleCheck")
       }
     }
-
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path } shouldBe listOf(":moduleCheck")
-    }
-  }
 }

@@ -15,8 +15,12 @@
 
 package modulecheck.builds
 
+import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.TaskContainer
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -62,6 +66,13 @@ inline fun <reified T> ObjectFactory.optionalProperty(
   }
 
 @PublishedApi
+internal fun <T> Property<T>.getOrNullFinal(): T? {
+  finalizeValueOnRead()
+  disallowChanges()
+  return orNull
+}
+
+@PublishedApi
 internal fun <T> Property<T>.getFinal(): T {
   finalizeValueOnRead()
   return get()
@@ -72,4 +83,41 @@ internal fun <T> Property<T>.setFinal(value: T) {
   set(value)
   disallowUnsafeRead()
   disallowChanges()
+}
+
+fun <T> Project.propertyNamed(name: String): T {
+  return requireNotNull(findPropertyNamed(name))
+}
+
+fun <T> Project.findPropertyNamed(name: String): T? {
+  @Suppress("UNCHECKED_CAST")
+  return findProperty(name) as? T
+}
+
+fun <T> Project.gradlePropertyAsProvider(name: String): Provider<T?> {
+  return provider { findPropertyNamed(name) }
+}
+
+inline fun <T, R> Project.gradlePropertyAsProvider(
+  name: String,
+  crossinline transform: (T?) -> R
+): Provider<R?> {
+  return provider { transform(findPropertyNamed(name)) }
+}
+
+fun TaskContainer.maybeNamed(
+  taskName: String,
+  configuration: Task.() -> Unit
+) {
+
+  if (names.contains(taskName)) {
+    named(taskName, configuration)
+    return
+  }
+
+  whenTaskAdded {
+    if (names.contains(taskName)) {
+      named(taskName, configuration)
+    }
+  }
 }

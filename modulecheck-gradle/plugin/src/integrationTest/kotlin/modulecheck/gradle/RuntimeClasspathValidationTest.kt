@@ -25,7 +25,7 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
 
   @TestFactory
   fun `all tasks should succeed without any other libraries in the build classpath`() =
-    matrix {
+    factory {
       rootBuild.writeText(
         """
           plugins {
@@ -49,16 +49,16 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           resolutionStrategy {
             eachPlugin {
               if (requested.id.id.startsWith("com.android")) {
-                useVersion("$agpVersion")
+                useVersion("$agp")
               }
               if (requested.id.id == "com.rickbusarow.module-check") {
                 useVersion("${BuildProperties().version}")
               }
               if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                useVersion("$kotlinVersion")
+                useVersion("$kotlin")
               }
               if (requested.id.id == "com.squareup.anvil") {
-                useVersion("$anvilVersion")
+                useVersion("$anvil")
               }
             }
           }
@@ -88,21 +88,9 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
     }
 
   @TestFactory
-  fun `test project should have its own versions for AGP and KGP in classpath`() =
-    testProjectVersions()
-      // These tests aren't affected by Gradle
-      .filter { it.gradleVersion == gradleVersion }
-      .dynamic(
-        filter = { isValid() },
-        testName = { it.toString() },
-        setup = { versions ->
-          agpVersion = versions.agpVersion
-          gradleVersion = versions.gradleVersion
-          kotlinVersion = versions.kotlinVersion
-        }
-      ) {
-        rootBuild.writeText(
-          """
+  fun `test project should have its own versions for AGP and KGP in classpath`() = factory {
+    rootBuild.writeText(
+      """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -127,17 +115,17 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
           }
         }
         """
-        )
+    )
 
-        shouldSucceed("printClasspath") {
+    shouldSucceed("printClasspath") {
 
-          output shouldContain "com.android.library:com.android.library.gradle.plugin:$agpVersion"
-          output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlinVersion"
-        }
-      }
+      output shouldContain "com.android.library:com.android.library.gradle.plugin:$agp"
+      output shouldContain "org.jetbrains.kotlin.android:org.jetbrains.kotlin.android.gradle.plugin:$kotlin"
+    }
+  }
 
   @TestFactory
-  fun `test project should build with any kotlin version`() = kotlin {
+  fun `test project should build with any kotlin version`() = factory {
     kotlinProject(":lib1") {
       buildFile {
         """

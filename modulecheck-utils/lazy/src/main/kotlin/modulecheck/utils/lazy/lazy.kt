@@ -16,9 +16,49 @@
 package modulecheck.utils.lazy
 
 import kotlinx.coroutines.runBlocking
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 fun <T> unsafeLazy(initializer: () -> T): Lazy<T> =
   lazy(mode = LazyThreadSafetyMode.NONE, initializer = initializer)
+
+/**
+ * just a var, but the initial value is lazy
+ *
+ * @since 0.13.0
+ */
+fun <T> lazyVar(initializer: () -> T): ReadWriteProperty<Any?, T> = SynchronizedLazyVar(initializer)
+
+private class SynchronizedLazyVar<T>(initializer: () -> T) : ReadWriteProperty<Any?, T> {
+
+  @Volatile
+  private var isSet = false
+  private var initializer: (() -> T)? = initializer
+  private var value: Any? = null
+
+  @Suppress("UNCHECKED_CAST")
+  override fun getValue(thisRef: Any?, property: KProperty<*>): T {
+
+    if (isSet) {
+      return value as T
+    }
+    synchronized(this) {
+      if (!isSet) {
+        value = initializer!!.invoke()
+        isSet = true
+        initializer = null
+      }
+      return value as T
+    }
+  }
+
+  override fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {
+    synchronized(this) {
+      this.value = value
+      isSet = true
+    }
+  }
+}
 
 class ResetManager(
   private val delegates: MutableCollection<Resets> = mutableListOf()
