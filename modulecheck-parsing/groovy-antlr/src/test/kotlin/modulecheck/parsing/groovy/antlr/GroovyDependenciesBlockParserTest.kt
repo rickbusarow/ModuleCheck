@@ -182,6 +182,20 @@ internal class GroovyDependenciesBlockParserTest : BaseTest() {
   }
 
   @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() = parse(
+    """
+       //noinspection DSL_SCOPE_VIOLATION
+      dependencies {
+        api project(':core:android')
+        api project(':core:jvm')
+      }
+       """
+  ) {
+
+    allSuppressions.values.flatten() shouldBe emptyList()
+  }
+
+  @Test
   fun `dependency block with noinspection comment with old IDs should suppress those warnings in all declarations`() =
     parse(
       """
