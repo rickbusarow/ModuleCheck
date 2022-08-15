@@ -37,6 +37,7 @@ plugins {
   id("mcbuild.knit")
   id("mcbuild.kotlin")
   id("mcbuild.ktlint")
+  id("mcbuild.matrix-yaml")
   id("mcbuild.test")
   id("mcbuild.website")
 }
@@ -82,9 +83,6 @@ afterEvaluate {
       dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))
     }
   }
-}
-tasks.withType<Delete> {
-  dependsOn(gradle.includedBuild("build-logic").task(":clean"))
 }
 
 doctor {
