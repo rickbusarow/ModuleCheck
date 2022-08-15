@@ -27,6 +27,7 @@ abstract class ModuleCheckBuildExtension
   private val pluginManager: PluginManager,
   private val project: Project
 ) : ArtifactIdExtension,
+  BuildPropertiesExtension,
   DiExtension {
 
   override var artifactId: String? by objects.optionalProperty {
