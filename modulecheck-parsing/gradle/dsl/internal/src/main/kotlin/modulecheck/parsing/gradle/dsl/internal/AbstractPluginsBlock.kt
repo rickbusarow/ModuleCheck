@@ -21,7 +21,6 @@ import modulecheck.parsing.gradle.dsl.PluginsBlock
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
-import modulecheck.utils.mapToSet
 import java.io.File
 
 abstract class AbstractPluginsBlock(
@@ -48,7 +47,9 @@ abstract class AbstractPluginsBlock(
       _allDeclarations.forEach { pluginDeclaration ->
 
         val cached = getOrPut(pluginDeclaration) {
-          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed
+            .mapNotNull { FindingName.safe(it) }
+            .mapTo(mutableSetOf()) { it }
         }
 
         cached += pluginDeclaration.suppressed.updateOldSuppresses()
@@ -101,7 +102,7 @@ abstract class AbstractPluginsBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapToSet { FindingName(it) }
+    return mapNotNull { FindingName.safe(it) }.toSet()
   }
 }
 
