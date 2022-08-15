@@ -72,6 +72,16 @@ data class FindingName(
 
   companion object {
 
+    /**
+     * @return a [FindingName] if [maybeFindingName] is `kebab-case`, otherwise `null`.
+     * @since 0.13.0
+     */
+    fun safe(maybeFindingName: String): FindingName? {
+      return if (CaseMatcher.KebabCaseMatcher().matches(maybeFindingName)) {
+        FindingName(maybeFindingName)
+      } else null
+    }
+
     @Deprecated("This will be removed soon.")
     fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String? {
 
