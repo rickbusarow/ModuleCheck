@@ -102,6 +102,20 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() {
+    val block = parse(
+      """
+       @Suppress("DSL_SCOPE_VIOLATION")
+       plugins {
+         id("com.squareup.anvil")
+       }
+       """
+    )
+
+    block.allSuppressions.values.flatten() shouldBe emptyList()
+  }
+
+  @Test
   fun `suppressed id function`() {
     val block = parse(
       """
@@ -147,7 +161,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     string: String
   ): KotlinPluginsBlock {
     val file = NoContextPsiFileFactory()
-      .createKotlin("build.gradle.kts", string)
+      .createKotlin("build.gradle.kts", string.trimIndent())
 
     return KotlinPluginsBlockParser(logger).parse(file)!!
   }

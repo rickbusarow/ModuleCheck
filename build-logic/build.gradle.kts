@@ -20,14 +20,18 @@ buildscript {
   }
 }
 
-// `alias(libs.______)` inside the plugins block throws a false positive warning
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-// There's also an IntelliJ plugin to disable this warning globally:
-// https://plugins.jetbrains.com/plugin/18949-gradle-libs-error-suppressor
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   base
   alias(libs.plugins.ktlint)
+  alias(libs.plugins.dependencyAnalysis)
+  alias(libs.plugins.moduleCheck)
+}
+
+moduleCheck {
+  checks {
+    sortDependencies = true
+  }
 }
 
 allprojects {
@@ -47,6 +51,20 @@ allprojects {
           // doesn't work half the time
           "experimental:argument-list-wrapping"
         )
+      )
+    }
+  }
+
+  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+
+      languageVersion = "1.6"
+      apiVersion = "1.6"
+
+      jvmTarget = "11"
+
+      freeCompilerArgs = freeCompilerArgs + listOf(
+        "-opt-in=kotlin.RequiresOptIn"
       )
     }
   }

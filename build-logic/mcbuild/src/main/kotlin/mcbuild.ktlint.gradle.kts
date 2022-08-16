@@ -22,10 +22,15 @@ plugins {
 }
 
 extensions.configure(KtlintExtension::class.java) {
+  val libVersion = libsCatalog.version("ktlint-lib").requiredVersion
+  version.set(libVersion)
   debug.set(false)
-  version.set(libsCatalog.version("ktlint-lib").requiredVersion)
   outputToConsole.set(true)
   enableExperimentalRules.set(true)
+  filter {
+    exclude("**/generated/**")
+    exclude("**/build/**")
+  }
   disabledRules.set(
     setOf(
       "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
@@ -39,18 +44,21 @@ extensions.configure(KtlintExtension::class.java) {
       "experimental:function-signature"
     )
   )
-  require(libsCatalog.version("ktlint-lib").requiredVersion < "0.46.0") {
-    """
-    when updating to 0.46.0:
-    - Re-enable `experimental:type-parameter-list-spacing`
-    - remove 'experimental' from 'argument-list-wrapping'
-    - remove 'experimental' from 'no-empty-first-line-in-method-block'
-    """.trimIndent()
-  }
-}
 
-dependencies {
-  "ktlintRuleset"(project(path = ":ktlint-rules"))
+  extensions.configure(KtlintExtension::class.java) {
+
+    require(libVersion < "0.46.0") {
+      """
+      when updating to 0.46.0:
+      - Re-enable `experimental:type-parameter-list-spacing`
+      - remove 'experimental' from 'argument-list-wrapping'
+      - remove 'experimental' from 'no-empty-first-line-in-method-block'
+      """.trimIndent()
+    }
+  }
+  dependencies {
+    "ktlintRuleset"(project(path = ":ktlint-rules"))
+  }
 }
 
 tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask> {

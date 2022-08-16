@@ -13,8 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+package modulecheck.builds.matrix
 
-fun interface KspListener {
-  fun onChanged(useKsp: Boolean)
+data class TestVersions(
+  val gradle: String,
+  val agp: String,
+  val anvil: String,
+  val kotlin: String
+) {
+  override fun toString(): String {
+    return "[gradle $gradle, agp $agp, anvil $anvil, kotlin $kotlin]"
+  }
 }

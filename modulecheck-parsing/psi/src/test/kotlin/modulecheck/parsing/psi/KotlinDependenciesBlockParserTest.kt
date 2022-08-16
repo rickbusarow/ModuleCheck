@@ -116,6 +116,24 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
   }
 
   @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() {
+    val block = parser
+      .parse(
+        """
+       @Suppress("DSL_SCOPE_VIOLATION")
+       dependencies {
+          api(project(":core:android"))
+          api(project(":core:jvm"))
+          @Suppress("DSL_SCOPE_VIOLATION")
+          testImplementation(project(":core:test"))
+       }
+        """
+      ).single()
+
+    block.allSuppressions.values.flatten() shouldBe emptyList()
+  }
+
+  @Test
   fun `declaration with annotation should include annotation with argument`() {
     val block = parser
       .parse(

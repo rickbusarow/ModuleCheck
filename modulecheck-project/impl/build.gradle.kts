@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-project-impl"
-  anvil = true
+  anvil()
 }
 
 dependencies {

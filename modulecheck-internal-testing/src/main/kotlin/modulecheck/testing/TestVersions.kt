@@ -13,14 +13,24 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+package modulecheck.testing
 
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
-
-fun Project.applyKsp(useKsp: Boolean) {
-
-  if (!useKsp) return
-
-  apply(plugin = "com.google.devtools.ksp")
+/**
+ * The versions of dependencies which are changed during parameterized tests.
+ *
+ * @property gradle version of the gradle dependency
+ * @property agp version of the agp dependency
+ * @property anvil version of the anvil dependency
+ * @property kotlin version of the kotlin dependency
+ * @since 0.13.0
+ */
+data class TestVersions(
+  val gradle: String,
+  val agp: String,
+  val anvil: String,
+  val kotlin: String
+) {
+  override fun toString(): String {
+    return "[gradle $gradle, agp $agp, anvil $anvil, kotlin $kotlin]"
+  }
 }

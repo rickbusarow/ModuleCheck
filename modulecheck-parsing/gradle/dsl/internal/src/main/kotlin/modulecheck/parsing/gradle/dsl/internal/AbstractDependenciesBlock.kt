@@ -33,7 +33,6 @@ import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
-import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 
 abstract class AbstractDependenciesBlock(
@@ -53,7 +52,9 @@ abstract class AbstractDependenciesBlock(
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
         val cached = getOrPut(configuredModule) {
-          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed
+            .mapNotNull { FindingName.safe(it) }
+            .mapTo(mutableSetOf()) { it }
         }
 
         declarations.forEach { moduleDependencyDeclaration ->
@@ -171,7 +172,7 @@ abstract class AbstractDependenciesBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapToSet { FindingName(it) }
+    return mapNotNull { FindingName.safe(it) }.toSet()
   }
 
   override fun getOrEmpty(

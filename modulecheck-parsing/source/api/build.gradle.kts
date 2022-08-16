@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-source-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {
