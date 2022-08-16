@@ -16,11 +16,9 @@
 package modulecheck.builds
 
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
-import org.gradle.api.tasks.TaskContainer
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -103,21 +101,4 @@ inline fun <T, R> Project.gradlePropertyAsProvider(
   crossinline transform: (T?) -> R
 ): Provider<R?> {
   return provider { transform(findPropertyNamed(name)) }
-}
-
-fun TaskContainer.maybeNamed(
-  taskName: String,
-  configuration: Task.() -> Unit
-) {
-
-  if (names.contains(taskName)) {
-    named(taskName, configuration)
-    return
-  }
-
-  whenTaskAdded {
-    if (names.contains(taskName)) {
-      named(taskName, configuration)
-    }
-  }
 }
