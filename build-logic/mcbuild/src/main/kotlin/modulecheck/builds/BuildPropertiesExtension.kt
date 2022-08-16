@@ -17,10 +17,10 @@ package modulecheck.builds
 
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.configure
 import org.intellij.lang.annotations.Language
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.util.prefixIfNot
 import org.jetbrains.kotlin.util.suffixIfNot
 import java.io.File
@@ -47,10 +47,9 @@ private fun Project.setUpGeneration(
 
   val generatedDir = generatedDir(sourceSetName)
 
-  extensions.configure<SourceSetContainer> {
-
-    named(sourceSetName) {
-      java.srcDir(generatedDir)
+  configure<KotlinJvmProjectExtension> {
+    sourceSets.named(sourceSetName) {
+      kotlin.srcDir(generatedDir)
     }
   }
 

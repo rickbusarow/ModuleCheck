@@ -15,15 +15,17 @@
 
 package modulecheck.builds
 
+import com.google.devtools.ksp.gradle.KspTaskJvm
 import modulecheck.builds.matrix.VersionsFactoryTestTask
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getValue
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 
 interface VersionsMatrixExtension {
 
@@ -69,9 +71,9 @@ private fun Project.setUpGeneration(
 
   registerSimpleGenerationTaskAsDependency(sourceSetName, versionsMatrixGenerateFactory)
 
-  configure<SourceSetContainer> {
-    named("main") {
-      java.srcDir(project.file(generatedDirPath))
+  configure<KotlinJvmProjectExtension> {
+    sourceSets.named("main") {
+      kotlin.srcDir(generatedDirPath)
     }
   }
 }
@@ -91,12 +93,16 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   setOf(
     "compile${kotlinTaskSourceSetName}Kotlin",
     "javaSourcesJar",
-    "ksp${kotlinTaskSourceSetName}Kotlin",
     "runKtlintCheckOver${ktlintSourceSetName}SourceSet",
     "runKtlintFormatOver${ktlintSourceSetName}SourceSet"
   ).forEach { taskName ->
     tasks.maybeNamed(taskName) { dependsOn(taskProvider) }
   }
+
+  tasks.withType<KspTaskJvm>()
+    .configureEach {
+      dependsOn(taskProvider)
+    }
 
   // generate the build properties file during an IDE sync, so no more red squigglies
   rootProject.tasks.named("prepareKotlinBuildScriptModel") {
