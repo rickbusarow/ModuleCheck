@@ -32,6 +32,7 @@ plugins {
   id("mcbuild.artifacts-check")
   id("mcbuild.ben-manes")
   id("mcbuild.clean")
+  id("mcbuild.dependency-guard-aggregate")
   id("mcbuild.detekt")
   id("mcbuild.dokka")
   id("mcbuild.knit")
