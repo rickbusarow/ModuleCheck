@@ -67,7 +67,6 @@ class AgpApiAccess @Inject constructor() {
   /**
    * performs [action] if AGP is in the classpath and AGP is applied to this specific [project].
    *
-   * @param T
    * @param project the project to be used for this [SafeAgpApiReferenceScope]
    * @param action the action to perform if AGP is in the classpath and AGP is applied to this
    *   specific [project]
