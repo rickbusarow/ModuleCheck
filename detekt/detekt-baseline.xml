@@ -21,13 +21,10 @@
     <ID>MagicNumber:ArtifactsTask.kt$ArtifactsTask$4</ID>
     <ID>MagicNumber:mcbuild.java-library.gradle.kts$11</ID>
     <ID>NestedBlockDepth:ArtifactsCheckTask.kt$ArtifactsCheckTask$private fun StringBuilder.maybeAddChangedValueMessages( changed: List&lt;Pair&lt;ArtifactConfig, ArtifactConfig>> ): StringBuilder</ID>
-    <ID>OutdatedDocumentation:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$ fun addModuleStatement( configName: ConfigurationName, parsedString: String, projectPath: ProjectPath, projectAccessor: ProjectAccessor, suppressed: List&lt;String> )</ID>
+    <ID>OutdatedDocumentation:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$fun addModuleStatement( configName: ConfigurationName, parsedString: String, projectPath: ProjectPath, projectAccessor: ProjectAccessor, suppressed: List&lt;String> )</ID>
     <ID>OutdatedDocumentation:ConfiguredDependency.kt$PluginDependency : Dependency</ID>
     <ID>OutdatedDocumentation:ModuleCheckRunner.kt$ModuleCheckRunner</ID>
     <ID>OutdatedDocumentation:OverShotDependencyFinding.kt$OverShotDependency</ID>
-    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> HasTraceTags.traced( args: Iterable&lt;Any>, block: suspend CoroutineScope.() -> T ): T</ID>
-    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> HasTraceTags.traced( vararg args: Any, block: suspend CoroutineScope.() -> T ): T</ID>
-    <ID>OutdatedDocumentation:Trace.kt$ suspend fun &lt;T> traced( tags: Iterable&lt;Any>, args: Iterable&lt;Any>, block: suspend CoroutineScope.() -> T ): T</ID>
     <ID>SerialVersionUIDInSerializableClass:ArtifactConfig.kt$ArtifactConfig : Serializable</ID>
     <ID>UndocumentedPublicClass:AbstractDependenciesBlock.kt$AbstractDependenciesBlock : DependenciesBlock</ID>
     <ID>UndocumentedPublicClass:AbstractDependenciesBlock.kt$DependenciesBlocksProvider</ID>
@@ -150,7 +147,6 @@
     <ID>UndocumentedPublicClass:Finding.kt$ProjectDependencyFinding : ConfiguredDependencyFindingConfigurationFinding</ID>
     <ID>UndocumentedPublicClass:FindingFactory.kt$FindingFactory&lt;T : Finding></ID>
     <ID>UndocumentedPublicClass:FindingFactory.kt$RuleFilter</ID>
-    <ID>UndocumentedPublicClass:FindingFactoryImpl.kt$FindingFactoryModule</ID>
     <ID>UndocumentedPublicClass:FindingName.kt$FindingName</ID>
     <ID>UndocumentedPublicClass:FindingResultFactory.kt$FindingResultFactory</ID>
     <ID>UndocumentedPublicClass:Fixable.kt$Fixable : FindingProblem</ID>
@@ -509,7 +505,6 @@
     <ID>UndocumentedPublicFunction:FindingFactory.kt$FindingFactory$suspend fun evaluateReports(projects: List&lt;McProject>): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:FindingFactory.kt$FindingFactory$suspend fun evaluateSorts(projects: List&lt;McProject>): List&lt;T></ID>
     <ID>UndocumentedPublicFunction:FindingFactory.kt$RuleFilter$fun shouldEvaluate(rule: ModuleCheckRule&lt;*>, settings: ModuleCheckSettings): Boolean</ID>
-    <ID>UndocumentedPublicFunction:FindingFactoryImpl.kt$FindingFactoryModule$// TODO maybe take another stab at removing the generic Finding type from FindingFactory @Binds fun FindingFactoryImpl.bindFindingFactory(): FindingFactory&lt;out Finding></ID>
     <ID>UndocumentedPublicFunction:FindingName.kt$FindingName.Companion$@Deprecated("This will be removed soon.") fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String?</ID>
     <ID>UndocumentedPublicFunction:FindingResultFactory.kt$FindingResultFactory$suspend fun create( findings: List&lt;Finding>, autoCorrect: Boolean, deleteUnused: Boolean ): List&lt;FindingResult></ID>
     <ID>UndocumentedPublicFunction:Fixable.kt$Fixable$fun fixLabel()</ID>

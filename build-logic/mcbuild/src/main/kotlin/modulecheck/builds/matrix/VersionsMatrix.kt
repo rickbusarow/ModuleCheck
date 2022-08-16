@@ -30,10 +30,9 @@ class VersionsMatrix(
   val gradleList = gradleArg?.singletonList()
     ?: listOf("7.2", "7.4.2", "7.5.1")
   val kotlinList = kotlinArg?.singletonList()
-    ?: listOf("1.6.10", "1.6.21", "1.7.0", "1.7.10")
+    ?: listOf("1.6.21", "1.7.0", "1.7.10")
 
   internal val exclusions = listOf(
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1", kotlin = "1.6.10"),
     Exclusion(gradle = null, agp = null, anvil = "2.4.1", kotlin = "1.6.21"),
     Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.0"),
     Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.10"),
