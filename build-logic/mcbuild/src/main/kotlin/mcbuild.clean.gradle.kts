@@ -37,12 +37,12 @@ val deleteEmptyDirs by tasks.registering(Delete::class) {
       .filter { it.isDirectory }
       .filterNot { dir -> subprojectDirs.any { dir.path.startsWith(it) } }
       .filterNot { it.path.contains(".gradle") }
-      .filter { it.listFiles()?.isEmpty() != false }
+      .filter { it.listFiles().isNullOrEmpty() }
       .forEach { it.deleteRecursively() }
   }
 }
 
-tasks.matching { it.name == "clean" }.all {
+tasks.named(LifecycleBasePlugin.CLEAN_TASK_NAME) {
   dependsOn(deleteDocusaurusFoo, deleteEmptyDirs)
 }
 
