@@ -170,6 +170,7 @@ interface HasTraceTags {
  *
  * @param tags the [Trace.tags] added to this trace child
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  * @since 0.12.0
  */
@@ -204,6 +205,7 @@ suspend fun <T> HasTraceTags.traced(
  * implementation from the receiver.
  *
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  * @since 0.12.0
  */
@@ -219,6 +221,7 @@ suspend fun <T> HasTraceTags.traced(
  * implementation from the receiver.
  *
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
  * @since 0.12.0
  */
