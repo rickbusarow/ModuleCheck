@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2023 Rick Busarow
+ * Copyright (C) 2021-2022 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,24 +13,24 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.utils.trace
 
-mcbuild {
-  published(
-    artifactId = "modulecheck-utils-trace"
-  )
-}
+import kotlin.coroutines.AbstractCoroutineContextElement
+import kotlin.coroutines.CoroutineContext
 
-dependencies {
+class TraceCollector(
+  private val cache: MutableList<Trace>
+) : AbstractCoroutineContextElement(Key) {
 
-  api(libs.benManes.caffeine)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
+  fun add(trace: Trace) = synchronized(cache) {
+    cache.add(trace)
 
-  testImplementation(libs.bundles.junit)
-  testImplementation(libs.bundles.kotest)
-  testImplementation(libs.square.turbine)
+    trace.parentOrNull()?.let { parent ->
+      cache.remove(parent)
+    }
+  }
+
+  fun all() = cache
+
+  companion object Key : CoroutineContext.Key<TraceCollector>
 }

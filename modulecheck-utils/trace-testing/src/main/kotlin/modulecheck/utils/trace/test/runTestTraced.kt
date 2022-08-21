@@ -18,12 +18,14 @@ package modulecheck.utils.trace.test
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import modulecheck.utils.trace.Trace
-
-fun runTestTraced(action: suspend CoroutineScope.() -> Unit) {
-  runBlocking(Trace.start("test-start"), action)
-}
+import modulecheck.utils.trace.TraceCollector
 
 @Suppress("UnusedReceiverParameter")
 inline fun <reified T> T.runTestTraced(noinline action: suspend CoroutineScope.() -> Unit) {
-  runBlocking(Trace.start(T::class), action)
+  val traceCollector = TraceCollector(mutableListOf())
+  runBlocking(Trace.start(T::class) + traceCollector, action)
+
+  traceCollector.all()
+    .joinToString("\n") { it.asString() }
+    .also(::println)
 }

@@ -50,6 +50,7 @@ import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
 import modulecheck.testing.assertions.TrimmedAsserts
 import modulecheck.utils.mapToSet
+import modulecheck.utils.trace.TraceCollector
 
 @Suppress("UnnecessaryAbstractClass")
 abstract class RunnerTest :
@@ -131,6 +132,10 @@ abstract class RunnerTest :
       }
     }
 
+    val traceCollector = TraceCollector(mutableListOf())
+
+    settings.trace = true
+
     val result = ModuleCheckRunner(
       settings = settings,
       findingFactory = findingFactory,
@@ -147,9 +152,14 @@ abstract class RunnerTest :
       depthLogFactoryLazy = { DepthLogFactory(terminal) },
       projectProvider = projectProvider,
       rules = rules,
-      autoCorrect = autoCorrect
+      autoCorrect = autoCorrect,
+      traceCollector = traceCollector
     )
       .run(allProjects())
+
+    traceCollector.all()
+      .joinToString("\n\n") { it.asString() }
+      .also(::println)
 
     if (autoCorrect) {
 

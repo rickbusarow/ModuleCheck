@@ -58,6 +58,17 @@ sealed class Trace(
     }
   }
 
+  abstract fun parentOrNull(): Trace?
+
+  val parents: Sequence<Trace> = generateSequence {
+    when (this) {
+      is Child -> parent
+      is Root -> null
+    }
+  }
+  val parentsWithSelf: Sequence<Trace>
+    get() = sequenceOf(this) + parents
+
   override val key: CoroutineContext.Key<*> get() = Key
 
   abstract val depth: Int
@@ -93,9 +104,23 @@ sealed class Trace(
 
   private class Root(tags: List<String>) : Trace(tags) {
     override val depth = 0
+    override fun parentOrNull(): Trace? = null
     override fun asString(): String = buildString {
       appendLine("<ROOT OF TRACE>")
       append("tags: $tags")
+    }
+
+    override fun equals(other: Any?): Boolean {
+      if (this === other) return true
+      if (other !is Root) return false
+
+      if (tags != other.tags) return false
+
+      return true
+    }
+
+    override fun hashCode(): Int {
+      return tags.hashCode()
     }
   }
 
@@ -106,6 +131,8 @@ sealed class Trace(
     val args: List<String>
   ) : Trace(tags) {
 
+    override fun parentOrNull() = parent
+
     override fun asString(): String = StringBuilder(parent.asString())
       .apply {
         val indent = "   ".repeat(depth - 1)
@@ -113,6 +140,26 @@ sealed class Trace(
         append("\n$indent└─ tags: $tags  --  args: $args")
       }
       .toString()
+
+    override fun equals(other: Any?): Boolean {
+      if (this === other) return true
+      if (other !is Child) return false
+
+      if (parent != other.parent) return false
+      if (depth != other.depth) return false
+      if (args != other.args) return false
+      if (tags != other.tags) return false
+
+      return true
+    }
+
+    override fun hashCode(): Int {
+      var result = parent.hashCode()
+      result = 31 * result + depth
+      result = 31 * result + args.hashCode()
+      result = 31 * result + tags.hashCode()
+      return result
+    }
   }
 
   companion object Key : CoroutineContext.Key<Trace> {
@@ -122,6 +169,16 @@ sealed class Trace(
      * @since 0.12.0
      */
     fun start(vararg tags: Any): Trace = Root(tags.traceStrings())
+
+    /**
+     * Creates a new [Trace] root. Prefer adding to an existing trace via a [traced] extension.
+     *
+     * @since 0.12.0
+     */
+    suspend fun <T> start(
+      vararg tags: Any,
+      action: suspend CoroutineScope.() -> T
+    ): T = withContext(start(tags), action)
 
     private fun Array<out Any>.traceStrings(): List<String> = map { it.traceString() }
     private fun Iterable<Any>.traceStrings(): List<String> = map { it.traceString() }
@@ -235,6 +292,9 @@ private suspend fun <T> tracedInternal(
     ?: return coroutineScope { block() }
 
   val newTrace = oldTrace.child(tags, args)
+
+  currentCoroutineContext()[TraceCollector]?.add(newTrace)
+
   return withContext(newTrace, block)
 }
 
