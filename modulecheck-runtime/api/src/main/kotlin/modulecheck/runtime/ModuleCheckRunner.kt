@@ -15,6 +15,9 @@
 
 package modulecheck.runtime
 
+import com.squareup.anvil.annotations.ContributesTo
+import dagger.Module
+import dagger.Provides
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -24,6 +27,7 @@ import modulecheck.api.DepthFinding
 import modulecheck.api.context.ProjectDepth
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.DaggerList
+import modulecheck.dagger.TaskScope
 import modulecheck.finding.Finding
 import modulecheck.finding.Finding.FindingResult
 import modulecheck.finding.FindingResultFactory
@@ -41,8 +45,16 @@ import modulecheck.rule.FindingFactory
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.utils.createSafely
 import modulecheck.utils.trace.Trace
+import modulecheck.utils.trace.TraceCollector
 import java.io.File
 import kotlin.system.measureTimeMillis
+
+@Module
+@ContributesTo(TaskScope::class)
+object TraceCollectorModule {
+  @Provides
+  fun provideTraceCollector(): TraceCollector = TraceCollector(mutableListOf())
+}
 
 /**
  * Proxy for a Gradle task, without all the Gradle framework stuff. Most logic is delegated to its
@@ -50,7 +62,7 @@ import kotlin.system.measureTimeMillis
  *
  * @param findingFactory handles parsing of the projects in order to generate the findings
  * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
- *   [FindingResult][modulecheck.finding.Finding.FindingResult]
+ *     [FindingResult][modulecheck.finding.Finding.FindingResult]
  * @param reportFactory handles console output of the results
  * @since 0.12.0
  */
@@ -67,13 +79,14 @@ data class ModuleCheckRunner @AssistedInject constructor(
   val sarifReportFactory: SarifReportFactory,
   val projectProvider: ProjectProvider,
   val rules: DaggerList<ModuleCheckRule<*>>,
+  val traceCollector: TraceCollector,
   @Assisted
   val autoCorrect: Boolean
 ) {
 
   fun run(projects: List<McProject>): Result<Unit> = runBlocking(
     if (settings.trace) {
-      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class)
+      dispatcherProvider.default + Trace.start(ModuleCheckRunner::class) + traceCollector
     } else {
       dispatcherProvider.default
     }
@@ -144,6 +157,11 @@ data class ModuleCheckRunner @AssistedInject constructor(
           "See https://rbusarow.github.io/ModuleCheck/docs/suppressing-findings for more info."
       )
     }
+
+    File("TRACE.txt").writeText(
+      traceCollector.all()
+        .joinToString("\n\n") { it.asString() }
+    )
 
     if (totalUnfixedIssues > 0) {
 

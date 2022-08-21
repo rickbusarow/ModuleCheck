@@ -45,6 +45,7 @@ import modulecheck.rule.test.AllRulesComponent
 import modulecheck.runtime.ModuleCheckRunner
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.mapToSet
+import modulecheck.utils.trace.TraceCollector
 
 abstract class RunnerTest : ProjectTest() {
 
@@ -93,6 +94,10 @@ abstract class RunnerTest : ProjectTest() {
       }
     }
 
+    val traceCollector = TraceCollector(mutableListOf())
+
+    settings.trace = true
+
     val result = ModuleCheckRunner(
       autoCorrect = autoCorrect,
       settings = settings,
@@ -108,8 +113,13 @@ abstract class RunnerTest : ProjectTest() {
         websiteUrl = { "https://rbusarow.github.io/ModuleCheck" },
         moduleCheckVersion = { "0.12.1-SNAPSHOT" }
       ) { testProjectDir },
-      rules = rules
+      rules = rules,
+      traceCollector = traceCollector
     ).run(allProjects())
+
+    traceCollector.all()
+      .joinToString("\n\n") { it.asString() }
+      .also(::println)
 
     if (autoCorrect) {
 

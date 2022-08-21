@@ -42,7 +42,7 @@ interface TaskComponent : RunnerComponent, RulesComponent {
      * @param moduleCheckSettings settings...
      * @param ruleFilter this lets the tasks define which rule(s) they're going to apply
      * @param projectRoot the root directory for the rootProject. This is the same as calling
-     *   `rootProject.rootDir`.
+     *     `rootProject.rootDir`.
      * @since 0.12.0
      */
     fun create(
