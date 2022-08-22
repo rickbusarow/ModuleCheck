@@ -32,15 +32,9 @@ data class Depths(
   override val key: ProjectContext.Key<Depths>
     get() = Key
 
-  internal suspend fun populateAll() {
-    project.sourceSets
-      .keys
-      .forEach { fetchForSourceSet(it) }
-  }
-
   /**
    * @return a [ProjectDepth] for each [SourceSet][modulecheck.model.dependency.McSourceSet] in this
-   *   project.
+   *     project.
    * @since 0.12.0
    */
   suspend fun all(): List<ProjectDepth> = project.sourceSets.map { get(it.key) }
@@ -77,7 +71,7 @@ data class Depths(
   }
 }
 
-suspend fun McProject.depths(): Depths = get(Depths).also { it.populateAll() }
+suspend fun McProject.depths(): Depths = get(Depths)
 
 suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): ProjectDepth {
   return get(Depths).get(sourceSetName)
