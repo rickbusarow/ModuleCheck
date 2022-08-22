@@ -21,7 +21,19 @@ import java.util.Locale
 
 sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
 
+  /**
+   * the raw value of this path
+   * - **StringProjectPath**: ":some-module-group:api"
+   * - **TypeSafeProjectPath**: "someModuleGroup.api"
+   *
+   * @since 0.12.0
+   */
   abstract val value: String
+
+  /**
+   * @see value
+   * @since 0.12.0
+   */
   override val name by unsafeLazy { value }
 
   val typeSafeValue: String by lazy {

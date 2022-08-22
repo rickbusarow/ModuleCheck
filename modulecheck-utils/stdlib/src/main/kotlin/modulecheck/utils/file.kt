@@ -33,7 +33,7 @@ fun File.findMinimumIndent(): String {
 }
 
 fun File.createSafely(content: String? = null) = apply {
-  toPath().parent.toFile().mkdirs()
+  toPath().parent?.toFile()?.mkdirs()
   if (content != null) {
     writeText(content)
   } else {

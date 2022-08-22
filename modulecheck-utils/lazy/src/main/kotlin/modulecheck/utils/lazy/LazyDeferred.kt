@@ -78,6 +78,7 @@ internal class LazyDeferredImpl<T>(
   private val lock: Mutex
 ) : LazyDeferred<T> {
 
+  @Volatile
   private var _completed = false
   private var _value: T? = null
 
