@@ -48,7 +48,7 @@
 :ktlint-rules -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-util-klib:1.6.21
 :ktlint-rules -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.5.0
 :ktlint-rules -- runtimeClasspath -- org.jetbrains:annotations:13.0
-:ktlint-rules -- runtimeClasspath -- org.jlleitschuh.gradle:ktlint-gradle:10.3.0
+:ktlint-rules -- runtimeClasspath -- org.jlleitschuh.gradle:ktlint-gradle:11.0.0
 :ktlint-rules -- runtimeClasspath -- org.slf4j:slf4j-api:1.7.32
 
 :modulecheck-api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
