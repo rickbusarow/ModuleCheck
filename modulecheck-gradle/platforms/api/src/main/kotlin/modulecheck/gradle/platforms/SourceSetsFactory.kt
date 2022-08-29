@@ -18,9 +18,9 @@ package modulecheck.gradle.platforms
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.JvmSourceSetsParser
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.SourceSets
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.SourceSets
 import javax.inject.Inject
 
 class SourceSetsFactory @Inject constructor(

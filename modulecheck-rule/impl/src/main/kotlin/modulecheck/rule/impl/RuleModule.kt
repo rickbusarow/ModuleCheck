@@ -21,16 +21,16 @@ import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoSet
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.DaggerList
 import modulecheck.dagger.DaggerSet
+import modulecheck.dagger.TaskScope
 import modulecheck.rule.AllRules
 import modulecheck.rule.ModuleCheckRule
 import modulecheck.rule.RuleFilter
 
 @Suppress("UndocumentedPublicClass", "UndocumentedPublicFunction")
 @Module
-@ContributesTo(AppScope::class)
+@ContributesTo(TaskScope::class)
 interface RuleModule {
 
   @Binds

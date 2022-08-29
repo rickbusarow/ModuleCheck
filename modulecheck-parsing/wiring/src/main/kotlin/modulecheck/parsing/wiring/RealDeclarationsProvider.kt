@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flowOf
 import modulecheck.api.context.classpathDependencies
 import modulecheck.api.context.declarations
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName

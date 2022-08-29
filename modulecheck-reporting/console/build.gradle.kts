@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-console"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -28,7 +28,7 @@ dependencies {
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
 
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-model:sourceset:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

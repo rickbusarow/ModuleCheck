@@ -44,7 +44,6 @@ fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
  * https://github.com/detekt/detekt/blob/2d00cab3680f49a94a95e4d8b9da08303315619b/detekt-psi-utils/src/main/kotlin/io/github/detekt/psi/internal/KotlinNoImportClasses.kt
  *
  * The entries of this map was generate with this script:
- *
  * ``` bash
  *
  * #!/usr/bin/env bash
@@ -62,6 +61,8 @@ fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
  *
  * And the list of packages that should be considered was extracted from the kotlin documentation:
  * https://kotlinlang.org/docs/packages.html#default-imports
+ *
+ * @since 0.12.0
  */
 internal val kotlinStdLibNames = mapOf(
 

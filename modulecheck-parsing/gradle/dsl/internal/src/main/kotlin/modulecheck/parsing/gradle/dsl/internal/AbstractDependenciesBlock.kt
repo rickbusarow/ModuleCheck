@@ -17,7 +17,11 @@ package modulecheck.parsing.gradle.dsl.internal
 
 import modulecheck.finding.FindingName
 import modulecheck.finding.FindingName.Companion.migrateLegacyIdOrNull
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.parsing.gradle.dsl.DependenciesBlock
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration
 import modulecheck.parsing.gradle.dsl.DependencyDeclaration.ConfigurationNameTransform
@@ -26,14 +30,9 @@ import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
-import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 
 abstract class AbstractDependenciesBlock(
@@ -53,7 +52,9 @@ abstract class AbstractDependenciesBlock(
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
         val cached = getOrPut(configuredModule) {
-          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed
+            .mapNotNull { FindingName.safe(it) }
+            .mapTo(mutableSetOf()) { it }
         }
 
         declarations.forEach { moduleDependencyDeclaration ->
@@ -125,6 +126,7 @@ abstract class AbstractDependenciesBlock(
   /**
    * @param projectPath `:my:project:lib1` or `my.project.lib1`
    * @param projectAccessor `project(:my:project:lib1)` or `projects.my.project.lib1`
+   * @since 0.12.0
    */
   fun addModuleStatement(
     configName: ConfigurationName,
@@ -170,7 +172,7 @@ abstract class AbstractDependenciesBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapToSet { FindingName(it) }
+    return mapNotNull { FindingName.safe(it) }.toSet()
   }
 
   override fun getOrEmpty(
@@ -210,7 +212,6 @@ abstract class AbstractDependenciesBlock(
    * and returns the index of **the last row** which matches the parsed string.
    *
    * So, given the target:
-   *
    * ```
    * api(projects.foo.bar) {
    *   exclude(group = "androidx.appcompat")
@@ -218,7 +219,6 @@ abstract class AbstractDependenciesBlock(
    * ```
    *
    * And given the dependencies lines:
-   *
    * ```
    * <blank line>
    * // Remove leaking AppCompat dependency
@@ -232,6 +232,8 @@ abstract class AbstractDependenciesBlock(
    *
    * From this value, [getOriginalString] will return a multi-line string which includes the blank
    * line and the comment.
+   *
+   * @since 0.12.0
    */
   private fun findLastMatchingRowIndex(parsedString: String): Int {
     val targetLines = parsedString.lines()

@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-core"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -28,7 +28,9 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-finding:impl"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
 
@@ -54,7 +56,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-finding:api"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:source:api"))
-  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-project-generation:api"))
   testImplementation(project(path = ":modulecheck-rule:impl"))
   testImplementation(project(path = ":modulecheck-rule:impl-factory"))
   testImplementation(project(path = ":modulecheck-runtime:testing"))

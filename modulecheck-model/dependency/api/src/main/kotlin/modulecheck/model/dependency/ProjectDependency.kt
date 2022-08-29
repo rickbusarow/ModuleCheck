@@ -15,17 +15,20 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.config.CodeGeneratorBinding
-import modulecheck.config.MightHaveCodeGeneratorBinding
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.HasPath
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 
-/** Represents a specific dependency upon an internal project dependency. */
+/**
+ * Represents a specific dependency upon an internal project dependency.
+ *
+ * @since 0.12.0
+ */
 sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
-  /** name == path */
+  /**
+   * name == path
+   *
+   * @since 0.12.0
+   */
   override val identifier get() = path
 
   /**
@@ -34,6 +37,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    * @property configurationName the configuration used
    * @property path the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
+   * @since 0.12.0
    */
   class RuntimeProjectDependency(
     override val configurationName: ConfigurationName,
@@ -47,28 +51,39 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    * @property configurationName the configuration used
    * @property path the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
-   * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGeneratorBinding]
+   * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGenerator]
+   * @since 0.12.0
    */
   class CodeGeneratorProjectDependency(
     override val configurationName: ConfigurationName,
     override val path: ProjectPath,
     override val isTestFixture: Boolean,
-    override val codeGeneratorBindingOrNull: CodeGeneratorBinding?
+    override val codeGeneratorBindingOrNull: CodeGenerator?
   ) : ProjectDependency(), MightHaveCodeGeneratorBinding
 
-  /** @suppress */
+  /**
+   * @suppress
+   * @since 0.12.0
+   */
   operator fun component1(): ConfigurationName = configurationName
 
-  /** @suppress */
+  /**
+   * @suppress
+   * @since 0.12.0
+   */
   operator fun component2(): ProjectPath = path
 
-  /** @suppress */
+  /**
+   * @suppress
+   * @since 0.12.0
+   */
   operator fun component3(): Boolean = isTestFixture
 
   /**
    * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
    *   configuration. For a simple `implementation` configuration, this
    *   returns `main`. For a `debugImplementation`, it would return `debug`.
+   * @since 0.12.0
    */
   fun declaringSourceSetName(isAndroid: Boolean) = when {
     // <anyConfig>(testFixtures(___))
@@ -91,7 +106,11 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
     }
   }
 
-  /** Let's pretend this is a data class. */
+  /**
+   * Let's pretend this is a data class.
+   *
+   * @since 0.12.0
+   */
   fun copy(
     configurationName: ConfigurationName = this.configurationName,
     path: ProjectPath = this.path,
@@ -147,12 +166,17 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
   /**
    * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and a
-   * `List<CodeGeneratorBinding>` to look up a [CodeGeneratorBinding] in the event that the project
+   * `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the event that the project
    * dependency in question is an annotation processor.
+   *
+   * @since 0.12.0
    */
   fun interface Factory {
 
-    /** @return the [ProjectDependency] for this dependency declaration */
+    /**
+     * @return the [ProjectDependency] for this dependency declaration
+     * @since 0.12.0
+     */
     fun create(
       configurationName: ConfigurationName,
       path: ProjectPath,

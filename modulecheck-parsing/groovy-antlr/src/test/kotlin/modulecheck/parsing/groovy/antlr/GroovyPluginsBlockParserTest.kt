@@ -120,6 +120,19 @@ internal class GroovyPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() = parse(
+    """
+       //noinspection DSL_SCOPE_VIOLATION
+       plugins {
+         id 'com.squareup.anvil'
+       }
+       """
+  ) {
+
+    allSuppressions.values.flatten() shouldBe emptyList()
+  }
+
+  @Test
   fun `suppress with old ID should be updated`() = parse(
     """
     plugins {

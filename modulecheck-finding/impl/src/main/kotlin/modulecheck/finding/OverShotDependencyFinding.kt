@@ -18,22 +18,23 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionOfStatement
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 
 /**
  * Represents a [ConfiguredDependency] which is unused in the
- * [SourceSet][modulecheck.parsing.gradle.model.SourceSet] to which it's added, but *is* used in
+ * [SourceSet][modulecheck.parsing.gradle.model.McSourceSet] to which it's added, but *is* used in
  * another source set downstream. For instance, a dependency is overshot if it's added to `main`,
  * but only used in `test`.
  *
  * @property dependentProject the [McProject] declaring the dependency
  * @property oldDependency the [ConfiguredDependency] which adds the unused dependency
  * @property newDependency the [ConfiguredDependency] which should be added
+ * @since 0.12.0
  */
 data class OverShotDependency(
   val dependentProject: McProject,
@@ -44,6 +45,7 @@ data class OverShotDependency(
    * Converts the `OverShotDependency` to an [OverShotDependencyFinding].
    *
    * @return the finding matching this [OverShotDependency]
+   * @since 0.12.0
    */
   fun toFinding(): OverShotDependencyFinding = OverShotDependencyFinding(
     dependentProject = dependentProject,

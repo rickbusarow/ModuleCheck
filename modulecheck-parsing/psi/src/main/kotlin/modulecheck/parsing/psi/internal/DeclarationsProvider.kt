@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.utils.lazy.LazySet

@@ -1,6 +1,6 @@
 [versions]
 
-androidTools = "7.2.1"
+androidTools = "7.2.2"
 
 androidx-compose = "1.1.0-alpha04"
 androidx-fragment = "1.3.6"
@@ -22,29 +22,29 @@ benManes-versions = "0.42.0"
 changeTracker = "0.7.4"
 coil = "1.3.2"
 compileSdk = "30"
-dependencyAnalysis = "1.10.0"
-detekt = "1.20.0-RC2"
+dependencyAnalysis = "1.13.1"
+detekt = "1.21.0"
 dokka = "1.7.10"
 dropbox-dependencyGuard = "0.3.1"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
-google-dagger = "2.42"
+google-dagger = "2.43.2"
 google-material = "1.4.0"
 
 gradleDoctor = "0.8.1"
 graphviz = "0.18.1"
-groovy = "3.0.10"
-jUnit = "5.8.2"
-javaParser = "3.24.2"
+groovy = "3.0.12"
+jUnit = "5.9.0"
+javaParser = "3.24.4"
 knit = "0.4.0"
-kotest = "5.3.2"
-kotlin = "1.6.10"
+kotest = "5.4.2"
+kotlin = "1.6.21"
 
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.4"
 kotlinx-knit = "0.4.0"
-google-ksp = "1.6.10-1.0.2"
+google-ksp = "1.6.21-1.0.6"
 
 ktlint-plugin = "10.3.0"
 ktlint-lib = "0.45.2"
@@ -53,9 +53,9 @@ mavenPublish = "0.13.0"
 
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
-rickBusarow-hermit = "0.9.5"
+rickBusarow-hermit = "0.9.6"
 rickBusarow-moduleCheck = "0.12.3"
-rickBusarow-tangle = "0.14.1"
+rickBusarow-tangle = "0.15.1"
 
 square-anvil = "2.4.1-1-6"
 square-moshi = "1.13.0"
@@ -102,6 +102,8 @@ antlr-runtime = { module = "org.antlr:antlr4-runtime", version.ref = "antlr" }
 benManes-versions = { module = "com.github.ben-manes:gradle-versions-plugin", version.ref = "benManes-versions" }
 benManes-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "benManes-caffeine" }
 
+detekt-api = { module = "io.gitlab.arturbosch.detekt:detekt-api", version.ref = "detekt" }
+detekt-cli = { module = "io.gitlab.arturbosch.detekt:detekt-cli", version.ref = "detekt" }
 detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 detekt-test = { module = "io.gitlab.arturbosch.detekt:detekt-test", version.ref = "detekt" }
 detekt-test-utils = { module = "io.gitlab.arturbosch.detekt:detekt-test-utils", version.ref = "detekt" }
@@ -109,6 +111,10 @@ detekt-test-utils = { module = "io.gitlab.arturbosch.detekt:detekt-test-utils", 
 dokka-gradle = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 dropbox-dependencyGuard = { module = "com.dropbox.dependency-guard:dependency-guard", version.ref = "dropbox-dependencyGuard" }
+
+google-auto-common = "com.google.auto:auto-common:1.2.1"
+
+google-auto-service-annotations = "com.google.auto.service:auto-service-annotations:1.0.1"
 
 google-dagger-api = { module = "com.google.dagger:dagger", version.ref = "google-dagger" }
 google-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "google-dagger" }
@@ -155,8 +161,10 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
 kotlinx-knit-pathSaver = { module = "org.jetbrains.kotlinx:dokka-pathsaver-plugin", version.ref = "knit" }
 
-ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-plugin" }
 ktlint-core = { module = "com.pinterest.ktlint:ktlint-core", version.ref = "ktlint-lib" }
+ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-plugin" }
+ktlint-ruleset-experimental = { module = "com.pinterest.ktlint:ktlint-ruleset-experimental", version.ref = "ktlint-lib" }
+ktlint-ruleset-standard = { module = "com.pinterest.ktlint:ktlint-ruleset-standard", version.ref = "ktlint-lib" }
 ktlint-test = { module = "com.pinterest.ktlint:ktlint-test", version.ref = "ktlint-lib" }
 
 rickBusarow-dispatch-core = { module = "com.rickbusarow.dispatch:dispatch-core", version.ref = "rickBusarow-dispatch" }
@@ -192,12 +200,14 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
-square-turbine = "app.cash.turbine:turbine:0.8.0"
+square-turbine = "app.cash.turbine:turbine:0.9.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
 vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.19.0"
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
+
+zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.0.0"
 
 [bundles]
 jUnit = ["junit-api", "junit-params", "junit-engine"]

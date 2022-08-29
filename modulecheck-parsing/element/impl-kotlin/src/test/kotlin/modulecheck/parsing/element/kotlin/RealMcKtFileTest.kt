@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.jvmFiles
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.element.McProperty.McKtProperty.KtConstructorProperty
 import modulecheck.parsing.element.McProperty.McKtProperty.KtMemberProperty
 import modulecheck.parsing.element.McType.McConcreteType.McKtConcreteType
@@ -28,8 +30,6 @@ import modulecheck.parsing.element.resolve.ConcatenatingParsingInterceptor2
 import modulecheck.parsing.element.resolve.ImportAliasUnwrappingParsingInterceptor2
 import modulecheck.parsing.element.resolve.ParsingChain2
 import modulecheck.parsing.element.resolve.ParsingContext
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.psi.internal.file
@@ -47,7 +47,6 @@ import modulecheck.parsing.wiring.RealDeclarationsProvider
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -116,7 +115,6 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
 
     subjectClass.properties.toList()
       .filterIsInstance<KtConstructorProperty>()
-      .forEach { println(it.typeReferenceName.await()) }
 
     subjectClass.annotations.toSet()
       .map { it.referenceName.await() }
@@ -247,7 +245,6 @@ internal class RealMcKtFileTest : ProjectTest(), McNameTest {
         val psiProperties = file.subjectClass().properties.toList()
           .filterIsInstance<KtMemberProperty>()
           .map { it.psi }
-          .map { it.getType(bindingContext) }
           .also(::println)
 
         val lib1Class = file.subjectClass().property("lib1Class")

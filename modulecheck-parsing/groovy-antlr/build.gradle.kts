@@ -37,7 +37,6 @@ dependencies {
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

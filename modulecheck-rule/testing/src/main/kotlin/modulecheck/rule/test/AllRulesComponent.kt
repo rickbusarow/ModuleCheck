@@ -19,13 +19,13 @@ import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
 
-@SingleIn(AppScope::class)
-@MergeComponent(AppScope::class)
+@SingleIn(TaskScope::class)
+@MergeComponent(TaskScope::class)
 interface AllRulesComponent : RulesComponent {
 
   @Component.Factory

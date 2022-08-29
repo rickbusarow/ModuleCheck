@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.element.resolve.NameParser2.NameParser2Packet
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.AndroidDataBindingReferenceName
 import modulecheck.parsing.source.AndroidRReferenceName

@@ -22,7 +22,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
     kotlinOptions {
       allWarningsAsErrors = false
 
-      val kotlinMajor = "1.5"
+      val kotlinMajor = "1.6"
 
       languageVersion = kotlinMajor
       apiVersion = kotlinMajor
@@ -35,6 +35,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-Xinline-classes",
+        "-Xjvm-default=all",
         "-Xsam-conversions=class",
         "-opt-in=kotlin.ExperimentalStdlibApi",
         "-opt-in=kotlin.RequiresOptIn",

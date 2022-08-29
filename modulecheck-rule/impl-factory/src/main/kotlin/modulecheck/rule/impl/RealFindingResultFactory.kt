@@ -17,7 +17,7 @@ package modulecheck.rule.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.finding.AddsDependency
 import modulecheck.finding.Deletable
 import modulecheck.finding.Finding
@@ -31,7 +31,7 @@ import modulecheck.utils.coroutines.onEachAsync
 import modulecheck.utils.sortedWith
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
 
   override suspend fun create(

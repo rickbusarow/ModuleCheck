@@ -23,7 +23,7 @@ import org.junit.jupiter.api.TestFactory
 class TaskLifecycleTest : BaseGradleTest() {
 
   @TestFactory
-  fun `the modulecheck task should be invoked for the base plugin check task`() = gradle {
+  fun `the modulecheck task should be invoked for the base plugin check task`() = factory {
 
     kotlinProject(":") {
       buildFile {
@@ -53,7 +53,7 @@ class TaskLifecycleTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `the modulecheck task should be invoked for a late, manually created check task`() = gradle {
+  fun `the modulecheck task should be invoked for a late, manually created check task`() = factory {
 
     kotlinProject(":") {
       buildFile {

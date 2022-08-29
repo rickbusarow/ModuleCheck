@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-reporting-checkstyle"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -34,5 +34,5 @@ dependencies {
 
   testImplementation(project(path = ":modulecheck-finding:name"))
   testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  testImplementation(project(path = ":modulecheck-model:dependency:api"))
 }

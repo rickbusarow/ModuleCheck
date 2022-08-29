@@ -16,7 +16,7 @@
 package modulecheck.api.context
 
 import kotlinx.coroutines.flow.toList
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext

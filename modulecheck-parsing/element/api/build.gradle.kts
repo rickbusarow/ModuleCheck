@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-element-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -28,9 +28,9 @@ dependencies {
 
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

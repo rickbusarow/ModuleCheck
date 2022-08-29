@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
@@ -33,6 +33,7 @@ data class AnvilScopeContributions(
   /**
    * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName]
    *   for which they're contributed
+   * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
     return delegate.getOrPut(sourceSetName) {
@@ -61,6 +62,7 @@ suspend fun ProjectContext.anvilScopeContributions(): AnvilScopeContributions =
 /**
  * @return all contributed interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for
  *   which they're contributed
+ * @since 0.12.0
  */
 suspend fun ProjectContext.anvilScopeContributionsForSourceSetName(
   sourceSetName: SourceSetName

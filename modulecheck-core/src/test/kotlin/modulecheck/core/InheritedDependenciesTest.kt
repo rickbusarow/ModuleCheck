@@ -15,10 +15,10 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.gradle.model.asSourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.asConfigurationName
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.inheritedDependency
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.ProjectFindingReport.overshot
@@ -850,8 +850,8 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
-      addDependency(ConfigurationName.api, lib3)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
+      addDependency(ConfigurationName.api, lib3, addToBuildFile = false)
 
       buildFile {
         """
@@ -965,8 +965,8 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
-      addDependency(ConfigurationName.implementation, lib3)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
+      addDependency(ConfigurationName.implementation, lib3, addToBuildFile = false)
 
       buildFile {
         """
@@ -1080,8 +1080,8 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
-      addDependency(ConfigurationName.api, lib3)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
+      addDependency(ConfigurationName.api, lib3, addToBuildFile = false)
 
       buildFile {
         """
@@ -1195,8 +1195,8 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
-      addDependency(ConfigurationName.implementation, lib3)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
+      addDependency(ConfigurationName.implementation, lib3, addToBuildFile = false)
 
       buildFile {
         """
@@ -1292,7 +1292,7 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1386,7 +1386,7 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1479,7 +1479,7 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1570,7 +1570,7 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1667,7 +1667,7 @@ class InheritedDependenciesTest : RunnerTest() {
       // lib2 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -3439,8 +3439,8 @@ class InheritedDependenciesTest : RunnerTest() {
         }
 
         dependencies {
-          // testFixturesImplementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           testFixturesApi(project(path = ":lib1"))
+          // testFixturesImplementation(project(path = ":lib1"))  // ModuleCheck finding [must-be-api]
           testFixturesApi(testFixtures(project(path = ":lib1")))
         }
     """

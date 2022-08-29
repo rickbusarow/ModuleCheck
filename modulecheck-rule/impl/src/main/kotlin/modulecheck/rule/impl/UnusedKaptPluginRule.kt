@@ -16,14 +16,14 @@
 package modulecheck.rule.impl
 
 import modulecheck.api.context.kaptDependencies
-import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.context.overshotDependencies
 import modulecheck.core.context.unusedKaptProcessors
 import modulecheck.finding.Finding
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedPluginFinding
-import modulecheck.parsing.gradle.model.PluginDefinition
+import modulecheck.model.dependency.MightHaveCodeGeneratorBinding
+import modulecheck.model.dependency.PluginDefinition
 import modulecheck.project.McProject
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred

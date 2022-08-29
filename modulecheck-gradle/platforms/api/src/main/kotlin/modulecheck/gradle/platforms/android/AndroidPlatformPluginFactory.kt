@@ -15,7 +15,7 @@
 
 package modulecheck.gradle.platforms.android
 
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin
 
 interface AndroidPlatformPluginFactory {
   /**
@@ -24,6 +24,7 @@ interface AndroidPlatformPluginFactory {
    * @param hasTestFixturesPlugin has either the `java-test-fixtures` plugin or
    *   `buildFeatures.testFixtures` is enabled in the extension
    * @return the [AndroidPlatformPlugin] capturing all of this project's settings
+   * @since 0.12.0
    */
   @UnsafeDirectAgpApiReference
   fun create(

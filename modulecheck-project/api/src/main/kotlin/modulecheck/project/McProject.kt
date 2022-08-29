@@ -15,17 +15,22 @@
 
 package modulecheck.project
 
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.ExternalDependencies
+import modulecheck.model.dependency.HasConfigurations
+import modulecheck.model.dependency.HasDependencies
+import modulecheck.model.dependency.HasPath
+import modulecheck.model.dependency.HasSourceSets
+import modulecheck.model.dependency.ProjectDependencies
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.dependency.isAndroid
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.HasBuildFile
 import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
-import modulecheck.parsing.gradle.model.Configurations
-import modulecheck.parsing.gradle.model.HasConfigurations
-import modulecheck.parsing.gradle.model.HasPath
+import modulecheck.parsing.gradle.model.HasPlatformPlugin
 import modulecheck.parsing.gradle.model.PluginAware
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
-import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ResolvableMcName
@@ -41,8 +46,11 @@ interface McProject :
   HasProjectCache,
   HasBuildFile,
   HasConfigurations,
+  HasDependencies,
+  HasSourceSets,
   HasDependencyDeclarations,
   InvokesConfigurationNames,
+  HasPlatformPlugin,
   PluginAware {
 
   override val path: StringProjectPath
@@ -55,45 +63,35 @@ interface McProject :
 
   val projectDir: File
 
-  val projectDependencies: ProjectDependencies
-  val externalDependencies: ExternalDependencies
+  override val projectDependencies: ProjectDependencies
+  override val externalDependencies: ExternalDependencies
 
   val anvilGradlePlugin: AnvilGradlePlugin?
 
   override val hasAnvil: Boolean
     get() = anvilGradlePlugin != null
+  override val hasAGP: Boolean
+    get() = platformPlugin.isAndroid()
 
   val logger: McLogger
   val jvmFileProviderFactory: JvmFileProvider.Factory
 
-  /** The Java version used to compile this project */
+  /**
+   * The Java version used to compile this project
+   *
+   * @since 0.12.0
+   */
   val jvmTarget: JvmTarget
-
-  override suspend fun getConfigurationInvocations(): Set<String> = configurationInvocations()
 
   /**
    * @return a [QualifiedDeclaredName] if one can be found for the given [resolvableMcName] and
-   *   [sourceSetName]
+   *     [sourceSetName]
+   * @since 0.12.0
    */
   suspend fun resolvedNameOrNull(
     resolvableMcName: ResolvableMcName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName?
-}
-
-private suspend fun McProject.configurationInvocations(): Set<String> {
-  return buildFileParser.dependenciesBlocks()
-    .flatMap { it.settings }
-    .mapNotNull { declaration ->
-
-      val declarationText = declaration.declarationText.trim()
-
-      declaration.configName.value
-        .takeIf { declarationText.startsWith(it) }
-        ?: "\"${declaration.configName.value}\""
-          .takeIf { declarationText.startsWith(it) }
-    }
-    .toSet()
 }
 
 fun McProject.isAndroid(): Boolean = platformPlugin.isAndroid()

@@ -27,7 +27,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
-/** @return true if at least one element matches the given predicate */
+/**
+ * @return true if at least one element matches the given predicate
+ * @since 0.12.0
+ */
 suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
   val matching = firstOrNull(predicate)
 
@@ -37,6 +40,7 @@ suspend fun <T> Flow<T>.any(predicate: suspend (T) -> Boolean): Boolean {
 /**
  * @return a [Flow] containing only distinct elements from the receiver flow. When there are equal
  *   elements in the receiver, the first value is the one emitted in the returned flow.
+ * @since 0.12.0
  */
 fun <T> Flow<T>.distinct(): Flow<T> = flow {
   val past = mutableSetOf<T>()
@@ -45,12 +49,19 @@ fun <T> Flow<T>.distinct(): Flow<T> = flow {
   }
 }
 
-/** @return true if the receiver [Flow] contains [element], otherwise false. */
+/**
+ * @return true if the receiver [Flow] contains [element], otherwise false.
+ * @since 0.12.0
+ */
 suspend fun <T> Flow<T>.contains(element: T): Boolean {
   return any { it == element }
 }
 
-/** A slightly optimized version of `flatMapConcat {...}.toList()` */
+/**
+ * A slightly optimized version of `flatMapConcat {...}.toList()`
+ *
+ * @since 0.12.0
+ */
 suspend fun <T, R> Flow<T>.flatMapListConcat(
   destination: MutableList<R> = mutableListOf(),
   transform: suspend (T) -> Iterable<R>
@@ -60,7 +71,11 @@ suspend fun <T, R> Flow<T>.flatMapListConcat(
   }
 }
 
-/** A slightly optimized version of `flatMapConcat {...}.toSet()` */
+/**
+ * A slightly optimized version of `flatMapConcat {...}.toSet()`
+ *
+ * @since 0.12.0
+ */
 suspend fun <T, R> Flow<T>.flatMapSetConcat(
   destination: MutableSet<R> = mutableSetOf(),
   transform: suspend (T) -> Iterable<R>
@@ -75,6 +90,8 @@ suspend fun <T, R> Flow<T>.flatMapSetConcat(
  * *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @since 0.12.0
  */
 fun <T, R> Flow<T>.mapAsync(
   transform: suspend (T) -> R
@@ -86,21 +103,33 @@ fun <T, R> Flow<T>.mapAsync(
   }
 }
 
-/** Shorthand for `mapAsync(transform).flatMapSetConcat { it.toSet() }` */
+/**
+ * Shorthand for `mapAsync(transform).flatMapSetConcat { it.toSet() }`
+ *
+ * @since 0.12.0
+ */
 suspend fun <T, R> Iterable<T>.flatMapSetMerge(
   transform: suspend (T) -> Iterable<R>
 ): Set<R> {
   return mapAsync(transform).flatMapSetConcat { it.toSet() }
 }
 
-/** Shorthand for `mapAsync(transform).toList().flatten()` */
+/**
+ * Shorthand for `mapAsync(transform).toList().flatten()`
+ *
+ * @since 0.12.0
+ */
 suspend fun <T, R> Iterable<T>.flatMapListMerge(
   transform: suspend (T) -> Iterable<R>
 ): List<R> {
   return mapAsync(transform).toList().flatten()
 }
 
-/** Shorthand for `mapAsync(transform).toList().flatten()` */
+/**
+ * Shorthand for `mapAsync(transform).toList().flatten()`
+ *
+ * @since 0.12.0
+ */
 suspend fun <T, R> Flow<T>.flatMapListMerge(
   transform: suspend (T) -> Iterable<R>
 ): List<R> {
@@ -112,6 +141,8 @@ suspend fun <T, R> Flow<T>.flatMapListMerge(
  * *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [transform] is performed eagerly.
+ *
+ * @since 0.12.0
  */
 fun <T, R> Iterable<T>.mapAsync(
   transform: suspend (T) -> R
@@ -129,6 +160,8 @@ fun <T, R> Iterable<T>.mapAsync(
  * *concurrently* before that element is emitted.
  *
  * **This is a "hot" flow**, since [action] is performed eagerly.
+ *
+ * @since 0.12.0
  */
 fun <T> Iterable<T>.onEachAsync(
   action: suspend (T) -> Unit
@@ -149,6 +182,7 @@ fun <T> Iterable<T>.onEachAsync(
  *
  * @return a [Flow] from the receiver [Sequence], performing [transform] upon each element
  *   *concurrently* before that element is emitted.
+ * @since 0.12.0
  */
 fun <T, R> Sequence<T>.mapAsync(
   transform: suspend (T) -> R
@@ -165,6 +199,7 @@ fun <T, R> Sequence<T>.mapAsync(
  *
  * @return a [Flow] from the receiver [Flow], performing [transform] and filtering out `null` values
  *   upon each element *concurrently*.
+ * @since 0.12.0
  */
 fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
@@ -178,6 +213,7 @@ fun <T, R : Any> Flow<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> 
  *
  * @return a [Flow] from the receiver [Iterable], performing [transform] and filtering out `null`
  *   values upon each element *concurrently*.
+ * @since 0.12.0
  */
 fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
@@ -192,6 +228,7 @@ fun <T, R : Any> Iterable<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
  *
  * @return a [Flow] from the receiver [Sequence], performing [transform] and filtering out `null`
  *   values upon each element *concurrently*.
+ * @since 0.12.0
  */
 fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow<R> {
   return channelFlow {
@@ -206,6 +243,7 @@ fun <T, R : Any> Sequence<T>.mapAsyncNotNull(transform: suspend (T) -> R?): Flow
  *
  * @return a [Flow] from the receiver [Flow], filtering values based upon [predicate]
  *   *concurrently*.
+ * @since 0.12.0
  */
 fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
@@ -219,6 +257,7 @@ fun <T> Flow<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
  *
  * @return a [Flow] from the receiver [Iterable], filtering values based upon [predicate]
  *   *concurrently*.
+ * @since 0.12.0
  */
 fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
@@ -231,6 +270,7 @@ fun <T> Iterable<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
  *
  * @return a [Flow] from the receiver [Sequence], filtering values based upon [predicate]
  *   *concurrently*.
+ * @since 0.12.0
  */
 fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {

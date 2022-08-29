@@ -17,19 +17,18 @@ package modulecheck.gradle
 
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
-import modulecheck.gradle.TestVersions.Companion.DEFAULT_AGP_VERSION
-import modulecheck.gradle.TestVersions.Companion.DEFAULT_ANVIL_VERSION
-import modulecheck.gradle.TestVersions.Companion.DEFAULT_GRADLE_VERSION
-import modulecheck.gradle.TestVersions.Companion.DEFAULT_KOTLIN_VERSION
 import modulecheck.gradle.internal.BuildProperties
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
 import modulecheck.project.ProjectCache
-import modulecheck.project.test.ProjectCollector
+import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
+import modulecheck.testing.TestVersions
+import modulecheck.testing.VersionsFactoryTest
 import modulecheck.utils.child
 import modulecheck.utils.createSafely
+import modulecheck.utils.lazy.lazyVar
 import modulecheck.utils.letIf
 import modulecheck.utils.remove
 import org.gradle.testkit.runner.BuildResult
@@ -45,12 +44,14 @@ abstract class BaseGradleTest :
   BaseTest(),
   ProjectCollector,
   DynamicTests,
-  VersionsMatrixTest {
+  VersionsFactoryTest {
 
-  override var kotlinVersion = DEFAULT_KOTLIN_VERSION
-  override var agpVersion = DEFAULT_AGP_VERSION
-  override var gradleVersion = DEFAULT_GRADLE_VERSION
-  override var anvilVersion = DEFAULT_ANVIL_VERSION
+  private var testVersions: TestVersions by lazyVar { defaultTestVersions() }
+
+  val kotlinVersion get() = testVersions.kotlin
+  val agpVersion get() = testVersions.agp
+  val gradleVersion get() = testVersions.gradle
+  val anvilVersion get() = testVersions.anvil
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
   override val safeAnalysisResultAccess: SafeAnalysisResultAccess by resets {
@@ -149,6 +150,7 @@ abstract class BaseGradleTest :
   @BeforeEach
   fun beforeEach() {
     testProjectDir.deleteRecursively()
+    testVersions = defaultTestVersions()
   }
 
   // Make sure that every project in the cache is also added to the root project's settings file
@@ -230,11 +232,10 @@ abstract class BaseGradleTest :
     trimmed shouldBe message
   }
 
-  override fun <T> dynamicTest(
-    subject: T,
+  final override fun dynamicTest(
+    subject: TestVersions,
     testName: String,
-    setup: (T) -> Unit,
-    action: (T) -> Unit
+    action: (TestVersions) -> Unit
   ): DynamicTest = DynamicTest.dynamicTest(testName) {
     try {
 
@@ -243,9 +244,9 @@ abstract class BaseGradleTest :
         append(testName.replace(" ", "_").remove(":"))
       }
 
-      setup(subject)
-
+      testVersions = subject
       resetAll()
+
       beforeEach()
 
       // make sure that the root project is initialized

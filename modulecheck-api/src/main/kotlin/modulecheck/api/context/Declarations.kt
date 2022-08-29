@@ -19,7 +19,8 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.Parameterized
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject

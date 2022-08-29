@@ -13,10 +13,6 @@
  * limitations under the License.
  */
 
-// `alias(libs.______)` inside the plugins block throws a false positive warning
-// https://youtrack.jetbrains.com/issue/KTIJ-19369
-// There's also an IntelliJ plugin to disable this warning globally:
-// https://plugins.jetbrains.com/plugin/18949-gradle-libs-error-suppressor
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   `kotlin-dsl`
@@ -25,11 +21,12 @@ plugins {
   alias(libs.plugins.google.ksp)
 }
 
-val kotlinVersion = libs.versions.kotlin.get()
-
 dependencies {
 
+  api(libs.square.moshi)
+
   compileOnly(gradleApi())
+
   compileOnly(libs.kotlin.gradle.plug)
 
   implementation(libs.benManes.versions)
@@ -39,32 +36,13 @@ dependencies {
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
   implementation(libs.kotlin.compiler)
+  implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlinx.knit)
   implementation(libs.ktlint.gradle)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)
-  implementation(libs.square.moshi)
+  implementation(libs.square.kotlinPoet)
   implementation(libs.vanniktech.publish)
 
   ksp(libs.square.moshi.codegen)
-}
-
-java {
-  // This is different from the Kotlin jvm target.
-  @Suppress("MagicNumber")
-  toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions {
-
-    languageVersion = "1.5"
-    apiVersion = "1.5"
-
-    jvmTarget = "11"
-
-    freeCompilerArgs = freeCompilerArgs + listOf(
-      "-opt-in=kotlin.RequiresOptIn"
-    )
-  }
 }

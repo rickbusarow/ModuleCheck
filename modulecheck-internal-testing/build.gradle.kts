@@ -17,6 +17,10 @@ plugins {
   id("mcbuild")
 }
 
+mcbuild {
+  versionsMatrix("main", "modulecheck.testing")
+}
+
 dependencies {
 
   api(libs.bundles.hermit)

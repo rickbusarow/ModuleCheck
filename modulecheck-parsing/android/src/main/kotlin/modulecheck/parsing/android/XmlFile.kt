@@ -43,6 +43,8 @@ interface XmlFile : HasReferences {
     /**
      * All custom view types *used* within this file. Note that this is not the declaration of a
      * view.
+     *
+     * @since 0.12.0
      */
     val customViews: Lazy<Set<ReferenceName>> = lazy {
       AndroidLayoutParser().parseViews(file).mapToSet { ReferenceName(it, XML) }
@@ -52,7 +54,11 @@ interface XmlFile : HasReferences {
       AndroidLayoutParser().parseResources(file)
     }
 
-    /** Declared ids, using `@+id/________`, which are expressed as `R.id._____` */
+    /**
+     * Declared ids, using `@+id/________`, which are expressed as `R.id._____`
+     *
+     * @since 0.12.0
+     */
     val idDeclarations: Set<UnqualifiedAndroidResource> by lazy {
       attributes.filter { attribute ->
         attribute.startsWith("@+id/")

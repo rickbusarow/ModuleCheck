@@ -15,9 +15,9 @@
 
 package modulecheck.parsing.gradle.dsl
 
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 
 sealed interface ProjectAccessor {
   val statementText: String

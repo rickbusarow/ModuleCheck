@@ -21,7 +21,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-platform-internal-android"
-  anvil = true
+  anvil()
 }
 
 tasks.withType<KotlinCompile> {
@@ -36,6 +36,8 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 

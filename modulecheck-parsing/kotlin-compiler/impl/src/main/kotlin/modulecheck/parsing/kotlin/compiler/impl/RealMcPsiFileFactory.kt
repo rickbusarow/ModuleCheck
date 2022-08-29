@@ -16,7 +16,7 @@
 package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
@@ -36,6 +36,8 @@ import javax.inject.Inject
  * The files created from this factory are backed by a meaningful
  * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which is aware of the full
  * classpath and may be used for type resolution.
+ *
+ * @since 0.13.0
  */
 class RealMcPsiFileFactory(
   private val kotlinEnvironment: KotlinEnvironment
@@ -71,8 +73,12 @@ class RealMcPsiFileFactory(
     }
   }
 
-  /** Creates an instance of [McPsiFileFactory] */
-  @ContributesBinding(AppScope::class)
+  /**
+   * Creates an instance of [McPsiFileFactory]
+   *
+   * @since 0.13.0
+   */
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor() : McPsiFileFactory.Factory {
     override fun create(
       kotlinEnvironment: KotlinEnvironment

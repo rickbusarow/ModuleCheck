@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-platform-impl"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -27,6 +27,7 @@ dependencies {
   api(libs.javax.inject)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   compileOnly(gradleApi())
@@ -37,6 +38,7 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

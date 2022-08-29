@@ -20,8 +20,9 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
 import modulecheck.api.context.uses
 import modulecheck.finding.UnusedDependency
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.javaConfigurationNames
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

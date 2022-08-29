@@ -16,7 +16,7 @@
 package modulecheck.parsing.psi
 
 import kotlinx.coroutines.flow.firstOrNull
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser

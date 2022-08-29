@@ -40,13 +40,13 @@ dependencies {
   testImplementation(libs.kotest.runner)
 
   testImplementation(project(path = ":modulecheck-api"))
+  testImplementation(project(path = ":modulecheck-model:dependency:api"))
+  testImplementation(project(path = ":modulecheck-model:sourceset:api"))
   testImplementation(project(path = ":modulecheck-parsing:element:impl-resolve"))
-  testImplementation(project(path = ":modulecheck-parsing:gradle:model:api"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
   testImplementation(project(path = ":modulecheck-parsing:wiring"))
   testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils:trace"))
 }

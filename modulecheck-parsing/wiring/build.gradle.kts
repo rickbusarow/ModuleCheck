@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-wiring"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -27,8 +27,8 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:groovy-antlr"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:psi"))

@@ -21,7 +21,11 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 
 data class FindingName(
-  /** some-finding-name */
+  /**
+   * some-finding-name
+   *
+   * @since 0.12.0
+   */
   val id: String
 ) {
   init {
@@ -31,26 +35,52 @@ data class FindingName(
     }
   }
 
-  /** SomeFindingName */
+  /**
+   * SomeFindingName
+   *
+   * @since 0.12.0
+   */
   val titleCase: String
     get() = id.split('-').joinToString("") { it.capitalize() }
 
-  /** some_finding_name */
+  /**
+   * some_finding_name
+   *
+   * @since 0.12.0
+   */
   val snakeCase: String get() = id.replace('-', '_')
 
-  /** someFindingName */
+  /**
+   * someFindingName
+   *
+   * @since 0.12.0
+   */
   val pascalCase: String
     get() = id.split('-')
       .joinToString("") { it.capitalize() }
       .decapitalize()
 
-  /** 'Some finding Name' */
+  /**
+   * 'Some finding Name'
+   *
+   * @since 0.12.0
+   */
   val words: String
     get() = id.split('-')
       .joinToString(" ") { it.capitalize() }
       .decapitalize()
 
   companion object {
+
+    /**
+     * @return a [FindingName] if [maybeFindingName] is `kebab-case`, otherwise `null`.
+     * @since 0.13.0
+     */
+    fun safe(maybeFindingName: String): FindingName? {
+      return if (CaseMatcher.KebabCaseMatcher().matches(maybeFindingName)) {
+        FindingName(maybeFindingName)
+      } else null
+    }
 
     @Deprecated("This will be removed soon.")
     fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String? {

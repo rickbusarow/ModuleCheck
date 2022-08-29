@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-element-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -29,8 +29,8 @@ dependencies {
   api(libs.kotlin.compiler)
   api(libs.semVer)
 
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:element:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-parsing:source:api"))

@@ -26,41 +26,64 @@ import modulecheck.utils.lazy.LazySet
  *
  * @see QualifiedDeclaredName
  * @see ReferenceName
+ * @since 0.12.0
  */
 sealed interface McName : Comparable<McName> {
-  /** The raw String value of this name, such as `com.example.lib1.Lib1Class`. */
+  /**
+   * The raw String value of this name, such as `com.example.lib1.Lib1Class`.
+   *
+   * @since 0.12.0
+   */
   val name: String
 
-  /** ex: 'com.example.Subject' has the segments ['com', 'example', 'Subject'] */
+  /**
+   * ex: 'com.example.Subject' has the segments ['com', 'example', 'Subject']
+   *
+   * @since 0.12.0
+   */
   val segments: List<String>
 
   /**
    * The simplest name. For an inner class like `com.example.Outer.Inner`, this will be 'Inner'.
+   *
+   * @since 0.12.0
    */
   val simpleName: String
     get() = segments.last()
 
-  /** @return true if this [name] value with the name string of [other], otherwise false */
+  /**
+   * @return true if this [name] value with the name string of [other], otherwise false
+   * @since 0.12.0
+   */
   fun startsWith(other: McName): Boolean {
     return name.startsWith(other.name)
   }
 
-  /** @return true if this [name] value ends with the [str] parameter, otherwise false */
+  /**
+   * @return true if this [name] value ends with the [str] parameter, otherwise false
+   * @since 0.12.0
+   */
   fun endsWith(str: String): Boolean {
     return name.endsWith(str)
   }
 
-  /** @return true if the last segment of this name matches [str], otherwise false */
+  /**
+   * @return true if the last segment of this name matches [str], otherwise false
+   * @since 0.12.0
+   */
   fun endsWithSimpleName(str: String): Boolean {
     return name.split('.').last() == str
   }
 
-  /** @return true if the last segment of this name matches [simpleName], otherwise false */
+  /**
+   * @return true if the last segment of this name matches [simpleName], otherwise false */
   fun endsWithSimpleName(simpleName: SimpleName): Boolean {
     return name.split('.').last() == simpleName.name
   }
 
-  /** @return true if the last segment of this name matches [other], otherwise false */
+  /** @return true if the last segment of this name matches [other], otherwise false
+   * @since 0.12.0
+   */
   fun endsWith(other: McName): Boolean {
     return name.endsWith(other.name)
   }
@@ -78,19 +101,33 @@ sealed interface McName : Comparable<McName> {
   /**
    * The language which contains a given [ReferenceName], or the language which can access a given
    * [DeclaredName]
+   *
+   * @since 0.12.0
    */
   sealed interface CompatibleLanguage {
-    /** Java */
+    /**
+     * Java
+     *
+     * @since 0.12.0
+     */
     object JAVA : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
 
-    /** Kotlin */
+    /**
+     * Kotlin
+     *
+     * @since 0.12.0
+     */
     object KOTLIN : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
 
-    /** Xml, which is treated the same as [JAVA] */
+    /**
+     * Xml, which is treated the same as [JAVA]
+     *
+     * @since 0.12.0
+     */
     object XML : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }

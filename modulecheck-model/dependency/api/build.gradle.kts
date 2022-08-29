@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-model-dependency-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -27,10 +27,12 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-config:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  api(project(path = ":modulecheck-parsing:source:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
-  implementation(project(":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

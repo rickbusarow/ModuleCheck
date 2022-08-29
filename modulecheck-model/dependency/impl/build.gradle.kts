@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-model-dependency-impl"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -30,7 +30,6 @@ dependencies {
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
 
   implementation(project(":modulecheck-utils:lazy"))
 

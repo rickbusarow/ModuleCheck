@@ -13,16 +13,7 @@
  * limitations under the License.
  */
 
-@file:Suppress("SpellCheckingInspection", "VariableNaming")
-
-import modulecheck.builds.ArtifactIdListener
-import modulecheck.builds.DIListener
-import modulecheck.builds.KspListener
 import modulecheck.builds.ModuleCheckBuildExtension
-import modulecheck.builds.applyAnvil
-import modulecheck.builds.applyDagger
-import modulecheck.builds.applyKsp
-import modulecheck.builds.configurePublishing
 import modulecheck.builds.libsCatalog
 
 plugins {
@@ -34,31 +25,18 @@ plugins {
   id("mcbuild.kotlin")
   id("mcbuild.ktlint")
   id("mcbuild.test")
+
+  kotlin("jvm") apply false
+  id("com.google.devtools.ksp") apply false
 }
 
-val settings = extensions.create<ModuleCheckBuildExtension>(
-  "mcbuild",
-  ArtifactIdListener { onNewArtifactId(it) },
-  DIListener { anvil, dagger ->
-    applyAnvil(anvil = anvil, dagger = dagger)
-    applyDagger(anvil = anvil, dagger = dagger)
-  },
-  KspListener { onKspToggled(it) }
-)
+val settings = extensions.create<ModuleCheckBuildExtension>("mcbuild")
 
-fun onNewArtifactId(artifactId: String) {
-  project.configurePublishing(artifactId)
-}
-
-fun onKspToggled(useKsp: Boolean) {
-  project.applyKsp(useKsp)
-}
-
-@Suppress("UnstableApiUsage")
 val kotlinVersion = project.libsCatalog
   .findVersion("kotlin")
   .get()
   .requiredVersion
+
 configurations.all {
   resolutionStrategy {
     eachDependency {

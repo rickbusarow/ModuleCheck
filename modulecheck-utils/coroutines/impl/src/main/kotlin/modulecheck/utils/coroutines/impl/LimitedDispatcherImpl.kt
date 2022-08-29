@@ -30,6 +30,8 @@ import kotlin.coroutines.EmptyCoroutineContext
  *
  * The result of .limitedParallelism(x) call, a dispatcher that wraps the given dispatcher, but
  * limits the parallelism level, while trying to emulate fairness.
+ *
+ * @since 0.12.0
  */
 @OptIn(InternalCoroutinesApi::class)
 class LimitedDispatcherImpl(

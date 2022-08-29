@@ -17,10 +17,10 @@ package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
 import kotlinx.coroutines.flow.toList
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.coroutines.mapAsync
@@ -64,7 +64,7 @@ import javax.inject.Inject
 /**
  * @property projectPath path of the associated Gradle project
  * @property sourceSetName name of the associated
- *   [SourceSet][modulecheck.parsing.gradle.model.SourceSet]
+ *   [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
  * @property classpathFiles `.jar` files from external dependencies
  * @property sourceDirs all jvm source code directories for this source set, like
  *   `[...]/myProject/src/main/java`.
@@ -73,6 +73,7 @@ import javax.inject.Inject
  * @property safeAnalysisResultAccess provides thread-safe, "leased" access to the ModuleDescriptors
  *   of dependencies, since only one downstream project can safely
  *   consume (and update the cache of) a descriptor at any given time
+ * @since 0.13.0
  */
 @Suppress("LongParameterList")
 class RealKotlinEnvironment(
@@ -144,8 +145,12 @@ class RealKotlinEnvironment(
     analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
-  /** Dagger implementation for [KotlinEnvironmentFactory] */
-  @ContributesBinding(AppScope::class)
+  /**
+   * Dagger implementation for [KotlinEnvironmentFactory]
+   *
+   * @since 0.13.0
+   */
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val safeAnalysisResultAccess: SafeAnalysisResultAccess
   ) : KotlinEnvironmentFactory {
@@ -257,6 +262,8 @@ private fun createKotlinCoreEnvironment(
 
 /**
  * https://github.com/pinterest/ktlint/blob/69cc0f7f826e18d7ec20e7a0f05df12d53a3c1e1/ktlint-core/src/main/kotlin/com/pinterest/ktlint/core/internal/KotlinPsiFileFactory.kt#L70
+ *
+ * @since 0.13.0
  */
 private class ModuleCheckPomModel : UserDataHolderBase(), PomModel {
 

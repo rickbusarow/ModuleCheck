@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.jvmFiles
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.impl.RealMcPsiFileFactory
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
@@ -38,8 +38,6 @@ import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.BindingContextUtils
-import org.jetbrains.kotlin.resolve.calls.callUtil.getResolvedCall
-import org.jetbrains.kotlin.resolve.calls.callUtil.getType
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.properties.Delegates
@@ -152,9 +150,7 @@ class BindingContextExperiment : ProjectTest() {
       )
       println("delegate memberScope classifier names -- ${delegateReturnKotlinType?.memberScope?.getClassifierNames()}")
       println("descriptor type ------------------------ ${variableDescriptor?.type}")
-      println("using getType -------------------------- ${property.getType(bc)}")
       println("delegate type -------------------------- ${property.delegate?.let { it::class.simpleName }}")
-      println("resolved call -------------------------- ${property.getResolvedCall(bc)}")
       println("__________________\n\n")
     }
 

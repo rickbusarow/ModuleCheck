@@ -21,7 +21,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettings
 import modulecheck.parsing.gradle.dsl.AndroidGradleSettingsProvider
 import modulecheck.parsing.gradle.dsl.BuildFileParser
@@ -58,7 +58,7 @@ class RealBuildFileParser @AssistedInject constructor(
   override suspend fun androidSettings(): AndroidGradleSettings =
     lock.withLock { androidGradleSettingsProvider.get() }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   @AssistedFactory
   interface Factory : BuildFileParser.Factory {
     override fun create(invokesConfigurationNames: InvokesConfigurationNames): RealBuildFileParser

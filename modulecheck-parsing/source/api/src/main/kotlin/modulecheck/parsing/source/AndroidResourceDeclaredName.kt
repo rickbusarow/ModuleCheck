@@ -27,26 +27,40 @@ import modulecheck.utils.lazy.unsafeLazy
  * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
  * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
  * - R declarations, like `com.example.R`
+ *
+ * @since 0.12.0
  */
 sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
 
   companion object {
-    /** @return example: `com.example.app.R` */
+    /**
+     * @return example: `com.example.app.R`
+     * @since 0.12.0
+     */
     fun r(packageName: PackageName) = AndroidRDeclaredName(packageName)
 
-    /** @return `com.example.R.string.app_name` */
+    /**
+     * @return `com.example.R.string.app_name`
+     * @since 0.12.0
+     */
     fun qualifiedAndroidResource(
       sourceR: AndroidRReferenceName,
       sourceResource: UnqualifiedAndroidResourceReferenceName
     ) = QualifiedAndroidResourceDeclaredName(sourceR, sourceResource)
 
-    /** @return `com.example.databinding.FragmentListBinding` */
+    /**
+     * @return `com.example.databinding.FragmentListBinding`
+     * @since 0.12.0
+     */
     fun dataBinding(
       sourceLayout: UnqualifiedAndroidResourceReferenceName,
       packageName: PackageName
     ) = AndroidDataBindingDeclaredName(sourceLayout, packageName)
 
-    /** @return `com.example.databinding.FragmentListBinding` */
+    /**
+     * @return `com.example.databinding.FragmentListBinding`
+     * @since 0.12.0
+     */
     fun dataBinding(
       sourceLayoutDeclaration: UnqualifiedAndroidResource,
       packageName: PackageName
@@ -60,7 +74,11 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
   }
 }
 
-/** example: `com.example.app.R` */
+/**
+ * example: `com.example.app.R`
+ *
+ * @since 0.12.0
+ */
 class AndroidRDeclaredName(
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
@@ -78,6 +96,7 @@ class AndroidRDeclaredName(
  * @property sourceR the R declaration used when AGP generates this fully qualified resource
  * @property sourceResource the resource declaration, like `_.string.app_name`, used when AGP
  *   generates this fully qualified resource
+ * @since 0.12.0
  */
 class QualifiedAndroidResourceDeclaredName(
   val sourceR: AndroidRReferenceName,
@@ -103,7 +122,11 @@ class QualifiedAndroidResourceDeclaredName(
   }
 }
 
-/** example: `com.example.databinding.FragmentListBinding` */
+/**
+ * example: `com.example.databinding.FragmentListBinding`
+ *
+ * @since 0.12.0
+ */
 class AndroidDataBindingDeclaredName(
   sourceLayout: UnqualifiedAndroidResourceReferenceName,
   override val packageName: PackageName

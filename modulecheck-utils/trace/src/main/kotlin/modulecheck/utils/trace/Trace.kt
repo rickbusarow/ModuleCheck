@@ -46,6 +46,8 @@ import kotlin.reflect.KClass
  *   }
  * }
  * ```
+ *
+ * @since 0.12.0
  */
 sealed class Trace(
   val tags: List<String>
@@ -70,6 +72,8 @@ sealed class Trace(
    *          └─ tags: [Oak Leaf Trail]  --  args: []
    *             └─ tags: [home]  --  args: [shower]
    * ```
+   *
+   * @since 0.12.0
    */
   abstract fun asString(): String
 
@@ -118,7 +122,11 @@ sealed class Trace(
   }
 
   companion object Key : CoroutineContext.Key<Trace> {
-    /** Creates a new [Trace] root. Prefer adding to an existing trace via a [traced] extension. */
+    /**
+     * Creates a new [Trace] root. Prefer adding to an existing trace via a [traced] extension.
+     *
+     * @since 0.12.0
+     */
     fun start(vararg tags: Any): Trace = Root(tags.traceStrings())
 
     private fun Array<out Any>.traceStrings(): List<String> = map { it.traceString() }
@@ -146,6 +154,8 @@ sealed class Trace(
  *
  * val cache = MyCache(listOf(MyCache::class, project))
  * ```
+ *
+ * @since 0.12.0
  */
 interface HasTraceTags {
   val tags: Iterable<Any>
@@ -160,7 +170,9 @@ interface HasTraceTags {
  *
  * @param tags the [Trace.tags] added to this trace child
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
+ * @since 0.12.0
  */
 suspend fun <T> traced(
   tags: Iterable<Any>,
@@ -171,6 +183,8 @@ suspend fun <T> traced(
 /**
  * Don't use. This overload exists in order to prevent accidentally providing the wrong tags to a
  * [Trace] from inside a [HasTraceTags]. If you need to provide runtime
+ *
+ * @since 0.12.0
  */
 @Deprecated(
   message = "Don't provide dynamic tags from inside HasTraceTags.",
@@ -178,6 +192,7 @@ suspend fun <T> traced(
   replaceWith = ReplaceWith("traced(args, block)")
 )
 suspend fun <T> HasTraceTags.traced(
+  @Suppress("UNUSED_PARAMETER")
   tags: Iterable<Any>,
   args: Iterable<Any>,
   block: suspend CoroutineScope.() -> T
@@ -190,7 +205,9 @@ suspend fun <T> HasTraceTags.traced(
  * implementation from the receiver.
  *
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
+ * @since 0.12.0
  */
 suspend fun <T> HasTraceTags.traced(
   args: Iterable<Any>,
@@ -204,7 +221,9 @@ suspend fun <T> HasTraceTags.traced(
  * implementation from the receiver.
  *
  * @param args the dynamic runtime [Trace.Child.args] arguments added to this trace
+ * @param block performed with the updated trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
+ * @since 0.12.0
  */
 suspend fun <T> HasTraceTags.traced(
   vararg args: Any,
@@ -234,18 +253,22 @@ private suspend fun <T> tracedInternal(
  *
  * @see requireTrace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
+ * @since 0.12.0
  */
 suspend fun trace(): Trace = currentCoroutineContext().requireTrace()
 
-/** @return a [Trace] from inside a coroutine if it exists, else null */
+/**
+ * @return a [Trace] from inside a coroutine if it exists, else null
+ * @since 0.12.0
+ */
 internal suspend fun traceOrNull(): Trace? = currentCoroutineContext()[Trace]
 
 /**
  * Unsafe-ish extension for extracting a [Trace] from inside a coroutine.
  *
  * This will throw if attempting to do any sort of tracing from inside a no-context
- * [runBlocking][kotlinx.coroutines.runBlocking] call. If it's necessary to use `runBlocking`, the
- * parent trace must be passed in as a `coroutineContext] argument.
+ * [runBlocking][kotlinx.coroutines.runBlocking] call. If it's necessary to use
+ * `runBlocking`, the parent trace must be passed in as a `coroutineContext] argument.
  *
  * ```
  * suspend function doSomething() {
@@ -266,6 +289,7 @@ internal suspend fun traceOrNull(): Trace? = currentCoroutineContext()[Trace]
  *
  * @see trace
  * @throws IllegalArgumentException if the [coroutineContext] does not have a [Trace]
+ * @since 0.12.0
  */
 fun CoroutineContext.requireTrace(): Trace = requireNotNull(get(Trace)) {
   "This coroutineContext doesn't have a ${Trace::class.simpleName} in it -- $this"

@@ -18,41 +18,32 @@ package modulecheck.gradle.internal
 import com.squareup.anvil.annotations.ContributesBinding
 import com.squareup.anvil.plugin.AnvilExtension
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.GradleMcLogger
 import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
-import modulecheck.model.dependency.ExternalDependency
-import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.AllProjectPathsProvider
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
+import modulecheck.model.dependency.TypeSafeProjectPathResolver
 import modulecheck.parsing.gradle.dsl.BuildFileParser
-import modulecheck.parsing.gradle.model.AllProjectPathsProvider
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.GradleProjectDependency
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
-import modulecheck.parsing.gradle.model.TypeSafeProjectPathResolver
-import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.wiring.RealJvmFileProvider
-import modulecheck.project.ExternalDependencies
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.ProjectDependencies
 import modulecheck.project.ProjectProvider
 import modulecheck.project.impl.RealMcProject
 import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
-import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.artifacts.ModuleDependency
-import org.gradle.internal.component.external.model.ProjectDerivedCapability
 import javax.inject.Inject
 
 @Suppress("LongParameterList")
-@ContributesBinding(AppScope::class, ProjectProvider::class)
+@ContributesBinding(TaskScope::class, ProjectProvider::class)
 class GradleProjectProvider @Inject constructor(
   @RootGradleProject
   private val rootGradleProject: GradleProject,
@@ -65,9 +56,7 @@ class GradleProjectProvider @Inject constructor(
   private val androidPlatformPluginFactory: AndroidPlatformPluginFactory,
   private val jvmPlatformPluginFactory: JvmPlatformPluginFactory,
   private val typeSafeProjectPathResolver: TypeSafeProjectPathResolver,
-  private val allProjectPathsProviderDelegate: AllProjectPathsProvider,
-  private val projectDependency: ProjectDependency.Factory,
-  private val externalDependency: ExternalDependency.Factory
+  private val allProjectPathsProviderDelegate: AllProjectPathsProvider
 ) : ProjectProvider, AllProjectPathsProvider by allProjectPathsProviderDelegate {
 
   private val gradleProjects = rootGradleProject.allprojects
@@ -103,9 +92,6 @@ class GradleProjectProvider @Inject constructor(
   private fun createProject(path: StringProjectPath): McProject {
     val gradleProject = gradleProjects.getValue(path)
 
-    val projectDependencies = gradleProject.projectDependencies()
-    val externalDependencies = gradleProject.externalDependencies()
-
     val hasKapt = gradleProject
       .pluginManager
       .hasPlugin(KAPT_PLUGIN_ID)
@@ -135,58 +121,9 @@ class GradleProjectProvider @Inject constructor(
       logger = gradleLogger,
       jvmFileProviderFactory = jvmFileProviderFactory,
       jvmTarget = gradleProject.jvmTarget(),
-      projectDependencies = projectDependencies,
-      externalDependencies = externalDependencies,
       buildFileParserFactory = buildFileParserFactory,
       platformPlugin = platformPlugin
     )
-  }
-
-  private fun GradleProject.externalDependencies(): Lazy<ExternalDependencies> = lazy {
-    val map = configurations
-      .associate { configuration ->
-
-        val externalDependencies = configuration.dependencies
-          .filterIsInstance<ExternalModuleDependency>()
-          .map { dep ->
-
-            externalDependency.create(
-              configurationName = configuration.name.asConfigurationName(),
-              group = dep.group,
-              moduleName = dep.name,
-              version = dep.version,
-              isTestFixture = dep.isTestFixtures()
-            )
-          }
-
-        configuration.name.asConfigurationName() to externalDependencies
-      }
-      .toMutableMap()
-
-    ExternalDependencies(map)
-  }
-
-  private fun ModuleDependency.isTestFixtures() = requestedCapabilities
-    .filterIsInstance<ProjectDerivedCapability>()
-    .any { capability -> capability.capabilityId.endsWith(TEST_FIXTURES_SUFFIX) }
-
-  private fun GradleProject.projectDependencies(): Lazy<ProjectDependencies> = lazy {
-    val map = configurations
-      .filterNot { it.name == "ktlintRuleset" }
-      .associate { config ->
-        config.name.asConfigurationName() to config.dependencies
-          .withType(GradleProjectDependency::class.java)
-          .map {
-
-            projectDependency.create(
-              configurationName = config.name.asConfigurationName(),
-              path = StringProjectPath(it.dependencyProject.path),
-              isTestFixture = it.isTestFixtures()
-            )
-          }
-      }
-      .toMutableMap()
-    ProjectDependencies(map)
   }
 
   private fun GradleProject.anvilGradlePluginOrNull(): AnvilGradlePlugin? {
@@ -214,7 +151,6 @@ class GradleProjectProvider @Inject constructor(
   }
 
   companion object {
-    private const val TEST_FIXTURES_SUFFIX = "-test-fixtures"
     private const val TEST_FIXTURES_PLUGIN_ID = "java-test-fixtures"
   }
 }

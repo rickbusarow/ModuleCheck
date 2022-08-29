@@ -15,13 +15,13 @@
 
 package modulecheck.parsing.psi
 
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.asConfigurationName
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.ProjectAccessor
 import modulecheck.parsing.gradle.dsl.buildFileInvocationText
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.asConfigurationName
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe

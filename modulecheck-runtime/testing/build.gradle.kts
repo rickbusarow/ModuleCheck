@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-runtime-testing"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -28,6 +28,7 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
 
   api(project(path = ":modulecheck-config:api"))
+  api(project(path = ":modulecheck-config:impl"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))

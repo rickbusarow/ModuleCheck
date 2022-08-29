@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.runBlocking
 import modulecheck.api.context.jvmFiles
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.PackageName

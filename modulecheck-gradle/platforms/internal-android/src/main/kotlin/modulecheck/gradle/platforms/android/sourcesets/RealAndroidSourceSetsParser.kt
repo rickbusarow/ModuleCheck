@@ -24,7 +24,7 @@ import com.android.build.gradle.api.TestVariant
 import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.gradle.platforms.android.AndroidAppExtension
 import modulecheck.gradle.platforms.android.AndroidLibraryExtension
@@ -36,17 +36,17 @@ import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.jvmTarget
 import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.McSourceSet
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.SourceSets
+import modulecheck.model.dependency.asConfigurationName
+import modulecheck.model.dependency.distinctSourceSetNames
+import modulecheck.model.dependency.names
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
+import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSet
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.SourceSets
-import modulecheck.parsing.gradle.model.asConfigurationName
-import modulecheck.parsing.gradle.model.asSourceSetName
-import modulecheck.parsing.gradle.model.distinctSourceSetNames
-import modulecheck.parsing.gradle.model.names
-import modulecheck.parsing.gradle.model.removePrefix
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
@@ -60,7 +60,6 @@ import javax.inject.Inject
 
 /**
  * Given this Android config block:
- *
  * ```
  * android {
  *   buildTypes {
@@ -121,7 +120,6 @@ import javax.inject.Inject
  * Finally, a "main" SourceSet is always created.
  *
  * So just within the *production code* sources, we get all these SourceSets:
- *
  * ```
  * // primitives
  * main
@@ -138,6 +136,8 @@ import javax.inject.Inject
  * lightBlueDebug    lightBlueInternalRelease   lightBlueRelease
  * darkBlueDebug     darkBlueInternalRelease    darkBlueRelease
  * ```
+ *
+ * @since 0.12.0
  */
 class RealAndroidSourceSetsParser private constructor(
   private val parsedConfigurations: Configurations,
@@ -227,7 +227,7 @@ class RealAndroidSourceSetsParser private constructor(
     }
   }
 
-  private val sourceSetCache = mutableMapOf<SourceSetName, SourceSet>()
+  private val sourceSetCache = mutableMapOf<SourceSetName, McSourceSet>()
 
   override fun parse(): SourceSets {
 
@@ -342,7 +342,7 @@ class RealAndroidSourceSetsParser private constructor(
     }
   }
 
-  private fun DefaultAndroidSourceSet.toSourceSetOrNull(): SourceSet? {
+  private fun DefaultAndroidSourceSet.toSourceSetOrNull(): McSourceSet? {
 
     if (!sourceSetNameToUpstreamMap.containsKey(name)) return null
 
@@ -422,7 +422,7 @@ class RealAndroidSourceSetsParser private constructor(
         )
       }
 
-      SourceSet(
+      McSourceSet(
         name = sourceSetName,
         compileOnlyConfiguration = parsedConfigurations
           .getValue(compileOnlyConfigurationName.asConfigurationName()),
@@ -513,7 +513,7 @@ class RealAndroidSourceSetsParser private constructor(
   its upstream source set, then look up that source set and add its upstream sets to the
   corresponding testFixtures one.
    */
-  private fun MutableMap<SourceSetName, SourceSet>.maybeAddTestFixturesSourceSets() = apply {
+  private fun MutableMap<SourceSetName, McSourceSet>.maybeAddTestFixturesSourceSets() = apply {
     // The testFixtures source sets are defined regardless of whether the testFixtures feature is
     // actually enabled.  If it isn't enabled, don't add the Gradle source sets to our types.
     if (!hasTestFixturesPlugin) return@apply
@@ -586,7 +586,7 @@ class RealAndroidSourceSetsParser private constructor(
 
         put(
           sourceSetName,
-          SourceSet(
+          McSourceSet(
             name = sourceSetName,
             compileOnlyConfiguration = parsedConfigurations
               .getValue(androidSourceSet.compileOnlyConfigurationName.asConfigurationName()),
@@ -613,6 +613,8 @@ class RealAndroidSourceSetsParser private constructor(
   /**
    * This removes the `-AndroidTest` suffix from **variant** names. SourceSet names don't get this
    * suffix
+   *
+   * @since 0.12.0
    */
   @Suppress("DEPRECATION")
   fun TestVariant.nameWithoutAndroidTestSuffix(): String {
@@ -626,6 +628,8 @@ class RealAndroidSourceSetsParser private constructor(
   /**
    * This removes the `-UnitTest` suffix from **variant** names. SourceSet names don't get this
    * suffix
+   *
+   * @since 0.12.0
    */
   @Suppress("DEPRECATION")
   fun UnitTestVariant.nameWithoutUnitTestSuffix(): String {
@@ -642,7 +646,7 @@ class RealAndroidSourceSetsParser private constructor(
       ?: SourceSetName.MAIN
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
   ) : AndroidSourceSetsParser.Factory {

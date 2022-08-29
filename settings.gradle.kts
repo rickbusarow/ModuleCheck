@@ -25,7 +25,6 @@ pluginManagement {
         includeGroup("com.rickbusarow.modulecheck")
       }
     }
-    mavenLocal()
   }
   @Suppress("UnstableApiUsage")
   includeBuild("build-logic")
@@ -34,16 +33,14 @@ pluginManagement {
 dependencyResolutionManagement {
   @Suppress("UnstableApiUsage")
   repositories {
-    google()
     mavenCentral()
-    mavenLocal()
+    google()
     maven("https://plugins.gradle.org/m2/")
-    maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
 }
 
 plugins {
-  id("com.gradle.enterprise").version("3.5.2")
+  id("com.gradle.enterprise").version("3.11.1")
 }
 
 gradleEnterprise {
@@ -86,9 +83,11 @@ rootProject.name = "ModuleCheck"
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+  ":ktlint-rules",
   ":modulecheck-api",
   ":modulecheck-config:api",
   ":modulecheck-config:fake",
+  ":modulecheck-config:impl",
   ":modulecheck-core",
   ":modulecheck-dagger",
   ":modulecheck-finding:api",
@@ -104,6 +103,7 @@ include(
   ":modulecheck-internal-testing",
   ":modulecheck-model:dependency:api",
   ":modulecheck-model:dependency:impl",
+  ":modulecheck-model:sourceset:api",
   ":modulecheck-parsing:android",
   ":modulecheck-parsing:element:api",
   ":modulecheck-parsing:element:impl-kotlin",
@@ -115,9 +115,9 @@ include(
   ":modulecheck-parsing:gradle:model:api",
   ":modulecheck-parsing:gradle:model:impl-typesafe",
   ":modulecheck-parsing:groovy-antlr",
+  ":modulecheck-parsing:java",
   ":modulecheck-parsing:kotlin-compiler:api",
   ":modulecheck-parsing:kotlin-compiler:impl",
-  ":modulecheck-parsing:java",
   ":modulecheck-parsing:psi",
   ":modulecheck-parsing:source:api",
   ":modulecheck-parsing:source:testing",
@@ -125,6 +125,7 @@ include(
   ":modulecheck-project:api",
   ":modulecheck-project:impl",
   ":modulecheck-project:testing",
+  ":modulecheck-project-generation:api",
   ":modulecheck-reporting:checkstyle",
   ":modulecheck-reporting:console",
   ":modulecheck-reporting:graphviz",
