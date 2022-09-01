@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DetektPluginSettings">
+    <option name="baselinePath" value="$PROJECT_DIR$/detekt/detekt-baseline.xml" />
+    <option name="configurationFilePaths">
+      <set>
+        <option value="$PROJECT_DIR$/detekt/detekt-config.yml" />
+      </set>
+    </option>
+  </component>
   <component name="DetektProjectConfiguration">
     <configPaths>detekt/detekt-config.yml</configPaths>
     <baselinePath>detekt/detekt-baseline.xml</baselinePath>
