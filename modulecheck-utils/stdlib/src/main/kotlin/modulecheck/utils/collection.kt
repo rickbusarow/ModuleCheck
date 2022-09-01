@@ -124,3 +124,34 @@ fun <T> sequenceOfNotNull(
     if (element != null) yield(element)
   }
 }
+
+/**
+ * @return true if any element in [other] is contained within the receiver collection, otherwise
+ *     returns false
+ * @since 0.13.0
+ */
+fun <E> Iterable<E>.containsAny(other: Iterable<Any?>): Boolean {
+
+  return when {
+    this === other -> true
+    this is Set<E> && other is Set<*> -> {
+      intersect(other.toSetOrSelf()).isNotEmpty()
+    }
+
+    else -> {
+      val thisAsSet = toSetOrSelf()
+      other.any { thisAsSet.contains(it) }
+    }
+  }
+}
+
+/**
+ * shorthand for `this as? Set<E> ?: toSet()`
+ *
+ * @return itself if the receiver [Iterable] is already a `Set<E>`, otherwise calls `toSet()` to
+ *     create a new one
+ * @since 0.13.0
+ */
+internal fun <E> Iterable<E>.toSetOrSelf(): Set<E> {
+  return this as? Set<E> ?: toSet()
+}

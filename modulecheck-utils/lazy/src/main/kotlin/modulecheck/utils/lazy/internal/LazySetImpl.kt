@@ -22,8 +22,8 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.take
+import modulecheck.utils.containsAny
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.coroutines.distinct
 import modulecheck.utils.coroutines.flatMapSetConcat
@@ -64,7 +64,7 @@ internal class LazySetImpl<E>(
     // In order to determine whether the set has any more elements, we have to iterate over that
     // queue, unwrapping all those DataSources.  As soon as we reach any element, we know the set
     // isn't empty and we can return.
-    var reachedElement = false
+    var reachedElement = true
     take(1)
       .collect { reachedElement = true }
     return !reachedElement
@@ -76,7 +76,48 @@ internal class LazySetImpl<E>(
 
     val snap = state.get()
 
-    return snap.cache.contains(element) || snap.remainingFlow().any { it.contains(element) }
+    return snap.cache.contains(element) || snap.remainingFlow()
+      .any { it.contains(element) }
+  }
+
+  override suspend fun containsAny(other: LazySet<Any?>): Boolean {
+
+    // contents will match if this is reflexive
+    if (this === other) return true
+
+    val snap = snapshot()
+    val thisCached = snap.cache
+    val thisRemaining = snap.remainingFlow()
+
+    val otherSnap = other.snapshot()
+    val otherCached = otherSnap.cache
+    val otherRemaining = with(other as LazySetImpl<Any?>) {
+      otherSnap.remainingFlow()
+    }
+
+    // avoid pulling non-cached data if possible
+    // prioritize building the cache for "this" before adding to the cache of the other LazySet
+
+    return when {
+      // cached vs other cached
+      thisCached.containsAny(otherCached) -> true
+
+      snap.remaining.isEmpty() && otherSnap.remaining.isEmpty() -> false
+
+      // not-cached vs other cached, so that we build up "this" LazySet's cache first
+      thisRemaining.any { remainingSetChunk ->
+        remainingSetChunk.containsAny(otherCached)
+      } -> true
+
+      else -> {
+        // At this point, the "this" LazySet is fully cached.  So if there's a matching element,
+        // it must be in a "remaining" data source from the other.
+        val fullCache = snapshot().cache
+        otherRemaining.any { otherRemainingChunk ->
+          fullCache.containsAny(otherRemainingChunk)
+        }
+      }
+    }
   }
 
   private fun updateCache(new: Set<E>, completed: List<DataSource<E>>) {
@@ -99,8 +140,8 @@ internal class LazySetImpl<E>(
       .map { nextSources ->
 
         nextSources.mapAsync { it.get() }
-          .flatMapSetConcat { it }
-          .also { newData -> updateCache(newData, nextSources) }
+          .flatMapSetConcat()
+          .also { updateCache(it, nextSources) }
       }
   }
 
@@ -108,30 +149,25 @@ internal class LazySetImpl<E>(
 
     val snap = state.get()
 
-    val additionalCache = mutableSetOf<E>()
-    val completed: MutableList<DataSource<E>> = mutableListOf()
+    val distinctFlow = flow distinctFlow@{
 
-    val distinctFlow = flow {
-
-      emitAll(snap.cache.asFlow())
+      this@distinctFlow.emitAll(snap.cache.asFlow())
 
       @Suppress("MagicNumber")
       snap.remaining.sorted()
         .chunked(100)
-        .forEach { dataProviderChunk ->
+        .forEach { dataSourceChunk ->
 
-          val new = dataProviderChunk
-            .mapAsync { provider -> provider.get() }
-            .flatMapSetConcat { it }
+          val new = dataSourceChunk
+            .mapAsync { dataSource -> dataSource.get() }
+            .flatMapSetConcat()
 
-          additionalCache.addAll(new)
-          completed.addAll(dataProviderChunk)
+          updateCache(new, dataSourceChunk)
 
-          emitAll(new.asFlow())
+          this@distinctFlow.emitAll(new.asFlow())
         }
     }
       .distinct()
-      .onCompletion { updateCache(additionalCache, completed) }
 
     collector.emitAll(distinctFlow)
   }
