@@ -72,18 +72,17 @@ class Declarations private constructor(
     return delegate.getOrPut(key) {
       val components = mutableListOf<LazySetComponent<DeclaredName>>()
 
-      val seed = if (includeUpstream) {
+      if (includeUpstream) {
         sourceSetName.withUpstream(project)
           .filterNot { it == SourceSetName.TEST_FIXTURES }
+          .forEach { sourceSetOrUpstream ->
+            components.add(get(sourceSetOrUpstream, includeUpstream = false))
+          }
       } else {
-        listOf(sourceSetName)
-      }
 
-      seed.forEach { sourceSetOrUpstream ->
+        val rNameOrNull = project.androidRDeclaredNameForSourceSetName(sourceSetName)
 
-        val rNameOrNull = project.androidRDeclaredNameForSourceSetName(sourceSetOrUpstream)
-
-        project.jvmFilesForSourceSetName(sourceSetOrUpstream)
+        project.jvmFilesForSourceSetName(sourceSetName)
           .toList()
           .map { dataSource(DataSource.Priority.HIGH) { it.declarations } }
           .let { components.addAll(it) }
@@ -91,7 +90,7 @@ class Declarations private constructor(
         if (rNameOrNull != null) {
           check(project.isAndroid())
 
-          val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetOrUpstream)
+          val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetName)
             .asDataSource()
 
           components.add(resources)
@@ -99,7 +98,7 @@ class Declarations private constructor(
           components.add(dataSourceOf(rNameOrNull))
 
           components.add(
-            project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream)
+            project.androidDataBindingDeclarationsForSourceSetName(sourceSetName)
           )
         }
       }
@@ -124,7 +123,7 @@ suspend fun ProjectDependency.declarations(
 ): LazySet<DeclaredName> {
   val project = projectCache.getValue(path)
   if (isTestFixture) {
-    return project.declarations().get(SourceSetName.TEST_FIXTURES, false)
+    return project.declarations().get(SourceSetName.TEST_FIXTURES, includeUpstream = false)
   }
 
   // If the dependency config is `testImplementation(...)` or `androidTestImplementation(...)`:
@@ -144,5 +143,5 @@ suspend fun ProjectDependency.declarations(
     .takeIf { project.sourceSets.containsKey(nonTestSourceSetName) }
     ?: SourceSetName.MAIN
 
-  return project.declarations().get(declarationsSourceSetName, true)
+  return project.declarations().get(declarationsSourceSetName, includeUpstream = true)
 }
