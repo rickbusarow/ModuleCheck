@@ -15,6 +15,8 @@
 
 package modulecheck.parsing.test
 
+import io.kotest.assertions.asClue
+import io.kotest.assertions.assertSoftly
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
@@ -120,9 +122,17 @@ interface McNameTest : FancyShould {
 
     val other = JvmFileBuilder().also { it.config() }
 
-    references shouldBe other.referenceNames
-    apiReferences shouldBe other.apiReferenceNames
-    declarations shouldBe other.declarations
+    assertSoftly {
+      "references".asClue {
+        references shouldBe other.referenceNames
+      }
+      "api references".asClue {
+        apiReferences shouldBe other.apiReferenceNames
+      }
+      "declarations".asClue {
+        declarations shouldBe other.declarations
+      }
+    }
   }
 
   infix fun Collection<QualifiedDeclaredName>.shouldBe(other: Collection<QualifiedDeclaredName>) {

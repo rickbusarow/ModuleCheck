@@ -71,7 +71,7 @@ abstract class AbstractPluginsBlock(
       suppressed = suppressed.updateOldSuppresses() + blockSuppressed
     )
     _allDeclarations.add(declaration)
-    resetManager.resetAll()
+    resetManager.reset()
   }
 
   protected abstract fun findOriginalStringIndex(parsedString: String): Int

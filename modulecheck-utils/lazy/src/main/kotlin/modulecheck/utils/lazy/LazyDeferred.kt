@@ -37,6 +37,16 @@ import kotlinx.coroutines.sync.withLock
 interface LazyDeferred<out T> {
   val isCompleted: Boolean
   suspend fun await(): T
+
+  /**
+   * Immediately returns the deferred value **if already completed**.
+   *
+   * This should only be called after manually checking the value of [isCompleted].
+   *
+   * @throws [IllegalStateException] if this deferred value has not [completed][isCompleted] yet.
+   * @since 0.13.0
+   */
+  fun getCompleted(): T
 }
 
 /**
@@ -94,6 +104,12 @@ internal class LazyDeferredImpl<T>(
         }
       }
     }
+    @Suppress("UNCHECKED_CAST")
+    return _value as T
+  }
+
+  override fun getCompleted(): T {
+    check(_completed) { "LazyDeferred has not been completed yet." }
     @Suppress("UNCHECKED_CAST")
     return _value as T
   }

@@ -25,6 +25,7 @@ mcbuild {
 dependencies {
 
   api(libs.bundles.hermit)
+  api(libs.kotlinx.coroutines.debug)
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-internal-testing"))

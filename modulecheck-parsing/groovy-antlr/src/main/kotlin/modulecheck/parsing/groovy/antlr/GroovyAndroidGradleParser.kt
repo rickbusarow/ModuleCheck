@@ -35,7 +35,7 @@ import javax.inject.Inject
 
 class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
 
-  override fun parse(buildFile: File): AndroidGradleSettings = parse(buildFile) {
+  override suspend fun parse(buildFile: File): AndroidGradleSettings = parse(buildFile) {
 
     val androidBlocks = mutableListOf<AndroidBlock>()
     val buildFeaturesBlocks = mutableListOf<BuildFeaturesBlock>()

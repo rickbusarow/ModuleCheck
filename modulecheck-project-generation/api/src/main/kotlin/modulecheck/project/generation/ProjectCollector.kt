@@ -37,6 +37,7 @@ import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
 import modulecheck.utils.lazy.lazySet
+import org.jetbrains.annotations.Contract
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
@@ -137,6 +138,7 @@ interface ProjectCollector {
     )
   }
 
+  @Contract(pure = true, value = "_->new")
   suspend fun McProject.editSimple(
     config: McProjectBuilder<PlatformPluginBuilder<PlatformPlugin>>.() -> Unit = {}
   ): McProject {
