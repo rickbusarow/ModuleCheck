@@ -42,7 +42,7 @@ data class AndroidGradleSettings(
 
 interface AndroidGradleSettingsProvider {
 
-  fun get(): AndroidGradleSettings
+  suspend fun get(): AndroidGradleSettings
 
   fun interface Factory {
     fun create(buildFile: File): AndroidGradleSettingsProvider
@@ -51,5 +51,5 @@ interface AndroidGradleSettingsProvider {
 
 interface AndroidGradleParser {
 
-  fun parse(buildFile: File): AndroidGradleSettings
+  suspend fun parse(buildFile: File): AndroidGradleSettings
 }

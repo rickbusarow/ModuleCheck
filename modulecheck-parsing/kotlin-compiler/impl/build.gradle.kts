@@ -33,6 +33,7 @@ dependencies {
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(libs.agp)
@@ -49,4 +50,7 @@ dependencies {
   testImplementation(project(path = ":modulecheck-internal-testing"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
+  testImplementation(project(path = ":modulecheck-parsing:psi"))
+  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }

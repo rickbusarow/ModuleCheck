@@ -24,8 +24,10 @@ import modulecheck.model.sourceset.removePrefix
 import modulecheck.model.sourceset.removeSuffix
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
+import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
@@ -33,7 +35,7 @@ import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
-data class SourceSetBuilder constructor(
+data class SourceSetBuilder(
   var name: SourceSetName,
   var compileOnlyConfiguration: McConfiguration,
   var apiConfiguration: McConfiguration?,
@@ -43,7 +45,7 @@ data class SourceSetBuilder constructor(
   var jvmFiles: Set<File>,
   var resourceFiles: Set<File>,
   var layoutFiles: Set<File>,
-  var classpath: MutableSet<File> = mutableSetOf(
+  var classpath: MutableList<File> = mutableListOf(
     File(CharRange::class.java.protectionDomain.codeSource.location.path)
   ),
   val upstream: MutableList<SourceSetName>,
@@ -59,11 +61,13 @@ data class SourceSetBuilder constructor(
       RealKotlinEnvironment(
         projectPath = projectPath,
         sourceSetName = name,
-        classpathFiles = lazy { classpath },
+        classpathFiles = lazyDeferred { classpath },
         sourceDirs = jvmFiles,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        safeAnalysisResultAccess = safeAnalysisResultAccess
+        safeAnalysisResultAccess = safeAnalysisResultAccess,
+        logger = PrintLogger(),
+        resetManager = ResetManager()
       )
     }
 
@@ -98,7 +102,7 @@ data class SourceSetBuilder constructor(
         jvmFiles = sourceSet.jvmFiles,
         resourceFiles = sourceSet.resourceFiles,
         layoutFiles = sourceSet.layoutFiles,
-        classpath = kotlinEnvironment.classpathFiles.value.toMutableSet(),
+        classpath = kotlinEnvironment.classpathFiles.await().toMutableList(),
         upstream = sourceSet.upstream.toMutableList(),
         downstream = sourceSet.downstream.toMutableList(),
         kotlinLanguageVersion = kotlinEnvironment.kotlinLanguageVersion,
@@ -171,7 +175,7 @@ fun McProjectBuilder<*>.maybeAddSourceSet(
       jvmFiles = jvmFiles,
       resourceFiles = resourceFiles,
       layoutFiles = layoutFiles,
-      classpath = classpath.toMutableSet(),
+      classpath = classpath.toMutableList(),
       upstream = upstream,
       downstream = downstreamNames.toMutableList(),
       kotlinLanguageVersion = kotlinLanguageVersion,

@@ -48,7 +48,6 @@ import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
-import modulecheck.utils.decapitalize
 import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
@@ -394,28 +393,33 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val classpath = upstreamLazy.value
-        .asSequence()
-        .map { it.value }
-        .plus(name)
-        .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-        .flatMapToSet { variant ->
-          sequenceOf(
-            variant.compileConfiguration,
-            variant.runtimeConfiguration
-          )
-            .flatMap { config ->
-              config.fileCollection { dependency -> dependency is ExternalModuleDependency }
-                .mapNotNull { it.existsOrNull() }
-            }
-            .toSet()
-        }
+      val classpath = lazyDeferred {
+        upstreamLazy.value
+          .asSequence()
+          .map { it.value }
+          .plus(name)
+          .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
+          .flatMap { variant ->
+            sequenceOf(
+              variant.compileConfiguration,
+              variant.runtimeConfiguration
+            )
+              .flatMap { config ->
+                config.fileCollection { dependency ->
+                  dependency is ExternalModuleDependency
+                }
+                  .mapNotNull { it.existsOrNull() }
+              }
+              .toSet()
+          }
+          .toList()
+      }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
         kotlinEnvironmentFactory.create(
           projectPath = projectPath,
           sourceSetName = sourceSetName,
-          classpathFiles = lazy { classpath },
+          classpathFiles = classpath,
           sourceDirs = jvmFiles,
           kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
           jvmTarget = gradleProject.jvmTarget()
@@ -577,7 +581,7 @@ class RealAndroidSourceSetsParser private constructor(
           kotlinEnvironmentFactory.create(
             projectPath = projectPath,
             sourceSetName = sourceSetName,
-            classpathFiles = lazy { extension.bootClasspath.toSet() },
+            classpathFiles = lazyDeferred { extension.bootClasspath.toList() },
             sourceDirs = jvmFiles,
             kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget()
@@ -617,12 +621,8 @@ class RealAndroidSourceSetsParser private constructor(
    * @since 0.12.0
    */
   @Suppress("DEPRECATION")
-  fun TestVariant.nameWithoutAndroidTestSuffix(): String {
+  private fun TestVariant.nameWithoutAndroidTestSuffix(): String {
     return name.removeSuffix("AndroidTest")
-  }
-
-  fun String.removeAndroidTestPrefix(): SourceSetName {
-    return asSourceSetName().removePrefix(SourceSetName.ANDROID_TEST)
   }
 
   /**
@@ -632,15 +632,11 @@ class RealAndroidSourceSetsParser private constructor(
    * @since 0.12.0
    */
   @Suppress("DEPRECATION")
-  fun UnitTestVariant.nameWithoutUnitTestSuffix(): String {
+  private fun UnitTestVariant.nameWithoutUnitTestSuffix(): String {
     return name.removeSuffix("UnitTest")
   }
 
-  fun String.removeTestPrefix(): String {
-    return removePrefix(SourceSetName.TEST.value).decapitalize()
-  }
-
-  fun String.removeTestFixturesPrefix(): SourceSetName {
+  private fun String.removeTestFixturesPrefix(): SourceSetName {
     return asSourceSetName().removePrefix(SourceSetName.TEST_FIXTURES)
       .takeIf { it.value.isNotBlank() }
       ?: SourceSetName.MAIN

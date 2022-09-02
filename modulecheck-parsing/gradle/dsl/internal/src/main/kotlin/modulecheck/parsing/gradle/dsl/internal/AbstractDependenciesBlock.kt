@@ -161,7 +161,7 @@ abstract class AbstractDependenciesBlock(
 
     _allDeclarations.add(declaration)
 
-    resetManager.resetAll()
+    resetManager.reset()
   }
 
   private fun List<String>.updateOldSuppresses(): List<String> {

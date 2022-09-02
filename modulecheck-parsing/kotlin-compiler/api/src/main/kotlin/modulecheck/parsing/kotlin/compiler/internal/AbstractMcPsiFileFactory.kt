@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler.internal
 
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
+import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
@@ -37,11 +38,11 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
    *
    * @since 0.13.0
    */
-  abstract val coreEnvironment: KotlinCoreEnvironment
+  abstract val coreEnvironment: LazyDeferred<KotlinCoreEnvironment>
 
-  protected abstract fun create(file: File): PsiFile
+  protected abstract suspend fun create(file: File): PsiFile
 
-  override fun createKotlin(file: File): KtFile {
+  override suspend fun createKotlin(file: File): KtFile {
     if (!file.exists()) throw FileNotFoundException("could not find file $file")
     if (!file.isKotlinFile()) throw IllegalArgumentException(
       "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
@@ -50,7 +51,7 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
     return create(file) as KtFile
   }
 
-  override fun createJava(file: File): PsiJavaFile {
+  override suspend fun createJava(file: File): PsiJavaFile {
 
     if (!file.isJavaFile()) {
       throw IllegalArgumentException(
