@@ -212,16 +212,6 @@
     <ID>UndocumentedPublicClass:McLogger.kt$Report$ReportBuilder</ID>
     <ID>UndocumentedPublicClass:McLogger.kt$Report$ReportEntry</ID>
     <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$AppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$Failure : ReportEntry</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$FailureHeader : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$FailureLine : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$Header : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$Info : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$Success : ReportEntry</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$SuccessHeader : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$SuccessLine : ReportEntryAppendNewLine</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$Warning : ReportEntry</ID>
-    <ID>UndocumentedPublicClass:McLogger.kt$Report.ReportEntry$WarningLine : ReportEntryAppendNewLine</ID>
     <ID>UndocumentedPublicClass:McProject.kt$McProject : ProjectContextComparableHasPathHasProjectCacheHasBuildFileHasConfigurationsHasDependenciesHasSourceSetsHasDependencyDeclarationsInvokesConfigurationNamesHasPlatformPluginPluginAware</ID>
     <ID>UndocumentedPublicClass:McProjectBuilder.kt$McProjectBuilder&lt;P : PlatformPluginBuilder&lt;*>> : HasDependencyDeclarationsInvokesConfigurationNamesHasDependencies</ID>
     <ID>UndocumentedPublicClass:McSourceSet.kt$HasSourceSets</ID>
@@ -393,9 +383,6 @@
     <ID>UndocumentedPublicClass:XmlFile.kt$XmlFile : HasReferences</ID>
     <ID>UndocumentedPublicClass:XmlFile.kt$XmlFile$LayoutFile : XmlFile</ID>
     <ID>UndocumentedPublicClass:XmlFile.kt$XmlFile$ManifestFile : XmlFile</ID>
-    <ID>UndocumentedPublicClass:lazy.kt$LazyResets&lt;out T : Any> : LazyResets</ID>
-    <ID>UndocumentedPublicClass:lazy.kt$ResetManager</ID>
-    <ID>UndocumentedPublicClass:lazy.kt$Resets</ID>
     <ID>UndocumentedPublicFunction:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$fun addNonModuleStatement( configName: ConfigurationName, parsedString: String, coordinates: MavenCoordinates, suppressed: List&lt;String> )</ID>
     <ID>UndocumentedPublicFunction:AbstractDependenciesBlock.kt$AbstractDependenciesBlock$fun addUnknownStatement( configName: ConfigurationName, parsedString: String, argument: String, suppressed: List&lt;String> )</ID>
     <ID>UndocumentedPublicFunction:AbstractDependenciesBlock.kt$DependenciesBlocksProvider$suspend fun get(): List&lt;DependenciesBlock></ID>
@@ -413,8 +400,8 @@
     <ID>UndocumentedPublicFunction:AndroidDataBindingDeclarations.kt$suspend fun ProjectContext.androidDataBindingDeclarations(): AndroidDataBindingDeclarations</ID>
     <ID>UndocumentedPublicFunction:AndroidDataBindingDeclarations.kt$suspend fun ProjectContext.androidDataBindingDeclarationsForSourceSetName( sourceSetName: SourceSetName ): LazySet&lt;AndroidDataBindingDeclaredName></ID>
     <ID>UndocumentedPublicFunction:AndroidDataBindingNameProvider.kt$AndroidDataBindingNameProvider$suspend fun get(): LazySet&lt;AndroidDataBindingDeclaredName></ID>
-    <ID>UndocumentedPublicFunction:AndroidGradleSettings.kt$AndroidGradleParser$fun parse(buildFile: File): AndroidGradleSettings</ID>
-    <ID>UndocumentedPublicFunction:AndroidGradleSettings.kt$AndroidGradleSettingsProvider$fun get(): AndroidGradleSettings</ID>
+    <ID>UndocumentedPublicFunction:AndroidGradleSettings.kt$AndroidGradleParser$suspend fun parse(buildFile: File): AndroidGradleSettings</ID>
+    <ID>UndocumentedPublicFunction:AndroidGradleSettings.kt$AndroidGradleSettingsProvider$suspend fun get(): AndroidGradleSettings</ID>
     <ID>UndocumentedPublicFunction:AndroidGradleSettings.kt$AndroidGradleSettingsProvider.Factory$fun create(buildFile: File): AndroidGradleSettingsProvider</ID>
     <ID>UndocumentedPublicFunction:AndroidLayoutParser.kt$AndroidLayoutParser$fun parseResources(file: File): Set&lt;String></ID>
     <ID>UndocumentedPublicFunction:AndroidLayoutParser.kt$AndroidLayoutParser$fun parseViews(file: File): Set&lt;String></ID>
@@ -562,34 +549,12 @@
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet( priority: Priority = MEDIUM, dataSource: suspend () -> Set&lt;E> ): LazySet&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$fun &lt;E> lazySet( vararg children: LazySetComponent&lt;E> ): LazySet&lt;E></ID>
     <ID>UndocumentedPublicFunction:LazySet.kt$suspend fun &lt;T : B, E : B, B> LazySet&lt;T>.containsAny(elements: Collection&lt;E>): Boolean</ID>
-    <ID>UndocumentedPublicFunction:LazySet.kt$suspend fun &lt;T : B, E : B, B> LazySet&lt;T>.containsAny(elements: LazySet&lt;E>): Boolean</ID>
     <ID>UndocumentedPublicFunction:ManifestFiles.kt$ManifestFiles$suspend fun get(sourceSetName: SourceSetName): XmlFile.ManifestFile?</ID>
     <ID>UndocumentedPublicFunction:ManifestFiles.kt$suspend fun ProjectContext.manifestFileForSourceSetName( sourceSetName: SourceSetName ): XmlFile.ManifestFile?</ID>
     <ID>UndocumentedPublicFunction:ManifestFiles.kt$suspend fun ProjectContext.manifestFiles(): ManifestFiles</ID>
     <ID>UndocumentedPublicFunction:MavenCoordinates.kt$MavenCoordinates.Companion$fun parseOrNull(coordinateString: String): MavenCoordinates?</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printFailure(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printFailureHeader(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printFailureLine(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printHeader(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printInfo(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printReport(report: Report)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printSuccess(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printSuccessHeader(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printSuccessLine(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printWarning(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$McLogger$fun printWarningLine(message: String)</ID>
     <ID>UndocumentedPublicFunction:McLogger.kt$Report$fun joinToString(): String</ID>
     <ID>UndocumentedPublicFunction:McLogger.kt$Report.Companion$fun build(buildAction: ReportBuilder.() -> Unit): Report</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun failure(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun failureHeader(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun failureLine(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun header(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun info(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun success(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun successHeader(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun successLine(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun warning(message: String)</ID>
-    <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportBuilder$fun warningLine(message: String)</ID>
     <ID>UndocumentedPublicFunction:McLogger.kt$Report.ReportEntry$fun printToStdOut()</ID>
     <ID>UndocumentedPublicFunction:McProject.kt$fun McProject.isAndroid(): Boolean</ID>
     <ID>UndocumentedPublicFunction:McProjectBuilder.kt$McProjectBuilder$@Suppress("LongParameterList") fun addSourceSet( name: SourceSetName, jvmFiles: Set&lt;File> = emptySet(), resourceFiles: Set&lt;File> = emptySet(), layoutFiles: Set&lt;File> = emptySet(), upstreamNames: List&lt;SourceSetName> = emptyList(), downstreamNames: List&lt;SourceSetName> = emptyList() ): SourceSetBuilder</ID>
@@ -628,12 +593,13 @@
     <ID>UndocumentedPublicFunction:PlatformPlugin.kt$fun PlatformPlugin.isAndroid(): Boolean</ID>
     <ID>UndocumentedPublicFunction:PlatformPluginBuilder.kt$PlatformPluginBuilder$fun toPlugin( safeAnalysisResultAccess: SafeAnalysisResultAccess, projectPath: StringProjectPath, projectDependencies: ProjectDependencies, externalDependencies: ExternalDependencies ): T</ID>
     <ID>UndocumentedPublicFunction:PluginsBlock.kt$PluginsBlock$fun getById(pluginId: String): PluginDeclaration?</ID>
-    <ID>UndocumentedPublicFunction:PluginsBlock.kt$PluginsBlockProvider$fun get(): PluginsBlock?</ID>
+    <ID>UndocumentedPublicFunction:PluginsBlock.kt$PluginsBlockProvider$suspend fun get(): PluginsBlock?</ID>
     <ID>UndocumentedPublicFunction:PluginsBlock.kt$PluginsBlockProvider.Factory$fun create(buildFile: File): PluginsBlockProvider</ID>
     <ID>UndocumentedPublicFunction:ProjectAccessor.kt$ProjectAccessor.Companion$fun from(rawString: String, projectPath: ProjectPath): ProjectAccessor</ID>
     <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$fun clearContexts()</ID>
     <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$fun getValue(path: ProjectPath): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCache.kt$ProjectCache$operator fun set(path: ProjectPath, project: McProject): McProject?</ID>
+    <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$@Contract(pure = true, value = "_->new") suspend fun McProject.editSimple( config: McProjectBuilder&lt;PlatformPluginBuilder&lt;PlatformPlugin>>.() -> Unit = {} ): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun allProjects(): List&lt;McProject></ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun androidApplication( path: String, androidPackage: String, config: McProjectBuilder&lt;AndroidApplicationPluginBuilder>.() -> Unit = {} ): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun androidDynamicFeature( path: String, androidPackage: String, config: McProjectBuilder&lt;AndroidDynamicFeaturePluginBuilder>.() -> Unit = {} ): McProject</ID>
@@ -644,7 +610,6 @@
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$fun simpleProject( buildFileText: String? = null, path: String = ":lib" )</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$operator fun File.invoke(text: () -> String)</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun &lt;P : PlatformPluginBuilder&lt;*>> McProject.toProjectBuilder(): McProjectBuilder&lt;P></ID>
-    <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun McProject.editSimple( config: McProjectBuilder&lt;PlatformPluginBuilder&lt;PlatformPlugin>>.() -> Unit = {} ): McProject</ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun PlatformPlugin.toBuilder(): PlatformPluginBuilder&lt;*></ID>
     <ID>UndocumentedPublicFunction:ProjectCollector.kt$ProjectCollector$suspend fun resolveReferences()</ID>
     <ID>UndocumentedPublicFunction:ProjectContext.kt$ProjectContext$fun clearContext()</ID>
@@ -668,9 +633,6 @@
     <ID>UndocumentedPublicFunction:PsiElementResolver.kt$PsiElementResolver$suspend fun declaredNameOrNull( token: PsiElement ): QualifiedDeclaredName?</ID>
     <ID>UndocumentedPublicFunction:PublicDependencies.kt$suspend fun ProjectContext.publicDependencies(): PublicDependencies</ID>
     <ID>UndocumentedPublicFunction:RealAndroidPlatformPluginFactory.kt$RealAndroidPlatformPluginFactory.Type.Companion$fun from(extension: AndroidCommonExtension): Type&lt;*></ID>
-    <ID>UndocumentedPublicFunction:RealAndroidSourceSetsParser.kt$RealAndroidSourceSetsParser$fun String.removeAndroidTestPrefix(): SourceSetName</ID>
-    <ID>UndocumentedPublicFunction:RealAndroidSourceSetsParser.kt$RealAndroidSourceSetsParser$fun String.removeTestFixturesPrefix(): SourceSetName</ID>
-    <ID>UndocumentedPublicFunction:RealAndroidSourceSetsParser.kt$RealAndroidSourceSetsParser$fun String.removeTestPrefix(): String</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeImported(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun &lt;T> T.canBeResolved(): Boolean</ID>
     <ID>UndocumentedPublicFunction:RealJavaFile.kt$fun FieldDeclaration.apiReferences(): List&lt;String></ID>
@@ -766,12 +728,7 @@
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtFunction.jvmNameOrNull(): String?</ID>
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtProperty.isJvmField(): Boolean</ID>
     <ID>UndocumentedPublicFunction:ktCallableDeclaration.kt$fun KtPropertyAccessor.jvmNameOrNull(): String?</ID>
-    <ID>UndocumentedPublicFunction:lazy.kt$ResetManager$fun register(delegate: Resets)</ID>
-    <ID>UndocumentedPublicFunction:lazy.kt$ResetManager$fun resetAll()</ID>
-    <ID>UndocumentedPublicFunction:lazy.kt$Resets$fun reset()</ID>
-    <ID>UndocumentedPublicFunction:lazy.kt$fun &lt;T : Any> LazyResets( resetManager: ResetManager, valueFactory: suspend () -> T ): LazyResets&lt;T></ID>
     <ID>UndocumentedPublicFunction:lazy.kt$fun &lt;T> unsafeLazy(initializer: () -> T): Lazy&lt;T></ID>
-    <ID>UndocumentedPublicFunction:lazy.kt$inline fun &lt;reified T : Any> ResetManager.lazyResets( noinline valueFactory: suspend () -> T ): LazyResets&lt;T></ID>
     <ID>UndocumentedPublicFunction:list.kt$fun List&lt;String>.positionOf( path: String, configuration: ConfigurationName ): Position?</ID>
     <ID>UndocumentedPublicFunction:mcProject.kt$suspend fun ConfiguredDependency.positionIn( dependentProject: McProject ): Position?</ID>
     <ID>UndocumentedPublicFunction:mcProject.kt$suspend fun ConfiguredDependency.statementOrNullIn( dependentProject: McProject ): DependencyDeclaration?</ID>
@@ -1066,7 +1023,6 @@
     <ID>UndocumentedPublicProperty:ProjectCollector.kt$ProjectCollector$val root: File</ID>
     <ID>UndocumentedPublicProperty:ProjectCollector.kt$ProjectCollector$val safeAnalysisResultAccess: SafeAnalysisResultAccess</ID>
     <ID>UndocumentedPublicProperty:ProjectContext.kt$ProjectContext.Element$val key: Key&lt;*></ID>
-    <ID>UndocumentedPublicProperty:ProjectPath.kt$ProjectPath$abstract val value: String</ID>
     <ID>UndocumentedPublicProperty:ProjectPath.kt$ProjectPath$val typeSafeValue: String by lazy { when (this) { is StringProjectPath -> value.typeSafeName() is TypeSafeProjectPath -> value } }</ID>
     <ID>UndocumentedPublicProperty:PsiElementWithSurroundingText.kt$PsiElementWithSurroundingText$val psiElement: PsiElement</ID>
     <ID>UndocumentedPublicProperty:PsiElementWithSurroundingText.kt$PsiElementWithSurroundingText$val statementText: String = psiElement.text</ID>
@@ -1096,7 +1052,7 @@
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$val upstream: MutableList&lt;SourceSetName></ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var annotationProcessorConfiguration: McConfiguration?</ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var apiConfiguration: McConfiguration?</ID>
-    <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var classpath: MutableSet&lt;File> = mutableSetOf( File(CharRange::class.java.protectionDomain.codeSource.location.path) )</ID>
+    <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var classpath: MutableList&lt;File> = mutableListOf( File(CharRange::class.java.protectionDomain.codeSource.location.path) )</ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var compileOnlyConfiguration: McConfiguration</ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var implementationConfiguration: McConfiguration</ID>
     <ID>UndocumentedPublicProperty:SourceSetBuilder.kt$SourceSetBuilder$var jvmFiles: Set&lt;File></ID>

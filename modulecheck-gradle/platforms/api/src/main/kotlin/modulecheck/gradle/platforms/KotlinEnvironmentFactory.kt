@@ -18,6 +18,7 @@ package modulecheck.gradle.platforms
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
+import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import java.io.File
@@ -36,7 +37,7 @@ fun interface KotlinEnvironmentFactory {
   fun create(
     projectPath: StringProjectPath,
     sourceSetName: SourceSetName,
-    classpathFiles: Lazy<Collection<File>>,
+    classpathFiles: LazyDeferred<List<File>>,
     sourceDirs: Collection<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget

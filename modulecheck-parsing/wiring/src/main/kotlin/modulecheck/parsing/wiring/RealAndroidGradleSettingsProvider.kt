@@ -32,7 +32,7 @@ class RealAndroidGradleSettingsProvider(
   private val buildFile: File
 ) : AndroidGradleSettingsProvider {
 
-  override fun get(): AndroidGradleSettings {
+  override suspend fun get(): AndroidGradleSettings {
     return when {
       buildFile.isKotlinFile(listOf("kts")) -> kotlinParser.parse(buildFile)
       buildFile.extension == "gradle" -> groovyParser.parse(buildFile)

@@ -34,7 +34,7 @@ class RealPluginsBlockProvider(
   private val psiFileFactory: NoContextPsiFileFactory
 ) : PluginsBlockProvider {
 
-  override fun get(): PluginsBlock? {
+  override suspend fun get(): PluginsBlock? {
     return when {
       buildFile.isKotlinFile(listOf("kts")) ->
         kotlinParser

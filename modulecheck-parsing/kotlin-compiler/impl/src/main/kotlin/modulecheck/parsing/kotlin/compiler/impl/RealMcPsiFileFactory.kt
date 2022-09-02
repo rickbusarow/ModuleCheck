@@ -20,56 +20,63 @@ import modulecheck.dagger.TaskScope
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
-import org.jetbrains.kotlin.com.intellij.openapi.project.Project
+import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileManager
-import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileSystem
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiManager
 import java.io.File
 import java.io.FileNotFoundException
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
 /**
  * A real implementation of [McPsiFileFactory] using a curated [KotlinEnvironment].
  *
  * The files created from this factory are backed by a meaningful
- * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which is aware of the full
- * classpath and may be used for type resolution.
+ * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which
+ * is aware of the full classpath and may be used for type resolution.
  *
  * @since 0.13.0
  */
 class RealMcPsiFileFactory(
-  private val kotlinEnvironment: KotlinEnvironment
+  kotlinEnvironment: KotlinEnvironment
 ) : AbstractMcPsiFileFactory(),
   McPsiFileFactory {
 
-  override val coreEnvironment by lazy { kotlinEnvironment.coreEnvironment }
+  override val coreEnvironment = kotlinEnvironment.coreEnvironment
 
-  private val psiProject: Project by lazy { coreEnvironment.project }
-  private val psiManager: PsiManager by lazy { PsiManager.getInstance(psiProject) }
-  private val virtualFileSystem: VirtualFileSystem by lazy {
+  private val fileCache = ConcurrentHashMap<File, PsiFile>()
+
+  private val psiProjectDeferred = lazyDeferred { coreEnvironment.await().project }
+  private val psiManager = lazyDeferred {
+    PsiManager.getInstance(psiProjectDeferred.await())
+  }
+  private val virtualFileSystem = lazyDeferred {
     // make sure that the PsiManager has initialized, or we'll get NPE's when trying to initialize
     // the VirtualFileManager instance
-    psiManager
+    psiManager.await()
+
     VirtualFileManager.getInstance()
       .getFileSystem(StandardFileSystems.FILE_PROTOCOL)
   }
 
-  override fun create(file: File): PsiFile {
-    if (!file.exists()) throw FileNotFoundException("could not find file $file")
+  override suspend fun create(file: File): PsiFile {
+    return fileCache.getOrPut(file) {
+      if (!file.exists()) throw FileNotFoundException("could not find file $file")
 
-    val vFile = virtualFileSystem.findFileByPath(file.absolutePath)
-      ?: throw FileNotFoundException("could not find file $file")
+      val vFile = virtualFileSystem.await().findFileByPath(file.absolutePath)
+        ?: throw FileNotFoundException("could not find file $file")
 
-    val psi = psiManager.findFile(vFile)
+      val psi = psiManager.await().findFile(vFile)
 
-    return when (file.extension) {
-      "java" -> psi as PsiFile
-      "kt", "kts" -> psi as PsiFile
-      else -> throw IllegalArgumentException(
-        "file extension must be one of [java, kt, kts], but it was `${file.extension}`."
-      )
+      when (file.extension) {
+        "java" -> psi as PsiFile
+        "kt", "kts" -> psi as PsiFile
+        else -> throw IllegalArgumentException(
+          "file extension must be one of [java, kt, kts], but it was `${file.extension}`."
+        )
+      }
     }
   }
 

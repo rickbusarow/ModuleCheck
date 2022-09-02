@@ -33,7 +33,7 @@ interface McPsiFileFactory {
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
    * @since 0.13.0
    */
-  fun createKotlin(file: File): KtFile
+  suspend fun createKotlin(file: File): KtFile
 
   /**
    * @return a Psi `PsiJavaFile` for Java files. The file extension must be `.java`.
@@ -41,7 +41,7 @@ interface McPsiFileFactory {
    * @throws FileNotFoundException if the [file] does not exist in the Java file system
    * @since 0.13.0
    */
-  fun createJava(file: File): PsiJavaFile
+  suspend fun createJava(file: File): PsiJavaFile
 
   /**
    * Creates an instance of [McPsiFileFactory]

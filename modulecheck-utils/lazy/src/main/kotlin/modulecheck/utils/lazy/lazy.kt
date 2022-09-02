@@ -15,7 +15,6 @@
 
 package modulecheck.utils.lazy
 
-import kotlinx.coroutines.runBlocking
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
@@ -57,60 +56,5 @@ private class SynchronizedLazyVar<T>(initializer: () -> T) : ReadWriteProperty<A
       this.value = value
       isSet = true
     }
-  }
-}
-
-class ResetManager(
-  private val delegates: MutableCollection<Resets> = mutableListOf()
-) {
-
-  fun register(delegate: Resets) {
-    synchronized(delegates) {
-      delegates.add(delegate)
-    }
-  }
-
-  fun resetAll() {
-    synchronized(delegates) {
-      delegates.forEach { it.reset() }
-      delegates.clear()
-    }
-  }
-}
-
-interface LazyResets<out T : Any> : Lazy<T>, Resets
-
-interface Resets {
-  fun reset()
-}
-
-inline fun <reified T : Any> ResetManager.lazyResets(
-  noinline valueFactory: suspend () -> T
-): LazyResets<T> = LazyResets(this, valueFactory)
-
-fun <T : Any> LazyResets(
-  resetManager: ResetManager,
-  valueFactory: suspend () -> T
-): LazyResets<T> = LazyResetsImpl(resetManager, valueFactory)
-
-internal class LazyResetsImpl<out T : Any>(
-  private val resetManager: ResetManager,
-  private val valueFactory: suspend () -> T
-) : LazyResets<T> {
-
-  private var lazyHolder: Lazy<T> = createLazy()
-
-  override val value: T
-    get() = lazyHolder.value
-
-  override fun isInitialized(): Boolean = lazyHolder.isInitialized()
-
-  private fun createLazy() = lazy {
-    resetManager.register(this)
-    runBlocking { valueFactory() }
-  }
-
-  override fun reset() {
-    lazyHolder = createLazy()
   }
 }
