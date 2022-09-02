@@ -15,8 +15,6 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.parsing.gradle.model.ProjectPath
-
 data class DownstreamDependency(
   val dependentProjectPath: ProjectPath.StringProjectPath,
   val projectDependency: ProjectDependency

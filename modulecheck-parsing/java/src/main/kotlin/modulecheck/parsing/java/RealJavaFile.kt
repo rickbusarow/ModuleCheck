@@ -243,7 +243,6 @@ class RealJavaFile(
  * itself.
  *
  * For instance, given the function:
- *
  * ```
  * public javax.inject.Provider<List<String>> getStringListProvider() { /* ... */ }
  * ```
@@ -251,6 +250,7 @@ class RealJavaFile(
  * This function with will return a sequence of ['javax.inject.Provider', 'List', 'String'].
  *
  * @return A Sequence of all [Type]s referenced by the receiver class type.
+ * @since 0.12.0
  */
 fun ClassOrInterfaceType.typeReferencesRecursive(): Sequence<ClassOrInterfaceType> {
   return generateSequence(sequenceOf(this)) { types ->

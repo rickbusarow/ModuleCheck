@@ -16,11 +16,11 @@
 package modulecheck.core
 
 import modulecheck.config.fake.TestSettings
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.project.test.maybeAddSourceSet
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.project.generation.maybeAddSourceSet
 import modulecheck.rule.impl.DepthRule
-import modulecheck.rule.impl.MultiRuleFindingFactory
+import modulecheck.rule.impl.FindingFactoryImpl
 import modulecheck.rule.impl.UnusedDependencyRule
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.remove
@@ -263,8 +263,7 @@ internal class DepthReportTest : RunnerTest() {
     }
 
     run(
-      findingFactory = MultiRuleFindingFactory(
-        settings,
+      findingFactory = FindingFactoryImpl(
         listOf(DepthRule(), UnusedDependencyRule(settings))
       ),
       rules = listOf(DepthRule(), UnusedDependencyRule(settings))

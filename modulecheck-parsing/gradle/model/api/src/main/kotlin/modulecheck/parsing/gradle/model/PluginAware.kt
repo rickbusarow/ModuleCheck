@@ -15,13 +15,16 @@
 
 package modulecheck.parsing.gradle.model
 
+import modulecheck.model.dependency.PlatformPlugin
+
+interface HasPlatformPlugin : PluginAware {
+  val platformPlugin: PlatformPlugin
+}
+
 interface PluginAware {
 
   val hasKapt: Boolean
   val hasTestFixturesPlugin: Boolean
   val hasAnvil: Boolean
   val hasAGP: Boolean
-    get() = platformPlugin.isAndroid()
-
-  val platformPlugin: PlatformPlugin
 }

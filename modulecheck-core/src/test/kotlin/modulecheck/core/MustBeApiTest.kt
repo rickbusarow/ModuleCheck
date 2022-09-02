@@ -15,8 +15,8 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.mustBeApi
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.child
@@ -911,8 +911,8 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.api, lib2)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
+      addDependency(ConfigurationName.api, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1000,8 +1000,8 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
-      addDependency(ConfigurationName.implementation, lib2)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
+      addDependency(ConfigurationName.implementation, lib2, addToBuildFile = false)
 
       buildFile {
         """
@@ -1070,7 +1070,7 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1140,7 +1140,7 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1210,7 +1210,7 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1277,7 +1277,7 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1343,7 +1343,7 @@ class MustBeApiTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.implementation, lib1)
+      addDependency(ConfigurationName.implementation, lib1, addToBuildFile = false)
 
       buildFile {
         """

@@ -16,9 +16,6 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
-import modulecheck.builds.libsCatalog
-import modulecheck.builds.version
-import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -35,6 +32,7 @@ val detektExcludes = listOf(
 
 tasks.withType<Detekt> {
 
+  autoCorrect = true
   parallel = true
   baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
   config.from(files("$rootDir/detekt/detekt-config.yml"))
@@ -62,12 +60,6 @@ tasks.withType<Detekt> {
   exclude(detektExcludes)
   subprojects.forEach { sub ->
     exclude("**/${sub.projectDir.relativeTo(rootDir)}/**")
-  }
-
-  doFirst {
-    require(libsCatalog.version("kotlin").requiredVersion < "1.6.20") {
-      "Update Detekt to `1.20.0` (or later) when Kotlin is updated to `1.6.21` or later."
-    }
   }
 }
 

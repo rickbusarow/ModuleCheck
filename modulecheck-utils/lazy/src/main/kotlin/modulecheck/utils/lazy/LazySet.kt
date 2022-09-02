@@ -17,7 +17,6 @@ package modulecheck.utils.lazy
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.toSet
-import modulecheck.utils.coroutines.any
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.LazySet.DataSource
 import modulecheck.utils.lazy.LazySet.DataSource.Priority
@@ -31,6 +30,12 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   suspend fun contains(element: Any?): Boolean
 
+  /**
+   * @return true if the two LazySets have any element in common, otherwise false
+   * @since 0.13.0
+   */
+  suspend fun containsAny(other: LazySet<Any?>): Boolean
+
   suspend fun isEmpty(): Boolean
   suspend fun isNotEmpty(): Boolean
 
@@ -39,6 +44,8 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
   /**
    * A **Lazy** data source for a [LazySet], which performs some suspending operation [get] in order
    * to incrementally add data to the `LazySet`.
+   *
+   * @since 0.12.0
    */
   interface DataSource<out E> :
     Comparable<DataSource<*>>,
@@ -48,10 +55,16 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
     /**
      * The priority which should be applied to this source while in a LazySet. Higher priority
      * sources are invoked first.
+     *
+     * @since 0.12.0
      */
     val priority: Priority
 
-    /** Called to retrieve this source's data. Implementations are thread-safe and lazy. */
+    /**
+     * Called to retrieve this source's data. Implementations are thread-safe and lazy.
+     *
+     * @since 0.12.0
+     */
     suspend fun get(): Set<E>
 
     enum class Priority : Comparable<Priority> {
@@ -95,10 +108,6 @@ suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: Collection<E>): B
   return elements.any { contains(it) }
 }
 
-suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: LazySet<E>): Boolean {
-  return elements.any { contains(it) }
-}
-
 fun <E> Flow<E>.asDataSource(
   priority: Priority = MEDIUM
 ): DataSource<E> = dataSource(priority) { toSet() }
@@ -116,13 +125,19 @@ fun <E> dataSourceOf(
   priority: Priority = MEDIUM
 ): DataSource<E> = DataSourceImpl(priority, lazyDeferred { elements.toSet() })
 
-/** @return A DataSource<E> from this [priority] and [factory] */
+/**
+ * @return A DataSource<E> from this [priority] and [factory]
+ * @since 0.12.0
+ */
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: LazyDeferred<Set<E>>
 ): DataSource<E> = DataSourceImpl(priority, factory)
 
-/** @return A DataSource<E> from this [priority] and [factory] */
+/**
+ * @return A DataSource<E> from this [priority] and [factory]
+ * @since 0.12.0
+ */
 fun <E> dataSource(
   priority: Priority = MEDIUM,
   factory: suspend () -> Set<E>

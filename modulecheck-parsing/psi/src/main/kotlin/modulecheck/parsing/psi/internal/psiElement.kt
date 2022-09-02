@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
@@ -281,14 +281,20 @@ suspend fun PsiElement.declaredNameOrNull(
 
 fun KtDeclaration.isInObject() = containingClassOrObject?.isObjectLiteral() ?: false
 
-/** @return true if the receiver declaration is inside a companion object */
+/**
+ * @return true if the receiver declaration is inside a companion object
+ * @since 0.12.0
+ */
 fun KtDeclaration.isInCompanionObject(): Boolean {
   return containingClassOrObject?.isCompanionObject() ?: false
 }
 
 fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
 
-/** @return true if the receiver declaration is a companion object */
+/**
+ * @return true if the receiver declaration is a companion object
+ * @since 0.12.0
+ */
 fun KtDeclaration.isCompanionObject(): Boolean {
   contract {
     returns(true) implies (this@isCompanionObject is KtObjectDeclaration)
@@ -313,6 +319,8 @@ fun KtCallExpression.nameSafe(): String? {
 /**
  * This poorly-named function will return the most-qualified name available for a given [PsiElement]
  * from the snippet of code where it's being called, without looking at imports.
+ *
+ * @since 0.12.0
  */
 fun PsiElement.callSiteName(): String {
   // If a qualified expression is a function call, then the selector expression is the full
@@ -365,12 +373,18 @@ fun KtBlockExpression.nameSafe(): String? {
 
 internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() ?: false
 
-/** Basically the same as `name`, but if the name has backticks, this will include it. */
+/**
+ * Basically the same as `name`, but if the name has backticks, this will include it.
+ *
+ * @since 0.12.0
+ */
 fun KtNamedDeclaration.identifierName() = nameIdentifier?.text
 
 /**
  * For a declaration with a name wrapped in backticks, this returns a name with those backticks. The
  * regular `fqName` property does not.
+ *
+ * @since 0.12.0
  */
 fun KtNamedDeclaration.fqNameSafe(): FqName? {
   val base = fqName ?: return null

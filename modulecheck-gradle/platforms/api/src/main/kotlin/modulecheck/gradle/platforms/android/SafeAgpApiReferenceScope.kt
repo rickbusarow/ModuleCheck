@@ -16,8 +16,8 @@
 package modulecheck.gradle.platforms.android
 
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.Configurations
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.Configurations
 import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
 
@@ -27,6 +27,7 @@ import net.swiftzer.semver.SemVer
  *
  * @see AgpApiAccess
  * @see UnsafeDirectAgpApiReference
+ * @since 0.12.0
  */
 @OptIn(UnsafeDirectAgpApiReference::class)
 class SafeAgpApiReferenceScope @PublishedApi internal constructor(
@@ -34,30 +35,46 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   private val gradleProject: GradleProject
 ) {
 
-  /** Helper function for `this is AndroidAppExtension` which bypasses the opt-in requirement. */
+  /**
+   * Helper function for `this is AndroidAppExtension` which bypasses the opt-in requirement.
+   *
+   * @since 0.12.0
+   */
   fun Any?.isAndroidAppExtension() = this is AndroidAppExtension
 
-  /** Helper function for `this is AndroidBaseExtension` which bypasses the opt-in requirement. */
+  /**
+   * Helper function for `this is AndroidBaseExtension` which bypasses the opt-in requirement.
+   *
+   * @since 0.12.0
+   */
   fun Any?.isAndroidBaseExtension() = this is AndroidBaseExtension
 
   /**
    * Helper function for `this is AndroidCommonExtension` which bypasses the opt-in requirement.
+   *
+   * @since 0.12.0
    */
   fun Any?.isAndroidCommonExtension() = this is AndroidCommonExtension
 
   /**
    * Helper function for `this is AndroidLibraryExtension` which bypasses the opt-in requirement.
+   *
+   * @since 0.12.0
    */
   fun Any?.isAndroidLibraryExtension() = this is AndroidLibraryExtension
 
   /**
    * Helper function for `this is AndroidTestedExtension` which bypasses the opt-in requirement.
+   *
+   * @since 0.12.0
    */
   fun Any?.isAndroidTestedExtension() = this is AndroidTestedExtension
 
   /**
    * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type, only accessible
    * after it's been established that the type is in the classpath.
+   *
+   * @since 0.12.0
    */
   fun requireCommonExtension(): AndroidCommonExtension =
     gradleProject.extensions
@@ -66,6 +83,8 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   /**
    * Direct access to the AGP [AndroidBaseExtension] type, only accessible after it's been
    * established that the type is in the classpath.
+   *
+   * @since 0.12.0
    */
   fun requireBaseExtension(): AndroidBaseExtension =
     gradleProject.extensions
@@ -83,7 +102,10 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       extension.testFixtures.enable
     } ?: false
 
-  /** @return A new [AndroidPlatformPlugin] using this scope's [gradleProject] */
+  /**
+   * @return A new [AndroidPlatformPlugin] using this scope's [gradleProject]
+   * @since 0.12.0
+   */
   fun AndroidPlatformPluginFactory.create(
     hasTestFixturesPlugin: Boolean
   ): AndroidPlatformPlugin {
@@ -94,7 +116,10 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     )
   }
 
-  /** @return A new [AndroidSourceSetsParser] using this scope's [gradleProject] */
+  /**
+   * @return A new [AndroidSourceSetsParser] using this scope's [gradleProject]
+   * @since 0.12.0
+   */
   fun AndroidSourceSetsParser.Factory.create(
     mcConfigurations: Configurations,
     hasTestFixturesPlugin: Boolean

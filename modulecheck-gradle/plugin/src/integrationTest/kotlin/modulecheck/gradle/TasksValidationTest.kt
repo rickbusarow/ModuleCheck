@@ -15,6 +15,7 @@
 
 package modulecheck.gradle
 
+import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContain
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
@@ -55,53 +56,42 @@ class TasksValidationTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `all tasks should ignore configuration caching`() = gradleVersions.flatMap { gradleVersion ->
-    listOf(
-      "moduleCheck",
-      "moduleCheckAuto",
-      "moduleCheckDepths",
-      "moduleCheckGraphs",
-      "moduleCheckSortDependencies",
-      "moduleCheckSortDependenciesAuto",
-      "moduleCheckSortPlugins",
-      "moduleCheckSortPluginsAuto"
-    ).map { taskName ->
-      gradleVersion to taskName
-    }
-  }.dynamic(
-    filter = {
+  fun `all tasks should ignore configuration caching`() =
+    factory(
       // ignore this test for Gradle versions less than 7.4, since they can't disable caching
       // programmatically
-      first >= "7.4"
-    },
-    testName = { (gradleVersion, taskName) -> "gradle $gradleVersion $taskName" },
-    setup = { (gradleVersion, _) -> this.gradleVersion = gradleVersion }
-  ) { (_, taskName) ->
-    rootBuild.writeText(
-      """
-      plugins {
-        id("com.rickbusarow.module-check")
+      filter = { it.gradle >= "7.4" }
+    ) {
+
+      listOf(
+        "moduleCheck",
+        "moduleCheckAuto",
+        "moduleCheckDepths",
+        "moduleCheckGraphs",
+        "moduleCheckSortDependencies",
+        "moduleCheckSortDependenciesAuto",
+        "moduleCheckSortPlugins",
+        "moduleCheckSortPluginsAuto"
+      ).forAll { taskName ->
+
+        val expected1 = "Configuration cache is an incubating feature."
+        val expected2 =
+          "Calculating task graph as no configuration cache is available for tasks: $taskName"
+
+        // The first invocation would always succeed, but will generate a cache if caching isn't ignored
+        shouldSucceed(
+          taskName, "--configuration-cache",
+          withPluginClasspath = true
+        ).output.clean().let { output ->
+          output shouldContain expected1
+          output shouldContain expected2
+        }
+
+        // The second invocation will fail if a cache exists and caching isn't ignored.
+        shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
+          output shouldContain expected1
+          output shouldContain expected2
+        }
       }
-      """
-    )
-
-    val expected1 = "Configuration cache is an incubating feature."
-    val expected2 =
-      "Calculating task graph as no configuration cache is available for tasks: $taskName"
-
-    // The first invocation would always succeed, but will generate a cache if caching isn't ignored
-    shouldSucceed(
-      taskName, "--configuration-cache",
-      withPluginClasspath = true
-    ).output.clean().let { output ->
-      output shouldContain expected1
-      output shouldContain expected2
     }
-
-    // The second invocation will fail if a cache exists and caching isn't ignored.
-    shouldSucceed(taskName, "--configuration-cache").output.clean().let { output ->
-      output shouldContain expected1
-      output shouldContain expected2
-    }
-  }
 }

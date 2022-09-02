@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.android.AndroidResourceParser
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -29,7 +30,11 @@ import modulecheck.utils.lazy.emptyLazySet
 import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.toLazySet
 
-/** the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext] */
+/**
+ * the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext]
+ *
+ * @since 0.12.0
+ */
 data class AndroidUnqualifiedResources(
   private val delegate: SafeCache<SourceSetName, LazySet<UnqualifiedAndroidResource>>,
   private val project: McProject
@@ -41,6 +46,7 @@ data class AndroidUnqualifiedResources(
   /**
    * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
    *   `R.string.app_name`
+   * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): LazySet<UnqualifiedAndroidResource> {
     val platformPlugin = project.platformPlugin as? AndroidPlatformPlugin
@@ -98,13 +104,17 @@ data class AndroidUnqualifiedResources(
   }
 }
 
-/** @return the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext] */
+/**
+ * @return the cache of [UnqualifiedAndroidResource] for this [project][ProjectContext]
+ * @since 0.12.0
+ */
 suspend fun ProjectContext.androidUnqualifiedResources(): AndroidUnqualifiedResources =
   get(AndroidUnqualifiedResources)
 
 /**
  * @return every [UnqualifiedAndroidResource] declared within this [sourceSetName], like
  *   `R.string.app_name`
+ * @since 0.12.0
  */
 suspend fun ProjectContext.androidUnqualifiedResourcesForSourceSetName(
   sourceSetName: SourceSetName

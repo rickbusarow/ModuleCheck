@@ -21,12 +21,14 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ConfiguredDependency.Companion.copy
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.apiConfig
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.ReferenceName
@@ -230,6 +232,7 @@ private suspend fun McProject.mustBeApiIn(
 /**
  * @return Returns a [ConfiguredDependency] with an `-api` variant configuration if the dependency
  *   should be `api`, or `-implementation` otherwise.
+ * @since 0.12.0
  */
 suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
   dependentProject: McProject

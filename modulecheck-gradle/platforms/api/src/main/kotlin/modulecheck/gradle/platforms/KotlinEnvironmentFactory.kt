@@ -15,16 +15,23 @@
 
 package modulecheck.gradle.platforms
 
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import java.io.File
 
-/** Kotlin environment factory */
+/**
+ * Kotlin environment factory
+ *
+ * @since 0.12.0
+ */
 fun interface KotlinEnvironmentFactory {
-  /** @return a kotlin environment for these many arguments */
+  /**
+   * @return a kotlin environment for these many arguments
+   * @since 0.12.0
+   */
   @Suppress("LongParameterList")
   fun create(
     projectPath: StringProjectPath,

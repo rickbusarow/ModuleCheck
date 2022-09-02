@@ -19,23 +19,21 @@ import com.squareup.anvil.annotations.MergeComponent
 import dagger.BindsInstance
 import dagger.Component
 import modulecheck.config.ModuleCheckSettings
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.SingleIn
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.internal.GradleProjectProvider
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
-import modulecheck.rule.impl.MultiRuleFindingFactory
 import modulecheck.runtime.RunnerComponent
 import org.gradle.workers.WorkerExecutor
 
-@SingleIn(AppScope::class)
-@MergeComponent(AppScope::class)
+@SingleIn(TaskScope::class)
+@MergeComponent(TaskScope::class)
 interface TaskComponent : RunnerComponent, RulesComponent {
 
-  val multiRuleFindingFactory: MultiRuleFindingFactory
   val projectProvider: GradleProjectProvider
 
   @Component.Factory
@@ -46,6 +44,7 @@ interface TaskComponent : RunnerComponent, RulesComponent {
      * @param ruleFilter this lets the tasks define which rule(s) they're going to apply
      * @param projectRoot the root directory for the rootProject. This is the same as calling
      *   `rootProject.rootDir`.
+     * @since 0.12.0
      */
     fun create(
       @RootGradleProject

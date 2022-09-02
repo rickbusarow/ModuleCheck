@@ -16,13 +16,13 @@
 package modulecheck.parsing.psi
 
 import kotlinx.coroutines.runBlocking
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.gradle.dsl.ExternalDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.ModuleDependencyDeclaration
 import modulecheck.parsing.gradle.dsl.UnknownDependencyDeclaration
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.project.McProject
 import modulecheck.project.test.ProjectTest
@@ -113,6 +113,24 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
         statementWithSurroundingText = """   api(project(":core:jvm"))"""
       )
     )
+  }
+
+  @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() {
+    val block = parser
+      .parse(
+        """
+       @Suppress("DSL_SCOPE_VIOLATION")
+       dependencies {
+          api(project(":core:android"))
+          api(project(":core:jvm"))
+          @Suppress("DSL_SCOPE_VIOLATION")
+          testImplementation(project(":core:test"))
+       }
+        """
+      ).single()
+
+    block.allSuppressions.values.flatten() shouldBe emptyList()
   }
 
   @Test

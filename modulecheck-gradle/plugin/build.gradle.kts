@@ -22,7 +22,20 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-plugin"
-  dagger = true
+  dagger()
+
+  buildProperties(
+    "main",
+    """
+    package modulecheck.gradle.internal
+
+    internal class BuildProperties {
+      val version = "${modulecheck.builds.VERSION_NAME}"
+      val sourceWebsite = "${modulecheck.builds.SOURCE_WEBSITE}"
+      val docsWebsite = "${modulecheck.builds.DOCS_WEBSITE}"
+    }
+    """
+  )
 }
 
 val main by sourceSets.getting
@@ -87,6 +100,7 @@ dependencies {
   implementation(libs.google.dagger.api)
   implementation(libs.semVer)
 
+  implementation(project(path = ":modulecheck-config:impl"))
   implementation(project(path = ":modulecheck-gradle:platforms:impl"))
   implementation(project(path = ":modulecheck-gradle:platforms:internal-android"))
   implementation(project(path = ":modulecheck-model:dependency:impl"))
@@ -99,14 +113,14 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:coroutines:impl"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
-  "integrationTestImplementation"(project(path = ":modulecheck-config:api"))
+  "integrationTestImplementation"(project(path = ":modulecheck-config:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-android"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
   "integrationTestImplementation"(project(path = ":modulecheck-internal-testing"))
   "integrationTestImplementation"(project(path = ":modulecheck-model:dependency:impl"))
+  "integrationTestImplementation"(project(path = ":modulecheck-model:sourceset:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
@@ -121,7 +135,8 @@ dependencies {
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-project:testing"))
+  testImplementation(project(path = ":modulecheck-project-generation:api"))
+  testImplementation(project(path = ":modulecheck-utils:lazy"))
   testImplementation(project(path = ":modulecheck-utils:stdlib"))
 }
 
@@ -149,77 +164,6 @@ pluginBundle {
       tags = listOf("kotlin", "dependencies", "android", "gradle-plugin", "kotlin-compiler-plugin")
     }
   }
-}
-
-val generatedDirPath = "$buildDir/generated/sources/buildProperties/kotlin/main"
-sourceSets {
-  main.configure {
-    java.srcDir(project.file(generatedDirPath))
-  }
-}
-
-val generateBuildProperties by tasks.registering {
-
-  val version = modulecheck.builds.VERSION_NAME
-  val sourceWebsite = modulecheck.builds.SOURCE_WEBSITE
-  val docsWebsite = modulecheck.builds.DOCS_WEBSITE
-
-  val buildPropertiesDir = File(generatedDirPath)
-  val buildPropertiesFile = File(
-    buildPropertiesDir, "modulecheck/gradle/internal/BuildProperties.kt"
-  )
-
-  inputs.file(rootProject.file("build-logic/mcbuild/src/main/kotlin/modulecheck/builds/publishing.kt"))
-  outputs.file(buildPropertiesFile)
-
-  doLast {
-
-    buildPropertiesDir.deleteRecursively()
-    buildPropertiesFile.parentFile.mkdirs()
-
-    buildPropertiesFile.writeText(
-      """
-      |/*
-      | * Copyright (C) 2021-2022 Rick Busarow
-      | * Licensed under the Apache License, Version 2.0 (the "License");
-      | * you may not use this file except in compliance with the License.
-      | * You may obtain a copy of the License at
-      | *
-      | *      http://www.apache.org/licenses/LICENSE-2.0
-      | *
-      | * Unless required by applicable law or agreed to in writing, software
-      | * distributed under the License is distributed on an "AS IS" BASIS,
-      | * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-      | * See the License for the specific language governing permissions and
-      | * limitations under the License.
-      | */
-      |
-      |package modulecheck.gradle.internal
-      |
-      |internal class BuildProperties {
-      |  val version = "$version"
-      |  val sourceWebsite = "$sourceWebsite"
-      |  val docsWebsite = "$docsWebsite"
-      |}
-      |
-      """.trimMargin()
-    )
-  }
-}
-
-tasks.matching {
-  it.name in setOf(
-    "javaSourcesJar",
-    "runKtlintCheckOverMainSourceSet",
-    "runKtlintFormatOverMainSourceSet"
-  )
-}
-  .configureEach {
-    dependsOn(generateBuildProperties)
-  }
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-  dependsOn(generateBuildProperties)
 }
 
 val integrationTestTask = tasks.register("integrationTest", Test::class) {

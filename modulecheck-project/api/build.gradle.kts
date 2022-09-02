@@ -19,12 +19,13 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-project-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {
 
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:source:api"))

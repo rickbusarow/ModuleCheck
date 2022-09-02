@@ -16,10 +16,10 @@
 package modulecheck.parsing.gradle.dsl
 
 import modulecheck.finding.FindingName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.dependency.ProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
+import modulecheck.model.dependency.ProjectPath
 
 interface DependenciesBlock :
   Block<DependencyDeclaration>,

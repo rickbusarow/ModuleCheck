@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-runtime-api"
-  anvil = true
+  anvil()
 }
 
 dependencies {

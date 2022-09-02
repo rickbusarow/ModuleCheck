@@ -15,10 +15,10 @@
 
 package modulecheck.gradle.platforms
 
+import modulecheck.model.dependency.JvmPlatformPlugin
+import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
+import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.JavaLibraryPlugin
-import modulecheck.parsing.gradle.model.JvmPlatformPlugin.KotlinJvmPlugin
 import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import javax.inject.Inject
 

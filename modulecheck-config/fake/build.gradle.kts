@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-config-fake"
-  anvil = true
+  anvil()
 }
 
 dependencies {

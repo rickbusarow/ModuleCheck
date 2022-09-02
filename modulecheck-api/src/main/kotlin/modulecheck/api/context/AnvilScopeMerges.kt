@@ -15,7 +15,7 @@
 
 package modulecheck.api.context
 
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.AnvilScopeName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.project.McProject
@@ -30,7 +30,10 @@ data class AnvilScopeMerges(
   override val key: ProjectContext.Key<AnvilScopeMerges>
     get() = Key
 
-  /** @return all scope merges from any source set */
+  /**
+   * @return all scope merges from any source set
+   * @since 0.12.0
+   */
   suspend fun all(): List<Map<AnvilScopeName, Set<QualifiedDeclaredName>>> {
     return project.sourceSets.keys.map { get(it) }
   }
@@ -38,6 +41,7 @@ data class AnvilScopeMerges(
   /**
    * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for
    *   which they're merged
+   * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): Map<AnvilScopeName, Set<QualifiedDeclaredName>> {
     return delegate.getOrPut(sourceSetName) {
@@ -62,6 +66,7 @@ suspend fun ProjectContext.anvilScopeMerges(): AnvilScopeMerges = get(AnvilScope
 /**
  * @return all merged interfaces for this [sourceSetName], grouped by the [AnvilScopeName] for which
  *   they're merged
+ * @since 0.12.0
  */
 suspend fun ProjectContext.anvilScopeMergesForSourceSetName(
   sourceSetName: SourceSetName

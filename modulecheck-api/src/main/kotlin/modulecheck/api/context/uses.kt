@@ -15,26 +15,20 @@
 
 package modulecheck.api.context
 
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.toSet
-import modulecheck.config.MightHaveCodeGeneratorBinding
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency.ExternalCodeGeneratorDependency
 import modulecheck.model.dependency.ExternalDependency.ExternalRuntimeDependency
+import modulecheck.model.dependency.MightHaveCodeGeneratorBinding
 import modulecheck.model.dependency.ProjectDependency.CodeGeneratorProjectDependency
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.Generated
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.project.McProject
 import modulecheck.project.isAndroid
-import modulecheck.utils.coroutines.any
-import modulecheck.utils.lazy.containsAny
-import modulecheck.utils.lazy.dataSource
-import modulecheck.utils.lazy.lazySet
+import modulecheck.utils.lazy.LazySet
 
 suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean {
 
@@ -85,43 +79,27 @@ private suspend fun McProject.usesRuntimeDependency(dependency: RuntimeProjectDe
   val refs = referencesForSourceSetName(referencesSourceSetName)
 
   // Check whether human-written code references the dependency first.
-  val usedInStaticSource = refs
-    .any { reference -> dependencyDeclarations.contains(reference) }
+  val usedInStaticSource = refs.containsAny(dependencyDeclarations)
 
   if (usedInStaticSource) return true
 
-  // Any generated code from the receiver project which requires a declaration from the dependency
-  val generatedFromThisDependency = lazySet(
-    dataSource {
-
-      // TODO - probably make "all generated declarations" its own ProjectContext.Element,
-      //  specifically targeting generated declarations.  It shouldn't be needed in this specific
-      //  case, since `dependencyDeclarations` should already be fully cached by the time we get
-      //  here, and we have to iterate over the flow anyway in order to filter again.
-      declarations().get(
-        dependency.declaringSourceSetName(dependency.project().isAndroid()),
-        includeUpstream = true
-      )
-        .filterIsInstance<Generated>()
-        .filter { dependencyDeclarations.containsAny(it.sources) }
-        .toSet()
-    }
+  // Any references in the receiver project's generated code
+  // which reference a declaration from this dependency
+  val generatedRefs = generatedDeclarations(
+    sourceSetName = referencesSourceSetName,
+    sourceDeclarations = dependencyDeclarations
   )
 
-  val usedUpstream = generatedFromThisDependency.isNotEmpty() && dependents()
-    .any { downstreamDependency ->
+  val usedForGeneration = when {
+    generatedRefs.isEmpty() -> false
+    refs.containsAny(generatedRefs) -> true
+    else -> generationIsUsedDownstream(
+      generatedRefs = generatedRefs,
+      referencesSourceSetName = referencesSourceSetName
+    )
+  }
 
-      val downstreamProject = downstreamDependency.projectDependency.project()
-
-      val downstreamSourceSet = downstreamDependency.projectDependency
-        .declaringSourceSetName(downstreamProject.isAndroid())
-
-      projectCache.getValue(downstreamDependency.dependentProjectPath)
-        .referencesForSourceSetName(downstreamSourceSet)
-        .containsAny(generatedFromThisDependency)
-    }
-
-  if (usedUpstream) return true
+  if (usedForGeneration) return true
 
   // If there are no references is manually/human written static code, then parse the Anvil graph.
   val anvilContributions = dependency.project()
@@ -130,4 +108,31 @@ private suspend fun McProject.usesRuntimeDependency(dependency: RuntimeProjectDe
   return anvilGraph()
     .mergedScopeNames()
     .any { anvilContributions.containsKey(it) }
+}
+
+private suspend fun McProject.generationIsUsedDownstream(
+  generatedRefs: LazySet<Generated>,
+  referencesSourceSetName: SourceSetName
+): Boolean {
+
+  return dependents()
+    .asSequence()
+    .map { downstreamDependency ->
+
+      val downstreamProject = projectCache.getValue(downstreamDependency.dependentProjectPath)
+      val downstreamSourceSet = downstreamDependency.projectDependency
+        .declaringSourceSetName(downstreamProject.isAndroid())
+
+      downstreamProject to downstreamSourceSet
+    }
+    .filter { (_, downstreamSourceSet: SourceSetName) ->
+      downstreamSourceSet == referencesSourceSetName
+    }
+    .distinct()
+    .any { (downstreamProject, downstreamSourceSet) ->
+
+      downstreamProject
+        .referencesForSourceSetName(downstreamSourceSet)
+        .containsAny(generatedRefs)
+    }
 }

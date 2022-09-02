@@ -15,7 +15,7 @@
 
 package modulecheck.finding
 
-import modulecheck.finding.internal.removeDependencyWithDelete
+import modulecheck.parsing.gradle.dsl.removeDependencyWithDelete
 
 interface Deletable :
   Finding,

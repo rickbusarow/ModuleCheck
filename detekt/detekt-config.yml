@@ -49,6 +49,7 @@ output-reports:
 
 comments:
   active: true
+  excludes: [ '**/build-logic/**' ]
   AbsentOrWrongFileLicense:
     active: true
     licenseTemplateFile: 'license.template'
@@ -64,7 +65,7 @@ comments:
     endOfSentenceFormat: '([.?!][ \t\n\r\f<])|([.?!:]$)'
   OutdatedDocumentation:
     active: true
-    matchTypeParameters: true
+    matchTypeParameters: false
     matchDeclarationsOrder: true
     allowParamOnConstructorProperties: false
   UndocumentedPublicClass:
@@ -74,12 +75,21 @@ comments:
     searchInInnerClass: true
     searchInInnerObject: true
     searchInInnerInterface: true
+    ignoreAnnotated:
+      - 'dagger.Binds'
+      - 'dagger.Module'
   UndocumentedPublicFunction:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
+    ignoreAnnotated:
+      - 'dagger.Binds'
+      - 'dagger.Module'
   UndocumentedPublicProperty:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
+    ignoreAnnotated:
+      - 'dagger.Binds'
+      - 'dagger.Module'
 
 complexity:
   active: true

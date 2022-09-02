@@ -15,9 +15,10 @@
 
 package modulecheck.core
 
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.runtime.test.ProjectFindingReport.overshot
+import modulecheck.runtime.test.ProjectFindingReport.unsortedDependencies
 import modulecheck.runtime.test.ProjectFindingReport.unusedDependency
 import modulecheck.runtime.test.RunnerTest
 import org.junit.jupiter.api.Test
@@ -532,6 +533,99 @@ class OverShotDependenciesTest : RunnerTest() {
   }
 
   @Test
+  fun `unused in main but used in both test and androidTest should be added to both`() {
+
+    settings.checks.sortDependencies = true
+
+    val lib1 = kotlinProject(":lib1") {
+      addKotlinSource(
+        """
+        package com.modulecheck.lib1
+
+        interface Lib1Interface
+        """.trimIndent()
+      )
+    }
+
+    val lib2 = androidLibrary(":lib2", "com.modulecheck.lib2") {
+
+      addDependency(ConfigurationName.api, lib1)
+
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        dependencies {
+          api(project(path = ":lib1"))
+        }
+        """
+      }
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2.debug
+
+        import com.modulecheck.lib1.Lib1Interface
+
+        class Lib2ClassAndroidTest : Lib1Interface
+        """.trimIndent(),
+        SourceSetName.ANDROID_TEST
+      )
+      addKotlinSource(
+        """
+        package com.modulecheck.lib2.test
+
+        import com.modulecheck.lib1.Lib1Interface
+
+        class Lib2ClassTest : Lib1Interface
+        """.trimIndent(),
+        SourceSetName.TEST
+      )
+    }
+
+    run().isSuccess shouldBe true
+
+    lib2.buildFile shouldHaveText """
+      plugins {
+        id("com.android.library")
+        kotlin("android")
+      }
+
+      dependencies {
+        androidTestImplementation(project(path = ":lib1"))
+
+        testImplementation(project(path = ":lib1"))
+      }
+      """
+
+    logger.parsedReport() shouldBe listOf(
+      ":lib2" to listOf(
+        overshot(
+          fixed = true,
+          configuration = "androidTestImplementation",
+          dependency = ":lib1",
+          position = "7, 3"
+        ),
+        overshot(
+          fixed = true,
+          configuration = "testImplementation",
+          dependency = ":lib1",
+          position = "7, 3"
+        ),
+        unsortedDependencies(fixed = true),
+        unusedDependency(
+          fixed = true,
+          configuration = "api",
+          dependency = ":lib1",
+          position = "7, 3"
+        )
+      )
+    )
+  }
+
+  @Test
   fun `overshot as api with config block and comment with auto-correct should be fixed`() {
 
     val lib1 = kotlinProject(":lib1") {
@@ -759,7 +853,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -835,7 +929,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -937,7 +1031,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1012,7 +1106,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1083,7 +1177,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1153,7 +1247,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1221,7 +1315,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """
@@ -1295,7 +1389,7 @@ class OverShotDependenciesTest : RunnerTest() {
       // lib1 is added as a dependency, but it's not in the build file.
       // This is intentional, because it mimics the behavior of a convention plugin
       // which adds a dependency without any visible declaration in the build file
-      addDependency(ConfigurationName.api, lib1)
+      addDependency(ConfigurationName.api, lib1, addToBuildFile = false)
 
       buildFile {
         """

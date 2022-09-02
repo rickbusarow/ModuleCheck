@@ -15,17 +15,17 @@
 
 package modulecheck.project
 
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.ProjectPath.TypeSafeProjectPath
+import modulecheck.dagger.TaskScope
+import modulecheck.model.dependency.ProjectPath
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.dependency.ProjectPath.TypeSafeProjectPath
 import modulecheck.utils.requireNotNull
 import modulecheck.utils.trace.HasTraceTags
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 
-@SingleIn(AppScope::class)
+@SingleIn(TaskScope::class)
 class ProjectCache @Inject constructor() : HasTraceTags {
   private val delegate = ConcurrentHashMap<ProjectPath, McProject>()
 
@@ -38,6 +38,8 @@ class ProjectCache @Inject constructor() : HasTraceTags {
    * ([StringProjectPath], [TypeSafeProjectPath]), because all project paths are compared using the
    * derived type-safe variant. So, there are no cache misses when a project is already stored using
    * the String variant, but then we attempt to look it up via the type-safe one.
+   *
+   * @since 0.12.0
    */
   fun getOrPut(path: ProjectPath, defaultValue: () -> McProject): McProject {
     return delegate.getOrPut(path, defaultValue)

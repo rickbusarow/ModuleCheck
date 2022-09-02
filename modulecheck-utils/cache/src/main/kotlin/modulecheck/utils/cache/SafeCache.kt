@@ -32,6 +32,8 @@ import modulecheck.utils.trace.traced
  *
  * When accessing data via [getOrPut], the operation inside the lambda is guaranteed to only execute
  * once for each key -- unless the previous data has been evicted from the cache.
+ *
+ * @since 0.12.0
  */
 interface SafeCache<K : Any, V> : HasTraceTags {
 
@@ -45,11 +47,15 @@ interface SafeCache<K : Any, V> : HasTraceTags {
    * @param loader the action to perform if [key] does not already have a value in the cache. This
    *   action is guaranteed only to be performed once per key.
    * @return the value associated with this [key]
+   * @since 0.12.0
    */
   suspend fun getOrPut(key: K, loader: suspend () -> V): V
 
   companion object {
-    /** @return a [SafeCache] with initial initialValues of [initialValues] */
+    /**
+     * @return a [SafeCache] with initial initialValues of [initialValues]
+     * @since 0.12.0
+     */
     operator fun <K : Any, V> invoke(
       tags: Iterable<Any>,
       initialValues: Map<K, V> = emptyMap()
@@ -63,7 +69,10 @@ interface SafeCache<K : Any, V> : HasTraceTags {
       return RealSafeCache(tagsList, initialValues.toList())
     }
 
-    /** @return a [SafeCache] with initial initialValues of [initialValues] */
+    /**
+     * @return a [SafeCache] with initial initialValues of [initialValues]
+     * @since 0.12.0
+     */
     operator fun <K : Any, V> invoke(
       tags: Iterable<Any>,
       vararg initialValues: Pair<K, V>
@@ -89,6 +98,7 @@ internal class RealSafeCache<K : Any, V>(
    * This allows all "loader" operations to be light-weight and non-recursive.
    *
    * @see getOrPut
+   * @since 0.12.0
    */
   private val delegate: Cache<K, LazyDeferred<V>> = Caffeine.newBuilder()
     .build<K, LazyDeferred<V>>()

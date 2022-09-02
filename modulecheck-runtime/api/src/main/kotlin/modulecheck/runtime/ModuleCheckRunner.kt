@@ -54,6 +54,7 @@ import kotlin.system.measureTimeMillis
  * @param findingResultFactory attempts to apply fixes to the findings and returns a list of
  *   [FindingResult][modulecheck.finding.Finding.FindingResult]
  * @param reportFactory handles console output of the results
+ * @since 0.12.0
  */
 @Suppress("LongParameterList")
 data class ModuleCheckRunner @AssistedInject constructor(
@@ -159,7 +160,11 @@ data class ModuleCheckRunner @AssistedInject constructor(
     }
   }
 
-  /** Tries to fix all findings one project at a time, then reports the results. */
+  /**
+   * Tries to fix all findings one project at a time, then reports the results.
+   *
+   * @since 0.12.0
+   */
   private suspend fun processFindings(findings: List<Finding>): List<FindingResult> {
     return findingResultFactory.create(
       findings = findings,
@@ -168,7 +173,11 @@ data class ModuleCheckRunner @AssistedInject constructor(
     )
   }
 
-  /** Creates any applicable reports. */
+  /**
+   * Creates any applicable reports.
+   *
+   * @since 0.12.0
+   */
   private fun reportResults(results: List<Finding.FindingResult>) {
 
     val textReport = reportFactory.create(results)

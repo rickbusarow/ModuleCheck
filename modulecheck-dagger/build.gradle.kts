@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-dagger"
-  anvil = true
+  anvil()
 }
 
 dependencies {

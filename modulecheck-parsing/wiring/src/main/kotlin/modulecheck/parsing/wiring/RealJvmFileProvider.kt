@@ -16,9 +16,9 @@
 package modulecheck.parsing.wiring
 
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
 import modulecheck.dagger.SingleIn
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.dagger.TaskScope
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.java.RealJavaFile
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
@@ -45,12 +45,17 @@ import javax.inject.Provider
  *
  * The Psi file cache re-uses Psi files because they have internal caching used internally by the
  * compilation object.
+ *
+ * @since 0.12.0
  */
-@SingleIn(AppScope::class)
+@SingleIn(TaskScope::class)
 class JvmFileCache @Inject constructor() {
   private val delegate = SafeCache<File, JvmFile>(listOf(JvmFileCache::class))
 
-  /** @return a cached [JvmFile], or creates and caches a new one using [default] */
+  /**
+   * @return a cached [JvmFile], or creates and caches a new one using [default]
+   * @since 0.12.0
+   */
   suspend fun getOrPut(
     file: File,
     default: suspend () -> JvmFile
@@ -113,7 +118,7 @@ class RealJvmFileProvider(
     }
   }
 
-  @ContributesBinding(AppScope::class)
+  @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
     private val jvmFileCacheProvider: Provider<JvmFileCache>
   ) : JvmFileProvider.Factory {

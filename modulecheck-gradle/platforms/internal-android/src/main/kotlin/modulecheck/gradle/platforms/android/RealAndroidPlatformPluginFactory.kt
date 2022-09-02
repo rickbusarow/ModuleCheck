@@ -26,7 +26,7 @@ import com.android.build.gradle.internal.api.ApplicationVariantImpl
 import com.android.build.gradle.internal.api.LibraryVariantImpl
 import com.android.build.gradle.internal.core.InternalBaseVariant.MergedFlavor
 import com.squareup.anvil.annotations.ContributesBinding
-import modulecheck.dagger.AppScope
+import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.ConfigurationsFactory
 import modulecheck.gradle.platforms.SourceSetsFactory
 import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Application
@@ -35,19 +35,19 @@ import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Typ
 import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Test
 import modulecheck.gradle.platforms.android.internal.androidManifests
 import modulecheck.gradle.platforms.android.internal.orPropertyDefault
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidApplicationPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidDynamicFeaturePlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidTestPlugin
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.asSourceSetName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.utils.cast
 import javax.inject.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(TaskScope::class)
 class RealAndroidPlatformPluginFactory @Inject constructor(
   private val agpApiAccess: AgpApiAccess,
   private val configurationsFactory: ConfigurationsFactory,

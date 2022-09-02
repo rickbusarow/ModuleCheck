@@ -17,12 +17,7 @@ package modulecheck.model.dependency
 
 import modulecheck.model.dependency.SourceSetDependency.SourceSetExternalDependency
 import modulecheck.model.dependency.SourceSetDependency.SourceSetProjectDependency
-import modulecheck.parsing.gradle.model.HasIdentifier
-import modulecheck.parsing.gradle.model.HasMavenCoordinates
-import modulecheck.parsing.gradle.model.HasPath
-import modulecheck.parsing.gradle.model.MavenCoordinates
-import modulecheck.parsing.gradle.model.ProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.lazy.unsafeLazy
 
 sealed interface SourceSetDependency : HasIdentifier {

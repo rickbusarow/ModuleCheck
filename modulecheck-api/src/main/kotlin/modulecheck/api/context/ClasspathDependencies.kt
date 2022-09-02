@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.TransitiveProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.apiConfig
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

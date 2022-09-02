@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-gradle-platform-internal-jvm"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -31,6 +31,7 @@ dependencies {
   api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
@@ -43,6 +44,7 @@ dependencies {
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-model:sourceset:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

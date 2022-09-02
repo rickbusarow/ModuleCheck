@@ -18,7 +18,7 @@ package modulecheck.core.context
 import kotlinx.coroutines.flow.toList
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedKaptProcessorFinding
-import modulecheck.parsing.gradle.model.ConfigurationName
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

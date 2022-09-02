@@ -15,64 +15,35 @@
 
 package modulecheck.builds
 
+import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.plugins.PluginManager
 import javax.inject.Inject
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
 
 @Suppress("MemberVisibilityCanBePrivate", "UnnecessaryAbstractClass")
-abstract class ModuleCheckBuildExtension @Inject constructor(
+abstract class ModuleCheckBuildExtension
+@Inject constructor(
   objects: ObjectFactory,
-  private val artifactIdListener: ArtifactIdListener,
-  private val diListener: DIListener,
-  private val kspListener: KspListener
-) {
+  private val pluginManager: PluginManager,
+  private val project: Project
+) : ArtifactIdExtension,
+  BuildPropertiesExtension,
+  DiExtension,
+  VersionsMatrixExtension {
 
-  var artifactId: String? by objects.nullableProperty<String> {
-    if (it != null) artifactIdListener.onChanged(it)
+  override var artifactId: String? by objects.optionalProperty {
+    project.configurePublishing(it)
   }
-  var anvil: Boolean by objects.property(false) {
-    diListener.onChanged(it, dagger)
+
+  override fun anvil() {
+    project.applyAnvil()
   }
-  var dagger: Boolean by objects.property(false) {
-    diListener.onChanged(anvil, it)
+
+  override fun dagger() {
+    project.applyDagger()
   }
-  var ksp: Boolean by objects.property(false) {
-    kspListener.onChanged(it)
+
+  fun ksp() {
+    pluginManager.apply("com.google.devtools.ksp")
   }
 }
-
-internal inline fun <reified T : Any> ObjectFactory.property(
-  initialValue: T,
-  crossinline onSet: (T) -> Unit
-): ReadWriteProperty<Any, T> =
-  object : ReadWriteProperty<Any, T> {
-
-    val delegate = property(T::class.java).convention(initialValue)
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): T {
-      return delegate.get()
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-      delegate.set(value)
-      onSet(value)
-    }
-  }
-
-internal inline fun <reified T> ObjectFactory.nullableProperty(
-  crossinline onSet: (T?) -> Unit
-): ReadWriteProperty<Any, T?> =
-  object : ReadWriteProperty<Any, T?> {
-
-    val delegate = property(T::class.java)
-
-    override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-      return delegate.orNull
-    }
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-      delegate.set(value)
-      onSet(value)
-    }
-  }

@@ -16,18 +16,18 @@
 package modulecheck.project.impl
 
 import modulecheck.api.context.resolvedDeclaredNames
+import modulecheck.model.dependency.ExternalDependencies
+import modulecheck.model.dependency.PlatformPlugin
+import modulecheck.model.dependency.ProjectDependencies
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.BuildFileParser
-import modulecheck.parsing.gradle.model.PlatformPlugin
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.project.ExternalDependencies
-import modulecheck.project.JvmFileProvider
+import modulecheck.project.JvmFileProvider.Factory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
-import modulecheck.project.ProjectDependencies
 import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
@@ -42,17 +42,18 @@ class RealMcProject(
   override val projectCache: ProjectCache,
   override val anvilGradlePlugin: AnvilGradlePlugin?,
   override val logger: McLogger,
-  override val jvmFileProviderFactory: JvmFileProvider.Factory,
+  override val jvmFileProviderFactory: Factory,
   override val jvmTarget: JvmTarget,
-  projectDependencies: Lazy<ProjectDependencies>,
-  externalDependencies: Lazy<ExternalDependencies>,
   buildFileParserFactory: BuildFileParser.Factory,
   override val platformPlugin: PlatformPlugin
 ) : McProject {
 
-  override val projectDependencies: ProjectDependencies by projectDependencies
-
-  override val externalDependencies: ExternalDependencies by externalDependencies
+  override val projectDependencies: ProjectDependencies by lazy {
+    ProjectDependencies(platformPlugin.configurations.mapValues { it.value.projectDependencies })
+  }
+  override val externalDependencies: ExternalDependencies by lazy {
+    ExternalDependencies(platformPlugin.configurations.mapValues { it.value.externalDependencies })
+  }
 
   override val buildFileParser: BuildFileParser by lazy { buildFileParserFactory.create(this) }
 

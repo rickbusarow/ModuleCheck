@@ -17,8 +17,8 @@ package modulecheck.api.context
 
 import modulecheck.api.DepthFinding
 import modulecheck.finding.FindingName
-import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
-import modulecheck.parsing.gradle.model.SourceSetName
+import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -32,15 +32,10 @@ data class Depths(
   override val key: ProjectContext.Key<Depths>
     get() = Key
 
-  internal suspend fun populateAll() {
-    project.sourceSets
-      .keys
-      .forEach { fetchForSourceSet(it) }
-  }
-
   /**
-   * @return a [ProjectDepth] for each [SourceSet][modulecheck.parsing.gradle.model.SourceSet] in
-   *   this project.
+   * @return a [ProjectDepth] for each [SourceSet][modulecheck.model.dependency.McSourceSet] in this
+   *     project.
+   * @since 0.12.0
    */
   suspend fun all(): List<ProjectDepth> = project.sourceSets.map { get(it.key) }
 
@@ -76,7 +71,7 @@ data class Depths(
   }
 }
 
-suspend fun McProject.depths(): Depths = get(Depths).also { it.populateAll() }
+suspend fun McProject.depths(): Depths = get(Depths)
 
 suspend fun McProject.depthForSourceSetName(sourceSetName: SourceSetName): ProjectDepth {
   return get(Depths).get(sourceSetName)

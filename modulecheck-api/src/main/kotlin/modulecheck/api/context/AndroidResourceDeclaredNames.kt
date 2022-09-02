@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.toSet
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin
-import modulecheck.parsing.gradle.model.AndroidPlatformPlugin.AndroidLibraryPlugin
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.asSourceSetName
+import modulecheck.model.dependency.AndroidPlatformPlugin
+import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.source.AndroidResourceDeclaredName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -46,11 +46,13 @@ data class AndroidResourceDeclaredNames(
     get() = Key
 
   /**
-   * @return every [AndroidResourceDeclaredName] declared within any [SourceSetName]. This includes:
    * - fully qualified generated resources like `com.example.R.string.app_name`
    * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
    * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
    * - R declarations, like `com.example.R`
+   *
+   * @return every [AndroidResourceDeclaredName] declared within any [SourceSetName]. This includes:
+   * @since 0.12.0
    */
   suspend fun all(): LazySet<AndroidResourceDeclaredName> {
     return delegate.getOrPut("all_source_sets".asSourceSetName()) {
@@ -69,6 +71,7 @@ data class AndroidResourceDeclaredNames(
    * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
    * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
    * - R declarations, like `com.example.R`
+   * @since 0.12.0
    */
   suspend fun get(sourceSetName: SourceSetName): LazySet<AndroidResourceDeclaredName> {
     if (!project.isAndroid()) return emptyLazySet()
@@ -148,6 +151,7 @@ suspend fun ProjectContext.androidResourceDeclaredNames(): AndroidResourceDeclar
  * - generated data-/view-binding declarations like `com.example.databinding.FragmentListBinding`
  * - unqualified resources which can be consumed in downstream projects, like `R.string.app_name`
  * - R declarations, like `com.example.R`
+ * @since 0.12.0
  */
 suspend fun ProjectContext.androidResourceDeclaredNamesForSourceSetName(
   sourceSetName: SourceSetName

@@ -19,10 +19,8 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-gradle-dsl-internal"
-  anvil = true
+  anvil()
 }
-
-val isIdeSync = System.getProperty("idea.sync.active", "false").toBoolean()
 
 dependencies {
 
@@ -31,7 +29,6 @@ dependencies {
 
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
 
   implementation(project(path = ":modulecheck-dagger"))

@@ -69,6 +69,8 @@ internal sealed interface GradleSourceSetName : Comparable<GradleSourceSetName> 
    *
    * For instance, a source set of `testDebug` has a test prefix of `test` and a published property
    * of `debug`.
+   *
+   * @since 0.12.0
    */
   data class TestSourceName<T : GradleSourceSetName>(
     val testPrefix: TestType,

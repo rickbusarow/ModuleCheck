@@ -19,12 +19,8 @@ plugins {
 }
 
 dependencyGuard {
-  if (project.rootProject == project) {
-    configuration("classpath")
-  } else {
-    configuration("runtimeClasspath") {
-      modules = false
-    }
+  configuration("runtimeClasspath") {
+    modules = false
   }
 }
 
@@ -32,12 +28,18 @@ dependencyGuard {
 val dependencyGuardDeleteBaselines by tasks.registering(Delete::class) {
   delete("dependencies")
 }
-tasks.matching { it.name == "dependencyGuardBaseline" }
-  .configureEach { dependsOn(dependencyGuardDeleteBaselines) }
 
-// Automatically run `artifactsCheck` when running `check`
-tasks
-  .matching { it.name == LifecycleBasePlugin.CHECK_TASK_NAME }
-  .configureEach {
-    dependsOn("dependencyGuard")
-  }
+tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
+  dependsOn("dependencyGuard")
+}
+
+tasks.named("dependencyGuardBaseline") task@{
+  dependsOn(dependencyGuardDeleteBaselines)
+
+  finalizedBy(rootProject.tasks.named("dependencyGuardAggregate"))
+}
+
+tasks.named("dependencyGuard") {
+  dependsOn(rootProject.tasks.named("dependencyGuardExplode"))
+  finalizedBy(dependencyGuardDeleteBaselines)
+}

@@ -23,8 +23,8 @@ import modulecheck.config.fake.TestChecksSettings
 import modulecheck.config.fake.TestSettings
 import modulecheck.finding.FindingName
 import modulecheck.finding.UnusedDependencyFinding
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency.RuntimeProjectDependency
-import modulecheck.parsing.gradle.model.ConfigurationName
 import modulecheck.runtime.test.RunnerTest
 import modulecheck.utils.suffixIfNot
 import org.junit.jupiter.api.Test

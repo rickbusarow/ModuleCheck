@@ -15,9 +15,10 @@
 
 package modulecheck.api.context
 
+import modulecheck.model.dependency.isAndroid
+import modulecheck.model.dependency.withUpstream
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.android.XmlFile
-import modulecheck.parsing.gradle.model.SourceSetName
-import modulecheck.parsing.gradle.model.isAndroid
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.utils.cache.SafeCache

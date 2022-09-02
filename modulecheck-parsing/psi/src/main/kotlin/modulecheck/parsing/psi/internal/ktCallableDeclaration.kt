@@ -53,6 +53,8 @@ private fun KtAnnotated.annotatedJvmNameOrNull(): String? {
 /**
  * Returns any custom names defined by `@JvmName(...)`, the default setter/getter names if it's a
  * property, or the same names as used by Kotlin for anything else.
+ *
+ * @since 0.12.0
  */
 @Suppress("ComplexMethod")
 internal fun KtNamedDeclaration.jvmSimpleNames(): Set<String> {

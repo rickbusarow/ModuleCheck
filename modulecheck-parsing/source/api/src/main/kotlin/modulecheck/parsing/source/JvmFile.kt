@@ -22,19 +22,39 @@ import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
 sealed interface JvmFile : HasReferences {
-  /** The [java.io.File] version of this file */
+  /**
+   * The [java.io.File] version of this file
+   *
+   * @since 0.12.0
+   */
   val file: File
 
-  /** The simple name of this file, with extension. Like `App.java` or `App.kt`. */
+  /**
+   * The simple name of this file, with extension. Like `App.java` or `App.kt`.
+   *
+   * @since 0.12.0
+   */
   val name: String
 
-  /** the package name of this file, or [PackageName.DEFAULT] if a package is not declared */
+  /**
+   * the package name of this file, or [PackageName.DEFAULT] if a package is not declared
+   *
+   * @since 0.12.0
+   */
   val packageName: PackageName
 
-  /** All declared names within this file */
+  /**
+   * All declared names within this file
+   *
+   * @since 0.12.0
+   */
   val declarations: Set<QualifiedDeclaredName>
 
-  /** The Kotlin compiler version of this file. It will either be a [KtFile] or [PsiJavaFile] */
+  /**
+   * The Kotlin compiler version of this file. It will either be a [KtFile] or [PsiJavaFile]
+   *
+   * @since 0.12.0
+   */
   val psi: PsiFile
 
   val importsLazy: Lazy<Set<ReferenceName>>
@@ -44,7 +64,11 @@ sealed interface JvmFile : HasReferences {
 interface KotlinFile : JvmFile {
   override val psi: KtFile
 
-  /** A weird, dated function for getting Anvil scope arguments */
+  /**
+   * A weird, dated function for getting Anvil scope arguments
+   *
+   * @since 0.12.0
+   */
   suspend fun getAnvilScopeArguments(
     allAnnotations: List<ReferenceName>,
     mergeAnnotations: List<ReferenceName>
@@ -57,6 +81,10 @@ interface KotlinFile : JvmFile {
 }
 
 interface JavaFile : JvmFile {
-  /** The [PsiJavaFile] version of this file */
+  /**
+   * The [PsiJavaFile] version of this file
+   *
+   * @since 0.12.0
+   */
   override val psi: PsiJavaFile
 }

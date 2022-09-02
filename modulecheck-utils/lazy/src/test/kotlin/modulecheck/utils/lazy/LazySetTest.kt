@@ -66,6 +66,21 @@ class LazySetTest {
 
     subject.isEmpty() shouldBe false
     subject.isNotEmpty() shouldBe true
+
+    subject.isFullyCached shouldBe true
+    subject.snapshot().cache shouldBe setOf(1)
+  }
+
+  @Test
+  fun `isEmpty with single dataSource when it's not cached`() = runBlocking {
+
+    val subject = lazySet { setOf(1, 2, 3, 4) }
+
+    subject.isEmpty() shouldBe false
+    subject.isNotEmpty() shouldBe true
+
+    subject.isFullyCached shouldBe true
+    subject.snapshot().cache shouldBe setOf(1, 2, 3, 4)
   }
 
   @Test
@@ -94,5 +109,15 @@ class LazySetTest {
     subject.snapshot().cache shouldBe (0..99).toSet()
 
     subject.toList() shouldBe List(101) { it }
+  }
+
+  @Test
+  fun `should be fully cached if 'contains' returns false`() = runBlocking {
+
+    val subject = lazySet(List(101) { dataSourceOf(it) })
+
+    subject.contains(9000) shouldBe false
+
+    subject.isFullyCached shouldBe true
   }
 }

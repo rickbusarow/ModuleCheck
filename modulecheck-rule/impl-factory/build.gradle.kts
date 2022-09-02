@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-rule-impl-factory"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -27,7 +27,6 @@ dependencies {
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
 
-  api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-project:api"))
@@ -38,9 +37,10 @@ dependencies {
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-finding:impl"))
   implementation(project(path = ":modulecheck-model:dependency:api"))
-  implementation(project(path = ":modulecheck-parsing:gradle:model:api"))
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
+  implementation(project(path = ":modulecheck-utils:trace"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

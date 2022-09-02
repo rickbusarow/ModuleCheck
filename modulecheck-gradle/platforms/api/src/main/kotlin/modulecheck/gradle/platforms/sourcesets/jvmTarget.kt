@@ -26,10 +26,14 @@ import org.jetbrains.kotlin.config.LanguageVersion
 /**
  * @return every file which is an actual file (not directory), and actually exists in this file
  *   system
+ * @since 0.12.0
  */
 fun FileCollection.existingFiles() = filter { it.isFile && it.exists() }
 
-/** @return the Java version used to compile this project */
+/**
+ * @return the Java version used to compile this project
+ * @since 0.12.0
+ */
 fun GradleProject.jvmTarget(): JvmTarget {
   return extensions.findByType(JavaPluginExtension::class.java)
     ?.sourceCompatibility
@@ -37,7 +41,10 @@ fun GradleProject.jvmTarget(): JvmTarget {
     ?: JvmTarget.JVM_1_8
 }
 
-/** @return the Kotlin language version used to compile this project */
+/**
+ * @return the Kotlin language version used to compile this project
+ * @since 0.12.0
+ */
 fun GradleProject.kotlinLanguageVersionOrNull(): LanguageVersion? {
 
   return getKotlinExtensionOrNull()?.let { kotlinExtension ->

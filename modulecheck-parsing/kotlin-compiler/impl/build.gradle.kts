@@ -19,7 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-kotlin-compiler-impl"
-  anvil = true
+  anvil()
 }
 
 dependencies {
@@ -29,7 +29,8 @@ dependencies {
   api(libs.kotlin.reflect)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
-  api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:lazy"))
