@@ -73,13 +73,15 @@ class RealJvmSourceSetsParser @Inject constructor(
               downstreamLazy
             ) = parseHierarchy(sourceSetName, configs)
 
-            val classpath = javaExtension?.sourceSets
-              ?.findByName(sourceSetName.value)
-              ?.classpath()
-              ?.filter { it.exists() }
-              ?.filterNotNull()
-              ?.toSet()
-              .orEmpty()
+            val classpath = lazyDeferred {
+              javaExtension?.sourceSets
+                ?.findByName(sourceSetName.value)
+                ?.classpath()
+                ?.filter { it.exists() }
+                ?.filterNotNull()
+                ?.toList()
+                .orEmpty()
+            }
 
             val kotlinVersion = gradleProject.kotlinLanguageVersionOrNull()
               .requireNotNull {
@@ -92,7 +94,7 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = lazy { classpath },
+                classpathFiles = classpath,
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = kotlinVersion,
                 jvmTarget = jvmTarget
@@ -148,7 +150,7 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = lazy { gradleSourceSet.classpath() },
+                classpathFiles = lazyDeferred { gradleSourceSet.classpath() },
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = null,
                 jvmTarget = jvmTarget
@@ -213,5 +215,5 @@ class RealJvmSourceSetsParser @Inject constructor(
 
   private fun GradleSourceSet.classpath() = compileClasspath.existingFiles()
     .plus(output.classesDirs.existingFiles())
-    .toSet()
+    .toList()
 }

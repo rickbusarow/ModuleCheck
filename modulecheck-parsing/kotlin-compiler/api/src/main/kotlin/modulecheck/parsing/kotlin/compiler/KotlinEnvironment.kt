@@ -33,11 +33,30 @@ import java.io.File
  */
 interface KotlinEnvironment : HasAnalysisResult {
   /**
-   * Used to create Psi files for Kotlin and Java
+   * Used to create Psi files without necessarily performing compiler analysis first. This is only
+   * useful for Kotlin files, as Java Psi files require analysis first.
    *
    * @since 0.13.0
    */
-  val psiFileFactory: McPsiFileFactory
+  val lightPsiFactory: LazyDeferred<McPsiFileFactory>
+
+  /**
+   * Used to create Psi files with a guarantee that compiler analysis is done first. This is
+   * required in order to use [java Psi files][PsiJavaFile],
+   *
+   * @since 0.13.0
+   */
+  val heavyPsiFactory: LazyDeferred<McPsiFileFactory>
+
+  /**
+   * Returns the best [McPsiFileFactory] available without having to run compiler analysis.
+   *
+   * If analysis is completed, this will return [heavyPsiFactory]. Otherwise, it will return
+   * [lightPsiFactory].
+   *
+   * @since 0.13.0
+   */
+  suspend fun bestAvailablePsiFactory(): McPsiFileFactory
 
   /**
    * wrapper around "core" settings like Kotlin version, source files, and classpath files (external
@@ -45,35 +64,36 @@ interface KotlinEnvironment : HasAnalysisResult {
    *
    * @since 0.13.0
    */
-  val coreEnvironment: KotlinCoreEnvironment
+  val coreEnvironment: LazyDeferred<KotlinCoreEnvironment>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
    *
    * @since 0.13.0
    */
-  val compilerConfiguration: CompilerConfiguration
+  val compilerConfiguration: LazyDeferred<CompilerConfiguration>
 
   /**
-   * The cache of Kotlin Psi files created by [psiFileFactory]. Note that these are re-used in
-   * dependency modules, and much of their implementation is Lazy, so re-use is important.
+   * Returns a cached [KtFile] if one has already been created, otherwise creates a new one. Note
+   * that these files are usable before compiler analysis has been executed.
    *
    * @since 0.13.0
    */
-  val ktFiles: Map<File, KtFile>
+  suspend fun ktFile(file: File): KtFile
 
   /**
-   * The cache of Java Psi files created by [psiFileFactory]. Note that these are re-used in
-   * dependency modules, and much of their implementation is Lazy, so re-use is important.
+   * Returns a cached [PsiJavaFile] if one has already been created, otherwise creates a new one.
+   * Note that Java Psi files require compiler analysis to execute first.
    *
    * @since 0.13.0
    */
-  val javaFiles: Map<File, PsiJavaFile>
+  suspend fun javaPsiFile(file: File): PsiJavaFile
 }
 
 /**
- * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a [KotlinEnvironment]. These are
- * retrieved from an [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
+ * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl]
+ * for a [KotlinEnvironment]. These are retrieved from an
+ * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
  *
  * @since 0.13.0
  */
@@ -98,10 +118,10 @@ interface HasAnalysisResult {
   val bindingContextDeferred: LazyDeferred<BindingContext>
 
   /**
-   * The real force behind type resolution. Prefer using [bindingContextDeferred] as the entry point, as it
-   * will give references to Psi elements when they're known. But when we have to resolve things
-   * from dependencies (including other source sets in the same module), this is always done using
-   * the descriptor.
+   * The real force behind type resolution. Prefer using [bindingContextDeferred] as the entry
+   * point, as it will give references to Psi elements when they're known. But when we have to
+   * resolve things from dependencies (including other source sets in the same module), this is
+   * always done using the descriptor.
    *
    * N.B. This is not thread-safe. This holds lazily cached data. That cache is partially filled
    * after the initial analysis, but the cache is still added to when this descriptor is used in the

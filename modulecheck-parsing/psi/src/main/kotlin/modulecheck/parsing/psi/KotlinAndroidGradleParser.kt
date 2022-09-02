@@ -41,7 +41,7 @@ class KotlinAndroidGradleParser @Inject constructor(
   private val psiFileFactory: NoContextPsiFileFactory
 ) : AndroidGradleParser {
 
-  override fun parse(buildFile: File): AndroidGradleSettings {
+  override suspend fun parse(buildFile: File): AndroidGradleSettings {
 
     val file = psiFileFactory.createKotlin(buildFile)
 

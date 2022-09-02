@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler
 
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
+import modulecheck.utils.lazy.lazyDeferred
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
@@ -23,7 +24,6 @@ import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.lang.java.JavaLanguage
-import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.com.intellij.openapi.util.text.StringUtilRt
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
@@ -59,7 +59,7 @@ class NoContextPsiFileFactory @Inject constructor() :
     )
   }
 
-  override val coreEnvironment by lazy {
+  override val coreEnvironment = lazyDeferred {
     KotlinCoreEnvironment.createForProduction(
       parentDisposable = Disposer.newDisposable(),
       configuration = configuration,
@@ -67,26 +67,28 @@ class NoContextPsiFileFactory @Inject constructor() :
     )
   }
 
-  private val psiProject: Project by lazy { coreEnvironment.project }
+  private val psiProject = lazyDeferred { coreEnvironment.await().project }
 
-  private val ktFileFactory: KtPsiFactory by lazy {
-    KtPsiFactory(psiProject, markGenerated = false)
+  private val ktFileFactory = lazyDeferred {
+    KtPsiFactory(psiProject.await(), markGenerated = false)
   }
-  private val javaFileFactory: PsiFileFactory by lazy { PsiFileFactory.getInstance(psiProject) }
+  private val javaFileFactory = lazyDeferred { PsiFileFactory.getInstance(psiProject.await()) }
 
-  override fun create(file: File): PsiFile {
+  override suspend fun create(file: File): PsiFile {
     if (!file.exists()) throw FileNotFoundException("could not find file $file")
 
     return when (file.extension) {
-      "java" -> javaFileFactory.createFileFromText(
+      "java" -> javaFileFactory.await().createFileFromText(
         file.name,
         JavaLanguage.INSTANCE,
         file.readText()
       ) as PsiJavaFile
-      "kt", "kts" -> ktFileFactory.createPhysicalFile(
+
+      "kt", "kts" -> ktFileFactory.await().createPhysicalFile(
         file.name,
         StringUtilRt.convertLineSeparators(file.readText().trimIndent())
       )
+
       else -> throw IllegalArgumentException(
         "file extension must be one of [java, kt, kts], but it was `${file.extension}`."
       )
@@ -99,12 +101,13 @@ class NoContextPsiFileFactory @Inject constructor() :
    * @see createKotlin
    * @since 0.13.0
    */
-  fun createKotlin(
+  suspend fun createKotlin(
     name: String,
     @Language("kotlin")
     content: String
   ): KtFile {
-    return ktFileFactory.createFile(name, content)
+    return ktFileFactory.await()
+      .createFile(name, content)
   }
 
   /**
@@ -113,16 +116,17 @@ class NoContextPsiFileFactory @Inject constructor() :
    * @see createJava
    * @since 0.13.0
    */
-  fun createJava(
+  suspend fun createJava(
     name: String,
     @Language("java")
     content: String
   ): PsiJavaFile {
 
-    return javaFileFactory.createFileFromText(
-      name,
-      JavaLanguage.INSTANCE,
-      content.trimIndent()
-    ) as PsiJavaFile
+    return javaFileFactory.await()
+      .createFileFromText(
+        name,
+        JavaLanguage.INSTANCE,
+        content.trimIndent()
+      ) as PsiJavaFile
   }
 }

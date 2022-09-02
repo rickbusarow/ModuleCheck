@@ -597,7 +597,8 @@
 :modulecheck-project:testing -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-project:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
 :modulecheck-project:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
-:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna-platform:5.9.0
+:modulecheck-project:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.9.0
 :modulecheck-project:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.2.0
 :modulecheck-project:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-project:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -621,6 +622,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4
+:modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.6.4
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.4
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4
@@ -987,7 +989,8 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- javax.inject:javax.inject:1
 :modulecheck-runtime:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy-agent:1.12.6
 :modulecheck-runtime:testing -- runtimeClasspath -- net.bytebuddy:byte-buddy:1.12.6
-:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna-platform:5.9.0
+:modulecheck-runtime:testing -- runtimeClasspath -- net.java.dev.jna:jna:5.9.0
 :modulecheck-runtime:testing -- runtimeClasspath -- net.swiftzer.semver:semver:1.2.0
 :modulecheck-runtime:testing -- runtimeClasspath -- org.abego.treelayout:org.abego.treelayout.core:1.0.3
 :modulecheck-runtime:testing -- runtimeClasspath -- org.antlr:ST4:4.3.4
@@ -1011,6 +1014,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.6.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4
+:modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.6.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm:1.6.4
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4
@@ -1031,7 +1035,13 @@
 :modulecheck-utils:cache -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
 :modulecheck-utils:cache -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
 :modulecheck-utils:cache -- runtimeClasspath -- com.rickbusarow.dispatch:dispatch-core:1.0.0-beta10
+:modulecheck-utils:cache -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-utils:cache -- runtimeClasspath -- org.checkerframework:checker-qual:3.22.0
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.21
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.6.21
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-reflect:1.6.21
+:modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-script-runtime:1.6.21
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21
@@ -1042,6 +1052,12 @@
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4
 :modulecheck-utils:cache -- runtimeClasspath -- org.jetbrains:annotations:13.0
 
+:modulecheck-utils:lazy -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.6.21
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.6.21
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-reflect:1.6.21
+:modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-script-runtime:1.6.21
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-common:1.6.21
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21
 :modulecheck-utils:lazy -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.21

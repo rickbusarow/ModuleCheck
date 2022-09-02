@@ -52,9 +52,8 @@ object VersionNeutralTopDownAnalyzerFacadeForJVM {
    * so that we can use the [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] for type
    * resolution.
    *
-   * Note that this process is eager, and can be very time-consuming for large
-   * projects or projects with lots of internal dependencies. It's only a bit
-   * faster than doing a normal compilation. This function is called when the lazy
+   * Note that this process is eager, and can be very time-consuming
+   * for large projects. This function is called when the lazy
    * [KotlinEnvironment.bindingContext][modulecheck.parsing.kotlin.compiler.KotlinEnvironment.bindingContextDeferred]
    * is accessed.
    *
