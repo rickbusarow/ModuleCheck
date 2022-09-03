@@ -22,7 +22,7 @@ class DepthReportFactory {
 
   fun create(results: List<DepthFinding>): Report = Report.build {
 
-    header("-- ModuleCheck Depth results --")
+    headerLine("-- ModuleCheck Depth results --")
 
     results.filter { it.shouldReport() }
       .groupBy { it.dependentPath }
@@ -30,7 +30,7 @@ class DepthReportFactory {
       .entries
       .forEach { (path, values) ->
 
-        header("\n${path.value}")
+        headerLine("\n${path.value}")
 
         val nameHeader = "source set"
         val depthHeader = "depth"
@@ -42,7 +42,7 @@ class DepthReportFactory {
 
         val depthHeaderLength = depthHeader.length + DEPTH_PADDING
 
-        header(
+        headerLine(
           "    " +
             "${nameHeader.padEnd(maxSourceSetNameLength)} " +
             "${depthHeader.padEnd(depthHeaderLength)} " +
@@ -51,7 +51,7 @@ class DepthReportFactory {
 
         values.sortedBy { it.sourceSetName.value }
           .forEach { depthFinding ->
-            info(
+            infoLine(
               "    " +
                 "${depthFinding.sourceSetName.value.padEnd(maxSourceSetNameLength)} " +
                 "${depthFinding.depth.toString().padEnd(depthHeaderLength)} " +
@@ -65,7 +65,7 @@ class DepthReportFactory {
       }
 
     // bottom padding
-    header("")
+    headerLine("")
   }
 
   private fun DepthFinding.shouldReport(): Boolean {

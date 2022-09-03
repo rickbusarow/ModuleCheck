@@ -25,7 +25,9 @@ import modulecheck.reporting.logging.Report.ReportEntry.Failure
 import modulecheck.reporting.logging.Report.ReportEntry.FailureHeader
 import modulecheck.reporting.logging.Report.ReportEntry.FailureLine
 import modulecheck.reporting.logging.Report.ReportEntry.Header
+import modulecheck.reporting.logging.Report.ReportEntry.HeaderLine
 import modulecheck.reporting.logging.Report.ReportEntry.Info
+import modulecheck.reporting.logging.Report.ReportEntry.InfoLine
 import modulecheck.reporting.logging.Report.ReportEntry.Success
 import modulecheck.reporting.logging.Report.ReportEntry.SuccessHeader
 import modulecheck.reporting.logging.Report.ReportEntry.SuccessLine
@@ -54,7 +56,9 @@ class GradleMcLogger @Inject constructor(
           is FailureHeader -> printFailureHeader(reportEntry.message)
           is FailureLine -> printFailureLine(reportEntry.message)
           is Header -> printHeader(reportEntry.message)
+          is HeaderLine -> printHeaderLine(reportEntry.message)
           is Info -> printInfo(reportEntry.message)
+          is InfoLine -> printInfoLine(reportEntry.message)
           is Success -> printSuccess(reportEntry.message)
           is SuccessHeader -> printSuccessHeader(reportEntry.message)
           is SuccessLine -> printSuccessLine(reportEntry.message)
@@ -65,6 +69,10 @@ class GradleMcLogger @Inject constructor(
   }
 
   override fun printHeader(message: String) {
+    output.withStyle(StyledTextOutput.Style.Header).text(message)
+  }
+
+  override fun printHeaderLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Header).println(message)
   }
 
@@ -77,6 +85,10 @@ class GradleMcLogger @Inject constructor(
   }
 
   override fun printInfo(message: String) {
+    output.withStyle(StyledTextOutput.Style.Description).text(message)
+  }
+
+  override fun printInfoLine(message: String) {
     output.withStyle(StyledTextOutput.Style.Description).println(message)
   }
 
