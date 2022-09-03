@@ -133,7 +133,7 @@ data class ModuleCheckRunner @AssistedInject constructor(
 
     val issuePlural = if (totalFindings == 1) "issue" else "issues"
 
-    logger.printInfo("ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.")
+    logger.printInfoLine("ModuleCheck found $totalFindings $issuePlural in $secondsDouble seconds.")
 
     if (totalFindings > 0) {
 

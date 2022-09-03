@@ -24,7 +24,7 @@ class ReportFactory @Inject constructor() {
 
   fun create(results: List<Finding.FindingResult>): Report = Report.build {
 
-    header("-- ModuleCheck results --")
+    headerLine("-- ModuleCheck results --")
 
     results.groupBy { it.dependentPath.value.lowercase(Locale.getDefault()) }
       .entries
@@ -33,7 +33,7 @@ class ReportFactory @Inject constructor() {
 
         val path = values.first().dependentPath
 
-        header("\n${tab(1)}${path.value}")
+        headerLine("\n${tab(1)}${path.value}")
 
         val maxConfigurationName = maxOf(
           values.maxOf { it.configurationName.length },
@@ -48,7 +48,7 @@ class ReportFactory @Inject constructor() {
 
         val fixPrefix = "   ​"
 
-        header(
+        headerLine(
           tab(2) +
             fixPrefix +
             "configuration".padEnd(maxConfigurationName) +
@@ -93,7 +93,7 @@ class ReportFactory @Inject constructor() {
       }
 
     // bottom padding
-    header("")
+    headerLine("")
   }
 
   // use `​` (\u200B) as an invisible token for parsing.

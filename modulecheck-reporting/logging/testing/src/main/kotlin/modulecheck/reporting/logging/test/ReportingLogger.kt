@@ -23,7 +23,9 @@ import modulecheck.reporting.logging.Report.ReportEntry.Failure
 import modulecheck.reporting.logging.Report.ReportEntry.FailureHeader
 import modulecheck.reporting.logging.Report.ReportEntry.FailureLine
 import modulecheck.reporting.logging.Report.ReportEntry.Header
+import modulecheck.reporting.logging.Report.ReportEntry.HeaderLine
 import modulecheck.reporting.logging.Report.ReportEntry.Info
+import modulecheck.reporting.logging.Report.ReportEntry.InfoLine
 import modulecheck.reporting.logging.Report.ReportEntry.Success
 import modulecheck.reporting.logging.Report.ReportEntry.SuccessHeader
 import modulecheck.reporting.logging.Report.ReportEntry.SuccessLine
@@ -67,6 +69,10 @@ class ReportingLogger(
     addEntry(Header(message))
   }
 
+  override fun printHeaderLine(message: String) {
+    addEntry(HeaderLine(message))
+  }
+
   override fun printWarning(message: String) {
     addEntry(Warning(message))
   }
@@ -77,6 +83,10 @@ class ReportingLogger(
 
   override fun printInfo(message: String) {
     addEntry(Info(message))
+  }
+
+  override fun printInfoLine(message: String) {
+    addEntry(InfoLine(message))
   }
 
   override fun printFailure(message: String) {
