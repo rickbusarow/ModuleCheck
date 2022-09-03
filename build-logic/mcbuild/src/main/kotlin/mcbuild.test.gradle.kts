@@ -37,6 +37,34 @@ tasks.withType<Test> {
       systemProperty(key, value!!)
     }
 
-  // Allow unit tests to run in parallel
+  val ci = System.getenv("CI")?.toBoolean() == true
+  if (ci) {
+    // defaults to 512m.
+    maxHeapSize = "1g"
+  } else {
+    maxHeapSize = "4g"
+    systemProperties(
+
+      // auto-discover and apply any Junit5 extensions in the classpath
+      "junit.jupiter.extensions.autodetection.enabled" to true,
+
+      // remove parentheses from test display names
+      "junit.jupiter.displayname.generator.default" to "org.junit.jupiter.api.DisplayNameGenerator\$Simple",
+
+      // single class instance for all tests
+      "junit.jupiter.testinstance.lifecycle.default" to "per_class",
+
+      // https://junit.org/junit5/docs/snapshot/user-guide/#writing-tests-parallel-execution-config-properties
+      // Allow unit tests to run in parallel
+      "junit.jupiter.execution.parallel.enabled" to true,
+      "junit.jupiter.execution.parallel.mode.default" to "concurrent",
+      "junit.jupiter.execution.parallel.mode.classes.default" to "concurrent",
+
+      "junit.jupiter.execution.parallel.config.strategy" to "dynamic",
+      "junit.jupiter.execution.parallel.config.dynamic.factor" to 1.0
+    )
+  }
+
+  // Allow JUnit4 tests to run in parallel
   maxParallelForks = Runtime.getRuntime().availableProcessors()
 }
