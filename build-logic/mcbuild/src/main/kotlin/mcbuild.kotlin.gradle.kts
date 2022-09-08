@@ -35,7 +35,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-Xinline-classes",
-        "-Xjvm-default=enable",
+        "-Xjvm-default=all",
         "-Xsam-conversions=class",
         "-opt-in=kotlin.ExperimentalStdlibApi",
         "-opt-in=kotlin.RequiresOptIn",
