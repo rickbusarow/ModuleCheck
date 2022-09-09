@@ -43,7 +43,7 @@ fun Project.configurePublishing(
   var skipDokka = false
 
   configure<MavenPublishBaseExtension> {
-    publishToMavenCentral(DEFAULT)
+    publishToMavenCentral(DEFAULT, automaticRelease = true)
     signAllPublications()
     pom {
       description.set("Fast dependency graph linting for Gradle projects")
