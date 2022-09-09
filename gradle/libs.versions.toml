@@ -66,7 +66,7 @@ square-workflow = "1.0.0"
 targetSdk = "30"
 taskTree = "2.1.0"
 
-vanniktech-publish = "0.21.0"
+vanniktech-publish = "0.22.0"
 
 [plugins]
 
@@ -204,7 +204,6 @@ square-turbine = "app.cash.turbine:turbine:0.9.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
-vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.19.0"
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 
 zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.0.0"
