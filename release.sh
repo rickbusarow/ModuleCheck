@@ -26,10 +26,7 @@ trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 ./gradlew clean
 
 # Publish Maven release
-./gradlew publish --no-daemon --no-parallel --no-configuration-cache
-
-# Close Maven release
-./gradlew closeAndReleaseRepository --no-daemon --no-parallel --no-configuration-cache
+./gradlew publish --no-daemon --no-configuration-cache
 
 # Publish to Gradle Plugin Portal
 ./gradlew publishPlugins --no-configuration-cache
