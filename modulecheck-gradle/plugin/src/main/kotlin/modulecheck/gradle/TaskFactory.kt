@@ -37,7 +37,6 @@ import modulecheck.utils.capitalize
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
 import org.gradle.api.internal.file.FileCollectionInternal
 import org.gradle.api.tasks.TaskProvider
@@ -172,23 +171,20 @@ internal class TaskFactory(
       val sourceSetCaps = sourceSetName.value.capitalize()
 
       val cfg = configurations
-        .register(
-          "moduleCheck${sourceSetCaps}AggregateDependencies"
-        ) { config ->
+        .register(sourceSetName.aggregateConfigName().value) { config ->
 
-          val external = configs.map {
-            it.allDependencies.withType(ExternalModuleDependency::class.java)
-          }
-            .flatten()
-
-          configs.forEach {
-            config.extendsFrom(it)
-          }
-
-          println("                                                      -----  external")
-          external.joinToString("\n").also(::println)
-
-          config.dependencies.addAll(external)
+          // val external = configs
+          //   .map { it.allDependencies.withType(ExternalModuleDependency::class.java) }
+          //   .flatten()
+          //
+          // configs
+          //   .filterNot { it.name.endsWith("RuntimeElements") }
+          //   .forEach { config.extendsFrom(it) }
+          //
+          // // println("                                                      -----  external")
+          // // external.joinToString("\n").also(::println)
+          //
+          // config.dependencies.addAll(external)
         }
 
       val resolveTask = tasks.register(

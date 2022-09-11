@@ -157,9 +157,9 @@ inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
       )
         .mapToSet { configName -> configurations.getByName(configName) }
 
-      println("######## configs for $path")
-      configs.joinToString("\n") { it.name }
-        .also(::println)
+      // println("######## configs for $path")
+      // configs.joinToString("\n") { it.name }
+      //   .also(::println)
 
       configAction(sourceSet.name.asSourceSetName(), configs)
     }

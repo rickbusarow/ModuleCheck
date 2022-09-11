@@ -75,9 +75,11 @@ fun List<McConfiguration>.classpathLazy(
       gradleProject.configurations.getByName(name.value)
     }
       .flatMap { gradleConfiguration ->
-        gradleConfiguration.fileCollection { dep ->
-          dep is ExternalModuleDependency
-        }
+        if (gradleConfiguration.isCanBeResolved) {
+          gradleConfiguration.fileCollection { dep ->
+            dep is ExternalModuleDependency
+          }
+        } else emptyList()
       }
   }
 }
