@@ -45,24 +45,24 @@ open class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
   }
 
   @TaskAction
-  fun butt() {
+  fun execute() {
     dependsOn.filterIsInstance<GradleConfiguration>()
-      .forEach { it.resolve() }
+      .filterNot { it.name.endsWith("RuntimeElements") }
+    // .forEach { it.resolve() }
 
-    println("###################################### config files")
-    project.configurations.getByName("moduleCheckDebugAggregateDependencies")
-      .allDependencies
-      // .flatMap {
-      //   when (it) {
-      //     is DefaultSelfResolvingDependency -> it.resolve()
-      //     is DefaultExternalModuleDependency -> it.artifacts
-      //     else -> emptyList()
-      //   }
-      // }
-      // .filterIsInstance<DefaultSelfResolvingDependency>()
-      // .flatMap { it.resolve() }
-      .joinToString("\n")
-      .also(::println)
+    // project.configurations.getByName("moduleCheckDebugAggregateDependencies")
+
+    // .allDependencies
+    // .flatMap {
+    //   when (it) {
+    //     is DefaultSelfResolvingDependency -> it.resolve()
+    //     is DefaultExternalModuleDependency -> it.artifacts
+    //     else -> emptyList()
+    //   }
+    // }
+    // .filterIsInstance<DefaultSelfResolvingDependency>()
+    // .flatMap { it.resolve() }
+    // .joinToString("\n")
 
     // println("###################################### depends on")
     // dependsOn.joinToString("\n")
