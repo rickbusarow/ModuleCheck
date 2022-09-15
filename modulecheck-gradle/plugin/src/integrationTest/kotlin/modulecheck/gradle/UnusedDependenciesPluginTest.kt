@@ -90,7 +90,7 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
   @TestFactory
   fun `module with an auto-generated manifest used in subject module should not be unused`() =
-    factory {
+    factory(true) {
 
       // This module is declaring a base package in an auto-generated manifest which isn't present
       // until the manifest processor task is invoked.  That base package needs to be read from the
