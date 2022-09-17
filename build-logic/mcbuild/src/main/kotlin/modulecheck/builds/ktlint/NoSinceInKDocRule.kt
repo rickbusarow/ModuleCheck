@@ -24,6 +24,7 @@ import com.pinterest.ktlint.core.ast.ElementType.WHITE_SPACE
 import com.pinterest.ktlint.core.ast.children
 import com.pinterest.ktlint.core.ast.nextSibling
 import com.pinterest.ktlint.core.ast.prevLeaf
+import modulecheck.builds.VERSION_NAME
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.CompositeElement
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.LeafElement
@@ -42,7 +43,7 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
  */
 class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   private val currentVersion by lazy {
-    BuildProperties().version
+    VERSION_NAME
       .removeSuffix("-LOCAL")
       .removeSuffix("-SNAPSHOT")
   }
@@ -227,14 +228,16 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
 
     var acc = startOffset + 1
 
-    val numSpaces = fileLines.firstNotNullOf {
-      if (it.length + 1 < acc) {
-        acc -= (it.length + 1)
-        null
-      } else {
-        acc
+    val numSpaces = fileLines.asSequence()
+      .mapNotNull {
+        if (it.length + 1 < acc) {
+          acc -= (it.length + 1)
+          null
+        } else {
+          acc
+        }
       }
-    }
+      .first()
     return " ".repeat(numSpaces)
   }
 }
