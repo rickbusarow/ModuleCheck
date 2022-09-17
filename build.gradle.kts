@@ -78,7 +78,8 @@ afterEvaluate {
     "clean",
     "ktlintCheck",
     "ktlintFormat",
-    "moduleCheckSortDependenciesAuto"
+    "moduleCheckSortDependenciesAuto",
+    "test"
   ).forEach { taskName ->
     tasks.named(taskName).configure {
       dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))

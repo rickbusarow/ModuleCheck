@@ -18,12 +18,13 @@ package modulecheck.builds.ktlint
 import com.pinterest.ktlint.test.format
 import hermit.test.junit.HermitJUnit5
 import io.kotest.matchers.shouldBe
+import modulecheck.builds.VERSION_NAME
 import org.junit.jupiter.api.Test
 
 class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   private val currentVersion by lazy {
-    BuildProperties().version
+    VERSION_NAME
       .removeSuffix("-LOCAL")
       .removeSuffix("-SNAPSHOT")
   }
