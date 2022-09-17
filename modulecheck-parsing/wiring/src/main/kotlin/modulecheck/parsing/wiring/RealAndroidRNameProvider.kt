@@ -51,7 +51,7 @@ class RealAndroidRNameProvider constructor(
 
         val transitiveSourceSetName = transitiveDependency.source
           .declaringSourceSetName(
-            transitiveDependency.source.project(project).isAndroid()
+            transitiveDependency.source.project(project).sourceSets
           )
 
         dataSource {

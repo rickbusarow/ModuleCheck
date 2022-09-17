@@ -45,7 +45,7 @@ class RealAndroidDataBindingNameProvider constructor(
 
         tpd.contributed.project(project)
           .androidDataBindingDeclarationsForSourceSetName(
-            tpd.source.declaringSourceSetName(sourceProject.isAndroid())
+            tpd.source.declaringSourceSetName(sourceProject.sourceSets)
           )
       }
 

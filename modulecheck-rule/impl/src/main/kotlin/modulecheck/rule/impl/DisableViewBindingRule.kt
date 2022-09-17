@@ -23,7 +23,6 @@ import modulecheck.finding.android.DisableViewBindingGenerationFinding
 import modulecheck.model.dependency.withDownStream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.project.isAndroid
 import modulecheck.project.project
 import modulecheck.utils.coroutines.any
 import modulecheck.utils.lazy.lazyDeferred
@@ -76,7 +75,7 @@ class DisableViewBindingRule @Inject constructor() :
             // configuration.  This will typically be `main`, but it could be another build variant
             // if the entire dependency chain is using another source set's configuration.
             val exposedSourceSetName = downstream.projectDependency
-              .declaringSourceSetName(downstreamProject.isAndroid())
+              .declaringSourceSetName(downstreamProject.sourceSets)
 
             val references = downstream.project(project)
               .referencesForSourceSetName(exposedSourceSetName)
