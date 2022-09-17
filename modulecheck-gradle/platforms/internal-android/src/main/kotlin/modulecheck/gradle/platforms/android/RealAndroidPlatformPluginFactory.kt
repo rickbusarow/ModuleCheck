@@ -34,6 +34,7 @@ import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Typ
 import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Library
 import modulecheck.gradle.platforms.android.RealAndroidPlatformPluginFactory.Type.Test
 import modulecheck.gradle.platforms.android.internal.androidManifests
+import modulecheck.gradle.platforms.android.internal.androidNamespaces
 import modulecheck.gradle.platforms.android.internal.orPropertyDefault
 import modulecheck.model.dependency.AndroidPlatformPlugin
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidApplicationPlugin
@@ -73,6 +74,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
 
     val manifests = gradleProject.androidManifests(agpApiAccess).orEmpty()
 
+    val namespaces = gradleProject.androidNamespaces(agpApiAccess, sourceSets).orEmpty()
+
     val resValuesLazy = lazy { parseResValues(type) }
 
     val hasKotlinAndroidExtensions = gradleProject
@@ -107,6 +110,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
+        namespaces = namespaces,
         resValuesLazy = resValuesLazy
       )
 
@@ -117,6 +121,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
+        namespaces = namespaces,
         buildConfigEnabled = buildConfigEnabled,
         resValuesLazy = resValuesLazy
       )
@@ -128,6 +133,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
+        namespaces = namespaces,
         androidResourcesEnabled = androidResourcesEnabled,
         buildConfigEnabled = buildConfigEnabled,
         resValuesLazy = resValuesLazy
@@ -140,6 +146,7 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
         viewBindingEnabled = viewBindingEnabled,
         kotlinAndroidExtensionEnabled = hasKotlinAndroidExtensions,
         manifests = manifests,
+        namespaces = namespaces,
         buildConfigEnabled = buildConfigEnabled,
         resValuesLazy = resValuesLazy
       )

@@ -81,19 +81,14 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
 
   /**
    * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
-   *   configuration. For a simple `implementation` configuration, this
-   *   returns `main`. For a `debugImplementation`, it would return `debug`.
+   *     configuration. For a simple `implementation` configuration, this returns `main`. For a
+   *     `debugImplementation`, it would return `debug`.
    * @since 0.12.0
    */
-  fun declaringSourceSetName(isAndroid: Boolean) = when {
+  fun declaringSourceSetName(sourceSets: SourceSets) = when {
     // <anyConfig>(testFixtures(___))
     isTestFixture -> {
       SourceSetName.TEST_FIXTURES
-    }
-
-    configurationName.toSourceSetName().isTestingOnly() -> {
-      if (isAndroid) SourceSetName.DEBUG
-      else SourceSetName.MAIN
     }
 
     // testFixturesApi(___)
@@ -102,7 +97,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
     }
 
     else -> {
-      configurationName.toSourceSetName()
+      configurationName.toSourceSetName().nonTestSourceSetName(sourceSets)
     }
   }
 
@@ -165,8 +160,8 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
   }
 
   /**
-   * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and a
-   * `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the event that the project
+   * Creates a [ProjectDependency] for given arguments, using [TypeSafeProjectPathResolver] and
+   * a `List<CodeGeneratorBinding>` to look up a [CodeGenerator] in the event that the project
    * dependency in question is an annotation processor.
    *
    * @since 0.12.0

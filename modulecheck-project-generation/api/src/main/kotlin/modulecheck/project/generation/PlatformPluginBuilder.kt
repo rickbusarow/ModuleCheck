@@ -31,6 +31,7 @@ import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.SourceSets
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File
 
@@ -114,6 +115,12 @@ interface AndroidPlatformPluginBuilder<T : AndroidPlatformPlugin> : PlatformPlug
   var nonTransientRClass: Boolean
   var kotlinAndroidExtensionEnabled: Boolean
   val manifests: MutableMap<SourceSetName, File>
+
+  /**
+   * @see AndroidPlatformPlugin.namespaces
+   * @since 0.13.0
+   */
+  val namespaces: MutableMap<SourceSetName, PackageName>
   val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>>
 }
 
@@ -122,6 +129,7 @@ data class AndroidApplicationPluginBuilder(
   override var nonTransientRClass: Boolean = false,
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
+  override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
@@ -154,6 +162,7 @@ data class AndroidApplicationPluginBuilder(
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
+    namespaces = namespaces,
     resValuesLazy = lazy { resValues }
   )
 }
@@ -165,6 +174,7 @@ data class AndroidLibraryPluginBuilder(
   var buildConfigEnabled: Boolean = true,
   var androidResourcesEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
+  override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
@@ -197,6 +207,7 @@ data class AndroidLibraryPluginBuilder(
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
+    namespaces = namespaces,
     androidResourcesEnabled = androidResourcesEnabled,
     buildConfigEnabled = buildConfigEnabled,
     resValuesLazy = lazy { resValues }
@@ -209,6 +220,7 @@ data class AndroidDynamicFeaturePluginBuilder(
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   var buildConfigEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
+  override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
@@ -241,6 +253,7 @@ data class AndroidDynamicFeaturePluginBuilder(
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
+    namespaces = namespaces,
     buildConfigEnabled = buildConfigEnabled,
     resValuesLazy = lazy { resValues }
   )
@@ -252,6 +265,7 @@ data class AndroidTestPluginBuilder(
   override var kotlinAndroidExtensionEnabled: Boolean = true,
   var buildConfigEnabled: Boolean = true,
   override val manifests: MutableMap<SourceSetName, File> = mutableMapOf(),
+  override val namespaces: MutableMap<SourceSetName, PackageName> = mutableMapOf(),
   override val sourceSets: MutableMap<SourceSetName, SourceSetBuilder> = mutableMapOf(),
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf(),
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
@@ -284,6 +298,7 @@ data class AndroidTestPluginBuilder(
     viewBindingEnabled = viewBindingEnabled,
     kotlinAndroidExtensionEnabled = kotlinAndroidExtensionEnabled,
     manifests = manifests,
+    namespaces = namespaces,
     buildConfigEnabled = buildConfigEnabled,
     resValuesLazy = lazy { resValues }
   )

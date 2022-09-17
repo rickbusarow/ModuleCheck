@@ -36,14 +36,23 @@ data class AndroidBasePackages(
 
     return delegate.getOrPut(sourceSetName) {
 
-      // Note that this isn't just looking for a manifest file.  It's looking for a manifest which
-      // has a defined base package.  It's possible for a manifest to exist, but just add an
-      // Activity or something, if the package is already defined in an withUpstream source set.
       sourceSetName
         .withUpstream(project)
         .firstNotNullOfOrNull { sourceSetOrUpstream ->
 
-          project.manifestFileForSourceSetName(sourceSetOrUpstream)?.basePackage
+          // Namespace declarations supersede packages defined in a manifest, even when that
+          // manifest is in a downstream source set.  So, if a namespace is set anywhere, it's set
+          // everywhere, and a downstream source set like `debugInternalRelease` will return the
+          // same value as for `main`.
+          project.platformPlugin.asAndroidOrNull()
+            ?.namespaces
+            ?.get(sourceSetOrUpstream)
+
+            // Note that this isn't just looking for a manifest file.  It's looking for a manifest
+            // which has a defined base package.  It's possible for a manifest to exist, but just
+            // add an Activity or something, if the package is already defined in an withUpstream
+            // source set.
+            ?: project.manifestFileForSourceSetName(sourceSetOrUpstream)?.basePackage
         }
     }
   }

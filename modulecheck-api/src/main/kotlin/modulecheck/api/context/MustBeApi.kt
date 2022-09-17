@@ -27,6 +27,7 @@ import modulecheck.model.dependency.ConfiguredDependency.Companion.copy
 import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.apiConfig
+import modulecheck.model.dependency.isTestingOnly
 import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
@@ -102,7 +103,7 @@ data class MustBeApi(
               cpd.copy(configurationName = cpd.configurationName.apiVariant()) in directApiProjects
             }
             .filterAsync {
-              !sourceSetName.isTestingOnly() && it.project(project)
+              !sourceSetName.isTestingOnly(project.sourceSets) && it.project(project)
                 .mustBeApiIn(
                   dependentProject = project,
                   referencesFromDependencies = importsFromDependencies,
@@ -167,7 +168,7 @@ suspend fun McProject.mustBeApiIn(
   isTestFixtures: Boolean
 ): Boolean {
   // `testApi` and `androidTestApi` are not valid configurations
-  if (sourceSetName.isTestingOnly()) return false
+  if (sourceSetName.isTestingOnly(dependentProject.sourceSets)) return false
 
   val referencesFromDependencies = dependentProject.referencesFromDependencies(sourceSetName)
   val directDependencies = sourceSetName.withUpstream(dependentProject)
@@ -231,7 +232,7 @@ private suspend fun McProject.mustBeApiIn(
 
 /**
  * @return Returns a [ConfiguredDependency] with an `-api` variant configuration if the dependency
- *   should be `api`, or `-implementation` otherwise.
+ *     should be `api`, or `-implementation` otherwise.
  * @since 0.12.0
  */
 suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(

@@ -80,13 +80,21 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
   )
     .also {
       it.maybeAddSourceSet(SourceSetName.MAIN)
-      it.maybeAddSourceSet(SourceSetName.TEST)
+
+      val testUpstream = mutableListOf(SourceSetName.MAIN)
 
       if (pluginBuilder is AndroidPlatformPluginBuilder<*>) {
-        it.maybeAddSourceSet(SourceSetName.DEBUG)
-        it.maybeAddSourceSet(SourceSetName.RELEASE)
-        it.maybeAddSourceSet(SourceSetName.ANDROID_TEST)
+        it.maybeAddSourceSet(SourceSetName.DEBUG, upstreamNames = listOf(SourceSetName.MAIN))
+        it.maybeAddSourceSet(SourceSetName.RELEASE, upstreamNames = listOf(SourceSetName.MAIN))
+        it.maybeAddSourceSet(
+          SourceSetName.ANDROID_TEST,
+          upstreamNames = listOf(SourceSetName.MAIN, SourceSetName.DEBUG)
+        )
+
+        testUpstream.add(SourceSetName.DEBUG)
       }
+
+      it.maybeAddSourceSet(SourceSetName.TEST, upstreamNames = testUpstream)
 
       it.config()
 

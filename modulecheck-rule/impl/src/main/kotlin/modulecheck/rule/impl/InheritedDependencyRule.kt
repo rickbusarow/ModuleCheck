@@ -33,7 +33,6 @@ import modulecheck.model.dependency.withDownStream
 import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
-import modulecheck.project.isAndroid
 import modulecheck.project.project
 import modulecheck.utils.coroutines.mapAsync
 import modulecheck.utils.flatMapToSet
@@ -205,11 +204,11 @@ class InheritedDependencyRule @Inject constructor() :
   ): Sequence<TransitiveProjectDependency> {
 
     return sortedWith { o1, o2 ->
-      val o1IsAndroid = o1.contributed.project(project).isAndroid()
-      val o1SourceSet = o1.contributed.declaringSourceSetName(o1IsAndroid)
+      val o1SourceSets = o1.contributed.project(project).sourceSets
+      val o1SourceSet = o1.contributed.declaringSourceSetName(o1SourceSets)
 
-      val o2IsAndroid = o2.contributed.project(project).isAndroid()
-      val o2SourceSet = o2.contributed.declaringSourceSetName(o2IsAndroid)
+      val o2SourceSets = o2.contributed.project(project).sourceSets
+      val o2SourceSet = o2.contributed.declaringSourceSetName(o2SourceSets)
 
       o2SourceSet.inheritsFrom(o1SourceSet, project).compareTo(true)
     }

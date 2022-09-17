@@ -32,7 +32,6 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.HasAnalysisResult
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.project.isAndroid
 import modulecheck.utils.coroutines.flatMapListMerge
 import modulecheck.utils.coroutines.onEachAsync
 import modulecheck.utils.letIf
@@ -93,7 +92,7 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
       .flatMapListMerge { dep ->
 
         val dependencyProject = projectCache.getValue(dep.path)
-        val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.isAndroid())
+        val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.sourceSets)
 
         dependencySourceSetName.upstreamEnvironments(dependencyProject)
       }
