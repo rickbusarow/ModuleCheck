@@ -82,7 +82,6 @@ rootDir.resolve("gradle.properties")
 rootProject.name = "ModuleCheck"
 
 include(
-  ":ktlint-rules",
   ":modulecheck-api",
   ":modulecheck-config:api",
   ":modulecheck-config:fake",

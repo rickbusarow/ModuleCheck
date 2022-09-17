@@ -104,3 +104,17 @@ tasks.withType<Delete> rootTask@{
     }
   }
 }
+
+tasks.register("test") rootTask@{
+
+  doLast {
+    println("running the root build logic test")
+  }
+
+  subprojects {
+    tasks.withType<Test> subTask@{
+      useJUnitPlatform()
+      this@rootTask.dependsOn(this@subTask)
+    }
+  }
+}
