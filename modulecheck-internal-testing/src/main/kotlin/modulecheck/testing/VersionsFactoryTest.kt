@@ -39,6 +39,7 @@ interface VersionsFactoryTest : VersionsFactory {
    * @since 0.13.0
    */
   fun factory(
+    exhaustive: Boolean = this.exhaustive,
     filter: (TestVersions) -> Boolean = { true },
     action: TestVersions.() -> Unit
   ): List<DynamicTest> {

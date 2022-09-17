@@ -39,6 +39,7 @@ dependencies {
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
+  api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
@@ -52,7 +53,6 @@ dependencies {
   implementation(libs.kotlin.reflect)
 
   implementation(project(path = ":modulecheck-dagger"))
-  implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
