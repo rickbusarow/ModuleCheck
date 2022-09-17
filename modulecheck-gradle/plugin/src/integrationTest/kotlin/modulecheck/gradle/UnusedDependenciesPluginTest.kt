@@ -36,9 +36,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
         """
@@ -64,9 +63,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
 
@@ -105,49 +103,18 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
         plugins {
           id("com.android.library")
           kotlin("android")
+          id("com.gradleup.auto.manifest") version "2.0"
         }
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
 
-        // This reproduces the behavior of Auto-Manifest:
-        // https://github.com/GradleUp/auto-manifest
-        // For some reason, that plugin doesn't work with Gradle TestKit.  Its task is never
-        // registered, and the manifest location is never changed from the default.  When I open
-        // the generated project dir and execute the task from terminal, it works fine...
-        // This does the same thing, but uses a different default directory.
-        val manifestFile = file("${'$'}buildDir/generated/my-custom-manifest-location/AndroidManifest.xml")
-
-        android.sourceSets {
-            findByName("main")?.manifest {
-              srcFile(manifestFile.path)
-            }
-          }
-        val makeFile by tasks.registering {
-
-          doFirst {
-
-            manifestFile.parentFile.mkdirs()
-            manifestFile.writeText(
-              ""${'"'}<manifest package="com.modulecheck.lib1" /> ""${'"'}.trimMargin()
-            )
-          }
-        }
-
-        afterEvaluate {
-
-          tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java)
-            .configureEach { dependsOn(makeFile) }
-          tasks.withType(com.android.build.gradle.tasks.MergeResources::class.java)
-            .configureEach { dependsOn(makeFile) }
-          tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java)
-            .configureEach { dependsOn(makeFile)}
-
+        autoManifest {
+          packageName.set("com.modulecheck.lib1")
         }
         """
         }
@@ -166,9 +133,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
 
@@ -208,9 +174,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
           testFixtures.enable = true
         }
@@ -237,9 +202,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
 
@@ -279,9 +243,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
           defaultConfig {
             resValue("string", "app_name", "AppName")
 
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
           buildTypes {
             getByName("debug") {
@@ -311,9 +274,8 @@ class UnusedDependenciesPluginTest : BaseGradleTest() {
 
         android {
           defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+            minSdk = 23
+            compileSdk = 32
           }
         }
 

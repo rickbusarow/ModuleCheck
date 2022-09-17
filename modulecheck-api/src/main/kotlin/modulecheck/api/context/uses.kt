@@ -27,7 +27,6 @@ import modulecheck.parsing.source.Generated
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.project.McProject
-import modulecheck.project.isAndroid
 import modulecheck.utils.lazy.LazySet
 
 suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean {
@@ -121,7 +120,7 @@ private suspend fun McProject.generationIsUsedDownstream(
 
       val downstreamProject = projectCache.getValue(downstreamDependency.dependentProjectPath)
       val downstreamSourceSet = downstreamDependency.projectDependency
-        .declaringSourceSetName(downstreamProject.isAndroid())
+        .declaringSourceSetName(downstreamProject.sourceSets)
 
       downstreamProject to downstreamSourceSet
     }

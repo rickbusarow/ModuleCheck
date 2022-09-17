@@ -15,6 +15,7 @@
 
 package modulecheck.gradle
 
+import io.kotest.matchers.collections.shouldContainAll
 import org.junit.jupiter.api.TestFactory
 
 class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
@@ -43,28 +44,22 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
 
       shouldSucceed("moduleCheck").apply {
         // Assert that nothing else executed.
-        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-        tasks.map { it.path }.sorted() shouldBe listOf(
-          ":lib:extractDeepLinksDebug",
+        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
+        tasks.map { it.path }.sorted() shouldContainAll listOf(
           ":lib:generateDebugAndroidTestBuildConfig",
           ":lib:generateDebugBuildConfig",
           ":lib:generateReleaseBuildConfig",
-          ":lib:preBuild",
-          ":lib:preDebugAndroidTestBuild",
-          ":lib:preDebugBuild",
-          ":lib:preReleaseBuild",
-          ":lib:processDebugAndroidTestManifest",
-          ":lib:processDebugManifest",
           ":moduleCheck"
         )
       }
     }
 
   @TestFactory
-  fun `buildConfig task should not be required when disabled in android library module`() = factory {
-    androidLibrary(":lib", "com.modulecheck.lib1") {
-      buildFile {
-        """
+  fun `buildConfig task should not be required when disabled in android library module`() =
+    factory {
+      androidLibrary(":lib", "com.modulecheck.lib1") {
+        buildFile {
+          """
         plugins {
           id("com.android.library")
           kotlin("android")
@@ -79,15 +74,15 @@ class AndroidBuildConfigAvoidanceTest : BaseGradleTest() {
           buildFeatures.buildConfig = false
         }
         """
+        }
+      }
+
+      shouldSucceed("moduleCheck").apply {
+        // Assert that nothing else executed.
+        // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
+        tasks.map { it.path } shouldBe listOf(":moduleCheck")
       }
     }
-
-    shouldSucceed("moduleCheck").apply {
-      // Assert that nothing else executed.
-      // If ModuleCheck were relying upon buildConfig tasks, they'd be in this list.
-      tasks.map { it.path } shouldBe listOf(":moduleCheck")
-    }
-  }
 
   @TestFactory
   fun `buildConfig task should not be required when disabled in android dynamic-feature module`() =

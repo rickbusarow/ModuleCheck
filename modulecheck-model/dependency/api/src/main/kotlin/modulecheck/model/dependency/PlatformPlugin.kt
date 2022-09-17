@@ -16,6 +16,7 @@
 package modulecheck.model.dependency
 
 import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File
 import kotlin.contracts.contract
@@ -67,6 +68,15 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   val manifests: Map<SourceSetName, File>
 
   /**
+   * Base packages as defined via the AGP DSL. There are only two versions - the "main" `namespace`
+   * which is the default for everything, and `testNamespace` which is applied to all `test` and
+   * `androidTest` source sets.
+   *
+   * @since 0.13.0
+   */
+  val namespaces: Map<SourceSetName, PackageName>
+
+  /**
    * All resource declarations -- without a package -- grouped by [SourceSetName]
    *
    * @since 0.12.0
@@ -89,6 +99,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
+    override val namespaces: Map<SourceSetName, PackageName>,
     resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin, AndroidPlatformPlugin {
     override val resValues by resValuesLazy
@@ -102,6 +113,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
+    override val namespaces: Map<SourceSetName, PackageName>,
     override val androidResourcesEnabled: Boolean,
     override val buildConfigEnabled: Boolean,
     resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
@@ -120,6 +132,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
+    override val namespaces: Map<SourceSetName, PackageName>,
     override val buildConfigEnabled: Boolean,
     resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin,
@@ -136,6 +149,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val viewBindingEnabled: Boolean,
     override val kotlinAndroidExtensionEnabled: Boolean,
     override val manifests: Map<SourceSetName, File>,
+    override val namespaces: Map<SourceSetName, PackageName>,
     override val buildConfigEnabled: Boolean,
     resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin,

@@ -18,6 +18,7 @@ package modulecheck.api.context
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.TransitiveProjectDependency
 import modulecheck.model.dependency.apiConfig
+import modulecheck.model.dependency.isTestingOnly
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
@@ -52,7 +53,11 @@ data class ClasspathDependencies(
       sourceSetName: SourceSetName,
       isTestFixtures: Boolean
     ): Set<ConfigurationName> = setOfNotNull(
-      if (sourceSetName.isTestingOnly()) SourceSetName.DEBUG.apiConfig() else sourceSetName.apiConfig(),
+      if (sourceSetName.isTestingOnly(this.sourceSets)) {
+        SourceSetName.DEBUG.apiConfig()
+      } else {
+        sourceSetName.apiConfig()
+      },
       ConfigurationName.api,
       if (isTestFixtures) SourceSetName.TEST_FIXTURES.apiConfig() else null
     )
