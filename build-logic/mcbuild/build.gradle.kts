@@ -17,13 +17,16 @@
 plugins {
   `kotlin-dsl`
   base
-  alias(libs.plugins.ktlint)
+  alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
 }
 
 dependencies {
 
   api(libs.square.moshi)
+
+  api(project(path = ":core"))
+  api(project(path = ":ktlint-rules"))
 
   compileOnly(gradleApi())
 
@@ -36,13 +39,13 @@ dependencies {
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
   implementation(libs.jmailen.kotlinter)
-  implementation(libs.kotlin.stdlib.jdk7)
-  implementation(libs.kotlin.stdlib.core)
-  implementation(libs.kotlin.stdlib.common)
-  implementation(libs.kotlin.stdlib.jdk8)
-  implementation(libs.kotlin.reflect)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plug)
+  implementation(libs.kotlin.reflect)
+  implementation(libs.kotlin.stdlib.common)
+  implementation(libs.kotlin.stdlib.core)
+  implementation(libs.kotlin.stdlib.jdk7)
+  implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
   implementation(libs.scabbard)
   implementation(libs.square.anvil.gradle)

@@ -88,18 +88,22 @@ data class AndroidResourceDeclaredNames(
 
     return delegate.getOrPut(sourceSetName) {
 
-      val allTransitiveUnqualified = if (!platformPlugin.nonTransientRClass) project
-        .classpathDependencies()
-        .get(sourceSetName)
-        .mapAsyncNotNull { tpd ->
+      val allTransitiveUnqualified = if (!platformPlugin.nonTransientRClass) {
+        project
+          .classpathDependencies()
+          .get(sourceSetName)
+          .mapAsyncNotNull { tpd ->
 
-          val transitiveSourceSetName = tpd.source.declaringSourceSetName(
-            tpd.source.project(project).sourceSets
-          )
+            val transitiveSourceSetName = tpd.source.declaringSourceSetName(
+              tpd.source.project(project).sourceSets
+            )
 
-          tpd.contributed.project(project)
-            .androidUnqualifiedResourcesForSourceSetName(transitiveSourceSetName)
-        } else flowOf()
+            tpd.contributed.project(project)
+              .androidUnqualifiedResourcesForSourceSetName(transitiveSourceSetName)
+          }
+      } else {
+        flowOf()
+      }
 
       val localUnqualified = project
         .androidUnqualifiedResourcesForSourceSetName(sourceSetName)

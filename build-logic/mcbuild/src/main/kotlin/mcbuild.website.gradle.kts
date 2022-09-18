@@ -175,7 +175,6 @@ fun File.updateModuleCheckVersionRef(
   failOnChanges: Boolean,
   updateTaskName: String = ""
 ) {
-
   val group = GROUP
 
   val pluginId = PLUGIN_ID

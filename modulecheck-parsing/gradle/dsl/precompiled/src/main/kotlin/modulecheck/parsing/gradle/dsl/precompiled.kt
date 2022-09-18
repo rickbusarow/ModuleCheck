@@ -174,8 +174,11 @@ private fun List<DependencyDeclaration>.sorted(
   newDependency: ConfiguredDependency
 ) = sortedWith(
   {
-    if (matchPathFirst) it.configName == newDependency.configurationName
-    else it.configName != newDependency.configurationName
+    if (matchPathFirst) {
+      it.configName == newDependency.configurationName
+    } else {
+      it.configName != newDependency.configurationName
+    }
   },
   { it !is ModuleDependencyDeclaration },
   {
@@ -364,7 +367,9 @@ private suspend fun HasDependencyDeclarations.getStatementWithSurroundingText(
 
   val declarationText = if (isKotlin) {
     "$configInvocation($projectWithTestFixtures)"
-  } else "$configInvocation $projectWithTestFixtures"
+  } else {
+    "$configInvocation $projectWithTestFixtures"
+  }
 
   return declarationText to buildFileParser.dependenciesBlocks()
     .map { it.lambdaContent.findMinimumIndent() }

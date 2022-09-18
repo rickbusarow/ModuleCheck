@@ -72,8 +72,11 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
           )
           .map { finding ->
 
-            val removalStrategy = if (deleteUnused) RemovesDependency.RemovalStrategy.DELETE
-            else RemovesDependency.RemovalStrategy.COMMENT
+            val removalStrategy = if (deleteUnused) {
+              RemovesDependency.RemovalStrategy.DELETE
+            } else {
+              RemovesDependency.RemovalStrategy.COMMENT
+            }
 
             val fixed = when {
               !autoCorrect -> false
