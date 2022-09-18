@@ -22,17 +22,17 @@ kotlinter {
   reporters = arrayOf("checkstyle", "plain")
   experimentalRules = true
   disabledRules = arrayOf(
-    "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-    "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-    "argument-list-wrapping", // doesn't work half the time
-    "no-empty-first-line-in-method-block", // code golf...
-    // This can be re-enabled once 0.46.0 is released
-    // https://github.com/pinterest/ktlint/issues/1435
-    // "experimental:type-parameter-list-spacing",
+    // manually formatting still does this, and KTLint will still wrap long chains when possible
+    "max-line-length",
+    // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
+    "filename",
+    // code golf...
+    "no-empty-first-line-in-method-block",
     // added in 0.46.0
     "experimental:function-signature"
   )
 }
+// dummy ktlint-gradle plugin task names which just delegate to the Kotlinter ones
 tasks.register("ktlintCheck") {
   dependsOn("lintKotlin")
 }

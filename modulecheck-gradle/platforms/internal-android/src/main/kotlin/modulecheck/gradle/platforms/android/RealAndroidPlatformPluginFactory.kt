@@ -99,7 +99,8 @@ class RealAndroidPlatformPluginFactory @Inject constructor(
       ?.androidResources
       .orPropertyDefault(
         gradleProject,
-        "android.library.defaults.buildfeatures.androidresources", true
+        "android.library.defaults.buildfeatures.androidresources",
+        true
       )
 
     return when (type) {
