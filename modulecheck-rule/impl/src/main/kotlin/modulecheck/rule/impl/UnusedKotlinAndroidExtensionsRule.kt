@@ -52,22 +52,25 @@ class UnusedKotlinAndroidExtensionsRule @Inject constructor() :
           .any { it == parcelizeImport || it.startsWith(syntheticReferencePackage) }
       }
 
-    return if (usedInProject) emptyList()
-    else listOf(
-      UnusedPluginFinding(
-        dependentProject = project,
-        dependentPath = project.path,
-        buildFile = project.buildFile,
-        findingName = name,
-        pluginDefinition = PluginDefinition(
-          name = "Kotlin Android Extensions",
-          qualifiedId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
-          legacyIdOrNull = null,
-          precompiledAccessorOrNull = null,
-          kotlinFunctionArgumentOrNull = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
+    return if (usedInProject) {
+      emptyList()
+    } else {
+      listOf(
+        UnusedPluginFinding(
+          dependentProject = project,
+          dependentPath = project.path,
+          buildFile = project.buildFile,
+          findingName = name,
+          pluginDefinition = PluginDefinition(
+            name = "Kotlin Android Extensions",
+            qualifiedId = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID,
+            legacyIdOrNull = null,
+            precompiledAccessorOrNull = null,
+            kotlinFunctionArgumentOrNull = KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN
+          )
         )
       )
-    )
+    }
   }
 
   override fun shouldApply(settings: ModuleCheckSettings): Boolean {

@@ -69,7 +69,9 @@ class Declarations private constructor(
   ): LazySet<DeclaredName> {
     val key = if (includeUpstream) {
       WithUpstream(sourceSetName)
-    } else WithoutUpstream(sourceSetName)
+    } else {
+      WithoutUpstream(sourceSetName)
+    }
     return delegate.getOrPut(key) {
       val components = mutableListOf<LazySetComponent<DeclaredName>>()
 

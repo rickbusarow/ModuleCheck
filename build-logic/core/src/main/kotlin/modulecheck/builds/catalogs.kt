@@ -20,7 +20,6 @@ import org.gradle.api.artifacts.MinimalExternalModuleDependency
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.provider.Provider
-import org.gradle.kotlin.dsl.getByType
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
@@ -29,7 +28,7 @@ const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
 const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
 val Project.catalogs: VersionCatalogsExtension
-  get() = extensions.getByType(VersionCatalogsExtension::class)
+  get() = extensions.getByType(VersionCatalogsExtension::class.java)
 
 val Project.libsCatalog: VersionCatalog
   get() = catalogs.named("libs")

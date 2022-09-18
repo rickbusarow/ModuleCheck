@@ -79,7 +79,9 @@ data class FindingName(
     fun safe(maybeFindingName: String): FindingName? {
       return if (CaseMatcher.KebabCaseMatcher().matches(maybeFindingName)) {
         FindingName(maybeFindingName)
-      } else null
+      } else {
+        null
+      }
     }
 
     @Deprecated("This will be removed soon.")

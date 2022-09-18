@@ -15,26 +15,26 @@
 
 package modulecheck.builds.ktlint
 
-import com.pinterest.ktlint.test.format
-import hermit.test.junit.HermitJUnit5
+import com.pinterest.ktlint.core.LintError
+import com.pinterest.ktlint.core.RuleProvider
+import com.pinterest.ktlint.core.api.EditorConfigOverride
 import io.kotest.matchers.shouldBe
-import modulecheck.builds.VERSION_NAME
 import org.junit.jupiter.api.Test
+import com.pinterest.ktlint.test.format as ktlintTestFormat
 
-class NoSinceInKDocRuleTest : HermitJUnit5() {
+class NoSinceInKDocRuleTest {
 
-  private val currentVersion by lazy {
-    VERSION_NAME
-      .removeSuffix("-LOCAL")
-      .removeSuffix("-SNAPSHOT")
-  }
+  private val currentVersion = "0.13.0"
+    .removeSuffix("-LOCAL")
+    .removeSuffix("-SNAPSHOT")
 
-  val rule by resets { NoSinceInKDocRule() }
+  val rules = setOf(
+    RuleProvider { NoSinceInKDocRule() }
+  )
 
   @Test
   fun `existing since has no issue`() {
-
-    rule.format(
+    rules.format(
       """
       /**
        * comment
@@ -62,8 +62,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `missing since in comment is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /**
        * comment
@@ -89,8 +88,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `missing since in empty comment is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /** */
       data class Subject(
@@ -107,8 +105,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `missing since in suppressed comment is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /** @suppress */
       data class Subject(
@@ -128,8 +125,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `missing since in nested comment is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       class Outer {
         /**
@@ -159,8 +155,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `single-line kdoc is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /** comment */
       data class Subject(
@@ -181,8 +176,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `single-line kdoc with tag is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /** @property name a name */
       data class Subject(
@@ -202,8 +196,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `since tag without version content is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /**
        * comment
@@ -230,8 +223,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `multi line kdoc without tags has blank line before since tag`() {
-
-    rule.format(
+    rules.format(
       """
       /**
        * comment
@@ -254,8 +246,7 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
 
   @Test
   fun `multi line blank kdoc is auto-corrected`() {
-
-    rule.format(
+    rules.format(
       """
       /**
        */
@@ -271,3 +262,18 @@ class NoSinceInKDocRuleTest : HermitJUnit5() {
     """.trimIndent()
   }
 }
+
+fun Set<RuleProvider>.format(
+  text: String,
+  editorConfigOverride: EditorConfigOverride = EditorConfigOverride.emptyEditorConfigOverride,
+  userData: Map<String, String> = emptyMap(),
+  cb: (e: LintError, corrected: Boolean) -> Unit = { _, _ -> },
+  script: Boolean = false
+): String = ktlintTestFormat(
+  lintedFilePath = null,
+  text = text,
+  editorConfigOverride = editorConfigOverride,
+  userData = userData,
+  cb = cb,
+  script = script
+)
