@@ -13,16 +13,17 @@
  * limitations under the License.
  */
 
-import modulecheck.builds.isRootOfComposite
 import modulecheck.builds.matrix.VersionsMatrixYamlCheckTask
 import modulecheck.builds.matrix.VersionsMatrixYamlGenerateTask
 
-require(project.isRootOfComposite()) {
-  "only add the ci/yaml matrix tasks to the root project"
+val ciFile = rootProject.file(".github/workflows/ci.yml")
+
+require(ciFile.exists()) {
+  "Could not resolve '$ciFile'.  Only add the ci/yaml matrix tasks to the root project."
 }
 
 val versionsMatrixYamlCheck by tasks.registering(VersionsMatrixYamlCheckTask::class) {
-  yamlFile.set(rootProject.file(".github/workflows/ci.yml"))
+  yamlFile.set(ciFile)
 }
 
 // Automatically run `versionsMatrixYamlCheck` when running `check`
@@ -33,5 +34,5 @@ tasks
   }
 
 tasks.register("versionsMatrixGenerateYaml", VersionsMatrixYamlGenerateTask::class) {
-  yamlFile.set(rootProject.file(".github/workflows/ci.yml"))
+  yamlFile.set(ciFile)
 }
