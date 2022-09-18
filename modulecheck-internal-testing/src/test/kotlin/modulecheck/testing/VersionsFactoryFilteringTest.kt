@@ -31,8 +31,8 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
     versions(true)
       .joinToString(
         separator = ",\n",
-        prefix = "########## copy/paste these rows in order to update the test\n",
-        postfix = "\n##########"
+        prefix = "########## copy/paste these rows in order to update the test\n\n",
+        postfix = "\n\n##########"
       ) { (g, ag, av, k) ->
         """row( "$g", "$ag", "$av", "$k")"""
       }
@@ -41,12 +41,16 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
         versions(true).joinToString("\n") shouldBe listOf(
           row("7.2", "7.1.3", "2.4.2", "1.7.0"),
           row("7.2", "7.1.3", "2.4.2", "1.7.10"),
+          row("7.2", "7.1.3", "2.4.2", "1.7.20-RC"),
           row("7.5.1", "7.1.3", "2.4.2", "1.7.0"),
           row("7.5.1", "7.1.3", "2.4.2", "1.7.10"),
+          row("7.5.1", "7.1.3", "2.4.2", "1.7.20-RC"),
           row("7.5.1", "7.2.2", "2.4.2", "1.7.0"),
           row("7.5.1", "7.2.2", "2.4.2", "1.7.10"),
+          row("7.5.1", "7.2.2", "2.4.2", "1.7.20-RC"),
           row("7.5.1", "7.3.0", "2.4.2", "1.7.0"),
-          row("7.5.1", "7.3.0", "2.4.2", "1.7.10")
+          row("7.5.1", "7.3.0", "2.4.2", "1.7.10"),
+          row("7.5.1", "7.3.0", "2.4.2", "1.7.20-RC")
         )
           .map { (gradle, agp, anvil, kotlin) ->
             TestVersions(
