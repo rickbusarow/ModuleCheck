@@ -29,7 +29,8 @@ fun String.replaceRegex(
   regex: String,
   replacement: String
 ): String = replace(
-  regex = regex.toRegex(), replacement = replacement
+  regex = regex.toRegex(),
+  replacement = replacement
 )
 
 inline fun String.replaceDestructured(

@@ -180,7 +180,8 @@ abstract class BaseGradleTest :
     assertions: BuildResult.() -> Unit = {}
   ): BuildResult {
     val result = build(
-      *tasks, withPluginClasspath = withPluginClasspath,
+      *tasks,
+      withPluginClasspath = withPluginClasspath,
       stacktrace = stacktrace
     )
 

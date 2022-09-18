@@ -134,7 +134,8 @@ class RealKotlinFile(
 
       fun kotlin(name: String) {
         val declared = DeclaredName.kotlin(
-          packageName, name.stripPackageNameFromFqName(packageName)
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
         )
         if (!contains(declared)) {
           add(declared)
@@ -157,7 +158,8 @@ class RealKotlinFile(
 
       fun java(name: String) {
         val declared = DeclaredName.java(
-          packageName, name.stripPackageNameFromFqName(packageName)
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
         )
         if (!contains(declared)) {
           add(declared)

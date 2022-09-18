@@ -40,7 +40,8 @@ internal class LazySetImpl<E>(
 
   internal val state = AtomicReference(
     State(
-      cache = cache, remaining = sources
+      cache = cache,
+      remaining = sources
     )
   )
 
