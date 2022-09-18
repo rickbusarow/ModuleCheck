@@ -148,7 +148,8 @@ fun buildFileParserFactory(
         RealPluginsBlockProvider(
           groovyParser = GroovyPluginsBlockParser(logger),
           kotlinParser = KotlinPluginsBlockParser(logger),
-          buildFile = invokesConfigurationNames.buildFile, NoContextPsiFileFactory()
+          buildFile = invokesConfigurationNames.buildFile,
+          NoContextPsiFileFactory()
         )
       },
       {

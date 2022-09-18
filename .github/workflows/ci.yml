@@ -101,7 +101,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintformat -q
+          arguments: ktlintformat
           cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
@@ -116,7 +116,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name != github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintCheck -q
+          arguments: ktlintCheck
           cache-read-only: false
 
   modulecheck:

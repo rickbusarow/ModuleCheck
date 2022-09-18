@@ -80,7 +80,8 @@ class TasksValidationTest : BaseGradleTest() {
 
         // The first invocation would always succeed, but will generate a cache if caching isn't ignored
         shouldSucceed(
-          taskName, "--configuration-cache",
+          taskName,
+          "--configuration-cache",
           withPluginClasspath = true
         ).output.clean().let { output ->
           output shouldContain expected1

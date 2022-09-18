@@ -93,7 +93,8 @@ class SarifReportFactory @Inject constructor(
     val tool = Tool(driver = driver)
 
     val run = Run(
-      tool = tool, results = results
+      tool = tool,
+      results = results
     )
 
     val sarifReport = SarifReport(
