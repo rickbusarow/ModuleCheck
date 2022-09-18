@@ -26,23 +26,17 @@ class VersionsMatrix(
   val agpList = agpArg?.singletonList()
     ?: listOf("7.0.1", "7.1.3", "7.2.2", "7.3.0")
   val anvilList = anvilArg?.singletonList()
-    ?: listOf("2.4.1-1-6", "2.4.2")
+    ?: listOf("2.4.2")
   val gradleList = gradleArg?.singletonList()
     ?: listOf("7.2", "7.4.2", "7.5.1")
   val kotlinList = kotlinArg?.singletonList()
-    ?: listOf("1.6.21", "1.7.0", "1.7.10")
+    ?: listOf("1.7.0", "1.7.10")
 
   internal val exclusions = listOf(
-    Exclusion(gradle = null, agp = null, anvil = "2.4.2", kotlin = "1.6.21"),
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.0"),
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.10"),
     Exclusion(gradle = null, agp = "7.0.1", anvil = "2.4.2", kotlin = null),
-    Exclusion(gradle = null, agp = "7.1.3", anvil = "2.4.1-1-6", kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.2.2", anvil = null, kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.3.0", anvil = null, kotlin = null),
     Exclusion(gradle = "7.4.2", agp = null, anvil = "2.4.2", kotlin = null),
-    Exclusion(gradle = "7.4.2", agp = "7.2.2", anvil = null, kotlin = null),
-    Exclusion(gradle = "7.5.1", agp = null, anvil = "2.4.1-1-6", kotlin = null)
   )
     .requireNoDuplicates()
 
