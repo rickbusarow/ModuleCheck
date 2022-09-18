@@ -92,7 +92,7 @@ private fun Project.requireInSyncWithToml() {
     )
       .forEach { (list, listName, alias) ->
         require(list.contains(libsCatalog.version(alias))) {
-          "The versions catalog version for 'alias' is ${libsCatalog.version(alias)}.  " +
+          "The versions catalog version for '$alias' is ${libsCatalog.version(alias)}.  " +
             "Update the VersionsMatrix list '$listName' to include this new version."
         }
       }
