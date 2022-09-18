@@ -63,7 +63,10 @@ internal class DepthReportTaskTest : BaseGradleTest() {
     shouldSucceed("moduleCheckDepths")
 
     root.child(
-      "build", "reports", "modulecheck", "depths.txt"
+      "build",
+      "reports",
+      "modulecheck",
+      "depths.txt"
     ) shouldHaveText """
       -- ModuleCheck Depth results --
 

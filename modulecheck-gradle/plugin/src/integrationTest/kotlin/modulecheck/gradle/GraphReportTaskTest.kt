@@ -63,7 +63,11 @@ internal class GraphReportTaskTest : BaseGradleTest() {
     shouldSucceed("moduleCheckGraphs")
 
     app.projectDir.child(
-      "build", "reports", "modulecheck", "graphs", "main.dot"
+      "build",
+      "reports",
+      "modulecheck",
+      "graphs",
+      "main.dot"
     ) shouldHaveText """
       strict digraph {
         edge ["dir"="forward"]

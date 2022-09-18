@@ -66,7 +66,9 @@ internal class XmlFileTest : BaseTest() {
       id("fragment_container_nested".asSimpleName())
     )
 
-    file.resourceReferencesAsRReferences shouldBe setOf("R.style.Theme_AppCompat_Light_DarkActionBar")
+    file.resourceReferencesAsRReferences shouldBe setOf(
+      "R.style.Theme_AppCompat_Light_DarkActionBar"
+    )
 
     file.references.toList() shouldBe listOf(
       ReferenceName("LinearLayout", XML),

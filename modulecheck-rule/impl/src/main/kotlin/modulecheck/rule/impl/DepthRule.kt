@@ -35,7 +35,8 @@ class DepthRule @Inject constructor() :
         val intermediate = project.depthForSourceSetName(sourceSetName)
 
         DepthFinding(
-          dependentProject = project, dependentPath = project.path,
+          dependentProject = project,
+          dependentPath = project.path,
           depth = intermediate.depth,
           children = intermediate.children.map { it.toFinding(name) },
           sourceSetName = sourceSetName,

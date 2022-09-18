@@ -77,7 +77,8 @@ data class UnusedDependencies(
     override suspend operator fun invoke(project: McProject): UnusedDependencies {
 
       return UnusedDependencies(
-        SafeCache(listOf(project.path, UnusedDependencies::class)), project
+        SafeCache(listOf(project.path, UnusedDependencies::class)),
+        project
       )
     }
   }
