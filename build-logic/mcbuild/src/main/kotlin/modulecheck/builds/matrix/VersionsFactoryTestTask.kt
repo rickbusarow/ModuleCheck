@@ -65,7 +65,6 @@ abstract class VersionsFactoryTestTask @Inject constructor(
 
   @TaskAction
   fun execute() {
-
     val packageNameString = packageName.get()
 
     outDir.get().asFile.deleteRecursively()
@@ -80,7 +79,9 @@ abstract class VersionsFactoryTestTask @Inject constructor(
 
     val fullList = versionsMatrix.allValid
       .joinToString(
-        separator = ",\n", prefix = "listOf(\n", postfix = "\n|      )"
+        separator = ",\n",
+        prefix = "listOf(\n",
+        postfix = "\n|      )"
       ) { (gradle, agp, anvil, kotlin) ->
         "|        TestVersions(" +
           """gradle = "$gradle", """ +

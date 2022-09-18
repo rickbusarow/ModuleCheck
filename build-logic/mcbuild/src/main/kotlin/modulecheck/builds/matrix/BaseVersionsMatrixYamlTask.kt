@@ -43,7 +43,6 @@ abstract class BaseVersionsMatrixYamlTask @Inject constructor(
   )
 
   protected fun createYaml(indentSize: Int): String {
-
     val versionsMatrix = VersionsMatrix(
       exhaustive = true,
       gradleArg = null,
@@ -86,7 +85,6 @@ abstract class BaseVersionsMatrixYamlTask @Inject constructor(
     .create("mcbuild-versions-matrix")
 
   protected fun requireCiFile(): File {
-
     val ciFile = yamlFile.get().asFile
 
     require(ciFile.exists()) {
@@ -109,7 +107,6 @@ abstract class VersionsMatrixYamlCheckTask @Inject constructor(
 
   @TaskAction
   fun check() {
-
     val changed = getYamlSections(requireCiFile().readText())
       .map { it.destructured }
       .filter { (indent, _, content, _) ->
@@ -119,7 +116,6 @@ abstract class VersionsMatrixYamlCheckTask @Inject constructor(
       .toList()
 
     if (changed.isNotEmpty()) {
-
       val message = "The versions matrix in the CI file is out of date.  " +
         "Run ./gradlew versionsMatrixGenerateYaml to automatically update." +
         "\n\tfile://${yamlFile.get()}"

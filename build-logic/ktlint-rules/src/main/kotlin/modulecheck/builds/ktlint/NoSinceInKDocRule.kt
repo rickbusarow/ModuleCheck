@@ -48,12 +48,11 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
       .removeSuffix("-SNAPSHOT")
   }
 
-  override fun visit(
+  override fun beforeVisitChildNodes(
     node: ASTNode,
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
-
     if (node.elementType == ElementType.KDOC_END) {
       visitKDoc(node, autoCorrect = autoCorrect, emit = emit)
     }
@@ -64,7 +63,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
-
     val kdoc = kdocNode.psi.parent as KDoc
 
     val tag = kdoc.findSinceTag()
@@ -81,7 +79,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     val sinceVersion = kdoc.findSinceTag()?.getContent()
 
     if (sinceVersion.isNullOrBlank()) {
-
       emit(
         kdocNode.startOffset,
         "added '$currentVersion' to `@since` tag",
@@ -117,7 +114,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun ASTNode.addSinceTag(version: String) {
-
     val kdoc = psi.parent as KDoc
 
     val indent = kdoc.findIndent()
@@ -143,7 +139,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     var firstNewNode: ASTNode? = null
 
     repeat(leadingNewlineCount) {
-
       val newline = PsiWhiteSpaceImpl(newlineIndent)
       if (firstNewNode == null) {
         firstNewNode = newline
@@ -212,7 +207,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun KDocTag.addVersionToSinceTag(version: String) {
-
     require(knownTag == SINCE) {
       "Expected to be adding a version to a `@since` tag, but instead it's `$text`."
     }

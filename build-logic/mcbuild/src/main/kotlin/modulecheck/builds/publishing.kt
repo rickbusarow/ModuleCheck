@@ -123,7 +123,6 @@ fun Project.configurePublishing(
   // and generating kdoc for everything takes forever -- especially on a GitHub Actions server.
   // So for integration tests, skip Dokka tasks.
   val publishToMavenLocalNoDokka = tasks.register("publishToMavenLocalNoDokka") {
-
     notCompatibleWithConfigurationCache("")
     doFirst { skipDokka = true }
 
