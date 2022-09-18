@@ -23,14 +23,14 @@ class DepthLogFactory {
 
   fun create(results: List<DepthFinding>): Report = Report.build {
 
-    header("-- ModuleCheck main source set depth results --")
+    headerLine("-- ModuleCheck main source set depth results --")
 
     val depthHeader = "depth"
     val childrenHeader = "modules"
 
     val depthHeaderLength = depthHeader.length + DEPTH_PADDING
 
-    header(
+    headerLine(
       "    " +
         "${depthHeader.padEnd(depthHeaderLength)} " +
         childrenHeader
@@ -51,11 +51,11 @@ class DepthLogFactory {
             postfix = "]"
           ) { it.dependentPath.value }
 
-        info("    ${depth.toString().padEnd(depthHeaderLength)} $paths")
+        infoLine("    ${depth.toString().padEnd(depthHeaderLength)} $paths")
       }
 
     // bottom padding
-    header("")
+    headerLine("")
   }
 
   companion object {

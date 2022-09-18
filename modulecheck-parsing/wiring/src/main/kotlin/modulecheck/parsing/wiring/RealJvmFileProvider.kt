@@ -104,7 +104,7 @@ class RealJvmFileProvider(
       when {
         file.isKtFile() -> RealKotlinFile(
           file = file,
-          psi = kotlinEnvironment.ktFiles.getValue(file),
+          psi = kotlinEnvironment.ktFile(file),
           psiResolver = PsiElementResolver(
             project = project,
             sourceSetName = sourceSetName
@@ -114,7 +114,7 @@ class RealJvmFileProvider(
 
         else -> RealJavaFile(
           file = file,
-          psi = kotlinEnvironment.javaFiles.getValue(file),
+          psi = kotlinEnvironment.javaPsiFile(file),
           jvmTarget = sourceSet.jvmTarget,
           nameParser = nameParser
         )

@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.toSet
-import modulecheck.utils.coroutines.any
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.LazySet.DataSource
 import modulecheck.utils.lazy.LazySet.DataSource.Priority
@@ -32,6 +31,12 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
   val isFullyCached: Boolean
 
   suspend fun contains(element: Any?): Boolean
+
+  /**
+   * @return true if the two LazySets have any element in common, otherwise false
+   * @since 0.13.0
+   */
+  suspend fun containsAny(other: LazySet<Any?>): Boolean
 
   suspend fun isEmpty(): Boolean
   suspend fun isNotEmpty(): Boolean
@@ -108,10 +113,6 @@ suspend inline fun <reified T : E, E> LazySet<E>.getOrNull(element: E): T? {
 sealed interface LazySetComponent<out E>
 
 suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: Collection<E>): Boolean {
-  return elements.any { contains(it) }
-}
-
-suspend fun <T : B, E : B, B> LazySet<T>.containsAny(elements: LazySet<E>): Boolean {
   return elements.any { contains(it) }
 }
 

@@ -17,6 +17,42 @@ package modulecheck.model.dependency
 
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.capitalize
+import modulecheck.utils.requireNotNull
+
+/**
+ * @return true if this source set is `androidTest` or `test`, or any other source set downstream of
+ *     them, like `androidTestDebug`.
+ * @since 0.13.0
+ */
+fun SourceSetName.isTestingOnly(sourceSets: SourceSets): Boolean {
+
+  return sourceSets.getOrElse(this) { sourceSets.getValue(SourceSetName.MAIN) }
+    .withUpstream()
+    .any { upstream ->
+      upstream == SourceSetName.TEST || upstream == SourceSetName.ANDROID_TEST
+    }
+}
+
+/**
+ * @return the name of the non-test/published SourceSet associated with a given SourceSet name. For
+ *     SourceSets which are published, this just returns the same name. For testing SourceSets, this
+ *     returns the most-downstream source set which it's testing against.
+ * @since 0.13.0
+ */
+fun SourceSetName.nonTestSourceSetName(sourceSets: SourceSets): SourceSetName {
+
+  return sourceSets.getOrElse(this) { sourceSets.getValue(SourceSetName.MAIN) }
+    .withUpstream()
+    .sortedByDescending { sourceSets.getValue(it).upstream.size }
+    .firstOrNull { upstream -> !upstream.isTestingOnly(sourceSets) }
+    .requireNotNull {
+      val possible = sourceSets.getValue(this)
+        .withUpstream()
+        .sortedByDescending { sourceSets.getValue(it).upstream.size }
+
+      "Could not find a non-test source set out of $possible"
+    }
+}
 
 fun SourceSetName.javaConfigurationNames(): List<ConfigurationName> {
 

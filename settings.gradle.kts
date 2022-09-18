@@ -80,7 +80,6 @@ rootDir.resolve("gradle.properties")
   )
 
 rootProject.name = "ModuleCheck"
-enableFeaturePreview("VERSION_CATALOGS")
 
 include(
   ":ktlint-rules",

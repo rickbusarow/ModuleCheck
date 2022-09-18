@@ -26,7 +26,7 @@ interface PluginsBlock :
 
 interface PluginsBlockProvider {
 
-  fun get(): PluginsBlock?
+  suspend fun get(): PluginsBlock?
 
   fun interface Factory {
     fun create(buildFile: File): PluginsBlockProvider

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.Parameterized
 import modulecheck.model.dependency.ProjectDependency
+import modulecheck.model.dependency.nonTestSourceSetName
 import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
@@ -78,15 +79,14 @@ class Declarations private constructor(
       val sourceSetSeed = if (includeUpstream) {
         sourceSetName.withUpstream(project)
           .filterNot { it == SourceSetName.TEST_FIXTURES }
+          .forEach { sourceSetOrUpstream ->
+            components.add(get(sourceSetOrUpstream, includeUpstream = false))
+          }
       } else {
-        listOf(sourceSetName)
-      }
 
       sourceSetSeed.forEach { sourceSetOrUpstream ->
 
-        val rNameOrNull = project.androidRDeclaredNameForSourceSetName(sourceSetOrUpstream)
-
-        project.jvmFilesForSourceSetName(sourceSetOrUpstream)
+        project.jvmFilesForSourceSetName(sourceSetName)
           .toList()
           .letIf(packageNameOrNull != null) { files ->
             files.filter { it.packageName == packageNameOrNull }
@@ -97,7 +97,7 @@ class Declarations private constructor(
         if (rNameOrNull != null) {
           check(project.isAndroid())
 
-          val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetOrUpstream)
+          val resources = project.androidResourceDeclaredNamesForSourceSetName(sourceSetName)
             .asDataSource()
 
           components.add(resources)
@@ -105,7 +105,7 @@ class Declarations private constructor(
           components.add(dataSourceOf(rNameOrNull))
 
           components.add(
-            project.androidDataBindingDeclarationsForSourceSetName(sourceSetOrUpstream)
+            project.androidDataBindingDeclarationsForSourceSetName(sourceSetName)
           )
         }
       }
@@ -146,8 +146,7 @@ suspend fun ProjectDependency.declarations(
   // If the dependency is something like `debugImplementation(...)`, the dependency is providing its
   // `debug` source, which in turn provides its upstream `main` source.
   val nonTestSourceSetName = configurationName.toSourceSetName()
-    .nonTestSourceSetNameOrNull()
-    ?: declaringSourceSetName(isAndroid = project.isAndroid())
+    .nonTestSourceSetName(project.sourceSets)
 
   // If we got something like `debug` as a source set, that just means that the dependent project
   // has a `debug` source set.  If the dependency project has `debug`, that's what it'll provide.

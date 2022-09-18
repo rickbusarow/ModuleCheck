@@ -26,7 +26,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   val logger by resets { PrintLogger() }
 
   @Test
-  fun `external declaration`() {
+  fun `external declaration`() = test {
     val block = parse(
       """
        plugins {
@@ -60,7 +60,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `suppressed kotlin function`() {
+  fun `suppressed kotlin function`() = test {
     val block = parse(
       """
        plugins {
@@ -81,7 +81,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `suppressed back-ticked ID`() {
+  fun `suppressed back-ticked ID`() = test {
     val block = parse(
       """
        plugins {
@@ -102,7 +102,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `suppression which doesn't match finding name regex should be ignored`() {
+  fun `suppression which doesn't match finding name regex should be ignored`() = test {
     val block = parse(
       """
        @Suppress("DSL_SCOPE_VIOLATION")
@@ -116,7 +116,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `suppressed id function`() {
+  fun `suppressed id function`() = test {
     val block = parse(
       """
        plugins {
@@ -137,7 +137,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
   }
 
   @Test
-  fun `suppressed with old finding name`() {
+  fun `suppressed with old finding name`() = test {
     val block = parse(
       """
        plugins {
@@ -157,7 +157,7 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
     )
   }
 
-  fun parse(
+  suspend fun parse(
     string: String
   ): KotlinPluginsBlock {
     val file = NoContextPsiFileFactory()

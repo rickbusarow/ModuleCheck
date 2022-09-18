@@ -22,7 +22,7 @@ plugins {
 }
 
 extensions.configure(KtlintExtension::class.java) {
-  val libVersion = libsCatalog.version("ktlint-lib").requiredVersion
+  val libVersion = libsCatalog.version("ktlint-lib")
   version.set(libVersion)
   debug.set(false)
   outputToConsole.set(true)

@@ -17,6 +17,7 @@ package modulecheck.builds
 
 import com.google.devtools.ksp.gradle.KspTaskJvm
 import modulecheck.builds.matrix.VersionsFactoryTestTask
+import modulecheck.builds.matrix.VersionsMatrix
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
@@ -49,6 +50,8 @@ private fun Project.setUpGeneration(
     "generated/sources/versionsMatrix/kotlin/main"
   )
 
+  requireInSyncWithToml()
+
   val versionsMatrixGenerateFactory by tasks.registering(VersionsFactoryTestTask::class) {
 
     gradleVersion.set(project.gradlePropertyAsProvider("modulecheck.gradleVersion"))
@@ -74,6 +77,29 @@ private fun Project.setUpGeneration(
   configure<KotlinJvmProjectExtension> {
     sourceSets.named("main") {
       kotlin.srcDir(generatedDirPath)
+    }
+  }
+}
+
+private fun Project.requireInSyncWithToml() {
+
+  with(VersionsMatrix()) {
+
+    sequenceOf(
+      Triple(agpList, "agpList", "androidTools"),
+      Triple(anvilList, "anvilList", "square-anvil"),
+      Triple(kotlinList, "kotlinList", "kotlin")
+    )
+      .forEach { (list, listName, alias) ->
+        require(list.contains(libsCatalog.version(alias))) {
+          "The versions catalog version for 'alias' is ${libsCatalog.version(alias)}.  " +
+            "Update the VersionsMatrix list '$listName' to include this new version."
+        }
+      }
+
+    require(gradleList.contains(gradle.gradleVersion)) {
+      "The Gradle version is ${gradle.gradleVersion}.  " +
+        "Update the VersionsMatrix list 'gradleList' to include this new version."
     }
   }
 }

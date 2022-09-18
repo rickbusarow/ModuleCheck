@@ -1,6 +1,6 @@
 [versions]
 
-androidTools = "7.2.2"
+androidTools = "7.3.0"
 
 androidx-compose = "1.1.0-alpha04"
 androidx-fragment = "1.3.6"
@@ -13,7 +13,7 @@ androidx-test-espresso = "3.4.0"
 androidx-test = "1.4.0"
 androidx-work = "2.6.0"
 
-antlr = "4.10.1"
+antlr = "4.11.1"
 autoManifest = "2.0"
 
 benManes-caffeine = "3.1.1"
@@ -25,7 +25,7 @@ compileSdk = "30"
 dependencyAnalysis = "1.13.1"
 detekt = "1.21.0"
 dokka = "1.7.10"
-dropbox-dependencyGuard = "0.3.1"
+dropbox-dependencyGuard = "0.3.2"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
@@ -46,7 +46,7 @@ kotlinx-coroutines = "1.6.4"
 kotlinx-knit = "0.4.0"
 google-ksp = "1.6.21-1.0.6"
 
-ktlint-plugin = "10.3.0"
+ktlint-plugin = "11.0.0"
 ktlint-lib = "0.45.2"
 
 mavenPublish = "0.13.0"
@@ -66,7 +66,7 @@ square-workflow = "1.0.0"
 targetSdk = "30"
 taskTree = "2.1.0"
 
-vanniktech-publish = "0.21.0"
+vanniktech-publish = "0.22.0"
 
 [plugins]
 
@@ -153,6 +153,7 @@ kotlin-compile-testing = "com.github.tschuchortdev:kotlin-compile-testing:1.4.9"
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-coreCommon = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-common", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-debug = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-debug", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinx-coroutines" }
@@ -200,11 +201,10 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
-square-turbine = "app.cash.turbine:turbine:0.9.0"
+square-turbine = "app.cash.turbine:turbine:0.10.0"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
-vanniktech-gradle-maven-publish-plugin-base = "com.vanniktech:gradle-maven-publish-plugin-base:0.19.0"
 vanniktech-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "vanniktech-publish" }
 
 zacSweers-auto-service-ksp = "dev.zacsweers.autoservice:auto-service-ksp:1.0.0"

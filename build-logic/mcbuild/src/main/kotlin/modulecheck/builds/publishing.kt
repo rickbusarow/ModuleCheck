@@ -43,7 +43,7 @@ fun Project.configurePublishing(
   var skipDokka = false
 
   configure<MavenPublishBaseExtension> {
-    publishToMavenCentral(DEFAULT)
+    publishToMavenCentral(DEFAULT, automaticRelease = true)
     signAllPublications()
     pom {
       description.set("Fast dependency graph linting for Gradle projects")
@@ -124,12 +124,13 @@ fun Project.configurePublishing(
   // So for integration tests, skip Dokka tasks.
   val publishToMavenLocalNoDokka = tasks.register("publishToMavenLocalNoDokka") {
 
+    notCompatibleWithConfigurationCache("")
     doFirst { skipDokka = true }
 
-    finalizedBy(rootProject.tasks.matching { it.name == "publishToMavenLocal" })
+    finalizedBy("publishToMavenLocal")
   }
 
-  tasks.matching { it.name == "publishToMavenLocal" }.all {
+  tasks.matching { it.name == "publishToMavenLocal" }.configureEach {
     mustRunAfter(publishToMavenLocalNoDokka)
   }
 }
