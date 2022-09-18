@@ -136,7 +136,9 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
             true,
             disableConfigCache
           )
-        } else null
+        } else {
+          null
+        }
       )
     } else {
       listOfNotNull(
@@ -148,7 +150,9 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
             true,
             disableConfigCache
           )
-        } else null
+        } else {
+          null
+        }
       )
     }
 

@@ -218,8 +218,9 @@ class RealKotlinEnvironment(
   ): AnalysisResult {
 
     val analyzer = AnalyzerWithCompilerReport(
-      messageCollector,
-      coreEnvironment.configuration.languageVersionSettings
+      messageCollector = messageCollector,
+      languageVersionSettings = coreEnvironment.configuration.languageVersionSettings,
+      renderDiagnosticName = false
     )
 
     analyzer.analyzeAndReport(ktFiles) {

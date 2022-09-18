@@ -34,7 +34,18 @@ moduleCheck {
   }
 }
 
+val kotlinVersion = libs.versions.kotlin.get()
 allprojects {
+
+  configurations.all {
+    resolutionStrategy {
+      eachDependency {
+        if (requested.group == "org.jetbrains.kotlin") {
+          useVersion(kotlinVersion)
+        }
+      }
+    }
+  }
   afterEvaluate {
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
       debug.set(false)

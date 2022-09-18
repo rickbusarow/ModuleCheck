@@ -16,8 +16,8 @@
 import modulecheck.builds.ArtifactIdExtension
 import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
-import org.jlleitschuh.gradle.ktlint.tasks.KtLintFormatTask
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
+import org.jmailen.gradle.kotlinter.tasks.LintTask
 
 plugins {
   id("org.jetbrains.dokka")
@@ -31,8 +31,8 @@ tasks.withType<AbstractDokkaLeafTask>()
 
     // Dokka uses their outputs but doesn't explicitly depend upon them.
     mustRunAfter(tasks.withType(KotlinCompile::class.java))
-    mustRunAfter(tasks.withType(KtLintCheckTask::class.java))
-    mustRunAfter(tasks.withType(KtLintFormatTask::class.java))
+    mustRunAfter(tasks.withType(LintTask::class.java))
+    mustRunAfter(tasks.withType(FormatTask::class.java))
 
     // The default moduleName for each module in the module list is its unqualified "name",
     // meaning the list would be full of "api", "impl", etc.  Instead, use the module's maven
