@@ -26,7 +26,7 @@ import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.BindingContext
-import org.jetbrains.kotlin.types.UnresolvedType
+import org.jetbrains.kotlin.types.error.ErrorType
 import org.jetbrains.kotlin.types.isNullable
 import org.junit.jupiter.api.Test
 
@@ -276,9 +276,9 @@ class RealKotlinEnvironmentTest : ProjectTest() {
     val propertyType = propertyDescriptor.returnType!!
 
     assertSoftly {
-      propertyType.shouldBeTypeOf<UnresolvedType>()
+      propertyType.shouldBeTypeOf<ErrorType>()
       propertyType.getJetTypeFqName(false) shouldBe ""
-      propertyType.presentableName shouldBe "com.fake.Fake<String>"
+      propertyType.debugMessage shouldBe "Unresolved type for com.fake.Fake<String>"
       propertyType.isNullable() shouldBe true
 
       propertyType.arguments.single()
