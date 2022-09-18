@@ -64,7 +64,6 @@ abstract class ArtifactsTask(
   }
 
   private fun Project.createArtifactList(): List<ArtifactConfig> {
-
     val map = subprojects
       .mapNotNull { sub ->
 

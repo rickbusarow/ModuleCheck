@@ -597,7 +597,9 @@ internal class CaseMatcherTest {
 
       val displayName = if (extraName.isNotBlank()) {
         "'$subject' -- $extraName"
-      } else subject
+      } else {
+        subject
+      }
 
       DynamicTest.dynamicTest(displayName) {
         test.invoke(subject)

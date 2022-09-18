@@ -84,7 +84,6 @@ class VersionsMatrix(
 
   private fun List<TestVersions>.requireNotEmpty() = apply {
     require(isNotEmpty()) {
-
       val arguments = listOf(
         "gradle" to gradleArg,
         "agp" to agpArg,
@@ -100,7 +99,6 @@ class VersionsMatrix(
 
   private fun List<Exclusion>.requireNoDuplicates() = also { exclusions ->
     require(exclusions.toSet().size == exclusions.size) {
-
       val duplicates = exclusions.filter { target ->
         exclusions.filter { it == target }.size > 1
       }
@@ -112,7 +110,6 @@ class VersionsMatrix(
   }
 
   private fun requireNoUselessExclusions() {
-
     // If we're using arguments, then the baseline `combinations` list will naturally be smaller.
     // This check can be skipped.
     if (listOfNotNull(gradleArg, agpArg, anvilArg, kotlinArg).isNotEmpty()) return
@@ -145,7 +142,6 @@ class VersionsMatrix(
   }
 
   private fun TestVersions.excludedBy(exclusion: Exclusion): Boolean {
-
     return when {
       exclusion.gradle != null && exclusion.gradle != gradle -> false
       exclusion.agp != null && exclusion.agp != agp -> false

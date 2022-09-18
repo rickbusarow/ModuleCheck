@@ -13,19 +13,26 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+@Suppress("DSL_SCOPE_VIOLATION")
+plugins {
+  kotlin("jvm")
+  alias(libs.plugins.kotlinter)
+  alias(libs.plugins.google.ksp)
+}
 
-import org.gradle.api.Project
-import org.gradle.kotlin.dsl.apply
-import org.gradle.kotlin.dsl.dependencies
+dependencies {
+  api(project(path = ":core"))
 
-fun Project.applyDagger() {
-  apply(plugin = "org.jetbrains.kotlin.kapt")
-  apply(plugin = "com.squareup.anvil")
+  implementation(libs.google.auto.common)
+  implementation(libs.google.auto.service.annotations)
+  implementation(libs.jmailen.kotlinter)
+  implementation(libs.ktlint.core)
+  implementation(libs.ktlint.ruleset.standard)
 
-  dependencies {
-    "compileOnly"(project.libsCatalog.dependency("javax-inject"))
-    "compileOnly"(project.libsCatalog.dependency("google-dagger-api"))
-    "kapt"(project.libsCatalog.dependency("google-dagger-compiler"))
-  }
+  ksp(libs.zacSweers.auto.service.ksp)
+
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.ktlint.test)
 }

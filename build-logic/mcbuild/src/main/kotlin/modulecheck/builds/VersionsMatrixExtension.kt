@@ -108,7 +108,6 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   sourceSetName: String,
   taskProvider: TaskProvider<out Task>
 ) {
-
   val kotlinTaskSourceSetName = when (sourceSetName) {
     "main" -> ""
     else -> sourceSetName.capitalize()

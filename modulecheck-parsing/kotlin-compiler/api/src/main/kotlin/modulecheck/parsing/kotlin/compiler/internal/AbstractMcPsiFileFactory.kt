@@ -44,9 +44,11 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
 
   override suspend fun createKotlin(file: File): KtFile {
     if (!file.exists()) throw FileNotFoundException("could not find file $file")
-    if (!file.isKotlinFile()) throw IllegalArgumentException(
-      "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
-    )
+    if (!file.isKotlinFile()) {
+      throw IllegalArgumentException(
+        "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
+      )
+    }
 
     return create(file) as KtFile
   }
