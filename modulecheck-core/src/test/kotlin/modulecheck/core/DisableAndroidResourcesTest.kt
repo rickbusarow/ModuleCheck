@@ -26,7 +26,11 @@ import org.junit.jupiter.api.Test
 
 class DisableAndroidResourcesTest : RunnerTest() {
 
-  override val settings by resets { TestSettings(checks = TestChecksSettings(disableAndroidResources = true)) }
+  override val settings by resets {
+    TestSettings(
+      checks = TestChecksSettings(disableAndroidResources = true)
+    )
+  }
 
   @Test
   fun `resource generation is used in contributing module with no changes`() {

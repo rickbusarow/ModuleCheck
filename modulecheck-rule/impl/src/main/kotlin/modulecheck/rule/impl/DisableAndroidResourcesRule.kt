@@ -47,7 +47,9 @@ class DisableAndroidResourcesRule @Inject constructor() :
 
     fun findingList() = listOf(
       UnusedResourcesGenerationFinding(
-        dependentProject = project, dependentPath = project.path, buildFile = project.buildFile
+        dependentProject = project,
+        dependentPath = project.path,
+        buildFile = project.buildFile
       )
     )
 

@@ -110,7 +110,8 @@ sealed class ReferenceName : McName {
       name: String,
       language: CompatibleLanguage
     ): ReferenceName = ReferenceNameImpl(
-      name = name, language = language
+      name = name,
+      language = language
     )
   }
 }

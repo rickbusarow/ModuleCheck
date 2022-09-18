@@ -95,7 +95,8 @@ data class ClasspathDependencies(
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
     override suspend operator fun invoke(project: McProject): ClasspathDependencies {
       return ClasspathDependencies(
-        SafeCache(listOf(project.path, ClasspathDependencies::class)), project
+        SafeCache(listOf(project.path, ClasspathDependencies::class)),
+        project
       )
     }
   }

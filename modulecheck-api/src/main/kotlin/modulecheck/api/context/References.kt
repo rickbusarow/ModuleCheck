@@ -63,7 +63,8 @@ data class References(
     override suspend operator fun invoke(project: McProject): References {
 
       return References(
-        SafeCache(listOf(project.path, References::class)), project
+        SafeCache(listOf(project.path, References::class)),
+        project
       )
     }
   }
