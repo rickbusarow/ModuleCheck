@@ -149,6 +149,16 @@ abstract class VersionsMatrixYamlGenerateTask @Inject constructor(
       "$indent$startTag$newContent$closingLine"
     }
 
-    ciFile.writeText(newText)
+    if (ciText != newText) {
+
+      ciFile.writeText(newText)
+
+      val message = "Updated the versions matrix in the CI file." +
+        "\n\tfile://${yamlFile.get()}"
+
+      createStyledOutput()
+        .withStyle(StyledTextOutput.Style.Description)
+        .println(message)
+    }
   }
 }

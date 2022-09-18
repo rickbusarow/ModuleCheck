@@ -13,13 +13,11 @@
  * limitations under the License.
  */
 
+import modulecheck.builds.isRootOfComposite
 import modulecheck.builds.matrix.VersionsMatrixYamlCheckTask
 import modulecheck.builds.matrix.VersionsMatrixYamlGenerateTask
-import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.registering
-import org.gradle.language.base.plugins.LifecycleBasePlugin
 
-require(project == rootProject) {
+require(project.isRootOfComposite()) {
   "only add the ci/yaml matrix tasks to the root project"
 }
 
