@@ -17,11 +17,12 @@ package modulecheck.builds.ktlint
 
 import com.pinterest.ktlint.core.RuleProvider
 import io.kotest.matchers.shouldBe
+import modulecheck.builds.VERSION_NAME
 import org.junit.jupiter.api.Test
 
 class NoSinceInKDocRuleTest {
 
-  private val currentVersion = "0.13.0"
+  private val currentVersion = VERSION_NAME
     .removeSuffix("-LOCAL")
     .removeSuffix("-SNAPSHOT")
 
