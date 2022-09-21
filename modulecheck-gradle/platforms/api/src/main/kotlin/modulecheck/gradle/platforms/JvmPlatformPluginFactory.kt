@@ -57,7 +57,11 @@ class JvmPlatformPluginFactory @Inject constructor(
 fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
   extensions.findByName("kotlin") as? KotlinProjectExtension
 
-/** shorthand for `extensions.findByType(JavaPluginExtension::class.java)` */
+/**
+ * shorthand for `extensions.findByType(JavaPluginExtension::class.java)`
+ *
+ * @since 0.13.0
+ */
 fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
   extensions.findByType(JavaPluginExtension::class.java)
 
@@ -66,6 +70,8 @@ fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
  *
  * NB This is technically unsafe, in that it assumes the files have all been resolved already. If
  * they need to be resolved still, it may happen on a non-Gradle thread, which causes an exception.
+ *
+ * @since 0.13.0
  */
 fun List<McConfiguration>.classpathLazy(
   gradleProject: GradleProject
@@ -79,7 +85,9 @@ fun List<McConfiguration>.classpathLazy(
           gradleConfiguration.fileCollection { dep ->
             dep is ExternalModuleDependency
           }
-        } else emptyList()
+        } else {
+          emptyList()
+        }
       }
   }
 }

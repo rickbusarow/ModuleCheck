@@ -28,9 +28,9 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.utils.mapToSet
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.PackageName.Companion.asPackageName
+import modulecheck.utils.mapToSet
 import java.io.File
 
 fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
@@ -132,6 +132,7 @@ fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin
  * @param configAction invoked *for each build variant* with the set of compiled configurations
  * @return [Unit] if the project had AGP and registered the callback, or `null` if the project does
  *     not have AGP
+ * @since 0.13.0
  */
 @Suppress("UnstableApiUsage")
 inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
