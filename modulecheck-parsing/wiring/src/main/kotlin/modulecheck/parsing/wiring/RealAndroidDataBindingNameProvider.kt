@@ -27,7 +27,7 @@ import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.emptyLazySet
 import modulecheck.utils.lazy.toLazySet
 
-class RealAndroidDataBindingNameProvider constructor(
+class RealAndroidDataBindingNameProvider(
   private val project: McProject,
   private val sourceSetName: SourceSetName
 ) : AndroidDataBindingNameProvider {
