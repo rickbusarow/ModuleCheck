@@ -31,7 +31,7 @@ import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.letIf
 import modulecheck.utils.requireNotNull
 
-class RealAndroidRNameProvider constructor(
+class RealAndroidRNameProvider(
   private val project: McProject,
   private val sourceSetName: SourceSetName
 ) : AndroidRNameProvider {
