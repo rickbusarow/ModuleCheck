@@ -20,6 +20,17 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-core"
   anvil()
+
+  buildProperties(
+    "test",
+    """
+    package modulecheck.core
+
+    internal class BuildProperties {
+      val websiteDir = "${rootDir.resolve("website").invariantSeparatorsPath}"
+    }
+    """
+  )
 }
 
 dependencies {
