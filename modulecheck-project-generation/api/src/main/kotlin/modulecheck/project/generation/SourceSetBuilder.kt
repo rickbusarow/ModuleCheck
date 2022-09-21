@@ -35,7 +35,7 @@ import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersion.KOTLIN_1_6
 import java.io.File
 
-data class SourceSetBuilder constructor(
+data class SourceSetBuilder(
   var name: SourceSetName,
   var compileOnlyConfiguration: McConfiguration,
   var apiConfiguration: McConfiguration?,

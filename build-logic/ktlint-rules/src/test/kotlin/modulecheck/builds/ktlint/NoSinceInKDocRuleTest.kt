@@ -15,12 +15,9 @@
 
 package modulecheck.builds.ktlint
 
-import com.pinterest.ktlint.core.LintError
 import com.pinterest.ktlint.core.RuleProvider
-import com.pinterest.ktlint.core.api.EditorConfigOverride
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import com.pinterest.ktlint.test.format as ktlintTestFormat
 
 class NoSinceInKDocRuleTest {
 
@@ -262,18 +259,3 @@ class NoSinceInKDocRuleTest {
     """.trimIndent()
   }
 }
-
-fun Set<RuleProvider>.format(
-  text: String,
-  editorConfigOverride: EditorConfigOverride = EditorConfigOverride.emptyEditorConfigOverride,
-  userData: Map<String, String> = emptyMap(),
-  cb: (e: LintError, corrected: Boolean) -> Unit = { _, _ -> },
-  script: Boolean = false
-): String = ktlintTestFormat(
-  lintedFilePath = null,
-  text = text,
-  editorConfigOverride = editorConfigOverride,
-  userData = userData,
-  cb = cb,
-  script = script
-)
