@@ -21,6 +21,7 @@ import org.gradle.api.artifacts.ExternalDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
+import org.gradle.api.internal.artifacts.DefaultDependencySet
 
 /**
  * Adapted from Ben Manes' gradle versions plugin
@@ -35,22 +36,30 @@ class ResolutionConfigFactory {
     configurations: List<Configuration>
   ): Configuration {
 
-    val configuration = configurations.first()
+    val first = configurations.first()
 
-    val copy = configuration.copyRecursive().setTransitive(false)
+    val copy = first.copyRecursive().setTransitive(false)
     copy.isCanBeResolved = true
 
-    // Resolve using the latest version of explicitly declared dependencies and retains Kotlin's
-    // inherited stdlib dependencies from the super configurations. This is required for variant
-    // resolution, but the full set can break consumer capability matching.
-    val inherited = configuration.allDependencies
-      .filterIsInstance<ExternalDependency>()
-      .filter { dependency -> dependency.group == "org.jetbrains.kotlin" }
-      .filter { dependency -> dependency.version != null } -
-      configuration.dependencies
+    val dest = copy.dependencies as DefaultDependencySet
 
-    val latest = configuration.dependencies
-      .filter { dependency -> dependency !is ProjectDependency }
+    copy.dependencies.clear()
+
+    configurations.forEach { configuration ->
+      // Resolve using the latest version of explicitly declared dependencies and retains Kotlin's
+      // inherited stdlib dependencies from the super configurations. This is required for variant
+      // resolution, but the full set can break consumer capability matching.
+      configuration.allDependencies
+        .matching { dependency -> dependency !in configuration.dependencies }
+        .matching { dependency -> dependency is ExternalDependency }
+        .matching { dependency -> dependency.group == "org.jetbrains.kotlin" }
+        .matching { dependency -> dependency.version != null }
+        .configureEach { dest.add(it) }
+
+      configuration.allDependencies
+        .matching { dependency -> dependency !is ProjectDependency }
+        .configureEach { dest.add(it) }
+    }
 
     // Adds the Kotlin 1.2.x legacy metadata to assist in variant selection
     val metadata = project.configurations.findByName("commonMainMetadataElements")
@@ -63,25 +72,22 @@ class ResolutionConfigFactory {
       copy.addAttributes(metadata)
     }
 
-    copy.dependencies.clear()
-    copy.dependencies.addAll(latest)
-    copy.dependencies.addAll(inherited)
-
-    copy.addAttributes(configuration)
+    copy.addAttributes(first)
     return copy
   }
 
   private fun HasConfigurableAttributes<*>.addAttributes(
     source: HasConfigurableAttributes<*>,
-    filter: (String) -> Boolean = { true }
+    predicate: (String) -> Boolean = { true }
   ) {
     attributes { container ->
-      for (key in source.attributes.keySet()) {
-        if (filter.invoke(key.name)) {
-          val value = source.attributes.getAttribute(key as Attribute<Any>)
+      source.attributes.keySet()
+        .filter { predicate(it.name) }
+        .forEach { key ->
+          @Suppress("UNCHECKED_CAST")
+          val value = source.attributes.getAttribute(key as Attribute<Any>)!!
           container.attribute(key, value)
         }
-      }
     }
   }
 }
