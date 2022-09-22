@@ -204,25 +204,25 @@ internal class TaskFactory(
 
     if (leafProject.isMissingManifestFile(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(ManifestProcessorTask::class.java)
-        .configureEach { manifestTask ->
+        .forEach { manifestTask ->
           addDependencies(manifestTask)
         }
     }
 
     if (leafProject.generatesBuildConfig(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(GenerateBuildConfig::class.java)
-        .configureEach { buildConfigTask ->
+        .forEach { buildConfigTask ->
           addDependencies(buildConfigTask)
         }
     }
     if (leafProject.isAndroid(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(LinkApplicationAndroidResourcesTask::class.java)
         .matching { "process[A-Z][a-z]*Resources".toRegex().matches(it.name) }
-        .configureEach { androidResourcesTask ->
+        .forEach { androidResourcesTask ->
           addDependencies(androidResourcesTask)
         }
       leafProject.tasks.withType(GenerateLibraryRFileTask::class.java)
-        .configureEach { androidResourcesTask ->
+        .forEach { androidResourcesTask ->
           addDependencies(androidResourcesTask)
         }
     }

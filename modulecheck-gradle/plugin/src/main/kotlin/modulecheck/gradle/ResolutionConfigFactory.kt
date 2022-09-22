@@ -22,6 +22,8 @@ import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.internal.artifacts.DefaultDependencySet
+import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED
+import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 
 /**
  * Adapted from Ben Manes' gradle versions plugin
@@ -39,13 +41,23 @@ class ResolutionConfigFactory {
     val first = configurations.first()
 
     val copy = first.copyRecursive().setTransitive(false)
+
     copy.isCanBeResolved = true
 
     val dest = copy.dependencies as DefaultDependencySet
 
     copy.dependencies.clear()
 
+    println("   -------   ${project.path} ")
+
     configurations.forEach { configuration ->
+
+      copy.excludeRules.addAll(configuration.excludeRules)
+
+      copy as DefaultConfiguration
+
+      copy.resolvedState
+
       // Resolve using the latest version of explicitly declared dependencies and retains Kotlin's
       // inherited stdlib dependencies from the super configurations. This is required for variant
       // resolution, but the full set can break consumer capability matching.
@@ -54,11 +66,19 @@ class ResolutionConfigFactory {
         .matching { dependency -> dependency is ExternalDependency }
         .matching { dependency -> dependency.group == "org.jetbrains.kotlin" }
         .matching { dependency -> dependency.version != null }
-        .configureEach { dest.add(it) }
+        .configureEach {
+          if (copy.resolvedState == UNRESOLVED) {
+            dest.add(it)
+          }
+        }
 
       configuration.allDependencies
         .matching { dependency -> dependency !is ProjectDependency }
-        .configureEach { dest.add(it) }
+        .configureEach {
+          if (copy.resolvedState == UNRESOLVED) {
+            dest.add(it)
+          }
+        }
     }
 
     // Adds the Kotlin 1.2.x legacy metadata to assist in variant selection
