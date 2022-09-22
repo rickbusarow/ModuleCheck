@@ -48,7 +48,12 @@ open class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
   fun execute() {
     dependsOn.filterIsInstance<GradleConfiguration>()
       .filterNot { it.name.endsWith("RuntimeElements") }
-    // .forEach { it.resolve() }
+      .forEach {
+        it.resolve()
+          .sorted()
+          .joinToString("\n")
+          .also(::println)
+      }
 
     // project.configurations.getByName("moduleCheckDebugAggregateDependencies")
 

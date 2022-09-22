@@ -34,10 +34,8 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleConfiguration
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
-import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.api.artifacts.ExternalModuleDependency
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
 import org.gradle.api.internal.file.FileCollectionInternal
 import org.gradle.api.tasks.TaskProvider
@@ -169,36 +167,21 @@ internal class TaskFactory(
 
     onCompileConfigurations(agpApiAccess) { sourceSetName, configs ->
 
+      val cfg = ResolutionConfigFactory().create(this, configs.toList())
+
       val sourceSetCaps = sourceSetName.value.capitalize()
-
-      val cfg = configurations
-        .register(sourceSetName.aggregateConfigName().value) { config ->
-
-          val external = configs
-            .map { it.allDependencies.withType(ExternalModuleDependency::class.java) }
-            .flatten()
-
-          configs
-            .filterNot { it.name.endsWith("RuntimeElements") }
-            .forEach { config.extendsFrom(it) }
-
-          // // println("                                                      -----  external")
-          // // external.joinToString("\n").also(::println)
-          //
-          config.dependencies.addAll(external)
-        }
 
       val resolveTask = tasks.register(
         "resolve${sourceSetCaps}AggregateDependencies",
         ModuleCheckDependencyResolutionTask::class.java
       ) { task ->
-        task.dependsOn(cfg)
-        task.inputs.files(cfg)
 
         task.addInternalDependencies(
           leafProject = this@registerResolutionTask,
-          configuration = cfg
+          config = cfg
         )
+        task.dependsOn(cfg)
+        task.inputs.files(cfg)
       }
 
       rootTasks.forEach { it.dependsOn(resolveTask) }
@@ -207,41 +190,39 @@ internal class TaskFactory(
 
   private fun ModuleCheckDependencyResolutionTask.addInternalDependencies(
     leafProject: Project,
-    configuration: NamedDomainObjectProvider<GradleConfiguration>
+    config: GradleConfiguration
   ) = apply {
 
     fun addDependencies(depTask: Task) {
-      configuration.configure { config ->
-        val filesDep = DefaultSelfResolvingDependency(
-          depTask.outputs.files as FileCollectionInternal
-        )
-        config.dependencies.add(filesDep)
-      }
+      val filesDep = DefaultSelfResolvingDependency(
+        depTask.outputs.files as FileCollectionInternal
+      )
+      config.dependencies.add(filesDep)
       inputs.files(depTask.outputs.files)
       dependsOn(depTask)
     }
 
     if (leafProject.isMissingManifestFile(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(ManifestProcessorTask::class.java)
-        .forEach { manifestTask ->
+        .configureEach { manifestTask ->
           addDependencies(manifestTask)
         }
     }
 
     if (leafProject.generatesBuildConfig(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(GenerateBuildConfig::class.java)
-        .forEach { buildConfigTask ->
+        .configureEach { buildConfigTask ->
           addDependencies(buildConfigTask)
         }
     }
     if (leafProject.isAndroid(this@TaskFactory.agpApiAccess)) {
       leafProject.tasks.withType(LinkApplicationAndroidResourcesTask::class.java)
         .matching { "process[A-Z][a-z]*Resources".toRegex().matches(it.name) }
-        .forEach { androidResourcesTask ->
+        .configureEach { androidResourcesTask ->
           addDependencies(androidResourcesTask)
         }
       leafProject.tasks.withType(GenerateLibraryRFileTask::class.java)
-        .forEach { androidResourcesTask ->
+        .configureEach { androidResourcesTask ->
           addDependencies(androidResourcesTask)
         }
     }
