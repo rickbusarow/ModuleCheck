@@ -46,3 +46,8 @@ configurations.all {
     }
   }
 }
+
+@Suppress("UnstableApiUsage")
+tasks.matching { it is Sign }.configureEach {
+  notCompatibleWithConfigurationCache("")
+}
