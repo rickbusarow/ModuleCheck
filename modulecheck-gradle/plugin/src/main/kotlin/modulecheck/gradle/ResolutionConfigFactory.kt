@@ -22,6 +22,7 @@ import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.internal.artifacts.DefaultDependencySet
+import org.gradle.api.internal.artifacts.DefaultExcludeRule
 import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED
 import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 
@@ -52,7 +53,9 @@ class ResolutionConfigFactory {
 
     configurations.forEach { configuration ->
 
-      copy.excludeRules.addAll(configuration.excludeRules)
+      configuration.excludeRules.forEach { er ->
+        copy.excludeRules.add(DefaultExcludeRule(er.group, er.module))
+      }
 
       copy as DefaultConfiguration
 
