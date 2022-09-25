@@ -18,7 +18,6 @@ package modulecheck.gradle.task
 import kotlinx.coroutines.cancel
 import modulecheck.finding.FindingName
 import modulecheck.gradle.ModuleCheckExtension
-import modulecheck.parsing.gradle.model.GradleConfiguration
 import modulecheck.rule.RuleFilter
 import modulecheck.utils.cast
 import modulecheck.utils.coroutines.impl.DispatcherProviderComponent
@@ -36,53 +35,6 @@ abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
     group = "moduleCheck"
-  }
-}
-
-open class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
-  init {
-    description = "Resolves all external dependencies"
-  }
-
-  @TaskAction
-  fun execute() {
-    dependsOn.filterIsInstance<GradleConfiguration>()
-      .filterNot { it.name.endsWith("RuntimeElements") }
-      .forEach {
-        it.resolve()
-          .sorted()
-          .joinToString("\n")
-          .also(::println)
-      }
-
-    // project.configurations.getByName("moduleCheckDebugAggregateDependencies")
-
-    // .allDependencies
-    // .flatMap {
-    //   when (it) {
-    //     is DefaultSelfResolvingDependency -> it.resolve()
-    //     is DefaultExternalModuleDependency -> it.artifacts
-    //     else -> emptyList()
-    //   }
-    // }
-    // .filterIsInstance<DefaultSelfResolvingDependency>()
-    // .flatMap { it.resolve() }
-    // .joinToString("\n")
-
-    // println("###################################### depends on")
-    // dependsOn.joinToString("\n")
-    //   .also(::println)
-    //
-    // println("###################################### input files")
-    // inputs.files.joinToString("\n")
-    //   .also(::println)
-    //
-    // dependsOn.filterIsInstance<GradleConfiguration>()
-    //   .forEach {
-    //
-    //     println("###################################### files  ${it.name}")
-    //     it.dependencies.joinToString("\n").also(::println)
-    //   }
   }
 }
 
