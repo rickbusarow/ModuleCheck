@@ -17,6 +17,7 @@ package modulecheck.gradle
 
 import modulecheck.parsing.gradle.model.GradleProject
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.ExcludeRule
 import org.gradle.api.artifacts.ExternalDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
@@ -49,13 +50,23 @@ class ResolutionConfigFactory {
 
     copy.dependencies.clear()
 
-    println("   -------   ${project.path} ")
+    // println("   -------   ${project.path} ")
+
+    fun ExcludeRule.ts() = "group: $group   module: $module"
 
     configurations.forEach { configuration ->
 
       configuration.excludeRules.forEach { er ->
-        copy.excludeRules.add(DefaultExcludeRule(er.group, er.module))
+
+        val newER = DefaultExcludeRule(er.group, er.module)
+
+        copy.exclude(mapOf("group" to er.group, "module" to er.module))
+        // copy.excludeRules.add(newER)
       }
+
+      // copy.excludeRules
+      //   .joinToString("\n") { it.ts() }
+      //   .also(::println)
 
       copy as DefaultConfiguration
 
