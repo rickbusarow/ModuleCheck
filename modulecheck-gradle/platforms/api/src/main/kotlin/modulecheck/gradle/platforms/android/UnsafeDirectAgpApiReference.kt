@@ -56,3 +56,19 @@ typealias AndroidTestExtension = com.android.build.gradle.TestExtension
 
 @UnsafeDirectAgpApiReference
 typealias AndroidTestedExtension = com.android.build.gradle.TestedExtension
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidBaseVariant = com.android.build.gradle.api.BaseVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidTestedVariant = com.android.build.gradle.internal.api.TestedVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidTestVariant = com.android.build.gradle.api.TestVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidUnitTestVariant = com.android.build.gradle.api.UnitTestVariant
