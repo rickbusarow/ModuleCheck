@@ -15,48 +15,111 @@
 
 package modulecheck.gradle
 
-import io.kotest.matchers.collections.shouldContainAll
+import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.model.sourceset.asSourceSetName
+import modulecheck.project.McProject
+import modulecheck.utils.remove
 import org.junit.jupiter.api.TestFactory
+import java.io.File
 
 class ClasspathResolutionTest : BaseGradleTest() {
 
   @TestFactory
   fun `exclude with group only in external dependency`() =
     factory {
-      androidLibrary(":lib", "com.modulecheck.lib1") {
+      val lib = androidLibrary(":lib", "com.modulecheck.lib1") {
         buildFile {
           """
-        plugins {
-          id("com.android.library")
-          kotlin("android")
-        }
+          plugins {
+            id("com.android.library")
+            kotlin("android")
+          }
 
-        android {
-          defaultConfig {
-            minSdkVersion(23)
-            compileSdkVersion(30)
-            targetSdkVersion(30)
+          android {
+            defaultConfig {
+              minSdkVersion(23)
+              compileSdkVersion(30)
+              targetSdkVersion(30)
+            }
           }
-        }
-        dependencies {
-          implementation("com.google.auto:auto-common:1.0.1") {
-            exclude(group = "com.foo")
+          dependencies {
+            implementation("com.google.auto:auto-common:1.0.1")
           }
-        }
-        """
+          """
         }
       }
 
       shouldSucceed("moduleCheck").apply {
         // Assert that nothing else executed.
         // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-        tasks.map { it.path }.sorted() shouldContainAll listOf(
+        // tasks.map { it.path }.sorted() shouldContainAll listOf(
+        tasks.map { it.path }.sorted() shouldBe listOf(
           ":lib:generateDebugAndroidTestBuildConfig",
           ":lib:generateDebugBuildConfig",
           ":lib:generateReleaseBuildConfig",
           ":moduleCheck"
         )
       }
+
+      lib.classpathFileText(SourceSetName.MAIN) shouldBe """
+        com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+        org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+
+      lib.classpathFileText(SourceSetName.DEBUG) shouldBe """
+        /lib/build/generated/source/buildConfig/debug/com/modulecheck/lib1/BuildConfig.java
+        /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+        /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+        /lib/build/intermediates/compile_r_class_jar/debug/R.jar
+        /lib/build/intermediates/compile_symbol_list/debug/R.txt
+        /lib/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+        /lib/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+        /lib/build/intermediates/packaged_manifests/debug/output-metadata.json
+        /lib/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+        /lib/build/outputs/logs/manifest-merger-debug-report.txt
+        com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+        org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+
+      lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
+
+      lib.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
+        /lib/build/generated/source/buildConfig/androidTest/debug/com/modulecheck/lib1/test/BuildConfig.java
+        /lib/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar
+        /lib/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt
+        /lib/build/intermediates/packaged_manifests/debugAndroidTest/AndroidManifest.xml
+        /lib/build/intermediates/packaged_manifests/debugAndroidTest/output-metadata.json
+        /lib/build/intermediates/processed_res/debugAndroidTest/out/output-metadata.json
+        /lib/build/intermediates/processed_res/debugAndroidTest/out/resources-debugAndroidTest.ap_
+        /lib/build/intermediates/runtime_symbol_list/debugAndroidTest/R.txt
+        /lib/build/intermediates/symbol_list_with_package_name/debugAndroidTest/package-aware-r.txt
+      """
+
+      lib.projectDir.resolve("outputs/")
     }
 
+  fun McProject.classpathFileText(sourceSetName: SourceSetName): String {
+
+    val testKitM2 = testKitDir.resolve("caches/modules-2/files-2.1")
+      .absolutePath.replace('/', File.separatorChar)
+
+    val startPartLength = testKitM2.split(File.separatorChar).size
+
+    fun String.clean(): String {
+      return if (!startsWith(testKitM2)) {
+        remove(testProjectDir.absolutePath)
+      } else {
+        split(File.separatorChar).drop(startPartLength)
+          .let { segments -> segments.dropLast(2) + segments.last() }
+          .joinToString("/")
+      }
+    }
+
+    return ModuleCheckDependencyResolutionTask
+      .classpathFile(this, sourceSetName)
+      .readText()
+      .lines()
+      .joinToString("\n") { line -> line.clean() }
+  }
 }

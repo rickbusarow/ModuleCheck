@@ -17,13 +17,10 @@ package modulecheck.gradle
 
 import modulecheck.parsing.gradle.model.GradleProject
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.ExcludeRule
-import org.gradle.api.artifacts.ExternalDependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.internal.artifacts.DefaultDependencySet
-import org.gradle.api.internal.artifacts.DefaultExcludeRule
 import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED
 import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
 
@@ -50,41 +47,15 @@ class ResolutionConfigFactory {
 
     copy.dependencies.clear()
 
-    // println("   -------   ${project.path} ")
-
-    fun ExcludeRule.ts() = "group: $group   module: $module"
-
     configurations.forEach { configuration ->
 
       configuration.excludeRules.forEach { er ->
-
-        val newER = DefaultExcludeRule(er.group, er.module)
-
         copy.exclude(mapOf("group" to er.group, "module" to er.module))
-        // copy.excludeRules.add(newER)
       }
-
-      // copy.excludeRules
-      //   .joinToString("\n") { it.ts() }
-      //   .also(::println)
 
       copy as DefaultConfiguration
 
       copy.resolvedState
-
-      // Resolve using the latest version of explicitly declared dependencies and retains Kotlin's
-      // inherited stdlib dependencies from the super configurations. This is required for variant
-      // resolution, but the full set can break consumer capability matching.
-      configuration.allDependencies
-        .matching { dependency -> dependency !in configuration.dependencies }
-        .matching { dependency -> dependency is ExternalDependency }
-        .matching { dependency -> dependency.group == "org.jetbrains.kotlin" }
-        .matching { dependency -> dependency.version != null }
-        .configureEach {
-          if (copy.resolvedState == UNRESOLVED) {
-            dest.add(it)
-          }
-        }
 
       configuration.allDependencies
         .matching { dependency -> dependency !is ProjectDependency }

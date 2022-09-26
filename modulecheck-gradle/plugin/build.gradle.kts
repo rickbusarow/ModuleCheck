@@ -36,6 +36,16 @@ mcbuild {
     }
     """
   )
+  buildProperties(
+    "test",
+    """
+    package modulecheck.gradle
+
+    object TestBuildProperties {
+      val testKitDir = "${buildDir.resolve("tmp/integrationTest/work/.gradle-test-kit")}"
+    }
+    """
+  )
 }
 
 val main by sourceSets.getting
