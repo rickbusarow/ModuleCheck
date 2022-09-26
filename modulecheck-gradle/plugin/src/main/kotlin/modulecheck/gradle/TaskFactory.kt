@@ -15,30 +15,38 @@
 
 package modulecheck.gradle
 
+import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
+import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
 import modulecheck.gradle.platforms.android.AgpApiAccess
-import modulecheck.gradle.platforms.android.internal.generatesBuildConfig
-import modulecheck.gradle.platforms.android.internal.isMissingManifestFile
-import modulecheck.gradle.platforms.android.isAndroid
+import modulecheck.gradle.platforms.android.AndroidBaseExtension
+import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
+import modulecheck.gradle.platforms.android.androidTestVariant
+import modulecheck.gradle.platforms.android.baseVariants
+import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
+import modulecheck.gradle.platforms.android.unitTestVariant
 import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
-import modulecheck.model.dependency.ConfigurationName
-import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.gradle.model.GradleConfiguration
+import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
+import org.gradle.api.DefaultTask
 import org.gradle.api.Project
-import org.gradle.api.Task
+import org.gradle.api.artifacts.FileCollectionDependency
+import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
 import org.gradle.api.internal.file.FileCollectionInternal
+import org.gradle.api.tasks.TaskCollection
+import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
+import kotlin.reflect.KClass
 
 internal class TaskFactory(
   private val target: GradleProject,
@@ -156,75 +164,126 @@ internal class TaskFactory(
     }
   }
 
-  fun SourceSetName.aggregateConfigName(): ConfigurationName {
-    val sourceSetCaps = value.capitalize()
-    return "moduleCheck${sourceSetCaps}AggregateDependencies".asConfigurationName()
-  }
-
+  @OptIn(UnsafeDirectAgpApiReference::class)
   private fun Project.registerResolutionTask(
     rootTasks: List<TaskProvider<*>>
   ) {
 
-    onCompileConfigurations(agpApiAccess) { sourceSetName, configs ->
+    val configFactory = ResolutionConfigFactory()
 
-      val cfg = ResolutionConfigFactory().create(this, configs.toList())
+    onAndroidPlugin(agpApiAccess) {
 
-      val sourceSetCaps = sourceSetName.value.capitalize()
+      agpApiAccess.ifSafeOrNull(this@registerResolutionTask) {
 
-      val resolveTask = tasks.register(
-        "resolve${sourceSetCaps}AggregateDependencies",
-        ModuleCheckDependencyResolutionTask::class.java
-      ) { task ->
+        val baseExtension = requireBaseExtension()
 
-        task.addInternalDependencies(
-          leafProject = this@registerResolutionTask,
-          config = cfg
-        )
-        task.dependsOn(cfg)
-        task.inputs.files(cfg)
+        fun register(variant: BaseVariant) {
+          afterAndroidVariants(
+            project = this@registerResolutionTask,
+            sourceSetName = variant.sourceSets.last().name.asSourceSetName(),
+            variantName = variant.name,
+            configFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
+
+        baseExtension.baseVariants().configureEach { variant: BaseVariant ->
+
+          register(variant)
+
+          variant.androidTestVariant()?.let { androidTestVariant ->
+            register(androidTestVariant)
+          }
+          variant.unitTestVariant()?.let { unitTestVariant ->
+            register(unitTestVariant)
+          }
+        }
+
+        fun register(sourceSetName: SourceSetName) {
+          afterAndroidVariants(
+            project = this@registerResolutionTask,
+            sourceSetName = sourceSetName,
+            variantName = null,
+            configFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
+        register(SourceSetName.MAIN)
+        register(SourceSetName.ANDROID_TEST)
+        register(SourceSetName.TEST)
+      }
+    }
+  }
+
+  @Suppress("UnstableApiUsage")
+  @OptIn(UnsafeDirectAgpApiReference::class)
+  fun afterAndroidVariants(
+    project: GradleProject,
+    sourceSetName: SourceSetName,
+    variantName: String?,
+    configFactory: ResolutionConfigFactory,
+    baseExtension: AndroidBaseExtension,
+    rootTasks: List<TaskProvider<*>>
+  ) {
+
+    val sourceSet = baseExtension.sourceSets.getByName(sourceSetName.value)
+
+    val configs = sequenceOf(
+      sourceSet.apiConfigurationName,
+      sourceSet.implementationConfigurationName,
+      sourceSet.compileOnlyConfigurationName,
+      sourceSet.runtimeOnlyConfigurationName
+    )
+      .mapNotNull { configName -> project.configurations.findByName(configName) }
+
+    val sourceSetCaps = sourceSetName.value.capitalize()
+
+    val cfg = configFactory.create(
+      project = project,
+      configurations = configs.toList()
+    )
+
+    val resolveTask = project.tasks.register(
+      "resolve${sourceSetCaps}AggregateDependencies",
+      ModuleCheckDependencyResolutionTask::class.java
+    ) { task ->
+
+      task.classpathFile
+        .set(ModuleCheckDependencyResolutionTask.classpathFile(project, sourceSetName))
+
+      task.dependsOn(cfg)
+      task.inputs.files(cfg)
+
+      fun <T> TaskContainer.variantTask(
+        tClass: KClass<T>
+      ): TaskCollection<T>
+        where T : VariantAwareTask,
+              T : DefaultTask {
+        return withType(tClass.java)
+          .matching { it.variantName == variantName }
       }
 
-      rootTasks.forEach { it.dependsOn(resolveTask) }
-    }
-  }
-
-  private fun ModuleCheckDependencyResolutionTask.addInternalDependencies(
-    leafProject: Project,
-    config: GradleConfiguration
-  ) = apply {
-
-    fun addDependencies(depTask: Task) {
-      val filesDep = DefaultSelfResolvingDependency(
-        depTask.outputs.files as FileCollectionInternal
+      sequenceOf(
+        project.tasks.variantTask(ManifestProcessorTask::class),
+        project.tasks.variantTask(GenerateBuildConfig::class),
+        project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class),
+        project.tasks.variantTask(GenerateLibraryRFileTask::class)
       )
-      config.dependencies.add(filesDep)
-      inputs.files(depTask.outputs.files)
-      dependsOn(depTask)
-    }
+        .forEach { variantTaskCollection ->
+          variantTaskCollection.forEach { variantTask ->
 
-    if (leafProject.isMissingManifestFile(this@TaskFactory.agpApiAccess)) {
-      leafProject.tasks.withType(ManifestProcessorTask::class.java)
-        .forEach { manifestTask ->
-          addDependencies(manifestTask)
+            cfg.dependencies.add(variantTask.outputs.files.asDependency())
+            task.inputs.files(variantTask.outputs.files)
+            task.dependsOn(variantTask)
+          }
         }
     }
 
-    if (leafProject.generatesBuildConfig(this@TaskFactory.agpApiAccess)) {
-      leafProject.tasks.withType(GenerateBuildConfig::class.java)
-        .forEach { buildConfigTask ->
-          addDependencies(buildConfigTask)
-        }
-    }
-    if (leafProject.isAndroid(this@TaskFactory.agpApiAccess)) {
-      leafProject.tasks.withType(LinkApplicationAndroidResourcesTask::class.java)
-        .matching { "process[A-Z][a-z]*Resources".toRegex().matches(it.name) }
-        .forEach { androidResourcesTask ->
-          addDependencies(androidResourcesTask)
-        }
-      leafProject.tasks.withType(GenerateLibraryRFileTask::class.java)
-        .forEach { androidResourcesTask ->
-          addDependencies(androidResourcesTask)
-        }
-    }
+    rootTasks.forEach { it.dependsOn(resolveTask) }
   }
 }
+
+fun FileCollection.asDependency(): FileCollectionDependency =
+  DefaultSelfResolvingDependency(this as FileCollectionInternal)

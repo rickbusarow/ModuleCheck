@@ -19,16 +19,13 @@ package modulecheck.gradle.platforms.android.sourcesets
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.TestVariant
 import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.gradle.platforms.android.AndroidAppExtension
-import modulecheck.gradle.platforms.android.AndroidLibraryExtension
-import modulecheck.gradle.platforms.android.AndroidTestExtension
+import modulecheck.gradle.platforms.android.baseVariants
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
@@ -52,7 +49,6 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
-import org.gradle.api.DomainObjectSet
 import java.io.File
 import javax.inject.Inject
 
@@ -178,7 +174,7 @@ class RealAndroidSourceSetsParser private constructor(
       ?.let { it.testVariants + it.unitTestVariants }
       .orEmpty()
 
-    extension.publishedVariants()
+    extension.baseVariants()
       .plus(tested)
       .associateBy { GradleSourceSetName.VariantName(it.name) }
   }
@@ -194,7 +190,7 @@ class RealAndroidSourceSetsParser private constructor(
     )
     put(GradleSourceSetName.UnitTestName, listOf(GradleSourceSetName.MainName, BuildTypeName.DEBUG))
 
-    extension.publishedVariants()
+    extension.baseVariants()
       .map { GradleSourceSetName.VariantName(it.name) }
       .forEach { variantName ->
 
@@ -470,17 +466,6 @@ class RealAndroidSourceSetsParser private constructor(
 
     return upstreamNames.distinct()
   }
-
-  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> =
-    when (this) {
-      is AndroidAppExtension -> applicationVariants
-      is AndroidLibraryExtension -> libraryVariants
-      is AndroidTestExtension -> applicationVariants
-      else -> error(
-        "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
-          "but it was `${this::class.qualifiedName}`."
-      )
-    }
 
   private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType(): Pair<ConcatenatedFlavorsName, BuildTypeName> {
     buildTypeNames

@@ -15,69 +15,54 @@
 
 package modulecheck.gradle.task
 
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.project.McProject
+import modulecheck.utils.createSafely
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import java.io.File
 
-open class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
+abstract class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
   init {
     description = "Resolves all external dependencies"
   }
 
+  @get:OutputFile
+  abstract val classpathFile: RegularFileProperty
+
   @TaskAction
   fun execute() {
 
-    val workingDir = "/Users/rbusarow/Development/ModuleCheck/modulecheck-gradle/plugin/" +
-      "build/tests/UnusedDependenciesPluginTest/" +
-      "module_with_a_declaration_used_in_an_android_module_with_kotlin_source_" +
-      "directory_should_not_be_unused/[gradle_7.5.1,_agp_7.3.0,_anvil_2.4.2,_kotlin_1.7.20-RC]"
-
-    // dependsOn.filterIsInstance<GradleConfiguration>()
-    //   .filterNot { it.name.endsWith("RuntimeElements") }
-    //   .forEach {
-    //     it.resolve()
-    //       .sorted()
-    //       .joinToString("\n")
-    //       .also(::println)
-    //   }
-
-    inputs.files.files
-      .sorted()
-      .flatMap { f ->
-        if (f.isDirectory) {
-          f.walkBottomUp().filter { it.isFile }.toList()
+    inputs.files
+      .flatMap { javaFile ->
+        if (javaFile.isDirectory) {
+          javaFile.walkBottomUp().filter { it.isFile }.toList()
         } else {
-          listOf(f)
+          listOf(javaFile)
         }
       }
-      .joinToString("\n") { it.absolutePath.removePrefix(workingDir) }
-      .also(::println)
+      .distinct()
+      .sorted()
+      .joinToString("\n")
+      .also { txt ->
+        classpathFile.asFile.get()
+          .createSafely(txt)
+      }
+  }
 
-    // project.configurations.getByName("moduleCheckDebugAggregateDependencies")
+  companion object {
+    fun classpathFile(project: GradleProject, sourceSetName: SourceSetName): File {
+      return project.buildDir.classpathFile(sourceSetName)
+    }
 
-    // .allDependencies
-    // .flatMap {
-    //   when (it) {
-    //     is DefaultSelfResolvingDependency -> it.resolve()
-    //     is DefaultExternalModuleDependency -> it.artifacts
-    //     else -> emptyList()
-    //   }
-    // }
-    // .filterIsInstance<DefaultSelfResolvingDependency>()
-    // .flatMap { it.resolve() }
-    // .joinToString("\n")
+    fun classpathFile(project: McProject, sourceSetName: SourceSetName): File {
+      return project.projectDir.resolve("build").classpathFile(sourceSetName)
+    }
 
-    // println("###################################### depends on")
-    // dependsOn.joinToString("\n")
-    //   .also(::println)
-    //
-    // println("###################################### input files")
-    // inputs.files.joinToString("\n")
-    //   .also(::println)
-    //
-    // dependsOn.filterIsInstance<GradleConfiguration>()
-    //   .forEach {
-    //
-    //     println("###################################### files  ${it.name}")
-    //     it.dependencies.joinToString("\n").also(::println)
-    //   }
+    private fun File.classpathFile(sourceSetName: SourceSetName): File {
+      return resolve("outputs/modulecheck/classpath/${sourceSetName.value}.txt")
+    }
   }
 }
