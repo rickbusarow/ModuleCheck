@@ -25,7 +25,7 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.gradle.platforms.android.baseVariants
+import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
@@ -139,7 +139,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val hasTestFixturesPlugin: Boolean,
   private val gradleProject: GradleProject,
   private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
-) : AndroidSourceSetsParser {
+) : SafeAgpApiReferenceScope(gradleProject), AndroidSourceSetsParser {
 
   private val projectPath = StringProjectPath(gradleProject.path)
 

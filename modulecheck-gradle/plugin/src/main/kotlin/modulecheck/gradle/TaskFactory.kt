@@ -13,9 +13,11 @@
  * limitations under the License.
  */
 
+@file:Suppress("TYPEALIAS_EXPANSION_DEPRECATION")
+
 package modulecheck.gradle
 
-import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.tasks.VariantAwareTask
@@ -25,20 +27,19 @@ import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidBaseExtension
+import modulecheck.gradle.platforms.android.AndroidBaseVariant
+import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
-import modulecheck.gradle.platforms.android.androidTestVariant
-import modulecheck.gradle.platforms.android.baseVariants
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
-import modulecheck.gradle.platforms.android.unitTestVariant
 import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
 import org.gradle.api.DefaultTask
-import org.gradle.api.Project
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
@@ -46,6 +47,8 @@ import org.gradle.api.internal.file.FileCollectionInternal
 import org.gradle.api.tasks.TaskCollection
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.TaskProvider
+import org.jetbrains.kotlin.incremental.isJavaFile
+import java.io.File
 import kotlin.reflect.KClass
 
 internal class TaskFactory(
@@ -165,7 +168,7 @@ internal class TaskFactory(
   }
 
   @OptIn(UnsafeDirectAgpApiReference::class)
-  private fun Project.registerResolutionTask(
+  private fun GradleProject.registerResolutionTask(
     rootTasks: List<TaskProvider<*>>
   ) {
 
@@ -177,52 +180,55 @@ internal class TaskFactory(
 
         val baseExtension = requireBaseExtension()
 
-        fun register(variant: BaseVariant) {
+        fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
           afterAndroidVariants(
             project = this@registerResolutionTask,
             sourceSetName = variant.sourceSets.last().name.asSourceSetName(),
             variantName = variant.name,
+            isTestingSourceSet = isTestingSourceSet,
             configFactory = configFactory,
             baseExtension = baseExtension,
             rootTasks = rootTasks
           )
         }
 
-        baseExtension.baseVariants().configureEach { variant: BaseVariant ->
+        baseExtension.baseVariants().configureEach { variant: AndroidBaseVariant ->
 
-          register(variant)
+          register(variant, isTestingSourceSet = false)
 
-          variant.androidTestVariant()?.let { androidTestVariant ->
-            register(androidTestVariant)
+          variant.androidTestVariantOrNull()?.let { androidTestVariant ->
+            register(androidTestVariant, isTestingSourceSet = true)
           }
-          variant.unitTestVariant()?.let { unitTestVariant ->
-            register(unitTestVariant)
+          variant.unitTestVariantOrNull()?.let { unitTestVariant ->
+            register(unitTestVariant, isTestingSourceSet = true)
           }
         }
 
-        fun register(sourceSetName: SourceSetName) {
+        fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
           afterAndroidVariants(
             project = this@registerResolutionTask,
             sourceSetName = sourceSetName,
             variantName = null,
+            isTestingSourceSet = isTestingSourceSet,
             configFactory = configFactory,
             baseExtension = baseExtension,
             rootTasks = rootTasks
           )
         }
-        register(SourceSetName.MAIN)
-        register(SourceSetName.ANDROID_TEST)
-        register(SourceSetName.TEST)
+        register(SourceSetName.MAIN, isTestingSourceSet = false)
+        register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
+        register(SourceSetName.TEST, isTestingSourceSet = true)
       }
     }
   }
 
   @Suppress("UnstableApiUsage")
   @OptIn(UnsafeDirectAgpApiReference::class)
-  fun afterAndroidVariants(
+  fun SafeAgpApiReferenceScope.afterAndroidVariants(
     project: GradleProject,
     sourceSetName: SourceSetName,
     variantName: String?,
+    isTestingSourceSet: Boolean,
     configFactory: ResolutionConfigFactory,
     baseExtension: AndroidBaseExtension,
     rootTasks: List<TaskProvider<*>>
@@ -246,7 +252,7 @@ internal class TaskFactory(
     )
 
     val resolveTask = project.tasks.register(
-      "resolve${sourceSetCaps}AggregateDependencies",
+      "resolve${sourceSetCaps}Dependencies",
       ModuleCheckDependencyResolutionTask::class.java
     ) { task ->
 
@@ -257,23 +263,46 @@ internal class TaskFactory(
       task.inputs.files(cfg)
 
       fun <T> TaskContainer.variantTask(
-        tClass: KClass<T>
+        tClass: KClass<T>,
+        predicate: (T) -> Boolean = { true }
       ): TaskCollection<T>
         where T : VariantAwareTask,
               T : DefaultTask {
         return withType(tClass.java)
-          .matching { it.variantName == variantName }
+          .matching { it.variantName == variantName && predicate(it) }
       }
 
+      fun File.hasSource() = walkBottomUp()
+        .any { file -> file.isFile && (file.isKotlinFile() || file.isJavaFile()) }
+
+      val hasSourceFiles = (sourceSet.kotlin as DefaultAndroidSourceDirectorySet)
+        .srcDirs.any { dir -> dir.hasSource() } ||
+        (sourceSet.java as DefaultAndroidSourceDirectorySet)
+          .srcDirs.any { dir -> dir.hasSource() } ||
+        sourceSet.res.srcDirs.any { it.hasSource() }
+
+      val isApplication = baseExtension.isAndroidAppExtension()
+
       sequenceOf(
-        project.tasks.variantTask(ManifestProcessorTask::class),
+        project.tasks.variantTask(ManifestProcessorTask::class) {
+          sourceSet.manifest.srcFile.exists()
+        },
         project.tasks.variantTask(GenerateBuildConfig::class),
-        project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class),
-        project.tasks.variantTask(GenerateLibraryRFileTask::class)
+        project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class) {
+
+          when {
+            it.name != "process${variantName?.capitalize()}Resources" -> false
+            isApplication -> true // hasSourceFiles
+            else -> !isTestingSourceSet || hasSourceFiles
+          }
+        },
+        project.tasks.variantTask(GenerateLibraryRFileTask::class) {
+
+          hasSourceFiles && it.name == "generate${variantName?.capitalize()}Resources"
+        }
       )
         .forEach { variantTaskCollection ->
           variantTaskCollection.forEach { variantTask ->
-
             cfg.dependencies.add(variantTask.outputs.files.asDependency())
             task.inputs.files(variantTask.outputs.files)
             task.dependsOn(variantTask)

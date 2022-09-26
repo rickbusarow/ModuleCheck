@@ -15,16 +15,10 @@
 
 package modulecheck.gradle.platforms.android
 
-import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.api.TestVariant
-import com.android.build.gradle.api.UnitTestVariant
-import com.android.build.gradle.internal.api.TestedVariant
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
-import org.gradle.api.DomainObjectSet
 import javax.inject.Inject
 
 /**
@@ -98,47 +92,18 @@ class AgpApiAccess @Inject constructor() {
  * @return `true` if the project has a `com.android.*` plugin applied, else false
  * @since 0.12.0
  */
+@OptIn(UnsafeDirectAgpApiReference::class)
 fun GradleProject.isAndroid(
   agpApiAccess: AgpApiAccess
 ): Boolean {
 
   if (!agpApiAccess.androidIsInClasspath) return false
 
+  // extensions.configure<Any>("android") { }
+
   val extension = extensions.findByName("android") ?: return false
 
   return with(SafeAgpApiReferenceScope(agpApiAccess, this)) {
-    extension.isAndroidCommonExtension()
+    extension is AndroidCommonExtension
   }
 }
-
-fun BaseVariant.androidTestVariant(): TestVariant? {
-  return when (this) {
-    is TestedVariant -> testVariant
-    else -> null
-  }
-}
-
-fun BaseVariant.unitTestVariant(): UnitTestVariant? {
-  return when (this) {
-    is TestedVariant -> unitTestVariant
-    else -> null
-  }
-}
-
-@UnsafeDirectAgpApiReference
-fun AndroidBaseExtension.baseVariants(): DomainObjectSet<out BaseVariant> =
-  when (this) {
-    is AndroidAppExtension -> applicationVariants
-    is AndroidLibraryExtension -> libraryVariants
-    is AndroidTestExtension -> applicationVariants
-    else -> TODO()
-    // else -> DefaultDomainObjectSet(BaseVariant::class.java, CollectionCallbackActionDecorator.NOOP)
-  }
-
-@UnsafeDirectAgpApiReference
-fun AndroidBaseExtension.testingVariants(): Set<BaseVariant> =
-  when (this) {
-    is TestedExtension -> testVariants + unitTestVariants
-    is AndroidLibraryExtension -> testVariants + unitTestVariants
-    else -> emptySet()
-  }
