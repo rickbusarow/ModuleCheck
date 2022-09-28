@@ -31,15 +31,62 @@ import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
  * @since 0.13.0
  */
 class ResolutionConfigFactory {
+  //
+  // fun create(
+  //   project: GradleProject,
+  //   configurations: List<Configuration>
+  // ): Configuration {
+  //
+  //   val first = configurations.first()
+  //
+  //   val copy = first.copyRecursive().setTransitive(false)
+  //
+  //   copy.isCanBeResolved = true
+  //
+  //   val dest = copy.dependencies as DefaultDependencySet
+  //
+  //   copy.dependencies.clear()
+  //
+  //   configurations.forEach { configuration ->
+  //
+  //     configuration.excludeRules.forEach { er ->
+  //       copy.exclude(mapOf("group" to er.group, "module" to er.module))
+  //     }
+  //
+  //     copy as DefaultConfiguration
+  //
+  //     copy.resolvedState
+  //
+  //     configuration.allDependencies
+  //       .matching { dependency -> dependency !is ProjectDependency }
+  //       .configureEach {
+  //         if (copy.resolvedState == UNRESOLVED) {
+  //           dest.add(it)
+  //         }
+  //       }
+  //   }
+  //
+  //   // Adds the Kotlin 1.2.x legacy metadata to assist in variant selection
+  //   val metadata = project.configurations.findByName("commonMainMetadataElements")
+  //   if (metadata == null) {
+  //     val compile = project.configurations.findByName("compile")
+  //     if (compile != null) {
+  //       copy.addAttributes(compile) { key -> key.contains("kotlin") }
+  //     }
+  //   } else {
+  //     copy.addAttributes(metadata)
+  //   }
+  //
+  //   copy.addAttributes(first)
+  //   return copy
+  // }
 
   fun create(
     project: GradleProject,
-    configurations: List<Configuration>
+    configuration: Configuration
   ): Configuration {
 
-    val first = configurations.first()
-
-    val copy = first.copyRecursive().setTransitive(false)
+    val copy = configuration.copyRecursive().setTransitive(false)
 
     copy.isCanBeResolved = true
 
@@ -47,24 +94,21 @@ class ResolutionConfigFactory {
 
     copy.dependencies.clear()
 
-    configurations.forEach { configuration ->
-
-      configuration.excludeRules.forEach { er ->
-        copy.exclude(mapOf("group" to er.group, "module" to er.module))
-      }
-
-      copy as DefaultConfiguration
-
-      copy.resolvedState
-
-      configuration.allDependencies
-        .matching { dependency -> dependency !is ProjectDependency }
-        .configureEach {
-          if (copy.resolvedState == UNRESOLVED) {
-            dest.add(it)
-          }
-        }
+    configuration.excludeRules.forEach { er ->
+      copy.exclude(mapOf("group" to er.group, "module" to er.module))
     }
+
+    copy as DefaultConfiguration
+
+    copy.resolvedState
+
+    configuration.allDependencies
+      .matching { dependency -> dependency !is ProjectDependency }
+      .configureEach {
+        if (copy.resolvedState == UNRESOLVED) {
+          dest.add(it)
+        }
+      }
 
     // Adds the Kotlin 1.2.x legacy metadata to assist in variant selection
     val metadata = project.configurations.findByName("commonMainMetadataElements")
@@ -77,7 +121,7 @@ class ResolutionConfigFactory {
       copy.addAttributes(metadata)
     }
 
-    copy.addAttributes(first)
+    copy.addAttributes(configuration)
     return copy
   }
 

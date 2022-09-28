@@ -31,6 +31,7 @@ import modulecheck.gradle.platforms.android.AndroidBaseVariant
 import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
+import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
@@ -167,58 +168,124 @@ internal class TaskFactory(
     }
   }
 
-  @OptIn(UnsafeDirectAgpApiReference::class)
   private fun GradleProject.registerResolutionTask(
     rootTasks: List<TaskProvider<*>>
   ) {
 
+    println("-------------------------------------------- pre kotlin")
+
     val configFactory = ResolutionConfigFactory()
 
     onAndroidPlugin(agpApiAccess) {
+      handleAndroidPlugin(configFactory, rootTasks)
+    }
 
-      agpApiAccess.ifSafeOrNull(this@registerResolutionTask) {
+    println("here??????   $path")
 
-        val baseExtension = requireBaseExtension()
+    pluginManager
 
-        fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
-          afterAndroidVariants(
-            project = this@registerResolutionTask,
-            sourceSetName = variant.sourceSets.last().name.asSourceSetName(),
-            variantName = variant.name,
-            isTestingSourceSet = isTestingSourceSet,
-            configFactory = configFactory,
-            baseExtension = baseExtension,
-            rootTasks = rootTasks
-          )
-        }
+    pluginManager.withPlugin("com.jetbrains.kotlin.jvm") {
+      println("kotlin 1")
+      handleKotlinJvmPlugin(configFactory, rootTasks)
+    }
 
-        baseExtension.baseVariants().configureEach { variant: AndroidBaseVariant ->
+    println("_____________________________________- nope here")
+  }
 
-          register(variant, isTestingSourceSet = false)
+  private fun GradleProject.handleKotlinJvmPlugin(
+    configFactory: ResolutionConfigFactory,
+    rootTasks: List<TaskProvider<*>>
+  ) {
 
-          variant.androidTestVariantOrNull()?.let { androidTestVariant ->
-            register(androidTestVariant, isTestingSourceSet = true)
+    getKotlinExtensionOrNull()?.sourceSets
+      ?.forEach { sourceSet ->
+
+        println("kotlin 2 -- ${sourceSet.name}")
+
+        val sourceSetName = sourceSet.name.asSourceSetName()
+
+        val configs = sourceSet.relatedConfigurationNames
+          .mapNotNull { configurations.findByName(it) }
+
+        val sourceSetCaps = sourceSetName.value.capitalize()
+
+        val androidCfg = project.configurations
+          .register("android${sourceSetCaps}ResourceArtifacts") {
+            it.isCanBeResolved = true
+            it.isCanBeConsumed = true
           }
-          variant.unitTestVariantOrNull()?.let { unitTestVariant ->
-            register(unitTestVariant, isTestingSourceSet = true)
+
+        val cfgs = configs.map { config ->
+          configFactory.create(
+            project = project,
+            configuration = config
+          )
+        } + androidCfg
+
+        val resolveTask = project.tasks.register(
+          "resolve${sourceSetCaps}Dependencies",
+          ModuleCheckDependencyResolutionTask::class.java
+        ) { task ->
+
+          task.classpathFile
+            .set(ModuleCheckDependencyResolutionTask.classpathFile(project, sourceSetName))
+          cfgs.forEach { cfg ->
+            task.dependsOn(cfg)
+            task.inputs.files(cfg)
           }
         }
 
-        fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
-          afterAndroidVariants(
-            project = this@registerResolutionTask,
-            sourceSetName = sourceSetName,
-            variantName = null,
-            isTestingSourceSet = isTestingSourceSet,
-            configFactory = configFactory,
-            baseExtension = baseExtension,
-            rootTasks = rootTasks
-          )
-        }
-        register(SourceSetName.MAIN, isTestingSourceSet = false)
-        register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
-        register(SourceSetName.TEST, isTestingSourceSet = true)
+        rootTasks.forEach { it.dependsOn(resolveTask) }
       }
+  }
+
+  @OptIn(UnsafeDirectAgpApiReference::class)
+  private fun GradleProject.handleAndroidPlugin(
+    configFactory: ResolutionConfigFactory,
+    rootTasks: List<TaskProvider<*>>
+  ) {
+    agpApiAccess.ifSafeOrNull(this) {
+
+      val baseExtension = requireBaseExtension()
+
+      fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
+        afterAndroidVariants(
+          project = this@handleAndroidPlugin,
+          sourceSetName = variant.sourceSets.last().name.asSourceSetName(),
+          variantName = variant.name,
+          isTestingSourceSet = isTestingSourceSet,
+          configFactory = configFactory,
+          baseExtension = baseExtension,
+          rootTasks = rootTasks
+        )
+      }
+
+      baseExtension.baseVariants().configureEach { variant: AndroidBaseVariant ->
+
+        register(variant, isTestingSourceSet = false)
+
+        variant.androidTestVariantOrNull()?.let { androidTestVariant ->
+          register(androidTestVariant, isTestingSourceSet = true)
+        }
+        variant.unitTestVariantOrNull()?.let { unitTestVariant ->
+          register(unitTestVariant, isTestingSourceSet = true)
+        }
+      }
+
+      fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
+        afterAndroidVariants(
+          project = this@handleAndroidPlugin,
+          sourceSetName = sourceSetName,
+          variantName = null,
+          isTestingSourceSet = isTestingSourceSet,
+          configFactory = configFactory,
+          baseExtension = baseExtension,
+          rootTasks = rootTasks
+        )
+      }
+      register(SourceSetName.MAIN, isTestingSourceSet = false)
+      register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
+      register(SourceSetName.TEST, isTestingSourceSet = true)
     }
   }
 
@@ -246,10 +313,18 @@ internal class TaskFactory(
 
     val sourceSetCaps = sourceSetName.value.capitalize()
 
-    val cfg = configFactory.create(
-      project = project,
-      configurations = configs.toList()
-    )
+    val androidCfg = project.configurations
+      .register("android${sourceSetCaps}ResourceArtifacts") {
+        it.isCanBeResolved = true
+        it.isCanBeConsumed = true
+      }
+
+    val cfgs = configs.map { config ->
+      configFactory.create(
+        project = project,
+        configuration = config
+      )
+    } + androidCfg
 
     val resolveTask = project.tasks.register(
       "resolve${sourceSetCaps}Dependencies",
@@ -258,9 +333,10 @@ internal class TaskFactory(
 
       task.classpathFile
         .set(ModuleCheckDependencyResolutionTask.classpathFile(project, sourceSetName))
-
-      task.dependsOn(cfg)
-      task.inputs.files(cfg)
+      cfgs.forEach { cfg ->
+        task.dependsOn(cfg)
+        task.inputs.files(cfg)
+      }
 
       fun <T> TaskContainer.variantTask(
         tClass: KClass<T>,
@@ -271,9 +347,6 @@ internal class TaskFactory(
         return withType(tClass.java)
           .matching { it.variantName == variantName && predicate(it) }
       }
-
-      fun File.hasSource() = walkBottomUp()
-        .any { file -> file.isFile && (file.isKotlinFile() || file.isJavaFile()) }
 
       val hasSourceFiles = (sourceSet.kotlin as DefaultAndroidSourceDirectorySet)
         .srcDirs.any { dir -> dir.hasSource() } ||
@@ -303,7 +376,9 @@ internal class TaskFactory(
       )
         .forEach { variantTaskCollection ->
           variantTaskCollection.forEach { variantTask ->
-            cfg.dependencies.add(variantTask.outputs.files.asDependency())
+            androidCfg.configure {
+              it.dependencies.add(variantTask.outputs.files.asDependency())
+            }
             task.inputs.files(variantTask.outputs.files)
             task.dependsOn(variantTask)
           }
@@ -313,6 +388,9 @@ internal class TaskFactory(
     rootTasks.forEach { it.dependsOn(resolveTask) }
   }
 }
+
+fun File.hasSource() = walkBottomUp()
+  .any { file -> file.isFile && (file.isKotlinFile() || file.isJavaFile()) }
 
 fun FileCollection.asDependency(): FileCollectionDependency =
   DefaultSelfResolvingDependency(this as FileCollectionInternal)
