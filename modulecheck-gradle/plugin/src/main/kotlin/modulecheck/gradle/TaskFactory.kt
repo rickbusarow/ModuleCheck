@@ -172,24 +172,23 @@ internal class TaskFactory(
     rootTasks: List<TaskProvider<*>>
   ) {
 
-    println("-------------------------------------------- pre kotlin")
-
     val configFactory = ResolutionConfigFactory()
 
     onAndroidPlugin(agpApiAccess) {
       handleAndroidPlugin(configFactory, rootTasks)
     }
 
-    println("here??????   $path")
-
-    pluginManager
-
-    pluginManager.withPlugin("com.jetbrains.kotlin.jvm") {
-      println("kotlin 1")
+    pluginManager.withPlugin("java") {
       handleKotlinJvmPlugin(configFactory, rootTasks)
     }
 
-    println("_____________________________________- nope here")
+    pluginManager.withPlugin("kotlin") {
+      handleKotlinJvmPlugin(configFactory, rootTasks)
+    }
+
+    pluginManager.withPlugin("com.jetbrains.kotlin.jvm") {
+      handleKotlinJvmPlugin(configFactory, rootTasks)
+    }
   }
 
   private fun GradleProject.handleKotlinJvmPlugin(
@@ -199,8 +198,6 @@ internal class TaskFactory(
 
     getKotlinExtensionOrNull()?.sourceSets
       ?.forEach { sourceSet ->
-
-        println("kotlin 2 -- ${sourceSet.name}")
 
         val sourceSetName = sourceSet.name.asSourceSetName()
 

@@ -52,7 +52,7 @@ abstract class BaseGradleTest :
   val gradleVersion get() = testVersions.gradle
   val anvilVersion get() = testVersions.anvil
 
-  val testKitDir: File get() = File( TestBuildProperties.testKitDir)
+  val testKitDir: File get() = File(TestBuildProperties.testKitDir)
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
   override val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess by resets {
@@ -142,7 +142,7 @@ abstract class BaseGradleTest :
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)
-      // .withTestKitDir(testKitDir)
+      .withTestKitDir(testKitDir)
       // .withPluginClasspath()
       // .withDebug(true)
       .withProjectDir(testProjectDir)
