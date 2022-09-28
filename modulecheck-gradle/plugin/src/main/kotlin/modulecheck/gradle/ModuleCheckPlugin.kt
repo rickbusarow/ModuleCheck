@@ -16,11 +16,7 @@
 package modulecheck.gradle
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
-import modulecheck.gradle.platforms.android.internal.onAndroidCompileConfigurationsOrNull
-import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
-import modulecheck.gradle.platforms.android.isAndroid
-import modulecheck.gradle.platforms.getJavaPluginExtensionOrNull
-import modulecheck.gradle.platforms.getKotlinExtensionOrNull
+import modulecheck.gradle.platforms.kotlin.getJavaPluginExtensionOrNull
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleConfiguration
@@ -50,25 +46,8 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
 }
 
 internal inline fun GradleProject.onCompileConfigurations(
-  agpApiAccess: AgpApiAccess,
   crossinline action: (SourceSetName, Set<GradleConfiguration>) -> Unit
 ) {
-
-  onAndroidPlugin(agpApiAccess) {
-    onAndroidCompileConfigurationsOrNull(agpApiAccess, action)
-  }
-
-  plugins.withId("com.jetbrains.kotlin.jvm") { plugin ->
-    getKotlinExtensionOrNull()
-      ?.takeIf { !isAndroid(agpApiAccess) }
-      ?.sourceSets
-      ?.forEach { sourceSet ->
-        val configs = sourceSet.relatedConfigurationNames
-          .mapToSet { configurations.getByName(it) }
-
-        action(sourceSet.name.asSourceSetName(), configs)
-      }
-  }
 
   getJavaPluginExtensionOrNull()
     ?.sourceSets

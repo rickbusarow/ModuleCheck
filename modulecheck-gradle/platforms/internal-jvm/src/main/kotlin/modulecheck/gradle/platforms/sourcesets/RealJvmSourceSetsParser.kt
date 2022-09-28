@@ -17,9 +17,12 @@ package modulecheck.gradle.platforms.sourcesets
 
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.gradle.platforms.classpathLazy
-import modulecheck.gradle.platforms.getKotlinExtensionOrNull
+import modulecheck.gradle.platforms.Classpath
+import modulecheck.gradle.platforms.jvm.JvmSourceSetsParser
+import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
+import modulecheck.gradle.platforms.kotlin.jvmTarget
+import modulecheck.gradle.platforms.kotlin.kotlinLanguageVersionOrNull
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.McConfiguration
 import modulecheck.model.dependency.McSourceSet
@@ -29,7 +32,6 @@ import modulecheck.model.dependency.asConfigurationName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.parsing.gradle.model.GradleSourceSet
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.requireNotNull
@@ -81,7 +83,12 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = configs.classpathLazy(gradleProject),
+                classpathFiles = lazyDeferred {
+                  Classpath.from(
+                    gradleProject,
+                    sourceSetName
+                  ).files
+                },
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = kotlinVersion,
                 jvmTarget = jvmTarget
@@ -137,7 +144,9 @@ class RealJvmSourceSetsParser @Inject constructor(
               kotlinEnvironmentFactory.create(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
-                classpathFiles = configs.classpathLazy(gradleProject),
+                classpathFiles = lazyDeferred {
+                  Classpath.from(gradleProject, sourceSetName).files
+                },
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = null,
                 jvmTarget = jvmTarget
@@ -199,8 +208,4 @@ class RealJvmSourceSetsParser @Inject constructor(
 
     return upstreamLazy to downstreamLazy
   }
-
-  private fun GradleSourceSet.classpath() = compileClasspath
-    .plus(output.classesDirs.existingFiles())
-    .toList()
 }

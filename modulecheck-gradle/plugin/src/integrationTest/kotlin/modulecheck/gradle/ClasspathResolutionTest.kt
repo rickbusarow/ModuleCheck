@@ -15,7 +15,7 @@
 
 package modulecheck.gradle
 
-import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
+import modulecheck.gradle.platforms.Classpath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.project.McProject
@@ -174,18 +174,6 @@ class ClasspathResolutionTest : BaseGradleTest() {
         }
       }
 
-      shouldSucceed("assembleDebug").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-        // tasks.map { it.path }.sorted() shouldContainAll listOf(
-        //           ":lib:generateDebugAndroidTestBuildConfig",
-        //           ":lib:generateDebugBuildConfig",
-        //           ":lib:generateReleaseBuildConfig",
-        //           ":moduleCheck"
-        //         )
-        tasks.map { it.path } /*.sorted()*/.joinToString("\n") shouldBe ""
-      }
-
       shouldSucceed("moduleCheck").apply {
         // Assert that nothing else executed.
         // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
@@ -250,10 +238,7 @@ class ClasspathResolutionTest : BaseGradleTest() {
       }
     }
 
-    return ModuleCheckDependencyResolutionTask
-      .classpathFile(this, sourceSetName)
-      .readText()
-      .lines()
-      .joinToString("\n") { line -> line.clean() }
+    return Classpath.from(this, sourceSetName).files
+      .joinToString("\n") { it.absolutePath.clean() }
   }
 }

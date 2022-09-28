@@ -25,13 +25,14 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
+import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidBaseExtension
 import modulecheck.gradle.platforms.android.AndroidBaseVariant
 import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
-import modulecheck.gradle.platforms.getKotlinExtensionOrNull
+import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
 import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
@@ -224,8 +225,7 @@ internal class TaskFactory(
           ModuleCheckDependencyResolutionTask::class.java
         ) { task ->
 
-          task.classpathFile
-            .set(ModuleCheckDependencyResolutionTask.classpathFile(project, sourceSetName))
+          task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
           cfgs.forEach { cfg ->
             task.dependsOn(cfg)
             task.inputs.files(cfg)
@@ -328,8 +328,8 @@ internal class TaskFactory(
       ModuleCheckDependencyResolutionTask::class.java
     ) { task ->
 
-      task.classpathFile
-        .set(ModuleCheckDependencyResolutionTask.classpathFile(project, sourceSetName))
+      task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
+
       cfgs.forEach { cfg ->
         task.dependsOn(cfg)
         task.inputs.files(cfg)

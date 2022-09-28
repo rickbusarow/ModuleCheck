@@ -16,8 +16,8 @@
 package modulecheck.gradle.platforms
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.jvm.JvmSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.gradle.platforms.sourcesets.JvmSourceSetsParser
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.SourceSets
 import modulecheck.parsing.gradle.model.GradleProject

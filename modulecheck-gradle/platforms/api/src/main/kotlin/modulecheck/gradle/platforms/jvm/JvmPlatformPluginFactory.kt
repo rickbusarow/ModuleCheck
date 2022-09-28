@@ -13,8 +13,11 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms
+package modulecheck.gradle.platforms.jvm
 
+import modulecheck.gradle.platforms.ConfigurationsFactory
+import modulecheck.gradle.platforms.SourceSetsFactory
+import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
 import modulecheck.model.dependency.JvmPlatformPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.JavaLibraryPlugin
 import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
@@ -23,8 +26,6 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.gradle.api.artifacts.ExternalModuleDependency
-import org.gradle.api.plugins.JavaPluginExtension
-import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
 import java.io.File
 import javax.inject.Inject
 
@@ -53,17 +54,6 @@ class JvmPlatformPluginFactory @Inject constructor(
     }
   }
 }
-
-fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
-  extensions.findByName("kotlin") as? KotlinProjectExtension
-
-/**
- * shorthand for `extensions.findByType(JavaPluginExtension::class.java)`
- *
- * @since 0.13.0
- */
-fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
-  extensions.findByType(JavaPluginExtension::class.java)
 
 /**
  * returns a [Lazy][kotlin.Lazy] set of all external dependency files for a list of configurations

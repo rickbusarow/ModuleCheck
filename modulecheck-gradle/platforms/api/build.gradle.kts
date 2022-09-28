@@ -31,6 +31,7 @@ dependencies {
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())

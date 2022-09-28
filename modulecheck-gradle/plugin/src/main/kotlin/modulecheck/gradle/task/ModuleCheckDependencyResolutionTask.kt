@@ -15,14 +15,10 @@
 
 package modulecheck.gradle.task
 
-import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.gradle.model.GradleProject
-import modulecheck.project.McProject
 import modulecheck.utils.createSafely
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import java.io.File
 
 abstract class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
   init {
@@ -50,19 +46,5 @@ abstract class ModuleCheckDependencyResolutionTask : AbstractModuleCheckTask() {
         classpathFile.asFile.get()
           .createSafely(txt)
       }
-  }
-
-  companion object {
-    fun classpathFile(project: GradleProject, sourceSetName: SourceSetName): File {
-      return project.buildDir.classpathFile(sourceSetName)
-    }
-
-    fun classpathFile(project: McProject, sourceSetName: SourceSetName): File {
-      return project.projectDir.resolve("build").classpathFile(sourceSetName)
-    }
-
-    private fun File.classpathFile(sourceSetName: SourceSetName): File {
-      return resolve("outputs/modulecheck/classpath/${sourceSetName.value}.txt")
-    }
   }
 }
