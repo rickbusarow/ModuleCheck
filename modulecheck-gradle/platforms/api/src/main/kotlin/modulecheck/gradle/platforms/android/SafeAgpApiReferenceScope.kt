@@ -95,6 +95,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
    *     [testVariant][com.android.build.gradle.internal.api.TestedVariant.testVariant]. Otherwise,
    *     returns null.
+   * @since 0.13.0
    */
   fun AndroidBaseVariant.androidTestVariantOrNull(): AndroidTestVariant? {
     return when (this) {
@@ -108,6 +109,7 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
    *     [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.unitTestVariant].
    *     Otherwise, returns null.
+   * @since 0.13.0
    */
   fun AndroidBaseVariant.unitTestVariantOrNull(): AndroidUnitTestVariant? {
     return when (this) {

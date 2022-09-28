@@ -24,17 +24,17 @@ import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.platforms.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.kotlin.jvmTarget
+import modulecheck.gradle.platforms.kotlin.kotlinLanguageVersionOrNull
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.gradle.platforms.sourcesets.jvmTarget
-import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.model.dependency.Configurations
-import modulecheck.model.dependency.ExternalDependency
 import modulecheck.model.dependency.McSourceSet
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.SourceSets
@@ -388,26 +388,7 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val classpath = lazyDeferred {
-        upstreamLazy.value
-          .asSequence()
-          .map { it.value }
-          .plus(name)
-          .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-          .flatMap { variant ->
-            sequenceOf(
-              variant.compileConfiguration,
-              variant.runtimeConfiguration
-            )
-              .flatMap { config ->
-                val resolved = config.resolvedConfiguration
-                val lenient = resolved.lenientConfiguration
-                lenient.getFiles { it is ExternalDependency }
-              }
-              .toSet()
-          }
-          .toList()
-      }
+      val classpath = lazyDeferred { Classpath.from(gradleProject, sourceSetName).files }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
         kotlinEnvironmentFactory.create(
@@ -564,7 +545,7 @@ class RealAndroidSourceSetsParser private constructor(
           kotlinEnvironmentFactory.create(
             projectPath = projectPath,
             sourceSetName = sourceSetName,
-            classpathFiles = lazyDeferred { extension.bootClasspath.toList() },
+            classpathFiles = lazyDeferred { Classpath.from(gradleProject, sourceSetName).files },
             sourceDirs = jvmFiles,
             kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget()

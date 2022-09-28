@@ -18,7 +18,7 @@ package modulecheck.parsing.kotlin.compiler.impl
 import com.squareup.anvil.annotations.ContributesBinding
 import dispatch.core.withIO
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.platforms.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment

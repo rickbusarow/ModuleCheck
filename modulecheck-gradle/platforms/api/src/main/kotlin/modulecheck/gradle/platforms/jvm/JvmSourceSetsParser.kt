@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms.sourcesets
+package modulecheck.gradle.platforms.jvm
 
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.SourceSets
