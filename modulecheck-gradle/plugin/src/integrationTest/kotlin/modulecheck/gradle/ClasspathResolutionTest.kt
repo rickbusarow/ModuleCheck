@@ -26,48 +26,104 @@ import java.io.File
 class ClasspathResolutionTest : BaseGradleTest() {
 
   @TestFactory
-  fun `android library with external dependency`() =
-    factory {
-      val lib = androidLibrary(":lib", "com.modulecheck.lib1") {
-        buildFile {
-          """
-          plugins {
-            id("com.android.library")
-            kotlin("android")
-          }
-
-          android {
-            defaultConfig {
-              minSdkVersion(23)
-              compileSdkVersion(30)
-              targetSdkVersion(30)
-            }
-          }
-          dependencies {
-            implementation("com.google.auto:auto-common:1.0.1")
-          }
-          """
+  fun `kotlin library with external dependency`() = factory {
+    val lib = kotlinProject(":lib") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
         }
-      }
 
-      shouldSucceed("moduleCheck").apply {
-        // Assert that nothing else executed.
-        // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-        // tasks.map { it.path }.sorted() shouldContainAll listOf(
-        //           ":lib:generateDebugAndroidTestBuildConfig",
-        //           ":lib:generateDebugBuildConfig",
-        //           ":lib:generateReleaseBuildConfig",
-        //           ":moduleCheck"
-        //         )
-        tasks.map { it.path }.sorted().joinToString("\n") shouldBe ""
-      }
+        println()
 
-      lib.classpathFileText(SourceSetName.MAIN) shouldBe """
+        dependencies {
+          implementation("com.google.auto:auto-common:1.0.1")
+        }
+        """
+      }
+    }
+
+    shouldSucceed("moduleCheck", "--scan")
+
+    lib.classpathFileText(SourceSetName.MAIN) shouldBe """
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+
+    lib.classpathFileText(SourceSetName.DEBUG) shouldBe """
+      /lib/build/generated/source/buildConfig/debug/com/modulecheck/lib1/BuildConfig.java
+      /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
+      /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
+      /lib/build/intermediates/compile_r_class_jar/debug/R.jar
+      /lib/build/intermediates/compile_symbol_list/debug/R.txt
+      /lib/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
+      /lib/build/intermediates/merged_manifest/debug/AndroidManifest.xml
+      /lib/build/intermediates/packaged_manifests/debug/output-metadata.json
+      /lib/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
+      /lib/build/outputs/logs/manifest-merger-debug-report.txt
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+
+    lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
+
+    lib.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
+      /lib/build/generated/source/buildConfig/androidTest/debug/com/modulecheck/lib1/test/BuildConfig.java
+      /lib/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar
+      /lib/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt
+      /lib/build/intermediates/packaged_manifests/debugAndroidTest/AndroidManifest.xml
+      /lib/build/intermediates/packaged_manifests/debugAndroidTest/output-metadata.json
+      /lib/build/intermediates/processed_res/debugAndroidTest/out/output-metadata.json
+      /lib/build/intermediates/processed_res/debugAndroidTest/out/resources-debugAndroidTest.ap_
+      /lib/build/intermediates/runtime_symbol_list/debugAndroidTest/R.txt
+      /lib/build/intermediates/symbol_list_with_package_name/debugAndroidTest/package-aware-r.txt
+      """
+
+    lib.projectDir.resolve("outputs/")
+  }
+
+  @TestFactory
+  fun `android library with external dependency`() = factory {
+    val lib = androidLibrary(":lib", "com.modulecheck.lib1") {
+      buildFile {
+        """
+        plugins {
+          id("com.android.library")
+          kotlin("android")
+        }
+
+        android {
+          defaultConfig {
+            minSdkVersion(23)
+            compileSdkVersion(30)
+            targetSdkVersion(30)
+          }
+        }
+        dependencies {
+          implementation("com.google.auto:auto-common:1.0.1")
+        }
+        """
+      }
+    }
+
+    shouldSucceed("moduleCheck").apply {
+      // Assert that nothing else executed.
+      // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
+      // tasks.map { it.path }.sorted() shouldContainAll listOf(
+      //           ":lib:generateDebugAndroidTestBuildConfig",
+      //           ":lib:generateDebugBuildConfig",
+      //           ":lib:generateReleaseBuildConfig",
+      //           ":moduleCheck"
+      //         )
+      tasks.map { it.path }.sorted().joinToString("\n") shouldBe ""
+    }
+
+    lib.classpathFileText(SourceSetName.MAIN) shouldBe """
         com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
       """
 
-      lib.classpathFileText(SourceSetName.DEBUG) shouldBe """
+    lib.classpathFileText(SourceSetName.DEBUG) shouldBe """
         /lib/build/generated/source/buildConfig/debug/com/modulecheck/lib1/BuildConfig.java
         /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
         /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
@@ -82,9 +138,9 @@ class ClasspathResolutionTest : BaseGradleTest() {
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
       """
 
-      lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
+    lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
 
-      lib.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
+    lib.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
         /lib/build/generated/source/buildConfig/androidTest/debug/com/modulecheck/lib1/test/BuildConfig.java
         /lib/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar
         /lib/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt
@@ -96,8 +152,8 @@ class ClasspathResolutionTest : BaseGradleTest() {
         /lib/build/intermediates/symbol_list_with_package_name/debugAndroidTest/package-aware-r.txt
       """
 
-      lib.projectDir.resolve("outputs/")
-    }
+    lib.projectDir.resolve("outputs/")
+  }
 
   @TestFactory
   fun `android application with project dependency`() =
