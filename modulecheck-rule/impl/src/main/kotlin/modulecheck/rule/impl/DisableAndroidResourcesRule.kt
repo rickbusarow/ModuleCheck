@@ -26,7 +26,6 @@ import modulecheck.finding.android.UnusedResourcesGenerationFinding
 import modulecheck.model.dependency.AndroidPlatformPlugin.AndroidLibraryPlugin
 import modulecheck.project.McProject
 import modulecheck.project.project
-import modulecheck.utils.lazy.containsAny
 import javax.inject.Inject
 
 class DisableAndroidResourcesRule @Inject constructor() :
@@ -48,7 +47,7 @@ class DisableAndroidResourcesRule @Inject constructor() :
     fun findingList() = listOf(
       UnusedResourcesGenerationFinding(
         dependentProject = project,
-        dependentPath = project.path,
+        dependentPath = project.projectPath,
         buildFile = project.buildFile
       )
     )

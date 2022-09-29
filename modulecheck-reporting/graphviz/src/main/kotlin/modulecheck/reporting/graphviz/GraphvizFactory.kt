@@ -112,7 +112,7 @@ class GraphvizFactory @Inject constructor(
       .forEach { depthFinding ->
         depthFinding.dependentProject
           .projectDependencies[depthFinding.sourceSetName]
-          .sortedBy { it.path }
+          .sortedBy { it.projectPath }
           .forEach { cpd ->
 
             val lineColor = cpd.lineColor()
@@ -120,7 +120,7 @@ class GraphvizFactory @Inject constructor(
             rootGraph.add(
               node(depthFinding.pathString())
                 .link(
-                  Factory.to(node(cpd.path.pathString()))
+                  Factory.to(node(cpd.projectPath.pathString()))
                     .with(Arrow.NORMAL, Style.BOLD, lineColor)
                 )
             )

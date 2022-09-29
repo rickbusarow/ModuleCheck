@@ -75,8 +75,8 @@ class SarifReportTest : RunnerTest() {
     val finding = UnusedDependencyFinding(
       findingName = FindingName("unused-dependency"),
       dependentProject = p2,
-      oldDependency = RuntimeProjectDependency(ConfigurationName.api, p1.path, false),
-      dependencyIdentifier = p1.path.value,
+      oldDependency = RuntimeProjectDependency(ConfigurationName.api, p1.projectPath, false),
+      dependencyIdentifier = p1.projectPath.value,
       configurationName = ConfigurationName.api
     ).toResult(true)
 

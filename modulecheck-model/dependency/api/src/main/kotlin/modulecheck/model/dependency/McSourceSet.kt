@@ -15,6 +15,7 @@
 
 package modulecheck.model.dependency
 
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.utils.lazy.LazyDeferred
@@ -80,7 +81,9 @@ class McSourceSet(
   val kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
-) : Comparable<McSourceSet> {
+) : Comparable<McSourceSet>, HasSourceSetName {
+
+  override val sourceSetName: SourceSetName get() = name
 
   val configurations by lazy {
     Configurations(

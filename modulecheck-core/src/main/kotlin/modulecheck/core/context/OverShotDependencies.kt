@@ -136,7 +136,7 @@ data class OverShotDependencies(
     override suspend operator fun invoke(project: McProject): OverShotDependencies {
 
       return OverShotDependencies(
-        SafeCache(listOf(project.path, OverShotDependencies::class)),
+        SafeCache(listOf(project.projectPath, OverShotDependencies::class)),
         project
       )
     }

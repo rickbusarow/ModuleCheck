@@ -121,7 +121,7 @@ interface ProjectCollector {
   suspend fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder(): McProjectBuilder<P> {
     @Suppress("UNCHECKED_CAST")
     return McProjectBuilder(
-      path = path,
+      path = projectPath,
       projectDir = projectDir,
       buildFile = buildFile,
       platformPlugin = platformPlugin.toBuilder() as P,
@@ -307,7 +307,7 @@ interface ProjectCollector {
             if (unresolved) {
               fail(
                 """
-                |Project ${project.path} has a reference which must be declared in a dependency kotlinProject.
+                |Project ${project.projectPath} has a reference which must be declared in a dependency kotlinProject.
                 |
                 |-- reference:
                 |   ${reference.name}

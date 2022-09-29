@@ -52,7 +52,7 @@ data class ManifestFiles(
   companion object Key : ProjectContext.Key<ManifestFiles> {
     override suspend operator fun invoke(project: McProject): ManifestFiles {
 
-      return ManifestFiles(SafeCache(listOf(project.path, ManifestFiles::class)), project)
+      return ManifestFiles(SafeCache(listOf(project.projectPath, ManifestFiles::class)), project)
     }
   }
 }

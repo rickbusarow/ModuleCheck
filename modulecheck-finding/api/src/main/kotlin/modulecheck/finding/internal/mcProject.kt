@@ -33,7 +33,7 @@ suspend fun ConfiguredDependency.statementOrNullIn(
         is ExternalDependency -> block.getOrEmpty(mavenCoordinates, configurationName)
           .takeIf { it.isNotEmpty() }
 
-        is ProjectDependency -> block.getOrEmpty(path, configurationName, isTestFixture)
+        is ProjectDependency -> block.getOrEmpty(projectPath, configurationName, isTestFixture)
           .takeIf { it.isNotEmpty() }
       }
     }

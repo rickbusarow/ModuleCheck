@@ -41,7 +41,7 @@ data class DownstreamProjects(
             .filter { it.contributed.project(project) == project }
             .map { transitive ->
               DownstreamDependency(
-                dependentProjectPath = otherProject.path,
+                dependentProjectPath = otherProject.projectPath,
                 projectDependency = transitive.withContributedConfiguration().contributed
               )
             }

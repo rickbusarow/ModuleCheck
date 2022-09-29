@@ -17,9 +17,17 @@ package modulecheck.model.sourceset
 
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import java.io.Serializable
+
+/**
+ * Something associated with a specific [SourceSetName][modulecheck.model.sourceset.SourceSetName].
+ */
+interface HasSourceSetName : Serializable {
+  val sourceSetName: SourceSetName
+}
 
 @JvmInline
-value class SourceSetName(val value: String) {
+value class SourceSetName(val value: String) : Serializable {
 
   fun isTestFixtures() = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
 

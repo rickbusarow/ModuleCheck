@@ -63,7 +63,7 @@ class SortDependenciesRule @Inject constructor(
       listOf(
         SortDependenciesFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           buildFile = project.buildFile,
           comparator = comparator
         )

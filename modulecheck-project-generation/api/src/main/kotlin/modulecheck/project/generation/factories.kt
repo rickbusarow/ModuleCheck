@@ -182,7 +182,7 @@ internal inline fun <reified T, reified P, G> T.buildProject(
 
   return projectFactory(jvmFileProviderFactory)
     .also { finalProject ->
-      projectCache[finalProject.path] = finalProject
+      projectCache[finalProject.projectPath] = finalProject
     }
 }
 
@@ -193,7 +193,7 @@ inline fun <reified T, reified P, G> T.toRealMcProject(): McProject
   return buildProject { jvmFileProviderFactory ->
 
     RealMcProject(
-      path = path,
+      projectPath = path,
       projectDir = projectDir,
       buildFile = buildFile,
       hasKapt = hasKapt,

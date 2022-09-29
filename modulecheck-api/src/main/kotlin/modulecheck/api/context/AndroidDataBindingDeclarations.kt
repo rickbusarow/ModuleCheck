@@ -75,7 +75,7 @@ data class AndroidDataBindingDeclarations(
     override suspend operator fun invoke(project: McProject): AndroidDataBindingDeclarations {
 
       return AndroidDataBindingDeclarations(
-        SafeCache(listOf(project.path, AndroidDataBindingDeclarations::class)),
+        SafeCache(listOf(project.projectPath, AndroidDataBindingDeclarations::class)),
         project
       )
     }

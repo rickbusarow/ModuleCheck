@@ -33,7 +33,7 @@ import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
 import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
-import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
+import modulecheck.gradle.task.McDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
 import modulecheck.model.sourceset.SourceSetName
@@ -42,6 +42,7 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
 import org.gradle.api.DefaultTask
+import org.gradle.api.Task
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
@@ -220,17 +221,16 @@ internal class TaskFactory(
           )
         } + androidCfg
 
-        val resolveTask = project.tasks.register(
-          "resolve${sourceSetCaps}Dependencies",
-          ModuleCheckDependencyResolutionTask::class.java
-        ) { task ->
+        val resolveTask = McDependencyResolutionTask
+          .register(project = project, sourceSetName = sourceSetName)
+          .configuring { task ->
 
-          task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
-          cfgs.forEach { cfg ->
-            task.dependsOn(cfg)
-            task.inputs.files(cfg)
+            task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
+            cfgs.forEach { cfg ->
+              task.dependsOn(cfg)
+              task.inputs.files(cfg)
+            }
           }
-        }
 
         rootTasks.forEach { it.dependsOn(resolveTask) }
       }
@@ -323,64 +323,65 @@ internal class TaskFactory(
       )
     } + androidCfg
 
-    val resolveTask = project.tasks.register(
-      "resolve${sourceSetCaps}Dependencies",
-      ModuleCheckDependencyResolutionTask::class.java
-    ) { task ->
+    val resolveTask = McDependencyResolutionTask
+      .register(project = project, sourceSetName = sourceSetName)
+      .configuring { task ->
 
-      task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
+        task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
 
-      cfgs.forEach { cfg ->
-        task.dependsOn(cfg)
-        task.inputs.files(cfg)
-      }
+        cfgs.forEach { cfg ->
+          task.dependsOn(cfg)
+          task.inputs.files(cfg)
+        }
 
-      fun <T> TaskContainer.variantTask(
-        tClass: KClass<T>,
-        predicate: (T) -> Boolean = { true }
-      ): TaskCollection<T>
-        where T : VariantAwareTask,
-              T : DefaultTask {
-        return withType(tClass.java)
-          .matching { it.variantName == variantName && predicate(it) }
-      }
+        fun <T> TaskContainer.variantTask(
+          tClass: KClass<T>,
+          predicate: (T) -> Boolean = { true }
+        ): TaskCollection<T>
+          where T : VariantAwareTask,
+                T : DefaultTask {
+          return withType(tClass.java)
+            .matching { it.variantName == variantName && predicate(it) }
+        }
 
-      val hasSourceFiles = (sourceSet.kotlin as DefaultAndroidSourceDirectorySet)
-        .srcDirs.any { dir -> dir.hasSource() } ||
-        (sourceSet.java as DefaultAndroidSourceDirectorySet)
+        val hasSourceFiles = (sourceSet.kotlin as DefaultAndroidSourceDirectorySet)
           .srcDirs.any { dir -> dir.hasSource() } ||
-        sourceSet.res.srcDirs.any { it.hasSource() }
+          (sourceSet.java as DefaultAndroidSourceDirectorySet)
+            .srcDirs.any { dir -> dir.hasSource() } ||
+          sourceSet.res.srcDirs.any { it.hasSource() }
 
-      val isApplication = baseExtension.isAndroidAppExtension()
+        val isApplication = baseExtension.isAndroidAppExtension()
 
-      sequenceOf(
-        project.tasks.variantTask(ManifestProcessorTask::class) {
-          sourceSet.manifest.srcFile.exists()
-        },
-        project.tasks.variantTask(GenerateBuildConfig::class),
-        project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class) {
+        sequenceOf(
+          project.tasks.variantTask(ManifestProcessorTask::class) {
+            sourceSet.manifest.srcFile.exists()
+          },
+          project.tasks.variantTask(GenerateBuildConfig::class),
+          project.tasks.variantTask(LinkApplicationAndroidResourcesTask::class) {
 
-          when {
-            it.name != "process${variantName?.capitalize()}Resources" -> false
-            isApplication -> true // hasSourceFiles
-            else -> !isTestingSourceSet || hasSourceFiles
-          }
-        },
-        project.tasks.variantTask(GenerateLibraryRFileTask::class) {
-
-          hasSourceFiles && it.name == "generate${variantName?.capitalize()}Resources"
-        }
-      )
-        .forEach { variantTaskCollection ->
-          variantTaskCollection.forEach { variantTask ->
-            androidCfg.configure {
-              it.dependencies.add(variantTask.outputs.files.asDependency())
+            when {
+              it.name != "process${variantName?.capitalize()}Resources" -> false
+              isApplication -> true // hasSourceFiles
+              else -> !isTestingSourceSet || hasSourceFiles
             }
-            task.inputs.files(variantTask.outputs.files)
-            task.dependsOn(variantTask)
+          },
+          project.tasks.variantTask(GenerateLibraryRFileTask::class) {
+
+            /* hasSourceFiles &&*/
+            it.name == "generate${variantName?.capitalize()}Resources"
+            true
           }
-        }
-    }
+        )
+          .forEach { variantTaskCollection ->
+            variantTaskCollection.forEach { variantTask ->
+              androidCfg.configure {
+                it.dependencies.add(variantTask.outputs.files.asDependency())
+              }
+              task.inputs.files(variantTask.outputs.files)
+              task.dependsOn(variantTask)
+            }
+          }
+      }
 
     rootTasks.forEach { it.dependsOn(resolveTask) }
   }
@@ -391,3 +392,17 @@ fun File.hasSource() = walkBottomUp()
 
 fun FileCollection.asDependency(): FileCollectionDependency =
   DefaultSelfResolvingDependency(this as FileCollectionInternal)
+
+/**
+ * Lazily configures the provided Task without relying upon the Kotlin Gradle DSL.
+ *
+ * ex:
+ * ```
+ * tasks.register("myTask", MyTaskClass::class.java, arg0).configuring { task ->
+ *   task.someInput.set(...)
+ * }
+ * ```
+ */
+fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
+  configure(action)
+}

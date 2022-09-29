@@ -91,7 +91,7 @@ class DisableViewBindingRule @Inject constructor() :
     return listOf(
       DisableViewBindingGenerationFinding(
         dependentProject = project,
-        dependentPath = project.path,
+        dependentPath = project.projectPath,
         buildFile = project.buildFile
       )
     )

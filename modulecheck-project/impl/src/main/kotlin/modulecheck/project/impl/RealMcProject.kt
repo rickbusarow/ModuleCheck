@@ -34,7 +34,7 @@ import java.io.File
 
 @Suppress("LongParameterList")
 class RealMcProject(
-  override val path: StringProjectPath,
+  override val projectPath: StringProjectPath,
   override val projectDir: File,
   override val buildFile: File,
   override val hasKapt: Boolean,
@@ -67,23 +67,23 @@ class RealMcProject(
     return context.get(key)
   }
 
-  override fun compareTo(other: McProject): Int = path.compareTo(other.path)
+  override fun compareTo(other: McProject): Int = projectPath.compareTo(other.projectPath)
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is McProject) return false
 
-    if (path != other.path) return false
+    if (projectPath != other.projectPath) return false
 
     return true
   }
 
   override fun hashCode(): Int {
-    return path.hashCode()
+    return projectPath.hashCode()
   }
 
   override fun toString(): String {
-    return "${this::class.java.simpleName}('$path')"
+    return "${this::class.java.simpleName}('$projectPath')"
   }
 
   override suspend fun resolveFqNameOrNull(

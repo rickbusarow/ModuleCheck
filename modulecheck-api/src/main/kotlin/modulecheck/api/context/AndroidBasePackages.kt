@@ -60,7 +60,7 @@ data class AndroidBasePackages(
   companion object Key : ProjectContext.Key<AndroidBasePackages> {
     override suspend operator fun invoke(project: McProject): AndroidBasePackages {
       return AndroidBasePackages(
-        SafeCache(listOf(project.path, AndroidBasePackages::class)),
+        SafeCache(listOf(project.projectPath, AndroidBasePackages::class)),
         project
       )
     }

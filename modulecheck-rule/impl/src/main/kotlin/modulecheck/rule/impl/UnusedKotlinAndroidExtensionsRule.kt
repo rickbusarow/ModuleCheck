@@ -58,7 +58,7 @@ class UnusedKotlinAndroidExtensionsRule @Inject constructor() :
       listOf(
         UnusedPluginFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           buildFile = project.buildFile,
           findingName = name,
           pluginDefinition = PluginDefinition(

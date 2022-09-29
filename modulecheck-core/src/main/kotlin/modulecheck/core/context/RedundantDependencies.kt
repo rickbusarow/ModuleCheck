@@ -52,12 +52,12 @@ data class RedundantDependencies(
       val inheritedDependencyProjects = project
         .classpathDependencies()
         .get(sourceSetName)
-        .groupBy { it.contributed.path }
+        .groupBy { it.contributed.projectPath }
 
       allDirect
         .mapNotNull { direct ->
 
-          val fromCpd = inheritedDependencyProjects[direct.path]
+          val fromCpd = inheritedDependencyProjects[direct.projectPath]
             ?.map { it.source }
             ?: return@mapNotNull null
 
@@ -75,7 +75,7 @@ data class RedundantDependencies(
     override suspend operator fun invoke(project: McProject): RedundantDependencies {
 
       return RedundantDependencies(
-        SafeCache(listOf(project.path, RedundantDependencies::class)),
+        SafeCache(listOf(project.projectPath, RedundantDependencies::class)),
         project
       )
     }

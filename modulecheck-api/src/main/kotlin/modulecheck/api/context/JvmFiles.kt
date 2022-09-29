@@ -64,7 +64,7 @@ data class JvmFiles(
   companion object Key : ProjectContext.Key<JvmFiles> {
     override suspend operator fun invoke(project: McProject): JvmFiles {
 
-      return JvmFiles(SafeCache(listOf(project.path, JvmFiles::class)), project)
+      return JvmFiles(SafeCache(listOf(project.projectPath, JvmFiles::class)), project)
     }
   }
 }

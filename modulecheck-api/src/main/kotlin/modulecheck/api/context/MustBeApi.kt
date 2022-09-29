@@ -97,7 +97,7 @@ data class MustBeApi(
             // and will be handled by the InheritedDependencyRule.
             .filterNot { it.configurationName.isApi() }
             .plus(scopeContributingProjects)
-            .distinctBy { it.path }
+            .distinctBy { it.projectPath }
             .filterNot { cpd ->
               // exclude anything which is inherited but already included in local `api` deps
               cpd.copy(configurationName = cpd.configurationName.apiVariant()) in directApiProjects
@@ -120,15 +120,15 @@ data class MustBeApi(
                   // First try to find a normal "implementation" version of the dependency.
                   dependencies
                     .firstOrNull { declared ->
-                      declared.path == cpd.path && declared.isTestFixture == cpd.isTestFixture
+                      declared.projectPath == cpd.projectPath && declared.isTestFixture == cpd.isTestFixture
                     }
                     // If that didn't work, look for something where the project matches
                     // (which means it's testFixtures)
-                    ?: dependencies.firstOrNull { it.path == cpd.path }
+                    ?: dependencies.firstOrNull { it.projectPath == cpd.projectPath }
                 }
                 ?: project.dependencySources()
                   .sourceOfOrNull(
-                    dependencyProjectPath = cpd.path,
+                    dependencyProjectPath = cpd.projectPath,
                     sourceSetName = sourceSetName,
                     isTestFixture = cpd.isTestFixture
                   )

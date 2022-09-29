@@ -44,7 +44,7 @@ internal class RealProjectContext(val project: McProject) : ProjectContext {
   private var cache = newCache()
 
   private fun newCache() = SafeCache<Key<*>, LazyDeferred<Element>>(
-    listOf(project.path, RealProjectContext::class)
+    listOf(project.projectPath, RealProjectContext::class)
   )
 
   override suspend fun <E : Element> get(key: Key<E>): E {

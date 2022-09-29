@@ -40,7 +40,7 @@ data class JvmSourceFiles(
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
     override suspend operator fun invoke(project: McProject): JvmSourceFiles {
 
-      return JvmSourceFiles(SafeCache(listOf(project.path, JvmSourceFiles::class)), project)
+      return JvmSourceFiles(SafeCache(listOf(project.projectPath, JvmSourceFiles::class)), project)
     }
   }
 }
