@@ -36,7 +36,7 @@ class DepthRule @Inject constructor() :
 
         DepthFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           depth = intermediate.depth,
           children = intermediate.children.map { it.toFinding(name) },
           sourceSetName = sourceSetName,

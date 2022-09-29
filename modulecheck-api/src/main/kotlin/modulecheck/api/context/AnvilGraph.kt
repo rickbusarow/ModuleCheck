@@ -199,7 +199,7 @@ data class AnvilGraph(
     override suspend operator fun invoke(project: McProject): AnvilGraph {
       return AnvilGraph(
         project = project,
-        delegate = SafeCache(listOf(project.path, AnvilGraph::class))
+        delegate = SafeCache(listOf(project.projectPath, AnvilGraph::class))
       )
     }
   }

@@ -19,7 +19,9 @@ import com.squareup.anvil.annotations.ContributesBinding
 import dispatch.core.withIO
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
+import modulecheck.model.dependency.HasProjectPath
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
@@ -72,8 +74,8 @@ import javax.inject.Inject
  */
 @Suppress("LongParameterList")
 class RealKotlinEnvironment(
-  val projectPath: StringProjectPath,
-  val sourceSetName: SourceSetName,
+  override val projectPath: StringProjectPath,
+  override val sourceSetName: SourceSetName,
   val classpathFiles: LazyDeferred<List<File>>,
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
@@ -81,7 +83,7 @@ class RealKotlinEnvironment(
   val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   val logger: McLogger,
   private val resetManager: ResetManager
-) : KotlinEnvironment {
+) : KotlinEnvironment, HasProjectPath, HasSourceSetName {
 
   private val sourceFiles by lazy {
     sourceDirs.asSequence()

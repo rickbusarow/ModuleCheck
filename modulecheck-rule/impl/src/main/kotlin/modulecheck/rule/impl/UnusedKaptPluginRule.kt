@@ -70,7 +70,7 @@ class UnusedKaptPluginRule @Inject constructor() : DocumentedRule<Finding>() {
       else -> listOf(
         UnusedPluginFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           buildFile = project.buildFile,
           findingName = name,
           pluginDefinition = PluginDefinition(

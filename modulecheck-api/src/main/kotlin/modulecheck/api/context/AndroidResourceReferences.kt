@@ -82,7 +82,7 @@ data class AndroidResourceReferences(
     override suspend operator fun invoke(project: McProject): AndroidResourceReferences {
 
       return AndroidResourceReferences(
-        SafeCache(listOf(project.path, AndroidResourceReferences::class)),
+        SafeCache(listOf(project.projectPath, AndroidResourceReferences::class)),
         project
       )
     }

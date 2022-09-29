@@ -41,7 +41,7 @@ data class MustBeApiFinding(
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
       "a declaration which is referenced in this module's public API."
 
-  override val dependencyIdentifier = dependency.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier = dependency.projectPath.value + fromStringOrEmpty()
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     super.statementOrNull.await()
@@ -49,10 +49,10 @@ data class MustBeApiFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.path == source?.path) {
+    return if (dependency.projectPath == source?.projectPath) {
       ""
     } else {
-      "${source?.path?.value}"
+      "${source?.projectPath?.value}"
     }
   }
 

@@ -113,7 +113,7 @@ class Declarations private constructor(
   companion object Key : ProjectContext.Key<Declarations> {
     override suspend operator fun invoke(project: McProject): Declarations {
       return Declarations(
-        SafeCache(listOf(project.path, Declarations::class)),
+        SafeCache(listOf(project.projectPath, Declarations::class)),
         project
       )
     }
@@ -125,7 +125,7 @@ suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 suspend fun ProjectDependency.declarations(
   projectCache: ProjectCache
 ): LazySet<DeclaredName> {
-  val project = projectCache.getValue(path)
+  val project = projectCache.getValue(projectPath)
   if (isTestFixture) {
     return project.declarations().get(SourceSetName.TEST_FIXTURES, includeUpstream = false)
   }

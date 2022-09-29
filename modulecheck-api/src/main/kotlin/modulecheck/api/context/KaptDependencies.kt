@@ -64,7 +64,10 @@ data class KaptDependencies(
     )
 
     override suspend operator fun invoke(project: McProject): KaptDependencies {
-      return KaptDependencies(SafeCache(listOf(project.path, KaptDependencies::class)), project)
+      return KaptDependencies(
+        SafeCache(listOf(project.projectPath, KaptDependencies::class)),
+        project
+      )
     }
   }
 }

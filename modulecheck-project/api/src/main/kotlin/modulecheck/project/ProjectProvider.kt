@@ -27,7 +27,7 @@ interface ProjectProvider : HasProjectCache, AllProjectPathsProvider {
 
   fun getAll(): List<McProject>
 
-  override fun getAllPaths(): List<StringProjectPath> = getAll().map { it.path }
+  override fun getAllPaths(): List<StringProjectPath> = getAll().map { it.projectPath }
 
   fun clearCaches()
 }

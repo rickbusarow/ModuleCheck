@@ -97,7 +97,7 @@ data class AndroidUnqualifiedResources(
     override suspend operator fun invoke(project: McProject): AndroidUnqualifiedResources {
 
       return AndroidUnqualifiedResources(
-        SafeCache(listOf(project.path, AndroidUnqualifiedResources::class)),
+        SafeCache(listOf(project.projectPath, AndroidUnqualifiedResources::class)),
         project
       )
     }

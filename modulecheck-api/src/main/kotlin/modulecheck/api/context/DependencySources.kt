@@ -60,7 +60,7 @@ data class DependencySources(
       val sourceOrNull = project.classpathDependencies()
         .get(sourceSetName)
         .firstOrNull { transitive ->
-          transitive.contributed.path == dependencyProjectPath &&
+          transitive.contributed.projectPath == dependencyProjectPath &&
             transitive.contributed.isTestFixture == isTestFixture
         }
         ?.source
@@ -80,7 +80,10 @@ data class DependencySources(
 
   companion object Key : ProjectContext.Key<DependencySources> {
     override suspend fun invoke(project: McProject): DependencySources {
-      return DependencySources(SafeCache(listOf(project.path, DependencySources::class)), project)
+      return DependencySources(
+        SafeCache(listOf(project.projectPath, DependencySources::class)),
+        project
+      )
     }
   }
 }
@@ -93,13 +96,13 @@ suspend fun McProject.requireSourceOf(
   isTestFixture: Boolean
 ): ProjectDependency {
   return dependencySources().sourceOfOrNull(
-    dependencyProjectPath = dependencyProject.path,
+    dependencyProjectPath = dependencyProject.projectPath,
     sourceSetName = sourceSetName,
     isTestFixture = isTestFixture
   )
     ?: throw IllegalArgumentException(
-      "Unable to find source of the dependency project '${dependencyProject.path}' for SourceSet " +
-        "`${sourceSetName.value}` in the dependent project '$path', " +
+      "Unable to find source of the dependency project '${dependencyProject.projectPath}' for SourceSet " +
+        "`${sourceSetName.value}` in the dependent project '$projectPath', " +
         "including transitive dependencies."
     )
 }

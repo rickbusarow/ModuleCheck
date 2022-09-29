@@ -54,7 +54,7 @@ sealed interface ConfiguredDependency : Dependency {
 
       is ProjectDependency -> (this as ProjectDependency).copy(
         configurationName = configurationName,
-        path = path,
+        path = projectPath,
         isTestFixture = isTestFixture
       )
     }

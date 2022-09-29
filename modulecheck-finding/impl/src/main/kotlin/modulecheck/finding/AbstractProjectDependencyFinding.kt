@@ -32,7 +32,7 @@ abstract class AbstractProjectDependencyFinding :
   DependencyFinding,
   ConfiguredDependencyFinding {
 
-  final override val dependentPath: StringProjectPath get() = dependentProject.path
+  final override val dependentPath: StringProjectPath get() = dependentProject.projectPath
   final override val buildFile: File get() = dependentProject.buildFile
 
   override val isSuppressed: LazyDeferred<Boolean> = lazyDeferred {

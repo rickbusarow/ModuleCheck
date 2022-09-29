@@ -43,9 +43,9 @@ sealed interface SourceSetDependency : HasIdentifier {
 
   data class SourceSetProjectDependency(
     override val sourceSetName: SourceSetName,
-    override val path: ProjectPath,
+    override val projectPath: ProjectPath,
     override val isTestFixture: Boolean
-  ) : SourceSetDependency, HasPath
+  ) : SourceSetDependency, HasProjectPath
 }
 
 fun ConfiguredDependency.toSourceSetDependency(
@@ -61,7 +61,7 @@ fun ConfiguredDependency.toSourceSetDependency(
 
   is ProjectDependency -> SourceSetProjectDependency(
     sourceSetName = sourceSetName,
-    path = path,
+    projectPath = projectPath,
     isTestFixture = isTestFixture
   )
 }

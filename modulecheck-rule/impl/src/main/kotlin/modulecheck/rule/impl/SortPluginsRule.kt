@@ -64,7 +64,7 @@ class SortPluginsRule @Inject constructor(
       listOf(
         SortPluginsFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           buildFile = project.buildFile,
           comparator = comparator
         )

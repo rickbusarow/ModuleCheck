@@ -32,7 +32,7 @@ data class CouldUseAnvilFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.path
+  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.projectPath
 
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."

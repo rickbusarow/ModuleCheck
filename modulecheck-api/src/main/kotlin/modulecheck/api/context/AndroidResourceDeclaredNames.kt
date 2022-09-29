@@ -140,7 +140,7 @@ data class AndroidResourceDeclaredNames(
   companion object Key : ProjectContext.Key<AndroidResourceDeclaredNames> {
     override suspend operator fun invoke(project: McProject): AndroidResourceDeclaredNames {
       return AndroidResourceDeclaredNames(
-        SafeCache(listOf(project.path, AndroidResourceDeclaredNames::class)),
+        SafeCache(listOf(project.projectPath, AndroidResourceDeclaredNames::class)),
         project
       )
     }

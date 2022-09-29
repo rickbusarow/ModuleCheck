@@ -56,7 +56,10 @@ data class AnvilScopeMerges(
   companion object Key : ProjectContext.Key<AnvilScopeMerges> {
 
     override suspend operator fun invoke(project: McProject): AnvilScopeMerges {
-      return AnvilScopeMerges(SafeCache(listOf(project.path, AnvilScopeMerges::class)), project)
+      return AnvilScopeMerges(
+        SafeCache(listOf(project.projectPath, AnvilScopeMerges::class)),
+        project
+      )
     }
   }
 }

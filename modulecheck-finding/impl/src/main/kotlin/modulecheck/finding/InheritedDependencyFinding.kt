@@ -36,7 +36,7 @@ data class InheritedDependencyFinding(
   override val message: String
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
-  override val dependencyIdentifier get() = newDependency.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier get() = newDependency.projectPath.value + fromStringOrEmpty()
   override val dependency get() = newDependency
 
   override val configurationName get() = newDependency.configurationName
@@ -49,10 +49,10 @@ data class InheritedDependencyFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.path == source.path) {
+    return if (dependency.projectPath == source.projectPath) {
       ""
     } else {
-      source.path.value
+      source.projectPath.value
     }
   }
 
@@ -61,7 +61,7 @@ data class InheritedDependencyFinding(
     return compareBy<InheritedDependencyFinding>(
       { it.configurationName },
       { it.source.isTestFixture },
-      { it.newDependency.path }
+      { it.newDependency.projectPath }
     ).compare(this, other)
   }
 }

@@ -48,7 +48,7 @@ data class UnusedKaptProcessorFinding(
       "This can be a significant performance hit."
 
   override val dependencyIdentifier = when (oldDependency) {
-    is ProjectDependency -> oldDependency.path
+    is ProjectDependency -> oldDependency.projectPath
     is ExternalDependency -> oldDependency.identifier
   }.name
 

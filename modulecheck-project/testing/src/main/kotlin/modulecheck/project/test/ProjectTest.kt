@@ -56,7 +56,7 @@ abstract class ProjectTest : BaseTest(), ProjectCollector {
     val old = projectDependencies[configurationName].orEmpty()
 
     val cpd =
-      projectDependencyFactory.create(configurationName, project.path, asTestFixture)
+      projectDependencyFactory.create(configurationName, project.projectPath, asTestFixture)
 
     projectDependencies[configurationName] = old + cpd
   }

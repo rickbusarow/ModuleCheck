@@ -156,7 +156,7 @@ abstract class BaseGradleTest :
 
   // Make sure that every project in the cache is also added to the root project's settings file
   private fun addIncludes() {
-    val includes = projectCache.values.map { it.path.value }
+    val includes = projectCache.values.map { it.projectPath.value }
       .joinToString(separator = "\n", prefix = "\n", postfix = "\n") { "include(\"$it\")" }
     rootSettings.appendText(includes)
   }

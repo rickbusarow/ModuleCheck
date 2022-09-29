@@ -68,7 +68,7 @@ class RealFindingResultFactory @Inject constructor() : FindingResultFactory {
             // Sort by type, ish.
             { it::class.java.canonicalName },
             // Amongst findings of the same type, sort by path (if it exists)
-            { (it as? ProjectDependencyFinding)?.dependency?.path ?: "" }
+            { (it as? ProjectDependencyFinding)?.dependency?.projectPath ?: "" }
           )
           .map { finding ->
 

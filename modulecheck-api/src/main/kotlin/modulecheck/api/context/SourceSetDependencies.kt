@@ -45,10 +45,10 @@ data class SourceSetDependencies(
     )
 
     val directDependencies = projectDependencies[sourceSetName]
-      .filterNot { it.path == project.path }
+      .filterNot { it.projectPath == project.projectPath }
       .toSet()
 
-    val directDependencyPaths = directDependencies.map { it.path }.toSet()
+    val directDependencyPaths = directDependencies.map { it.projectPath }.toSet()
 
     val inherited = directDependencies.flatMap { sourceCpd ->
       sourceConfigs(sourceCpd.isTestFixture)
@@ -57,7 +57,7 @@ data class SourceSetDependencies(
           sourceCpd.project()
             .sourceSetDependencies()
             .get(dependencySourceSetName)
-            .filterNot { it.contributed.path in directDependencyPaths }
+            .filterNot { it.contributed.projectPath in directDependencyPaths }
             .map { transitiveCpd ->
               TransitiveProjectDependency(sourceCpd, transitiveCpd.contributed)
             }
@@ -76,7 +76,7 @@ data class SourceSetDependencies(
   companion object Key : ProjectContext.Key<SourceSetDependencies> {
     override suspend operator fun invoke(project: McProject): SourceSetDependencies {
       return SourceSetDependencies(
-        SafeCache(listOf(project.path, SourceSetDependencies::class)),
+        SafeCache(listOf(project.projectPath, SourceSetDependencies::class)),
         project
       )
     }

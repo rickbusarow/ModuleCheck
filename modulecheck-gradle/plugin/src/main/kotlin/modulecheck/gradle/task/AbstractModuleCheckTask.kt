@@ -18,6 +18,7 @@ package modulecheck.gradle.task
 import kotlinx.coroutines.cancel
 import modulecheck.finding.FindingName
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.rule.RuleFilter
 import modulecheck.utils.cast
 import modulecheck.utils.coroutines.impl.DispatcherProviderComponent
@@ -31,10 +32,12 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.workers.WorkerExecutor
 import javax.inject.Inject
 
+abstract class ModuleCheckSourceSetTask : AbstractModuleCheckTask(), HasSourceSetName
+
 abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
-    group = "moduleCheck"
+    group = "ModuleCheck"
   }
 }
 

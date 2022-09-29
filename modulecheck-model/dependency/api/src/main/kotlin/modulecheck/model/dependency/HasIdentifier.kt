@@ -15,9 +15,10 @@
 
 package modulecheck.model.dependency
 
-interface HasPath : HasIdentifier {
-  val path: ProjectPath
-  override val identifier: Identifier get() = path
+/** Something associated with a specific [ProjectPath][modulecheck.model.dependency.ProjectPath]. */
+interface HasProjectPath : HasIdentifier {
+  val projectPath: ProjectPath
+  override val identifier: Identifier get() = projectPath
 }
 
 interface HasIdentifier {

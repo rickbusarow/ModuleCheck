@@ -49,7 +49,7 @@ data class AnvilScopeContributions(
 
     override suspend operator fun invoke(project: McProject): AnvilScopeContributions {
       return AnvilScopeContributions(
-        SafeCache(listOf(project.path, AnvilScopeContributions::class)),
+        SafeCache(listOf(project.projectPath, AnvilScopeContributions::class)),
         project
       )
     }

@@ -113,7 +113,7 @@ internal class GraphVizReportTest : RunnerTest() {
     val graphsDir = testProjectDir.child("graphs")
     fun graph(project: McProject, sourceSetName: SourceSetName): File {
       return graphsDir.child(
-        project.path.value.removePrefix(":"),
+        project.projectPath.value.removePrefix(":"),
         "${sourceSetName.value}.dot"
       )
     }
@@ -145,12 +145,12 @@ internal class GraphVizReportTest : RunnerTest() {
       graph(project, sourceSet) shouldHaveText """
         strict digraph {
           edge ["dir"="forward"]
-          graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>${project.path.value} -- ${sourceSet.value}</b>>,"labelloc"="t"]
+          graph ["ratio"="0.5625","rankdir"="TB","label"=<<b>${project.projectPath.value} -- ${sourceSet.value}</b>>,"labelloc"="t"]
           node ["style"="rounded,filled","shape"="box"]
           {
             edge ["dir"="none"]
             graph ["rank"="same"]
-            "${project.path.value}" ["fillcolor"="#F89820"]
+            "${project.projectPath.value}" ["fillcolor"="#F89820"]
           }
         }
         """
