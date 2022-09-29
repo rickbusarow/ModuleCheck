@@ -26,6 +26,48 @@ import java.io.File
 class ClasspathResolutionTest : BaseGradleTest() {
 
   @TestFactory
+  fun `kotlin library with external dependency with resolution`() = factory {
+    val lib = kotlinProject(":lib") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        println()
+
+        dependencies {
+          implementation("com.google.auto:auto-common:1.0.1")
+        }
+        """
+      }
+
+      addKotlinSource(
+        """
+        package com.modulecheck.subject
+
+        class SubjectClass {
+          val dep = 1L
+        }
+        """,
+        sourceSetName = SourceSetName.TEST
+      )
+    }
+
+    shouldSucceed("moduleCheck")
+
+    lib.classpathFileText(SourceSetName.MAIN) shouldBe """
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+
+    lib.classpathFileText(SourceSetName.TEST) shouldBe """
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      """
+  }
+
+  @TestFactory
   fun `kotlin library with external dependency`() = factory {
     val lib = kotlinProject(":lib") {
       buildFile {
