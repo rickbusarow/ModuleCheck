@@ -367,9 +367,7 @@ internal class TaskFactory(
           },
           project.tasks.variantTask(GenerateLibraryRFileTask::class) {
 
-            /* hasSourceFiles &&*/
-            it.name == "generate${variantName?.capitalize()}Resources"
-            true
+            hasSourceFiles // && it.name == "generate${variantName?.capitalize()}Resources"
           }
         )
           .forEach { variantTaskCollection ->
@@ -402,6 +400,8 @@ fun FileCollection.asDependency(): FileCollectionDependency =
  *   task.someInput.set(...)
  * }
  * ```
+ *
+ * @since 0.13.0
  */
 fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
   configure(action)

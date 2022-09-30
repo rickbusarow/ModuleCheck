@@ -21,6 +21,8 @@ import java.io.Serializable
 
 /**
  * Something associated with a specific [SourceSetName][modulecheck.model.sourceset.SourceSetName].
+ *
+ * @since 0.13.0
  */
 interface HasSourceSetName : Serializable {
   val sourceSetName: SourceSetName
