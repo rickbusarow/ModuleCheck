@@ -41,28 +41,28 @@ class SourceSets(
  *
  * @property name the name of this source set, like 'main' or 'internalRelease'
  * @property compileOnlyConfiguration the configuration name of this source set's 'compileOnly'
- *   configuration, like 'compileOnly' for 'main' or 'debugCompileOnly' for 'debug'
+ *     configuration, like 'compileOnly' for 'main' or 'debugCompileOnly' for 'debug'
  * @property apiConfiguration the configuration name of this source set's 'api' configuration, like
- *   'api' for 'main' or 'debugApi' for 'debug'
+ *     'api' for 'main' or 'debugApi' for 'debug'
  * @property implementationConfiguration the configuration name of this source set's
- *   'implementation' configuration, like 'implementation'
- *   for 'main' or 'debugImplementation' for 'debug'
+ *     'implementation' configuration, like 'implementation' for 'main' or 'debugImplementation' for
+ *     'debug'
  * @property runtimeOnlyConfiguration the configuration name of this source set's 'runtimeOnly'
- *   configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
+ *     configuration, like 'runtimeOnly' for 'main' or 'debugRuntimeOnly' for 'debug'
  * @property annotationProcessorConfiguration the configuration name of this source set's
- *   'annotationProcessor' configuration, like 'annotationProcessor'
- *   for 'main' or 'debugAnnotationProcessor' for 'debug'
+ *     'annotationProcessor' configuration, like 'annotationProcessor' for 'main' or
+ *     'debugAnnotationProcessor' for 'debug'
  * @property jvmFiles all java/kotlin/scala/groovy files in this source set
  * @property resourceFiles all xml 'res' files for this source set
  * @property layoutFiles all android layout files for this source set. This is a subset of
- *   [resourceFiles].
+ *     [resourceFiles].
  * @property jvmTarget the Java version used when compiling this source set
  * @property kotlinEnvironmentDeferred the kotlin environment used for "compiling" and parsing this
- *   source set
+ *     source set
  * @property upstreamLazy all source sets upstream of this one, like `main` if this source set is
- *   `test`
+ *     `test`
  * @property downstreamLazy all source sets downstream of this one, like `test` if this source set
- *   is `main`
+ *     is `main`
  * @since 0.12.0
  */
 @Suppress("LongParameterList")
@@ -200,6 +200,27 @@ fun Collection<McSourceSet>.sortedByInheritance(): Sequence<McSourceSet> {
   }
 }
 
+/**
+ * Upstream source set names **not** including the receiver name.
+ *
+ * @since 0.13.0
+ */
+fun SourceSetName.upstream(
+  hasSourceSets: HasSourceSets
+): List<SourceSetName> = hasSourceSets.sourceSets[this]
+  ?.upstream
+  .orEmpty()
+
+/**
+ * Upstream source set names *including the receiver name.*
+ *
+ * ### Ordering
+ * Order is based upon proximity to the receiver name. This is a breadth-first traversal of a
+ * directed graph where the receiver [SourceSetName] is the root. The first returned name is the
+ * receiver, followed by the source sets it directly inherits.
+ *
+ * @since 0.13.0
+ */
 fun SourceSetName.withUpstream(
   hasSourceSets: HasSourceSets
 ): List<SourceSetName> = hasSourceSets.sourceSets[this]
