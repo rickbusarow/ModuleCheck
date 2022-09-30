@@ -28,7 +28,7 @@ import modulecheck.parsing.groovy.antlr.GroovyAndroidGradleParser
 import modulecheck.parsing.groovy.antlr.GroovyDependenciesBlockParser
 import modulecheck.parsing.groovy.antlr.GroovyPluginsBlockParser
 import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.psi.KotlinAndroidGradleParser
 import modulecheck.parsing.psi.KotlinDependenciesBlockParser
 import modulecheck.parsing.psi.KotlinPluginsBlockParser
@@ -52,7 +52,7 @@ import java.io.File
 @Suppress("LongParameterList")
 internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> createProject(
   projectCache: ProjectCache,
-  safeAnalysisResultAccess: SafeAnalysisResultAccess,
+  dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   projectDir: File,
   path: String,
   pluginBuilder: T,
@@ -76,7 +76,7 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
     projectCache = projectCache,
     codeGeneratorBindings = codeGeneratorBindings,
     projectProvider = projectProvider,
-    safeAnalysisResultAccess = safeAnalysisResultAccess
+    dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess
   )
     .also {
       it.maybeAddSourceSet(SourceSetName.MAIN)
@@ -205,7 +205,7 @@ inline fun <reified T, reified P, G> T.toRealMcProject(): McProject
       jvmTarget = jvmTarget,
       buildFileParserFactory = buildFileParserFactory(configuredProjectDependencyFactory),
       platformPlugin = platformPlugin.toPlugin(
-        safeAnalysisResultAccess = safeAnalysisResultAccess,
+        dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
         projectPath = path,
         projectDependencies = projectDependencies,
         externalDependencies = externalDependencies

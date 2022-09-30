@@ -34,7 +34,7 @@ import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.addDependency
 import modulecheck.parsing.gradle.dsl.asDeclaration
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
@@ -55,7 +55,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   val codeGeneratorBindings: List<CodeGeneratorBinding>,
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
-  val safeAnalysisResultAccess: SafeAnalysisResultAccess,
+  val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
   override var hasKapt: Boolean = false,

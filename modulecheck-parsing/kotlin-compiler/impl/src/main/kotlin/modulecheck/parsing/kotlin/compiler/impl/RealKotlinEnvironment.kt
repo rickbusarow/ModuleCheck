@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler.impl
 
 import com.squareup.anvil.annotations.ContributesBinding
+import dispatch.core.withIO
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.platforms.KotlinEnvironmentFactory
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -23,13 +24,10 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.reporting.logging.McLogger
-import modulecheck.utils.coroutines.flatMapSetMerge
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyDeferred
 import org.jetbrains.kotlin.analyzer.AnalysisResult
-import org.jetbrains.kotlin.builtins.jvm.JvmBuiltIns
-import org.jetbrains.kotlin.builtins.jvm.JvmBuiltIns.Kind.FROM_DEPENDENCIES
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
@@ -50,12 +48,8 @@ import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
 import org.jetbrains.kotlin.config.LanguageVersionSettingsImpl
 import org.jetbrains.kotlin.config.languageVersionSettings
-import org.jetbrains.kotlin.context.ContextForNewModule
-import org.jetbrains.kotlin.context.ProjectContext
 import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.incremental.isJavaFile
-import org.jetbrains.kotlin.name.Name
-import org.jetbrains.kotlin.platform.jvm.JvmPlatforms
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import java.io.File
@@ -70,9 +64,8 @@ import javax.inject.Inject
  *     `[...]/myProject/src/main/java`.
  * @property kotlinLanguageVersion the version of Kotlin being used
  * @property jvmTarget the version of Java being compiled to
- * @property safeAnalysisResultAccess provides thread-safe, "leased" access to the ModuleDescriptors
- *     of dependencies, since only one downstream project can safely consume (and update the cache
- *     of) a descriptor at any given time
+ * @property dependencyModuleDescriptorAccess provides the module descriptors of all dependency
+ *     source sets from the current module and dependency modules
  * @property logger logs Kotlin compiler messages during analysis
  * @property resetManager used to reset caching
  * @since 0.13.0
@@ -85,7 +78,7 @@ class RealKotlinEnvironment(
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
   val jvmTarget: JvmTarget,
-  val safeAnalysisResultAccess: SafeAnalysisResultAccess,
+  val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   val logger: McLogger,
   private val resetManager: ResetManager
 ) : KotlinEnvironment {
@@ -147,27 +140,16 @@ class RealKotlinEnvironment(
     val ktFiles = kotlinSourceFiles
       .map { file -> psiFactory.createKotlin(file) }
 
-    safeAnalysisResultAccess.withLeases(
-      requester = this,
+    val descriptors = dependencyModuleDescriptorAccess.dependencyModuleDescriptors(
       projectPath = projectPath,
       sourceSetName = sourceSetName
-    ) { dependencyEnvironments ->
+    )
 
-      @Suppress("UNCHECKED_CAST")
-      val descriptors = dependencyEnvironments
-        .flatMapSetMerge { dependency ->
-          val directDependency = dependency.moduleDescriptorDeferred.await()
-          setOf(directDependency)
-            .plus(directDependency.allDependencyModules as List<ModuleDescriptorImpl>)
-        }
-        .toList()
-
-      createAnalysisResult(
-        coreEnvironment = coreEnvironment.await(),
-        ktFiles = ktFiles,
-        dependencyModuleDescriptors = descriptors
-      )
-    }
+    createAnalysisResult(
+      coreEnvironment = coreEnvironment.await(),
+      ktFiles = ktFiles,
+      dependencyModuleDescriptors = descriptors
+    )
   }
 
   override val bindingContextDeferred = lazyDeferred {
@@ -175,32 +157,7 @@ class RealKotlinEnvironment(
   }
 
   override val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl> = lazyDeferred {
-    val golden = analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
-    golden.copy()
-  }
-
-  private suspend fun ModuleDescriptorImpl.copy(): ModuleDescriptorImpl {
-    val project = coreEnvironment.await().project
-
-    val projectContext = ProjectContext(project, "testing project context")
-    val builtIns = JvmBuiltIns(projectContext.storageManager, FROM_DEPENDENCIES)
-
-    val mutableModuleContext = ContextForNewModule(
-      projectContext,
-      Name.special(
-        "<${projectPath.value}:${sourceSetName.value} ${kotlin.random.Random.nextInt()}>"
-      ),
-      builtIns,
-      JvmPlatforms.jvmPlatformByTargetVersion(jvmTarget)
-    )
-
-    mutableModuleContext.module.setDependencies(
-      allDependencyModules.filterIsInstance<ModuleDescriptorImpl>()
-    )
-
-    mutableModuleContext.module.initialize(this.packageFragmentProvider)
-
-    return mutableModuleContext.module
+    analysisResultDeferred.await().moduleDescriptor as ModuleDescriptorImpl
   }
 
   private val messageCollector by lazy {
@@ -211,11 +168,11 @@ class RealKotlinEnvironment(
     )
   }
 
-  private fun createAnalysisResult(
+  private suspend fun createAnalysisResult(
     coreEnvironment: KotlinCoreEnvironment,
     ktFiles: List<KtFile>,
     dependencyModuleDescriptors: List<ModuleDescriptorImpl>
-  ): AnalysisResult {
+  ): AnalysisResult = withIO {
 
     val analyzer = AnalyzerWithCompilerReport(
       messageCollector = messageCollector,
@@ -237,7 +194,7 @@ class RealKotlinEnvironment(
 
     messageCollector.printIssuesCountIfAny()
 
-    return analyzer.analysisResult
+    analyzer.analysisResult
   }
 
   private suspend fun createCompilerConfiguration(
@@ -296,7 +253,7 @@ class RealKotlinEnvironment(
    */
   @ContributesBinding(TaskScope::class)
   class Factory @Inject constructor(
-    private val safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    private val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     private val logger: McLogger
   ) : KotlinEnvironmentFactory {
     override fun create(
@@ -313,7 +270,7 @@ class RealKotlinEnvironment(
       sourceDirs = sourceDirs,
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       logger = logger,
       resetManager = ResetManager()
     )
