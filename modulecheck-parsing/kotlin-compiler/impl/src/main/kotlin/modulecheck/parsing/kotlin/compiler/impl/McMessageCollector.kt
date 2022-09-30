@@ -28,7 +28,7 @@ internal class McMessageCollector(
   private val messageRenderer: MessageRenderer,
   private val logger: McLogger,
   private val logLevel: LogLevel
-) : MessageCollector by MessageCollector.NONE {
+) : MessageCollector {
 
   private var totalMessages = 0
   private var ignoredMessages = 0
