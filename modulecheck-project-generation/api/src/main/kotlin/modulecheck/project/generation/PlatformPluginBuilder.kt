@@ -30,7 +30,7 @@ import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.dependency.SourceSets
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import java.io.File
@@ -40,7 +40,7 @@ interface PlatformPluginBuilder<T : PlatformPlugin> {
   val configurations: MutableMap<ConfigurationName, ConfigBuilder>
 
   fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -53,7 +53,7 @@ data class JavaLibraryPluginBuilder(
 ) : PlatformPluginBuilder<JavaLibraryPlugin> {
 
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -61,7 +61,7 @@ data class JavaLibraryPluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
@@ -84,7 +84,7 @@ data class KotlinJvmPluginBuilder(
   override val configurations: MutableMap<ConfigurationName, ConfigBuilder> = mutableMapOf()
 ) : PlatformPluginBuilder<KotlinJvmPlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -92,7 +92,7 @@ data class KotlinJvmPluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
@@ -135,7 +135,7 @@ data class AndroidApplicationPluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidApplicationPlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -143,7 +143,7 @@ data class AndroidApplicationPluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
@@ -180,7 +180,7 @@ data class AndroidLibraryPluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidLibraryPlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -188,7 +188,7 @@ data class AndroidLibraryPluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
@@ -226,7 +226,7 @@ data class AndroidDynamicFeaturePluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidDynamicFeaturePlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -234,7 +234,7 @@ data class AndroidDynamicFeaturePluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
@@ -271,7 +271,7 @@ data class AndroidTestPluginBuilder(
   override val resValues: MutableMap<SourceSetName, Set<UnqualifiedAndroidResource>> = mutableMapOf()
 ) : AndroidPlatformPluginBuilder<AndroidTestPlugin> {
   override fun toPlugin(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath,
     projectDependencies: ProjectDependencies,
     externalDependencies: ExternalDependencies
@@ -279,7 +279,7 @@ data class AndroidTestPluginBuilder(
     sourceSets = SourceSets(
       sourceSets.mapValues {
         it.value.toSourceSet(
-          safeAnalysisResultAccess = safeAnalysisResultAccess,
+          dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
           projectPath = projectPath
         )
       }
