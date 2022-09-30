@@ -40,7 +40,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
-import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
@@ -194,7 +193,9 @@ class RealKotlinEnvironment(
       )
     }
 
-    messageCollector.printIssuesCountIfAny()
+    // messageCollector.printIssuesCountIfAny()
+
+    println("finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 
     analyzer.analysisResult
   }
@@ -231,7 +232,7 @@ class RealKotlinEnvironment(
 
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles.await())
+      // addJvmClasspathRoots(classpathFiles.await())
     }
   }
 

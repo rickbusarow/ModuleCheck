@@ -43,21 +43,21 @@ internal class McMessageCollector(
 
     when (logLevel) {
       ERRORS -> if (severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
+        // logger.printFailureLine(messageRenderer.render(severity, message, location))
       } else {
-        ignoredMessages++
+        // ignoredMessages++
       }
 
       WARNINGS_AS_ERRORS -> if (severity.isWarning || severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
+        // logger.printFailureLine(messageRenderer.render(severity, message, location))
       } else {
-        ignoredMessages++
+        // ignoredMessages++
       }
 
       VERBOSE -> if (severity.isWarning || severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
+        // logger.printFailureLine(messageRenderer.render(severity, message, location))
       } else {
-        logger.printInfo(messageRenderer.render(severity, message, location))
+        // logger.printInfo(messageRenderer.render(severity, message, location))
       }
     }
   }

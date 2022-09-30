@@ -15,14 +15,12 @@
 
 package modulecheck.gradle.task
 
-import com.android.builder.aar.AarExtractor
 import modulecheck.gradle.configuring
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.createSafely
-import modulecheck.utils.mkdirsInline
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
@@ -49,27 +47,27 @@ abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
   @TaskAction
   fun execute() {
 
-    inputs.files
-      .flatMap { javaFile ->
-        if (javaFile.isDirectory) {
-          javaFile.walkBottomUp().filter { it.isFile }.toList()
-        } else {
-          listOf(javaFile)
-        }
-      }
-      .filter { it.name.endsWith(".aar") }
-      .forEach { aar ->
-
-        val output = classpathFile.asFile.get().parentFile
-          .resolve("unzipped/${aar.nameWithoutExtension}")
-          .mkdirsInline()
-
-        AarExtractor().extract(aar, output)
-
-        output.walkBottomUp()
-          .filter { it.isFile }
-          .forEach { println("                      file://$it") }
-      }
+    // inputs.files
+    //   .flatMap { javaFile ->
+    //     if (javaFile.isDirectory) {
+    //       javaFile.walkBottomUp().filter { it.isFile }.toList()
+    //     } else {
+    //       listOf(javaFile)
+    //     }
+    //   }
+    //   .filter { it.name.endsWith(".aar") }
+    //   .forEach { aar ->
+    //
+    //     val output = classpathFile.asFile.get().parentFile
+    //       .resolve("unzipped/${aar.nameWithoutExtension}")
+    //       .mkdirsInline()
+    //
+    //     AarExtractor().extract(aar, output)
+    //
+    //     output.walkBottomUp()
+    //       .filter { it.isFile }
+    //       // .forEach { println("                      file://$it") }
+    //   }
 
     inputs.files
       .flatMap { javaFile ->
@@ -82,7 +80,7 @@ abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
       .distinct()
       .sorted()
       .joinToString("\n")
-      .also(::println)
+      // .also(::println)
       .also { txt ->
         classpathFile.asFile.get()
           .createSafely(txt)

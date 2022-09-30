@@ -57,7 +57,7 @@ class DependencyModuleDescriptorAccess @Inject constructor(
       .projectDependencies[sourceSetName]
       .flatMapListMerge { dep ->
 
-        val dependencyProject = projectCache.getValue(dep.path)
+        val dependencyProject = projectCache.getValue(dep.projectPath)
         val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.sourceSets)
 
         dependencySourceSetName.upstreamEnvironments(dependencyProject, includeSelf = true)

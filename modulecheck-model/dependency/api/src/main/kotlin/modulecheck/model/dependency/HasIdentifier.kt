@@ -15,7 +15,11 @@
 
 package modulecheck.model.dependency
 
-/** Something associated with a specific [ProjectPath][modulecheck.model.dependency.ProjectPath]. */
+/**
+ * Something associated with a specific [ProjectPath][modulecheck.model.dependency.ProjectPath].
+ *
+ * @since 0.13.0
+ */
 interface HasProjectPath : HasIdentifier {
   val projectPath: ProjectPath
   override val identifier: Identifier get() = projectPath
