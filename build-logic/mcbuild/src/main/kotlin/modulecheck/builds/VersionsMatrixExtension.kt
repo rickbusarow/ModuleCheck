@@ -118,6 +118,8 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   setOf(
     "compile${kotlinTaskSourceSetName}Kotlin",
     "javaSourcesJar",
+    "lintKotlin$ktlintSourceSetName",
+    "formatKotlin$ktlintSourceSetName",
     "runKtlintCheckOver${ktlintSourceSetName}SourceSet",
     "runKtlintFormatOver${ktlintSourceSetName}SourceSet"
   ).forEach { taskName ->
