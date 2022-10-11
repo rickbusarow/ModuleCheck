@@ -40,5 +40,7 @@ dependencyResolutionManagement {
 }
 
 include(
-  ":mcbuild"
+  ":core",
+  ":ktlint-rules",
+  ":mcbuild",
 )

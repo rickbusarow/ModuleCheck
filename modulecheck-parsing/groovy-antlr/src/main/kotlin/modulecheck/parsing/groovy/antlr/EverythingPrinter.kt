@@ -41,7 +41,10 @@ internal fun ParserRuleContext.printEverything() {
   }
 
   printNode(
-    nodeSimpleName = javaClass.simpleName, parentName = "null", nodeText = text, level = 0
+    nodeSimpleName = javaClass.simpleName,
+    parentName = "null",
+    nodeText = text,
+    level = 0
   )
 
   childrenOfTypeRecursive<ParserRuleContext>()

@@ -109,12 +109,20 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
       configure { mcTask ->
         allprojects
           .filter { it.isMissingManifestFile(agpApiAccess) }
-          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.ManifestProcessorTask::class.java) }
+          .flatMap {
+            it.tasks.withType(
+              com.android.build.gradle.tasks.ManifestProcessorTask::class.java
+            )
+          }
           .forEach { mcTask.dependsOn(it) }
 
         allprojects
           .filter { it.generatesBuildConfig(agpApiAccess) }
-          .flatMap { it.tasks.withType(com.android.build.gradle.tasks.GenerateBuildConfig::class.java) }
+          .flatMap {
+            it.tasks.withType(
+              com.android.build.gradle.tasks.GenerateBuildConfig::class.java
+            )
+          }
           .forEach { mcTask.dependsOn(it) }
       }
     }
@@ -136,7 +144,9 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
             true,
             disableConfigCache
           )
-        } else null
+        } else {
+          null
+        }
       )
     } else {
       listOfNotNull(
@@ -148,7 +158,9 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
             true,
             disableConfigCache
           )
-        } else null
+        } else {
+          null
+        }
       )
     }
 

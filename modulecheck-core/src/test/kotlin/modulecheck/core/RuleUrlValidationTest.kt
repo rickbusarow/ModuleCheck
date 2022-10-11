@@ -27,18 +27,14 @@ import modulecheck.utils.child
 import modulecheck.utils.remove
 import modulecheck.utils.requireNotNull
 import org.junit.jupiter.api.Test
-import kotlin.io.path.Path
-import kotlin.io.path.absolute
+import java.io.File
 
 class RuleUrlValidationTest : RunnerTest() {
 
   @Test
   fun `each rule documentation url must correspond to a docs file and sidebar entry`() {
 
-    val websiteDir = Path(".").absolute()
-      .parent
-      .parent
-      .child("website")
+    val websiteDir = File(BuildProperties().websiteDir)
 
     """
       The path must point to the project website: $websiteDir

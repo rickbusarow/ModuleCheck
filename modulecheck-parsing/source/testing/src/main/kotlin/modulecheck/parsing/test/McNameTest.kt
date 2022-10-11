@@ -103,13 +103,15 @@ interface McNameTest : FancyShould {
     inner class DeclarationsBuilder {
       fun kotlin(name: String, packageName: PackageName = PackageName("com.subject")) =
         DeclaredName.kotlin(
-          packageName, name.stripPackageNameFromFqName(packageName)
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
         )
           .also { declarations.add(it) }
 
       fun java(name: String, packageName: PackageName = PackageName("com.subject")) =
         DeclaredName.java(
-          packageName, name.stripPackageNameFromFqName(packageName)
+          packageName,
+          name.stripPackageNameFromFqName(packageName)
         )
           .also { declarations.add(it) }
 

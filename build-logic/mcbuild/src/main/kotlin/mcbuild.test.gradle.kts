@@ -20,7 +20,7 @@ tasks.withType<Test> {
   useJUnitPlatform()
 
   testLogging {
-    events = setOf(/*PASSED, */FAILED)
+    events = setOf(FAILED)
     exceptionFormat = TestExceptionFormat.FULL
     showExceptions = true
     showCauses = true

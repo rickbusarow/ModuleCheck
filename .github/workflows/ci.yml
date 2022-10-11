@@ -18,7 +18,7 @@ jobs:
     steps:
       # cancel previous jobs
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.0
+        uses: styfle/cancel-workflow-action@0.10.1
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
@@ -101,7 +101,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintformat -q
+          arguments: ktlintformat
           cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
@@ -116,7 +116,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name != github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintCheck -q
+          arguments: ktlintCheck
           cache-read-only: false
 
   modulecheck:
@@ -364,31 +364,19 @@ jobs:
       fail-fast: false
       ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.6.21, 1.7.0, 1.7.10 ]
+        kotlin-version: [ 1.7.0, 1.7.10, 1.7.20 ]
         gradle-version: [ 7.2, 7.4.2, 7.5.1 ]
         agp-version: [ 7.0.1, 7.1.3, 7.2.2, 7.3.0 ]
-        anvil-version: [ 2.4.1-1-6, 2.4.1 ]
+        anvil-version: [ 2.4.2 ]
         exclude:
-          - kotlin-version: 1.6.21
-            anvil-version: 2.4.1
-          - kotlin-version: 1.7.0
-            anvil-version: 2.4.1-1-6
-          - kotlin-version: 1.7.10
-            anvil-version: 2.4.1-1-6
           - agp-version: 7.0.1
-            anvil-version: 2.4.1
-          - agp-version: 7.1.3
-            anvil-version: 2.4.1-1-6
+            anvil-version: 2.4.2
           - gradle-version: 7.2
             agp-version: 7.2.2
           - gradle-version: 7.2
             agp-version: 7.3.0
           - gradle-version: 7.4.2
-            anvil-version: 2.4.1
-          - gradle-version: 7.4.2
-            agp-version: 7.2.2
-          - gradle-version: 7.5.1
-            anvil-version: 2.4.1-1-6
+            anvil-version: 2.4.2
       ### <end-matrix>
 
     steps:

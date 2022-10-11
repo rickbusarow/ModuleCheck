@@ -16,20 +16,25 @@
 package modulecheck.builds.ktlint
 
 import com.google.auto.service.AutoService
-import com.pinterest.ktlint.core.RuleSetProvider
+import com.pinterest.ktlint.core.RuleProvider
+import com.pinterest.ktlint.core.RuleSetProviderV2
 
 /**
  * TODO
  *
  * @since 0.13.0
  */
-@AutoService(RuleSetProvider::class)
-class McRuleSetProvider : RuleSetProvider {
+@AutoService(RuleSetProviderV2::class)
+class McRuleSetProvider : RuleSetProviderV2(
+  id = "mc-rules",
+  about = NO_ABOUT
+) {
 
-  override fun get(): com.pinterest.ktlint.core.RuleSet {
-    return com.pinterest.ktlint.core.RuleSet(
-      "mc-rules",
-      NoSinceInKDocRule()
+  override fun getRuleProviders(): Set<RuleProvider> {
+    return setOf(
+      RuleProvider { NoSinceInKDocRule() },
+      RuleProvider { NoTrailingSpacesInRawStringLiteralRule() },
+      RuleProvider { NoUselessConstructorKeywordRule() }
     )
   }
 }

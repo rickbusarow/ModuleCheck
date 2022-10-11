@@ -63,8 +63,7 @@ inline fun <reified T> ObjectFactory.optionalProperty(
     }
   }
 
-@PublishedApi
-internal fun <T> Property<T>.getOrNullFinal(): T? {
+fun <T> Property<T>.getOrNullFinal(): T? {
   finalizeValueOnRead()
   disallowChanges()
   return orNull

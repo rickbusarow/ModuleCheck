@@ -61,7 +61,9 @@ class AgpApiAccess @Inject constructor() {
       // since they removed the suggested replacement.
       @Suppress("DEPRECATION")
       (SemVer.parse(com.android.builder.model.Version.ANDROID_GRADLE_PLUGIN_VERSION))
-    } else null
+    } else {
+      null
+    }
   }
 
   /**
@@ -79,7 +81,9 @@ class AgpApiAccess @Inject constructor() {
   ): T? {
     return if (androidIsInClasspath && project.isAndroid(this)) {
       SafeAgpApiReferenceScope(this, project).action()
-    } else null
+    } else {
+      null
+    }
   }
 }
 

@@ -114,7 +114,8 @@ sealed class ReferenceName(name: String) : McName, ResolvableMcName {
       name: String,
       language: CompatibleLanguage
     ): ReferenceName = ReferenceNameImpl(
-      name = name, language = language
+      name = name,
+      language = language
     )
 
     /** @return a basic [ReferenceName] for this name and language. */

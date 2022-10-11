@@ -15,16 +15,15 @@
 
 import modulecheck.builds.matrix.VersionsMatrixYamlCheckTask
 import modulecheck.builds.matrix.VersionsMatrixYamlGenerateTask
-import org.gradle.kotlin.dsl.register
-import org.gradle.kotlin.dsl.registering
-import org.gradle.language.base.plugins.LifecycleBasePlugin
 
-require(project == rootProject) {
-  "only add the ci/yaml matrix tasks to the root project"
+val ciFile = rootProject.file(".github/workflows/ci.yml")
+
+require(ciFile.exists()) {
+  "Could not resolve '$ciFile'.  Only add the ci/yaml matrix tasks to the root project."
 }
 
 val versionsMatrixYamlCheck by tasks.registering(VersionsMatrixYamlCheckTask::class) {
-  yamlFile.set(rootProject.file(".github/workflows/ci.yml"))
+  yamlFile.set(ciFile)
 }
 
 // Automatically run `versionsMatrixYamlCheck` when running `check`
@@ -35,5 +34,5 @@ tasks
   }
 
 tasks.register("versionsMatrixGenerateYaml", VersionsMatrixYamlGenerateTask::class) {
-  yamlFile.set(rootProject.file(".github/workflows/ci.yml"))
+  yamlFile.set(ciFile)
 }

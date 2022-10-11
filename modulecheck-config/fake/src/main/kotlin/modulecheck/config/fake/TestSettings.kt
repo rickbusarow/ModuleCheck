@@ -86,7 +86,8 @@ class TestReportsSettings(
     ReportsSettings.DEPTHS_PATH_DEFAULT
   ),
   override val graphs: PerModuleReportSettings = TestPerModuleReportSettings(
-    enabled = ReportsSettings.GRAPH_ENABLED_DEFAULT, outputDir = null
+    enabled = ReportsSettings.GRAPH_ENABLED_DEFAULT,
+    outputDir = null
   )
 ) : ReportsSettings
 

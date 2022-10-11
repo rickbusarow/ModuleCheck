@@ -28,7 +28,11 @@ import org.junit.jupiter.api.Test
 
 class DisableViewBindingTest : RunnerTest() {
 
-  override val settings by resets { TestSettings(checks = TestChecksSettings(disableViewBinding = true)) }
+  override val settings by resets {
+    TestSettings(
+      checks = TestChecksSettings(disableViewBinding = true)
+    )
+  }
 
   @Test
   fun `used ViewBinding from main sourceset in dependent module with no changes`() {

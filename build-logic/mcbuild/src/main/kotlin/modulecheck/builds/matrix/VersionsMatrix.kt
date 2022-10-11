@@ -26,23 +26,17 @@ class VersionsMatrix(
   val agpList = agpArg?.singletonList()
     ?: listOf("7.0.1", "7.1.3", "7.2.2", "7.3.0")
   val anvilList = anvilArg?.singletonList()
-    ?: listOf("2.4.1-1-6", "2.4.1")
+    ?: listOf("2.4.2")
   val gradleList = gradleArg?.singletonList()
     ?: listOf("7.2", "7.4.2", "7.5.1")
   val kotlinList = kotlinArg?.singletonList()
-    ?: listOf("1.6.21", "1.7.0", "1.7.10")
+    ?: listOf("1.7.0", "1.7.10", "1.7.20")
 
   internal val exclusions = listOf(
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1", kotlin = "1.6.21"),
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.0"),
-    Exclusion(gradle = null, agp = null, anvil = "2.4.1-1-6", kotlin = "1.7.10"),
-    Exclusion(gradle = null, agp = "7.0.1", anvil = "2.4.1", kotlin = null),
-    Exclusion(gradle = null, agp = "7.1.3", anvil = "2.4.1-1-6", kotlin = null),
+    Exclusion(gradle = null, agp = "7.0.1", anvil = "2.4.2", kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.2.2", anvil = null, kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.3.0", anvil = null, kotlin = null),
-    Exclusion(gradle = "7.4.2", agp = null, anvil = "2.4.1", kotlin = null),
-    Exclusion(gradle = "7.4.2", agp = "7.2.2", anvil = null, kotlin = null),
-    Exclusion(gradle = "7.5.1", agp = null, anvil = "2.4.1-1-6", kotlin = null)
+    Exclusion(gradle = "7.4.2", agp = null, anvil = "2.4.2", kotlin = null)
   )
     .requireNoDuplicates()
 
@@ -84,7 +78,6 @@ class VersionsMatrix(
 
   private fun List<TestVersions>.requireNotEmpty() = apply {
     require(isNotEmpty()) {
-
       val arguments = listOf(
         "gradle" to gradleArg,
         "agp" to agpArg,
@@ -100,7 +93,6 @@ class VersionsMatrix(
 
   private fun List<Exclusion>.requireNoDuplicates() = also { exclusions ->
     require(exclusions.toSet().size == exclusions.size) {
-
       val duplicates = exclusions.filter { target ->
         exclusions.filter { it == target }.size > 1
       }
@@ -112,7 +104,6 @@ class VersionsMatrix(
   }
 
   private fun requireNoUselessExclusions() {
-
     // If we're using arguments, then the baseline `combinations` list will naturally be smaller.
     // This check can be skipped.
     if (listOfNotNull(gradleArg, agpArg, anvilArg, kotlinArg).isNotEmpty()) return
@@ -145,7 +136,6 @@ class VersionsMatrix(
   }
 
   private fun TestVersions.excludedBy(exclusion: Exclusion): Boolean {
-
     return when {
       exclusion.gradle != null && exclusion.gradle != gradle -> false
       exclusion.agp != null && exclusion.agp != agp -> false

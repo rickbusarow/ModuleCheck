@@ -20,7 +20,6 @@ import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 
 fun Project.applyDagger() {
-
   apply(plugin = "org.jetbrains.kotlin.kapt")
   apply(plugin = "com.squareup.anvil")
 

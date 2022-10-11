@@ -92,7 +92,7 @@ private fun Project.requireInSyncWithToml() {
     )
       .forEach { (list, listName, alias) ->
         require(list.contains(libsCatalog.version(alias))) {
-          "The versions catalog version for 'alias' is ${libsCatalog.version(alias)}.  " +
+          "The versions catalog version for '$alias' is ${libsCatalog.version(alias)}.  " +
             "Update the VersionsMatrix list '$listName' to include this new version."
         }
       }
@@ -108,7 +108,6 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   sourceSetName: String,
   taskProvider: TaskProvider<out Task>
 ) {
-
   val kotlinTaskSourceSetName = when (sourceSetName) {
     "main" -> ""
     else -> sourceSetName.capitalize()
@@ -119,6 +118,8 @@ fun Project.registerSimpleGenerationTaskAsDependency(
   setOf(
     "compile${kotlinTaskSourceSetName}Kotlin",
     "javaSourcesJar",
+    "lintKotlin$ktlintSourceSetName",
+    "formatKotlin$ktlintSourceSetName",
     "runKtlintCheckOver${ktlintSourceSetName}SourceSet",
     "runKtlintFormatOver${ktlintSourceSetName}SourceSet"
   ).forEach { taskName ->

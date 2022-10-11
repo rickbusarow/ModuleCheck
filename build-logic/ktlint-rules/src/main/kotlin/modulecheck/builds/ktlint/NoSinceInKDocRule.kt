@@ -24,6 +24,7 @@ import com.pinterest.ktlint.core.ast.ElementType.WHITE_SPACE
 import com.pinterest.ktlint.core.ast.children
 import com.pinterest.ktlint.core.ast.nextSibling
 import com.pinterest.ktlint.core.ast.prevLeaf
+import modulecheck.builds.VERSION_NAME
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.CompositeElement
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.LeafElement
@@ -42,17 +43,16 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
  */
 class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   private val currentVersion by lazy {
-    BuildProperties().version
+    VERSION_NAME
       .removeSuffix("-LOCAL")
       .removeSuffix("-SNAPSHOT")
   }
 
-  override fun visit(
+  override fun beforeVisitChildNodes(
     node: ASTNode,
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
-
     if (node.elementType == ElementType.KDOC_END) {
       visitKDoc(node, autoCorrect = autoCorrect, emit = emit)
     }
@@ -63,7 +63,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
-
     val kdoc = kdocNode.psi.parent as KDoc
 
     val tag = kdoc.findSinceTag()
@@ -80,7 +79,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     val sinceVersion = kdoc.findSinceTag()?.getContent()
 
     if (sinceVersion.isNullOrBlank()) {
-
       emit(
         kdocNode.startOffset,
         "added '$currentVersion' to `@since` tag",
@@ -116,7 +114,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun ASTNode.addSinceTag(version: String) {
-
     val kdoc = psi.parent as KDoc
 
     val indent = kdoc.findIndent()
@@ -142,7 +139,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     var firstNewNode: ASTNode? = null
 
     repeat(leadingNewlineCount) {
-
       val newline = PsiWhiteSpaceImpl(newlineIndent)
       if (firstNewNode == null) {
         firstNewNode = newline
@@ -211,7 +207,6 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun KDocTag.addVersionToSinceTag(version: String) {
-
     require(knownTag == SINCE) {
       "Expected to be adding a version to a `@since` tag, but instead it's `$text`."
     }
@@ -227,14 +222,16 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
 
     var acc = startOffset + 1
 
-    val numSpaces = fileLines.firstNotNullOf {
-      if (it.length + 1 < acc) {
-        acc -= (it.length + 1)
-        null
-      } else {
-        acc
+    val numSpaces = fileLines.asSequence()
+      .mapNotNull {
+        if (it.length + 1 < acc) {
+          acc -= (it.length + 1)
+          null
+        } else {
+          acc
+        }
       }
-    }
+      .first()
     return " ".repeat(numSpaces)
   }
 }

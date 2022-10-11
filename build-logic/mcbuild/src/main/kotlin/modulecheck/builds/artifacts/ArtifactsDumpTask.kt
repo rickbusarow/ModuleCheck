@@ -34,7 +34,6 @@ open class ArtifactsDumpTask @Inject constructor(
 
   @TaskAction
   fun run() {
-
     val json = moshiAdapter.indent("  ").toJson(currentList)
 
     reportFile.asFile.writeText(json)

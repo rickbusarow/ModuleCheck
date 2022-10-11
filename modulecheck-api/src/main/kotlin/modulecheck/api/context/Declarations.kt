@@ -117,7 +117,8 @@ class Declarations private constructor(
   companion object Key : ProjectContext.Key<Declarations> {
     override suspend operator fun invoke(project: McProject): Declarations {
       return Declarations(
-        SafeCache(listOf(project.path, Declarations::class)), project
+        SafeCache(listOf(project.path, Declarations::class)),
+        project
       )
     }
   }

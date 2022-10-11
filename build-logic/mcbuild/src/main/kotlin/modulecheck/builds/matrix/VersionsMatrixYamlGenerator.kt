@@ -20,7 +20,6 @@ import modulecheck.builds.matrix.VersionsMatrix.Exclusion
 internal class VersionsMatrixYamlGenerator {
 
   fun generate(versionsMatrix: VersionsMatrix, indentSize: Int): String {
-
     var currentIndent = " ".repeat(indentSize)
 
     fun StringBuilder.indent(content: StringBuilder.() -> Unit) {
@@ -34,7 +33,6 @@ internal class VersionsMatrixYamlGenerator {
     }
 
     val yaml = buildString {
-
       line("matrix:")
 
       indent {

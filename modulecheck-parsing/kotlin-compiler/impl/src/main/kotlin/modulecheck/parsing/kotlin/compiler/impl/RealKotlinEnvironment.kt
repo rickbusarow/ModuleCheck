@@ -41,7 +41,6 @@ import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
-import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
@@ -100,7 +99,7 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration = lazyDeferred {
     createCompilerConfiguration(
-      classpathFiles = classpathFiles.value.toList(),
+      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -220,8 +219,9 @@ class RealKotlinEnvironment(
   ): AnalysisResult {
 
     val analyzer = AnalyzerWithCompilerReport(
-      messageCollector,
-      coreEnvironment.configuration.languageVersionSettings
+      messageCollector = messageCollector,
+      languageVersionSettings = coreEnvironment.configuration.languageVersionSettings,
+      renderDiagnosticName = false
     )
 
     analyzer.analyzeAndReport(ktFiles) {
@@ -243,12 +243,12 @@ class RealKotlinEnvironment(
 
   private suspend fun createCompilerConfiguration(
     classpathFiles: List<File>,
-  sourceFiles: List<File>,
-  kotlinLanguageVersion: LanguageVersion?,
-  jvmTarget: JvmTarget
-): CompilerConfiguration {
-  val javaFiles = mutableListOf<File>()
-  val kotlinFiles = mutableListOf<String>()
+    sourceFiles: List<File>,
+    kotlinLanguageVersion: LanguageVersion?,
+    jvmTarget: JvmTarget
+  ): CompilerConfiguration {
+    val javaFiles = mutableListOf<File>()
+    val kotlinFiles = mutableListOf<String>()
 
     sourceFiles.forEach { file ->
       when {
@@ -274,7 +274,7 @@ class RealKotlinEnvironment(
 
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles.await())
+      addJvmClasspathRoots(classpathFiles)
     }
   }
 

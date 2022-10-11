@@ -13,40 +13,23 @@
  * limitations under the License.
  */
 
-import modulecheck.builds.DOCS_WEBSITE
-import modulecheck.builds.SOURCE_WEBSITE
-import modulecheck.builds.VERSION_NAME
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-  id("mcbuild")
-}
-
-mcbuild {
-  ksp()
-
-  buildProperties(
-    "main",
-    """
-    package modulecheck.builds.ktlint
-
-    internal class BuildProperties {
-      val version = "$VERSION_NAME"
-      val sourceWebsite = "$SOURCE_WEBSITE"
-      val docsWebsite = "$DOCS_WEBSITE"
-    }
-    """
-  )
+  kotlin("jvm")
+  alias(libs.plugins.kotlinter)
+  alias(libs.plugins.google.ksp)
 }
 
 dependencies {
-  api(libs.detekt.api)
+
+  compileOnly(gradleApi())
+
+  compileOnly(libs.kotlin.gradle.plug)
 
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
-  implementation(libs.google.ksp)
-  implementation(libs.kotlin.compiler)
+  implementation(libs.jmailen.kotlinter)
   implementation(libs.ktlint.core)
-  implementation(libs.ktlint.gradle)
   implementation(libs.ktlint.ruleset.standard)
 
   ksp(libs.zacSweers.auto.service.ksp)
@@ -55,9 +38,4 @@ dependencies {
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.ktlint.test)
-}
-
-val jarTask = tasks.withType<Jar>()
-rootProject.tasks.named("prepareKotlinBuildScriptModel") {
-  dependsOn(jarTask)
 }

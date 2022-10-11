@@ -109,7 +109,7 @@ class AndroidDataBindingReferenceName(
  * @property language the language making this reference
  * @since 0.12.0
  */
-class QualifiedAndroidResourceReferenceName constructor(
+class QualifiedAndroidResourceReferenceName(
   name: String,
   override val language: CompatibleLanguage
 ) : AndroidResourceReferenceName(name)

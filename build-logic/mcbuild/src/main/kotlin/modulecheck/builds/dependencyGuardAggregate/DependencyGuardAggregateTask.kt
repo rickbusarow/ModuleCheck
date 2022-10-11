@@ -38,7 +38,6 @@ abstract class DependencyGuardAggregateTask : SourceTask() {
 
   @TaskAction
   fun combine() {
-
     val rootFile = rootDir.asFile.get()
 
     val newText = source.files
@@ -82,7 +81,6 @@ abstract class DependencyGuardExplodeTask : DefaultTask() {
 
   @TaskAction
   fun combine() {
-
     val agText = aggregateFile.asFile.get().readText()
 
     val split = agText.lines()
@@ -127,7 +125,6 @@ abstract class DependencyGuardExplodeTask : DefaultTask() {
 }
 
 fun File.deleteAndDeleteEmptyParents() {
-
   when {
     isFile -> delete()
     exists() && isDirectory && listFiles().isNullOrEmpty() -> delete()

@@ -80,7 +80,7 @@ private fun Project.registerTask(
   content: String
 ): TaskProvider<Task> {
   val catalogs = rootProject.file(
-    "build-logic/mcbuild/src/main/kotlin/modulecheck/builds/catalogs.kt"
+    "build-logic/core/src/main/kotlin/modulecheck/builds/catalogs.kt"
   )
 
   val sourceSetTaskName = when (sourceSetName) {
