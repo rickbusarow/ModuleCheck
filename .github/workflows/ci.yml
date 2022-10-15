@@ -44,11 +44,27 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: ci versions matrix check
+      - name: ci versions matrix check (used by everyone but Renovate)
+        if: github.actor != 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
           arguments: versionsMatrixYamlCheck
           cache-read-only: false
+
+      - name: ci versions matrix update (used by Renovate)
+        if: github.actor == 'renovate[bot]'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: versionsMatrixGenerateYaml
+          cache-read-only: false
+
+      # If the versions matrix was just udpated, commit and push those changes.
+      - name: commit dependency-guard baseline changes (used by main repo)
+        if: github.actor == 'renovate[bot]'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update versions matrix in yaml
+          commit_options: '--no-verify --signoff'
 
       - name: dependency-guard check (used by everyone but Renovate)
         if: github.actor != 'renovate[bot]'
