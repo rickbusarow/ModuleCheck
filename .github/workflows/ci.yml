@@ -50,11 +50,27 @@ jobs:
           arguments: versionsMatrixYamlCheck
           cache-read-only: false
 
-      - name: dependency-guard
+      - name: dependency-guard check (used by everyone but Renovate)
+        if: github.actor != 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
           arguments: dependencyGuard
           cache-read-only: false --refresh-dependencies
+
+      - name: dependency-guard baseline (used by Renovate)
+        if: github.actor == 'renovate[bot]'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dependencyGuardBaseline
+          cache-read-only: false --refresh-dependencies
+
+      # If dependency-guard generated changes, commit and push those changes.
+      - name: commit dependency-guard baseline changes (used by main repo)
+        if: github.actor == 'renovate[bot]'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update dependency-guard baseline
+          commit_options: '--no-verify --signoff'
 
       - name: artifacts check
         uses: gradle/gradle-build-action@v2
