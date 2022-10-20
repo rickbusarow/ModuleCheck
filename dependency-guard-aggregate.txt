@@ -269,8 +269,8 @@
 :modulecheck-finding:name -- runtimeClasspath -- org.jetbrains:annotations:13.0
 
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-gradle:plugin -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.dagger:dagger:2.44
 :modulecheck-gradle:plugin -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
@@ -297,7 +297,7 @@
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.13
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.13
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.glassfish:javax.json:1.1.4
-:modulecheck-gradle:plugin -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-gradle:plugin -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-gradle:plugin -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
@@ -366,8 +366,8 @@
 :modulecheck-parsing:groovy-antlr -- runtimeClasspath -- org.jetbrains:annotations:13.0
 
 :modulecheck-parsing:java -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-parsing:java -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
 :modulecheck-parsing:java -- runtimeClasspath -- com.google.guava:failureaccess:1.0.1
@@ -380,7 +380,7 @@
 :modulecheck-parsing:java -- runtimeClasspath -- net.java.dev.jna:jna:5.6.0
 :modulecheck-parsing:java -- runtimeClasspath -- net.swiftzer.semver:semver:1.2.0
 :modulecheck-parsing:java -- runtimeClasspath -- org.checkerframework:checker-qual:3.22.0
-:modulecheck-parsing:java -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-parsing:java -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-parsing:java -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
@@ -420,8 +420,8 @@
 :modulecheck-parsing:psi -- runtimeClasspath -- org.jetbrains:annotations:13.0
 
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-parsing:wiring -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
 :modulecheck-parsing:wiring -- runtimeClasspath -- com.google.guava:failureaccess:1.0.1
@@ -443,7 +443,7 @@
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.13
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.13
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.glassfish:javax.json:1.1.4
-:modulecheck-parsing:wiring -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-parsing:wiring -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-parsing:wiring -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
@@ -509,8 +509,8 @@
 
 :modulecheck-project:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
 :modulecheck-project:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-project:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-project:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-project:testing -- runtimeClasspath -- com.google.dagger:dagger:2.44
 :modulecheck-project:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
@@ -556,7 +556,7 @@
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.13
 :modulecheck-project:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.13
 :modulecheck-project:testing -- runtimeClasspath -- org.glassfish:javax.json:1.1.4
-:modulecheck-project:testing -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-project:testing -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-project:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
@@ -585,8 +585,8 @@
 
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
 :modulecheck-project-generation:api -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-project-generation:api -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.dagger:dagger:2.44
 :modulecheck-project-generation:api -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
@@ -631,7 +631,7 @@
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.13
 :modulecheck-project-generation:api -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.13
 :modulecheck-project-generation:api -- runtimeClasspath -- org.glassfish:javax.json:1.1.4
-:modulecheck-project-generation:api -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-project-generation:api -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-project-generation:api -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
@@ -897,8 +897,8 @@
 
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.ben-manes.caffeine:caffeine:3.1.1
 :modulecheck-runtime:testing -- runtimeClasspath -- com.github.curious-odd-man:rgxgen:1.4
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.4
-:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.4
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-core:3.24.7
+:modulecheck-runtime:testing -- runtimeClasspath -- com.github.javaparser:javaparser-symbol-solver-core:3.24.7
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.code.findbugs:jsr305:3.0.2
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.dagger:dagger:2.44
 :modulecheck-runtime:testing -- runtimeClasspath -- com.google.errorprone:error_prone_annotations:2.14.0
@@ -948,7 +948,7 @@
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy-xml:3.0.13
 :modulecheck-runtime:testing -- runtimeClasspath -- org.codehaus.groovy:groovy:3.0.13
 :modulecheck-runtime:testing -- runtimeClasspath -- org.glassfish:javax.json:1.1.4
-:modulecheck-runtime:testing -- runtimeClasspath -- org.javassist:javassist:3.29.0-GA
+:modulecheck-runtime:testing -- runtimeClasspath -- org.javassist:javassist:3.29.2-GA
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.intellij.deps:trove4j:1.0.20200330
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-compiler-embeddable:1.7.20
 :modulecheck-runtime:testing -- runtimeClasspath -- org.jetbrains.kotlin:kotlin-daemon-embeddable:1.7.20
