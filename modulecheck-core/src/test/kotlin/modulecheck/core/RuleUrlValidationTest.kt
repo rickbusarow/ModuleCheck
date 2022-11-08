@@ -19,7 +19,6 @@ import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.file.shouldExist
-import io.kotest.matchers.file.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import modulecheck.rule.impl.DocumentedRule.Companion.RULES_BASE_URL
 import modulecheck.runtime.test.RunnerTest
@@ -42,7 +41,6 @@ class RuleUrlValidationTest : RunnerTest() {
       If this doesn't point to the website, something has moved.
     """.trimIndent().asClue {
       websiteDir.shouldExist()
-      websiteDir.shouldNotBeEmpty()
     }
 
     val sidebarsFile = websiteDir.child("sidebars.js")
