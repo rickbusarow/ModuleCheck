@@ -280,7 +280,7 @@ class ClasspathResolutionTest : BaseGradleTest() {
       }
     }
 
-    return Classpath.from(this, sourceSetName).files
+    return Classpath.from(this, sourceSetName).files()
       .joinToString("\n") { it.absolutePath.clean() }
   }
 }

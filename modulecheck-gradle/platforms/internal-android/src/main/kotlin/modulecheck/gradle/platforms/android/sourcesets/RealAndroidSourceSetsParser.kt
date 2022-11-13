@@ -388,7 +388,9 @@ class RealAndroidSourceSetsParser private constructor(
           .map { it.asSourceSetName() }
       }
 
-      val classpath = lazyDeferred { Classpath.from(gradleProject, sourceSetName).files }
+      val classpath = lazyDeferred {
+        Classpath.from(gradleProject, sourceSetName).files()
+      }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
         kotlinEnvironmentFactory.create(
@@ -545,7 +547,9 @@ class RealAndroidSourceSetsParser private constructor(
           kotlinEnvironmentFactory.create(
             projectPath = projectPath,
             sourceSetName = sourceSetName,
-            classpathFiles = lazyDeferred { Classpath.from(gradleProject, sourceSetName).files },
+            classpathFiles = lazyDeferred {
+              Classpath.from(gradleProject, sourceSetName).files()
+            },
             sourceDirs = jvmFiles,
             kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget()

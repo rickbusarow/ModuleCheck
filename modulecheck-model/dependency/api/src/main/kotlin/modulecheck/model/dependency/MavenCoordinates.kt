@@ -17,7 +17,7 @@ package modulecheck.model.dependency
 
 import modulecheck.utils.lazy.unsafeLazy
 
-data class MavenCoordinates(
+data class MavenCoordinates constructor(
   /**
    * In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`.
    *
@@ -43,15 +43,19 @@ data class MavenCoordinates(
   override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
 
   companion object {
-
-    private val MATCHER = "([\\w\\.]+):([\\w\\-]+):([\\w\\.]+)".toRegex()
-
     fun parseOrNull(coordinateString: String): MavenCoordinates? {
-      return MATCHER.find(coordinateString)
-        ?.destructured
-        ?.let { (group, moduleName, version) ->
-          MavenCoordinates(group, moduleName, version)
-        }
+
+      val split = coordinateString.split(':')
+
+      if (split.size in 2..3) {
+        return null
+      }
+
+      return MavenCoordinates(
+        group = split[0],
+        moduleName = split[1],
+        version = split.getOrNull(2)
+      )
     }
   }
 

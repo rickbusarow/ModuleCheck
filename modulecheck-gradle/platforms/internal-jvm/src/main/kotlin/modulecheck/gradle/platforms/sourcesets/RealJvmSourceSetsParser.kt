@@ -87,7 +87,7 @@ class RealJvmSourceSetsParser @Inject constructor(
                   Classpath.from(
                     gradleProject,
                     sourceSetName
-                  ).files
+                  ).files()
                 },
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = kotlinVersion,
@@ -145,7 +145,10 @@ class RealJvmSourceSetsParser @Inject constructor(
                 projectPath = projectPath,
                 sourceSetName = sourceSetName,
                 classpathFiles = lazyDeferred {
-                  Classpath.from(gradleProject, sourceSetName).files
+                  Classpath.from(
+                    gradleProject,
+                    sourceSetName
+                  ).files()
                 },
                 sourceDirs = jvmFiles,
                 kotlinLanguageVersion = null,

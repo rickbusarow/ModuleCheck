@@ -15,6 +15,7 @@
 
 package modulecheck.gradle.platforms
 
+import modulecheck.model.dependency.MavenCoordinates
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.McProject
@@ -22,7 +23,11 @@ import modulecheck.utils.requireExists
 import java.io.File
 
 @JvmInline
-value class Classpath(val files: List<File>) {
+value class Classpath constructor(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
+
+  fun coordinates() = mavenCoordinatesWithFiles.map { it.mavenCoordinates }
+  fun files() = mavenCoordinatesWithFiles.map { it.file }
+
   companion object {
 
     fun reportFile(project: GradleProject, sourceSetName: SourceSetName): File {
@@ -48,13 +53,36 @@ value class Classpath(val files: List<File>) {
     private fun File.parseToClasspath(): Classpath {
       requireExists { "The expected classpath report file is missing at $absolutePath" }
 
-      val files = readText()
+      val extensions = setOf(".jar", ".aar")
+
+      val coordinatesWithFiles = readText()
         .lineSequence()
         .filter { it.isNotBlank() }
-        .map { File(it) }
-        .onEach { it.requireExists() }
+        .map { it.trim() }
+        // filter out .json and .txt files added by Android modules
+        .filter { it.takeLast(4) in extensions }
+        .map { line ->
 
-      return Classpath(files.toList())
+          // example of a starting path:
+          // [...]/com.square.anvil/compiler/1.0.0/911d07691411f7cbccf00d177ac41c1af38/compiler-1.0.0.jar
+          val (fileGroup, fileModule, fileVersion) = line
+            // becomes [..., "com.square.anvil", "compiler", "1.0.0", "91...38", "compiler-1.0.0.jar"]
+            .split(File.separatorChar)
+            // becomes [..., "com.square.anvil", "compiler", "1.0.0"]
+            .dropLast(2)
+            // becomes ["com.square.anvil", "compiler", "1.0.0"]
+            .takeLast(3)
+
+          MavenCoordinatesWithFile(MavenCoordinates(fileGroup, fileModule, fileVersion), File(line))
+        }
+        .toList()
+
+      return Classpath(coordinatesWithFiles)
     }
   }
+
+  data class MavenCoordinatesWithFile(
+    val mavenCoordinates: MavenCoordinates,
+    val file: File
+  )
 }
