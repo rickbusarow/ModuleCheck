@@ -40,7 +40,7 @@ data class MavenCoordinates(
    * @since 0.12.0
    */
   val version: String?
-) : Identifier, Comparable<MavenCoordinates> {
+) : Identifier {
 
   override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
 
@@ -78,10 +78,6 @@ data class MavenCoordinates(
     }
   }
 
-  override fun compareTo(other: MavenCoordinates): Int {
-    return name.compareTo(other.name)
-  }
-
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (javaClass != other?.javaClass) return false
@@ -104,6 +100,51 @@ data class MavenCoordinates(
   }
 }
 
-sealed interface Identifier {
+sealed interface Identifier : Comparable<Identifier> {
   val name: String
+
+  override fun compareTo(other: Identifier): Int {
+    return name.compareTo(other.name)
+  }
+}
+
+sealed class AndroidSdk : Identifier {
+  abstract val version: Int
+
+  data class Full(override val version: Int) : AndroidSdk() {
+    override val name = "android-sdk-jar-$version-full"
+  }
+
+  data class CoreForSystemModules(override val version: Int) : AndroidSdk() {
+    override val name = "android-sdk-jar-$version-core"
+  }
+
+  override fun toString(): String = "AndroidSdk($name)"
+
+  companion object {
+
+    private val MATCHER = """.*\/sdk\/platforms\/android-(\d{2})\/([^\/\.]*)\.jar""".toRegex()
+
+    /**
+     * Given a gradle cache path like:
+     * ```
+     * /Users/rbusarow/Library/Android/sdk/platforms/android-30/android.jar
+     * ```
+     *
+     * Parse out the group, module, and version.
+     *
+     * @since 0.13.0
+     */
+    fun File.parseAndroidSdkJarFromPath(): AndroidSdk? {
+      return MATCHER.find(absolutePath)
+        ?.destructured
+        ?.let { (version, type) ->
+          when (type) {
+            "android" -> Full(version.toInt())
+            "core-for-system-modules" -> CoreForSystemModules(version.toInt())
+            else -> error("unrecognized android sdk artifact type: $type")
+          }
+        }
+    }
+  }
 }

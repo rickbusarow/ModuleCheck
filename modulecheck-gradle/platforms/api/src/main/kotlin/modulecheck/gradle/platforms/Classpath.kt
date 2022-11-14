@@ -15,7 +15,8 @@
 
 package modulecheck.gradle.platforms
 
-import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.AndroidSdk.Companion.parseAndroidSdkJarFromPath
+import modulecheck.model.dependency.Identifier
 import modulecheck.model.dependency.MavenCoordinates.Companion.parseMavenCoordinatesFromGradleCache
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
@@ -26,7 +27,7 @@ import java.io.File
 @JvmInline
 value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
 
-  fun coordinates() = mavenCoordinatesWithFiles.map { it.mavenCoordinates }
+  fun coordinates() = mavenCoordinatesWithFiles.map { it.identifier }
   fun files() = mavenCoordinatesWithFiles.map { it.file }
 
   companion object {
@@ -64,14 +65,14 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
         .filter { it.takeLast(4) in extensions }
         .map { line ->
 
-          val coords = File(line).parseMavenCoordinatesFromGradleCache()
+          val identifier = File(line).parseMavenCoordinatesFromGradleCache()
+            ?: File(line).parseAndroidSdkJarFromPath()
 
           // TODO for special cases:
-          //   android sdk jar paths, like `/Users/rbusarow/Library/Android/sdk/platforms/android-30/android.jar`
           //   parsing the coordinates from unzipped .aar files
           //   handle BuildConfig.java and R.java files
 
-          MavenCoordinatesWithFile(coords!!, File(line))
+          MavenCoordinatesWithFile(identifier!!, File(line))
         }
         .toList()
 
@@ -80,7 +81,7 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
   }
 
   data class MavenCoordinatesWithFile(
-    val mavenCoordinates: MavenCoordinates,
+    val identifier: Identifier,
     val file: File
   )
 }
