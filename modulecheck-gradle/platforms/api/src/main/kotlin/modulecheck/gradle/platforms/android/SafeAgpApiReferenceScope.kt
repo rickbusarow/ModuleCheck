@@ -15,6 +15,7 @@
 
 package modulecheck.gradle.platforms.android
 
+import com.android.build.api.dsl.AndroidSourceSet
 import com.android.build.gradle.TestedExtension
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
 import modulecheck.model.dependency.AndroidPlatformPlugin
@@ -146,6 +147,24 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       @Suppress("UnstableApiUsage")
       extension.testFixtures.enable
     } ?: false
+
+  /**
+   * `api`, `implementation`, `compileOnly`, and `runtimeOnly` configuration names for this source
+   * set.
+   *
+   * Inspired by
+   * [KotlinSourceSet.relatedConfigurationNames][org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames].
+   *
+   * @since 0.13.0
+   */
+  @Suppress("UnstableApiUsage")
+  val AndroidSourceSet.relatedConfigurationNames: List<String>
+    get() = listOf(
+      apiConfigurationName,
+      implementationConfigurationName,
+      compileOnlyConfigurationName,
+      runtimeOnlyConfigurationName
+    )
 
   /**
    * @return A new [AndroidPlatformPlugin] using this scope's [gradleProject]

@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler.impl
 
 import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.classpathDependencies
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
@@ -48,7 +49,42 @@ class DependencyModuleDescriptorAccess @Inject constructor(
    *     are globally cached and shared.
    * @since 0.13.0
    */
-  suspend fun dependencyModuleDescriptors(
+  suspend fun projectDependencies(
+    projectPath: ProjectPath,
+    sourceSetName: SourceSetName
+  ): List<ModuleDescriptorImpl> {
+
+    return projectCache.getValue(projectPath)
+      .classpathDependencies()
+      .get(sourceSetName)
+      .flatMapListMerge { transitive ->
+
+        val contributedProject = projectCache.getValue(transitive.contributed.projectPath)
+
+        val depSourceSet =
+          transitive.contributed.declaringSourceSetName(contributedProject.sourceSets)
+
+        depSourceSet.upstreamEnvironments(contributedProject, includeSelf = true)
+      }
+      .plus(
+        sourceSetName.upstreamEnvironments(
+          project = projectCache.getValue(projectPath),
+          includeSelf = false
+        )
+      )
+      .mapAsync { dependencyKotlinEnvironment ->
+        dependencyKotlinEnvironment.moduleDescriptorDeferred.await()
+      }
+      .distinct()
+      .toList()
+  }
+
+  /**
+   * @return all descriptors for the dependencies of a given project's source set. These descriptors
+   *     are globally cached and shared.
+   * @since 0.13.0
+   */
+  suspend fun externalDependencies(
     projectPath: ProjectPath,
     sourceSetName: SourceSetName
   ): List<ModuleDescriptorImpl> {
@@ -59,6 +95,9 @@ class DependencyModuleDescriptorAccess @Inject constructor(
 
         val dependencyProject = projectCache.getValue(dep.projectPath)
         val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.sourceSets)
+
+        dependencyProject.externalDependencies[sourceSetName]
+          .filter { it.configurationName.isApi() }
 
         dependencySourceSetName.upstreamEnvironments(dependencyProject, includeSelf = true)
       }

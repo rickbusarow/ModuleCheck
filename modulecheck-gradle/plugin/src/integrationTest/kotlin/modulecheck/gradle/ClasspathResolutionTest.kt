@@ -99,6 +99,62 @@ class ClasspathResolutionTest : BaseGradleTest() {
   }
 
   @TestFactory
+  fun `kotlin library gets transitive external dependency from its project dependency`() = factory {
+    kotlinProject(":lib1") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        println()
+
+        dependencies {
+          api("com.google.auto:auto-common:1.0.1")
+        }
+        """
+      }
+    }
+
+    val lib2 = kotlinProject(":lib2") {
+      buildFile {
+        """
+        plugins {
+          kotlin("jvm")
+        }
+
+        println()
+
+        dependencies {
+          @Suppress("unused-dependency")
+          implementation(project(":lib1"))
+        }
+        """
+      }
+    }
+
+    shouldSucceed("moduleCheck")
+
+    lib2.classpathFileText(SourceSetName.MAIN) shouldBe """
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-common/$kotlinVersion/kotlin-stdlib-common-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk7/$kotlinVersion/kotlin-stdlib-jdk7-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib/$kotlinVersion/kotlin-stdlib-$kotlinVersion.jar
+      org.jetbrains/annotations/13.0/annotations-13.0.jar
+      """
+
+    lib2.classpathFileText(SourceSetName.TEST) shouldBe """
+      com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+      org.jetbrains.kotlin/kotlin-stdlib-common/$kotlinVersion/kotlin-stdlib-common-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk7/$kotlinVersion/kotlin-stdlib-jdk7-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+      org.jetbrains.kotlin/kotlin-stdlib/$kotlinVersion/kotlin-stdlib-$kotlinVersion.jar
+      org.jetbrains/annotations/13.0/annotations-13.0.jar
+      """
+  }
+
+  @TestFactory
   fun `android library with external dependency`() = factory {
     val lib = androidLibrary(":lib", "com.modulecheck.lib1") {
       buildFile {

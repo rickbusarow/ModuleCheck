@@ -28,26 +28,26 @@ class ResolutionConfigFactory {
 
   fun create(
     project: GradleProject,
-    configuration: Configuration
+    sourceConfiguration: Configuration
   ): Configuration {
 
-    val copy = configuration.copyRecursive().setTransitive(true)
+    val copy = sourceConfiguration.copyRecursive().setTransitive(true)
 
-    copy.isCanBeResolved = true
+    copy as DefaultConfiguration
+
+    if (copy.resolvedState == UNRESOLVED) {
+      copy.isCanBeResolved = true
+    }
 
     copy.dependencies.clear()
 
     val dest = copy.dependencies as DefaultDependencySet
 
-    configuration.excludeRules.forEach { er ->
+    sourceConfiguration.excludeRules.forEach { er ->
       copy.exclude(mapOf("group" to er.group, "module" to er.module))
     }
 
-    copy as DefaultConfiguration
-
-    copy.resolvedState
-
-    configuration.allDependencies
+    sourceConfiguration.allDependencies
       .matching { dependency -> dependency !is ProjectDependency }
       .configureEach {
         if (copy.resolvedState == UNRESOLVED) {
@@ -65,7 +65,7 @@ class ResolutionConfigFactory {
       copy.addAttributes(metadata)
     }
 
-    copy.addAttributes(configuration)
+    copy.addAttributes(sourceConfiguration)
     return copy
   }
 

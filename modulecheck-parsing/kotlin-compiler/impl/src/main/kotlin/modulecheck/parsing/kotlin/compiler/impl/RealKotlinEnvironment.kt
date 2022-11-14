@@ -41,6 +41,7 @@ import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
+import org.jetbrains.kotlin.cli.jvm.config.configureJdkClasspathRoots
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
@@ -73,7 +74,7 @@ import javax.inject.Inject
  * @since 0.13.0
  */
 @Suppress("LongParameterList")
-class RealKotlinEnvironment constructor(
+class RealKotlinEnvironment(
   override val projectPath: StringProjectPath,
   override val sourceSetName: SourceSetName,
   val classpathFiles: LazyDeferred<List<File>>,
@@ -142,7 +143,7 @@ class RealKotlinEnvironment constructor(
     val ktFiles = kotlinSourceFiles
       .map { file -> psiFactory.createKotlin(file) }
 
-    val descriptors = dependencyModuleDescriptorAccess.dependencyModuleDescriptors(
+    val descriptors = dependencyModuleDescriptorAccess.projectDependencies(
       projectPath = projectPath,
       sourceSetName = sourceSetName
     )
@@ -234,6 +235,7 @@ class RealKotlinEnvironment constructor(
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
       addJvmClasspathRoots(classpathFiles.await())
+      configureJdkClasspathRoots()
     }
   }
 

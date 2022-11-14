@@ -16,6 +16,7 @@
 package modulecheck.gradle.platforms
 
 import modulecheck.model.dependency.MavenCoordinates
+import modulecheck.model.dependency.MavenCoordinates.Companion.parseMavenCoordinatesFromGradleCache
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.McProject
@@ -23,7 +24,7 @@ import modulecheck.utils.requireExists
 import java.io.File
 
 @JvmInline
-value class Classpath constructor(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
+value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
 
   fun coordinates() = mavenCoordinatesWithFiles.map { it.mavenCoordinates }
   fun files() = mavenCoordinatesWithFiles.map { it.file }
@@ -63,17 +64,14 @@ value class Classpath constructor(val mavenCoordinatesWithFiles: List<MavenCoord
         .filter { it.takeLast(4) in extensions }
         .map { line ->
 
-          // example of a starting path:
-          // [...]/com.square.anvil/compiler/1.0.0/911d07691411f7cbccf00d177ac41c1af38/compiler-1.0.0.jar
-          val (fileGroup, fileModule, fileVersion) = line
-            // becomes [..., "com.square.anvil", "compiler", "1.0.0", "91...38", "compiler-1.0.0.jar"]
-            .split(File.separatorChar)
-            // becomes [..., "com.square.anvil", "compiler", "1.0.0"]
-            .dropLast(2)
-            // becomes ["com.square.anvil", "compiler", "1.0.0"]
-            .takeLast(3)
+          val coords = File(line).parseMavenCoordinatesFromGradleCache()
 
-          MavenCoordinatesWithFile(MavenCoordinates(fileGroup, fileModule, fileVersion), File(line))
+          // TODO for special cases:
+          //   android sdk jar paths, like `/Users/rbusarow/Library/Android/sdk/platforms/android-30/android.jar`
+          //   parsing the coordinates from unzipped .aar files
+          //   handle BuildConfig.java and R.java files
+
+          MavenCoordinatesWithFile(coords!!, File(line))
         }
         .toList()
 

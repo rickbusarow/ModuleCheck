@@ -16,8 +16,10 @@
 package modulecheck.model.dependency
 
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.segments
+import java.io.File
 
-data class MavenCoordinates constructor(
+data class MavenCoordinates(
   /**
    * In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`.
    *
@@ -43,19 +45,36 @@ data class MavenCoordinates constructor(
   override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
 
   companion object {
+
+    private val MATCHER = """([\w\.]+):([\w\-]+):([\w\.]+)""".toRegex()
+
     fun parseOrNull(coordinateString: String): MavenCoordinates? {
+      return MATCHER.find(coordinateString)
+        ?.destructured
+        ?.let { (group, moduleName, version) ->
+          MavenCoordinates(group, moduleName, version)
+        }
+    }
 
-      val split = coordinateString.split(':')
-
-      if (split.size in 2..3) {
-        return null
-      }
-
-      return MavenCoordinates(
-        group = split[0],
-        moduleName = split[1],
-        version = split.getOrNull(2)
-      )
+    /**
+     * Given a gradle cache path like:
+     * ```
+     * [...]/com.square.anvil/compiler/1.0.0/911d07691411f7cbccf00d177ac41c1af38/compiler-1.0.0.jar
+     * ```
+     *
+     * Parse out the group, module, and version.
+     *
+     * @since 0.13.0
+     */
+    fun File.parseMavenCoordinatesFromGradleCache(): MavenCoordinates? {
+      // after `segments()`, we get:
+      // [..., "com.square.anvil", "compiler", "1.0.0", "91...38", "compiler-1.0.0.jar"]
+      return segments()
+        .dropLast(2) // becomes [..., "com.square.anvil", "compiler", "1.0.0"]
+        .takeLast(3) // becomes ["com.square.anvil", "compiler", "1.0.0"]
+        .takeIf { it.size == 3 }
+        ?.joinToString(":") // becomes "com.square.anvil:compiler:1.0.0"
+        ?.let { parseOrNull(it) }
     }
   }
 

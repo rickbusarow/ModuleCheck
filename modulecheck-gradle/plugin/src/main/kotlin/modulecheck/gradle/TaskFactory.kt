@@ -33,7 +33,7 @@ import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.UnsafeDirectAgpApiReference
 import modulecheck.gradle.platforms.android.internal.onAndroidPlugin
 import modulecheck.gradle.platforms.kotlin.getKotlinExtensionOrNull
-import modulecheck.gradle.task.McDependencyResolutionTask
+import modulecheck.gradle.task.ModuleCheckDependencyResolutionTask
 import modulecheck.gradle.task.MultiRuleModuleCheckTask
 import modulecheck.gradle.task.SingleRuleModuleCheckTask
 import modulecheck.model.sourceset.SourceSetName
@@ -43,6 +43,7 @@ import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
 import org.gradle.api.DefaultTask
 import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
 import org.gradle.api.internal.artifacts.dependencies.DefaultSelfResolvingDependency
@@ -132,7 +133,6 @@ internal class TaskFactory(
     }
   }
 
-  @Suppress("LongParameterList")
   private fun GradleProject.registerMultiRuleTasks(
     taskName: String,
     includeAuto: Boolean,
@@ -194,7 +194,7 @@ internal class TaskFactory(
   }
 
   private fun GradleProject.handleKotlinJvmPlugin(
-    configFactory: ResolutionConfigFactory,
+    resolutionConfigFactory: ResolutionConfigFactory,
     rootTasks: List<TaskProvider<*>>
   ) {
 
@@ -203,30 +203,15 @@ internal class TaskFactory(
 
         val sourceSetName = sourceSet.name.asSourceSetName()
 
-        val configs = sourceSet.relatedConfigurationNames
-          .mapNotNull { configurations.findByName(it) }
+        val jarDependencyConfigs = sourceSet.relatedConfigurationNames
+          .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
 
-        val sourceSetCaps = sourceSetName.value.capitalize()
-
-        val androidCfg = project.configurations
-          .register("android${sourceSetCaps}ResourceArtifacts") {
-            it.isCanBeResolved = true
-            it.isCanBeConsumed = true
-          }
-
-        val cfgs = configs.map { config ->
-          configFactory.create(
-            project = project,
-            configuration = config
-          )
-        } + androidCfg
-
-        val resolveTask = McDependencyResolutionTask
+        val resolveTask = ModuleCheckDependencyResolutionTask
           .register(project = project, sourceSetName = sourceSetName)
           .configuring { task ->
 
             task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
-            cfgs.forEach { cfg ->
+            jarDependencyConfigs.forEach { cfg ->
               task.dependsOn(cfg)
               task.inputs.files(cfg)
             }
@@ -241,20 +226,43 @@ internal class TaskFactory(
     configFactory: ResolutionConfigFactory,
     rootTasks: List<TaskProvider<*>>
   ) {
+
     agpApiAccess.ifSafeOrNull(this) {
+
+      val registered = mutableSetOf<SourceSetName>()
 
       val baseExtension = requireBaseExtension()
 
+      baseExtension.buildTypes.configureEach { buildType ->
+
+        val sourceSetName = buildType.name.asSourceSetName()
+
+        if (registered.add(sourceSetName)) {
+          afterAndroidVariants(
+            project = this@handleAndroidPlugin,
+            sourceSetName = sourceSetName,
+            variantName = buildType.name,
+            isTestingSourceSet = false,
+            resolutionConfigFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
+      }
+
       fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
-        afterAndroidVariants(
-          project = this@handleAndroidPlugin,
-          sourceSetName = variant.sourceSets.last().name.asSourceSetName(),
-          variantName = variant.name,
-          isTestingSourceSet = isTestingSourceSet,
-          configFactory = configFactory,
-          baseExtension = baseExtension,
-          rootTasks = rootTasks
-        )
+        val sourceSetName = variant.sourceSets.last().name.asSourceSetName()
+        if (registered.add(sourceSetName)) {
+          afterAndroidVariants(
+            project = this@handleAndroidPlugin,
+            sourceSetName = sourceSetName,
+            variantName = variant.name,
+            isTestingSourceSet = isTestingSourceSet,
+            resolutionConfigFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
       }
 
       baseExtension.baseVariants().configureEach { variant: AndroidBaseVariant ->
@@ -270,15 +278,17 @@ internal class TaskFactory(
       }
 
       fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
-        afterAndroidVariants(
-          project = this@handleAndroidPlugin,
-          sourceSetName = sourceSetName,
-          variantName = null,
-          isTestingSourceSet = isTestingSourceSet,
-          configFactory = configFactory,
-          baseExtension = baseExtension,
-          rootTasks = rootTasks
-        )
+        if (registered.add(sourceSetName)) {
+          afterAndroidVariants(
+            project = this@handleAndroidPlugin,
+            sourceSetName = sourceSetName,
+            variantName = null,
+            isTestingSourceSet = isTestingSourceSet,
+            resolutionConfigFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
       }
       register(SourceSetName.MAIN, isTestingSourceSet = false)
       register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
@@ -286,53 +296,48 @@ internal class TaskFactory(
     }
   }
 
-  @Suppress("UnstableApiUsage")
   @OptIn(UnsafeDirectAgpApiReference::class)
   fun SafeAgpApiReferenceScope.afterAndroidVariants(
     project: GradleProject,
     sourceSetName: SourceSetName,
     variantName: String?,
     isTestingSourceSet: Boolean,
-    configFactory: ResolutionConfigFactory,
+    resolutionConfigFactory: ResolutionConfigFactory,
     baseExtension: AndroidBaseExtension,
     rootTasks: List<TaskProvider<*>>
   ) {
 
     val sourceSet = baseExtension.sourceSets.getByName(sourceSetName.value)
 
-    val configs = sequenceOf(
-      sourceSet.apiConfigurationName,
-      sourceSet.implementationConfigurationName,
-      sourceSet.compileOnlyConfigurationName,
-      sourceSet.runtimeOnlyConfigurationName
-    )
-      .mapNotNull { configName -> project.configurations.findByName(configName) }
+    val androidSdkJarConfigs = sequenceOf(
+      "androidApis",
+      "androidJdkImage"
+    ).mapNotNull { configName -> project.configurations.findByName(configName) }
+
+    val jarDependencyConfigs = sourceSet.relatedConfigurationNames
+      .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
+      .plus(androidSdkJarConfigs)
 
     val sourceSetCaps = sourceSetName.value.capitalize()
 
-    val androidCfg = project.configurations
+    val androidResourceArtifactsConfig = project.configurations
       .register("android${sourceSetCaps}ResourceArtifacts") {
         it.isCanBeResolved = true
         it.isCanBeConsumed = true
       }
 
-    val cfgs = configs.map { config ->
-      configFactory.create(
-        project = project,
-        configuration = config
-      )
-    } + androidCfg
-
-    val resolveTask = McDependencyResolutionTask
+    val resolveTask = ModuleCheckDependencyResolutionTask
       .register(project = project, sourceSetName = sourceSetName)
       .configuring { task ->
 
         task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
 
-        cfgs.forEach { cfg ->
+        jarDependencyConfigs.forEach { cfg ->
           task.dependsOn(cfg)
           task.inputs.files(cfg)
         }
+        task.dependsOn(androidResourceArtifactsConfig)
+        task.inputs.files(androidResourceArtifactsConfig)
 
         fun <T> TaskContainer.variantTask(
           tClass: KClass<T>,
@@ -372,7 +377,7 @@ internal class TaskFactory(
         )
           .forEach { variantTaskCollection ->
             variantTaskCollection.forEach { variantTask ->
-              androidCfg.configure {
+              androidResourceArtifactsConfig.configure {
                 it.dependencies.add(variantTask.outputs.files.asDependency())
               }
               task.inputs.files(variantTask.outputs.files)
@@ -382,6 +387,16 @@ internal class TaskFactory(
       }
 
     rootTasks.forEach { it.dependsOn(resolveTask) }
+  }
+
+  private fun List<String>.jarDependencyResolutionConfigs(
+    project: GradleProject,
+    resolutionConfigFactory: ResolutionConfigFactory
+  ): List<Configuration> {
+    return mapNotNull { configName -> project.configurations.findByName(configName) }
+      .map { config ->
+        resolutionConfigFactory.create(project = project, sourceConfiguration = config)
+      }
   }
 }
 

@@ -61,3 +61,17 @@ fun File.createSafely(content: String? = null) = apply {
  * @since 0.12.0
  */
 fun File.mkdirsInline() = apply { mkdirs() }
+
+/**
+ * a fancy version of `file.resolve(child)`
+ *
+ * @since 0.10.0
+ */
+operator fun File.div(child: String): File = resolve(child)
+
+/**
+ * `File("a/b/c/d.txt").segments() == ["a", "b", "c", "d.txt"]`
+ *
+ * @since 0.10.0
+ */
+fun File.segments() = path.split(File.separatorChar)

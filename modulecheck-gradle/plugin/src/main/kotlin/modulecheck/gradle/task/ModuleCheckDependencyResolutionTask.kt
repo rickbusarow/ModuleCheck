@@ -15,20 +15,23 @@
 
 package modulecheck.gradle.task
 
+import com.android.builder.aar.AarExtractor
 import modulecheck.gradle.configuring
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
 import modulecheck.utils.createSafely
+import modulecheck.utils.mkdirsInline
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
+import java.io.File
 
-abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
+abstract class ModuleCheckDependencyResolutionTask : ModuleCheckSourceSetTask() {
 
   init {
     description = "Resolves all external dependencies"
@@ -47,27 +50,12 @@ abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
   @TaskAction
   fun execute() {
 
-    // inputs.files
-    //   .flatMap { javaFile ->
-    //     if (javaFile.isDirectory) {
-    //       javaFile.walkBottomUp().filter { it.isFile }.toList()
-    //     } else {
-    //       listOf(javaFile)
-    //     }
-    //   }
-    //   .filter { it.name.endsWith(".aar") }
-    //   .forEach { aar ->
-    //
-    //     val output = classpathFile.asFile.get().parentFile
-    //       .resolve("unzipped/${aar.nameWithoutExtension}")
-    //       .mkdirsInline()
-    //
-    //     AarExtractor().extract(aar, output)
-    //
-    //     output.walkBottomUp()
-    //       .filter { it.isFile }
-    //       // .forEach { println("                      file://$it") }
-    //   }
+    val unzippedDir = classpathFile.asFile.get()
+      .resolveSibling("unzipped")
+
+    fun File.unzippedAarDir(): File {
+      return unzippedDir.resolve(nameWithoutExtension)
+    }
 
     inputs.files
       .flatMap { javaFile ->
@@ -77,10 +65,37 @@ abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
           listOf(javaFile)
         }
       }
+      .filter { it.name.endsWith(".aar") }
+      .forEach { aar ->
+
+        val dir = aar.unzippedAarDir()
+
+        if (dir.list().isNullOrEmpty()) {
+          AarExtractor().extract(aar, dir.mkdirsInline())
+        }
+      }
+
+    inputs.files
+      .flatMap { file ->
+        when {
+          file.isDirectory -> {
+            file.walkBottomUp().filter { it.isFile }.toList()
+          }
+
+          else -> {
+            listOf(file)
+          }
+        }
+      }
+      .plus(
+        unzippedDir
+          .walkBottomUp()
+          .filter { it.isFile && it.extension == "jar" }
+          .toList()
+      )
       .distinct()
       .sorted()
       .joinToString("\n")
-      // .also(::println)
       .also { txt ->
         classpathFile.asFile.get()
           .createSafely(txt)
@@ -91,11 +106,11 @@ abstract class McDependencyResolutionTask : ModuleCheckSourceSetTask() {
     fun register(
       project: GradleProject,
       sourceSetName: SourceSetName
-    ): TaskProvider<McDependencyResolutionTask> {
+    ): TaskProvider<ModuleCheckDependencyResolutionTask> {
       val sourceSetCaps = sourceSetName.value.capitalize()
       return project.tasks.register(
         "resolve${sourceSetCaps}NonProjectDependencies",
-        McDependencyResolutionTask::class.java
+        ModuleCheckDependencyResolutionTask::class.java
       ).configuring { task ->
 
         task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
