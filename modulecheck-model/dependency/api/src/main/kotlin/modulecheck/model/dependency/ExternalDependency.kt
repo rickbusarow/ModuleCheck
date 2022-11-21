@@ -31,9 +31,9 @@ sealed class ExternalDependency :
       version = version
     )
   }
-  override val identifier by unsafeLazy { mavenCoordinates }
-  val nameWithVersion by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
-  val nameWithoutVersion by unsafeLazy { "${group ?: ""}:$moduleName" }
+  override val identifier: MavenCoordinates by unsafeLazy { mavenCoordinates }
+  val nameWithVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
+  val nameWithoutVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName" }
 
   class ExternalRuntimeDependency(
     override val configurationName: ConfigurationName,
@@ -119,8 +119,8 @@ sealed class ExternalDependency :
   }
 
   /**
-   * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
-   * a [CodeGenerator] in the event that the project dependency in question is an annotation
+   * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look
+   * up a [CodeGenerator] in the event that the project dependency in question is an annotation
    * processor.
    *
    * @since 0.12.0

@@ -44,14 +44,15 @@ data class RedundantDependencyFinding(
   RemovesDependency,
   Deletable {
 
-  override val dependency get() = oldDependency
+  override val dependency: ProjectDependency
+    get() = oldDependency
 
   override val message: String
     get() = "The dependency is declared as `api` in a dependency module, but also explicitly " +
       "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
       "file is desired."
 
-  override val dependencyIdentifier = oldDependency.projectPath.value + fromStringOrEmpty()
+  override val dependencyIdentifier: String = oldDependency.projectPath.value + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {
 

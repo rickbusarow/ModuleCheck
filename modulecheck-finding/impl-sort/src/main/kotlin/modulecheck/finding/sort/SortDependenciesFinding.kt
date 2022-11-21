@@ -43,7 +43,7 @@ class SortDependenciesFinding(
     get() = "Project/external dependency declarations are not sorted " +
       "according to the defined pattern."
 
-  override val dependencyIdentifier = ""
+  override val dependencyIdentifier: String = ""
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
 
@@ -114,8 +114,8 @@ internal fun DependenciesBlock.sortedDeclarations(
 
 internal fun List<DependencyDeclaration>.grouped(
   comparator: Comparator<String>
-) = groupBy {
-  it.declarationText
+) = groupBy { declaration ->
+  declaration.declarationText
     .split("[^a-zA-Z-]".toRegex())
     .filterNot { it.isEmpty() }
     .take(2)

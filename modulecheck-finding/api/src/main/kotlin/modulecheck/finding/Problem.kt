@@ -43,7 +43,7 @@ interface Problem :
       dependentPath = dependentPath,
       findingName = findingName,
       sourceOrNull = null,
-      configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value ?: "",
+      configurationName = safeAs<ConfigurationFinding>()?.configurationName?.value.orEmpty(),
       dependencyIdentifier = dependencyIdentifier,
       positionOrNull = positionOrNull.await(),
       buildFile = buildFile,

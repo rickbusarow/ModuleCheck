@@ -93,7 +93,7 @@ class GroovyAndroidGradleParser @Inject constructor() : AndroidGradleParser {
       val android = ctx.takeIf { it.isNamed("android") }
         ?: return@commandExpressionVisitor
 
-      val precedingCommentOrEmpty = android.precedingCommentNodeOrNull()?.originalText() ?: ""
+      val precedingCommentOrEmpty = android.precedingCommentNodeOrNull()?.originalText().orEmpty()
 
       val androidSuppressed = precedingCommentOrEmpty.suppressions()
 

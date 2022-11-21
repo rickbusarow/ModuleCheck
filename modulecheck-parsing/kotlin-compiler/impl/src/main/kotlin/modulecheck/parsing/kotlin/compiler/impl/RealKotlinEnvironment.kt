@@ -54,6 +54,7 @@ import org.jetbrains.kotlin.config.languageVersionSettings
 import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.lazy.declarations.FileBasedDeclarationProviderFactory
 import java.io.File
 import javax.inject.Inject
@@ -93,7 +94,7 @@ class RealKotlinEnvironment(
       .toSet()
   }
 
-  override val compilerConfiguration = lazyDeferred {
+  override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
@@ -101,15 +102,15 @@ class RealKotlinEnvironment(
     )
   }
 
-  override val coreEnvironment = lazyDeferred {
+  override val coreEnvironment: LazyDeferred<KotlinCoreEnvironment> = lazyDeferred {
     createKotlinCoreEnvironment(compilerConfiguration.await())
   }
 
-  override val lightPsiFactory = lazyDeferred {
+  override val lightPsiFactory: LazyDeferred<RealMcPsiFileFactory> = lazyDeferred {
     RealMcPsiFileFactory(this)
   }
 
-  override val heavyPsiFactory = lazyDeferred {
+  override val heavyPsiFactory: LazyDeferred<RealMcPsiFileFactory> = lazyDeferred {
     analysisResultDeferred.await()
     RealMcPsiFileFactory(this)
   }
@@ -155,7 +156,7 @@ class RealKotlinEnvironment(
     )
   }
 
-  override val bindingContextDeferred = lazyDeferred {
+  override val bindingContextDeferred: LazyDeferred<BindingContext> = lazyDeferred {
     analysisResultDeferred.await().bindingContext
   }
 

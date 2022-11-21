@@ -24,12 +24,13 @@ import modulecheck.utils.requireNotNull
 import modulecheck.utils.trace.HasTraceTags
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
 @SingleIn(TaskScope::class)
 class ProjectCache @Inject constructor() : HasTraceTags {
   private val delegate = ConcurrentHashMap<ProjectPath, McProject>()
 
-  override val tags = listOf(this::class)
+  override val tags: List<KClass<out ProjectCache>> = listOf(this::class)
 
   val values: MutableCollection<McProject> get() = delegate.values
 

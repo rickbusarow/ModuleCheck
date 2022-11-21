@@ -55,7 +55,7 @@ class KotlinPluginsBlockParser @Inject constructor(
 
         val blockWhiteSpace = (contentBlock.prevSibling as? PsiWhiteSpace)?.text
           ?.trimStart('\n', '\r')
-          ?: ""
+          .orEmpty()
 
         val pluginsBlock = KotlinPluginsBlock(
           logger = logger,

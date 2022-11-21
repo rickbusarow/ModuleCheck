@@ -16,6 +16,7 @@
 package modulecheck.project.generation
 
 import modulecheck.config.CodeGeneratorBinding
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.PlatformPlugin
 import modulecheck.model.dependency.ProjectDependency
@@ -117,14 +118,16 @@ internal inline fun <reified T : PlatformPluginBuilder<R>, R : PlatformPlugin> c
 }
 
 @PublishedApi
-internal suspend fun SourceSets.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
-  SourceSetBuilder.fromSourceSet(sourceSet)
-}
+internal suspend fun SourceSets.toBuilderMap(): MutableMap<SourceSetName, SourceSetBuilder> =
+  mapValuesTo(mutableMapOf()) { (_, sourceSet) ->
+    SourceSetBuilder.fromSourceSet(sourceSet)
+  }
 
 @PublishedApi
-internal fun Configurations.toBuilderMap() = mapValuesTo(mutableMapOf()) { (_, config) ->
-  ConfigBuilder.fromConfig(config)
-}
+internal fun Configurations.toBuilderMap(): MutableMap<ConfigurationName, ConfigBuilder> =
+  mapValuesTo(mutableMapOf()) { (_, config) ->
+    ConfigBuilder.fromConfig(config)
+  }
 
 fun buildFileParserFactory(
   projectDependencyFactory: ProjectDependency.Factory,

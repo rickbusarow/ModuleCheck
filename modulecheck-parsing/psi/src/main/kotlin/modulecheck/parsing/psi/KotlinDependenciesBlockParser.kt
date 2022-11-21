@@ -26,6 +26,7 @@ import modulecheck.parsing.kotlin.compiler.NoContextPsiFileFactory
 import modulecheck.parsing.psi.internal.getChildrenOfTypeRecursive
 import modulecheck.parsing.psi.internal.nameSafe
 import modulecheck.reporting.logging.McLogger
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
@@ -70,7 +71,7 @@ class KotlinDependenciesBlockParser @Inject constructor(
 
         val blockWhiteSpace = (contentBlock.prevSibling as? PsiWhiteSpace)?.text
           ?.trimStart('\n', '\r')
-          ?: ""
+          .orEmpty()
 
         val block = KotlinDependenciesBlock(
           logger = logger,
@@ -108,7 +109,7 @@ private fun KtCallExpression.parseStatements(
   block: KotlinDependenciesBlock,
   suppressed: List<String>
 ) {
-  val configName = calleeExpression!!
+  val configName = calleeExpression.requireNotNull()
     .text
     .replace("\"", "")
 
@@ -165,7 +166,7 @@ private fun KtCallExpression.parseStatements(
   block.addUnknownStatement(
     configName = configName.asConfigurationName(),
     parsedString = text,
-    argument = getUnknownArgumentOrNull() ?: "",
+    argument = getUnknownArgumentOrNull().orEmpty(),
     suppressed = suppressed
   )
 }
@@ -270,7 +271,7 @@ internal fun KtCallExpression.getUnknownArgumentOrNull(): String? {
 
 inline fun blockExpressionRecursiveVisitor(
   crossinline block: KtTreeVisitorVoid.(expression: KtBlockExpression) -> Unit
-) = object : KtTreeVisitorVoid() {
+): KtTreeVisitorVoid = object : KtTreeVisitorVoid() {
   override fun visitBlockExpression(expression: KtBlockExpression) {
     block(expression)
   }
@@ -278,7 +279,7 @@ inline fun blockExpressionRecursiveVisitor(
 
 inline fun literalStringTemplateRecursiveVisitor(
   crossinline block: KtTreeVisitorVoid.(entry: KtLiteralStringTemplateEntry) -> Unit
-) = object : KtTreeVisitorVoid() {
+): KtTreeVisitorVoid = object : KtTreeVisitorVoid() {
   override fun visitLiteralStringTemplateEntry(entry: KtLiteralStringTemplateEntry) {
     super.visitLiteralStringTemplateEntry(entry)
     block(entry)

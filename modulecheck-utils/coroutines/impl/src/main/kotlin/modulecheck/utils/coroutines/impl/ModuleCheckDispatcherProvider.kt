@@ -35,9 +35,7 @@ class ModuleCheckDispatcherProvider @Inject constructor(
   limitedDispatcher: LimitedDispatcher
 ) : DispatcherProvider {
 
-  override val default: CoroutineDispatcher = Dispatchers.Default
-
-  // override val default: CoroutineDispatcher = limitedDispatcher
+  override val default: CoroutineDispatcher = limitedDispatcher
   override val io: CoroutineDispatcher = default
   override val main: CoroutineDispatcher = Dispatchers.Main
   override val mainImmediate: CoroutineDispatcher = Dispatchers.Main.immediate

@@ -20,14 +20,14 @@ package modulecheck.utils
  *
  * @since 0.12.0
  */
-fun <T> T.singletonList() = listOf(this)
+fun <T> T.singletonList(): List<T> = listOf(this)
 
 /**
  * functional style shorthand for `setOf(this)`
  *
  * @since 0.12.0
  */
-fun <T> T.singletonSet() = setOf(this)
+fun <T> T.singletonSet(): Set<T> = setOf(this)
 
 /**
  * shorthand for `filterTo(destination, predicate)`

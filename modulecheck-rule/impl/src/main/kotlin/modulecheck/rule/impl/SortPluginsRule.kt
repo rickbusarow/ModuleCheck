@@ -16,6 +16,7 @@
 package modulecheck.rule.impl
 
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.FindingName
 import modulecheck.finding.sort.SortPluginsFinding
 import modulecheck.finding.sort.sortedPlugins
 import modulecheck.parsing.gradle.dsl.PluginDeclaration
@@ -27,8 +28,8 @@ class SortPluginsRule @Inject constructor(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortPluginsFinding>(), SortRule<SortPluginsFinding> {
 
-  override val name = SortPluginsFinding.NAME
-  override val description =
+  override val name: FindingName = SortPluginsFinding.NAME
+  override val description: String =
     "Sorts Gradle plugins which are applied using the plugins { ... } block"
 
   private val comparables: Array<(PluginDeclaration) -> Comparable<*>> =

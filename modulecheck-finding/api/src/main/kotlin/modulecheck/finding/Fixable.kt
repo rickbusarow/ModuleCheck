@@ -38,10 +38,10 @@ interface Fixable : Finding, Problem {
     return addSuccessful && removeSuccessful
   }
 
-  fun fixLabel() = "  $FIX_LABEL [${findingName.id}]"
+  fun fixLabel(): String = "  $FIX_LABEL [${findingName.id}]"
 
   companion object {
 
-    const val FIX_LABEL = "// ModuleCheck finding"
+    const val FIX_LABEL: String = "// ModuleCheck finding"
   }
 }

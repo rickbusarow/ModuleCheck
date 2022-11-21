@@ -18,6 +18,7 @@ package modulecheck.rule.impl
 import modulecheck.api.DepthFinding
 import modulecheck.api.context.depthForSourceSetName
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.FindingName
 import modulecheck.project.McProject
 import modulecheck.rule.ReportOnlyRule
 import javax.inject.Inject
@@ -26,8 +27,8 @@ class DepthRule @Inject constructor() :
   DocumentedRule<DepthFinding>(),
   ReportOnlyRule<DepthFinding> {
 
-  override val name = DepthFinding.NAME
-  override val description = "The longest path between this module and its leaf nodes"
+  override val name: FindingName = DepthFinding.NAME
+  override val description: String = "The longest path between this module and its leaf nodes"
 
   override suspend fun check(project: McProject): List<DepthFinding> {
     return project.sourceSets.keys

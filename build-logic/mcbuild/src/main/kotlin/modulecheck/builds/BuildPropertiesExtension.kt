@@ -16,7 +16,6 @@
 package modulecheck.builds
 
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.configure
 import org.intellij.lang.annotations.Language
@@ -78,7 +77,7 @@ private fun Project.registerTask(
   generatedDir: File,
   buildPropertiesFile: File,
   content: String
-): TaskProvider<Task> {
+): TaskProvider<ModuleCheckBuildCodeGeneratorTask> {
   val catalogs = rootProject.file(
     "build-logic/core/src/main/kotlin/modulecheck/builds/catalogs.kt"
   )
@@ -88,7 +87,10 @@ private fun Project.registerTask(
     else -> sourceSetName.capitalize()
   }
 
-  return tasks.register("generate${sourceSetTaskName}BuildProperties") {
+  return tasks.register(
+    "generate${sourceSetTaskName}BuildProperties",
+    ModuleCheckBuildCodeGeneratorTask::class.java
+  ) {
     inputs.file(catalogs)
 
     outputs.file(buildPropertiesFile)

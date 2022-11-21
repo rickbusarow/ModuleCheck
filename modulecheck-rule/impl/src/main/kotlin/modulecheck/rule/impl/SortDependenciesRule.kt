@@ -16,6 +16,7 @@
 package modulecheck.rule.impl
 
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.FindingName
 import modulecheck.finding.SortDependenciesFinding
 import modulecheck.finding.sortedDependenciesFileText
 import modulecheck.project.McProject
@@ -27,8 +28,8 @@ class SortDependenciesRule @Inject constructor(
   settings: ModuleCheckSettings
 ) : DocumentedRule<SortDependenciesFinding>(), SortRule<SortDependenciesFinding> {
 
-  override val name = SortDependenciesFinding.NAME
-  override val description = "Sorts all dependencies within a dependencies { ... } block"
+  override val name: FindingName = SortDependenciesFinding.NAME
+  override val description: String = "Sorts all dependencies within a dependencies { ... } block"
 
   private val elementComparables: Array<(String) -> Comparable<*>> =
     settings

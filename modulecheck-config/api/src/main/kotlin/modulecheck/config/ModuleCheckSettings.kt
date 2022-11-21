@@ -118,7 +118,7 @@ interface SortSettings {
 
   companion object {
 
-    val PLUGIN_COMPARATORS_DEFAULT = listOf(
+    val PLUGIN_COMPARATORS_DEFAULT: List<String> = listOf(
       """id\("com\.android.*"\)""",
       """id\("android-.*"\)""",
       """id\("java-library"\)""",
@@ -128,7 +128,7 @@ interface SortSettings {
       """kotlin.*""",
       """id.*"""
     )
-    val DEPENDENCY_COMPARATORS_DEFAULT = listOf(
+    val DEPENDENCY_COMPARATORS_DEFAULT: List<String> = listOf(
       """.*""",
       """kapt.*"""
     )
@@ -152,19 +152,19 @@ interface ChecksSettings {
 
   companion object {
 
-    const val REDUNDANT_DEPENDENCY_DEFAULT = false
-    const val UNUSED_DEPENDENCY_DEFAULT = true
-    const val OVERSHOT_DEPENDENCY_DEFAULT = true
-    const val MUST_BE_API_DEFAULT = true
-    const val INHERITED_DEPENDENCY_DEFAULT = true
-    const val SORT_DEPENDENCIES_DEFAULT = false
-    const val SORT_PLUGINS_DEFAULT = false
-    const val UNUSED_KAPT_DEFAULT = true
-    const val UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT = false
-    const val ANVIL_FACTORY_GENERATION_DEFAULT = true
-    const val DISABLE_ANDROID_RESOURCES_DEFAULT = false
-    const val DISABLE_VIEW_BINDING_DEFAULT = false
-    const val DEPTHS_DEFAULT = false
+    const val REDUNDANT_DEPENDENCY_DEFAULT: Boolean = false
+    const val UNUSED_DEPENDENCY_DEFAULT: Boolean = true
+    const val OVERSHOT_DEPENDENCY_DEFAULT: Boolean = true
+    const val MUST_BE_API_DEFAULT: Boolean = true
+    const val INHERITED_DEPENDENCY_DEFAULT: Boolean = true
+    const val SORT_DEPENDENCIES_DEFAULT: Boolean = false
+    const val SORT_PLUGINS_DEFAULT: Boolean = false
+    const val UNUSED_KAPT_DEFAULT: Boolean = true
+    const val UNUSED_KOTLIN_ANDROID_EXTENSIONS_DEFAULT: Boolean = false
+    const val ANVIL_FACTORY_GENERATION_DEFAULT: Boolean = true
+    const val DISABLE_ANDROID_RESOURCES_DEFAULT: Boolean = false
+    const val DISABLE_VIEW_BINDING_DEFAULT: Boolean = false
+    const val DEPTHS_DEFAULT: Boolean = false
   }
 }
 
@@ -206,19 +206,19 @@ interface ReportsSettings {
   val graphs: PerModuleReportSettings
 
   companion object {
-    const val CHECKSTYLE_ENABLED_DEFAULT = false
-    const val CHECKSTYLE_PATH_DEFAULT = "build/reports/modulecheck/report.xml"
+    const val CHECKSTYLE_ENABLED_DEFAULT: Boolean = false
+    const val CHECKSTYLE_PATH_DEFAULT: String = "build/reports/modulecheck/report.xml"
 
-    const val TEXT_ENABLED_DEFAULT = false
-    const val TEXT_PATH_DEFAULT = "build/reports/modulecheck/report.txt"
+    const val TEXT_ENABLED_DEFAULT: Boolean = false
+    const val TEXT_PATH_DEFAULT: String = "build/reports/modulecheck/report.txt"
 
-    const val DEPTHS_ENABLED_DEFAULT = false
-    const val DEPTHS_PATH_DEFAULT = "build/reports/modulecheck/depths.txt"
+    const val DEPTHS_ENABLED_DEFAULT: Boolean = false
+    const val DEPTHS_PATH_DEFAULT: String = "build/reports/modulecheck/depths.txt"
 
-    const val SARIF_ENABLED_DEFAULT = false
-    const val SARIF_PATH_DEFAULT = "build/reports/modulecheck/modulecheck.sarif"
+    const val SARIF_ENABLED_DEFAULT: Boolean = false
+    const val SARIF_PATH_DEFAULT: String = "build/reports/modulecheck/modulecheck.sarif"
 
-    const val GRAPH_ENABLED_DEFAULT = false
+    const val GRAPH_ENABLED_DEFAULT: Boolean = false
   }
 }
 

@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 class MustBeApiRule @Inject constructor() : DocumentedRule<MustBeApiFinding>() {
 
-  override val name = FindingName("must-be-api")
-  override val description = "Finds project dependencies which are exposed by the module " +
+  override val name: FindingName = FindingName("must-be-api")
+  override val description: String = "Finds project dependencies which are exposed by the module " +
     "as part of its public ABI, but are only added as runtimeOnly, compileOnly, or implementation"
 
   override suspend fun check(project: McProject): List<MustBeApiFinding> {

@@ -56,7 +56,8 @@ data class AndroidRDeclaredNames(
   }
 }
 
-suspend fun ProjectContext.androidRDeclaredNames() = get(AndroidRDeclaredNames)
+suspend fun ProjectContext.androidRDeclaredNames(): AndroidRDeclaredNames =
+  get(AndroidRDeclaredNames)
 
 suspend fun ProjectContext.androidRDeclaredNameForSourceSetName(
   sourceSetName: SourceSetName

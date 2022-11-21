@@ -42,7 +42,7 @@ data class MavenCoordinates(
   val version: String?
 ) : Identifier {
 
-  override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
+  override val name: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
 
   companion object {
 

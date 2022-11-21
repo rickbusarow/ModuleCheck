@@ -27,7 +27,7 @@ import modulecheck.utils.lazy.lazyDeferred
 
 /**
  * Represents a [ConfiguredDependency] which is unused in the
- * [SourceSet][modulecheck.parsing.gradle.model.McSourceSet] to which it's added, but *is* used in
+ * [SourceSet][modulecheck.model.dependency.McSourceSet] to which it's added, but *is* used in
  * another source set downstream. For instance, a dependency is overshot if it's added to `main`,
  * but only used in `test`.
  *
@@ -81,7 +81,7 @@ data class OverShotDependencyFinding(
         .positionOfStatement(statement)
     }
 
-  override val dependency get() = newDependency
+  override val dependency: ConfiguredDependency get() = newDependency
   override val dependencyIdentifier: String get() = newDependency.identifier.name
 
   override val message: String
@@ -102,6 +102,6 @@ data class OverShotDependencyFinding(
   }
 
   companion object {
-    val NAME = FindingName("overshot-dependency")
+    val NAME: FindingName = FindingName("overshot-dependency")
   }
 }

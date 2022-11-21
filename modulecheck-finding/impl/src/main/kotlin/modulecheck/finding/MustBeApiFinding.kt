@@ -35,13 +35,14 @@ data class MustBeApiFinding(
   AddsDependency,
   RemovesDependency {
 
-  override val dependency get() = oldDependency
+  override val dependency: ProjectDependency
+    get() = oldDependency
 
   override val message: String
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
       "a declaration which is referenced in this module's public API."
 
-  override val dependencyIdentifier = dependency.projectPath.value + fromStringOrEmpty()
+  override val dependencyIdentifier: String = dependency.projectPath.value + fromStringOrEmpty()
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     super.statementOrNull.await()

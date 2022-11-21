@@ -22,16 +22,16 @@ import modulecheck.finding.FindingName
 import modulecheck.project.McProject
 import javax.inject.Inject
 
-const val KAPT_PLUGIN_ID = "org.jetbrains.kotlin.kapt"
-const val KAPT_ALTERNATE_PLUGIN_ID = "kotlin-kapt"
+const val KAPT_PLUGIN_ID: String = "org.jetbrains.kotlin.kapt"
+const val KAPT_ALTERNATE_PLUGIN_ID: String = "kotlin-kapt"
 internal const val KAPT_PLUGIN_FUN = "kapt"
 
 class UnusedKaptProcessorRule @Inject constructor(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<Finding>() {
 
-  override val name = FindingName("unused-kapt-processor")
-  override val description = "Finds unused kapt processor dependencies " +
+  override val name: FindingName = FindingName("unused-kapt-processor")
+  override val description: String = "Finds unused kapt processor dependencies " +
     "and warns if the kapt plugin is applied but unused"
 
   override suspend fun check(project: McProject): List<Finding> {

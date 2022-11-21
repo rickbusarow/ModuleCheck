@@ -43,6 +43,7 @@ private class SynchronizedLazyVar<T>(initializer: () -> T) : ReadWriteProperty<A
     }
     synchronized(this) {
       if (!isSet) {
+        @Suppress("UnsafeCallOnNullableType")
         value = initializer!!.invoke()
         isSet = true
         initializer = null

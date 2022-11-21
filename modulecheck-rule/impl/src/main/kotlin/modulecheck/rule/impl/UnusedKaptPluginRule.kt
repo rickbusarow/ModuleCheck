@@ -31,8 +31,8 @@ import javax.inject.Inject
 
 class UnusedKaptPluginRule @Inject constructor() : DocumentedRule<Finding>() {
 
-  override val name = FindingName("unused-kapt-plugin")
-  override val description = "Warns if the kapt plugin is applied, but unused"
+  override val name: FindingName = FindingName("unused-kapt-plugin")
+  override val description: String = "Warns if the kapt plugin is applied, but unused"
 
   override suspend fun check(project: McProject): List<Finding> {
     if (!project.hasKapt) return emptyList()

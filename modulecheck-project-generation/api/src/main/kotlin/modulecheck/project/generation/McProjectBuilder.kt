@@ -75,14 +75,14 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   override val hasAGP: Boolean
     get() = platformPlugin is AndroidPlatformPluginBuilder<*>
 
-  val configuredProjectDependencyFactory by lazy {
+  val configuredProjectDependencyFactory: RealConfiguredProjectDependencyFactory by lazy {
     RealConfiguredProjectDependencyFactory(
       pathResolver = TypeSafeProjectPathResolver(projectProvider),
       generatorBindings = codeGeneratorBindings
     )
   }
 
-  val externalDependency by lazy {
+  private val externalDependency by lazy {
     RealExternalDependencyFactory(generatorBindings = codeGeneratorBindings)
   }
 
@@ -202,7 +202,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       .find(java)
       ?.destructured
       ?.component1()
-      ?: ""
+      .orEmpty()
 
     val file = createJvmPhysicalFile(
       content = java,
@@ -234,7 +234,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       .find(kotlin)
       ?.destructured
       ?.component1()
-      ?: ""
+      .orEmpty()
 
     val file = createJvmPhysicalFile(
       content = kotlin,

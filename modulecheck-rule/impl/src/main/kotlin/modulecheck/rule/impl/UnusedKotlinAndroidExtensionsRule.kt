@@ -26,14 +26,14 @@ import modulecheck.project.McProject
 import modulecheck.utils.coroutines.any
 import javax.inject.Inject
 
-const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID = "org.jetbrains.kotlin.android.extensions"
+const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_ID: String = "org.jetbrains.kotlin.android.extensions"
 private const val KOTLIN_ANDROID_EXTENSIONS_PLUGIN_FUN = "android-extensions"
 
 class UnusedKotlinAndroidExtensionsRule @Inject constructor() :
   DocumentedRule<UnusedPluginFinding>() {
 
-  override val name = FindingName("unused-kotlin-android-extensions")
-  override val description = "Finds modules which have Kotlin AndroidExtensions enabled, " +
+  override val name: FindingName = FindingName("unused-kotlin-android-extensions")
+  override val description: String = "Finds modules which have Kotlin AndroidExtensions enabled, " +
     "but don't actually use any synthetic imports"
 
   private val parcelizeImport = ReferenceName("kotlinx.android.parcel.Parcelize", KOTLIN)

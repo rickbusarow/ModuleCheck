@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package builds
+package modulecheck.builds
 
 import java.io.File
 

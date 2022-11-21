@@ -18,6 +18,7 @@ package modulecheck.finding
 import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
+import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.project.McProject
@@ -36,10 +37,13 @@ data class InheritedDependencyFinding(
   override val message: String
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
-  override val dependencyIdentifier get() = newDependency.projectPath.value + fromStringOrEmpty()
-  override val dependency get() = newDependency
+  override val dependencyIdentifier: String
+    get() = newDependency.projectPath.value + fromStringOrEmpty()
+  override val dependency: ProjectDependency
+    get() = newDependency
 
-  override val configurationName get() = newDependency.configurationName
+  override val configurationName: ConfigurationName
+    get() = newDependency.configurationName
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     source.statementOrNullIn(dependentProject)

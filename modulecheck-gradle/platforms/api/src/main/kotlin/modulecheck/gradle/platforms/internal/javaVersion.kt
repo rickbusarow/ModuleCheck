@@ -22,10 +22,18 @@ import org.gradle.api.JavaVersion.VERSION_14
 import org.gradle.api.JavaVersion.VERSION_15
 import org.gradle.api.JavaVersion.VERSION_16
 import org.gradle.api.JavaVersion.VERSION_17
+import org.gradle.api.JavaVersion.VERSION_18
+import org.gradle.api.JavaVersion.VERSION_1_1
 import org.gradle.api.JavaVersion.VERSION_1_10
+import org.gradle.api.JavaVersion.VERSION_1_2
+import org.gradle.api.JavaVersion.VERSION_1_3
+import org.gradle.api.JavaVersion.VERSION_1_4
+import org.gradle.api.JavaVersion.VERSION_1_5
 import org.gradle.api.JavaVersion.VERSION_1_6
+import org.gradle.api.JavaVersion.VERSION_1_7
 import org.gradle.api.JavaVersion.VERSION_1_8
 import org.gradle.api.JavaVersion.VERSION_1_9
+import org.gradle.api.JavaVersion.VERSION_HIGHER
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.JvmTarget.JVM_10
 import org.jetbrains.kotlin.config.JvmTarget.JVM_11
@@ -47,8 +55,15 @@ typealias GradleJavaVersion = org.gradle.api.JavaVersion
  */
 @Suppress("ComplexMethod")
 fun GradleJavaVersion.toJavaVersion(): JvmTarget {
+  @Suppress("ElseCaseInsteadOfExhaustiveWhen")
   return when (this) {
+    VERSION_1_1 -> error("Unsupported Java version: $this")
+    VERSION_1_2 -> error("Unsupported Java version: $this")
+    VERSION_1_3 -> error("Unsupported Java version: $this")
+    VERSION_1_4 -> error("Unsupported Java version: $this")
+    VERSION_1_5 -> error("Unsupported Java version: $this")
     VERSION_1_6 -> JVM_1_6
+    VERSION_1_7 -> JVM_1_6
     VERSION_1_8 -> JVM_1_8
     VERSION_1_9 -> JVM_9
     VERSION_1_10 -> JVM_10
@@ -60,6 +75,8 @@ fun GradleJavaVersion.toJavaVersion(): JvmTarget {
     VERSION_16 -> JVM_16
     VERSION_17 -> JVM_17
     // VERSION_18 -> JVM_18
+    VERSION_18 -> error("Unsupported Java version: $this")
+    VERSION_HIGHER -> error("Unsupported Java version: $this")
     else -> error("Unsupported Java version: $this")
   }
 }

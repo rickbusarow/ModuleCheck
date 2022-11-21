@@ -102,7 +102,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     override val namespaces: Map<SourceSetName, PackageName>,
     resValuesLazy: Lazy<Map<SourceSetName, Set<UnqualifiedAndroidResource>>>
   ) : PlatformPlugin, AndroidPlatformPlugin {
-    override val resValues by resValuesLazy
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
   @Suppress("LongParameterList")
@@ -121,7 +121,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
     AndroidPlatformPlugin,
     CanDisableAndroidResources,
     CanDisableAndroidBuildConfig {
-    override val resValues by resValuesLazy
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
   @Suppress("LongParameterList")
@@ -138,7 +138,7 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidBuildConfig {
-    override val resValues by resValuesLazy
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 
   @Suppress("LongParameterList")
@@ -155,6 +155,6 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   ) : PlatformPlugin,
     AndroidPlatformPlugin,
     CanDisableAndroidBuildConfig {
-    override val resValues by resValuesLazy
+    override val resValues: Map<SourceSetName, Set<UnqualifiedAndroidResource>> by resValuesLazy
   }
 }

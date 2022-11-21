@@ -42,12 +42,12 @@ class ProjectDependencies(
   }
 
   fun add(cpd: ProjectDependency) {
-    val oldDependencies = get(cpd.configurationName) ?: emptySet()
+    val oldDependencies = get(cpd.configurationName).orEmpty()
     put(cpd.configurationName, oldDependencies + cpd)
   }
 
   fun remove(cpd: ProjectDependency) {
-    val oldDependencies = get(cpd.configurationName) ?: emptySet()
+    val oldDependencies = get(cpd.configurationName).orEmpty()
     put(cpd.configurationName, oldDependencies.filterToSet { it != cpd })
   }
 }

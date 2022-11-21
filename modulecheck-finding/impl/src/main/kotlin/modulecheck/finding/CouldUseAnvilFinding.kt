@@ -37,7 +37,7 @@ data class CouldUseAnvilFinding(
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."
 
-  override val dependencyIdentifier = "com.google.dagger:dagger-compiler"
+  override val dependencyIdentifier: String = "com.google.dagger:dagger-compiler"
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred { null }
 

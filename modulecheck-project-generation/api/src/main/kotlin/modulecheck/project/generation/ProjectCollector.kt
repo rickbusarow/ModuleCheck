@@ -260,7 +260,7 @@ interface ProjectCollector {
   fun simpleProject(
     buildFileText: String? = null,
     path: String = ":lib"
-  ) = this.kotlinProject(path) {
+  ): McProject = this.kotlinProject(path) {
     if (buildFileText != null) {
       buildFile.writeText(buildFileText)
     }
