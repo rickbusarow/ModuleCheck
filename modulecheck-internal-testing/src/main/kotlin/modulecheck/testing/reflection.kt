@@ -59,7 +59,7 @@ inline fun <reified T : Any, reified R : Any> T.getPrivateFieldByName(name: Stri
 
   val property = kClass.memberProperties.find { it.name == name }
 
-  require(property != null) { "Cannot find a property named `$name` in ${kClass.qualifiedName}." }
+  requireNotNull(property) { "Cannot find a property named `$name` in ${kClass.qualifiedName}." }
 
   property.isAccessible = true
 

@@ -38,12 +38,12 @@ data class UnusedResourcesGenerationFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val findingName = NAME
+  override val findingName: FindingName = NAME
 
   override val message: String
     get() = "`androidResources` generation is enabled, but no resources are defined in this module."
 
-  override val dependencyIdentifier = ""
+  override val dependencyIdentifier: String = ""
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     dependentProject.buildFileParser.androidSettings()
@@ -51,7 +51,7 @@ data class UnusedResourcesGenerationFinding(
       .firstOrNull { it.propertyFullName == "androidResources" }
   }
 
-  override val statementTextOrNull = lazyDeferred {
+  override val statementTextOrNull: LazyDeferred<String?> = lazyDeferred {
     statementOrNull.await()?.declarationText
   }
 
@@ -147,6 +147,6 @@ data class UnusedResourcesGenerationFinding(
      * @since 0.12.0
      * @suppress
      */
-    val NAME = FindingName("disable-android-resources")
+    val NAME: FindingName = FindingName("disable-android-resources")
   }
 }

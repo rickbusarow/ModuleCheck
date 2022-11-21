@@ -135,7 +135,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
 
-      var pendingBlockNoInspectionComments = mutableListOf<String>()
+      val pendingBlockNoInspectionComments = mutableListOf<String>()
 
       override fun visitNls(ctx: NlsContext) {
         super.visitNls(ctx)
@@ -181,7 +181,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
-            var pendingNoInspectionComments = mutableListOf<String>()
+            val pendingNoInspectionComments = mutableListOf<String>()
 
             override fun visitSep(ctx: SepContext) {
               super.visitSep(ctx)
@@ -257,7 +257,7 @@ class GroovyDependenciesBlockParser @Inject constructor(
   }
 
   companion object {
-    val BLOCK_BODY_REGEX = """dependencies\s*\{([\s\S]*)\}""".toRegex()
-    val NO_INSPECTION_REGEX = """//noinspection\s+(.*)\n""".toRegex()
+    val BLOCK_BODY_REGEX: Regex = """dependencies\s*\{([\s\S]*)\}""".toRegex()
+    val NO_INSPECTION_REGEX: Regex = """//noinspection\s+(.*)\n""".toRegex()
   }
 }

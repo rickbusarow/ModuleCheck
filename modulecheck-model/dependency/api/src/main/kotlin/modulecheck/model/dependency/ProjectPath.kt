@@ -34,7 +34,7 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
    * @see value
    * @since 0.12.0
    */
-  override val name by unsafeLazy { value }
+  override val name: String by unsafeLazy { value }
 
   val typeSafeValue: String by lazy {
     when (this) {

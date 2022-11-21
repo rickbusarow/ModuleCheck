@@ -109,7 +109,7 @@ data class ModuleDependencyDeclaration(
 
     val newModule = newModulePath != projectPath
     val precedingWhitespace = "^\\s*".toRegex()
-      .find(statementWithSurroundingText)?.value ?: ""
+      .find(statementWithSurroundingText)?.value.orEmpty()
 
     val newProjectPathRef = when (projectPath) {
       is StringProjectPath -> newModulePath.value
@@ -247,7 +247,7 @@ data class ExternalDependencyDeclaration(
 
     val newLibraryCoordinates = newCoordinates != coordinates
     val precedingWhitespace = "^\\s*".toRegex()
-      .find(statementWithSurroundingText)?.value ?: ""
+      .find(statementWithSurroundingText)?.value.orEmpty()
 
     val newDeclaration = declarationText
       .letIf(newLibraryCoordinates) {

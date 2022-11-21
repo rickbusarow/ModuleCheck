@@ -51,7 +51,7 @@ abstract class AbstractModuleCheckTask(
     .getByType(ModuleCheckExtension::class.java)
 
   @get:Internal
-  protected val component by lazy {
+  protected val component: TaskComponent by lazy {
     DaggerTaskComponent.factory()
       .create(
         rootProject = project,
@@ -73,7 +73,10 @@ abstract class AbstractModuleCheckTask(
       val result = runner.run(projects)
 
       result.exceptionOrNull()
-        ?.let { throw GradleException(it.message!!, it) }
+        ?.let {
+          @Suppress("UnsafeCallOnNullableType")
+          throw GradleException(it.message!!, it)
+        }
     } finally {
 
       val dispatcherProvider = component.cast<DispatcherProviderComponent>()
@@ -98,7 +101,7 @@ open class MultiRuleModuleCheckTask @Inject constructor(
     }
   }
 
-  override fun ruleFilter() = RuleFilter.DEFAULT
+  override fun ruleFilter(): RuleFilter = RuleFilter.DEFAULT
 }
 
 open class SingleRuleModuleCheckTask @Inject constructor(
@@ -115,7 +118,7 @@ open class SingleRuleModuleCheckTask @Inject constructor(
     }
   }
 
-  override fun ruleFilter() = RuleFilter { rule, _ ->
+  override fun ruleFilter(): RuleFilter = RuleFilter { rule, _ ->
     rule.name == findingName
   }
 }

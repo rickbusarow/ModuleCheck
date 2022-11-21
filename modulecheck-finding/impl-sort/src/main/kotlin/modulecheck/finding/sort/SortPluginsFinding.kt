@@ -37,12 +37,12 @@ class SortPluginsFinding(
   val comparator: Comparator<PluginDeclaration>
 ) : Finding, Fixable {
 
-  override val findingName = NAME
+  override val findingName: FindingName = NAME
 
   override val message: String
     get() = "Plugin declarations are not sorted according to the defined pattern."
 
-  override val dependencyIdentifier = ""
+  override val dependencyIdentifier: String = ""
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
 
@@ -66,7 +66,7 @@ class SortPluginsFinding(
   }
 
   companion object {
-    val NAME = FindingName("sort-plugins")
+    val NAME: FindingName = FindingName("sort-plugins")
   }
 }
 
@@ -83,7 +83,7 @@ fun PluginsBlock.sortedPlugins(
     .find(lambdaContent)
     ?.destructured
     ?.component1()
-    ?: ""
+    .orEmpty()
 
   return settings
     .sortedWith(comparator)

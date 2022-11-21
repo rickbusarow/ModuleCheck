@@ -68,8 +68,9 @@ class ConfigFactory<T : Any>(
       configurations
         .flatMap { config ->
           allFactory()
-            .filter {
-              it.identifier().extendsFrom()
+            .filter { otherConfig ->
+              otherConfig.identifier()
+                .extendsFrom()
                 .mapToSet { it.identifier() }
                 .contains(config.identifier())
             }

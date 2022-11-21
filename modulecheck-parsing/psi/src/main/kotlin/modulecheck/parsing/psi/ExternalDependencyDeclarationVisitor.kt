@@ -44,9 +44,10 @@ class ExternalDependencyDeclarationVisitor(
   version: String? = null
 ) {
 
-  val projectMatcher = """${group.orWildcard()}:${name.orWildcard()}:${version.orWildcard()}"""
-    .replace(".", "\\.")
-    .toRegex()
+  private val projectMatcher =
+    """${group.orWildcard()}:${name.orWildcard()}:${version.orWildcard()}"""
+      .replace(".", "\\.")
+      .toRegex()
 
   private fun String?.orWildcard() = this ?: "*"
 

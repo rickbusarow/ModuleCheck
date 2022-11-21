@@ -97,7 +97,7 @@ jobs:
       - name: detekt
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: detekt
+          arguments: detekt detektMain
           cache-read-only: false
 
       - name: Upload SARIF to Github using the upload-sarif action
