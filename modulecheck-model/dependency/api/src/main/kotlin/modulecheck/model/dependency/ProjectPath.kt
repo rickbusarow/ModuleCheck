@@ -19,7 +19,7 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
 
-sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
+sealed class ProjectPath : Identifier {
 
   /**
    * the raw value of this path
@@ -55,10 +55,6 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
 
   override fun hashCode(): Int {
     return typeSafeValue.hashCode()
-  }
-
-  override fun compareTo(other: ProjectPath): Int {
-    return typeSafeValue.compareTo(other.typeSafeValue)
   }
 
   override fun toString(): String = value

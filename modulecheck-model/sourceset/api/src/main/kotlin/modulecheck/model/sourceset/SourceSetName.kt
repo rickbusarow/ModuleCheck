@@ -25,9 +25,20 @@ import java.io.Serializable
  * @since 0.13.0
  */
 interface HasSourceSetName : Serializable {
+
+  /**
+   * ex: `main`, `test`, `debug`
+   *
+   * @since 0.13.0
+   */
   val sourceSetName: SourceSetName
 }
 
+/**
+ * ex: `main`, `test`, `debug`
+ *
+ * @since 0.13.0
+ */
 @JvmInline
 value class SourceSetName(val value: String) : Serializable {
 

@@ -74,4 +74,4 @@ operator fun File.div(child: String): File = resolve(child)
  *
  * @since 0.10.0
  */
-fun File.segments() = path.split(File.separatorChar)
+fun File.segments(): List<String> = path.split(File.separatorChar)

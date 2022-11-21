@@ -37,7 +37,6 @@ import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("TooManyFunctions")
 interface McProject :
   ProjectContext,
   Comparable<McProject>,

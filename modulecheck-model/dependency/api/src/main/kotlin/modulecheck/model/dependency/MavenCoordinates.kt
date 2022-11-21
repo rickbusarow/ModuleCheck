@@ -69,6 +69,7 @@ data class MavenCoordinates(
     fun File.parseMavenCoordinatesFromGradleCache(): MavenCoordinates? {
       // after `segments()`, we get:
       // [..., "com.square.anvil", "compiler", "1.0.0", "91...38", "compiler-1.0.0.jar"]
+      @Suppress("MagicNumber")
       return segments()
         .dropLast(2) // becomes [..., "com.square.anvil", "compiler", "1.0.0"]
         .takeLast(3) // becomes ["com.square.anvil", "compiler", "1.0.0"]
@@ -112,11 +113,11 @@ sealed class AndroidSdk : Identifier {
   abstract val version: Int
 
   data class Full(override val version: Int) : AndroidSdk() {
-    override val name = "android-sdk-jar-$version-full"
+    override val name: String = "android-sdk-jar-$version-full"
   }
 
   data class CoreForSystemModules(override val version: Int) : AndroidSdk() {
-    override val name = "android-sdk-jar-$version-core"
+    override val name: String = "android-sdk-jar-$version-core"
   }
 
   override fun toString(): String = "AndroidSdk($name)"
