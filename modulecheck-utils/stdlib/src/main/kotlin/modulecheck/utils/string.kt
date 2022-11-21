@@ -17,19 +17,19 @@ package modulecheck.utils
 
 import java.util.Locale
 
-fun String.prefixIfNot(prefix: String) =
+fun String.prefixIfNot(prefix: String): String =
   if (this.startsWith(prefix)) this else "$prefix$this"
 
-fun String.suffixIfNot(suffix: String) =
+fun String.suffixIfNot(suffix: String): String =
   if (this.endsWith(suffix)) this else "$this$suffix"
 
 fun String.decapitalize(
   locale: Locale = Locale.US
-) = replaceFirstChar { it.lowercase(locale) }
+): String = replaceFirstChar { it.lowercase(locale) }
 
 fun String.capitalize(
   locale: Locale = Locale.US
-) = replaceFirstChar { it.uppercase(locale) }
+): String = replaceFirstChar { it.uppercase(locale) }
 
 fun String.findMinimumIndent(
   absoluteMinimum: String = "  "

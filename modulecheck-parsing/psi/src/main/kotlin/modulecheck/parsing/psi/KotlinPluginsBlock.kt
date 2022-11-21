@@ -28,7 +28,7 @@ class KotlinPluginsBlock(
   blockSuppressed = blockSuppressed
 ) {
 
-  override fun findOriginalStringIndex(parsedString: String) = originalLines
+  override fun findOriginalStringIndex(parsedString: String): Int = originalLines
     .indexOfFirst { originalLine ->
 
       originalLine.trimStart().contains(parsedString)

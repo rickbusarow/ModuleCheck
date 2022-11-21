@@ -30,7 +30,7 @@ fun interface RuleFilter {
   fun shouldEvaluate(rule: ModuleCheckRule<*>, settings: ModuleCheckSettings): Boolean
 
   companion object {
-    val DEFAULT = RuleFilter { rule, settings ->
+    val DEFAULT: RuleFilter = RuleFilter { rule, settings ->
       rule.shouldApply(settings)
     }
   }

@@ -40,11 +40,11 @@ data class MavenCoordinates(
   val version: String?
 ) : Identifier, Comparable<MavenCoordinates> {
 
-  override val name: String by unsafeLazy { "${group ?: ""}:$moduleName:${version ?: ""}" }
+  override val name: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
 
   companion object {
 
-    private val MATCHER = "([\\w\\.]+):([\\w\\-]+):([\\w\\.]+)".toRegex()
+    private val MATCHER = """([\w\.]+):([\w\-]+):([\w\.]+)""".toRegex()
 
     fun parseOrNull(coordinateString: String): MavenCoordinates? {
       return MATCHER.find(coordinateString)

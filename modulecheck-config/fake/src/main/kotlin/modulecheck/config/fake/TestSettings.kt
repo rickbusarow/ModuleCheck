@@ -40,10 +40,10 @@ data class TestSettings(
   override val reports: ReportsSettings = TestReportsSettings()
 ) : ModuleCheckSettings {
   @Suppress("UNUSED")
-  fun checks(block: ChecksSettings.() -> Unit) = Unit
+  fun checks(block: ChecksSettings.() -> Unit): Unit = Unit
 
   @Suppress("UNUSED")
-  fun sort(block: SortSettings.() -> Unit) = Unit
+  fun sort(block: SortSettings.() -> Unit): Unit = Unit
 }
 
 @Suppress("LongParameterList")

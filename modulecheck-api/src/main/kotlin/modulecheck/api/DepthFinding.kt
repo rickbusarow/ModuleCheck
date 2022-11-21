@@ -36,7 +36,7 @@ data class DepthFinding(
   override val buildFile: File
 ) : Finding, Comparable<DepthFinding> {
 
-  override val findingName = NAME
+  override val findingName: FindingName = NAME
 
   override val message: String
     get() = "The longest path between this module and its leaf nodes"
@@ -80,6 +80,6 @@ data class DepthFinding(
   }
 
   companion object {
-    val NAME = FindingName("project-depth")
+    val NAME: FindingName = FindingName("project-depth")
   }
 }

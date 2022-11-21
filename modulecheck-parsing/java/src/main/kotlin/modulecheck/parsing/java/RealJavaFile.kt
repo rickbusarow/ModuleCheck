@@ -39,6 +39,8 @@ import modulecheck.parsing.source.DeclaredName
 import modulecheck.parsing.source.JavaFile
 import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.parsing.source.internal.NameParser
@@ -105,16 +107,16 @@ class RealJavaFile(
 
   private val parsed by ParsedFile.fromCompilationUnitLazy(compilationUnit)
 
-  override val packageName by unsafeLazy { parsed.packageName }
+  override val packageName: PackageName by unsafeLazy { parsed.packageName }
 
-  override val importsLazy = unsafeLazy {
+  override val importsLazy: Lazy<Set<ReferenceName>> = unsafeLazy {
     compilationUnit.imports
       .filterNot { it.isAsterisk }
       .map { ReferenceName(it.nameAsString, JAVA) }
       .toSet()
   }
 
-  override val declarations by unsafeLazy {
+  override val declarations: Set<QualifiedDeclaredName> by unsafeLazy {
     parsed.typeDeclarations
       .asSequence()
       .filterNot { it.isPrivate }
@@ -335,6 +337,7 @@ fun <T> T.canBeImported(): Boolean
 
 @Suppress("ComplexMethod")
 internal fun JvmTarget.toLanguageLevel(): LanguageLevel {
+  @Suppress("ElseCaseInsteadOfExhaustiveWhen")
   return when (this) {
     JVM_1_6 -> LanguageLevel.JAVA_6
     JVM_1_8 -> LanguageLevel.JAVA_8

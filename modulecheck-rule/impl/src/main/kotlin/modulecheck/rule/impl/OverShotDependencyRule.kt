@@ -17,6 +17,7 @@ package modulecheck.rule.impl
 
 import modulecheck.config.ModuleCheckSettings
 import modulecheck.core.context.overshotDependencies
+import modulecheck.finding.FindingName
 import modulecheck.finding.OverShotDependencyFinding
 import modulecheck.project.McProject
 import javax.inject.Inject
@@ -25,9 +26,10 @@ class OverShotDependencyRule @Inject constructor(
   val settings: ModuleCheckSettings
 ) : DocumentedRule<OverShotDependencyFinding>() {
 
-  override val name = OverShotDependencyFinding.NAME
-  override val description = "Finds project dependencies which aren't used by the declaring" +
-    " configuration, but are used by a dependent configuration."
+  override val name: FindingName = OverShotDependencyFinding.NAME
+  override val description: String =
+    "Finds project dependencies which aren't used by the declaring" +
+      " configuration, but are used by a dependent configuration."
 
   override suspend fun check(project: McProject): List<OverShotDependencyFinding> {
     return project.overshotDependencies()

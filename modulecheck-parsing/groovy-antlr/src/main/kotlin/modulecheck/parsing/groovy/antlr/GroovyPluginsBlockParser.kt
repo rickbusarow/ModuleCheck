@@ -34,7 +34,7 @@ class GroovyPluginsBlockParser @Inject constructor(
 
     val visitor = object : GroovyParserBaseVisitor<Unit>() {
 
-      var pendingBlockNoInspectionComments = mutableListOf<String>()
+      val pendingBlockNoInspectionComments = mutableListOf<String>()
 
       override fun visitNls(ctx: NlsContext) {
         super.visitNls(ctx)
@@ -75,7 +75,7 @@ class GroovyPluginsBlockParser @Inject constructor(
 
           val blockStatementVisitor = object : GroovyParserBaseVisitor<Unit>() {
 
-            var pendingNoInspectionComments = mutableListOf<String>()
+            val pendingNoInspectionComments = mutableListOf<String>()
 
             override fun visitSep(ctx: SepContext) {
               super.visitSep(ctx)

@@ -16,6 +16,7 @@
 package modulecheck.parsing.kotlin.compiler
 
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
+import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
@@ -59,7 +60,7 @@ class NoContextPsiFileFactory @Inject constructor() :
     )
   }
 
-  override val coreEnvironment = lazyDeferred {
+  override val coreEnvironment: LazyDeferred<KotlinCoreEnvironment> = lazyDeferred {
     KotlinCoreEnvironment.createForProduction(
       parentDisposable = Disposer.newDisposable(),
       configuration = configuration,

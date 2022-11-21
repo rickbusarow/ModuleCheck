@@ -42,12 +42,12 @@ class ExternalDependencies(
   }
 
   fun add(dependency: ExternalDependency) {
-    val oldDependencies = get(dependency.configurationName) ?: emptySet()
+    val oldDependencies = get(dependency.configurationName).orEmpty()
     put(dependency.configurationName, oldDependencies + dependency)
   }
 
   fun remove(dependency: ExternalDependency) {
-    val oldDependencies = get(dependency.configurationName) ?: emptySet()
+    val oldDependencies = get(dependency.configurationName).orEmpty()
     put(dependency.configurationName, oldDependencies.filterToSet { it != dependency })
   }
 }

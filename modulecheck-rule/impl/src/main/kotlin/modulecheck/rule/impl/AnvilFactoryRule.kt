@@ -34,8 +34,8 @@ import javax.inject.Inject
 
 class AnvilFactoryRule @Inject constructor() : DocumentedRule<CouldUseAnvilFinding>() {
 
-  override val name = FindingName("use-anvil-factory-generation")
-  override val description = "Finds modules which could use Anvil's factory generation " +
+  override val name: FindingName = FindingName("use-anvil-factory-generation")
+  override val description: String = "Finds modules which could use Anvil's factory generation " +
     "instead of Dagger's"
 
   private val anvilMergeComponent =

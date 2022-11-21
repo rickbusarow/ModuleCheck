@@ -81,47 +81,53 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
     }
   }
 
-  override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) = runBlocking {
-    super.visitPrimaryConstructor(constructor)
+  override fun visitPrimaryConstructor(constructor: KtPrimaryConstructor) {
+    runBlocking {
+      super.visitPrimaryConstructor(constructor)
 
-    if (!constructor.isPrivateOrInternal()) {
-      val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
+      if (!constructor.isPrivateOrInternal()) {
+        val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
 
-      apiReferences += valueTypeRefs
+        apiReferences += valueTypeRefs
 
-      if (constructor.hasAnnotation(FqNames.inject)) {
-        constructorInjected += valueTypeRefs
+        if (constructor.hasAnnotation(FqNames.inject)) {
+          constructorInjected += valueTypeRefs
+        }
+
+        apiReferences += constructor.typeParameters.parseTypeReferences()
       }
-
-      apiReferences += constructor.typeParameters.parseTypeReferences()
     }
   }
 
-  override fun visitSecondaryConstructor(constructor: KtSecondaryConstructor) = runBlocking {
-    super.visitSecondaryConstructor(constructor)
-    if (!constructor.isPrivateOrInternal()) {
+  override fun visitSecondaryConstructor(constructor: KtSecondaryConstructor) {
+    runBlocking {
+      super.visitSecondaryConstructor(constructor)
+      if (!constructor.isPrivateOrInternal()) {
 
-      val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
+        val valueTypeRefs = constructor.valueParameters.parseTypeReferences()
 
-      apiReferences += valueTypeRefs
+        apiReferences += valueTypeRefs
 
-      if (constructor.hasAnnotation(FqNames.inject)) {
-        constructorInjected += valueTypeRefs
+        if (constructor.hasAnnotation(FqNames.inject)) {
+          constructorInjected += valueTypeRefs
+        }
+
+        apiReferences += constructor.typeParameters.parseTypeReferences()
       }
-
-      apiReferences += constructor.typeParameters.parseTypeReferences()
     }
   }
 
-  override fun visitNamedFunction(function: KtNamedFunction) = runBlocking {
-    super.visitNamedFunction(function)
-    if (!function.isPrivateOrInternal()) {
-      apiReferences += function.valueParameters.parseTypeReferences()
-      apiReferences += function.typeParameters.parseTypeReferences()
+  override fun visitNamedFunction(function: KtNamedFunction) {
+    runBlocking {
+      super.visitNamedFunction(function)
+      if (!function.isPrivateOrInternal()) {
+        apiReferences += function.valueParameters.parseTypeReferences()
+        apiReferences += function.typeParameters.parseTypeReferences()
 
-      // function.typeReference is the return type
-      apiReferences += function.typeReference?.parseTypeReferences().orEmpty()
-      apiReferences += function.receiverTypeReference?.parseTypeReferences().orEmpty()
+        // function.typeReference is the return type
+        apiReferences += function.typeReference?.parseTypeReferences().orEmpty()
+        apiReferences += function.receiverTypeReference?.parseTypeReferences().orEmpty()
+      }
     }
   }
 

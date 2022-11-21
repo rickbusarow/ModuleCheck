@@ -145,7 +145,7 @@ suspend fun HasDependencyDeclarations.closestDeclarationOrNull(
       } else {
 
         val precedingWhitespace = "^\\s*".toRegex()
-          .find(closestDeclaration.statementWithSurroundingText)?.value ?: ""
+          .find(closestDeclaration.statementWithSurroundingText)?.value.orEmpty()
 
         when (closestDeclaration) {
           is ExternalDependencyDeclaration -> closestDeclaration.copy(
@@ -194,7 +194,7 @@ private fun List<DependencyDeclaration>.sorted(
       ?: (it as? ExternalDependencyDeclaration)
         ?.coordinates
         ?.name
-      ?: ""
+        .orEmpty()
   }
 )
 
