@@ -26,8 +26,8 @@ class UnusedDependencyRule @Inject constructor(
   private val settings: ModuleCheckSettings
 ) : DocumentedRule<UnusedDependencyFinding>() {
 
-  override val name = FindingName("unused-dependency")
-  override val description = "Finds project dependencies which aren't used in the declaring module"
+  override val name: FindingName = FindingName("unused-dependency")
+  override val description: String = "Finds project dependencies which aren't used in the declaring module"
 
   override suspend fun check(project: McProject): List<UnusedDependencyFinding> {
     return project.get(UnusedDependencies)

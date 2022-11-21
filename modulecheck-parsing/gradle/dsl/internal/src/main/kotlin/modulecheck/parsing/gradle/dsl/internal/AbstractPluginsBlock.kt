@@ -30,16 +30,14 @@ abstract class AbstractPluginsBlock(
 
   private val resetManager = ResetManager()
 
-  protected val originalLines by lazy { lambdaContent.lines().toMutableList() }
+  protected val originalLines: MutableList<String> by lazy { lambdaContent.lines().toMutableList() }
 
   private val _allDeclarations = mutableListOf<PluginDeclaration>()
 
   override val settings: List<PluginDeclaration>
     get() = _allDeclarations
 
-  protected val allBlockStatements = mutableListOf<String>()
-
-  override val blockSuppressed = blockSuppressed.updateOldSuppresses()
+  override val blockSuppressed: List<String> = blockSuppressed.updateOldSuppresses()
 
   override val allSuppressions: Map<PluginDeclaration, Set<FindingName>> by resetManager.lazyResets {
     buildMap<PluginDeclaration, MutableSet<FindingName>> {

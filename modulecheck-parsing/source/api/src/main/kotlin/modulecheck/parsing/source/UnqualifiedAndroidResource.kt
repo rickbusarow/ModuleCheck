@@ -34,7 +34,7 @@ class UnqualifiedAndroidResource private constructor(
   val identifier: SimpleName
 ) : AndroidResourceDeclaredName, McName, HasSimpleNames {
 
-  override val simpleNames by unsafeLazy {
+  override val simpleNames: List<SimpleName> by unsafeLazy {
     listOf("R".asSimpleName(), prefix, identifier)
   }
   override val segments: List<String> by unsafeLazy { simpleNames.map { it.name } }
@@ -42,7 +42,8 @@ class UnqualifiedAndroidResource private constructor(
 
   /**
    * @return the fully qualified name of a generated Android resource, like
-   *   `com.example.R.string.app_name` from the combination of `com.example.R` and `R.string.app_name`
+   *     `com.example.R.string.app_name` from the combination of `com.example.R` and
+   *     `R.string.app_name`
    * @since 0.12.0
    */
   fun toQualifiedDeclaredName(
@@ -85,7 +86,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun anim(identifier: SimpleName) =
+    fun anim(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("anim".asSimpleName(), identifier = identifier)
 
     /**
@@ -93,7 +94,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun animator(identifier: SimpleName) =
+    fun animator(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("animator".asSimpleName(), identifier = identifier)
 
     /**
@@ -101,7 +102,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun array(identifier: SimpleName) =
+    fun array(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("array".asSimpleName(), identifier = identifier)
 
     /**
@@ -109,7 +110,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun bool(identifier: SimpleName) =
+    fun bool(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("bool".asSimpleName(), identifier = identifier)
 
     /**
@@ -117,7 +118,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun color(identifier: SimpleName) =
+    fun color(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("color".asSimpleName(), identifier = identifier)
 
     /**
@@ -125,7 +126,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun dimen(identifier: SimpleName) =
+    fun dimen(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("dimen".asSimpleName(), identifier = identifier)
 
     /**
@@ -133,7 +134,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun drawable(identifier: SimpleName) =
+    fun drawable(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("drawable".asSimpleName(), identifier = identifier)
 
     /**
@@ -141,7 +142,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun font(identifier: SimpleName) =
+    fun font(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("font".asSimpleName(), identifier = identifier)
 
     /**
@@ -149,7 +150,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun id(identifier: SimpleName) =
+    fun id(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("id".asSimpleName(), identifier = identifier)
 
     /**
@@ -157,7 +158,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun integer(identifier: SimpleName) =
+    fun integer(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("integer".asSimpleName(), identifier = identifier)
 
     /**
@@ -165,7 +166,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun layout(identifier: SimpleName) =
+    fun layout(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("layout".asSimpleName(), identifier = identifier)
 
     /**
@@ -173,7 +174,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun menu(identifier: SimpleName) =
+    fun menu(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("menu".asSimpleName(), identifier = identifier)
 
     /**
@@ -181,7 +182,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun mipmap(identifier: SimpleName) =
+    fun mipmap(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("mipmap".asSimpleName(), identifier = identifier)
 
     /**
@@ -189,7 +190,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun raw(identifier: SimpleName) =
+    fun raw(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("raw".asSimpleName(), identifier = identifier)
 
     /**
@@ -197,7 +198,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun string(identifier: SimpleName) =
+    fun string(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("string".asSimpleName(), identifier = identifier)
 
     /**
@@ -205,7 +206,7 @@ class UnqualifiedAndroidResource private constructor(
      *
      * @since 0.12.0
      */
-    fun style(identifier: SimpleName) =
+    fun style(identifier: SimpleName): UnqualifiedAndroidResource =
       UnqualifiedAndroidResource("style".asSimpleName(), identifier = identifier)
 
     /**

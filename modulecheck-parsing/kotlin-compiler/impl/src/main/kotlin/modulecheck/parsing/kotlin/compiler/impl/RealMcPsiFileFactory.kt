@@ -20,7 +20,9 @@ import modulecheck.dagger.TaskScope
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.McPsiFileFactory
 import modulecheck.parsing.kotlin.compiler.internal.AbstractMcPsiFileFactory
+import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.lazy.lazyDeferred
+import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.StandardFileSystems
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFileManager
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
@@ -44,7 +46,7 @@ class RealMcPsiFileFactory(
 ) : AbstractMcPsiFileFactory(),
   McPsiFileFactory {
 
-  override val coreEnvironment = kotlinEnvironment.coreEnvironment
+  override val coreEnvironment: LazyDeferred<KotlinCoreEnvironment> = kotlinEnvironment.coreEnvironment
 
   private val fileCache = ConcurrentHashMap<File, PsiFile>()
 

@@ -29,7 +29,9 @@ data class ConfigBuilder(
   val upstream: MutableList<ConfigurationName>,
   val downstream: MutableList<ConfigurationName>
 ) {
-  fun toConfig(configFactory: ConfigFactory<String>) = configFactory.create(name.value)
+  fun toConfig(configFactory: ConfigFactory<String>): McConfiguration = configFactory.create(
+    name.value
+  )
 
   companion object {
     fun fromConfig(configuration: McConfiguration): ConfigBuilder {

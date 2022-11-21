@@ -28,10 +28,12 @@ import kotlinx.coroutines.runBlocking
 fun <A> forAllBlocking(
   genA: Gen<A>,
   property: suspend PropertyContext.(A) -> Unit
-) = runBlocking<Unit> {
-  io.kotest.property.forAll(PropTestConfig(), genA) {
-    property.invoke(this, it)
-    true
+) {
+  runBlocking<Unit> {
+    io.kotest.property.forAll(PropTestConfig(), genA) {
+      property.invoke(this, it)
+      true
+    }
   }
 }
 
@@ -43,6 +45,8 @@ fun <A> forAllBlocking(
 @JvmName("forAllBlockingExtension")
 fun <A> Gen<A>.forAllBlocking(
   property: suspend PropertyContext.(A) -> Unit
-): Unit = forAllBlocking(genA = this) {
-  property.invoke(this, it)
+) {
+  forAllBlocking(genA = this) {
+    property.invoke(this, it)
+  }
 }

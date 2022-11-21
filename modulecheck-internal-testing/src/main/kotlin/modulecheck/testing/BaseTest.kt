@@ -25,6 +25,7 @@ import org.junit.jupiter.api.TestInfo
 import java.io.File
 import kotlin.properties.Delegates
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class BaseTest : HermitJUnit5(), FancyShould {
 
   /**
@@ -48,15 +49,13 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   }
 
   /**
-   * For a standard `@Test`-annotated test, this directory will be:
-   * `$className/$functionName`
+   * For a standard `@Test`-annotated test, this directory will be: `$className/$functionName`
    *
-   * For a `TestFactory` test, this will be:
-   * `$className/$functionName/$displayName`
+   * For a `TestFactory` test, this will be: `$className/$functionName/$displayName`
    *
    * @since 0.12.0
    */
-  val testRelativePath by resets {
+  private val testRelativePath by resets {
     "$testClassName${File.separator}$testDisplayName"
   }
 
@@ -65,7 +64,7 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
    *
    * @since 0.12.0
    */
-  protected var testClassName: String by Delegates.notNull()
+  private var testClassName: String by Delegates.notNull()
 
   /**
    * Test function name
@@ -82,14 +81,14 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
    */
   protected var testDisplayName: String by Delegates.notNull()
 
-  fun File.relativePath() = path.removePrefix(testProjectDir.path)
+  fun File.relativePath(): String = path.removePrefix(testProjectDir.path)
 
   /**
    * Replace CRLF and CR line endings with Unix LF endings.
    *
    * @since 0.12.0
    */
-  fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
+  private fun String.normaliseLineSeparators(): String = replace("\r\n|\r".toRegex(), "\n")
 
   /**
    * Replace Windows file separators with Unix ones, just for string comparison in tests
@@ -170,7 +169,7 @@ abstract class BaseTest : HermitJUnit5(), FancyShould {
   }
 
   companion object {
-    protected val durationSuffixRegex =
+    protected val durationSuffixRegex: Regex =
       "(ModuleCheck found \\d+ issues?) in [\\d.]+ seconds\\.[\\s\\S]*".toRegex()
   }
 }

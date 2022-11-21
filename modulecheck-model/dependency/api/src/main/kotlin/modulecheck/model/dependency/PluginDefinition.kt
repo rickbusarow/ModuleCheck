@@ -42,7 +42,7 @@ data class PluginDefinition(
    *
    * @since 0.12.0
    */
-  val accessors by lazy {
+  val accessors: Set<PluginAccessor> by lazy {
 
     buildList {
       add("id(\"$qualifiedId\")")

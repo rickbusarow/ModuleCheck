@@ -44,7 +44,7 @@ abstract class AbstractDependenciesBlock(
 
   private val resetManager = ResetManager()
 
-  final override val blockSuppressed = blockSuppressed.updateOldSuppresses()
+  final override val blockSuppressed: List<String> = blockSuppressed.updateOldSuppresses()
 
   override val allSuppressions: Map<ProjectDependency, Set<FindingName>> by resetManager.lazyResets {
     buildMap<ProjectDependency, MutableSet<FindingName>> {
@@ -283,7 +283,7 @@ abstract class AbstractDependenciesBlock(
   }
 
   companion object {
-    val testFixturesRegex = "testFixtures\\([\\s\\S]*\\)".toRegex()
+    val testFixturesRegex: Regex = "testFixtures\\([\\s\\S]*\\)".toRegex()
   }
 }
 

@@ -32,7 +32,7 @@ fun File.findMinimumIndent(): String {
   return readText().findMinimumIndent()
 }
 
-fun File.createSafely(content: String? = null) = apply {
+fun File.createSafely(content: String? = null): File = apply {
   toPath().parent?.toFile()?.mkdirs()
   if (content != null) {
     writeText(content)
@@ -47,4 +47,4 @@ fun File.createSafely(content: String? = null) = apply {
  * @see File.mkdirs
  * @since 0.12.0
  */
-fun File.mkdirsInline() = apply { mkdirs() }
+fun File.mkdirsInline(): File = apply { mkdirs() }

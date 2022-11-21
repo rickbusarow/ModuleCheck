@@ -46,7 +46,8 @@ data class UnusedDependencyFinding(
   RemovesDependency,
   Deletable {
 
-  override val dependency get() = oldDependency
+  override val dependency: ConfiguredDependency
+    get() = oldDependency
 
   override val message: String
     get() = when {

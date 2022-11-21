@@ -29,6 +29,7 @@ import modulecheck.testing.BaseTest
 import java.io.File
 import java.nio.charset.Charset
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class ProjectTest : BaseTest(), ProjectCollector {
 
   override val projectCache: ProjectCache by resets { ProjectCache() }

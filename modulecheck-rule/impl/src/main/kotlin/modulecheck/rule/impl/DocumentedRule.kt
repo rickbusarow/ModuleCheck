@@ -32,6 +32,6 @@ sealed class DocumentedRule<T : Finding> : ModuleCheckRule<T> {
   override fun toString(): String = "${this::class.simpleName}(${name.id})"
 
   companion object {
-    const val RULES_BASE_URL = "https://rbusarow.github.io/ModuleCheck/docs/rules/"
+    const val RULES_BASE_URL: String = "https://rbusarow.github.io/ModuleCheck/docs/rules/"
   }
 }

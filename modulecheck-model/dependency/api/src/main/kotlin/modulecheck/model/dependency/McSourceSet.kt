@@ -82,7 +82,7 @@ class McSourceSet(
   private val downstreamLazy: Lazy<List<SourceSetName>>
 ) : Comparable<McSourceSet> {
 
-  val configurations by lazy {
+  val configurations: Configurations by lazy {
     Configurations(
       sequenceOfNotNull(
         compileOnlyConfiguration,
@@ -124,10 +124,10 @@ class McSourceSet(
    */
   val downstream: List<SourceSetName> by downstreamLazy
 
-  fun withUpstream() = listOf(name) + upstream
-  fun withDownstream() = listOf(name) + downstream
+  fun withUpstream(): List<SourceSetName> = listOf(name) + upstream
+  fun withDownstream(): List<SourceSetName> = listOf(name) + downstream
 
-  val hasExistingSourceFiles by lazy {
+  val hasExistingSourceFiles: Boolean by lazy {
     jvmFiles.hasExistingFiles() ||
       resourceFiles.hasExistingFiles() ||
       layoutFiles.hasExistingFiles()

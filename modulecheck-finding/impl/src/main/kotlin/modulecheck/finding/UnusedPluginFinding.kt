@@ -41,7 +41,7 @@ data class UnusedPluginFinding(
     get() = "The `${pluginDefinition.qualifiedId}` plugin dependency declared, " +
       "but no processor dependencies are declared."
 
-  override val dependencyIdentifier = pluginDefinition.qualifiedId
+  override val dependencyIdentifier: String = pluginDefinition.qualifiedId
 
   override val isSuppressed: LazyDeferred<Boolean> = lazyDeferred {
     dependentProject.getSuppressions()

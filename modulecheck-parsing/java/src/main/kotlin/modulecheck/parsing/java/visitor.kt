@@ -26,9 +26,8 @@ import com.github.javaparser.resolution.declarations.ResolvedDeclaration
 
 internal inline fun Node.visit(
   crossinline predicate: (node: Node) -> Boolean
-) {
-
-  childrenRecursive()
+): Sequence<Node> {
+  return childrenRecursive()
     .takeWhile { predicate(it) }
 }
 
