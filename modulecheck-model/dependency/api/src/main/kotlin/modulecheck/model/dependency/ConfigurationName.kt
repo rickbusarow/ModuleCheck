@@ -155,10 +155,10 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * testApi | debug | debugApi | androidTestImplementation | androidTestApi
    *
    * @return for any main/common configuration, just returns `api`. For any other configuration, it
-   *   returns the [SourceSetName] appended with `Api`.
+   *     returns the [SourceSetName] appended with `Api`.
    * @since 0.12.0
    */
-  fun apiVariant() = toSourceSetName().apiConfig()
+  fun apiVariant(): ConfigurationName = toSourceSetName().apiConfig()
 
   /**
    * Returns the '-implementation' version of the current configuration.
@@ -168,19 +168,19 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * androidTestImplementation | androidTestImplementation
    *
    * @return for any main/common configuration, just returns `implementation`. For any other
-   *   configuration, it returns the [SourceSetName] appended with `Implementation`.
+   *     configuration, it returns the [SourceSetName] appended with `Implementation`.
    * @since 0.12.0
    */
-  fun implementationVariant() = toSourceSetName().implementationConfig()
+  fun implementationVariant(): ConfigurationName = toSourceSetName().implementationConfig()
 
   /**
    * Returns the 'kapt-' version of the current configuration.
    *
    * @return for any main/common configuration, just returns `kapt`. For any other configuration, it
-   *   returns `kapt` appended with the [SourceSetName].
+   *     returns `kapt` appended with the [SourceSetName].
    * @since 0.12.0
    */
-  fun kaptVariant() = toSourceSetName().kaptVariant()
+  fun kaptVariant(): ConfigurationName = toSourceSetName().kaptVariant()
 
   /**
    * @return true if the configuration is an `api` variant
@@ -213,107 +213,109 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
      *
      * @since 0.13.0
      */
-    val androidTestImplementation = ConfigurationName("androidTestImplementation")
+    val androidTestImplementation: ConfigurationName =
+      ConfigurationName("androidTestImplementation")
 
     /**
      * name of the 'annotationProcessor' configuration
      *
      * @since 0.13.0
      */
-    val annotationProcessor = ConfigurationName("annotationProcessor")
+    val annotationProcessor: ConfigurationName = ConfigurationName("annotationProcessor")
 
     /**
      * name of the 'anvil' configuration
      *
      * @since 0.13.0
      */
-    val anvil = ConfigurationName("anvil")
+    val anvil: ConfigurationName = ConfigurationName("anvil")
 
     /**
      * name of the 'api' configuration
      *
      * @since 0.13.0
      */
-    val api = ConfigurationName("api")
+    val api: ConfigurationName = ConfigurationName("api")
 
     /**
      * name of the 'compile' configuration
      *
      * @since 0.13.0
      */
-    val compile = ConfigurationName("compile")
+    val compile: ConfigurationName = ConfigurationName("compile")
 
     /**
      * name of the 'compileOnly' configuration
      *
      * @since 0.13.0
      */
-    val compileOnly = ConfigurationName("compileOnly")
+    val compileOnly: ConfigurationName = ConfigurationName("compileOnly")
 
     /**
      * name of the 'compileOnlyApi' configuration
      *
      * @since 0.13.0
      */
-    val compileOnlyApi = ConfigurationName("compileOnlyApi")
+    val compileOnlyApi: ConfigurationName = ConfigurationName("compileOnlyApi")
 
     /**
      * name of the 'implementation' configuration
      *
      * @since 0.13.0
      */
-    val implementation = ConfigurationName("implementation")
+    val implementation: ConfigurationName = ConfigurationName("implementation")
 
     /**
      * name of the 'kapt' configuration
      *
      * @since 0.13.0
      */
-    val kapt = ConfigurationName("kapt")
+    val kapt: ConfigurationName = ConfigurationName("kapt")
 
     /**
      * name of the 'kotlinCompilerPluginClasspathMain' configuration
      *
      * @since 0.13.0
      */
-    val kotlinCompileClasspath = ConfigurationName("kotlinCompilerPluginClasspathMain")
+    val kotlinCompileClasspath: ConfigurationName =
+      ConfigurationName("kotlinCompilerPluginClasspathMain")
 
     /**
      * name of the 'ksp' configuration
      *
      * @since 0.13.0
      */
-    val ksp = ConfigurationName("ksp")
+    val ksp: ConfigurationName = ConfigurationName("ksp")
 
     /**
      * name of the 'runtime' configuration
      *
      * @since 0.13.0
      */
-    val runtime = ConfigurationName("runtime")
+    val runtime: ConfigurationName = ConfigurationName("runtime")
 
     /**
      * name of the 'runtimeOnly' configuration
      *
      * @since 0.13.0
      */
-    val runtimeOnly = ConfigurationName("runtimeOnly")
+    val runtimeOnly: ConfigurationName = ConfigurationName("runtimeOnly")
 
     /**
      * name of the 'testApi' configuration
      *
      * @since 0.13.0
      */
-    val testApi = ConfigurationName("testApi")
+    val testApi: ConfigurationName = ConfigurationName("testApi")
 
     /**
      * name of the 'testImplementation' configuration
      *
      * @since 0.13.0
      */
-    val testImplementation = ConfigurationName("testImplementation")
+    val testImplementation: ConfigurationName = ConfigurationName("testImplementation")
 
-    val mainConfigurations = listOf(
+    val mainConfigurations: List<String> = listOf(
       api.value,
       compile.value,
       compileOnly.value,
@@ -334,12 +336,12 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
        */
       .sortedByDescending { it.length }
 
-    internal val mainCommonConfigurations = listOf(
+    internal val mainCommonConfigurations: List<String> = listOf(
       api.value,
       implementation.value
     )
 
-    private val mainConfigurationsCapitalized = mainConfigurations
+    private val mainConfigurationsCapitalized: Set<String> = mainConfigurations
       .map { it.capitalize() }
       .toSet()
 
@@ -348,7 +350,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
      *
      * @since 0.13.0
      */
-    fun main() = listOf(
+    fun main(): List<ConfigurationName> = listOf(
       compileOnlyApi,
       api,
       implementation,
@@ -364,7 +366,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
      *
      * @since 0.13.0
      */
-    fun private() = listOf(
+    fun private(): List<ConfigurationName> = listOf(
       implementation,
       compileOnly,
       compile,
@@ -377,7 +379,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
      *
      * @since 0.13.0
      */
-    fun public() = listOf(
+    fun public(): List<ConfigurationName> = listOf(
       compileOnlyApi,
       api
     )

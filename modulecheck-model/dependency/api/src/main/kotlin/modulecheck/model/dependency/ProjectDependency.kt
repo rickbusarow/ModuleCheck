@@ -29,7 +29,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    *
    * @since 0.12.0
    */
-  override val identifier get() = path
+  override val identifier: ProjectPath get() = path
 
   /**
    * The typical implementation of [ProjectDependency], for normal JVM or Android dependencies.
@@ -85,7 +85,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    *     `debugImplementation`, it would return `debug`.
    * @since 0.12.0
    */
-  fun declaringSourceSetName(sourceSets: SourceSets) = when {
+  fun declaringSourceSetName(sourceSets: SourceSets): SourceSetName = when {
     // <anyConfig>(testFixtures(___))
     isTestFixture -> {
       SourceSetName.TEST_FIXTURES

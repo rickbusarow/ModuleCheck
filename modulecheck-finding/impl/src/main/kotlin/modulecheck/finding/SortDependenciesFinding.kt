@@ -34,13 +34,13 @@ class SortDependenciesFinding(
   override val buildFile: File,
   private val comparator: Comparator<String>
 ) : Finding, Fixable {
-  override val findingName = NAME
+  override val findingName: FindingName = NAME
 
   override val message: String
     get() = "Project/external dependency declarations are not sorted " +
       "according to the defined pattern."
 
-  override val dependencyIdentifier = ""
+  override val dependencyIdentifier: String = ""
 
   override val positionOrNull: LazyDeferred<Position?> = lazyDeferred { null }
 
@@ -64,7 +64,7 @@ class SortDependenciesFinding(
   }
 
   companion object {
-    val NAME = FindingName("sort-dependencies")
+    val NAME: FindingName = FindingName("sort-dependencies")
   }
 }
 
@@ -115,8 +115,9 @@ internal fun DependenciesBlock.sortedDeclarations(
 
 internal fun List<DependencyDeclaration>.grouped(
   comparator: Comparator<String>
-) = groupBy {
-  it.declarationText
+) = groupBy { declaration ->
+  declaration
+    .declarationText
     .split("[^a-zA-Z-]".toRegex())
     .filterNot { it.isEmpty() }
     .take(2)

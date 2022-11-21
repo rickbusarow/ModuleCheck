@@ -113,7 +113,7 @@ class ProjectQueue(
           }
         }
 
-      invokeOnClose {
+      invokeOnClose { _ ->
         // If any projects somehow haven't cleared their context, do so now.
         toClear.forEach { it.clearContext() }
       }

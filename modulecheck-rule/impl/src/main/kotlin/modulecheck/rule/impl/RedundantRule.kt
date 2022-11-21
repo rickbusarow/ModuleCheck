@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 class RedundantRule @Inject constructor() : DocumentedRule<RedundantDependencyFinding>() {
 
-  override val name = FindingName("redundant-dependency")
-  override val description =
+  override val name: FindingName = FindingName("redundant-dependency")
+  override val description: String =
     "Finds project dependencies which are declared as `api` in dependent " +
       "projects, but also declared in the current project unnecessarily"
 

@@ -37,9 +37,10 @@ class AgpApiAccess @Inject constructor() {
    *
    * @since 0.12.0
    */
-  val androidIsInClasspath by lazy {
+  val androidIsInClasspath: Boolean by lazy {
     @Suppress("SwallowedException")
     try {
+      @Suppress("SENSELESS_COMPARISON")
       Class.forName(
         "com.android.build.gradle.BasePlugin",
         false,
@@ -55,7 +56,7 @@ class AgpApiAccess @Inject constructor() {
    *
    * @since 0.12.0
    */
-  val agpVersionOrNull by lazy {
+  val agpVersionOrNull: SemVer? by lazy {
     if (androidIsInClasspath) {
       // `com.android.builder.model.Version` shouldn't really be deprecated,
       // since they removed the suggested replacement.

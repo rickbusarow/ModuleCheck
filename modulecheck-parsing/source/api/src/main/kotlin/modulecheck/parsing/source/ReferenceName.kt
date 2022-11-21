@@ -57,14 +57,14 @@ sealed class ReferenceName : McName {
    *
    * @since 0.12.0
    */
-  fun isJava() = language == JAVA
+  fun isJava(): Boolean = language == JAVA
 
   /**
    * This reference is from a Kotlin source file
    *
    * @since 0.12.0
    */
-  fun isKotlin() = language == KOTLIN
+  fun isKotlin(): Boolean = language == KOTLIN
 
   /**
    * This reference is from an xml source file
@@ -72,7 +72,7 @@ sealed class ReferenceName : McName {
    * @since 0.12.0
    */
   @Suppress("GrazieInspection")
-  fun isXml() = language == XML
+  fun isXml(): Boolean = language == XML
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -98,6 +98,7 @@ sealed class ReferenceName : McName {
   final override fun hashCode(): Int = name.hashCode()
 
   override fun toString(): String {
+    @Suppress("UnsafeCallOnNullableType")
     return "${this::class.simpleName!!}(name='$name'  language=$language)"
   }
 

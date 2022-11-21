@@ -28,7 +28,7 @@ import org.jetbrains.kotlin.config.LanguageVersion
  *   system
  * @since 0.12.0
  */
-fun FileCollection.existingFiles() = filter { it.isFile && it.exists() }
+fun FileCollection.existingFiles(): FileCollection = filter { it.isFile && it.exists() }
 
 /**
  * @return the Java version used to compile this project

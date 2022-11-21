@@ -21,44 +21,46 @@ import modulecheck.utils.decapitalize
 @JvmInline
 value class SourceSetName(val value: String) {
 
-  fun isTestFixtures() = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
+  fun isTestFixtures(): Boolean = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
 
   override fun toString(): String = "(SourceSetName) `$value`"
 
   companion object {
-    val ANDROID_TEST = SourceSetName("androidTest")
-    val ANVIL = SourceSetName("anvil")
-    val DEBUG = SourceSetName("debug")
-    val KAPT = SourceSetName("kapt")
-    val MAIN = SourceSetName("main")
-    val RELEASE = SourceSetName("release")
-    val TEST = SourceSetName("test")
-    val TEST_FIXTURES = SourceSetName("testFixtures")
+    val ANDROID_TEST: SourceSetName = SourceSetName("androidTest")
+    val ANVIL: SourceSetName = SourceSetName("anvil")
+    val DEBUG: SourceSetName = SourceSetName("debug")
+    val KAPT: SourceSetName = SourceSetName("kapt")
+    val MAIN: SourceSetName = SourceSetName("main")
+    val RELEASE: SourceSetName = SourceSetName("release")
+    val TEST: SourceSetName = SourceSetName("test")
+    val TEST_FIXTURES: SourceSetName = SourceSetName("testFixtures")
   }
 }
 
 fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 
-fun SourceSetName.removePrefix(prefix: String) = value.removePrefix(prefix)
+fun SourceSetName.removePrefix(prefix: String): SourceSetName = value.removePrefix(prefix)
   .decapitalize()
   .asSourceSetName()
 
-fun SourceSetName.removePrefix(prefix: SourceSetName) = removePrefix(prefix.value)
+fun SourceSetName.removePrefix(prefix: SourceSetName): SourceSetName = removePrefix(prefix.value)
 
-fun SourceSetName.hasPrefix(prefix: String) = value.startsWith(prefix)
-fun SourceSetName.hasPrefix(prefix: SourceSetName) = hasPrefix(prefix.value)
+fun SourceSetName.hasPrefix(prefix: String): Boolean = value.startsWith(prefix)
+fun SourceSetName.hasPrefix(prefix: SourceSetName): Boolean = hasPrefix(prefix.value)
 
-fun SourceSetName.addPrefix(prefix: String) = prefix.plus(value.capitalize())
+fun SourceSetName.addPrefix(prefix: String): SourceSetName = prefix.plus(value.capitalize())
   .asSourceSetName()
 
-fun SourceSetName.addPrefix(prefix: SourceSetName) = addPrefix(prefix.value)
+fun SourceSetName.addPrefix(prefix: SourceSetName): SourceSetName = addPrefix(prefix.value)
 
-fun SourceSetName.removeSuffix(suffix: String) = value.removeSuffix(suffix.capitalize())
+fun SourceSetName.removeSuffix(suffix: String): SourceSetName =
+  value.removeSuffix(suffix.capitalize())
+    .asSourceSetName()
+
+fun SourceSetName.removeSuffix(suffix: SourceSetName): SourceSetName =
+  removeSuffix(suffix.value.capitalize())
+
+fun SourceSetName.addSuffix(suffix: String): SourceSetName = value.plus(suffix.capitalize())
   .asSourceSetName()
 
-fun SourceSetName.removeSuffix(suffix: SourceSetName) = removeSuffix(suffix.value.capitalize())
-
-fun SourceSetName.addSuffix(suffix: String) = value.plus(suffix.capitalize())
-  .asSourceSetName()
-
-fun SourceSetName.addSuffix(suffix: SourceSetName) = addSuffix(suffix.value)
+fun SourceSetName.addSuffix(suffix: SourceSetName): SourceSetName = addSuffix(suffix.value)

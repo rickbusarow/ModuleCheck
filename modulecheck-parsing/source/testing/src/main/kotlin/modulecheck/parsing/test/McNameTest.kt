@@ -51,9 +51,9 @@ interface McNameTest : FancyShould {
 
   class JvmFileBuilder {
 
-    val referenceNames = mutableListOf<ReferenceName>()
-    val apiReferenceNames = mutableListOf<ReferenceName>()
-    val declarations = mutableListOf<QualifiedDeclaredName>()
+    val referenceNames: MutableList<ReferenceName> = mutableListOf()
+    val apiReferenceNames: MutableList<ReferenceName> = mutableListOf()
+    val declarations: MutableList<QualifiedDeclaredName> = mutableListOf()
 
     fun references(builder: NormalReferenceBuilder.() -> Unit) {
       NormalReferenceBuilder().builder()
@@ -71,26 +71,26 @@ interface McNameTest : FancyShould {
       private val target: MutableList<ReferenceName>
     ) {
 
-      fun androidR(packageName: PackageName = PackageName("com.test")) =
+      fun androidR(packageName: PackageName = PackageName("com.test")): AndroidRReferenceName =
         AndroidRReferenceName(packageName, XML)
           .also { target.add(it) }
 
-      fun androidDataBinding(name: String) =
+      fun androidDataBinding(name: String): AndroidDataBindingReferenceName =
         AndroidDataBindingReferenceName(name, XML)
           .also { target.add(it) }
 
-      fun qualifiedAndroidResource(name: String) =
+      fun qualifiedAndroidResource(name: String): QualifiedAndroidResourceReferenceName =
         QualifiedAndroidResourceReferenceName(name, XML)
           .also { target.add(it) }
 
-      fun unqualifiedAndroidResource(name: String) =
+      fun unqualifiedAndroidResource(name: String): UnqualifiedAndroidResourceReferenceName =
         UnqualifiedAndroidResourceReferenceName(name, XML)
           .also { target.add(it) }
 
-      fun kotlin(name: String) = ReferenceName(name, KOTLIN)
+      fun kotlin(name: String): ReferenceName = ReferenceName(name, KOTLIN)
         .also { target.add(it) }
 
-      fun java(name: String) = ReferenceName(name, JAVA)
+      fun java(name: String): ReferenceName = ReferenceName(name, JAVA)
         .also { target.add(it) }
     }
 
@@ -99,21 +99,30 @@ interface McNameTest : FancyShould {
     inner class ApiReferenceBuilder : ReferenceBuilder(apiReferenceNames)
 
     inner class DeclarationsBuilder {
-      fun kotlin(name: String, packageName: PackageName = PackageName("com.subject")) =
+      fun kotlin(
+        name: String,
+        packageName: PackageName = PackageName("com.subject")
+      ): QualifiedDeclaredName =
         DeclaredName.kotlin(
           packageName,
           name.stripPackageNameFromFqName(packageName)
         )
           .also { declarations.add(it) }
 
-      fun java(name: String, packageName: PackageName = PackageName("com.subject")) =
+      fun java(
+        name: String,
+        packageName: PackageName = PackageName("com.subject")
+      ): QualifiedDeclaredName =
         DeclaredName.java(
           packageName,
           name.stripPackageNameFromFqName(packageName)
         )
           .also { declarations.add(it) }
 
-      fun agnostic(name: String, packageName: PackageName = PackageName("com.subject")) =
+      fun agnostic(
+        name: String,
+        packageName: PackageName = PackageName("com.subject")
+      ): QualifiedDeclaredName =
         name.stripPackageNameFromFqName(packageName)
           .asDeclaredName(packageName)
           .also { declarations.add(it) }
@@ -166,62 +175,72 @@ interface McNameTest : FancyShould {
     }
   }
 
-  fun kotlin(name: String, packageName: PackageName = PackageName("com.test")) =
+  fun kotlin(
+    name: String,
+    packageName: PackageName = PackageName("com.test")
+  ): QualifiedDeclaredName =
     DeclaredName.kotlin(packageName, name.stripPackageNameFromFqName(packageName))
 
-  fun java(name: String, packageName: PackageName = PackageName("com.test")) =
+  fun java(
+    name: String,
+    packageName: PackageName = PackageName("com.test")
+  ): QualifiedDeclaredName =
     DeclaredName.java(packageName, name.stripPackageNameFromFqName(packageName))
 
-  fun agnostic(name: String, packageName: PackageName = PackageName("com.test")) =
+  fun agnostic(
+    name: String,
+    packageName: PackageName = PackageName("com.test")
+  ): QualifiedDeclaredName =
     name.stripPackageNameFromFqName(packageName).asDeclaredName(packageName)
 
-  fun androidR(packageName: PackageName = PackageName("com.test")) =
+  fun androidR(packageName: PackageName = PackageName("com.test")): AndroidRReferenceName =
     AndroidRReferenceName(packageName, defaultLanguage)
 
-  fun androidDataBinding(name: String) =
+  fun androidDataBinding(name: String): AndroidDataBindingReferenceName =
     AndroidDataBindingReferenceName(name, defaultLanguage)
 
-  fun qualifiedAndroidResource(name: String) =
+  fun qualifiedAndroidResource(name: String): QualifiedAndroidResourceReferenceName =
     QualifiedAndroidResourceReferenceName(name, defaultLanguage)
 
-  fun unqualifiedAndroidResource(name: String) =
+  fun unqualifiedAndroidResource(name: String): UnqualifiedAndroidResourceReferenceName =
     UnqualifiedAndroidResourceReferenceName(name, defaultLanguage)
 }
 
-fun Collection<McName>.prettyPrint() = map { mcName ->
-  val typeName = when (mcName) {
-    // references
-    is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
-    is AndroidRReferenceName -> "androidR"
-    is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
-    is AndroidDataBindingReferenceName -> "androidDataBinding"
-    is ReferenceName -> when {
-      mcName.isJava() -> "java"
-      mcName.isKotlin() -> "kotlin"
-      mcName.isXml() -> "xml"
-      else -> throw IllegalArgumentException("???")
-    }
-
-    is AndroidRDeclaredName -> "androidR"
-    is UnqualifiedAndroidResource -> mcName.prefix.name
-    is QualifiedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
-    is AndroidDataBindingDeclaredName -> "androidDataBinding"
-
-    // declarations
-    is QualifiedDeclaredName -> {
-      when {
-        mcName.languages.containsAll(setOf(KOTLIN, JAVA)) -> "agnostic"
-        mcName.languages.contains(KOTLIN) -> "kotlin"
-        mcName.languages.contains(JAVA) -> "java"
-        mcName.languages.contains(XML) -> "xml"
+fun Collection<McName>.prettyPrint(): String = asSequence()
+  .map { mcName ->
+    val typeName = when (mcName) {
+      // references
+      is UnqualifiedAndroidResourceReferenceName -> "unqualifiedAndroidResource"
+      is AndroidRReferenceName -> "androidR"
+      is QualifiedAndroidResourceReferenceName -> "qualifiedAndroidResource"
+      is AndroidDataBindingReferenceName -> "androidDataBinding"
+      is ReferenceName -> when {
+        mcName.isJava() -> "java"
+        mcName.isKotlin() -> "kotlin"
+        mcName.isXml() -> "xml"
         else -> throw IllegalArgumentException("???")
       }
+
+      is AndroidRDeclaredName -> "androidR"
+      is UnqualifiedAndroidResource -> mcName.prefix.name
+      is QualifiedAndroidResourceDeclaredName -> "qualifiedAndroidResource"
+      is AndroidDataBindingDeclaredName -> "androidDataBinding"
+
+      // declarations
+      is QualifiedDeclaredName -> {
+        when {
+          mcName.languages.containsAll(setOf(KOTLIN, JAVA)) -> "agnostic"
+          mcName.languages.contains(KOTLIN) -> "kotlin"
+          mcName.languages.contains(JAVA) -> "java"
+          mcName.languages.contains(XML) -> "xml"
+          else -> throw IllegalArgumentException("???")
+        }
+      }
+      // package
+      is PackageName -> "packageName"
     }
-    // package
-    is PackageName -> "packageName"
+    typeName to mcName
   }
-  typeName to mcName
-}
   .groupBy { it.first }
   .toList()
   .sortedBy { it.first }

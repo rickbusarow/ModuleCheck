@@ -18,6 +18,7 @@
 package modulecheck.api
 
 import modulecheck.config.CodeGeneratorBinding
+import modulecheck.config.CodeGeneratorBinding.AnnotationProcessor
 import modulecheck.utils.remove
 
 @Deprecated("Use `modulecheck.config.CodeGeneratorBinding` instead.")
@@ -27,7 +28,7 @@ data class KaptMatcher(
   val annotationImports: List<String>
 ) {
 
-  fun toCodeGeneratorBinding() = CodeGeneratorBinding.AnnotationProcessor(
+  fun toCodeGeneratorBinding(): AnnotationProcessor = CodeGeneratorBinding.AnnotationProcessor(
     name = name,
     generatorMavenCoordinates = processor,
     annotationNames = annotationImports

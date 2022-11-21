@@ -13,24 +13,9 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.groovy.antlr
+package modulecheck.builds
 
-import modulecheck.parsing.gradle.dsl.internal.AbstractPluginsBlock
-import modulecheck.reporting.logging.McLogger
+import org.gradle.api.DefaultTask
 
-class GroovyPluginsBlock(
-  logger: McLogger,
-  override val fullText: String,
-  override val lambdaContent: String,
-  blockSuppressed: List<String>
-) : AbstractPluginsBlock(
-  logger = logger,
-  blockSuppressed = blockSuppressed
-) {
-
-  override fun findOriginalStringIndex(parsedString: String): Int = originalLines
-    .indexOfFirst { originalLine ->
-
-      originalLine.trimStart().contains(parsedString)
-    }
-}
+abstract class ModuleCheckBuildTask : DefaultTask()
+abstract class ModuleCheckBuildCodeGeneratorTask : ModuleCheckBuildTask()

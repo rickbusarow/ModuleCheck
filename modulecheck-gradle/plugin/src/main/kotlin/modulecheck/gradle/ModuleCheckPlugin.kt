@@ -165,9 +165,13 @@ class ModuleCheckPlugin : Plugin<GradleProject> {
     }
 
     tasks.forEach { taskProvider ->
-      taskProvider
-        .also { if (doFirstAction != null) it.configure { it.doFirst { doFirstAction() } } }
-        .maybeAddDependencies()
+      if (doFirstAction != null) {
+        taskProvider.configure { task ->
+          task.doFirst { doFirstAction() }
+        }
+      }
+
+      taskProvider.maybeAddDependencies()
     }
   }
 }

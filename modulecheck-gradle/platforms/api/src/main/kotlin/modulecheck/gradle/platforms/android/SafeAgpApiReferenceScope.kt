@@ -40,35 +40,35 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidAppExtension() = this is AndroidAppExtension
+  fun Any?.isAndroidAppExtension(): Boolean = this is AndroidAppExtension
 
   /**
    * Helper function for `this is AndroidBaseExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidBaseExtension() = this is AndroidBaseExtension
+  fun Any?.isAndroidBaseExtension(): Boolean = this is AndroidBaseExtension
 
   /**
    * Helper function for `this is AndroidCommonExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidCommonExtension() = this is AndroidCommonExtension
+  fun Any?.isAndroidCommonExtension(): Boolean = this is AndroidCommonExtension
 
   /**
    * Helper function for `this is AndroidLibraryExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidLibraryExtension() = this is AndroidLibraryExtension
+  fun Any?.isAndroidLibraryExtension(): Boolean = this is AndroidLibraryExtension
 
   /**
    * Helper function for `this is AndroidTestedExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidTestedExtension() = this is AndroidTestedExtension
+  fun Any?.isAndroidTestedExtension(): Boolean = this is AndroidTestedExtension
 
   /**
    * Direct access to the AGP [com.android.build.api.dsl.CommonExtension] type, only accessible

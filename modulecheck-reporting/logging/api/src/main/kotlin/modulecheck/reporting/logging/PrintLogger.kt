@@ -20,27 +20,51 @@ class PrintLogger : McLogger {
     println(report.joinToString())
   }
 
-  override fun printHeader(message: String) = print(message)
+  override fun printHeader(message: String) {
+    print(message)
+  }
 
-  override fun printHeaderLine(message: String) = println(message)
+  override fun printHeaderLine(message: String) {
+    println(message)
+  }
 
-  override fun printWarning(message: String) = print(message)
+  override fun printWarning(message: String) {
+    print(message)
+  }
 
-  override fun printWarningLine(message: String) = println(message)
+  override fun printWarningLine(message: String) {
+    println(message)
+  }
 
-  override fun printInfo(message: String) = print(message)
+  override fun printInfo(message: String) {
+    print(message)
+  }
 
-  override fun printInfoLine(message: String) = println(message)
+  override fun printInfoLine(message: String) {
+    println(message)
+  }
 
-  override fun printFailure(message: String) = print(message)
+  override fun printFailure(message: String) {
+    print(message)
+  }
 
-  override fun printFailureLine(message: String) = println(message)
+  override fun printFailureLine(message: String) {
+    println(message)
+  }
 
-  override fun printFailureHeader(message: String) = println(message)
+  override fun printFailureHeader(message: String) {
+    println(message)
+  }
 
-  override fun printSuccess(message: String) = print(message)
+  override fun printSuccess(message: String) {
+    print(message)
+  }
 
-  override fun printSuccessLine(message: String) = println(message)
+  override fun printSuccessLine(message: String) {
+    println(message)
+  }
 
-  override fun printSuccessHeader(message: String) = println(message)
+  override fun printSuccessHeader(message: String) {
+    println(message)
+  }
 }

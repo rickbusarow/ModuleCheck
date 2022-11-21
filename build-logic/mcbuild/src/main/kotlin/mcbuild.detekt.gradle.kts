@@ -13,9 +13,13 @@
  * limitations under the License.
  */
 
+import gradle.kotlin.dsl.accessors._d053bda006dd8df240cc40e01632c4a9.detekt
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import modulecheck.builds.ModuleCheckBuildCodeGeneratorTask
+import modulecheck.builds.dependency
+import modulecheck.builds.libsCatalog
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -30,9 +34,26 @@ val detektExcludes = listOf(
   "**/build/**"
 )
 
+dependencies {
+  detektPlugins(libsCatalog.dependency("detekt-rules-libraries"))
+}
+
+detekt {
+
+  autoCorrect = false
+  baseline = file("$rootDir/detekt/detekt-baseline.xml")
+  config = files("$rootDir/detekt/detekt-config.yml")
+  buildUponDefaultConfig = true
+
+  source = files(
+    listOf("src/main/java", "src/test/java", "src/main/kotlin", "src/test/kotlin")
+  )
+  parallel = true
+}
+
 tasks.withType<Detekt> {
 
-  autoCorrect = true
+  autoCorrect = false
   parallel = true
   baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
   config.from(files("$rootDir/detekt/detekt-config.yml"))
@@ -54,13 +75,12 @@ tasks.withType<Detekt> {
     sarif.required.set(true)
   }
 
-  setSource(files(projectDir))
-
-  include("**/*.kt", "**/*.kts")
   exclude(detektExcludes)
   subprojects.forEach { sub ->
     exclude("**/${sub.projectDir.relativeTo(rootDir)}/**")
   }
+
+  dependsOn(tasks.withType(ModuleCheckBuildCodeGeneratorTask::class.java))
 }
 
 if (project == rootProject) {

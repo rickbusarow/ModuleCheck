@@ -47,7 +47,7 @@ data class UnusedKaptProcessorFinding(
     get() = "The annotation processor dependency is not used in this module.  " +
       "This can be a significant performance hit."
 
-  override val dependencyIdentifier = when (oldDependency) {
+  override val dependencyIdentifier: String = when (oldDependency) {
     is ProjectDependency -> oldDependency.path
     is ExternalDependency -> oldDependency.identifier
   }.name

@@ -43,7 +43,7 @@ class RealExternalDependencyFactory @Inject constructor(
     version: String?,
     isTestFixture: Boolean
   ): ExternalDependency {
-    val name by unsafeLazy { "${group ?: ""}:$moduleName" }
+    val name by unsafeLazy { "${group .orEmpty()}:$moduleName" }
 
     return when {
       configurationName.isKapt() -> ExternalDependency.ExternalCodeGeneratorDependency(
