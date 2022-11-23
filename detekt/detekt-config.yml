@@ -747,7 +747,7 @@ style:
 
 libraries:
   active: true
-  excludes: [ '**/build-logic/**' ]
+  excludes: [ '**/build-logic/**', '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/jsTest/**', '**/integrationTest/**', '**/iosTest/**' ]
   ForbiddenPublicDataClass:
     active: false
     ignorePackages:

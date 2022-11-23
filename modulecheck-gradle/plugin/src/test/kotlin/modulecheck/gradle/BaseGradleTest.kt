@@ -38,7 +38,7 @@ import org.junit.jupiter.api.DynamicTest
 import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
-@Suppress("PropertyName")
+@Suppress("PropertyName", "UnnecessaryAbstractClass")
 abstract class BaseGradleTest :
   BaseTest(),
   ProjectCollector,
@@ -138,7 +138,7 @@ abstract class BaseGradleTest :
     root
   }
 
-  val gradleRunner by resets {
+  val gradleRunner: GradleRunner by resets {
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)

@@ -17,9 +17,8 @@ package modulecheck.builds.dependencyGuardAggregate
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.PathSensitive
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
@@ -30,7 +29,7 @@ import java.io.File
 
 abstract class DependencyGuardAggregateTask : SourceTask() {
 
-  @get:InputDirectory
+  @get:Internal
   abstract val rootDir: RegularFileProperty
 
   @get:OutputFile
@@ -76,7 +75,7 @@ abstract class DependencyGuardExplodeTask : DefaultTask() {
   @get:PathSensitive(RELATIVE)
   abstract val aggregateFile: RegularFileProperty
 
-  @get:Input
+  @get:Internal
   abstract val rootDir: RegularFileProperty
 
   @TaskAction
