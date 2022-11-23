@@ -23,6 +23,7 @@ import modulecheck.testing.BaseTest
 import modulecheck.testing.DynamicTests
 import modulecheck.utils.letIf
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class BaseMcNameTest : BaseTest(), DynamicTests {
 
   fun allReferenceNames(
