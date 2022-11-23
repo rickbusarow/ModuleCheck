@@ -58,7 +58,7 @@ jobs:
           arguments: versionsMatrixGenerateYaml
           cache-read-only: false
 
-      # If the versions matrix was just udpated, commit and push those changes.
+      # If the versions matrix was just updated, commit and push those changes.
       - name: commit dependency-guard baseline changes (used by main repo)
         if: github.actor == 'renovate[bot]'
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -97,7 +97,7 @@ jobs:
       - name: detekt
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: detekt detektMain
+          arguments: detekt detektMain detektTest
           cache-read-only: false
 
       - name: Upload SARIF to Github using the upload-sarif action
@@ -133,7 +133,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintformat
+          arguments: ktlintFormat
           cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
