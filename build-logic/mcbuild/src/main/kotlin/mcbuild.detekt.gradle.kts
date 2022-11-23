@@ -13,9 +13,9 @@
  * limitations under the License.
  */
 
-import gradle.kotlin.dsl.accessors._d053bda006dd8df240cc40e01632c4a9.detekt
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import io.gitlab.arturbosch.detekt.DetektGenerateConfigTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import modulecheck.builds.ModuleCheckBuildCodeGeneratorTask
 import modulecheck.builds.dependency
@@ -81,6 +81,30 @@ tasks.withType<Detekt> {
   }
 
   dependsOn(tasks.withType(ModuleCheckBuildCodeGeneratorTask::class.java))
+}
+
+fun Task.otherDetektTasks(withAutoCorrect: Boolean): TaskCollection<Detekt> {
+  return tasks.withType(Detekt::class.java)
+    .matching { it.autoCorrect == withAutoCorrect && it != this@otherDetektTasks }
+}
+
+tasks.register("detektAll", Detekt::class) {
+  description = "runs the standard PSI Detekt as well as all type resolution tasks"
+  dependsOn(otherDetektTasks(withAutoCorrect = false))
+}
+
+// Make all tasks from Detekt part of the 'detekt' task group.  Default is 'verification'.
+sequenceOf(
+  Detekt::class.java,
+  DetektCreateBaselineTask::class.java,
+  DetektGenerateConfigTask::class.java
+).forEach { type ->
+  tasks.withType(type).configureEach { group = "detekt" }
+}
+
+// By default, `check` only handles the PSI Detekt task.  This adds the type resolution tasks.
+tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
+  dependsOn(otherDetektTasks(withAutoCorrect = false))
 }
 
 if (project == rootProject) {
