@@ -757,3 +757,40 @@ libraries:
     active: true
   LibraryEntitiesShouldNotBePublic:
     active: false
+
+compiler:
+  CompilerInfo:
+    active: true
+    ignoreDiagnostic: [ ]
+  CompilerWarning:
+    active: true
+    ignoreDiagnostic:
+      - 'OPT_IN_IS_NOT_ENABLED'
+      - 'OPT_IN_OVERRIDE'
+      - 'OPT_IN_USAGE'
+
+impure:
+  active: true
+  LoopDefinition:
+    active: true
+  ReturnStatement:
+    active: true
+  VariableDefinition:
+    active: true
+  ReturnUnit:
+    active: true
+    ignoreFunctionType: false
+    ignoredAnnotations: [ ]
+    ignoreDsl: false
+  ClassDefinition:
+    active: false
+  AbstractClassDefinition:
+    active: false
+  ThrowExpression:
+    active: true
+  MutableCollections:
+    active: true
+  BranchStatement:
+    active: true
+  MissingElse:
+    active: false

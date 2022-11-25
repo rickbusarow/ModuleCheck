@@ -36,6 +36,8 @@ val detektExcludes = listOf(
 
 dependencies {
   detektPlugins(libsCatalog.dependency("detekt-rules-libraries"))
+  detektPlugins(libsCatalog.dependency("braisgabin-detekt-compiler-wrapper"))
+  detektPlugins(libsCatalog.dependency("setblack-kure-potlin"))
 }
 
 detekt {

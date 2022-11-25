@@ -77,7 +77,7 @@ sealed interface PackageName : McName {
      * Shorthand for calling [PackageName.invoke] in-line.
      *
      * @return A `PackageName` wrapper around [nameOrNull]. If [nameOrNull] is null or blank, this
-     *   will return [PackageName.DEFAULT].
+     *     will return [PackageName.DEFAULT].
      * @since 0.13.0
      */
     operator fun invoke(nameOrNull: String?): PackageName {
@@ -112,8 +112,9 @@ data class PackageNameImpl internal constructor(override val name: String) : Pac
   init {
     require(name.isNotBlank()) {
       "A ${this.javaClass.canonicalName} must be a non-empty, non-blank String.  " +
-        "Represent an empty/blank or missing package name as ${DEFAULT::class.qualifiedName}.  " +
-        "This name argument, wrapped in single quotes: '$name'"
+        "This name argument was: '$name'.  " +
+        "Represent an empty/blank or missing package name as " +
+        "${DEFAULT::class.java.canonicalName}.  "
     }
   }
 
