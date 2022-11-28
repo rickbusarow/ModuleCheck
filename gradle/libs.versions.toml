@@ -45,7 +45,7 @@ kotlin = "1.7.21"
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.4"
 kotlinx-knit = "0.4.0"
-google-ksp = "1.7.21-1.0.8"
+google-ksp = "1.7.22-1.0.8"
 
 ktlint-plugin = "11.0.0"
 ktlint-lib = "0.47.1"
