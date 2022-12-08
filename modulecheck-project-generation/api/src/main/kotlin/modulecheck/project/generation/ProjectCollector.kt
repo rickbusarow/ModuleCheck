@@ -32,7 +32,7 @@ import modulecheck.model.dependency.JvmPlatformPlugin.KotlinJvmPlugin
 import modulecheck.model.dependency.PlatformPlugin
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectProvider
@@ -45,7 +45,7 @@ interface ProjectCollector {
 
   val root: File
   val projectCache: ProjectCache
-  val safeAnalysisResultAccess: SafeAnalysisResultAccess
+  val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess
 
   val codeGeneratorBindings: List<CodeGeneratorBinding>
 
@@ -128,7 +128,7 @@ interface ProjectCollector {
       codeGeneratorBindings = codeGeneratorBindings,
       projectProvider = projectProvider,
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDependencies = projectDependencies,
       externalDependencies = externalDependencies,
       hasKapt = hasKapt,
@@ -155,7 +155,7 @@ interface ProjectCollector {
 
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = platformPlugin,
@@ -174,7 +174,7 @@ interface ProjectCollector {
 
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = platformPlugin,
@@ -192,7 +192,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidApplicationPluginBuilder(),
@@ -210,7 +210,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidLibraryPluginBuilder(),
@@ -228,7 +228,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidDynamicFeaturePluginBuilder(),
@@ -246,7 +246,7 @@ interface ProjectCollector {
   ): McProject {
     return createProject(
       projectCache = projectCache,
-      safeAnalysisResultAccess = safeAnalysisResultAccess,
+      dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
       projectDir = root,
       path = path,
       pluginBuilder = AndroidTestPluginBuilder(),
@@ -260,7 +260,7 @@ interface ProjectCollector {
   fun simpleProject(
     buildFileText: String? = null,
     path: String = ":lib"
-  ) = this.kotlinProject(path) {
+  ): McProject = this.kotlinProject(path) {
     if (buildFileText != null) {
       buildFile.writeText(buildFileText)
     }

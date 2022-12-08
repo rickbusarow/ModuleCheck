@@ -71,10 +71,10 @@ interface ResetManager : Resets, Disposable {
 }
 
 object EmptyResetManager : ResetManager {
-  override fun register(delegate: Resets) = Unit
-  override fun dispose() = Unit
-  override fun reset() = Unit
-  override fun child(childDelegates: MutableCollection<Resets>) = this
+  override fun register(delegate: Resets): Unit = Unit
+  override fun dispose(): Unit = Unit
+  override fun reset(): Unit = Unit
+  override fun child(childDelegates: MutableCollection<Resets>): EmptyResetManager = this
 }
 
 class RealResetManager(
@@ -87,7 +87,9 @@ class RealResetManager(
     }
   }
 
-  override fun dispose() = reset()
+  override fun dispose() {
+    reset()
+  }
   override fun reset() {
     synchronized(delegates) {
       delegates.forEach { it.reset() }

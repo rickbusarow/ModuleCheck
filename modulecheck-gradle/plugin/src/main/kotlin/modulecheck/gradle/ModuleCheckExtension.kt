@@ -130,7 +130,7 @@ open class ModuleCheckExtension @Inject constructor(
     action.execute(checks)
   }
 
-  override val sort = SortExtension(objects)
+  override val sort: SortExtension = SortExtension(objects)
   fun sort(action: Action<SortExtension>) {
     action.execute(sort)
   }
@@ -140,7 +140,7 @@ open class ModuleCheckExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val reports = ReportsExtension(objects, projectLayout)
+  override val reports: ReportsExtension = ReportsExtension(objects, projectLayout)
 
   /**
    * Configures reporting options
@@ -177,10 +177,10 @@ open class ChecksExtension @Inject constructor(
 open class SortExtension @Inject constructor(
   objects: ObjectFactory
 ) : SortSettings {
-  override var pluginComparators by objects
+  override var pluginComparators: List<String> by objects
     .listProperty(PLUGIN_COMPARATORS_DEFAULT)
 
-  override var dependencyComparators by objects
+  override var dependencyComparators: List<String> by objects
     .listProperty(DEPENDENCY_COMPARATORS_DEFAULT)
 }
 
@@ -194,7 +194,7 @@ open class ReportsExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val checkstyle = ReportExtension(
+  override val checkstyle: ReportExtension = ReportExtension(
     objects = objects,
     enabledDefault = CHECKSTYLE_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(CHECKSTYLE_PATH_DEFAULT).toString()
@@ -214,7 +214,7 @@ open class ReportsExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val sarif = ReportExtension(
+  override val sarif: ReportExtension = ReportExtension(
     objects = objects,
     enabledDefault = SARIF_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(SARIF_PATH_DEFAULT).toString()
@@ -234,7 +234,7 @@ open class ReportsExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val text = ReportExtension(
+  override val text: ReportExtension = ReportExtension(
     objects = objects,
     enabledDefault = TEXT_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(TEXT_PATH_DEFAULT).toString()
@@ -254,7 +254,7 @@ open class ReportsExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val depths = ReportExtension(
+  override val depths: ReportExtension = ReportExtension(
     objects = objects,
     enabledDefault = DEPTHS_ENABLED_DEFAULT,
     outputPath = projectLayout.projectDirectory.dir(DEPTHS_PATH_DEFAULT).toString()
@@ -274,7 +274,7 @@ open class ReportsExtension @Inject constructor(
    *
    * @since 0.12.0
    */
-  override val graphs = PerModuleReportExtension(
+  override val graphs: PerModuleReportExtension = PerModuleReportExtension(
     objects = objects,
     enabledDefault = GRAPH_ENABLED_DEFAULT,
     outputDir = null

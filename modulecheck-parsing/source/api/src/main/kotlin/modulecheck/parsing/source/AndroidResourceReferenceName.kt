@@ -68,16 +68,16 @@ class UnqualifiedAndroidResourceReferenceName(
    *
    * @since 0.12.0
    */
-  val prefix by unsafeLazy { split[1].asSimpleName() }
+  val prefix: SimpleName by unsafeLazy { split[1].asSimpleName() }
 
   /**
    * example: 'app_name' in `R.string.app_name`
    *
    * @since 0.12.0
    */
-  val identifier by unsafeLazy { split[2].asSimpleName() }
+  val identifier: SimpleName by unsafeLazy { split[2].asSimpleName() }
 
-  override val simpleNames by unsafeLazy {
+  override val simpleNames: List<SimpleName> by unsafeLazy {
     listOf("R".asSimpleName(), prefix, identifier)
   }
 

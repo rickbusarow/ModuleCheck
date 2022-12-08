@@ -38,12 +38,12 @@ data class DisableViewBindingGenerationFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val findingName = NAME
+  override val findingName: FindingName = NAME
 
   override val message: String
     get() = "Android viewBinding generation is enabled, but no generated code is being used."
 
-  override val dependencyIdentifier = ""
+  override val dependencyIdentifier: String = ""
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     dependentProject.buildFileParser.androidSettings()
@@ -146,6 +146,6 @@ data class DisableViewBindingGenerationFinding(
      * @since 0.12.0
      * @suppress
      */
-    val NAME = FindingName("disable-view-binding")
+    val NAME: FindingName = FindingName("disable-view-binding")
   }
 }

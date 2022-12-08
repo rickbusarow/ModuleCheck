@@ -126,7 +126,7 @@ interface XmlFile : HasReferences {
   }
 
   companion object {
-    val REFERENCE_PREFIXES = listOf(
+    val REFERENCE_PREFIXES: List<String> = listOf(
       "@anim/",
       "@animator/",
       "@arrays/",

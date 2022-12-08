@@ -77,7 +77,11 @@ data class Report(val entries: List<ReportEntry>) {
       .forEach { reportEntry ->
         when (reportEntry) {
           is AppendNewLine -> appendLine(reportEntry.message.trimEnd())
-          else -> append(reportEntry.message)
+          is Failure -> append(reportEntry.message)
+          is Header -> append(reportEntry.message)
+          is Info -> append(reportEntry.message)
+          is Success -> append(reportEntry.message)
+          is Warning -> append(reportEntry.message)
         }
       }
   }
@@ -133,12 +137,16 @@ data class Report(val entries: List<ReportEntry>) {
     @JvmInline
     value class SuccessHeader(override val message: String) : ReportEntry, AppendNewLine
 
-    interface AppendNewLine
+    sealed interface AppendNewLine
 
     fun printToStdOut() {
       when (this) {
         is AppendNewLine -> println(message.trimEnd())
-        else -> print(message)
+        is Failure -> print(message)
+        is Header -> print(message)
+        is Info -> print(message)
+        is Success -> print(message)
+        is Warning -> print(message)
       }
     }
   }

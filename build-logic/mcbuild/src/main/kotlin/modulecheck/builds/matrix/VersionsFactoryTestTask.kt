@@ -15,8 +15,8 @@
 
 package modulecheck.builds.matrix
 
+import modulecheck.builds.ModuleCheckBuildCodeGeneratorTask
 import modulecheck.builds.getOrNullFinal
-import org.gradle.api.DefaultTask
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Optional
@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 abstract class VersionsFactoryTestTask @Inject constructor(
   objectFactory: ObjectFactory
-) : DefaultTask() {
+) : ModuleCheckBuildCodeGeneratorTask() {
 
   @get:Input
   @get:Optional
@@ -127,6 +127,7 @@ abstract class VersionsFactoryTestTask @Inject constructor(
       |    anvil = "${versionsMatrix.defaultAnvil}",
       |    kotlin = "${versionsMatrix.defaultKotlin}"
       |  )
+      |
     """.trimMargin()
 
     val packageDir = packageNameString.replace(".", File.separator)

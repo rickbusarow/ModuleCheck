@@ -37,7 +37,7 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
      * @return example: `com.example.app.R`
      * @since 0.12.0
      */
-    fun r(packageName: PackageName) = AndroidRDeclaredName(packageName)
+    fun r(packageName: PackageName): AndroidRDeclaredName = AndroidRDeclaredName(packageName)
 
     /**
      * @return `com.example.R.string.app_name`
@@ -46,7 +46,9 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
     fun qualifiedAndroidResource(
       sourceR: AndroidRReferenceName,
       sourceResource: UnqualifiedAndroidResourceReferenceName
-    ) = QualifiedAndroidResourceDeclaredName(sourceR, sourceResource)
+    ): QualifiedAndroidResourceDeclaredName {
+      return QualifiedAndroidResourceDeclaredName(sourceR, sourceResource)
+    }
 
     /**
      * @return `com.example.databinding.FragmentListBinding`
@@ -55,7 +57,9 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
     fun dataBinding(
       sourceLayout: UnqualifiedAndroidResourceReferenceName,
       packageName: PackageName
-    ) = AndroidDataBindingDeclaredName(sourceLayout, packageName)
+    ): AndroidDataBindingDeclaredName {
+      return AndroidDataBindingDeclaredName(sourceLayout, packageName)
+    }
 
     /**
      * @return `com.example.databinding.FragmentListBinding`
@@ -64,13 +68,15 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
     fun dataBinding(
       sourceLayoutDeclaration: UnqualifiedAndroidResource,
       packageName: PackageName
-    ) = AndroidDataBindingDeclaredName(
-      UnqualifiedAndroidResourceReferenceName(
-        name = sourceLayoutDeclaration.name,
-        language = XML
-      ),
-      packageName
-    )
+    ): AndroidDataBindingDeclaredName {
+      return AndroidDataBindingDeclaredName(
+        UnqualifiedAndroidResourceReferenceName(
+          name = sourceLayoutDeclaration.name,
+          language = XML
+        ),
+        packageName
+      )
+    }
   }
 }
 
@@ -83,7 +89,7 @@ class AndroidRDeclaredName(
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
 
-  override val simpleNames by lazy { listOf("R".asSimpleName()) }
+  override val simpleNames: List<SimpleName> by lazy { listOf("R".asSimpleName()) }
 
   override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
     return AndroidRReferenceName(packageName, language)
@@ -105,7 +111,7 @@ class QualifiedAndroidResourceDeclaredName(
 
   override val packageName: PackageName by unsafeLazy { sourceR.packageName }
 
-  override val simpleNames by unsafeLazy { sourceResource.simpleNames }
+  override val simpleNames: List<SimpleName> by unsafeLazy { sourceResource.simpleNames }
 
   override val name: String by unsafeLazy {
     "${sourceR.name}.${sourceResource.prefix.name}.${sourceResource.identifier.name}"

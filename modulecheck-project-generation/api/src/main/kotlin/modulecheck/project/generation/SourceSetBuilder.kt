@@ -22,8 +22,8 @@ import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.model.sourceset.removeSuffix
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.kotlin.compiler.impl.RealKotlinEnvironment
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
 import modulecheck.reporting.logging.PrintLogger
 import modulecheck.testing.requireNotNullOrFail
 import modulecheck.utils.capitalize
@@ -54,7 +54,7 @@ data class SourceSetBuilder(
   var jvmTarget: JvmTarget = JVM_11
 ) {
   fun toSourceSet(
-    safeAnalysisResultAccess: SafeAnalysisResultAccess,
+    dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
     projectPath: StringProjectPath
   ): McSourceSet {
     val kotlinEnvironmentDeferred = lazyDeferred {
@@ -65,7 +65,7 @@ data class SourceSetBuilder(
         sourceDirs = jvmFiles,
         kotlinLanguageVersion = kotlinLanguageVersion,
         jvmTarget = jvmTarget,
-        safeAnalysisResultAccess = safeAnalysisResultAccess,
+        dependencyModuleDescriptorAccess = dependencyModuleDescriptorAccess,
         logger = PrintLogger(),
         resetManager = ResetManager()
       )

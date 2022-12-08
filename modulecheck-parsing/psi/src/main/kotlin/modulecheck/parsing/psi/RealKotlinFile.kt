@@ -81,9 +81,9 @@ class RealKotlinFile(
   private val nameParser: NameParser
 ) : KotlinFile {
 
-  override val name = psi.name
+  override val name: String = psi.name
 
-  override val packageName by lazy { PackageName(psi.packageFqName.asString()) }
+  override val packageName: PackageName by lazy { PackageName(psi.packageFqName.asString()) }
 
   // For `import com.foo as Bar`, the entry is `"Bar" to "com.foo".asExplicitKotlinReference()`
   private val _aliasMap = mutableMapOf<String, ReferenceName>()
@@ -95,7 +95,10 @@ class RealKotlinFile(
       .filter { it.identifier() != null }
       .filter { it.identifier()?.contains("*")?.not() == true }
       .filter { !operatorSet.contains(it.identifier()) }
-      .filter { !componentNRegex.matches(it.identifier()!!) }
+      .filter {
+        @Suppress("UnsafeCallOnNullableType")
+        !componentNRegex.matches(it.identifier()!!)
+      }
       .mapNotNull { importDirective ->
         importDirective.importPath?.pathStr
           ?.also { nameString ->
@@ -118,7 +121,7 @@ class RealKotlinFile(
       .mapToSet { ReferenceName(it, KOTLIN) }
   }
 
-  val constructorInjectedParams = lazyDeferred {
+  val constructorInjectedParams: LazyDeferred<Set<QualifiedDeclaredName>> = lazyDeferred {
     referenceVisitor.constructorInjected.mapNotNull { psiResolver.declaredNameOrNull(it) }.toSet()
   }
 
@@ -256,7 +259,7 @@ class RealKotlinFile(
     }
   }
 
-  override val declarations by lazy {
+  override val declarations: Set<QualifiedDeclaredName> by lazy {
 
     psi.getChildrenOfTypeRecursive<KtNamedDeclaration>()
       .asSequence()
@@ -339,7 +342,7 @@ class RealKotlinFile(
 
         allAnnotations.any { it.endsWith(typeRef) }
       }.forEach { annotationEntry ->
-        val typeRef = annotationEntry.typeReference!!.text
+        val typeRef = annotationEntry.typeReference.requireNotNull().text
 
         runBlocking {
           val raw = annotationEntry.toRawAnvilAnnotatedType(typeFqName)

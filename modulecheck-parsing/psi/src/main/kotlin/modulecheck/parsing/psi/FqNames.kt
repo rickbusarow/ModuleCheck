@@ -18,7 +18,7 @@ package modulecheck.parsing.psi
 import org.jetbrains.kotlin.name.FqName
 
 object FqNames {
-  val inject = FqName("javax.inject.Inject")
-  val jvmField = FqName("kotlin.jvm.JvmField")
-  val jvmStatic = FqName("kotlin.jvm.JvmStatic")
+  val inject: FqName = FqName("javax.inject.Inject")
+  val jvmField: FqName = FqName("kotlin.jvm.JvmField")
+  val jvmStatic: FqName = FqName("kotlin.jvm.JvmStatic")
 }

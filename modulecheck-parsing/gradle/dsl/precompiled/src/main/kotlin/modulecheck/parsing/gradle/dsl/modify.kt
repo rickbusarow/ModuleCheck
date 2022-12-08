@@ -110,58 +110,62 @@ fun HasDependencyDeclarations.removeDependencyWithComment(
   statement: BuildFileStatement,
   fixLabel: String,
   configuredDependency: ConfiguredDependency? = null
-) = synchronized(buildFile) {
+) {
+  synchronized(buildFile) {
 
-  val text = buildFile.readText()
+    val text = buildFile.readText()
 
-  val declarationText = statement.declarationText
+    val declarationText = statement.declarationText
 
-  val lines = declarationText.lines()
-  val lastIndex = lines.lastIndex
-  val newDeclarationText = lines
-    .mapIndexed { index: Int, str: String ->
+    val lines = declarationText.lines()
+    val lastIndex = lines.lastIndex
+    val newDeclarationText = lines
+      .mapIndexed { index: Int, str: String ->
 
-      // don't comment out a blank line
-      if (str.isBlank()) return@mapIndexed str
+        // don't comment out a blank line
+        if (str.isBlank()) return@mapIndexed str
 
-      val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
-        val (whitespace, code) = mr.destructured
-        "$whitespace// $code"
+        val commented = str.replace("""(\s*)(\S.*)""".toRegex()) { mr ->
+          val (whitespace, code) = mr.destructured
+          "$whitespace// $code"
+        }
+
+        if (index == lastIndex) {
+          commented + fixLabel
+        } else {
+          commented
+        }
       }
+      .joinToString("\n")
 
-      if (index == lastIndex) {
-        commented + fixLabel
-      } else {
-        commented
-      }
+    val newText = text.replace(declarationText, newDeclarationText)
+
+    buildFile.writeText(newText)
+
+    if (configuredDependency is ProjectDependency) {
+
+      projectDependencies.remove(configuredDependency)
     }
-    .joinToString("\n")
-
-  val newText = text.replace(declarationText, newDeclarationText)
-
-  buildFile.writeText(newText)
-
-  if (configuredDependency is ProjectDependency) {
-
-    projectDependencies.remove(configuredDependency)
   }
 }
 
 fun HasDependencyDeclarations.removeDependencyWithDelete(
   statement: BuildFileStatement,
   configuredDependency: ConfiguredDependency? = null
-) = synchronized(buildFile) {
-  val text = buildFile.readText()
+) {
+  synchronized(buildFile) {
+    val text = buildFile.readText()
 
-  buildFile.writeText(
-    // the `prefixIfNot("\n")` here is important.
-    // It needs to match what we're doing if we add a new dependency.  Otherwise, we wind up adding
-    // or removing newlines instead of just modifying the dependencies.
-    // See https://github.com/RBusarow/ModuleCheck/issues/443
-    text.replaceFirst(statement.statementWithSurroundingText.prefixIfNot("\n"), "")
-  )
+    buildFile.writeText(
+      // the `prefixIfNot("\n")` here is important.
+      // It needs to match what we're doing if we add a new dependency.  Otherwise, we wind up adding
+      // or removing newlines instead of just modifying the dependencies.
+      // See https://github.com/RBusarow/ModuleCheck/issues/443
+      text.replaceFirst(statement.statementWithSurroundingText.prefixIfNot("\n"), "")
+    )
 
-  if (configuredDependency is ProjectDependency) {
-    projectDependencies.remove(configuredDependency)
+    if (configuredDependency is ProjectDependency) {
+      projectDependencies.remove(configuredDependency)
+    }
   }
 }

@@ -65,7 +65,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 import kotlin.contracts.contract
 
-inline fun <reified T : PsiElement> PsiElement.isPartOf() = getNonStrictParentOfType<T>() != null
+inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean = getNonStrictParentOfType<T>() != null
 
 inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
   return generateSequence(children.asSequence()) { children ->
@@ -321,7 +321,7 @@ suspend fun PsiElement.declaredNameOrNull(
   return null
 }
 
-fun KtDeclaration.isInObject() = containingClassOrObject?.isObjectLiteral() ?: false
+fun KtDeclaration.isInObject(): Boolean = containingClassOrObject?.isObjectLiteral() ?: false
 
 /**
  * @return true if the receiver declaration is inside a companion object
@@ -331,7 +331,7 @@ fun KtDeclaration.isInCompanionObject(): Boolean {
   return containingClassOrObject?.isCompanionObject() ?: false
 }
 
-fun KtDeclaration.isInObjectOrCompanionObject() = isInObject() || isInCompanionObject()
+fun KtDeclaration.isInObjectOrCompanionObject(): Boolean = isInObject() || isInCompanionObject()
 
 /**
  * @return true if the receiver declaration is a companion object
@@ -420,7 +420,7 @@ internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() 
  *
  * @since 0.12.0
  */
-fun KtNamedDeclaration.identifierName() = nameIdentifier?.text
+fun KtNamedDeclaration.identifierName(): String? = nameIdentifier?.text
 
 /**
  * For a declaration with a name wrapped in backticks, this returns a name with those backticks. The

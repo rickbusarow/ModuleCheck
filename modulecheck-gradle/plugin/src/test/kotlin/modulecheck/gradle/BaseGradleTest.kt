@@ -18,8 +18,7 @@ package modulecheck.gradle
 import modulecheck.config.CodeGeneratorBinding
 import modulecheck.config.internal.defaultCodeGeneratorBindings
 import modulecheck.gradle.internal.BuildProperties
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccessImpl
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.project.ProjectCache
 import modulecheck.project.generation.ProjectCollector
 import modulecheck.testing.BaseTest
@@ -39,7 +38,7 @@ import org.junit.jupiter.api.DynamicTest
 import java.io.File
 import kotlin.text.RegexOption.IGNORE_CASE
 
-@Suppress("PropertyName")
+@Suppress("PropertyName", "UnnecessaryAbstractClass")
 abstract class BaseGradleTest :
   BaseTest(),
   ProjectCollector,
@@ -54,8 +53,8 @@ abstract class BaseGradleTest :
   val anvilVersion get() = testVersions.anvil
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
-  override val safeAnalysisResultAccess: SafeAnalysisResultAccess by resets {
-    SafeAnalysisResultAccessImpl(projectCache)
+  override val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess by resets {
+    DependencyModuleDescriptorAccess(projectCache)
   }
 
   override val root: File
@@ -137,7 +136,7 @@ abstract class BaseGradleTest :
     root
   }
 
-  val gradleRunner by resets {
+  val gradleRunner: GradleRunner by resets {
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)

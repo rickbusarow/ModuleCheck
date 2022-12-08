@@ -18,7 +18,7 @@ jobs:
     steps:
       # cancel previous jobs
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.10.1
+        uses: styfle/cancel-workflow-action@0.11.0
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
@@ -44,17 +44,49 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: ci versions matrix check
+      - name: ci versions matrix check (used by everyone but Renovate)
+        if: github.actor != 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
           arguments: versionsMatrixYamlCheck
           cache-read-only: false
 
-      - name: dependency-guard
+      - name: ci versions matrix update (used by Renovate)
+        if: github.actor == 'renovate[bot]'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: versionsMatrixGenerateYaml
+          cache-read-only: false
+
+      # If the versions matrix was just updated, commit and push those changes.
+      - name: commit dependency-guard baseline changes (used by main repo)
+        if: github.actor == 'renovate[bot]'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update versions matrix in yaml
+          commit_options: '--no-verify --signoff'
+
+      - name: dependency-guard check (used by everyone but Renovate)
+        if: github.actor != 'renovate[bot]'
         uses: gradle/gradle-build-action@v2
         with:
           arguments: dependencyGuard
           cache-read-only: false --refresh-dependencies
+
+      - name: dependency-guard baseline (used by Renovate)
+        if: github.actor == 'renovate[bot]'
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dependencyGuardBaseline
+          cache-read-only: false --refresh-dependencies
+
+      # If dependency-guard generated changes, commit and push those changes.
+      - name: commit dependency-guard baseline changes (used by main repo)
+        if: github.actor == 'renovate[bot]'
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: update dependency-guard baseline
+          commit_options: '--no-verify --signoff'
 
       - name: artifacts check
         uses: gradle/gradle-build-action@v2
@@ -65,7 +97,7 @@ jobs:
       - name: detekt
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: detekt
+          arguments: detekt detektMain detektTest
           cache-read-only: false
 
       - name: Upload SARIF to Github using the upload-sarif action
@@ -101,7 +133,7 @@ jobs:
         if: github.event.pull_request.head.repo.full_name == github.repository
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: ktlintformat
+          arguments: ktlintFormat
           cache-read-only: false
 
       # If KtLint generated changes, commit and push those changes.
@@ -364,9 +396,9 @@ jobs:
       fail-fast: false
       ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.7.0, 1.7.10, 1.7.20 ]
-        gradle-version: [ 7.2, 7.4.2, 7.5.1 ]
-        agp-version: [ 7.0.1, 7.1.3, 7.2.2, 7.3.0 ]
+        kotlin-version: [ 1.7.0, 1.7.10, 1.7.22 ]
+        gradle-version: [ 7.2, 7.4.2, 7.5.1, 7.6 ]
+        agp-version: [ 7.0.1, 7.1.3, 7.2.2, 7.3.1 ]
         anvil-version: [ 2.4.2 ]
         exclude:
           - agp-version: 7.0.1
@@ -374,7 +406,7 @@ jobs:
           - gradle-version: 7.2
             agp-version: 7.2.2
           - gradle-version: 7.2
-            agp-version: 7.3.0
+            agp-version: 7.3.1
           - gradle-version: 7.4.2
             anvil-version: 2.4.2
       ### <end-matrix>

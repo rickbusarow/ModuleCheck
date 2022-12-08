@@ -34,7 +34,7 @@ import modulecheck.parsing.gradle.dsl.HasDependencyDeclarations
 import modulecheck.parsing.gradle.dsl.InvokesConfigurationNames
 import modulecheck.parsing.gradle.dsl.addDependency
 import modulecheck.parsing.gradle.dsl.asDeclaration
-import modulecheck.parsing.kotlin.compiler.impl.SafeAnalysisResultAccess
+import modulecheck.parsing.kotlin.compiler.impl.DependencyModuleDescriptorAccess
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
@@ -55,7 +55,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   val codeGeneratorBindings: List<CodeGeneratorBinding>,
   val projectProvider: ProjectProvider,
   val projectCache: ProjectCache,
-  val safeAnalysisResultAccess: SafeAnalysisResultAccess,
+  val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   override val projectDependencies: ProjectDependencies = ProjectDependencies(mapOf()),
   override val externalDependencies: ExternalDependencies = ExternalDependencies(mapOf()),
   override var hasKapt: Boolean = false,
@@ -75,14 +75,14 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
   override val hasAGP: Boolean
     get() = platformPlugin is AndroidPlatformPluginBuilder<*>
 
-  val configuredProjectDependencyFactory by lazy {
+  val configuredProjectDependencyFactory: RealConfiguredProjectDependencyFactory by lazy {
     RealConfiguredProjectDependencyFactory(
       pathResolver = TypeSafeProjectPathResolver(projectProvider),
       generatorBindings = codeGeneratorBindings
     )
   }
 
-  val externalDependency by lazy {
+  private val externalDependency by lazy {
     RealExternalDependencyFactory(generatorBindings = codeGeneratorBindings)
   }
 
@@ -202,7 +202,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       .find(java)
       ?.destructured
       ?.component1()
-      ?: ""
+      .orEmpty()
 
     val file = createJvmPhysicalFile(
       content = java,
@@ -234,7 +234,7 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
       .find(kotlin)
       ?.destructured
       ?.component1()
-      ?: ""
+      .orEmpty()
 
     val file = createJvmPhysicalFile(
       content = kotlin,

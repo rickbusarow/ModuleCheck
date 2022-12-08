@@ -31,12 +31,15 @@ class McElementTest : BaseTest() {
   @Test
   fun `every McElement type except files should have a 'parent' property`() {
 
+    // The language-specific element types are technically subclasses,
+    // but also can't have parents.
+    val excluded = setOf(
+      McJavaElement::class,
+      McKtElement::class, McKtDeclaredElement::class
+    )
+
     McElement::class.sealedSubclassesRecursive()
-      .filterNot {
-        // The language-specific element types are technically subclasses,
-        // but also can't have parents.
-        it == McJavaElement::class || it == McKtElement::class || it == McKtDeclaredElement::class
-      }
+      .filterNot { it in excluded }
       .forAll { sub ->
 
         when {

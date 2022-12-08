@@ -19,6 +19,7 @@ import modulecheck.api.context.androidDataBindingDeclarationsForSourceSetName
 import modulecheck.api.context.dependents
 import modulecheck.api.context.referencesForSourceSetName
 import modulecheck.config.ModuleCheckSettings
+import modulecheck.finding.FindingName
 import modulecheck.finding.android.DisableViewBindingGenerationFinding
 import modulecheck.model.dependency.withDownStream
 import modulecheck.model.sourceset.SourceSetName
@@ -31,8 +32,8 @@ import javax.inject.Inject
 class DisableViewBindingRule @Inject constructor() :
   DocumentedRule<DisableViewBindingGenerationFinding>() {
 
-  override val name = DisableViewBindingGenerationFinding.NAME
-  override val description = "Finds modules which have ViewBinding enabled, " +
+  override val name: FindingName = DisableViewBindingGenerationFinding.NAME
+  override val description: String = "Finds modules which have ViewBinding enabled, " +
     "but don't actually use any generated ViewBinding objects from that module"
 
   @Suppress("ReturnCount")

@@ -39,14 +39,14 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
      *
      * @since 0.12.0
      */
-    fun List<SimpleName>.asString() = joinToString(".") { it.name.trim() }
+    fun List<SimpleName>.asString(): String = joinToString(".") { it.name.trim() }
 
     /**
      * wraps this String in a [SimpleName]
      *
      * @since 0.12.0
      */
-    fun String.asSimpleName() = SimpleName(this)
+    fun String.asSimpleName(): SimpleName = SimpleName(this)
 
     /**
      * Removes the prefix of [packageName]'s value and a subsequent period, then splits the

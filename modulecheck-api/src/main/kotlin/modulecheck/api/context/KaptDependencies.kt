@@ -72,4 +72,4 @@ data class KaptDependencies(
 suspend fun ProjectContext.kaptDependencies(): KaptDependencies = get(KaptDependencies)
 suspend fun ProjectContext.kaptDependenciesForConfig(
   configurationName: ConfigurationName
-): Set<ConfiguredDependency> = kaptDependencies().get(configurationName).orEmpty()
+): Set<ConfiguredDependency> = kaptDependencies().get(configurationName)

@@ -23,7 +23,6 @@ import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.incremental.isJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
-import java.io.FileNotFoundException
 
 /**
  * Base class for an [McPsiFileFactory] implementation
@@ -43,11 +42,9 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
   protected abstract suspend fun create(file: File): PsiFile
 
   override suspend fun createKotlin(file: File): KtFile {
-    if (!file.exists()) throw FileNotFoundException("could not find file $file")
-    if (!file.isKotlinFile()) {
-      throw IllegalArgumentException(
-        "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
-      )
+    require(file.exists()) { "could not find file $file" }
+    require(file.isKotlinFile()) {
+      "the file's extension must be either `.kt` or `.kts`, but it was `${file.extension}`."
     }
 
     return create(file) as KtFile
@@ -55,10 +52,8 @@ abstract class AbstractMcPsiFileFactory : McPsiFileFactory {
 
   override suspend fun createJava(file: File): PsiJavaFile {
 
-    if (!file.isJavaFile()) {
-      throw IllegalArgumentException(
-        "the file's extension must be `.java`, but it was `${file.extension}`."
-      )
+    require(file.isJavaFile()) {
+      "the file's extension must be `.java`, but it was `${file.extension}`."
     }
 
     return create(file) as PsiJavaFile

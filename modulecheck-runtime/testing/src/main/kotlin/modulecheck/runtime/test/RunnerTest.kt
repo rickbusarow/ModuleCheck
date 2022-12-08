@@ -46,6 +46,7 @@ import modulecheck.runtime.ModuleCheckRunner
 import modulecheck.testing.trimmedShouldBe
 import modulecheck.utils.mapToSet
 
+@Suppress("UnnecessaryAbstractClass")
 abstract class RunnerTest : ProjectTest() {
 
   open val settings: ModuleCheckSettings by resets { TestSettings() }
@@ -53,7 +54,7 @@ abstract class RunnerTest : ProjectTest() {
 
   open val ruleFilter: RuleFilter = RuleFilter.DEFAULT
 
-  open val rules by resets {
+  open val rules: List<ModuleCheckRule<*>> by resets {
     AllRulesComponent.create(settings, ruleFilter).allRules
   }
   open val findingFactory: FindingFactory<out Finding> by resets {

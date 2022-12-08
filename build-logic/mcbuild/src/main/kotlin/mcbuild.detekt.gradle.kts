@@ -15,7 +15,11 @@
 
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
+import io.gitlab.arturbosch.detekt.DetektGenerateConfigTask
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
+import modulecheck.builds.ModuleCheckBuildCodeGeneratorTask
+import modulecheck.builds.dependency
+import modulecheck.builds.libsCatalog
 
 plugins {
   id("io.gitlab.arturbosch.detekt")
@@ -30,9 +34,26 @@ val detektExcludes = listOf(
   "**/build/**"
 )
 
+dependencies {
+  detektPlugins(libsCatalog.dependency("detekt-rules-libraries"))
+}
+
+detekt {
+
+  autoCorrect = false
+  baseline = file("$rootDir/detekt/detekt-baseline.xml")
+  config = files("$rootDir/detekt/detekt-config.yml")
+  buildUponDefaultConfig = true
+
+  source = files(
+    listOf("src/main/java", "src/test/java", "src/main/kotlin", "src/test/kotlin")
+  )
+  parallel = true
+}
+
 tasks.withType<Detekt> {
 
-  autoCorrect = true
+  autoCorrect = false
   parallel = true
   baseline.set(file("$rootDir/detekt/detekt-baseline.xml"))
   config.from(files("$rootDir/detekt/detekt-config.yml"))
@@ -54,13 +75,36 @@ tasks.withType<Detekt> {
     sarif.required.set(true)
   }
 
-  setSource(files(projectDir))
-
-  include("**/*.kt", "**/*.kts")
   exclude(detektExcludes)
   subprojects.forEach { sub ->
     exclude("**/${sub.projectDir.relativeTo(rootDir)}/**")
   }
+
+  dependsOn(tasks.withType(ModuleCheckBuildCodeGeneratorTask::class.java))
+}
+
+fun Task.otherDetektTasks(withAutoCorrect: Boolean): TaskCollection<Detekt> {
+  return tasks.withType(Detekt::class.java)
+    .matching { it.autoCorrect == withAutoCorrect && it != this@otherDetektTasks }
+}
+
+tasks.register("detektAll", Detekt::class) {
+  description = "runs the standard PSI Detekt as well as all type resolution tasks"
+  dependsOn(otherDetektTasks(withAutoCorrect = false))
+}
+
+// Make all tasks from Detekt part of the 'detekt' task group.  Default is 'verification'.
+sequenceOf(
+  Detekt::class.java,
+  DetektCreateBaselineTask::class.java,
+  DetektGenerateConfigTask::class.java
+).forEach { type ->
+  tasks.withType(type).configureEach { group = "detekt" }
+}
+
+// By default, `check` only handles the PSI Detekt task.  This adds the type resolution tasks.
+tasks.named(LifecycleBasePlugin.CHECK_TASK_NAME) {
+  dependsOn(otherDetektTasks(withAutoCorrect = false))
 }
 
 if (project == rootProject) {

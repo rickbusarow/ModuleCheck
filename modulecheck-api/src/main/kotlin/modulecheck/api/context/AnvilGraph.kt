@@ -61,7 +61,7 @@ data class AnvilGraph(
     "com.squareup.anvil.annotations.MergeSubcomponent"
   ).map { ReferenceName(it, KOTLIN) }
 
-  val allAnnotations = mergeAnnotations + contributeAnnotations
+  private val allAnnotations = mergeAnnotations + contributeAnnotations
 
   override val key: ProjectContext.Key<AnvilGraph>
     get() = Key
@@ -190,7 +190,9 @@ data class AnvilGraph(
         configurationName.toSourceSetName() to projectDependencies[configurationName].orEmpty()
       }
       .groupBy { it.first }
-      .map { it.key to it.value.flatMap { it.second } }
+      .map { (sourceSetName, pairs) ->
+        sourceSetName to pairs.flatMap { it.second }
+      }
       .toMap()
   }
 
