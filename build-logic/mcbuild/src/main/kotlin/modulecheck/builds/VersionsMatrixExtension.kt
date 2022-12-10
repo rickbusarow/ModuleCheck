@@ -27,6 +27,7 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.registering
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import java.io.File
 
 interface VersionsMatrixExtension {
 
@@ -83,6 +84,20 @@ private fun Project.setUpGeneration(
 
 private fun Project.requireInSyncWithToml() {
 
+  val simpleName = VersionsMatrix::class.simpleName
+  val versionsMatrixRelativePath = VersionsMatrix::class.qualifiedName!!
+    .replace('.', File.separatorChar)
+    .let { "$it.kt" }
+
+  val versionMatrixFile = rootDir
+    .resolve("build-logic/mcbuild")
+    .resolve("src/main/kotlin")
+    .resolve(versionsMatrixRelativePath)
+
+  require(versionMatrixFile.exists()) {
+    "Could not resolve the $simpleName file: $versionMatrixFile"
+  }
+
   with(VersionsMatrix()) {
 
     sequenceOf(
@@ -93,13 +108,15 @@ private fun Project.requireInSyncWithToml() {
       .forEach { (list, listName, alias) ->
         require(list.contains(libsCatalog.version(alias))) {
           "The versions catalog version for '$alias' is ${libsCatalog.version(alias)}.  " +
-            "Update the VersionsMatrix list '$listName' to include this new version."
+            "Update the $simpleName list '$listName' to include this new version.\n" +
+            "\tfile://$versionMatrixFile"
         }
       }
 
     require(gradleList.contains(gradle.gradleVersion)) {
       "The Gradle version is ${gradle.gradleVersion}.  " +
-        "Update the VersionsMatrix list 'gradleList' to include this new version."
+        "Update the $simpleName list 'gradleList' to include this new version.\n" +
+        "\tfile://$versionMatrixFile"
     }
   }
 }
