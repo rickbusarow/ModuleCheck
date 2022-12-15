@@ -62,7 +62,7 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
         .filter { it.isNotBlank() }
         .map { it.trim() }
         // filter out .json and .txt files added by Android modules
-        .filter { it.takeLast(4) in extensions }
+        .filter { it.substringAfterLast(".") in extensions }
         .map { line ->
 
           val identifier = File(line).parseMavenCoordinatesFromGradleCache()
