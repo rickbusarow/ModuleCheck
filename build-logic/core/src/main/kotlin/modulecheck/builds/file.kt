@@ -54,6 +54,67 @@ fun File.resolveInParent(relativePath: String): File {
 
 fun File.existsOrNull(): File? = takeIf { it.exists() }
 
-fun File.isDirectoryWithFiles(): Boolean = takeIf { it.isDirectory }
-  ?.listFiles()
-  ?.any { it.isDirectory } == true
+/**
+ * @return true if the receiver [File] is a directory with at least one child file which satisfies
+ *     [childPredicate]
+ * @since 0.10.0
+ */
+fun File.isDirectoryWithFiles(
+  childPredicate: (File) -> Boolean = { it.exists() }
+): Boolean = !isFile && listFiles()?.any(childPredicate) == true
+
+/**
+ * Returns true if the receiver [File] is `/build/` or `/.gradle/`, but there is no sibling
+ * `/build.gradle.kts` or `/settings.gradle.kts`.
+ *
+ * The most common cause of this would be switching between git branches with different module
+ * structures. Since `build` and `.gradle` directories are ignored in git, they'll stick around
+ * after a branch switch.
+ *
+ * @since 0.10.0
+ */
+fun File.isOrphanedBuildOrGradleDir(): Boolean {
+  return when {
+    !isDirectory -> false
+    name != "build" && name != ".gradle" -> false
+    !exists() -> false
+    parentFile!!.hasGradleProjectFiles() -> false
+    else -> true
+  }
+}
+
+/**
+ * Returns true if the receiver [File] is `/gradle.properties`, but there is no sibling
+ * `/build.gradle.kts` or `/settings.gradle.kts`.
+ *
+ * The most common cause of this would be switching between git branches with different module
+ * structures. Since all `gradle.properties` files except the root are ignored in git, they'll stick
+ * around after a branch switch.
+ *
+ * @since 0.10.0
+ */
+fun File.isOrphanedGradleProperties(): Boolean {
+  return when {
+    !isFile -> false
+    name != "gradle.properties" -> false
+    parentFile!!.hasGradleProjectFiles() -> false
+    else -> true
+  }
+}
+
+/**
+ * Returns true if the receiver [File] is a directory which contains at least one of
+ * `settings.gradle.kts`, `settings.gradle`, `build.gradle.kts`, or `build.gradle`.
+ *
+ * @since 0.10.0
+ */
+fun File.hasGradleProjectFiles(): Boolean {
+  return when {
+    !isDirectory -> false
+    resolve("settings.gradle.kts").exists() -> true
+    resolve("settings.gradle").exists() -> true
+    resolve("build.gradle.kts").exists() -> true
+    resolve("build.gradle").exists() -> true
+    else -> false
+  }
+}
