@@ -69,7 +69,7 @@ allprojects {
 
     configure<JavaPluginExtension> {
       @Suppress("MagicNumber")
-      toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+      toolchain.languageVersion.set(JavaLanguageVersion.of(8))
     }
   }
 
@@ -98,12 +98,12 @@ allprojects {
 
 tasks.register("ktlintCheck") rootTask@{
   allprojects {
-    this@rootTask.dependsOn(tasks.named("lintKotlin"))
+    this@rootTask.dependsOn(tasks.matching { it.name == "lintKotlin" })
   }
 }
 tasks.register("ktlintFormat") rootTask@{
   allprojects {
-    this@rootTask.dependsOn(tasks.named("formatKotlin"))
+    this@rootTask.dependsOn(tasks.matching { it.name == "formatKotlin" })
   }
 }
 
