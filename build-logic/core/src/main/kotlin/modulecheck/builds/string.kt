@@ -13,37 +13,16 @@
  * limitations under the License.
  */
 
-rootProject.name = "build-logic"
+package modulecheck.builds
 
-pluginManagement {
-  repositories {
-    mavenCentral()
-    google()
-    maven("https://plugins.gradle.org/m2/")
-  }
-}
+import java.util.Locale
 
-dependencyResolutionManagement {
-  @Suppress("UnstableApiUsage")
-  repositories {
-    mavenCentral()
-    google()
-    maven("https://plugins.gradle.org/m2/")
-  }
-
-  @Suppress("UnstableApiUsage")
-  versionCatalogs {
-    create("libs") {
-      from(files("../gradle/libs.versions.toml"))
+fun String.capitalize(): String {
+  return replaceFirstChar { char ->
+    if (char.isLowerCase()) {
+      char.titlecase(Locale.getDefault())
+    } else {
+      char.toString()
     }
   }
 }
-
-include(
-  ":artifacts-check",
-  ":conventions",
-  ":core",
-  ":ktlint-rules",
-  ":mcbuild",
-  ":versions-matrix"
-)

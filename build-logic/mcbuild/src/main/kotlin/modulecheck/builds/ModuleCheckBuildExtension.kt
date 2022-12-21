@@ -15,14 +15,14 @@
 
 package modulecheck.builds
 
+import modulecheck.builds.matrix.VersionsMatrixExtension
 import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.PluginManager
 import javax.inject.Inject
 
 @Suppress("MemberVisibilityCanBePrivate", "UnnecessaryAbstractClass")
-abstract class ModuleCheckBuildExtension
-@Inject constructor(
+abstract class ModuleCheckBuildExtension @Inject constructor(
   objects: ObjectFactory,
   private val pluginManager: PluginManager,
   private val project: Project
