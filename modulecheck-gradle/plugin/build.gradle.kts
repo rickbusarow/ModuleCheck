@@ -173,7 +173,9 @@ val integrationTestTask = tasks.register("integrationTest", Test::class) {
   dependsOn(rootProject.tasks.matching { it.name == "publishToMavenLocalNoDokka" })
 }
 
-tasks.matching { it.name == "check" }.all { dependsOn(integrationTestTask) }
+tasks.matching { it.name == "check" }.configureEach {
+  dependsOn(integrationTestTask)
+}
 
 kotlin {
   val compilations = target.compilations

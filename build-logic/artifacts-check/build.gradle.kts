@@ -24,6 +24,7 @@ buildscript {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+  base
   kotlin("jvm")
   alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
@@ -32,13 +33,9 @@ plugins {
 
 gradlePlugin {
   plugins {
-    create("mcbuild") {
-      id = "mcbuild"
-      implementationClass = "modulecheck.builds.McBuildPlugin"
-    }
-    create("mcbuild.root") {
-      id = "mcbuild.root"
-      implementationClass = "modulecheck.builds.McBuildRootPlugin"
+    create("artifacts-check") {
+      id = "mcbuild.artifacts-check"
+      implementationClass = "modulecheck.builds.artifacts.ArtifactsPlugin"
     }
   }
 }
@@ -47,11 +44,7 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":artifacts-check"))
-  api(project(path = ":conventions"))
   api(project(path = ":core"))
-  api(project(path = ":ktlint-rules"))
-  api(project(path = ":versions-matrix"))
 
   compileOnly(gradleApi())
 
@@ -63,7 +56,6 @@ dependencies {
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
-  implementation(libs.jmailen.kotlinter)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plug)
   implementation(libs.kotlin.reflect)
@@ -72,10 +64,6 @@ dependencies {
   implementation(libs.kotlin.stdlib.jdk7)
   implementation(libs.kotlin.stdlib.jdk8)
   implementation(libs.kotlinx.knit)
-  implementation(libs.scabbard)
-  implementation(libs.square.anvil.gradle)
-  implementation(libs.square.kotlinPoet)
-  implementation(libs.vanniktech.publish)
 
   ksp(libs.square.moshi.codegen)
 }

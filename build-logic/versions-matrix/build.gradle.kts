@@ -24,6 +24,7 @@ buildscript {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+  base
   kotlin("jvm")
   alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
@@ -32,13 +33,9 @@ plugins {
 
 gradlePlugin {
   plugins {
-    create("mcbuild") {
-      id = "mcbuild"
-      implementationClass = "modulecheck.builds.McBuildPlugin"
-    }
-    create("mcbuild.root") {
-      id = "mcbuild.root"
-      implementationClass = "modulecheck.builds.McBuildRootPlugin"
+    create("mcbuild.matrix-yaml") {
+      id = "mcbuild.matrix-yaml"
+      implementationClass = "VersionsMatrixYamlPlugin"
     }
   }
 }
@@ -47,11 +44,8 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":artifacts-check"))
-  api(project(path = ":conventions"))
   api(project(path = ":core"))
   api(project(path = ":ktlint-rules"))
-  api(project(path = ":versions-matrix"))
 
   compileOnly(gradleApi())
 

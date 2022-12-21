@@ -24,6 +24,7 @@ buildscript {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
+  base
   kotlin("jvm")
   alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
@@ -32,13 +33,53 @@ plugins {
 
 gradlePlugin {
   plugins {
-    create("mcbuild") {
-      id = "mcbuild"
-      implementationClass = "modulecheck.builds.McBuildPlugin"
+    create("ben-manes") {
+      id = "mcbuild.ben-manes"
+      implementationClass = "modulecheck.builds.BenManesVersionsPlugin"
     }
-    create("mcbuild.root") {
-      id = "mcbuild.root"
-      implementationClass = "modulecheck.builds.McBuildRootPlugin"
+    create("mcbuild.clean") {
+      id = "mcbuild.clean"
+      implementationClass = "modulecheck.builds.CleanPlugin"
+    }
+    create("mcbuild.dependency-guard") {
+      id = "mcbuild.dependency-guard"
+      implementationClass = "modulecheck.builds.DependencyGuardConventionPlugin"
+    }
+    create("mcbuild.dependency-guard-aggregate") {
+      id = "mcbuild.dependency-guard-aggregate"
+      implementationClass = "modulecheck.builds.DependencyGuardAggregatePlugin"
+    }
+    create("mcbuild.detekt") {
+      id = "mcbuild.detekt"
+      implementationClass = "modulecheck.builds.DetektConventionPlugin"
+    }
+    create("mcbuild.dokka") {
+      id = "mcbuild.dokka"
+      implementationClass = "modulecheck.builds.DokkaConventionPlugin"
+    }
+    create("mcbuild.java-library") {
+      id = "mcbuild.java-library"
+      implementationClass = "modulecheck.builds.JavaLibraryConventionPlugin"
+    }
+    create("mcbuild.kotlin") {
+      id = "mcbuild.kotlin"
+      implementationClass = "modulecheck.builds.KotlinJvmConventionPlugin"
+    }
+    create("mcbuild.knit") {
+      id = "mcbuild.knit"
+      implementationClass = "modulecheck.builds.KnitConventionPlugin"
+    }
+    create("mcbuild.ktlint") {
+      id = "mcbuild.ktlint"
+      implementationClass = "modulecheck.builds.KtLintConventionPlugin"
+    }
+    create("mcbuild.test") {
+      id = "mcbuild.test"
+      implementationClass = "modulecheck.builds.TestConventionPlugin"
+    }
+    create("mcbuild.website") {
+      id = "mcbuild.website"
+      implementationClass = "modulecheck.builds.WebsitePlugin"
     }
   }
 }
@@ -47,11 +88,8 @@ dependencies {
 
   api(libs.square.moshi)
 
-  api(project(path = ":artifacts-check"))
-  api(project(path = ":conventions"))
   api(project(path = ":core"))
   api(project(path = ":ktlint-rules"))
-  api(project(path = ":versions-matrix"))
 
   compileOnly(gradleApi())
 
