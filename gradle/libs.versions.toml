@@ -34,7 +34,7 @@ google-material = "1.4.0"
 
 gradleDoctor = "0.8.1"
 graphviz = "0.18.1"
-groovy = "3.0.13"
+groovy = "3.0.14"
 jUnit = "5.9.1"
 javaParser = "3.24.9"
 jmailen-kotlinter = "3.13.0"
