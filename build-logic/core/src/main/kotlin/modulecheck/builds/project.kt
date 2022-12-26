@@ -15,7 +15,11 @@
 
 package modulecheck.builds
 
+import com.google.devtools.ksp.gradle.KspTaskJvm
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.plugins.PluginContainer
+import org.gradle.api.tasks.TaskProvider
 
 /**
  * Determines if this project is the root project **and** root of a composite build, if it's part of
@@ -35,4 +39,46 @@ import org.gradle.api.Project
  */
 fun Project.isRootOfComposite(): Boolean {
   return this == rootProject && gradle.parent == null
+}
+
+fun PluginContainer.applyOnce(id: String) {
+  if (!hasPlugin(id)) {
+    apply(id)
+  }
+}
+
+fun Project.checkProjectIsRoot(
+  message: () -> String = { "Only apply this plugin to the project root." }
+) {
+  check(this == rootProject, message)
+}
+
+fun Project.registerSimpleGenerationTaskAsDependency(
+  sourceSetName: String,
+  taskProvider: TaskProvider<out Task>
+) {
+  val kotlinTaskSourceSetName = when (sourceSetName) {
+    "main" -> ""
+    else -> sourceSetName.capitalize()
+  }
+
+  val ktlintSourceSetName = sourceSetName.capitalize()
+
+  setOf(
+    "compile${kotlinTaskSourceSetName}Kotlin",
+    "javaSourcesJar",
+    "lintKotlin$ktlintSourceSetName",
+    "formatKotlin$ktlintSourceSetName",
+    "runKtlintCheckOver${ktlintSourceSetName}SourceSet",
+    "runKtlintFormatOver${ktlintSourceSetName}SourceSet"
+  ).forEach { taskName ->
+    tasks.maybeNamed(taskName) { dependsOn(taskProvider) }
+  }
+
+  tasks.withType(KspTaskJvm::class.java) { it.dependsOn(taskProvider) }
+
+  // generate the build properties file during an IDE sync, so no more red squigglies
+  rootProject.tasks.named("prepareKotlinBuildScriptModel") {
+    it.dependsOn(taskProvider)
+  }
 }
