@@ -396,19 +396,23 @@ jobs:
       fail-fast: false
       ### <start-matrix>
       matrix:
-        kotlin-version: [ 1.7.0, 1.7.10, 1.7.22 ]
+        kotlin-version: [ 1.7.0, 1.7.10, 1.7.22, 1.8.0-RC2 ]
         gradle-version: [ 7.2, 7.4.2, 7.5.1, 7.6 ]
         agp-version: [ 7.0.1, 7.1.3, 7.2.2, 7.3.1 ]
-        anvil-version: [ 2.4.3 ]
+        anvil-version: [ 2.4.3, 2.4.3-1-8-0-RC ]
         exclude:
           - agp-version: 7.0.1
             anvil-version: 2.4.3
+          - agp-version: 7.0.1
+            anvil-version: 2.4.3-1-8-0-RC
           - gradle-version: 7.2
             agp-version: 7.2.2
           - gradle-version: 7.2
             agp-version: 7.3.1
           - gradle-version: 7.4.2
             anvil-version: 2.4.3
+          - gradle-version: 7.4.2
+            anvil-version: 2.4.3-1-8-0-RC
       ### <end-matrix>
 
     steps:
