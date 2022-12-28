@@ -55,7 +55,7 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
     private fun File.parseToClasspath(): Classpath {
       requireExists { "The expected classpath report file is missing at $absolutePath" }
 
-      val extensions = setOf(".jar", ".aar")
+      val extensions = setOf("jar", "aar")
 
       val coordinatesWithFiles = readText()
         .lineSequence()
@@ -69,8 +69,31 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
             ?: File(line).parseAndroidSdkJarFromPath()
 
           // TODO for special cases:
-          //   parsing the coordinates from unzipped .aar files
           //   handle BuildConfig.java and R.java files
+
+          /*
+          val file = when (identifier) {
+            is MavenCoordinates -> {
+
+              if (line.endsWith("aar")) {
+                val subDir = when {
+                  identifier.version.isNullOrBlank() -> identifier.moduleName
+                  else -> identifier.moduleName + "-" + identifier.version.orEmpty()
+                }
+
+                resolveSibling("unzipped") / subDir / "jars" / "classes.jar"
+              } else {
+                File(line)
+              }
+            }
+
+            is AndroidSdk -> File(line)
+            null -> error("could not parse line - $line")
+            else -> error("could not parse line - $line")
+          }
+
+          MavenCoordinatesWithFile(identifier, file)
+           */
 
           MavenCoordinatesWithFile(identifier!!, File(line))
         }

@@ -19,6 +19,7 @@ import modulecheck.finding.Finding.Position
 import modulecheck.finding.internal.positionIn
 import modulecheck.finding.internal.statementOrNullIn
 import modulecheck.model.dependency.ConfigurationName
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.parsing.gradle.dsl.BuildFileStatement
 import modulecheck.project.McProject
@@ -28,7 +29,7 @@ import modulecheck.utils.lazy.lazyDeferred
 data class InheritedDependencyFinding(
   override val findingName: FindingName,
   override val dependentProject: McProject,
-  override val newDependency: ProjectDependency,
+  override val newDependency: ConfiguredDependency,
   val source: ProjectDependency
 ) : AbstractProjectDependencyFinding(),
   AddsDependency,
@@ -38,8 +39,8 @@ data class InheritedDependencyFinding(
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
   override val dependencyIdentifier: String
-    get() = newDependency.projectPath.value + fromStringOrEmpty()
-  override val dependency: ProjectDependency
+    get() = newDependency.identifier.name + fromStringOrEmpty()
+  override val dependency: ConfiguredDependency
     get() = newDependency
 
   override val configurationName: ConfigurationName
@@ -53,7 +54,7 @@ data class InheritedDependencyFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.projectPath == source.projectPath) {
+    return if (dependency.identifier == source.projectPath) {
       ""
     } else {
       source.projectPath.value
@@ -65,7 +66,7 @@ data class InheritedDependencyFinding(
     return compareBy<InheritedDependencyFinding>(
       { it.configurationName },
       { it.source.isTestFixture },
-      { it.newDependency.projectPath }
+      { it.newDependency.identifier }
     ).compare(this, other)
   }
 }

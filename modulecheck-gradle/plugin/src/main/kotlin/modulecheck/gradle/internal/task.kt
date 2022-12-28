@@ -13,25 +13,27 @@
  * limitations under the License.
  */
 
-package modulecheck.model.dependency
+package modulecheck.gradle.internal
 
-data class TransitiveProjectDependency constructor(
-  val source: ProjectDependency,
-  val contributed: ProjectDependency
-) {
+import org.gradle.api.Task
+import org.gradle.api.tasks.TaskProvider
 
-  fun withContributedConfiguration(
-    configurationName: ConfigurationName = source.configurationName
-  ): TransitiveProjectDependency {
-    val newContributed = contributed.copy(configurationName = configurationName)
-    return copy(contributed = newContributed)
+fun <T : Task> TaskProvider<out T>.dependsOn(
+  tasks: Collection<TaskProvider<out Task>>
+): TaskProvider<out T> {
+  if (tasks.isEmpty().not()) {
+    configure { it.dependsOn(tasks) }
   }
 
-  override fun toString(): String {
-    return """TransitiveProjectDependency(
-      |       source=$source
-      |  contributed=$contributed
-      |)
-    """.trimMargin()
+  return this
+}
+
+fun <T : Task> TaskProvider<out T>.dependsOn(
+  vararg tasks: TaskProvider<out Task>
+): TaskProvider<out T> {
+  if (tasks.isEmpty().not()) {
+    configure { it.dependsOn(*tasks) }
   }
+
+  return this
 }

@@ -32,7 +32,9 @@ sealed class ExternalDependency :
     )
   }
   override val identifier: MavenCoordinates by unsafeLazy { mavenCoordinates }
-  val nameWithVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
+  val nameWithVersion: String by unsafeLazy {
+    "${group.orEmpty()}:$moduleName:${version.orEmpty()}"
+  }
   val nameWithoutVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName" }
 
   class ExternalRuntimeDependency(

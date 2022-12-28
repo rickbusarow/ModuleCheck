@@ -101,8 +101,8 @@ suspend fun McProject.requireSourceOf(
     isTestFixture = isTestFixture
   )
     ?: throw IllegalArgumentException(
-      "Unable to find source of the dependency project '${dependencyProject.projectPath}' for SourceSet " +
-        "`${sourceSetName.value}` in the dependent project '$projectPath', " +
+      "Unable to find source of the dependency project '${dependencyProject.projectPath}' " +
+        "for SourceSet `${sourceSetName.value}` in the dependent project '$projectPath', " +
         "including transitive dependencies."
     )
 }

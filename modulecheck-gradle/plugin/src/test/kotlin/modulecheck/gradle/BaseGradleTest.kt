@@ -144,7 +144,7 @@ abstract class BaseGradleTest :
       .withGradleVersion(gradleVersion)
       .withTestKitDir(testKitDir)
       // .withPluginClasspath()
-      // .withDebug(true)
+      .withDebug(true)
       .withProjectDir(testProjectDir)
   }
 

@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
@@ -165,11 +166,17 @@ class RealKotlinEnvironment(
   }
 
   private val messageCollector by lazy {
-    McMessageCollector(
-      messageRenderer = MessageRenderer.GRADLE_STYLE,
-      logger = logger,
-      logLevel = McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
-    )
+
+    if (projectPath.value == ":core:core") {
+      // if (projectPath.value == ":core:jvm") {
+      McMessageCollector(
+        messageRenderer = MessageRenderer.GRADLE_STYLE,
+        logger = logger,
+        logLevel = McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
+      )
+    } else {
+      MessageCollector.NONE
+    }
   }
 
   private suspend fun createAnalysisResult(
@@ -192,11 +199,15 @@ class RealKotlinEnvironment(
         configuration = coreEnvironment.configuration,
         packagePartProvider = coreEnvironment::createPackagePartProvider,
         declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
-        explicitModuleDependencyList = dependencyModuleDescriptors
+        explicitModuleDependencyList = dependencyModuleDescriptors,
+        explicitModuleFriendsList = dependencyModuleDescriptors
       )
     }
 
-    messageCollector.printIssuesCountIfAny()
+    val mc = messageCollector
+    if (mc is McMessageCollector) {
+      mc.printIssuesCountIfAny()
+    }
 
     println("finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 

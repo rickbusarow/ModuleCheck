@@ -46,7 +46,7 @@ data class MavenCoordinates(
 
   companion object {
 
-    private val MATCHER = """([\w\.]+):([\w\-]+):([\w\.]+)""".toRegex()
+    private val MATCHER = """([\w.]+):([\w\-.]+):([\w.\-]+)""".toRegex()
 
     fun parseOrNull(coordinateString: String): MavenCoordinates? {
       return MATCHER.find(coordinateString)
@@ -79,26 +79,26 @@ data class MavenCoordinates(
     }
   }
 
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-
-    other as MavenCoordinates
-
-    if (group != other.group) return false
-    if (moduleName != other.moduleName) return false
-    // if either version is null (or both), that's a wildcard, and they match
-    if (version != null && other.version != null && version != other.version) return false
-
-    return true
-  }
-
-  override fun hashCode(): Int {
-    var result = group?.hashCode() ?: 0
-    result = 31 * result + moduleName.hashCode()
-    result = 31 * result + (version?.hashCode() ?: 0)
-    return result
-  }
+  // override fun equals(other: Any?): Boolean {
+  //   if (this === other) return true
+  //   if (javaClass != other?.javaClass) return false
+  //
+  //   other as MavenCoordinates
+  //
+  //   if (group != other.group) return false
+  //   if (moduleName != other.moduleName) return false
+  //   // if either version is null (or both), that's a wildcard, and they match
+  //   if (version != null && other.version != null && version != other.version) return false
+  //
+  //   return true
+  // }
+  //
+  // override fun hashCode(): Int {
+  //   var result = group?.hashCode() ?: 0
+  //   result = 31 * result + moduleName.hashCode()
+  //   result = 31 * result + (version?.hashCode() ?: 0)
+  //   return result
+  // }
 }
 
 sealed interface Identifier : Comparable<Identifier> {

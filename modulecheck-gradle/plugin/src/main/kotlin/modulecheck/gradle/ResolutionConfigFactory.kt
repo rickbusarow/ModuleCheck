@@ -15,21 +15,63 @@
 
 package modulecheck.gradle
 
+import modulecheck.model.dependency.apiConfig
+import modulecheck.model.dependency.asConfigurationName
+import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
+import modulecheck.utils.flatMapToSet
+import modulecheck.utils.singletonSet
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.ProjectDependency
 import org.gradle.api.attributes.Attribute
 import org.gradle.api.attributes.HasConfigurableAttributes
 import org.gradle.api.internal.artifacts.DefaultDependencySet
 import org.gradle.api.internal.artifacts.configurations.ConfigurationInternal.InternalState.UNRESOLVED
 import org.gradle.api.internal.artifacts.configurations.DefaultConfiguration
+import org.gradle.api.internal.artifacts.dependencies.ProjectDependencyInternal
 
 class ResolutionConfigFactory {
+
+  private fun ProjectDependency.externalDependencies(
+    sourceConfiguration: Configuration,
+    visited: Set<String>
+  ): Set<Dependency> {
+
+    // println("<Rick> 40 -- ${dependencyProject.path}  --  ${sourceConfiguration.name}")
+
+    val contributingConfigName = sourceConfiguration.name
+      .asConfigurationName()
+      .toSourceSetName()
+      .apiConfig()
+
+    val contributingConfig = dependencyProject.configurations
+      .findByName(contributingConfigName.value)
+      ?.takeIf { it.name.asConfigurationName().toSourceSetName() != SourceSetName.TEST }
+      ?: dependencyProject.configurations.findByName("api")
+      ?: return emptySet()
+
+    val deps = contributingConfig.dependencies.toSet()
+
+    return deps.plus(
+      deps.flatMapToSet { dep ->
+        if (dep is ProjectDependencyInternal && contributingConfig.name !in visited) {
+          dep.externalDependencies(contributingConfig, visited + contributingConfig.name)
+        } else {
+          emptySet()
+        }
+      }
+    )
+  }
 
   fun create(
     project: GradleProject,
     sourceConfiguration: Configuration
   ): Configuration {
+
+    if (project.path == ":core:core") {
+      println("########### config ${sourceConfiguration.name}")
+    }
 
     val copy = sourceConfiguration.copyRecursive().setTransitive(true)
 
@@ -48,10 +90,23 @@ class ResolutionConfigFactory {
     }
 
     sourceConfiguration.allDependencies
-      .matching { dependency -> dependency !is ProjectDependency }
-      .configureEach {
+      .configureEach { dependency ->
+
         if (copy.resolvedState == UNRESOLVED) {
-          dest.add(it)
+
+          val deps = when (dependency) {
+            is ProjectDependency -> dependency.externalDependencies(
+              sourceConfiguration,
+              setOf(sourceConfiguration.name)
+            )
+              .filter { it !is ProjectDependency }
+
+            else -> dependency.singletonSet()
+          }
+
+          for (trans in deps) {
+            dest.add(trans)
+          }
         }
       }
 

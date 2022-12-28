@@ -163,7 +163,9 @@ open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       apiConfigurationName,
       implementationConfigurationName,
       compileOnlyConfigurationName,
-      runtimeOnlyConfigurationName
+      runtimeOnlyConfigurationName,
+      "${name}AnnotationProcessorClasspath",
+      "${name}CompileClasspath"
     )
 
   /**

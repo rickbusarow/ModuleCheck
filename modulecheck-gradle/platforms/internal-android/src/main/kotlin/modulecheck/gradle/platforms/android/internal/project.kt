@@ -114,12 +114,15 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
  */
 fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin.() -> Unit) {
 
-  plugins.withType(BasePlugin::class.java) { plugin ->
-    action(plugin)
+  agpApiAccess.ifSafeOrNull(this) {
+
+    plugins.withType(BasePlugin::class.java) { plugin ->
+      action(plugin)
+    }
+    // pluginManager.withPlugin("com.android.application") { plugin ->
+    //   action(plugin as BasePlugin)
+    // }
   }
-  // pluginManager.withPlugin("com.android.application") { plugin ->
-  //   action(plugin as BasePlugin)
-  // }
 }
 
 /**
@@ -157,10 +160,6 @@ inline fun GradleProject.onAndroidCompileConfigurationsOrNull(
         sourceSet.runtimeOnlyConfigurationName
       )
         .mapToSet { configName -> configurations.getByName(configName) }
-
-      // println("######## configs for $path")
-      // configs.joinToString("\n") { it.name }
-      //   .also(::println)
 
       configAction(sourceSet.name.asSourceSetName(), configs)
     }

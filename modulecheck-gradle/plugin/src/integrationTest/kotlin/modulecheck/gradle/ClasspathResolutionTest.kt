@@ -15,6 +15,7 @@
 
 package modulecheck.gradle
 
+import io.kotest.matchers.collections.shouldContainAll
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.model.sourceset.asSourceSetName
@@ -181,47 +182,58 @@ class ClasspathResolutionTest : BaseGradleTest() {
     shouldSucceed("moduleCheck").apply {
       // Assert that nothing else executed.
       // If ModuleCheck is relying upon buildConfig tasks, they'll be in this list.
-      // tasks.map { it.path }.sorted() shouldContainAll listOf(
-      //           ":lib:generateDebugAndroidTestBuildConfig",
-      //           ":lib:generateDebugBuildConfig",
-      //           ":lib:generateReleaseBuildConfig",
-      //           ":moduleCheck"
-      //         )
-      tasks.map { it.path }.sorted().joinToString("\n") shouldBe ""
+      tasks.map { it.path }.sorted() shouldContainAll listOf(
+        ":lib:generateDebugAndroidTestBuildConfig",
+        ":lib:generateDebugBuildConfig",
+        ":lib:generateReleaseBuildConfig",
+        ":moduleCheck"
+      )
     }
 
     lib.classpathFileText(SourceSetName.MAIN) shouldBe """
         com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+        com.google.code.findbugs/jsr305/3.0.2/jsr305-3.0.2.jar
+        com.google.errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar
+        com.google.guava/failureaccess/1.0.1/failureaccess-1.0.1.jar
+        com.google.guava/guava/30.1.1-jre/guava-30.1.1-jre.jar
+        com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+        com.google.j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar
+        org.checkerframework/checker-qual/3.8.0/checker-qual-3.8.0.jar
+        org.jetbrains.kotlin/kotlin-stdlib-common/$kotlinVersion/kotlin-stdlib-common-$kotlinVersion.jar
+        org.jetbrains.kotlin/kotlin-stdlib-jdk7/$kotlinVersion/kotlin-stdlib-jdk7-$kotlinVersion.jar
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+        org.jetbrains.kotlin/kotlin-stdlib/$kotlinVersion/kotlin-stdlib-$kotlinVersion.jar
+        org.jetbrains/annotations/13.0/annotations-13.0.jar
+        /Android/sdk/platforms/android-30/android.jar
+        /Android/sdk/platforms/android-30/core-for-system-modules.jar
       """
 
     lib.classpathFileText(SourceSetName.DEBUG) shouldBe """
-        /lib/build/generated/source/buildConfig/debug/com/modulecheck/lib1/BuildConfig.java
-        /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml
-        /lib/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json
-        /lib/build/intermediates/compile_r_class_jar/debug/R.jar
-        /lib/build/intermediates/compile_symbol_list/debug/R.txt
-        /lib/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt
-        /lib/build/intermediates/merged_manifest/debug/AndroidManifest.xml
-        /lib/build/intermediates/packaged_manifests/debug/output-metadata.json
-        /lib/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
-        /lib/build/outputs/logs/manifest-merger-debug-report.txt
         com.google.auto/auto-common/1.0.1/auto-common-1.0.1.jar
+        com.google.code.findbugs/jsr305/3.0.2/jsr305-3.0.2.jar
+        com.google.errorprone/error_prone_annotations/2.5.1/error_prone_annotations-2.5.1.jar
+        com.google.guava/failureaccess/1.0.1/failureaccess-1.0.1.jar
+        com.google.guava/guava/30.1.1-jre/guava-30.1.1-jre.jar
+        com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+        com.google.j2objc/j2objc-annotations/1.3/j2objc-annotations-1.3.jar
+        org.checkerframework/checker-qual/3.8.0/checker-qual-3.8.0.jar
+        org.jetbrains.kotlin/kotlin-stdlib-common/$kotlinVersion/kotlin-stdlib-common-$kotlinVersion.jar
+        org.jetbrains.kotlin/kotlin-stdlib-jdk7/$kotlinVersion/kotlin-stdlib-jdk7-$kotlinVersion.jar
         org.jetbrains.kotlin/kotlin-stdlib-jdk8/$kotlinVersion/kotlin-stdlib-jdk8-$kotlinVersion.jar
+        org.jetbrains.kotlin/kotlin-stdlib/$kotlinVersion/kotlin-stdlib-$kotlinVersion.jar
+        org.jetbrains/annotations/13.0/annotations-13.0.jar
+        /Android/sdk/platforms/android-30/android.jar
+        /Android/sdk/platforms/android-30/core-for-system-modules.jar
       """
 
-    lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe ""
+    lib.classpathFileText(SourceSetName.ANDROID_TEST) shouldBe """
+        /Android/sdk/platforms/android-30/android.jar
+        /Android/sdk/platforms/android-30/core-for-system-modules.jar
+      """
 
     lib.classpathFileText("androidTestDebug".asSourceSetName()) shouldBe """
-        /lib/build/generated/source/buildConfig/androidTest/debug/com/modulecheck/lib1/test/BuildConfig.java
-        /lib/build/intermediates/compile_and_runtime_not_namespaced_r_class_jar/debugAndroidTest/R.jar
-        /lib/build/intermediates/manifest_merge_blame_file/debugAndroidTest/manifest-merger-blame-debug-androidTest-report.txt
-        /lib/build/intermediates/packaged_manifests/debugAndroidTest/AndroidManifest.xml
-        /lib/build/intermediates/packaged_manifests/debugAndroidTest/output-metadata.json
-        /lib/build/intermediates/processed_res/debugAndroidTest/out/output-metadata.json
-        /lib/build/intermediates/processed_res/debugAndroidTest/out/resources-debugAndroidTest.ap_
-        /lib/build/intermediates/runtime_symbol_list/debugAndroidTest/R.txt
-        /lib/build/intermediates/symbol_list_with_package_name/debugAndroidTest/package-aware-r.txt
+        /Android/sdk/platforms/android-30/android.jar
+        /Android/sdk/platforms/android-30/core-for-system-modules.jar
       """
   }
 
@@ -326,13 +338,30 @@ class ClasspathResolutionTest : BaseGradleTest() {
 
     val startPartLength = testKitM2.split(File.separatorChar).size
 
+    val sdkStart = "/Android/sdk/platforms/"
+
+    val sdkRegex = sdkStart.replace('/', File.separatorChar)
+      .let { "(.*)${Regex.escape(it)}(.*)".toRegex() }
+
     fun String.clean(): String {
-      return if (!startsWith(testKitM2)) {
-        remove(testProjectDir.absolutePath)
-      } else {
-        split(File.separatorChar).drop(startPartLength)
-          .let { segments -> segments.dropLast(2) + segments.last() }
-          .joinToString("/")
+
+      val androidMatch = sdkRegex.find(this)
+
+      return when {
+        androidMatch != null -> {
+          val (_, _, end) = androidMatch.groupValues
+          "$sdkStart$end"
+        }
+
+        startsWith(testKitM2) -> {
+          split(File.separatorChar).drop(startPartLength)
+            .let { segments -> segments.dropLast(2) + segments.last() }
+            .joinToString("/")
+        }
+
+        else -> {
+          remove(testProjectDir.absolutePath)
+        }
       }
     }
 

@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
 import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
 import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
+import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.nonTestSourceSetName
 import modulecheck.model.dependency.withUpstream
@@ -122,9 +123,13 @@ class Declarations private constructor(
 
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
-suspend fun ProjectDependency.declarations(
+suspend fun ConfiguredDependency.declarations(
   projectCache: ProjectCache
 ): LazySet<DeclaredName> {
+
+  this as? ProjectDependency
+    ?: TODO("external dependency declarations are not supported yet")
+
   val project = projectCache.getValue(projectPath)
   if (isTestFixture) {
     return project.declarations().get(SourceSetName.TEST_FIXTURES, includeUpstream = false)

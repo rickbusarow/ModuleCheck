@@ -21,10 +21,10 @@ import com.android.build.gradle.internal.api.DefaultAndroidSourceDirectorySet
 import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
 import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.android.build.gradle.internal.tasks.VariantAwareTask
-import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
+import modulecheck.gradle.internal.dependsOn
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidBaseExtension
@@ -203,18 +203,19 @@ internal class TaskFactory(
 
         val sourceSetName = sourceSet.name.asSourceSetName()
 
-        val jarDependencyConfigs = sourceSet.relatedConfigurationNames
-          .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
+        val jarDependencyConfigs = project.provider {
+          sourceSet.relatedConfigurationNames
+            .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
+        }
 
         val resolveTask = ModuleCheckDependencyResolutionTask
           .register(project = project, sourceSetName = sourceSetName)
           .configuring { task ->
 
             task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
-            jarDependencyConfigs.forEach { cfg ->
-              task.dependsOn(cfg)
-              task.inputs.files(cfg)
-            }
+
+            task.dependsOn(jarDependencyConfigs)
+            task.inputs.files(jarDependencyConfigs)
           }
 
         rootTasks.forEach { it.dependsOn(resolveTask) }
@@ -233,23 +234,6 @@ internal class TaskFactory(
 
       val baseExtension = requireBaseExtension()
 
-      baseExtension.buildTypes.configureEach { buildType ->
-
-        val sourceSetName = buildType.name.asSourceSetName()
-
-        if (registered.add(sourceSetName)) {
-          afterAndroidVariants(
-            project = this@handleAndroidPlugin,
-            sourceSetName = sourceSetName,
-            variantName = buildType.name,
-            isTestingSourceSet = false,
-            resolutionConfigFactory = configFactory,
-            baseExtension = baseExtension,
-            rootTasks = rootTasks
-          )
-        }
-      }
-
       fun register(variant: AndroidBaseVariant, isTestingSourceSet: Boolean) {
         val sourceSetName = variant.sourceSets.last().name.asSourceSetName()
         if (registered.add(sourceSetName)) {
@@ -257,6 +241,20 @@ internal class TaskFactory(
             project = this@handleAndroidPlugin,
             sourceSetName = sourceSetName,
             variantName = variant.name,
+            isTestingSourceSet = isTestingSourceSet,
+            resolutionConfigFactory = configFactory,
+            baseExtension = baseExtension,
+            rootTasks = rootTasks
+          )
+        }
+      }
+
+      fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
+        if (registered.add(sourceSetName)) {
+          afterAndroidVariants(
+            project = this@handleAndroidPlugin,
+            sourceSetName = sourceSetName,
+            variantName = null,
             isTestingSourceSet = isTestingSourceSet,
             resolutionConfigFactory = configFactory,
             baseExtension = baseExtension,
@@ -275,24 +273,11 @@ internal class TaskFactory(
         variant.unitTestVariantOrNull()?.let { unitTestVariant ->
           register(unitTestVariant, isTestingSourceSet = true)
         }
-      }
 
-      fun register(sourceSetName: SourceSetName, isTestingSourceSet: Boolean) {
-        if (registered.add(sourceSetName)) {
-          afterAndroidVariants(
-            project = this@handleAndroidPlugin,
-            sourceSetName = sourceSetName,
-            variantName = null,
-            isTestingSourceSet = isTestingSourceSet,
-            resolutionConfigFactory = configFactory,
-            baseExtension = baseExtension,
-            rootTasks = rootTasks
-          )
-        }
+        register(SourceSetName.MAIN, isTestingSourceSet = false)
+        register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
+        register(SourceSetName.TEST, isTestingSourceSet = true)
       }
-      register(SourceSetName.MAIN, isTestingSourceSet = false)
-      register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
-      register(SourceSetName.TEST, isTestingSourceSet = true)
     }
   }
 
@@ -314,9 +299,11 @@ internal class TaskFactory(
       "androidJdkImage"
     ).mapNotNull { configName -> project.configurations.findByName(configName) }
 
-    val jarDependencyConfigs = sourceSet.relatedConfigurationNames
-      .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
-      .plus(androidSdkJarConfigs)
+    val jarDependencyConfigs = project.provider {
+      sourceSet.relatedConfigurationNames
+        .jarDependencyResolutionConfigs(project, resolutionConfigFactory)
+        .plus(androidSdkJarConfigs)
+    }
 
     val sourceSetCaps = sourceSetName.value.capitalize()
 
@@ -332,10 +319,9 @@ internal class TaskFactory(
 
         task.classpathFile.set(Classpath.reportFile(project, sourceSetName))
 
-        jarDependencyConfigs.forEach { cfg ->
-          task.dependsOn(cfg)
-          task.inputs.files(cfg)
-        }
+        task.dependsOn(jarDependencyConfigs)
+        task.inputs.files(jarDependencyConfigs)
+
         task.dependsOn(androidResourceArtifactsConfig)
         task.inputs.files(androidResourceArtifactsConfig)
 

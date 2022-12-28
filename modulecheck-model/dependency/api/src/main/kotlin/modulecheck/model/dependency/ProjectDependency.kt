@@ -15,8 +15,6 @@
 
 package modulecheck.model.dependency
 
-import modulecheck.model.sourceset.SourceSetName
-
 /**
  * Represents a specific dependency upon an internal project dependency.
  *
@@ -78,28 +76,6 @@ sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
    * @since 0.12.0
    */
   operator fun component3(): Boolean = isTestFixture
-
-  /**
-   * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
-   *     configuration. For a simple `implementation` configuration, this returns `main`. For a
-   *     `debugImplementation`, it would return `debug`.
-   * @since 0.12.0
-   */
-  fun declaringSourceSetName(sourceSets: SourceSets): SourceSetName = when {
-    // <anyConfig>(testFixtures(___))
-    isTestFixture -> {
-      SourceSetName.TEST_FIXTURES
-    }
-
-    // testFixturesApi(___)
-    configurationName.toSourceSetName() == SourceSetName.TEST_FIXTURES -> {
-      SourceSetName.MAIN
-    }
-
-    else -> {
-      configurationName.toSourceSetName().nonTestSourceSetName(sourceSets)
-    }
-  }
 
   /**
    * Let's pretend this is a data class.

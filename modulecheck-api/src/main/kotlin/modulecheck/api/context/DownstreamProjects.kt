@@ -16,6 +16,7 @@
 package modulecheck.api.context
 
 import modulecheck.model.dependency.DownstreamDependency
+import modulecheck.model.dependency.TransitiveProjectDependency
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
@@ -38,6 +39,7 @@ data class DownstreamProjects(
           otherProject
             .classpathDependencies()
             .all()
+            .filterIsInstance<TransitiveProjectDependency>()
             .filter { it.contributed.project(project) == project }
             .map { transitive ->
               DownstreamDependency(
