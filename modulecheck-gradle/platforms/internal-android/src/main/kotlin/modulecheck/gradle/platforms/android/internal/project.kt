@@ -114,14 +114,11 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
  */
 fun GradleProject.onAndroidPlugin(agpApiAccess: AgpApiAccess, action: BasePlugin.() -> Unit) {
 
-  agpApiAccess.ifSafeOrNull(this) {
+  agpApiAccess.whenSafe(this) {
 
     plugins.withType(BasePlugin::class.java) { plugin ->
       action(plugin)
     }
-    // pluginManager.withPlugin("com.android.application") { plugin ->
-    //   action(plugin as BasePlugin)
-    // }
   }
 }
 

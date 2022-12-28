@@ -15,7 +15,6 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
-import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.classpathDependencies
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
@@ -26,10 +25,7 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.utils.coroutines.distinct
 import modulecheck.utils.coroutines.flatMapListMerge
-import modulecheck.utils.coroutines.mapAsync
-import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import javax.inject.Inject
 
 /**
@@ -52,7 +48,7 @@ class DependencyModuleDescriptorAccess @Inject constructor(
   suspend fun projectDependencies(
     projectPath: ProjectPath,
     sourceSetName: SourceSetName
-  ): List<ModuleDescriptorImpl> {
+  ): List<KotlinEnvironment> {
 
     return projectCache.getValue(projectPath)
       .classpathDependencies()
@@ -72,46 +68,10 @@ class DependencyModuleDescriptorAccess @Inject constructor(
           includeSelf = false
         )
       )
-      .mapAsync { dependencyKotlinEnvironment ->
-        dependencyKotlinEnvironment.moduleDescriptorDeferred.await()
+      .distinctBy {
+        it as RealKotlinEnvironment
+        it.projectPath to it.sourceSetName
       }
-      .distinct()
-      .toList()
-  }
-
-  /**
-   * @return all descriptors for the dependencies of a given project's source set. These descriptors
-   *     are globally cached and shared.
-   * @since 0.13.0
-   */
-  suspend fun externalDependencies(
-    projectPath: ProjectPath,
-    sourceSetName: SourceSetName
-  ): List<ModuleDescriptorImpl> {
-
-    return projectCache.getValue(projectPath)
-      .projectDependencies[sourceSetName]
-      .flatMapListMerge { dep ->
-
-        val dependencyProject = projectCache.getValue(dep.projectPath)
-        val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.sourceSets)
-
-        dependencyProject.externalDependencies[sourceSetName]
-          .filter { it.configurationName.isApi() }
-
-        dependencySourceSetName.upstreamEnvironments(dependencyProject, includeSelf = true)
-      }
-      .plus(
-        sourceSetName.upstreamEnvironments(
-          project = projectCache.getValue(projectPath),
-          includeSelf = false
-        )
-      )
-      .mapAsync { dependencyKotlinEnvironment ->
-        dependencyKotlinEnvironment.moduleDescriptorDeferred.await()
-      }
-      .distinct()
-      .toList()
   }
 
   private suspend fun SourceSetName.upstreamEnvironments(

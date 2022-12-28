@@ -69,10 +69,6 @@ class ResolutionConfigFactory {
     sourceConfiguration: Configuration
   ): Configuration {
 
-    if (project.path == ":core:core") {
-      println("########### config ${sourceConfiguration.name}")
-    }
-
     val copy = sourceConfiguration.copyRecursive().setTransitive(true)
 
     copy as DefaultConfiguration

@@ -16,7 +16,7 @@
 package modulecheck.gradle.task
 
 import com.android.builder.aar.AarExtractor
-import modulecheck.gradle.configuring
+import modulecheck.gradle.internal.configuring
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject

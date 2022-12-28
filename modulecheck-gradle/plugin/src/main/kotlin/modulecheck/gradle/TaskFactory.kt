@@ -24,6 +24,7 @@ import com.android.build.gradle.internal.tasks.VariantAwareTask
 import com.android.build.gradle.tasks.GenerateBuildConfig
 import com.android.build.gradle.tasks.ManifestProcessorTask
 import modulecheck.finding.FindingName
+import modulecheck.gradle.internal.configuring
 import modulecheck.gradle.internal.dependsOn
 import modulecheck.gradle.platforms.Classpath
 import modulecheck.gradle.platforms.android.AgpApiAccess
@@ -42,7 +43,6 @@ import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.utils.capitalize
 import org.gradle.api.DefaultTask
-import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.FileCollectionDependency
 import org.gradle.api.file.FileCollection
@@ -278,6 +278,23 @@ internal class TaskFactory(
         register(SourceSetName.ANDROID_TEST, isTestingSourceSet = true)
         register(SourceSetName.TEST, isTestingSourceSet = true)
       }
+
+      // baseExtension.buildTypes.configureEach { buildType ->
+      //
+      //   val sourceSetName = buildType.name.asSourceSetName()
+      //
+      //   if (registered.add(sourceSetName)) {
+      //     afterAndroidVariants(
+      //       project = this@handleAndroidPlugin,
+      //       sourceSetName = sourceSetName,
+      //       variantName = buildType.name,
+      //       isTestingSourceSet = false,
+      //       resolutionConfigFactory = configFactory,
+      //       baseExtension = baseExtension,
+      //       rootTasks = rootTasks
+      //     )
+      //   }
+      // }
     }
   }
 
@@ -391,19 +408,3 @@ fun File.hasSource() = walkBottomUp()
 
 fun FileCollection.asDependency(): FileCollectionDependency =
   DefaultSelfResolvingDependency(this as FileCollectionInternal)
-
-/**
- * Lazily configures the provided Task without relying upon the Kotlin Gradle DSL.
- *
- * ex:
- * ```
- * tasks.register("myTask", MyTaskClass::class.java, arg0).configuring { task ->
- *   task.someInput.set(...)
- * }
- * ```
- *
- * @since 0.13.0
- */
-fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
-  configure(action)
-}

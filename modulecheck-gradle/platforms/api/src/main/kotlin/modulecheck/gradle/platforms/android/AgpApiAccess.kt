@@ -15,6 +15,7 @@
 
 package modulecheck.gradle.platforms.android
 
+import com.android.build.gradle.BasePlugin
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.model.GradleProject
@@ -86,6 +87,27 @@ class AgpApiAccess @Inject constructor() {
       null
     }
   }
+
+  /**
+   * performs [action] if AGP is in the classpath and AGP is applied to this specific [project].
+   *
+   * @param project the project to be used for this [SafeAgpApiReferenceScope]
+   * @param action the action to perform if AGP is in the classpath and AGP is applied to this
+   *     specific [project]
+   * @return the output `T` of this [action], or `null` if AGP is not in the classpath
+   * @since 0.12.0
+   */
+  inline fun whenSafe(
+    project: GradleProject,
+    crossinline action: SafeAgpApiReferenceScope.() -> Unit
+  ) {
+
+    if (!androidIsInClasspath) return
+
+    project.plugins.withType(BasePlugin::class.java) {
+      SafeAgpApiReferenceScope(this, project).action()
+    }
+  }
 }
 
 /**
@@ -93,9 +115,7 @@ class AgpApiAccess @Inject constructor() {
  * @since 0.12.0
  */
 @OptIn(UnsafeDirectAgpApiReference::class)
-fun GradleProject.isAndroid(
-  agpApiAccess: AgpApiAccess
-): Boolean {
+fun GradleProject.isAndroid(agpApiAccess: AgpApiAccess): Boolean {
 
   if (!agpApiAccess.androidIsInClasspath) return false
 
@@ -103,7 +123,5 @@ fun GradleProject.isAndroid(
 
   val extension = extensions.findByName("android") ?: return false
 
-  return with(SafeAgpApiReferenceScope(agpApiAccess, this)) {
-    extension is AndroidCommonExtension
-  }
+  return extension is AndroidCommonExtension
 }

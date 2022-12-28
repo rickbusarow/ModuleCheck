@@ -37,3 +37,19 @@ fun <T : Task> TaskProvider<out T>.dependsOn(
 
   return this
 }
+
+/**
+ * Lazily configures the provided Task without relying upon the Kotlin Gradle DSL.
+ *
+ * ex:
+ * ```
+ * tasks.register("myTask", MyTaskClass::class.java, arg0).configuring { task ->
+ *   task.someInput.set(...)
+ * }
+ * ```
+ *
+ * @since 0.13.0
+ */
+fun <T : Task> TaskProvider<T>.configuring(action: (T) -> Unit) = apply {
+  configure(action)
+}

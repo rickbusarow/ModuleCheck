@@ -35,7 +35,6 @@ import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
@@ -76,7 +75,7 @@ import javax.inject.Inject
  * @since 0.13.0
  */
 @Suppress("LongParameterList")
-class RealKotlinEnvironment(
+data class RealKotlinEnvironment(
   override val projectPath: StringProjectPath,
   override val sourceSetName: SourceSetName,
   val classpathFiles: LazyDeferred<List<File>>,
@@ -145,15 +144,17 @@ class RealKotlinEnvironment(
     val ktFiles = kotlinSourceFiles
       .map { file -> psiFactory.createKotlin(file) }
 
-    val descriptors = dependencyModuleDescriptorAccess.projectDependencies(
+    val (friends, dependencies) = dependencyModuleDescriptorAccess.projectDependencies(
       projectPath = projectPath,
       sourceSetName = sourceSetName
     )
+      .partition { (it as RealKotlinEnvironment).projectPath == projectPath }
 
     createAnalysisResult(
       coreEnvironment = coreEnvironment.await(),
       ktFiles = ktFiles,
-      dependencyModuleDescriptors = descriptors
+      dependencyModuleDescriptors = dependencies.map { it.moduleDescriptorDeferred.await() },
+      friendModuleDescriptors = friends.map { it.moduleDescriptorDeferred.await() }
     )
   }
 
@@ -167,22 +168,23 @@ class RealKotlinEnvironment(
 
   private val messageCollector by lazy {
 
-    if (projectPath.value == ":core:core") {
-      // if (projectPath.value == ":core:jvm") {
-      McMessageCollector(
-        messageRenderer = MessageRenderer.GRADLE_STYLE,
-        logger = logger,
-        logLevel = McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
-      )
-    } else {
+    // if (projectPath.value == ":core:core") {
+    // if (projectPath.value == ":core:jvm") {
+    // McMessageCollector(
+    //   messageRenderer = MessageRenderer.GRADLE_STYLE,
+    //   logger = logger,
+    //   logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
+    // )
+    // } else {
       MessageCollector.NONE
-    }
+    // }
   }
 
   private suspend fun createAnalysisResult(
     coreEnvironment: KotlinCoreEnvironment,
     ktFiles: List<KtFile>,
-    dependencyModuleDescriptors: List<ModuleDescriptorImpl>
+    dependencyModuleDescriptors: List<ModuleDescriptorImpl>,
+    friendModuleDescriptors: List<ModuleDescriptorImpl>
   ): AnalysisResult = withIO {
 
     val analyzer = AnalyzerWithCompilerReport(
@@ -190,6 +192,8 @@ class RealKotlinEnvironment(
       languageVersionSettings = coreEnvironment.configuration.languageVersionSettings,
       renderDiagnosticName = false
     )
+
+    println("start analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 
     analyzer.analyzeAndReport(ktFiles) {
       TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
@@ -199,8 +203,8 @@ class RealKotlinEnvironment(
         configuration = coreEnvironment.configuration,
         packagePartProvider = coreEnvironment::createPackagePartProvider,
         declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
-        explicitModuleDependencyList = dependencyModuleDescriptors,
-        explicitModuleFriendsList = dependencyModuleDescriptors
+        explicitModuleDependencyList = dependencyModuleDescriptors + friendModuleDescriptors,
+        explicitModuleFriendsList = friendModuleDescriptors
       )
     }
 
@@ -209,7 +213,10 @@ class RealKotlinEnvironment(
       mc.printIssuesCountIfAny()
     }
 
-    println("finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
+    println(
+      "                                                                      " +
+        "finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}"
+    )
 
     analyzer.analysisResult
   }

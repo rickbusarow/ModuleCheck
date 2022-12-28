@@ -18,6 +18,7 @@ package modulecheck.parsing.kotlin.compiler.impl
 import modulecheck.parsing.kotlin.compiler.impl.McMessageCollector.LogLevel.ERRORS
 import modulecheck.parsing.kotlin.compiler.impl.McMessageCollector.LogLevel.VERBOSE
 import modulecheck.parsing.kotlin.compiler.impl.McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
+import modulecheck.parsing.kotlin.compiler.impl.McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
 import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
@@ -54,10 +55,28 @@ internal class McMessageCollector(
         ignoredMessages++
       }
 
-      VERBOSE -> if (severity.isWarning || severity.isError) {
-        logger.printFailureLine(messageRenderer.render(severity, message, location))
-      } else {
-        logger.printInfo(messageRenderer.render(severity, message, location))
+      WARNINGS_AS_WARNINGS -> when {
+        severity.isError -> {
+          logger.printFailureLine(messageRenderer.render(severity, message, location))
+        }
+
+        severity.isWarning -> {
+          logger.printWarningLine(messageRenderer.render(severity, message, location))
+        }
+      }
+
+      VERBOSE -> when {
+        severity.isError -> {
+          logger.printFailureLine(messageRenderer.render(severity, message, location))
+        }
+
+        severity.isWarning -> {
+          logger.printWarningLine(messageRenderer.render(severity, message, location))
+        }
+
+        else -> {
+          logger.printInfo(messageRenderer.render(severity, message, location))
+        }
       }
     }
   }
@@ -78,6 +97,7 @@ internal class McMessageCollector(
   enum class LogLevel {
     ERRORS,
     WARNINGS_AS_ERRORS,
+    WARNINGS_AS_WARNINGS,
     VERBOSE
   }
 }

@@ -15,7 +15,7 @@
 
 package modulecheck.model.dependency
 
-data class TransitiveProjectDependency constructor(
+data class TransitiveProjectDependency(
   val source: ProjectDependency,
   val contributed: ProjectDependency
 ) {
