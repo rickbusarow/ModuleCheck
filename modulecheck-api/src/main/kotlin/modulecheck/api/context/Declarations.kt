@@ -76,7 +76,7 @@ class Declarations private constructor(
     return delegate.getOrPut(key) {
       val components = mutableListOf<LazySetComponent<DeclaredName>>()
 
-      val sourceSetSeed = if (includeUpstream) {
+      if (includeUpstream) {
         sourceSetName.withUpstream(project)
           .filterNot { it == SourceSetName.TEST_FIXTURES }
           .forEach { sourceSetOrUpstream ->
@@ -84,7 +84,7 @@ class Declarations private constructor(
           }
       } else {
 
-      sourceSetSeed.forEach { sourceSetOrUpstream ->
+        val rNameOrNull = project.androidRDeclaredNameForSourceSetName(sourceSetName)
 
         project.jvmFilesForSourceSetName(sourceSetName)
           .toList()
