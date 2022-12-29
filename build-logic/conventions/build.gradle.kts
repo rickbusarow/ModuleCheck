@@ -18,7 +18,9 @@ buildscript {
     // Gradle 7.6 has a dependency resolution bug which tries to use Kotlin 1.7.10
     // for transitive dependencies like `sam-with-receiver`.
     // https://github.com/gradle/gradle/issues/22510
-    classpath(libs.kotlin.sam.with.receiver)
+
+    classpath(libs.kotlin.serialization)
+classpath(libs.kotlin.sam.with.receiver)
   }
 }
 
@@ -81,6 +83,10 @@ gradlePlugin {
       id = "mcbuild.website"
       implementationClass = "modulecheck.builds.WebsitePlugin"
     }
+    create("mcbuild.wire") {
+      id = "mcbuild.wire"
+      implementationClass = "modulecheck.builds.WireConventionPlugin"
+    }
   }
 }
 
@@ -98,9 +104,13 @@ dependencies {
   implementation(libs.benManes.versions)
   implementation(libs.detekt.gradle)
   implementation(libs.dokka.gradle)
+  implementation(libs.square.wire.gradle)
   implementation(libs.dropbox.dependencyGuard)
   implementation(libs.google.dagger.api)
   implementation(libs.google.ksp)
+  implementation(libs.kotlin.serialization)
+  implementation(libs.kotlinx.serialization.core)
+  implementation(libs.kotlinx.serialization.protobuf)
   implementation(libs.jmailen.kotlinter)
   implementation(libs.kotlin.compiler)
   implementation(libs.kotlin.gradle.plug)

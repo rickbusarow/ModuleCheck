@@ -106,6 +106,7 @@ dependencies {
   compileOnly(libs.agp.builder.model)
   compileOnly(libs.kotlin.gradle.plug)
   compileOnly(libs.kotlin.gradle.plugin.api)
+  compileOnly(libs.kotlinx.serialization.core)
   compileOnly(libs.square.anvil.gradle)
 
   implementation(libs.google.dagger.api)

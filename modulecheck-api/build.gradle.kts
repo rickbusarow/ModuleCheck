@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-api"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
   implementation(libs.kotlin.compiler)
 
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
+  implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

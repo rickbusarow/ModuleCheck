@@ -15,11 +15,14 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
+
 /**
  * Represents a specific dependency upon an internal project dependency.
  *
  * @since 0.12.0
  */
+@Serializable
 sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
 
   /**
@@ -37,6 +40,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
    * @since 0.12.0
    */
+  @Serializable
   class RuntimeProjectDependency(
     override val configurationName: ConfigurationName,
     override val projectPath: ProjectPath,
@@ -52,6 +56,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
    * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGenerator]
    * @since 0.12.0
    */
+  @Serializable
   class CodeGeneratorProjectDependency(
     override val configurationName: ConfigurationName,
     override val projectPath: ProjectPath,

@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
+@file:UseSerializers(FileAsStringSerializer::class)
+
 package modulecheck.parsing.android
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import modulecheck.parsing.source.HasReferences
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.PackageName
@@ -26,6 +30,7 @@ import modulecheck.utils.lazy.asDataSource
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.toLazySet
 import modulecheck.utils.mapToSet
+import modulecheck.utils.serialization.FileAsStringSerializer
 import java.io.File
 
 interface XmlFile : HasReferences {
@@ -34,6 +39,7 @@ interface XmlFile : HasReferences {
 
   val resourceReferencesAsRReferences: Set<String>
 
+  @Serializable
   data class LayoutFile(
     override val file: File
   ) : XmlFile {
@@ -93,6 +99,7 @@ interface XmlFile : HasReferences {
     ).toLazySet()
   }
 
+  @Serializable
   data class ManifestFile(
     override val file: File
   ) : XmlFile {

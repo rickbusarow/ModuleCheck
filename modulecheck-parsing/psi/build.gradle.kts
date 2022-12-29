@@ -19,6 +19,7 @@ plugins {
 
 mcbuild {
   artifactId = "modulecheck-parsing-psi"
+  serialization()
 }
 
 dependencies {

@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
@@ -42,6 +43,7 @@ interface HasReferences {
  *
  * @since 0.12.0
  */
+@Serializable
 sealed class ReferenceName : McName {
   /**
    * The [language][CompatibleLanguage] of the file making this reference
@@ -117,6 +119,7 @@ sealed class ReferenceName : McName {
   }
 }
 
+@Serializable
 private class ReferenceNameImpl(
   override val name: String,
   override val language: CompatibleLanguage

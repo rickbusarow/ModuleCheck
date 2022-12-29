@@ -28,7 +28,7 @@ class VersionsMatrix(
   val anvilList = anvilArg?.singletonList()
     ?: listOf("2.4.3", "2.4.3-1-8-0-RC")
   val gradleList = gradleArg?.singletonList()
-    ?: listOf("7.2", "7.4.2", "7.5.1", "7.6")
+    ?: listOf("7.2", "7.4.2", "7.5.1", "7.6", "8.0-rc-1")
   val kotlinList = kotlinArg?.singletonList()
     ?: listOf("1.7.0", "1.7.10", "1.7.22", "1.8.0-RC2")
 

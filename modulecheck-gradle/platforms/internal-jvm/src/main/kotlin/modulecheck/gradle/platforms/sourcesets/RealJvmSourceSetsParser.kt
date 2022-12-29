@@ -48,11 +48,8 @@ class RealJvmSourceSetsParser @Inject constructor(
     parsedConfigurations: Configurations,
     gradleProject: GradleProject
   ): SourceSets {
-    val map = buildMap<SourceSetName, McSourceSet> {
+    val map = buildMap {
       val kotlinExtensionOrNull = gradleProject.getKotlinExtensionOrNull()
-
-      val javaExtension = gradleProject.extensions
-        .findByType(JavaPluginExtension::class.java)
 
       val jvmTarget = gradleProject.jvmTarget()
 

@@ -15,11 +15,21 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
+import kotlinx.serialization.serializer
+import modulecheck.model.sourceset.SourceSetName
+
 /**
  * Cache of [configurations][McConfiguration], probably at the project level.
  *
  * @since 0.13.0
  */
+@Serializable(with = ConfigurationsSerializer::class)
 class Configurations(
   delegate: Map<ConfigurationName, McConfiguration>
 ) : Map<ConfigurationName, McConfiguration> by delegate {
@@ -29,6 +39,34 @@ class Configurations(
   }
 }
 
+object ConfigurationsSerializer : KSerializer<Configurations> {
+
+  private val delegate: KSerializer<Map<ConfigurationName, McConfiguration>> = serializer()
+
+  override val descriptor = delegate.descriptor
+
+  override fun serialize(encoder: Encoder, value: Configurations) {
+    encoder.encodeSerializableValue(delegate, value)
+  }
+
+  override fun deserialize(decoder: Decoder): Configurations {
+    return Configurations(decoder.decodeSerializableValue(delegate))
+  }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+fun main() {
+  val descriptors = listOf(
+    ProjectDependency.serializer().descriptor,
+    McConfiguration.serializer().descriptor,
+    McSourceSet.serializer().descriptor,
+    SourceSetName.serializer().descriptor
+  )
+  val schemas = ProtoBufSchemaGenerator.generateSchemaText(descriptors)
+  println(schemas)
+}
+
+@Serializable
 data class McConfiguration(
   val name: ConfigurationName,
   val projectDependencies: Set<ProjectDependency>,

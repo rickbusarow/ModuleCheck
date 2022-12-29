@@ -46,6 +46,7 @@ kotlin = "1.8.0-RC2"
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.4"
 kotlinx-knit = "0.4.0"
+kotlinx-serialization = "1.4.1"
 
 ktlint-plugin = "11.0.0"
 ktlint-lib = "0.47.1"
@@ -62,6 +63,7 @@ square-anvil = "2.4.3-1-8-0-RC"
 square-moshi = "1.14.0"
 square-okio = "3.2.0"
 square-retrofit = "2.9.0"
+square-wire = "4.4.3"
 square-workflow = "1.0.0"
 
 targetSdk = "30"
@@ -156,6 +158,7 @@ kotlin-gradle-plug = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", ver
 kotlin-gradle-plugin-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin-api", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-sam-with-receiver = { module = "org.jetbrains.kotlin:kotlin-sam-with-receiver", version.ref = "kotlin" }
+kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 kotlin-stdlib-common = { module = "org.jetbrains.kotlin:kotlin-stdlib-common", version.ref = "kotlin" }
 kotlin-stdlib-core = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib-jdk7 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk7", version.ref = "kotlin" }
@@ -174,6 +177,10 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 
 kotlinx-knit = { module = "org.jetbrains.kotlinx:kotlinx-knit", version.ref = "knit" }
 kotlinx-knit-pathSaver = { module = "org.jetbrains.kotlinx:dokka-pathsaver-plugin", version.ref = "knit" }
+
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "kotlinx-serialization" }
 
 ktlint-core = { module = "com.pinterest.ktlint:ktlint-core", version.ref = "ktlint-lib" }
 ktlint-gradle = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint-plugin" }
@@ -215,6 +222,8 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
 square-turbine = "app.cash.turbine:turbine:0.12.1"
+
+square-wire-gradle = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "square-wire" }
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 

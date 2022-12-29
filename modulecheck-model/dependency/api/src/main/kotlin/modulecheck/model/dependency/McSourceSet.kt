@@ -12,14 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.serializer
 import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.sequenceOfNotNull
+import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
@@ -32,9 +40,25 @@ interface HasSourceSets {
  *
  * @since 0.13.0
  */
+@Serializable(with = SourceSetsSerializer::class)
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
+
+object SourceSetsSerializer : KSerializer<SourceSets> {
+
+  private val delegate: KSerializer<Map<SourceSetName, McSourceSet>> = serializer()
+
+  override val descriptor = delegate.descriptor
+
+  override fun serialize(encoder: Encoder, value: SourceSets) {
+    encoder.encodeSerializableValue(delegate, value)
+  }
+
+  override fun deserialize(decoder: Decoder): SourceSets {
+    return SourceSets(decoder.decodeSerializableValue(delegate))
+  }
+}
 
 /**
  * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
@@ -66,6 +90,7 @@ class SourceSets(
  *     is `main`
  * @since 0.12.0
  */
+@Serializable
 @Suppress("LongParameterList")
 class McSourceSet(
   val name: SourceSetName,

@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-parsing-core"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -33,6 +34,7 @@ dependencies {
   implementation(libs.groovyXml)
 
   implementation(project(path = ":modulecheck-utils:lazy"))
+  implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

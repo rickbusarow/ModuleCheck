@@ -12,9 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.gradle.platforms
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
 import modulecheck.model.dependency.AndroidSdk.Companion.parseAndroidSdkJarFromPath
 import modulecheck.model.dependency.Identifier
 import modulecheck.model.dependency.MavenCoordinates.Companion.parseMavenCoordinatesFromGradleCache
@@ -22,10 +25,11 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.project.McProject
 import modulecheck.utils.requireExists
+import modulecheck.utils.serialization.FileAsStringSerializer
 import java.io.File
 
-@JvmInline
-value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
+@Serializable
+data class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFile>) {
 
   fun coordinates() = mavenCoordinatesWithFiles.map { it.identifier }
   fun files() = mavenCoordinatesWithFiles.map { it.file }
@@ -103,6 +107,7 @@ value class Classpath(val mavenCoordinatesWithFiles: List<MavenCoordinatesWithFi
     }
   }
 
+  @Serializable
   data class MavenCoordinatesWithFile(
     val identifier: Identifier,
     val file: File

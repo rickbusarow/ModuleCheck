@@ -15,10 +15,12 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.lazy.unsafeLazy
 import modulecheck.utils.segments
 import java.io.File
 
+@Serializable
 data class MavenCoordinates(
   /**
    * In `com.google.dagger:dagger:2.32`, this is `com.google.dagger:__:__`.
@@ -78,29 +80,9 @@ data class MavenCoordinates(
         ?.let { parseOrNull(it) }
     }
   }
-
-  // override fun equals(other: Any?): Boolean {
-  //   if (this === other) return true
-  //   if (javaClass != other?.javaClass) return false
-  //
-  //   other as MavenCoordinates
-  //
-  //   if (group != other.group) return false
-  //   if (moduleName != other.moduleName) return false
-  //   // if either version is null (or both), that's a wildcard, and they match
-  //   if (version != null && other.version != null && version != other.version) return false
-  //
-  //   return true
-  // }
-  //
-  // override fun hashCode(): Int {
-  //   var result = group?.hashCode() ?: 0
-  //   result = 31 * result + moduleName.hashCode()
-  //   result = 31 * result + (version?.hashCode() ?: 0)
-  //   return result
-  // }
 }
 
+@Serializable
 sealed interface Identifier : Comparable<Identifier> {
   val name: String
 
@@ -109,13 +91,16 @@ sealed interface Identifier : Comparable<Identifier> {
   }
 }
 
+@Serializable
 sealed class AndroidSdk : Identifier {
   abstract val version: Int
 
+  @Serializable
   data class Full(override val version: Int) : AndroidSdk() {
     override val name: String = "android-sdk-jar-$version-full"
   }
 
+  @Serializable
   data class CoreForSystemModules(override val version: Int) : AndroidSdk() {
     override val name: String = "android-sdk-jar-$version-core"
   }

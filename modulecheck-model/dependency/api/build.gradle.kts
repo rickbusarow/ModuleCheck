@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-model-dependency-api"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -32,6 +33,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
+  implementation(project(path = ":modulecheck-utils:serialization"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

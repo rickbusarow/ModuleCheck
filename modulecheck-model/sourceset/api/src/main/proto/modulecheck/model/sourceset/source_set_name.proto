@@ -1,0 +1,98 @@
+syntax = "proto2";
+
+package modulecheck.model.sourceset;
+
+message SourceSetName_Proto {
+  required string value = 1;
+}
+
+message ProjectPath_Proto {
+  required string value = 1;
+}
+
+message McSourceSet_Proto {
+  required SourceSetName_Proto name = 1;
+  required McConfiguration_Proto compile_only_configuration = 2;
+  optional McConfiguration_Proto api_configuration = 3;
+  required McConfiguration_Proto implementation_configuration = 4;
+  required McConfiguration_Proto runtime_only_configuration = 5;
+  optional McConfiguration_Proto annotation_protcessor_configuration = 6;
+  repeated string jvm_files = 7;
+  repeated string resource_files = 8;
+  repeated string layout_files = 9;
+  required JvmTarget_Proto jvm_target = 10;
+  repeated SourceSetName_Proto upstream = 11;
+  repeated SourceSetName_Proto downstream = 12;
+}
+
+enum JvmTarget_Proto {
+  JVM_6 = 0;
+  JVM_8 = 1;
+  JVM_9 = 2;
+  JVM_10 = 3;
+  JVM_11 = 4;
+  JVM_12 = 5;
+  JVM_13 = 6;
+  JVM_14 = 7;
+  JVM_15 = 8;
+  JVM_16 = 9;
+  JVM_17 = 10;
+  JVM_18 = 11;
+}
+
+
+message RuntimeProjectDependency_Proto {
+  required ConfigurationName_Proto configuration_name = 1;
+  required ProjectPath_Proto path = 2;
+  required bool is_test_fixture = 3;
+}
+
+message CodeGeneratorProjectDependency_Proto {
+  required ConfigurationName_Proto configuration_name = 1;
+  required ProjectPath_Proto path = 2;
+  required bool is_test_fixture = 3;
+  optional CodeGenerator_Proto code_generator_binding_or_null = 4;
+}
+
+message CodeGenerator_Proto {
+  required string extension_type_name = 1;
+  repeated ConfigurationName_Proto base_config_names = 2;
+  required string name = 3;
+  required string generator_maven_coordinates = 4;
+  repeated string annotation_names = 5;
+}
+
+message ExternalRuntimeDependency_Proto {
+  required ConfigurationName_Proto configuration_name = 1;
+  required string group = 2;
+  required string module_name = 3;
+  required string version = 4;
+  required bool is_test_fixture = 5;
+}
+
+message ExternalCodeGeneratorDependency_Proto {
+  required ConfigurationName_Proto configuration_name = 1;
+  required string group = 2;
+  required string module_name = 3;
+  required string version = 4;
+  required bool is_test_fixture = 5;
+  optional CodeGenerator_Proto code_generator_binding_or_null = 6;
+}
+
+message ConfigurationName_Proto {
+  required string value = 1;
+}
+
+message McConfiguration_Proto {
+  required ConfigurationName_Proto name = 1;
+
+  repeated RuntimeProjectDependency_Proto runtime_project_dependencies = 2;
+  repeated CodeGeneratorProjectDependency_Proto code_generator_project_dependencies = 3;
+
+
+  repeated ExternalRuntimeDependency_Proto runtime_external_dependencies = 4;
+  repeated ExternalCodeGeneratorDependency_Proto code_generator_external_dependencies = 5;
+
+  repeated McConfiguration_Proto upstream = 6;
+  repeated McConfiguration_Proto downstream = 7;
+}
