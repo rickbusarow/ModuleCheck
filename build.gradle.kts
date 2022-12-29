@@ -29,18 +29,7 @@ plugins {
   alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
   base
-  id("mcbuild.artifacts-check")
-  id("mcbuild.ben-manes")
-  id("mcbuild.clean")
-  id("mcbuild.dependency-guard-aggregate")
-  id("mcbuild.detekt")
-  id("mcbuild.dokka")
-  id("mcbuild.knit")
-  id("mcbuild.kotlin")
-  id("mcbuild.ktlint")
-  id("mcbuild.matrix-yaml")
-  id("mcbuild.test")
-  id("mcbuild.website")
+  id("mcbuild.root")
 }
 
 moduleCheck {

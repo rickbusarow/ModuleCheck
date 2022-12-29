@@ -13,37 +13,15 @@
  * limitations under the License.
  */
 
-rootProject.name = "build-logic"
+package modulecheck.builds
 
-pluginManagement {
-  repositories {
-    mavenCentral()
-    google()
-    maven("https://plugins.gradle.org/m2/")
-  }
+import org.gradle.api.Project
+
+fun Project.applyDagger() {
+  plugins.applyOnce("org.jetbrains.kotlin.kapt")
+  plugins.applyOnce("com.squareup.anvil")
+
+  dependencies.add("compileOnly", project.libsCatalog.dependency("javax-inject"))
+  dependencies.add("compileOnly", project.libsCatalog.dependency("google-dagger-api"))
+  dependencies.add("kapt", project.libsCatalog.dependency("google-dagger-compiler"))
 }
-
-dependencyResolutionManagement {
-  @Suppress("UnstableApiUsage")
-  repositories {
-    mavenCentral()
-    google()
-    maven("https://plugins.gradle.org/m2/")
-  }
-
-  @Suppress("UnstableApiUsage")
-  versionCatalogs {
-    create("libs") {
-      from(files("../gradle/libs.versions.toml"))
-    }
-  }
-}
-
-include(
-  ":artifacts-check",
-  ":conventions",
-  ":core",
-  ":ktlint-rules",
-  ":mcbuild",
-  ":versions-matrix"
-)

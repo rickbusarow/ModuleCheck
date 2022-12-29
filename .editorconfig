@@ -991,14 +991,27 @@ ij_groovy_while_on_new_line = false
 ij_groovy_wrap_chain_calls_after_dot = false
 ij_groovy_wrap_long_lines = false
 
-# for KtLint
-# https://github.com/pinterest/ktlint#custom-ktlint-specific-editorconfig-properties
-kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
-
 [{*.kt,*.kts}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
+# for KtLint
+# https://github.com/pinterest/ktlint#custom-ktlint-specific-editorconfig-properties
+# noinspection EditorConfigKeyCorrectness
+kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
+# Back-ticked method names are allowed to exceed the line length. That's especially helpful for
+# test methods with descriptive names.
+# noinspection EditorConfigKeyCorrectness
+ktlint_ignore_back_ticked_identifier = true
+##### Disabled KtLint rules
+# - experimental:function-signature - it looks terrible
+# - filename - same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and
+#     this can't
+# - max-line-length - manually formatting still does this, and KTLint will still wrap long chains when
+#     possible
+# - no-empty-first-line-in-method-block - code golf...
+# noinspection EditorConfigKeyCorrectness
+ktlint_disabled_rules = filename,experimental:function-signature,max-line-length,no-empty-first-line-in-method-block
 ij_kotlin_align_in_columns_case_branch = false
 ij_kotlin_align_multiline_binary_operation = false
 ij_kotlin_align_multiline_extends_list = false
