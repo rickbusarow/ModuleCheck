@@ -69,7 +69,7 @@ allprojects {
 
     configure<JavaPluginExtension> {
       @Suppress("MagicNumber")
-      toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+      toolchain.languageVersion.set(JavaLanguageVersion.of(11))
     }
   }
 
@@ -79,7 +79,7 @@ allprojects {
       languageVersion = "1.6"
       apiVersion = "1.6"
 
-      jvmTarget = "1.8"
+      jvmTarget = "11"
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-opt-in=kotlin.RequiresOptIn"
