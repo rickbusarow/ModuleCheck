@@ -15,6 +15,10 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import modulecheck.utils.lazy.LazySet
+
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
@@ -64,7 +68,7 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * @return true if the last segment of this symbol matches [str], otherwise false
+   * @return true if the last segment of this name matches [str], otherwise false
    * @since 0.12.0
    */
   fun endsWithSimpleName(str: String): Boolean {
@@ -72,7 +76,14 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * @return true if this [name] value ends with the name string of [other], otherwise false
+   * @return true if the last segment of this name matches [simpleName], otherwise false
+   * @since 0.13.0
+   */
+  fun endsWithSimpleName(simpleName: SimpleName): Boolean {
+    return name.split('.').last() == simpleName.name
+  }
+
+  /** @return true if the last segment of this name matches [other], otherwise false
    * @since 0.12.0
    */
   fun endsWith(other: McName): Boolean {
@@ -123,4 +134,18 @@ sealed interface McName : Comparable<McName> {
       override fun toString(): String = this::class.java.simpleName
     }
   }
+}
+
+/**
+ * An [McName] which has the potential to be resolved -- meaning any [ReferenceName], or a
+ * [QualifiedDeclaredName]
+ *
+ * @since 0.13.0
+ */
+sealed interface ResolvableMcName : McName
+
+suspend inline fun <reified T : McName> LazySet<McName>.getNameOrNull(element: McName): T? {
+  return takeIf { it.contains(element) }
+    ?.filterIsInstance<T>()
+    ?.firstOrNull { it == element }
 }

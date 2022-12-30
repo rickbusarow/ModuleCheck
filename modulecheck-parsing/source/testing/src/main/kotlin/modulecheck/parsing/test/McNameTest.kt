@@ -35,6 +35,7 @@ import modulecheck.parsing.source.QualifiedAndroidResourceDeclaredName
 import modulecheck.parsing.source.QualifiedAndroidResourceReferenceName
 import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.parsing.source.UnqualifiedAndroidResource
 import modulecheck.parsing.source.UnqualifiedAndroidResourceReferenceName
@@ -177,21 +178,23 @@ interface McNameTest : FancyShould {
 
   fun kotlin(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     DeclaredName.kotlin(packageName, name.stripPackageNameFromFqName(packageName))
 
   fun java(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     DeclaredName.java(packageName, name.stripPackageNameFromFqName(packageName))
 
   fun agnostic(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     name.stripPackageNameFromFqName(packageName).asDeclaredName(packageName)
+
+  fun String.asReferenceName() = this@asReferenceName.asReferenceName(defaultLanguage)
 
   fun androidR(packageName: PackageName = PackageName("com.test")): AndroidRReferenceName =
     AndroidRReferenceName(packageName, defaultLanguage)

@@ -17,10 +17,12 @@ package modulecheck.utils.coroutines
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.fold
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -310,4 +312,17 @@ fun <T> Sequence<T>.filterAsync(predicate: suspend (T) -> Boolean): Flow<T> {
   return channelFlow {
     forEach { launch { if (predicate(it)) send(it) } }
   }
+}
+
+/**
+ * Shorthand for `onCompletion { if (it == null) emitAll(other) }`
+ *
+ * ```
+ * val mySingleFlow = someFlow + someOtherFlow
+ * ```
+ *
+ * @since 0.13.0
+ */
+operator fun <T> Flow<T>.plus(other: Flow<T>): Flow<T> {
+  return onCompletion { if (it == null) emitAll(other) }
 }
