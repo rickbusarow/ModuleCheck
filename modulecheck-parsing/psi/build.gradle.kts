@@ -27,10 +27,10 @@ dependencies {
   api(libs.kotlin.compiler)
 
   api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
@@ -41,6 +41,7 @@ dependencies {
 
   implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
+  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
