@@ -38,6 +38,8 @@ interface HasReferences {
   val references: LazySet<ReferenceName>
 }
 
+
+
 /**
  * Represents a name -- fully qualified or not -- which references a declaration somewhere else
  *

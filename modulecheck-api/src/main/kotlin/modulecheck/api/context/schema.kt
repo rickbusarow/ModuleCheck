@@ -17,16 +17,12 @@
 
 package modulecheck.api.context
 
-import jdk.internal.org.jline.utils.Colors
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.decodeFromByteArray
-import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.encodeToHexString
 import kotlinx.serialization.protobuf.ProtoBuf
-import modulecheck.api.context.Color_Proto.Blue
-import modulecheck.api.context.Color_Proto.Red
+import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
@@ -45,23 +41,59 @@ import java.io.File
 
 @OptIn(ExperimentalSerializationApi::class)
 fun main() {
+
   val descriptors = listOf(
-    Colors.serializer().descriptor
+    ReferenceName_Proto.serializer().descriptor
+    // ReferenceName.serializer().descriptor
   )
+
+  val schemas = ProtoBufSchemaGenerator.generateSchemaText(descriptors)
+  println(schemas)
 
   val protoBuf = ProtoBuf { encodeDefaults = true }
 
-  val colors = Colors(listOf(Blue, Red, Blue))
+  println(
+    protoBuf.encodeToHexString(
+      ReferenceName_Proto(
+        "Butt",
+        null,
+        listOf(),
+        CompatibleLanguage_Proto.KOTLIN
+      )
+    )
+  )
+}
 
-  val encoded = protoBuf.encodeToByteArray(colors)
+@Serializable
+data class ReferenceName_Proto(
+  val simpleName: String,
+  val receiver: String?,
+  val typeArguments: List<Type_Name>,
+  val language: CompatibleLanguage_Proto
+)
 
-  println(protoBuf.encodeToHexString(colors))
+@Serializable
+data class Type_Name(
+  val packageName: String?,
+  val enclosingType: Type_Proto?,
+  val simpleNames: List<String>,
+  val simpleName: String?
+)
 
-  val decoded = ProtoBuf.decodeFromByteArray<Colors>(encoded)
+@Serializable
+data class Type_Proto(
+  val packageName: String?,
+  val enclosingType: Type_Proto?,
+  val simpleNames: List<String>,
+  val simpleName: String?,
+  val nestedTypes: List<Type_Proto>
+)
 
-  check(colors == decoded)
-  println(colors == decoded)
-  println(decoded)
+@Serializable
+enum class CompatibleLanguage_Proto {
+  JAVA,
+  KOTLIN,
+  XML
 }
 
 @Serializable

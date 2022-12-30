@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.lazy.unsafeLazy
@@ -24,6 +25,7 @@ import modulecheck.utils.lazy.unsafeLazy
  *
  * @since 0.12.0
  */
+@Serializable
 sealed class AndroidResourceReferenceName : ReferenceName()
 
 /**
@@ -33,6 +35,7 @@ sealed class AndroidResourceReferenceName : ReferenceName()
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class AndroidRReferenceName(
   val packageName: PackageName,
   override val language: CompatibleLanguage
@@ -49,6 +52,7 @@ class AndroidRReferenceName(
  */
 // hashcode behavior is intentionally handled by super
 @Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
+@Serializable
 class UnqualifiedAndroidResourceReferenceName(
   override val name: String,
   override val language: CompatibleLanguage
@@ -99,6 +103,7 @@ class UnqualifiedAndroidResourceReferenceName(
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class AndroidDataBindingReferenceName(
   override val name: String,
   override val language: CompatibleLanguage
@@ -111,6 +116,7 @@ class AndroidDataBindingReferenceName(
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class QualifiedAndroidResourceReferenceName(
   override val name: String,
   override val language: CompatibleLanguage
