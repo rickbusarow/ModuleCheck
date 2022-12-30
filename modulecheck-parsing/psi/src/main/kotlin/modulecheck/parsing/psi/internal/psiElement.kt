@@ -17,13 +17,20 @@ package modulecheck.parsing.psi.internal
 
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.psi.kotlinStdLibNameOrNull
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.PackageName
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.asDeclaredName
 import modulecheck.project.McProject
 import modulecheck.utils.cast
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.requireNotNull
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.descriptors.PropertyDescriptor
+import org.jetbrains.kotlin.descriptors.VariableDescriptor
+import org.jetbrains.kotlin.js.descriptorUtils.getJetTypeFqName
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtAnnotated
@@ -38,6 +45,7 @@ import org.jetbrains.kotlin.psi.KtNamedDeclaration
 import org.jetbrains.kotlin.psi.KtNullableType
 import org.jetbrains.kotlin.psi.KtObjectDeclaration
 import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.psi.KtPropertyDelegate
 import org.jetbrains.kotlin.psi.KtPureElement
 import org.jetbrains.kotlin.psi.KtQualifiedExpression
 import org.jetbrains.kotlin.psi.KtScriptInitializer
@@ -51,11 +59,14 @@ import org.jetbrains.kotlin.psi.psiUtil.getNonStrictParentOfType
 import org.jetbrains.kotlin.psi.psiUtil.isObjectLiteral
 import org.jetbrains.kotlin.psi.psiUtil.parents
 import org.jetbrains.kotlin.psi.psiUtil.parentsWithSelf
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 import kotlin.contracts.contract
 
-inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean = getNonStrictParentOfType<T>() != null
+inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean =
+  getNonStrictParentOfType<T>() != null
 
 inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
   return generateSequence(children.asSequence()) { children ->
@@ -69,9 +80,33 @@ inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): Lis
     .toList()
 }
 
+fun KotlinType?.requireReferenceName(): ReferenceName = requireNotNull()
+  .getJetTypeFqName(false)
+  .asReferenceName(KOTLIN)
+
+fun KotlinType.asReferenceName(): ReferenceName = getJetTypeFqName(false)
+  .asReferenceName(KOTLIN)
+
+fun KtProperty.resolveType(bindingContext: BindingContext): VariableDescriptor? {
+  return bindingContext[BindingContext.VARIABLE, this]
+}
+
+fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {
+  val property = this.parent as? KtProperty ?: return null
+  val propertyDescriptor =
+    bindingContext[BindingContext.DECLARATION_TO_DESCRIPTOR, property] as? PropertyDescriptor
+  return propertyDescriptor?.getter?.let {
+    bindingContext[BindingContext.DELEGATED_PROPERTY_RESOLVED_CALL, it]
+      ?.resultingDescriptor
+      ?.returnType
+  }
+}
+
 fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 
-  if (annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }) {
+  if (
+    annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }
+  ) {
     return true
   }
 
@@ -98,11 +133,18 @@ fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
     .any { it == annotationFqName.shortName().asString() }
 }
 
+suspend fun McProject.canResolveReferenceName(
+  declaredName: ReferenceName,
+  sourceSetName: SourceSetName
+): Boolean {
+  return resolvedNameOrNull(declaredName, sourceSetName) != null
+}
+
 suspend fun McProject.canResolveDeclaredName(
   declaredName: QualifiedDeclaredName,
   sourceSetName: SourceSetName
 ): Boolean {
-  return resolveFqNameOrNull(declaredName, sourceSetName) != null
+  return resolvedNameOrNull(declaredName, sourceSetName) != null
 }
 
 fun PsiElement.file(): File {
@@ -128,7 +170,10 @@ suspend fun PsiElement.declaredNameOrNull(
     // An inner class reference like Abc.Inner is also considered a KtDotQualifiedExpression in
     // some cases.
     is KtDotQualifiedExpression -> {
-      project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
+      project.resolvedNameOrNull(
+        FqName(text).asDeclaredName(packageName),
+        sourceSetName
+      )
         ?.let { return it }
         ?: text
     }
@@ -147,7 +192,7 @@ suspend fun PsiElement.declaredNameOrNull(
         if (qualifierText != null) {
 
           // The generic might be fully qualified. Try to resolve it and return early.
-          project.resolveFqNameOrNull(
+          project.resolvedNameOrNull(
             FqName("$qualifierText.$className").asDeclaredName(packageName),
             sourceSetName
           )
@@ -164,7 +209,7 @@ suspend fun PsiElement.declaredNameOrNull(
 
         // Sometimes a KtUserType is a fully qualified name. Give it a try and return early.
         if (text.contains(".") && text[0].isLowerCase()) {
-          project.resolveFqNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
+          project.resolvedNameOrNull(FqName(text).asDeclaredName(packageName), sourceSetName)
             ?.let { return it }
         }
 
@@ -251,7 +296,7 @@ suspend fun PsiElement.declaredNameOrNull(
       it.importPath?.fqName
     }
     .forEach { importFqName ->
-      project.resolveFqNameOrNull(
+      project.resolvedNameOrNull(
         importFqName.child(Name.identifier(classReference)).asDeclaredName(packageName),
         sourceSetName
       )
@@ -259,7 +304,7 @@ suspend fun PsiElement.declaredNameOrNull(
     }
 
   // If there is no import, then try to resolve the class with the same package as this file.
-  project.resolveFqNameOrNull(
+  project.resolvedNameOrNull(
     containingKtFile.packageFqName.child(Name.identifier(classReference))
       .asDeclaredName(packageName),
     sourceSetName
@@ -274,7 +319,7 @@ suspend fun PsiElement.declaredNameOrNull(
 
   // If this doesn't work, then maybe a class from the Kotlin package is used.
   classReference.kotlinStdLibNameOrNull()
-    ?.let { return FqName(it.name).asDeclaredName(packageName) }
+    ?.let { return it }
 
   return null
 }

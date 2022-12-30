@@ -35,11 +35,11 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
 
   companion object {
     /**
-     * shorthand for `joinToString(".") { it.name }`
+     * shorthand for `joinToString(".") { it.name.trim() }`
      *
      * @since 0.12.0
      */
-    fun List<SimpleName>.asString(): String = joinToString(".") { it.name }
+    fun List<SimpleName>.asString(): String = joinToString(".") { it.name.trim() }
 
     /**
      * wraps this String in a [SimpleName]
