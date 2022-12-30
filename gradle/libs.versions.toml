@@ -67,7 +67,7 @@ square-workflow = "1.0.0"
 targetSdk = "30"
 taskTree = "2.1.0"
 
-vanniktech-publish = "0.22.0"
+vanniktech-publish = "0.23.1"
 
 [plugins]
 
