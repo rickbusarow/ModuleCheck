@@ -93,6 +93,7 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
+      classpathFiles = classpathFiles.await(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -198,7 +199,8 @@ class RealKotlinEnvironment(
     analyzer.analysisResult
   }
 
-  private suspend fun createCompilerConfiguration(
+  private fun createCompilerConfiguration(
+    classpathFiles: List<File>,
     sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
@@ -230,7 +232,7 @@ class RealKotlinEnvironment(
 
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles.await())
+      addJvmClasspathRoots(classpathFiles)
     }
   }
 
