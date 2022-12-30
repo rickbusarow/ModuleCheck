@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+package modulecheck.builds.matrix
 
-import modulecheck.builds.matrix.VersionsMatrixYamlCheckTask
-import modulecheck.builds.matrix.VersionsMatrixYamlGenerateTask
+import modulecheck.builds.applyOnce
+import modulecheck.builds.checkProjectIsRoot
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.language.base.plugins.LifecycleBasePlugin
