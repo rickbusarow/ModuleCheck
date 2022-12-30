@@ -15,12 +15,27 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName.Companion.asPackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
+import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 
-internal fun String.kotlinStdLibNameOrNull(): ReferenceName? {
+fun ReferenceName.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
+  return name.kotlinStdLibNameOrNull()
+}
 
-  return kotlinStdLibNames[this]?.let { ReferenceName(it, KOTLIN) }
+fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
+
+  return kotlinStdLibNames[this]?.let {
+
+    val segments = it.split('.')
+
+    DeclaredName.kotlin(
+      packageName = segments.dropLast(1).joinToString(".").asPackageName(),
+      simpleNames = listOf(segments.last().asSimpleName())
+    )
+  }
 }
 
 @Suppress("MaxLineLength")

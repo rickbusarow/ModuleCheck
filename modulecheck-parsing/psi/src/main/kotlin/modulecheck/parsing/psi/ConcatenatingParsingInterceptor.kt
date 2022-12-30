@@ -13,14 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.wiring
+package modulecheck.parsing.psi
 
+import kotlinx.coroutines.flow.firstOrNull
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
+import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 
-class ConcatenatingParsingInterceptor : ParsingInterceptor {
+class ConcatenatingParsingInterceptor(
+  private val declarationsProvider: DeclarationsProvider,
+  private val sourceSetName: SourceSetName
+) : ParsingInterceptor {
 
   override suspend fun intercept(
     chain: ParsingInterceptor.Chain
@@ -32,6 +39,13 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
       .plus(packet.imports.mapToSet { ReferenceName(it, packet.referenceLanguage) })
       .toMutableSet()
     val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
+
+    val declarationsInPackage = lazyDeferred {
+      declarationsProvider.getWithUpstream(
+        sourceSetName = sourceSetName,
+        packageNameOrNull = packet.packageName
+      )
+    }
 
     val stillUnresolved = packet.unresolved
       .filter { toResolve ->
@@ -54,6 +68,9 @@ class ConcatenatingParsingInterceptor : ParsingInterceptor {
           }
           ?: toResolve.inlineAliasOrNull(packet.aliasedImports)
           ?: packet.stdLibNameOrNull(toResolve)?.name
+          ?: declarationsInPackage.await()
+            .firstOrNull { it.endsWithSimpleName(toResolve) }
+            ?.name
 
         if (concatOrNull != null) {
 
