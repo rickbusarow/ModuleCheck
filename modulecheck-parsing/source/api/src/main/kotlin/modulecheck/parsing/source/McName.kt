@@ -76,7 +76,9 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * @return true if the last segment of this name matches [simpleName], otherwise false */
+   * @return true if the last segment of this name matches [simpleName], otherwise false
+   * @since 0.13.0
+   */
   fun endsWithSimpleName(simpleName: SimpleName): Boolean {
     return name.split('.').last() == simpleName.name
   }
@@ -137,6 +139,8 @@ sealed interface McName : Comparable<McName> {
 /**
  * An [McName] which has the potential to be resolved -- meaning any [ReferenceName], or a
  * [QualifiedDeclaredName]
+ *
+ * @since 0.13.0
  */
 sealed interface ResolvableMcName : McName
 

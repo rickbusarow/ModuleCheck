@@ -170,7 +170,11 @@ sealed interface McFile : McElement, HasPackageName {
     val topLevelFunctions: LazySet<McFunction>
     val topLevelProperties: LazySet<McProperty>
 
-    /** A weird, dated function for getting Anvil scope arguments */
+    /**
+     * A weird, dated function for getting Anvil scope arguments
+     *
+     * @since 0.13.0
+     */
     suspend fun getAnvilScopeArguments(
       allAnnotations: List<ReferenceName>,
       mergeAnnotations: List<ReferenceName>

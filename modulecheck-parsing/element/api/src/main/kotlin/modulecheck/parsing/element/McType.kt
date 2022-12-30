@@ -29,10 +29,16 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasType
    * In a concrete type, this represents super-classes and interfaces.
    *
    * In a generic type, supers are the upper bound(s).
+   *
+   * @since 0.13.0
    */
   val superTypes: LazySet<McType>
 
-  /** Represents a class, interface, object, or companion object */
+  /**
+   * Represents a class, interface, object, or companion object
+   *
+   * @since 0.13.0
+   */
   sealed interface McConcreteType : McType, Declared {
 
     override val containingFile: McFile
@@ -81,7 +87,11 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasType
 
         val primaryConstructor: McFunction.McKtFunction?
 
-        /** All** constructors, including the primary if it exists */
+        /**
+         * All constructors, including the primary if it exists
+         *
+         * @since 0.13.0
+         */
         val constructors: LazySet<McFunction.McKtFunction>
       }
 
@@ -93,7 +103,11 @@ sealed interface McType : McElementWithParent<McElement>, McAnnotated, McHasType
     }
   }
 
-  /** Represents a generic type used as a parameter, like `<T>` or `<R: Any>`. */
+  /**
+   * Represents a generic type used as a parameter, like `<T>` or `<R: Any>`.
+   *
+   * @since 0.13.0
+   */
   interface McTypeParameter : McType
   interface McJavaTypeParameter : McTypeParameter, McJavaType
   interface McKtTypeParameter : McTypeParameter, McKtType

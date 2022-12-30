@@ -81,7 +81,9 @@ abstract class AbstractMcKtConcreteType internal constructor(
       .orEmpty()
       .mapToSet {
         RealMcKtMemberProperty(
-          parsingContext = parsingContext, psi = it, parent = this
+          parsingContext = parsingContext,
+          psi = it,
+          parent = this
         )
       }
       .plus(

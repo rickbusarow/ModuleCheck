@@ -121,6 +121,8 @@ sealed class QualifiedDeclaredName :
   /**
    * `true` if a declaration is top-level in a file, otherwise `false` such as if the declaration is
    * a nested type or a member declaration
+   *
+   * @since 0.13.0
    */
   val isTopLevel: Boolean by unsafeLazy { simpleNames.size == 1 }
 
@@ -193,6 +195,7 @@ fun Iterable<SimpleName>.asDeclaredName(
 /**
  * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
  *   [SimpleNames][SimpleName]
+ * @since 0.13.0
  */
 fun SimpleName.asDeclaredName(
   packageName: PackageName,

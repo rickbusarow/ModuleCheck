@@ -51,7 +51,9 @@ class RealMcKtFile(
   }
   override val declaredTypes: LazySet<McKtConcreteType> = lazySet {
     psi.mcKtConcreteTypesDirect(
-      parsingContext = parsingContext, containingFile = this, parent = this
+      parsingContext = parsingContext,
+      containingFile = this,
+      parent = this
     )
   }
   override val declaredTypesAndInnerTypes: LazySet<McKtConcreteType> = lazySet {

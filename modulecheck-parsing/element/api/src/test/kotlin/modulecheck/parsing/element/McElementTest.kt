@@ -35,7 +35,8 @@ class McElementTest : BaseTest() {
     // but also can't have parents.
     val excluded = setOf(
       McJavaElement::class,
-      McKtElement::class, McKtDeclaredElement::class
+      McKtElement::class,
+      McKtDeclaredElement::class
     )
 
     McElement::class.sealedSubclassesRecursive()

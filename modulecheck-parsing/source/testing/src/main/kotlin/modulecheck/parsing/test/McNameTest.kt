@@ -185,19 +185,19 @@ interface McNameTest : FancyShould {
 
   fun kotlin(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     DeclaredName.kotlin(packageName, name.stripPackageNameFromFqName(packageName))
 
   fun java(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     DeclaredName.java(packageName, name.stripPackageNameFromFqName(packageName))
 
   fun agnostic(
     name: String,
-    packageName: PackageName = PackageName("com.test")
+    packageName: PackageName = PackageName("com.subject")
   ): QualifiedDeclaredName =
     name.stripPackageNameFromFqName(packageName).asDeclaredName(packageName)
 
