@@ -23,8 +23,6 @@ import com.vanniktech.maven.publish.SonatypeHost.DEFAULT
 import com.vanniktech.maven.publish.tasks.JavadocJar
 import com.vanniktech.maven.publish.tasks.SourcesJar
 import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.plugins.signing.Sign
@@ -43,6 +41,13 @@ fun Project.configurePublishing(
   extensions.configure(MavenPublishBaseExtension::class.java) { extension ->
     extension.publishToMavenCentral(DEFAULT, automaticRelease = true)
     extension.signAllPublications()
+
+    extension.coordinates(
+      groupId = GROUP,
+      artifactId = artifactId,
+      version = VERSION_NAME
+    )
+
     extension.pom { mavenPom ->
       mavenPom.description.set("Fast dependency graph linting for Gradle projects")
       mavenPom.name.set(artifactId)
@@ -77,15 +82,6 @@ fun Project.configurePublishing(
     } else {
       extension.configure(KotlinJvm(javadocJar = Dokka(taskName = "dokkaHtml"), sourcesJar = true))
     }
-  }
-
-  extensions.configure(PublishingExtension::class.java) {
-    it.publications
-      .filterIsInstance<MavenPublication>()
-      .forEach { publication ->
-        publication.groupId = GROUP
-        publication.artifactId = artifactId
-      }
   }
 
   tasks.register("checkVersionIsSnapshot") {
