@@ -13,26 +13,23 @@
  * limitations under the License.
  */
 
-plugins {
-  id("mcbuild")
-}
+package modulecheck.builds
 
-mcbuild {
-  artifactId = "modulecheck-model-sourceset-api"
-  anvil()
-  serialization()
-}
+import org.gradle.api.Project
 
-dependencies {
+interface SerializationExtension {
 
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
+  fun Project.serialization() {
 
-  compileOnly(gradleApi())
+    plugins.applyOnce("org.jetbrains.kotlin.plugin.serialization")
 
-  implementation(project(path = ":modulecheck-utils:stdlib"))
-
-  testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
-  testImplementation(libs.bundles.kotest)
+    dependencies.add(
+      "implementation",
+      libsCatalog.dependency("kotlinx-serialization-core")
+    )
+    dependencies.add(
+      "implementation",
+      libsCatalog.dependency("kotlinx-serialization-protobuf")
+    )
+  }
 }

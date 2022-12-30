@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-parsing-core"
   anvil()
+  serialization()
 }
 
 dependencies {

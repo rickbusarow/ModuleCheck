@@ -22,14 +22,12 @@ mcbuild {
 }
 
 dependencies {
-
   api(libs.kotlinx.coroutines.core)
   api(libs.kotlinx.coroutines.jvm)
-
+  api(project(path = ":modulecheck-utils:serialization"))
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
-
   testImplementation(project(path = ":modulecheck-utils:coroutines:api"))
 }

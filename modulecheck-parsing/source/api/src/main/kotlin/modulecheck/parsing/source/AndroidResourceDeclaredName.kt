@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
@@ -84,6 +85,7 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
  *
  * @since 0.12.0
  */
+@Serializable
 class AndroidRDeclaredName(
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {

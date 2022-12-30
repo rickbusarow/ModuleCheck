@@ -29,6 +29,7 @@ abstract class ModuleCheckBuildExtension @Inject constructor(
 ) : ArtifactIdExtension,
   BuildPropertiesExtension,
   DiExtension,
+  SerializationExtension,
   VersionsMatrixExtension {
 
   override var artifactId: String? by objects.optionalProperty {

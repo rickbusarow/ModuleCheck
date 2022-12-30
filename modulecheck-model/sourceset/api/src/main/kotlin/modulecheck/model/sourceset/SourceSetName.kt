@@ -15,9 +15,11 @@
 
 package modulecheck.model.sourceset
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 
+@Serializable
 @JvmInline
 value class SourceSetName(val value: String) {
 

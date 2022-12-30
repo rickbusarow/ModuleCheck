@@ -18,19 +18,11 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-model-sourceset-api"
-  anvil()
+  artifactId = "modulecheck-utils-serialization"
   serialization()
 }
 
 dependencies {
-
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-
-  compileOnly(gradleApi())
-
-  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

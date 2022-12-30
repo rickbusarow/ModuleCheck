@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.PackageName.DEFAULT
 import modulecheck.utils.lazy.unsafeLazy
 
@@ -28,6 +29,7 @@ import modulecheck.utils.lazy.unsafeLazy
  * @see DEFAULT
  * @since 0.13.0
  */
+@Serializable
 sealed interface PackageName : McName {
   /**
    * the full name of this package
@@ -44,6 +46,7 @@ sealed interface PackageName : McName {
    * @see DEFAULT
    * @since 0.13.0
    */
+  @Serializable
   object DEFAULT : PackageName {
     override val name: String = ""
 
@@ -108,6 +111,7 @@ fun PackageName.append(vararg simpleNames: String): String = append(simpleNames.
  * @since 0.13.0
  * @throws IllegalArgumentException if the [name] parameter is empty or blank
  */
+@Serializable
 data class PackageNameImpl internal constructor(override val name: String) : PackageName {
   init {
     require(name.isNotBlank()) {

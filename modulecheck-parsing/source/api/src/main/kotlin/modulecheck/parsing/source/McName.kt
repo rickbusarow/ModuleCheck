@@ -15,6 +15,8 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
+
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
@@ -95,12 +97,14 @@ sealed interface McName : Comparable<McName> {
    *
    * @since 0.12.0
    */
+  @Serializable
   sealed interface CompatibleLanguage {
     /**
      * Java
      *
      * @since 0.12.0
      */
+    @Serializable
     object JAVA : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -110,6 +114,7 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
+    @Serializable
     object KOTLIN : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -119,6 +124,7 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
+    @Serializable
     object XML : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }

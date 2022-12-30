@@ -15,6 +15,8 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
+
 /**
  * Cache of [configurations][McConfiguration], probably at the project level.
  *
@@ -29,6 +31,7 @@ class Configurations(
   }
 }
 
+@Serializable
 data class McConfiguration(
   val name: ConfigurationName,
   val projectDependencies: Set<ProjectDependency>,
