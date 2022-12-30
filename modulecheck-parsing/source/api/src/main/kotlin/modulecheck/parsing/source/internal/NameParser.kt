@@ -17,6 +17,7 @@ package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
+import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 
@@ -48,7 +49,7 @@ fun interface NameParser {
     val mustBeApi: Set<String>,
     val apiReferenceNames: Set<ReferenceName>,
     val referenceLanguage: McName.CompatibleLanguage,
-    val stdLibNameOrNull: String.() -> ReferenceName?
+    val stdLibNameOrNull: String.() -> QualifiedDeclaredName?
   ) {
     override fun toString(): String {
       return """NameParserPacket(

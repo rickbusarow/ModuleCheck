@@ -17,25 +17,23 @@ package modulecheck.api.context
 
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.Found
 import modulecheck.api.context.ResolvedDeclaredNames.SourceResult.NOT_PRESENT
+import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.ResolvableMcName
+import modulecheck.parsing.source.getNameOrNull
 import modulecheck.project.McProject
 import modulecheck.project.ProjectContext
 import modulecheck.project.project
 import modulecheck.utils.cache.SafeCache
 
-data class ResolvedDeclaredNames internal constructor(
-  private val delegate: SafeCache<DeclarationInSourceSet, SourceResult>,
+class ResolvedDeclaredNames private constructor(
+  private val delegate: SafeCache<NameInSourceSet, SourceResult>,
   private val project: McProject
 ) : ProjectContext.Element {
 
   override val key: ProjectContext.Key<ResolvedDeclaredNames>
     get() = Key
-
-  internal data class DeclarationInSourceSet(
-    val declaredName: QualifiedDeclaredName,
-    val sourceSetName: SourceSetName
-  )
 
   internal sealed interface SourceResult {
     data class Found(val sourceProject: McProjectWithSourceSetName) : SourceResult
@@ -44,49 +42,60 @@ data class ResolvedDeclaredNames internal constructor(
 
   data class McProjectWithSourceSetName(
     val project: McProject,
-    val sourceSetName: SourceSetName
+    val sourceSetName: SourceSetName,
+    val declaration: QualifiedDeclaredName
   )
 
   suspend fun getSource(
-    declaredName: QualifiedDeclaredName,
+    name: ResolvableMcName,
     sourceSetName: SourceSetName
   ): McProjectWithSourceSetName? {
-    val declarationInSourceSet = DeclarationInSourceSet(declaredName, sourceSetName)
+    val nameInSourceSet = NameInSourceSet(name, sourceSetName)
 
     val existing = delegate
-      .getOrPut(declarationInSourceSet) { fetchNewSource(declaredName, sourceSetName) }
+      .getOrPut(nameInSourceSet) { fetchNewSource(name, sourceSetName) }
 
     return (existing as? Found)?.sourceProject
   }
 
   private suspend fun fetchNewSource(
-    declaredName: QualifiedDeclaredName,
+    name: ResolvableMcName,
     sourceSetName: SourceSetName
   ): SourceResult {
-    return project.takeIf {
-      project.declarations()
-        .get(sourceSetName, includeUpstream = false)
-        .contains(declaredName)
-    }
-      ?.let { Found(McProjectWithSourceSetName(it, sourceSetName)) }
-      ?: project.classpathDependencies()
-        .get(sourceSetName)
-        .asSequence()
-        .map { it.contributed }
-        .distinctBy { it.project(project) to it.isTestFixture }
-        .firstNotNullOfOrNull { sourceCpd ->
 
-          listOfNotNull(
-            SourceSetName.MAIN,
-            SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
-          )
-            .firstNotNullOfOrNull { dependencySourceSetName ->
-              sourceCpd.project(project)
-                .resolvedDeclaredNames()
-                .getSource(declaredName, dependencySourceSetName)
-            }
-        }
-        ?.let { Found(it) }
+    return sourceSetName.withUpstream(project)
+      .firstNotNullOfOrNull { sourceSetOrUpstream ->
+
+        project.declarations()
+          .get(sourceSetOrUpstream, includeUpstream = false)
+          .getNameOrNull<QualifiedDeclaredName>(name)
+          ?.let {
+            Found(
+              McProjectWithSourceSetName(
+                project = project,
+                sourceSetName = sourceSetOrUpstream,
+                declaration = it
+              )
+            )
+          }
+      } ?: project.classpathDependencies()
+      .get(sourceSetName)
+      .asSequence()
+      .map { it.contributed }
+      .distinctBy { it.project(project) to it.isTestFixture }
+      .firstNotNullOfOrNull { sourceCpd ->
+
+        listOfNotNull(
+          SourceSetName.MAIN,
+          SourceSetName.TEST_FIXTURES.takeIf { sourceCpd.isTestFixture }
+        )
+          .firstNotNullOfOrNull { dependencySourceSetName ->
+            sourceCpd.project(project)
+              .resolvedDeclaredNames()
+              .getSource(name, dependencySourceSetName)
+          }
+      }
+      ?.let { Found(it) }
       ?: NOT_PRESENT
   }
 
@@ -98,6 +107,11 @@ data class ResolvedDeclaredNames internal constructor(
       )
     }
   }
+
+  private data class NameInSourceSet(
+    val name: ResolvableMcName,
+    val sourceSetName: SourceSetName
+  )
 }
 
 suspend fun ProjectContext.resolvedDeclaredNames(): ResolvedDeclaredNames =

@@ -17,13 +17,13 @@ package modulecheck.api.context
 
 import kotlinx.coroutines.flow.toList
 import modulecheck.api.context.Declarations.DeclarationsKey.ALL
-import modulecheck.api.context.Declarations.DeclarationsKey.WithUpstream
-import modulecheck.api.context.Declarations.DeclarationsKey.WithoutUpstream
+import modulecheck.api.context.Declarations.DeclarationsKey.Parameterized
 import modulecheck.model.dependency.ProjectDependency
 import modulecheck.model.dependency.nonTestSourceSetName
 import modulecheck.model.dependency.withUpstream
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
@@ -36,6 +36,7 @@ import modulecheck.utils.lazy.asDataSource
 import modulecheck.utils.lazy.dataSource
 import modulecheck.utils.lazy.dataSourceOf
 import modulecheck.utils.lazy.lazySet
+import modulecheck.utils.letIf
 
 class Declarations private constructor(
   private val delegate: SafeCache<DeclarationsKey, LazySet<DeclaredName>>,
@@ -45,33 +46,33 @@ class Declarations private constructor(
   override val key: ProjectContext.Key<Declarations>
     get() = Key
 
-  // Allow for caching full hierarchies up declarations in a single `LazySet`.
+  // Allow for caching full hierarchies of declarations in a single `LazySet`.
   // Without this, a full-hierarchy LazySet needs to be rebuilt from cached elements for every
-  // `mustBeApi` or `all` query, and that turns out ti be very expensive.
+  // `mustBeApi` or `all` query, and that turns out to be very expensive.
   private sealed interface DeclarationsKey {
     object ALL : DeclarationsKey
-    data class WithUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
-    data class WithoutUpstream(val sourceSetName: SourceSetName) : DeclarationsKey
+    data class Parameterized(
+      val sourceSetName: SourceSetName,
+      val includeUpstream: Boolean,
+      val packageNameOrNull: PackageName?
+    ) : DeclarationsKey
   }
 
   suspend fun all(): LazySet<DeclaredName> {
     return delegate.getOrPut(ALL) {
       project.sourceSets
         .keys
-        .map { project.declarations().get(it, false) }
+        .map { project.declarations().get(it, includeUpstream = false, packageNameOrNull = null) }
         .let { lazySet(it) }
     }
   }
 
   suspend fun get(
     sourceSetName: SourceSetName,
-    includeUpstream: Boolean
+    includeUpstream: Boolean,
+    packageNameOrNull: PackageName? = null
   ): LazySet<DeclaredName> {
-    val key = if (includeUpstream) {
-      WithUpstream(sourceSetName)
-    } else {
-      WithoutUpstream(sourceSetName)
-    }
+    val key = Parameterized(sourceSetName, includeUpstream, packageNameOrNull)
     return delegate.getOrPut(key) {
       val components = mutableListOf<LazySetComponent<DeclaredName>>()
 
@@ -87,6 +88,9 @@ class Declarations private constructor(
 
         project.jvmFilesForSourceSetName(sourceSetName)
           .toList()
+          .letIf(packageNameOrNull != null) { files ->
+            files.filter { it.packageName == packageNameOrNull }
+          }
           .map { dataSource(DataSource.Priority.HIGH) { it.declarations } }
           .let { components.addAll(it) }
 
@@ -123,11 +127,17 @@ class Declarations private constructor(
 suspend fun ProjectContext.declarations(): Declarations = get(Declarations)
 
 suspend fun ProjectDependency.declarations(
-  projectCache: ProjectCache
+  projectCache: ProjectCache,
+  packageNameOrNull: PackageName? = null
 ): LazySet<DeclaredName> {
   val project = projectCache.getValue(path)
   if (isTestFixture) {
-    return project.declarations().get(SourceSetName.TEST_FIXTURES, includeUpstream = false)
+    return project.declarations()
+      .get(
+        sourceSetName = SourceSetName.TEST_FIXTURES,
+        includeUpstream = false,
+        packageNameOrNull = packageNameOrNull
+      )
   }
 
   // If the dependency config is `testImplementation(...)` or `androidTestImplementation(...)`:
@@ -146,5 +156,10 @@ suspend fun ProjectDependency.declarations(
     .takeIf { project.sourceSets.containsKey(nonTestSourceSetName) }
     ?: SourceSetName.MAIN
 
-  return project.declarations().get(declarationsSourceSetName, includeUpstream = true)
+  return project.declarations()
+    .get(
+      sourceSetName = declarationsSourceSetName,
+      includeUpstream = true,
+      packageNameOrNull = packageNameOrNull
+    )
 }
