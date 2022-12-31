@@ -65,7 +65,7 @@ square-retrofit = "2.9.0"
 square-workflow = "1.0.0"
 
 targetSdk = "30"
-taskTree = "2.1.0"
+taskTree = "2.1.1"
 
 vanniktech-publish = "0.23.1"
 
