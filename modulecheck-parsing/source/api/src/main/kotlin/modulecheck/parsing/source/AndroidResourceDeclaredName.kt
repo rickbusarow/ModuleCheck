@@ -17,6 +17,7 @@ package modulecheck.parsing.source
 
 import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
+import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.capitalize
@@ -91,6 +92,10 @@ class AndroidRDeclaredName(
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
 
   override val simpleNames: List<SimpleName> by lazy { listOf("R".asSimpleName()) }
+
+  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
+    return AndroidRReferenceName(packageName, language)
+  }
 }
 
 /**
@@ -118,6 +123,10 @@ class QualifiedAndroidResourceDeclaredName(
 
   init {
     checkSimpleNames()
+  }
+
+  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
+    return QualifiedAndroidResourceReferenceName(name, language)
   }
 }
 
@@ -148,5 +157,9 @@ class AndroidDataBindingDeclaredName(
 
   init {
     checkSimpleNames()
+  }
+
+  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
+    return AndroidDataBindingReferenceName(name, language)
   }
 }

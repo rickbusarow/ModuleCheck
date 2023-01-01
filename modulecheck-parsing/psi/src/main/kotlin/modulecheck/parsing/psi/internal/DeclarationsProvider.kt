@@ -15,20 +15,19 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.source.SimpleName
-import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
-import modulecheck.utils.requireNotNull
-import org.jetbrains.kotlin.psi.KtElement
-import org.jetbrains.kotlin.psi.KtValueArgument
-import org.jetbrains.kotlin.psi.KtValueArgumentList
+import modulecheck.model.sourceset.SourceSetName
+import modulecheck.parsing.source.DeclaredName
+import modulecheck.parsing.source.PackageName
+import modulecheck.utils.lazy.LazySet
 
-fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgument? {
-  return arguments
-    .firstOrNull { it.getArgumentName()?.text == name }
-    ?: arguments
-      .getOrNull(index)
-}
+interface DeclarationsProvider {
+  suspend fun get(
+    sourceSetName: SourceSetName,
+    packageName: PackageName
+  ): LazySet<DeclaredName>
 
-fun KtElement.requireSimpleName(): SimpleName {
-  return name.requireNotNull().asSimpleName()
+  suspend fun getWithUpstream(
+    sourceSetName: SourceSetName,
+    packageNameOrNull: PackageName? = null
+  ): LazySet<DeclaredName>
 }

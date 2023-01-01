@@ -125,19 +125,18 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
       references {
 
         lib1Class
+        kotlin("com.subject.SubjectClass.lib1Class")
 
         kotlin("Inject")
         kotlin("com.subject.Inject")
         kotlin("com.subject.inject")
         kotlin("com.subject.javax")
         kotlin("com.subject.javax.inject.Inject")
-        kotlin("com.subject.lib1Class")
         kotlin("com.subject.this")
         kotlin("com.subject.this.lib1Class")
         kotlin("inject")
         kotlin("javax")
         kotlin("javax.inject.Inject")
-        kotlin("lib1Class")
         kotlin("this")
         kotlin("this.lib1Class")
       }
@@ -206,17 +205,12 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     file shouldBe {
       references {
 
-        kotlin("javax.inject.Inject")
-
-        kotlin("Lib1Class")
         kotlin("com.lib1.Lib1Class")
-        kotlin("com.subject.Lib1Class")
+        kotlin("javax.inject.Inject")
       }
       apiReferences {
 
-        kotlin("Lib1Class")
         kotlin("com.lib1.Lib1Class")
-        kotlin("com.subject.Lib1Class")
       }
       declarations {
         agnostic("com.subject.SubjectClass")
@@ -243,25 +237,18 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
     file shouldBe {
       references {
 
-        kotlin("javax.inject.Inject")
-
-        kotlin("Lib1Class")
         kotlin("com")
         kotlin("com.lib1.Lib1Class")
-        kotlin("com.subject.Lib1Class")
         kotlin("com.subject.com")
-        kotlin("com.subject.com.lib1.Lib1Class")
         kotlin("com.subject.lib1")
+        kotlin("javax.inject.Inject")
         kotlin("lib1")
       }
       apiReferences {
 
-        kotlin("Lib1Class")
         kotlin("com")
         kotlin("com.lib1.Lib1Class")
-        kotlin("com.subject.Lib1Class")
         kotlin("com.subject.com")
-        kotlin("com.subject.com.lib1.Lib1Class")
         kotlin("com.subject.lib1")
         kotlin("lib1")
       }
@@ -299,11 +286,10 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
         lib1Class
         kotlin("javax.inject.Inject")
+        kotlin("com.subject.SubjectClass.lib1Class")
 
-        kotlin("com.subject.lib1Class")
         kotlin("com.subject.this")
         kotlin("com.subject.this.lib1Class")
-        kotlin("lib1Class")
         kotlin("this")
         kotlin("this.lib1Class")
       }
@@ -345,9 +331,7 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
         lib1Class
         kotlin("org.jetbrains.kotlin.name.FqName")
         kotlin("javax.inject.Inject")
-
-        kotlin("com.subject.lib1Class")
-        kotlin("lib1Class")
+        kotlin("com.subject.SubjectClass.lib1Class")
       }
       apiReferences {
 
@@ -484,7 +468,6 @@ internal class KotlinFileTest : ProjectTest(), McNameTest {
 
       file shouldBe {
         references {
-          kotlin("SubjectClass")
           kotlin("com.subject.SubjectClass")
         }
         declarations {

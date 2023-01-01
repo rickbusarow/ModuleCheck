@@ -22,6 +22,7 @@ import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.utils.lazy.LazySet
 import modulecheck.utils.lazy.unsafeLazy
+import modulecheck.utils.trimSegments
 
 /**
  * Marker which indicates that [references] exist. Typically implemented by "file" types
@@ -46,7 +47,9 @@ interface HasReferences {
  * @since 0.12.0
  */
 @Serializable
-sealed class ReferenceName : McName {
+sealed class ReferenceName(name: String) : McName, ResolvableMcName {
+
+  final override val name: String = name.trimSegments()
   /**
    * The [language][CompatibleLanguage] of the file making this reference
    *
@@ -54,7 +57,7 @@ sealed class ReferenceName : McName {
    */
   abstract val language: CompatibleLanguage
 
-  override val segments: List<String> by unsafeLazy { name.split('.') }
+  override val segments: List<String> by unsafeLazy { this.name.split('.') }
 
   /**
    * This reference is from a Java source file
@@ -118,14 +121,23 @@ sealed class ReferenceName : McName {
       name = name,
       language = language
     )
+
+    /**
+     * @return a basic [ReferenceName] for this name and language.
+     * @since 0.13.0
+     */
+    fun String.asReferenceName(
+      language: CompatibleLanguage
+    ): ReferenceName = ReferenceName(this, language)
   }
 }
 
 @Serializable
 private class ReferenceNameImpl(
-  override val name: String,
+  name: String,
   override val language: CompatibleLanguage
-) : ReferenceName(), McName {
+) : ReferenceName(name), McName {
+
   override val simpleName by unsafeLazy {
     name.split('.').last()
   }

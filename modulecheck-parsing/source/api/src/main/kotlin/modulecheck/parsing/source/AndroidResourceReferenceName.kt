@@ -26,7 +26,7 @@ import modulecheck.utils.lazy.unsafeLazy
  * @since 0.12.0
  */
 @Serializable
-sealed class AndroidResourceReferenceName : ReferenceName()
+sealed class AndroidResourceReferenceName(name: String) : ReferenceName(name)
 
 /**
  * example: `com.example.R`
@@ -39,14 +39,12 @@ sealed class AndroidResourceReferenceName : ReferenceName()
 class AndroidRReferenceName(
   val packageName: PackageName,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName() {
-  override val name: String by unsafeLazy { packageName.append("R") }
-}
+) : AndroidResourceReferenceName(packageName.append("R"))
 
 /**
  * example: `R.string.app_name`
  *
- * @property name `R.string.____`
+ * @param name `R.string.____`
  * @property language the language making this reference
  * @since 0.12.0
  */
@@ -54,9 +52,9 @@ class AndroidRReferenceName(
 @Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
 @Serializable
 class UnqualifiedAndroidResourceReferenceName(
-  override val name: String,
+  name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(),
+) : AndroidResourceReferenceName(name),
   HasSimpleNames {
 
   private val split by unsafeLazy {
@@ -99,25 +97,25 @@ class UnqualifiedAndroidResourceReferenceName(
 /**
  * example: `com.example.databinding.FragmentViewBinding`
  *
- * @property name `com.example.databinding.FragmentViewBinding`
+ * @param name `com.example.databinding.FragmentViewBinding`
  * @property language the language making this reference
  * @since 0.12.0
  */
 @Serializable
 class AndroidDataBindingReferenceName(
-  override val name: String,
+  name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName()
+) : AndroidResourceReferenceName(name)
 
 /**
  * example: `com.example.R.string.app_name`
  *
- * @property name `com.example.R.string.app_name`
+ * @param name `com.example.R.string.app_name`
  * @property language the language making this reference
  * @since 0.12.0
  */
 @Serializable
 class QualifiedAndroidResourceReferenceName(
-  override val name: String,
+  name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName()
+) : AndroidResourceReferenceName(name)
