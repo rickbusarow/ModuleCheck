@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,6 +39,7 @@ import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
+// TODO <Rick> delete me
 @OptIn(ExperimentalSerializationApi::class)
 fun main() {
 
@@ -47,8 +48,8 @@ fun main() {
     // ReferenceName.serializer().descriptor
   )
 
-  val schemas = ProtoBufSchemaGenerator.generateSchemaText(descriptors)
-  println(schemas)
+  ProtoBufSchemaGenerator.generateSchemaText(descriptors)
+    .also(::println)
 
   val protoBuf = ProtoBuf { encodeDefaults = true }
 
@@ -68,12 +69,12 @@ fun main() {
 data class ReferenceName_Proto(
   val simpleName: String,
   val receiver: String?,
-  val typeArguments: List<Type_Name>,
+  val typeArguments: List<TypeName_Proto>,
   val language: CompatibleLanguage_Proto
 )
 
 @Serializable
-data class Type_Name(
+data class TypeName_Proto(
   val packageName: String?,
   val enclosingType: Type_Proto?,
   val simpleNames: List<String>,

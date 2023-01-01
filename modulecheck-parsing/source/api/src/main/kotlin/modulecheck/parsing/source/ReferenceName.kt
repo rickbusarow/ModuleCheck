@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,9 +47,8 @@ interface HasReferences {
  * @since 0.12.0
  */
 @Serializable
-sealed class ReferenceName(name: String) : McName, ResolvableMcName {
+sealed class ReferenceName(final override val name: String) : McName, ResolvableMcName {
 
-  final override val name: String = name.trimSegments()
   /**
    * The [language][CompatibleLanguage] of the file making this reference
    *
