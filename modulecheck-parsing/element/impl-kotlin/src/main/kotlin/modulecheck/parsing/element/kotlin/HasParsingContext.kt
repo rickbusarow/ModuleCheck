@@ -13,21 +13,21 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.internal
+package modulecheck.parsing.element.kotlin
 
-import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.element.resolve.SymbolResolver
-import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.project.McProject
+import modulecheck.parsing.element.resolve.ParsingContext
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.util.slicedMap.ReadOnlySlice
 
-class PsiElementResolver(
-  private val project: McProject,
-  private val sourceSetName: SourceSetName
-) : SymbolResolver<PsiElement> {
-  override suspend fun declaredNameOrNull(
-    symbol: PsiElement
-  ): QualifiedDeclaredName? {
-    return symbol.declaredNameOrNull(project, sourceSetName)
+interface HasParsingContext {
+  val parsingContext: ParsingContext<PsiElement>
+
+  suspend fun bindingContext(): BindingContext {
+    return parsingContext.bindingContextDeferred.await()
+  }
+
+  suspend fun <K, V> bindingContext(readOnlySlice: ReadOnlySlice<K, V>?, key: K): V? {
+    return parsingContext.bindingContextDeferred.await().get(readOnlySlice, key)
   }
 }

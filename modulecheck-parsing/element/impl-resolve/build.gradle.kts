@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,22 +18,31 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-source-testing"
+  artifactId = "modulecheck-parsing-element-impl-resolve"
   anvil()
 }
 
 dependencies {
 
-  api(libs.bundles.hermit)
+  api(libs.javax.inject)
+  api(libs.kotlin.compiler)
+  api(libs.kotlin.compiler)
+  api(libs.semVer)
 
-  api(project(path = ":modulecheck-internal-testing"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:element:api"))
+  api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-utils:lazy"))
+  api(project(path = ":modulecheck-parsing:source:api"))
 
-  implementation(project(path = ":modulecheck-utils:trace"))
+  compileOnly(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotest.runner)
+  testImplementation(libs.kotlin.reflect)
 }

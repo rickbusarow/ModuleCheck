@@ -18,31 +18,20 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-psi"
+  artifactId = "modulecheck-parsing-element-kotlin"
 }
 
 dependencies {
-
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
 
-  api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:element:api"))
-  api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
-  api(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
-  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
-  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  api(project(path = ":modulecheck-parsing:psi"))
   api(project(path = ":modulecheck-parsing:source:api"))
-  api(project(path = ":modulecheck-project:api"))
-  api(project(path = ":modulecheck-reporting:logging:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(libs.kotlin.reflect)
 
-  implementation(project(path = ":modulecheck-model:dependency:api"))
-  implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
-  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
@@ -51,10 +40,13 @@ dependencies {
   testImplementation(libs.kotest.runner)
 
   testImplementation(project(path = ":modulecheck-api"))
-  testImplementation(project(path = ":modulecheck-internal-testing"))
-  testImplementation(project(path = ":modulecheck-parsing:gradle:dsl:testing"))
+  testImplementation(project(path = ":modulecheck-model:dependency:api"))
+  testImplementation(project(path = ":modulecheck-model:sourceset:api"))
+  testImplementation(project(path = ":modulecheck-parsing:element:impl-resolve"))
+  testImplementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   testImplementation(project(path = ":modulecheck-parsing:psi"))
   testImplementation(project(path = ":modulecheck-parsing:source:testing"))
+  testImplementation(project(path = ":modulecheck-parsing:wiring"))
+  testImplementation(project(path = ":modulecheck-project:api"))
   testImplementation(project(path = ":modulecheck-project:testing"))
-  testImplementation(project(path = ":modulecheck-utils:trace"))
 }

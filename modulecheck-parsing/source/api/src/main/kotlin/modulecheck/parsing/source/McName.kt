@@ -20,6 +20,10 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import modulecheck.utils.lazy.LazySet
 
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.firstOrNull
+import modulecheck.utils.lazy.LazySet
+
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
  * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching

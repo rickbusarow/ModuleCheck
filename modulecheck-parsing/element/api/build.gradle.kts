@@ -18,22 +18,24 @@ plugins {
 }
 
 mcbuild {
-  artifactId = "modulecheck-parsing-source-testing"
+  artifactId = "modulecheck-parsing-element-api"
   anvil()
 }
 
 dependencies {
+  api(libs.kotlin.compiler)
+  api(libs.semVer)
 
-  api(libs.bundles.hermit)
-
-  api(project(path = ":modulecheck-internal-testing"))
-  api(project(path = ":modulecheck-parsing:element:api"))
+  api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
-  implementation(project(path = ":modulecheck-utils:trace"))
+  implementation(project(path = ":modulecheck-utils:coroutines:api"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
+  testImplementation(libs.kotlin.reflect)
+
+  testImplementation(project(path = ":modulecheck-internal-testing"))
 }
