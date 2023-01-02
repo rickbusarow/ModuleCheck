@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,6 +19,7 @@ buildscript {
     // for transitive dependencies like `sam-with-receiver`.
     // https://github.com/gradle/gradle/issues/22510
     classpath(libs.kotlin.sam.with.receiver)
+    classpath(libs.kotlin.serialization)
   }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.element
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.element.McCallable.McJavaCallable
 import modulecheck.parsing.element.McCallable.McKtCallable
 import modulecheck.parsing.element.McFunction.McKtFunction
@@ -44,7 +45,7 @@ sealed interface McCallable :
   }
 
   sealed interface McKtCallable : McCallable, McKtElement {
-    override val psi: KtCallableDeclaration
+    override val psi: KtCallableDeclaration?
     override val parent: McKtElement
     override val visibility: McKtVisibility
   }
@@ -77,6 +78,7 @@ sealed interface McProperty : McCallable, McElement, Declared {
   }
 }
 
+@Serializable
 sealed interface McParameter : McCallable, McElement {
   val index: Int
 
@@ -102,7 +104,7 @@ sealed interface McFunction : McCallable, McElement, McHasTypeParameters {
   }
 
   interface McKtFunction : McFunction, McKtCallable {
-    override val psi: KtFunction
+    override val psi: KtFunction?
     override val parent: McKtElement
     override val parameters: LazySet<McKtParameter>
     override val properties: LazySet<McKtProperty>

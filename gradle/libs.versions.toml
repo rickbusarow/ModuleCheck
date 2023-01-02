@@ -63,6 +63,7 @@ square-anvil = "2.4.3"
 square-moshi = "1.14.0"
 square-okio = "3.2.0"
 square-retrofit = "2.9.0"
+square-wire = "4.4.3"
 square-workflow = "1.0.0"
 
 targetSdk = "30"
@@ -218,6 +219,8 @@ square-moshi-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", ver
 square-okio = { module = "com.squareup.okio:okio", version.ref = "square-okio" }
 
 square-turbine = "app.cash.turbine:turbine:0.12.1"
+
+square-wire-gradle = { module = "com.squareup.wire:wire-gradle-plugin", version.ref = "square-wire" }
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 

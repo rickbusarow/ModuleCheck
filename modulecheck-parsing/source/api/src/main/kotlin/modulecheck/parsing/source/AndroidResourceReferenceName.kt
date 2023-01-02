@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,7 @@ import modulecheck.utils.lazy.unsafeLazy
  * @since 0.12.0
  */
 @Serializable
-sealed class AndroidResourceReferenceName(name: String) : ReferenceName(name)
+sealed class AndroidResourceReferenceName() : ReferenceName()
 
 /**
  * example: `com.example.R`
@@ -39,7 +39,9 @@ sealed class AndroidResourceReferenceName(name: String) : ReferenceName(name)
 class AndroidRReferenceName(
   val packageName: PackageName,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(packageName.append("R"))
+) : AndroidResourceReferenceName() {
+  override val name = packageName.append("R")
+}
 
 /**
  * example: `R.string.app_name`
@@ -52,9 +54,9 @@ class AndroidRReferenceName(
 @Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
 @Serializable
 class UnqualifiedAndroidResourceReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name),
+) : AndroidResourceReferenceName(),
   HasSimpleNames {
 
   private val split by unsafeLazy {
@@ -103,9 +105,9 @@ class UnqualifiedAndroidResourceReferenceName(
  */
 @Serializable
 class AndroidDataBindingReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name)
+) : AndroidResourceReferenceName()
 
 /**
  * example: `com.example.R.string.app_name`
@@ -116,6 +118,6 @@ class AndroidDataBindingReferenceName(
  */
 @Serializable
 class QualifiedAndroidResourceReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name)
+) : AndroidResourceReferenceName()

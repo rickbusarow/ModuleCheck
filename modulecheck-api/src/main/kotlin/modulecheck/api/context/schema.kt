@@ -17,12 +17,8 @@
 
 package modulecheck.api.context
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.encodeToHexString
-import kotlinx.serialization.protobuf.ProtoBuf
-import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
 import modulecheck.model.dependency.ConfigurationName
 import modulecheck.model.dependency.ConfiguredDependency
 import modulecheck.model.dependency.ExternalDependency
@@ -38,32 +34,6 @@ import modulecheck.parsing.source.ReferenceName
 import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
-
-// TODO <Rick> delete me
-@OptIn(ExperimentalSerializationApi::class)
-fun main() {
-
-  val descriptors = listOf(
-    ReferenceName_Proto.serializer().descriptor
-    // ReferenceName.serializer().descriptor
-  )
-
-  ProtoBufSchemaGenerator.generateSchemaText(descriptors)
-    .also(::println)
-
-  val protoBuf = ProtoBuf { encodeDefaults = true }
-
-  println(
-    protoBuf.encodeToHexString(
-      ReferenceName_Proto(
-        "Butt",
-        null,
-        listOf(),
-        CompatibleLanguage_Proto.KOTLIN
-      )
-    )
-  )
-}
 
 @Serializable
 data class ReferenceName_Proto(

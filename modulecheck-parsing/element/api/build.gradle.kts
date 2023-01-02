@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-parsing-element-api"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
   api(project(path = ":modulecheck-utils:lazy"))
 
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
+  implementation(project(path = ":modulecheck-utils:serialization"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.element
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.element.McVisibility.McJavaVisibility
 import modulecheck.parsing.element.McVisibility.McKtVisibility
 
@@ -30,17 +31,20 @@ interface HasKtVisibility : HasVisibility {
   override val visibility: McKtVisibility
 }
 
+@Serializable
 sealed interface McVisibility {
-  sealed interface McJavaVisibility : McVisibility {
-    object PackagePrivate : McJavaVisibility
+
+  @Serializable sealed interface McJavaVisibility : McVisibility {
+    @Serializable  object PackagePrivate : McJavaVisibility
   }
 
+  @Serializable
   sealed interface McKtVisibility : McVisibility {
-
+    @Serializable
     object Internal : McKtVisibility
   }
 
-  object Public : McJavaVisibility, McKtVisibility
-  object Protected : McJavaVisibility, McKtVisibility
-  object Private : McJavaVisibility, McKtVisibility
+  @Serializable object Public : McJavaVisibility, McKtVisibility
+  @Serializable object Protected : McJavaVisibility, McKtVisibility
+  @Serializable object Private : McJavaVisibility, McKtVisibility
 }

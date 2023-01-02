@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -72,7 +72,7 @@ interface McElementFactory<T> {
  * @since 0.13.0
  */
 sealed interface McElement {
-  val psi: PsiElement
+  val psi: PsiElement?
   val containingFile: McFile
   val children: Flow<McElement> get() = flowOf()
 }
@@ -82,7 +82,7 @@ sealed interface McJavaElement : McElement {
 }
 
 sealed interface McKtElement : McElement {
-  override val psi: KtElement
+  override val psi: KtElement?
 
   override val containingFile: McFile.McKtFile
     get() = when (this) {
@@ -162,7 +162,7 @@ sealed interface McFile : McElement, HasPackageName {
     McFile,
     McKtElement,
     McAnnotated {
-    override val psi: KtFile
+    override val psi: KtFile?
 
     override val declaredTypes: LazySet<McKtConcreteType>
     override val declaredTypesAndInnerTypes: LazySet<McKtConcreteType>
