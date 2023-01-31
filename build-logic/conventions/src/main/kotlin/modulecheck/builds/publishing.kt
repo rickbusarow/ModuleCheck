@@ -19,9 +19,8 @@ import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost.DEFAULT
+import com.vanniktech.maven.publish.SonatypeHost
 import com.vanniktech.maven.publish.tasks.JavadocJar
-import com.vanniktech.maven.publish.tasks.SourcesJar
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.bundling.Jar
@@ -39,7 +38,7 @@ fun Project.configurePublishing(
   var skipDokka = false
 
   extensions.configure(MavenPublishBaseExtension::class.java) { extension ->
-    extension.publishToMavenCentral(DEFAULT, automaticRelease = true)
+    extension.publishToMavenCentral(SonatypeHost.DEFAULT, automaticRelease = true)
     extension.signAllPublications()
 
     extension.coordinates(
@@ -99,7 +98,6 @@ fun Project.configurePublishing(
   }
 
   tasks.withType(Jar::class.java) { it.notCompatibleWithConfigurationCache("") }
-  tasks.withType(SourcesJar::class.java) { it.notCompatibleWithConfigurationCache("") }
   tasks.withType(JavadocJar::class.java) { it.notCompatibleWithConfigurationCache("") }
   tasks.withType(Sign::class.java) {
     it.notCompatibleWithConfigurationCache("")
