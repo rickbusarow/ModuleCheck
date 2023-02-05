@@ -1,3 +1,18 @@
+# 0.12.4
+
+### 🐛 Bug Fixes
+
+* don't crash if Anvil isn't in the buildScript classpath by @RBusarow
+  in https://github.com/RBusarow/ModuleCheck/pull/944
+* ignore suppress/noinspection names which don't fit the FindingName pattern by @RBusarow
+  in https://github.com/RBusarow/ModuleCheck/pull/945
+
+### Other Changes
+
+* GitHub release notes config by @RBusarow in https://github.com/RBusarow/ModuleCheck/pull/946
+
+**Full Changelog**: https://github.com/RBusarow/ModuleCheck/compare/0.12.3...0.12.4
+
 # 0.12.3
 
 ### 🐛 Bug Fixes
@@ -149,7 +164,9 @@
 - revert KaptMatcher name
   to `modulecheck.api.KaptMatcher` [@RBusarow](https://github.com/RBusarow) ([#613](https://github.com/rbusarow/ModuleCheck/pull/613))
 -
+
 delete `ConfiguredModule` [@RBusarow](https://github.com/RBusarow) ([#609](https://github.com/rbusarow/ModuleCheck/pull/609))
+
 - disable the "use tab character" option in IDE
   codestyle [@RBusarow](https://github.com/RBusarow) ([#607](https://github.com/rbusarow/ModuleCheck/pull/607))
 - replace `java-test-fixtures` usages with `-testing`

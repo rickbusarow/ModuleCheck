@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,7 +34,7 @@ import org.jetbrains.dokka.gradle.AbstractDokkaLeafTask
 
 const val GROUP = "com.rickbusarow.modulecheck"
 const val PLUGIN_ID = "com.rickbusarow.module-check"
-const val VERSION_NAME = "0.13.0-SNAPSHOT"
+const val VERSION_NAME = "0.12.4"
 const val SOURCE_WEBSITE = "https://github.com/rbusarow/ModuleCheck"
 const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 

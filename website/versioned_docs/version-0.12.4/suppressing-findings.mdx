@@ -1,0 +1,66 @@
+---
+id: suppressing-findings
+title: Suppressing Findings
+sidebar_label: Suppressing Findings
+---
+
+
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+
+You can disable individual ModuleCheck findings via annotation, just like with any other lint tool.
+
+The name of the check to disable can be found in the `name` column of console output:
+
+```
+> Task :moduleCheck
+ModuleCheck found 3 issues in 6.157 seconds
+
+:app
+  dependency      name                  build file
+  :fat-and-leaky  inherited-dependency  /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
+  :fat-and-leaky  must-be-api           /Users/rbusarow/projects/sample/app/build.gradle.kts: (15, 3):
+  :unused-lib     unused-dependency     /Users/rbusarow/projects/sample/app/build.gradle.kts: (49, 3):
+
+```
+
+<Tabs groupId="language"
+      defaultValue="Kotlin"
+      values={[
+        {label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
+      ]}>
+
+  <TabItem value="Kotlin">
+
+    ```kotlin title="build.gradle.kts"
+    @Suppress("must-be-api") // don't switch anything to an api config
+    dependencies {
+
+    @Suppress("unused-dependency") // don't comment out or delete this dependency
+    implementation(project(":unused-lib"))
+
+    @Suppress("inherited-dependency") // don't add dependencies which are inherited from this library
+    implementation(project(":leaky"))
+  }
+    ```
+
+  </TabItem>
+
+  <TabItem value="Groovy">
+
+    ```groovy title="build.gradle"
+    // don't switch anything to an api config
+    //noinspection must-be-api
+    dependencies {
+
+    // don't comment out or delete this dependency
+    //noinspection unused-dependency
+    implementation(project(":unused-lib"))
+
+    // don't add dependencies which are inherited from this library
+    //noinspection inherited-dependency
+    implementation(project(":leaky"))
+  }
+    ```
+
+  </TabItem>
+</Tabs>
