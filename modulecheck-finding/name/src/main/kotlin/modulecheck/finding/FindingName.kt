@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,6 +51,18 @@ data class FindingName(
       .decapitalize()
 
   companion object {
+
+    /**
+     * @return a [FindingName] if [maybeFindingName] is `kebab-case`, otherwise `null`.
+     * @since 0.12.4
+     */
+    fun safe(maybeFindingName: String): FindingName? {
+      return if (CaseMatcher.KebabCaseMatcher().matches(maybeFindingName)) {
+        FindingName(maybeFindingName)
+      } else {
+        null
+      }
+    }
 
     @Deprecated("This will be removed soon.")
     fun migrateLegacyIdOrNull(legacyID: String, logger: McLogger): String? {

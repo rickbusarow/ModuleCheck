@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,6 @@ import modulecheck.parsing.gradle.dsl.PluginsBlock
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
-import modulecheck.utils.mapToSet
 import java.io.File
 
 abstract class AbstractPluginsBlock(
@@ -48,7 +47,7 @@ abstract class AbstractPluginsBlock(
       _allDeclarations.forEach { pluginDeclaration ->
 
         val cached = getOrPut(pluginDeclaration) {
-          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed.mapNotNullTo(mutableSetOf()) { FindingName.safe(it) }
         }
 
         cached += pluginDeclaration.suppressed.updateOldSuppresses()
@@ -101,7 +100,7 @@ abstract class AbstractPluginsBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapToSet { FindingName(it) }
+    return mapNotNullTo(mutableSetOf()) { FindingName.safe(it) }
   }
 }
 
