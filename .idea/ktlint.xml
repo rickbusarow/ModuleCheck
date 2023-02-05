@@ -8,10 +8,14 @@
       <list>
         <option value="max-line-length" />
         <option value="filename" />
-        <option value="experimental:argument-list-wrapping" />
-        <option value="experimental:no-empty-first-line-in-method-block" />
-        <option value="experimental:type-parameter-list-spacing" />
+        <option value="no-empty-first-line-in-method-block" />
+        <option value="experimental:function-signature" />
       </list>
     </disabledRules>
+    <externalJarPaths>
+      <list>
+        <option value="ktlint-rules/build/libs/ktlint-rules.jar" />
+      </list>
+    </externalJarPaths>
   </component>
 </project>
