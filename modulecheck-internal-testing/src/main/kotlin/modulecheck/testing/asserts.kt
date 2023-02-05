@@ -63,6 +63,7 @@ private fun assertChanged(
 ) = newString.also { new ->
   trimmedAssert {
 
+    @Suppress("MagicNumber")
     val tokenName = (if (token is Regex) "regex" else "oldValue").padStart(9)
 
     """
