@@ -39,7 +39,7 @@ jUnit = "5.9.2"
 javaParser = "3.25.0"
 jmailen-kotlinter = "3.13.0"
 knit = "0.4.0"
-kotest = "5.5.4"
+kotest = "5.5.5"
 kotlin = "1.7.22"
 
 kotlinx-atomicfu = "0.16.3"
