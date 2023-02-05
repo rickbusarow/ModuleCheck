@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -67,6 +67,19 @@ interface VersionsMatrixTest : DynamicTests, ResetManager {
       filter = { filter(this) },
       testName = { "agp $it" },
       setup = { agpVersion = it },
+      action = action
+    )
+  }
+
+  fun anvil(
+    filter: (String) -> Boolean = { true },
+    action: (String) -> Unit
+  ): List<DynamicTest> {
+
+    return anvilVersions.dynamic(
+      filter = { filter(this) },
+      testName = { "anvil $it" },
+      setup = { anvilVersion = it },
       action = action
     )
   }
