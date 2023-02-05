@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,6 @@ import modulecheck.parsing.gradle.model.ProjectPath.StringProjectPath
 import modulecheck.reporting.logging.McLogger
 import modulecheck.utils.lazy.ResetManager
 import modulecheck.utils.lazy.lazyResets
-import modulecheck.utils.mapToSet
 import modulecheck.utils.remove
 
 abstract class AbstractDependenciesBlock(
@@ -53,7 +52,9 @@ abstract class AbstractDependenciesBlock(
       allModuleDeclarations.forEach { (configuredModule, declarations) ->
 
         val cached = getOrPut(configuredModule) {
-          blockSuppressed.mapTo(mutableSetOf()) { FindingName(it) }
+          blockSuppressed
+            .mapNotNull { FindingName.safe(it) }
+            .mapTo(mutableSetOf()) { it }
         }
 
         declarations.forEach { moduleDependencyDeclaration ->
@@ -170,7 +171,7 @@ abstract class AbstractDependenciesBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapToSet { FindingName(it) }
+    return mapNotNull { FindingName.safe(it) }.toSet()
   }
 
   override fun getOrEmpty(

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -102,6 +102,20 @@ internal class KotlinPluginsBlockParserTest : BaseTest() {
         suppressed = listOf("unused-plugin")
       )
     )
+  }
+
+  @Test
+  fun `suppression which doesn't match finding name regex should be ignored`() {
+    val block = parse(
+      """
+        @Suppress("DSL_SCOPE_VIOLATION")
+        plugins {
+          id("com.squareup.anvil")
+        }
+        """
+    )
+
+    block.allSuppressions.values.flatten() shouldBe emptyList()
   }
 
   @Test
