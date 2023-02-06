@@ -5,24 +5,20 @@ sidebar_label: Configuration
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
-<Tabs groupId="language"
-      defaultValue="Kotlin"
-      values={[
-        {label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-      ]}>
+<Tabs>
 
-  <TabItem value="Kotlin">
+  <TabItem value="Kotlin" default>
 
-    ``` kotlin title="root/build.gradle.kts"
-    plugins {
-    id("com.rickbusarow.module-check") version "0.12.2"
-  }
+``` kotlin title="root/build.gradle.kts"
+plugins {
+  id("com.rickbusarow.module-check") version "0.12.2"
+}
 
-    moduleCheck {
+moduleCheck {
 
-    deleteUnused = true // default is false
+  deleteUnused = true // default is false
 
-    checks {
+  checks {
     overShotDependency = true // default is true
     redundantDependency = false // default is false
     unusedDependency = true // default is true
@@ -38,69 +34,69 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
     depths = false // default is false
   }
 
-    // allow these modules to be declared as dependency anywhere,
-    // regardless of whether they're used
-    ignoreUnusedFinding = setOf(":test:core-jvm", ":test:core-android")
+  // allow these modules to be declared as dependency anywhere,
+  // regardless of whether they're used
+  ignoreUnusedFinding = setOf(":test:core-jvm", ":test:core-android")
 
-    // do not check the dependencies of these modules.
-    // in this case, :app could declare any module it wants without issue
-    doNotCheck = setOf(":app")
+  // do not check the dependencies of these modules.
+  // in this case, :app could declare any module it wants without issue
+  doNotCheck = setOf(":app")
 
     additionalCodeGenerators = listOf(
     modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
-    name = "My Processor",
-    generatorMavenCoordinates = "my-project.codegen:processor",
-    annotationNames = listOf(
-    "myproject.MyInject",
-    "myproject.MyInject.Factory",
-    "myproject.MyInjectParam",
-    "myproject.MyInjectModule"
+      name = "My Processor",
+      generatorMavenCoordinates = "my-project.codegen:processor",
+      annotationNames = listOf(
+        "myproject.MyInject",
+        "myproject.MyInject.Factory",
+        "myproject.MyInjectParam",
+        "myproject.MyInjectModule"
+      )
     )
-    )
-    )
+  )
 
-    reports {
+  reports {
     checkstyle {
-    enabled = true // default is false
-    outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
-  }
+      enabled = true // default is false
+      outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
+    }
     sarif {
-    enabled = true // default is false
-    outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
-  }
+      enabled = true // default is false
+      outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
+    }
     depths {
-    enabled = true // default is false
-    outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
-  }
+      enabled = true // default is false
+      outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
+    }
     graphs {
-    enabled = true // default is false
-    // The root directory of all generated graphs.  If set, directories will be created
-    // for each module, mirroring the structure of the project.  If this property is null,
-    // graphs will be created in the `build/reports/modulecheck/graphs/` relative
-    // directory of each project.
-    outputDir = "${project.buildDir}/reports/modulecheck/graphs"
-  }
+      enabled = true // default is false
+      // The root directory of all generated graphs.  If set, directories will be created
+      // for each module, mirroring the structure of the project.  If this property is null,
+      // graphs will be created in the `build/reports/modulecheck/graphs/` relative
+      // directory of each project.
+      outputDir = "${project.buildDir}/reports/modulecheck/graphs"
+    }
     text {
-    enabled = true // default is false
-    outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
+      enabled = true // default is false
+      outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
+    }
   }
-  }
-  }
-    ```
+}
+```
 
   </TabItem>
 
   <TabItem value="Groovy">
 
-    ``` groovy title="root/build.gradle"
-    plugins {
-    id 'com.rickbusarow.module-check' version '0.12.2'
-  }
+``` groovy title="root/build.gradle"
+plugins {
+  id 'com.rickbusarow.module-check' version '0.12.2'
+}
 
-    moduleCheck {
-    deleteUnused = true // default is false
+moduleCheck {
+  deleteUnused = true // default is false
 
-    checks {
+  checks {
     overShotDependency = true // default is true
     redundantDependency = false // default is false
     unusedDependency = true // default is true
@@ -116,55 +112,55 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
     depths = false // default is false
   }
 
-    // allow these modules to be declared as dependency anywhere,
-    // regardless of whether they're used
-    ignoreUnusedFinding = [':test:core-jvm', ':test:core-android']
+  // allow these modules to be declared as dependency anywhere,
+  // regardless of whether they're used
+  ignoreUnusedFinding = [':test:core-jvm', ':test:core-android']
 
-    // do not check the dependencies of these modules.
-    // in this case, :app could declare any module it wants without issue
-    doNotCheck = [':app']
+  // do not check the dependencies of these modules.
+  // in this case, :app could declare any module it wants without issue
+  doNotCheck = [':app']
 
-    additionalCodeGenerators = [
+  additionalCodeGenerators = [
     new modulecheck.config.CodeGeneratorBinding.AnnotationProcessor(
-    'My Processor',
-    'my-project.codegen:processor',
-    [
-    "myproject.MyInject",
-    "myproject.MyInject.Factory",
-    "myproject.MyInjectParam",
-    "myproject.MyInjectModule"
-    ]
+      'My Processor',
+      'my-project.codegen:processor',
+      [
+        "myproject.MyInject",
+        "myproject.MyInject.Factory",
+        "myproject.MyInjectParam",
+        "myproject.MyInjectModule"
+      ]
     )
-    ]
+  ]
 
-    reports {
+  reports {
     checkstyle {
-    it.enabled = true // default is false
-    it.outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
-  }
+      it.enabled = true // default is false
+      it.outputPath = "${project.buildDir}/reports/modulecheck/checkstyle.xml"
+    }
     sarif {
-    it.enabled = true // default is false
-    it.outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
-  }
+      it.enabled = true // default is false
+      it.outputPath = "${project.buildDir}/reports/modulecheck/modulecheck.sarif"
+    }
     depths {
-    it.enabled = true // default is false
-    it.outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
-  }
+      it.enabled = true // default is false
+      it.outputPath = "${project.buildDir}/reports/modulecheck/depths.txt"
+    }
     graphs {
-    it.enabled = true // default is false
-    // The root directory of all generated graphs.  If set, directories will be created
-    // for each module, mirroring the structure of the project.  If this property is null,
-    // graphs will be created in the `build/reports/modulecheck/graphs/` relative
-    // directory of each project.
-    it.outputDir = "${project.buildDir}/reports/modulecheck/graphs"
-  }
+      it.enabled = true // default is false
+      // The root directory of all generated graphs.  If set, directories will be created
+      // for each module, mirroring the structure of the project.  If this property is null,
+      // graphs will be created in the `build/reports/modulecheck/graphs/` relative
+      // directory of each project.
+      it.outputDir = "${project.buildDir}/reports/modulecheck/graphs"
+    }
     text {
-    it.enabled = true // default is false
-    it.outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
-  }
+      it.enabled = true // default is false
+      it.outputPath = "${project.buildDir}/reports/modulecheck/report.txt"
+    }
   }
 
-  }
-    ```
+}
+```
   </TabItem>
 </Tabs>

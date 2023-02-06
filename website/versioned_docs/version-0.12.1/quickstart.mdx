@@ -11,61 +11,57 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
 ## Dependencies
 
-<Tabs groupId="language"
-      defaultValue="Kotlin"
-      values={[
-        {label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-      ]}>
+<Tabs>
 
-  <TabItem value="Kotlin">
+  <TabItem value="Kotlin" default>
 
-    ```kotlin
-    // settings.gradle.kts
+```kotlin
+// settings.gradle.kts
 
-    pluginManagement {
-    repositories {
+pluginManagement {
+  repositories {
     gradlePluginPortal()
     // Add for SNAPSHOT builds
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
   }
-  }
-    ```
+}
+```
 
-    ```kotlin
-    // top-level build.gradle.kts
+```kotlin
+// top-level build.gradle.kts
 
-    plugins {
-    id("com.rickbusarow.module-check") version "0.12.1-SNAPSHOT"
-  }
-    ```
+plugins {
+  id("com.rickbusarow.module-check") version "0.12.1"
+}
+```
 
-  </TabItem>
+   </TabItem>
 
-  <TabItem value="Groovy">
+<TabItem value="Groovy">
 
-    ```groovy
-    // settings.gradle
+```groovy
+// settings.gradle
 
-    pluginManagement {
-    repositories {
+pluginManagement {
+  repositories {
     gradlePluginPortal()
     // Add for SNAPSHOT builds
     maven {
-    url "https://oss.sonatype.org/content/repositories/snapshots"
+      url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
   }
-  }
-  }
-    ```
+}
+```
 
-    ```groovy
-    // top-level build.gradle
+```groovy
+// top-level build.gradle
 
-    plugins {
-    id 'com.rickbusarow.module-check' version '0.12.1-SNAPSHOT'
-  }
-    ```
+plugins {
+  id 'com.rickbusarow.module-check' version '0.12.1'
+}
+```
 
-  </TabItem>
+   </TabItem>
 </Tabs>
 
 ## Tasks
@@ -104,55 +100,49 @@ generate (module-only) dependency graphs
 
 See [configuration](./configuration.mdx) for a full list of options.
 
-<Tabs groupId="language"
-      defaultValue="Kotlin"
-      values={[
-        {label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-      ]}>
+<Tabs >
 
 
-  <TabItem value="Kotlin">
+   <TabItem value="Kotlin" default>
 
-    ```kotlin title="root/build.gradle.kts"
-    configure
-    <com.rickbusarow.modulecheck.ModuleCheckExtension> {
+```kotlin title="root/build.gradle.kts"
+configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
 
-      alwaysIgnore.set(setOf(":app"))
+  alwaysIgnore.set(setOf(":app"))
 
-      checks {
-      redundant.set(false)
-    }
-    }
-      ```
+  checks {
+    redundant.set(false)
+  }
+}
+```
 
-      --or--
+--or--
 
-      ```kotlin title="root/build.gradle.kts"
-      moduleCheck {
+```kotlin title="root/build.gradle.kts"
+moduleCheck {
 
-        alwaysIgnore.set(setOf(":app"))
+  alwaysIgnore.set(setOf(":app"))
 
-        checks {
-        redundant.set(false)
-      }
-      }
-      ```
+  checks {
+    redundant.set(false)
+  }
+}
+```
 
   </TabItem>
-
 
   <TabItem value="Groovy">
 
-    ```groovy title="root/build.gradle"
-    moduleCheck {
+```groovy title="root/build.gradle"
+moduleCheck {
 
-    alwaysIgnore.set(setOf(":app"))
+  alwaysIgnore.set(setOf(":app"))
 
-    checks {
+  checks {
     redundant.set(false)
   }
-  }
-    ```
+}
+```
 
-  </TabItem>
+   </TabItem>
 </Tabs>
