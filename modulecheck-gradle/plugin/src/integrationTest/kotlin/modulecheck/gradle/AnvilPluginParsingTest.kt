@@ -21,7 +21,7 @@ import org.junit.jupiter.api.TestFactory
 class AnvilPluginParsingTest : BaseGradleTest() {
 
   @TestFactory
-  fun `anvil may be added to the root project buildScript classpath`() = anvil {
+  fun `anvil may be added to the root project buildScript classpath`() = factory {
     rootBuild {
       DEFAULT_BUILD_FILE.replaceOrFail(
         """(\s*buildscript\s*\{\s*dependencies\s*\{)(\s*)""".toRegex(),
@@ -53,7 +53,7 @@ class AnvilPluginParsingTest : BaseGradleTest() {
   }
 
   @TestFactory
-  fun `anvil may be added directly to a subproject only`() = anvil {
+  fun `anvil may be added directly to a subproject only`() = factory {
 
     kotlinProject(":lib1") {
       buildFile {
