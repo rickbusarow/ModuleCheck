@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 env:
-  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx6g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
+  gradleArgs: '-Dorg.gradle.jvmargs=-Xmx10g -Dfile.encoding=UTF-8 -XX:+UseParallelGC'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
