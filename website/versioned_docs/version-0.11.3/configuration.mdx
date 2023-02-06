@@ -5,13 +5,9 @@ sidebar_label: Configuration
 
 import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
-<Tabs groupId="language"
-      defaultValue="Kotlin"
-      values={[
-        {label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-      ]}>
+<Tabs>
 
-  <TabItem value="Kotlin">
+  <TabItem value="Kotlin" default>
 
 ``` kotlin title="root/build.gradle.kts"
 plugins {
