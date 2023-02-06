@@ -34,12 +34,19 @@ class VersionsMatrix(
 
   internal val exclusions = listOf(
     Exclusion(gradle = "7.5.1", agp = "7.3.1", anvil = null, kotlin = null),
+    Exclusion(gradle = null, agp = "7.0.1", anvil = "2.4.4", kotlin = null),
     Exclusion(gradle = "7.5.1", agp = null, anvil = null, kotlin = "1.8.10"),
     Exclusion(gradle = "7.5.1", agp = "7.4.2", anvil = null, kotlin = null),
     Exclusion(gradle = "8.0.2", agp = "7.1.3", anvil = null, kotlin = null),
     Exclusion(gradle = "8.0.2", agp = "7.2.2", anvil = null, kotlin = null),
     Exclusion(gradle = null, agp = null, anvil = "2.4.3", kotlin = "1.8.0"),
     Exclusion(gradle = null, agp = null, anvil = "2.4.3", kotlin = "1.8.10"),
+    Exclusion(gradle = null, agp = null, anvil = "2.4.4", kotlin = "1.7.22"),
+    Exclusion(gradle = "7.4.2", agp = null, anvil = "2.4.4", kotlin = null),
+    Exclusion(gradle = null, agp = null, anvil = "2.4.3", kotlin = "1.8.0"),
+    Exclusion(gradle = null, agp = null, anvil = "2.4.3", kotlin = "1.8.10"),
+    Exclusion(gradle = null, agp = null, anvil = "2.4.4", kotlin = "1.7.0"),
+    Exclusion(gradle = null, agp = null, anvil = "2.4.4", kotlin = "1.7.10"),
     Exclusion(gradle = null, agp = null, anvil = "2.4.4", kotlin = "1.7.22")
   )
     .requireNoDuplicates()

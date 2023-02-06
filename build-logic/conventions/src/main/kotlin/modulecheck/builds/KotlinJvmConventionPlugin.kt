@@ -85,18 +85,6 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
       }
     }
 
-    val kotlinVersion = target.libsCatalog.version("kotlin")
-
-    target.configurations.configureEach { configuration ->
-      configuration.resolutionStrategy { strategy ->
-        strategy.eachDependency { resolveDetails ->
-          if (resolveDetails.requested.group == "org.jetbrains.kotlin") {
-            resolveDetails.useVersion(kotlinVersion)
-          }
-        }
-      }
-    }
-
     target.tasks.register("moveJavaSrcToKotlin") { task ->
 
       task.doLast {

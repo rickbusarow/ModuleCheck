@@ -40,16 +40,6 @@ moduleCheck {
 val kotlinVersion = libs.versions.kotlin.get()
 allprojects {
 
-  configurations.all {
-    resolutionStrategy {
-      eachDependency {
-        if (requested.group == "org.jetbrains.kotlin") {
-          useVersion(kotlinVersion)
-        }
-      }
-    }
-  }
-
   plugins.withType(JavaPlugin::class.java) {
     configure<JavaPluginExtension> {
       @Suppress("MagicNumber")
