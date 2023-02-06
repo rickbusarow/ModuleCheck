@@ -58,7 +58,7 @@ rickBusarow-hermit = "0.9.6"
 rickBusarow-moduleCheck = "0.12.3"
 rickBusarow-tangle = "0.15.1"
 
-square-anvil = "2.4.3"
+square-anvil = "2.4.4"
 square-moshi = "1.14.0"
 square-okio = "3.3.0"
 square-retrofit = "2.9.0"
