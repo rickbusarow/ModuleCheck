@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -134,18 +134,25 @@ class GradleProjectProvider @Inject constructor(
     `kotlinCompilerPluginClasspathMain`, `kotlinCompilerPluginClasspathTest`, etc.
      */
     val version = configurations
-      .filter { it.name.startsWith("kotlinCompilerPluginClasspath") }
       .asSequence()
+      .filter { it.name.startsWith("kotlinCompilerPluginClasspath") }
       .flatMap { it.dependencies }
       .firstOrNull { it.group == "com.squareup.anvil" }
       ?.version
       ?.let { versionString -> SemVer.parse(versionString) }
       ?: return null
 
-    val enabled = extensions
-      .findByType(AnvilExtension::class.java)
-      ?.generateDaggerFactories
-      ?.get() == true
+    // TODO This is something of a band-aid, because it means that if the plugin is only applied to
+    //  a sub-project, it won't be parsed at all.  Anvil should probably be shaded, unless/until
+    //  classpath isolation with the Worker API is working.
+    @Suppress("SwallowedException")
+    val enabled = try {
+      extensions.findByType(AnvilExtension::class.java)
+        ?.generateDaggerFactories
+        ?.get() == true
+    } catch (e: NoClassDefFoundError) {
+      return null
+    }
 
     return AnvilGradlePlugin(version, enabled)
   }

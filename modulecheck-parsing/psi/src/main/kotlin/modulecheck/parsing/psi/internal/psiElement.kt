@@ -65,7 +65,8 @@ import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 import kotlin.contracts.contract
 
-inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean = getNonStrictParentOfType<T>() != null
+inline fun <reified T : PsiElement> PsiElement.isPartOf(): Boolean =
+  getNonStrictParentOfType<T>() != null
 
 inline fun <reified T : PsiElement> PsiElement.getChildrenOfTypeRecursive(): List<T> {
   return generateSequence(children.asSequence()) { children ->
@@ -103,7 +104,9 @@ fun KtPropertyDelegate.returnType(bindingContext: BindingContext): KotlinType? {
 
 fun KtAnnotated.hasAnnotation(annotationFqName: FqName): Boolean {
 
-  if (annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }) {
+  if (
+    annotationEntries.any { it.typeReference?.typeElement?.text == annotationFqName.asString() }
+  ) {
     return true
   }
 

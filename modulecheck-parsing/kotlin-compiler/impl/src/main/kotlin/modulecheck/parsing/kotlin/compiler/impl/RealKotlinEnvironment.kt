@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -93,7 +93,9 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
-      classpathFiles = classpathFiles.await(),
+      // TODO re-enable classpath files once external dependency resolution is working
+      // classpathFiles =   classpathFiles.await(),
+      classpathFiles = emptyList(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -199,7 +201,7 @@ class RealKotlinEnvironment(
     analyzer.analysisResult
   }
 
-  private suspend fun createCompilerConfiguration(
+  private fun createCompilerConfiguration(
     classpathFiles: List<File>,
     sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,

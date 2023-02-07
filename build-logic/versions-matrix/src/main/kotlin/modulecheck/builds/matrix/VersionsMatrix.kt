@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ class VersionsMatrix(
 ) {
 
   val agpList = agpArg?.singletonList()
-    ?: listOf("7.0.1", "7.1.3", "7.2.2", "7.3.1")
+    ?: listOf("7.0.1", "7.1.3", "7.2.2", "7.3.1", "7.4.1")
   val anvilList = anvilArg?.singletonList()
     ?: listOf("2.4.3")
   val gradleList = gradleArg?.singletonList()
@@ -36,6 +36,7 @@ class VersionsMatrix(
     Exclusion(gradle = null, agp = "7.0.1", anvil = "2.4.3", kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.2.2", anvil = null, kotlin = null),
     Exclusion(gradle = "7.2", agp = "7.3.1", anvil = null, kotlin = null),
+    Exclusion(gradle = "7.2", agp = "7.4.1", anvil = null, kotlin = null),
     Exclusion(gradle = "7.4.2", agp = null, anvil = "2.4.3", kotlin = null)
   )
     .requireNoDuplicates()

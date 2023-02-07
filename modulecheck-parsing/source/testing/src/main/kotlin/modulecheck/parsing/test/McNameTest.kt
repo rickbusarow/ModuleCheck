@@ -19,7 +19,6 @@ import io.kotest.assertions.asClue
 import io.kotest.assertions.assertSoftly
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.runBlocking
-import modulecheck.parsing.element.McElement
 import modulecheck.parsing.source.AndroidDataBindingDeclaredName
 import modulecheck.parsing.source.AndroidDataBindingReferenceName
 import modulecheck.parsing.source.AndroidRDeclaredName
@@ -150,12 +149,6 @@ interface McNameTest : FancyShould {
 
   infix fun Collection<QualifiedDeclaredName>.shouldBe(other: Collection<QualifiedDeclaredName>) {
     prettyPrint().trimmedShouldBe(other.prettyPrint(), McNameTest::class)
-  }
-
-  infix fun LazySet<McElement>.shouldBe(other: List<McElement>) {
-    runBlocking(Trace.start(McNameTest::class)) {
-      toList().trimmedShouldBe(other.toList())
-    }
   }
 
   infix fun LazySet<ReferenceName>.shouldBe(other: Collection<ReferenceName>) {
