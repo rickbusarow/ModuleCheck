@@ -1,4 +1,6 @@
-# 0.12.4
+# 0.12.5
+
+This is a re-release of [0.12.4](#0.12.4).
 
 ### 🐛 Bug Fixes
 
@@ -11,7 +13,11 @@
 
 * GitHub release notes config by @RBusarow in https://github.com/RBusarow/ModuleCheck/pull/946
 
-**Full Changelog**: https://github.com/RBusarow/ModuleCheck/compare/0.12.3...0.12.4
+**Full Changelog**: https://github.com/RBusarow/ModuleCheck/compare/0.12.3...0.12.5
+
+# 0.12.4
+
+This version was published with stale artifacts. Use 0.12.5 instead.
 
 # 0.12.3
 

@@ -1,0 +1,157 @@
+---
+id: quickstart
+title: Quick Start
+sidebar_label: Quick Start
+slug: /
+---
+
+
+import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
+
+
+## Dependencies
+
+<Tabs groupId="language"
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
+]}>
+
+   <TabItem value="Kotlin">
+
+```kotlin
+// settings.gradle.kts
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    // Add for SNAPSHOT builds
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
+  }
+}
+```
+
+```kotlin
+// top-level build.gradle.kts
+
+plugins {
+     id("com.rickbusarow.module-check") version "0.13.0-SNAPSHOT"
+}
+```
+
+   </TabItem>
+
+<TabItem value="Groovy">
+
+```groovy
+// settings.gradle
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    // Add for SNAPSHOT builds
+    maven {
+      url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+  }
+}
+```
+
+```groovy
+// top-level build.gradle
+
+plugins {
+  id 'com.rickbusarow.module-check' version '0.13.0-SNAPSHOT'
+}
+```
+
+   </TabItem>
+</Tabs>
+
+## Tasks
+
+all checks
+```shell
+./gradlew moduleCheck
+```
+
+all checks with auto-correct
+```shell
+./gradlew moduleCheckAuto
+```
+
+check sorting
+```shell
+./gradlew moduleCheckSortPlugins moduleCheckSortDependencies
+```
+
+apply sorting
+```shell
+./gradlew moduleCheckSortPluginsAuto moduleCheckSortDependenciesAuto
+```
+
+report depths of each module
+```shell
+./gradlew moduleCheckDepths
+```
+
+generate (module-only) dependency graphs
+```shell
+./gradlew moduleCheckGraphs
+```
+
+## Configuration
+
+See [configuration](./configuration.mdx) for a full list of options.
+
+<Tabs groupId="language"
+defaultValue="Kotlin"
+values={[
+{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
+]}>
+
+
+   <TabItem value="Kotlin">
+
+```kotlin title="root/build.gradle.kts"
+configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+--or--
+
+```kotlin title="root/build.gradle.kts"
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+   </TabItem>
+
+
+<TabItem value="Groovy">
+
+```groovy title="root/build.gradle"
+moduleCheck {
+
+  alwaysIgnore.set(setOf(":app"))
+
+  checks {
+    redundant.set(false)
+  }
+}
+```
+
+   </TabItem>
+</Tabs>
