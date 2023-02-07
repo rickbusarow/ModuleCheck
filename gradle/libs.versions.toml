@@ -55,7 +55,7 @@ mavenPublish = "0.13.0"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-hermit = "0.9.6"
-rickBusarow-moduleCheck = "0.12.4"
+rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
 
 square-anvil = "2.4.3"
