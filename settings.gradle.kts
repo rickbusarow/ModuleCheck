@@ -137,6 +137,7 @@ include(
   ":modulecheck-utils:coroutines:api",
   ":modulecheck-utils:coroutines:impl",
   ":modulecheck-utils:lazy",
+  ":modulecheck-utils:serialization",
   ":modulecheck-utils:stdlib",
   ":modulecheck-utils:trace",
   ":modulecheck-utils:trace-testing"

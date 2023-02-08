@@ -19,6 +19,7 @@ buildscript {
     // for transitive dependencies like `sam-with-receiver`.
     // https://github.com/gradle/gradle/issues/22510
     classpath(libs.kotlin.sam.with.receiver)
+    classpath(libs.kotlin.serialization)
   }
 }
 

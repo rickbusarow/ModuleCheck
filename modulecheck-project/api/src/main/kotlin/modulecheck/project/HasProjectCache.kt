@@ -30,9 +30,8 @@ interface HasProjectCache {
  * @receiver has a defined path to be resolved to a project
  * @since 0.12.0
  */
-fun HasProjectPath.project(
-  projectCache: ProjectCache
-): McProject = projectCache.getValue(projectPath)
+fun HasProjectPath.project(projectCache: ProjectCache): McProject =
+  projectCache.getValue(projectPath)
 
 /**
  * @receiver has a defined path to be resolved to a project
@@ -40,9 +39,9 @@ fun HasProjectPath.project(
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
-fun HasProjectPath.project(
-  hasProjectCache: HasProjectCache
-): McProject = hasProjectCache.projectCache.getValue(projectPath)
+fun HasProjectPath.project(hasProjectCache: HasProjectCache): McProject =
+  hasProjectCache.projectCache
+    .getValue(projectPath)
 
 /**
  * @receiver has a dependentPath to be resolved to a project

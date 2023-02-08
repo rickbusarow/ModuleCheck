@@ -13,21 +13,16 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi.internal
+package modulecheck.gradle.platforms.jvm
 
-import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.PackageName
-import modulecheck.utils.lazy.LazySet
+import modulecheck.model.dependency.Configurations
+import modulecheck.model.dependency.SourceSets
+import modulecheck.parsing.gradle.model.GradleProject
 
-interface DeclarationsProvider {
-  suspend fun get(
-    sourceSetName: SourceSetName,
-    packageName: PackageName
-  ): LazySet<DeclaredName>
+fun interface JvmSourceSetsParser {
+  fun parse(
+    parsedConfigurations: Configurations,
+    gradleProject: GradleProject
 
-  suspend fun getWithUpstream(
-    sourceSetName: SourceSetName,
-    packageNameOrNull: PackageName? = null
-  ): LazySet<DeclaredName>
+  ): SourceSets
 }

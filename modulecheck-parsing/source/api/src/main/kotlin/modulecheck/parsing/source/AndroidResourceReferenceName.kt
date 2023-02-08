@@ -15,6 +15,7 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.lazy.unsafeLazy
@@ -24,7 +25,8 @@ import modulecheck.utils.lazy.unsafeLazy
  *
  * @since 0.12.0
  */
-sealed class AndroidResourceReferenceName(name: String) : ReferenceName(name)
+@Serializable
+sealed class AndroidResourceReferenceName : ReferenceName()
 
 /**
  * example: `com.example.R`
@@ -33,24 +35,28 @@ sealed class AndroidResourceReferenceName(name: String) : ReferenceName(name)
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class AndroidRReferenceName(
   val packageName: PackageName,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(packageName.append("R"))
+) : AndroidResourceReferenceName() {
+  override val name: String by unsafeLazy { packageName.append("R") }
+}
 
 /**
  * example: `R.string.app_name`
  *
- * @param name `R.string.____`
+ * @property name `R.string.____`
  * @property language the language making this reference
  * @since 0.12.0
  */
 // hashcode behavior is intentionally handled by super
 @Suppress("EqualsWithHashCodeExist", "EqualsOrHashCode")
+@Serializable
 class UnqualifiedAndroidResourceReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name),
+) : AndroidResourceReferenceName(),
   HasSimpleNames {
 
   private val split by unsafeLazy {
@@ -93,23 +99,25 @@ class UnqualifiedAndroidResourceReferenceName(
 /**
  * example: `com.example.databinding.FragmentViewBinding`
  *
- * @param name `com.example.databinding.FragmentViewBinding`
+ * @property name `com.example.databinding.FragmentViewBinding`
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class AndroidDataBindingReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name)
+) : AndroidResourceReferenceName()
 
 /**
  * example: `com.example.R.string.app_name`
  *
- * @param name `com.example.R.string.app_name`
+ * @property name `com.example.R.string.app_name`
  * @property language the language making this reference
  * @since 0.12.0
  */
+@Serializable
 class QualifiedAndroidResourceReferenceName(
-  name: String,
+  override val name: String,
   override val language: CompatibleLanguage
-) : AndroidResourceReferenceName(name)
+) : AndroidResourceReferenceName()

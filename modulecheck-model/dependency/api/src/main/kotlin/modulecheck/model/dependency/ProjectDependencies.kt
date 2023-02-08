@@ -15,10 +15,16 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.serializer
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.utils.filterToSet
 import modulecheck.utils.flatMapToSet
 
+@Serializable(ProjectDependenciesSerializer::class)
 class ProjectDependencies(
   map: Map<ConfigurationName, Set<ProjectDependency>>
 ) : MutableMap<ConfigurationName, Set<ProjectDependency>> by map.toMutableMap() {
@@ -49,5 +55,20 @@ class ProjectDependencies(
   fun remove(cpd: ProjectDependency) {
     val oldDependencies = get(cpd.configurationName).orEmpty()
     put(cpd.configurationName, oldDependencies.filterToSet { it != cpd })
+  }
+}
+
+object ProjectDependenciesSerializer : KSerializer<ProjectDependencies> {
+
+  private val delegate: KSerializer<Map<ConfigurationName, Set<ProjectDependency>>> = serializer()
+
+  override val descriptor = delegate.descriptor
+
+  override fun serialize(encoder: Encoder, value: ProjectDependencies) {
+    encoder.encodeSerializableValue(delegate, value)
+  }
+
+  override fun deserialize(decoder: Decoder): ProjectDependencies {
+    return ProjectDependencies(decoder.decodeSerializableValue(delegate))
   }
 }

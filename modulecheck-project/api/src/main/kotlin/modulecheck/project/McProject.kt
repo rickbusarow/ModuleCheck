@@ -33,12 +33,10 @@ import modulecheck.parsing.gradle.model.HasPlatformPlugin
 import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("TooManyFunctions")
 interface McProject :
   ProjectContext,
   Comparable<McProject>,
@@ -84,12 +82,12 @@ interface McProject :
   val jvmTarget: JvmTarget
 
   /**
-   * @return a [QualifiedDeclaredName] if one can be found for the given [resolvableMcName] and
+   * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
    *     [sourceSetName]
    * @since 0.12.0
    */
-  suspend fun resolvedNameOrNull(
-    resolvableMcName: ResolvableMcName,
+  suspend fun resolveFqNameOrNull(
+    declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName?
 }

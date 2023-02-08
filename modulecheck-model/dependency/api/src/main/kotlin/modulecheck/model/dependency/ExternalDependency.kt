@@ -15,8 +15,10 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.lazy.unsafeLazy
 
+@Serializable
 sealed class ExternalDependency :
   ConfiguredDependency,
   HasMavenCoordinates {
@@ -32,9 +34,12 @@ sealed class ExternalDependency :
     )
   }
   override val identifier: MavenCoordinates by unsafeLazy { mavenCoordinates }
-  val nameWithVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName:${version.orEmpty()}" }
+  val nameWithVersion: String by unsafeLazy {
+    "${group.orEmpty()}:$moduleName:${version.orEmpty()}"
+  }
   val nameWithoutVersion: String by unsafeLazy { "${group.orEmpty()}:$moduleName" }
 
+  @Serializable
   class ExternalRuntimeDependency(
     override val configurationName: ConfigurationName,
     override val group: String?,
@@ -43,6 +48,7 @@ sealed class ExternalDependency :
     override val isTestFixture: Boolean
   ) : ExternalDependency()
 
+  @Serializable
   class ExternalCodeGeneratorDependency(
     override val configurationName: ConfigurationName,
     override val group: String?,

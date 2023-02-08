@@ -52,8 +52,8 @@ class JavaParserNodeResolver(
     }
       .asFlow()
       .map {
-        project.resolvedNameOrNull(
-          resolvableMcName = FqName(it).asDeclaredName(PackageName(packageName)),
+        project.resolveFqNameOrNull(
+          declaredName = FqName(it).asDeclaredName(PackageName(packageName)),
           sourceSetName = sourceSetName
         )
       }

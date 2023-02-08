@@ -28,6 +28,7 @@ import modulecheck.project.ProjectRoot
 import modulecheck.rule.RuleFilter
 import modulecheck.rule.RulesComponent
 import modulecheck.runtime.RunnerComponent
+import org.gradle.workers.WorkerExecutor
 
 @SingleIn(TaskScope::class)
 @MergeComponent(TaskScope::class)
@@ -43,6 +44,7 @@ interface TaskComponent : RunnerComponent, RulesComponent {
      * @param ruleFilter this lets the tasks define which rule(s) they're going to apply
      * @param projectRoot the root directory for the rootProject. This is the same as calling
      *   `rootProject.rootDir`.
+     * @param workerExecutor the only way into Gradle's managed thread ecosystem
      * @since 0.12.0
      */
     fun create(
@@ -54,7 +56,9 @@ interface TaskComponent : RunnerComponent, RulesComponent {
       @BindsInstance
       ruleFilter: RuleFilter,
       @BindsInstance
-      projectRoot: ProjectRoot
+      projectRoot: ProjectRoot,
+      @BindsInstance
+      workerExecutor: WorkerExecutor
     ): TaskComponent
   }
 }

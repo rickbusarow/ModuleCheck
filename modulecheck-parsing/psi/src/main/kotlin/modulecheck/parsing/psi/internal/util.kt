@@ -15,10 +15,6 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.source.SimpleName
-import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
-import modulecheck.utils.requireNotNull
-import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 
@@ -27,8 +23,4 @@ fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgum
     .firstOrNull { it.getArgumentName()?.text == name }
     ?: arguments
       .getOrNull(index)
-}
-
-fun KtElement.requireSimpleName(): SimpleName {
-  return name.requireNotNull().asSimpleName()
 }

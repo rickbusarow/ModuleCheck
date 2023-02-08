@@ -13,16 +13,18 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms.sourcesets
+plugins {
+  id("mcbuild")
+}
 
-import modulecheck.model.dependency.Configurations
-import modulecheck.model.dependency.SourceSets
-import modulecheck.parsing.gradle.model.GradleProject
+mcbuild {
+  artifactId = "modulecheck-utils-serialization"
+  serialization()
+}
 
-fun interface JvmSourceSetsParser {
-  fun parse(
-    parsedConfigurations: Configurations,
-    gradleProject: GradleProject
+dependencies {
 
-  ): SourceSets
+  testImplementation(libs.bundles.hermit)
+  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.kotest)
 }

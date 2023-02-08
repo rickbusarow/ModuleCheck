@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-gradle-platform-api"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
+  api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:lazy"))
 
   compileOnly(gradleApi())
@@ -44,6 +46,8 @@ dependencies {
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
+  implementation(project(path = ":modulecheck-utils:serialization"))
+  implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)

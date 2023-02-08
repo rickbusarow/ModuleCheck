@@ -20,6 +20,8 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-model-sourceset-api"
   anvil()
+  wire()
+  serialization()
 }
 
 dependencies {

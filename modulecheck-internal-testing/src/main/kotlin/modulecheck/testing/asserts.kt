@@ -15,67 +15,13 @@
 
 package modulecheck.testing
 
-import io.kotest.assertions.asClue
-import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.fail
 
 fun <T : Any> T?.requireNotNullOrFail(
   lazyMessage: () -> String = { "The receiver cannot be null, but it was. ¯\\_(ツ)_/¯" }
 ): T {
+
   if (this != null) return this
 
   fail(lazyMessage)
-}
-
-/**
- * Asserts that the receiver string is changed after calling [String.replace]
- *
- * @since 0.12.4
- */
-fun String.replaceOrFail(oldValue: String, replacement: String): String {
-  return assertChanged(
-    oldString = this@replaceOrFail,
-    newString = replace(oldValue, replacement),
-    token = oldValue,
-    replacement = replacement
-  )
-}
-
-/**
- * Asserts that the receiver string is changed after calling [String.replace]
- *
- * @since 0.12.4
- */
-fun String.replaceOrFail(regex: Regex, replacement: String): String {
-  return assertChanged(
-    oldString = this@replaceOrFail,
-    newString = replace(regex, replacement),
-    token = regex,
-    replacement = replacement
-  )
-}
-
-private fun assertChanged(
-  oldString: String,
-  newString: String,
-  token: Any,
-  replacement: String
-) = newString.also { new ->
-  trimmedAssert {
-
-    @Suppress("MagicNumber")
-    val tokenName = (if (token is Regex) "regex" else "oldValue").padStart(9)
-
-    """
-      |String replacement did not change the original string.
-      |
-      |     $tokenName: $token
-      |    replacement: $replacement
-      |
-      |original string (starting on the new line):
-      |$oldString
-      |____________________________________________________
-      |""".replaceIndentByMargin()
-      .asClue { new shouldNotBe oldString }
-  }
 }

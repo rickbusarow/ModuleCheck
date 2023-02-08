@@ -127,7 +127,7 @@ internal class KotlinDependenciesBlockParserTest : ProjectTest() {
            @Suppress("DSL_SCOPE_VIOLATION")
            testImplementation(project(":core:test"))
         }
-         """
+        """
       ).single()
 
     block.allSuppressions.values.flatten() shouldBe emptyList()
