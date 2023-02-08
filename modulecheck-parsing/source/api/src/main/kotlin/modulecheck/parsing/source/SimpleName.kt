@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 @JvmInline
-value class SimpleName(val name: String) : Comparable<SimpleName> {
+value class SimpleName(val name: String) : Comparable<SimpleName>, java.io.Serializable {
 
   init {
     require(name.matches("""^([a-zA-Z_$][a-zA-Z\d_$]*)|(`.*`)$""".toRegex())) {
@@ -38,11 +38,11 @@ value class SimpleName(val name: String) : Comparable<SimpleName> {
 
   companion object {
     /**
-     * shorthand for `joinToString(".") { it.name.trim() }`
+     * shorthand for `joinToString(".") { it.name }`
      *
      * @since 0.12.0
      */
-    fun List<SimpleName>.asString(): String = joinToString(".") { it.name.trim() }
+    fun List<SimpleName>.asString(): String = joinToString(".") { it.name }
 
     /**
      * wraps this String in a [SimpleName]

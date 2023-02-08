@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,23 +19,21 @@ package modulecheck.gradle.platforms.android.sourcesets
 
 import com.android.build.gradle.BaseExtension
 import com.android.build.gradle.TestedExtension
-import com.android.build.gradle.api.BaseVariant
 import com.android.build.gradle.api.TestVariant
 import com.android.build.gradle.api.UnitTestVariant
 import com.android.build.gradle.internal.api.DefaultAndroidSourceSet
 import com.squareup.anvil.annotations.ContributesBinding
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.platforms.KotlinEnvironmentFactory
-import modulecheck.gradle.platforms.android.AndroidAppExtension
-import modulecheck.gradle.platforms.android.AndroidLibraryExtension
-import modulecheck.gradle.platforms.android.AndroidTestExtension
+import modulecheck.gradle.platforms.Classpath
+import modulecheck.gradle.platforms.android.SafeAgpApiReferenceScope
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.BuildTypeName
 import modulecheck.gradle.platforms.android.sourcesets.internal.GradleSourceSetName.ConcatenatedFlavorsName
 import modulecheck.gradle.platforms.android.sourcesets.internal.ParsedNames
+import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.kotlin.jvmTarget
+import modulecheck.gradle.platforms.kotlin.kotlinLanguageVersionOrNull
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.gradle.platforms.sourcesets.jvmTarget
-import modulecheck.gradle.platforms.sourcesets.kotlinLanguageVersionOrNull
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.McSourceSet
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -48,12 +46,9 @@ import modulecheck.model.sourceset.asSourceSetName
 import modulecheck.model.sourceset.removePrefix
 import modulecheck.parsing.gradle.model.GradleProject
 import modulecheck.utils.capitalize
-import modulecheck.utils.existsOrNull
 import modulecheck.utils.flatMapToSet
 import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
-import org.gradle.api.DomainObjectSet
-import org.gradle.api.artifacts.ExternalModuleDependency
 import java.io.File
 import javax.inject.Inject
 
@@ -144,7 +139,7 @@ class RealAndroidSourceSetsParser private constructor(
   private val hasTestFixturesPlugin: Boolean,
   private val gradleProject: GradleProject,
   private val kotlinEnvironmentFactory: KotlinEnvironmentFactory
-) : AndroidSourceSetsParser {
+) : SafeAgpApiReferenceScope(gradleProject), AndroidSourceSetsParser {
 
   private val projectPath = StringProjectPath(gradleProject.path)
 
@@ -179,7 +174,7 @@ class RealAndroidSourceSetsParser private constructor(
       ?.let { it.testVariants + it.unitTestVariants }
       .orEmpty()
 
-    extension.publishedVariants()
+    extension.baseVariants()
       .plus(tested)
       .associateBy { GradleSourceSetName.VariantName(it.name) }
   }
@@ -195,7 +190,7 @@ class RealAndroidSourceSetsParser private constructor(
     )
     put(GradleSourceSetName.UnitTestName, listOf(GradleSourceSetName.MainName, BuildTypeName.DEBUG))
 
-    extension.publishedVariants()
+    extension.baseVariants()
       .map { GradleSourceSetName.VariantName(it.name) }
       .forEach { variantName ->
 
@@ -394,25 +389,7 @@ class RealAndroidSourceSetsParser private constructor(
       }
 
       val classpath = lazyDeferred {
-        upstreamLazy.value
-          .asSequence()
-          .map { it.value }
-          .plus(name)
-          .mapNotNull { variantMap[GradleSourceSetName.VariantName(it)] }
-          .flatMap { variant ->
-            sequenceOf(
-              variant.compileConfiguration,
-              variant.runtimeConfiguration
-            )
-              .flatMap { config ->
-                config.fileCollection { dependency ->
-                  dependency is ExternalModuleDependency
-                }
-                  .mapNotNull { it.existsOrNull() }
-              }
-              .toSet()
-          }
-          .toList()
+        Classpath.from(gradleProject, sourceSetName).files()
       }
 
       val kotlinEnvironmentDeferred = lazyDeferred {
@@ -472,17 +449,6 @@ class RealAndroidSourceSetsParser private constructor(
 
     return upstreamNames.distinct()
   }
-
-  private fun BaseExtension.publishedVariants(): DomainObjectSet<out BaseVariant> =
-    when (this) {
-      is AndroidAppExtension -> applicationVariants
-      is AndroidLibraryExtension -> libraryVariants
-      is AndroidTestExtension -> applicationVariants
-      else -> error(
-        "Expected the extension to be `AppExtension`, `LibraryExtension`, or `TestExtension`, " +
-          "but it was `${this::class.qualifiedName}`."
-      )
-    }
 
   private fun GradleSourceSetName.VariantName.splitFlavorAndBuildType(): Pair<ConcatenatedFlavorsName, BuildTypeName> {
     buildTypeNames
@@ -581,7 +547,9 @@ class RealAndroidSourceSetsParser private constructor(
           kotlinEnvironmentFactory.create(
             projectPath = projectPath,
             sourceSetName = sourceSetName,
-            classpathFiles = lazyDeferred { extension.bootClasspath.toList() },
+            classpathFiles = lazyDeferred {
+              Classpath.from(gradleProject, sourceSetName).files()
+            },
             sourceDirs = jvmFiles,
             kotlinLanguageVersion = gradleProject.kotlinLanguageVersionOrNull(),
             jvmTarget = gradleProject.jvmTarget()

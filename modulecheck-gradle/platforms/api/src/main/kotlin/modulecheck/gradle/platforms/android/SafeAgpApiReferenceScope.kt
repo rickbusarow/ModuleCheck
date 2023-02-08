@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@ import modulecheck.model.dependency.AndroidPlatformPlugin
 import modulecheck.model.dependency.Configurations
 import modulecheck.parsing.gradle.model.GradleProject
 import net.swiftzer.semver.SemVer
+import org.gradle.api.DomainObjectSet
 
 /**
  * Wrapper for accessing AGP declarations only after it's been established that they exist in the
@@ -29,25 +30,23 @@ import net.swiftzer.semver.SemVer
  * @see UnsafeDirectAgpApiReference
  * @since 0.12.0
  */
+@Suppress("TYPEALIAS_EXPANSION_DEPRECATION")
 @OptIn(UnsafeDirectAgpApiReference::class)
-class SafeAgpApiReferenceScope @PublishedApi internal constructor(
+open class SafeAgpApiReferenceScope @PublishedApi internal constructor(
   private val agpApiAccess: AgpApiAccess,
   private val gradleProject: GradleProject
 ) {
+
+  protected constructor(
+    gradleProject: GradleProject
+  ) : this(AgpApiAccess(), gradleProject)
 
   /**
    * Helper function for `this is AndroidAppExtension` which bypasses the opt-in requirement.
    *
    * @since 0.12.0
    */
-  fun Any?.isAndroidAppExtension(): Boolean = this is AndroidAppExtension
-
-  /**
-   * Helper function for `this is AndroidBaseExtension` which bypasses the opt-in requirement.
-   *
-   * @since 0.12.0
-   */
-  fun Any?.isAndroidBaseExtension(): Boolean = this is AndroidBaseExtension
+  fun AndroidBaseExtension?.isAndroidAppExtension(): Boolean = this is AndroidAppExtension
 
   /**
    * Helper function for `this is AndroidCommonExtension` which bypasses the opt-in requirement.
@@ -90,6 +89,51 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
     gradleProject.extensions
       .getByType(AndroidBaseExtension::class.java)
 
+  /**
+   * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
+   *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
+   *     [testVariant][com.android.build.gradle.internal.api.TestedVariant.testVariant]. Otherwise,
+   *     returns null.
+   * @since 0.13.0
+   */
+  fun AndroidBaseVariant.androidTestVariantOrNull(): AndroidTestVariant? {
+    return when (this) {
+      is AndroidTestedVariant -> testVariant
+      else -> null
+    }
+  }
+
+  /**
+   * @return if this [BaseVariant][com.android.build.gradle.api.BaseVariant] is a
+   *     [TestedVariant][com.android.build.gradle.internal.api.TestedVariant], returns its
+   *     [unitTestVariant][com.android.build.gradle.internal.api.TestedVariant.unitTestVariant].
+   *     Otherwise, returns null.
+   * @since 0.13.0
+   */
+  fun AndroidBaseVariant.unitTestVariantOrNull(): AndroidUnitTestVariant? {
+    return when (this) {
+      is AndroidTestedVariant -> unitTestVariant
+      else -> null
+    }
+  }
+
+  @UnsafeDirectAgpApiReference
+  fun AndroidBaseExtension.baseVariants(): DomainObjectSet<out AndroidBaseVariant> =
+    when (this) {
+      is AndroidAppExtension -> applicationVariants
+      is AndroidLibraryExtension -> libraryVariants
+      is AndroidTestExtension -> applicationVariants
+      else -> TODO()
+      // else -> DefaultDomainObjectSet(BaseVariant::class.java, CollectionCallbackActionDecorator.NOOP)
+    }
+
+  @UnsafeDirectAgpApiReference
+  fun AndroidBaseExtension.testingVariants(): Set<AndroidBaseVariant> =
+    when (this) {
+      is AndroidTestedExtension -> testVariants + unitTestVariants
+      else -> emptySet()
+    }
+
   private fun hasAgpTestFixtures(): Boolean = gradleProject.extensions
     .findByType(AndroidTestedExtension::class.java)
     ?.takeIf {
@@ -101,6 +145,26 @@ class SafeAgpApiReferenceScope @PublishedApi internal constructor(
       @Suppress("UnstableApiUsage")
       extension.testFixtures.enable
     } ?: false
+
+  /**
+   * `api`, `implementation`, `compileOnly`, and `runtimeOnly` configuration names for this source
+   * set.
+   *
+   * Inspired by
+   * [KotlinSourceSet.relatedConfigurationNames][org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet.relatedConfigurationNames].
+   *
+   * @since 0.13.0
+   */
+  @Suppress("UnstableApiUsage")
+  val AndroidSourceSet.relatedConfigurationNames: List<String>
+    get() = listOf(
+      apiConfigurationName,
+      implementationConfigurationName,
+      compileOnlyConfigurationName,
+      runtimeOnlyConfigurationName,
+      "${name}AnnotationProcessorClasspath",
+      "${name}CompileClasspath"
+    )
 
   /**
    * @return A new [AndroidPlatformPlugin] using this scope's [gradleProject]

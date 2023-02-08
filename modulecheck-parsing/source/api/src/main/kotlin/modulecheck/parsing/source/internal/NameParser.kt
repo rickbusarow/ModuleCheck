@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,7 +17,6 @@ package modulecheck.parsing.source.internal
 
 import modulecheck.parsing.source.McName
 import modulecheck.parsing.source.PackageName
-import modulecheck.parsing.source.QualifiedDeclaredName
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser.NameParserPacket
 
@@ -49,7 +48,7 @@ fun interface NameParser {
     val mustBeApi: Set<String>,
     val apiReferenceNames: Set<ReferenceName>,
     val referenceLanguage: McName.CompatibleLanguage,
-    val stdLibNameOrNull: String.() -> QualifiedDeclaredName?
+    val stdLibNameOrNull: String.() -> ReferenceName?
   ) {
     override fun toString(): String {
       return """NameParserPacket(

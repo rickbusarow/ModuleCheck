@@ -29,6 +29,7 @@ import modulecheck.utils.lazy.LazySet
  * @see ReferenceName
  * @since 0.12.0
  */
+@Serializable
 sealed interface McName : Comparable<McName> {
   /**
    * The raw String value of this name, such as `com.example.lib1.Lib1Class`.
@@ -77,14 +78,7 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * @return true if the last segment of this name matches [simpleName], otherwise false
-   * @since 0.13.0
-   */
-  fun endsWithSimpleName(simpleName: SimpleName): Boolean {
-    return name.split('.').last() == simpleName.name
-  }
-
-  /** @return true if the last segment of this name matches [other], otherwise false
+   * @return true if this [name] value ends with the name string of [other], otherwise false
    * @since 0.12.0
    */
   fun endsWith(other: McName): Boolean {

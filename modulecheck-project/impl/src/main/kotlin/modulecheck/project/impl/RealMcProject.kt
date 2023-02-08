@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,9 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.project.impl
 
+import kotlinx.serialization.UseSerializers
 import modulecheck.api.context.resolvedDeclaredNames
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.PlatformPlugin
@@ -24,18 +26,17 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.project.JvmFileProvider.Factory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.reporting.logging.McLogger
+import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("LongParameterList")
 class RealMcProject(
-  override val path: StringProjectPath,
+  override val projectPath: StringProjectPath,
   override val projectDir: File,
   override val buildFile: File,
   override val hasKapt: Boolean,
@@ -45,7 +46,7 @@ class RealMcProject(
   override val logger: McLogger,
   override val jvmFileProviderFactory: Factory,
   override val jvmTarget: JvmTarget,
-  buildFileParserFactory: BuildFileParser.Factory,
+  private val buildFileParserFactory: BuildFileParser.Factory,
   override val platformPlugin: PlatformPlugin
 ) : McProject {
 
@@ -68,32 +69,33 @@ class RealMcProject(
     return context.get(key)
   }
 
-  override fun compareTo(other: McProject): Int = path.compareTo(other.path)
+  override fun compareTo(other: McProject): Int = projectPath.compareTo(other.projectPath)
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
     if (other !is McProject) return false
 
-    if (path != other.path) return false
+    if (projectPath != other.projectPath) return false
 
     return true
   }
 
   override fun hashCode(): Int {
-    return path.hashCode()
+    return projectPath.hashCode()
   }
 
   override fun toString(): String {
-    return "${this::class.java.simpleName}('$path')"
+    return "${this::class.java.simpleName}('$projectPath')"
   }
 
-  override suspend fun resolvedNameOrNull(
-    resolvableMcName: ResolvableMcName,
+  override suspend fun resolveFqNameOrNull(
+    declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName? {
     return resolvedDeclaredNames().getSource(
-      resolvableMcName,
+      declaredName,
       sourceSetName
-    )?.run { declaration }
+    )
+      ?.run { declaredName }
   }
 }

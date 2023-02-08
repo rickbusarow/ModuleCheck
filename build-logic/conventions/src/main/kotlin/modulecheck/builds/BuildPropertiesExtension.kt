@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -123,7 +123,7 @@ private fun packageNameToClassName(content: String): Pair<String, String> {
       match.destructured.component1().trim()
     }
 
-  val classNameRegex = "internal class (\\S*).*".toRegex()
+  val classNameRegex = "(?>internal )?(?>class|object) (\\S*).*".toRegex()
 
   val typeName = lines.first { it.trim().matches(classNameRegex) }
     .replace(classNameRegex) { match ->

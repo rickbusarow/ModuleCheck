@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,7 @@
 
 package modulecheck.gradle.platforms.android
 
+import com.android.build.gradle.BasePlugin
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.parsing.gradle.model.GradleProject
@@ -72,7 +73,7 @@ class AgpApiAccess @Inject constructor() {
    *
    * @param project the project to be used for this [SafeAgpApiReferenceScope]
    * @param action the action to perform if AGP is in the classpath and AGP is applied to this
-   *   specific [project]
+   *     specific [project]
    * @return the output `T` of this [action], or `null` if AGP is not in the classpath
    * @since 0.12.0
    */
@@ -86,21 +87,39 @@ class AgpApiAccess @Inject constructor() {
       null
     }
   }
+
+  /**
+   * performs [action] if AGP is in the classpath and AGP is applied to this specific [project].
+   *
+   * @param project the project to be used for this [SafeAgpApiReferenceScope]
+   * @param action the action to perform if AGP is in the classpath and AGP is applied to this
+   *     specific [project]
+   * @return the output `T` of this [action], or `null` if AGP is not in the classpath
+   * @since 0.12.0
+   */
+  inline fun whenSafe(
+    project: GradleProject,
+    crossinline action: SafeAgpApiReferenceScope.() -> Unit
+  ) {
+
+    if (!androidIsInClasspath) return
+
+    project.plugins.withType(BasePlugin::class.java) {
+      SafeAgpApiReferenceScope(this, project).action()
+    }
+  }
 }
 
 /**
  * @return `true` if the project has a `com.android.*` plugin applied, else false
  * @since 0.12.0
  */
-fun GradleProject.isAndroid(
-  agpApiAccess: AgpApiAccess
-): Boolean {
+@OptIn(UnsafeDirectAgpApiReference::class)
+fun GradleProject.isAndroid(agpApiAccess: AgpApiAccess): Boolean {
 
   if (!agpApiAccess.androidIsInClasspath) return false
 
   val extension = extensions.findByName("android") ?: return false
 
-  return with(SafeAgpApiReferenceScope(agpApiAccess, this)) {
-    extension.isAndroidCommonExtension()
-  }
+  return extension is AndroidCommonExtension
 }

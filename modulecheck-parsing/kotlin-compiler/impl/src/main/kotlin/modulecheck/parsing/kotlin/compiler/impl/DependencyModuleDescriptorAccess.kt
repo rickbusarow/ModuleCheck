@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,7 @@
 
 package modulecheck.parsing.kotlin.compiler.impl
 
-import kotlinx.coroutines.flow.toList
+import modulecheck.api.context.classpathDependencies
 import modulecheck.dagger.SingleIn
 import modulecheck.dagger.TaskScope
 import modulecheck.model.dependency.ProjectPath
@@ -25,10 +25,7 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
-import modulecheck.utils.coroutines.distinct
 import modulecheck.utils.coroutines.flatMapListMerge
-import modulecheck.utils.coroutines.mapAsync
-import org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl
 import javax.inject.Inject
 
 /**
@@ -48,19 +45,22 @@ class DependencyModuleDescriptorAccess @Inject constructor(
    *     are globally cached and shared.
    * @since 0.13.0
    */
-  suspend fun dependencyModuleDescriptors(
+  suspend fun projectDependencies(
     projectPath: ProjectPath,
     sourceSetName: SourceSetName
-  ): List<ModuleDescriptorImpl> {
+  ): List<KotlinEnvironment> {
 
     return projectCache.getValue(projectPath)
-      .projectDependencies[sourceSetName]
-      .flatMapListMerge { dep ->
+      .classpathDependencies()
+      .get(sourceSetName)
+      .flatMapListMerge { transitive ->
 
-        val dependencyProject = projectCache.getValue(dep.path)
-        val dependencySourceSetName = dep.declaringSourceSetName(dependencyProject.sourceSets)
+        val contributedProject = projectCache.getValue(transitive.contributed.projectPath)
 
-        dependencySourceSetName.upstreamEnvironments(dependencyProject, includeSelf = true)
+        val depSourceSet =
+          transitive.contributed.declaringSourceSetName(contributedProject.sourceSets)
+
+        depSourceSet.upstreamEnvironments(contributedProject, includeSelf = true)
       }
       .plus(
         sourceSetName.upstreamEnvironments(
@@ -68,11 +68,10 @@ class DependencyModuleDescriptorAccess @Inject constructor(
           includeSelf = false
         )
       )
-      .mapAsync { dependencyKotlinEnvironment ->
-        dependencyKotlinEnvironment.moduleDescriptorDeferred.await()
+      .distinctBy {
+        it as RealKotlinEnvironment
+        it.projectPath to it.sourceSetName
       }
-      .distinct()
-      .toList()
   }
 
   private suspend fun SourceSetName.upstreamEnvironments(

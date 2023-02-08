@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -97,7 +97,7 @@ data class MustBeApi(
             // and will be handled by the InheritedDependencyRule.
             .filterNot { it.configurationName.isApi() }
             .plus(scopeContributingProjects)
-            .distinctBy { it.path }
+            .distinctBy { it.projectPath }
             .filterNot { cpd ->
               // exclude anything which is inherited but already included in local `api` deps
               cpd.copy(configurationName = cpd.configurationName.apiVariant()) in directApiProjects
@@ -120,15 +120,15 @@ data class MustBeApi(
                   // First try to find a normal "implementation" version of the dependency.
                   dependencies
                     .firstOrNull { declared ->
-                      declared.path == cpd.path && declared.isTestFixture == cpd.isTestFixture
+                      declared.projectPath == cpd.projectPath && declared.isTestFixture == cpd.isTestFixture
                     }
                     // If that didn't work, look for something where the project matches
                     // (which means it's testFixtures)
-                    ?: dependencies.firstOrNull { it.path == cpd.path }
+                    ?: dependencies.firstOrNull { it.projectPath == cpd.projectPath }
                 }
                 ?: project.dependencySources()
                   .sourceOfOrNull(
-                    dependencyProjectPath = cpd.path,
+                    dependencyProjectPath = cpd.projectPath,
                     sourceSetName = sourceSetName,
                     isTestFixture = cpd.isTestFixture
                   )
@@ -238,11 +238,11 @@ private suspend fun McProject.mustBeApiIn(
 suspend inline fun <reified T : ConfiguredDependency> T.maybeAsApi(
   dependentProject: McProject
 ): T {
-  val mustBeApi = when (this as ConfiguredDependency) {
+  val mustBeApi = when (val dep = this as ConfiguredDependency) {
     is ExternalDependency -> false
     is ProjectDependency -> when {
       configurationName.isKapt() -> false
-      else -> (this as ProjectDependency).project(dependentProject.projectCache)
+      else -> dep.project(dependentProject.projectCache)
         .mustBeApiIn(
           dependentProject = dependentProject,
           sourceSetName = configurationName.toSourceSetName(),

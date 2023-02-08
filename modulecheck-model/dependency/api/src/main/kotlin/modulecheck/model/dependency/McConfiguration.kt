@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,13 +15,21 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.protobuf.schema.ProtoBufSchemaGenerator
+import kotlinx.serialization.serializer
+import modulecheck.model.sourceset.SourceSetName
 
 /**
  * Cache of [configurations][McConfiguration], probably at the project level.
  *
  * @since 0.13.0
  */
+@Serializable(with = ConfigurationsSerializer::class)
 class Configurations(
   delegate: Map<ConfigurationName, McConfiguration>
 ) : Map<ConfigurationName, McConfiguration> by delegate {
@@ -29,6 +37,33 @@ class Configurations(
   override fun toString(): String {
     return toList().joinToString("\n")
   }
+}
+
+object ConfigurationsSerializer : KSerializer<Configurations> {
+
+  private val delegate: KSerializer<Map<ConfigurationName, McConfiguration>> = serializer()
+
+  override val descriptor = delegate.descriptor
+
+  override fun serialize(encoder: Encoder, value: Configurations) {
+    encoder.encodeSerializableValue(delegate, value)
+  }
+
+  override fun deserialize(decoder: Decoder): Configurations {
+    return Configurations(decoder.decodeSerializableValue(delegate))
+  }
+}
+
+@OptIn(ExperimentalSerializationApi::class)
+fun main() {
+  val descriptors = listOf(
+    ProjectDependency.serializer().descriptor,
+    McConfiguration.serializer().descriptor,
+    McSourceSet.serializer().descriptor,
+    SourceSetName.serializer().descriptor
+  )
+  val schemas = ProtoBufSchemaGenerator.generateSchemaText(descriptors)
+  println(schemas)
 }
 
 @Serializable

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,13 +12,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.serializer
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.utils.lazy.LazyDeferred
 import modulecheck.utils.sequenceOfNotNull
+import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
@@ -31,9 +40,25 @@ interface HasSourceSets {
  *
  * @since 0.13.0
  */
+@Serializable(with = SourceSetsSerializer::class)
 class SourceSets(
   delegate: Map<SourceSetName, McSourceSet>
 ) : Map<SourceSetName, McSourceSet> by delegate
+
+object SourceSetsSerializer : KSerializer<SourceSets> {
+
+  private val delegate: KSerializer<Map<SourceSetName, McSourceSet>> = serializer()
+
+  override val descriptor = delegate.descriptor
+
+  override fun serialize(encoder: Encoder, value: SourceSets) {
+    encoder.encodeSerializableValue(delegate, value)
+  }
+
+  override fun deserialize(decoder: Decoder): SourceSets {
+    return SourceSets(decoder.decodeSerializableValue(delegate))
+  }
+}
 
 /**
  * Models all the particulars for a compilation unit, roughly equivalent to the source set models in
@@ -65,6 +90,7 @@ class SourceSets(
  *     is `main`
  * @since 0.12.0
  */
+@Serializable
 @Suppress("LongParameterList")
 class McSourceSet(
   val name: SourceSetName,
@@ -80,7 +106,9 @@ class McSourceSet(
   val kotlinEnvironmentDeferred: LazyDeferred<KotlinEnvironment>,
   private val upstreamLazy: Lazy<List<SourceSetName>>,
   private val downstreamLazy: Lazy<List<SourceSetName>>
-) : Comparable<McSourceSet> {
+) : Comparable<McSourceSet>, HasSourceSetName {
+
+  override val sourceSetName: SourceSetName get() = name
 
   val configurations: Configurations by lazy {
     Configurations(

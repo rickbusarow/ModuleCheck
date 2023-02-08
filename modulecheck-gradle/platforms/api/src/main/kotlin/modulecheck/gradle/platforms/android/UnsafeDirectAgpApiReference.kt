@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -56,3 +56,22 @@ typealias AndroidTestExtension = com.android.build.gradle.TestExtension
 
 @UnsafeDirectAgpApiReference
 typealias AndroidTestedExtension = com.android.build.gradle.TestedExtension
+
+@UnsafeDirectAgpApiReference
+typealias AndroidSourceSet = com.android.build.api.dsl.AndroidSourceSet
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidBaseVariant = com.android.build.gradle.api.BaseVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidTestedVariant = com.android.build.gradle.internal.api.TestedVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidTestVariant = com.android.build.gradle.api.TestVariant
+
+@Suppress("DEPRECATION")
+@UnsafeDirectAgpApiReference
+typealias AndroidUnitTestVariant = com.android.build.gradle.api.UnitTestVariant

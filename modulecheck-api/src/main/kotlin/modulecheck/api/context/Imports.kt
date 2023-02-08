@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -54,7 +54,7 @@ data class Imports(
   companion object Key : ProjectContext.Key<Imports> {
     override suspend operator fun invoke(project: McProject): Imports {
 
-      return Imports(SafeCache(listOf(project.path, Imports::class)), project)
+      return Imports(SafeCache(listOf(project.projectPath, Imports::class)), project)
     }
   }
 }

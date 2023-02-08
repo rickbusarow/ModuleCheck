@@ -14,7 +14,7 @@
     </disabledRules>
     <externalJarPaths>
       <list>
-        <option value="ktlint-rules/build/libs/ktlint-rules.jar" />
+        <option value="build-logic/ktlint-rules/build/libs/ktlint-rules.jar" />
       </list>
     </externalJarPaths>
   </component>

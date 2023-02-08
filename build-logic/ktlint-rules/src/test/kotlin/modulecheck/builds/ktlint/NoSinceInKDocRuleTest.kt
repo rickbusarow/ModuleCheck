@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -17,11 +17,12 @@ package modulecheck.builds.ktlint
 
 import com.pinterest.ktlint.core.RuleProvider
 import io.kotest.matchers.shouldBe
+import modulecheck.builds.VERSION_NAME
 import org.junit.jupiter.api.Test
 
 class NoSinceInKDocRuleTest {
 
-  private val currentVersion = "0.13.0"
+  private val currentVersion = VERSION_NAME
     .removeSuffix("-LOCAL")
     .removeSuffix("-SNAPSHOT")
 

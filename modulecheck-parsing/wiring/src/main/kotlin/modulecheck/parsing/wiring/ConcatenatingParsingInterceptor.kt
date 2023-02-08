@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,21 +13,14 @@
  * limitations under the License.
  */
 
-package modulecheck.parsing.psi
+package modulecheck.parsing.wiring
 
-import kotlinx.coroutines.flow.firstOrNull
-import modulecheck.model.sourceset.SourceSetName
-import modulecheck.parsing.psi.internal.DeclarationsProvider
 import modulecheck.parsing.source.ReferenceName
 import modulecheck.parsing.source.internal.NameParser
 import modulecheck.parsing.source.internal.ParsingInterceptor
-import modulecheck.utils.lazy.lazyDeferred
 import modulecheck.utils.mapToSet
 
-class ConcatenatingParsingInterceptor(
-  private val declarationsProvider: DeclarationsProvider,
-  private val sourceSetName: SourceSetName
-) : ParsingInterceptor {
+class ConcatenatingParsingInterceptor : ParsingInterceptor {
 
   override suspend fun intercept(
     chain: ParsingInterceptor.Chain
@@ -39,13 +32,6 @@ class ConcatenatingParsingInterceptor(
       .plus(packet.imports.mapToSet { ReferenceName(it, packet.referenceLanguage) })
       .toMutableSet()
     val resolvedApiReferenceNames = mutableSetOf<ReferenceName>()
-
-    val declarationsInPackage = lazyDeferred {
-      declarationsProvider.getWithUpstream(
-        sourceSetName = sourceSetName,
-        packageNameOrNull = packet.packageName
-      )
-    }
 
     val stillUnresolved = packet.unresolved
       .filter { toResolve ->
@@ -68,9 +54,6 @@ class ConcatenatingParsingInterceptor(
           }
           ?: toResolve.inlineAliasOrNull(packet.aliasedImports)
           ?: packet.stdLibNameOrNull(toResolve)?.name
-          ?: declarationsInPackage.await()
-            .firstOrNull { it.endsWithSimpleName(toResolve) }
-            ?.name
 
         if (concatOrNull != null) {
 

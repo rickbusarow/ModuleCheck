@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,8 +16,8 @@
 package modulecheck.gradle.platforms
 
 import modulecheck.gradle.platforms.android.AgpApiAccess
+import modulecheck.gradle.platforms.jvm.JvmSourceSetsParser
 import modulecheck.gradle.platforms.sourcesets.AndroidSourceSetsParser
-import modulecheck.gradle.platforms.sourcesets.JvmSourceSetsParser
 import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.SourceSets
 import modulecheck.parsing.gradle.model.GradleProject

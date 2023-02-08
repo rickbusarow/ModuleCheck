@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,27 +15,12 @@
 
 package modulecheck.parsing.psi
 
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.PackageName.Companion.asPackageName
-import modulecheck.parsing.source.QualifiedDeclaredName
+import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.ReferenceName
-import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 
-fun ReferenceName.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
-  return name.kotlinStdLibNameOrNull()
-}
+internal fun String.kotlinStdLibNameOrNull(): ReferenceName? {
 
-fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
-
-  return kotlinStdLibNames[this]?.let {
-
-    val segments = it.split('.')
-
-    DeclaredName.kotlin(
-      packageName = segments.dropLast(1).joinToString(".").asPackageName(),
-      simpleNames = listOf(segments.last().asSimpleName())
-    )
-  }
+  return kotlinStdLibNames[this]?.let { ReferenceName(it, KOTLIN) }
 }
 
 @Suppress("MaxLineLength")

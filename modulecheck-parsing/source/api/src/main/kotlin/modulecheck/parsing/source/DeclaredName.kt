@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,16 +15,15 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
 import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
 import modulecheck.parsing.source.McName.CompatibleLanguage.KOTLIN
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
-import modulecheck.parsing.source.ReferenceName.Companion.asReferenceName
 import modulecheck.parsing.source.SimpleName.Companion.asString
 import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
 import modulecheck.utils.lazy.unsafeLazy
-import modulecheck.utils.singletonList
 import org.jetbrains.kotlin.name.FqName
 
 /**
@@ -32,6 +31,7 @@ import org.jetbrains.kotlin.name.FqName
  *
  * @since 0.12.0
  */
+@Serializable
 sealed interface DeclaredName : McName, HasSimpleNames {
 
   /**
@@ -102,6 +102,7 @@ sealed interface DeclaredName : McName, HasSimpleNames {
  *
  * @since 0.12.0
  */
+@Serializable
 sealed class QualifiedDeclaredName :
   DeclaredName,
   McName,
@@ -113,18 +114,6 @@ sealed class QualifiedDeclaredName :
     get() = packageName.append(simpleNames.asString())
 
   override val segments: List<String> by unsafeLazy { name.split('.') }
-
-  open fun asReferenceName(language: CompatibleLanguage): ReferenceName {
-    return name.asReferenceName(language)
-  }
-
-  /**
-   * `true` if a declaration is top-level in a file, otherwise `false` such as if the declaration is
-   * a nested type or a member declaration
-   *
-   * @since 0.13.0
-   */
-  val isTopLevel: Boolean by unsafeLazy { simpleNames.size == 1 }
 
   final override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -153,7 +142,8 @@ sealed class QualifiedDeclaredName :
     "(${this::class.java.simpleName}) `$name`  language=$languages"
 }
 
-internal class QualifiedDeclaredNameImpl(
+@Serializable
+class QualifiedDeclaredNameImpl(
   override val packageName: PackageName,
   override val simpleNames: List<SimpleName>,
   override val languages: Set<CompatibleLanguage>
@@ -165,7 +155,7 @@ internal class QualifiedDeclaredNameImpl(
 
 /**
  * @return a [QualifiedDeclaredName], where the String after [packageName] is split and treated as
- *   the collection of [SimpleNames][SimpleName].
+ *     the collection of [SimpleNames][SimpleName].
  * @since 0.12.0
  */
 fun FqName.asDeclaredName(
@@ -177,7 +167,7 @@ fun FqName.asDeclaredName(
 
 /**
  * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
- *   [SimpleNames][SimpleName]
+ *     [SimpleNames][SimpleName]
  * @since 0.12.0
  */
 fun Iterable<SimpleName>.asDeclaredName(
@@ -190,16 +180,4 @@ fun Iterable<SimpleName>.asDeclaredName(
     !languages.contains(KOTLIN) -> DeclaredName.java(packageName, this)
     else -> DeclaredName.agnostic(packageName, this)
   }
-}
-
-/**
- * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
- *   [SimpleNames][SimpleName]
- * @since 0.13.0
- */
-fun SimpleName.asDeclaredName(
-  packageName: PackageName,
-  vararg languages: CompatibleLanguage
-): QualifiedDeclaredName {
-  return singletonList().asDeclaredName(packageName, *languages)
 }

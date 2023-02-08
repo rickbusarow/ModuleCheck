@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.HasConfigurations
 import modulecheck.model.dependency.HasDependencies
-import modulecheck.model.dependency.HasPath
+import modulecheck.model.dependency.HasProjectPath
 import modulecheck.model.dependency.HasSourceSets
 import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -33,16 +33,14 @@ import modulecheck.parsing.gradle.model.HasPlatformPlugin
 import modulecheck.parsing.gradle.model.PluginAware
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.reporting.logging.McLogger
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("TooManyFunctions")
 interface McProject :
   ProjectContext,
   Comparable<McProject>,
-  HasPath,
+  HasProjectPath,
   HasProjectCache,
   HasBuildFile,
   HasConfigurations,
@@ -53,7 +51,7 @@ interface McProject :
   HasPlatformPlugin,
   PluginAware {
 
-  override val path: StringProjectPath
+  override val projectPath: StringProjectPath
 
   override val configurations: Configurations
     get() = platformPlugin.configurations
@@ -84,12 +82,12 @@ interface McProject :
   val jvmTarget: JvmTarget
 
   /**
-   * @return a [QualifiedDeclaredName] if one can be found for the given [resolvableMcName] and
+   * @return a [QualifiedDeclaredName] if one can be found for the given [declaredName] and
    *     [sourceSetName]
    * @since 0.12.0
    */
-  suspend fun resolvedNameOrNull(
-    resolvableMcName: ResolvableMcName,
+  suspend fun resolveFqNameOrNull(
+    declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName?
 }

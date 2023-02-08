@@ -53,7 +53,7 @@ sealed class ReferenceName : McName, ResolvableMcName {
    */
   abstract val language: CompatibleLanguage
 
-  override val segments: List<String> by unsafeLazy { this.name.split('.') }
+  override val segments: List<String> by unsafeLazy { name.split('.') }
 
   /**
    * This reference is from a Java source file
@@ -117,14 +117,6 @@ sealed class ReferenceName : McName, ResolvableMcName {
       name = name,
       language = language
     )
-
-    /**
-     * @return a basic [ReferenceName] for this name and language.
-     * @since 0.13.0
-     */
-    fun String.asReferenceName(
-      language: CompatibleLanguage
-    ): ReferenceName = ReferenceName(this, language)
   }
 }
 
@@ -133,7 +125,6 @@ private class ReferenceNameImpl(
   override val name: String,
   override val language: CompatibleLanguage
 ) : ReferenceName( ), McName {
-
   override val simpleName by unsafeLazy {
     name.split('.').last()
   }

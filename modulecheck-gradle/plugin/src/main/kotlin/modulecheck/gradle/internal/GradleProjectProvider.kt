@@ -21,10 +21,10 @@ import modulecheck.config.ModuleCheckSettings
 import modulecheck.dagger.RootGradleProject
 import modulecheck.dagger.TaskScope
 import modulecheck.gradle.GradleMcLogger
-import modulecheck.gradle.platforms.JvmPlatformPluginFactory
 import modulecheck.gradle.platforms.android.AgpApiAccess
 import modulecheck.gradle.platforms.android.AndroidPlatformPluginFactory
-import modulecheck.gradle.platforms.sourcesets.jvmTarget
+import modulecheck.gradle.platforms.jvm.JvmPlatformPluginFactory
+import modulecheck.gradle.platforms.kotlin.jvmTarget
 import modulecheck.model.dependency.AllProjectPathsProvider
 import modulecheck.model.dependency.ProjectPath
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -42,7 +42,6 @@ import modulecheck.rule.impl.KAPT_PLUGIN_ID
 import net.swiftzer.semver.SemVer
 import javax.inject.Inject
 
-@Suppress("LongParameterList")
 @ContributesBinding(TaskScope::class, ProjectProvider::class)
 class GradleProjectProvider @Inject constructor(
   @RootGradleProject
@@ -111,7 +110,7 @@ class GradleProjectProvider @Inject constructor(
     )
 
     return RealMcProject(
-      path = path,
+      projectPath = path,
       projectDir = gradleProject.projectDir,
       buildFile = gradleProject.buildFile,
       hasKapt = hasKapt,

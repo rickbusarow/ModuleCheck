@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,6 +51,8 @@ abstract class BaseGradleTest :
   val agpVersion get() = testVersions.agp
   val gradleVersion get() = testVersions.gradle
   val anvilVersion get() = testVersions.anvil
+
+  val testKitDir: File get() = File(TestBuildProperties.testKitDir)
 
   override val projectCache: ProjectCache by resets { ProjectCache() }
   override val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess by resets {
@@ -140,7 +142,7 @@ abstract class BaseGradleTest :
     GradleRunner.create()
       .forwardOutput()
       .withGradleVersion(gradleVersion)
-      // .withTestKitDir(testKitDir)
+      .withTestKitDir(testKitDir)
       // .withPluginClasspath()
       .withDebug(true)
       .withProjectDir(testProjectDir)
@@ -154,7 +156,7 @@ abstract class BaseGradleTest :
 
   // Make sure that every project in the cache is also added to the root project's settings file
   private fun addIncludes() {
-    val includes = projectCache.values.map { it.path.value }
+    val includes = projectCache.values.map { it.projectPath.value }
       .joinToString(separator = "\n", prefix = "\n", postfix = "\n") { "include(\"$it\")" }
     rootSettings.appendText(includes)
   }

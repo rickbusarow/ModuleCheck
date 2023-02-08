@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,21 +15,15 @@
 
 package modulecheck.parsing.java
 
-import modulecheck.parsing.source.DeclaredName
-import modulecheck.parsing.source.PackageName.Companion.asPackageName
-import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.parsing.source.SimpleName.Companion.stripPackageNameFromFqName
+import modulecheck.parsing.source.McName.CompatibleLanguage.JAVA
+import modulecheck.parsing.source.ReferenceName
 
-internal fun String.javaLangFqNameOrNull(): QualifiedDeclaredName? {
+internal fun String.javaLangFqNameOrNull(): ReferenceName? {
 
   val maybeJavaLang = "java.lang.$this"
 
   return if (maybeJavaLang in javaStdLibNames) {
-
-    val javaLangPackage = "java.lang".asPackageName()
-    val simple = maybeJavaLang.stripPackageNameFromFqName(javaLangPackage)
-
-    DeclaredName.java(javaLangPackage, simple)
+    ReferenceName(maybeJavaLang, JAVA)
   } else {
     null
   }

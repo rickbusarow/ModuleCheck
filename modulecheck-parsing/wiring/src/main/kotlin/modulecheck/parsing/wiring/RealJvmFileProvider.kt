@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,7 +23,6 @@ import modulecheck.parsing.java.RealJavaFile
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
 import modulecheck.parsing.kotlin.compiler.internal.isKtFile
-import modulecheck.parsing.psi.ConcatenatingParsingInterceptor
 import modulecheck.parsing.psi.RealKotlinFile
 import modulecheck.parsing.psi.internal.PsiElementResolver
 import modulecheck.parsing.source.JvmFile
@@ -87,10 +86,7 @@ class RealJvmFileProvider(
 
       val nameParser = ParsingChain.Factory(
         listOf(
-          ConcatenatingParsingInterceptor(
-            RealDeclarationsProvider(project),
-            sourceSetName
-          ),
+          ConcatenatingParsingInterceptor(),
           AndroidResourceReferenceParsingInterceptor(
             androidRNameProvider = androidRNameProvider
           ),

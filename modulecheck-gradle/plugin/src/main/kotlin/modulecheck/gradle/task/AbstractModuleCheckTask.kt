@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,31 +18,37 @@ package modulecheck.gradle.task
 import kotlinx.coroutines.cancel
 import modulecheck.finding.FindingName
 import modulecheck.gradle.ModuleCheckExtension
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.rule.RuleFilter
 import modulecheck.utils.cast
 import modulecheck.utils.coroutines.impl.DispatcherProviderComponent
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
+import org.gradle.workers.WorkerExecutor
 import javax.inject.Inject
 
-abstract class AbstractModuleCheckTask(
-  private val autoCorrect: Boolean,
-  disableConfigCache: Boolean
-) : DefaultTask() {
+abstract class ModuleCheckSourceSetTask : AbstractModuleCheckTask(), HasSourceSetName
+
+abstract class AbstractModuleCheckTask : DefaultTask() {
 
   init {
-    group = "moduleCheck"
-
-    if (disableConfigCache) {
-      // If the runtime Gradle distro is 7.4+, disable configuration caching.
-      // This function was introduced in 7.4.
-      @Suppress("LeakingThis")
-      notCompatibleWithConfigurationCache("Not supported yet")
-    }
+    group = "ModuleCheck"
   }
+}
+
+abstract class AbstractModuleCheckRuleTask(
+  @Internal
+  val workerExecutor: WorkerExecutor,
+  objectFactory: ObjectFactory
+) : AbstractModuleCheckTask() {
+
+  @get:Input
+  val autoCorrect: Property<Boolean> = objectFactory.property(Boolean::class.java)
 
   protected abstract fun ruleFilter(): RuleFilter
 
@@ -51,13 +57,14 @@ abstract class AbstractModuleCheckTask(
     .getByType(ModuleCheckExtension::class.java)
 
   @get:Internal
-  protected val component: TaskComponent by lazy {
+  protected val component by lazy {
     DaggerTaskComponent.factory()
       .create(
         rootProject = project,
         moduleCheckSettings = settings,
         ruleFilter = ruleFilter(),
-        projectRoot = { project.rootDir }
+        projectRoot = { project.rootDir },
+        workerExecutor = workerExecutor
       )
   }
 
@@ -66,17 +73,14 @@ abstract class AbstractModuleCheckTask(
     try {
 
       val projectProvider = component.projectProvider
-      val runner = component.runnerFactory.create(autoCorrect)
+      val runner = component.runnerFactory.create(autoCorrect.get())
 
       val projects = projectProvider.getAll()
 
       val result = runner.run(projects)
 
       result.exceptionOrNull()
-        ?.let {
-          @Suppress("UnsafeCallOnNullableType")
-          throw GradleException(it.message!!, it)
-        }
+        ?.let { throw GradleException(it.message!!, it) }
     } finally {
 
       val dispatcherProvider = component.cast<DispatcherProviderComponent>()
@@ -86,31 +90,54 @@ abstract class AbstractModuleCheckTask(
       dispatcherProvider.io.cancel()
     }
   }
+
+  protected fun maybeDisableConfigurationCaching(disableConfigCache: Boolean) {
+    if (disableConfigCache) {
+      // If the runtime Gradle distro is 7.4+, disable configuration caching.
+      // This function was introduced in 7.4.
+      notCompatibleWithConfigurationCache("Not supported yet")
+    }
+  }
 }
 
 open class MultiRuleModuleCheckTask @Inject constructor(
-  autoCorrect: Boolean,
-  disableConfigCache: Boolean
-) : AbstractModuleCheckTask(autoCorrect, disableConfigCache) {
+  workerExecutor: WorkerExecutor,
+  objectFactory: ObjectFactory
+) : AbstractModuleCheckRuleTask(workerExecutor, objectFactory) {
 
-  init {
+  internal fun configure(autoCorrect: Boolean, disableConfigCache: Boolean) {
+    this.autoCorrect.set(autoCorrect)
+
     description = if (autoCorrect) {
       "runs all enabled ModuleCheck rules with auto-correct"
     } else {
       "runs all enabled ModuleCheck rules"
     }
+
+    maybeDisableConfigurationCaching(disableConfigCache)
   }
 
-  override fun ruleFilter(): RuleFilter = RuleFilter.DEFAULT
+  override fun ruleFilter() = RuleFilter.DEFAULT
 }
 
 open class SingleRuleModuleCheckTask @Inject constructor(
-  private val findingName: FindingName,
-  autoCorrect: Boolean,
-  disableConfigCache: Boolean
-) : AbstractModuleCheckTask(autoCorrect, disableConfigCache) {
+  workerExecutor: WorkerExecutor,
+  objectFactory: ObjectFactory
+) : AbstractModuleCheckRuleTask(workerExecutor, objectFactory) {
 
-  init {
+  @get:Input
+  val findingName: Property<FindingName> = objectFactory.property(FindingName::class.java)
+
+  internal fun configure(
+    findingName: FindingName,
+    autoCorrect: Boolean,
+    disableConfigCache: Boolean
+  ) {
+    this.autoCorrect.set(autoCorrect)
+    this.findingName.set(findingName)
+
+    maybeDisableConfigurationCaching(disableConfigCache)
+
     description = if (autoCorrect) {
       "runs the ${findingName.id} ModuleCheck rule with auto-correct"
     } else {
@@ -118,7 +145,7 @@ open class SingleRuleModuleCheckTask @Inject constructor(
     }
   }
 
-  override fun ruleFilter(): RuleFilter = RuleFilter { rule, _ ->
-    rule.name == findingName
+  override fun ruleFilter() = RuleFilter { rule, _ ->
+    rule.name == findingName.get()
   }
 }

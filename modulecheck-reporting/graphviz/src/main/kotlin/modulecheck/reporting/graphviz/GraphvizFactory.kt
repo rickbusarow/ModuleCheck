@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -112,7 +112,7 @@ class GraphvizFactory @Inject constructor(
       .forEach { depthFinding ->
         depthFinding.dependentProject
           .projectDependencies[depthFinding.sourceSetName]
-          .sortedBy { it.path }
+          .sortedBy { it.projectPath }
           .forEach { cpd ->
 
             val lineColor = cpd.lineColor()
@@ -120,7 +120,7 @@ class GraphvizFactory @Inject constructor(
             rootGraph.add(
               node(depthFinding.pathString())
                 .link(
-                  Factory.to(node(cpd.path.pathString()))
+                  Factory.to(node(cpd.projectPath.pathString()))
                     .with(Arrow.NORMAL, Style.BOLD, lineColor)
                 )
             )

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,7 +21,7 @@ import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
 
 @Serializable
-sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
+sealed class ProjectPath : Identifier {
 
   /**
    * the raw value of this path
@@ -57,10 +57,6 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
 
   override fun hashCode(): Int {
     return typeSafeValue.hashCode()
-  }
-
-  override fun compareTo(other: ProjectPath): Int {
-    return typeSafeValue.compareTo(other.typeSafeValue)
   }
 
   override fun toString(): String = value

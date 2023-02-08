@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,6 +15,10 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
+import modulecheck.model.sourceset.SourceSetName
+
+@Serializable
 sealed interface ConfiguredDependency : Dependency {
 
   val configurationName: ConfigurationName
@@ -38,29 +42,52 @@ sealed interface ConfiguredDependency : Dependency {
    */
   val isTestFixture: Boolean
 
+  /**
+   * @return the most-downstream [SourceSetName] which contains declarations used by this dependency
+   *     configuration. For a simple `implementation` configuration, this returns `main`. For a
+   *     `debugImplementation`, it would return `debug`.
+   * @since 0.12.0
+   */
+  fun declaringSourceSetName(sourceSets: SourceSets): SourceSetName = when {
+    // <anyConfig>(testFixtures(___))
+    isTestFixture -> {
+      SourceSetName.TEST_FIXTURES
+    }
+
+    // testFixturesApi(___)
+    configurationName.toSourceSetName() == SourceSetName.TEST_FIXTURES -> {
+      SourceSetName.MAIN
+    }
+
+    else -> {
+      configurationName.toSourceSetName().nonTestSourceSetName(sourceSets)
+    }
+  }
+
   companion object {
 
     inline fun <reified T : ConfiguredDependency> T.copy(
       configurationName: ConfigurationName = this.configurationName,
       isTestFixture: Boolean = this.isTestFixture
-    ): ConfiguredDependency = when (this as ConfiguredDependency) {
-      is ExternalDependency -> (this as ExternalDependency).copy(
+    ): ConfiguredDependency = when (val dependency = this as ConfiguredDependency) {
+      is ExternalDependency -> dependency.copy(
         configurationName = configurationName,
-        group = group,
-        moduleName = moduleName,
-        version = version,
+        group = dependency.group,
+        moduleName = dependency.moduleName,
+        version = dependency.version,
         isTestFixture = isTestFixture
       )
 
-      is ProjectDependency -> (this as ProjectDependency).copy(
+      is ProjectDependency -> dependency.copy(
         configurationName = configurationName,
-        path = path,
+        path = dependency.projectPath,
         isTestFixture = isTestFixture
       )
     }
   }
 }
 
+@Serializable
 sealed interface Dependency
 
 /**
@@ -78,6 +105,7 @@ sealed interface Dependency
  *       - `alias(libs.plugins.anvil)`
  * @since 0.12.0
  */
+@Serializable
 data class PluginDependency(
   val accessor: PluginAccessor
 ) : Dependency {

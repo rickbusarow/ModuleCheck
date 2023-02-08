@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,6 +41,11 @@ inline fun <T> Iterable<T>.filterToSet(
   return filterTo(destination, predicate)
 }
 
+/**
+ * shorthand for `mapTo(destination, transform)`
+ *
+ * @since 0.13.0
+ */
 inline fun <C : Collection<T>, T, R> C.mapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> R
@@ -48,6 +53,11 @@ inline fun <C : Collection<T>, T, R> C.mapToSet(
   return mapTo(destination, transform)
 }
 
+/**
+ * shorthand for `flatMapTo(destination, transform)`
+ *
+ * @since 0.13.0
+ */
 inline fun <T, R> Iterable<T>.flatMapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> Iterable<R>
@@ -55,11 +65,28 @@ inline fun <T, R> Iterable<T>.flatMapToSet(
   return flatMapTo(destination, transform)
 }
 
+/**
+ * shorthand for `flatMapTo(destination, transform)`
+ *
+ * @since 0.13.0
+ */
 inline fun <T, R> Sequence<T>.flatMapToSet(
   destination: MutableSet<R> = mutableSetOf(),
   transform: (T) -> Iterable<R>
 ): Set<R> {
   return flatMapTo(destination, transform)
+}
+
+/**
+ * shorthand for `mapTo(destination, transform)`
+ *
+ * @since 0.13.0
+ */
+inline fun <T, R> Sequence<T>.mapToSet(
+  destination: MutableSet<R> = mutableSetOf(),
+  transform: (T) -> R
+): Set<R> {
+  return mapTo(destination, transform)
 }
 
 /**

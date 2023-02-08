@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,10 +15,6 @@
 
 package modulecheck.parsing.psi.internal
 
-import modulecheck.parsing.source.SimpleName
-import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
-import modulecheck.utils.requireNotNull
-import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtValueArgument
 import org.jetbrains.kotlin.psi.KtValueArgumentList
 
@@ -27,8 +23,4 @@ fun KtValueArgumentList.getByNameOrIndex(index: Int, name: String): KtValueArgum
     .firstOrNull { it.getArgumentName()?.text == name }
     ?: arguments
       .getOrNull(index)
-}
-
-fun KtElement.requireSimpleName(): SimpleName {
-  return name.requireNotNull().asSimpleName()
 }

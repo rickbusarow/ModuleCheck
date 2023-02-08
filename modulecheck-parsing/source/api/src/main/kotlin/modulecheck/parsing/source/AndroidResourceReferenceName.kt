@@ -26,7 +26,7 @@ import modulecheck.utils.lazy.unsafeLazy
  * @since 0.12.0
  */
 @Serializable
-sealed class AndroidResourceReferenceName() : ReferenceName()
+sealed class AndroidResourceReferenceName : ReferenceName()
 
 /**
  * example: `com.example.R`
@@ -40,13 +40,13 @@ class AndroidRReferenceName(
   val packageName: PackageName,
   override val language: CompatibleLanguage
 ) : AndroidResourceReferenceName() {
-  override val name = packageName.append("R")
+  override val name: String by unsafeLazy { packageName.append("R") }
 }
 
 /**
  * example: `R.string.app_name`
  *
- * @param name `R.string.____`
+ * @property name `R.string.____`
  * @property language the language making this reference
  * @since 0.12.0
  */
@@ -99,7 +99,7 @@ class UnqualifiedAndroidResourceReferenceName(
 /**
  * example: `com.example.databinding.FragmentViewBinding`
  *
- * @param name `com.example.databinding.FragmentViewBinding`
+ * @property name `com.example.databinding.FragmentViewBinding`
  * @property language the language making this reference
  * @since 0.12.0
  */
@@ -112,7 +112,7 @@ class AndroidDataBindingReferenceName(
 /**
  * example: `com.example.R.string.app_name`
  *
- * @param name `com.example.R.string.app_name`
+ * @property name `com.example.R.string.app_name`
  * @property language the language making this reference
  * @since 0.12.0
  */
