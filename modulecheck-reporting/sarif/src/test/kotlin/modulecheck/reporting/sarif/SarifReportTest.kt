@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -75,8 +75,8 @@ class SarifReportTest : RunnerTest() {
     val finding = UnusedDependencyFinding(
       findingName = FindingName("unused-dependency"),
       dependentProject = p2,
-      oldDependency = RuntimeProjectDependency(ConfigurationName.api, p1.path, false),
-      dependencyIdentifier = p1.path.value,
+      oldDependency = RuntimeProjectDependency(ConfigurationName.api, p1.projectPath, false),
+      dependencyIdentifier = p1.projectPath.value,
       configurationName = ConfigurationName.api
     ).toResult(true)
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,7 +42,7 @@ data class MustBeApiFinding(
     get() = "The dependency should be declared via an `api` configuration, since it provides " +
       "a declaration which is referenced in this module's public API."
 
-  override val dependencyIdentifier: String = dependency.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier: String = dependency.projectPath.value + fromStringOrEmpty()
 
   override val statementOrNull: LazyDeferred<BuildFileStatement?> = lazyDeferred {
     super.statementOrNull.await()
@@ -50,10 +50,10 @@ data class MustBeApiFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.path == source?.path) {
+    return if (dependency.projectPath == source?.projectPath) {
       ""
     } else {
-      "${source?.path?.value}"
+      "${source?.projectPath?.value}"
     }
   }
 

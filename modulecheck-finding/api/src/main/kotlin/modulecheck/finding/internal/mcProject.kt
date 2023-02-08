@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,7 +33,7 @@ suspend fun ConfiguredDependency.statementOrNullIn(
         is ExternalDependency -> block.getOrEmpty(mavenCoordinates, configurationName)
           .takeIf { it.isNotEmpty() }
 
-        is ProjectDependency -> block.getOrEmpty(path, configurationName, isTestFixture)
+        is ProjectDependency -> block.getOrEmpty(projectPath, configurationName, isTestFixture)
           .takeIf { it.isNotEmpty() }
       }
     }

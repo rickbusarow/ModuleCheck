@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -121,7 +121,7 @@ interface ProjectCollector {
   suspend fun <P : PlatformPluginBuilder<*>> McProject.toProjectBuilder(): McProjectBuilder<P> {
     @Suppress("UNCHECKED_CAST")
     return McProjectBuilder(
-      path = path,
+      path = projectPath,
       projectDir = projectDir,
       buildFile = buildFile,
       platformPlugin = platformPlugin.toBuilder() as P,
@@ -307,7 +307,7 @@ interface ProjectCollector {
             if (unresolved) {
               fail(
                 """
-                |Project ${project.path} has a reference which must be declared in a dependency kotlinProject.
+                |Project ${project.projectPath} has a reference which must be declared in a dependency kotlinProject.
                 |
                 |-- reference:
                 |   ${reference.name}

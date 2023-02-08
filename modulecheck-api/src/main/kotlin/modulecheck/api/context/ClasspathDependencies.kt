@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -65,7 +65,7 @@ data class ClasspathDependencies(
     val directDependencies = projectDependencies[sourceSetName]
       .filterNot { it.project() == project }
 
-    val directDependencyPaths = directDependencies.mapToSet { it.path }
+    val directDependencyPaths = directDependencies.mapToSet { it.projectPath }
 
     val inherited = directDependencies.flatMap { sourceCpd ->
       sourceApiConfigs(sourceSetName, sourceCpd.isTestFixture)
@@ -76,7 +76,7 @@ data class ClasspathDependencies(
             .get(apiConfig.toSourceSetName())
             .asSequence()
             .filter { it.contributed.configurationName.isApi() }
-            .filterNot { it.contributed.path in directDependencyPaths }
+            .filterNot { it.contributed.projectPath in directDependencyPaths }
             .map { transitiveCpd ->
               TransitiveProjectDependency(sourceCpd, transitiveCpd.contributed)
             }
@@ -95,7 +95,7 @@ data class ClasspathDependencies(
   companion object Key : ProjectContext.Key<ClasspathDependencies> {
     override suspend operator fun invoke(project: McProject): ClasspathDependencies {
       return ClasspathDependencies(
-        SafeCache(listOf(project.path, ClasspathDependencies::class)),
+        SafeCache(listOf(project.projectPath, ClasspathDependencies::class)),
         project
       )
     }

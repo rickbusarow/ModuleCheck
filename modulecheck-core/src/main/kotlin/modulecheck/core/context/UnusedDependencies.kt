@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -57,7 +57,7 @@ data class UnusedDependencies(
       dependencies
         // test configurations have the main source project as a dependency.
         // without this filter, every project will report itself as unused.
-        .filterNot { cd -> (cd as? ProjectDependency)?.path == project.path }
+        .filterNot { cd -> (cd as? ProjectDependency)?.projectPath == project.projectPath }
         .filterAsync { dependency ->
           !project.uses(dependency)
         }
@@ -77,7 +77,7 @@ data class UnusedDependencies(
     override suspend operator fun invoke(project: McProject): UnusedDependencies {
 
       return UnusedDependencies(
-        SafeCache(listOf(project.path, UnusedDependencies::class)),
+        SafeCache(listOf(project.projectPath, UnusedDependencies::class)),
         project
       )
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,14 +52,14 @@ data class RedundantDependencyFinding(
       "declared in the current module.  This is technically unnecessary if a \"minimalist\" build " +
       "file is desired."
 
-  override val dependencyIdentifier: String = oldDependency.path.value + fromStringOrEmpty()
+  override val dependencyIdentifier: String = oldDependency.projectPath.value + fromStringOrEmpty()
 
   override fun fromStringOrEmpty(): String {
 
-    return if (from.all { dependency.path == it.path }) {
+    return if (from.all { dependency.projectPath == it.projectPath }) {
       ""
     } else {
-      from.joinToString { it.path.value }
+      from.joinToString { it.projectPath.value }
     }
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -185,7 +185,7 @@ internal inline fun <reified T, reified P, G> T.buildProject(
 
   return projectFactory(jvmFileProviderFactory)
     .also { finalProject ->
-      projectCache[finalProject.path] = finalProject
+      projectCache[finalProject.projectPath] = finalProject
     }
 }
 
@@ -196,7 +196,7 @@ inline fun <reified T, reified P, G> T.toRealMcProject(): McProject
   return buildProject { jvmFileProviderFactory ->
 
     RealMcProject(
-      path = path,
+      projectPath = path,
       projectDir = projectDir,
       buildFile = buildFile,
       hasKapt = hasKapt,

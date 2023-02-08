@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,12 +52,12 @@ data class RedundantDependencies(
       val inheritedDependencyProjects = project
         .classpathDependencies()
         .get(sourceSetName)
-        .groupBy { it.contributed.path }
+        .groupBy { it.contributed.projectPath }
 
       allDirect
         .mapNotNull { direct ->
 
-          val fromCpd = inheritedDependencyProjects[direct.path]
+          val fromCpd = inheritedDependencyProjects[direct.projectPath]
             ?.map { it.source }
             ?: return@mapNotNull null
 
@@ -75,7 +75,7 @@ data class RedundantDependencies(
     override suspend operator fun invoke(project: McProject): RedundantDependencies {
 
       return RedundantDependencies(
-        SafeCache(listOf(project.path, RedundantDependencies::class)),
+        SafeCache(listOf(project.projectPath, RedundantDependencies::class)),
         project
       )
     }

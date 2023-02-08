@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,7 +19,7 @@ import modulecheck.model.dependency.Configurations
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.HasConfigurations
 import modulecheck.model.dependency.HasDependencies
-import modulecheck.model.dependency.HasPath
+import modulecheck.model.dependency.HasProjectPath
 import modulecheck.model.dependency.HasSourceSets
 import modulecheck.model.dependency.ProjectDependencies
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
@@ -42,7 +42,7 @@ import java.io.File
 interface McProject :
   ProjectContext,
   Comparable<McProject>,
-  HasPath,
+  HasProjectPath,
   HasProjectCache,
   HasBuildFile,
   HasConfigurations,
@@ -53,7 +53,7 @@ interface McProject :
   HasPlatformPlugin,
   PluginAware {
 
-  override val path: StringProjectPath
+  override val projectPath: StringProjectPath
 
   override val configurations: Configurations
     get() = platformPlugin.configurations

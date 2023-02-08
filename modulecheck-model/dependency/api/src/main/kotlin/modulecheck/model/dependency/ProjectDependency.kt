@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,26 +22,26 @@ import modulecheck.model.sourceset.SourceSetName
  *
  * @since 0.12.0
  */
-sealed class ProjectDependency : ConfiguredDependency, HasPath {
+sealed class ProjectDependency : ConfiguredDependency, HasProjectPath {
 
   /**
    * name == path
    *
    * @since 0.12.0
    */
-  override val identifier: ProjectPath get() = path
+  override val identifier: ProjectPath get() = projectPath
 
   /**
    * The typical implementation of [ProjectDependency], for normal JVM or Android dependencies.
    *
    * @property configurationName the configuration used
-   * @property path the path of the dependency project
+   * @property projectPath the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
    * @since 0.12.0
    */
   class RuntimeProjectDependency(
     override val configurationName: ConfigurationName,
-    override val path: ProjectPath,
+    override val projectPath: ProjectPath,
     override val isTestFixture: Boolean
   ) : ProjectDependency()
 
@@ -49,14 +49,14 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    * The implementation of [ProjectDependency] used for code-generator dependencies.
    *
    * @property configurationName the configuration used
-   * @property path the path of the dependency project
+   * @property projectPath the path of the dependency project
    * @property isTestFixture Is the dependency being invoked via `testFixtures(project(...))`?
    * @property codeGeneratorBindingOrNull If it exists, this is the defined [CodeGenerator]
    * @since 0.12.0
    */
   class CodeGeneratorProjectDependency(
     override val configurationName: ConfigurationName,
-    override val path: ProjectPath,
+    override val projectPath: ProjectPath,
     override val isTestFixture: Boolean,
     override val codeGeneratorBindingOrNull: CodeGenerator?
   ) : ProjectDependency(), MightHaveCodeGeneratorBinding
@@ -71,7 +71,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    * @suppress
    * @since 0.12.0
    */
-  operator fun component2(): ProjectPath = path
+  operator fun component2(): ProjectPath = projectPath
 
   /**
    * @suppress
@@ -108,19 +108,19 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
    */
   fun copy(
     configurationName: ConfigurationName = this.configurationName,
-    path: ProjectPath = this.path,
+    path: ProjectPath = this.projectPath,
     isTestFixture: Boolean = this.isTestFixture
   ): ProjectDependency {
     return when (this) {
       is RuntimeProjectDependency -> RuntimeProjectDependency(
         configurationName = configurationName,
-        path = path,
+        projectPath = path,
         isTestFixture = isTestFixture
       )
 
       is CodeGeneratorProjectDependency -> CodeGeneratorProjectDependency(
         configurationName = configurationName,
-        path = path,
+        projectPath = path,
         isTestFixture = isTestFixture,
         codeGeneratorBindingOrNull = codeGeneratorBindingOrNull
       )
@@ -130,9 +130,9 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
   final override fun toString(): String {
 
     val declaration = if (isTestFixture) {
-      "${configurationName.value}(testFixtures(project(path = \"${path.value}\")))"
+      "${configurationName.value}(testFixtures(project(path = \"${projectPath.value}\")))"
     } else {
-      "${configurationName.value}(project(path = \"${path.value}\"))"
+      "${configurationName.value}(project(path = \"${projectPath.value}\"))"
     }
 
     return "${this::class.simpleName}( $declaration )"
@@ -145,7 +145,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
     other as ProjectDependency
 
     if (configurationName != other.configurationName) return false
-    if (path != other.path) return false
+    if (projectPath != other.projectPath) return false
     if (isTestFixture != other.isTestFixture) return false
 
     return true
@@ -154,7 +154,7 @@ sealed class ProjectDependency : ConfiguredDependency, HasPath {
   override fun hashCode(): Int {
     var result = javaClass.hashCode()
     result = 31 * result + configurationName.hashCode()
-    result = 31 * result + path.hashCode()
+    result = 31 * result + projectPath.hashCode()
     result = 31 * result + isTestFixture.hashCode()
     return result
   }

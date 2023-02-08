@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,7 @@ data class InheritedDependencyFinding(
     get() = "Transitive dependencies which are directly referenced should be declared in this module."
 
   override val dependencyIdentifier: String
-    get() = newDependency.path.value + fromStringOrEmpty()
+    get() = newDependency.projectPath.value + fromStringOrEmpty()
   override val dependency: ProjectDependency
     get() = newDependency
 
@@ -53,10 +53,10 @@ data class InheritedDependencyFinding(
   }
 
   override fun fromStringOrEmpty(): String {
-    return if (dependency.path == source.path) {
+    return if (dependency.projectPath == source.projectPath) {
       ""
     } else {
-      source.path.value
+      source.projectPath.value
     }
   }
 
@@ -65,7 +65,7 @@ data class InheritedDependencyFinding(
     return compareBy<InheritedDependencyFinding>(
       { it.configurationName },
       { it.source.isTestFixture },
-      { it.newDependency.path }
+      { it.newDependency.projectPath }
     ).compare(this, other)
   }
 }
