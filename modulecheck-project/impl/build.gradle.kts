@@ -20,6 +20,7 @@ plugins {
 mcbuild {
   artifactId = "modulecheck-project-impl"
   anvil()
+  serialization()
 }
 
 dependencies {
@@ -33,6 +34,7 @@ dependencies {
   api(project(path = ":modulecheck-parsing:source:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-reporting:logging:api"))
+  api(project(path = ":modulecheck-utils:serialization"))
 
   implementation(project(path = ":modulecheck-api"))
 

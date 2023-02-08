@@ -12,9 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:UseSerializers(FileAsStringSerializer::class)
 
 package modulecheck.project.impl
 
+import kotlinx.serialization.UseSerializers
 import modulecheck.api.context.resolvedDeclaredNames
 import modulecheck.model.dependency.ExternalDependencies
 import modulecheck.model.dependency.PlatformPlugin
@@ -24,16 +26,15 @@ import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.gradle.dsl.BuildFileParser
 import modulecheck.parsing.source.AnvilGradlePlugin
 import modulecheck.parsing.source.QualifiedDeclaredName
-import modulecheck.parsing.source.ResolvableMcName
 import modulecheck.project.JvmFileProvider.Factory
 import modulecheck.project.McProject
 import modulecheck.project.ProjectCache
 import modulecheck.project.ProjectContext
 import modulecheck.reporting.logging.McLogger
+import modulecheck.utils.serialization.FileAsStringSerializer
 import org.jetbrains.kotlin.config.JvmTarget
 import java.io.File
 
-@Suppress("LongParameterList")
 class RealMcProject(
   override val projectPath: StringProjectPath,
   override val projectDir: File,
@@ -45,7 +46,7 @@ class RealMcProject(
   override val logger: McLogger,
   override val jvmFileProviderFactory: Factory,
   override val jvmTarget: JvmTarget,
-  buildFileParserFactory: BuildFileParser.Factory,
+  private val buildFileParserFactory: BuildFileParser.Factory,
   override val platformPlugin: PlatformPlugin
 ) : McProject {
 
@@ -87,13 +88,14 @@ class RealMcProject(
     return "${this::class.java.simpleName}('$projectPath')"
   }
 
-  override suspend fun resolvedNameOrNull(
-    resolvableMcName: ResolvableMcName,
+  override suspend fun resolveFqNameOrNull(
+    declaredName: QualifiedDeclaredName,
     sourceSetName: SourceSetName
   ): QualifiedDeclaredName? {
     return resolvedDeclaredNames().getSource(
-      resolvableMcName,
+      declaredName,
       sourceSetName
-    )?.run { declaration }
+    )
+      ?.run { declaredName }
   }
 }

@@ -15,12 +15,14 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.lazy.LazyDeferred
 import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.psi.KtFile
 import java.io.File
 
+@Serializable
 sealed interface JvmFile : HasReferences {
   /**
    * The [java.io.File] version of this file

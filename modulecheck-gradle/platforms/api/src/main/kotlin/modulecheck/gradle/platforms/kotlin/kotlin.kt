@@ -13,22 +13,25 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms.sourcesets
+package modulecheck.gradle.platforms.kotlin
 
-import modulecheck.gradle.platforms.getKotlinExtensionOrNull
 import modulecheck.gradle.platforms.internal.toJavaVersion
 import modulecheck.parsing.gradle.model.GradleProject
-import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.JavaPluginExtension
 import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.config.LanguageVersion
+import org.jetbrains.kotlin.gradle.dsl.KotlinProjectExtension
+
+fun GradleProject.getKotlinExtensionOrNull(): KotlinProjectExtension? =
+  extensions.findByName("kotlin") as? KotlinProjectExtension
 
 /**
- * @return every file which is an actual file (not directory), and actually exists in this file
- *   system
- * @since 0.12.0
+ * shorthand for `extensions.findByType(JavaPluginExtension::class.java)`
+ *
+ * @since 0.13.0
  */
-fun FileCollection.existingFiles(): FileCollection = filter { it.isFile && it.exists() }
+fun GradleProject.getJavaPluginExtensionOrNull(): JavaPluginExtension? =
+  extensions.findByType(org.gradle.api.plugins.JavaPluginExtension::class.java)
 
 /**
  * @return the Java version used to compile this project

@@ -15,9 +15,7 @@
 
 package modulecheck.parsing.source
 
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.firstOrNull
-import modulecheck.utils.lazy.LazySet
+import kotlinx.serialization.Serializable
 
 /**
  * Fundamentally, this is a version of `FqName` (such as Kotlin's
@@ -28,6 +26,7 @@ import modulecheck.utils.lazy.LazySet
  * @see ReferenceName
  * @since 0.12.0
  */
+@Serializable
 sealed interface McName : Comparable<McName> {
   /**
    * The raw String value of this name, such as `com.example.lib1.Lib1Class`.
@@ -76,14 +75,7 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * @return true if the last segment of this name matches [simpleName], otherwise false
-   * @since 0.13.0
-   */
-  fun endsWithSimpleName(simpleName: SimpleName): Boolean {
-    return name.split('.').last() == simpleName.name
-  }
-
-  /** @return true if the last segment of this name matches [other], otherwise false
+   * @return true if this [name] value ends with the name string of [other], otherwise false
    * @since 0.12.0
    */
   fun endsWith(other: McName): Boolean {
@@ -106,12 +98,14 @@ sealed interface McName : Comparable<McName> {
    *
    * @since 0.12.0
    */
+  @Serializable
   sealed interface CompatibleLanguage {
     /**
      * Java
      *
      * @since 0.12.0
      */
+    @Serializable
     object JAVA : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -121,6 +115,7 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
+    @Serializable
     object KOTLIN : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
@@ -130,22 +125,9 @@ sealed interface McName : Comparable<McName> {
      *
      * @since 0.12.0
      */
+    @Serializable
     object XML : CompatibleLanguage {
       override fun toString(): String = this::class.java.simpleName
     }
   }
-}
-
-/**
- * An [McName] which has the potential to be resolved -- meaning any [ReferenceName], or a
- * [QualifiedDeclaredName]
- *
- * @since 0.13.0
- */
-sealed interface ResolvableMcName : McName
-
-suspend inline fun <reified T : McName> LazySet<McName>.getNameOrNull(element: McName): T? {
-  return takeIf { it.contains(element) }
-    ?.filterIsInstance<T>()
-    ?.firstOrNull { it == element }
 }

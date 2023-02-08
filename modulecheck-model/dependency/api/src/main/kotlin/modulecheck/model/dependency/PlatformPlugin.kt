@@ -54,7 +54,7 @@ sealed interface JvmPlatformPlugin : PlatformPlugin {
     override val configurations: Configurations
   ) : JvmPlatformPlugin
 
-  data class KotlinJvmPlugin(
+  data class KotlinJvmPlugin constructor(
     override val sourceSets: SourceSets,
     override val configurations: Configurations
   ) : JvmPlatformPlugin

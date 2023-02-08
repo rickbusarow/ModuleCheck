@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.gradle.platforms
+package modulecheck.gradle.platforms.kotlin
 
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
 import modulecheck.model.sourceset.SourceSetName

@@ -123,7 +123,7 @@ private fun packageNameToClassName(content: String): Pair<String, String> {
       match.destructured.component1().trim()
     }
 
-  val classNameRegex = "internal class (\\S*).*".toRegex()
+  val classNameRegex = "(?>internal )?(?>class|object) (\\S*).*".toRegex()
 
   val typeName = lines.first { it.trim().matches(classNameRegex) }
     .replace(classNameRegex) { match ->

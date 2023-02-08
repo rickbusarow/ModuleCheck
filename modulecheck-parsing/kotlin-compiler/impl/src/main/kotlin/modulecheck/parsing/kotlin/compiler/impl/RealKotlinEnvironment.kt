@@ -18,8 +18,10 @@ package modulecheck.parsing.kotlin.compiler.impl
 import com.squareup.anvil.annotations.ContributesBinding
 import dispatch.core.withIO
 import modulecheck.dagger.TaskScope
-import modulecheck.gradle.platforms.KotlinEnvironmentFactory
+import modulecheck.gradle.platforms.kotlin.KotlinEnvironmentFactory
+import modulecheck.model.dependency.HasProjectPath
 import modulecheck.model.dependency.ProjectPath.StringProjectPath
+import modulecheck.model.sourceset.HasSourceSetName
 import modulecheck.model.sourceset.SourceSetName
 import modulecheck.parsing.kotlin.compiler.KotlinEnvironment
 import modulecheck.parsing.kotlin.compiler.internal.isKotlinFile
@@ -32,13 +34,14 @@ import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.environment.setIdeaIoUseFallback
 import org.jetbrains.kotlin.cli.common.messages.AnalyzerWithCompilerReport
-import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
+import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles.JVM_CONFIG_FILES
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
 import org.jetbrains.kotlin.cli.jvm.compiler.TopDownAnalyzerFacadeForJVM
 import org.jetbrains.kotlin.cli.jvm.config.addJavaSourceRoots
 import org.jetbrains.kotlin.cli.jvm.config.addJvmClasspathRoots
+import org.jetbrains.kotlin.cli.jvm.config.configureJdkClasspathRoots
 import org.jetbrains.kotlin.com.intellij.psi.PsiJavaFile
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
@@ -72,9 +75,9 @@ import javax.inject.Inject
  * @since 0.13.0
  */
 @Suppress("LongParameterList")
-class RealKotlinEnvironment(
-  val projectPath: StringProjectPath,
-  val sourceSetName: SourceSetName,
+data class RealKotlinEnvironment(
+  override val projectPath: StringProjectPath,
+  override val sourceSetName: SourceSetName,
   val classpathFiles: LazyDeferred<List<File>>,
   private val sourceDirs: Collection<File>,
   val kotlinLanguageVersion: LanguageVersion?,
@@ -82,7 +85,7 @@ class RealKotlinEnvironment(
   val dependencyModuleDescriptorAccess: DependencyModuleDescriptorAccess,
   val logger: McLogger,
   private val resetManager: ResetManager
-) : KotlinEnvironment {
+) : KotlinEnvironment, HasProjectPath, HasSourceSetName {
 
   private val sourceFiles by lazy {
     sourceDirs.asSequence()
@@ -93,9 +96,6 @@ class RealKotlinEnvironment(
 
   override val compilerConfiguration: LazyDeferred<CompilerConfiguration> = lazyDeferred {
     createCompilerConfiguration(
-      // TODO re-enable classpath files once external dependency resolution is working
-      // classpathFiles =   classpathFiles.await(),
-      classpathFiles = emptyList(),
       sourceFiles = sourceFiles.toList(),
       kotlinLanguageVersion = kotlinLanguageVersion,
       jvmTarget = jvmTarget
@@ -144,15 +144,17 @@ class RealKotlinEnvironment(
     val ktFiles = kotlinSourceFiles
       .map { file -> psiFactory.createKotlin(file) }
 
-    val descriptors = dependencyModuleDescriptorAccess.dependencyModuleDescriptors(
+    val (friends, dependencies) = dependencyModuleDescriptorAccess.projectDependencies(
       projectPath = projectPath,
       sourceSetName = sourceSetName
     )
+      .partition { (it as RealKotlinEnvironment).projectPath == projectPath }
 
     createAnalysisResult(
       coreEnvironment = coreEnvironment.await(),
       ktFiles = ktFiles,
-      dependencyModuleDescriptors = descriptors
+      dependencyModuleDescriptors = dependencies.map { it.moduleDescriptorDeferred.await() },
+      friendModuleDescriptors = friends.map { it.moduleDescriptorDeferred.await() }
     )
   }
 
@@ -165,17 +167,24 @@ class RealKotlinEnvironment(
   }
 
   private val messageCollector by lazy {
-    McMessageCollector(
-      messageRenderer = MessageRenderer.GRADLE_STYLE,
-      logger = logger,
-      logLevel = McMessageCollector.LogLevel.WARNINGS_AS_ERRORS
-    )
+
+    // if (projectPath.value == ":core:core") {
+    // if (projectPath.value == ":core:jvm") {
+    // McMessageCollector(
+    //   messageRenderer = MessageRenderer.GRADLE_STYLE,
+    //   logger = logger,
+    //   logLevel = McMessageCollector.LogLevel.WARNINGS_AS_WARNINGS
+    // )
+    // } else {
+    MessageCollector.NONE
+    // }
   }
 
   private suspend fun createAnalysisResult(
     coreEnvironment: KotlinCoreEnvironment,
     ktFiles: List<KtFile>,
-    dependencyModuleDescriptors: List<ModuleDescriptorImpl>
+    dependencyModuleDescriptors: List<ModuleDescriptorImpl>,
+    friendModuleDescriptors: List<ModuleDescriptorImpl>
   ): AnalysisResult = withIO {
 
     val analyzer = AnalyzerWithCompilerReport(
@@ -183,6 +192,8 @@ class RealKotlinEnvironment(
       languageVersionSettings = coreEnvironment.configuration.languageVersionSettings,
       renderDiagnosticName = false
     )
+
+    println("start analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}")
 
     analyzer.analyzeAndReport(ktFiles) {
       TopDownAnalyzerFacadeForJVM.analyzeFilesWithJavaIntegration(
@@ -192,17 +203,25 @@ class RealKotlinEnvironment(
         configuration = coreEnvironment.configuration,
         packagePartProvider = coreEnvironment::createPackagePartProvider,
         declarationProviderFactory = ::FileBasedDeclarationProviderFactory,
-        explicitModuleDependencyList = dependencyModuleDescriptors
+        explicitModuleDependencyList = dependencyModuleDescriptors + friendModuleDescriptors,
+        explicitModuleFriendsList = friendModuleDescriptors
       )
     }
 
-    messageCollector.printIssuesCountIfAny()
+    val mc = messageCollector
+    if (mc is McMessageCollector) {
+      mc.printIssuesCountIfAny()
+    }
+
+    println(
+      "                                                                      " +
+        "finish analysis ${projectPath.value.padStart(36)} -- ${sourceSetName.value}"
+    )
 
     analyzer.analysisResult
   }
 
-  private fun createCompilerConfiguration(
-    classpathFiles: List<File>,
+  private suspend fun createCompilerConfiguration(
     sourceFiles: List<File>,
     kotlinLanguageVersion: LanguageVersion?,
     jvmTarget: JvmTarget
@@ -234,7 +253,8 @@ class RealKotlinEnvironment(
 
       addJavaSourceRoots(javaFiles)
       addKotlinSourceRoots(kotlinFiles)
-      addJvmClasspathRoots(classpathFiles)
+      addJvmClasspathRoots(classpathFiles.await())
+      configureJdkClasspathRoots()
     }
   }
 

@@ -15,8 +15,8 @@
 
 package modulecheck.parsing.source
 
+import kotlinx.serialization.Serializable
 import modulecheck.parsing.source.HasSimpleNames.Companion.checkSimpleNames
-import modulecheck.parsing.source.McName.CompatibleLanguage
 import modulecheck.parsing.source.McName.CompatibleLanguage.XML
 import modulecheck.parsing.source.SimpleName.Companion.asSimpleName
 import modulecheck.utils.capitalize
@@ -85,15 +85,12 @@ sealed interface AndroidResourceDeclaredName : DeclaredName, HasSimpleNames {
  *
  * @since 0.12.0
  */
+@Serializable
 class AndroidRDeclaredName(
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName {
 
   override val simpleNames: List<SimpleName> by lazy { listOf("R".asSimpleName()) }
-
-  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
-    return AndroidRReferenceName(packageName, language)
-  }
 }
 
 /**
@@ -104,6 +101,7 @@ class AndroidRDeclaredName(
  *   generates this fully qualified resource
  * @since 0.12.0
  */
+@Serializable
 class QualifiedAndroidResourceDeclaredName(
   val sourceR: AndroidRReferenceName,
   val sourceResource: UnqualifiedAndroidResourceReferenceName
@@ -122,10 +120,6 @@ class QualifiedAndroidResourceDeclaredName(
   init {
     checkSimpleNames()
   }
-
-  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
-    return QualifiedAndroidResourceReferenceName(name, language)
-  }
 }
 
 /**
@@ -133,8 +127,10 @@ class QualifiedAndroidResourceDeclaredName(
  *
  * @since 0.12.0
  */
+
+@Serializable
 class AndroidDataBindingDeclaredName(
-  sourceLayout: UnqualifiedAndroidResourceReferenceName,
+  val sourceLayout: UnqualifiedAndroidResourceReferenceName,
   override val packageName: PackageName
 ) : QualifiedDeclaredName(), AndroidResourceDeclaredName, Generated {
 
@@ -155,9 +151,5 @@ class AndroidDataBindingDeclaredName(
 
   init {
     checkSimpleNames()
-  }
-
-  override fun asReferenceName(language: CompatibleLanguage): ReferenceName {
-    return AndroidDataBindingReferenceName(name, language)
   }
 }

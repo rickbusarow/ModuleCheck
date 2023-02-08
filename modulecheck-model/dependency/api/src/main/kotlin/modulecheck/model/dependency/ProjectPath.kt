@@ -15,11 +15,13 @@
 
 package modulecheck.model.dependency
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.capitalize
 import modulecheck.utils.lazy.unsafeLazy
 import java.util.Locale
 
-sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
+@Serializable
+sealed class ProjectPath : Identifier {
 
   /**
    * the raw value of this path
@@ -57,14 +59,11 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
     return typeSafeValue.hashCode()
   }
 
-  override fun compareTo(other: ProjectPath): Int {
-    return typeSafeValue.compareTo(other.typeSafeValue)
-  }
-
   override fun toString(): String = value
 
   abstract fun pathValue(typeSafeProjectPathResolver: TypeSafeProjectPathResolver): String
 
+  @Serializable
   class StringProjectPath(override val value: String) : ProjectPath() {
     init {
       require(value.startsWith(':')) {
@@ -83,6 +82,7 @@ sealed class ProjectPath : Identifier, Comparable<ProjectPath> {
     ): String = value
   }
 
+  @Serializable
   class TypeSafeProjectPath(override val value: String) : ProjectPath() {
 
     override fun toTypeSafe(): TypeSafeProjectPath = this

@@ -36,6 +36,16 @@ mcbuild {
     }
     """
   )
+  buildProperties(
+    "test",
+    """
+    package modulecheck.gradle
+
+    object TestBuildProperties {
+      val testKitDir = "${buildDir.resolve("tmp/integrationTest/work/.gradle-test-kit")}"
+    }
+    """
+  )
 }
 
 val main by sourceSets.getting
@@ -80,6 +90,7 @@ dependencies {
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
   api(project(path = ":modulecheck-model:dependency:api"))
+  api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
   api(project(path = ":modulecheck-parsing:wiring"))
@@ -96,6 +107,7 @@ dependencies {
   compileOnly(libs.agp.builder.model)
   compileOnly(libs.kotlin.gradle.plug)
   compileOnly(libs.kotlin.gradle.plugin.api)
+  compileOnly(libs.kotlinx.serialization.core)
   compileOnly(libs.square.anvil.gradle)
 
   implementation(libs.google.dagger.api)
@@ -107,6 +119,7 @@ dependencies {
   implementation(project(path = ":modulecheck-model:dependency:impl"))
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:internal"))
   implementation(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
+  implementation(project(path = ":modulecheck-parsing:kotlin-compiler:api"))
   implementation(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   implementation(project(path = ":modulecheck-parsing:source:api"))
   implementation(project(path = ":modulecheck-project:impl"))
@@ -115,6 +128,7 @@ dependencies {
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   "integrationTestImplementation"(project(path = ":modulecheck-config:impl"))
+  "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-android"))
   "integrationTestImplementation"(project(path = ":modulecheck-gradle:platforms:internal-jvm"))
@@ -125,6 +139,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:gradle:model:impl-typesafe"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:kotlin-compiler:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-parsing:wiring"))
+  "integrationTestImplementation"(project(path = ":modulecheck-project:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:api"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl"))
   "integrationTestImplementation"(project(path = ":modulecheck-rule:impl-factory"))

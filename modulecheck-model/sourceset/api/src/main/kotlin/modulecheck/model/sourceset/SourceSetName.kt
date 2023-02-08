@@ -15,11 +15,34 @@
 
 package modulecheck.model.sourceset
 
+import kotlinx.serialization.Serializable
 import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
+import java.io.Serializable as JavaSerializable
 
+/**
+ * Something associated with a specific [SourceSetName][modulecheck.model.sourceset.SourceSetName].
+ *
+ * @since 0.13.0
+ */
+interface HasSourceSetName : JavaSerializable {
+
+  /**
+   * ex: `main`, `test`, `debug`
+   *
+   * @since 0.13.0
+   */
+  val sourceSetName: SourceSetName
+}
+
+/**
+ * ex: `main`, `test`, `debug`
+ *
+ * @since 0.13.0
+ */
+@Serializable
 @JvmInline
-value class SourceSetName(val value: String) {
+value class SourceSetName(val value: String) : JavaSerializable {
 
   fun isTestFixtures(): Boolean = value.startsWith(TEST_FIXTURES.value, ignoreCase = true)
 
@@ -36,6 +59,9 @@ value class SourceSetName(val value: String) {
     val TEST_FIXTURES: SourceSetName = SourceSetName("testFixtures")
   }
 }
+
+fun SourceSetName.toProto() = SourceSetName_Proto(value)
+fun SourceSetName.toPojo() = SourceSetName(value)
 
 fun String.asSourceSetName(): SourceSetName = SourceSetName(this)
 

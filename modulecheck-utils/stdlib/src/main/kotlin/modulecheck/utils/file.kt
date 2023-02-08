@@ -20,6 +20,19 @@ import java.nio.file.Path
 
 fun File.existsOrNull(): File? = if (exists()) this else null
 
+/**
+ * Checks that the receiver File exists and returns that file, throwing an exception if it does not.
+ *
+ * @throws IllegalArgumentException with the result of [lazyMessage] if the receiver file does not
+ *     exist in the Java file system
+ * @since 0.13.0
+ */
+inline fun File.requireExists(
+  lazyMessage: () -> String = { "The required file does not exist: File://$absolutePath" }
+): File = apply {
+  require(exists(), lazyMessage)
+}
+
 fun File.child(vararg childPath: String): File {
   return File(this, childPath.joinToString(File.separator))
 }
@@ -48,3 +61,17 @@ fun File.createSafely(content: String? = null): File = apply {
  * @since 0.12.0
  */
 fun File.mkdirsInline(): File = apply { mkdirs() }
+
+/**
+ * a fancy version of `file.resolve(child)`
+ *
+ * @since 0.10.0
+ */
+operator fun File.div(child: String): File = resolve(child)
+
+/**
+ * `File("a/b/c/d.txt").segments() == ["a", "b", "c", "d.txt"]`
+ *
+ * @since 0.10.0
+ */
+fun File.segments(): List<String> = path.split(File.separatorChar)
