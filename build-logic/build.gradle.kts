@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,7 +70,7 @@ allprojects {
 
     configure<JavaPluginExtension> {
       @Suppress("MagicNumber")
-      toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+      toolchain.languageVersion.set(JavaLanguageVersion.of(11))
     }
   }
 
@@ -80,7 +80,7 @@ allprojects {
       languageVersion = "1.6"
       apiVersion = "1.6"
 
-      jvmTarget = "1.8"
+      jvmTarget = "11"
 
       freeCompilerArgs = freeCompilerArgs + listOf(
         "-opt-in=kotlin.RequiresOptIn"

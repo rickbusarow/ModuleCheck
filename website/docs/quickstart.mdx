@@ -11,13 +11,8 @@ import Tabs from '@theme/Tabs'; import TabItem from '@theme/TabItem';
 
 ## Dependencies
 
-<Tabs groupId="language"
-defaultValue="Kotlin"
-values={[
-{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-]}>
-
-   <TabItem value="Kotlin">
+<Tabs>
+   <TabItem value="Kotlin" default>
 
 ```kotlin
 // settings.gradle.kts
@@ -35,7 +30,7 @@ pluginManagement {
 // top-level build.gradle.kts
 
 plugins {
-     id("com.rickbusarow.module-check") version "0.13.0-SNAPSHOT"
+  id("com.rickbusarow.module-check") version "0.13.0-SNAPSHOT"
 }
 ```
 
@@ -104,14 +99,10 @@ generate (module-only) dependency graphs
 
 See [configuration](./configuration.mdx) for a full list of options.
 
-<Tabs groupId="language"
-defaultValue="Kotlin"
-values={[
-{label: 'Kotlin', value: 'Kotlin'}, {label: 'Groovy', value: 'Groovy'},
-]}>
+<Tabs >
 
 
-   <TabItem value="Kotlin">
+   <TabItem value="Kotlin" default>
 
 ```kotlin title="root/build.gradle.kts"
 configure<com.rickbusarow.modulecheck.ModuleCheckExtension> {
@@ -137,10 +128,9 @@ moduleCheck {
 }
 ```
 
-   </TabItem>
+  </TabItem>
 
-
-<TabItem value="Groovy">
+  <TabItem value="Groovy">
 
 ```groovy title="root/build.gradle"
 moduleCheck {

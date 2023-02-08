@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-package modulecheck.builds
+package modulecheck.builds.matrix
 
-import modulecheck.builds.matrix.VersionsMatrixYamlCheckTask
-import modulecheck.builds.matrix.VersionsMatrixYamlGenerateTask
+import modulecheck.builds.applyOnce
+import modulecheck.builds.checkProjectIsRoot
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.language.base.plugins.LifecycleBasePlugin

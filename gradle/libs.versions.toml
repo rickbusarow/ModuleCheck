@@ -1,6 +1,6 @@
 [versions]
 
-androidTools = "7.3.1"
+androidTools = "7.4.1"
 
 androidx-compose = "1.1.0-alpha04"
 androidx-fragment = "1.3.6"
@@ -17,38 +17,38 @@ antlr = "4.11.1"
 autoManifest = "2.0"
 
 benManes-caffeine = "3.1.2"
-benManes-versions = "0.44.0"
+benManes-versions = "0.45.0"
 
 changeTracker = "0.7.4"
 coil = "1.3.2"
 compileSdk = "30"
-dependencyAnalysis = "1.18.0"
+dependencyAnalysis = "1.19.0"
 detekt = "1.22.0"
 dokka = "1.7.20"
-dropbox-dependencyGuard = "0.3.2"
+dropbox-dependencyGuard = "0.4.1"
 exhaustive = "0.2.0"
 
 google-accompanist = "0.18.0"
 google-dagger = "2.44.2"
-google-ksp = "1.8.0-RC2-1.0.8"
 google-material = "1.4.0"
 
 gradleDoctor = "0.8.1"
 graphviz = "0.18.1"
-groovy = "3.0.13"
-jUnit = "5.9.1"
-javaParser = "3.24.9"
+groovy = "3.0.14"
+jUnit = "5.9.2"
+javaParser = "3.25.0"
 jmailen-kotlinter = "3.13.0"
 knit = "0.4.0"
-kotest = "5.5.4"
-kotlin = "1.8.0-RC2"
+kotest = "5.5.5"
+kotlin = "1.7.22"
 
 kotlinx-atomicfu = "0.16.3"
 kotlinx-coroutines = "1.6.4"
 kotlinx-knit = "0.4.0"
+google-ksp = "1.7.22-1.0.8"
 kotlinx-serialization = "1.4.1"
 
-ktlint-plugin = "11.0.0"
+ktlint-plugin = "11.1.0"
 ktlint-lib = "0.47.1"
 
 mavenPublish = "0.13.0"
@@ -56,20 +56,20 @@ mavenPublish = "0.13.0"
 rickBusarow-dependencySync = "0.11.2"
 rickBusarow-dispatch = "1.0.0-beta10"
 rickBusarow-hermit = "0.9.6"
-rickBusarow-moduleCheck = "0.12.3"
+rickBusarow-moduleCheck = "0.12.5"
 rickBusarow-tangle = "0.15.1"
 
-square-anvil = "2.4.3-1-8-0-RC"
+square-anvil = "2.4.3"
 square-moshi = "1.14.0"
-square-okio = "3.2.0"
+square-okio = "3.3.0"
 square-retrofit = "2.9.0"
 square-wire = "4.4.3"
 square-workflow = "1.0.0"
 
 targetSdk = "30"
-taskTree = "2.1.0"
+taskTree = "2.1.1"
 
-vanniktech-publish = "0.22.0"
+vanniktech-publish = "0.24.0"
 
 [plugins]
 

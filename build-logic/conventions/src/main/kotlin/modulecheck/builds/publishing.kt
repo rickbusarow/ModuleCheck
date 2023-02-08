@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,12 +19,9 @@ import com.vanniktech.maven.publish.GradlePlugin
 import com.vanniktech.maven.publish.JavadocJar.Dokka
 import com.vanniktech.maven.publish.KotlinJvm
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
-import com.vanniktech.maven.publish.SonatypeHost.DEFAULT
+import com.vanniktech.maven.publish.SonatypeHost
 import com.vanniktech.maven.publish.tasks.JavadocJar
-import com.vanniktech.maven.publish.tasks.SourcesJar
 import org.gradle.api.Project
-import org.gradle.api.publish.PublishingExtension
-import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.publish.maven.tasks.PublishToMavenRepository
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.plugins.signing.Sign
@@ -41,8 +38,15 @@ fun Project.configurePublishing(
   var skipDokka = false
 
   extensions.configure(MavenPublishBaseExtension::class.java) { extension ->
-    extension.publishToMavenCentral(DEFAULT, automaticRelease = true)
+    extension.publishToMavenCentral(SonatypeHost.DEFAULT, automaticRelease = true)
     extension.signAllPublications()
+
+    extension.coordinates(
+      groupId = GROUP,
+      artifactId = artifactId,
+      version = VERSION_NAME
+    )
+
     extension.pom { mavenPom ->
       mavenPom.description.set("Fast dependency graph linting for Gradle projects")
       mavenPom.name.set(artifactId)
@@ -79,15 +83,6 @@ fun Project.configurePublishing(
     }
   }
 
-  extensions.configure(PublishingExtension::class.java) {
-    it.publications
-      .filterIsInstance<MavenPublication>()
-      .forEach { publication ->
-        publication.groupId = GROUP
-        publication.artifactId = artifactId
-      }
-  }
-
   tasks.register("checkVersionIsSnapshot") {
     it.doLast {
       val expected = "-SNAPSHOT"
@@ -103,7 +98,6 @@ fun Project.configurePublishing(
   }
 
   tasks.withType(Jar::class.java) { it.notCompatibleWithConfigurationCache("") }
-  tasks.withType(SourcesJar::class.java) { it.notCompatibleWithConfigurationCache("") }
   tasks.withType(JavadocJar::class.java) { it.notCompatibleWithConfigurationCache("") }
   tasks.withType(Sign::class.java) {
     it.notCompatibleWithConfigurationCache("")
