@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,7 @@ data class References(
     override suspend operator fun invoke(project: McProject): References {
 
       return References(
-        SafeCache(listOf(project.path, References::class)),
+        SafeCache(listOf(project.projectPath, References::class)),
         project
       )
     }

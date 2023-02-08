@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,7 +32,7 @@ data class CouldUseAnvilFinding(
   override val buildFile: File
 ) : Finding, Fixable {
 
-  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.path
+  override val dependentPath: ProjectPath.StringProjectPath = dependentProject.projectPath
 
   override val message: String
     get() = "Dagger's compiler could be replaced with Anvil's factory generation for faster builds."

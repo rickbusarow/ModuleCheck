@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -140,7 +140,7 @@ data class AndroidResourceDeclaredNames(
   companion object Key : ProjectContext.Key<AndroidResourceDeclaredNames> {
     override suspend operator fun invoke(project: McProject): AndroidResourceDeclaredNames {
       return AndroidResourceDeclaredNames(
-        SafeCache(listOf(project.path, AndroidResourceDeclaredNames::class)),
+        SafeCache(listOf(project.projectPath, AndroidResourceDeclaredNames::class)),
         project
       )
     }

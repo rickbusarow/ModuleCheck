@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -55,7 +55,7 @@ class ProjectQueue(
 
       // A full set of all dependencies per project, regardless of their source set or classpath
       val projectsToDependencyPaths = projects.associateWith { project ->
-        project.allDependencies().mapToSet { it.path }
+        project.allDependencies().mapToSet { it.projectPath }
       }
         .toMutableMap()
 
@@ -69,7 +69,7 @@ class ProjectQueue(
        * @since 0.12.0
        */
       fun McProject.hasRemainingDownstream() = upstreamPending.entries
-        .none { it.value.contains(path) }
+        .none { it.value.contains(projectPath) }
 
       // safe access to the shared state of the queue
       val lock = Mutex(false)
@@ -142,7 +142,7 @@ class ProjectQueue(
 
     while (pending.isNotEmpty()) {
       val next = pending.firstOrNull { maybeNext ->
-        values.none { paths -> maybeNext.path in paths }
+        values.none { paths -> maybeNext.projectPath in paths }
       } ?: pending.first()
 
       out.add(next)

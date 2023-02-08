@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -70,7 +70,7 @@ class UnusedKaptPluginRule @Inject constructor() : DocumentedRule<Finding>() {
       else -> listOf(
         UnusedPluginFinding(
           dependentProject = project,
-          dependentPath = project.path,
+          dependentPath = project.projectPath,
           buildFile = project.buildFile,
           findingName = name,
           pluginDefinition = PluginDefinition(

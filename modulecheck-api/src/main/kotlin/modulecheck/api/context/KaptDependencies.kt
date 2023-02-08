@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -64,7 +64,10 @@ data class KaptDependencies(
     )
 
     override suspend operator fun invoke(project: McProject): KaptDependencies {
-      return KaptDependencies(SafeCache(listOf(project.path, KaptDependencies::class)), project)
+      return KaptDependencies(
+        SafeCache(listOf(project.projectPath, KaptDependencies::class)),
+        project
+      )
     }
   }
 }

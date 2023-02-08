@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -44,7 +44,7 @@ internal class RealProjectContext(val project: McProject) : ProjectContext {
   private var cache = newCache()
 
   private fun newCache() = SafeCache<Key<*>, LazyDeferred<Element>>(
-    listOf(project.path, RealProjectContext::class)
+    listOf(project.projectPath, RealProjectContext::class)
   )
 
   override suspend fun <E : Element> get(key: Key<E>): E {

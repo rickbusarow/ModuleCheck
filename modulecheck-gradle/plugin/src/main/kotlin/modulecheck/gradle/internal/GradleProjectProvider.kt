@@ -111,7 +111,7 @@ class GradleProjectProvider @Inject constructor(
     )
 
     return RealMcProject(
-      path = path,
+      projectPath = path,
       projectDir = gradleProject.projectDir,
       buildFile = gradleProject.buildFile,
       hasKapt = hasKapt,

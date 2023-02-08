@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -117,7 +117,7 @@ class Declarations private constructor(
   companion object Key : ProjectContext.Key<Declarations> {
     override suspend operator fun invoke(project: McProject): Declarations {
       return Declarations(
-        SafeCache(listOf(project.path, Declarations::class)),
+        SafeCache(listOf(project.projectPath, Declarations::class)),
         project
       )
     }
@@ -130,7 +130,7 @@ suspend fun ProjectDependency.declarations(
   projectCache: ProjectCache,
   packageNameOrNull: PackageName? = null
 ): LazySet<DeclaredName> {
-  val project = projectCache.getValue(path)
+  val project = projectCache.getValue(projectPath)
   if (isTestFixture) {
     return project.declarations()
       .get(

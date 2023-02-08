@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -41,7 +41,7 @@ data class DownstreamProjects(
             .filter { it.contributed.project(project) == project }
             .map { transitive ->
               DownstreamDependency(
-                dependentProjectPath = otherProject.path,
+                dependentProjectPath = otherProject.projectPath,
                 projectDependency = transitive.withContributedConfiguration().contributed
               )
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,12 +16,12 @@
 package modulecheck.project
 
 import modulecheck.model.dependency.DownstreamDependency
-import modulecheck.model.dependency.HasPath
+import modulecheck.model.dependency.HasProjectPath
 
 interface HasProjectCache {
   val projectCache: ProjectCache
 
-  fun HasPath.project(): McProject = projectCache.getValue(path)
+  fun HasProjectPath.project(): McProject = projectCache.getValue(projectPath)
 }
 
 /**
@@ -30,7 +30,9 @@ interface HasProjectCache {
  * @receiver has a defined path to be resolved to a project
  * @since 0.12.0
  */
-fun HasPath.project(projectCache: ProjectCache): McProject = projectCache.getValue(path)
+fun HasProjectPath.project(
+  projectCache: ProjectCache
+): McProject = projectCache.getValue(projectPath)
 
 /**
  * @receiver has a defined path to be resolved to a project
@@ -38,8 +40,9 @@ fun HasPath.project(projectCache: ProjectCache): McProject = projectCache.getVal
  * @return the project associated with the path in the receiver
  * @since 0.12.0
  */
-fun HasPath.project(hasProjectCache: HasProjectCache): McProject = hasProjectCache.projectCache
-  .getValue(path)
+fun HasProjectPath.project(
+  hasProjectCache: HasProjectCache
+): McProject = hasProjectCache.projectCache.getValue(projectPath)
 
 /**
  * @receiver has a dependentPath to be resolved to a project

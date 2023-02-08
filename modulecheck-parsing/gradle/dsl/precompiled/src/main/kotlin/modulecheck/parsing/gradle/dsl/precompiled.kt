@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -114,7 +114,7 @@ suspend fun HasDependencyDeclarations.closestDeclarationOrNull(
       val closestDeclaration = sorted.firstOrNull {
         when (newDependency) {
           is ExternalDependency -> it.mavenCoordinatesOrNull() == newDependency.mavenCoordinates
-          is ProjectDependency -> it.projectPathOrNull() == newDependency.path
+          is ProjectDependency -> it.projectPathOrNull() == newDependency.projectPath
         }
       }
         ?: sorted.firstOrNull {
@@ -124,7 +124,7 @@ suspend fun HasDependencyDeclarations.closestDeclarationOrNull(
               ?.isGreaterThan(newDependency.mavenCoordinates)
 
             is ProjectDependency -> it.projectPathOrNull()
-              ?.isGreaterThan(newDependency.path)
+              ?.isGreaterThan(newDependency.projectPath)
           } ?: false
         }
         ?: sorted.lastOrNull()
@@ -136,7 +136,7 @@ suspend fun HasDependencyDeclarations.closestDeclarationOrNull(
         }
 
         is ProjectDependency -> {
-          closestDeclaration.projectPathOrNull() == newDependency.path
+          closestDeclaration.projectPathOrNull() == newDependency.projectPath
         }
       }
 
@@ -213,13 +213,13 @@ private suspend fun ProjectDependency.asModuleDependencyDeclaration(
   return if (tokenOrNull is ModuleDependencyDeclaration) {
     tokenOrNull.copy(
       newConfigName = configurationName,
-      newModulePath = path,
+      newModulePath = projectPath,
       testFixtures = isTestFixture
     )
   } else {
     project.createDependencyDeclaration(
       configurationName = configurationName,
-      projectPath = path,
+      projectPath = projectPath,
       isTestFixtures = isTestFixture
     )
   }

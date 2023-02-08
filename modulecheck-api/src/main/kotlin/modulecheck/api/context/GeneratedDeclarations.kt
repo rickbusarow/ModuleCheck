@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,7 +39,7 @@ class GeneratedDeclarations private constructor(
 ) : ProjectContext.Element {
 
   private val allGenerated: SafeCache<SourceSetName, LazySet<Generated>> by lazy {
-    SafeCache(listOf(project.path, GeneratedDeclarations::class))
+    SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
   }
 
   /**
@@ -51,7 +51,7 @@ class GeneratedDeclarations private constructor(
    * @since 0.13.0
    */
   private val reversed: SafeCache<SourceSetName, Map<McName, Set<Generated>>> by lazy {
-    SafeCache(listOf(project.path, GeneratedDeclarations::class))
+    SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
   }
 
   /**
@@ -60,7 +60,7 @@ class GeneratedDeclarations private constructor(
    * @since 0.13.0
    */
   private val filtered: SafeCache<SourceSetWithDeclarations, LazySet<Generated>> by lazy {
-    SafeCache(listOf(project.path, GeneratedDeclarations::class))
+    SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
   }
 
   private data class SourceSetWithDeclarations(

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -40,7 +40,7 @@ data class JvmSourceFiles(
   companion object Key : ProjectContext.Key<JvmSourceFiles> {
     override suspend operator fun invoke(project: McProject): JvmSourceFiles {
 
-      return JvmSourceFiles(SafeCache(listOf(project.path, JvmSourceFiles::class)), project)
+      return JvmSourceFiles(SafeCache(listOf(project.projectPath, JvmSourceFiles::class)), project)
     }
   }
 }

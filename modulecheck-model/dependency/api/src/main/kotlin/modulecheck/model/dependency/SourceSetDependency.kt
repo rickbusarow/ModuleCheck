@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,9 +43,9 @@ sealed interface SourceSetDependency : HasIdentifier {
 
   data class SourceSetProjectDependency(
     override val sourceSetName: SourceSetName,
-    override val path: ProjectPath,
+    override val projectPath: ProjectPath,
     override val isTestFixture: Boolean
-  ) : SourceSetDependency, HasPath
+  ) : SourceSetDependency, HasProjectPath
 }
 
 fun ConfiguredDependency.toSourceSetDependency(
@@ -61,7 +61,7 @@ fun ConfiguredDependency.toSourceSetDependency(
 
   is ProjectDependency -> SourceSetProjectDependency(
     sourceSetName = sourceSetName,
-    path = path,
+    projectPath = projectPath,
     isTestFixture = isTestFixture
   )
 }

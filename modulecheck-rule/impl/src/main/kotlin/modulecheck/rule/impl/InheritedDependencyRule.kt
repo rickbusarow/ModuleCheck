@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -83,7 +83,7 @@ class InheritedDependencyRule @Inject constructor() :
       // Projects shouldn't inherit themselves.  This false-positive can happen if a test
       // fixture/utilities module depends upon a module, and that module uses the test module in
       // testImplementation.
-      .filterNot { transitive -> transitive.contributed.path == project.path }
+      .filterNot { transitive -> transitive.contributed.projectPath == project.projectPath }
       .flatMap { transitive ->
 
         /*
@@ -146,7 +146,7 @@ class InheritedDependencyRule @Inject constructor() :
                 return@any false
               }
 
-              upstreamCpd.path == contributed.path &&
+              upstreamCpd.projectPath == contributed.projectPath &&
                 contributed.isTestFixture == upstreamCpd.isTestFixture
             }
 

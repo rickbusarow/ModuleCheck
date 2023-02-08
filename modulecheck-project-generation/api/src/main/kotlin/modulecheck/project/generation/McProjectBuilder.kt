@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -98,14 +98,14 @@ class McProjectBuilder<P : PlatformPluginBuilder<*>>(
     val old = projectDependencies[configurationName].orEmpty()
 
     val newDependency = configuredProjectDependencyFactory
-      .create(configurationName, project.path, asTestFixture)
+      .create(configurationName, project.projectPath, asTestFixture)
 
     if (addToBuildFile) {
       onBuild {
 
         val declarationExists = runBlocking {
           buildFileParser.dependenciesBlocks().any { dependenciesBlock ->
-            dependenciesBlock.getOrEmpty(project.path, configurationName, asTestFixture)
+            dependenciesBlock.getOrEmpty(project.projectPath, configurationName, asTestFixture)
               .isNotEmpty()
           }
         }
