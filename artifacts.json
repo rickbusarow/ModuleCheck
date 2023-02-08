@@ -336,30 +336,6 @@
     "javaVersion": "11"
   },
   {
-    "gradlePath": ":modulecheck-parsing:element:api",
-    "group": "com.rickbusarow.modulecheck",
-    "artifactId": "modulecheck-parsing-element-api",
-    "description": "Fast dependency graph linting for Gradle projects",
-    "packaging": "jar",
-    "javaVersion": "11"
-  },
-  {
-    "gradlePath": ":modulecheck-parsing:element:impl-kotlin",
-    "group": "com.rickbusarow.modulecheck",
-    "artifactId": "modulecheck-parsing-element-kotlin",
-    "description": "Fast dependency graph linting for Gradle projects",
-    "packaging": "jar",
-    "javaVersion": "11"
-  },
-  {
-    "gradlePath": ":modulecheck-parsing:element:impl-resolve",
-    "group": "com.rickbusarow.modulecheck",
-    "artifactId": "modulecheck-parsing-element-impl-resolve",
-    "description": "Fast dependency graph linting for Gradle projects",
-    "packaging": "jar",
-    "javaVersion": "11"
-  },
-  {
     "gradlePath": ":modulecheck-parsing:kotlin-compiler:api",
     "group": "com.rickbusarow.modulecheck",
     "artifactId": "modulecheck-parsing-kotlin-compiler-api",

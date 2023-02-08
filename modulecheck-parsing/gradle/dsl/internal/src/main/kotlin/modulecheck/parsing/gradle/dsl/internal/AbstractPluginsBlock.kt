@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,9 +45,7 @@ abstract class AbstractPluginsBlock(
       _allDeclarations.forEach { pluginDeclaration ->
 
         val cached = getOrPut(pluginDeclaration) {
-          blockSuppressed
-            .mapNotNull { FindingName.safe(it) }
-            .mapTo(mutableSetOf()) { it }
+          blockSuppressed.mapNotNullTo(mutableSetOf()) { FindingName.safe(it) }
         }
 
         cached += pluginDeclaration.suppressed.updateOldSuppresses()
@@ -100,7 +98,7 @@ abstract class AbstractPluginsBlock(
   }
 
   private fun Collection<String>.asFindingNames(): Set<FindingName> {
-    return mapNotNull { FindingName.safe(it) }.toSet()
+    return mapNotNullTo(mutableSetOf()) { FindingName.safe(it) }
   }
 }
 

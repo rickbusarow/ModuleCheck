@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2022 Rick Busarow
+ * Copyright (C) 2021-2023 Rick Busarow
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,6 +51,9 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
           row("7.5.1", "7.3.1", "2.4.3", "1.7.0"),
           row("7.5.1", "7.3.1", "2.4.3", "1.7.10"),
           row("7.5.1", "7.3.1", "2.4.3", "1.7.22"),
+          row("7.5.1", "7.4.1", "2.4.3", "1.7.0"),
+          row("7.5.1", "7.4.1", "2.4.3", "1.7.10"),
+          row("7.5.1", "7.4.1", "2.4.3", "1.7.22"),
           row("7.6", "7.1.3", "2.4.3", "1.7.0"),
           row("7.6", "7.1.3", "2.4.3", "1.7.10"),
           row("7.6", "7.1.3", "2.4.3", "1.7.22"),
@@ -59,7 +62,10 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
           row("7.6", "7.2.2", "2.4.3", "1.7.22"),
           row("7.6", "7.3.1", "2.4.3", "1.7.0"),
           row("7.6", "7.3.1", "2.4.3", "1.7.10"),
-          row("7.6", "7.3.1", "2.4.3", "1.7.22")
+          row("7.6", "7.3.1", "2.4.3", "1.7.22"),
+          row("7.6", "7.4.1", "2.4.3", "1.7.0"),
+          row("7.6", "7.4.1", "2.4.3", "1.7.10"),
+          row("7.6", "7.4.1", "2.4.3", "1.7.22")
         )
           .map { (gradle, agp, anvil, kotlin) ->
             TestVersions(
