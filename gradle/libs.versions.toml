@@ -16,7 +16,7 @@ androidx-work = "2.6.0"
 antlr = "4.11.1"
 autoManifest = "2.0"
 
-benManes-caffeine = "3.1.2"
+benManes-caffeine = "3.1.3"
 benManes-versions = "0.45.0"
 
 changeTracker = "0.7.4"
