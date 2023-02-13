@@ -26,9 +26,6 @@ dependencies {
 
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
-  api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
-  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-gradle:platforms:api"))
   api(project(path = ":modulecheck-model:dependency:api"))
@@ -39,9 +36,6 @@ dependencies {
 
   compileOnly(libs.kotlin.gradle.plug)
   compileOnly(libs.kotlin.gradle.plugin.api)
-
-  implementation(libs.kotlin.reflect)
-  implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-dagger"))
   implementation(project(path = ":modulecheck-model:sourceset:api"))

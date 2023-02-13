@@ -17,6 +17,7 @@ package modulecheck.builds
 
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import org.gradle.api.artifacts.ExternalDependency
 
 fun Project.applyAnvil() {
 
@@ -34,4 +35,17 @@ fun Project.applyAnvil() {
 
   dependencies.add("compileOnly", project.libsCatalog.dependency("javax-inject"))
   dependencies.add("compileOnly", project.libsCatalog.dependency("google-dagger-api"))
+
+  // Anvil adds its annotations artifact as 'implementation', which is unnecessary.
+  // Replace it with a 'compileOnly' dependency.
+  dependencies.add("compileOnly", project.libsCatalog.dependency("square-anvil-annotations"))
+  afterEvaluate {
+    configurations.named("implementation") {
+      val annotations = project.libsCatalog.dependency("square-anvil-annotations").get()
+
+      it.dependencies.removeIf { dep ->
+        dep is ExternalDependency && dep.group == annotations.group && dep.name == annotations.name
+      }
+    }
+  }
 }

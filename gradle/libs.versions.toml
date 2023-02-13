@@ -38,6 +38,7 @@ groovy = "3.0.15"
 jUnit = "5.9.2"
 javaParser = "3.25.0"
 jmailen-kotlinter = "3.13.0"
+johnrengelman-shadow = "7.1.2"
 knit = "0.4.0"
 kotest = "5.5.5"
 kotlin = "1.7.22"
@@ -82,6 +83,7 @@ gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "jmailen-kotlinter" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-plugin" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "johnrengelman-shadow" }
 taskTree = { id = "com.dorongold.task-tree", version.ref = "taskTree" }
 
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
@@ -138,6 +140,8 @@ javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-
 javax-inject = "javax.inject:javax.inject:1"
 
 jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "jmailen-kotlinter" }
+
+johnrengelman-shadow = { module = "gradle.plugin.com.github.johnrengelman:shadow", version.ref = "johnrengelman-shadow" }
 
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jUnit" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "jUnit" }

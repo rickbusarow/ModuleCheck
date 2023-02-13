@@ -23,14 +23,12 @@ mcbuild {
 }
 dependencies {
 
-  api(libs.kotlinx.coroutines.core)
-
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))
-  api(project(path = ":modulecheck-model:dependency:api"))
 
   compileOnly(gradleApi())
 
+  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)

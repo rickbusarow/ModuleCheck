@@ -27,9 +27,9 @@ dependencies {
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-parsing:gradle:dsl:api"))
   api(project(path = ":modulecheck-project:api"))
+  api(project(path = ":modulecheck-utils:lazy"))
 
   implementation(project(path = ":modulecheck-parsing:gradle:dsl:precompiled"))
-  implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
