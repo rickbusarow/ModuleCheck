@@ -4,6 +4,7 @@
     <androidMode>true</androidMode>
     <useExperimental>true</useExperimental>
     <treatAsErrors>false</treatAsErrors>
+    <lintAfterReformat>false</lintAfterReformat>
     <disabledRules>
       <list>
         <option value="max-line-length" />
@@ -14,7 +15,7 @@
     </disabledRules>
     <externalJarPaths>
       <list>
-        <option value="ktlint-rules/build/libs/ktlint-rules.jar" />
+        <option value="build-logic/ktlint-rules/build/libs/ktlint-rules.jar" />
       </list>
     </externalJarPaths>
   </component>

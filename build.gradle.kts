@@ -65,8 +65,8 @@ afterEvaluate {
   sequenceOf(
     "buildHealth",
     "clean",
-    "ktlintCheck",
-    "ktlintFormat",
+    "moduleCheck",
+    "moduleCheckAuto",
     "moduleCheckSortDependenciesAuto",
     "test"
   ).forEach { taskName ->

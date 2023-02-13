@@ -25,7 +25,6 @@ buildscript {
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   kotlin("jvm")
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
   id("java-gradle-plugin")
 }
@@ -49,7 +48,6 @@ dependencies {
 
   api(project(path = ":artifacts-check"))
   api(project(path = ":conventions"))
-  api(project(path = ":core"))
   api(project(path = ":ktlint-rules"))
   api(project(path = ":versions-matrix"))
 

@@ -19,11 +19,6 @@ import com.google.auto.service.AutoService
 import com.pinterest.ktlint.core.RuleProvider
 import com.pinterest.ktlint.core.RuleSetProviderV2
 
-/**
- * TODO
- *
- * @since 0.13.0
- */
 @AutoService(RuleSetProviderV2::class)
 class McRuleSetProvider : RuleSetProviderV2(
   id = "mc-rules",

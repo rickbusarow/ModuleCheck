@@ -16,7 +16,6 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   kotlin("jvm")
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
 }
 
@@ -28,9 +27,9 @@ dependencies {
 
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
+  implementation(libs.google.ksp)
   implementation(libs.jmailen.kotlinter)
   implementation(libs.ktlint.core)
-  implementation(libs.google.ksp)
   implementation(libs.ktlint.ruleset.standard)
 
   ksp(libs.zacSweers.auto.service.ksp)

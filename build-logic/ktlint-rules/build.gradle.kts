@@ -16,12 +16,13 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
   kotlin("jvm")
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
 }
 
 dependencies {
   api(project(path = ":core"))
+
+  compileOnly(gradleApi())
 
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
