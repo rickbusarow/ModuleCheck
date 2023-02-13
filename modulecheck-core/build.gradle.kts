@@ -40,18 +40,15 @@ dependencies {
 
   api(project(path = ":modulecheck-finding:impl"))
   api(project(path = ":modulecheck-model:dependency:api"))
-  api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-project:api"))
   api(project(path = ":modulecheck-utils:cache"))
 
-  implementation(libs.kotlin.compiler)
   implementation(libs.kotlinx.coroutines.jvm)
   implementation(libs.semVer)
 
   implementation(project(path = ":modulecheck-api"))
   implementation(project(path = ":modulecheck-finding:name"))
-  implementation(project(path = ":modulecheck-model:dependency:api"))
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:lazy"))
   implementation(project(path = ":modulecheck-utils:stdlib"))
@@ -59,7 +56,6 @@ dependencies {
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotlin.reflect)
   testImplementation(libs.rickBusarow.dispatch.test.core)
 
   testImplementation(project(path = ":modulecheck-config:api"))

@@ -72,6 +72,7 @@ val integrationTestRuntime by configurations.registering {
 dependencies {
 
   api(libs.javax.inject)
+  api(libs.rickBusarow.dispatch.core)
 
   api(project(path = ":modulecheck-config:api"))
   api(project(path = ":modulecheck-dagger"))

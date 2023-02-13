@@ -24,8 +24,6 @@ mcbuild {
 
 dependencies {
 
-  api(libs.kotlinx.coroutines.core)
-
   api(project(path = ":modulecheck-config:api"))
 
   compileOnly(gradleApi())

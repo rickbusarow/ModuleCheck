@@ -25,7 +25,6 @@ mcbuild {
 dependencies {
 
   api(libs.kotlinx.coroutines.core)
-  api(libs.kotlinx.coroutines.jvm)
 
   api(project(path = ":modulecheck-finding:api"))
   api(project(path = ":modulecheck-finding:name"))
@@ -38,6 +37,7 @@ dependencies {
   api(project(path = ":modulecheck-utils:lazy"))
 
   implementation(libs.kotlin.compiler)
+  implementation(libs.kotlinx.coroutines.jvm)
 
   implementation(project(path = ":modulecheck-utils:coroutines:api"))
   implementation(project(path = ":modulecheck-utils:stdlib"))

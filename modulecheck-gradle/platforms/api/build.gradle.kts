@@ -26,7 +26,9 @@ dependencies {
 
   api(libs.javax.inject)
   api(libs.kotlin.compiler)
+  api(libs.semVer)
 
+  api(project(path = ":modulecheck-dagger"))
   api(project(path = ":modulecheck-model:dependency:api"))
   api(project(path = ":modulecheck-model:sourceset:api"))
   api(project(path = ":modulecheck-parsing:gradle:model:api"))
@@ -37,13 +39,11 @@ dependencies {
 
   compileOnly(libs.agp)
   compileOnly(libs.agp.api)
+  compileOnly(libs.agp.builder.model)
   compileOnly(libs.kotlin.gradle.plug)
   compileOnly(libs.kotlin.gradle.plugin.api)
 
   implementation(libs.kotlin.reflect)
-  implementation(libs.semVer)
-
-  implementation(project(path = ":modulecheck-dagger"))
 
   testImplementation(libs.bundles.hermit)
   testImplementation(libs.bundles.jUnit)
