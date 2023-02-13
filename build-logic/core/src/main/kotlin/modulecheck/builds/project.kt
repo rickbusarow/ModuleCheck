@@ -74,6 +74,7 @@ fun Project.registerSimpleGenerationTaskAsDependency(
 
   setOf(
     "compile${kotlinTaskSourceSetName}Kotlin",
+    "sourcesJar",
     "javaSourcesJar",
     "lintKotlin$ktlintSourceSetName",
     "formatKotlin$ktlintSourceSetName",
