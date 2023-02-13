@@ -56,7 +56,7 @@ idea {
     integrationTest.configure {
       allSource.srcDirs
         .forEach { srcDir ->
-          module.testSourceDirs.add(srcDir)
+          module.testSources.from(srcDir)
         }
     }
   }
