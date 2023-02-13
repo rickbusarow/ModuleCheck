@@ -26,7 +26,6 @@ buildscript {
 plugins {
   base
   kotlin("jvm")
-  alias(libs.plugins.kotlinter)
   alias(libs.plugins.google.ksp)
   id("java-gradle-plugin")
 }

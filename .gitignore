@@ -72,3 +72,6 @@ libs/
 # copy of API docs for website.  Save the /styles dir before the CSS is slightly customized
 /website/static/api
 !/website/static/api/styles
+
+# auto-generated from the root .editorconfig in order to add extra disabled rules
+build-logic/.editorconfig

@@ -31,6 +31,7 @@ plugins {
 }
 
 moduleCheck {
+  deleteUnused = true
   checks {
     sortDependencies = true
   }
@@ -49,24 +50,7 @@ allprojects {
     }
   }
 
-  afterEvaluate {
-    configure<org.jmailen.gradle.kotlinter.KotlinterExtension> {
-      ignoreFailures = false
-      reporters = arrayOf("checkstyle", "plain")
-      experimentalRules = true
-      disabledRules = arrayOf(
-        "max-line-length", // manually formatting still does this, and KTLint will still wrap long chains when possible
-        "filename", // same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and this can't
-        "argument-list-wrapping", // doesn't work half the time
-        "no-empty-first-line-in-method-block", // code golf...
-        // This can be re-enabled once 0.46.0 is released
-        // https://github.com/pinterest/ktlint/issues/1435
-        // "experimental:type-parameter-list-spacing",
-        // added in 0.46.0
-        "experimental:function-signature"
-      )
-    }
-
+  plugins.withType(JavaPlugin::class.java) {
     configure<JavaPluginExtension> {
       @Suppress("MagicNumber")
       toolchain.languageVersion.set(JavaLanguageVersion.of(11))
@@ -85,25 +69,6 @@ allprojects {
         "-opt-in=kotlin.RequiresOptIn"
       )
     }
-  }
-
-  tasks.withType<org.jmailen.gradle.kotlinter.tasks.FormatTask> {
-
-    // These exclude the Gradle-generated code from Kotlinter's checks.
-    // These globs are relative to the source set's kotlin root.
-    exclude("*Plugin.kt")
-    exclude("gradle/kotlin/dsl/**")
-  }
-}
-
-tasks.register("ktlintCheck") rootTask@{
-  allprojects {
-    this@rootTask.dependsOn(tasks.matching { it.name == "lintKotlin" })
-  }
-}
-tasks.register("ktlintFormat") rootTask@{
-  allprojects {
-    this@rootTask.dependsOn(tasks.matching { it.name == "formatKotlin" })
   }
 }
 
