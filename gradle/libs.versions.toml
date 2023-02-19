@@ -13,7 +13,7 @@ androidx-test-espresso = "3.4.0"
 androidx-test = "1.4.0"
 androidx-work = "2.6.0"
 
-antlr = "4.11.1"
+antlr = "4.12.0"
 autoManifest = "2.0"
 
 benManes-caffeine = "3.1.3"
