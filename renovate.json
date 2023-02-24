@@ -1,6 +1,20 @@
 {
-  "labels": ["dependencies", "automerge"],
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "labels": [
+    "dependencies",
+    "automerge"
+  ],
   "extends": [
     "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": [
+        "^org\\.jetbrains\\.kotlin:(?:[\\w-]+)$",
+        "^com\\.google\\.devtools\\.ksp:(?:[\\w-]+)$",
+        "^com\\.square\\.anvil:(?:[\\w-]+)$"
+      ],
+      "groupName": "Kotlin and compiler plugins"
+    },
   ]
 }
