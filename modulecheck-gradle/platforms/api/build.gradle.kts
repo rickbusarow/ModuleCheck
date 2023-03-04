@@ -40,12 +40,12 @@ dependencies {
   compileOnly(libs.agp)
   compileOnly(libs.agp.api)
   compileOnly(libs.agp.builder.model)
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
   compileOnly(libs.kotlin.gradle.plugin.api)
 
   implementation(libs.kotlin.reflect)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

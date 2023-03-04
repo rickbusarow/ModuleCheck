@@ -32,7 +32,7 @@ dependencies {
   compileOnly(libs.agp)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
-  testImplementation(libs.kotest.runner)
+  testImplementation(libs.kotest.runner.junit5.jvm)
 }

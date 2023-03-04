@@ -28,7 +28,7 @@ dependencies {
   api(libs.kotlinx.coroutines.jvm)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.square.turbine)
 }
