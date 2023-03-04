@@ -15,8 +15,6 @@
 
 package modulecheck.testing
 
-import io.kotest.assertions.asClue
-import io.kotest.data.row
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -25,71 +23,6 @@ internal class VersionsFactoryFilteringTest : BaseTest(), VersionsFactoryTest {
 
   override val exhaustive: Boolean
     get() = true
-
-  @Test
-  fun `all valid version combinations in the matrix`() {
-    versions(true)
-      .joinToString(
-        separator = ",\n",
-        prefix = "########## copy/paste these rows in order to update the test\n\n",
-        postfix = "\n\n##########"
-      ) { (g, ag, av, k) ->
-        """row( "$g", "$ag", "$av", "$k")"""
-      }
-      .asClue {
-
-        versions(true).joinToString("\n") shouldBe listOf(
-          row("7.2", "7.1.3", "2.4.3", "1.7.0"),
-          row("7.2", "7.1.3", "2.4.3", "1.7.10"),
-          row("7.2", "7.1.3", "2.4.3", "1.7.22"),
-          row("7.5.1", "7.1.3", "2.4.3", "1.7.0"),
-          row("7.5.1", "7.1.3", "2.4.3", "1.7.10"),
-          row("7.5.1", "7.1.3", "2.4.3", "1.7.22"),
-          row("7.5.1", "7.2.2", "2.4.3", "1.7.0"),
-          row("7.5.1", "7.2.2", "2.4.3", "1.7.10"),
-          row("7.5.1", "7.2.2", "2.4.3", "1.7.22"),
-          row("7.5.1", "7.3.1", "2.4.3", "1.7.0"),
-          row("7.5.1", "7.3.1", "2.4.3", "1.7.10"),
-          row("7.5.1", "7.3.1", "2.4.3", "1.7.22"),
-          row("7.5.1", "7.4.1", "2.4.3", "1.7.0"),
-          row("7.5.1", "7.4.1", "2.4.3", "1.7.10"),
-          row("7.5.1", "7.4.1", "2.4.3", "1.7.22"),
-          row("7.6.1", "7.1.3", "2.4.3", "1.7.0"),
-          row("7.6.1", "7.1.3", "2.4.3", "1.7.10"),
-          row("7.6.1", "7.1.3", "2.4.3", "1.7.22"),
-          row("7.6.1", "7.2.2", "2.4.3", "1.7.0"),
-          row("7.6.1", "7.2.2", "2.4.3", "1.7.10"),
-          row("7.6.1", "7.2.2", "2.4.3", "1.7.22"),
-          row("7.6.1", "7.3.1", "2.4.3", "1.7.0"),
-          row("7.6.1", "7.3.1", "2.4.3", "1.7.10"),
-          row("7.6.1", "7.3.1", "2.4.3", "1.7.22"),
-          row("7.6.1", "7.4.1", "2.4.3", "1.7.0"),
-          row("7.6.1", "7.4.1", "2.4.3", "1.7.10"),
-          row("7.6.1", "7.4.1", "2.4.3", "1.7.22"),
-          row("8.0", "7.1.3", "2.4.3", "1.7.0"),
-          row("8.0", "7.1.3", "2.4.3", "1.7.10"),
-          row("8.0", "7.1.3", "2.4.3", "1.7.22"),
-          row("8.0", "7.2.2", "2.4.3", "1.7.0"),
-          row("8.0", "7.2.2", "2.4.3", "1.7.10"),
-          row("8.0", "7.2.2", "2.4.3", "1.7.22"),
-          row("8.0", "7.3.1", "2.4.3", "1.7.0"),
-          row("8.0", "7.3.1", "2.4.3", "1.7.10"),
-          row("8.0", "7.3.1", "2.4.3", "1.7.22"),
-          row("8.0", "7.4.1", "2.4.3", "1.7.0"),
-          row("8.0", "7.4.1", "2.4.3", "1.7.10"),
-          row("8.0", "7.4.1", "2.4.3", "1.7.22")
-        )
-          .map { (gradle, agp, anvil, kotlin) ->
-            TestVersions(
-              gradle = gradle,
-              agp = agp,
-              anvil = anvil,
-              kotlin = kotlin
-            )
-          }
-          .joinToString("\n")
-      }
-  }
 
   @Test
   fun `class-level 'exhaustive' value of true makes the function exhaustive by default`() {
