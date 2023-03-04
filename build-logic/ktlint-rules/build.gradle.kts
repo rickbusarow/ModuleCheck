@@ -33,7 +33,7 @@ dependencies {
   ksp(libs.zacSweers.auto.service.ksp)
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
   testImplementation(libs.ktlint.test)
 }

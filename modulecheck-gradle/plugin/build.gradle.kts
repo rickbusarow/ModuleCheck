@@ -94,7 +94,7 @@ dependencies {
   compileOnly(libs.agp)
   compileOnly(libs.agp.api)
   compileOnly(libs.agp.builder.model)
-  compileOnly(libs.kotlin.gradle.plug)
+  compileOnly(libs.kotlin.gradle.plugin)
   compileOnly(libs.kotlin.gradle.plugin.api)
   compileOnly(libs.square.anvil.gradle)
 
@@ -132,7 +132,7 @@ dependencies {
   "integrationTestImplementation"(project(path = ":modulecheck-utils:stdlib"))
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 
   testImplementation(project(path = ":modulecheck-internal-testing"))

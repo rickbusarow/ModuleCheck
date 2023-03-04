@@ -35,6 +35,6 @@ dependencies {
   implementation(project(path = ":modulecheck-rule:impl"))
 
   testImplementation(libs.bundles.hermit)
-  testImplementation(libs.bundles.jUnit)
+  testImplementation(libs.bundles.junit)
   testImplementation(libs.bundles.kotest)
 }

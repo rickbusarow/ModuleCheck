@@ -24,7 +24,7 @@ mcbuild {
 dependencies {
 
   api(libs.bundles.hermit)
-  api(libs.bundles.jUnit)
+  api(libs.bundles.junit)
   api(libs.bundles.kotest)
 
   compileOnly(gradleApi())

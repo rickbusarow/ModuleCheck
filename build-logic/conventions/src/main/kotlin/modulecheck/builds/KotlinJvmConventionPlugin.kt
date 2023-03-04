@@ -15,8 +15,14 @@
 
 package modulecheck.builds
 
+import com.vanniktech.maven.publish.MavenPublishBasePlugin
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.File
 
@@ -25,27 +31,57 @@ abstract class KotlinJvmConventionPlugin : Plugin<Project> {
   override fun apply(target: Project) {
     target.plugins.applyOnce("org.jetbrains.kotlin.jvm")
 
+    target.extensions.configure(KotlinJvmProjectExtension::class.java) { extension ->
+      extension.jvmToolchain { toolChain ->
+        toolChain.languageVersion.set(JavaLanguageVersion.of(target.JDK))
+      }
+    }
+
     target.tasks.withType(KotlinCompile::class.java) { task ->
       task.kotlinOptions {
         allWarningsAsErrors = false
 
-        val kotlinMajor = "1.6"
-
+        val kotlinMajor = target.KOTLIN_API
         languageVersion = kotlinMajor
         apiVersion = kotlinMajor
 
-        jvmTarget = "11"
+        jvmTarget = target.JVM_TARGET
 
-        freeCompilerArgs = freeCompilerArgs + listOf(
-          "-Xinline-classes",
-          "-Xjvm-default=all",
-          "-Xsam-conversions=class",
-          "-opt-in=kotlin.ExperimentalStdlibApi",
-          "-opt-in=kotlin.RequiresOptIn",
-          "-opt-in=kotlin.contracts.ExperimentalContracts",
-          "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-          "-opt-in=kotlinx.coroutines.FlowPreview"
-        )
+        freeCompilerArgs += buildList {
+          add("-Xinline-classes")
+          add("-Xjvm-default=all")
+          add("-Xsam-conversions=class")
+          add("-opt-in=kotlin.ExperimentalStdlibApi")
+          add("-opt-in=kotlin.RequiresOptIn")
+          add("-opt-in=kotlin.contracts.ExperimentalContracts")
+          add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+          add("-opt-in=kotlinx.coroutines.FlowPreview")
+
+          // Workaround for Kotest's shading of the `@Language` annotation
+          // https://github.com/kotest/kotest/issues/3387
+          // It's fixed by https://github.com/kotest/kotest/pull/3397 but that's unreleased, so check
+          // back after the next update.
+          if (task.name == "compileTestKotlin" ||
+            target.path == ":modulecheck-internal-testing" ||
+            target.path == ":modulecheck-project-generation:api"
+          ) {
+            val kotestVersion = target.libsCatalog.version("kotest")
+            check(kotestVersion == "5.5.5") {
+              "The Kotest `@Language` workaround should be fixed in version $kotestVersion.  " +
+                "Check to see if the opt-in compiler argument can be removed."
+            }
+            add("-opt-in=io.kotest.common.KotestInternal")
+          }
+        }
+      }
+    }
+
+    target.plugins.withType(MavenPublishBasePlugin::class.java) {
+      target.extensions.configure(JavaPluginExtension::class.java) { extension ->
+        extension.sourceCompatibility = JavaVersion.toVersion(target.JVM_TARGET)
+      }
+      target.tasks.withType(JavaCompile::class.java) { task ->
+        task.options.release.set(target.JVM_TARGET_INT)
       }
     }
 

@@ -15,7 +15,7 @@
 
 buildscript {
   dependencies {
-    classpath(libs.kotlin.gradle.plug)
+    classpath(libs.kotlin.gradle.plugin)
     classpath(libs.ktlint.gradle)
     classpath(libs.vanniktech.publish)
   }
