@@ -24,6 +24,7 @@ import org.gradle.api.Project
 abstract class McBuildPlugin : Plugin<Project> {
   override fun apply(target: Project) {
 
+    target.plugins.apply(CheckPlugin::class.java)
     target.plugins.apply(CleanPlugin::class.java)
     target.plugins.apply(DependencyGuardConventionPlugin::class.java)
     target.plugins.apply(DetektConventionPlugin::class.java)
