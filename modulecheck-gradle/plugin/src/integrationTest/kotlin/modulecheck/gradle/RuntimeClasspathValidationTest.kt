@@ -54,9 +54,6 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
               if (requested.id.id == "com.rickbusarow.module-check") {
                 useVersion("${BuildProperties().version}")
               }
-              if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-                useVersion("$kotlin")
-              }
               if (requested.id.id == "com.squareup.anvil") {
                 useVersion("$anvil")
               }
@@ -93,7 +90,7 @@ class RuntimeClasspathValidationTest : BaseGradleTest() {
       """
         plugins {
           id("com.android.library")
-          kotlin("android")
+          kotlin("android") version "$kotlin"
           id("com.rickbusarow.module-check")
         }
 

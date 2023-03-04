@@ -101,9 +101,6 @@ abstract class BaseGradleTest :
           if (requested.id.id == "com.rickbusarow.module-check") {
             useVersion("${BuildProperties().version}")
           }
-          if (requested.id.id.startsWith("org.jetbrains.kotlin")) {
-            useVersion("$kotlinVersion")
-          }
           if (requested.id.id == "com.squareup.anvil") {
             useVersion("$anvilVersion")
           }

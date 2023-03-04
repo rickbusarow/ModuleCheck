@@ -44,7 +44,7 @@ class VersionsMatrix(
   )
     .requireNoDuplicates()
 
-  private val latest by lazy { allValid.last() }
+  private val latest by lazy { allValid.first() }
 
   val defaultGradle by lazy { gradleArg ?: latest.gradle }
   val defaultAgp by lazy { agpArg ?: latest.agp }
