@@ -9,7 +9,7 @@ kotlin = "1.7.22"
 google-ksp = "1.7.22-1.0.8"
 square-anvil = "2.4.3"
 
-androidTools = "7.4.1"
+androidTools = "7.4.2"
 
 androidx-compose = "1.1.0-alpha04"
 androidx-fragment = "1.3.6"
