@@ -41,16 +41,20 @@ internal class VersionsMatrixYamlGenerator {
         line("agp-version: ${versionsMatrix.agpList.asYamlList()}")
         line("anvil-version: ${versionsMatrix.anvilList.asYamlList()}")
 
-        line("exclude:")
+        if (versionsMatrix.exclusions.isEmpty()) {
+          line("exclude: [ ]")
+        } else {
+          line("exclude:")
 
-        indent {
-          versionsMatrix.exclusions
-            .forEach { exclude ->
-              exclude.asYamlLines()
-                .forEach { line ->
-                  line(line)
-                }
-            }
+          indent {
+            versionsMatrix.exclusions
+              .forEach { exclude ->
+                exclude.asYamlLines()
+                  .forEach { line ->
+                    line(line)
+                  }
+              }
+          }
         }
       }
     }
