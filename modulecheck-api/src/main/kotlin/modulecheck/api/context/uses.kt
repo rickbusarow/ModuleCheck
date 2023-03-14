@@ -46,7 +46,7 @@ suspend fun McProject.uses(dependency: ConfiguredDependency): Boolean {
 private suspend fun <T> McProject.usesCodeGenDependency(
   dependency: T
 ): Boolean where T : ConfiguredDependency,
-                 T : MightHaveCodeGeneratorBinding {
+      T : MightHaveCodeGeneratorBinding {
 
   val codeGeneratorBinding = dependency.codeGeneratorBindingOrNull
     // If the dependency doesn't have a binding, default to treating it as used

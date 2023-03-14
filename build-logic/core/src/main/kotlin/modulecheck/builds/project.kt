@@ -44,6 +44,7 @@ import org.gradle.composite.internal.DefaultIncludedBuild.IncludedBuildImpl
  * true root of that tree.
  *
  * @return true if this project is the root of the entire build, else false
+ * @since 0.13.0
  */
 fun Project.isRootOfComposite(): Boolean {
   return this == rootProject && gradle.parent == null
@@ -94,6 +95,7 @@ fun Project.registerSimpleGenerationTaskAsDependency(
 
 /**
  * @return the root project of this included build
+ * @since 0.13.0
  */
 fun IncludedBuild.rootProject(): ProjectInternal {
   return requireProjectRegistry().rootProject!!
@@ -101,6 +103,7 @@ fun IncludedBuild.rootProject(): ProjectInternal {
 
 /**
  * @return all projects in this included build
+ * @since 0.13.0
  */
 fun IncludedBuild.allProjects(): Set<ProjectInternal> {
   return requireProjectRegistry().allProjects
@@ -109,6 +112,7 @@ fun IncludedBuild.allProjects(): Set<ProjectInternal> {
 /**
  * @return the projects in this included build, or throws if the [IncludedBuild] is of an unexpected
  *     type
+ * @since 0.13.0
  */
 fun IncludedBuild.requireProjectRegistry(): ProjectRegistry<ProjectInternal> {
   require(this is IncludedBuildImpl) {

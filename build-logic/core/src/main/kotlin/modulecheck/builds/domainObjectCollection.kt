@@ -26,6 +26,7 @@ import org.gradle.api.DomainObjectCollection
  * @return The matching objects. Returns an empty collection if there are no such objects in this
  *     collection.
  * @see [DomainObjectCollection.withType]
+ * @since 0.13.0
  */
 inline fun <reified S : Any> DomainObjectCollection<in S>.withType(
   noinline configuration: (S) -> Unit
@@ -40,6 +41,7 @@ inline fun <reified S : Any> DomainObjectCollection<in S>.withType(
  * @return The matching objects. Returns an empty collection if there are no such objects in this
  *     collection.
  * @see [DomainObjectCollection.withType]
+ * @since 0.13.0
  */
 inline fun <reified S : Any> DomainObjectCollection<in S>.withType(): DomainObjectCollection<S> =
   withType(S::class.java)

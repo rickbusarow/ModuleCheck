@@ -32,6 +32,7 @@ import java.io.File
  * @returns the first path to contain an [existent][File.exists] File for [relativePath], or `null`
  *     if it could not be resolved
  * @see resolveInParent for a version which throws if nothing is resolved
+ * @since 0.13.0
  */
 fun File.resolveInParentOrNull(relativePath: String): File? {
   return resolve(relativePath).existsOrNull()
@@ -43,6 +44,7 @@ fun File.resolveInParentOrNull(relativePath: String): File? {
  *
  * @throws IllegalArgumentException if a file cannot be resolved
  * @see resolveInParentOrNull for a nullable, non-throwing variant
+ * @since 0.13.0
  */
 fun File.resolveInParent(relativePath: String): File {
   return requireNotNull(resolveInParentOrNull(relativePath)) {

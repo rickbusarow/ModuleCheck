@@ -39,7 +39,6 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     target.extensions.configure(KotlinterExtension::class.java) { extension ->
       extension.ignoreFailures = false
       extension.reporters = arrayOf("checkstyle", "plain")
-      extension.experimentalRules = true
     }
 
     // dummy ktlint-gradle plugin task names which just delegate to the Kotlinter ones
@@ -49,7 +48,7 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     }
 
     if (target.isRealRootProject()) {
-      addRootProjectDelegateTasks(target)
+      target.addRootProjectDelegateTasks()
     }
 
     target.tasks.named("lintKotlin") {
@@ -113,58 +112,14 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
     tasks.named("formatKotlin").dependsOn(formatKotlinBuildLogic)
   }
 
-  private fun addRootProjectDelegateTasks(rootProject: Project) {
+  private fun Project.addRootProjectDelegateTasks() {
 
-    val writeEditorConfig = rootProject.tasks
-      .register<ModuleCheckBuildTask>("writeBuildLogicEditorConfig") { task ->
-        val rootConfig = rootProject.file(".editorconfig")
-        task.inputs.file(rootConfig)
-        val buildLogicConfig = rootProject.file("build-logic/.editorconfig")
-        task.outputs.file(buildLogicConfig)
-
-        task.doLast {
-
-          val originalRules = rootConfig.readLines()
-            .single { it.startsWith("ktlint_disabled_rules =") }
-            .substringAfter('=')
-            .trim()
-            .split(" ?, ?".toRegex())
-
-          val additionalRules = listOf("no-since-in-kdoc")
-
-          val newText = buildString {
-            appendLine("### THIS FILE IS GENERATED.  DO NOT MODIFY.")
-            appendLine("# These disabled rules are copied from the root project's .editorconfig.")
-            appendLine("# Then additional rules are appended.")
-            appendLine("# This is done by the 'writeBuildLogicEditorConfig' task.")
-            appendLine("[{*.kt,*.kts}]")
-
-            appendLine("# original rules:")
-            originalRules.forEach { appendLine("#    $it") }
-            appendLine("# additional disabled rules:")
-            additionalRules.forEach { appendLine("#    $it") }
-
-            appendLine("# noinspection EditorConfigKeyCorrectness")
-
-            // creates `rule1,rule2,experimental:rule3,my-rule4`
-            // Whitespaces around the '=' are fine, but there can't be any spaces before or after
-            // the commas or Ktlint won't parse them and will just silently apply all rules.
-            val allDisabledString = originalRules.plus(additionalRules).joinToString(",")
-            appendLine("ktlint_disabled_rules = $allDisabledString")
-            appendLine()
-          }
-
-          if (!buildLogicConfig.exists() || newText != buildLogicConfig.readText()) {
-            println("writing a new version of file://$buildLogicConfig")
-            buildLogicConfig.writeText(newText)
-          }
-        }
-      }
+    val writeEditorConfig = addWriteBuildLogicEditorConfig()
 
     // Add KtLint tasks to the root project to handle build-logic project sources as well.
     // The convention plugin can't be applied to build-logic in the conventional way since
     // that's where its source is.
-    rootProject.gradle
+    gradle
       .includedBuild("build-logic")
       .allProjects()
       .asSequence()
@@ -181,41 +136,67 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
 
             val taskSuffix = cleanProjectName + buildLogicSrc.nameWithoutExtension.capitalize()
 
-            val lintKotlinBuildLogic = rootProject
-              .tasks
+            val lintKotlinBuildLogic = tasks
               .register<LintTask>("lintKotlinBuildLogic$taskSuffix") { task ->
                 task.group = "Formatting"
                 task.description = "Runs lint on the source files in build-logic"
-                task.source(rootProject.files(buildLogicSrc))
+                task.source(files(buildLogicSrc))
                 excludeGenerated(task, proj)
                 task.dependsOn(writeEditorConfig)
               }
-            rootProject.tasks.named("lintKotlin").dependsOn(lintKotlinBuildLogic)
+            tasks.named("lintKotlin").dependsOn(lintKotlinBuildLogic)
 
-            val formatKotlinBuildLogic = rootProject
-              .tasks
+            val formatKotlinBuildLogic = tasks
               .register<FormatTask>("formatKotlinBuildLogic$taskSuffix") { task ->
                 task.group = "Formatting"
                 task.description = "Formats the source files in build-logic"
-                task.source(rootProject.files(buildLogicSrc))
+                task.source(files(buildLogicSrc))
                 excludeGenerated(task, proj)
                 task.dependsOn(writeEditorConfig)
               }
-            rootProject.tasks.named("formatKotlin").dependsOn(formatKotlinBuildLogic)
+            tasks.named("formatKotlin").dependsOn(formatKotlinBuildLogic)
           }
       }
 
-    rootProject.gradle.includedBuild("build-logic")
+    gradle.includedBuild("build-logic")
       .rootProject()
       .addGradleScriptTasks(
-        rootProject.tasks,
+        tasks,
         dependencies = listOf(writeEditorConfig),
         taskNameQualifier = "BuildLogic"
       )
   }
 
-  // These exclude the generated code from Kotlinter's checks.
-  // These globs are relative to the source set's kotlin root.
+  private fun Project.addWriteBuildLogicEditorConfig() = rootProject.tasks
+    .register<ModuleCheckBuildTask>("writeBuildLogicEditorConfig") { task ->
+
+      val buildLogicConfig = rootProject.file("build-logic/.editorconfig")
+      task.outputs.file(buildLogicConfig)
+
+      task.doLast {
+
+        val newText = buildString {
+          appendLine("### THIS FILE IS GENERATED.  DO NOT MODIFY.")
+          appendLine("# This is done by the 'writeBuildLogicEditorConfig' task.")
+          appendLine("[{*.kt,*.kts}]")
+
+          appendLine("# noinspection EditorConfigKeyCorrectness")
+
+          appendLine("build_logic_no-since-in-kdoc = disabled")
+          appendLine()
+        }
+
+        if (!buildLogicConfig.exists() || newText != buildLogicConfig.readText()) {
+          println("writing a new version of file://$buildLogicConfig")
+          buildLogicConfig.writeText(newText)
+        }
+      }
+    }
+
+  /**
+   * These exclude anything in `$projectDir/build/generated/` from Kotlinter's checks. Globs are
+   * relative to the **source set's** kotlin root.
+   */
   private fun excludeGenerated(task: ConfigurableKtLintTask, project: Project) {
     // task.exclude("*Plugin.kt")
     // task.exclude("gradle/kotlin/dsl/**")
