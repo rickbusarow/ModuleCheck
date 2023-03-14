@@ -38,6 +38,8 @@ import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
 /**
  * Finds Kdoc comments which don't have a `@since <version>` annotation
+ *
+ * @since 0.13.0
  */
 class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   private val currentVersion by lazy {

@@ -26,20 +26,13 @@ kotlin_imports_layout = *,java.**,javax.**,kotlin.**,^
 # Back-ticked method names are allowed to exceed the line length. That's especially helpful for
 # test methods with descriptive names.
 ktlint_ignore_back_ticked_identifier = true
-##### Disabled KtLint rules
-# - experimental:function-signature - it looks terrible
-# - filename - same as Detekt's MatchingDeclarationName, but Detekt's version can be suppressed and
-#     this can't
-# - max-line-length - manually formatting still does this, and KTLint will still wrap long chains when
-#     possible
-# - no-empty-first-line-in-method-block - code golf...
 
 # ktlint_code_style = official
 # ktlint_function_signature_body_expression_wrapping = default
 # ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = 3
+ktlint_experimental = enabled
 
-ktlint_disabled_rules = filename,experimental:function-signature,max-line-length,no-empty-first-line-in-method-block
-
+# Disabled rules for 0.48.0+
 ktlint_experimental_class-naming = disabled
 ktlint_experimental_function-naming = disabled
 ktlint_experimental_function-signature = disabled

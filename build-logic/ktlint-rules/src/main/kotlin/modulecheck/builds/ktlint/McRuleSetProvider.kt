@@ -20,10 +20,7 @@ import com.pinterest.ktlint.core.RuleProvider
 import com.pinterest.ktlint.core.RuleSetProviderV2
 
 @AutoService(RuleSetProviderV2::class)
-class McRuleSetProvider : RuleSetProviderV2(
-  id = "mc-rules",
-  about = NO_ABOUT
-) {
+class McRuleSetProvider : RuleSetProviderV2(id = "build-logic", about = NO_ABOUT) {
 
   override fun getRuleProviders(): Set<RuleProvider> {
     return setOf(

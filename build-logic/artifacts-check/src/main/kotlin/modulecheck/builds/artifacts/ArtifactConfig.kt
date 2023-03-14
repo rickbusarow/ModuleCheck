@@ -31,6 +31,7 @@ import java.io.Serializable
  * @param packaging `aar` or `jar`.
  * @param javaVersion the java version of the artifact (typically 8 or 11). If not set
  *   explicitly, this defaults to the JDK version used to build the artifact.
+ * @since 0.13.0
  */
 @JsonClass(generateAdapter = true)
 data class ArtifactConfig(

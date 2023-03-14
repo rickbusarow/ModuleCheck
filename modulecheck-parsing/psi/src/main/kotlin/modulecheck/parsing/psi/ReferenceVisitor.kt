@@ -69,7 +69,7 @@ class ReferenceVisitor : KtTreeVisitorVoid() {
   override fun visitProperty(property: KtProperty) {
     super.visitProperty(property)
     if (!property.isPrivateOrInternal() && property.containingClass()
-      ?.isPrivateOrInternal() != true
+        ?.isPrivateOrInternal() != true
     ) {
 
       val propertyType = property.getChildOfType<KtTypeReference>()

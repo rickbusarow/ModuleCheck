@@ -19,6 +19,8 @@ interface DiExtension {
   /**
    * Applies the Anvil plugin with `generateDaggerFactories` set to `true`. Do not use at the same
    * time as `dagger()`.
+   *
+   * @since 0.13.0
    */
   fun anvil()
 
@@ -27,6 +29,8 @@ interface DiExtension {
    * Dagger compiler `kapt` dependency.
    *
    * Do not use at the same time as `anvil()`.
+   *
+   * @since 0.13.0
    */
   fun dagger()
 }

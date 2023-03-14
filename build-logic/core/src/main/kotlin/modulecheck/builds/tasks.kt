@@ -35,13 +35,19 @@ fun TaskContainer.maybeNamed(
     .configureEach(configuration)
 }
 
-/** code golf for `matching { it.name == taskName }` */
+/**
+ * code golf for `matching { it.name == taskName }`
+ *
+ * @since 0.13.0
+ */
 fun TaskContainer.matchingName(
   taskName: String
 ): TaskCollection<Task> = matching { it.name == taskName }
 
 /**
  * adds all [objects] as dependencies to every task in the collection, inside a `configureEach { }`
+ *
+ * @since 0.13.0
  */
 fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T> {
   return also { taskCollection ->
@@ -49,7 +55,11 @@ fun <T : Task> TaskCollection<T>.dependOn(vararg objects: Any): TaskCollection<T
   }
 }
 
-/** adds all [objects] as dependencies inside a configuration block, inside a `configure { }` */
+/**
+ * adds all [objects] as dependencies inside a configuration block, inside a `configure { }`
+ *
+ * @since 0.13.0
+ */
 fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
   return also { provider ->
     provider.configure { task ->
@@ -67,6 +77,7 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
  * @return The matching objects. Returns an empty collection if there are no such objects in this
  *     collection.
  * @see [TaskCollection.withType]
+ * @since 0.13.0
  */
 inline fun <reified S : Task> TaskCollection<in S>.withType(): TaskCollection<S> =
   withType(S::class.java)
@@ -81,6 +92,8 @@ inline fun <reified T : Task> TaskContainer.register(
 /**
  * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
  * new task, or the existing task if one already existed.
+ *
+ * @since 0.13.0
  */
 @JvmName("registerOnceInline")
 inline fun <reified T : Task> TaskContainer.registerOnce(
@@ -91,6 +104,8 @@ inline fun <reified T : Task> TaskContainer.registerOnce(
 /**
  * Adds a task of this name and type if it doesn't exist. [configurationAction] is performed on the
  * new task, or the existing task if one already existed.
+ *
+ * @since 0.13.0
  */
 fun <T : Task> TaskContainer.registerOnce(
   name: String,
@@ -105,6 +120,7 @@ fun <T : Task> TaskContainer.registerOnce(
 /**
  * @return the fully qualified name of this task's type, without any '_Decorated' suffix if one
  *     exists
+ * @since 0.13.0
  */
 fun Task.undecoratedTypeName(): String {
   return javaClass.canonicalName.removeSuffix("_Decorated")
