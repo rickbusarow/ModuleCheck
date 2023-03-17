@@ -196,6 +196,8 @@ abstract class KtLintConventionPlugin : Plugin<Project> {
   /**
    * These exclude anything in `$projectDir/build/generated/` from Kotlinter's checks. Globs are
    * relative to the **source set's** kotlin root.
+   *
+   * @since 0.13.0
    */
   private fun excludeGenerated(task: ConfigurableKtLintTask, project: Project) {
     // task.exclude("*Plugin.kt")
