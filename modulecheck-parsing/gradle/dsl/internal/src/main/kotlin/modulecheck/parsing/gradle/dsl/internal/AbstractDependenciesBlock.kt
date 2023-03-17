@@ -212,6 +212,7 @@ abstract class AbstractDependenciesBlock(
    * and returns the index of **the last row** which matches the parsed string.
    *
    * So, given the target:
+   *
    * ```
    * api(projects.foo.bar) {
    *   exclude(group = "androidx.appcompat")
@@ -219,6 +220,7 @@ abstract class AbstractDependenciesBlock(
    * ```
    *
    * And given the dependencies lines:
+   *
    * ```
    * <blank line>
    * // Remove leaking AppCompat dependency

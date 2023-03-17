@@ -25,8 +25,8 @@ import modulecheck.utils.lazy.unsafeLazy
 import javax.inject.Inject
 
 /**
- * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
- * a [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
+ * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up a
+ * [CodeGeneratorBinding] in the event that the project dependency in question is an annotation
  * processor.
  *
  * @property generatorBindings the list of possible bindings to search

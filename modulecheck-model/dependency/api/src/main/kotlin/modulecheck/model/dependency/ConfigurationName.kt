@@ -35,6 +35,7 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * from an aggregate name like `debugImplementation`.
    *
    * examples:
+   *
    * ```
    * Config                           SourceSet
    * | api                            | main
@@ -60,8 +61,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the base name of the Configuration without any source set prefix.
    *
-   * For "main" source sets, this function just returns the same string,
-   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * For "main" source sets, this function just returns the same string, e.g.:
+   * ConfigurationName("api").nameWithoutSourceSet() == "api"
    * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
    *
    * For other source sets, it returns the base configuration names:
@@ -80,8 +81,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the base name of the Configuration without any source set prefix.
    *
-   * For "main" source sets, this function just returns the same string,
-   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * For "main" source sets, this function just returns the same string, e.g.:
+   * ConfigurationName("api").nameWithoutSourceSet() == "api"
    * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
    *
    * For other source sets, it returns the base configuration names:
@@ -154,8 +155,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * In Returns | api | api | implementation | api | compileOnly | api | testImplementation |
    * testApi | debug | debugApi | androidTestImplementation | androidTestApi
    *
-   * @return for any main/common configuration, just returns `api`. For any other configuration, it
-   *     returns the [SourceSetName] appended with `Api`.
+   * @return for any main/common configuration, just returns `api`. For any other configuration,
+   *   it returns the [SourceSetName] appended with `Api`.
    * @since 0.12.0
    */
   fun apiVariant(): ConfigurationName = toSourceSetName().apiConfig()
@@ -163,12 +164,12 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the '-implementation' version of the current configuration.
    *
-   * In Returns | implementation | implementation | implementation | implementation | compileOnly
-   * | implementation | testImplementation | testImplementation | debug | debugImplementation |
+   * In Returns | implementation | implementation | implementation | implementation | compileOnly |
+   * implementation | testImplementation | testImplementation | debug | debugImplementation |
    * androidTestImplementation | androidTestImplementation
    *
    * @return for any main/common configuration, just returns `implementation`. For any other
-   *     configuration, it returns the [SourceSetName] appended with `Implementation`.
+   *   configuration, it returns the [SourceSetName] appended with `Implementation`.
    * @since 0.12.0
    */
   fun implementationVariant(): ConfigurationName = toSourceSetName().implementationConfig()
@@ -176,8 +177,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the 'kapt-' version of the current configuration.
    *
-   * @return for any main/common configuration, just returns `kapt`. For any other configuration, it
-   *     returns `kapt` appended with the [SourceSetName].
+   * @return for any main/common configuration, just returns `kapt`. For any other configuration,
+   *   it returns `kapt` appended with the [SourceSetName].
    * @since 0.12.0
    */
   fun kaptVariant(): ConfigurationName = toSourceSetName().kaptVariant()

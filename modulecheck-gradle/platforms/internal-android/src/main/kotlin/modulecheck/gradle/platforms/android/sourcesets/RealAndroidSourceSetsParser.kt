@@ -59,6 +59,7 @@ import javax.inject.Inject
 
 /**
  * Given this Android config block:
+ *
  * ```
  * android {
  *   buildTypes {
@@ -119,6 +120,7 @@ import javax.inject.Inject
  * Finally, a "main" SourceSet is always created.
  *
  * So just within the *production code* sources, we get all these SourceSets:
+ *
  * ```
  * // primitives
  * main

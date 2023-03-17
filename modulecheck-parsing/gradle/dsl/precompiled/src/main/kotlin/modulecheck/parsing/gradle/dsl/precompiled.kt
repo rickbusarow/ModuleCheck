@@ -36,6 +36,7 @@ import modulecheck.utils.sortedWith
 /**
  * Precompiled configuration names are names which are added by a pre-compiled plugin. These names
  * can be used as functions in Kotlin scripts. examples:
+ *
  * ```
  *   api("some-dependency")
  *   testImplementation(project(":my-lib"))
@@ -44,6 +45,7 @@ import modulecheck.utils.sortedWith
  *
  * If a configuration is added in a local build script, then it won't have a function associated
  * with it. In this case, the Kotlin script supports using a String extension function:
+ *
  * ```
  *   "internalReleaseApi"(libs.timber)
  * ```
@@ -67,7 +69,7 @@ suspend fun ConfigurationName.isDefinitelyPrecompiledForProject(
  *
  * @param project
  * @return a Pair where the first declaration is the newly created one, and the second is the
- *     pre-existing template, or null if a template was not used.
+ *   pre-existing template, or null if a template was not used.
  * @since 0.13.0
  */
 suspend fun ConfiguredDependency.asDeclaration(
@@ -93,8 +95,8 @@ suspend fun ConfiguredDependency.asDeclaration(
  *
  * @param newDependency The dependency being added
  * @param matchPathFirst If true, matching project paths will be prioritized over matching
- *     configurations. If false, configuration matches will take priority over a matching project
- *     path.
+ *   configurations. If false, configuration matches will take priority over a matching project
+ *   path.
  * @receiver the project containing this declaration's match
  * @return the closest matching declaration, or null if there are no declarations at all.
  * @since 0.12.0
@@ -253,7 +255,7 @@ private suspend fun ExternalDependency.asExternalDependencyDeclaration(
  * @param configurationName the new config name
  * @param projectPath the new project dependency
  * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
- *     `api(testFixtures(project(":lib1")))`
+ *   `api(testFixtures(project(":lib1")))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
  * @since 0.13.0
@@ -317,7 +319,7 @@ private suspend fun HasDependencyDeclarations.getConfigInvocation(
  * @param configurationName the new config name
  * @param mavenCoordinates the new dependency
  * @param isTestFixtures if true, the dependency is wrapped in `testFixtures(...)`, like
- *     `api(testFixtures("com.example:foo:1:))`
+ *   `api(testFixtures("com.example:foo:1:))`
  * @receiver the project receiving this new dependency
  * @return a new declaration model
  * @since 0.13.0
@@ -434,11 +436,11 @@ private tailrec fun SourceSetName.isDefinitelyPrecompiledForProject(
 }
 
 /**
- * Attempts to determine the most idiomatic way of invoking the receiver
- * [configuration name][ConfigurationName]. Typically, this will just be a function with a matching
- * name. However, if a configuration is non-standard (e.g. `internalReleaseImplementation`) and
- * the build file is using the Kotlin Gradle DSL, then the configuration must be invoked as a
- * String extension function instead (e.g. `"internalReleaseImplementation"(libs.myDependency)`).
+ * Attempts to determine the most idiomatic way of invoking the receiver [configuration
+ * name][ConfigurationName]. Typically, this will just be a function with a matching name. However,
+ * if a configuration is non-standard (e.g. `internalReleaseImplementation`) and the build file is
+ * using the Kotlin Gradle DSL, then the configuration must be invoked as a String extension
+ * function instead (e.g. `"internalReleaseImplementation"(libs.myDependency)`).
  *
  * @return The text used to add a dependency using this [ConfigurationName], in this project.
  * @see isDefinitelyPrecompiledForProject
@@ -461,6 +463,7 @@ private fun ConfigurationName.wrapInQuotes(): String =
 
 /**
  * Returns true if the build file is Kotlin, and one of:
+ *
  * - this exact configuration name is already used as a string extension
  * - this configuration name is atypical (such as `internalDebugApi`) and not already used as a
  *   non-string invocation, so there's no way to be sure that the function is precompiled.

@@ -44,8 +44,8 @@ class DependencyModuleDescriptorAccess @Inject constructor(
 ) {
 
   /**
-   * @return all descriptors for the dependencies of a given project's source set. These descriptors
-   *     are globally cached and shared.
+   * @return all descriptors for the dependencies of a given project's source set. These
+   *   descriptors are globally cached and shared.
    * @since 0.13.0
    */
   suspend fun dependencyModuleDescriptors(

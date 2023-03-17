@@ -20,8 +20,8 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.requireNotNull
 
 /**
- * @return true if this source set is `androidTest` or `test`, or any other source set downstream of
- *     them, like `androidTestDebug`.
+ * @return true if this source set is `androidTest` or `test`, or any other source set downstream
+ *   of them, like `androidTestDebug`.
  * @since 0.13.0
  */
 fun SourceSetName.isTestingOnly(sourceSets: SourceSets): Boolean {
@@ -34,9 +34,9 @@ fun SourceSetName.isTestingOnly(sourceSets: SourceSets): Boolean {
 }
 
 /**
- * @return the name of the non-test/published SourceSet associated with a given SourceSet name. For
- *     SourceSets which are published, this just returns the same name. For testing SourceSets, this
- *     returns the most-downstream source set which it's testing against.
+ * @return the name of the non-test/published SourceSet associated with a given SourceSet name.
+ *   For SourceSets which are published, this just returns the same name. For testing SourceSets,
+ *   this returns the most-downstream source set which it's testing against.
  * @since 0.13.0
  */
 fun SourceSetName.nonTestSourceSetName(sourceSets: SourceSets): SourceSetName {

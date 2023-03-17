@@ -22,6 +22,7 @@ import javax.inject.Inject
 /**
  * A type-safe name can't always be resolved to a String path, because dashes and pascalCase in a
  * String path are treated the same. For instance, these two paths:
+ *
  * - `:foo-bar`
  * - `:fooBar`
  *

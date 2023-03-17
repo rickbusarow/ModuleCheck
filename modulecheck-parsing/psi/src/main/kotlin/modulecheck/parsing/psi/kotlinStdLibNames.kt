@@ -40,10 +40,8 @@ fun String.kotlinStdLibNameOrNull(): QualifiedDeclaredName? {
 
 @Suppress("MaxLineLength")
 /**
- * From Detekt, again:
- * https://github.com/detekt/detekt/blob/2d00cab3680f49a94a95e4d8b9da08303315619b/detekt-psi-utils/src/main/kotlin/io/github/detekt/psi/internal/KotlinNoImportClasses.kt
- *
  * The entries of this map was generate with this script:
+ *
  * ``` bash
  * #!/usr/bin/env bash
  *

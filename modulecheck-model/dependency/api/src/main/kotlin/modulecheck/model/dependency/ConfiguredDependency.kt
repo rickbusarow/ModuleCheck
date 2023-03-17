@@ -67,15 +67,16 @@ sealed interface Dependency
  * [https://docs.gradle.org/current/userguide/plugins.html#sec:binary_plugins]
  *
  * @param accessor Could be any of:
- *    - standard `id` invocations
- *       - `id 'org.jetbrains.kotlin.kapt'` (groovy) or `id("org.jetbrains.kotlin.kapt")` (kotlin)
- *       - `id 'kotlin-kapt'` (groovy) or `id("kotlin-kapt")` (kotlin)
- *    - precompiled accessor for Gradle plugins or `buildSrc`
- *       - `java`, `maven-publish`, `my-convention-plugin`
- *    - function invocations for Kotlin libraries in the Kotlin DSL only
- *       - `kotlin("kapt")`
- *    - alias invocations for Gradle's type-safe catalogs
- *       - `alias(libs.plugins.anvil)`
+ *
+ * - standard `id` invocations
+ *    - `id 'org.jetbrains.kotlin.kapt'` (groovy) or `id("org.jetbrains.kotlin.kapt")` (kotlin)
+ *    - `id 'kotlin-kapt'` (groovy) or `id("kotlin-kapt")` (kotlin)
+ * - precompiled accessor for Gradle plugins or `buildSrc`
+ *    - `java`, `maven-publish`, `my-convention-plugin`
+ * - function invocations for Kotlin libraries in the Kotlin DSL only
+ *    - `kotlin("kapt")`
+ * - alias invocations for Gradle's type-safe catalogs
+ *    - `alias(libs.plugins.anvil)`
  * @since 0.12.0
  */
 data class PluginDependency(

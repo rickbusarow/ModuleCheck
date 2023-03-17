@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="KtlintProjectConfiguration">
+    <enableKtlint>false</enableKtlint>
     <androidMode>true</androidMode>
     <useExperimental>true</useExperimental>
     <treatAsErrors>false</treatAsErrors>
@@ -11,6 +12,7 @@
         <option value="filename" />
         <option value="no-empty-first-line-in-method-block" />
         <option value="experimental:function-signature" />
+        <option value="dot-spacing" />
       </list>
     </disabledRules>
     <externalJarPaths>

@@ -3049,8 +3049,8 @@ data class ThreadFlowLocation(
 
   /**
    * A set of distinct strings that categorize the thread flow location. Well-known kinds include
-   * 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false',
-   * 'true', 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock',
+   * 'acquire', 'release', 'enter', 'exit', 'call', 'return', 'branch', 'implicit', 'false', 'true',
+   * 'caution', 'danger', 'unknown', 'unreachable', 'taint', 'function', 'handler', 'lock',
    * 'memory', 'resource', 'scope' and 'value'.
    *
    * @since 0.12.0
@@ -3136,8 +3136,8 @@ data class ThreadFlowLocation(
 )
 
 /**
- * Specifies the importance of this location in understanding the code flow in which it occurs.
- * The order from most to least important is "essential", "important", "unimportant". Default:
+ * Specifies the importance of this location in understanding the code flow in which it occurs. The
+ * order from most to least important is "essential", "important", "unimportant". Default:
  * "important".
  *
  * @since 0.12.0
@@ -4094,8 +4094,8 @@ data class ExternalPropertyFileReferences(
   val graphs: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.invocations array to be merged with the
-   * root log file.
+   * An array of external property files containing run.invocations array to be merged with the root
+   * log file.
    *
    * @since 0.12.0
    */
@@ -4103,8 +4103,8 @@ data class ExternalPropertyFileReferences(
   val invocations: List<ExternalPropertyFileReference>? = null,
 
   /**
-   * An array of external property files containing run.logicalLocations array to be merged with
-   * the root log file.
+   * An array of external property files containing run.logicalLocations array to be merged with the
+   * root log file.
    *
    * @since 0.12.0
    */
@@ -4129,8 +4129,8 @@ data class ExternalPropertyFileReferences(
   val properties: PropertyBag? = null,
 
   /**
-   * An array of external property files containing run.results array to be merged with the root
-   * log file.
+   * An array of external property files containing run.results array to be merged with the root log
+   * file.
    *
    * @since 0.12.0
    */

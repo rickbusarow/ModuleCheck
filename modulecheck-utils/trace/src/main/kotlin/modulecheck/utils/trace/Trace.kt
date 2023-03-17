@@ -267,8 +267,8 @@ internal suspend fun traceOrNull(): Trace? = currentCoroutineContext()[Trace]
  * Unsafe-ish extension for extracting a [Trace] from inside a coroutine.
  *
  * This will throw if attempting to do any sort of tracing from inside a no-context
- * [runBlocking][kotlinx.coroutines.runBlocking] call. If it's necessary to use
- * `runBlocking`, the parent trace must be passed in as a `coroutineContext] argument.
+ * [runBlocking][kotlinx.coroutines.runBlocking] call. If it's necessary to use `runBlocking`, the
+ * parent trace must be passed in as a `coroutineContext] argument.
  *
  * ```
  * suspend function doSomething() {

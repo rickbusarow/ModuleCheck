@@ -75,7 +75,7 @@ fun <T : Task> TaskProvider<T>.dependsOn(vararg objects: Any): TaskProvider<T> {
  *
  * @param S The type of objects to find.
  * @return The matching objects. Returns an empty collection if there are no such objects in this
- *     collection.
+ *   collection.
  * @see [TaskCollection.withType]
  * @since 0.13.0
  */
@@ -119,7 +119,7 @@ fun <T : Task> TaskContainer.registerOnce(
 
 /**
  * @return the fully qualified name of this task's type, without any '_Decorated' suffix if one
- *     exists
+ *   exists
  * @since 0.13.0
  */
 fun Task.undecoratedTypeName(): String {
