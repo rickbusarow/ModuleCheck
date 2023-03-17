@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-package modulecheck.builds.ktlint
+package modulecheck.builds.ktlint.rules
 
 import com.pinterest.ktlint.core.Rule
 import com.pinterest.ktlint.core.ast.ElementType
+import com.pinterest.ktlint.core.ast.children
 import com.pinterest.ktlint.core.ast.nextLeaf
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
-import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.LeafPsiElement
 
-class NoTrailingSpacesInRawStringLiteralRule : Rule("no-trailing-space-in-raw-string-literal") {
+class NoDuplicateCopyrightHeaderRule : Rule("no-duplicate-copyright-header") {
 
   override fun beforeVisitChildNodes(
     node: ASTNode,
@@ -29,27 +29,21 @@ class NoTrailingSpacesInRawStringLiteralRule : Rule("no-trailing-space-in-raw-st
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
 
-    if (node.elementType == ElementType.LITERAL_STRING_TEMPLATE_ENTRY) {
+    if (node.elementType == ElementType.FILE) {
 
-      val stringPartNode = node.nextLeaf(true) ?: return
+      node.children()
+        .filter { it.isCopyrightHeader() }
+        .drop(1)
+        .forEach { commentNode ->
 
-      if (!stringPartNode.hasTrailingSpaces()) return
+          val trailingWhitespace = commentNode.nextLeaf(includeEmpty = true)
 
-      if (stringPartNode.nextLeaf(true)?.text != "\n") return
-
-      val violationOffset = stringPartNode.startOffset + stringPartNode.text.trimEnd().length
-      emit(violationOffset, "Trailing space(s) in literal string template", true)
-
-      stringPartNode.removeTrailingSpaces()
+          emit(commentNode.startOffset, "duplicate copyright header", true)
+          node.removeChild(commentNode)
+          if (trailingWhitespace != null) {
+            node.removeChild(trailingWhitespace)
+          }
+        }
     }
   }
-
-  private fun ASTNode.hasTrailingSpaces() = text.hasTrailingSpace()
-
-  private fun ASTNode.removeTrailingSpaces() {
-    val newText = text.trimEnd()
-    (this as LeafPsiElement).replaceWithText(newText)
-  }
-
-  private fun String.hasTrailingSpace() = takeLast(1) == " "
 }

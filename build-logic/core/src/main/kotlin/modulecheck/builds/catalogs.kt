@@ -70,6 +70,7 @@ private val Project.catalogs: VersionCatalogsExtension
  * non-dsl version of `libs`
  *
  * ex:
+ *
  * ```
  * val myCatalog = project.libsCatalog
  * ```
@@ -83,6 +84,7 @@ val Project.libsCatalog: VersionCatalog
  * non-dsl version of `libs._____`
  *
  * ex:
+ *
  * ```
  * "api"(project.libsCatalog.dependency("square-anvil-annotations"))
  * ```
@@ -97,6 +99,7 @@ fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDepe
  * non-dsl version of `libs.versions._____.get()`
  *
  * ex:
+ *
  * ```
  * val anvilVersion = project.libsCatalog.version("square-anvil")
  * ```

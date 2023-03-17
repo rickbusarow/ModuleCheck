@@ -42,8 +42,8 @@ class UnqualifiedAndroidResource private constructor(
 
   /**
    * @return the fully qualified name of a generated Android resource, like
-   *     `com.example.R.string.app_name` from the combination of `com.example.R` and
-   *     `R.string.app_name`
+   *   `com.example.R.string.app_name` from the combination of `com.example.R` and
+   *   `R.string.app_name`
    * @since 0.12.0
    */
   fun toQualifiedDeclaredName(

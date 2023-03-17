@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.builds.ktlint
+package modulecheck.builds.ktlint.rules
 
 import com.pinterest.ktlint.core.Rule
 import com.pinterest.ktlint.core.ast.ElementType
@@ -24,7 +24,6 @@ import com.pinterest.ktlint.core.ast.ElementType.WHITE_SPACE
 import com.pinterest.ktlint.core.ast.children
 import com.pinterest.ktlint.core.ast.nextSibling
 import com.pinterest.ktlint.core.ast.prevLeaf
-import modulecheck.builds.VERSION_NAME
 import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.CompositeElement
 import org.jetbrains.kotlin.com.intellij.psi.impl.source.tree.LeafElement
@@ -34,26 +33,22 @@ import org.jetbrains.kotlin.kdoc.parser.KDocKnownTag.SINCE
 import org.jetbrains.kotlin.kdoc.psi.api.KDoc
 import org.jetbrains.kotlin.kdoc.psi.impl.KDocTag
 import org.jetbrains.kotlin.psi.psiUtil.collectDescendantsOfType
-import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-/**
- * Finds Kdoc comments which don't have a `@since <version>` annotation
- *
- * @since 0.13.0
- */
-class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
-  private val currentVersion by lazy {
-    VERSION_NAME
-      .removeSuffix("-LOCAL")
-      .removeSuffix("-SNAPSHOT")
-  }
+/** Finds Kdoc comments which don't have a `@since <version>` annotation. */
+class NoSinceInKDocRule(currentVersion: String) : Rule(id = "no-since-in-kdoc") {
+
+  private val currentVersion = currentVersion
+    .replace("-.*$".toRegex(), "")
+
+  private val skipAll by lazy { this.currentVersion != currentVersion }
 
   override fun beforeVisitChildNodes(
     node: ASTNode,
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
-    if (node.elementType == ElementType.KDOC_END) {
+
+    if (!skipAll && node.elementType == ElementType.KDOC_END) {
       visitKDoc(node, autoCorrect = autoCorrect, emit = emit)
     }
   }
@@ -63,12 +58,13 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     autoCorrect: Boolean,
     emit: (offset: Int, errorMessage: String, canBeAutoCorrected: Boolean) -> Unit
   ) {
+
     val kdoc = kdocNode.psi.parent as KDoc
 
     val tag = kdoc.findSinceTag()
 
     if (tag == null) {
-      emit(kdocNode.startOffset, "added `@since $currentVersion` to kdoc", true)
+      emit(kdocNode.startOffset, "add `@since $currentVersion` to kdoc", true)
 
       if (autoCorrect) {
         kdocNode.addSinceTag(currentVersion)
@@ -79,9 +75,10 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     val sinceVersion = kdoc.findSinceTag()?.getContent()
 
     if (sinceVersion.isNullOrBlank()) {
+
       emit(
         kdocNode.startOffset,
-        "added '$currentVersion' to `@since` tag",
+        "add '$currentVersion' to `@since` tag",
         true
       )
 
@@ -114,6 +111,7 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun ASTNode.addSinceTag(version: String) {
+
     val kdoc = psi.parent as KDoc
 
     val indent = kdoc.findIndent()
@@ -139,6 +137,7 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     var firstNewNode: ASTNode? = null
 
     repeat(leadingNewlineCount) {
+
       val newline = PsiWhiteSpaceImpl(newlineIndent)
       if (firstNewNode == null) {
         firstNewNode = newline
@@ -207,6 +206,7 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
   }
 
   private fun KDocTag.addVersionToSinceTag(version: String) {
+
     require(knownTag == SINCE) {
       "Expected to be adding a version to a `@since` tag, but instead it's `$text`."
     }
@@ -215,23 +215,5 @@ class NoSinceInKDocRule : Rule(id = "no-since-in-kdoc") {
     val old = tag.text
 
     tag.rawReplaceWithText("$old $version")
-  }
-
-  private fun KDoc.findIndent(): String {
-    val fileLines = containingFile.text.lines()
-
-    var acc = startOffset + 1
-
-    val numSpaces = fileLines.asSequence()
-      .mapNotNull {
-        if (it.length + 1 < acc) {
-          acc -= (it.length + 1)
-          null
-        } else {
-          acc
-        }
-      }
-      .first()
-    return " ".repeat(numSpaces)
   }
 }

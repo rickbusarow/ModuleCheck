@@ -245,6 +245,7 @@ class RealJavaFile(
  * itself.
  *
  * For instance, given the function:
+ *
  * ```
  * public javax.inject.Provider<List<String>> getStringListProvider() { /* ... */ }
  * ```

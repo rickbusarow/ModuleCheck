@@ -52,15 +52,15 @@ data class McConfiguration(
   val downstream: List<McConfiguration> by lazy { downstreamSequence.toList() }
 
   /**
-   * @return list of this configuration and all other configurations which it depends upon. The list
-   *   is breadth-first, with the most-upstream configurations being last.
+   * @return list of this configuration and all other configurations which it depends upon. The
+   *   list is breadth-first, with the most-upstream configurations being last.
    * @since 0.13.0
    */
   fun withUpstream(): List<McConfiguration> = listOf(this) + upstream
 
   /**
-   * @return list of this configuration and all other configurations which depend upon it. The list
-   *   is breadth-first, with the most-downstream configurations being last.
+   * @return list of this configuration and all other configurations which depend upon it. The
+   *   list is breadth-first, with the most-downstream configurations being last.
    * @since 0.13.0
    */
   fun withDownstream(): List<McConfiguration> = listOf(this) + downstream

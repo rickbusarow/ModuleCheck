@@ -105,6 +105,7 @@ class IndentScope(
  * the `buildString { ... }` block would just be a call to `indent(...) { ... }`.
  *
  * example:
+ *
  * ```
  * override fun toString() = buildStringIndented(baseIndent = "      ") {
  *   appendLine("SomeClass(")
@@ -134,6 +135,7 @@ inline fun buildStringIndented(
 
 /**
  * example:
+ *
  * ```
  * override fun toString() = buildString {
  *   appendLine("SomeClass(")
@@ -202,7 +204,7 @@ fun String.remove(vararg patterns: Regex): String = patterns.fold(this) { acc, r
 
 /**
  * @return a string with no leading or trailing whitespace, and no whitespace before or after any
- *     instance of [delimiter]
+ *   instance of [delimiter]
  * @since 0.12.0
  */
 fun String.trimSegments(delimiter: String = "."): String {

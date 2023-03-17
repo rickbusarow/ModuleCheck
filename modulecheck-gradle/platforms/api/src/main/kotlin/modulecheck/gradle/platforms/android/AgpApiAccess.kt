@@ -23,6 +23,7 @@ import javax.inject.Inject
 
 /**
  * This class provides:
+ *
  * 1. 'Static', project-independent information about AGP in the build classpath.
  * 2. A gateway to [SafeAgpApiReferenceScope], which allows access to AGP classes after it's
  *    verified that they exist in the classpath.

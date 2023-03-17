@@ -26,6 +26,7 @@ dependencies {
 
   implementation(libs.google.auto.common)
   implementation(libs.google.auto.service.annotations)
+  implementation(libs.jetbrains.markdown)
   implementation(libs.jmailen.kotlinter)
   implementation(libs.ktlint.core)
   implementation(libs.ktlint.ruleset.standard)

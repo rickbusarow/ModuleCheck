@@ -36,8 +36,8 @@ import javax.inject.Inject
  * A real implementation of [McPsiFileFactory] using a curated [KotlinEnvironment].
  *
  * The files created from this factory are backed by a meaningful
- * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which
- * is aware of the full classpath and may be used for type resolution.
+ * [BindingContext][org.jetbrains.kotlin.resolve.BindingContext] which is aware of the full
+ * classpath and may be used for type resolution.
  *
  * @since 0.13.0
  */

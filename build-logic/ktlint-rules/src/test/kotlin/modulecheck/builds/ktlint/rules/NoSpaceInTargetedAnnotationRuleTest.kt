@@ -13,71 +13,87 @@
  * limitations under the License.
  */
 
-package modulecheck.builds.ktlint
+package modulecheck.builds.ktlint.rules
 
 import com.pinterest.ktlint.core.RuleProvider
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class NoUselessConstructorKeywordRuleTest {
+class NoSpaceInTargetedAnnotationRuleTest {
 
   val rules = setOf(
-    RuleProvider { NoUselessConstructorKeywordRule() }
+    RuleProvider { NoSpaceInTargetedAnnotationRule() }
   )
 
   @Test
-  fun `annotated constructor keyword is not removed`() {
+  fun `space after colon`() {
 
     rules.format(
       """
-      |class MyClass @Inject constructor(
-      |  val name: String
-      |)
+      |@file: Suppress("DEPRECATION")
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
     ) shouldBe
       """
-      |class MyClass @Inject constructor(
-      |  val name: String
-      |)
+      |@file:Suppress("DEPRECATION")
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
   }
 
   @Test
-  fun `private constructor keyword is not removed`() {
+  fun `space before colon`() {
 
     rules.format(
       """
-      |class MyClass private constructor(
-      |  val name: String
-      |)
+      |@file:Suppress("DEPRECATION")
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
     ) shouldBe
       """
-      |class MyClass private constructor(
-      |  val name: String
-      |)
+      |@file:Suppress("DEPRECATION")
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
   }
 
   @Test
-  fun `useless constructor keyword is removed`() {
+  fun `parameter list spaces are left alone`() {
 
     rules.format(
       """
-      |class MyClass constructor(
-      |  val name: String
+      |@file:Suppress(
+      |  "DEPRECATION"
       |)
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
     ) shouldBe
       """
-      |class MyClass(
-      |  val name: String
+      |@file:Suppress(
+      |  "DEPRECATION"
       |)
+      |
+      |package com.test
+      |
+      |class MyClass
       |
       """.trimMargin()
   }

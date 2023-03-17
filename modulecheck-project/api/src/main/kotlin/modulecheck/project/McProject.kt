@@ -85,7 +85,7 @@ interface McProject :
 
   /**
    * @return a [QualifiedDeclaredName] if one can be found for the given [resolvableMcName] and
-   *     [sourceSetName]
+   *   [sourceSetName]
    * @since 0.12.0
    */
   suspend fun resolvedNameOrNull(

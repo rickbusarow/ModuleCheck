@@ -127,7 +127,7 @@ fun <T> sequenceOfNotNull(
 
 /**
  * @return true if any element in [other] is contained within the receiver collection, otherwise
- *     returns false
+ *   returns false
  * @since 0.13.0
  */
 fun <E> Iterable<E>.containsAny(other: Iterable<Any?>): Boolean {
@@ -149,7 +149,7 @@ fun <E> Iterable<E>.containsAny(other: Iterable<Any?>): Boolean {
  * shorthand for `this as? Set<E> ?: toSet()`
  *
  * @return itself if the receiver [Iterable] is already a `Set<E>`, otherwise calls `toSet()` to
- *     create a new one
+ *   create a new one
  * @since 0.13.0
  */
 internal fun <E> Iterable<E>.toSetOrSelf(): Set<E> {

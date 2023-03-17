@@ -89,6 +89,7 @@ open class ModuleCheckExtension @Inject constructor(
    * Set of modules which are allowed to be unused.
    *
    * For instance, given:
+   *
    * ```
    * ignoreUnusedFinding = setOf(":core")
    * ```

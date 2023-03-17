@@ -91,8 +91,8 @@ interface KotlinEnvironment : HasAnalysisResult {
 }
 
 /**
- * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl]
- * for a [KotlinEnvironment]. These are retrieved from an
+ * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a
+ * [KotlinEnvironment]. These are retrieved from an
  * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
  *
  * @since 0.13.0

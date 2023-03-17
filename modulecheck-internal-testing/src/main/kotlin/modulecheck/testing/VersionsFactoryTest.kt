@@ -35,7 +35,7 @@ interface VersionsFactoryTest : VersionsFactory {
 
   /**
    * @return a list of [DynamicTest] from all valid versions combinations, optionally filtered by
-   *     [filter]. [action] is performed against each element.
+   *   [filter]. [action] is performed against each element.
    * @since 0.13.0
    */
   fun factory(

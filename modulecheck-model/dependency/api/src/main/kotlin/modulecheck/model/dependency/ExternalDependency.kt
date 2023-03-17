@@ -119,8 +119,8 @@ sealed class ExternalDependency :
   }
 
   /**
-   * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look
-   * up a [CodeGenerator] in the event that the project dependency in question is an annotation
+   * Creates an [ExternalDependency] for given arguments, a `List<CodeGeneratorBinding>` to look up
+   * a [CodeGenerator] in the event that the project dependency in question is an annotation
    * processor.
    *
    * @since 0.12.0

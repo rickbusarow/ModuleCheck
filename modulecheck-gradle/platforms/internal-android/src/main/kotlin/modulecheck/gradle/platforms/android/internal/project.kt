@@ -33,8 +33,8 @@ fun FileTreeWalk.files(): Sequence<File> = asSequence().filter { it.isFile }
 
 /**
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
- * @return A map of the [SourceSetName] to manifest [File] if the AGP plugin is applied, or null if
- *     AGP isn't applied
+ * @return A map of the [SourceSetName] to manifest [File] if the AGP plugin is applied, or null
+ *   if AGP isn't applied
  * @since 0.12.0
  */
 @UnsafeDirectAgpApiReference
@@ -51,7 +51,7 @@ fun GradleProject.androidManifests(
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @param mcSourceSets the [SourceSets] from this project, used to look up hierarchies
  * @return A map of the [SourceSetName] to base package names if the
- *     [namespace][com.android.build.api.dsl.CommonExtension.namespace] is defined
+ *   [namespace][com.android.build.api.dsl.CommonExtension.namespace] is defined
  * @since 0.12.0
  */
 @UnsafeDirectAgpApiReference
@@ -85,8 +85,8 @@ fun GradleProject.androidNamespaces(
 /**
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @return the main src `AndroidManifest.xml` file if it exists. This will typically be
- *     `$projectDir/src/main/AndroidManifest.xml`, but if the position has been changed in the
- *     Android extension, the new path will be used.
+ *   `$projectDir/src/main/AndroidManifest.xml`, but if the position has been changed in the Android
+ *   extension, the new path will be used.
  * @since 0.12.0
  */
 fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
@@ -104,7 +104,7 @@ fun GradleProject.mainAndroidManifest(agpApiAccess: AgpApiAccess): File? {
 /**
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
  * @return true if the project is an Android project and no manifest file exists at the location
- *     defined in the Android extension
+ *   defined in the Android extension
  * @since 0.12.0
  */
 fun GradleProject.isMissingManifestFile(agpApiAccess: AgpApiAccess): Boolean {
@@ -117,8 +117,8 @@ fun GradleProject.isMissingManifestFile(agpApiAccess: AgpApiAccess): Boolean {
 
 /**
  * @param agpApiAccess the [AgpApiAccess] to use for safe access
- * @return true if the project is an Android library, dynamic feature, or test extensions module and
- *     BuildConfig generation has NOT been explicitly disabled.
+ * @return true if the project is an Android library, dynamic feature, or test extensions module
+ *   and BuildConfig generation has NOT been explicitly disabled.
  * @since 0.12.0
  */
 fun GradleProject.generatesBuildConfig(agpApiAccess: AgpApiAccess): Boolean {

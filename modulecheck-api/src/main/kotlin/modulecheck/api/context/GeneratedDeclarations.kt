@@ -87,8 +87,8 @@ class GeneratedDeclarations private constructor(
 
   /**
    * @return all [Generated] declarations from a given source set which reference a declaration
-   *     contained in [sourceDeclarations]. One example would be generated Android resources which
-   *     come from another module.
+   *   contained in [sourceDeclarations]. One example would be generated Android resources which
+   *   come from another module.
    * @since 0.13.0
    */
   suspend fun get(
@@ -156,8 +156,8 @@ suspend fun ProjectContext.generatedDeclarations(
 
 /**
  * @return all [Generated] declarations from a given source set which reference a declaration
- *     contained in [sourceDeclarations]. One example would be generated Android resources which
- *     come from another module.
+ *   contained in [sourceDeclarations]. One example would be generated Android resources which come
+ *   from another module.
  * @since 0.13.0
  */
 suspend fun ProjectContext.generatedDeclarations(

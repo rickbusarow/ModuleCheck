@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package modulecheck.builds.ktlint
+package modulecheck.builds.ktlint.rules
 
 import com.pinterest.ktlint.core.RuleProvider
 import io.kotest.matchers.shouldBe

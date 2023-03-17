@@ -29,8 +29,8 @@ import modulecheck.model.dependency.PluginDefinition
  * determine whether `foo-generator` is used, we must look for those annotations. If there are no
  * annotations, then `foo-generator` isn't triggered and could probably be removed.
  *
- * N.B. Code generators often evolve over time, adding new annotations. So if a defined generator
- * is throwing a false positive saying it's unused, it's best to first check the list of
+ * N.B. Code generators often evolve over time, adding new annotations. So if a defined generator is
+ * throwing a false positive saying it's unused, it's best to first check the list of
  * [annotationNames] to make sure it's exhaustive.
  *
  * @since 0.12.0

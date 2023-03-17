@@ -18,13 +18,25 @@ package modulecheck.builds.ktlint
 import com.google.auto.service.AutoService
 import com.pinterest.ktlint.core.RuleProvider
 import com.pinterest.ktlint.core.RuleSetProviderV2
+import modulecheck.builds.VERSION_NAME
+import modulecheck.builds.ktlint.rules.KDocWrappingRule
+import modulecheck.builds.ktlint.rules.NoDuplicateCopyrightHeaderRule
+import modulecheck.builds.ktlint.rules.NoLeadingBlankLinesRule
+import modulecheck.builds.ktlint.rules.NoSinceInKDocRule
+import modulecheck.builds.ktlint.rules.NoSpaceInTargetedAnnotationRule
+import modulecheck.builds.ktlint.rules.NoTrailingSpacesInRawStringLiteralRule
+import modulecheck.builds.ktlint.rules.NoUselessConstructorKeywordRule
 
 @AutoService(RuleSetProviderV2::class)
 class McRuleSetProvider : RuleSetProviderV2(id = "build-logic", about = NO_ABOUT) {
 
   override fun getRuleProviders(): Set<RuleProvider> {
     return setOf(
-      RuleProvider { NoSinceInKDocRule() },
+      RuleProvider { KDocWrappingRule() },
+      RuleProvider { NoDuplicateCopyrightHeaderRule() },
+      RuleProvider { NoLeadingBlankLinesRule() },
+      RuleProvider { NoSinceInKDocRule(VERSION_NAME) },
+      RuleProvider { NoSpaceInTargetedAnnotationRule() },
       RuleProvider { NoTrailingSpacesInRawStringLiteralRule() },
       RuleProvider { NoUselessConstructorKeywordRule() }
     )

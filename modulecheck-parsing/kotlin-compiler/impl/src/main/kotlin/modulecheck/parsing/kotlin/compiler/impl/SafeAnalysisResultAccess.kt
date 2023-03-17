@@ -39,8 +39,8 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 /**
- * Thread-safe, "leased" access to
- * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult] creation and subsequent
+ * Thread-safe, "leased" access to [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult]
+ * creation and subsequent
  * [ModuleDescriptorImpl][org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl] access.
  *
  * @since 0.13.0

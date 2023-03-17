@@ -56,6 +56,7 @@ groovy = "3.0.16"
 jUnit = "5.9.2"
 jackson = "2.13.0"
 javaParser = "3.25.1"
+jetbrains-markdown = "0.4.1"
 jmailen-kotlinter = "3.14.0"
 johnrengelman-shadow = "8.1.0"
 kaml = "0.52.0"
@@ -183,6 +184,8 @@ javaParser-core = { module = "com.github.javaparser:javaparser-core", version.re
 javaParser-symbols = { module = "com.github.javaparser:javaparser-symbol-solver-core", version.ref = "javaParser" }
 
 javax-inject = "javax.inject:javax.inject:1"
+
+jetbrains-markdown = { module = "org.jetbrains:markdown", version.ref = "jetbrains-markdown" }
 
 jmailen-kotlinter = { module = "org.jmailen.gradle:kotlinter-gradle", version.ref = "jmailen-kotlinter" }
 

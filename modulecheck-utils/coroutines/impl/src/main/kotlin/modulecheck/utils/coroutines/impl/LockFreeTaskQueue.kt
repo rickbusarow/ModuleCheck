@@ -27,6 +27,7 @@ private typealias Core<E> = LockFreeTaskQueueCore<E>
  * operations.** However, this guarantee is strong enough for task-scheduling purposes. In
  * particular, the following execution is permitted for this queue, but is not permitted for a
  * linearizable queue:
+ *
  * ```
  * Thread 1: addLast(1) = true, removeFirstOrNull() = null
  * Thread 2: addLast(2) = 2 // this operation is concurrent with both operations in the first thread
