@@ -25,7 +25,6 @@ buildscript {
 plugins {
   alias(libs.plugins.dependencyAnalysis)
   alias(libs.plugins.detekt)
-  alias(libs.plugins.gradleDoctor)
   alias(libs.plugins.moduleCheck)
   alias(libs.plugins.taskTree)
   base
@@ -73,15 +72,5 @@ afterEvaluate {
     tasks.named(taskName).configure {
       dependsOn(gradle.includedBuild("build-logic").task(":$taskName"))
     }
-  }
-}
-
-doctor {
-  disallowCleanTaskDependencies.set(false)
-  javaHome {
-    // this is throwing a false positive
-    // JAVA_HOME is /Users/rbusarow/Library/Java/JavaVirtualMachines/azul-11-ARM64
-    // Gradle is using /Users/rbusarow/Library/Java/JavaVirtualMachines/azul-11-ARM64/zulu-11.jdk/Contents/Home
-    ensureJavaHomeMatches.set(false)
   }
 }

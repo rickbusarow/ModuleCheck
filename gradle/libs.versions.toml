@@ -50,7 +50,6 @@ google-dagger = "2.45"
 google-guava = "31.1-jre"
 google-material = "1.4.0"
 gradle-plugin-publish = "1.1.0"
-gradleDoctor = "0.8.1"
 graphviz = "0.18.1"
 groovy = "3.0.16"
 jUnit = "5.9.2"
@@ -107,7 +106,6 @@ exhaustive = { id = "app.cash.exhaustive:exhaustive-gradle", version.ref = "exha
 github-release = { id = "com.github.breadmoirai.github-release", version.ref = "github-release" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "google-ksp" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
-gradleDoctor = { id = "com.osacky.doctor", version.ref = "gradleDoctor" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "jmailen-kotlinter" }
 kotlinx-binaryCompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binaryCompatibility" }
