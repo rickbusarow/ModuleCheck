@@ -57,7 +57,7 @@ jackson = "2.13.0"
 javaParser = "3.25.1"
 jetbrains-markdown = "0.4.1"
 jmailen-kotlinter = "3.14.0"
-johnrengelman-shadow = "8.1.0"
+johnrengelman-shadow = "8.1.1"
 kaml = "0.53.0"
 kct = "1.5.0"
 knit = "0.4.0"
@@ -84,12 +84,12 @@ slf4j = "2.0.7"
 square-moshi = "1.14.0"
 square-okio = "3.3.0"
 square-retrofit = "2.9.0"
-square-wire = "4.5.2"
+square-wire = "4.5.3"
 square-workflow = "1.0.0"
 
 taskTree = "2.1.1"
 
-vanniktech-publish = "0.24.0"
+vanniktech-publish = "0.25.1"
 
 [plugins]
 
@@ -298,7 +298,7 @@ square-wire-runtime-swift = { module = "com.squareup.wire:wire-runtime-swift", v
 square-wire-schema = { module = "com.squareup.wire:wire-schema", version.ref = "square-wire" }
 square-wire-schema-tests = { module = "com.squareup.wire:wire-schema-tests", version.ref = "square-wire" }
 
-square-turbine = "app.cash.turbine:turbine:0.12.1"
+square-turbine = "app.cash.turbine:turbine:0.12.3"
 
 unbescape = "org.unbescape:unbescape:1.1.6.RELEASE"
 
