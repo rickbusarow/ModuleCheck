@@ -34,8 +34,8 @@ fun interface NameParser {
    * @property mustBeApi every declaration which is part of the public api
    * @property apiReferenceNames every reference which is part of the public api
    * @property referenceLanguage is this file Java or Kotlin?
-   * @property stdLibNameOrNull returns a [ReferenceName] if the receiver name is part of the
-   *   stdlib of this [referenceLanguage], otherwise null
+   * @property stdLibNameOrNull returns a [ReferenceName] if the receiver
+   *   name is part of the stdlib of this [referenceLanguage], otherwise null
    * @since 0.12.0
    */
   data class NameParserPacket(

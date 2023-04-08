@@ -29,10 +29,8 @@ import modulecheck.utils.lazy.lazySet
 import modulecheck.utils.lazy.toLazySet
 
 /**
- * Cache of all [Generated] declarations created by this project, where each [Generated] lists its
- * [sources][Generated.sources].
- *
- * @since 0.13.0
+ * Cache of all [Generated] declarations created by this project,
+ * where each [Generated] lists its [sources][Generated.sources].
  */
 class GeneratedDeclarations private constructor(
   private val project: McProject
@@ -44,11 +42,10 @@ class GeneratedDeclarations private constructor(
 
   /**
    * the map holds all generated declarations for a given
-   * [ReferenceName][modulecheck.parsing.source.ReferenceName]. This is more efficient than a linear
-   * search/filter of a full list of [Generated] when there will be lookups for more than one
-   * source.
+   * [ReferenceName][modulecheck.parsing.source.ReferenceName]. This
+   * is more efficient than a linear search/filter of a full list of
+   * [Generated] when there will be lookups for more than one source.
    *
-   * @since 0.13.0
    */
   private val reversed: SafeCache<SourceSetName, Map<McName, Set<Generated>>> by lazy {
     SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
@@ -57,7 +54,6 @@ class GeneratedDeclarations private constructor(
   /**
    * Just a cache of the results from filtering all generated for a particular set of sources.
    *
-   * @since 0.13.0
    */
   private val filtered: SafeCache<SourceSetWithDeclarations, LazySet<Generated>> by lazy {
     SafeCache(listOf(project.projectPath, GeneratedDeclarations::class))
@@ -73,7 +69,6 @@ class GeneratedDeclarations private constructor(
 
   /**
    * @return all [Generated] declarations for a given source set
-   * @since 0.13.0
    */
   suspend fun get(sourceSetName: SourceSetName): LazySet<Generated> {
 
@@ -86,10 +81,9 @@ class GeneratedDeclarations private constructor(
   }
 
   /**
-   * @return all [Generated] declarations from a given source set which reference a declaration
-   *   contained in [sourceDeclarations]. One example would be generated Android resources which
-   *   come from another module.
-   * @since 0.13.0
+   * @return all [Generated] declarations from a given source set which
+   *   reference a declaration contained in [sourceDeclarations]. One example
+   *   would be generated Android resources which come from another module.
    */
   suspend fun get(
     sourceSetName: SourceSetName,
@@ -129,7 +123,6 @@ class GeneratedDeclarations private constructor(
   /**
    * The [ProjectContext] key for [GeneratedDeclarations].
    *
-   * @since 0.13.0
    */
   companion object Key : ProjectContext.Key<GeneratedDeclarations> {
     override suspend operator fun invoke(project: McProject): GeneratedDeclarations {
@@ -140,25 +133,21 @@ class GeneratedDeclarations private constructor(
 
 /**
  * shorthand for `project.get(GeneratedDeclarations)`
- *
- * @since 0.13.0
  */
 suspend fun ProjectContext.generatedDeclarations(): GeneratedDeclarations =
   get(GeneratedDeclarations)
 
 /**
  * @return all [Generated] declarations for a given source set
- * @since 0.13.0
  */
 suspend fun ProjectContext.generatedDeclarations(
   sourceSetName: SourceSetName
 ): LazySet<Generated> = generatedDeclarations().get(sourceSetName)
 
 /**
- * @return all [Generated] declarations from a given source set which reference a declaration
- *   contained in [sourceDeclarations]. One example would be generated Android resources which come
- *   from another module.
- * @since 0.13.0
+ * @return all [Generated] declarations from a given source set which
+ *   reference a declaration contained in [sourceDeclarations]. One example
+ *   would be generated Android resources which come from another module.
  */
 suspend fun ProjectContext.generatedDeclarations(
   sourceSetName: SourceSetName,

@@ -39,20 +39,16 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 /**
- * Thread-safe, "leased" access to [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult]
- * creation and subsequent
+ * Thread-safe, "leased" access to
+ * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult] creation and subsequent
  * [ModuleDescriptorImpl][org.jetbrains.kotlin.descriptors.impl.ModuleDescriptorImpl] access.
- *
- * @since 0.13.0
  */
 interface SafeAnalysisResultAccess {
 
   /**
-   * Suspends until all dependency module descriptors are available for use, then acquires locks for
-   * all of them and performs [action]. No other project/source set will be able to read from those
-   * analysis results, binding contexts, or module descriptors until [action] has completed.
-   *
-   * @since 0.13.0
+   * Suspends until all dependency module descriptors are available for use, then acquires locks
+   * for all of them and performs [action]. No other project/source set will be able to read from
+   * those analysis results, binding contexts, or module descriptors until [action] has completed.
    */
   suspend fun <T> withLeases(
     requester: HasAnalysisResult,
@@ -62,11 +58,7 @@ interface SafeAnalysisResultAccess {
   ): T
 }
 
-/**
- * The only implementation of [SafeAnalysisResultAccess]
- *
- * @since 0.13.0
- */
+/** The only implementation of [SafeAnalysisResultAccess] */
 @SingleIn(TaskScope::class)
 @ContributesBinding(TaskScope::class)
 class SafeAnalysisResultAccessImpl @Inject constructor(
@@ -224,14 +216,12 @@ class SafeAnalysisResultAccessImpl @Inject constructor(
   }
 
   /**
-   * This is a hack to get around the de-duping behavior of a
-   * [StateFlow][kotlinx.coroutines.flow.StateFlow]. Two lists with identical contents will never be
-   * equal, so
+   * This is a hack to get around the de-duping behavior of
+   * a [StateFlow][kotlinx.coroutines.flow.StateFlow]. Two
+   * lists with identical contents will never be equal, so
    *
-   * As a bonus, this is also cheaper since we don't need to compare all the elements of the two
-   * lists.
-   *
-   * @since 0.13.0
+   * As a bonus, this is also cheaper since we don't
+   * need to compare all the elements of the two lists.
    */
   private class DifferentList(delegate: List<PendingRequest>) : List<PendingRequest> by delegate {
     @Suppress("EqualsAlwaysReturnsTrueOrFalse")

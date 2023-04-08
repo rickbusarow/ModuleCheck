@@ -20,9 +20,9 @@ import kotlinx.coroutines.flow.firstOrNull
 import modulecheck.utils.lazy.LazySet
 
 /**
- * Fundamentally, this is a version of `FqName` (such as Kotlin's
- * [FqName][org.jetbrains.kotlin.name.FqName]) with syntactic sugar for complex matching
- * requirements.
+ * Fundamentally, this is a version of `FqName` (such as
+ * Kotlin's [FqName][org.jetbrains.kotlin.name.FqName])
+ * with syntactic sugar for complex matching requirements.
  *
  * @see QualifiedDeclaredName
  * @see ReferenceName
@@ -77,7 +77,6 @@ sealed interface McName : Comparable<McName> {
 
   /**
    * @return true if the last segment of this name matches [simpleName], otherwise false
-   * @since 0.13.0
    */
   fun endsWithSimpleName(simpleName: SimpleName): Boolean {
     return name.split('.').last() == simpleName.name
@@ -101,8 +100,8 @@ sealed interface McName : Comparable<McName> {
   }
 
   /**
-   * The language which contains a given [ReferenceName], or the language which can access a given
-   * [DeclaredName]
+   * The language which contains a given [ReferenceName],
+   * or the language which can access a given [DeclaredName]
    *
    * @since 0.12.0
    */
@@ -137,10 +136,8 @@ sealed interface McName : Comparable<McName> {
 }
 
 /**
- * An [McName] which has the potential to be resolved -- meaning any [ReferenceName], or a
- * [QualifiedDeclaredName]
- *
- * @since 0.13.0
+ * An [McName] which has the potential to be resolved --
+ * meaning any [ReferenceName], or a [QualifiedDeclaredName]
  */
 sealed interface ResolvableMcName : McName
 

@@ -22,17 +22,11 @@ import kotlin.reflect.KClass
 
 /**
  * Tied to a single Gradle task. Currently, that's essentially the same as an `AppScope`.
- *
- * @since 0.13.0
  */
 @Suppress("UnnecessaryAbstractClass")
 abstract class TaskScope private constructor()
 
-/**
- * path of ":"
- *
- * @since 0.13.0
- */
+/** path of ":" */
 @Qualifier
 annotation class RootGradleProject
 

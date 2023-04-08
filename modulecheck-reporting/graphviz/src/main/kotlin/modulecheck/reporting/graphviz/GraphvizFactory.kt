@@ -44,8 +44,8 @@ import javax.inject.Inject
 /**
  * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
  *
- * @property typeSafeProjectPathResolver used to resolve project paths from type-safe project
- *   accessors
+ * @property typeSafeProjectPathResolver used to resolve
+ *   project paths from type-safe project accessors
  * @since 0.12.0
  */
 class GraphvizFactory @Inject constructor(
@@ -55,8 +55,8 @@ class GraphvizFactory @Inject constructor(
   /**
    * Creates a [Graphviz] model of a dependency graph from a given [ProjectDepth] root.
    *
-   * @param root the root of the dependency graph, starting at a single
-   *   [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
+   * @param root the root of the dependency graph, starting at a
+   *   single [SourceSet][modulecheck.parsing.gradle.model.McSourceSet]
    * @return the graph model for this dependency graph
    * @since 0.12.0
    */

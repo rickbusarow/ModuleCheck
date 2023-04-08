@@ -16,7 +16,6 @@
 package modulecheck.builds
 
 import modulecheck.builds.artifacts.ArtifactsPlugin
-import modulecheck.builds.ktlint.KtLintConventionPlugin
 import modulecheck.builds.matrix.VersionsMatrixYamlPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project

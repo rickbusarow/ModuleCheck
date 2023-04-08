@@ -23,8 +23,8 @@ package modulecheck.parsing.source
 sealed interface Generated : McName {
 
   /**
-   * The references which the underlying code generator (AGP, Dagger, etc.) uses in order to trigger
-   * the new declaration.
+   * The references which the underlying code generator (AGP,
+   * Dagger, etc.) uses in order to trigger the new declaration.
    *
    * @since 0.12.0
    */

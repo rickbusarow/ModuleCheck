@@ -22,9 +22,9 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.isAccessible
 
 /**
- * Returns the full tree of classes which implement a base sealed class/interface, including
- * grandchildren, great-grandchildren, etc. This is different from [KClass.sealedSubclasses] in that
- * the latter only returns the direct children.
+ * Returns the full tree of classes which implement a base sealed class/interface,
+ * including grandchildren, great-grandchildren, etc. This is different from
+ * [KClass.sealedSubclasses] in that the latter only returns the direct children.
  *
  * @since 0.12.0
  */

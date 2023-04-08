@@ -24,12 +24,12 @@ import kotlin.contracts.contract
 /**
  * This represents the *prevailing* build/platform plugin for a given module.
  *
- * In JVM platform projects, the Kotlin jvm plugin automatically applies the `java-library` plugin,
- * but the latter is really just an implementation detail for Kotlin.
+ * In JVM platform projects, the Kotlin jvm plugin automatically applies the `java-library`
+ * plugin, but the latter is really just an implementation detail for Kotlin.
  *
- * In Android projects, the Kotlin Android plugin *must* be added in order to use Kotlin. In this
- * case, kotlin is the implementation detail, since it's just enabling kotlin compilation in the
- * build configured by AGP.
+ * In Android projects, the Kotlin Android plugin *must* be added in order
+ * to use Kotlin. In this case, kotlin is the implementation detail, since
+ * it's just enabling kotlin compilation in the build configured by AGP.
  *
  * @since 0.12.0
  */
@@ -68,11 +68,9 @@ sealed interface AndroidPlatformPlugin : PlatformPlugin {
   val manifests: Map<SourceSetName, File>
 
   /**
-   * Base packages as defined via the AGP DSL. There are only two versions - the "main" `namespace`
-   * which is the default for everything, and `testNamespace` which is applied to all `test` and
-   * `androidTest` source sets.
-   *
-   * @since 0.13.0
+   * Base packages as defined via the AGP DSL. There are only two versions
+   * - the "main" `namespace` which is the default for everything, and `testNamespace`
+   *   which is applied to all `test` and `androidTest` source sets.
    */
   val namespaces: Map<SourceSetName, PackageName>
 

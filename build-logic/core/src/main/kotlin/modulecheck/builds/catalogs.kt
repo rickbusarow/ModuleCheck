@@ -29,8 +29,6 @@ const val DOCS_WEBSITE = "https://rbusarow.github.io/ModuleCheck"
 
 /**
  * "1.6", "1.7", "1.8", etc.
- *
- * @since 0.13.0
  */
 val Project.KOTLIN_API: String
   get() = libsCatalog.version("kotlinApi")
@@ -39,8 +37,6 @@ val Project.KOTLIN_API: String
  * the jdk used in packaging
  *
  * "1.6", "1.8", "11", etc.
- *
- * @since 0.13.0
  */
 val Project.JVM_TARGET: String
   get() = libsCatalog.version("jvmTarget")
@@ -49,16 +45,12 @@ val Project.JVM_TARGET: String
  * the jdk used to build the project
  *
  * "1.6", "1.8", "11", etc.
- *
- * @since 0.13.0
  */
 val Project.JDK: String
   get() = libsCatalog.version("jdk")
 
 /**
  * `6`, `8`, `11`, etc.
- *
- * @since 0.13.0
  */
 val Project.JVM_TARGET_INT: Int
   get() = JVM_TARGET.substringAfterLast('.').toInt()
@@ -74,8 +66,6 @@ private val Project.catalogs: VersionCatalogsExtension
  * ```
  * val myCatalog = project.libsCatalog
  * ```
- *
- * @since 0.13.0
  */
 val Project.libsCatalog: VersionCatalog
   get() = catalogs.named("libs")
@@ -88,8 +78,6 @@ val Project.libsCatalog: VersionCatalog
  * ```
  * "api"(project.libsCatalog.dependency("square-anvil-annotations"))
  * ```
- *
- * @since 0.13.0
  */
 fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDependency> {
   return findLibrary(alias).get()
@@ -103,8 +91,6 @@ fun VersionCatalog.dependency(alias: String): Provider<MinimalExternalModuleDepe
  * ```
  * val anvilVersion = project.libsCatalog.version("square-anvil")
  * ```
- *
- * @since 0.13.0
  */
 fun VersionCatalog.version(alias: String): String {
   return findVersion(alias).get().requiredVersion

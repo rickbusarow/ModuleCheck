@@ -26,111 +26,88 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import java.io.File
 
 /**
- * Models everything needed in order to creat authentic Psi files for [BindingContext]-backed type
- * resolution.
- *
- * @since 0.13.0
+ * Models everything needed in order to creat authentic
+ * Psi files for [BindingContext]-backed type resolution.
  */
 interface KotlinEnvironment : HasAnalysisResult {
   /**
-   * Used to create Psi files without necessarily performing compiler analysis first. This is only
-   * useful for Kotlin files, as Java Psi files require analysis first.
+   * Used to create Psi files without necessarily performing compiler analysis first.
+   * This is only useful for Kotlin files, as Java Psi files require analysis first.
    *
-   * @since 0.13.0
    */
   val lightPsiFactory: LazyDeferred<McPsiFileFactory>
 
   /**
-   * Used to create Psi files with a guarantee that compiler analysis is done first. This is
-   * required in order to use [java Psi files][PsiJavaFile],
-   *
-   * @since 0.13.0
+   * Used to create Psi files with a guarantee that compiler analysis is done
+   * first. This is required in order to use [java Psi files][PsiJavaFile],
    */
   val heavyPsiFactory: LazyDeferred<McPsiFileFactory>
 
   /**
    * Returns the best [McPsiFileFactory] available without having to run compiler analysis.
    *
-   * If analysis is completed, this will return [heavyPsiFactory]. Otherwise, it will return
-   * [lightPsiFactory].
-   *
-   * @since 0.13.0
+   * If analysis is completed, this will return [heavyPsiFactory].
+   * Otherwise, it will return [lightPsiFactory].
    */
   suspend fun bestAvailablePsiFactory(): McPsiFileFactory
 
   /**
-   * wrapper around "core" settings like Kotlin version, source files, and classpath files (external
-   * dependencies)
-   *
-   * @since 0.13.0
+   * wrapper around "core" settings like Kotlin version,
+   * source files, and classpath files (external dependencies)
    */
   val coreEnvironment: LazyDeferred<KotlinCoreEnvironment>
 
   /**
    * "core" settings like Kotlin version, source files, and classpath files (external dependencies)
-   *
-   * @since 0.13.0
    */
   val compilerConfiguration: LazyDeferred<CompilerConfiguration>
 
   /**
-   * Returns a cached [KtFile] if one has already been created, otherwise creates a new one. Note
-   * that these files are usable before compiler analysis has been executed.
-   *
-   * @since 0.13.0
+   * Returns a cached [KtFile] if one has already been created, otherwise creates a new
+   * one. Note that these files are usable before compiler analysis has been executed.
    */
   suspend fun ktFile(file: File): KtFile
 
   /**
-   * Returns a cached [PsiJavaFile] if one has already been created, otherwise creates a new one.
-   * Note that Java Psi files require compiler analysis to execute first.
-   *
-   * @since 0.13.0
+   * Returns a cached [PsiJavaFile] if one has already been created, otherwise creates
+   * a new one. Note that Java Psi files require compiler analysis to execute first.
    */
   suspend fun javaPsiFile(file: File): PsiJavaFile
 }
 
 /**
- * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl] for a
- * [KotlinEnvironment]. These are retrieved from an
+ * Holds the [AnalysisResult], [BindingContext], and [ModuleDescriptorImpl]
+ * for a [KotlinEnvironment]. These are retrieved from an
  * [AnalysisResult][org.jetbrains.kotlin.analyzer.AnalysisResult].
- *
- * @since 0.13.0
  */
 interface HasAnalysisResult {
   /**
    * The result of file analysis. This object is very expensive to create, but it's created lazily.
    *
-   * Holds the [bindingContextDeferred] and [moduleDescriptorDeferred] used for last-resort type and
-   * reference resolution.
-   *
-   * @since 0.13.0
+   * Holds the [bindingContextDeferred] and [moduleDescriptorDeferred]
+   * used for last-resort type and reference resolution.
    */
   val analysisResultDeferred: LazyDeferred<AnalysisResult>
 
   /**
-   * Used as the entry point for type resolution in Psi files. Under the hood, it frequently
-   * delegates to this environment's ModuleDescriptor or the descriptors from its dependency
-   * environments.
-   *
-   * @since 0.13.0
+   * Used as the entry point for type resolution in Psi files.
+   * Under the hood, it frequently delegates to this environment's
+   * ModuleDescriptor or the descriptors from its dependency environments.
    */
   val bindingContextDeferred: LazyDeferred<BindingContext>
 
   /**
-   * The real force behind type resolution. Prefer using [bindingContextDeferred] as the entry
-   * point, as it will give references to Psi elements when they're known. But when we have to
-   * resolve things from dependencies (including other source sets in the same module), this is
-   * always done using the descriptor.
+   * The real force behind type resolution. Prefer using [bindingContextDeferred]
+   * as the entry point, as it will give references to Psi elements when they're
+   * known. But when we have to resolve things from dependencies (including other
+   * source sets in the same module), this is always done using the descriptor.
    *
-   * N.B. This is not thread-safe. This holds lazily cached data. That cache is partially filled
-   * after the initial analysis, but the cache is still added to when this descriptor is used in the
-   * analysis of downstream compilations.
+   * N.B. This is not thread-safe. This holds lazily cached data. That cache is
+   * partially filled after the initial analysis, but the cache is still added
+   * to when this descriptor is used in the analysis of downstream compilations.
    *
-   * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface because
-   * `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
-   *
-   * @since 0.13.0
+   * N.B. This has to be an -Impl instead of just the `ModuleDescriptor` interface
+   * because `TopDownAnalyzerFacadeForJVM.createContainer(...)` requires the -Impl type.
    */
   val moduleDescriptorDeferred: LazyDeferred<ModuleDescriptorImpl>
 }

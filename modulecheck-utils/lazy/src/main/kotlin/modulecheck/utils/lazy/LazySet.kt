@@ -34,7 +34,6 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
 
   /**
    * @return true if the two LazySets have any element in common, otherwise false
-   * @since 0.13.0
    */
   suspend fun containsAny(other: LazySet<Any?>): Boolean
 
@@ -44,8 +43,8 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
   fun snapshot(): State<E>
 
   /**
-   * A **Lazy** data source for a [LazySet], which performs some suspending operation [get] in order
-   * to incrementally add data to the `LazySet`.
+   * A **Lazy** data source for a [LazySet], which performs some suspending
+   * operation [get] in order to incrementally add data to the `LazySet`.
    *
    * @since 0.12.0
    */
@@ -55,8 +54,8 @@ interface LazySet<out E> : Flow<E>, LazySetComponent<E> {
     LazyDeferred<Set<E>> {
 
     /**
-     * The priority which should be applied to this source while in a LazySet. Higher priority
-     * sources are invoked first.
+     * The priority which should be applied to this source while
+     * in a LazySet. Higher priority sources are invoked first.
      *
      * @since 0.12.0
      */

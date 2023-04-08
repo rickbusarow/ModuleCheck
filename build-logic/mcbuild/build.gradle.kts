@@ -48,7 +48,6 @@ dependencies {
 
   api(project(path = ":artifacts-check"))
   api(project(path = ":conventions"))
-  api(project(path = ":ktlint-rules"))
   api(project(path = ":versions-matrix"))
 
   compileOnly(gradleApi())

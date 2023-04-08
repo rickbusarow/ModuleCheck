@@ -35,9 +35,9 @@ import org.jetbrains.kotlin.name.FqName
 sealed interface DeclaredName : McName, HasSimpleNames {
 
   /**
-   * The languages with which this declaration is compatible. For instance, a member property will
-   * typically have a [KOTLIN] declaration using property access syntax, but will also have a
-   * [JAVA]/[XML] declaration for setter and getter functions.
+   * The languages with which this declaration is compatible. For instance, a member
+   * property will typically have a [KOTLIN] declaration using property access syntax,
+   * but will also have a [JAVA]/[XML] declaration for setter and getter functions.
    *
    * @since 0.12.0
    */
@@ -61,8 +61,8 @@ sealed interface DeclaredName : McName, HasSimpleNames {
     )
 
     /**
-     * Shorthand for creating a [QualifiedDeclaredName] which is only accessible from Java or XML
-     * files.
+     * Shorthand for creating a [QualifiedDeclaredName]
+     * which is only accessible from Java or XML files.
      *
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.XML
@@ -78,8 +78,8 @@ sealed interface DeclaredName : McName, HasSimpleNames {
     )
 
     /**
-     * Shorthand for creating a [QualifiedDeclaredName] which is accessible from files in any
-     * language.
+     * Shorthand for creating a [QualifiedDeclaredName]
+     * which is accessible from files in any language.
      *
      * @see McName.CompatibleLanguage.JAVA
      * @see McName.CompatibleLanguage.KOTLIN
@@ -119,10 +119,8 @@ sealed class QualifiedDeclaredName :
   }
 
   /**
-   * `true` if a declaration is top-level in a file, otherwise `false` such as if the declaration is
-   * a nested type or a member declaration
-   *
-   * @since 0.13.0
+   * `true` if a declaration is top-level in a file, otherwise `false`
+   * such as if the declaration is a nested type or a member declaration
    */
   val isTopLevel: Boolean by unsafeLazy { simpleNames.size == 1 }
 
@@ -164,8 +162,8 @@ internal class QualifiedDeclaredNameImpl(
 }
 
 /**
- * @return a [QualifiedDeclaredName], where the String after [packageName] is split and treated as
- *   the collection of [SimpleNames][SimpleName].
+ * @return a [QualifiedDeclaredName], where the String after [packageName]
+ *   is split and treated as the collection of [SimpleNames][SimpleName].
  * @since 0.12.0
  */
 fun FqName.asDeclaredName(
@@ -176,8 +174,8 @@ fun FqName.asDeclaredName(
 }
 
 /**
- * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
- *   [SimpleNames][SimpleName]
+ * @return a [QualifiedDeclaredName] from the [packageName]
+ *   argument, appending the receiver [SimpleNames][SimpleName]
  * @since 0.12.0
  */
 fun Iterable<SimpleName>.asDeclaredName(
@@ -193,9 +191,8 @@ fun Iterable<SimpleName>.asDeclaredName(
 }
 
 /**
- * @return a [QualifiedDeclaredName] from the [packageName] argument, appending the receiver
- *   [SimpleNames][SimpleName]
- * @since 0.13.0
+ * @return a [QualifiedDeclaredName] from the [packageName]
+ *   argument, appending the receiver [SimpleNames][SimpleName]
  */
 fun SimpleName.asDeclaredName(
   packageName: PackageName,

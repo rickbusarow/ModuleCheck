@@ -21,18 +21,17 @@ import modulecheck.utils.capitalize
 import modulecheck.utils.decapitalize
 
 /**
- * Wraps the unqualified, simple name of a Gradle Configuration, like `implementation` or
- * `debugApi`.
+ * Wraps the unqualified, simple name of a Gradle
+ * Configuration, like `implementation` or `debugApi`.
  *
  * @property value the name
- * @since 0.13.0
  */
 @JvmInline
 value class ConfigurationName(val value: String) : Comparable<ConfigurationName> {
 
   /**
-   * Strips the "base Configuration name" (`api`, `implementation`, `compileOnly`, `runtimeOnly`)
-   * from an aggregate name like `debugImplementation`.
+   * Strips the "base Configuration name" (`api`, `implementation`, `compileOnly`,
+   * `runtimeOnly`) from an aggregate name like `debugImplementation`.
    *
    * examples:
    *
@@ -47,7 +46,6 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
    * ```
    *
    * @return the name of the source set used with this configuration, wrapped in [SourceSetName]
-   * @since 0.13.0
    */
   fun toSourceSetName(): SourceSetName = when (this.value) {
     // "main" source set configurations omit the "main" from their name,
@@ -61,8 +59,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the base name of the Configuration without any source set prefix.
    *
-   * For "main" source sets, this function just returns the same string, e.g.:
-   * ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * For "main" source sets, this function just returns the same string,
+   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
    * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
    *
    * For other source sets, it returns the base configuration names:
@@ -81,8 +79,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the base name of the Configuration without any source set prefix.
    *
-   * For "main" source sets, this function just returns the same string, e.g.:
-   * ConfigurationName("api").nameWithoutSourceSet() == "api"
+   * For "main" source sets, this function just returns the same string,
+   * e.g.: ConfigurationName("api").nameWithoutSourceSet() == "api"
    * ConfigurationName("implementation").nameWithoutSourceSet() == "implementation"
    *
    * For other source sets, it returns the base configuration names:
@@ -107,8 +105,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * find the "base" configuration name and remove it
    *
-   * For instance, `debugCompileOnly` would find the "CompileOnly" and remove it, returning "debug"
-   * as the sourceSet name
+   * For instance, `debugCompileOnly` would find the "CompileOnly"
+   * and remove it, returning "debug" as the sourceSet name
    *
    * @since 0.12.0
    */
@@ -152,11 +150,11 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the '-api' version of the current configuration.
    *
-   * In Returns | api | api | implementation | api | compileOnly | api | testImplementation |
-   * testApi | debug | debugApi | androidTestImplementation | androidTestApi
+   * In Returns | api | api | implementation | api | compileOnly | api | testImplementation
+   * | testApi | debug | debugApi | androidTestImplementation | androidTestApi
    *
-   * @return for any main/common configuration, just returns `api`. For any other configuration,
-   *   it returns the [SourceSetName] appended with `Api`.
+   * @return for any main/common configuration, just returns `api`. For any
+   *   other configuration, it returns the [SourceSetName] appended with `Api`.
    * @since 0.12.0
    */
   fun apiVariant(): ConfigurationName = toSourceSetName().apiConfig()
@@ -164,12 +162,12 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the '-implementation' version of the current configuration.
    *
-   * In Returns | implementation | implementation | implementation | implementation | compileOnly |
-   * implementation | testImplementation | testImplementation | debug | debugImplementation |
-   * androidTestImplementation | androidTestImplementation
+   * In Returns | implementation | implementation | implementation | implementation
+   * | compileOnly | implementation | testImplementation | testImplementation | debug
+   * | debugImplementation | androidTestImplementation | androidTestImplementation
    *
-   * @return for any main/common configuration, just returns `implementation`. For any other
-   *   configuration, it returns the [SourceSetName] appended with `Implementation`.
+   * @return for any main/common configuration, just returns `implementation`. For any
+   *   other configuration, it returns the [SourceSetName] appended with `Implementation`.
    * @since 0.12.0
    */
   fun implementationVariant(): ConfigurationName = toSourceSetName().implementationConfig()
@@ -177,8 +175,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
   /**
    * Returns the 'kapt-' version of the current configuration.
    *
-   * @return for any main/common configuration, just returns `kapt`. For any other configuration,
-   *   it returns `kapt` appended with the [SourceSetName].
+   * @return for any main/common configuration, just returns `kapt`. For any
+   *   other configuration, it returns `kapt` appended with the [SourceSetName].
    * @since 0.12.0
    */
   fun kaptVariant(): ConfigurationName = toSourceSetName().kaptVariant()
@@ -211,111 +209,82 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
     /**
      * name of the 'androidTestImplementation' configuration
-     *
-     * @since 0.13.0
      */
     val androidTestImplementation: ConfigurationName =
       ConfigurationName("androidTestImplementation")
 
     /**
      * name of the 'annotationProcessor' configuration
-     *
-     * @since 0.13.0
      */
     val annotationProcessor: ConfigurationName = ConfigurationName("annotationProcessor")
 
     /**
      * name of the 'anvil' configuration
-     *
-     * @since 0.13.0
      */
     val anvil: ConfigurationName = ConfigurationName("anvil")
 
     /**
      * name of the 'api' configuration
-     *
-     * @since 0.13.0
      */
     val api: ConfigurationName = ConfigurationName("api")
 
     /**
      * name of the 'compile' configuration
-     *
-     * @since 0.13.0
      */
     val compile: ConfigurationName = ConfigurationName("compile")
 
     /**
      * name of the 'compileOnly' configuration
-     *
-     * @since 0.13.0
      */
     val compileOnly: ConfigurationName = ConfigurationName("compileOnly")
 
     /**
      * name of the 'compileOnlyApi' configuration
-     *
-     * @since 0.13.0
      */
     val compileOnlyApi: ConfigurationName = ConfigurationName("compileOnlyApi")
 
     /**
      * name of the 'implementation' configuration
-     *
-     * @since 0.13.0
      */
     val implementation: ConfigurationName = ConfigurationName("implementation")
 
     /**
      * name of the 'kapt' configuration
-     *
-     * @since 0.13.0
      */
     val kapt: ConfigurationName = ConfigurationName("kapt")
 
     /**
      * name of the 'kotlinCompilerPluginClasspathMain' configuration
-     *
-     * @since 0.13.0
      */
     val kotlinCompileClasspath: ConfigurationName =
       ConfigurationName("kotlinCompilerPluginClasspathMain")
 
     /**
      * name of the 'ksp' configuration
-     *
-     * @since 0.13.0
      */
     val ksp: ConfigurationName = ConfigurationName("ksp")
 
     /**
      * name of the 'runtime' configuration
-     *
-     * @since 0.13.0
      */
     val runtime: ConfigurationName = ConfigurationName("runtime")
 
     /**
      * name of the 'runtimeOnly' configuration
-     *
-     * @since 0.13.0
      */
     val runtimeOnly: ConfigurationName = ConfigurationName("runtimeOnly")
 
     /**
      * name of the 'testApi' configuration
-     *
-     * @since 0.13.0
      */
     val testApi: ConfigurationName = ConfigurationName("testApi")
 
     /**
      * name of the 'testImplementation' configuration
-     *
-     * @since 0.13.0
      */
     val testImplementation: ConfigurationName = ConfigurationName("testImplementation")
 
+    /** */
     val mainConfigurations: List<String> = listOf(
       api.value,
       compile.value,
@@ -329,12 +298,8 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
       runtime.value,
       runtimeOnly.value
     )
-      /**
-       * The order of this list matters. CompileOnlyApi must be before `api` or
-       * `extractSourceSetName` below will match the wrong suffix.
-       *
-       * @since 0.12.0
-       */
+      // The order of this list matters. CompileOnlyApi must be before `api` or
+      // `extractSourceSetName` below will match the wrong suffix.
       .sortedByDescending { it.length }
 
     internal val mainCommonConfigurations: List<String> = listOf(
@@ -348,8 +313,6 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
     /**
      * the names of all configurations consumed by the main source set
-     *
-     * @since 0.13.0
      */
     fun main(): List<ConfigurationName> = listOf(
       compileOnlyApi,
@@ -364,8 +327,6 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
     /**
      * the base configurations which do not leak their transitive dependencies (basically not `api`)
-     *
-     * @since 0.13.0
      */
     fun private(): List<ConfigurationName> = listOf(
       implementation,
@@ -377,8 +338,6 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
     /**
      * the base configurations which include their dependencies as "compile" dependencies in the POM
-     *
-     * @since 0.13.0
      */
     fun public(): List<ConfigurationName> = listOf(
       compileOnlyApi,
@@ -389,7 +348,6 @@ value class ConfigurationName(val value: String) : Comparable<ConfigurationName>
 
 /**
  * @return a ConfigurationName from this raw string
- * @since 0.13.0
  */
 fun String.asConfigurationName(): ConfigurationName = ConfigurationName(this)
 
@@ -404,7 +362,6 @@ fun <T : Any> Map<ConfigurationName, Collection<T>>.main(): List<T> {
 
 /**
  * @return all source set names from this configuration names, without duplicates
- * @since 0.13.0
  */
 fun Iterable<ConfigurationName>.distinctSourceSetNames(): List<SourceSetName> =
   map { it.toSourceSetName() }
@@ -412,7 +369,6 @@ fun Iterable<ConfigurationName>.distinctSourceSetNames(): List<SourceSetName> =
 
 /**
  * @return all source set names from this configuration names, without duplicates
- * @since 0.13.0
  */
 fun Sequence<ConfigurationName>.distinctSourceSetNames(): Sequence<SourceSetName> =
   map { it.toSourceSetName() }

@@ -361,8 +361,8 @@ fun KtCallExpression.nameSafe(): String? {
 }
 
 /**
- * This poorly-named function will return the most-qualified name available for a given [PsiElement]
- * from the snippet of code where it's being called, without looking at imports.
+ * This poorly-named function will return the most-qualified name available for a given
+ * [PsiElement] from the snippet of code where it's being called, without looking at imports.
  *
  * @since 0.12.0
  */
@@ -425,8 +425,8 @@ internal fun KtNamedDeclaration.isConst() = (this as? KtProperty)?.isConstant() 
 fun KtNamedDeclaration.identifierName(): String? = nameIdentifier?.text
 
 /**
- * For a declaration with a name wrapped in backticks, this returns a name with those backticks. The
- * regular `fqName` property does not.
+ * For a declaration with a name wrapped in backticks, this returns a
+ * name with those backticks. The regular `fqName` property does not.
  *
  * @since 0.12.0
  */
