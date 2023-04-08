@@ -71,7 +71,6 @@ import org.jetbrains.kotlin.psi.classOrObjectRecursiveVisitor
 import org.jetbrains.kotlin.psi.psiUtil.containingClassOrObject
 import org.jetbrains.kotlin.psi.psiUtil.isTopLevelKtOrJavaMember
 import org.jetbrains.kotlin.psi.psiUtil.parents
-import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 import java.io.File
 
 class RealKotlinFile(
@@ -335,7 +334,7 @@ class RealKotlinFile(
     val visitor = classOrObjectRecursiveVisitor vis@{ classOrObject ->
 
       val typeFqName = classOrObject.fqNameSafe() ?: return@vis
-      val annotated = classOrObject.safeAs<KtAnnotated>() ?: return@vis
+      val annotated = classOrObject as?KtAnnotated ?: return@vis
 
       annotated.annotationEntries.filter { annotationEntry ->
         val typeRef = annotationEntry.typeReference?.text ?: return@filter false

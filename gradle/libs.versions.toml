@@ -7,7 +7,7 @@ kotlinApi = "1.6"
 
 kotlin = "1.8.20"
 google-ksp = "1.8.20-1.0.10"
-square-anvil = "2.4.4"
+square-anvil = "2.4.5"
 
 androidTools = "7.4.2"
 
